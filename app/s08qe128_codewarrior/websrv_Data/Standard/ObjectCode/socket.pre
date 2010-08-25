@@ -1,0 +1,642 @@
+
+
+/**** FILE 'F:\web\hcweb\hcweb\Sources\Drivers\w5100\socket.c' */
+
+
+/*        6 */ 
+
+/**** FILE 'F:\web\hcweb\hcweb\Sources\Drivers\w5100\socket.c' */
+
+
+/*       10 */ 
+
+/**** FILE 'w5100.h' */
+
+
+/*        9 */ 
+
+/**** FILE 'w5100.h' */
+
+
+/*      324 */ 
+
+/**** FILE 'w5100.h' */
+
+
+/*       10 */ 
+
+/**** FILE 'wizhdl.h' */
+
+
+/*       10 */ 
+
+/**** FILE 'mytypes.h' */
+
+
+/*        8 */  typedef unsigned char uchar ;
+/*        9 */  typedef signed char schar ;
+/*       10 */  typedef unsigned int uint ;
+/*       11 */  typedef unsigned short ushort ;
+/*       12 */  typedef unsigned long ulong ;
+/*       16 */  typedef uchar MUInt ;
+/*       17 */  typedef schar MInt ;
+/*       18 */  typedef uint bitf ;
+/*       20 */  typedef uchar BOOL ;
+/*       21 */  typedef uchar BYTE ;
+/*       22 */  typedef ushort WORD ;
+/*       35 */ 
+
+/**** FILE 'wizhdl.h' */
+
+
+/*       15 */  MInt wiz_hwreset ( void ) ;
+/*       26 */  unsigned char
+/*       27 */  wiz_rwbyte ( unsigned char rdwr , unsigned int address , unsigned char outdata ) ;
+/*       32 */ 
+
+/**** FILE 'w5100.h' */
+
+
+/*       11 */ 
+
+/**** FILE 'wizopts.h' */
+
+
+/*       62 */ 
+
+/**** FILE 'w5100.h' */
+
+
+/*       12 */ 
+
+/**** FILE 'wiztypes.h' */
+
+
+/*       11 */  typedef char int8 ;
+/*       15 */  typedef volatile char vint8 ;
+/*       19 */  typedef unsigned char uint8 ;
+/*       23 */  typedef volatile unsigned char vuint8 ;
+/*       28 */  typedef int int16 ;
+/*       32 */  typedef volatile int vint16 ;
+/*       36 */  typedef unsigned int uint16 ;
+/*       40 */  typedef volatile unsigned int vuint16 ;
+/*       44 */  typedef long int32 ;
+/*       48 */  typedef volatile long vint32 ;
+/*       52 */  typedef unsigned long uint32 ;
+/*       56 */  typedef volatile unsigned long vuint32 ;
+/*       59 */  typedef uint8 u_char ;
+/*       60 */  typedef uint8 SOCKET ;
+/*       61 */  typedef uint16 u_short ;
+/*       62 */  typedef uint16 u_int ;
+/*       63 */  typedef uint32 u_long ;
+/*       65 */  typedef union _un_l2cval {
+/*       66 */  u_long lVal ;
+/*       67 */  u_char cVal [ 4 ] ;
+/*       68 */  } un_l2cval ;
+/*       70 */  typedef union _un_i2cval {
+/*       71 */  u_int iVal ;
+/*       72 */  u_char cVal [ 2 ] ;
+/*       73 */  } un_i2cval ;
+/*       87 */ 
+
+/**** FILE 'w5100.h' */
+
+
+/*      251 */  void wiz_read_buf ( uint16 addr , uint8 * buf , uint16 len ) ;
+/*      252 */  void wiz_write_buf ( uint16 addr , uint8 * buf , uint16 len ) ;
+/*      254 */  void iinchip_init ( void ) ;
+/*      256 */  void sysinit ( uint8 tx_size , uint8 rx_size ) ;
+/*      258 */  uint8 getISR ( uint8 s ) ;
+/*      259 */  void putISR ( uint8 s , uint8 val ) ;
+/*      261 */  uint16 getIINCHIP_RxMAX ( uint8 s ) ;
+/*      262 */  uint16 getIINCHIP_TxMAX ( uint8 s ) ;
+/*      263 */  uint16 getIINCHIP_RxMASK ( uint8 s ) ;
+/*      264 */  uint16 getIINCHIP_TxMASK ( uint8 s ) ;
+/*      265 */  uint16 getIINCHIP_RxBASE ( uint8 s ) ;
+/*      266 */  uint16 getIINCHIP_TxBASE ( uint8 s ) ;
+/*      268 */  void setGAR ( uint8 * addr ) ;
+/*      269 */  void setSUBR ( uint8 * addr ) ;
+/*      270 */  void setSHAR ( uint8 * addr ) ;
+/*      271 */  void setSIPR ( uint8 * addr ) ;
+/*      272 */  void setRTR ( uint16 timeout ) ;
+/*      273 */  void setRCR ( uint8 retry ) ;
+/*      274 */  void setIMR ( uint8 mask ) ;
+/*      276 */  void getGAR ( uint8 * addr ) ;
+/*      277 */  void getSUBR ( uint8 * addr ) ;
+/*      278 */  void getSHAR ( uint8 * addr ) ;
+/*      279 */  void getSIPR ( uint8 * addr ) ;
+/*      280 */  uint8 getIR ( void ) ;
+/*      282 */  void setSn_MSS ( SOCKET s , uint16 Sn_MSSR0 ) ;
+/*      283 */  void setSn_PROTO ( SOCKET s , uint8 proto ) ;
+/*      284 */  uint8 getSn_IR ( SOCKET s ) ;
+/*      285 */  uint8 getSn_SR ( SOCKET s ) ;
+/*      286 */  uint16 getSn_TX_FSR ( SOCKET s ) ;
+/*      287 */  uint16 getSn_RX_RSR ( SOCKET s ) ;
+/*      289 */  void setSn_DHAR ( SOCKET s , uint8 * addr ) ;
+/*      290 */  void setSn_DIPR ( SOCKET s , uint8 * addr ) ;
+/*      291 */  void setSn_DPORT ( SOCKET s , uint8 * addr ) ;
+/*      292 */  void getSn_DHAR ( SOCKET s , uint8 * addr ) ;
+/*      293 */  void getSn_DIPR ( SOCKET s , uint8 * addr ) ;
+/*      294 */  void getSn_DPORT ( SOCKET s , uint8 * addr ) ;
+/*      295 */  void setSn_TTL ( SOCKET s , uint8 ttl ) ;
+/*      296 */  void setMR ( uint8 val ) ;
+/*      303 */  void send_data_processing ( SOCKET s , uint8 * data , uint16 len ) ;
+/*      304 */  void recv_data_processing ( SOCKET s , uint8 * data , uint16 len ) ;
+/*      305 */  void read_data ( SOCKET s , vuint8 * src , vuint8 * dst , uint16 len ) ;
+/*      306 */  void write_data ( SOCKET s , vuint8 * src , vuint8 * dst , uint16 len ) ;
+/*      309 */  extern unsigned char TX_BUF [ 2048 ] ;
+/*      311 */  extern unsigned char RX_BUF [ 1024 ] ;
+/*      313 */  extern unsigned char DHTML_BUF [ 1024 ] ;
+/*      324 */ 
+
+/**** FILE 'F:\web\hcweb\hcweb\Sources\Drivers\w5100\socket.c' */
+
+
+/*       11 */ 
+
+/**** FILE 'socket.h' */
+
+
+/*       13 */  extern uint8 socket ( SOCKET s , uint8 protocol , uint16 port , uint8 flag ) ;
+/*       14 */  extern void close ( SOCKET s ) ;
+/*       15 */  extern uint8 connect ( SOCKET s , uint8 * addr , uint16 port ) ;
+/*       16 */  extern void disconnect ( SOCKET s ) ;
+/*       17 */  extern uint8 listen ( SOCKET s ) ;
+/*       18 */  extern uint16 send ( SOCKET s , const uint8 * buf , uint16 len ) ;
+/*       19 */  extern uint16 recv ( SOCKET s , uint8 * buf , uint16 len ) ;
+/*       20 */  extern uint16 sendto ( SOCKET s , const uint8 * buf , uint16 len , uint8 * addr , uint16 port ) ;
+/*       21 */  extern uint16 recvfrom ( SOCKET s , uint8 * buf , uint16 len , uint8 * addr , uint16 * port ) ;
+/*       23 */  extern uint16 igmpsend ( SOCKET s , const uint8 * buf , uint16 len ) ;
+/*       28 */ 
+
+/**** FILE 'F:\web\hcweb\hcweb\Sources\Drivers\w5100\socket.c' */
+
+
+/*       12 */ 
+
+/**** FILE 'debug.h' */
+
+
+/*        8 */ 
+
+/**** FILE 'settings.h' */
+
+
+/*       24 */ 
+
+/**** FILE 'debug.h' */
+
+
+/*        9 */ 
+
+/**** FILE 'rkutils.h' */
+
+
+/*       11 */ 
+
+/**** FILE 'rkutils.h' */
+
+
+/*       48 */ 
+
+/**** FILE 'rkutils.h' */
+
+
+/*       12 */ 
+
+/**** FILE 'debug.h' */
+
+
+/*       16 */ 
+
+/**** FILE 'rkutils.h' */
+
+
+/*       13 */ 
+
+/**** FILE 'stdarg.h' */
+
+
+/*       27 */  typedef char * va_list ;
+/*      157 */ 
+
+/**** FILE 'rkutils.h' */
+
+
+/*       42 */  void print_format ( char * fmt , ... ) ;
+/*       48 */ 
+
+/**** FILE 'debug.h' */
+
+
+/*       11 */ 
+
+/**** FILE 'serial.h' */
+
+
+/*        8 */ 
+
+/**** FILE 'serdefs.h' */
+
+
+/*        9 */ 
+
+/**** FILE 'gsqueue.h' */
+
+
+/*       14 */  typedef enum
+/*       15 */  {
+/*       16 */  OK_QUEUE , EMPTY_QUEUE , FULL_QUEUE
+/*       17 */  } QCODES ;
+/*       19 */  typedef MUInt QHDLR ;
+/*       20 */  typedef MUInt ELEM_TYPE ;
+/*       22 */  typedef struct
+/*       23 */  {
+/*       24 */  ELEM_TYPE * queue ;
+/*       25 */  ELEM_TYPE * pout ;
+/*       26 */  ELEM_TYPE * pin ;
+/*       27 */  MUInt elem_qty ;
+/*       28 */  MUInt num_elems ;
+/*       29 */  } GSQUEUE ;
+/*       32 */  MUInt is_empty_gsqueue ( QHDLR qh ) ;
+/*       33 */  MUInt get_gsq_qty ( QHDLR qh ) ;
+/*       34 */  MInt remove_gsqueue ( QHDLR qh , ELEM_TYPE * elem ) ;
+/*       35 */  MInt put_gsqueue ( QHDLR qh , ELEM_TYPE elem ) ;
+/*       36 */  void deplete_gsqueue ( QHDLR qh ) ;
+/*       41 */ 
+
+/**** FILE 'serdefs.h' */
+
+
+/*       17 */  extern ELEM_TYPE com1rx_queue [ 10 ] ;
+/*       23 */  extern ELEM_TYPE com2rx_queue [ 10 ] ;
+/*       25 */  enum
+/*       26 */  {
+/*       27 */  COM1 , COM2 ,
+/*       28 */  NUM_CHANNELS
+/*       29 */  } ;
+/*       31 */  enum
+/*       32 */  {
+/*       33 */  B300 , B600 , B1200 , B2400 , B4800 , B9600 , B19200 ,
+/*       34 */  B38400 , B57600 ,
+/*       35 */  NUM_BAUD
+/*       36 */  } ;
+/*       38 */  enum
+/*       39 */  {
+/*       40 */  BIT8 , BIT7 , BIT6 , BIT5 ,
+/*       41 */  NUM_BITS
+/*       42 */  } ;
+/*       44 */  enum
+/*       45 */  {
+/*       46 */  NO_PAR , EVEN_PAR , ODD_PAR , HIGH_PAR , LOW_PAR ,
+/*       47 */  NUM_PAR
+/*       48 */  } ;
+/*       50 */  enum
+/*       51 */  {
+/*       52 */  ONE_BIT_STOP , TWO_BIT_STOP
+/*       53 */  } ;
+/*       55 */  typedef struct
+/*       56 */  {
+/*       57 */  MUInt baud ;
+/*       58 */  MUInt bits ;
+/*       59 */  MUInt parity ;
+/*       60 */  } COMSET_T ;
+/*       62 */  typedef struct
+/*       63 */  {
+/*       64 */  COMSET_T comsets ;
+/*       65 */  void ( * init_func ) ( COMSET_T * p ) ;
+/*       66 */  void ( * sendchar_func ) ( unsigned char p ) ;
+/*       67 */  } COM_T ;
+/*       72 */ 
+
+/**** FILE 'serial.h' */
+
+
+/*       13 */  void serial_init ( MUInt channel ) ;
+/*       25 */  void put_nchar ( MUInt channel , const unsigned char * p , ushort qty ) ;
+/*       35 */  void put_string ( MUInt channel , const char * p ) ;
+/*       44 */  void put_char ( MUInt channel , const unsigned char c ) ;
+/*       51 */  MInt get_char ( MUInt channel , unsigned char * p ) ;
+/*       55 */ 
+
+/**** FILE 'debug.h' */
+
+
+/*       16 */ 
+
+/**** FILE 'F:\web\hcweb\hcweb\Sources\Drivers\w5100\socket.c' */
+
+
+/*       14 */  static uint16 local_port ;
+/*       21 */  uint8
+/*       22 */  socket (
+/*       23 */  SOCKET s ,
+/*       24 */  uint8 protocol ,
+/*       25 */  uint16 port ,
+/*       26 */  uint8 flag
+/*       27 */  )
+/*       28 */  {
+/*       29 */  uint8 ret ;
+/*       31 */  dprintf ( "socket()\r\n" ) ;
+/*       32 */  if ( ( protocol == 0x01 ) || ( protocol == 0x02 ) || ( protocol == 0x03 ) || ( protocol == 0x04 ) || ( protocol == 0x05 ) )
+/*       33 */  {
+/*       34 */  close ( s ) ;
+/*       35 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0000 ) , protocol | flag ) ;
+/*       36 */  if ( port != 0 )
+/*       37 */  {
+/*       38 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0004 ) , ( uint8 ) ( ( port & 0xff00 ) >> 8 ) ) ;
+/*       39 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0004 ) + 1 ) , ( uint8 ) ( port & 0x00ff ) ) ;
+/*       40 */  }
+/*       41 */  else
+/*       42 */  {
+/*       43 */  local_port ++ ;
+/*       44 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0004 ) , ( uint8 ) ( ( local_port & 0xff00 ) >> 8 ) ) ;
+/*       45 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0004 ) + 1 ) , ( uint8 ) ( local_port & 0x00ff ) ) ;
+/*       46 */  }
+/*       48 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x01 ) ;
+/*       51 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*       54 */  ret = 1 ;
+/*       55 */  }
+/*       56 */  else
+/*       57 */  ret = 0 ;
+/*       59 */  DPRINT2 ( "Sn_SR = %.2x , Protocol = %.2x\r\n" , wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0003 ) , 0 ) , wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0000 ) , 0 ) ) ;
+/*       60 */  return ret ;
+/*       61 */  }
+/*       67 */  void
+/*       68 */  close ( SOCKET s )
+/*       69 */  {
+/*       70 */  dprintf ( "close()\r\n" ) ;
+/*       72 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x10 ) ;
+/*       75 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*       84 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0xFF ) ;
+/*       86 */  }
+/*       93 */  uint8
+/*       94 */  listen (
+/*       95 */  SOCKET s
+/*       96 */  )
+/*       97 */  {
+/*       98 */  uint8 ret ;
+/*       99 */  dprintf ( "listen()\r\n" ) ;
+/*      100 */  if ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0003 ) , 0 ) == 0x13 )
+/*      101 */  {
+/*      102 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x02 ) ;
+/*      104 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      106 */  ret = 1 ;
+/*      107 */  }
+/*      108 */  else
+/*      109 */  {
+/*      110 */  ret = 0 ;
+/*      111 */  dprintf ( "Fail[invalid ip,port]\r\n" ) ;
+/*      112 */  }
+/*      113 */  return ret ;
+/*      114 */  }
+/*      123 */  uint8
+/*      124 */  connect ( SOCKET s , uint8 * addr , uint16 port )
+/*      125 */  {
+/*      126 */  uint8 ret ;
+/*      127 */  dprintf ( "connect()\r\n" ) ;
+/*      128 */  if ( ( ( addr [ 0 ] == 0xFF ) && ( addr [ 1 ] == 0xFF ) && ( addr [ 2 ] == 0xFF ) && ( addr [ 3 ] == 0xFF ) ) ||
+/*      129 */  ( ( addr [ 0 ] == 0x00 ) && ( addr [ 1 ] == 0x00 ) && ( addr [ 2 ] == 0x00 ) && ( addr [ 3 ] == 0x00 ) ) ||
+/*      130 */  ( port == 0x00 ) )
+/*      131 */  {
+/*      132 */  ret = 0 ;
+/*      133 */  dprintf ( "Fail[invalid ip,port]\r\n" ) ;
+/*      134 */  }
+/*      135 */  else
+/*      136 */  {
+/*      137 */  ret = 1 ;
+/*      139 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) , addr [ 0 ] ) ;
+/*      140 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) + 1 ) , addr [ 1 ] ) ;
+/*      141 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) + 2 ) , addr [ 2 ] ) ;
+/*      142 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) + 3 ) , addr [ 3 ] ) ;
+/*      143 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0010 ) , ( uint8 ) ( ( port & 0xff00 ) >> 8 ) ) ;
+/*      144 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0010 ) + 1 ) , ( uint8 ) ( port & 0x00ff ) ) ;
+/*      145 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x04 ) ;
+/*      147 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      148 */  }
+/*      150 */  return ret ;
+/*      151 */  }
+/*      159 */  void
+/*      160 */  disconnect ( SOCKET s )
+/*      161 */  {
+/*      162 */  dprintf ( "disconnect()\r\n" ) ;
+/*      163 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x08 ) ;
+/*      166 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      168 */  }
+/*      175 */  uint16
+/*      176 */  send (
+/*      177 */  SOCKET s ,
+/*      178 */  const uint8 * buf ,
+/*      179 */  uint16 len
+/*      180 */  )
+/*      181 */  {
+/*      182 */  uint8 status = 0 ;
+/*      183 */  uint16 ret = 0 ;
+/*      184 */  uint16 freesize = 0 ;
+/*      185 */  dprintf ( "send()\r\n" ) ;
+/*      187 */  if ( len > getIINCHIP_TxMAX ( s ) )
+/*      188 */  ret = getIINCHIP_TxMAX ( s ) ;
+/*      189 */  else
+/*      190 */  ret = len ;
+/*      193 */  do
+/*      194 */  {
+/*      195 */  freesize = getSn_TX_FSR ( s ) ;
+/*      196 */  status = wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0003 ) , 0 ) ;
+/*      197 */  if ( ( status != 0x17 ) && ( status != 0x1C ) )
+/*      198 */  {
+/*      199 */  print_format ( ( "socket %d NOT_ESTAB NOT_CLOSE_WAIT" , s ) ) ;
+/*      200 */  ret = 0 ;
+/*      201 */  return ret ;
+/*      203 */  }
+/*      205 */  printf ( "socket %d len(%d), ret(%d), freesize(%d) empty or error\r\n" , s , len , ret , freesize ) ;
+/*      206 */  } while ( freesize < ret ) ;
+/*      208 */  ;
+/*      210 */  send_data_processing ( s , ( uint8 * ) buf , ret ) ;
+/*      211 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x20 ) ;
+/*      214 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      221 */  while ( ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0 ) & 0x10 ) != 0x10 )
+/*      223 */  {
+/*      225 */  if ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0003 ) , 0 ) == 0x00 )
+/*      226 */  {
+/*      227 */  dprintf ( "SOCK_CLOSED.\r\n" ) ;
+/*      228 */  close ( s ) ;
+/*      229 */  return 0 ;
+/*      230 */  }
+/*      231 */  }
+/*      236 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0x10 ) ;
+/*      238 */  return ret ;
+/*      239 */  }
+/*      248 */  uint16
+/*      249 */  recv (
+/*      250 */  SOCKET s ,
+/*      251 */  uint8 * buf ,
+/*      252 */  uint16 len
+/*      253 */  )
+/*      254 */  {
+/*      255 */  uint16 ret = 0 ;
+/*      256 */  dprintf ( "recv()\r\n" ) ;
+/*      258 */  if ( len > 0 )
+/*      259 */  {
+/*      260 */  recv_data_processing ( s , buf , len ) ;
+/*      261 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x40 ) ;
+/*      264 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      266 */  ret = len ;
+/*      267 */  }
+/*      268 */  return ret ;
+/*      269 */  }
+/*      278 */  uint16
+/*      279 */  sendto (
+/*      280 */  SOCKET s ,
+/*      281 */  const uint8 * buf ,
+/*      282 */  uint16 len ,
+/*      283 */  uint8 * addr ,
+/*      284 */  uint16 port
+/*      285 */  )
+/*      286 */  {
+/*      289 */  uint16 ret = 0 ;
+/*      291 */  dprintf ( "sendto()\r\n" ) ;
+/*      292 */  if ( len > getIINCHIP_TxMAX ( s ) ) ret = getIINCHIP_TxMAX ( s ) ;
+/*      293 */  else ret = len ;
+/*      295 */  if ( ( ( addr [ 0 ] == 0x00 ) && ( addr [ 1 ] == 0x00 ) && ( addr [ 2 ] == 0x00 ) && ( addr [ 3 ] == 0x00 ) ) ||
+/*      296 */  ( ( port == 0x00 ) ) || ( ret == 0 ) )
+/*      297 */  {
+/*      299 */  ret = 0 ;
+/*      300 */  dprintf ( "%d Fail[%.2x.%.2x.%.2x.%.2x, %.d, %d]\r\n" , s , addr [ 0 ] , addr [ 1 ] , addr [ 2 ] , addr [ 3 ] , port , len ) ;
+/*      301 */  dprintf ( "Fail[invalid ip,port]\r\n" ) ;
+/*      302 */  }
+/*      303 */  else
+/*      304 */  {
+/*      305 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) , addr [ 0 ] ) ;
+/*      306 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) + 1 ) , addr [ 1 ] ) ;
+/*      307 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) + 2 ) , addr [ 2 ] ) ;
+/*      308 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x000C ) + 3 ) , addr [ 3 ] ) ;
+/*      309 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0010 ) , ( uint8 ) ( ( port & 0xff00 ) >> 8 ) ) ;
+/*      310 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0010 ) + 1 ) , ( uint8 ) ( port & 0x00ff ) ) ;
+/*      313 */  send_data_processing ( s , ( uint8 * ) buf , ret ) ;
+/*      314 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x20 ) ;
+/*      317 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      324 */  while ( ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0 ) & 0x10 ) != 0x10 )
+/*      326 */  {
+/*      330 */  if ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0 ) & 0x08 )
+/*      332 */  {
+/*      333 */  dprintf ( "send fail.\r\n" ) ;
+/*      338 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , ( 0x10 | 0x08 ) ) ;
+/*      340 */  return 0 ;
+/*      341 */  }
+/*      342 */  }
+/*      348 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0x10 ) ;
+/*      350 */  }
+/*      351 */  return ret ;
+/*      352 */  }
+/*      361 */  uint16
+/*      362 */  recvfrom (
+/*      363 */  SOCKET s ,
+/*      364 */  uint8 * buf ,
+/*      365 */  uint16 len ,
+/*      366 */  uint8 * addr ,
+/*      367 */  uint16 * port
+/*      368 */  )
+/*      369 */  {
+/*      370 */  uint8 head [ 8 ] ;
+/*      371 */  uint16 data_len = 0 ;
+/*      372 */  uint16 ptr = 0 ;
+/*      373 */  dprintf ( "recvfrom()\r\n" ) ;
+/*      375 */  if ( len > 0 )
+/*      376 */  {
+/*      377 */  ptr = wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) , 0 ) ;
+/*      378 */  ptr = ( ( ptr & 0x00ff ) << 8 ) + wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) + 1 , 0 ) ;
+/*      379 */  dprintf ( "ISR_RX: rd_ptr : %.4x\r\n" , ptr ) ;
+/*      380 */  switch ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0000 ) , 0 ) & 0x07 )
+/*      381 */  {
+/*      382 */  case 0x02 :
+/*      383 */  read_data ( s , ( uint8 * ) ptr , head , 0x08 ) ;
+/*      384 */  ptr += 8 ;
+/*      386 */  addr [ 0 ] = head [ 0 ] ;
+/*      387 */  addr [ 1 ] = head [ 1 ] ;
+/*      388 */  addr [ 2 ] = head [ 2 ] ;
+/*      389 */  addr [ 3 ] = head [ 3 ] ;
+/*      390 */  * port = head [ 4 ] ;
+/*      391 */  * port = ( * port << 8 ) + head [ 5 ] ;
+/*      392 */  data_len = head [ 6 ] ;
+/*      393 */  data_len = ( data_len << 8 ) + head [ 7 ] ;
+/*      395 */  dprintf ( "UDP msg arrived\r\n" ) ;
+/*      396 */  dprintf ( "source Port : %d\r\n" , * port ) ;
+/*      397 */  dprintf ( "source IP : %d.%d.%d.%d\r\n" , addr [ 0 ] , addr [ 1 ] , addr [ 2 ] , addr [ 3 ] ) ;
+/*      399 */  read_data ( s , ( uint8 * ) ptr , buf , data_len ) ;
+/*      400 */  ptr += data_len ;
+/*      402 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) , ( uint8 ) ( ( ptr & 0xff00 ) >> 8 ) ) ;
+/*      403 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) + 1 ) , ( uint8 ) ( ptr & 0x00ff ) ) ;
+/*      404 */  break ;
+/*      406 */  case 0x03 :
+/*      407 */  read_data ( s , ( uint8 * ) ptr , head , 0x06 ) ;
+/*      408 */  ptr += 6 ;
+/*      410 */  addr [ 0 ] = head [ 0 ] ;
+/*      411 */  addr [ 1 ] = head [ 1 ] ;
+/*      412 */  addr [ 2 ] = head [ 2 ] ;
+/*      413 */  addr [ 3 ] = head [ 3 ] ;
+/*      414 */  data_len = head [ 4 ] ;
+/*      415 */  data_len = ( data_len << 8 ) + head [ 5 ] ;
+/*      417 */  dprintf ( "IP RAW msg arrived\r\n" ) ;
+/*      418 */  dprintf ( "source IP : %d.%d.%d.%d\r\n" , addr [ 0 ] , addr [ 1 ] , addr [ 2 ] , addr [ 3 ] ) ;
+/*      419 */  read_data ( s , ( uint8 * ) ptr , buf , data_len ) ;
+/*      420 */  ptr += data_len ;
+/*      422 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) , ( uint8 ) ( ( ptr & 0xff00 ) >> 8 ) ) ;
+/*      423 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) + 1 ) , ( uint8 ) ( ptr & 0x00ff ) ) ;
+/*      424 */  break ;
+/*      425 */  case 0x04 :
+/*      426 */  read_data ( s , ( uint8 * ) ptr , head , 2 ) ;
+/*      427 */  ptr += 2 ;
+/*      428 */  data_len = head [ 0 ] ;
+/*      429 */  data_len = ( data_len << 8 ) + head [ 1 ] - 2 ;
+/*      431 */  read_data ( s , ( uint8 * ) ptr , buf , data_len ) ;
+/*      432 */  ptr += data_len ;
+/*      433 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) , ( uint8 ) ( ( ptr & 0xff00 ) >> 8 ) ) ;
+/*      434 */  wiz_rwbyte ( 0xF0 , ( ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0028 ) + 1 ) , ( uint8 ) ( ptr & 0x00ff ) ) ;
+/*      436 */  dprintf ( "MAC RAW msg arrived\r\n" ) ;
+/*      437 */  dprintf ( "dest mac=%.2X.%.2X.%.2X.%.2X.%.2X.%.2X\r\n" , buf [ 0 ] , buf [ 1 ] , buf [ 2 ] , buf [ 3 ] , buf [ 4 ] , buf [ 5 ] ) ;
+/*      438 */  dprintf ( "src  mac=%.2X.%.2X.%.2X.%.2X.%.2X.%.2X\r\n" , buf [ 6 ] , buf [ 7 ] , buf [ 8 ] , buf [ 9 ] , buf [ 10 ] , buf [ 11 ] ) ;
+/*      439 */  dprintf ( "type    =%.2X%.2X\r\n" , buf [ 12 ] , buf [ 13 ] ) ;
+/*      440 */  break ;
+/*      442 */  default :
+/*      443 */  break ;
+/*      444 */  }
+/*      445 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x40 ) ;
+/*      448 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      450 */  }
+/*      451 */  dprintf ( "recvfrom() end ..\r\n" ) ;
+/*      452 */  return data_len ;
+/*      453 */  }
+/*      456 */  uint16
+/*      457 */  igmpsend ( SOCKET s , const uint8 * buf , uint16 len )
+/*      458 */  {
+/*      459 */  uint8 status = 0 ;
+/*      461 */  uint16 ret = 0 ;
+/*      463 */  dprintf ( "igmpsend()\r\n" ) ;
+/*      464 */  if ( len > getIINCHIP_TxMAX ( s ) )
+/*      465 */  ret = getIINCHIP_TxMAX ( s ) ;
+/*      466 */  else
+/*      467 */  ret = len ;
+/*      469 */  if ( ret == 0 )
+/*      470 */  {
+/*      471 */  ;
+/*      472 */  dprintf ( "%d Fail[%d]\r\n" , len ) ;
+/*      473 */  }
+/*      474 */  else
+/*      475 */  {
+/*      477 */  send_data_processing ( s , ( uint8 * ) buf , ret ) ;
+/*      478 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0x20 ) ;
+/*      480 */  while ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0001 ) , 0 ) ) ;
+/*      487 */  while ( ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0 ) & 0x10 ) != 0x10 )
+/*      489 */  {
+/*      490 */  status = wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0003 ) , 0 ) ;
+/*      494 */  if ( wiz_rwbyte ( 0x0F , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0 ) & 0x08 )
+/*      496 */  {
+/*      497 */  dprintf ( "igmpsend fail.\r\n" ) ;
+/*      500 */  close ( s ) ;
+/*      502 */  return 0 ;
+/*      503 */  }
+/*      504 */  }
+/*      510 */  wiz_rwbyte ( 0xF0 , ( ( ( 0x0000 ) + 0x0400 ) + s * 0x0100 + 0x0002 ) , 0x10 ) ;
+/*      512 */  }
+/*      513 */  return ret ;
+/*      514 */  }

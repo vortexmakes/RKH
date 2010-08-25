@@ -1,0 +1,5 @@
+[create_PE_project]
+CPUs=#DEF-LIST-CPUS-FOR-MASTER-MCU-NAME:%CW_PRJWIZ_MCU_NAME
+%define CW_MCU_NAME %CW_PRJWIZ_MCU_NAME
+%include ..\Config\PE\CPE\HC08.cpe
+[_end_]

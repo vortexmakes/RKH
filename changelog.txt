@@ -1,0 +1,80 @@
+Changes between V2.54 and V2.55 released August 04th 2010
+
+	+	Fixed bug within queue_deplete() function. 
+
+Changes between V2.53 and V2.54 released September 22th 2009
+
+	+	Added RKSYS_STATS_EXEC_TASKS macro within rksys.h file to enable or 
+		disable execution time metrics of schedulable tasks.
+	+	Added rktick_ms(), rktick_sec() and rktick_min() macros to 
+		calculate real time from the tick rate.
+	+	Added RKSYS_SIZEOF_TICK_COUNTER, RKSYS_TICK_RATE_HZ,
+		RKSYS_CPU_CLOCK_HZ and RKSYS_TICK_RATE_MS macros for system tick 
+		configuration within rksyscfg.h file.
+	+	Added RKTICK_T data type for counters with system tick rate.
+	+	Deleted exec_time member from TASK_T structure within task.h file.
+	+	Added performance information facility of queue, mutex, stimer and 
+		event flag resources. This facility must be enable or disable by
+		means RKSYS_QUEUE_GET_INFO, RKSYS_MUTEX_GET_INFO, RKSYS_TIMER_GET_INFO
+		and RKSYS_EFLAG_GET_INFO macros in rksyscfg.h file.
+	+	Added external declaration of tasks array and ready_list array within
+		task.h file.
+	+	Added external declaration of queue array within queue.h file.
+	+	Changed definition of queue number from rksyscfg.h. Now, 
+		RKSYS_QUEUE_NUM_QUEUES must be defined as macro in rksyscfg.h file.
+	+	Changed definition of signal number from rksyscfg.h. Now, 
+		RKSYS_SIGNAL_NUM_SIGNALS must be defined as macro in rksyscfg.h file.
+	+	Added task_identify() function within task.h file for retrieving the 
+		task control block of previously created task.
+	+	Added execution time measurement facility within rkutils.h file by
+		means rkstart_time_measure(), rkend_time_measure() and 
+		rkget_time_measure() functions. This facility must be enable or
+		disable by means RKSYS_TIME_MEASURE macro in rksyscfg.h file.
+	+	Changed macro definitions RKSYS_NUM_PRIORITY_LEVEL and RKSYS_NUM_TASKS 
+		by RKSYS_TASK_NUM_PTY_LEVEL and RKSYS_TASK_NUM_TASKS respectively.
+	+	Changed definition of task number and priority level number from 
+		rksyscfg.h. Now, RKSYS_TASK_NUM_PTY_LEVEL and RKSYS_TASK_NUM_TASKS
+		must be defined as macro in rksyscfg.h file.
+	+	Deleted definition of RKSYS_MUTEX_TASK_PER_MUTEX from rksyscfg.h. Now,
+		it's directly defined by RKSYS.
+	+	Added and changed several verification of constraints in rksys.h file.
+	+	Added new conditional compilations in schdr.c/.h file.
+	+	Sometimes codewarrior IDE launchs the linker error L1907. Then, 
+		must be added the comiler option -OnB=b.
+
+Changes between V2.52 and V2.53 released September 08th 2009
+
+	+	Added forward and backward read random access from queue files.
+		Therefore, the interfaces of ffile_queue_open_as_random() and
+		ffile_queue_random_read() functions has been changed according to new
+		features.
+	+	Changed TRACE_EVENT_T structure for supporting access to its members.
+	+	Changed kernel version format on RKSYS_VERSION macro.
+	+	Fixed pointer to file structure within ffile_file_format() function.
+	+	Fixed the rktrace_give_mutex() and rktrace_unlink_mutex macro 
+		expansion.
+	+	Changed various error strings within rksys.h file.
+	+	Added RKSYS_TIMER_SCOUNTER on rksyscfg.h file for setting the size of
+		timer counter.
+
+Changes between V2.51 and V2.52 released August 31th 2009
+
+	+	Added rkwatchdog() macro.
+	+	Added a triggering of watchdog timer within to_idle_task() macro.
+	
+Changes between V2.50 and V2.51 released August 20th 2009
+
+	+	Added trace group concept and its configuration function.
+	+ 	Minor modifications to rksys.h file to remove some compiler 
+		warnings with disabled trace.
+	
+Changes between V2.49 and V2.50 released July 17th 2009
+
+	Main changes:
+	
+	+ 	Added the fsm_get_stored_state() and fsm_get_stored_event() macros 
+		to facilitate use of FSM module functionalities. 
+	  
+	Minor changes:
+
+	+ 	Corrected comments in fsm_set_recall() function.
