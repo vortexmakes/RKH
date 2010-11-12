@@ -1,0 +1,142 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+C1	my.c	/^RKH_CREATE_BRANCH_TABLE( C1 ) =$/;"	v
+C1	my.h	/^RKH_DCLR_COND_STATE		C1,C2;$/;"	v
+C2	my.c	/^RKH_CREATE_BRANCH_TABLE( C2 ) =$/;"	v
+C2	my.h	/^RKH_DCLR_COND_STATE		C1,C2;$/;"	v
+CC	Makefile	/^CC=gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -g -Wall -I$(RKHSRCPATH)\/include -I$(PWD) -I$(PORTPATH) $/;"	m
+DEFINE	Makefile	/^DEFINE= -D__LNXGCC__$/;"	m
+DH	my.h	/^RKH_DCLR_DHIST_STATE	DH;$/;"	v
+ELSE	myevt.h	/^	ELSE$/;"	e	enum:__anon1
+ESC	main.c	16;"	d	file:
+FOUR	myevt.h	/^	FOUR$/;"	e	enum:__anon2
+H	my.h	/^RKH_DCLR_SHIST_STATE	H;$/;"	v
+J	my.h	/^RKH_DCLR_JUNC_STATE		J;$/;"	v
+LDFLAGS	Makefile	/^LDFLAGS	= -lc  $/;"	m
+MY	rkhdata.h	/^	MY, RKH_NUM_RKHS$/;"	e	enum:__anon5
+MYEVT_T	my.h	/^} MYEVT_T;$/;"	t	typeref:struct:__anon3
+MYHDATA_T	my.h	/^} MYHDATA_T;$/;"	t	typeref:struct:__anon4
+ONE	myevt.h	/^	ONE,$/;"	e	enum:__anon2
+PORTPATH	Makefile	/^PORTPATH= $(RKHSRCPATH)\/portable$/;"	m
+PROGNAME	Makefile	/^PROGNAME=rkh$/;"	m
+RKHSRCPATH	Makefile	/^RKHSRCPATH=$(PWD)\/..\/..\/source$/;"	m
+RKH_EN_ACT_EVT_ARG	rkhcfg.h	25;"	d
+RKH_EN_ACT_HSM_ARG	rkhcfg.h	24;"	d
+RKH_EN_BCH_EVT_ARG	rkhcfg.h	28;"	d
+RKH_EN_BCH_HSM_ARG	rkhcfg.h	29;"	d
+RKH_EN_CONDITIONAL	rkhcfg.h	19;"	d
+RKH_EN_DEEP_HISTORY	rkhcfg.h	16;"	d
+RKH_EN_ENTRY	rkhcfg.h	47;"	d
+RKH_EN_ENT_HSM_ARG	rkhcfg.h	22;"	d
+RKH_EN_EVENT	rkhcfg.h	42;"	d
+RKH_EN_EXIT	rkhcfg.h	48;"	d
+RKH_EN_EXT_HSM_ARG	rkhcfg.h	23;"	d
+RKH_EN_GET_INFO	rkhcfg.h	35;"	d
+RKH_EN_GRD_EVT_ARG	rkhcfg.h	26;"	d
+RKH_EN_GRD_HSM_ARG	rkhcfg.h	27;"	d
+RKH_EN_HCAL	rkhcfg.h	10;"	d
+RKH_EN_HSM_DATA	rkhcfg.h	33;"	d
+RKH_EN_HSM_NAME	rkhcfg.h	32;"	d
+RKH_EN_INIT_HSM	rkhcfg.h	49;"	d
+RKH_EN_INIT_HSM_ARG	rkhcfg.h	21;"	d
+RKH_EN_INT_TRAN	rkhcfg.h	46;"	d
+RKH_EN_JUNCTION	rkhcfg.h	18;"	d
+RKH_EN_NUM_ACTSGT	rkhcfg.h	53;"	d
+RKH_EN_NUM_ENEX	rkhcfg.h	52;"	d
+RKH_EN_NXT_STATE	rkhcfg.h	45;"	d
+RKH_EN_PPRO	rkhcfg.h	34;"	d
+RKH_EN_PSEUDOSTATE	rkhcfg.h	15;"	d
+RKH_EN_REENTRANT	rkhcfg.h	36;"	d
+RKH_EN_RTN_CODE	rkhcfg.h	51;"	d
+RKH_EN_SGT_TGT	rkhcfg.h	50;"	d
+RKH_EN_SHALLOW_HISTORY	rkhcfg.h	17;"	d
+RKH_EN_STATE_NAME	rkhcfg.h	31;"	d
+RKH_EN_TIMESTAMP	rkhcfg.h	55;"	d
+RKH_EN_TRACE_STRING	rkhcfg.h	58;"	d
+RKH_EN_TRN_SRC	rkhcfg.h	43;"	d
+RKH_EN_TRN_TGT	rkhcfg.h	44;"	d
+RKH_MAX_HCAL_DEPTH	rkhcfg.h	11;"	d
+RKH_MAX_NUM_TRACES	rkhcfg.h	57;"	d
+RKH_MAX_TRACE_STRING_SIZE	rkhcfg.h	59;"	d
+RKH_MAX_TR_SEGS	rkhcfg.h	12;"	d
+RKH_NUM_RKHS	rkhdata.h	/^	MY, RKH_NUM_RKHS$/;"	e	enum:__anon5
+RKH_SIZEOF_EVENT	rkhcfg.h	13;"	d
+RKH_SIZEOF_TIMESTAMP	rkhcfg.h	56;"	d
+RKH_TRACE	rkhcfg.h	38;"	d
+RKH_TRACE_ALL	rkhcfg.h	39;"	d
+S1	my.c	/^RKH_CREATE_TRANS_TABLE( S1 ) =$/;"	v
+S1	my.h	/^RKH_DCLR_COMP_STATE		S1,S3,S11;$/;"	v
+S11	my.c	/^RKH_CREATE_TRANS_TABLE( S11 ) =$/;"	v
+S11	my.h	/^RKH_DCLR_COMP_STATE		S1,S3,S11;$/;"	v
+S111	my.c	/^RKH_CREATE_TRANS_TABLE( S111 ) =$/;"	v
+S111	my.h	/^RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;$/;"	v
+S112	my.c	/^RKH_CREATE_TRANS_TABLE( S112 ) =$/;"	v
+S112	my.h	/^RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;$/;"	v
+S12	my.c	/^RKH_CREATE_TRANS_TABLE( S12 ) =$/;"	v
+S12	my.h	/^RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;$/;"	v
+S2	my.c	/^RKH_CREATE_TRANS_TABLE( S2 ) =$/;"	v
+S2	my.h	/^RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;$/;"	v
+S3	my.c	/^RKH_CREATE_TRANS_TABLE( S3 ) =$/;"	v
+S3	my.h	/^RKH_DCLR_COMP_STATE		S1,S3,S11;$/;"	v
+S31	my.c	/^RKH_CREATE_TRANS_TABLE( S31 ) =$/;"	v
+S31	my.h	/^RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;$/;"	v
+S32	my.c	/^RKH_CREATE_TRANS_TABLE( S32 ) =$/;"	v
+S32	my.h	/^RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;$/;"	v
+THREE	myevt.h	/^	THREE,$/;"	e	enum:__anon2
+TWO	myevt.h	/^	TWO,$/;"	e	enum:__anon2
+X1	myevt.h	/^	X1, X2_OR_X3, $/;"	e	enum:__anon1
+X2_OR_X3	myevt.h	/^	X1, X2_OR_X3, $/;"	e	enum:__anon1
+Y1	myevt.h	/^	Y1, Y2,$/;"	e	enum:__anon1
+Y2	myevt.h	/^	Y1, Y2,$/;"	e	enum:__anon1
+ZERO	myevt.h	/^	ZERO,$/;"	e	enum:__anon2
+__GNU_UTILS__	gnu_utils.h	4;"	d
+__MYACT_H__	myact.h	7;"	d
+__MYEVT_H__	myevt.h	7;"	d
+__MY_H__	my.h	7;"	d
+__RKHCFG_H__	rkhcfg.h	7;"	d
+__RKHDATA_H__	rkhdata.h	7;"	d
+dummy_act	myact.c	/^dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )$/;"	f
+dummy_exit	myact.c	/^dummy_exit( const struct rkh_t *ph )$/;"	f
+event	my.h	/^	RKHEVT_T event;$/;"	m	struct:__anon3
+fdbg	main.c	/^FILE *fdbg;$/;"	v
+fmt	main.c	/^static char fmt[ 64 ];$/;"	v	file:
+forever	main.c	17;"	d	file:
+format_trevt_args	main.c	/^format_trevt_args( RKHTREVT_T *ptre )$/;"	f	file:
+get_x	myact.c	/^get_x( const struct rkh_t *ph, RKHEVT_T *pe )$/;"	f
+get_y	myact.c	/^get_y( const struct rkh_t *ph, RKHEVT_T *pe )$/;"	f
+gnu_getch	gnu_utils.c	/^gnu_getch(void)$/;"	f
+kbmap	main.c	18;"	d	file:
+main	main.c	/^main( void )$/;"	f
+my	my.h	/^RKH_DCLR_HSM( my );$/;"	v
+my_init	myact.c	/^my_init( const struct rkh_t *ph )$/;"	f
+mydata	my.c	/^static MYHDATA_T mydata;$/;"	v	file:
+mye	main.c	/^static MYEVT_T mye;$/;"	v	file:
+mygetch	main.c	22;"	d	file:
+mygetch	main.c	25;"	d	file:
+objects	Makefile	/^objects:=$(patsubst %.c,%.o,$(wildcard *.c))$/;"	m
+pd	myact.c	/^static MYHDATA_T *pd;$/;"	v	file:
+rcmap	main.c	/^static const char *rcmap[] =$/;"	v	file:
+rkh	Makefile	/^rkh:=$(patsubst $(RKHSRCPATH)\/%, %,$(rkhobjects)) $/;"	m
+rkh_trace_close	main.c	/^rkh_trace_close( void )$/;"	f
+rkh_trace_flush	main.c	/^rkh_trace_flush( void )$/;"	f
+rkh_trace_getts	main.c	/^rkh_trace_getts( void )$/;"	f
+rkh_trace_open	main.c	/^rkh_trace_open( void )$/;"	f
+rkhobjects	Makefile	/^rkhobjects:=$(patsubst %.c,%.o,$(wildcard $(RKHSRCPATH)\/*.c)) $/;"	m
+set_x_1	myact.c	/^set_x_1( const struct rkh_t *ph )$/;"	f
+set_x_2	myact.c	/^set_x_2( const struct rkh_t *ph )$/;"	f
+set_x_3	myact.c	/^set_x_3( const struct rkh_t *ph )$/;"	f
+set_y_0	myact.c	/^set_y_0( const struct rkh_t *ph )$/;"	f
+set_y_1	myact.c	/^set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )$/;"	f
+set_y_2	myact.c	/^set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )$/;"	f
+smmap	main.c	/^static const char *smmap[] =$/;"	v	file:
+tostring	main.c	15;"	d	file:
+tremap	main.c	/^static const char *tremap[] =$/;"	v	file:
+ts	my.h	/^	rkhuint16 ts;$/;"	m	struct:__anon3
+x	my.h	/^	rkhuint8 x;$/;"	m	struct:__anon4
+x_equal_1	myact.c	/^x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )$/;"	f
+y	my.h	/^	rkhuint8 y;$/;"	m	struct:__anon4

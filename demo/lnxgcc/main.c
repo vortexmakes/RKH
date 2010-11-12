@@ -1,0 +1,192 @@
+/*
+ * main.c
+ */
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#include "rkhsm.h"
+#include "my.h"
+#include "myevt.h"
+
+
+#define tostring( expr )		#expr
+#define ESC						0x1B
+#define forever					for(;;)
+#define kbmap( c )				( c - '0' )
+
+#ifdef __VC__
+	#include <conio.h>
+	#define mygetch()			getch()
+#elif __LNXGCC__
+	#include "gnu_utils.h"
+	#define mygetch()			gnu_getch()
+#endif
+
+
+static char fmt[ 64 ];
+static MYEVT_T mye;
+FILE *fdbg;
+
+
+static const char *tremap[] =
+{
+	tostring( RKHTR_EVENT 		),
+	tostring( RKHTR_TRN_SRC		),
+	tostring( RKHTR_TRN_TGT		),
+	tostring( RKHTR_NXT_STATE	),
+	tostring( RKHTR_INT_TRAN	),
+	tostring( RKHTR_ENTRY		),
+	tostring( RKHTR_EXIT		),
+	tostring( RKHTR_INIT_HSM	),
+	tostring( RKHTR_SGT_TGT		),
+	tostring( RKHTR_RTN_CODE	),
+	tostring( RKHTR_NUM_ENEX	),
+	tostring( RKHTR_NUM_ACTSGT	)
+};
+
+
+static const char *smmap[] =
+{
+	tostring( MY )
+};
+
+
+static const char *rcmap[] =
+{
+	tostring( RKH_OK 						),
+	tostring( RKH_INPUT_NOT_FOUND			),
+	tostring( RKH_CONDITIONAL_NOT_FOUND		),
+	tostring( RKH_CONDITION_NOT_FOUND		),
+	tostring( RKH_GUARD_FALSE				),
+	tostring( RKH_UNKNOWN_STATE				),
+	tostring( RKH_EXCEED_HCAL_LEVEL			),
+	tostring( RKH_EXCEED_TR_SEGS 			)
+};
+
+
+static
+char *
+format_trevt_args( RKHTREVT_T *ptre )
+{
+	switch( ptre->id )
+	{
+		case RKHTR_INIT_HSM:
+			sprintf( fmt, "is = %s [%d]", ptre->sb, ptre->num );
+			break;
+		case RKHTR_INT_TRAN:
+			sprintf( fmt, " " );
+			break;
+		case RKHTR_SGT_TGT:
+		case RKHTR_TRN_SRC:
+		case RKHTR_TRN_TGT:
+		case RKHTR_NXT_STATE:
+		case RKHTR_ENTRY:
+		case RKHTR_EXIT:
+			sprintf( fmt, "%s [%d]", ptre->sb, ptre->num );
+			break;
+		case RKHTR_RTN_CODE:
+			sprintf( fmt, "%s", rcmap[ ptre->num ] );
+			break;
+		case RKHTR_NUM_ENEX:
+		case RKHTR_NUM_ACTSGT:
+			sprintf( fmt, "%d - %d", ( ( ptre->num ) >> 4 ) & 0x0F, 
+										( ptre->num & 0x0F  ) );
+			break;
+		case RKHTR_EVENT:
+			sprintf( fmt, "%d", ptre->num );
+			break;
+		default:
+			return NULL;
+	}
+	return fmt;
+}
+
+
+void 
+rkh_trace_open( void )
+{
+	rkh_trinit();
+	rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
+	rkh_trcontrol( MY, RKH_TRSTART );
+
+	if( ( fdbg = fopen( "mylog.txt", "w+" ) ) == NULL )
+	{
+		perror( "Can't open file\n" );
+		exit( EXIT_FAILURE );
+	}
+
+	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
+}
+
+
+void 
+rkh_trace_close( void )
+{
+	fclose( fdbg );
+}
+
+
+void 
+rkh_trace_flush( void )
+{
+	RKHTREVT_T te;
+	RKHTRCFG_T *pcfg;
+
+	while( rkh_trgetnext( &te ) != RKH_TREMPTY )
+	{
+		pcfg = rkh_trgetcfg( te.smix );
+
+		if( pcfg->log == RKH_TRLOG )
+			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
+													rkh_trgetts(),
+													tremap[ te.id ],
+													smmap[ te.smix ],
+													format_trevt_args( &te ) );
+		if( pcfg->print == RKH_TRPRINT )
+			printf( "%05d [ %-16s ] - %s : %s\n",
+													rkh_trgetts(),
+													tremap[ te.id ],
+													smmap[ te.smix ],
+													format_trevt_args( &te ) );
+	}
+}
+
+
+RKHTS_T 
+rkh_trace_getts( void )
+{
+	return ( RKHTS_T )clock();
+}
+
+
+int
+main( void )
+{
+	int c;
+
+	rkh_trace_open();
+	rkh_init_hsm( &my );
+	srand( ( unsigned )time( NULL ) );
+
+	forever
+	{
+		c = mygetch();
+		
+		if( c == 'p' )
+			rkh_trace_flush();
+		else if ( c == ESC )
+			break;
+		else
+		{
+			mye.event.evt = kbmap( c );
+			mye.ts = ( rkhuint16 )rand();
+			rkh_engine( &my, ( RKHEVT_T *)&mye );
+		}
+	}
+
+	rkh_trace_close();
+	return 0;
+}
