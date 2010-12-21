@@ -1,5 +1,5 @@
 
-PROGRAM "C:\Users\francucci\Desktop\rkhrel\demo\cws08\prj\sample\bin\Project.abs"
+PROGRAM "C:\Users\francucci\Desktop\rkhwc\rkh\demo\cws08\prj\sample\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -458,27 +458,27 @@ MODULE:                 -- main.c.o --
 MODULE:                 -- my.c.o --
 - PROCEDURES:
 - VARIABLES:
-     S2_trtbl                                  2120      23      35       1   .rodata     
-     S1_trtbl                                  2143      15      21       1   .rodata     
-     S12_trtbl                                 2158      15      21       1   .rodata     
-     S11_trtbl                                 216D       E      14       1   .rodata     
-     S3_trtbl                                  217B      15      21       1   .rodata     
-     S31_trtbl                                 2190       E      14       1   .rodata     
-     S32_trtbl                                 219E       E      14       1   .rodata     
-     C1_trtbl                                  21AC      15      21       1   .rodata     
-     C2_trtbl                                  21C1      15      21       1   .rodata     
-     S2                                        21D6       6       6       3   .rodata     
-     S1                                        21DC       6       6       4   .rodata     
-     S12                                       21E2       6       6       1   .rodata     
-     S11                                       21E8       6       6       1   .rodata     
-     H                                         21EE       6       6       1   .rodata     
-     DH                                        21F4       6       6       1   .rodata     
-     S3                                        21FA       6       6       4   .rodata     
-     S31                                       2200       6       6       1   .rodata     
-     S32                                       2206       6       6       2   .rodata     
-     J                                         220C       6       6       1   .rodata     
-     C1                                        2212       6       6       1   .rodata     
-     C2                                        2218       6       6       1   .rodata     
+     S2                                        2120       6       6       3   .rodata     
+     S2_trtbl                                  2126      23      35       1   .rodata     
+     S1                                        2149       6       6       4   .rodata     
+     S1_trtbl                                  214F      15      21       1   .rodata     
+     S12                                       2164       6       6       1   .rodata     
+     S12_trtbl                                 216A      15      21       1   .rodata     
+     S11                                       217F       6       6       1   .rodata     
+     S11_trtbl                                 2185       E      14       1   .rodata     
+     H                                         2193       6       6       1   .rodata     
+     DH                                        2199       6       6       1   .rodata     
+     S3                                        219F       6       6       4   .rodata     
+     S3_trtbl                                  21A5      15      21       1   .rodata     
+     S31                                       21BA       6       6       1   .rodata     
+     S31_trtbl                                 21C0       E      14       1   .rodata     
+     S32                                       21CE       6       6       2   .rodata     
+     S32_trtbl                                 21D4       E      14       1   .rodata     
+     J                                         21E2       6       6       1   .rodata     
+     C1                                        21E8       6       6       1   .rodata     
+     C1_trtbl                                  21EE      15      21       1   .rodata     
+     C2                                        2203       6       6       1   .rodata     
+     C2_trtbl                                  2209      15      21       1   .rodata     
      my                                         100       A      10       2   .data       
      mydata                                     122       2       2       1   .bss        
      ramH                                       124       2       2       1   .bss        
@@ -522,8 +522,8 @@ SECTION: ".bss"
 SECTION: ".init"
   loadByte Init _Startup 
 SECTION: ".rodata"
-  tr_null event_list S2_trtbl S1_trtbl S12_trtbl S11_trtbl S3_trtbl S31_trtbl 
-  S32_trtbl C1_trtbl C2_trtbl S2 S1 S12 S11 H DH S3 S31 S32 J C1 C2 
+  tr_null event_list S2 S2_trtbl S1 S1_trtbl S12 S12_trtbl S11 S11_trtbl H DH 
+  S3 S3_trtbl S31 S31_trtbl S32 S32_trtbl J C1 C1_trtbl C2 C2_trtbl 
 SECTION: ".abs_section_0"
   _PTAD 
 SECTION: ".abs_section_1"
@@ -1083,27 +1083,27 @@ OBJECT LIST SORTED BY ADDRESS
      _Startup                                  20FB       9       9       0   .init       
      tr_null                                   2116       7       7       1   .rodata     
      event_list                                211D       3       3       1   .rodata     
-     S2_trtbl                                  2120      23      35       1   .rodata     
-     S1_trtbl                                  2143      15      21       1   .rodata     
-     S12_trtbl                                 2158      15      21       1   .rodata     
-     S11_trtbl                                 216D       E      14       1   .rodata     
-     S3_trtbl                                  217B      15      21       1   .rodata     
-     S31_trtbl                                 2190       E      14       1   .rodata     
-     S32_trtbl                                 219E       E      14       1   .rodata     
-     C1_trtbl                                  21AC      15      21       1   .rodata     
-     C2_trtbl                                  21C1      15      21       1   .rodata     
-     S2                                        21D6       6       6       3   .rodata     
-     S1                                        21DC       6       6       4   .rodata     
-     S12                                       21E2       6       6       1   .rodata     
-     S11                                       21E8       6       6       1   .rodata     
-     H                                         21EE       6       6       1   .rodata     
-     DH                                        21F4       6       6       1   .rodata     
-     S3                                        21FA       6       6       4   .rodata     
-     S31                                       2200       6       6       1   .rodata     
-     S32                                       2206       6       6       2   .rodata     
-     J                                         220C       6       6       1   .rodata     
-     C1                                        2212       6       6       1   .rodata     
-     C2                                        2218       6       6       1   .rodata     
+     S2                                        2120       6       6       3   .rodata     
+     S2_trtbl                                  2126      23      35       1   .rodata     
+     S1                                        2149       6       6       4   .rodata     
+     S1_trtbl                                  214F      15      21       1   .rodata     
+     S12                                       2164       6       6       1   .rodata     
+     S12_trtbl                                 216A      15      21       1   .rodata     
+     S11                                       217F       6       6       1   .rodata     
+     S11_trtbl                                 2185       E      14       1   .rodata     
+     H                                         2193       6       6       1   .rodata     
+     DH                                        2199       6       6       1   .rodata     
+     S3                                        219F       6       6       4   .rodata     
+     S3_trtbl                                  21A5      15      21       1   .rodata     
+     S31                                       21BA       6       6       1   .rodata     
+     S31_trtbl                                 21C0       E      14       1   .rodata     
+     S32                                       21CE       6       6       2   .rodata     
+     S32_trtbl                                 21D4       E      14       1   .rodata     
+     J                                         21E2       6       6       1   .rodata     
+     C1                                        21E8       6       6       1   .rodata     
+     C1_trtbl                                  21EE      15      21       1   .rodata     
+     C2                                        2203       6       6       1   .rodata     
+     C2_trtbl                                  2209      15      21       1   .rodata     
      _CALL_STAR08                              221E      20      32       5   .text       
      find_trans                                223E      1F      31       2   .text       
      rkh_init_list                             225D       9       9       1   .text       
@@ -1149,7 +1149,7 @@ NOT USED VARIABLES
 RTSHC08.C.o (ansiis.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
 my.c.o:
-  S111_trtbl S112_trtbl S111 S112 
+  S111 S111_trtbl S112 S112_trtbl 
 
 *********************************************************************************************
 COPYDOWN SECTION
@@ -1159,7 +1159,7 @@ Filling bytes inserted
  00080102
 ------- ROM-ADDRESS: 0x2545 ---- RAM-ADDRESS: 0x102 ---- SIZE       8 ---
 Name of initialized Object : my:2
- 21DC21DC24 D50122
+ 2149214924 D50122
 ------- ROM-ADDRESS: 0x254D ---- SIZE       2 ---
 Filling bytes inserted
  0000
@@ -1170,27 +1170,27 @@ OBJECT-DEPENDENCIES SECTION
 my                        USES S1 my_init mydata 
 Init                      USES _startupData loadByte 
 _Startup                  USES __SEG_END_SSTACK Init main 
-S2_trtbl                  USES x_equal_1 dummy_act S1 S2 C2 
-S1_trtbl                  USES S3 set_y_2 S2 
-S12_trtbl                 USES J set_y_1 S2 
-S11_trtbl                 USES S12 
-S3_trtbl                  USES C1 S3 
-S31_trtbl                 USES S32 
-S32_trtbl                 USES S31 
-C1_trtbl                  USES H dummy_act DH 
-C2_trtbl                  USES dummy_act S3 S32 
 S2                        USES S2_trtbl 
+S2_trtbl                  USES x_equal_1 dummy_act S1 S2 C2 
 S1                        USES S1_trtbl 
+S1_trtbl                  USES S3 set_y_2 S2 
 S12                       USES S12_trtbl 
+S12_trtbl                 USES J set_y_1 S2 
 S11                       USES S11_trtbl 
+S11_trtbl                 USES S12 
 H                         USES S11 ramH 
 DH                        USES S1 ramDH 
 S3                        USES S3_trtbl 
+S3_trtbl                  USES C1 S3 
 S31                       USES S31_trtbl 
+S31_trtbl                 USES S32 
 S32                       USES S32_trtbl 
+S32_trtbl                 USES S31 
 J                         USES S3 
 C1                        USES get_y C1_trtbl 
+C1_trtbl                  USES H dummy_act DH 
 C2                        USES get_x C2_trtbl 
+C2_trtbl                  USES dummy_act S3 S32 
 rkh_traverse_list         USES pgh pgevt _CALL_STAR08 
 rkh_init_hsm              USES _CALL_STAR08 
 rkh_engine                USES pgh pgevt find_trans act_list rkh_init_list 

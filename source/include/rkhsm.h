@@ -168,6 +168,8 @@ typedef enum
 
 #define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )	\
 																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
+																		\
 								rkhrom RKHSREG_T name =					\
 								{										\
 									mkbase(RKH_COMPOSITE,id,name),		\
@@ -195,6 +197,8 @@ typedef enum
  */
 
 #define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
 																		\
 								rkhrom RKHSREG_T name =					\
 								{										\
@@ -225,6 +229,8 @@ typedef enum
  */
 
 #define RKH_CREATE_COND_STATE( name,id,cdt )							\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
 																		\
 								rkhrom RKHSCOND_T name =				\
 								{										\
@@ -322,7 +328,7 @@ typedef enum
 
 #define RKH_CREATE_TRANS_TABLE( name )									\
 																		\
-								static rkhrom RKHTR_T name##_trtbl[]
+								static rkhrom RKHTR_T name##_trtbl[]={
 
 
 /**
@@ -358,11 +364,19 @@ typedef enum
 #define RKH_TRINT( e, g, a )	{ e, g, a, NULL }
 
 
+/*
+ * 	This macro is internal to RKH and the user application should 
+ * 	not call it.
+ */
+
+#define RKH_ETRTBL				{ RKH_ANY, NULL, NULL, NULL }
+
+
 /**
  *	This macro is used to terminate a state transition table.
  */
 
-#define RKH_END_TRANS_TABLE		{ RKH_ANY, NULL, NULL, NULL }
+#define RKH_END_TRANS_TABLE		RKH_ETRTBL};
 
 
 /**
@@ -394,11 +408,19 @@ typedef enum
 #define RKH_BRANCH( e, a, t )	{ e, NULL, a, t }
 
 
+/*
+ * 	This macro is internal to RKH and the user application should 
+ * 	not call it.
+ */
+
+#define RKH_EBTBL				{ RKH_ANY, NULL, NULL, NULL }
+
+
 /**
  *	This macro is used to terminate a state transition table.
  */
 
-#define RKH_END_BRANCH_TABLE	{ RKH_ANY, NULL, NULL, NULL }
+#define RKH_END_BRANCH_TABLE	RKH_EBTBL};
 
 
 /**
