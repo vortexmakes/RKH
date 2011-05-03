@@ -592,3 +592,38 @@ rkh_get_info( RKH_T *ph )
 }
 
 #endif
+
+
+#if RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 1
+
+HUInt 
+rkh_else( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	return RKH_GTRUE;
+}
+
+#elif RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 0
+	
+HUInt 
+rkh_else( RKHEVT_T *pe )
+{
+	return RKH_GTRUE;
+}
+
+#elif RKH_EN_GRD_EVT_ARG == 0 && RKH_EN_GRD_HSM_ARG == 1
+	
+HUInt 
+rkh_else( const struct rkh_t *ph )
+{
+	return RKH_GTRUE;
+}
+
+#else
+	
+HUInt 
+rkh_else( void )
+{
+	return RKH_GTRUE;
+}
+
+#endif

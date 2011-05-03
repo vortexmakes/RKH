@@ -400,6 +400,10 @@ typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
  *	the triggering event would be discarded and the transition would 
  *	not be taken.
  *	
+ *	Each condition connector can have one special branch with a guard 
+ *	labeled rkh_else, which is taken if all the guards on the other 
+ *	branches are false. 
+ *
  * 	A guard function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
  * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
@@ -409,21 +413,26 @@ typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
 
 	typedef HUInt (*RKHGUARD_T)( const struct rkh_t *ph, RKHEVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
+	HUInt rkh_else( const struct rkh_t *ph, RKHEVT_T *pe );
 
 #elif RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 0
 	
 	typedef HUInt (*RKHGUARD_T)( RKHEVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
+	HUInt rkh_else( RKHEVT_T *pe );
+
 
 #elif RKH_EN_GRD_EVT_ARG == 0 && RKH_EN_GRD_HSM_ARG == 1
 	
 	typedef HUInt (*RKHGUARD_T)( const struct rkh_t *ph );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
+	HUInt rkh_else( const struct rkh_t *ph );
 
 #else
 	
 	typedef HUInt (*RKHGUARD_T)( void );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
+	HUInt rkh_else( void );
 
 #endif
 

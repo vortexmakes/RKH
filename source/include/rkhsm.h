@@ -207,7 +207,8 @@ typedef enum
  *	one is to be actually taken. Since the condition connector is an OR 
  *	connector, only one of the branches can be taken. Each 
  *	condition connector can have one special branch with a guard labeled 
- *	else, which is taken if all the guards on the other branches are false. 
+ *	rkh_else, which is taken if all the guards on the other branches are 
+ *	false. 
  *	Branches cannot contain triggers, but in addition to a guard they may 
  *	contain actions. A branch can enter another condition connector, thus 
  *	providing for the nesting of branches.
@@ -375,6 +376,7 @@ typedef enum
 /**
  *	This macro creates a branch table. Use the 
  *	'RKH_END_BRANCH_TABLE' macro to terminate the branch table.
+ *	Use rkh_else when if all the guards on the other branches are false.
  *
  * 	\param name		conditional pseudostate name.
  */
@@ -385,14 +387,18 @@ typedef enum
 
 
 /**
- *	This macro defines a branch in the branch table.
+ *	This macro defines a branch in the branch table. Each condition
+ *	connector can have one special branch with a guard labeled rkh_else, 
+ *	which is taken if all the guards on the other branches are false.
+ *	
  *
  *	\note
  *
  *	See RKHTR_T structure definition for more information.
  *
  * 	\param g		branch guard. Branches are labeled with guards that 
- * 					determine which one is to be actually taken.
+ * 					determine which one is to be actually taken. Use rkh_else
+ * 					when if all the guards on the other branches are false.
  * 	\param a		pointer to action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param t		pointer to target state.

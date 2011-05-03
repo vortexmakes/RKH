@@ -152,19 +152,19 @@
       </table>
 </div>
 <div class="memdoc">
-<p>This macro defines a branch in the branch table.</p>
+<p>This macro defines a branch in the branch table. Each condition connector can have one special branch with a guard labeled rkh_else, which is taken if all the guards on the other branches are false.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>See <a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>g</em>&nbsp;</td><td>branch guard. Branches are labeled with guards that determine which one is to be actually taken. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>g</em>&nbsp;</td><td>branch guard. Branches are labeled with guards that determine which one is to be actually taken. Use rkh_else when if all the guards on the other branches are false. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>a</em>&nbsp;</td><td>pointer to action function. This argument is optional, thus it could be declared as NULL. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>pointer to target state. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00401">401</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00407">407</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -252,7 +252,7 @@
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 <a class="code" href="rkhsm_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( name )
-</pre></div><p>This macro creates a branch table. Use the 'RKH_END_BRANCH_TABLE' macro to terminate the branch table.</p>
+</pre></div><p>This macro creates a branch table. Use the 'RKH_END_BRANCH_TABLE' macro to terminate the branch table. Use rkh_else when if all the guards on the other branches are false.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>conditional pseudostate name. </td></tr>
@@ -260,7 +260,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00382">382</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00384">384</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@
                                     mkbase(RKH_CONDITIONAL,<span class="keywordtype">id</span>,name),    \
                                     name##_trtbl                        \
                                 }
-</pre></div><p>This macro creates a conditional pseudostate. A condition connector has one incoming transition and can have several outgoing transition segments called branches. Branches are labeled with guards that determine which one is to be actually taken. Since the condition connector is an OR connector, only one of the branches can be taken. Each condition connector can have one special branch with a guard labeled else, which is taken if all the guards on the other branches are false. Branches cannot contain triggers, but in addition to a guard they may contain actions. A branch can enter another condition connector, thus providing for the nesting of branches.</p>
+</pre></div><p>This macro creates a conditional pseudostate. A condition connector has one incoming transition and can have several outgoing transition segments called branches. Branches are labeled with guards that determine which one is to be actually taken. Since the condition connector is an OR connector, only one of the branches can be taken. Each condition connector can have one special branch with a guard labeled rkh_else, which is taken if all the guards on the other branches are false. Branches cannot contain triggers, but in addition to a guard they may contain actions. A branch can enter another condition connector, thus providing for the nesting of branches.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>See <a class="el" href="struct_r_k_h_s_c_o_n_d___t.html" title="Describes the conditional pseudostate.">RKHSCOND_T</a> structure definition for more information.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
@@ -377,7 +377,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00224">224</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00225">225</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -427,7 +427,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00277">277</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00278">278</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -541,7 +541,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00252">252</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00253">253</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -590,7 +590,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00304">304</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00305">305</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -619,7 +619,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00322">322</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00323">323</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -637,7 +637,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00448">448</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00454">454</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -655,7 +655,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00447">447</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00453">453</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -673,7 +673,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00449">449</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00455">455</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -691,7 +691,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00451">451</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00457">457</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -718,7 +718,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00434">434</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00440">440</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +736,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00450">450</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00456">456</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -754,7 +754,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00452">452</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00458">458</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -770,7 +770,7 @@
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00416">416</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00422">422</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -786,7 +786,7 @@
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00372">372</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00373">373</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -817,7 +817,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00513">513</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00519">519</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -848,7 +848,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00529">529</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00535">535</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -879,7 +879,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00544">544</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00550">550</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -895,7 +895,7 @@
 <div class="memdoc">
 <p>This macro indicates the root state of a HSM. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00423">423</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00429">429</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -936,7 +936,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00357">357</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00358">358</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -983,7 +983,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00342">342</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00343">343</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1010,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00464">464</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00470">470</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1204,7 +1204,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue May 3 11:03:41 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue May 3 11:58:53 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
