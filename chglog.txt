@@ -4,3 +4,14 @@
 #	This file resumes the changes across project version releases.
 #
 #
+
+Changes between V1.0.0 and V1.1.0 released 05/03/2011
+
+	+	Added rkh_else function to be used when if all the guards on 
+		the other branches are false.
+	+	Changed conditional (branch) pseudostate related macros. Therefore, 
+		the demo and doc files too.
+	+	Changed macros RKH_CREATE_*_STATE, RKH_CREATE_TRANS_TABLE and 
+		RKH_END_TRANS_TABLE. 
+	+	Fixed VC08 project settings.
+	+	Changed demo files.
