@@ -1,6 +1,12 @@
----- RKH trace log session - Dec 21 2010 - 09:57:17 ----
+---- RKH trace log session - May  3 2011 - 09:12:28 ----
 
-31700 [ RKHTR_EVENT      ] - MY : 1
-31700 [ RKHTR_NXT_STATE  ] - MY : S112 [0]
-31700 [ RKHTR_EVENT      ] - MY : 1
-31700 [ RKHTR_NXT_STATE  ] - MY : S111 [0]
+03010 [ RKHTR_EVENT      ] - MY : 1
+03010 [ RKHTR_NXT_STATE  ] - MY : S112 [0]
+16548 [ RKHTR_EVENT      ] - MY : 4
+16548 [ RKHTR_NXT_STATE  ] - MY : S12 [0]
+16549 [ RKHTR_EVENT      ] - MY : 4
+16549 [ RKHTR_NXT_STATE  ] - MY : S2 [0]
+16549 [ RKHTR_EVENT      ] - MY : 3
+16549 [ RKHTR_NXT_STATE  ] - MY : S32 [0]
+16549 [ RKHTR_EVENT      ] - MY : 2
+16549 [ RKHTR_NXT_STATE  ] - MY : S112 [0]

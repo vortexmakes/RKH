@@ -64,7 +64,6 @@
 <tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a> )(<a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *pe)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a6774d6792a14179a0955de97a2545dd3">RKHACT_T</a> )(const struct rkh_t *ph, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *pe)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef HUInt(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#accdcce4dbcbade1d09c11a3484784c68">RKHGUARD_T</a> )(const struct rkh_t *ph, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *pe)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ad68cd0d56eb8ba736bae4a8a37501a43">RKHBRANCH_T</a> )(void)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>RKH engine interface. </p>
@@ -120,23 +119,6 @@
 <p>An action function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_ACT_EVT_ARG' and RKH_EN_ACT_HSM_ARG. </p>
 
 <p>Definition at line <a class="el" href="rkh_8h_source.html#l00371">371</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad68cd0d56eb8ba736bae4a8a37501a43"></a><!-- doxytag: member="rkh.h::RKHBRANCH_T" ref="ad68cd0d56eb8ba736bae4a8a37501a43" args=")(void)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>(* <a class="el" href="rkh_8h.html#ad68cd0d56eb8ba736bae4a8a37501a43">RKHBRANCH_T</a>)(void)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Branch:</p>
-<p>A branch function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_BCH_EVT_ARG and RKH_EN_BCH_HSM_ARG. </p>
-
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00456">456</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -246,7 +228,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jul 8 10:48:36 2010 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue May 3 11:03:41 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

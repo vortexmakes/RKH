@@ -50,11 +50,13 @@ void dummy_act( const struct rkh_t *ph, RKHEVT_T *pe );
 
 
 /*
- *	Defines branch functions
+ *	Defines branch's guards
  */
 
-RKHE_T get_y( const struct rkh_t *ph, RKHEVT_T *pe );
-RKHE_T get_x( const struct rkh_t *ph, RKHEVT_T *pe );
+HUInt y1( const struct rkh_t *ph, RKHEVT_T *pe );
+HUInt y2( const struct rkh_t *ph, RKHEVT_T *pe );
+HUInt x1( const struct rkh_t *ph, RKHEVT_T *pe );
+HUInt x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe );
 
 
 /*

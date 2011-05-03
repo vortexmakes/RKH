@@ -39,17 +39,17 @@
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a6cd51b397f904a73a38861b8f40e551c">RKH_CREATE_HSM</a>(name, id, ppty, is, ia, hd)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#acc24b2221cd374e66732a09fb24b56ce">RKH_CREATE_COMP_STATE</a>(name, id, en, ex, parent, defchild, history)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>(name, id, en, ex, parent, prepro)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ad9503fe07634becef5f6b9d4ee989143">RKH_CREATE_COND_STATE</a>(name, id, cdt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ade7387dead9112bd67580de3350aee51">RKH_CREATE_COND_STATE</a>(name, id)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a9f73c81d95a4bd5bec21e10ea6f05add">RKH_CREATE_JUNCTION_STATE</a>(name, id, action, target)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a49995aa34cddd68fcc6416655ca408f8">RKH_CREATE_DEEP_HISTORY_STATE</a>(name, id, parent)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a7a5376dd9929642f5b6e31def6d92bb4">RKH_CREATE_SHALLOW_HISTORY_STATE</a>(name, id, parent)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>(name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>(e, g, a, t)&nbsp;&nbsp;&nbsp;{ e, g, a, t }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>(e, g, a)&nbsp;&nbsp;&nbsp;{ e, g, a, NULL }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>&nbsp;&nbsp;&nbsp;{ RKH_ANY, NULL, NULL, NULL }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>&nbsp;&nbsp;&nbsp;RKH_ETRTBL};</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>(name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a4d84e410ae2719afd5ffa59c8b7b67e7">RKH_BRANCH</a>(e, a, t)&nbsp;&nbsp;&nbsp;{ e, NULL, a, t }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>&nbsp;&nbsp;&nbsp;{ RKH_ANY, NULL, NULL, NULL }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>(g, a, t)&nbsp;&nbsp;&nbsp;{ 0, g, a, t }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>&nbsp;&nbsp;&nbsp;RKH_EBTBL};</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#af2b1332a21797445c49710b6074ddb9b">RKH_ROOT</a>&nbsp;&nbsp;&nbsp;NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1">RKH_DCLR_HSM</a>(h)&nbsp;&nbsp;&nbsp;extern <a class="el" href="struct_r_k_h___t.html">RKH_T</a> h</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ae32100c17bee5afab9b31d9132ad41bb">rkh_get_cstate_id</a>(ph)</td></tr>
@@ -69,16 +69,14 @@
 &nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>, 
 <a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a0c9fe6c670ea1e83ca5c3a5666ca1181">RKH_INPUT_NOT_FOUND</a>, 
 <br/>
-&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a8230582233c22349989fb86447ad6399">RKH_CONDITIONAL_NOT_FOUND</a>, 
-<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a24fbaf67d8677779b69f3a133ec22772">RKH_CONDITION_NOT_FOUND</a>, 
+&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a24fbaf67d8677779b69f3a133ec22772">RKH_CONDITION_NOT_FOUND</a>, 
+<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3ae46b1cbd592c25a27720783efb3b21f4">RKH_GUARD_FALSE</a>, 
 <br/>
-&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3ae46b1cbd592c25a27720783efb3b21f4">RKH_GUARD_FALSE</a>, 
-<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a067ecd2890ffed78d08680c9f029594c">RKH_UNKNOWN_STATE</a>, 
+&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a067ecd2890ffed78d08680c9f029594c">RKH_UNKNOWN_STATE</a>, 
+<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a42666d274d23ded0e35db3b52a6681e8">RKH_EXCEED_HCAL_LEVEL</a>, 
 <br/>
-&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a42666d274d23ded0e35db3b52a6681e8">RKH_EXCEED_HCAL_LEVEL</a>, 
-<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a793e9c62f0ebf4bb3c221567ff80bf77">RKH_EXCEED_TR_SEGS</a>, 
-<br/>
-&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3adb6db8102ad27b1b187bc07070669243">RKH_NUM_CODES</a>
+&nbsp;&nbsp;<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a793e9c62f0ebf4bb3c221567ff80bf77">RKH_EXCEED_TR_SEGS</a>, 
+<a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3adb6db8102ad27b1b187bc07070669243">RKH_NUM_CODES</a>
 <br/>
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>, 
@@ -109,7 +107,7 @@
 <div class="memdoc">
 <p>This macro disables state nesting in a particular state-machine. When FLAT is used in <a class="el" href="rkhsm_8h.html#a6cd51b397f904a73a38861b8f40e551c">RKH_CREATE_HSM()</a> macro some important features of RKH are not included: state nesting, composite state, history (shallow and deep) pseudostate, entry action, and exit action. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00121">121</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00115">115</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -125,18 +123,18 @@
 <div class="memdoc">
 <p>This macro enables state nesting in a particular state-machine. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00111">111</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00105">105</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4d84e410ae2719afd5ffa59c8b7b67e7"></a><!-- doxytag: member="rkhsm.h::RKH_BRANCH" ref="a4d84e410ae2719afd5ffa59c8b7b67e7" args="(e, a, t)" -->
+<a class="anchor" id="ad1ebb38b7398d7f4ec60ef3e0922d033"></a><!-- doxytag: member="rkhsm.h::RKH_BRANCH" ref="ad1ebb38b7398d7f4ec60ef3e0922d033" args="(g, a, t)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">#define RKH_BRANCH</td>
           <td>(</td>
-          <td class="paramtype">e, </td>
+          <td class="paramtype">g, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -149,7 +147,7 @@
           <td class="paramtype">t&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;{ e, NULL, a, t }</td>
+          <td>&nbsp;&nbsp;&nbsp;{ 0, g, a, t }</td>
         </tr>
       </table>
 </div>
@@ -159,14 +157,14 @@
 <p>See <a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>e</em>&nbsp;</td><td>branch guard. Branches are labeled with guards that determine which one is to be actually taken. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>g</em>&nbsp;</td><td>branch guard. Branches are labeled with guards that determine which one is to be actually taken. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>a</em>&nbsp;</td><td>pointer to action function. This argument is optional, thus it could be declared as NULL. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>pointer to target state. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00394">394</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00401">401</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -211,6 +209,8 @@
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
+                                <span class="keyword">extern</span> rkhrom <a class="code" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> name##_trtbl[];   \
+                                                                        \
                                 rkhrom <a class="code" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> name =                 \
                                 {                                       \
                                     mkbase(RKH_BASIC,<span class="keywordtype">id</span>,name),          \
@@ -231,7 +231,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00197">197</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00193">193</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -260,7 +260,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00375">375</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00382">382</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -310,6 +310,8 @@
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
+                                <span class="keyword">extern</span> rkhrom <a class="code" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> name##_trtbl[];   \
+                                                                        \
                                 rkhrom <a class="code" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> name =                 \
                                 {                                       \
                                     mkbase(RKH_COMPOSITE,<span class="keywordtype">id</span>,name),      \
@@ -332,11 +334,11 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00169">169</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00163">163</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad9503fe07634becef5f6b9d4ee989143"></a><!-- doxytag: member="rkhsm.h::RKH_CREATE_COND_STATE" ref="ad9503fe07634becef5f6b9d4ee989143" args="(name, id, cdt)" -->
+<a class="anchor" id="ade7387dead9112bd67580de3350aee51"></a><!-- doxytag: member="rkhsm.h::RKH_CREATE_COND_STATE" ref="ade7387dead9112bd67580de3350aee51" args="(name, id)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -348,12 +350,7 @@
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">id, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">cdt&nbsp;</td>
+          <td class="paramtype">id&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
@@ -362,10 +359,12 @@
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
+                                <span class="keyword">extern</span> rkhrom <a class="code" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> name##_trtbl[];   \
+                                                                        \
                                 rkhrom <a class="code" href="struct_r_k_h_s_c_o_n_d___t.html" title="Describes the conditional pseudostate.">RKHSCOND_T</a> name =                \
                                 {                                       \
                                     mkbase(RKH_CONDITIONAL,<span class="keywordtype">id</span>,name),    \
-                                    cdt, name##_trtbl                   \
+                                    name##_trtbl                        \
                                 }
 </pre></div><p>This macro creates a conditional pseudostate. A condition connector has one incoming transition and can have several outgoing transition segments called branches. Branches are labeled with guards that determine which one is to be actually taken. Since the condition connector is an OR connector, only one of the branches can be taken. Each condition connector can have one special branch with a guard labeled else, which is taken if all the guards on the other branches are false. Branches cannot contain triggers, but in addition to a guard they may contain actions. A branch can enter another condition connector, thus providing for the nesting of branches.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
@@ -373,13 +372,12 @@
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>pseudostate name. Represents a conditional pseudostate structure. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>cdt</em>&nbsp;</td><td>pointer to branch function. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>id</em>&nbsp;</td><td>the value of state ID. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00227">227</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00224">224</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -429,7 +427,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00278">278</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00277">277</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -490,7 +488,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00145">145</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00139">139</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -543,7 +541,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00253">253</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00252">252</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +590,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00305">305</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00304">304</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -612,7 +610,7 @@
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
-                                <span class="keyword">static</span> rkhrom <a class="code" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> name##_trtbl[]
+                                <span class="keyword">static</span> rkhrom <a class="code" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> name##_trtbl[]={
 </pre></div><p>This macro creates a state transition table. Use the 'RKH_END_TRANS_TABLE' macro to terminate the transition table.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -621,7 +619,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00323">323</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00322">322</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -639,7 +637,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00433">433</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00448">448</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -657,7 +655,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00432">432</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00447">447</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -675,7 +673,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00434">434</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00449">449</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -693,7 +691,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00436">436</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00451">451</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -720,7 +718,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00419">419</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00434">434</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -738,7 +736,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00435">435</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00450">450</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -756,7 +754,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00437">437</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00452">452</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -765,14 +763,14 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define RKH_END_BRANCH_TABLE&nbsp;&nbsp;&nbsp;{ RKH_ANY, NULL, NULL, NULL }</td>
+          <td class="memname">#define RKH_END_BRANCH_TABLE&nbsp;&nbsp;&nbsp;RKH_EBTBL};</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00401">401</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00416">416</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -781,14 +779,14 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define RKH_END_TRANS_TABLE&nbsp;&nbsp;&nbsp;{ RKH_ANY, NULL, NULL, NULL }</td>
+          <td class="memname">#define RKH_END_TRANS_TABLE&nbsp;&nbsp;&nbsp;RKH_ETRTBL};</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00365">365</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00372">372</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -819,7 +817,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00498">498</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00513">513</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -850,7 +848,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00514">514</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00529">529</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -881,7 +879,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00529">529</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00544">544</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -897,7 +895,7 @@
 <div class="memdoc">
 <p>This macro indicates the root state of a HSM. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00408">408</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00423">423</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -938,7 +936,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00358">358</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00357">357</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -985,7 +983,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00343">343</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00342">342</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1012,7 +1010,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00449">449</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00464">464</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1033,9 +1031,6 @@
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ad7ffdf67be28296726e65d6b7223f5e3a0c9fe6c670ea1e83ca5c3a5666ca1181"></a><!-- doxytag: member="RKH_INPUT_NOT_FOUND" ref="ad7ffdf67be28296726e65d6b7223f5e3a0c9fe6c670ea1e83ca5c3a5666ca1181" args="" -->RKH_INPUT_NOT_FOUND</em>&nbsp;</td><td>
 <p>The arrived event was't founded in the transition table. </p>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="ad7ffdf67be28296726e65d6b7223f5e3a8230582233c22349989fb86447ad6399"></a><!-- doxytag: member="RKH_CONDITIONAL_NOT_FOUND" ref="ad7ffdf67be28296726e65d6b7223f5e3a8230582233c22349989fb86447ad6399" args="" -->RKH_CONDITIONAL_NOT_FOUND</em>&nbsp;</td><td>
-<p>Wasn't found the branch function. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ad7ffdf67be28296726e65d6b7223f5e3a24fbaf67d8677779b69f3a133ec22772"></a><!-- doxytag: member="RKH_CONDITION_NOT_FOUND" ref="ad7ffdf67be28296726e65d6b7223f5e3a24fbaf67d8677779b69f3a133ec22772" args="" -->RKH_CONDITION_NOT_FOUND</em>&nbsp;</td><td>
 <p>The branch function returned a value not founded in the branch table. </p>
@@ -1209,7 +1204,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jul 8 10:48:36 2010 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue May 3 11:03:41 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

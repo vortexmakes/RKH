@@ -429,37 +429,6 @@ typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
 
 
 /**
- * 	Branch:
- *
- * 	A branch function takes the state machine pointer and the event 
- * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to RKH_EN_BCH_EVT_ARG and RKH_EN_BCH_HSM_ARG.
- */
-
-#if RKH_EN_BCH_EVT_ARG == 1 && RKH_EN_BCH_HSM_ARG == 1
-
-	typedef RKHE_T (*RKHBRANCH_T)( const struct rkh_t *ph, RKHEVT_T *pe );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)( h, e )
-
-#elif RKH_EN_BCH_EVT_ARG == 1 && RKH_EN_BCH_HSM_ARG == 0
-	
-	typedef RKHE_T (*RKHBRANCH_T)( RKHEVT_T *pe );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)( e )
-
-#elif RKH_EN_BCH_EVT_ARG == 0 && RKH_EN_BCH_HSM_ARG == 1
-	
-	typedef RKHE_T (*RKHBRANCH_T)( const struct rkh_t *ph );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)( h )
-
-#else
-	
-	typedef RKHE_T (*RKHBRANCH_T)( void );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)()
-
-#endif
-
-
-/**
  * 	\brief 
  *
  * 	Maintains the basic information of a state.
@@ -616,12 +585,6 @@ typedef struct rkhscond_t
 	 */
 
 	struct rkhbase_t base;
-
-	/**	
-	 *	Points to conditional function.
-	 */
-
-	RKHBRANCH_T cdl;
 
 	/**	
 	 *	Points to branch table.

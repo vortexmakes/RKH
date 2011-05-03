@@ -120,6 +120,14 @@
 #endif
 
 
+#define find_branch( btbl, t )											\
+																		\
+	for( tr = btbl; tr->event != RKH_ANY; ++tr )						\
+		if( is_valid_guard( tr ) &&										\
+				rkh_call_guard( tr, ph, pe ) == RKH_GTRUE )				\
+			break;
+
+
 typedef struct
 {
 	void *list[ RKH_MAX_HCAL_DEPTH	];
@@ -443,15 +451,8 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 						return RKH_GUARD_FALSE;
 					}
 
-					if( is_not_valid_conditional( CC(ets) ) )
-					{
-						rkh_rec_rtn_code( te, ph->id, 
-												RKH_CONDITIONAL_NOT_FOUND );
-						return RKH_CONDITIONAL_NOT_FOUND;
-					}
 
-					tr = find_trans( CC(ets)->trtbl, 
-											rkh_call_cond( CC(ets), ph, pe ) );
+					find_branch( CC(ets)->trtbl, tr );
 
 					if( is_not_found_trans( tr ) )
 					{

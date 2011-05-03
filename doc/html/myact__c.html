@@ -110,7 +110,7 @@ set_y_2( <span class="keyword">const</span> <span class="keyword">struct</span> 
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     pd-&gt;y = 2;
-    printf( <span class="stringliteral">&quot;action: &quot;</span>__FUNCTION__<span class="stringliteral">&quot;()\n&quot;</span> );
+    printf( <span class="stringliteral">&quot;action: %s()\n&quot;</span>, __FUNCTION__ );
     printf( <span class="stringliteral">&quot;event.ts = %05d\n&quot;</span>, (( MYEVT_T* )pe )-&gt;ts );
     printf( <span class="stringliteral">&quot;data.x = %02d - data.y = %02d\n&quot;</span>, pd-&gt;x, pd-&gt;y );
 }
@@ -121,7 +121,7 @@ set_y_1( <span class="keyword">const</span> <span class="keyword">struct</span> 
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     pd-&gt;y = 1;
-    printf( <span class="stringliteral">&quot;action: &quot;</span>__FUNCTION__<span class="stringliteral">&quot;()\n&quot;</span> );
+    printf( <span class="stringliteral">&quot;action: %s()\n&quot;</span>, __FUNCTION__ );
     printf( <span class="stringliteral">&quot;event.ts = %05d\n&quot;</span>, (( MYEVT_T* )pe )-&gt;ts );
     printf( <span class="stringliteral">&quot;data.x = %02d - data.y = %02d\n&quot;</span>, pd-&gt;x, pd-&gt;y );
 }
@@ -134,36 +134,39 @@ dummy_act( <span class="keyword">const</span> <span class="keyword">struct</span
 
 
 <span class="comment">/*</span>
-<span class="comment">    Defines branch functions</span>
+<span class="comment">    Defines branch&#39;s guards</span>
 <span class="comment"> */</span>
 
 
-<a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
-get_y( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+HUInt
+y1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
-
-    <span class="keywordflow">switch</span>( pd-&gt;y )
-    {
-        <span class="keywordflow">case</span> 1:
-            <span class="keywordflow">return</span> ( <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a> )Y1;
-        <span class="keywordflow">case</span> 2:
-            <span class="keywordflow">return</span> ( <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a> )Y2;
-        <span class="keywordflow">default</span>:
-            <span class="keywordflow">return</span> ( <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a> )pd-&gt;y;
-    }
+    <span class="keywordflow">return</span> pd-&gt;y == 1 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 
 
-<a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
-get_x( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+HUInt
+y2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
+    <span class="keywordflow">return</span> pd-&gt;y == 2 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
+}
 
-    <span class="keywordflow">if</span>( pd-&gt;x == 2 || pd-&gt;x == 3 )
-        <span class="keywordflow">return</span> ( <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a> )X2_OR_X3;
-    <span class="keywordflow">else</span>
-        <span class="keywordflow">return</span> ( <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a> )X1;
+
+HUInt
+x1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+{
+    pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
+    <span class="keywordflow">return</span> pd-&gt;x == 1 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
+}
+
+
+HUInt
+x2_or_x3( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+{
+    pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
+    <span class="keywordflow">return</span> pd-&gt;x == 2 || pd-&gt;x == 3 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 
 
@@ -180,7 +183,7 @@ x_equal_1( <span class="keyword">const</span> <span class="keyword">struct</span
     <span class="keywordflow">return</span> pd-&gt;x == 1 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jul 8 10:48:37 2010 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue May 3 11:03:41 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

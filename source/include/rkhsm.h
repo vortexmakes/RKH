@@ -62,12 +62,6 @@ typedef enum
 	RKH_INPUT_NOT_FOUND,
 
 	/**
-	 * 	Wasn't found the branch function.
-	 */
-
-	RKH_CONDITIONAL_NOT_FOUND,
-
-	/**
 	 * 	The branch function returned a value not founded 
 	 * 	in the branch table.
 	 */
@@ -224,18 +218,17 @@ typedef enum
  *
  * 	\param name		pseudostate name. Represents a conditional pseudostate 
  * 					structure.
- * 	\param cdt		pointer to branch function.
  * 	\param id		the value of state ID.	
  */
 
-#define RKH_CREATE_COND_STATE( name,id,cdt )							\
+#define RKH_CREATE_COND_STATE( name,id )								\
 																		\
 								extern rkhrom RKHTR_T name##_trtbl[];	\
 																		\
 								rkhrom RKHSCOND_T name =				\
 								{										\
 									mkbase(RKH_CONDITIONAL,id,name),	\
-									cdt, name##_trtbl 					\
+									name##_trtbl 						\
 								}
 
 
@@ -398,14 +391,14 @@ typedef enum
  *
  *	See RKHTR_T structure definition for more information.
  *
- * 	\param e		branch guard. Branches are labeled with guards that 
+ * 	\param g		branch guard. Branches are labeled with guards that 
  * 					determine which one is to be actually taken.
  * 	\param a		pointer to action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param t		pointer to target state.
  */
 
-#define RKH_BRANCH( e, a, t )	{ e, NULL, a, t }
+#define RKH_BRANCH( g, a, t )	{ 0, g, a, t }
 
 
 /*

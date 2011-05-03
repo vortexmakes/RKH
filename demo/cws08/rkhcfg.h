@@ -7,14 +7,14 @@
 #define __RKHCFG_H__
 
 
-#define RKH_EN_HCAL					0	/* 	Enable (1) or Disable (0) state nesting */
+#define RKH_EN_HCAL					1	/* 	Enable (1) or Disable (0) state nesting */
 #define RKH_MAX_HCAL_DEPTH			4	/* 	Max. number of hierarchical levels */
 #define RKH_MAX_TR_SEGS				4	/* 	Max. number of transition segments */
 #define RKH_SIZEOF_EVENT			8	/* 	Defines the size of event [in bits]: 8, 16 or 32 */
 
 #define RKH_EN_PSEUDOSTATE			1	/* 	Enable (1) or Disable (0) pseudostates */
-#define RKH_EN_DEEP_HISTORY			0	/* 	Include deep history */
-#define RKH_EN_SHALLOW_HISTORY		0	/* 	Include shallow history */
+#define RKH_EN_DEEP_HISTORY			1	/* 	Include deep history */
+#define RKH_EN_SHALLOW_HISTORY		1	/* 	Include shallow history */
 #define RKH_EN_JUNCTION				1	/* 	Include junction */
 #define RKH_EN_CONDITIONAL			1	/* 	Include conditional */
 
@@ -25,17 +25,15 @@
 #define RKH_EN_ACT_EVT_ARG			1	/* 	Enable (1) or Disable (0) event arg */
 #define RKH_EN_GRD_EVT_ARG			1	/* 	Enable (1) or Disable (0) event arg */
 #define RKH_EN_GRD_HSM_ARG			1	/* 	Enable (1) or Disable (0) HSM arg */
-#define RKH_EN_BCH_EVT_ARG			1	/* 	Enable (1) or Disable (0) event arg */
-#define RKH_EN_BCH_HSM_ARG			1	/* 	Enable (1) or Disable (0) HSM arg */
 
-#define RKH_EN_STATE_NAME			0	/* 	Include state name */
-#define RKH_EN_HSM_NAME				0	/* 	Include HSM name */
+#define RKH_EN_STATE_NAME			1	/* 	Include state name */
+#define RKH_EN_HSM_NAME				1	/* 	Include HSM name */
 #define RKH_EN_HSM_DATA				1	/*	Include HSM data */
 #define RKH_EN_PPRO					0	/* 	Include input preprocessor function */
 #define RKH_EN_GET_INFO				0	/* 	Include get information function */
 #define RKH_EN_REENTRANT			0	/* 	Enable (1) or Disable (0) HSM re-entrancy */
 
-#define RKH_TRACE					0	/* 	Enable (1) or Disable (0) trace mode */
+#define RKH_TRACE					1	/* 	Enable (1) or Disable (0) trace mode */
 #define RKH_TRACE_ALL				0	/* 	Include all trace points */
 
 										/* 	Enable (1) or Disable (0) trace points: */

@@ -25,8 +25,6 @@
 #define RKH_EN_ACT_EVT_ARG			1	/* 	Enable (1) or Disable (0) event arg */
 #define RKH_EN_GRD_EVT_ARG			1	/* 	Enable (1) or Disable (0) event arg */
 #define RKH_EN_GRD_HSM_ARG			1	/* 	Enable (1) or Disable (0) HSM arg */
-#define RKH_EN_BCH_EVT_ARG			1	/* 	Enable (1) or Disable (0) event arg */
-#define RKH_EN_BCH_HSM_ARG			1	/* 	Enable (1) or Disable (0) HSM arg */
 
 #define RKH_EN_STATE_NAME			1	/* 	Include state name */
 #define RKH_EN_HSM_NAME				1	/* 	Include HSM name */

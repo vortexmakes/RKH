@@ -23,7 +23,6 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_j_u_n_c___t.html"><param name="Name" value="RKHSJUNC_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="RKHSREG_T"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="cdl"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="cfg.html"><param name="Name" value="Configuration"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="dbg.html"><param name="Name" value="Debugging tool"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="defchild"></OBJECT>
@@ -72,7 +71,6 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKH_ANY"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKH_VERSION"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHACT_T"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHBRANCH_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHE_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHENT_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHEXT_T"></OBJECT>
@@ -85,7 +83,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="rkh_clear_history"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="rkh_clear_info"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CONDITION_NOT_FOUND"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CONDITIONAL_NOT_FOUND"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CREATE_BASIC_STATE"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CREATE_BRANCH_TABLE"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CREATE_COMP_STATE"></OBJECT>
@@ -161,7 +158,6 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="Name" value="name"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="Name" value="type"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHBRANCH_T"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHE_T"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKHENT_T"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_e_v_t___t.html"><param name="Name" value="RKHEVT_T"></OBJECT>
@@ -175,7 +171,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="RKHSCOND_T"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="base"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="cdl"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="trtbl"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_h_i_s_t___t.html"><param name="Name" value="RKHSHIST_T"></OBJECT>
@@ -198,7 +193,6 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="rkh_clear_history"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="rkh_clear_info"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CONDITION_NOT_FOUND"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CONDITIONAL_NOT_FOUND"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CREATE_BASIC_STATE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CREATE_BRANCH_TABLE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_CREATE_COMP_STATE"></OBJECT>
