@@ -123,7 +123,7 @@ along with RKH package. If not, see <http://www.gnu.org/licenses/>.
 
 Contact information:
 
-RKH web site:	http://
+RKH web site:	http://http://sourceforge.net/projects/rkh-reactivesys/
 \n e-mail:			francuccilea@gmail.com
 
 <HR>

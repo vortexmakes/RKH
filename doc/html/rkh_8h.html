@@ -54,7 +54,7 @@
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html">RKH_T</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Describes the HSM.  <a href="struct_r_k_h___t.html#_details">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2>Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a3a949da4eee4a01fcdf0e1066e8165aa">RKH_VERSION</a>&nbsp;&nbsp;&nbsp;&quot;0.0.26&quot;</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a3a949da4eee4a01fcdf0e1066e8165aa">RKH_VERSION</a>&nbsp;&nbsp;&nbsp;&quot;1.1.00&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#abd3571be44849ed0b7bf73ed08af9596">RKH_ANY</a>&nbsp;&nbsp;&nbsp;((<a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>)(-1))</td></tr>
 <tr><td colspan="2"><h2>Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a></td></tr>
@@ -83,7 +83,7 @@
 <div class="memdoc">
 <p>This macro is used to indicate the end of a transition table. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00080">80</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00082">82</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -92,14 +92,15 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define RKH_VERSION&nbsp;&nbsp;&nbsp;&quot;0.0.26&quot;</td>
+          <td class="memname">#define RKH_VERSION&nbsp;&nbsp;&nbsp;&quot;1.1.00&quot;</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Application specific configuration options. Specific definitions to the platform being used. Identification numbers of declared state-machines. Trace facility. Version string of RKH. </p>
+<p>Application specific configuration options. Specific definitions to the platform being used. Identification numbers of declared state-machines. Trace facility. Version string of RKH.</p>
+<p>Date: 05/04/2011 </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00073">73</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00075">75</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -118,7 +119,7 @@
 <p>Actions are small atomic behaviors executed at specified points in a state machine. Actions are assumed to take an insignificant amount of time to execute and are noninterruptible.</p>
 <p>An action function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_ACT_EVT_ARG' and RKH_EN_ACT_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00371">371</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00373">373</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -134,7 +135,7 @@
 <div class="memdoc">
 <p>Defines the size of event. The valid values [in bits] are 8, 16 or 32. Default is 8. This type is configurable via the preprocessor switch RKH_SIZEOF_EVENT. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00202">202</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00204">204</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -152,7 +153,7 @@
 <p>The actions that are always executed when a state is entered should be specified as entry actions.</p>
 <p>An entry function takes the state machine pointer as argument. This parameter is optional in compile-time according to RKH_EN_ENT_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00256">256</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00258">258</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -170,7 +171,7 @@
 <p>The actions that are always execute when a state is exited should be exit actions.</p>
 <p>An exit function takes the state machine pointer as argument. This parameter is optional in compile-time according to RKH_EN_EXT_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00291">291</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00293">293</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -189,7 +190,7 @@
 <p>Each condition connector can have one special branch with a guard labeled rkh_else, which is taken if all the guards on the other branches are false.</p>
 <p>A guard function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00414">414</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00416">416</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -207,7 +208,7 @@
 <p>The application code must trigger the initial transition explicitly by invoking 'rkh_init_hsm'.</p>
 <p>An init function takes the state machine pointer as argument. This parameter is optional in compile-time according to RKH_EN_INIT_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00326">326</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00328">328</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -224,12 +225,12 @@
 <p>Event preprocessor.</p>
 <p>Before sending the arrived event to state machine, it can be previously processed using the event preprocessor function. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00354">354</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00356">356</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue May 3 11:58:53 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed May 4 15:01:15 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

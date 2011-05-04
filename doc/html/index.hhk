@@ -26,6 +26,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="cfg.html"><param name="Name" value="Configuration"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="dbg.html"><param name="Name" value="Debugging tool"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="defchild"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="ELSE"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_c_f_g___t.html"><param name="Name" value="enable"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="enter"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r___t.html"><param name="Name" value="event"></OBJECT>
@@ -187,6 +188,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="rkhsm.h"></OBJECT>
   <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="ELSE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="FLAT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="HCAL"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhsm_8h.html"><param name="Name" value="RKH_BRANCH"></OBJECT>
