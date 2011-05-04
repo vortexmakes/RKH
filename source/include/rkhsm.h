@@ -99,6 +99,19 @@ typedef enum
 
 
 /**
+ * 	Each condition connector can have one special branch with a guard 
+ *	labeled ELSE, which is taken if all the guards on the other 
+ *	branches are false.
+ *
+ * 	A guard function takes the state machine pointer and the event 
+ * 	pointer as arguments. These parameters are optional in compile-time
+ * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
+ */
+
+#define ELSE		rkh_else
+
+
+/**
  * 	This macro enables state nesting in a particular state-machine.
  */
 
