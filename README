@@ -44,6 +44,15 @@
 #	This file resumes the changes across project version releases.
 #
 
+Changes between V1.1.0 and V1.1.2 released 05/05/2011
+
+	+	Changed external transition to local transition support. Therefore, 
+		just modified rkh_define_ex_en_states() macro to support this feature 
+		according to UML 2.0.
+	+	Modified demo directory to test local transition feature and added 
+		some improvements to main.c file.
+	+	Fixed and update doc files.
+
 Changes between V1.0.0 and V1.1.0 released 05/03/2011
 
 	+	Added rkh_else function to be used when if all the guards on 
