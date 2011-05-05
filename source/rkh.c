@@ -101,7 +101,7 @@
 
 #define rkh_define_ex_en_states()										\
 																		\
-	for( --sn.p, --sx.p; *sn.p == *sx.p && sn.qty > 1 && sx.qty > 1; 	\
+	for( --sn.p, --sx.p; sn.qty != 0 && sx.qty != 0 && *sn.p == *sx.p; 	\
 			--sn.qty,--sx.qty, --sn.p, --sx.p )
 
 

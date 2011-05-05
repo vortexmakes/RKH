@@ -672,8 +672,9 @@ looks as follow:
 
 (2)		RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
 		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
-(3)		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
-		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
+		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
+(3)		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
+		RKH_TRINT( SIX, 	NULL, 		show_data ),
 
 (4)	RKH_END_TRANS_TABLE	
 \endcode
@@ -688,7 +689,7 @@ looks as follow:
 					optional, thus it could be declared as NULL.
 	- \e \b target \b state = "S1". Pointer to target state.
 
-\li (3) Declares a regular transition using RKH_TRREG() macro. Where:
+\li (3) Declares an internal transition using RKH_TRINT() macro. Where:
 	- \e \b event =	"FOUR". Triggering event. 
 	- \e \b guard = "NULL". Pointer to guard function. This argument is 
 					optional, thus it could be declared as NULL.
@@ -732,15 +733,16 @@ RKH_CREATE_TRANS_TABLE( S2 )
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
 	RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
+	RKH_TRINT( SIX, 	NULL, 		show_data ),
 
 RKH_END_TRANS_TABLE
-
 
 RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit,  RKH_ROOT, &S11, &DH );
 RKH_CREATE_TRANS_TABLE( S1 )
 
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_TRREG( TWO, 	NULL, 		set_y_2, 	&S2 ),
+	RKH_TRREG( FIVE, 	NULL, 		NULL, 		&S12 ),
+	RKH_TRINT( SIX, 	NULL, 		show_data ),
 
 RKH_END_TRANS_TABLE
 
@@ -755,6 +757,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_COMP_STATE( S11, 0, NULL, NULL, &S1, &S111, &H );
 RKH_CREATE_TRANS_TABLE( S11 )
 
+	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S112 ),
 	RKH_TRREG( FOUR, 	NULL, 		NULL, 		&S12 ),
 
 RKH_END_TRANS_TABLE
@@ -770,6 +773,7 @@ RKH_CREATE_BASIC_STATE( S112, 0, set_x_2, NULL, &S11, NULL );
 RKH_CREATE_TRANS_TABLE( S112 )
 
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S111 ),
+	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S11 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&J ),
 
 RKH_END_TRANS_TABLE
@@ -782,6 +786,7 @@ RKH_CREATE_TRANS_TABLE( S3 )
 
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&C1 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
+	RKH_TRINT( SIX, 	NULL, 		show_data ),
 
 RKH_END_TRANS_TABLE
 
@@ -815,6 +820,7 @@ RKH_CREATE_BRANCH_TABLE( C2 )
 
 	RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
 	RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
+	RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
 
 RKH_END_BRANCH_TABLE
 \endcode
@@ -1018,6 +1024,14 @@ void
 dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
 {
 }
+
+
+void
+show_data( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
+}
 \endcode
 
 \n According to "my" state diagram the entry actions looks as follow:
@@ -1141,6 +1155,8 @@ directory.
 (4)				rkh_trace_flush();
 			else if ( c == ESC )
 (5)				break;
+			else if ( c == 'r' )
+				rkh_init_hsm( &my );
 			else
 			{
 (6)				mye.event.evt = kbmap( c );

@@ -238,8 +238,9 @@ Declaring transition and branch tables</a></h3>
 
 (2)     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
         <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
-(3)     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
-        <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
+        <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
+(3)     <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
+        <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
 (4) <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a> 
 </pre></div><ul>
@@ -255,7 +256,7 @@ Declaring transition and branch tables</a></h3>
 </li>
 </ul>
 <ul>
-<li>(3) Declares a regular transition using <a class="el" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG()</a> macro. Where:<ul>
+<li>(3) Declares an internal transition using <a class="el" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT()</a> macro. Where:<ul>
 <li><em><b>event</b> =</em> "FOUR". Triggering event.</li>
 <li><em><b>guard</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
 <li><em><b>action</b> =</em> "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
@@ -299,15 +300,16 @@ Declaring transition and branch tables</a></h3>
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
     <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
+    <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
 <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
-
 
 <a class="code" href="rkhsm_8h.html#acc24b2221cd374e66732a09fb24b56ce">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit,  <a class="code" href="rkhsm_8h.html#af2b1332a21797445c49710b6074ddb9b">RKH_ROOT</a>, &amp;S11, &amp;DH );
 <a class="code" href="rkhsm_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S1 )
 
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
-    <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       set_y_2,    &amp;S2 ),
+    <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( FIVE,    NULL,       NULL,       &amp;S12 ),
+    <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
 <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
 
@@ -322,6 +324,7 @@ Declaring transition and branch tables</a></h3>
 <a class="code" href="rkhsm_8h.html#acc24b2221cd374e66732a09fb24b56ce">RKH_CREATE_COMP_STATE</a>( S11, 0, NULL, NULL, &amp;S1, &amp;S111, &amp;H );
 <a class="code" href="rkhsm_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S11 )
 
+    <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S112 ),
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( FOUR,    NULL,       NULL,       &amp;S12 ),
 
 <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
@@ -337,6 +340,7 @@ Declaring transition and branch tables</a></h3>
 <a class="code" href="rkhsm_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S112 )
 
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S111 ),
+    <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S11 ),
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;J ),
 
 <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
@@ -349,6 +353,7 @@ Declaring transition and branch tables</a></h3>
 
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;C1 ),
     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
+    <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
 <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
 
@@ -382,6 +387,7 @@ Declaring transition and branch tables</a></h3>
 
     <a class="code" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>( x1,         dummy_act,  &amp;S3 ),
     <a class="code" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>( x2_or_x3,   NULL,       &amp;S32 ),
+    <a class="code" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>( <a class="code" href="rkhsm_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>,       NULL,       &amp;S2 ),
 
 <a class="code" href="rkhsm_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>
 </pre></div><h3><a class="anchor" id="rep_inc">
@@ -559,6 +565,14 @@ set_y_1( <span class="keyword">const</span> <span class="keyword">struct</span> 
 dummy_act( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
 }
+
+
+<span class="keywordtype">void</span>
+show_data( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+{
+    pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
+    printf( <span class="stringliteral">&quot;data.x = %02d - data.y = %02d\n&quot;</span>, pd-&gt;x, pd-&gt;y );
+}
 </pre></div><p><br/>
  According to "my" state diagram the entry actions looks as follow: <br/>
  </p>
@@ -665,6 +679,8 @@ Running</a></h2>
 (4)             <a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>();
             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == ESC )
 (5)             <span class="keywordflow">break</span>;
+            <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == <span class="charliteral">&#39;r&#39;</span> )
+                <a class="code" href="rkhsm_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
             <span class="keywordflow">else</span>
             {
 (6)             mye.event.evt = kbmap( c );
@@ -703,7 +719,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed May 4 15:01:15 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed May 4 22:41:19 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

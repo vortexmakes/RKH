@@ -52,6 +52,7 @@ void dummy_exit( const struct rkh_t *ph );
 void set_y_2( const struct rkh_t *ph, RKHEVT_T *pe );
 void set_y_1( const struct rkh_t *ph, RKHEVT_T *pe );
 void dummy_act( const struct rkh_t *ph, RKHEVT_T *pe );
+void show_data( const struct rkh_t *ph, RKHEVT_T *pe );
 
 
 /*

@@ -42,8 +42,8 @@
 #define RKH_EN_TRN_TGT				0	/*	transition target state */
 #define RKH_EN_NXT_STATE			1	/*	next state */
 #define RKH_EN_INT_TRAN				0	/*	internal transition */
-#define RKH_EN_ENTRY				0	/*	entry state */
-#define RKH_EN_EXIT					0	/*	exit state */
+#define RKH_EN_ENTRY				1	/*	entry state */
+#define RKH_EN_EXIT					1	/*	exit state */
 #define RKH_EN_INIT_HSM				0	/*	initializing state-machine */
 #define RKH_EN_SGT_TGT				0	/*	target state of transition segment */
 #define RKH_EN_RTN_CODE				0	/*	code returned by rkh_engine() function */

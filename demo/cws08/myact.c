@@ -110,6 +110,14 @@ dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
 }
 
 
+void
+show_data( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
+}
+
+
 /*
  *	Defines branch's guards
  */

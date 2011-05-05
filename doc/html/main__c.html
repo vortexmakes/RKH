@@ -141,7 +141,8 @@ print_banner( <span class="keywordtype">void</span> )
     printf( <span class="stringliteral">&quot;1.- Press &lt;numbers&gt; to send events to state machine. \n&quot;</span> );
     printf( <span class="stringliteral">&quot;2.- Press &#39;p&#39; to see related information about transitions, \n&quot;</span> );
     printf( <span class="stringliteral">&quot;    state changes, and so on.\n&quot;</span> );
-    printf( <span class="stringliteral">&quot;3.- Press ESC to quit \n\n\n&quot;</span> );
+    printf( <span class="stringliteral">&quot;3.- Press &#39;r&#39; to reset state machine.\n&quot;</span> );
+    printf( <span class="stringliteral">&quot;4.- Press ESC to quit \n\n\n&quot;</span> );
 }
 
 
@@ -227,6 +228,8 @@ main( <span class="keywordtype">void</span> )
             <a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>();
         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == ESC )
             <span class="keywordflow">break</span>;
+        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == <span class="charliteral">&#39;r&#39;</span> )
+            <a class="code" href="rkhsm_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
         <span class="keywordflow">else</span>
         {
             mye.event.evt = kbmap( c );
@@ -238,7 +241,7 @@ main( <span class="keywordtype">void</span> )
     <a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>();
 }
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed May 4 15:01:15 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed May 4 22:41:19 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -17,7 +17,9 @@ enum
 	ONE,
 	TWO,
 	THREE,
-	FOUR
+	FOUR,
+	FIVE,
+	SIX
 };
 
 
