@@ -59,6 +59,7 @@ CPU, operating system, or compiler.
 - Support hierarchically nested states, and flat state-machine.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
+- Support local transitions.
 
 
 <HR>

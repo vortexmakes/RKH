@@ -37,6 +37,7 @@
 <li>Support hierarchically nested states, and flat state-machine.</li>
 <li>Support conditional, junction, and history pseudostates.</li>
 <li>Support compound transitions with guards.</li>
+<li>Support local transitions.</li>
 </ul>
 <p>The RKH not implements neither entire UML specs. nor entire Statechart specs. Instead, the RKH intention is to support just enough basic concepts of that powerful tools to facilitate the reactive-system modeling holding a solid, and efficient implementation. Broadly speaking, the RKH implementation has been designed from the ground up to be used in 8-bits platforms but can be easily adapted to 16 or 32-bits platforms.</p>
 <p>The goal in this section is to explain how to represent a state-machine using the RKH framework. To do that is proposed a simple example, which is shown in the <a class="el" href="_usage.html#fig1">Figure 1</a>.</p>
@@ -237,12 +238,12 @@ Declaring transition and branch tables</a></h3>
 <div class="fragment"><pre class="fragment">(1) <a class="code" href="rkhsm_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S2 )
 
 (2)     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
-        <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
+(3)     <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
         <a class="code" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
-(3)     <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
+(4)     <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
         <a class="code" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
-(4) <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a> 
+(5) <a class="code" href="rkhsm_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a> 
 </pre></div><ul>
 <li>(1) Declares the state transition table of state "S2".</li>
 </ul>
@@ -256,7 +257,16 @@ Declaring transition and branch tables</a></h3>
 </li>
 </ul>
 <ul>
-<li>(3) Declares an internal transition using <a class="el" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT()</a> macro. Where:<ul>
+<li>(3) Declares a regular transition using <a class="el" href="rkhsm_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG()</a> macro. Note that the RKH implementation supports exclusively the local state transition semantics, that is, a local transition doesn't cause exit from the source state if the target state is a substate of the source. In addition, local state transition doesn't cause exit and reentry to the target state if the target is a superstate of the source state. Where:<ul>
+<li><em><b>event</b> =</em> "TWO". Triggering event.</li>
+<li><em><b>guard</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
+<li><em><b>action</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
+<li><em><b>target</b> <b>state</b> =</em> "S2". Pointer to target state.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>(4) Declares an internal transition using <a class="el" href="rkhsm_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT()</a> macro. Where:<ul>
 <li><em><b>event</b> =</em> "FOUR". Triggering event.</li>
 <li><em><b>guard</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
 <li><em><b>action</b> =</em> "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
@@ -271,7 +281,8 @@ Declaring transition and branch tables</a></h3>
 <div class="fragment"><pre class="fragment">(1) <a class="code" href="rkhsm_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>( C2 )
 (2)     <a class="code" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>( x1,         dummy_act,  &amp;S3 ),
         <a class="code" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>( x2_or_x3,   NULL,       &amp;S32 ),
-(3) <a class="code" href="rkhsm_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>
+(3)     <a class="code" href="rkhsm_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>( <a class="code" href="rkhsm_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>,       NULL,       &amp;S2 ),
+(4) <a class="code" href="rkhsm_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>
 </pre></div><ul>
 <li>(1) Declares the branch table of state of "C2".</li>
 </ul>
@@ -284,7 +295,10 @@ Declaring transition and branch tables</a></h3>
 </li>
 </ul>
 <ul>
-<li>(3) Terminates the branch table.</li>
+<li>(3) Declares an "else" branch. Each condition connector can have one special branch with a guard labeled ELSE, which is taken if all the guards on the other branches are false.</li>
+</ul>
+<ul>
+<li>(4) Terminates the branch table.</li>
 </ul>
 <p><br/>
  In like manner, the rest tables are declared as shown below: <br/>
@@ -719,7 +733,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed May 4 22:41:19 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 5 10:46:57 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -379,6 +379,7 @@ CPU, operating system, or compiler.
 - Support hierarchically nested states, and flat state-machine.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
+- Support local transitions.
 
 
 The RKH not implements neither entire UML specs. nor entire Statechart specs. 
@@ -671,12 +672,12 @@ looks as follow:
 (1)	RKH_CREATE_TRANS_TABLE( S2 )
 
 (2)		RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
-		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
+(3)		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
 		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
-(3)		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
+(4)		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
 		RKH_TRINT( SIX, 	NULL, 		show_data ),
 
-(4)	RKH_END_TRANS_TABLE	
+(5)	RKH_END_TRANS_TABLE	
 \endcode
 
 \li (1) Declares the state transition table of state "S2".
@@ -689,7 +690,21 @@ looks as follow:
 					optional, thus it could be declared as NULL.
 	- \e \b target \b state = "S1". Pointer to target state.
 
-\li (3) Declares an internal transition using RKH_TRINT() macro. Where:
+
+\li (3) Declares a regular transition using RKH_TRREG() macro. Note that the RKH
+		implementation supports exclusively the local state transition semantics, 
+		that is, a local transition doesn't cause exit from the source state 
+		if the target state is a substate of the source. In addition, local state 
+		transition doesn't cause exit and reentry to the target state if the 
+		target is a superstate of the source state. Where:
+	- \e \b event =	"TWO". Triggering event. 
+	- \e \b guard = "NULL". Pointer to guard function. This argument is 
+					optional, thus it could be declared as NULL.
+	- \e \b action = "NULL". Pointer to guard function. This argument is 
+					optional, thus it could be declared as NULL.
+	- \e \b target \b state = "S2". Pointer to target state.
+
+\li (4) Declares an internal transition using RKH_TRINT() macro. Where:
 	- \e \b event =	"FOUR". Triggering event. 
 	- \e \b guard = "NULL". Pointer to guard function. This argument is 
 					optional, thus it could be declared as NULL.
@@ -705,7 +720,8 @@ looks as follow:
 (1)	RKH_CREATE_BRANCH_TABLE( C2 )
 (2)		RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
 		RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
-(3)	RKH_END_BRANCH_TABLE
+(3)		RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
+(4)	RKH_END_BRANCH_TABLE
 
 \endcode
 
@@ -717,7 +733,11 @@ looks as follow:
 					optional, thus it could be declared as NULL.
 	- \e \b target \b state = "S3". Pointer to target state.
 
-\li (3) Terminates the branch table.
+\li (3) Declares an "else" branch. Each condition connector can have one 
+		special branch with a guard labeled ELSE, which is taken 
+		if all the guards on the other branches are false. 
+
+\li (4) Terminates the branch table.
 
 \n In like manner, the rest tables are declared as shown below:
 \n
