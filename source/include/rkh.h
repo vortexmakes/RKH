@@ -69,10 +69,10 @@
 /**	
  *	Version string of RKH.
  *
- *	Date: 05/04/2011
+ *	Date: 05/19/2011
  */
 
-#define RKH_VERSION					"1.1.00"
+#define RKH_VERSION					"1.1.3"
 
 
 /**	
@@ -228,10 +228,7 @@
  * 	state transition.
  */
 
-typedef	struct
-{
-	RKHE_T evt;		/**< Represents a triggering event */
-} RKHEVT_T;
+typedef RKHE_T RKHEVT_T;
 
 
 /*
@@ -577,6 +574,40 @@ typedef struct rkhsreg_t
 
 	/**	
 	 *	Points to event preprocessor.
+	 *
+	 *	Aditionally, by means of single inheritance in C it could be 
+	 *	used as state's abstract data.
+	 *	Aditionally, implementing the single inheritance in C is very 
+	 *	simply by literally embedding the base type, RKHPPRO_T in 
+	 *	this case, as the first member of the derived structure.
+	 *	
+	 *	This argument is optional, thus it could be declared as NULL.
+	 *
+	 *	Example:
+	 *  
+	 *  	\code
+	 *  	static
+	 *  	RKHE_T
+	 *  	preprocessor( RKHEVT_T *pe )
+	 *  	{
+	 *  		...
+	 *  	}
+	 *  
+	 * 		typedef struct
+	 * 		{
+	 * 			RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 * 			unsigned min:4;
+	 * 			unsigned max:4;
+	 * 			char *buff;
+	 * 		} SDATA_T;
+	 *
+	 * 		static const SDATA_T option = { preprocessor, 4, 8, token1 };
+	 *
+	 *  	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+	 *  								NULL, &S11, preprocessor ); 
+	 *  	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+	 *  								NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *  	\endcode
 	 */
 
 	RKHPPRO_T prepro;

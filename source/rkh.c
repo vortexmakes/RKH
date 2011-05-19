@@ -109,13 +109,13 @@
 
 #define rkh_process_input( s, pe )										\
 																		\
-	(s)->prepro != NULL ? (*(s)->prepro)((pe)) : (pe)->evt
+	(s)->prepro != NULL ? (*(s)->prepro)((pe)) : (*pe)
 
 #else
 
 #define rkh_process_input( s, pe )										\
 																		\
-	(pe)->evt
+	(*pe)
 
 #endif
 

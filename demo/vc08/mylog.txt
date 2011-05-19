@@ -1,2 +1,11 @@
----- RKH trace log session - May  4 2011 - 22:15:27 ----
+---- RKH trace log session - May 19 2011 - 09:43:43 ----
 
+28530 [ RKHTR_EVENT      ] - MY : 1
+28531 [ RKHTR_EXIT       ] - MY : S111 [0]
+28531 [ RKHTR_ENTRY      ] - MY : S112 [0]
+28531 [ RKHTR_NXT_STATE  ] - MY : S112 [0]
+33578 [ RKHTR_EVENT      ] - MY : 4
+33578 [ RKHTR_EXIT       ] - MY : S112 [0]
+33578 [ RKHTR_EXIT       ] - MY : S11 [0]
+33578 [ RKHTR_ENTRY      ] - MY : S12 [0]
+33578 [ RKHTR_NXT_STATE  ] - MY : S12 [0]

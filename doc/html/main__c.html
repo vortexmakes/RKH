@@ -232,16 +232,16 @@ main( <span class="keywordtype">void</span> )
             <a class="code" href="rkhsm_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
         <span class="keywordflow">else</span>
         {
-            mye.event.evt = kbmap( c );
+            mye.event = kbmap( c );
             mye.ts = ( rkhuint16 )rand();
-            <a class="code" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a>( &amp;my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
+            <a class="code" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a>( &amp;my, ( <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
         }
     }
 
     <a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>();
 }
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 5 10:46:57 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 19 10:56:45 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

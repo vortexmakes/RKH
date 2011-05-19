@@ -46,7 +46,7 @@
 <p>Describes a regular state. </p>
 <p>It can either be a composite or basic state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00530">530</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00527">527</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 <hr/><h2>Field Documentation</h2>
 <a class="anchor" id="a1f89f000af66a1b8f3120cd4b40f6bce"></a><!-- doxytag: member="RKHSREG_T::base" ref="a1f89f000af66a1b8f3120cd4b40f6bce" args="" -->
 <div class="memitem">
@@ -60,7 +60,7 @@
 <div class="memdoc">
 <p>Maintains the basic information of state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00536">536</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00533">533</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -76,7 +76,7 @@
 <div class="memdoc">
 <p>Points to state's default child. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00569">569</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00566">566</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -92,7 +92,7 @@
 <div class="memdoc">
 <p>Points to entry action. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00543">543</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00540">540</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -108,7 +108,7 @@
 <div class="memdoc">
 <p>Points to exit action. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00549">549</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00546">546</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -124,7 +124,7 @@
 <div class="memdoc">
 <p>Points to state's history. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00575">575</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00572">572</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -140,7 +140,7 @@
 <div class="memdoc">
 <p>Points to state's parent. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00555">555</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00552">552</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -154,9 +154,33 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Points to event preprocessor. </p>
+<p>Points to event preprocessor.</p>
+<p>Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure.</p>
+<p>This argument is optional, thus it could be declared as NULL.</p>
+<p>Example:</p>
+<div class="fragment"><pre class="fragment">    <span class="keyword">static</span>
+    <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
+    preprocessor( <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+    {
+        ...
+    }
+  
+        <span class="keyword">typedef</span> <span class="keyword">struct</span>
+        {
+            <a class="code" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a> <a class="code" href="struct_r_k_h_s_r_e_g___t.html#a6e28dae4902c9560b0a27d0292b55404">prepro</a>;   <span class="comment">// extend the RKHPPRO_T class</span>
+            <span class="keywordtype">unsigned</span> min:4;
+            <span class="keywordtype">unsigned</span> max:4;
+            <span class="keywordtype">char</span> *buff;
+        } SDATA_T;
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00582">582</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+        <span class="keyword">static</span> <span class="keyword">const</span> SDATA_T option = { preprocessor, 4, 8, token1 };
+
+    <a class="code" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111, 0, set_x_1, 
+                                NULL, &amp;S11, preprocessor ); 
+    <a class="code" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S22, 0, set_x_4, 
+                                NULL, &amp;S2, (<a class="code" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a>*)&amp;option ); 
+</pre></div> 
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00613">613</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -172,7 +196,7 @@
 <div class="memdoc">
 <p>Points to state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00562">562</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00559">559</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -180,7 +204,7 @@
 <li><a class="el" href="rkh_8h_source.html">rkh.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 5 10:46:57 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 19 10:56:45 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

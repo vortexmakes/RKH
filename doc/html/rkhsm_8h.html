@@ -56,6 +56,7 @@
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#ae32100c17bee5afab9b31d9132ad41bb">rkh_get_cstate_id</a>(ph)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a9417335cf8e391658a5566c695c2813b">rkh_get_cstate_name</a>(ph)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>(ph)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#aafa7b99c6789668667bf529f20bb6c65">rkh_get_sdata</a>(ph)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -85,7 +86,7 @@
  }</td></tr>
 <tr><td colspan="2"><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">HUInt&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *pevt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">HUInt&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph, <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pevt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a522044fea14a01a5197ccd35a5a0eb79">rkh_clear_history</a> (rkhrom <a class="el" href="struct_r_k_h_s_h_i_s_t___t.html">RKHSHIST_T</a> *h)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a8738812d2675799e9a982e86fb5c4e52">rkh_clear_info</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_r_k_h___i_n_f_o___t.html">RKH_INFO_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhsm_8h.html#a4dc5198b4e6e7d11ce12a53179cba8ce">rkh_get_info</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph)</td></tr>
@@ -182,7 +183,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00420">420</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00427">427</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -244,12 +245,12 @@
     <tr><td valign="top"></td><td valign="top"><em>en</em>&nbsp;</td><td>pointer to state entry action. This argument is optional, thus it could be declared as NULL. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>ex</em>&nbsp;</td><td>pointer to state exit action. This argument is optional, thus it could be declared as NULL. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>parent</em>&nbsp;</td><td>pointer to parent state. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>prepro</em>&nbsp;</td><td>pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>prepro</em>&nbsp;</td><td>pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL. Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure. See member "prepro" of <a class="el" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> structure for more information. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00206">206</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00213">213</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -278,7 +279,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00397">397</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00404">404</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -395,7 +396,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00238">238</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00245">245</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -445,7 +446,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00291">291</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00298">298</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -559,7 +560,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00266">266</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00273">273</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -608,7 +609,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00318">318</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00325">325</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -637,7 +638,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00336">336</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00343">343</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -655,7 +656,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00467">467</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00474">474</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -673,7 +674,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00466">466</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00473">473</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -691,7 +692,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00468">468</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00475">475</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -709,7 +710,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00470">470</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00477">477</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +737,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00453">453</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00460">460</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -754,7 +755,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00469">469</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00476">476</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -772,7 +773,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00471">471</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00478">478</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +789,7 @@
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00435">435</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00442">442</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -804,7 +805,7 @@
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00386">386</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00393">393</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -835,7 +836,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00532">532</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00539">539</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -866,7 +867,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00548">548</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00555">555</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -897,7 +898,38 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00563">563</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00570">570</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aafa7b99c6789668667bf529f20bb6c65"></a><!-- doxytag: member="rkhsm.h::rkh_get_sdata" ref="aafa7b99c6789668667bf529f20bb6c65" args="(ph)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define rkh_get_sdata</td>
+          <td>(</td>
+          <td class="paramtype">ph&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">\
+                                ((ph)-&gt;state-&gt;sdata)
+</pre></div><p>This macro retrieves the state's abstract data.</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
+<p>Pointer to state's abstract data. </p>
+
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00586">586</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -913,7 +945,7 @@
 <div class="memdoc">
 <p>This macro indicates the root state of a HSM. </p>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00442">442</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00449">449</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -954,7 +986,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00371">371</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00378">378</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1001,7 +1033,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00356">356</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00363">363</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1028,7 +1060,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00483">483</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhsm_8h_source.html#l00490">490</a> of file <a class="el" href="rkhsm_8h_source.html">rkhsm.h</a>.</p>
 
 </div>
 </div>
@@ -1143,7 +1175,7 @@
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *&nbsp;</td>
+          <td class="paramtype"><a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *&nbsp;</td>
           <td class="paramname"> <em>pevt</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -1158,7 +1190,7 @@
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>pevt</em>&nbsp;</td><td>pointer to arrived event. The field "pevt-&gt;evt" is used as HSM's input alphabet.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>pevt</em>&nbsp;</td><td>pointer to arrived event. It's used as HSM's input alphabet.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1222,7 +1254,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 5 10:46:57 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 19 10:56:45 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

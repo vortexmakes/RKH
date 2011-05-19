@@ -164,9 +164,37 @@ Declaring the basic states</a></h3>
 <li><em><b>en</b> =</em> "set_x_3". Pointer to state entry action. This argument is optional, thus it could be declared as NULL.</li>
 <li><em><b>ex</b> =</em> "NULL". Pointer to state exit action. This argument is optional, thus it could be declared as NULL.</li>
 <li><em><b>parent</b> =</em> "S1". Pointer to parent state.</li>
-<li><em><b>prepro</b> =</em> "NULL". Pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL.</li>
+<li><em><b>prepro</b> =</em> "NULL". Pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL. Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure. <b>Example:</b> </li>
 </ul>
-<p>In like manner, the rest basic states are declared as shown below: <br/>
+<div class="fragment"><pre class="fragment">                        <span class="keyword">static</span>
+                        <a class="code" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
+                        preprocessor( <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+                        {
+                                ...
+                        }
+
+                        <span class="keyword">typedef</span> <span class="keyword">struct</span>
+                        {
+                            <a class="code" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a> prepro;   <span class="comment">// extend the RKHPPRO_T class</span>
+                            <span class="keywordtype">unsigned</span> min:4;
+                            <span class="keywordtype">unsigned</span> max:4;
+                            <span class="keywordtype">char</span> *buff;
+                        } SDATA_T;
+                            
+                        <span class="keyword">static</span> <span class="keyword">const</span> SDATA_T option = { preprocessor, 4, 8, token1 };
+
+                        HUInt
+                        action( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+                        {
+                            SDATA_T *popt;
+
+                            popt = (SDATA_T *)<a class="code" href="rkhsm_8h.html#aafa7b99c6789668667bf529f20bb6c65">rkh_get_sdata</a>( ph );
+                            <span class="keywordflow">return</span> popt-&gt;min &gt; 1 &amp;&amp; popt-&gt;max &lt; 4 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
+                        } 
+                        
+                        <a class="code" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111, 0, set_x_1, NULL, &amp;S11, preprocessor ); 
+                        <a class="code" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S22, 0, set_x_4, NULL, &amp;S2, (<a class="code" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a>*)&amp;option ); 
+</pre></div><p>In like manner, the rest basic states are declared as shown below: <br/>
  </p>
 <div class="fragment"><pre class="fragment"><a class="code" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111,   0, set_x_1, NULL, &amp;S11, NULL );
 <a class="code" href="rkhsm_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S112,   0, set_x_2, NULL, &amp;S11, NULL );
@@ -461,7 +489,7 @@ Defining the state-machine</a></h3>
 
 (2) <span class="keyword">typedef</span> <span class="keyword">struct</span>
     {
-(3)     <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> event;
+(3)     <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> event;
 (4)     rkhuint16 ts;
     } MYEVT_T;
 
@@ -495,7 +523,7 @@ Defining the state-machine</a></h3>
 <li>(1) RKH interfaces.</li>
 </ul>
 <ul>
-<li>(2-4) The MYEVT_T structure declares an event with the parameter "ts". Such nesting of structures always aligns the data member <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> at the beginning of every instance of the derived structure. In particular, this alignment lets treat a pointer to the derived MYEVT_T structure as a pointer to the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> base structure. Consequently, can always safely pass a pointer to MYEVT_T to any C function that expects a pointer to <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>.</li>
+<li>(2-4) The MYEVT_T structure declares an event with the parameter "ts". Such nesting of structures always aligns the data member <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> at the beginning of every instance of the derived structure. In particular, this alignment lets treat a pointer to the derived MYEVT_T structure as a pointer to the <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> base structure. Consequently, can always safely pass a pointer to MYEVT_T to any C function that expects a pointer to <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a>.</li>
 </ul>
 <ul>
 <li>(5) The MYHDATA_T defines the state-machine data.</li>
@@ -554,7 +582,7 @@ my_init( <span class="keyword">const</span> <span class="keyword">struct</span> 
  According to "my" state diagram the transition actions looks as follow: <br/>
  </p>
 <div class="fragment"><pre class="fragment"><span class="keywordtype">void</span>
-set_y_2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+set_y_2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     pd-&gt;y = 2;
@@ -565,7 +593,7 @@ set_y_2( <span class="keyword">const</span> <span class="keyword">struct</span> 
 
 
 <span class="keywordtype">void</span>
-set_y_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+set_y_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     pd-&gt;y = 1;
@@ -576,13 +604,13 @@ set_y_1( <span class="keyword">const</span> <span class="keyword">struct</span> 
 
 
 <span class="keywordtype">void</span>
-dummy_act( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+dummy_act( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
 }
 
 
 <span class="keywordtype">void</span>
-show_data( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+show_data( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     printf( <span class="stringliteral">&quot;data.x = %02d - data.y = %02d\n&quot;</span>, pd-&gt;x, pd-&gt;y );
@@ -631,7 +659,7 @@ dummy_exit( <span class="keyword">const</span> <span class="keyword">struct</spa
  According to "my" state diagram the guards looks as follow: <br/>
  </p>
 <div class="fragment"><pre class="fragment">HUInt
-x_equal_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+x_equal_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
 
@@ -641,7 +669,7 @@ x_equal_1( <span class="keyword">const</span> <span class="keyword">struct</span
  According to "my" state diagram the branch selection functions looks as follow: <br/>
  </p>
 <div class="fragment"><pre class="fragment">HUInt
-y1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+y1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;y == 1 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
@@ -649,7 +677,7 @@ y1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t
 
 
 HUInt
-y2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+y2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;y == 2 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
@@ -657,7 +685,7 @@ y2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t
 
 
 HUInt
-x1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+x1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;x == 1 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
@@ -665,7 +693,7 @@ x1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t
 
 
 HUInt
-x2_or_x3( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+x2_or_x3( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
     pd = <a class="code" href="rkhsm_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;x == 2 || pd-&gt;x == 3 ? <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkhsm_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
@@ -697,9 +725,9 @@ Running</a></h2>
                 <a class="code" href="rkhsm_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
             <span class="keywordflow">else</span>
             {
-(6)             mye.event.evt = kbmap( c );
+(6)             mye.event = kbmap( c );
 (7)             mye.ts = ( rkhuint16 )rand();
-(8)             <a class="code" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a>( &amp;my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
+(8)             <a class="code" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a>( &amp;my, ( <a class="code" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
             }
         }
 
@@ -721,19 +749,19 @@ Running</a></h2>
 <li>(5) Terminates the program.</li>
 </ul>
 <ul>
-<li>(6) The event generated by pressing a key on the keyboard is stored in the "event.evt" member of MYEVT_T structure.</li>
+<li>(6) The event generated by pressing a key on the keyboard is stored in the "event" member of MYEVT_T structure.</li>
 </ul>
 <ul>
 <li>(7) The event has associated parameters that convey a random number.</li>
 </ul>
 <ul>
-<li>(8) Events with parameters, such as the MYEVT_T, require explicit casting from the generic base structure <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> to the specific derived structure MYEVT_T.</li>
+<li>(8) Events with parameters, such as the MYEVT_T, require explicit casting from the generic base structure <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03" title="Represents events without parameters.">RKHEVT_T</a> to the specific derived structure MYEVT_T.</li>
 </ul>
 <ul>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 5 10:46:57 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 19 10:56:45 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

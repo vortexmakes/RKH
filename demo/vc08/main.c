@@ -209,7 +209,7 @@ main( void )
 			rkh_init_hsm( &my );
 		else
 		{
-			mye.event.evt = kbmap( c );
+			mye.event = kbmap( c );
 			mye.ts = ( rkhuint16 )rand();
 			rkh_engine( &my, ( RKHEVT_T *)&mye );
 		}

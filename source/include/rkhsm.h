@@ -201,6 +201,13 @@ typedef enum
  * 	\param parent	pointer to parent state.
  * 	\param prepro	pointer to input preprocessor function. This argument is 
  *					optional, thus it could be declared as NULL.
+ *					Aditionally, by means of single inheritance in C it 
+ *					could be used as state's abstract data. 
+ *					Aditionally, implementing the single inheritance in C 
+ *					is very simply by literally embedding the base type, 
+ *					RKHPPRO_T in this case, as the first member of the 
+ *					derived structure. See member "prepro" of RKHSREG_T 
+ *					structure for more information.
  */
 
 #define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
@@ -506,8 +513,8 @@ void rkh_init_hsm( RKH_T *ph );
  *
  * 	\param ph		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.
- *	\param pevt		pointer to arrived event. The field "pevt->evt" is used 
- *					as HSM's input alphabet.
+ *	\param pevt		pointer to arrived event. It's used as HSM's input 
+ *					alphabet.
  *
  *	\return
  *
@@ -563,6 +570,22 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 #define rkh_get_data( ph )												\
 																		\
 								((ph)->hdata)	
+
+
+/**	
+ * 	This macro retrieves the state's abstract data.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *
+ * 	\returns
+ *
+ * 	Pointer to state's abstract data.
+ */
+
+#define rkh_get_sdata( ph )												\
+																		\
+								((ph)->state->sdata)	
 
 
 /**
