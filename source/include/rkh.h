@@ -68,9 +68,11 @@
 
 /**	
  *	Version string of RKH.
+ *
+ *	Date: 05/19/2011
  */
 
-#define RKH_VERSION					"0.0.26"
+#define RKH_VERSION					"1.1.3"
 
 
 /**	
@@ -226,10 +228,7 @@
  * 	state transition.
  */
 
-typedef	struct
-{
-	RKHE_T evt;		/**< Represents a triggering event */
-} RKHEVT_T;
+typedef RKHE_T RKHEVT_T;
 
 
 /*
@@ -400,6 +399,10 @@ typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
  *	the triggering event would be discarded and the transition would 
  *	not be taken.
  *	
+ *	Each condition connector can have one special branch with a guard 
+ *	labeled rkh_else, which is taken if all the guards on the other 
+ *	branches are false. 
+ *
  * 	A guard function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
  * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
@@ -409,52 +412,26 @@ typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
 
 	typedef HUInt (*RKHGUARD_T)( const struct rkh_t *ph, RKHEVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
+	HUInt rkh_else( const struct rkh_t *ph, RKHEVT_T *pe );
 
 #elif RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 0
 	
 	typedef HUInt (*RKHGUARD_T)( RKHEVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
+	HUInt rkh_else( RKHEVT_T *pe );
+
 
 #elif RKH_EN_GRD_EVT_ARG == 0 && RKH_EN_GRD_HSM_ARG == 1
 	
 	typedef HUInt (*RKHGUARD_T)( const struct rkh_t *ph );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
+	HUInt rkh_else( const struct rkh_t *ph );
 
 #else
 	
 	typedef HUInt (*RKHGUARD_T)( void );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
-
-#endif
-
-
-/**
- * 	Branch:
- *
- * 	A branch function takes the state machine pointer and the event 
- * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to RKH_EN_BCH_EVT_ARG and RKH_EN_BCH_HSM_ARG.
- */
-
-#if RKH_EN_BCH_EVT_ARG == 1 && RKH_EN_BCH_HSM_ARG == 1
-
-	typedef RKHE_T (*RKHBRANCH_T)( const struct rkh_t *ph, RKHEVT_T *pe );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)( h, e )
-
-#elif RKH_EN_BCH_EVT_ARG == 1 && RKH_EN_BCH_HSM_ARG == 0
-	
-	typedef RKHE_T (*RKHBRANCH_T)( RKHEVT_T *pe );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)( e )
-
-#elif RKH_EN_BCH_EVT_ARG == 0 && RKH_EN_BCH_HSM_ARG == 1
-	
-	typedef RKHE_T (*RKHBRANCH_T)( const struct rkh_t *ph );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)( h )
-
-#else
-	
-	typedef RKHE_T (*RKHBRANCH_T)( void );
-	#define rkh_call_cond(s,h,e)	(*(s)->cdl)()
+	HUInt rkh_else( void );
 
 #endif
 
@@ -597,6 +574,40 @@ typedef struct rkhsreg_t
 
 	/**	
 	 *	Points to event preprocessor.
+	 *
+	 *	Aditionally, by means of single inheritance in C it could be 
+	 *	used as state's abstract data.
+	 *	Aditionally, implementing the single inheritance in C is very 
+	 *	simply by literally embedding the base type, RKHPPRO_T in 
+	 *	this case, as the first member of the derived structure.
+	 *	
+	 *	This argument is optional, thus it could be declared as NULL.
+	 *
+	 *	Example:
+	 *  
+	 *  	\code
+	 *  	static
+	 *  	RKHE_T
+	 *  	preprocessor( RKHEVT_T *pe )
+	 *  	{
+	 *  		...
+	 *  	}
+	 *  
+	 * 		typedef struct
+	 * 		{
+	 * 			RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 * 			unsigned min:4;
+	 * 			unsigned max:4;
+	 * 			char *buff;
+	 * 		} SDATA_T;
+	 *
+	 * 		static const SDATA_T option = { preprocessor, 4, 8, token1 };
+	 *
+	 *  	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+	 *  								NULL, &S11, preprocessor ); 
+	 *  	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+	 *  								NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *  	\endcode
 	 */
 
 	RKHPPRO_T prepro;
@@ -616,12 +627,6 @@ typedef struct rkhscond_t
 	 */
 
 	struct rkhbase_t base;
-
-	/**	
-	 *	Points to conditional function.
-	 */
-
-	RKHBRANCH_T cdl;
 
 	/**	
 	 *	Points to branch table.

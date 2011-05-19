@@ -110,37 +110,48 @@ dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
 }
 
 
-/*
- *	Defines branch functions
- */
-
-
-RKHE_T
-get_y( const struct rkh_t *ph, RKHEVT_T *pe )
+void
+show_data( const struct rkh_t *ph, RKHEVT_T *pe )
 {
 	pd = rkh_get_data( ph );
-
-	switch( pd->y )
-	{
-		case 1:
-			return ( RKHE_T )Y1;
-		case 2:
-			return ( RKHE_T )Y2;
-		default:
-			return ( RKHE_T )pd->y;
-	}
+	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
 }
 
 
-RKHE_T
-get_x( const struct rkh_t *ph, RKHEVT_T *pe )
+/*
+ *	Defines branch's guards
+ */
+
+
+HUInt
+y1( const struct rkh_t *ph, RKHEVT_T *pe )
 {
 	pd = rkh_get_data( ph );
+	return pd->y == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
 
-	if( pd->x == 2 || pd->x == 3 )
-		return ( RKHE_T )X2_OR_X3;
-	else
-		return ( RKHE_T )X1;
+
+HUInt
+y2( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	return pd->y == 2 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+
+HUInt
+x1( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+
+HUInt
+x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	return pd->x == 2 || pd->x == 3 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 

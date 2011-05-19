@@ -1,6 +1,0 @@
-#
-#	RKH changelog file.
-#
-#	This file resumes the changes across project version releases.
-#
-#

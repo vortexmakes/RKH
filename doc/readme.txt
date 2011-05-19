@@ -379,6 +379,7 @@ CPU, operating system, or compiler.
 - Support hierarchically nested states, and flat state-machine.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
+- Support local transitions.
 
 
 The RKH not implements neither entire UML specs. nor entire Statechart specs. 
@@ -434,8 +435,7 @@ Th header file is located in the application directory:
 					directory.
 
 - \b "myact.c": 	this source file declares each of entry, exit, 
-					transition, guard, and branch guard actions to be 
-					executed.
+					transition, and guard actions to be executed.
 					Note that the \c rkhcfg.h file defines the function
 					prototype of actions. See \ref cfg section about of 
 					available options and \ref myact_c file.
@@ -457,7 +457,7 @@ Th header file is located in the application directory:
 					Note that this header file is located in the application 
 					directory.
 
-- \b "myevt.h":		because events and branch guards are explicitly shared 
+- \b "myevt.h":		because events are explicitly shared 
 					among most of the application components, it's convenient 
 					to declare them in the separate header file "myevt.h".
 					See the \ref myevt_h file.
@@ -578,7 +578,46 @@ where:
 					optional, thus it could be declared as NULL.
 	- \e \b parent =	"S1". Pointer to parent state. 
 	- \e \b prepro =	"NULL". Pointer to input preprocessor function. This 
-						argument is optional, thus it could be declared as NULL.
+						argument is optional, thus it could be declared as 
+						NULL.
+						Aditionally, by means of single inheritance in C it 
+						could be used as state's abstract data.	Aditionally, 
+						implementing the single inheritance in C is very 
+						simply by literally embedding the base type, 
+						RKHPPRO_T in this case, as the first member of the 
+						derived structure.
+						\b Example:
+
+						\code
+						static
+						RKHE_T
+						preprocessor( RKHEVT_T *pe )
+						{
+								...
+						}
+
+						typedef struct
+						{
+							RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+							unsigned min:4;
+							unsigned max:4;
+							char *buff;
+						} SDATA_T;
+							
+						static const SDATA_T option = { preprocessor, 4, 8, token1 };
+
+						HUInt
+						action( const struct rkh_t *ph, RKHEVT_T *pe )
+						{
+							SDATA_T *popt;
+
+							popt = (SDATA_T *)rkh_get_sdata( ph );
+							return popt->min > 1 && popt->max < 4 ? RKH_GTRUE : RKH_GFALSE;
+						} 
+						
+						RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, preprocessor ); 
+						RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, NULL, &S2, (RKHPPRO_T*)&option ); 
+						\endcode
 
 In like manner, the rest basic states are declared as shown below:
 \n
@@ -600,8 +639,8 @@ macros respectively, which are explained in \c rkhsm.h file.
 pseudostate "C1" looks as follow:
 \n
 \code
-RKH_CREATE_COND_STATE( C1, 0, get_y );
-RKH_CREATE_COND_STATE( C2, 0, get_x );
+RKH_CREATE_COND_STATE( C1, 0 );
+RKH_CREATE_COND_STATE( C2, 0 );
 \endcode
 \n
 where:
@@ -609,7 +648,6 @@ where:
 	- \e \b name =	"C1"/"C2". Pseudostate name. Represents the conditional 
 					pseudostate structure.
 	- \e \b id =	"0"/"0". The value of state ID.
-	- \e \b cdl =	"get_y"/"get_x". Pointer to branch selection function.
 
 \n According to "my" state diagram the declaration of juction pseudostate
 "J" looks as follow:
@@ -659,34 +697,26 @@ where:
 \subsection rep_st Declaring transition and branch tables
 
 \n
-Los estados compuestos y basicos requieren una tabla de transicion de estados.
-Estas tablas se declaran en el archivo en donde reside la declaracion de 
-estados, por medio de la macro #RKH_CREATE_TRANS_TABLE(). Una tabla de
-transicion es un arreglo de transiciones, en donde cada fila representa una 
-transcion, la cual puede ser regular o interna. Las transiciones regulares 
-se declaran por medio de la macro #RKH_TRREG() mientras que las internas por
-medio de #RKH_TRINT(). El fin de una tabla de transicion se indica
-por medio de la macro #RKH_END_TRANS_TABLE.
-
-De manera similar, los pseudoestados condicionales requieren una branch table.
-Estas tablas se declaran en el archivo en donde reside la declaracion de 
-estados, por medio de la macro #RKH_CREATE_BRANCH_TABLE(). Una branch table
-es un arreglo de branches, en donde cada fila representa un branch.
-El fin de una branch table se indica por medio de la macro 
-#RKH_END_BRANCH_TABLE.
+The basic and composite states requires a state transition table.
+The #RKH_CREATE_TRANS_TABLE() macro creates a state transition table. Use the 
+#RKH_END_TRANS_TABLE macro to terminate it.
+Similarly, the condiotional pseudostates requires a branch table. 
+This #RKH_CREATE_BRANCH_TABLE macro creates a branch table. Use the 
+#RKH_END_BRANCH_TABLE macro to terminate it.
 
 \n According to "my" state diagram the state transition table of state "S2"
 looks as follow:
 
 \code
-(1)	RKH_CREATE_TRANS_TABLE( S2 ) =
-	{
-(2)		RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 	),
-		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 	),
-		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 	),
-(3)		RKH_TRINT( FOUR, 	NULL, 		dummy_act			),
-(4)		RKH_END_TRANS_TABLE
-	};
+(1)	RKH_CREATE_TRANS_TABLE( S2 )
+
+(2)		RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
+(3)		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
+		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
+(4)		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
+		RKH_TRINT( SIX, 	NULL, 		show_data ),
+
+(5)	RKH_END_TRANS_TABLE	
 \endcode
 
 \li (1) Declares the state transition table of state "S2".
@@ -699,7 +729,21 @@ looks as follow:
 					optional, thus it could be declared as NULL.
 	- \e \b target \b state = "S1". Pointer to target state.
 
-\li (3) Declares a regular transition using RKH_TRREG() macro. Where:
+
+\li (3) Declares a regular transition using RKH_TRREG() macro. Note that the RKH
+		implementation supports exclusively the local state transition semantics, 
+		that is, a local transition doesn't cause exit from the source state 
+		if the target state is a substate of the source. In addition, local state 
+		transition doesn't cause exit and reentry to the target state if the 
+		target is a superstate of the source state. Where:
+	- \e \b event =	"TWO". Triggering event. 
+	- \e \b guard = "NULL". Pointer to guard function. This argument is 
+					optional, thus it could be declared as NULL.
+	- \e \b action = "NULL". Pointer to guard function. This argument is 
+					optional, thus it could be declared as NULL.
+	- \e \b target \b state = "S2". Pointer to target state.
+
+\li (4) Declares an internal transition using RKH_TRINT() macro. Where:
 	- \e \b event =	"FOUR". Triggering event. 
 	- \e \b guard = "NULL". Pointer to guard function. This argument is 
 					optional, thus it could be declared as NULL.
@@ -712,107 +756,132 @@ looks as follow:
 looks as follow:
 
 \code
-(1)	RKH_CREATE_BRANCH_TABLE( C2 ) =
-	{
-(2)		RKH_BRANCH( X1, 		NULL, &S3 ),
-		RKH_BRANCH( X2_OR_X3, 	NULL, &S32 ),
-(3)		RKH_END_BRANCH_TABLE
-	};
+(1)	RKH_CREATE_BRANCH_TABLE( C2 )
+(2)		RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
+		RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
+(3)		RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
+(4)	RKH_END_BRANCH_TABLE
+
 \endcode
 
 \li (1) Declares the branch table of state of "C2".
 
 \li (2) Declares a branch. Where:
-	- \e \b guard =	"X1". branch guard. 
+	- \e \b guard =	"x1". branch guard. 
 	- \e \b action = "NULL". Pointer to action function. This argument is 
 					optional, thus it could be declared as NULL.
 	- \e \b target \b state = "S3". Pointer to target state.
 
-\li (3) Terminates the branch table.
+\li (3) Declares an "else" branch. Each condition connector can have one 
+		special branch with a guard labeled ELSE, which is taken 
+		if all the guards on the other branches are false. 
+
+\li (4) Terminates the branch table.
 
 \n In like manner, the rest tables are declared as shown below:
 \n
 \code
-/*	Defines state transition tables */
+/*
+ *	Defines states and pseudostates.
+ */
 
-RKH_CREATE_TRANS_TABLE( S2 ) =
-{
+RKH_CREATE_BASIC_STATE( S2, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_TRANS_TABLE( S2 )
+
 	RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
 	RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
-	RKH_END_TRANS_TABLE
-};
+	RKH_TRINT( SIX, 	NULL, 		show_data ),
 
-RKH_CREATE_TRANS_TABLE( S1 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit,  RKH_ROOT, &S11, &DH );
+RKH_CREATE_TRANS_TABLE( S1 )
+
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_TRREG( TWO, 	NULL, 		set_y_2, 	&S2 ),
-	RKH_END_TRANS_TABLE
-};
+	RKH_TRREG( FIVE, 	NULL, 		NULL, 		&S12 ),
+	RKH_TRINT( SIX, 	NULL, 		show_data ),
 
-RKH_CREATE_TRANS_TABLE( S12 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE( S12, 0, set_x_3, NULL, &S1, NULL );
+RKH_CREATE_TRANS_TABLE( S12 )
+
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&J ),
 	RKH_TRREG( FOUR, 	NULL, 		set_y_1, 	&S2 ),
-	RKH_END_TRANS_TABLE
-};
 
-RKH_CREATE_TRANS_TABLE( S11 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_COMP_STATE( S11, 0, NULL, NULL, &S1, &S111, &H );
+RKH_CREATE_TRANS_TABLE( S11 )
+
+	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S112 ),
 	RKH_TRREG( FOUR, 	NULL, 		NULL, 		&S12 ),
-	RKH_END_TRANS_TABLE
-};
 
-RKH_CREATE_TRANS_TABLE( S111 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, NULL );
+RKH_CREATE_TRANS_TABLE( S111 )
+
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S112 ),
-	RKH_END_TRANS_TABLE
-};
 
-RKH_CREATE_TRANS_TABLE( S112 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE( S112, 0, set_x_2, NULL, &S11, NULL );
+RKH_CREATE_TRANS_TABLE( S112 )
+
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S111 ),
+	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S11 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&J ),
-	RKH_END_TRANS_TABLE
-};
 
-RKH_CREATE_TRANS_TABLE( S3 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_SHALLOW_HISTORY_STATE( H, 0, &S11 );
+RKH_CREATE_DEEP_HISTORY_STATE( DH, 0, &S1 );
+
+RKH_CREATE_COMP_STATE( S3, 0, NULL, NULL,  RKH_ROOT, &S31,  NULL );
+RKH_CREATE_TRANS_TABLE( S3 )
+
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&C1 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_END_TRANS_TABLE
-};
+	RKH_TRINT( SIX, 	NULL, 		show_data ),
 
-RKH_CREATE_TRANS_TABLE( S31 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE( S31, 0, NULL, NULL, &S3, NULL );
+RKH_CREATE_TRANS_TABLE( S31 )
+
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S32 ),
-	RKH_END_TRANS_TABLE
-};
 
-RKH_CREATE_TRANS_TABLE( S32 ) =
-{
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE( S32, 0, NULL, NULL, &S3, NULL );
+RKH_CREATE_TRANS_TABLE( S32 )
+
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S31 ),
-	RKH_END_TRANS_TABLE
-};
+
+RKH_END_TRANS_TABLE
 
 
-/*	Defines branch tables */
+RKH_CREATE_JUNCTION_STATE( J, 0, NULL, &S3 );
 
-RKH_CREATE_BRANCH_TABLE( C1 ) =
-{
-	RKH_BRANCH( Y1, 		NULL, 	&H ),
-	RKH_BRANCH( Y2, 		NULL, 	&DH ),
-	RKH_END_BRANCH_TABLE
-};
+RKH_CREATE_COND_STATE( C1, 0 );
+RKH_CREATE_BRANCH_TABLE( C1 )
 
+	RKH_BRANCH( y1, 	NULL, 		&H ),
+	RKH_BRANCH( y2, 	dummy_act, 	&DH ),
 
-RKH_CREATE_BRANCH_TABLE( C2 ) =
-{
-	RKH_BRANCH( X1, 		NULL, &S3 ),
-	RKH_BRANCH( X2_OR_X3, 	NULL, &S32 ),
-	RKH_END_BRANCH_TABLE
-};
+RKH_END_BRANCH_TABLE
+
+RKH_CREATE_COND_STATE( C2, 0 );
+RKH_CREATE_BRANCH_TABLE( C2 )
+
+	RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
+	RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
+	RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
+
+RKH_END_BRANCH_TABLE
 \endcode
 
 
@@ -854,7 +923,7 @@ illustatres some aspects of implementing state-machines with RKH.
 		in the application directory.
 
 \li (2) The "myevt.h" header file contains the declarations of triggering 
-		events and branch guards shared among the components of the
+		events shared among the components of the
 		application. This header file is located in the application 
 		directory.
 
@@ -965,10 +1034,6 @@ function prototypes are explicitly defined in \c rkh.h file.
 - \b Guard \b action (#RKHGUARD_T):
 	contains the guard conditions attached to transitions.
 
-- \b Branch \b action (#RKHBRANCH_T):
-	this action is executed upon entry to a conditional pseudostate to
-	resolve the next branch of transition.
-
 - \b Preprocessor \b action (#RKHPPRO_T): 	
 	this action is executed before sending occured event to state-machine.
 
@@ -1017,6 +1082,14 @@ set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )
 void
 dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
 {
+}
+
+
+void
+show_data( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
 }
 \endcode
 
@@ -1080,32 +1153,35 @@ x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
 as follow:
 \n
 \code
-RKHE_T
-get_y( const struct rkh_t *ph, RKHEVT_T *pe )
+HUInt
+y1( const struct rkh_t *ph, RKHEVT_T *pe )
 {
 	pd = rkh_get_data( ph );
-
-	switch( pd->y )
-	{
-		case 1:
-			return ( RKHE_T )Y1;
-		case 2:
-			return ( RKHE_T )Y2;
-		default:
-			return ( RKHE_T )pd->y;
-	}
+	return pd->y == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
-RKHE_T
-get_x( const struct rkh_t *ph, RKHEVT_T *pe )
+HUInt
+y2( const struct rkh_t *ph, RKHEVT_T *pe )
 {
 	pd = rkh_get_data( ph );
+	return pd->y == 2 ? RKH_GTRUE : RKH_GFALSE;
+}
 
-	if( pd->x == 2 || pd->x == 3 )
-		return ( RKHE_T )X2_OR_X3;
-	else
-		return ( RKHE_T )X1;
+
+HUInt
+x1( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+
+HUInt
+x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	pd = rkh_get_data( ph );
+	return pd->x == 2 || pd->x == 3 ? RKH_GTRUE : RKH_GFALSE;
 }
 \endcode
 
@@ -1138,9 +1214,11 @@ directory.
 (4)				rkh_trace_flush();
 			else if ( c == ESC )
 (5)				break;
+			else if ( c == 'r' )
+				rkh_init_hsm( &my );
 			else
 			{
-(6)				mye.event.evt = kbmap( c );
+(6)				mye.event = kbmap( c );
 (7)				mye.ts = ( rkhuint16 )rand();
 (8)				rkh_engine( &my, ( RKHEVT_T *)&mye );
 			}
@@ -1161,7 +1239,7 @@ directory.
 \li (5) Terminates the program.
 
 \li (6) The	event generated by pressing a key on the keyboard is stored 
-		in the "event.evt" member of MYEVT_T structure.
+		in the "event" member of MYEVT_T structure.
 
 \li (7)	The	event has associated parameters that convey a random number.
 
@@ -1468,20 +1546,6 @@ Available options:
 	When RKH_EN_GRD_HSM_ARG is set to one (1) this function adds as 
 	argument a pointer to state-machine structure RKH_T. See 
 	#RKHGUARD_T structure definition.
-
--	\b RKH_EN_BCH_EVT_ARG
-	\n \n Determines the function prototype of the branch selection
-	from conditional pseudostate.
-	When RKH_EN_BCH_EVT_ARG is set to one (1) this function adds as 
-	argument a pointer to ocurred event. See #RKHBRANCH_T structure 
-	definition.
-
--	\b RKH_EN_BCH_HSM_ARG
-	\n \n Determines the function prototype of the branch selection
-	from conditional pseudostate.
-	When RKH_EN_BCH_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
-	#RKHBRANCH_T structure definition.
 
 -	\b RKH_EN_STATE_NAME
 	\n \n When RKH_EN_STATE_NAME is set to one (1) the state structure 

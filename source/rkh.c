@@ -101,7 +101,7 @@
 
 #define rkh_define_ex_en_states()										\
 																		\
-	for( --sn.p, --sx.p; *sn.p == *sx.p && sn.qty > 1 && sx.qty > 1; 	\
+	for( --sn.p, --sx.p; sn.qty != 0 && sx.qty != 0 && *sn.p == *sx.p; 	\
 			--sn.qty,--sx.qty, --sn.p, --sx.p )
 
 
@@ -109,15 +109,23 @@
 
 #define rkh_process_input( s, pe )										\
 																		\
-	(s)->prepro != NULL ? (*(s)->prepro)((pe)) : (pe)->evt
+	(s)->prepro != NULL ? (*(s)->prepro)((pe)) : (*pe)
 
 #else
 
 #define rkh_process_input( s, pe )										\
 																		\
-	(pe)->evt
+	(*pe)
 
 #endif
+
+
+#define find_branch( btbl, t )											\
+																		\
+	for( tr = btbl; tr->event != RKH_ANY; ++tr )						\
+		if( is_valid_guard( tr ) &&										\
+				rkh_call_guard( tr, ph, pe ) == RKH_GTRUE )				\
+			break;
 
 
 typedef struct
@@ -443,15 +451,8 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 						return RKH_GUARD_FALSE;
 					}
 
-					if( is_not_valid_conditional( CC(ets) ) )
-					{
-						rkh_rec_rtn_code( te, ph->id, 
-												RKH_CONDITIONAL_NOT_FOUND );
-						return RKH_CONDITIONAL_NOT_FOUND;
-					}
 
-					tr = find_trans( CC(ets)->trtbl, 
-											rkh_call_cond( CC(ets), ph, pe ) );
+					find_branch( CC(ets)->trtbl, tr );
 
 					if( is_not_found_trans( tr ) )
 					{
@@ -588,6 +589,41 @@ RKH_INFO_T *
 rkh_get_info( RKH_T *ph )
 {
 	return &ph->hinfo;
+}
+
+#endif
+
+
+#if RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 1
+
+HUInt 
+rkh_else( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	return RKH_GTRUE;
+}
+
+#elif RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 0
+	
+HUInt 
+rkh_else( RKHEVT_T *pe )
+{
+	return RKH_GTRUE;
+}
+
+#elif RKH_EN_GRD_EVT_ARG == 0 && RKH_EN_GRD_HSM_ARG == 1
+	
+HUInt 
+rkh_else( const struct rkh_t *ph )
+{
+	return RKH_GTRUE;
+}
+
+#else
+	
+HUInt 
+rkh_else( void )
+{
+	return RKH_GTRUE;
 }
 
 #endif

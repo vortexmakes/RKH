@@ -1,0 +1,112 @@
+
+Overview
+
+RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
+and open-source development tool for implementing hierarchical 
+state-machines based on modern state-machine concepts. This modern 
+techniques are used to give an abstract description of the dynamic 
+behavior of a system in a substantial manner.
+
+------------------------------------------------------------------------------
+
+The main features of RKH
+
++ State-machines representation is based on state-tables. 
++ Representing a state-machine with RKH is intuitive, and easy. 
++ Reflects the state-diagram without obfuscation. 
++ The RKH application are highly maintainable. 
++ Easy to integrate with any event queuing and dispatching mechanism. 
++ Useful in embedded systems. 
++ The most of the RKH implementation is independent of any particular 
+  CPU, operating system, or compiler. 
++ Flexible and user-configurable code generation. 
++ Very small footprint. 
++ Support hierarchically nested states, and flat state-machine. 
++ Support conditional, junction, and history pseudostates. 
++ Support compound transitions with guards. 
+
+------------------------------------------------------------------------------
+
+Purpose and inspiration
+
+For many years, I had been used the traditional state-machine concepts 
+based on state-table strategy for modeling the dynamic behavior of several 
+reactive-systems, in many industries. Over the years, this implementation 
+was expanding its abilities to support system requirements increasingly 
+complex, achieving hierarchically nested states, pseudostates, compound 
+transitions, and more, proposed by Harel Statecharts.
+
+The RKH not implements neither entire UML specs. nor entire Statechart 
+specs. Instead, the RKH intention is to support just enough basic concepts 
+of that powerful tools to facilitate the reactive-system modeling holding 
+a solid, and efficient implementation. Broadly speaking, the RKH 
+implementation has been designed from the ground up to be used in 8-bits 
+platforms but can be easily adapted to 16 or 32-bits platforms.
+
+------------------------------------------------------------------------------
+
+Other implementations
+
+Open-source frameworks that support Statecharts.
+
+Quantum Leap - http://www.state-machine.com/ 
+Intelliwizard - http://www.intelliwizard.com/ 
+
+------------------------------------------------------------------------------
+
+Licensing
+
+Copyright (C) 2010 Leandro Francucci. All rights reserved.
+
+RKH is free software: you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software 
+Foundation, either version 3 of the License, or (at your option) any later 
+version.
+
+RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+details.
+
+You should have received a copy of the GNU General Public License along 
+with RKH package. If not, see <http://www.gnu.org/licenses/>.
+
+------------------------------------------------------------------------------
+
+Contact information:
+
+RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
+e-mail: francuccilea@gmail.com
+
+------------------------------------------------------------------------------
+	
+	RKH changelog file.
+
+	This file resumes the changes across project version releases.
+
+Changes between V1.1.2 and V1.1.3 released 05/19/2011
+
+	+	Changed RKHEVT_T data type.
+	+	Added rkh_get_sdata() macro to rkhsm.h file.
+	+	Added state's abstract data by means of single inheritance.
+	+	Update demo and doc files.
+
+Changes between V1.1.0 and V1.1.2 released 05/05/2011
+
+	+	Changed external transition to local transition support. Therefore, 
+		just modified rkh_define_ex_en_states() macro to support this feature 
+		according to UML 2.0.
+	+	Modified demo directory to test local transition feature and added 
+		some improvements to main.c file.
+	+	Fixed and update doc files.
+
+Changes between V1.0.0 and V1.1.0 released 05/03/2011
+
+	+	Added rkh_else function to be used when if all the guards on 
+		the other branches are false.
+	+	Changed conditional (branch) pseudostate related macros. Therefore, 
+		the demo and doc files too.
+	+	Changed macros RKH_CREATE_*_STATE, RKH_CREATE_TRANS_TABLE and 
+		RKH_END_TRANS_TABLE. 
+	+	Fixed VC08 project settings.
+	+	Changed demo files.

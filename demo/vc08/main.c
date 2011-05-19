@@ -104,9 +104,30 @@ format_trevt_args( RKHTREVT_T *ptre )
 }
 
 
+static
+void
+print_banner( void )
+{
+	printf( "Demo description: \n\n" );
+	printf( "The goal of this demo application is to explain how to \n" );
+	printf( "represent a state machine using the RKH framework. To do \n" );
+	printf( "that is proposed a simple and abstract example, which is \n" );
+	printf( "shown in the documentation file Figure 1 section \n" );
+	printf( "\"Representing a State Machine\". \n\n\n" );
+
+	printf( "1.- Press <numbers> to send events to state machine. \n" );
+	printf( "2.- Press 'p' to see related information about transitions, \n" );
+	printf( "    state changes, and so on.\n" );
+	printf( "3.- Press 'r' to reset state machine.\n" );
+	printf( "4.- Press ESC to quit \n\n\n" );
+}
+
+
 void 
 rkh_trace_open( void )
 {
+	RKHTRCFG_T *pcfg;
+
 	rkh_trinit();
 	rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
 	rkh_trcontrol( MY, RKH_TRSTART );
@@ -118,6 +139,10 @@ rkh_trace_open( void )
 	}
 
 	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
+	
+	pcfg = rkh_trgetcfg( MY );
+	if( pcfg->print == RKH_TRPRINT )
+		printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 }
 
 
@@ -166,9 +191,11 @@ main( void )
 {
 	int c;
 
-	rkh_trace_open();
 	rkh_init_hsm( &my );
 	srand( ( unsigned )time( NULL ) );
+
+	print_banner();
+	rkh_trace_open();
 
 	forever
 	{
@@ -178,9 +205,11 @@ main( void )
 			rkh_trace_flush();
 		else if ( c == ESC )
 			break;
+		else if ( c == 'r' )
+			rkh_init_hsm( &my );
 		else
 		{
-			mye.event.evt = kbmap( c );
+			mye.event = kbmap( c );
 			mye.ts = ( rkhuint16 )rand();
 			rkh_engine( &my, ( RKHEVT_T *)&mye );
 		}

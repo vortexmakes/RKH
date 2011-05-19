@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\source\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;__VC__"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

@@ -59,6 +59,7 @@ CPU, operating system, or compiler.
 - Support hierarchically nested states, and flat state-machine.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
+- Support local transitions.
 
 
 <HR>
@@ -123,7 +124,7 @@ along with RKH package. If not, see <http://www.gnu.org/licenses/>.
 
 Contact information:
 
-RKH web site:	http://
+RKH web site:	http://http://sourceforge.net/projects/rkh-reactivesys/
 \n e-mail:			francuccilea@gmail.com
 
 <HR>

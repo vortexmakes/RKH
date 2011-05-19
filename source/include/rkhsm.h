@@ -62,12 +62,6 @@ typedef enum
 	RKH_INPUT_NOT_FOUND,
 
 	/**
-	 * 	Wasn't found the branch function.
-	 */
-
-	RKH_CONDITIONAL_NOT_FOUND,
-
-	/**
 	 * 	The branch function returned a value not founded 
 	 * 	in the branch table.
 	 */
@@ -102,6 +96,19 @@ typedef enum
 	/** Number of returned codes */
 	RKH_NUM_CODES
 } RKH_RCODE_T;
+
+
+/**
+ * 	Each condition connector can have one special branch with a guard 
+ *	labeled ELSE, which is taken if all the guards on the other 
+ *	branches are false.
+ *
+ * 	A guard function takes the state machine pointer and the event 
+ * 	pointer as arguments. These parameters are optional in compile-time
+ * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
+ */
+
+#define ELSE		rkh_else
 
 
 /**
@@ -168,6 +175,8 @@ typedef enum
 
 #define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )	\
 																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
+																		\
 								rkhrom RKHSREG_T name =					\
 								{										\
 									mkbase(RKH_COMPOSITE,id,name),		\
@@ -192,9 +201,18 @@ typedef enum
  * 	\param parent	pointer to parent state.
  * 	\param prepro	pointer to input preprocessor function. This argument is 
  *					optional, thus it could be declared as NULL.
+ *					Aditionally, by means of single inheritance in C it 
+ *					could be used as state's abstract data. 
+ *					Aditionally, implementing the single inheritance in C 
+ *					is very simply by literally embedding the base type, 
+ *					RKHPPRO_T in this case, as the first member of the 
+ *					derived structure. See member "prepro" of RKHSREG_T 
+ *					structure for more information.
  */
 
 #define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
 																		\
 								rkhrom RKHSREG_T name =					\
 								{										\
@@ -209,7 +227,8 @@ typedef enum
  *	one is to be actually taken. Since the condition connector is an OR 
  *	connector, only one of the branches can be taken. Each 
  *	condition connector can have one special branch with a guard labeled 
- *	else, which is taken if all the guards on the other branches are false. 
+ *	rkh_else, which is taken if all the guards on the other branches are 
+ *	false. 
  *	Branches cannot contain triggers, but in addition to a guard they may 
  *	contain actions. A branch can enter another condition connector, thus 
  *	providing for the nesting of branches.
@@ -220,16 +239,17 @@ typedef enum
  *
  * 	\param name		pseudostate name. Represents a conditional pseudostate 
  * 					structure.
- * 	\param cdt		pointer to branch function.
  * 	\param id		the value of state ID.	
  */
 
-#define RKH_CREATE_COND_STATE( name,id,cdt )							\
+#define RKH_CREATE_COND_STATE( name,id )								\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
 																		\
 								rkhrom RKHSCOND_T name =				\
 								{										\
 									mkbase(RKH_CONDITIONAL,id,name),	\
-									cdt, name##_trtbl 					\
+									name##_trtbl 						\
 								}
 
 
@@ -322,7 +342,7 @@ typedef enum
 
 #define RKH_CREATE_TRANS_TABLE( name )									\
 																		\
-								static rkhrom RKHTR_T name##_trtbl[]
+								static rkhrom RKHTR_T name##_trtbl[]={
 
 
 /**
@@ -358,16 +378,25 @@ typedef enum
 #define RKH_TRINT( e, g, a )	{ e, g, a, NULL }
 
 
+/*
+ * 	This macro is internal to RKH and the user application should 
+ * 	not call it.
+ */
+
+#define RKH_ETRTBL				{ RKH_ANY, NULL, NULL, NULL }
+
+
 /**
  *	This macro is used to terminate a state transition table.
  */
 
-#define RKH_END_TRANS_TABLE		{ RKH_ANY, NULL, NULL, NULL }
+#define RKH_END_TRANS_TABLE		RKH_ETRTBL};
 
 
 /**
  *	This macro creates a branch table. Use the 
  *	'RKH_END_BRANCH_TABLE' macro to terminate the branch table.
+ *	Use rkh_else when if all the guards on the other branches are false.
  *
  * 	\param name		conditional pseudostate name.
  */
@@ -378,27 +407,39 @@ typedef enum
 
 
 /**
- *	This macro defines a branch in the branch table.
+ *	This macro defines a branch in the branch table. Each condition
+ *	connector can have one special branch with a guard labeled rkh_else, 
+ *	which is taken if all the guards on the other branches are false.
+ *	
  *
  *	\note
  *
  *	See RKHTR_T structure definition for more information.
  *
- * 	\param e		branch guard. Branches are labeled with guards that 
- * 					determine which one is to be actually taken.
+ * 	\param g		branch guard. Branches are labeled with guards that 
+ * 					determine which one is to be actually taken. Use rkh_else
+ * 					when if all the guards on the other branches are false.
  * 	\param a		pointer to action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param t		pointer to target state.
  */
 
-#define RKH_BRANCH( e, a, t )	{ e, NULL, a, t }
+#define RKH_BRANCH( g, a, t )	{ 0, g, a, t }
+
+
+/*
+ * 	This macro is internal to RKH and the user application should 
+ * 	not call it.
+ */
+
+#define RKH_EBTBL				{ RKH_ANY, NULL, NULL, NULL }
 
 
 /**
  *	This macro is used to terminate a state transition table.
  */
 
-#define RKH_END_BRANCH_TABLE	{ RKH_ANY, NULL, NULL, NULL }
+#define RKH_END_BRANCH_TABLE	RKH_EBTBL};
 
 
 /**
@@ -472,8 +513,8 @@ void rkh_init_hsm( RKH_T *ph );
  *
  * 	\param ph		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.
- *	\param pevt		pointer to arrived event. The field "pevt->evt" is used 
- *					as HSM's input alphabet.
+ *	\param pevt		pointer to arrived event. It's used as HSM's input 
+ *					alphabet.
  *
  *	\return
  *
@@ -529,6 +570,22 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 #define rkh_get_data( ph )												\
 																		\
 								((ph)->hdata)	
+
+
+/**	
+ * 	This macro retrieves the state's abstract data.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *
+ * 	\returns
+ *
+ * 	Pointer to state's abstract data.
+ */
+
+#define rkh_get_sdata( ph )												\
+																		\
+								((ph)->state->sdata)	
 
 
 /**
