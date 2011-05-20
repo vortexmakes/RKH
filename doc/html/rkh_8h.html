@@ -61,7 +61,7 @@
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ae42800670131f791c8eaa57862224c0e">RKHENT_T</a> )(const struct rkh_t *ph)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a175ad93caa689b1f3b02db520a1105c1">RKHEXT_T</a> )(const struct rkh_t *ph)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a> )(const struct rkh_t *ph)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a> )(<a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pe)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a> )(const struct rkh_t *ph, <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pe)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a6774d6792a14179a0955de97a2545dd3">RKHACT_T</a> )(const struct rkh_t *ph, <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pe)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef HUInt(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#accdcce4dbcbade1d09c11a3484784c68">RKHGUARD_T</a> )(const struct rkh_t *ph, <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pe)</td></tr>
 </table>
@@ -119,7 +119,7 @@
 <p>Actions are small atomic behaviors executed at specified points in a state machine. Actions are assumed to take an insignificant amount of time to execute and are noninterruptible.</p>
 <p>An action function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_ACT_EVT_ARG' and RKH_EN_ACT_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00370">370</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00384">384</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -210,7 +210,7 @@
 <p>Each condition connector can have one special branch with a guard labeled rkh_else, which is taken if all the guards on the other branches are false.</p>
 <p>A guard function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00413">413</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00427">427</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -232,25 +232,26 @@
 
 </div>
 </div>
-<a class="anchor" id="a2b7e707304a7466cd9b9dfb924823c94"></a><!-- doxytag: member="rkh.h::RKHPPRO_T" ref="a2b7e707304a7466cd9b9dfb924823c94" args=")(RKHEVT_T *pe)" -->
+<a class="anchor" id="a3b113df002d9c5d3422f369fd701ffe3"></a><!-- doxytag: member="rkh.h::RKHPPRO_T" ref="a3b113df002d9c5d3422f369fd701ffe3" args=")(const struct rkh_t *ph, RKHEVT_T *pe)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>( * <a class="el" href="rkh_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a>)(<a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pe)</td>
+          <td class="memname">typedef <a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>( * <a class="el" href="rkh_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a>)(const struct rkh_t *ph, <a class="el" href="rkh_8h.html#a61da75fb4e1e23d0fed7670860e55c03">RKHEVT_T</a> *pe)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 <p>Event preprocessor.</p>
-<p>Before sending the arrived event to state machine, it can be previously processed using the event preprocessor function. </p>
+<p>Before sending the arrived event to state machine, it can be previously processed using the event preprocessor function.</p>
+<p>An action function takes the state machine pointer and the event pointer as arguments. The first parameter is optional in compile-time according to RKH_EN_PPRO_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00353">353</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00359">359</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 11:27:30 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 13:54:26 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

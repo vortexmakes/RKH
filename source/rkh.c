@@ -48,6 +48,7 @@
 #define CJ( p )							((RKHSJUNC_T*)p)
 #define CH( p )							((RKHSHIST_T*)p)
 #define CA( p )							((RKHACT_T)p)
+#define CP( p )							((RKHPPRO_T)p)
 #define CV( p )							((void*)p)
 #define CM( p )							((const RKH_T*)p)
 
@@ -107,13 +108,13 @@
 
 #if RKH_EN_PPRO == 1
 
-#define rkh_process_input( s, pe )										\
+#define rkh_process_input( s, h, pe )									\
 																		\
-	(s)->prepro != NULL ? (*(s)->prepro)((pe)) : (*pe)
+	(s)->prepro != NULL ? rkh_call_prepro(s,h,pe) : (*pe)
 
 #else
 
-#define rkh_process_input( s, pe )										\
+#define rkh_process_input( s, h, pe )									\
 																		\
 	(*pe)
 
@@ -361,14 +362,14 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #if RKH_EN_HCAL == 1
 	for( s = ss; s != NULL; s = s->parent )
 	{
-		in = rkh_process_input( s, pe );	
+		in = rkh_process_input( s, ph, pe );	
 		tr = find_trans( s->trtbl, in );
 		if( is_found_trans( tr ) )
 			break;
 	}
 #else
 	s = ss;
-	in = rkh_process_input( s, pe );	
+	in = rkh_process_input( s, ph, pe );	
 	tr = find_trans( s->trtbl, in );
 #endif
 

@@ -1547,6 +1547,12 @@ Available options:
 	argument a pointer to state-machine structure RKH_T. See 
 	#RKHGUARD_T structure definition.
 
+-	\b RKH_EN_PPRO_HSM_ARG
+	\n \n Determines the function prototype of the event preprocessor.
+	When RKH_EN_PPRO_HSM_ARG is set to one (1) this function adds as 
+	argument a pointer to state-machine structure RKH_T. See 
+	#RKHPPRO_T structure definition.
+
 -	\b RKH_EN_STATE_NAME
 	\n \n When RKH_EN_STATE_NAME is set to one (1) the state structure 
 	includes its own name as a null-terminated string. When a particular 

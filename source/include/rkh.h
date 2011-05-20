@@ -348,9 +348,23 @@ struct rkh_t;
  *
  * 	Before sending the arrived event to state machine, it can be previously 
  * 	processed using the	event preprocessor function.
+ *
+ * 	An action function takes the state machine pointer and the event 
+ * 	pointer as arguments. The first parameter is optional in compile-time
+ * 	according to RKH_EN_PPRO_HSM_ARG.
  */
 
-typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
+#if RKH_EN_PPRO_HSM_ARG == 1
+
+	typedef RKHE_T ( *RKHPPRO_T )( const struct rkh_t *ph, RKHEVT_T *pe );
+	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
+
+#else
+
+	typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
+	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( e )
+
+#endif
 
 
 /**
