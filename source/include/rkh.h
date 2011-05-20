@@ -729,7 +729,9 @@ typedef struct rkh_t
 	rkhuint8 id;
 
 	/**
-	 * 	State-machine properties.
+	 * 	State machine properties. The available properties are
+	 * 	enumerated in RKH_HPPTY_T enumeration in the rkhsm.h
+	 * 	file.
 	 */
 
 	rkhuint8 ppty;

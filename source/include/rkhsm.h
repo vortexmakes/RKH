@@ -111,21 +111,29 @@ typedef enum
 #define ELSE		rkh_else
 
 
-/**
- * 	This macro enables state nesting in a particular state-machine.
- */
+typedef enum
+{
+	/**
+	 * 	Used as state machine property.
+	 * 	This macro enables state nesting in a particular state-machine.
+	 */
 
-#define HCAL		0x00
+	HCAL,
 
 
-/**
- * 	This macro disables state nesting in a particular state-machine.
- * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
- * 	RKH are	not included: state nesting, composite state, history 
- * 	(shallow and deep) pseudostate, entry action, and exit action.
- */
+	/**
+	 * 	Used as state machine property.
+	 * 	This macro disables state nesting in a particular state-machine.
+	 * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
+	 * 	RKH are	not included: state nesting, composite state, history 
+	 * 	(shallow and deep) pseudostate, entry action, and exit action.
+	 */
 
-#define FLAT		0x01
+	FLAT,
+
+	/** Number of state machines properties */
+	RKH_NUM_HPPTY
+} RKH_HPPTY_T;
 
 
 /**
@@ -138,8 +146,9 @@ typedef enum
  * 	\param name		state-machine (top-state) name. Represents a HSM structure.
  * 	\param id		the value of HSM ID. The user application defines the 
  * 					available ids in rkhdata.h file. 
- * 	\param ppty		state-machine properties. The available properties are
- * 					defined in the rkhsm.h file.
+ * 	\param ppty		state machine properties. The available properties are
+ * 					enumerated in RKH_HPPTY_T enumeration in the rkhsm.h
+ * 					file.
  * 	\param is		pointer to regular initial state. This state could be 
  * 					defined either composite or basic.
  * 	\param ia		pointer to initialization action. The function prototype 
