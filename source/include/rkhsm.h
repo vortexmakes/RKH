@@ -111,6 +111,10 @@ typedef enum
 #define ELSE		rkh_else
 
 
+/** 	
+ *  State machine properties.
+ */
+
 typedef enum
 {
 	/**

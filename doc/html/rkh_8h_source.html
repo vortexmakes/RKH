@@ -64,7 +64,7 @@
 <a name="l00066"></a>00066 <span class="preprocessor">#include &quot;<a class="code" href="rkhtrace_8h.html" title="Platform-independent interface for RKH trace facility.">rkhtrace.h</a>&quot;</span>
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068 
-<a name="l00075"></a><a class="code" href="rkh_8h.html#a3a949da4eee4a01fcdf0e1066e8165aa">00075</a> <span class="preprocessor">#define RKH_VERSION                 &quot;1.1.00&quot;</span>
+<a name="l00075"></a><a class="code" href="rkh_8h.html#a3a949da4eee4a01fcdf0e1066e8165aa">00075</a> <span class="preprocessor">#define RKH_VERSION                 &quot;1.1.3&quot;</span>
 <a name="l00076"></a>00076 <span class="preprocessor"></span>
 <a name="l00077"></a>00077 
 <a name="l00082"></a><a class="code" href="rkh_8h.html#abd3571be44849ed0b7bf73ed08af9596">00082</a> <span class="preprocessor">#define RKH_ANY                     ((RKHE_T)(-1))</span>
@@ -418,32 +418,32 @@
 <a name="l00724"></a>00724 {
 <a name="l00729"></a><a class="code" href="struct_r_k_h___t.html#ac8f4c99787d4630c6d075f30d71ff82d">00729</a>     rkhuint8 id;
 <a name="l00730"></a>00730 
-<a name="l00735"></a><a class="code" href="struct_r_k_h___t.html#a583ae75b740707aaa98f88dc7aebf20b">00735</a>     rkhuint8 ppty;
-<a name="l00736"></a>00736 
-<a name="l00737"></a>00737 <span class="preprocessor">#if RKH_EN_HSM_NAME == 1</span>
-<a name="l00738"></a>00738 <span class="preprocessor"></span>    
-<a name="l00745"></a><a class="code" href="struct_r_k_h___t.html#a0a9088fc7cfa0f123efde5ef25f34a7a">00745</a>     <span class="keywordtype">char</span> *name;
-<a name="l00746"></a>00746 <span class="preprocessor">#endif</span>
-<a name="l00747"></a>00747 <span class="preprocessor"></span>
-<a name="l00752"></a><a class="code" href="struct_r_k_h___t.html#ab0ceba5ab4edf93f38cda77b99bcd954">00752</a>     rkhrom <a class="code" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> *init_state;
-<a name="l00753"></a>00753 
-<a name="l00758"></a><a class="code" href="struct_r_k_h___t.html#afacfd9e7d97c9852ba862252cd2dd6ee">00758</a>     rkhrom <a class="code" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> *state;
-<a name="l00759"></a>00759 
-<a name="l00764"></a><a class="code" href="struct_r_k_h___t.html#a0ff3e30e31d64fae099d622e145ff51d">00764</a>     <a class="code" href="rkh_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a> init_action;
-<a name="l00765"></a>00765 <span class="preprocessor">#if RKH_EN_HSM_DATA == 1</span>
-<a name="l00766"></a>00766 <span class="preprocessor"></span>    
-<a name="l00771"></a><a class="code" href="struct_r_k_h___t.html#ae750a3f034fdd4c894568d1380300b48">00771</a>     <span class="keywordtype">void</span> *hdata;
-<a name="l00772"></a>00772 <span class="preprocessor">#endif</span>
-<a name="l00773"></a>00773 <span class="preprocessor"></span><span class="preprocessor">#if RKH_EN_GET_INFO == 1</span>
-<a name="l00774"></a>00774 <span class="preprocessor"></span>
-<a name="l00779"></a><a class="code" href="struct_r_k_h___t.html#a995c420f07ac4e4bf06e6f2d2d170085">00779</a>     <a class="code" href="struct_r_k_h___i_n_f_o___t.html" title="Describes the HSM&amp;#39;s performance information.">RKH_INFO_T</a> hinfo;
-<a name="l00780"></a>00780 <span class="preprocessor">#endif  </span>
-<a name="l00781"></a>00781 <span class="preprocessor"></span>} <a class="code" href="struct_r_k_h___t.html" title="Describes the HSM.">RKH_T</a>;
-<a name="l00782"></a>00782 
-<a name="l00783"></a>00783 
-<a name="l00784"></a>00784 <span class="preprocessor">#endif</span>
+<a name="l00737"></a><a class="code" href="struct_r_k_h___t.html#a583ae75b740707aaa98f88dc7aebf20b">00737</a>     rkhuint8 ppty;
+<a name="l00738"></a>00738 
+<a name="l00739"></a>00739 <span class="preprocessor">#if RKH_EN_HSM_NAME == 1</span>
+<a name="l00740"></a>00740 <span class="preprocessor"></span>    
+<a name="l00747"></a><a class="code" href="struct_r_k_h___t.html#a0a9088fc7cfa0f123efde5ef25f34a7a">00747</a>     <span class="keywordtype">char</span> *name;
+<a name="l00748"></a>00748 <span class="preprocessor">#endif</span>
+<a name="l00749"></a>00749 <span class="preprocessor"></span>
+<a name="l00754"></a><a class="code" href="struct_r_k_h___t.html#ab0ceba5ab4edf93f38cda77b99bcd954">00754</a>     rkhrom <a class="code" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> *init_state;
+<a name="l00755"></a>00755 
+<a name="l00760"></a><a class="code" href="struct_r_k_h___t.html#afacfd9e7d97c9852ba862252cd2dd6ee">00760</a>     rkhrom <a class="code" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> *state;
+<a name="l00761"></a>00761 
+<a name="l00766"></a><a class="code" href="struct_r_k_h___t.html#a0ff3e30e31d64fae099d622e145ff51d">00766</a>     <a class="code" href="rkh_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a> init_action;
+<a name="l00767"></a>00767 <span class="preprocessor">#if RKH_EN_HSM_DATA == 1</span>
+<a name="l00768"></a>00768 <span class="preprocessor"></span>    
+<a name="l00773"></a><a class="code" href="struct_r_k_h___t.html#ae750a3f034fdd4c894568d1380300b48">00773</a>     <span class="keywordtype">void</span> *hdata;
+<a name="l00774"></a>00774 <span class="preprocessor">#endif</span>
+<a name="l00775"></a>00775 <span class="preprocessor"></span><span class="preprocessor">#if RKH_EN_GET_INFO == 1</span>
+<a name="l00776"></a>00776 <span class="preprocessor"></span>
+<a name="l00781"></a><a class="code" href="struct_r_k_h___t.html#a995c420f07ac4e4bf06e6f2d2d170085">00781</a>     <a class="code" href="struct_r_k_h___i_n_f_o___t.html" title="Describes the HSM&amp;#39;s performance information.">RKH_INFO_T</a> hinfo;
+<a name="l00782"></a>00782 <span class="preprocessor">#endif  </span>
+<a name="l00783"></a>00783 <span class="preprocessor"></span>} <a class="code" href="struct_r_k_h___t.html" title="Describes the HSM.">RKH_T</a>;
+<a name="l00784"></a>00784 
+<a name="l00785"></a>00785 
+<a name="l00786"></a>00786 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 19 10:56:45 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 11:27:30 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
