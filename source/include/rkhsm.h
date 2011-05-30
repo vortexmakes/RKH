@@ -587,6 +587,11 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 /**	
  * 	This macro retrieves the state's abstract data.
+ *	Aditionally, by means of single inheritance in C it could be used 
+ *	as state's abstract data. Aditionally, implementing the single 
+ *	inheritance in C is very simply by literally embedding the base type, 
+ *	RKHPPRO_T in this case, as the first member of the derived structure. 
+ *	See member "prepro" of RKHSREG_T structure for more information.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.
