@@ -232,14 +232,14 @@ typedef enum
 	#define rkh_rec_event( e, s, n )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_SRC_STATE == 1
+	#if RKH_TRACE_ALL == 1 || RKH_EN_TRN_SRC == 1
 	#define rkh_rec_src_state( e, s, n, str )		\
 					mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_src_state( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_TGT_STATE == 1
+	#if RKH_TRACE_ALL == 1 || RKH_EN_TRN_TGT == 1
 	#define rkh_rec_tgt_state( e, s, n, str )		\
 					mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trgetts(), (n), (str) )
 	#else
