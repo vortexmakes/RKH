@@ -84,6 +84,13 @@ e-mail: francuccilea@gmail.com
 
 	This file resumes the changes across project version releases.
 
+Changes between V1.1.3 and V1.1.4 released 06/10/2011
+
+	+	Changed RKHPPRO_T type to support pointer to HSM as argument.
+	+	Added RKH_EN_PPRO_HSM_ARG configuration.
+	+	Added RKH_HPPTY_T enumeration to be used in RKH_CREATE_HSM() macro.
+	+	Update demo and doc files.
+
 Changes between V1.1.2 and V1.1.3 released 05/19/2011
 
 	+	Changed RKHEVT_T data type.
