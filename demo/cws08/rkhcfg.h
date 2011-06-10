@@ -46,7 +46,7 @@
 #define RKH_EN_ENTRY				1	/*	entry state */
 #define RKH_EN_EXIT					1	/*	exit state */
 #define RKH_EN_INIT_HSM				0	/*	initializing state-machine */
-#define RKH_EN_SGT_TGT				0	/*	target state of transition segment */
+#define RKH_EN_SGT					0	/*	target state of transition segment */
 #define RKH_EN_RTN_CODE				0	/*	code returned by rkh_engine() function */
 #define RKH_EN_NUM_ENEX				0	/*	number of enter and exited states */
 #define RKH_EN_NUM_ACTSGT			0	/*	number of transition actions to be executed and number of transition segments */
