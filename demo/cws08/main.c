@@ -24,7 +24,7 @@ main( void )
 
 	for( pe = event_list; *pe != RKH_ANY; ++pe  )
 	{
-		mye.event = *pe;
+		rkh_set_static_event( &mye, *pe );
 		mye.ts = 0;
 		rkh_engine( &my, ( RKHEVT_T *)&mye );
 	}	

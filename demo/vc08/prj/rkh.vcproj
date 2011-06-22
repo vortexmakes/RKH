@@ -261,6 +261,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\source\include\rkhassert.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\source\include\rkhplat.h"
 					>
 				</File>
