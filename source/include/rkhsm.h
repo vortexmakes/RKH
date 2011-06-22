@@ -508,6 +508,169 @@ enum
 
 
 /**
+ *	Posts an event directly to the event queue \a qd using the LIFO policy.
+ *
+ * 	\note 
+ *
+ * 	The LIFO policy should be used only with great caution because it
+ * 	alters order of events in the queue.
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	For memory efficiency and best performance the event queues store 
+ *	only pointers to events, not the whole event objects.
+ *
+ * 	\param qd		event queue descriptor.
+ * 	\param evt		pointer to event.
+ *
+ * 	\returns
+ *
+ * 	Zero (0) if the event was successfully inserted, 
+ *	otherwise error code. 	
+ */
+
+HUInt rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
+
+
+/**
+ *	Posts an event directly to the event queue \a qd using the FIFO policy.
+ *
+ * 	\note
+ *
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	For memory efficiency and best performance the event queues store 
+ *	only pointers to events, not the whole event objects.
+ *
+ * 	\param qd		event queue descriptor.
+ * 	\param evt		pointer to event.
+ *
+ * 	\returns
+ *
+ * 	Zero (0) if the event was successfully inserted, 
+ *	otherwise error code. 	
+ */
+
+HUInt rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
+
+
+/**
+ *	Defer an event to a given separate event queue.
+ *
+ * 	This function is part of the event deferral support. An active object
+ * 	uses this function to defer an event \a evt to the event queue \a qd. 
+ * 	RKH correctly accounts for another outstanding reference to the event 
+ * 	and will not recycle the event at the end of the RTC step. 
+ * 	Later, the active object might recall one event at a time from the 
+ * 	event queue.
+ *	
+ *	For memory efficiency and best performance the deferred event queue, 
+ *	store only pointers to events, not the whole event objects.
+ *  An active object can use multiple event queues to defer events of
+ *  different kinds.
+ *
+ * 	\param qd		event queue descriptor.
+ * 	\param evt		pointer to event.
+ *
+ * 	\returns
+ *
+ * 	Zero (0) if the event was successfully deferred, 
+ *	otherwise error code. 	
+ */
+
+HUInt rkh_defer( HUInt qd, RKHEVT_T *evt );
+
+
+/**
+ * 	Recall a deferred event from a given event queue.
+ *
+ * 	This function is part of the event deferral support. An active object
+ * 	uses this function to recall a deferred event from a given event queue. 
+ * 	Recalling an event means that it is removed from the deferred event 
+ * 	queue \a qds and posted (LIFO) to the event queue of the active object
+ * 	\a qdd.
+ *	For memory efficiency and best performance the deferred event queue, 
+ *	store only pointers to events, not the whole event objects.
+ *
+ * 	\returns 
+ *
+ * 	The pointer to the recalled event to the caller, or NULL if no 
+ * 	event has been recalled.
+ */
+
+RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
+
+
+/**
+ *	This macro dynamically creates a new event of type 'et' with the signal
+ *	'e'. It returns a pointer to the event already cast to the event type 
+ *	(et*). Here is an example of dynamic event allocation with the macro 
+ *	rkh_alloc_event():
+ *
+ *	\code
+ *	MYEVT_T *mye = rkh_alloc_event( MYEVT_T, DATA );
+ *	mye->y = mye->x = 0;
+ *	...
+ *	\endcode
+ *
+ * 	\note
+ *	The assertions inside rkh_ae() function guarantee that the pointer is 
+ *	valid, so you don't need to check the pointer returned from rkh_ae(), 
+ *	unlike the value returned from malloc(), which you should check.
+ *
+ * 	\param et		type of event.
+ * 	\param e		event signal.
+ */
+
+#define rkh_alloc_event( et, e )										\
+																		\
+								(et*)rkh_ae(sizeof((et)),(RKHE_T)(e))
+
+
+/**
+ * 	Recycle a dynamic event.
+ *
+ * 	This function implements a simple garbage collector for the dynamic 
+ * 	events.	Only dynamic events are candidates for recycling. (A dynamic 
+ * 	event is one that is allocated from an event pool, which is determined 
+ * 	as non-zero	e->dynamic_ attribute.) Next, the function decrements the 
+ * 	reference counter of the event, and recycles the event only if the 
+ * 	counter drops to zero (meaning that no more references are outstanding 
+ * 	for this event). The dynamic event is recycled by returning it to the 
+ * 	pool from which	it was originally allocated. The pool-of-origin 
+ * 	information is stored in the upper 2-MSBs of the e->dynamic_ attribute 
+ * 	[MS]. Note that the data member dynamic_ of a dynamic event cannot be 
+ * 	zero because the two most significant bits of the byte hold the pool 
+ * 	ID, with valid values of 1, 2, or 3.
+ * 	
+ * 	\note 
+ *
+ * 	The garbage collector must be explicitly invoked at all appropriate 
+ * 	contexts, when an event can become garbage (automatic garbage collection).
+ *
+ * 	\param evt		pointer to event to be potentially recycled.
+ */
+
+void rkh_gc( RKHEVT_T *evt );
+
+
+/**
+ *	This macro set the event 'evt' with 'e' signal and establishes it as one 
+ *	static event.
+ *
+ * 	\param evt		pointer to event structure derived from RKHEVT_T.
+ * 	\param e		event signal. The RKH takes this value for triggering 
+ * 					a state transition.
+ *
+ * 	\returns
+ */
+
+#define rkh_set_static_event( evt, es )									\
+																		\
+								((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
+								((RKHEVT_T*)(evt))->dynamic_ = 0;
+
+
+/**
  * 	Inits a previously created HSM calling its initializing function.
  *
  * 	\param ph		pointer to HSM control block. Represents a previously 
