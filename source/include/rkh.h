@@ -194,6 +194,234 @@
 #endif
 
 
+#ifndef RKH_ASSERT
+	#define RKH_ASSERT		0
+#endif
+
+
+/*
+ * 	The 'rkhassert' macro is used by RKH to check expressions that ought 
+ * 	to be true as long as the program is running correctly. An assert 
+ * 	should never have a side effect. If the expression evaluates to 0, the 
+ * 	macro 'rkh_assert' will be called, typically halting the program in some 
+ * 	way. The 'rkh_assert' macro should store or report the error code 
+ * 	('event' parameter). Once the 'rkh_assert' macro has stored 
+ *	or reported the error, it must decide on the system's next action.
+ *	One option is:
+ *		
+ *		1.- disable general interrupt
+ *		2.- stores or send detected error (could be use a trace facility)
+ *		3.- trigger a software reset
+ *	
+ *	The policy chooses will be largely determined by the nature of product. 
+ *	If the system is running with a source level debugger, place a 
+ *	breakpoint within.
+ */
+
+#if RKH_ASSERT == 1
+	#ifdef rkh_assert
+		#define rkhassert( exp, event )		\
+			if( ( exp ) )					\
+			{}								\
+			else							\
+			{								\
+				rkh_assert( event )			\
+			}
+	#else
+	    #error  "rkhcfg.h, Missing rkh_assert macro"
+	#endif
+#else
+	#define rkhassert( exp, event )
+	#undef rkh_assert
+	#define rkh_assert( event )
+#endif
+
+
+/**
+ *	Defines dynamic event support.
+ *	
+ *	This definitions are required only when the user application
+ *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
+ */
+
+#if RKH_EN_DYNAMIC_EVENT == 1
+
+	/**
+	 * 	\brief 
+	 * 	
+	 * 	Number of available memory pools. Default is 3.
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 * 	
+	 * 	\code
+	 * 	#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
+	 * 	\endcode
+	 */
+
+	#ifndef RKH_DYNE_NUM_POOLS
+		#define RKH_DYNE_NUM_POOLS			3
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 * 	Platform-dependent macro defining the event pool initialization.
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 * 	
+	 * 	\code
+	 * 	#define rkh_dyne_init( mpd, pm, ps, bs )						\
+	 * 																	\
+	 * 				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
+														(RK_MPBS_T)(bs) )
+	 *	\endcode
+	 */
+
+	#ifndef rkh_dyne_init
+	    #error  "rksyscfg.h, Missing rkh_dyne_init() macro."
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 * 	Platform-dependent macro defining how RKH should obtain the
+	 * 	event pool block size.
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 *
+	 * 	\code
+	 * 	#define rkh_dyne_event_size( mpd )								\
+	 * 																	\
+	 * 				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
+	 * 	\endcode
+	 */
+
+	#ifndef rkh_dyne_event_size
+	    #error  "rksyscfg.h, Missing rkh_dyne_event_size() macro."
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 * 	Platform-dependent macro defining how RKH should obtain an event
+	 * 	\a e from the event pool \a mpd.
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 *
+	 * 	\code
+	 *	#define rkh_dyne_get( mpd, e )									\
+	 *																	\
+	 *				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
+	 * 	\endcode
+	 */
+
+	#ifndef rkh_dyne_get
+	    #error  "rksyscfg.h, Missing rkh_dyne_get() macro."
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 *  Platform-dependent macro defining how RKH should return an event
+	 *  \a e to the event pool \a mpd.	
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 *
+	 * 	\code
+	 *	#define rkh_dyne_put( mpd, e )									\
+	 *																	\
+	 *				rk_mpool_put( (mpd), (e) )
+	 * 	\endcode
+	 */
+
+	#ifndef rkh_dyne_put
+	    #error  "rksyscfg.h, Missing rkh_dyne_put() macro."
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 *  Platform-dependent macro defining how RKH should post an event
+	 *  \a e to the queue \a qd in FIFO policy.	
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 *
+	 * 	\code
+	 *	#define rkh_post_fifo( qd, e )									\
+	 *																	\
+	 *				queue_insert( (QD_T)(qd), &(e) )
+	 * 	\endcode
+	 */
+
+	#ifndef rkh_post_fifo
+	    #error  "rksyscfg.h, Missing rkh_post_fifo() macro."
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 *  Platform-dependent macro defining how RKH should post an event
+	 *  \a e to the queue \a qd in LIFO policy.	
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 *
+	 * 	\code
+	 *	#define rkh_post_lifo( qd, e )									\
+	 *																	\
+	 *				queue_insert_lifo( (QD_T)(qd), &(e) )
+	 * 	\endcode
+	 */
+
+	#ifndef rkh_post_lifo
+	    #error  "rksyscfg.h, Missing rkh_post_lifo() macro."
+	#endif
+
+	/**
+	 * 	\brief 
+	 *
+	 *  Platform-dependent macro defining how RKH should get an event
+	 *  \a e from the queue \a qd.
+	 * 	
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 * 	Example:
+	 *
+	 * 	\code
+	 *	#define rkh_get( qd, e )										\
+	 *																	\
+	 *				queue_remove( (QD_T)(qd), &(e) )
+	 * 	\endcode
+	 */
+
+	#ifndef rkh_get
+	    #error  "rksyscfg.h, Missing rkh_get() macro."
+	#endif
+
+#endif
+
+
 /** 
  * 	Defines the size of event. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. This type is configurable via the 
@@ -224,11 +452,63 @@
  *	embedding the base structure, RKHEVT_T in this case, as the first 
  *	member of the derived structure.
  *
- * 	The RKH takes the evt member of RKHEVT_T structure for triggering a 
+ * 	For example, the structure MYEVT_T derived from the base structure 
+ * 	RKHEVT_T by embedding the RKHEVT_T instance as the first member of 
+ *	MYEVT_T.
+ *
+ * 	\code
+ * 	typedef struct
+ * 	{
+ * 		RKHEVT_T evt;
+ *		int x;
+ *		int y;
+ * 	} MYEVT_T;
+ * 	\endcode
+ *
+ *	Such nesting of structures always aligns the data member 'evt' at the 
+ *	beginning of every instance of the derived structure. In particular, this 
+ *	alignment lets you treat a pointer to the derived MYEVT_T structure as a 
+ *	pointer to the RKHEVT_T base structure. Consequently, you can always 
+ *	safely pass a pointer to MYEVT_T to any C function that expects a pointer 
+ *	to RKHEVT_T. (To be strictly correct in C, you should explicitly cast this 
+ *	pointer. In OOP such casting is called upcasting and is always safe.) 
+ *	Therefore, all functions designed for the RKHEVT_T structure are 
+ *	automatically available to the MYEVT_T structure as well as other 
+ *	structures derived from RKHEVT_T.
+ *
+ * 	The RKH takes the 'e' member of RKHEVT_T structure for triggering a 
  * 	state transition.
  */
 
-typedef RKHE_T RKHEVT_T;
+typedef struct
+{
+	/**
+	 *	Signal of the event instance.
+	 */
+
+	RKHE_T e;
+
+	/**
+	 * 	Attributes of dynamic event (0 for static event).
+	 */
+
+	rkhuint8 dynamic_;
+} RKHEVT_T;
+
+
+/**
+ * 	Internal RKH implementation of the dynamic event allocator. 
+ *
+ * 	\param es		size of event [in bytes].
+ * 	\param e		event signal.
+ * 	
+ * 	\note
+ *
+ * 	This function is internal to RKH and the user application should 
+ * 	not call it. Please use #rkh_alloc_event() macro.
+ */
+
+RKHEVT_T *rkh_ae( rkhuint8 es, RKHE_T e );
 
 
 /*
