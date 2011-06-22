@@ -68,4 +68,21 @@ typedef signed int		HInt;
 #define rkhrom			const	
 
 
+/*
+ * 	RKH needs to disable interrupts in order to access critical
+ * 	sections of code and to reenable interrupts when done.
+ * 	
+ * 	To hide the actual implementation method available for a
+ * 	particular processor, compiler, an OS, RKH defines the 
+ * 	following two macros to disable and enable interrupts 
+ * 	rkh_enter_critical() and define rkh_exit_critical() respectively.
+ * 	
+ * 	These macros are always together to wrap critical sections of
+ * 	code.
+ */
+
+#define rkh_enter_critical()
+#define rkh_exit_critical()
+
+
 #endif
