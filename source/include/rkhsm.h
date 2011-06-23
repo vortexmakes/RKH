@@ -516,8 +516,6 @@ enum
  * 	alters order of events in the queue.
  *	At this time, this functions are required only when the user 
  *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
- *	For memory efficiency and best performance the event queues store 
- *	only pointers to events, not the whole event objects.
  *
  * 	\param qd		event queue descriptor.
  * 	\param evt		pointer to event.
@@ -538,8 +536,6 @@ HUInt rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
  *
  *	At this time, this functions are required only when the user 
  *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
- *	For memory efficiency and best performance the event queues store 
- *	only pointers to events, not the whole event objects.
  *
  * 	\param qd		event queue descriptor.
  * 	\param evt		pointer to event.
@@ -664,10 +660,7 @@ void rkh_gc( RKHEVT_T *evt );
  * 	\returns
  */
 
-#define rkh_set_static_event( evt, es )									\
-																		\
-								((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
-								((RKHEVT_T*)(evt))->dynamic_ = 0;
+#define rkh_set_static_event( evt, es )			mksevt( evt, es )
 
 
 /**

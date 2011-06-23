@@ -741,7 +741,7 @@ rkh_recall( HUInt qdd, HUInt qds )
              * did NOT decrement the reference counter) and once in the
              * AO's event queue.
              */
-            rkhassert( (evt->dynamic_&0x3F) > 1, RKH_RC_FAIL );
+            rkhassert(( evt->dynamic_&0x3F ) > 1, RKH_RC_FAIL );
 
             /* 
 			 * We need to decrement the reference counter once, to account

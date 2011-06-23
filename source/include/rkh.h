@@ -237,6 +237,16 @@
 #endif
 
 
+#if RKH_EN_DYNAMIC_EVENT == 1
+	#define mksevt( evt, es )											\
+								((RKHEVT_T*)(e))->e = (RKHE_T)es;		\
+								((RKHEVT_T*)(e))->dynamic_ = 0;
+#else
+	#define mksevt( evt, es )											\
+								((RKHEVT_T*)(evt))->e = (RKHE_T)es;
+#endif
+
+
 /**
  *	Defines dynamic event support.
  *	
@@ -492,7 +502,9 @@ typedef struct
 	 * 	Attributes of dynamic event (0 for static event).
 	 */
 
+#if RKH_EN_DYNAMIC_EVENT == 1
 	rkhuint8 dynamic_;
+#endif
 } RKHEVT_T;
 
 
