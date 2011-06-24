@@ -84,6 +84,21 @@ e-mail: francuccilea@gmail.com
 
 	This file resumes the changes across project version releases.
 
+Changes between V1.1.4 and V1.1.5 released 06/24/2011
+
+	+	Added dynamic and defer event support. This facility is implemented by means of 
+		rkh_ae(), rkh_gc(), rkh_put_fifo(), rkh_put_lifo(), rkh_defer() and rkh_recall() and
+		added member dynamic_ to RKHEVT_T structure.
+	+	Changed rkh.h file name to rkhitl.h.
+	+	Changed rkhsm.h file name to rkh.h.
+	+	Added rkh_enter_critical() and rkh_exit_critical() to be defined within rkhport.h 
+		file.
+	+	Added assert feature. This facility is defined in rkhassert.h file.
+	+	Eliminated rkhdata.h dependence from rkhtrace.c and rkh.c files.
+	+	Added RKH_NUM_STATE_MACHINES directive in rkhcfg.h and rkhtrace.c files.
+	+	Added enhanced checks to platform-dependent functions within rkhtrace.h.
+	+	Added mksevt() macro.
+
 Changes between V1.1.3 and V1.1.4 released 06/10/2011
 
 	+	Changed RKHPPRO_T type to support pointer to HSM as argument.

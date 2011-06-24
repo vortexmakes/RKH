@@ -62,10 +62,10 @@
 /**	
  *	Version string of RKH.
  *
- *	Date: 06/10/2011
+ *	Date: 06/24/2011
  */
 
-#define RKH_VERSION					"1.1.4"
+#define RKH_VERSION					"1.1.5"
 
 
 /**	
