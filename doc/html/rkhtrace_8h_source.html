@@ -52,7 +52,7 @@
 <a name="l00066"></a>00066 <span class="preprocessor"></span><span class="preprocessor">#define __RKHTRACE_H__</span>
 <a name="l00067"></a>00067 <span class="preprocessor"></span>
 <a name="l00068"></a>00068 
-<a name="l00069"></a>00069 <span class="preprocessor">#include &quot;<a class="code" href="rkh_8h.html" title="RKH engine interface.">rkh.h</a>&quot;</span>
+<a name="l00069"></a>00069 <span class="preprocessor">#include &quot;<a class="code" href="rkhitl_8h.html" title="RKH engine interface.">rkhitl.h</a>&quot;</span>
 <a name="l00070"></a>00070 <span class="preprocessor">#include &lt;string.h&gt;</span>
 <a name="l00071"></a>00071 
 <a name="l00072"></a>00072 
@@ -111,13 +111,13 @@
 <a name="l00207"></a>00207 
 <a name="l00208"></a>00208 
 <a name="l00215"></a>00215 <span class="preprocessor">#if RKH_SIZEOF_TIMESTAMP == 8</span>
-<a name="l00216"></a>00216 <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint8 <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a>;
+<a name="l00216"></a>00216 <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint8 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a>;
 <a name="l00217"></a>00217 <span class="preprocessor">#elif RKH_SIZEOF_TIMESTAMP == 16</span>
-<a name="l00218"></a><a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">00218</a> <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint16 <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a>;
+<a name="l00218"></a>00218 <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint16 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a>;
 <a name="l00219"></a>00219 <span class="preprocessor">#elif RKH_SIZEOF_TIMESTAMP == 32</span>
-<a name="l00220"></a>00220 <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint32 <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a>;
+<a name="l00220"></a>00220 <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint32 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a>;
 <a name="l00221"></a>00221 <span class="preprocessor">#else</span>
-<a name="l00222"></a>00222 <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint8 <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a>;
+<a name="l00222"></a><a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">00222</a> <span class="preprocessor"></span>    <span class="keyword">typedef</span> rkhuint8 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a>;
 <a name="l00223"></a>00223 <span class="preprocessor">#endif</span>
 <a name="l00224"></a>00224 <span class="preprocessor"></span>
 <a name="l00225"></a>00225 
@@ -130,14 +130,14 @@
 <a name="l00232"></a>00232 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_rec_event( e, s, n )</span>
 <a name="l00233"></a>00233 <span class="preprocessor"></span><span class="preprocessor">    #endif</span>
 <a name="l00234"></a>00234 <span class="preprocessor"></span>
-<a name="l00235"></a>00235 <span class="preprocessor">    #if RKH_TRACE_ALL == 1 || RKH_EN_SRC_STATE == 1</span>
+<a name="l00235"></a>00235 <span class="preprocessor">    #if RKH_TRACE_ALL == 1 || RKH_EN_TRN_SRC == 1</span>
 <a name="l00236"></a>00236 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_rec_src_state( e, s, n, str )       \</span>
 <a name="l00237"></a>00237 <span class="preprocessor">                    mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trgetts(), (n), (str) )</span>
 <a name="l00238"></a>00238 <span class="preprocessor"></span><span class="preprocessor">    #else</span>
 <a name="l00239"></a>00239 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_rec_src_state( e, s, n, str )</span>
 <a name="l00240"></a>00240 <span class="preprocessor"></span><span class="preprocessor">    #endif</span>
 <a name="l00241"></a>00241 <span class="preprocessor"></span>
-<a name="l00242"></a>00242 <span class="preprocessor">    #if RKH_TRACE_ALL == 1 || RKH_EN_TGT_STATE == 1</span>
+<a name="l00242"></a>00242 <span class="preprocessor">    #if RKH_TRACE_ALL == 1 || RKH_EN_TRN_TGT == 1</span>
 <a name="l00243"></a>00243 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_rec_tgt_state( e, s, n, str )       \</span>
 <a name="l00244"></a>00244 <span class="preprocessor">                    mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trgetts(), (n), (str) )</span>
 <a name="l00245"></a>00245 <span class="preprocessor"></span><span class="preprocessor">    #else</span>
@@ -268,94 +268,106 @@
 <a name="l00370"></a>00370 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00371"></a>00371 <span class="preprocessor"></span>
 <a name="l00372"></a>00372 
-<a name="l00373"></a>00373 <span class="preprocessor">#if RKH_TRACE == 1</span>
-<a name="l00374"></a>00374 <span class="preprocessor"></span>
-<a name="l00380"></a><a class="code" href="rkhtrace_8h.html#a3e54cf3f0195c75032597931f31e3bf8">00380</a> <span class="preprocessor">    #define rkh_tropen()        rkh_trace_open()</span>
-<a name="l00381"></a>00381 <span class="preprocessor"></span>
-<a name="l00387"></a><a class="code" href="rkhtrace_8h.html#ad0d87b1866b776d9d07148e8ea550158">00387</a> <span class="preprocessor">    #define rkh_trclose()       rkh_trace_close()</span>
+<a name="l00377"></a>00377 <span class="preprocessor">#if RKH_TRACE == 1</span>
+<a name="l00378"></a>00378 <span class="preprocessor"></span>
+<a name="l00384"></a>00384 <span class="preprocessor">    #ifndef rkh_trace_open</span>
+<a name="l00385"></a>00385 <span class="preprocessor"></span><span class="preprocessor">        #error  &quot;rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_open() within application level.&quot;</span>
+<a name="l00386"></a>00386 <span class="preprocessor"></span><span class="preprocessor">    #endif</span>
+<a name="l00387"></a>00387 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_tropen()        rkh_trace_open()</span>
 <a name="l00388"></a>00388 <span class="preprocessor"></span>
-<a name="l00394"></a><a class="code" href="rkhtrace_8h.html#a366c8e8cfe3b1766db1703f94e0dc3e4">00394</a> <span class="preprocessor">    #define rkh_trflush()       rkh_trace_flush()</span>
-<a name="l00395"></a>00395 <span class="preprocessor"></span><span class="preprocessor">#else</span>
-<a name="l00396"></a>00396 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_tropen()</span>
-<a name="l00397"></a>00397 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trclose()</span>
-<a name="l00398"></a>00398 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trflush()</span>
-<a name="l00399"></a>00399 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00400"></a>00400 <span class="preprocessor"></span>
-<a name="l00401"></a>00401 
-<a name="l00402"></a>00402 <span class="preprocessor">#if RKH_TRACE == 1 &amp;&amp; RKH_EN_TIMESTAMP == 1</span>
-<a name="l00403"></a>00403 <span class="preprocessor"></span>
-<a name="l00409"></a><a class="code" href="rkhtrace_8h.html#a54d4c28e8ec104c9b77230df6c22be36">00409</a> <span class="preprocessor">    #define rkh_trgetts()       rkh_trace_getts()</span>
-<a name="l00410"></a>00410 <span class="preprocessor"></span><span class="preprocessor">#else</span>
-<a name="l00411"></a>00411 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trgetts()</span>
+<a name="l00394"></a>00394 <span class="preprocessor">    #ifndef rkh_trace_open</span>
+<a name="l00395"></a>00395 <span class="preprocessor"></span><span class="preprocessor">        #error  &quot;rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_close() within application level.&quot;</span>
+<a name="l00396"></a>00396 <span class="preprocessor"></span><span class="preprocessor">    #endif</span>
+<a name="l00397"></a>00397 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trclose()       rkh_trace_close()</span>
+<a name="l00398"></a>00398 <span class="preprocessor"></span>
+<a name="l00404"></a>00404 <span class="preprocessor">    #ifndef rkh_trace_open</span>
+<a name="l00405"></a>00405 <span class="preprocessor"></span><span class="preprocessor">        #error  &quot;rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_flush() within application level.&quot;</span>
+<a name="l00406"></a>00406 <span class="preprocessor"></span><span class="preprocessor">    #endif</span>
+<a name="l00407"></a>00407 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trflush()       rkh_trace_flush()</span>
+<a name="l00408"></a>00408 <span class="preprocessor"></span><span class="preprocessor">#else</span>
+<a name="l00409"></a><a class="code" href="rkhtrace_8h.html#a3e54cf3f0195c75032597931f31e3bf8">00409</a> <span class="preprocessor"></span><span class="preprocessor">    #define rkh_tropen()</span>
+<a name="l00410"></a>00410 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trclose()</span>
+<a name="l00411"></a>00411 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trflush()</span>
 <a name="l00412"></a>00412 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00413"></a>00413 <span class="preprocessor"></span>
 <a name="l00414"></a>00414 
-<a name="l00424"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html">00424</a> <span class="keyword">typedef</span> <span class="keyword">struct</span>
-<a name="l00425"></a>00425 {
-<a name="l00431"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#af30aa0b6ae6c3c91d0665864768aeb2c">00431</a>     <span class="keywordtype">unsigned</span> enable :1;
-<a name="l00432"></a>00432     
-<a name="l00437"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">00437</a>     <span class="keywordtype">unsigned</span> print  :1;
-<a name="l00438"></a>00438 
-<a name="l00443"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">00443</a>     <span class="keywordtype">unsigned</span> log    :1;
-<a name="l00444"></a>00444 
-<a name="l00449"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#ae3965af2aaffe56178cf7a7dc7539c57">00449</a>     <span class="keywordtype">unsigned</span> res    :5;
-<a name="l00450"></a>00450 } <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a>;
-<a name="l00451"></a>00451 
-<a name="l00452"></a>00452 
-<a name="l00459"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html">00459</a> <span class="keyword">typedef</span> <span class="keyword">struct</span>
-<a name="l00460"></a>00460 {
-<a name="l00465"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">00465</a>     rkhuint8 id;
-<a name="l00466"></a>00466 
-<a name="l00472"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">00472</a>     rkhuint8 smix;
-<a name="l00473"></a>00473 
-<a name="l00480"></a>00480 <span class="preprocessor">    #if RKH_EN_TIMESTAMP == 1</span>
-<a name="l00481"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#aca72b199fbda1df1999c21e94ba1106f">00481</a> <span class="preprocessor"></span>    <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a> ts;
-<a name="l00482"></a>00482 <span class="preprocessor">    #endif</span>
-<a name="l00483"></a>00483 <span class="preprocessor"></span>
-<a name="l00488"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">00488</a>     rkhuint8 num;
+<a name="l00415"></a>00415 <span class="preprocessor">#if RKH_TRACE == 1 &amp;&amp; RKH_EN_TIMESTAMP == 1</span>
+<a name="l00416"></a>00416 <span class="preprocessor"></span>
+<a name="l00422"></a>00422 <span class="preprocessor">    #ifndef rkh_trace_open</span>
+<a name="l00423"></a>00423 <span class="preprocessor"></span><span class="preprocessor">        #error  &quot;rkhtrace.h, When enabling RKH_TRACE and RKH_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level.&quot;</span>
+<a name="l00424"></a>00424 <span class="preprocessor"></span><span class="preprocessor">    #endif</span>
+<a name="l00425"></a>00425 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trgetts()       rkh_trace_getts()</span>
+<a name="l00426"></a>00426 <span class="preprocessor"></span><span class="preprocessor">#else</span>
+<a name="l00427"></a>00427 <span class="preprocessor"></span><span class="preprocessor">    #define rkh_trgetts()</span>
+<a name="l00428"></a>00428 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00429"></a>00429 <span class="preprocessor"></span>
+<a name="l00430"></a>00430 
+<a name="l00440"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html">00440</a> <span class="keyword">typedef</span> <span class="keyword">struct</span>
+<a name="l00441"></a>00441 {
+<a name="l00447"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#af30aa0b6ae6c3c91d0665864768aeb2c">00447</a>     <span class="keywordtype">unsigned</span> enable :1;
+<a name="l00448"></a>00448     
+<a name="l00453"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">00453</a>     <span class="keywordtype">unsigned</span> print  :1;
+<a name="l00454"></a>00454 
+<a name="l00459"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">00459</a>     <span class="keywordtype">unsigned</span> log    :1;
+<a name="l00460"></a>00460 
+<a name="l00465"></a><a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#ae3965af2aaffe56178cf7a7dc7539c57">00465</a>     <span class="keywordtype">unsigned</span> res    :5;
+<a name="l00466"></a>00466 } <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a>;
+<a name="l00467"></a>00467 
+<a name="l00468"></a>00468 
+<a name="l00475"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html">00475</a> <span class="keyword">typedef</span> <span class="keyword">struct</span>
+<a name="l00476"></a>00476 {
+<a name="l00481"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">00481</a>     rkhuint8 id;
+<a name="l00482"></a>00482 
+<a name="l00488"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">00488</a>     rkhuint8 smix;
 <a name="l00489"></a>00489 
-<a name="l00496"></a>00496 <span class="preprocessor">    #if RKH_EN_TRACE_STRING == 1</span>
-<a name="l00497"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a236a127264c866124bacd9d74a6a04b4">00497</a> <span class="preprocessor"></span>    <span class="keywordtype">char</span> sb[ RKH_MAX_TRACE_STRING_SIZE + 1 ];
+<a name="l00496"></a>00496 <span class="preprocessor">    #if RKH_EN_TIMESTAMP == 1</span>
+<a name="l00497"></a>00497 <span class="preprocessor"></span>    <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> ts;
 <a name="l00498"></a>00498 <span class="preprocessor">    #endif</span>
-<a name="l00499"></a>00499 <span class="preprocessor"></span>} <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a>;
-<a name="l00500"></a>00500 
-<a name="l00501"></a>00501 
-<a name="l00506"></a>00506 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be">rkh_trinit</a>( <span class="keywordtype">void</span> );
-<a name="l00507"></a>00507 
-<a name="l00508"></a>00508 
-<a name="l00525"></a>00525 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig</a>( HUInt trix, HUInt log, HUInt print );
-<a name="l00526"></a>00526 
-<a name="l00527"></a>00527 
-<a name="l00538"></a>00538 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8">rkh_trcontrol</a>( HUInt trix, HUInt opt );
-<a name="l00539"></a>00539 
-<a name="l00540"></a>00540 
-<a name="l00553"></a>00553 <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *<a class="code" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb">rkh_trgetcfg</a>( HUInt trix );
-<a name="l00554"></a>00554 
+<a name="l00499"></a>00499 <span class="preprocessor"></span>
+<a name="l00504"></a><a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">00504</a>     rkhuint8 num;
+<a name="l00505"></a>00505 
+<a name="l00512"></a>00512 <span class="preprocessor">    #if RKH_EN_TRACE_STRING == 1</span>
+<a name="l00513"></a>00513 <span class="preprocessor"></span>    <span class="keywordtype">char</span> sb[ RKH_MAX_TRACE_STRING_SIZE + 1 ];
+<a name="l00514"></a>00514 <span class="preprocessor">    #endif</span>
+<a name="l00515"></a>00515 <span class="preprocessor"></span>} <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a>;
+<a name="l00516"></a>00516 
+<a name="l00517"></a>00517 
+<a name="l00522"></a>00522 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be">rkh_trinit</a>( <span class="keywordtype">void</span> );
+<a name="l00523"></a>00523 
+<a name="l00524"></a>00524 
+<a name="l00541"></a>00541 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig</a>( HUInt trix, HUInt log, HUInt print );
+<a name="l00542"></a>00542 
+<a name="l00543"></a>00543 
+<a name="l00554"></a>00554 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8">rkh_trcontrol</a>( HUInt trix, HUInt opt );
 <a name="l00555"></a>00555 
-<a name="l00568"></a>00568 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#ac7cad1917f535bb2884306cbc6a473fd">rkh_trevt</a>( <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> *ptre );
-<a name="l00569"></a>00569 
+<a name="l00556"></a>00556 
+<a name="l00569"></a>00569 <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *<a class="code" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb">rkh_trgetcfg</a>( HUInt trix );
 <a name="l00570"></a>00570 
-<a name="l00583"></a>00583 HUInt <a class="code" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf">rkh_trgetnext</a>( <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> *ptre );
-<a name="l00584"></a>00584 
+<a name="l00571"></a>00571 
+<a name="l00584"></a>00584 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#ac7cad1917f535bb2884306cbc6a473fd">rkh_trevt</a>( <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> *ptre );
 <a name="l00585"></a>00585 
-<a name="l00594"></a>00594 rkhuint16 <a class="code" href="rkhtrace_8h.html#a3e4c7998e4e74404359f48fa98e11eac">rkh_trgetqty</a>( <span class="keywordtype">void</span> );
-<a name="l00595"></a>00595 
-<a name="l00596"></a>00596 
-<a name="l00606"></a>00606 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open</a>( <span class="keywordtype">void</span> );
-<a name="l00607"></a>00607 
-<a name="l00608"></a>00608 
-<a name="l00617"></a>00617 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>( <span class="keywordtype">void</span> );
-<a name="l00618"></a>00618 
-<a name="l00619"></a>00619 
-<a name="l00631"></a>00631 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>( <span class="keywordtype">void</span> );
-<a name="l00632"></a>00632 
-<a name="l00633"></a>00633 
-<a name="l00647"></a>00647 <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a> <a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts</a>( <span class="keywordtype">void</span> );
+<a name="l00586"></a>00586 
+<a name="l00599"></a>00599 HUInt <a class="code" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf">rkh_trgetnext</a>( <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> *ptre );
+<a name="l00600"></a>00600 
+<a name="l00601"></a>00601 
+<a name="l00610"></a>00610 rkhuint16 <a class="code" href="rkhtrace_8h.html#a3e4c7998e4e74404359f48fa98e11eac">rkh_trgetqty</a>( <span class="keywordtype">void</span> );
+<a name="l00611"></a>00611 
+<a name="l00612"></a>00612 
+<a name="l00622"></a>00622 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open</a>( <span class="keywordtype">void</span> );
+<a name="l00623"></a>00623 
+<a name="l00624"></a>00624 
+<a name="l00633"></a>00633 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>( <span class="keywordtype">void</span> );
+<a name="l00634"></a>00634 
+<a name="l00635"></a>00635 
+<a name="l00647"></a>00647 <span class="keywordtype">void</span> <a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>( <span class="keywordtype">void</span> );
 <a name="l00648"></a>00648 
 <a name="l00649"></a>00649 
-<a name="l00650"></a>00650 <span class="preprocessor">#endif</span>
+<a name="l00663"></a>00663 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> <a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts</a>( <span class="keywordtype">void</span> );
+<a name="l00664"></a>00664 
+<a name="l00665"></a>00665 
+<a name="l00666"></a>00666 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 13:54:26 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

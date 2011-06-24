@@ -27,8 +27,9 @@ This section describes how to use the RKH directory structure shown in
 +---demo				- RKH demo applications
 +---doc					- RKH documentation
 +---source				- RKH source files
-|   chglog.txt			- Change log file
-\	copying.txt			- licence file
+|   copying.txt			- licence file
+|   README				- change log file
+\	rkh.chm				- reference manual
 \endcode
 
 \n <STRONG> RKH source files </STRONG>
@@ -47,10 +48,11 @@ directory.
 \---source				- RKH source files
 |   |   
 |   \---include			- RKH platform-independent include files
-|   |       rkh.h		- Internal use only
-|   |       rkhtrace.h	- Trace facility
+|   |       rkh.h		- Framework interface
+|   |       rkhassert.h	- Assert definitions
+|   |       rkhitl.h	- Internal use only
 |   |       rkhplat.h	- Supported and portable platforms
-|   |       rkhsm.h		- Framework interface
+|   |       rkhtrace.h	- Trace facility
 |   |       
 |   \---portable		- RKH ports
 |   |   \---cws08		- Codewarrior for Freescale S08
@@ -63,8 +65,9 @@ directory.
 |   |   rkh.c			- RKH platform-independent source code.
 |   \   rkhtrace.c		- RKH trace facility source code.
 |
-|   chglog.txt			- Change log file
-\	copying.txt			- licence file
+|   copying.txt			- licence file
+|   README				- change log file
+\	rkh.chm				- reference manual
 \endcode
 
 - \c \\include: contains platform-independent header files.
@@ -129,20 +132,23 @@ This file is mandatory and it's used by RKH.
 |   +---cw08			- Application demo for Codewarrior Freescale S08 platform
 |   +---lnxgcc			- Application demo for Linux GCC platform
 |   \---vc08			- Application demo for VC08 platform
+|	    +---prj			- IDE files.
 |		main.c			- main source code
 |		my.c			- application source file
-|		myact.c			- application source file
 |		my.h			- application include file
+|		myact.c			- application source file
 |		myact.h			- application include file
 |		myevt.h			- application include file
+|		mylog.txt		- log file
 |		rkhcfg.h		- RKH configuration file
 |		rkhdata.h		- application include file
 |                   
 +---doc					- RKH documentation
 |                   
 +---source				- RKH source files
-|   chglog.txt			- Change log file
-\	copying.txt			- licence file
+|   copying.txt			- licence file
+|   README				- change log file
+\	rkh.chm				- reference manual
 \endcode
 
 <HR>
@@ -162,10 +168,11 @@ rkhtrace.c	- RKH trace tool
 Required include files extracted from \c \\include directory:
 
 \code
-rkh.h		- Internal use only
+rkh.h		- Framework interface
+rkhassert.h	- Assert definitions
+rkhitl.h	- Internal use only
+rkhplat.h	- Supported and portable platforms
 rkhtrace.h	- Trace facility
-rkhplat.h	- Supported and portable platform
-rkhsm.h		- Framework interface
 \endcode
 
 Required include files extracted from \c \\portable\\\<platform\> directory:
@@ -500,7 +507,7 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 
 \n
 The object structure of "my" state-machine is declared by means of 
-RKH_CREATE_HSM() macro, which is explained in \c rkhsm.h file.
+RKH_CREATE_HSM() macro, which is explained in \c rkh.h file.
 According to "my" state diagram:
 \n
 \n
@@ -526,7 +533,7 @@ where:
 \n
 \subsection rep_cs Declaring the composite states
 \n
-The RKH_CREATE_COMP_STATE() macro, which is defined in the \c rkhsm.h file,
+The RKH_CREATE_COMP_STATE() macro, which is defined in the \c rkhm.h file,
 is used for creating the composite states.
 
 According to "my" state diagram the declaration of composite state "S1" looks
@@ -558,7 +565,7 @@ RKH_CREATE_COMP_STATE( S3, 	0, NULL, NULL,  RKH_ROOT, 	&S31,  	NULL );
 \n
 \subsection rep_bs Declaring the basic states
 \n
-The RKH_CREATE_BASIC_STATE() macro, which is defined in the \c rkhsm.h file,
+The RKH_CREATE_BASIC_STATE() macro, which is defined in the \c rkh.h file,
 is used for creating the basic states.
 
 According to "my" state diagram the declaration of basic state "S12" looks
@@ -633,7 +640,7 @@ RKH_CREATE_BASIC_STATE( S32, 	0, NULL, 	NULL, &S3, 	NULL );
 The conditional, junction, shallow history, and deep history pseudostates 
 are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
 RKH_CREATE_SHALLOW_HISTORY_STATE(), and RKH_CREATE_DEEP_HISTORY_STATE() 
-macros respectively, which are explained in \c rkhsm.h file.
+macros respectively, which are explained in \c rkh.h file.
 
 \n According to "my" state diagram the declaration of conditional 
 pseudostate "C1" looks as follow:
@@ -891,7 +898,7 @@ The following listing shows a fragment of "my.c" source file, which
 illustatres some aspects of implementing state-machines with RKH.
 
 \code
-(1) #include "rkhsm.h"
+(1) #include "rkh.h"
 
 
 /*	Includes file of event definitions. */
@@ -916,7 +923,7 @@ illustatres some aspects of implementing state-machines with RKH.
 /* ... */
 \endcode
 
-\li (1) Every application C-file that uses RKH must include the rkhsm.h 
+\li (1) Every application C-file that uses RKH must include the rkh.h 
 		header file. This header file contains the specific adaptation 
 		of RKH to the given processor and compiler, also includes the
 		RKH interface to implement state-machines. The port file is located
@@ -947,7 +954,7 @@ illustatres some important aspects of implementing state-machines with RKH.
 #define __MY_H__
 
 
-(1)	#include "rkhsm.h"
+(1)	#include "rkh.h"
 
 
 /*	Defines the event structure. */
@@ -1015,7 +1022,7 @@ illustatres some important aspects of implementing state-machines with RKH.
 \subsection rep_act Declaring and defining actions
 
 \n The following enlists the action to be automatically executed by RKH. The
-function prototypes are explicitly defined in \c rkh.h file.
+function prototypes are explicitly defined in \c rkhitl.h file.
 
 - \b Initiallization \b action (#RKHINIT_T): 
 	the state transition originating at the black ball is called the 
@@ -1486,9 +1493,19 @@ Available options:
 	up to 4 transition segments. Currently RKH_MAX_TR_SEGS cannot 
 	exceed 8. 
 
+-	\b RKH_NUM_STATE_MACHINES
+	\n \n Number of used state machines.
+
 -	\b RKH_SIZEOF_EVENT
 	\n \n Determines the size [in bits] of the RKH event representation 
 	#RKHE_T. Valid values: 8, 16 or 32. Default 8.
+
+-	\b RKH_EN_DYNAMIC_EVENT
+	\n \n Enable (1) or Disable (0) dynamic event support.
+
+-	\b RKH_EN_DEFERRED_EVENT
+	\n \n Enable (1) or Disable (0) deferred event support. 
+	For using this feature the dynamic event support must be set to one.
 
 -	\b RKH_EN_PSEUDOSTATE
 	\n \n Enable (1) or disable (0) the pseudostates usage.
@@ -1646,5 +1663,7 @@ Available options:
 - 	\b RKH_MAX_TRACE_STRING_SIZE
 	\n \n Determines the size [in bytes] of the trace string argument.
 
+-	\b RKH_ASSERT
+	\n \n Enable (1) or Disable (0) assert support.
 
 */

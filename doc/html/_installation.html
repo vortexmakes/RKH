@@ -38,8 +38,9 @@ Using directory structure</a></h2>
 +---demo                - RKH demo applications
 +---doc                 - RKH documentation
 +---source              - RKH source files
-|   chglog.txt          - Change log file
-\   copying.txt         - licence file
+|   copying.txt         - licence file
+|   README              - change log file
+\   rkh.chm             - reference manual
 </pre></div><p><br/>
  <b> RKH source files </b></p>
 <p>The <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a> shows the <code>\source</code> directory.</p>
@@ -52,10 +53,11 @@ Using directory structure</a></h2>
 \---source              - RKH source files
 |   |   
 |   \---include         - RKH platform-independent include files
-|   |       rkh.h       - Internal use only
-|   |       rkhtrace.h  - Trace facility
+|   |       rkh.h       - Framework interface
+|   |       rkhassert.h - Assert definitions
+|   |       rkhitl.h    - Internal use only
 |   |       rkhplat.h   - Supported and portable platforms
-|   |       rkhsm.h     - Framework interface
+|   |       rkhtrace.h  - Trace facility
 |   |       
 |   \---portable        - RKH ports
 |   |   \---cws08       - Codewarrior <span class="keywordflow">for</span> Freescale S08
@@ -68,8 +70,9 @@ Using directory structure</a></h2>
 |   |   rkh.c           - RKH platform-independent source code.
 |   \   rkhtrace.c      - RKH trace facility source code.
 |
-|   chglog.txt          - Change log file
-\   copying.txt         - licence file
+|   copying.txt         - licence file
+|   README              - change log file
+\   rkh.chm             - reference manual
 </pre></div><ul>
 <li><code>\include:</code> contains platform-independent header files.</li>
 </ul>
@@ -77,7 +80,7 @@ Using directory structure</a></h2>
 <li><code>\portable:</code> contains platform-independent header files to be used by RKH applications. Each platform-dependent file should be placed in a directory that represents the platform to be used. Each platform directory should be placed within <code>\portable</code> directory, i.e.: <code>\portable\&lt;platform&gt;\rkhport.h</code>. The <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a> shows three RKH port directories: <code>\portable\cw08</code> (Codewarrior for Freescale S08), <code>\portable\lnxgcc</code> (Linux GCC), and <code>\portable\vc08</code> (Visual C++ 2008).</li>
 </ul>
 <ul>
-<li><code>rkh.c:</code> platform-independent source code of RKH. This file requires inclusion of only one platform-specific header file named <code>rkhport.h</code>. It's indirectly included by <code><a class="el" href="rkh_8h.html" title="RKH engine interface.">rkh.h</a></code> file and it's described in detail in section <a class="el" href="_porting.html">Porting</a>.</li>
+<li><code>rkh.c:</code> platform-independent source code of RKH. This file requires inclusion of only one platform-specific header file named <code>rkhport.h</code>. It's indirectly included by <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file and it's described in detail in section <a class="el" href="_porting.html">Porting</a>.</li>
 </ul>
 <ul>
 <li><code>rkhtrace.c:</code> platform-independent source code of runtime debugging.</li>
@@ -105,20 +108,23 @@ Using directory structure</a></h2>
 |   +---cw08            - Application demo <span class="keywordflow">for</span> Codewarrior Freescale S08 platform
 |   +---lnxgcc          - Application demo <span class="keywordflow">for</span> Linux GCC platform
 |   \---vc08            - Application demo <span class="keywordflow">for</span> VC08 platform
+|       +---prj         - IDE files.
 |       main.c          - main source code
 |       my.c            - application source file
-|       myact.c         - application source file
 |       my.h            - application include file
+|       myact.c         - application source file
 |       myact.h         - application include file
 |       myevt.h         - application include file
+|       mylog.txt       - log file
 |       rkhcfg.h        - RKH configuration file
 |       rkhdata.h       - application include file
 |                   
 +---doc                 - RKH documentation
 |                   
 +---source              - RKH source files
-|   chglog.txt          - Change log file
-\   copying.txt         - licence file
+|   copying.txt         - licence file
+|   README              - change log file
+\   rkh.chm             - reference manual
 </pre></div><hr/>
  <h2><a class="anchor" id="using_file">
 Using files</a></h2>
@@ -127,10 +133,11 @@ Using files</a></h2>
 <div class="fragment"><pre class="fragment">rkh.c       - RKH platform-independent source code
 rkhtrace.c  - RKH trace tool
 </pre></div><p>Required include files extracted from <code>\include</code> directory:</p>
-<div class="fragment"><pre class="fragment">rkh.h       - Internal use only
+<div class="fragment"><pre class="fragment">rkh.h       - Framework interface
+rkhassert.h - Assert definitions
+rkhitl.h    - Internal use only
+rkhplat.h   - Supported and portable platforms
 rkhtrace.h  - Trace facility
-rkhplat.h   - Supported and portable platform
-rkhsm.h     - Framework interface
 </pre></div><p>Required include files extracted from <code>\portable\&lt;platform&gt;</code> directory:</p>
 <div class="fragment"><pre class="fragment">rkhport.h   - RKH platform-dependent include file
 </pre></div><p>The <code>rkhport.h</code> must be referenced from <code><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></code> file as shown below:</p>
@@ -139,7 +146,7 @@ rkhsm.h     - Framework interface
  <b>Application</b> </p>
 <p>Next, should be created the configuration file <code>rkhcfg.h</code> to be included within the application directory. See <a class="el" href="cfg.html">Configuration</a> section for more information. This file is mandatory and it's used by RKH. </p>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 13:54:27 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

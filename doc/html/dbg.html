@@ -48,7 +48,7 @@ Using tracing tool</a></h2>
 <li>The trace events of interest must be defined in the <code>rkhcfg.h</code> file. See <code><a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e">RKHTR_EVENTS</a></code> enumeration and <a class="el" href="dbg.html#trcfg">Trace tool configuration</a> section.</li>
 </ul>
 <ul>
-<li>The <a class="el" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open()</a>, <a class="el" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close()</a>, <a class="el" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush()</a>, and <a class="el" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts()</a> are platform-dependent functions, therefore the user application must implement it. This functions are invoked through the <a class="el" href="rkhtrace_8h.html#a3e54cf3f0195c75032597931f31e3bf8">rkh_tropen()</a>, <a class="el" href="rkhtrace_8h.html#ad0d87b1866b776d9d07148e8ea550158">rkh_trclose()</a>, <a class="el" href="rkhtrace_8h.html#a366c8e8cfe3b1766db1703f94e0dc3e4">rkh_trflush()</a>, and <a class="el" href="rkhtrace_8h.html#a54d4c28e8ec104c9b77230df6c22be36">rkh_trgetts()</a> macros.</li>
+<li>The <a class="el" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open()</a>, <a class="el" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close()</a>, <a class="el" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush()</a>, and <a class="el" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts()</a> are platform-dependent functions, therefore the user application must implement it. This functions are invoked through the <a class="el" href="rkhtrace_8h.html#a3e54cf3f0195c75032597931f31e3bf8">rkh_tropen()</a>, rkh_trclose(), rkh_trflush(), and rkh_trgetts() macros.</li>
 </ul>
 <ul>
 <li>The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options configures the <code><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a></code> trace event structure and should be defined in the <code>rkhcfg.h</code> file.</li>
@@ -63,7 +63,7 @@ Trace tool configuration</a></h2>
 <ul>
 <li><b>RKH_EN_EVENT</b> <br/>
  <br/>
- Records the ocurred event in decimal format. See <code><a class="el" href="rkh_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a></code> typedef.</li>
+ Records the ocurred event in decimal format. See <code><a class="el" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a></code> typedef.</li>
 </ul>
 <ul>
 <li><b>RKH_EN_TRN_SRC</b> <br/>
@@ -108,7 +108,7 @@ Trace tool configuration</a></h2>
 <ul>
 <li><b>RKH_EN_RTN_CODE</b> <br/>
  <br/>
- Records the code returned by <a class="el" href="rkhsm_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine()</a> functionm in decimal format. See <code><a class="el" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3">RKH_RCODE_T</a></code> enumeration.</li>
+ Records the code returned by <a class="el" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine()</a> functionm in decimal format. See <code><a class="el" href="rkh_8h.html#ad7ffdf67be28296726e65d6b7223f5e3">RKH_RCODE_T</a></code> enumeration.</li>
 </ul>
 <ul>
 <li><b>RKH_EN_NUM_ENEX</b> <br/>
@@ -160,13 +160,13 @@ Example use</a></h2>
 
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">log</a> == RKH_TRLOG )
             fprintf( fdbg, <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    <a class="code" href="rkhtrace_8h.html#a54d4c28e8ec104c9b77230df6c22be36">rkh_trgetts</a>(),
+                                                    rkh_trgetts(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">print</a> == RKH_TRPRINT )
             printf( <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    <a class="code" href="rkhtrace_8h.html#a54d4c28e8ec104c9b77230df6c22be36">rkh_trgetts</a>(),
+                                                    rkh_trgetts(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
@@ -174,10 +174,10 @@ Example use</a></h2>
 }
 
 
-<a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a> 
+<a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> 
 <a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts</a>( <span class="keywordtype">void</span> )
 {
-    <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a> )clock();
+    <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> )clock();
 }
 </pre></div><p>According to example shown above the following shows a fragment of output generated:</p>
 <div class="fragment"><pre class="fragment">---- RKH trace log session - Jun 10 2010 - 11:00:42 ----
@@ -190,7 +190,7 @@ Example use</a></h2>
 00098 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eafcf52184dc38c3ec20cf06824304560a">RKHTR_TRN_SRC</a>    ] - MY : S111 [0]
 00098 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ead83151d7314cf1565126500bfab53154">RKHTR_INT_TRAN</a>   ] - MY : 
 00098 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea90a6fb0e01042f47d2e3c52078292959">RKHTR_NUM_ACTSGT</a> ] - MY : 0 - 0
-00098 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>   ] - MY : <a class="code" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>
+00098 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>   ] - MY : <a class="code" href="rkh_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>
 00099 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ead483ed5733cf57b12e370a5eca698ab9">RKHTR_EVENT</a>      ] - MY : 5
 00099 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eafcf52184dc38c3ec20cf06824304560a">RKHTR_TRN_SRC</a>    ] - MY : S111 [0]
 00099 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea196dc68f2780981a6bdb8d47176a8d64">RKHTR_TRN_TGT</a>    ] - MY : C11 [0]
@@ -204,9 +204,9 @@ Example use</a></h2>
 00104 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea792fb0c1c6395a6a4b5dcb49613a14a1">RKHTR_ENTRY</a>      ] - MY : S2 [0]
 00104 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea792fb0c1c6395a6a4b5dcb49613a14a1">RKHTR_ENTRY</a>      ] - MY : S21 [0]
 00104 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea8be40e23be633dfc1a77059494e3a18e">RKHTR_NXT_STATE</a>  ] - MY : S21 [0]
-00105 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>   ] - MY : <a class="code" href="rkhsm_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>
+00105 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>   ] - MY : <a class="code" href="rkh_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 13:54:27 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

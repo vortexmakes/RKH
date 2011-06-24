@@ -664,7 +664,7 @@ void rkh_gc( RKHEVT_T *evt );
  *	static event.
  *
  * 	\param evt		pointer to event structure derived from RKHEVT_T.
- * 	\param e		event signal. The RKH takes this value for triggering 
+ * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
  *
  * 	\returns

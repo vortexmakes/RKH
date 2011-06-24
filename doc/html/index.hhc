@@ -46,6 +46,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RKH_INFO_T"><param name="Local" value="struct_r_k_h___i_n_f_o___t.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RKH_T"><param name="Local" value="struct_r_k_h___t.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RKHBASE_T"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="RKHEVT_T"><param name="Local" value="struct_r_k_h_e_v_t___t.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RKHSCOND_T"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RKHSHIST_T"><param name="Local" value="struct_r_k_h_s_h_i_s_t___t.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RKHSJUNC_T"><param name="Local" value="struct_r_k_h_s_j_u_n_c___t.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -58,8 +59,9 @@
 <LI><OBJECT type="text/sitemap"><param name="Name" value="File List"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkh.h"><param name="Local" value="rkh_8h.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhassert.h"><param name="Local" value="rkhassert_8h.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhitl.h"><param name="Local" value="rkhitl_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhplat.h"><param name="Local" value="rkhplat_8h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhsm.h"><param name="Local" value="rkhsm_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhtrace.h"><param name="Local" value="rkhtrace_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Globals"><param name="Local" value="globals.html"><param name="ImageNumber" value="11"></OBJECT>

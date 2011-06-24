@@ -35,14 +35,12 @@
 <tr><td colspan="2"><h2>Data Fields</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#aca72b199fbda1df1999c21e94ba1106f">ts</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">num</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#a236a127264c866124bacd9d74a6a04b4">sb</a> [RKH_MAX_TRACE_STRING_SIZE+1]</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Describes a trace event. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00459">459</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00475">475</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 <hr/><h2>Field Documentation</h2>
 <a class="anchor" id="a80da6d45130b3df12d3eab8317e6519a"></a><!-- doxytag: member="RKHTREVT_T::id" ref="a80da6d45130b3df12d3eab8317e6519a" args="" -->
 <div class="memitem">
@@ -56,7 +54,7 @@
 <div class="memdoc">
 <p>Trace event identifier. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00465">465</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00481">481</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -70,25 +68,9 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Trace event argument. </p>
+<p>Timestamp. This is a optional member in compile-time by means of RKH_EN_TIMESTAMP preprocessor directive. Trace event argument. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00488">488</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a236a127264c866124bacd9d74a6a04b4"></a><!-- doxytag: member="RKHTREVT_T::sb" ref="a236a127264c866124bacd9d74a6a04b4" args="[RKH_MAX_TRACE_STRING_SIZE+1]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char <a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#a236a127264c866124bacd9d74a6a04b4">RKHTREVT_T::sb</a>[RKH_MAX_TRACE_STRING_SIZE+1]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Trace event argument. This is a optional argument in compile-time by means of RKH_EN_TRACE_STRING preprocessor directive. </p>
-
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00497">497</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00504">504</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -104,23 +86,7 @@
 <div class="memdoc">
 <p>HSM descriptor. It's used as instrumented state-machine identifier. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00472">472</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aca72b199fbda1df1999c21e94ba1106f"></a><!-- doxytag: member="RKHTREVT_T::ts" ref="aca72b199fbda1df1999c21e94ba1106f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020">RKHTS_T</a> <a class="el" href="struct_r_k_h_t_r_e_v_t___t.html#aca72b199fbda1df1999c21e94ba1106f">RKHTREVT_T::ts</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Timestamp. This is a optional member in compile-time by means of RKH_EN_TIMESTAMP preprocessor directive. </p>
-
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00481">481</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00488">488</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -128,7 +94,7 @@
 <li><a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 20 13:54:27 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
