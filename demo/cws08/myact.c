@@ -4,7 +4,7 @@
 
 
 #include <stdio.h>
-#include "rkhsm.h"
+#include "rkh.h"
 #include "my.h"
 #include "myevt.h"
 

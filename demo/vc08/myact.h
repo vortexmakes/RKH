@@ -7,7 +7,7 @@
 #define __MYACT_H__
 
 
-#include "rkhsm.h"
+#include "rkh.h"
 
 
 /*

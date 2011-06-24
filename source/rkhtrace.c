@@ -5,13 +5,12 @@
 
 #include "rkh.h"
 #include "rkhtrace.h"
-#include "rkhdata.h"
 
 
 #if RKH_TRACE == 1
 
 
-static RKHTRCFG_T trcfgs[ RKH_NUM_RKHS ];
+static RKHTRCFG_T trcfgs[ RKH_NUM_STATE_MACHINES ];
 static RKHTREVT_T trstream[ RKH_MAX_NUM_TRACES ];
 static RKHTREVT_T *trin, *trout;
 

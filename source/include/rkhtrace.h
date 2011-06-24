@@ -66,7 +66,7 @@
 #define __RKHTRACE_H__
 
 
-#include "rkh.h"
+#include "rkhitl.h"
 #include <string.h>
 
 
@@ -370,6 +370,10 @@ typedef enum
 #endif
 
 
+/**
+ *	Platform-dependent functions.
+ */
+
 #if RKH_TRACE == 1
 
 	/**
@@ -377,6 +381,9 @@ typedef enum
 	 * 	function.
 	 */
 
+	#ifndef rkh_trace_open
+		#error  "rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_open() within application level."
+	#endif
 	#define rkh_tropen()		rkh_trace_open()
 
 	/**
@@ -384,6 +391,9 @@ typedef enum
 	 * 	function.
 	 */
 
+	#ifndef rkh_trace_open
+		#error  "rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_close() within application level."
+	#endif
 	#define rkh_trclose()		rkh_trace_close()
 
 	/**
@@ -391,6 +401,9 @@ typedef enum
 	 * 	function.
 	 */
 
+	#ifndef rkh_trace_open
+		#error  "rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_flush() within application level."
+	#endif
 	#define rkh_trflush()		rkh_trace_flush()
 #else
 	#define rkh_tropen()
@@ -406,6 +419,9 @@ typedef enum
 	 * 	through the rkh_trace_getts() function.
 	 */
 
+	#ifndef rkh_trace_open
+		#error  "rkhtrace.h, When enabling RKH_TRACE and RKH_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level."
+	#endif
 	#define rkh_trgetts()		rkh_trace_getts()
 #else
 	#define rkh_trgetts()

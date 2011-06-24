@@ -25,12 +25,12 @@
 
 /**
  * 	\file rkh.h
- * 	\brief
+ *	\brief
+ *	
+ * 	RKH platform-independent interface.
  *
- * 	RKH engine interface.
- *
- * 	This header file is directly included in RKH interface 
- * 	file, rkhsm.h.
+ * 	This header file must be included in all modules 
+ * 	(*.c files) that use RKH.
  */
 
 
@@ -38,1055 +38,784 @@
 #define __RKH_H__
 
 
-/**	
- *  Application specific configuration options.
+#include <stdlib.h>
+#include "rkhitl.h"
+
+
+/** 	
+ *  Return codes from rkh_engine() function.
  */
 
-#include "rkhcfg.h"
-
-
-/** 
- * 	Specific definitions to the platform being used.
- */
-
-#include "rkhplat.h"
-
-
-/** 
- * 	Identification numbers of declared state-machines.
- */
-
-#include "rkhdata.h"
-
-
-/** 
- * 	Trace facility.
- */
-
-#include "rkhtrace.h"
-
-
-/**	
- *	Version string of RKH.
- *
- *	Date: 06/10/2011
- */
-
-#define RKH_VERSION					"1.1.4"
-
-
-/**	
- *	This macro is used to indicate the end of a transition table.
- */
-
-#define RKH_ANY						((RKHE_T)(-1))
-
-
-/* 	
- *  Verifies port file from rkhport.h included in rkhplat.h.
- */
-
-#ifndef rkhrom
-#error "rkhport.h, Missing rkhrom: Qualifier for ROM data storage. \
-	See Porting chapter in readme file for more information"
-#endif
-
-
-/* 	
- *  Verifies configurations from rkhcfg.h include file.
- */
-
-#if RKH_TRACE == 1
-	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_HSM_NAME != 1 )
-	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_HSM_NAME"
-	#endif
-#endif
-
-#ifndef RKH_MAX_HCAL_DEPTH
-#error "rkhcfg.h, Missing RKH_MAX_HCAL_DEPTH: Max. # of hierarchical levels"
-#else
-	#if RKH_MAX_HCAL_DEPTH == 0 || RKH_MAX_HCAL_DEPTH > 8
-	#error  "rkhcfg.h, RKH_MAX_HCAL_DEPTH must be > 0 and <= 8"
-	#endif
-#endif
-
-
-#ifndef RKH_MAX_TR_SEGS
-#error "rkhcfg.h, Missing RKH_MAX_TR_SEGS: Max. # of transition segments"
-#else
-	#if RKH_MAX_TR_SEGS == 0 || RKH_MAX_TR_SEGS > 8
-	#error  "rkhcfg.h, RKH_MAX_TR_SEGS must be > 0 and <= 8"
-	#endif
-#endif
-
-
-/*
- * 	The following macros and constants are internal to RKH and 
- * 	the user application should not call it.
- */
-
-#define RKH_REGULAR						0x80
-#define RKH_PSEUDO						0
-#define RKH_TYPE(t,i)					(t|i)
-
-#define RKH_BASIC						RKH_TYPE( RKH_REGULAR, 	0	 )
-#define RKH_COMPOSITE					RKH_TYPE( RKH_REGULAR, 	0x01 )	
-#define RKH_CONDITIONAL					RKH_TYPE( RKH_PSEUDO, 	0x02 )	
-#define RKH_JUNCTION					RKH_TYPE( RKH_PSEUDO, 	0x04 )	
-#define RKH_SHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x08 )	
-#define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
-
-
-#if RKH_EN_STATE_NAME == 1
-	#define mkbase(t,id,name)			{t,id,#name}
-#else
-	#define mkbase(t,id,name)			{t,id}
-#endif
-
-
-#if RKH_EN_HCAL == 1
-	#if RKH_EN_PPRO == 1
-		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL,pp
-		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h,NULL
-	#else
-		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL
-		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h
-	#endif
-#else
-	#if RKH_EN_PPRO == 1
-		#define mkbasic(en,ex,p,n,pp)		n##_trtbl,pp
-		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl,NULL
-	#else
-		#define mkbasic(en,ex,p,n,pp)		n##_trtbl
-		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl
-	#endif
-#endif
-
-
-#if RKH_EN_HSM_NAME	== 1
-#if RKH_EN_GET_INFO	== 1
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia,hd,{0,0}}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia,{0,0}}
-	#endif
-#else
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia,hd}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia}
-	#endif
-#endif
-#else
-#if RKH_EN_GET_INFO	== 1
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia,hd,{0,0}}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia,{0,0}}
-	#endif
-#else
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia,hd}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia}
-	#endif
-#endif
-#endif
-
-
-#ifndef RKH_ASSERT
-	#define RKH_ASSERT		0
-#endif
-
-
-/*
- * 	The 'rkhassert' macro is used by RKH to check expressions that ought 
- * 	to be true as long as the program is running correctly. An assert 
- * 	should never have a side effect. If the expression evaluates to 0, the 
- * 	macro 'rkh_assert' will be called, typically halting the program in some 
- * 	way. The 'rkh_assert' macro should store or report the error code 
- * 	('event' parameter). Once the 'rkh_assert' macro has stored 
- *	or reported the error, it must decide on the system's next action.
- *	One option is:
- *		
- *		1.- disable general interrupt
- *		2.- stores or send detected error (could be use a trace facility)
- *		3.- trigger a software reset
- *	
- *	The policy chooses will be largely determined by the nature of product. 
- *	If the system is running with a source level debugger, place a 
- *	breakpoint within.
- */
-
-#if RKH_ASSERT == 1
-	#ifdef rkh_assert
-		#define rkhassert( exp, event )		\
-			if( ( exp ) )					\
-			{}								\
-			else							\
-			{								\
-				rkh_assert( event )			\
-			}
-	#else
-	    #error  "rkhcfg.h, Missing rkh_assert macro"
-	#endif
-#else
-	#define rkhassert( exp, event )
-	#undef rkh_assert
-	#define rkh_assert( event )
-#endif
-
-
-#if RKH_EN_DYNAMIC_EVENT == 1
-	#define mksevt( evt, es )											\
-								((RKHEVT_T*)(e))->e = (RKHE_T)es;		\
-								((RKHEVT_T*)(e))->dynamic_ = 0;
-#else
-	#define mksevt( evt, es )											\
-								((RKHEVT_T*)(evt))->e = (RKHE_T)es;
-#endif
-
-
-/**
- *	Defines dynamic event support.
- *	
- *	This definitions are required only when the user application
- *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
- */
-
-#if RKH_EN_DYNAMIC_EVENT == 1
-
-	/**
-	 * 	\brief 
-	 * 	
-	 * 	Number of available memory pools. Default is 3.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 * 	
-	 * 	\code
-	 * 	#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
-	 * 	\endcode
-	 */
-
-	#ifndef RKH_DYNE_NUM_POOLS
-		#define RKH_DYNE_NUM_POOLS			3
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 * 	Platform-dependent macro defining the event pool initialization.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 * 	
-	 * 	\code
-	 * 	#define rkh_dyne_init( mpd, pm, ps, bs )						\
-	 * 																	\
-	 * 				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
-														(RK_MPBS_T)(bs) )
-	 *	\endcode
-	 */
-
-	#ifndef rkh_dyne_init
-	    #error  "rksyscfg.h, Missing rkh_dyne_init() macro."
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 * 	Platform-dependent macro defining how RKH should obtain the
-	 * 	event pool block size.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 * 	#define rkh_dyne_event_size( mpd )								\
-	 * 																	\
-	 * 				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
-	 * 	\endcode
-	 */
-
-	#ifndef rkh_dyne_event_size
-	    #error  "rksyscfg.h, Missing rkh_dyne_event_size() macro."
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 * 	Platform-dependent macro defining how RKH should obtain an event
-	 * 	\a e from the event pool \a mpd.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_dyne_get( mpd, e )									\
-	 *																	\
-	 *				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
-	 * 	\endcode
-	 */
-
-	#ifndef rkh_dyne_get
-	    #error  "rksyscfg.h, Missing rkh_dyne_get() macro."
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should return an event
-	 *  \a e to the event pool \a mpd.	
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_dyne_put( mpd, e )									\
-	 *																	\
-	 *				rk_mpool_put( (mpd), (e) )
-	 * 	\endcode
-	 */
-
-	#ifndef rkh_dyne_put
-	    #error  "rksyscfg.h, Missing rkh_dyne_put() macro."
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should post an event
-	 *  \a e to the queue \a qd in FIFO policy.	
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_post_fifo( qd, e )									\
-	 *																	\
-	 *				queue_insert( (QD_T)(qd), &(e) )
-	 * 	\endcode
-	 */
-
-	#ifndef rkh_post_fifo
-	    #error  "rksyscfg.h, Missing rkh_post_fifo() macro."
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should post an event
-	 *  \a e to the queue \a qd in LIFO policy.	
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_post_lifo( qd, e )									\
-	 *																	\
-	 *				queue_insert_lifo( (QD_T)(qd), &(e) )
-	 * 	\endcode
-	 */
-
-	#ifndef rkh_post_lifo
-	    #error  "rksyscfg.h, Missing rkh_post_lifo() macro."
-	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should get an event
-	 *  \a e from the queue \a qd.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_get( qd, e )										\
-	 *																	\
-	 *				queue_remove( (QD_T)(qd), &(e) )
-	 * 	\endcode
-	 */
-
-	#ifndef rkh_get
-	    #error  "rksyscfg.h, Missing rkh_get() macro."
-	#endif
-
-#endif
-
-
-/** 
- * 	Defines the size of event. The valid values [in bits] are 
- * 	8, 16 or 32. Default is 8. This type is configurable via the 
- * 	preprocessor switch RKH_SIZEOF_EVENT.
- */
-
-#if RKH_SIZEOF_EVENT == 8
-	typedef rkhuint8 RKHE_T;
-#elif RKH_SIZEOF_EVENT == 16
-	typedef rkhuint16 RKHE_T;
-#elif RKH_SIZEOF_EVENT == 32
-	typedef rkhuint32 RKHE_T;
-#else
-	typedef rkhuint8 RKHE_T;
-#endif
-
-
-/**	
- * 	\brief
- *
- * 	Represents events without parameters.
- * 	
- * 	An event can have associated parameters, allowing the event 
- * 	instance to convey not only the occurrence of some interesting 
- * 	incident but also quantitative information regarding that occurrence.
- *	
- *	Implementing the single inheritance in C is very simply by literally
- *	embedding the base structure, RKHEVT_T in this case, as the first 
- *	member of the derived structure.
- *
- * 	For example, the structure MYEVT_T derived from the base structure 
- * 	RKHEVT_T by embedding the RKHEVT_T instance as the first member of 
- *	MYEVT_T.
- *
- * 	\code
- * 	typedef struct
- * 	{
- * 		RKHEVT_T evt;
- *		int x;
- *		int y;
- * 	} MYEVT_T;
- * 	\endcode
- *
- *	Such nesting of structures always aligns the data member 'evt' at the 
- *	beginning of every instance of the derived structure. In particular, this 
- *	alignment lets you treat a pointer to the derived MYEVT_T structure as a 
- *	pointer to the RKHEVT_T base structure. Consequently, you can always 
- *	safely pass a pointer to MYEVT_T to any C function that expects a pointer 
- *	to RKHEVT_T. (To be strictly correct in C, you should explicitly cast this 
- *	pointer. In OOP such casting is called upcasting and is always safe.) 
- *	Therefore, all functions designed for the RKHEVT_T structure are 
- *	automatically available to the MYEVT_T structure as well as other 
- *	structures derived from RKHEVT_T.
- *
- * 	The RKH takes the 'e' member of RKHEVT_T structure for triggering a 
- * 	state transition.
- */
-
-typedef struct
+typedef enum
 {
 	/**
-	 *	Signal of the event instance.
+	 * 	The arrived event was succesfully processed and HSM 
+	 * 	resides in a allowed state.
 	 */
 
-	RKHE_T e;
+	RKH_OK,
 
 	/**
-	 * 	Attributes of dynamic event (0 for static event).
+	 * 	The arrived event was't founded in the transition table. 
 	 */
 
-#if RKH_EN_DYNAMIC_EVENT == 1
-	rkhuint8 dynamic_;
-#endif
-} RKHEVT_T;
+	RKH_INPUT_NOT_FOUND,
+
+	/**
+	 * 	The branch function returned a value not founded 
+	 * 	in the branch table.
+	 */
+
+	RKH_CONDITION_NOT_FOUND,
+
+	/**
+	 * 	The transition was cancelled by guard function.
+	 */
+
+	RKH_GUARD_FALSE,
+
+	/**
+	 * 	Unknown state. 
+	 */
+
+	RKH_UNKNOWN_STATE,
+
+	/**
+	 * 	The transition exceeded the allowed hierarchical level.
+	 */
+
+	RKH_EXCEED_HCAL_LEVEL,
+
+	/**
+	 * 	The transition exceeded the allowed number of segments 
+	 * 	within a compound transtion.
+	 */
+
+	RKH_EXCEED_TR_SEGS,
+
+	/** Number of returned codes */
+	RKH_NUM_CODES
+} RKH_RCODE_T;
 
 
 /**
- * 	Internal RKH implementation of the dynamic event allocator. 
- *
- * 	\param es		size of event [in bytes].
- * 	\param e		event signal.
- * 	
- * 	\note
- *
- * 	This function is internal to RKH and the user application should 
- * 	not call it. Please use #rkh_alloc_event() macro.
- */
-
-RKHEVT_T *rkh_ae( rkhuint8 es, RKHE_T e );
-
-
-/*
- * 	For GNU compatibility.
- */
-
-struct rkh_t;
-
-
-/**
- * 	Entry action.
- *
- * 	The actions that are always executed when a state is entered 
- * 	should be specified as entry actions.
- *
- * 	An entry function takes the state machine pointer as argument. 
- * 	This parameter is optional in compile-time according to 
- * 	RKH_EN_ENT_HSM_ARG.
- */
-
-
-#if RKH_EN_ENT_HSM_ARG == 1
-	
-	typedef void ( *RKHENT_T )( const struct rkh_t *ph );
-
-	#define rkh_exec_entry( s, h )				\
-	{											\
-		if( (s)->enter != NULL )				\
-			(*(s)->enter)( h ); 				\
-	}
-
-#else
-	
-	typedef void ( *RKHENT_T )( void );
-
-	#define rkh_exec_entry( s, h )				\
-	{											\
-		if( (s)->enter != NULL )				\
-			(*(s)->enter)(); 					\
-	}
-
-#endif
-
-
-
-/**
- * 	Exit action.
- *
- * 	The actions that are always execute when a state is exited should be 
- * 	exit actions.
- *
- * 	An exit function takes the state machine pointer as argument. 
- * 	This parameter is optional in compile-time according to 
- * 	RKH_EN_EXT_HSM_ARG.
- */
-
-#if RKH_EN_EXT_HSM_ARG == 1
-
-	typedef void ( *RKHEXT_T )( const struct rkh_t *ph );
-
-	#define rkh_exec_exit( s, h )				\
-	{											\
-		if( (s)->exit != NULL )					\
-			(*(s)->exit)( h ); 					\
-	}
-
-#else
-	
-	typedef void ( *RKHEXT_T )( void );
-
-	#define rkh_exec_exit( s, h )				\
-	{											\
-		if( (s)->exit != NULL )					\
-			(*(s)->exit)(); 					\
-	}
-
-#endif
-
-
-
-/**
- * 	Initialization action.
- *
- * 	The application code must trigger the initial transition explicitly 
- * 	by invoking 'rkh_init_hsm'.
- *
- * 	An init function takes the state machine pointer as argument. 
- * 	This parameter is optional in compile-time according to 
- * 	RKH_EN_INIT_HSM_ARG.
- */
-
-#if RKH_EN_INIT_HSM_ARG == 1
-
-	typedef void ( *RKHINIT_T )( const struct rkh_t *ph );
-
-	#define rkh_exec_init( h )					\
-	{											\
-		if( (h)->init_action != NULL )			\
-			(*(h)->init_action)( h );			\
-	}
-
-#else
-	
-	typedef void ( *RKHINIT_T )( void );
-
-	#define rkh_exec_init( h )					\
-	{											\
-		if( (h)->init_action != NULL )			\
-			(*(h)->init_action)();				\
-	}
-
-#endif
-
-
-/**
- * 	Event preprocessor.
- *
- * 	Before sending the arrived event to state machine, it can be previously 
- * 	processed using the	event preprocessor function.
- *
- * 	An action function takes the state machine pointer and the event 
- * 	pointer as arguments. The first parameter is optional in compile-time
- * 	according to RKH_EN_PPRO_HSM_ARG.
- */
-
-#if RKH_EN_PPRO_HSM_ARG == 1
-
-	typedef RKHE_T ( *RKHPPRO_T )( const struct rkh_t *ph, RKHEVT_T *pe );
-	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
-
-#else
-
-	typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
-	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( e )
-
-#endif
-
-
-/**
- * 	Action:
- *
- * 	Actions are small atomic behaviors executed at specified points 
- * 	in a state machine. Actions are assumed to take an insignificant 
- * 	amount of time to execute and are noninterruptible.
- *
- * 	An action function takes the state machine pointer and the event 
- * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to RKH_EN_ACT_EVT_ARG' and RKH_EN_ACT_HSM_ARG.
- */
-
-#if RKH_EN_ACT_EVT_ARG == 1 && RKH_EN_ACT_HSM_ARG == 1
-
-	typedef void (*RKHACT_T)( const struct rkh_t *ph, RKHEVT_T *pe );
-	#define rkh_call_action(h,e)	(*CA( q ))( h, e )
-
-#elif RKH_EN_ACT_EVT_ARG == 1 && RKH_EN_ACT_HSM_ARG == 0
-	
-	typedef void (*RKHACT_T)( RKHEVT_T *pe );
-	#define rkh_call_action(h,e)	(*CA( q ))( e )
-
-#elif RKH_EN_ACT_EVT_ARG == 0 && RKH_EN_ACT_HSM_ARG == 1
-	
-	typedef void (*RKHACT_T)( const struct rkh_t *ph );
-	#define rkh_call_action(h,e)	(*CA( q ))( h )
-
-#else
-	
-	typedef void (*RKHACT_T)( void );
-	#define rkh_call_action(h,e)	(*CA( q ))()
-
-#endif
-
-
-/**
- * 	Guard:
- *
- *	A guard is a boolean condition that returns a TRUE (RKH_GTRUE) or 
- *	FALSE (RKH_GFALSE) value that controls whether or not a transition 
- *	is taken following the receipt of a triggering event. A transition 
- *	with a guard is only take if the triggering event occurs and the 
- *	guard evaluates to TRUE. As long as the guard evaluated to FALSE, 
- *	the triggering event would be discarded and the transition would 
- *	not be taken.
- *	
- *	Each condition connector can have one special branch with a guard 
- *	labeled rkh_else, which is taken if all the guards on the other 
- *	branches are false. 
+ * 	Each condition connector can have one special branch with a guard 
+ *	labeled ELSE, which is taken if all the guards on the other 
+ *	branches are false.
  *
  * 	A guard function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
  * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
  */
 
-#if RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 1
-
-	typedef HUInt (*RKHGUARD_T)( const struct rkh_t *ph, RKHEVT_T *pe );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
-	HUInt rkh_else( const struct rkh_t *ph, RKHEVT_T *pe );
-
-#elif RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 0
-	
-	typedef HUInt (*RKHGUARD_T)( RKHEVT_T *pe );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
-	HUInt rkh_else( RKHEVT_T *pe );
+#define ELSE		rkh_else
 
 
-#elif RKH_EN_GRD_EVT_ARG == 0 && RKH_EN_GRD_HSM_ARG == 1
-	
-	typedef HUInt (*RKHGUARD_T)( const struct rkh_t *ph );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
-	HUInt rkh_else( const struct rkh_t *ph );
-
-#else
-	
-	typedef HUInt (*RKHGUARD_T)( void );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
-	HUInt rkh_else( void );
-
-#endif
-
-
-/**
- * 	\brief 
- *
- * 	Maintains the basic information of a state.
+/** 	
+ *  State machine properties.
  */
 
-typedef struct rkhbase_t
-{
-	/**	
-	 *	Contains the type of a particular state and can have 
-	 *	the following values:
-	 *
-	 *	- RKH_COMPOSITE: 		composite state.
-	 *	- RKH_BASIC: 			basic state.
-	 *	- RKH_JUNCTION: 		junction pseudostate.
-	 *	- RKH_CONDITIONAL: 		conditional pseudostate.
-	 *	- RKH_SHISTORY: 		shadow history pseudostate.
-	 *	- RKH_DHISTORY: 		deep history pseudostate.
-	 */
-
-	HUInt type;					
-
-	/**	
-	 *	State ID. 
-	 *	This number isn't internally used by RKH framework.
-	 */
-
-	HUInt id;
-
-#if RKH_EN_STATE_NAME == 1
-
-	/**	
-	 *	State name. 
-	 *	String terminated in '\\0' that represents the name 
-	 *	of state. It's generally used for debugging.
-	 */
-
-	char *name;
-#endif
-} RKHBASE_T;
-
-
-/**
- * 	\brief
- *
- * 	Describes the state transition. 
- *
- * 	Transitions represent the response of a state machine to events. 
- * 	Any event that is not explicitly listed as causing an event to occur 
- * 	in a given state is quietly discarded should it occur.
- */
-
-typedef struct rkhtr_t
-{
-	/** 	
-	 *  Triggering event.
-	 */
-
-	RKHE_T event;
-	
-	/**	
-	 *	Points to guard function.
-	 */
-
-	RKHGUARD_T guard;
-	
-	/** 	
-	 *  Points to transition action.
-	 */
-
-	RKHACT_T action;
-
-	/** 	
-	 *  Points to target state.
-	 */
-
-	rkhrom void *target;
-} RKHTR_T;
-
-
-/**
- *	\brief
- *
- * 	Describes a regular state.
- *
- * 	It can either be a composite or basic state.
- */
-
-typedef struct rkhsreg_t
-{
-	/**	
-	 *	Maintains the basic information of state.
-	 */
-
-	struct rkhbase_t base;
-
-#if RKH_EN_HCAL == 1
-	/**	
-	 *	Points to entry action.
-	 */
-
-	RKHENT_T enter;
-
-	/**	
-	 *	Points to exit action.
-	 */
-
-	RKHEXT_T exit;
-
-	/**	
-	 *	Points to state's parent.
-	 */
-
-	rkhrom struct rkhsreg_t *parent;
-#endif
-
-	/**	
-	 *	Points to state transition table.
-	 */
-
-	rkhrom struct rkhtr_t *trtbl;
-
-#if RKH_EN_HCAL == 1
-	/**	
-	 *	Points to state's default child.
-	 */
-
-	rkhrom void *defchild;
-
-	/**	
-	 *	Points to state's history. 
-	 */
-
-	rkhrom struct rkhshist_t *history;
-#endif
-
-	/**	
-	 *	Points to event preprocessor.
-	 *
-	 *	Aditionally, by means of single inheritance in C it could be 
-	 *	used as state's abstract data.
-	 *	Aditionally, implementing the single inheritance in C is very 
-	 *	simply by literally embedding the base type, RKHPPRO_T in 
-	 *	this case, as the first member of the derived structure.
-	 *	
-	 *	This argument is optional, thus it could be declared as NULL.
-	 *
-	 *	Example:
-	 *  
-	 *  	\code
-	 *  	static
-	 *  	RKHE_T
-	 *  	preprocessor( RKHEVT_T *pe )
-	 *  	{
-	 *  		...
-	 *  	}
-	 *  
-	 * 		typedef struct
-	 * 		{
-	 * 			RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-	 * 			unsigned min:4;
-	 * 			unsigned max:4;
-	 * 			char *buff;
-	 * 		} SDATA_T;
-	 *
-	 * 		static const SDATA_T option = { preprocessor, 4, 8, token1 };
-	 *
-	 *  	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
-	 *  								NULL, &S11, preprocessor ); 
-	 *  	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
-	 *  								NULL, &S2, (RKHPPRO_T*)&option ); 
-	 *  	\endcode
-	 */
-
-	RKHPPRO_T prepro;
-} RKHSREG_T;
-
-
-/**
- * 	\brief 
- *
- * 	Describes the conditional pseudostate.
- */
-
-typedef struct rkhscond_t
+typedef enum
 {
 	/**
-	 *	Maintains the basic information of state.
+	 * 	Used as state machine property.
+	 * 	This macro enables state nesting in a particular state-machine.
 	 */
 
-	struct rkhbase_t base;
+	HCAL,
 
-	/**	
-	 *	Points to branch table.
-	 */
-
-	rkhrom struct rkhtr_t *trtbl;
-} RKHSCOND_T;
-
-
-/**
- * 	\brief 
- *
- * 	Describes the junction pseudostate.
- */
-
-typedef struct rkhsjunct_t
-{
-	/**	
-	 *	Maintains the basic information of state.
-	 */
-
-	struct rkhbase_t base;
-
-	/**	
-	 *	Points to action function.
-	 */
-
-	RKHACT_T action;
-
-	/**	
-	 *	Points to target state or pseudostate.
-	 */
-
-	rkhrom void *target;
-} RKHSJUNC_T;
-
-
-/**
- * 	\brief 
- *
- * 	Describes the history pseudostate
- *
- * 	It can be either be shallow or deep.
- */
-
-typedef struct rkhshist_t
-{
-	/**	
-	 *	Maintains the basic information of state.
-	 */
-
-	struct rkhbase_t base;
-
-	/**	
-	 *	Points to state's parent.
-	 */
-
-	rkhrom RKHSREG_T *parent;
-
-	/**	
-	 *	Points to RAM memory location which stores
-	 *	the state's history.
-	 */
-
-	rkhrom RKHSREG_T **target;
-} RKHSHIST_T;
-
-
-/**
- * 	\brief 
- *
- * 	Describes the HSM's performance information.
- *
- * 	Defines the data structure into which the performance 
- * 	information for HSM is stored.
- */
-
-typedef struct rkh_info_t
-{
-	rkhuint16 rcvevt;			/**<	# of received events */
-	rkhuint16 exectr;			/**<	# of executed transitions */
-} RKH_INFO_T;
-
-
-/**
- * 	\brief 
- *
- * 	Describes the HSM. 
- *
- * 	It maintains the vital information related with a hierarchical 
- * 	state machine.
- */
-
-typedef struct rkh_t
-{
-	/**	
-	 *	HSM descriptor.
-	 */
-
-	rkhuint8 id;
 
 	/**
-	 * 	State machine properties. The available properties are
-	 * 	enumerated in RKH_HPPTY_T enumeration in the rkhsm.h
-	 * 	file.
+	 * 	Used as state machine property.
+	 * 	This macro disables state nesting in a particular state-machine.
+	 * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
+	 * 	RKH are	not included: state nesting, composite state, history 
+	 * 	(shallow and deep) pseudostate, entry action, and exit action.
 	 */
 
-	rkhuint8 ppty;
+	FLAT,
 
-#if RKH_EN_HSM_NAME	== 1
-	
-	/**	
-	 *	State name string. String terminated in '\\0' that 
-	 *	represents the name of state. It generally used for 
-	 *	debugging.
-	 */
+	/** Number of state machines properties */
+	RKH_NUM_HPPTY
+} RKH_HPPTY_T;
 
-	char *name;
-#endif
-	/** 
-	 * 	Points to initial state. The initial state must be a
-	 * 	composite state or basic state.
-	 */
 
-	rkhrom RKHSREG_T *init_state;
+/**
+ *	This macro creates a HSM control block. 
+ *
+ *	\note
+ *	
+ *	See RKH_T structure definition for more information.
+ *
+ * 	\param name		state-machine (top-state) name. Represents a HSM structure.
+ * 	\param id		the value of HSM ID.
+ * 	\param ppty		state machine properties. The available properties are
+ * 					enumerated in RKH_HPPTY_T enumeration in the rkh.h
+ * 					file.
+ * 	\param is		pointer to regular initial state. This state could be 
+ * 					defined either composite or basic.
+ * 	\param ia		pointer to initialization action. The function prototype 
+ * 					is defined as RKHINIT_T. This argument is optional, thus
+ * 					it could be declared as NULL.
+ * 	\param hd		pointer to HSM's abstract data. This argument is optional, 
+ * 					thus it could be declared as NULL.
+ */
 
-	/** 
-	 * 	Points to current state.
-	 */
+#define RKH_CREATE_HSM( name, id, ppty, is, ia, hd )					\
+																		\
+								RKH_T name = CHSM( id,ppty,name,is,ia,hd )
 
-	rkhrom RKHSREG_T *state;
 
-	/** 
-	 * 	Points to initializing action function.
-	 */
+/**
+ *	This macro creates a composite state.
+ *
+ *	\note
+ *
+ *	See RKHSREG_T structure definition for more information.
+ *
+ * 	\param name		state name. Represents a composite state structure.
+ * 	\param id		the value of state ID.	
+ * 	\param en		pointer to state entry action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ex		pointer to state exit action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param parent	pointer to parent state.
+ * 	\param defchild	pointer to default child state or pseudostate.
+ * 	\param history	pointer history pseudostate. This argument is 
+ *					optional, thus it could be declared as NULL.
+ */
 
-	RKHINIT_T init_action;
-#if RKH_EN_HSM_DATA == 1
-	
-	/** 
-	 * 	Points to optional HSM's data.
-	 */
+#define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )	\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
+																		\
+								rkhrom RKHSREG_T name =					\
+								{										\
+									mkbase(RKH_COMPOSITE,id,name),		\
+									mkcomp(en,ex,parent,name,			\
+												defchild,history)		\
+								}
 
-	void *hdata;
-#endif
-#if RKH_EN_GET_INFO == 1
 
-	/** 
-	 * 	Maintains the optional performance information.
-	 */
+/**
+ *	This macro creates a basic state.
+ *
+ *	\note
+ *
+ *	See RKHSREG_T structure definition for more information.
+ *
+ * 	\param name		state name. Represents a basic state structure.
+ * 	\param id		the value of state ID.	
+ * 	\param en		pointer to state entry action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ex		pointer to state exit action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param parent	pointer to parent state.
+ * 	\param prepro	pointer to input preprocessor function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ *					Aditionally, by means of single inheritance in C it 
+ *					could be used as state's abstract data. 
+ *					Aditionally, implementing the single inheritance in C 
+ *					is very simply by literally embedding the base type, 
+ *					RKHPPRO_T in this case, as the first member of the 
+ *					derived structure. See member "prepro" of RKHSREG_T 
+ *					structure for more information.
+ */
 
-	RKH_INFO_T hinfo;
-#endif	
-} RKH_T;
+#define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
+																		\
+								rkhrom RKHSREG_T name =					\
+								{										\
+									mkbase(RKH_BASIC,id,name),			\
+									mkbasic(en,ex,parent,name,prepro)	\
+								}
+
+/**
+ *	This macro creates a conditional pseudostate. A condition connector has 
+ *	one incoming transition and can have several outgoing transition segments 
+ *	called branches. Branches are labeled with guards that determine which 
+ *	one is to be actually taken. Since the condition connector is an OR 
+ *	connector, only one of the branches can be taken. Each 
+ *	condition connector can have one special branch with a guard labeled 
+ *	rkh_else, which is taken if all the guards on the other branches are 
+ *	false. 
+ *	Branches cannot contain triggers, but in addition to a guard they may 
+ *	contain actions. A branch can enter another condition connector, thus 
+ *	providing for the nesting of branches.
+ *	
+ *	\note
+ *
+ *	See RKHSCOND_T structure definition for more information.
+ *
+ * 	\param name		pseudostate name. Represents a conditional pseudostate 
+ * 					structure.
+ * 	\param id		the value of state ID.	
+ */
+
+#define RKH_CREATE_COND_STATE( name,id )								\
+																		\
+								extern rkhrom RKHTR_T name##_trtbl[];	\
+																		\
+								rkhrom RKHSCOND_T name =				\
+								{										\
+									mkbase(RKH_CONDITIONAL,id,name),	\
+									name##_trtbl 						\
+								}
+
+
+/**
+ *	This macro creates a junction pseudostate.
+ *	Transitions arrows can be joined using junction pseudostate. 
+ *	Multiple entrances and exits may be attached to a junction.
+ *
+ *	\note
+ *
+ *	See RKHSJUNC_T structure definition for more information.
+ *
+ * 	\param name		pseudostate name. Represents a junction pseudostate 
+ * 					structure.
+ * 	\param id		the value of state ID.	
+ * 	\param action	pointer to transition action. This argument is optional, 
+ * 					thus it could be declared as NULL.
+ * 	\param target	pointer to target state.
+ */
+
+#define RKH_CREATE_JUNCTION_STATE( name,id,action,target )				\
+																		\
+								rkhrom RKHSJUNC_T name =				\
+								{										\
+									mkbase(RKH_JUNCTION,id,name),		\
+									action,	target 						\
+								}
+
+
+/**
+ *	This macro creates a deep history pseudostate. Deep history 
+ *	applies downwards to all levels of nesting.
+ *
+ *	\note
+ *
+ *	See RKHSHIST_T structure definition for more information.
+ *
+ *	Arguments:
+ *
+ * 	\param name		pseudostate name. Represents a deep history 
+ * 					pseudostate structure.
+ * 	\param id		the value of state ID.	
+ * 	\param parent	pointer to parent state.
+ */
+
+#define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )					\
+																		\
+								static rkhrom RKHSREG_T *ram##name;		\
+																		\
+								rkhrom RKHSHIST_T name =				\
+								{										\
+									mkbase(RKH_DHISTORY,id,name),		\
+									parent,&ram##name 					\
+								}
+
+
+/**
+ *	This macro creates a shallow history pseudostate. Shallow 
+ *	history means that history applies to the current nesting context 
+ *	only – states nested more deeply are not affected by the 
+ *	presence of a history pseudostates in a higher context.
+ *	
+ *	\note
+ *
+ *	See RKHSHIST_T structure definition for more information.
+ *
+ * 	\param name		pseudostate name. Represents a shallow history pseudostate 
+ * 					structure.
+ * 	\param id		the value of state ID.	
+ * 	\param parent	pointer to parent state.
+ */
+
+#define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )				\
+																		\
+								static rkhrom RKHSREG_T *ram##name;		\
+																		\
+								rkhrom RKHSHIST_T name =				\
+								{										\
+									mkbase(RKH_SHISTORY,id,name),		\
+									parent,&ram##name 					\
+								}
+
+
+/**
+ *	This macro creates a state transition table. Use the 
+ *	'RKH_END_TRANS_TABLE' macro to terminate the transition table.
+ *
+ * 	\param name		state name.
+ */
+
+#define RKH_CREATE_TRANS_TABLE( name )									\
+																		\
+								static rkhrom RKHTR_T name##_trtbl[]={
+
+
+/**
+ *	This macro defines a regular state transition.
+ *
+ *	\note
+ *
+ *	See RKHTR_T structure definition for more information.
+ *
+ * 	\param e		triggering event.
+ * 	\param g		pointer to guard function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param a		pointer to action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param t		pointer to target state.
+ */
+
+#define RKH_TRREG( e, g, a, t )	{ e, g, a, t }
+
+
+/**
+ *	This macro defines an internal state transition.
+ *
+ *	\note
+ *
+ *	See RKHTR_T structure definition for more information.
+ *
+ * 	\param e		triggering event.
+ * 	\param g		pointer to guard function.	
+ * 	\param a		pointer to action function.
+ */
+
+#define RKH_TRINT( e, g, a )	{ e, g, a, NULL }
+
+
+/*
+ * 	This macro is internal to RKH and the user application should 
+ * 	not call it.
+ */
+
+#define RKH_ETRTBL				{ RKH_ANY, NULL, NULL, NULL }
+
+
+/**
+ *	This macro is used to terminate a state transition table.
+ */
+
+#define RKH_END_TRANS_TABLE		RKH_ETRTBL};
+
+
+/**
+ *	This macro creates a branch table. Use the 
+ *	'RKH_END_BRANCH_TABLE' macro to terminate the branch table.
+ *	Use rkh_else when if all the guards on the other branches are false.
+ *
+ * 	\param name		conditional pseudostate name.
+ */
+
+#define RKH_CREATE_BRANCH_TABLE( name )								\
+																	\
+								RKH_CREATE_TRANS_TABLE( name )
+
+
+/**
+ *	This macro defines a branch in the branch table. Each condition
+ *	connector can have one special branch with a guard labeled rkh_else, 
+ *	which is taken if all the guards on the other branches are false.
+ *	
+ *
+ *	\note
+ *
+ *	See RKHTR_T structure definition for more information.
+ *
+ * 	\param g		branch guard. Branches are labeled with guards that 
+ * 					determine which one is to be actually taken. Use rkh_else
+ * 					when if all the guards on the other branches are false.
+ * 	\param a		pointer to action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param t		pointer to target state.
+ */
+
+#define RKH_BRANCH( g, a, t )	{ 0, g, a, t }
+
+
+/*
+ * 	This macro is internal to RKH and the user application should 
+ * 	not call it.
+ */
+
+#define RKH_EBTBL				{ RKH_ANY, NULL, NULL, NULL }
+
+
+/**
+ *	This macro is used to terminate a state transition table.
+ */
+
+#define RKH_END_BRANCH_TABLE	RKH_EBTBL};
+
+
+/**
+ *	This macro indicates the root state of a HSM.
+ */
+
+#define RKH_ROOT				NULL
+
+
+/**
+ * 	This macro declares a previously created HSM to be used 
+ * 	as a global object. Generally, the HSMs are declared in HSM 
+ * 	dependent header file.
+ *
+ * 	\param h		HSM name.
+ */
+
+#define RKH_DCLR_HSM( h )		extern RKH_T h
+
+
+/**@{
+ *
+ * 	Declares a previously created state/pseudostate to be used 
+ * 	as a global object.  
+ *
+ * 	\note
+ *
+ * 	Generally, the states are declared in HSM dependent header file.
+ */
+
+#define RKH_DCLR_COMP_STATE		extern rkhrom RKHSREG_T
+#define RKH_DCLR_BASIC_STATE	extern rkhrom RKHSREG_T
+#define RKH_DCLR_COND_STATE		extern rkhrom RKHSCOND_T
+#define RKH_DCLR_JUNC_STATE		extern rkhrom RKHSJUNC_T
+#define RKH_DCLR_DHIST_STATE	extern rkhrom RKHSHIST_T 
+#define RKH_DCLR_SHIST_STATE	extern rkhrom RKHSHIST_T
+
+/*@}*/
+
+
+/**
+ * 	This values are retrived by guard functions. A guard is a boolean 
+ * 	condition that returns a TRUE or FALSE value that controls
+ * 	whether or not a transition is taken following the receipt of 
+ * 	a triggering event.
+ */
+
+enum
+{
+	RKH_GFALSE,	/**< False condition */
+	RKH_GTRUE	/**< True condition */
+};
+
+
+/**
+ *	Posts an event directly to the event queue \a qd using the LIFO policy.
+ *
+ * 	\note 
+ *
+ *	For memory efficiency and best performance the deferred event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *
+ * 	The LIFO policy should be used only with great caution because it
+ * 	alters order of events in the queue.
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *
+ * 	\param qd		event queue descriptor.
+ * 	\param evt		pointer to event.
+ *
+ * 	\returns
+ *
+ * 	Zero (0) if the event was successfully inserted, 
+ *	otherwise error code. 	
+ */
+
+HUInt rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
+
+
+/**
+ *	Posts an event directly to the event queue \a qd using the FIFO policy.
+ *
+ * 	\note
+ *
+ *	For memory efficiency and best performance the deferred event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *
+ * 	\param qd		event queue descriptor.
+ * 	\param evt		pointer to event.
+ *
+ * 	\returns
+ *
+ * 	Zero (0) if the event was successfully inserted, 
+ *	otherwise error code. 	
+ */
+
+HUInt rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
+
+
+/**
+ *	Defer an event to a given separate event queue.
+ *
+ * 	This function is part of the event deferral support. An active object
+ * 	uses this function to defer an event \a evt to the event queue \a qd. 
+ * 	RKH correctly accounts for another outstanding reference to the event 
+ * 	and will not recycle the event at the end of the RTC step. 
+ * 	Later, the active object might recall one event at a time from the 
+ * 	event queue.
+ *	
+ *	\note
+ *
+ *	For memory efficiency and best performance the deferred event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *  An active object can use multiple event queues to defer events of
+ *  different kinds.
+ *
+ * 	\param qd		event queue descriptor.
+ * 	\param evt		pointer to event.
+ *
+ * 	\returns
+ *
+ * 	Zero (0) if the event was successfully deferred, 
+ *	otherwise error code. 	
+ */
+
+HUInt rkh_defer( HUInt qd, RKHEVT_T *evt );
+
+
+/**
+ * 	Recall a deferred event from a given event queue.
+ *
+ * 	This function is part of the event deferral support. An active object
+ * 	uses this function to recall a deferred event from a given event queue. 
+ * 	Recalling an event means that it is removed from the deferred event 
+ * 	queue \a qds and posted (LIFO) to the event queue of the active object
+ * 	\a qdd.
+ *
+ * 	\note
+ *
+ *	For memory efficiency and best performance the deferred event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *
+ * 	\returns 
+ *
+ * 	The pointer to the recalled event to the caller, or NULL if no 
+ * 	event has been recalled.
+ */
+
+RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
+
+
+/**
+ *	This macro dynamically creates a new event of type 'et' with the signal
+ *	'e'. It returns a pointer to the event already cast to the event type 
+ *	(et*). Here is an example of dynamic event allocation with the macro 
+ *	rkh_alloc_event():
+ *
+ *	\code
+ *	MYEVT_T *mye = rkh_alloc_event( MYEVT_T, DATA );
+ *	mye->y = mye->x = 0;
+ *	...
+ *	\endcode
+ *
+ * 	\note
+ *	The assertions inside rkh_ae() function guarantee that the pointer is 
+ *	valid, so you don't need to check the pointer returned from rkh_ae(), 
+ *	unlike the value returned from malloc(), which you should check.
+ *
+ * 	\param et		type of event.
+ * 	\param e		event signal.
+ */
+
+#define rkh_alloc_event( et, e )										\
+																		\
+								(et*)rkh_ae(sizeof(et),(RKHE_T)(e))
+
+
+/**
+ * 	Recycle a dynamic event.
+ *
+ * 	This function implements a simple garbage collector for the dynamic 
+ * 	events.	Only dynamic events are candidates for recycling. (A dynamic 
+ * 	event is one that is allocated from an event pool, which is determined 
+ * 	as non-zero	e->dynamic_ attribute.) Next, the function decrements the 
+ * 	reference counter of the event, and recycles the event only if the 
+ * 	counter drops to zero (meaning that no more references are outstanding 
+ * 	for this event). The dynamic event is recycled by returning it to the 
+ * 	pool from which	it was originally allocated. The pool-of-origin 
+ * 	information is stored in the upper 2-MSBs of the e->dynamic_ attribute 
+ * 	[MS]. Note that the data member dynamic_ of a dynamic event cannot be 
+ * 	zero because the two most significant bits of the byte hold the pool 
+ * 	ID, with valid values of 1, 2, or 3.
+ * 	
+ * 	\note 
+ *
+ * 	The garbage collector must be explicitly invoked at all appropriate 
+ * 	contexts, when an event can become garbage (automatic garbage collection).
+ *
+ * 	\param evt		pointer to event to be potentially recycled.
+ */
+
+void rkh_gc( RKHEVT_T *evt );
+
+
+/**
+ *	This macro set the event 'evt' with 'e' signal and establishes it as one 
+ *	static event.
+ *
+ * 	\param evt		pointer to event structure derived from RKHEVT_T.
+ * 	\param e		event signal. The RKH takes this value for triggering 
+ * 					a state transition.
+ *
+ * 	\returns
+ */
+
+#define rkh_set_static_event( evt, es )			mksevt( evt, es )
+
+
+/**
+ * 	Inits a previously created HSM calling its initializing function.
+ *
+ * 	\param ph		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ */
+
+void rkh_init_hsm( RKH_T *ph );
+
+
+/**
+ *	Executes a HSM in a non-preemtive model. In this model, before the 
+ *	system handles a new event it can store it until the previous event 
+ *	has completed processing. This model is called run to completion or 
+ *	RTC. Thus, the system processes events in discrete, indivisible RTC 
+ *	steps.
+ *
+ * 	\param ph		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *	\param pevt		pointer to arrived event. It's used as HSM's input 
+ *					alphabet.
+ *
+ *	\return
+ *
+ *	Result RKH_RCODE_T code.
+ *	
+ */
+
+HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
+
+
+/**
+ * 	This macro retrieves the state ID of HSM control block.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *
+ * 	\return
+ *
+ * 	Id of current state.
+ */
+
+#define rkh_get_cstate_id( ph )											\
+																		\
+								((RKHBASE_T*)(ph->state))->id	
+
+
+/**	
+ * 	This macro retrieves the current state name of HSM control block.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *
+ * 	\returns
+ *
+ * 	Name of current state.
+ */
+
+#define rkh_get_cstate_name( ph )										\
+																		\
+								((RKHBASE_T*)(ph->state))->name	
+
+/**	
+ * 	This macro retrieves the HSM's data.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *
+ * 	\returns
+ *
+ * 	Pointer to state-machine's data.
+ */
+
+#define rkh_get_data( ph )												\
+																		\
+								((ph)->hdata)	
+
+
+/**	
+ * 	This macro retrieves the state's abstract data.
+ *	Aditionally, by means of single inheritance in C it could be used 
+ *	as state's abstract data. Aditionally, implementing the single 
+ *	inheritance in C is very simply by literally embedding the base type, 
+ *	RKHPPRO_T in this case, as the first member of the derived structure. 
+ *	See member "prepro" of RKHSREG_T structure for more information.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *
+ * 	\returns
+ *
+ * 	Pointer to state's abstract data.
+ */
+
+#define rkh_get_sdata( ph )												\
+																		\
+								((ph)->state->sdata)	
+
+
+/**
+ * 	Erase the history of a state. It can be a shallow or deep history.
+ *
+ * 	\param h 		pointer to history pseudostate.
+ */
+
+void rkh_clear_history( rkhrom RKHSHIST_T *h );
+
+
+/**
+ * 	Clear performance information for a particular HSM.
+ *
+ * 	Information is available during run-time for each HSM. This 
+ * 	information can be useful in determining whether
+ * 	the application is performing properly, as well as helping to
+ * 	optimize the application.
+ *
+ *	\note
+ *
+ *	See RKH_INFO_T structure definition for more information.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ */
+
+void rkh_clear_info( RKH_T *ph );
+
+
+/**
+ * 	Retrieves performance information for a particular HSM.
+ *
+ *	Note:
+ *
+ *	See RKH_INFO_T structure definition for more information.
+ *
+ * 	\param ph 		pointer to HSM control block. Represents a previously 
+ * 					created HSM structure.
+ *	
+ * 	\return
+ *
+ * 	A pointer to performance information structure.
+ */
+
+RKH_INFO_T *rkh_get_info( RKH_T *ph );
 
 
 #endif

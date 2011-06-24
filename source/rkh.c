@@ -33,8 +33,8 @@
 
 #include <stdlib.h>
 
+#include "rkhitl.h"
 #include "rkh.h"
-#include "rkhsm.h"
 #include "rkhassert.h"
 
 
@@ -650,7 +650,6 @@ rkh_ae( rkhuint8 es, RKHE_T e )
     rkh_dyne_get( idx, evt );        		 /* get e -- platform-dependent */
 							             /* pool must not run out of events */
     rkhassert( evt != NULL, RKH_AE_NOT_ALLOC );
-
     evt->e = e;                                /* set signal for this event */
 
 	/* 
@@ -658,7 +657,7 @@ rkh_ae( rkhuint8 es, RKHE_T e )
 	 * the pool ID and the reference counter == 0
 	 */
     evt->dynamic_ = (rkhuint8)( ( idx + 1 ) << 6 );
-    return e;	
+    return evt;	
 }
 
 
@@ -671,17 +670,17 @@ rkh_gc( RKHEVT_T *evt )
 
         if( ( evt->dynamic_ & 0x3F ) > 1 )      /* isn't this the last ref? */
 		{
-            --((RKHEVT_T*)e)->dynamic_;   /*decrement the reference counter */
+            --evt->dynamic_;              /*decrement the reference counter */
             rkh_exit_critical();
         }
         else        /* this is the last reference to this event, recycle it */
 		{
                                                       /* cannot wrap around */
-            rkhuint8 idx = (rkhuint8)( ( e->dynamic_ >> 6 ) - 1 );
+            rkhuint8 idx = (rkhuint8)( ( evt->dynamic_ >> 6 ) - 1 );
             rkh_exit_critical();
 
             rkhassert( idx < RKH_DYNE_NUM_POOLS, RKH_GC_RUNOUT_POOLS );
-            rkh_dyne_put( idx, ( RKHEVT_T* )e );
+            rkh_dyne_put( idx, evt );
         }
     }
 }
@@ -692,7 +691,7 @@ rkh_put_fifo( HUInt qd, RKHEVT_T *evt )
 {
     rkh_enter_critical();
     if( evt->dynamic_ != 0 ) 
-        ++(( RKHEVT_T* )evt)->dynamic_;
+        ++evt->dynamic_;
     rkh_exit_critical();
 
     return rkh_post_fifo( qd, evt ); 
@@ -704,7 +703,7 @@ rkh_put_lifo( HUInt qd, RKHEVT_T *evt )
 {
     rkh_enter_critical();
     if( evt->dynamic_ != 0 ) 
-        ++(( RKHEVT_T* )evt)->dynamic_;
+        ++evt->dynamic_;
     rkh_exit_critical();
 
     return rkh_post_lifo( qd, evt ); 
@@ -715,8 +714,8 @@ rkh_put_lifo( HUInt qd, RKHEVT_T *evt )
 
 HUInt 
 rkh_defer( HUInt qd, RKHEVT_T *evt )
-{
-	rkh_put_fifo( qd, evt );
+{ 
+	return rkh_put_fifo( qd, evt );
 }
 
 
@@ -747,7 +746,7 @@ rkh_recall( HUInt qdd, HUInt qds )
 			 * We need to decrement the reference counter once, to account
              * for removing the event from the deferred event queue.
              */
-            --( ( RKHEVT_T* )evt )->dynamic_;
+            --evt->dynamic_;
         }
 		rkh_exit_critical();
     }

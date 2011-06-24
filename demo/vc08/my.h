@@ -7,7 +7,7 @@
 #define __MY_H__
 
 
-#include "rkhsm.h"
+#include "rkh.h"
 
 
 typedef struct
