@@ -253,6 +253,8 @@
 	 * 	\brief 
 	 * 	
 	 * 	Number of available memory pools. Default is 3.
+ 	 *	RKH can manage up to three event pools (e.g., small, medium, and 
+	 *	large events, like shirt sizes). Thus, ensure the 
 	 * 	
 	 * 	\note 
 	 *
@@ -265,7 +267,9 @@
 	 */
 
 	#ifndef RKH_DYNE_NUM_POOLS
-		#define RKH_DYNE_NUM_POOLS			3
+	    #error  "rkhport.h, Missing RKH_DYNE_NUM_POOLS. RKH can manage up to three (3) event pools."
+	#elif RKH_DYNE_NUM_POOLS != 3
+	    #error  "rkhport.h, RKH can manage up to three (3) event pools."
 	#endif
 
 	/**
@@ -287,7 +291,7 @@
 	 */
 
 	#ifndef rkh_dyne_init
-	    #error  "rksyscfg.h, Missing rkh_dyne_init() macro."
+	    #error  "rkhport.h, Missing rkh_dyne_init() macro."
 	#endif
 
 	/**
@@ -309,7 +313,7 @@
 	 */
 
 	#ifndef rkh_dyne_event_size
-	    #error  "rksyscfg.h, Missing rkh_dyne_event_size() macro."
+	    #error  "rkhport.h, Missing rkh_dyne_event_size() macro."
 	#endif
 
 	/**
@@ -331,7 +335,7 @@
 	 */
 
 	#ifndef rkh_dyne_get
-	    #error  "rksyscfg.h, Missing rkh_dyne_get() macro."
+	    #error  "rkhport.h, Missing rkh_dyne_get() macro."
 	#endif
 
 	/**
@@ -353,7 +357,7 @@
 	 */
 
 	#ifndef rkh_dyne_put
-	    #error  "rksyscfg.h, Missing rkh_dyne_put() macro."
+	    #error  "rkhport.h, Missing rkh_dyne_put() macro."
 	#endif
 
 	/**
@@ -375,7 +379,7 @@
 	 */
 
 	#ifndef rkh_post_fifo
-	    #error  "rksyscfg.h, Missing rkh_post_fifo() macro."
+	    #error  "rkhport.h, Missing rkh_post_fifo() macro."
 	#endif
 
 	/**
@@ -397,7 +401,7 @@
 	 */
 
 	#ifndef rkh_post_lifo
-	    #error  "rksyscfg.h, Missing rkh_post_lifo() macro."
+	    #error  "rkhport.h, Missing rkh_post_lifo() macro."
 	#endif
 
 	/**
@@ -419,7 +423,7 @@
 	 */
 
 	#ifndef rkh_get
-	    #error  "rksyscfg.h, Missing rkh_get() macro."
+	    #error  "rkhport.h, Missing rkh_get() macro."
 	#endif
 
 #endif

@@ -43,6 +43,10 @@
 	#include "..\portable\vc08\rkhport.h"
 #endif
 
+#ifdef __VCRKSYS__
+	#include "..\portable\vc08rksys\rkhport.h"
+#endif
+
 #ifdef __LNXGCC__
    	#include "lnxgcc/rkhport.h"
 #endif

@@ -607,8 +607,13 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
 
 
 /**
- *	This macro dynamically creates a new event of type 'et' with the signal
- *	'e'. It returns a pointer to the event already cast to the event type 
+ *	This macro dynamically creates a new event of type 'et' with the signal.
+ *	The basic policy is to allocate the event from the first pool that has 
+ *	a block size big enough to fit the requested event size.
+ *	RKH can manage up to three event pools (e.g., small, medium, and 
+ *	large events, like shirt sizes). Thus, ensure the 
+ *
+ *	It returns a pointer to the event already cast to the event type 
  *	(et*). Here is an example of dynamic event allocation with the macro 
  *	rkh_alloc_event():
  *

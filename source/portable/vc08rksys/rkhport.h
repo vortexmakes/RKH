@@ -93,14 +93,36 @@ typedef signed int		HInt;
  *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
  */
 
-#define RKH_DYNE_NUM_POOLS						3
-#define rkh_dyne_init( mpd, pm, ps, bs )
-#define rkh_dyne_event_size( mpd )
-#define rkh_dyne_get( mpd, e )
-#define rkh_dyne_put( mpd, e )
-#define rkh_post_fifo( qd, e )
-#define rkh_post_lifo( qd, e )
-#define rkh_get( qd, e )
+#include "rkmpool.h"
+#include "queue.h"
+
+
+#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
+
+#define rkh_dyne_init( mpd, pm, ps, bs )							\
+				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
+												(RK_MPBS_T)(bs) )
+
+#define rkh_dyne_event_size( mpd )									\
+																	\
+				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
+
+#define rkh_dyne_get( mpd, e )										\
+																	\
+				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
+
+#define rkh_dyne_put( mpd, e )										\
+																	\
+				rk_mpool_put( (mpd), (e) )
+
+#define rkh_post_fifo( qd, e )										\
+				queue_insert( (QD_T)(qd), &(e) )
+
+#define rkh_post_lifo( qd, e )										\
+				queue_insert_lifo( (QD_T)(qd), &(e) )
+
+#define rkh_get( qd, e )											\
+				queue_remove( (QD_T)(qd), &(e) )
 
 
 #endif
