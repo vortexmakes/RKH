@@ -429,6 +429,94 @@
 #endif
 
 
+/**
+ *	Platform-dependent functions for trace facility support.
+ */
+
+#if RKH_TRACE == 1
+
+	/**
+	 *	Open the tracing session.
+	 *
+	 *	This is a platform-dependent function invoked through the macro 
+	 *	rkh_tropen(). 
+	 *	The application must implement this function. At a minimum, the 
+	 *	function must configure the trace stream by calling rkh_trinit().
+	 *
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 */
+
+	#ifndef rkh_tropen
+		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_open() within application level."
+	#endif
+
+	/**
+	 *	Close the tracing session.
+	 *
+	 *	This is a platform-dependent function invoked through the macro 
+	 *	rkh_trclose(). 
+	 *	The application must implement this function.
+	 *
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 */
+
+	#ifndef rkh_trclose
+		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_close() within application level."
+	#endif
+
+	/**
+	 *	Flush the trace stream.
+	 *
+	 *	This is a platform-dependent function invoked through the macro 
+	 *	rkh_trflush(). 
+	 * 	When the RKH trace an event, all the information related to it has to 
+	 * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
+	 * 	This place is a trace stream. Frequently, events traced are stored in 
+	 * 	the stream until it is flushed.
+	 *
+	 * 	\note 
+	 *
+	 * 	Typically, must be define it in the specific port file (rkhport.h).
+	 */
+
+	#ifndef rkh_trflush
+		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_flush() within application level."
+	#endif
+#else
+	#define rkh_tropen()
+	#define rkh_trclose()
+	#define rkh_trflush()
+#endif
+
+
+#if RKH_TRACE == 1 && RKH_EN_TIMESTAMP == 1
+
+	/**
+	 *	Retrieves a timestamp to be placed in a trace event.
+	 *
+	 *	This is a platform-dependent function invoked through the macro 
+	 *	rkh_trgetts(). 
+	 *	The data returned is defined in compile-time by means of 
+	 *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
+	 *
+	 * 	\returns
+	 *
+	 * 	Timestamp.
+	 */
+
+	#ifndef rkh_trgetts
+		#error  "rkhtrace.h, When enabling RKH_TRACE and RKH_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level."
+	#endif
+#else
+	#undef rkh_trgetts
+	#define rkh_trgetts()
+#endif
+
+
 /** 
  * 	Defines the size of event. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. This type is configurable via the 

@@ -10,6 +10,7 @@
 #define RKH_EN_HCAL					1	/* 	Enable (1) or Disable (0) state nesting */
 #define RKH_MAX_HCAL_DEPTH			4	/* 	Max. number of hierarchical levels */
 #define RKH_MAX_TR_SEGS				4	/* 	Max. number of transition segments */
+#define RKH_NUM_STATE_MACHINES		1	/*	Number of defined state machines */		
 #define RKH_SIZEOF_EVENT			8	/* 	Defines the size of event [in bits]: 8, 16 or 32 */
 #define RKH_EN_DYNAMIC_EVENT		0	/*	Enable (1) or Disable (0) dynamic event support. */
 #define RKH_EN_DEFERRED_EVENT		1	/* 	Enable (1) or Disable (0) deferred event support. For using this feature the dynamic event support must be set to one. */

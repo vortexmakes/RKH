@@ -10,6 +10,7 @@
 #include "rkh.h"
 #include "my.h"
 #include "myevt.h"
+#include "rkhdata.h"
 
 
 #define tostring( expr )		#expr
@@ -153,6 +154,13 @@ rkh_trace_close( void )
 }
 
 
+RKHTS_T 
+rkh_trace_getts( void )
+{
+	return ( RKHTS_T )clock();
+}
+
+
 void 
 rkh_trace_flush( void )
 {
@@ -176,13 +184,6 @@ rkh_trace_flush( void )
 													smmap[ te.smix ],
 													format_trevt_args( &te ) );
 	}
-}
-
-
-RKHTS_T 
-rkh_trace_getts( void )
-{
-	return ( RKHTS_T )clock();
 }
 
 

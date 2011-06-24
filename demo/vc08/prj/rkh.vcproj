@@ -265,15 +265,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\source\include\rkhitl.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\source\include\rkhplat.h"
 					>
 				</File>
 				<File
 					RelativePath="..\..\..\source\portable\vc08\rkhport.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\source\include\rkhsm.h"
 					>
 				</File>
 				<File

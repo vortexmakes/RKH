@@ -87,13 +87,26 @@ typedef signed int		HInt;
 
 
 /*
+ *	Defines trace facility support.
+ *
+ *	This definitions are required only when the user application
+ *	is used trace facility (of course, RKH_TRACE == 1).
+ */
+
+#define rkh_tropen							rkh_trace_open
+#define rkh_trclose							rkh_trace_close
+#define rkh_trflush							rkh_trace_flush
+#define rkh_trgetts							rkh_trace_getts
+
+
+/*
  *	Defines dynamic event support.
  *
  *	This definitions are required only when the user application
  *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
  */
 
-#define RKH_DYNE_NUM_POOLS						3
+#define RKH_DYNE_NUM_POOLS					3
 #define rkh_dyne_init( mpd, pm, ps, bs )
 #define rkh_dyne_event_size( mpd )
 #define rkh_dyne_get( mpd, e )

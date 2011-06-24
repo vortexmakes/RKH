@@ -371,64 +371,6 @@ typedef enum
 
 
 /**
- *	Platform-dependent functions.
- */
-
-#if RKH_TRACE == 1
-
-	/**
-	 * 	Open the tracing session through the rkh_trace_open()
-	 * 	function.
-	 */
-
-	#ifndef rkh_trace_open
-		#error  "rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_open() within application level."
-	#endif
-	#define rkh_tropen()		rkh_trace_open()
-
-	/**
-	 * 	Close the tracing session through the rkh_trace_close()
-	 * 	function.
-	 */
-
-	#ifndef rkh_trace_open
-		#error  "rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_close() within application level."
-	#endif
-	#define rkh_trclose()		rkh_trace_close()
-
-	/**
-	 * 	Flush the trace stream through the rkh_trace_flush()
-	 * 	function.
-	 */
-
-	#ifndef rkh_trace_open
-		#error  "rkhtrace.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_flush() within application level."
-	#endif
-	#define rkh_trflush()		rkh_trace_flush()
-#else
-	#define rkh_tropen()
-	#define rkh_trclose()
-	#define rkh_trflush()
-#endif
-
-
-#if RKH_TRACE == 1 && RKH_EN_TIMESTAMP == 1
-
-	/**
-	 * 	Retrieves a timestamp to be placed in a trace event 
-	 * 	through the rkh_trace_getts() function.
-	 */
-
-	#ifndef rkh_trace_open
-		#error  "rkhtrace.h, When enabling RKH_TRACE and RKH_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level."
-	#endif
-	#define rkh_trgetts()		rkh_trace_getts()
-#else
-	#define rkh_trgetts()
-#endif
-
-
-/**
  * 	\brief
  *
  * 	Specifies the behavior of the instrumented state-machine. 
@@ -606,61 +548,127 @@ HUInt rkh_trgetnext( RKHTREVT_T *ptre );
  *
  * 	Number of trace events stored in the stream.
  */
+/*
+ *	file: rkhport.h - Visual Studio 2008 port
+ *	Last updated for version: 1.0.00
+ *	Date of the last update:  May 28, 2010
+ *
+ * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *
+ * 	RKH is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ *  RKH is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with RKH, see copying.txt file.
+ *
+ * Contact information:
+ * RKH web site:	http://
+ * e-mail:			francuccilea@gmail.com
+ */
+
+/*
+ * 	rkhport.h
+ */
+
+
+#ifndef __RKHPORT_H__
+#define __RKHPORT_H__
+
+
+#include "rkhcfg.h"
+#include <stdio.h>
+
+
+/*
+ * 	Portable data types.
+ *
+ * 	The RKH uses a set of integer quantities. That maybe 
+ * 	machine or compiler	dependent.
+ *
+ * 	Note:
+ *
+ * 	The 'HUInt' and 'HInt' will normally be the natural size 
+ * 	for a particular machine. These types designates an integer 
+ * 	type that is usually fastest to operate with among all integer 
+ * 	types.
+ */
+
+typedef signed char 	rkhint8;
+typedef signed short 	rkhint16;
+typedef signed long		rkhint32;
+typedef unsigned char 	rkhuint8;
+typedef unsigned short 	rkhuint16;
+typedef unsigned long	rkhuint32;
+
+typedef unsigned int	HUInt;
+typedef signed int		HInt;
+
+
+/*
+ * 	Declaring an object rkhrom announces that its value will
+ * 	not be changed and it will be stored in ROM.
+ */
+
+#define rkhrom			const	
+
+
+/*
+ * 	RKH needs to disable interrupts in order to access critical
+ * 	sections of code and to reenable interrupts when done.
+ * 	
+ * 	To hide the actual implementation method available for a
+ * 	particular processor, compiler, an OS, RKH defines the 
+ * 	following two macros to disable and enable interrupts 
+ * 	rkh_enter_critical() and define rkh_exit_critical() respectively.
+ * 	
+ * 	These macros are always together to wrap critical sections of
+ * 	code.
+ */
+
+#define rkh_enter_critical()
+#define rkh_exit_critical()
+
+
+/*
+ *	Defines trace facility support.
+ *
+ *	This definitions are required only when the user application
+ *	is used trace facility (of course, RKH_TRACE == 1).
+ */
+
+//#define rkh_tropen						rkh_trace_open
+//#define rkh_trclose						rkh_trace_close
+//#define rkh_trflush						rkh_trace_flush
+//#define rkh_trgetts						rkh_trace_getts
+
+
+/*
+ *	Defines dynamic event support.
+ *
+ *	This definitions are required only when the user application
+ *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
+ */
+
+#define RKH_DYNE_NUM_POOLS					3
+#define rkh_dyne_init( mpd, pm, ps, bs )
+#define rkh_dyne_event_size( mpd )
+#define rkh_dyne_get( mpd, e )
+#define rkh_dyne_put( mpd, e )
+#define rkh_post_fifo( qd, e )
+#define rkh_post_lifo( qd, e )
+#define rkh_get( qd, e )
+
+
+#endif
 
 rkhuint16 rkh_trgetqty( void );
-
-
-/**
- *	Open the tracing session.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_tropen(). 
- *	The application must implement this function. At a minimum, the 
- *	function must configure the trace stream by calling rkh_trinit().
- */
-
-void rkh_trace_open( void );
-
-
-/**
- *	Close the tracing session.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trclose(). 
- *	The application must implement this function.
- */
-
-void rkh_trace_close( void );
-
-
-/**
- *	Flush the trace stream.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trflush(). 
- * 	When the RKH trace an event, all the information related to it has to 
- * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
- * 	This place is a trace stream. Frequently, events traced are stored in 
- * 	the stream until it is flushed.
- */
-
-void rkh_trace_flush( void );
-
-
-/**
- *	Retrieves a timestamp to be placed in a trace event.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trgetts(). 
- *	The data returned is defined in compile-time by means of 
- *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
- *
- * 	\returns
- *
- * 	Timestamp.
- */
-
-RKHTS_T rkh_trace_getts( void );
 
 
 #endif
