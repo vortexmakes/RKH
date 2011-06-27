@@ -21,7 +21,7 @@
 <div class="contents">
 <h1>RKH Reference Manual </h1><p><a class="anchor" id="main_page"></a></p>
 <p><br/>
- <em> "A behavioral description of a system specifies dynamic aspects of the entire system or of a particular function, including control and timming. It specifies the states and modes that the system might reside in and the transitions between them. It also describes what causes activities to start and stop, and the way the system reacts to various events. A natural technique for describing the dynamic of a system is to use a finite-state machine. The described system of function is always in one of a finite set of states. When an event occurrs, the system reacts by performing actions. The events causing the reaction are called triggers."</em></p>
+ <em> "A behavioral description of a system specifies dynamic aspects of the entire system or of a particular function, including control and timming. It specifies the states and modes that the system might reside in and the transitions between them. It also describes what causes activities to start and stop, and the way the system reacts to various events. A natural technique for describing the dynamic of a system is to use a finite state machine. The described system of function is always in one of a finite set of states. When an event occurrs, the system reacts by performing actions. The events causing the reaction are called triggers."</em></p>
 <p><em>David Harel</em> <br/>
 </p>
 <ul>
@@ -41,27 +41,29 @@
 <hr/>
  <h2><a class="anchor" id="Overview">
 Overview</a></h2>
-<p>RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, and open-source development tool for implementing hierarchical state-machines based on modern state-machine concepts. This modern techniques are used to give an abstract description of the dynamic behavior of a system in a substantial manner.</p>
+<p>RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, and open-source development tool for implementing hierarchical state machines based on modern state machine concepts. This modern techniques are used to give an abstract description of the dynamic behavior of a system in a substantial manner.</p>
 <p>The main features of RKH:</p>
 <ul>
-<li>State-machines representation is based on state-tables.</li>
-<li>Representing a state-machine with RKH is intuitive, and easy.</li>
-<li>Reflects the state-diagram without obfuscation.</li>
+<li>State machines representation is based on state tables.</li>
+<li>Representing a state machine with RKH is intuitive, and easy.</li>
+<li>Reflects the state diagram without obfuscation.</li>
 <li>The RKH application are highly maintainable.</li>
 <li>Easy to integrate with any event queuing and dispatching mechanism.</li>
 <li>Useful in embedded systems.</li>
-<li>The most of the RKH implementation is independent of any particular CPU, operating system, or compiler.</li>
-<li>Flexible and user-configurable code generation.</li>
+<li>The most of the RKH implementation is <a class="el" href="_porting.html">independent of any particular CPU, operating system, or compiler</a>.</li>
+<li>Flexible and <a class="el" href="cfg.html">user-configurable code generation</a>.</li>
 <li>Very small footprint.</li>
-<li>Support hierarchically nested states, and flat state-machine.</li>
+<li>Support hierarchically nested states, and flat state machine.</li>
 <li>Support conditional, junction, and history pseudostates.</li>
 <li>Support compound transitions with guards.</li>
 <li>Support local transitions.</li>
+<li>Support mechanism for <a class="el" href="rkh_8h.html#a326720bd37f6ea2d4ece8604b85eb6c3">deferring events </a>.</li>
+<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">dynamic events </a>.</li>
 </ul>
 <hr/>
  <h2><a class="anchor" id="Purpose">
 Purpose and inspiration</a></h2>
-<p>For many years, I had been used the traditional state-machine concepts based on state-table strategy for modeling the dynamic behavior of several reactive-systems, in many industries. Over the years, this implementation was expanding its abilities to support system requirements increasingly complex, achieving hierarchically nested states, pseudostates, compound transitions, and more, proposed by Harel Statecharts.</p>
+<p>For many years, I had been used the traditional state machine concepts based on state table strategy for modeling the dynamic behavior of several reactive-systems, in many industries. Over the years, this implementation was expanding its abilities to support system requirements increasingly complex, achieving hierarchically nested states, pseudostates, compound transitions, and more, proposed by Harel Statecharts.</p>
 <p>The RKH not implements neither entire UML specs. nor entire Statechart specs. Instead, the RKH intention is to support just enough basic concepts of that powerful tools to facilitate the reactive-system modeling holding a solid, and efficient implementation. Broadly speaking, the RKH implementation has been designed from the ground up to be used in 8-bits platforms but can be easily adapted to 16 or 32-bits platforms.</p>
 <hr/>
  <h2><a class="anchor" id="Download">
@@ -102,7 +104,7 @@ Licensing</a></h2>
 Acknowlegments</a></h2>
 <p>I would like to thank to Eduardo Martinez for introducing me to the reactive systems problems and Dario Balina for contributing with ideas and suggestions. </p>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

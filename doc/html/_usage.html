@@ -60,19 +60,19 @@ Preparing the application files</a></h2>
 <p>The sample code for the example presented above port to x86 is located in the directory \demo\vc08\. The directory contains the Visual C++ 2008 project files to build the application. See <a class="el" href="_installation.html">Installation</a> section about RKH files.</p>
 <p>Th header file is located in the application directory:</p>
 <ul>
-<li><b>"rkhcfg.h"</b>: this file adapts and configures RKH. See <a class="el" href="cfg.html">Configuration</a> section. In the \demo directory there are other rkhcfg.h files already in existence and it's suggested that these are used as a reference. See the application <a class="el" href="rkhcfg__h.html">"rkhcfg.h"</a> file. Note that this header file is located in the application directory.</li>
+<li><b>"rkhcfg.h"</b>: this file adapts and configures RKH. See <a class="el" href="cfg.html">Configuration</a> section. In the \demo directory there are other <a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a> files already in existence and it's suggested that these are used as a reference. See the application <a class="el" href="rkhcfg__h.html">"rkhcfg.h"</a> file. Note that this header file is located in the application directory.</li>
 </ul>
 <ul>
 <li><b>"my.c"</b>: contains the implementation of the "my" state-machine, which illustrates all aspects of implementing state-machines with RKH. Please correlate this implementation with the "my" state diagram in <a class="el" href="_usage.html#fig1">Figure 1</a>. In this file are specifically declared the state-machine, also its states and pseudostates. See the <a class="el" href="my__c.html">"my.c"</a> file. Note that this source file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myact.c"</b>: this source file declares each of entry, exit, transition, and guard actions to be executed. Note that the <code>rkhcfg.h</code> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. Also, note that this source file is located in the application</li>
+<li><b>"myact.c"</b>: this source file declares each of entry, exit, transition, and guard actions to be executed. Note that the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. Also, note that this source file is located in the application</li>
 </ul>
 <ul>
 <li><b>"my.h"</b>: this header file contains the definitions of objet structures (state-machine, states, and pseudostates) and other facilities shared among the components of the application. See the <a class="el" href="my__h.html">"my.h"</a> file. Note that this header file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myact.h"</b>: this header file defines the actions to be executed. Note that the <code>rkhcfg.h</code> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. See the <a class="el" href="myact__h.html">"myact.h"</a> file. Note that this header file is located in the application directory.</li>
+<li><b>"myact.h"</b>: this header file defines the actions to be executed. Note that the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. See the <a class="el" href="myact__h.html">"myact.h"</a> file. Note that this header file is located in the application directory.</li>
 </ul>
 <ul>
 <li><b>"myevt.h"</b>: because events are explicitly shared among most of the application components, it's convenient to declare them in the separate header file "myevt.h". See the <a class="el" href="myevt__h.html">"myevt.h"</a> file. Note that this header file is located in the application directory.</li>
@@ -120,7 +120,7 @@ Declaring the state-machine (top-state)</a></h3>
 <li><em><b>id</b> =</em> "0". The value of state-machine ID. The user application defines the available ids in <code>rkhdata.h</code> file.</li>
 <li><em><b>ppty</b> =</em> "HCAL". Enables the state nesting.</li>
 <li><em><b>is</b> =</em> "S1". Pointer to regular initial state. This state could be defined either composite or basic.</li>
-<li><em><b>ia</b> =</em> "my_init". Pointer to initialization action. The function prototype is defined as <a class="el" href="rkhitl_8h.html#a0ca2d07dd0857b77fff951f8e077e93e">RKHINIT_T</a>. This argument is optional, thus it could be declared as NULL.</li>
+<li><em><b>ia</b> =</em> "my_init". Pointer to initialization action. The function prototype is defined as <a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a>. This argument is optional, thus it could be declared as NULL.</li>
 <li><em><b>hd</b> =</em> "mydata". Pointer to state-machine's abstract data. This argument is optional, thus it could be declared as NULL. <br/>
  <br/>
  </li>
@@ -175,7 +175,7 @@ Declaring the basic states</a></h3>
 
                         <span class="keyword">typedef</span> <span class="keyword">struct</span>
                         {
-                            <a class="code" href="rkhitl_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a> prepro;   <span class="comment">// extend the RKHPPRO_T class</span>
+                            <a class="code" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a> prepro;   <span class="comment">// extend the RKHPPRO_T class</span>
                             <span class="keywordtype">unsigned</span> min:4;
                             <span class="keywordtype">unsigned</span> max:4;
                             <span class="keywordtype">char</span> *buff;
@@ -193,7 +193,7 @@ Declaring the basic states</a></h3>
                         } 
                         
                         <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111, 0, set_x_1, NULL, &amp;S11, preprocessor ); 
-                        <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S22, 0, set_x_4, NULL, &amp;S2, (<a class="code" href="rkhitl_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a>*)&amp;option ); 
+                        <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S22, 0, set_x_4, NULL, &amp;S2, (<a class="code" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a>*)&amp;option ); 
 </pre></div><p>In like manner, the rest basic states are declared as shown below: <br/>
  </p>
 <div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111,   0, set_x_1, NULL, &amp;S11, NULL );
@@ -551,24 +551,24 @@ Declaring and defining actions</a></h3>
 <p><br/>
  The following enlists the action to be automatically executed by RKH. The function prototypes are explicitly defined in <code><a class="el" href="rkhitl_8h.html" title="RKH engine interface.">rkhitl.h</a></code> file.</p>
 <ul>
-<li><b>Initiallization</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a0ca2d07dd0857b77fff951f8e077e93e">RKHINIT_T</a>): the state transition originating at the black ball is called the initial transition. An initial transition can have associated actions, which RKH invokes to execute the topmost initial transition.</li>
+<li><b>Initiallization</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a>): the state transition originating at the black ball is called the initial transition. An initial transition can have associated actions, which RKH invokes to execute the topmost initial transition.</li>
 </ul>
 <ul>
-<li><b>Transition</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#ad13ba2d964c9cd8163f14fac10e802f0">RKHACT_T</a>): enlists any actions associated with the transition.</li>
+<li><b>Transition</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a6774d6792a14179a0955de97a2545dd3">RKHACT_T</a>): enlists any actions associated with the transition.</li>
 </ul>
 <ul>
-<li><b>Entry</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a7d7f01c9589a88e9c877048282c6c546">RKHENT_T</a>): this action is executed upon entry to a state.</li>
+<li><b>Entry</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#ae42800670131f791c8eaa57862224c0e">RKHENT_T</a>): this action is executed upon entry to a state.</li>
 </ul>
 <ul>
-<li><b>Exit</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a4f0ff9b57df6b208726f32bfdb650271">RKHEXT_T</a>): this action is executed upon exit from a state.</li>
+<li><b>Exit</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a175ad93caa689b1f3b02db520a1105c1">RKHEXT_T</a>): this action is executed upon exit from a state.</li>
 </ul>
 <ul>
-<li><b>Guard</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a14478aee2611f57bc54091cf5ce704c5">RKHGUARD_T</a>): contains the guard conditions attached to transitions.</li>
+<li><b>Guard</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#accdcce4dbcbade1d09c11a3484784c68">RKHGUARD_T</a>): contains the guard conditions attached to transitions.</li>
 </ul>
 <ul>
-<li><b>Preprocessor</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a2b7e707304a7466cd9b9dfb924823c94">RKHPPRO_T</a>): this action is executed before sending occured event to state-machine.</li>
+<li><b>Preprocessor</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a>): this action is executed before sending occured event to state-machine.</li>
 </ul>
-<p>Aditionally, the preprocessor options listed in <code>rkhcfg.h</code> allows to customize the prototypes of each action. See <a class="el" href="cfg.html">Configuration</a> section for more information about that. The used actions in the "my" state-machine implementation are shown in <a class="el" href="myact__c.html">"myact.c"</a> file.</p>
+<p>Aditionally, the preprocessor options listed in <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> allows to customize the prototypes of each action. See <a class="el" href="cfg.html">Configuration</a> section for more information about that. The used actions in the "my" state-machine implementation are shown in <a class="el" href="myact__c.html">"myact.c"</a> file.</p>
 <p><br/>
  According to "my" state diagram the initial action looks as follow: <br/>
  </p>
@@ -709,7 +709,7 @@ Running</a></h2>
     {
         <span class="keywordtype">int</span> c;
 
-(1)     <a class="code" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open</a>();
+(1)     rkh_trace_open();
 (2)     <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
         srand( ( <span class="keywordtype">unsigned</span> )time( NULL ) );
 
@@ -718,7 +718,7 @@ Running</a></h2>
 (3)         c = mygetch();
         
             <span class="keywordflow">if</span>( c == <span class="charliteral">&#39;p&#39;</span> )
-(4)             <a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>();
+(4)             rkh_trace_flush();
             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == ESC )
 (5)             <span class="keywordflow">break</span>;
             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == <span class="charliteral">&#39;r&#39;</span> )
@@ -731,7 +731,7 @@ Running</a></h2>
             }
         }
 
-(9)     <a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>();
+(9)     rkh_trace_close();
     }
 </pre></div><ul>
 <li>(1) Initialize the RKH trace module.</li>
@@ -761,7 +761,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

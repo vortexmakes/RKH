@@ -34,23 +34,38 @@
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Data Fields</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_e_v_t___t.html#ace79af9a2276cf72d7accf7f8f2c957e">e</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_e_v_t___t.html#afc48efc9184cb837954ee67c89489b66">dynamic_</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Represents events without parameters. </p>
-<p>An event can have associated parameters, allowing the event instance to convey not only the occurrence of some interesting incident but also quantitative information regarding that occurrence.</p>
-<p>Implementing the single inheritance in C is very simply by literally embedding the base structure, <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> in this case, as the first member of the derived structure.</p>
-<p>For example, the structure MYEVT_T derived from the base structure <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> by embedding the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> instance as the first member of MYEVT_T.</p>
+<p>An event can have associated parameters, allowing the event instance to convey not only the occurrence of some interesting incident but also quantitative information regarding that occurrence. Implementing the single inheritance in C is very simply by literally embedding the base structure, <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> in this case, as the first member of the derived structure. For example, the structure MYEVT_T derived from the base structure <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> by embedding the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> instance as the first member of MYEVT_T.</p>
 <div class="fragment"><pre class="fragment">    <span class="keyword">typedef</span> <span class="keyword">struct</span>
     {
-        <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> evt;
-        <span class="keywordtype">int</span> x;
-        <span class="keywordtype">int</span> y;
+        <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> evt;   <span class="comment">// base structure</span>
+        <span class="keywordtype">int</span> x;          <span class="comment">// parameter &#39;x&#39;</span>
+        <span class="keywordtype">int</span> y;          <span class="comment">// parameter &#39;y&#39;</span>
     } MYEVT_T;
 </pre></div><p>Such nesting of structures always aligns the data member 'evt' at the beginning of every instance of the derived structure. In particular, this alignment lets you treat a pointer to the derived MYEVT_T structure as a pointer to the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> base structure. Consequently, you can always safely pass a pointer to MYEVT_T to any C function that expects a pointer to <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>. (To be strictly correct in C, you should explicitly cast this pointer. In OOP such casting is called upcasting and is always safe.) Therefore, all functions designed for the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> structure are automatically available to the MYEVT_T structure as well as other structures derived from <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>.</p>
 <p>The RKH takes the 'e' member of <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> structure for triggering a state transition. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00486">486</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00575">575</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 <hr/><h2>Field Documentation</h2>
+<a class="anchor" id="afc48efc9184cb837954ee67c89489b66"></a><!-- doxytag: member="RKHEVT_T::dynamic_" ref="afc48efc9184cb837954ee67c89489b66" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">rkhuint8 <a class="el" href="struct_r_k_h_e_v_t___t.html#afc48efc9184cb837954ee67c89489b66">RKHEVT_T::dynamic_</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Attributes of dynamic event (0 for static event). </p>
+
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00588">588</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ace79af9a2276cf72d7accf7f8f2c957e"></a><!-- doxytag: member="RKHEVT_T::e" ref="ace79af9a2276cf72d7accf7f8f2c957e" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -63,7 +78,7 @@
 <div class="memdoc">
 <p>Signal of the event instance. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00492">492</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00581">581</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -71,7 +86,7 @@
 <li><a class="el" href="rkhitl_8h_source.html">rkhitl.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

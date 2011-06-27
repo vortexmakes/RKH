@@ -192,7 +192,7 @@
 #endif
 
 
-/*
+/**
  * 	The 'rkhassert' macro is used by RKH to check expressions that ought 
  * 	to be true as long as the program is running correctly. An assert 
  * 	should never have a side effect. If the expression evaluates to 0, the 
@@ -232,8 +232,8 @@
 
 #if RKH_EN_DYNAMIC_EVENT == 1
 	#define mksevt( evt, es )											\
-								((RKHEVT_T*)(e))->e = (RKHE_T)es;		\
-								((RKHEVT_T*)(e))->dynamic_ = 0;
+								((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
+								((RKHEVT_T*)(evt))->dynamic_ = 0;
 #else
 	#define mksevt( evt, es )											\
 								((RKHEVT_T*)(evt))->e = (RKHE_T)es;
@@ -535,18 +535,15 @@
 
 
 /**	
- * 	\brief
- *
+ * 	\brief 
  * 	Represents events without parameters.
  * 	
  * 	An event can have associated parameters, allowing the event 
  * 	instance to convey not only the occurrence of some interesting 
  * 	incident but also quantitative information regarding that occurrence.
- *	
  *	Implementing the single inheritance in C is very simply by literally
  *	embedding the base structure, RKHEVT_T in this case, as the first 
  *	member of the derived structure.
- *
  * 	For example, the structure MYEVT_T derived from the base structure 
  * 	RKHEVT_T by embedding the RKHEVT_T instance as the first member of 
  *	MYEVT_T.
@@ -554,9 +551,9 @@
  * 	\code
  * 	typedef struct
  * 	{
- * 		RKHEVT_T evt;
- *		int x;
- *		int y;
+ * 		RKHEVT_T evt;	// base structure
+ *		int x;			// parameter 'x'
+ *		int y;			// parameter 'y'
  * 	} MYEVT_T;
  * 	\endcode
  *
@@ -976,29 +973,29 @@ typedef struct rkhsreg_t
 	 *
 	 *	Example:
 	 *  
-	 *  	\code
-	 *  	static
-	 *  	RKHE_T
-	 *  	preprocessor( RKHEVT_T *pe )
-	 *  	{
-	 *  		...
-	 *  	}
+	 *  \code
+	 *  static
+	 *  RKHE_T
+	 *  preprocessor( RKHEVT_T *pe )
+	 *  {
+	 *  	...
+	 *  }
 	 *  
-	 * 		typedef struct
-	 * 		{
-	 * 			RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-	 * 			unsigned min:4;
-	 * 			unsigned max:4;
-	 * 			char *buff;
-	 * 		} SDATA_T;
+	 * 	typedef struct
+	 * 	{
+	 * 		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 * 		unsigned min:4;
+	 * 		unsigned max:4;
+	 * 		char *buff;
+	 * 	} SDATA_T;
 	 *
-	 * 		static const SDATA_T option = { preprocessor, 4, 8, token1 };
+	 * 	static const SDATA_T option = { preprocessor, 4, 8, token1 };
 	 *
-	 *  	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+	 *  RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
 	 *  								NULL, &S11, preprocessor ); 
-	 *  	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+	 * 	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
 	 *  								NULL, &S2, (RKHPPRO_T*)&option ); 
-	 *  	\endcode
+	 * \endcode
 	 */
 
 	RKHPPRO_T prepro;

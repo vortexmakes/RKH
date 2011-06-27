@@ -147,7 +147,7 @@ print_banner( <span class="keywordtype">void</span> )
 
 
 <span class="keywordtype">void</span> 
-<a class="code" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open</a>( <span class="keywordtype">void</span> )
+rkh_trace_open( <span class="keywordtype">void</span> )
 {
     <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *pcfg;
 
@@ -170,14 +170,14 @@ print_banner( <span class="keywordtype">void</span> )
 
 
 <span class="keywordtype">void</span> 
-<a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>( <span class="keywordtype">void</span> )
+rkh_trace_close( <span class="keywordtype">void</span> )
 {
     fclose( fdbg );
 }
 
 
 <span class="keywordtype">void</span> 
-<a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>( <span class="keywordtype">void</span> )
+rkh_trace_flush( <span class="keywordtype">void</span> )
 {
     <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> te;
     <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *pcfg;
@@ -188,13 +188,13 @@ print_banner( <span class="keywordtype">void</span> )
 
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">log</a> == RKH_TRLOG )
             fprintf( fdbg, <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    rkh_trgetts(),
+                                                    <a class="code" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts</a>(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">print</a> == RKH_TRPRINT )
             printf( <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    rkh_trgetts(),
+                                                    <a class="code" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts</a>(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
@@ -203,7 +203,7 @@ print_banner( <span class="keywordtype">void</span> )
 
 
 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> 
-<a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts</a>( <span class="keywordtype">void</span> )
+rkh_trace_getts( <span class="keywordtype">void</span> )
 {
     <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> )clock();
 }
@@ -218,14 +218,14 @@ main( <span class="keywordtype">void</span> )
     srand( ( <span class="keywordtype">unsigned</span> )time( NULL ) );
 
     print_banner();
-    <a class="code" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open</a>();
+    rkh_trace_open();
 
     forever
     {
         c = mygetch();
         
         <span class="keywordflow">if</span>( c == <span class="charliteral">&#39;p&#39;</span> )
-            <a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>();
+            rkh_trace_flush();
         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == ESC )
             <span class="keywordflow">break</span>;
         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == <span class="charliteral">&#39;r&#39;</span> )
@@ -238,10 +238,10 @@ main( <span class="keywordtype">void</span> )
         }
     }
 
-    <a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>();
+    rkh_trace_close();
 }
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

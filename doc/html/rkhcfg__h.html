@@ -56,26 +56,26 @@
 <span class="preprocessor">#define RKH_EN_STATE_NAME           1   </span><span class="comment">/*  Include state name */</span>
 <span class="preprocessor">#define RKH_EN_HSM_NAME             1   </span><span class="comment">/*  Include HSM name */</span>
 <span class="preprocessor">#define RKH_EN_HSM_DATA             1   </span><span class="comment">/*  Include HSM data */</span>
-<span class="preprocessor">#define RKH_EN_PPRO                 0   </span><span class="comment">/*  Include input preprocessor function */</span>
-<span class="preprocessor">#define RKH_EN_GET_INFO             0   </span><span class="comment">/*  Include get information function */</span>
+<span class="preprocessor">#define RKH_EN_PPRO                 1   </span><span class="comment">/*  Include input preprocessor function */</span>
+<span class="preprocessor">#define RKH_EN_GET_INFO             1   </span><span class="comment">/*  Include get information function */</span>
 <span class="preprocessor">#define RKH_EN_REENTRANT            0   </span><span class="comment">/*  Enable (1) or Disable (0) HSM re-entrancy */</span>
 
-<span class="preprocessor">#define RKH_TRACE                   0   </span><span class="comment">/*  Enable (1) or Disable (0) trace mode */</span>
+<span class="preprocessor">#define RKH_TRACE                   1   </span><span class="comment">/*  Enable (1) or Disable (0) trace mode */</span>
 <span class="preprocessor">#define RKH_TRACE_ALL               0   </span><span class="comment">/*  Include all trace points */</span>
 
                                         <span class="comment">/*  Enable (1) or Disable (0) trace points: */</span>
 <span class="preprocessor">#define RKH_EN_EVENT                1   </span><span class="comment">/*  triggering event */</span>
-<span class="preprocessor">#define RKH_EN_TRN_SRC              0   </span><span class="comment">/*  transition source state */</span>
-<span class="preprocessor">#define RKH_EN_TRN_TGT              0   </span><span class="comment">/*  transition target state */</span>
+<span class="preprocessor">#define RKH_EN_TRN_SRC              1   </span><span class="comment">/*  transition source state */</span>
+<span class="preprocessor">#define RKH_EN_TRN_TGT              1   </span><span class="comment">/*  transition target state */</span>
 <span class="preprocessor">#define RKH_EN_NXT_STATE            1   </span><span class="comment">/*  next state */</span>
-<span class="preprocessor">#define RKH_EN_INT_TRAN             0   </span><span class="comment">/*  internal transition */</span>
+<span class="preprocessor">#define RKH_EN_INT_TRAN             1   </span><span class="comment">/*  internal transition */</span>
 <span class="preprocessor">#define RKH_EN_ENTRY                1   </span><span class="comment">/*  entry state */</span>
 <span class="preprocessor">#define RKH_EN_EXIT                 1   </span><span class="comment">/*  exit state */</span>
-<span class="preprocessor">#define RKH_EN_INIT_HSM             0   </span><span class="comment">/*  initializing state-machine */</span>
-<span class="preprocessor">#define RKH_EN_SGT                  0   </span><span class="comment">/*  target state of transition segment */</span>
-<span class="preprocessor">#define RKH_EN_RTN_CODE             0   </span><span class="comment">/*  code returned by rkh_engine() function */</span>
-<span class="preprocessor">#define RKH_EN_NUM_ENEX             0   </span><span class="comment">/*  number of enter and exited states */</span>
-<span class="preprocessor">#define RKH_EN_NUM_ACTSGT           0   </span><span class="comment">/*  number of transition actions to be executed and number of transition segments */</span>
+<span class="preprocessor">#define RKH_EN_INIT_HSM             1   </span><span class="comment">/*  initializing state-machine */</span>
+<span class="preprocessor">#define RKH_EN_SGT                  1   </span><span class="comment">/*  target state of transition segment */</span>
+<span class="preprocessor">#define RKH_EN_RTN_CODE             1   </span><span class="comment">/*  code returned by rkh_engine() function */</span>
+<span class="preprocessor">#define RKH_EN_NUM_ENEX             1   </span><span class="comment">/*  number of enter and exited states */</span>
+<span class="preprocessor">#define RKH_EN_NUM_ACTSGT           1   </span><span class="comment">/*  number of transition actions to be executed and number of transition segments */</span>
 
 <span class="preprocessor">#define RKH_EN_TIMESTAMP            1   </span><span class="comment">/*  Enable (1) or Disable (0) trace timestamp */</span>
 <span class="preprocessor">#define RKH_SIZEOF_TIMESTAMP        16  </span><span class="comment">/*  Defines the size of timestamp [in bits]: 8, 16 or 32 */</span>
@@ -91,7 +91,7 @@
 
 <span class="preprocessor">#endif</span>
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

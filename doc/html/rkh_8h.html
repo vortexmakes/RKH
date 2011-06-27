@@ -32,6 +32,8 @@
 <code>#include &quot;<a class="el" href="rkh_8h_source.html">rkhitl.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>&quot;</code><br/>
 <code>#include &lt;string.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a>&quot;</code><br/>
+<code>#include &lt;stdio.h&gt;</code><br/>
 
 <p><a href="rkh_8h_source.html">Go to the source code of this file.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
@@ -150,7 +152,8 @@
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 (et*)<a class="code" href="rkhitl_8h.html#adbd1a50ba630ea1a0dc689f14f28801b">rkh_ae</a>(<span class="keyword">sizeof</span>(et),(<a class="code" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>)(e))
-</pre></div><p>This macro dynamically creates a new event of type 'et' with the signal 'e'. It returns a pointer to the event already cast to the event type (et*). Here is an example of dynamic event allocation with the macro <a class="el" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">rkh_alloc_event()</a>:</p>
+</pre></div><p>This macro dynamically creates a new event of type 'et' with the signal. The basic policy is to allocate the event from the first pool that has a block size big enough to fit the requested event size. RKH can manage up to three event pools (e.g., small, medium, and large events, like shirt sizes). Thus, ensure the</p>
+<p>It returns a pointer to the event already cast to the event type (et*). Here is an example of dynamic event allocation with the macro <a class="el" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">rkh_alloc_event()</a>:</p>
 <div class="fragment"><pre class="fragment">    MYEVT_T *mye = <a class="code" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">rkh_alloc_event</a>( MYEVT_T, DATA );
     mye-&gt;y = mye-&gt;x = 0;
     ...
@@ -163,7 +166,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00630">630</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00639">639</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -857,7 +860,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00718">718</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00727">727</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -888,7 +891,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00734">734</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00743">743</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -919,7 +922,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00749">749</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00758">758</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -950,7 +953,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state's abstract data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00770">770</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00779">779</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1000,7 +1003,7 @@
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00673">673</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00682">682</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1271,7 +1274,7 @@
 </div>
 <div class="memdoc">
 <p>Defer an event to a given separate event queue.</p>
-<p>This function is part of the event deferral support. An active object uses this function to defer an event <em>evt</em> to the event queue <em>qd</em>. RKH correctly accounts for another outstanding reference to the event and will not recycle the event at the end of the RTC step. Later, the active object might recall one event at a time from the event queue.</p>
+<p>Event deferral comes in very handy when an event arrives in a particularly inconvenient moment but can be deferred for some later time, when the system is in a much better position to handle the event. RKH supports very efficient event deferring and recalling mechanisms. This function is part of the event deferral mechanism. An active object uses this function to defer an event <em>evt</em> to the event queue <em>qd</em>. RKH correctly accounts for another outstanding reference to the event and will not recycle the event at the end of the RTC step. Later, the active object might recall one event at a time from the event queue by means of <a class="el" href="rkh_8h.html#a7a45f14cc8f32bcad2798dafbe28ed1d">rkh_recall()</a> function.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>For memory efficiency and best performance the deferred event queue, STORE ONLY POINTERS to events, not the whole event objects. An active object can use multiple event queues to defer events of different kinds.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
@@ -1431,7 +1434,7 @@
 <div class="memdoc">
 <p>Posts an event directly to the event queue <em>qd</em> using the LIFO policy.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>For memory efficiency and best performance the deferred event queue, STORE ONLY POINTERS to events, not the whole event objects.</p>
+<p>For memory efficiency and best performance the AO's event queue, STORE ONLY POINTERS to events, not the whole event objects.</p>
 <p>The LIFO policy should be used only with great caution because it alters order of events in the queue. At this time, this functions are required only when the user application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -1471,7 +1474,7 @@
 <div class="memdoc">
 <p>Posts an event directly to the event queue <em>qd</em> using the FIFO policy.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>For memory efficiency and best performance the deferred event queue, STORE ONLY POINTERS to events, not the whole event objects.</p>
+<p>For memory efficiency and best performance the AO's event queue, STORE ONLY POINTERS to events, not the whole event objects.</p>
 <p>At this time, this functions are required only when the user application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -1512,14 +1515,14 @@
 <p>Recall a deferred event from a given event queue.</p>
 <p>This function is part of the event deferral support. An active object uses this function to recall a deferred event from a given event queue. Recalling an event means that it is removed from the deferred event queue <em>qds</em> and posted (LIFO) to the event queue of the active object <em>qdd</em>.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>For memory efficiency and best performance the deferred event queue, STORE ONLY POINTERS to events, not the whole event objects.</p>
+<p>For memory efficiency and best performance the destination event queue, STORE ONLY POINTERS to events, not the whole event objects.</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>The pointer to the recalled event to the caller, or NULL if no event has been recalled. </p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

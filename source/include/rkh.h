@@ -511,7 +511,7 @@ enum
  *
  * 	\note 
  *
- *	For memory efficiency and best performance the deferred event queue, 
+ *	For memory efficiency and best performance the AO's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *
  * 	The LIFO policy should be used only with great caution because it
@@ -536,7 +536,7 @@ HUInt rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
  *
  * 	\note
  *
- *	For memory efficiency and best performance the deferred event queue, 
+ *	For memory efficiency and best performance the AO's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *
  *	At this time, this functions are required only when the user 
@@ -557,12 +557,16 @@ HUInt rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
 /**
  *	Defer an event to a given separate event queue.
  *
- * 	This function is part of the event deferral support. An active object
+ * 	Event deferral comes in very handy when an event arrives in a 
+ * 	particularly inconvenient moment but can be deferred for some later time, 
+ * 	when the system is in a much better position to handle the event. RKH 
+ * 	supports very efficient event deferring and recalling mechanisms.
+ * 	This function is part of the event deferral mechanism. An active object
  * 	uses this function to defer an event \a evt to the event queue \a qd. 
  * 	RKH correctly accounts for another outstanding reference to the event 
  * 	and will not recycle the event at the end of the RTC step. 
  * 	Later, the active object might recall one event at a time from the 
- * 	event queue.
+ * 	event queue by means of rkh_recall() function.
  *	
  *	\note
  *
@@ -594,7 +598,7 @@ HUInt rkh_defer( HUInt qd, RKHEVT_T *evt );
  *
  * 	\note
  *
- *	For memory efficiency and best performance the deferred event queue, 
+ *	For memory efficiency and best performance the destination event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *
  * 	\returns 

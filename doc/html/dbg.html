@@ -42,16 +42,16 @@
  <h2><a class="anchor" id="trusing">
 Using tracing tool</a></h2>
 <ul>
-<li>The option <code>RKH_TRACE</code> must be set to one (1), it should be defined in the specific application configuration file named <code>rkhcfg.h</code>.</li>
+<li>The option <code>RKH_TRACE</code> must be set to one (1), it should be defined in the specific application configuration file named <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code>.</li>
 </ul>
 <ul>
-<li>The trace events of interest must be defined in the <code>rkhcfg.h</code> file. See <code><a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e">RKHTR_EVENTS</a></code> enumeration and <a class="el" href="dbg.html#trcfg">Trace tool configuration</a> section.</li>
+<li>The trace events of interest must be defined in the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file. See <code><a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e">RKHTR_EVENTS</a></code> enumeration and <a class="el" href="dbg.html#trcfg">Trace tool configuration</a> section.</li>
 </ul>
 <ul>
-<li>The <a class="el" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open()</a>, <a class="el" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close()</a>, <a class="el" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush()</a>, and <a class="el" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts()</a> are platform-dependent functions, therefore the user application must implement it. This functions are invoked through the <a class="el" href="rkhtrace_8h.html#a3e54cf3f0195c75032597931f31e3bf8">rkh_tropen()</a>, rkh_trclose(), rkh_trflush(), and rkh_trgetts() macros.</li>
+<li>The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and rkh_trace_getts() are platform-dependent functions, therefore the user application must implement it. This functions are invoked through the rkh_tropen(), rkh_trclose(), rkh_trflush(), and <a class="el" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts()</a> macros.</li>
 </ul>
 <ul>
-<li>The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options configures the <code><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a></code> trace event structure and should be defined in the <code>rkhcfg.h</code> file.</li>
+<li>The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options configures the <code><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a></code> trace event structure and should be defined in the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file.</li>
 </ul>
 <ul>
 <li>See <code><a class="el" href="rkhtrace_8h.html" title="Platform-independent interface for RKH trace facility.">rkhtrace.h</a></code> header file for more information.</li>
@@ -123,9 +123,9 @@ Trace tool configuration</a></h2>
 <hr/>
  <h2><a class="anchor" id="trexample">
 Example use</a></h2>
-<p>The following listing shows an implementation example of <a class="el" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open()</a>, <a class="el" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close()</a>, <a class="el" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush()</a>, and <a class="el" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts()</a> functions:</p>
+<p>The following listing shows an implementation example of rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and rkh_trace_getts() functions:</p>
 <div class="fragment"><pre class="fragment"><span class="keywordtype">void</span> 
-<a class="code" href="rkhtrace_8h.html#a060fe9242e8687fde49f16919faa6a1e">rkh_trace_open</a>( <span class="keywordtype">void</span> )
+rkh_trace_open( <span class="keywordtype">void</span> )
 {
     <a class="code" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be">rkh_trinit</a>();
     <a class="code" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig</a>( MY, RKH_TRLOG, RKH_TRPRINT );
@@ -142,14 +142,14 @@ Example use</a></h2>
 
 
 <span class="keywordtype">void</span> 
-<a class="code" href="rkhtrace_8h.html#aacda709cec1b3dce7df336e5b7b3a8c3">rkh_trace_close</a>( <span class="keywordtype">void</span> )
+rkh_trace_close( <span class="keywordtype">void</span> )
 {
     fclose( fdbg );
 }
 
 
 <span class="keywordtype">void</span> 
-<a class="code" href="rkhtrace_8h.html#a35efac489e172795aedbf9bddfe7f2e1">rkh_trace_flush</a>( <span class="keywordtype">void</span> )
+rkh_trace_flush( <span class="keywordtype">void</span> )
 {
     <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> te;
     <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *pcfg;
@@ -160,13 +160,13 @@ Example use</a></h2>
 
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">log</a> == RKH_TRLOG )
             fprintf( fdbg, <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    rkh_trgetts(),
+                                                    <a class="code" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts</a>(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">print</a> == RKH_TRPRINT )
             printf( <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    rkh_trgetts(),
+                                                    <a class="code" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts</a>(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
@@ -175,7 +175,7 @@ Example use</a></h2>
 
 
 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> 
-<a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6">rkh_trace_getts</a>( <span class="keywordtype">void</span> )
+rkh_trace_getts( <span class="keywordtype">void</span> )
 {
     <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> )clock();
 }
@@ -206,7 +206,7 @@ Example use</a></h2>
 00104 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea8be40e23be633dfc1a77059494e3a18e">RKHTR_NXT_STATE</a>  ] - MY : S21 [0]
 00105 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>   ] - MY : <a class="code" href="rkh_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jun 24 11:00:11 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jun 27 12:01:34 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

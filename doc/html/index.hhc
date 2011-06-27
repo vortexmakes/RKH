@@ -60,6 +60,7 @@
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkh.h"><param name="Local" value="rkh_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhassert.h"><param name="Local" value="rkhassert_8h.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhcfg.h"><param name="Local" value="rkhcfg_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhitl.h"><param name="Local" value="rkhitl_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhplat.h"><param name="Local" value="rkhplat_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhtrace.h"><param name="Local" value="rkhtrace_8h.html"><param name="ImageNumber" value="11"></OBJECT>

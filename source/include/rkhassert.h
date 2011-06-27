@@ -41,9 +41,23 @@
 
 typedef enum
 {
+	/**
+	 *	Indicates a detected error in rkh_ae() function.
+	 */
+
 	RKH_AE_RUNOUT_POOLS,
 	RKH_AE_NOT_ALLOC,
+
+	/**
+	 *	Indicates a detected error in rkh_gc() function.
+	 */
+
 	RKH_GC_RUNOUT_POOLS,
+
+	/**
+	 *	Indicates a detected error in rkh_recall() function.
+	 */
+
 	RKH_RC_FAIL,
 
 	RKH_ASSERT_NUM_ERRORS
