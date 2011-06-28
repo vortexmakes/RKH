@@ -629,7 +629,8 @@
  *	automatically available to the MYEVT_T structure as well as other 
  *	structures derived from RKHEVT_T.
  *
- * 	The RKH takes the 'e' member of RKHEVT_T structure for triggering a 
+ * 	\note
+ * 	The RKH takes the \a 'e' member of RKHEVT_T structure for triggering a 
  * 	state transition.
  */
 

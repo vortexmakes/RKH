@@ -25,19 +25,23 @@
  As stated above, RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, and open-source development tool for implementing hierarchical state-machines based on modern state-machine concepts. This modern techniques are used to give an abstract description of the dynamic behavior of a system in a substantial manner.</p>
 <p><b> The key features of the RKH framework: </b></p>
 <ul>
-<li>State-machines representation is based on state-tables.</li>
-<li>Representing a state-machine with RKH is intuitive, and easy.</li>
-<li>Reflects the state-diagram without obfuscation.</li>
+<li>State machines representation is based on state tables.</li>
+<li>Representing a state machine with RKH is intuitive, and easy.</li>
+<li>Reflects the state diagram without obfuscation.</li>
 <li>The RKH application are highly maintainable.</li>
 <li>Easy to integrate with any event queuing and dispatching mechanism.</li>
 <li>Useful in embedded systems.</li>
-<li>The most of the RKH implementation is independent of any particular CPU, operating system, or compiler.</li>
-<li>Flexible and user-configurable code generation.</li>
+<li>The most of the RKH implementation is <a class="el" href="_porting.html">independent of any particular CPU, operating system, or compiler</a>.</li>
+<li>Flexible and <a class="el" href="cfg.html">user-configurable code generation</a>.</li>
 <li>Very small footprint.</li>
-<li>Support hierarchically nested states, and flat state-machine.</li>
+<li>Support hierarchically nested states, and flat state machine.</li>
 <li>Support conditional, junction, and history pseudostates.</li>
 <li>Support compound transitions with guards.</li>
 <li>Support local transitions.</li>
+<li>Support mechanism for <a class="el" href="rkh_8h.html#af359d4e8f6cec6ca30f5797ee263af52">deferring events </a>.</li>
+<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">dynamic events </a>.</li>
+<li>Support systems-friendly <a class="el" href="rkhitl_8h.html#a701f7ea7c001444bc1ec0052c4a85c8b">assertion </a> macros.</li>
+<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">event dispatching with parameters </a>.</li>
 </ul>
 <p>The RKH not implements neither entire UML specs. nor entire Statechart specs. Instead, the RKH intention is to support just enough basic concepts of that powerful tools to facilitate the reactive-system modeling holding a solid, and efficient implementation. Broadly speaking, the RKH implementation has been designed from the ground up to be used in 8-bits platforms but can be easily adapted to 16 or 32-bits platforms.</p>
 <p>The goal in this section is to explain how to represent a state-machine using the RKH framework. To do that is proposed a simple example, which is shown in the <a class="el" href="_usage.html#fig1">Figure 1</a>.</p>
@@ -166,34 +170,34 @@ Declaring the basic states</a></h3>
 <li><em><b>parent</b> =</em> "S1". Pointer to parent state.</li>
 <li><em><b>prepro</b> =</em> "NULL". Pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL. Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure. <b>Example:</b> </li>
 </ul>
-<div class="fragment"><pre class="fragment">                        <span class="keyword">static</span>
-                        <a class="code" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
-                        preprocessor( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
-                        {
-                                ...
-                        }
+<div class="fragment"><pre class="fragment"><span class="keyword">static</span>
+<a class="code" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
+preprocessor( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+{
+        ...
+}
 
-                        <span class="keyword">typedef</span> <span class="keyword">struct</span>
-                        {
-                            <a class="code" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a> prepro;   <span class="comment">// extend the RKHPPRO_T class</span>
-                            <span class="keywordtype">unsigned</span> min:4;
-                            <span class="keywordtype">unsigned</span> max:4;
-                            <span class="keywordtype">char</span> *buff;
-                        } SDATA_T;
-                            
-                        <span class="keyword">static</span> <span class="keyword">const</span> SDATA_T option = { preprocessor, 4, 8, token1 };
+<span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    <a class="code" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a> prepro;   <span class="comment">// extend the RKHPPRO_T class</span>
+    <span class="keywordtype">unsigned</span> min:4;
+    <span class="keywordtype">unsigned</span> max:4;
+    <span class="keywordtype">char</span> *buff;
+} SDATA_T;
+    
+<span class="keyword">static</span> <span class="keyword">const</span> SDATA_T option = { preprocessor, 4, 8, token1 };
 
-                        HUInt
-                        action( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
-                        {
-                            SDATA_T *popt;
+HUInt
+action( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
+{
+    SDATA_T *popt;
 
-                            popt = (SDATA_T *)<a class="code" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65">rkh_get_sdata</a>( ph );
-                            <span class="keywordflow">return</span> popt-&gt;min &gt; 1 &amp;&amp; popt-&gt;max &lt; 4 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
-                        } 
-                        
-                        <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111, 0, set_x_1, NULL, &amp;S11, preprocessor ); 
-                        <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S22, 0, set_x_4, NULL, &amp;S2, (<a class="code" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a>*)&amp;option ); 
+    popt = (SDATA_T *)<a class="code" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65">rkh_get_sdata</a>( ph );
+    <span class="keywordflow">return</span> popt-&gt;min &gt; 1 &amp;&amp; popt-&gt;max &lt; 4 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
+} 
+
+<a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111, 0, set_x_1, NULL, &amp;S11, preprocessor ); 
+<a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S22, 0, set_x_4, NULL, &amp;S2, (<a class="code" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3">RKHPPRO_T</a>*)&amp;option ); 
 </pre></div><p>In like manner, the rest basic states are declared as shown below: <br/>
  </p>
 <div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>( S111,   0, set_x_1, NULL, &amp;S11, NULL );
@@ -761,7 +765,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jun 28 14:35:25 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jun 28 15:46:35 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

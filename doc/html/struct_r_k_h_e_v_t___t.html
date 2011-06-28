@@ -46,9 +46,9 @@
         <span class="keywordtype">int</span> y;          <span class="comment">// parameter &#39;y&#39;</span>
     } MYEVT_T;
 </pre></div><p>Such nesting of structures always aligns the data member 'evt' at the beginning of every instance of the derived structure. In particular, this alignment lets you treat a pointer to the derived MYEVT_T structure as a pointer to the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> base structure. Consequently, you can always safely pass a pointer to MYEVT_T to any C function that expects a pointer to <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>. (To be strictly correct in C, you should explicitly cast this pointer. In OOP such casting is called upcasting and is always safe.) Therefore, all functions designed for the <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> structure are automatically available to the MYEVT_T structure as well as other structures derived from <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>.</p>
-<p>The RKH takes the 'e' member of <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> structure for triggering a state transition. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>The RKH takes the <em>'e'</em> member of <a class="el" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> structure for triggering a state transition. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00636">636</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00637">637</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 <hr/><h2>Field Documentation</h2>
 <a class="anchor" id="afc48efc9184cb837954ee67c89489b66"></a><!-- doxytag: member="RKHEVT_T::dynamic_" ref="afc48efc9184cb837954ee67c89489b66" args="" -->
 <div class="memitem">
@@ -62,7 +62,7 @@
 <div class="memdoc">
 <p>Attributes of dynamic event (0 for static event). </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00649">649</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00650">650</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -78,7 +78,7 @@
 <div class="memdoc">
 <p>Signal of the event instance. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00642">642</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l00643">643</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -86,7 +86,7 @@
 <li><a class="el" href="rkhitl_8h_source.html">rkhitl.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jun 28 14:35:25 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jun 28 15:46:35 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

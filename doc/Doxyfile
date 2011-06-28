@@ -1349,7 +1349,8 @@ PREDEFINED             = RKH_EN_DYNAMIC_EVENT \
                          RKH_EN_PPRO \
                          RKH_EN_GET_INFO \
                          RKH_TRACE_ALL \
-                         RKH_ASSERT
+                         RKH_ASSERT \
+                         rkh_assert
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 

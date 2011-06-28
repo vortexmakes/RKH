@@ -373,20 +373,23 @@ behavior of a system in a substantial manner.
 
 <STRONG> The key features of the RKH framework: </STRONG>
 
-- State-machines representation is based on state-tables.
-- Representing a state-machine with RKH is intuitive, and easy.
-- Reflects the state-diagram without obfuscation.
+- State machines representation is based on state tables.
+- Representing a state machine with RKH is intuitive, and easy.
+- Reflects the state diagram without obfuscation.
 - The RKH application are highly maintainable.
 - Easy to integrate with any event queuing and dispatching mechanism.
 - Useful in embedded systems.
-- The most of the RKH implementation is independent of any particular 
-CPU, operating system, or compiler.
-- Flexible and user-configurable code generation.
+- The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
+- Flexible and \ref cfg "user-configurable code generation".
 - Very small footprint.
-- Support hierarchically nested states, and flat state-machine.
+- Support hierarchically nested states, and flat state machine.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
 - Support local transitions.
+- Support mechanism for \link rkh_defer() deferring events \endlink.
+- Support \link RKHEVT_T dynamic events \endlink.
+- Support systems-friendly \link rkhassert() assertion \endlink macros.
+- Support \link RKHEVT_T event dispatching with parameters \endlink.
 
 
 The RKH not implements neither entire UML specs. nor entire Statechart specs. 
@@ -595,36 +598,36 @@ where:
 						derived structure.
 						\b Example:
 
-						\code
-						static
-						RKHE_T
-						preprocessor( RKHEVT_T *pe )
-						{
-								...
-						}
+\code
+static
+RKHE_T
+preprocessor( RKHEVT_T *pe )
+{
+		...
+}
 
-						typedef struct
-						{
-							RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-							unsigned min:4;
-							unsigned max:4;
-							char *buff;
-						} SDATA_T;
-							
-						static const SDATA_T option = { preprocessor, 4, 8, token1 };
+typedef struct
+{
+	RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	unsigned min:4;
+	unsigned max:4;
+	char *buff;
+} SDATA_T;
+	
+static const SDATA_T option = { preprocessor, 4, 8, token1 };
 
-						HUInt
-						action( const struct rkh_t *ph, RKHEVT_T *pe )
-						{
-							SDATA_T *popt;
+HUInt
+action( const struct rkh_t *ph, RKHEVT_T *pe )
+{
+	SDATA_T *popt;
 
-							popt = (SDATA_T *)rkh_get_sdata( ph );
-							return popt->min > 1 && popt->max < 4 ? RKH_GTRUE : RKH_GFALSE;
-						} 
-						
-						RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, preprocessor ); 
-						RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, NULL, &S2, (RKHPPRO_T*)&option ); 
-						\endcode
+	popt = (SDATA_T *)rkh_get_sdata( ph );
+	return popt->min > 1 && popt->max < 4 ? RKH_GTRUE : RKH_GFALSE;
+} 
+
+RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, preprocessor ); 
+RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, NULL, &S2, (RKHPPRO_T*)&option ); 
+\endcode
 
 In like manner, the rest basic states are declared as shown below:
 \n
