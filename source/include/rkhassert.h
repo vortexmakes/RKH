@@ -60,6 +60,18 @@ typedef enum
 
 	RKH_RC_FAIL,
 
+	/**
+	 *	Indicates a detected error in rkh_put_fifo() function.
+	 */
+
+	RKH_PF_NO_ROOM,
+
+	/**
+	 *	Indicates a detected error in rkh_put_lifo() function.
+	 */
+
+	RKH_PL_NO_ROOM,
+
 	RKH_ASSERT_NUM_ERRORS
 } RKH_ASSERT_T;
 

@@ -193,22 +193,37 @@
 
 
 /**
- * 	The 'rkhassert' macro is used by RKH to check expressions that ought 
+ * 	The rkhassert() macro is used by RKH to check expressions that ought 
  * 	to be true as long as the program is running correctly. An assert 
- * 	should never have a side effect. If the expression evaluates to 0, the 
- * 	macro 'rkh_assert' will be called, typically halting the program in some 
- * 	way. The 'rkh_assert' macro should store or report the error code 
- * 	('event' parameter). Once the 'rkh_assert' macro has stored 
- *	or reported the error, it must decide on the system's next action.
+ * 	should never have a side effect. If the expression evaluates to FALSE (0),
+ * 	the macro rkh_assert() will be called, typically halting the program in 
+ * 	some way. This macro must be defined by the user application.
+ * 	The rkh_assert() macro should store or report the error code 
+ * 	('event' parameter). Once the rkh_assert() macro has stored or reported 
+ * 	the error, it must decide on the system's next action.
  *	One option is:
  *		
- *		1.- disable general interrupt
- *		2.- stores or send detected error (could be use a trace facility)
- *		3.- trigger a software reset
+ *	-# disable general interrupt
+ *	-# stores or send detected error (could be use a trace facility)
+ *	-# trigger a software reset
+ *
+ *	Example:
+ *
+ *	\code
+ *	#define rkh_assert( event )								\
+ *															\
+ *				printf( "RKHASSERT = [%02d] from %s()", 	\
+ *				event, __FUNCTION__ );						\
+ *				__debugbreak();
+ *	\endcode
  *	
+ *	\note
  *	The policy chooses will be largely determined by the nature of product. 
  *	If the system is running with a source level debugger, place a 
  *	breakpoint within.
+ *
+ * 	\param exp		expression to be checked.
+ * 	\param event	reported code.
  */
 
 #if RKH_ASSERT == 1
@@ -223,11 +238,53 @@
 	#else
 	    #error  "rkhcfg.h, Missing rkh_assert macro"
 	#endif
+
+    /** 
+	 * 	General purpose assertion that ALWAYS evaluates the \a exp
+	 * 	argument and calls the rkhassert() macro if the \a exp	evaluates 
+	 * 	to FALSE.
+	 * 	\note The \a exp argument IS always evaluated even when assertions 
+	 * 	are disabled with the RKH_ASSERT macro. When the RKH_ASSERT macro 
+	 * 	is defined, the rkhassert() macro is NOT called, even if the
+	 * 	\a exp evaluates to FALSE.
+     */
+
+	#define rkhallege( exp, event )			rkhassert( exp, event )
+
 #else
-	#define rkhassert( exp, event )
+	#define rkhassert( exp, event )			((void)0)
+	#define rkhallege( exp, event )			((void)(exp))
+
 	#undef rkh_assert
 	#define rkh_assert( event )
 #endif
+
+
+/**
+ *	This macro checks the precondition. 
+ *	This macro is equivalent to rkhassert() macro, except the name provides 
+ *	a better documentation of the intention of this assertion.
+ */
+
+#define rkhrequire( exp, event )			rkhassert( exp, event )
+
+
+/**
+ *	This macro checks the postcondition. 
+ *	This macro is equivalent to rkhassert() macro, except the name provides 
+ *	a better documentation of the intention of this assertion.
+ */
+
+#define rkhensure( exp, event )				rkhassert( exp, event )
+
+
+/**
+ *	This macro is used to check a loop invariant. 
+ *	This macro is equivalent to rkhassert() macro, except the name provides 
+ *	a better documentation of the intention of this assertion.
+ */
+
+#define rkhinvariant( exp, event )			rkhassert( exp, event )
 
 
 #if RKH_EN_DYNAMIC_EVENT == 1
@@ -364,7 +421,9 @@
 	 * 	\brief 
 	 *
 	 *  Platform-dependent macro defining how RKH should post an event
-	 *  \a e to the queue \a qd in FIFO policy.	
+	 *  \a e to the queue \a qd in FIFO policy and retrieves the result of 
+	 *  that operation, i.e. TRUE (0) if an element was successfully 
+	 *  inserted to the queue, otherwise error code.
 	 * 	
 	 * 	\note 
 	 *
@@ -386,7 +445,9 @@
 	 * 	\brief 
 	 *
 	 *  Platform-dependent macro defining how RKH should post an event
-	 *  \a e to the queue \a qd in LIFO policy.	
+	 *  \a e to the queue \a qd in LIFO policy and retrieves the result of 
+	 *  that operation, i.e. TRUE (0) if an element was successfully 
+	 *  inserted to the queue, otherwise error code.	
 	 * 	
 	 * 	\note 
 	 *

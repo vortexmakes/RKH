@@ -513,22 +513,18 @@ enum
  *
  *	For memory efficiency and best performance the AO's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
- *
  * 	The LIFO policy should be used only with great caution because it
  * 	alters order of events in the queue.
  *	At this time, this functions are required only when the user 
  *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	The assertion inside it guarantee that the pointer is valid, so is not 
+ *	necessary to check the pointer returned from rkh_put_fifo().
  *
  * 	\param qd		event queue descriptor.
  * 	\param evt		pointer to event.
- *
- * 	\returns
- *
- * 	Zero (0) if the event was successfully inserted, 
- *	otherwise error code. 	
  */
 
-HUInt rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
+void rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
 
 
 /**
@@ -538,20 +534,16 @@ HUInt rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
  *
  *	For memory efficiency and best performance the AO's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
- *
  *	At this time, this functions are required only when the user 
  *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	The assertion inside it guarantee that the pointer is valid, so is not 
+ *	necessary to check the pointer returned from rkh_put_lifo().
  *
  * 	\param qd		event queue descriptor.
  * 	\param evt		pointer to event.
- *
- * 	\returns
- *
- * 	Zero (0) if the event was successfully inserted, 
- *	otherwise error code. 	
  */
 
-HUInt rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
+void rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
 
 
 /**
@@ -574,17 +566,14 @@ HUInt rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *  An active object can use multiple event queues to defer events of
  *  different kinds.
+ *	The assertion inside it guarantee that operation is valid, so is not 
+ *	necessary to check the value returned from it.
  *
  * 	\param qd		event queue descriptor.
  * 	\param evt		pointer to event.
- *
- * 	\returns
- *
- * 	Zero (0) if the event was successfully deferred, 
- *	otherwise error code. 	
  */
 
-HUInt rkh_defer( HUInt qd, RKHEVT_T *evt );
+void rkh_defer( HUInt qd, RKHEVT_T *evt );
 
 
 /**

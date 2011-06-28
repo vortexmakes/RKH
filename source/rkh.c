@@ -686,7 +686,7 @@ rkh_gc( RKHEVT_T *evt )
 }
 
 
-HUInt 
+void 
 rkh_put_fifo( HUInt qd, RKHEVT_T *evt )
 {
     rkh_enter_critical();
@@ -694,11 +694,11 @@ rkh_put_fifo( HUInt qd, RKHEVT_T *evt )
         ++evt->dynamic_;
     rkh_exit_critical();
 
-    return rkh_post_fifo( qd, evt ); 
+    rkhallege( rkh_post_fifo( qd, evt ) == 0, RKH_PF_NO_ROOM ); 
 }
 
 
-HUInt 
+void 
 rkh_put_lifo( HUInt qd, RKHEVT_T *evt )
 {
     rkh_enter_critical();
@@ -706,16 +706,16 @@ rkh_put_lifo( HUInt qd, RKHEVT_T *evt )
         ++evt->dynamic_;
     rkh_exit_critical();
 
-    return rkh_post_lifo( qd, evt ); 
+    rkhallege( rkh_post_fifo( qd, evt ) == 0, RKH_PL_NO_ROOM ); 
 }
 
 
 #if RKH_EN_DEFERRED_EVENT == 1
 
-HUInt 
+void 
 rkh_defer( HUInt qd, RKHEVT_T *evt )
 { 
-	return rkh_put_fifo( qd, evt );
+	rkh_put_fifo( qd, evt );
 }
 
 
