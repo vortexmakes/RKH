@@ -26,7 +26,6 @@
 /**
  * 	\file rkhitl.h
  * 	\brief
- *
  * 	RKH engine interface.
  *
  * 	This header file is directly included in RKH interface 
@@ -193,11 +192,13 @@
 
 
 /**
+ * 	\brief 
  * 	The rkhassert() macro is used by RKH to check expressions that ought 
- * 	to be true as long as the program is running correctly. An assert 
- * 	should never have a side effect. If the expression evaluates to FALSE (0),
- * 	the macro rkh_assert() will be called, typically halting the program in 
- * 	some way. This macro must be defined by the user application.
+ * 	to be true as long as the program is running correctly. 
+ *
+ * 	An assert should never have a side effect. If the expression evaluates to 
+ * 	FALSE (0), the macro rkh_assert() will be called, typically halting the 
+ * 	program in some way. This macro must be defined by the user application.
  * 	The rkh_assert() macro should store or report the error code 
  * 	('event' parameter). Once the rkh_assert() macro has stored or reported 
  * 	the error, it must decide on the system's next action.
@@ -240,9 +241,11 @@
 	#endif
 
     /** 
+ 	 * 	\brief 
 	 * 	General purpose assertion that ALWAYS evaluates the \a exp
 	 * 	argument and calls the rkhassert() macro if the \a exp	evaluates 
 	 * 	to FALSE.
+	 *
 	 * 	\note The \a exp argument IS always evaluated even when assertions 
 	 * 	are disabled with the RKH_ASSERT macro. When the RKH_ASSERT macro 
 	 * 	is defined, the rkhassert() macro is NOT called, even if the
@@ -261,7 +264,9 @@
 
 
 /**
+ * 	\brief
  *	This macro checks the precondition. 
+ *
  *	This macro is equivalent to rkhassert() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
@@ -270,7 +275,9 @@
 
 
 /**
+ * 	\brief
  *	This macro checks the postcondition. 
+ *
  *	This macro is equivalent to rkhassert() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
@@ -279,7 +286,9 @@
 
 
 /**
+ * 	\brief
  *	This macro is used to check a loop invariant. 
+ *
  *	This macro is equivalent to rkhassert() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
@@ -297,31 +306,7 @@
 #endif
 
 
-/**
- *	Defines dynamic event support.
- *	
- *	This definitions are required only when the user application
- *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
- */
-
 #if RKH_EN_DYNAMIC_EVENT == 1
-
-	/**
-	 * 	\brief 
-	 * 	
-	 * 	Number of available memory pools. Default is 3.
- 	 *	RKH can manage up to three event pools (e.g., small, medium, and 
-	 *	large events, like shirt sizes). Thus, ensure the 
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 * 	
-	 * 	\code
-	 * 	#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
-	 * 	\endcode
-	 */
 
 	#ifndef RKH_DYNE_NUM_POOLS
 	    #error  "rkhport.h, Missing RKH_DYNE_NUM_POOLS. RKH can manage up to three (3) event pools."
@@ -329,159 +314,29 @@
 	    #error  "rkhport.h, RKH can manage up to three (3) event pools."
 	#endif
 
-	/**
-	 * 	\brief 
-	 *
-	 * 	Platform-dependent macro defining the event pool initialization.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 * 	
-	 * 	\code
-	 * 	#define rkh_dyne_init( mpd, pm, ps, bs )						\
-	 * 																	\
-	 * 				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
-														(RK_MPBS_T)(bs) )
-	 *	\endcode
-	 */
-
 	#ifndef rkh_dyne_init
 	    #error  "rkhport.h, Missing rkh_dyne_init() macro."
 	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 * 	Platform-dependent macro defining how RKH should obtain the
-	 * 	event pool block size.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 * 	#define rkh_dyne_event_size( mpd )								\
-	 * 																	\
-	 * 				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
-	 * 	\endcode
-	 */
 
 	#ifndef rkh_dyne_event_size
 	    #error  "rkhport.h, Missing rkh_dyne_event_size() macro."
 	#endif
 
-	/**
-	 * 	\brief 
-	 *
-	 * 	Platform-dependent macro defining how RKH should obtain an event
-	 * 	\a e from the event pool \a mpd.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_dyne_get( mpd, e )									\
-	 *																	\
-	 *				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
-	 * 	\endcode
-	 */
-
 	#ifndef rkh_dyne_get
 	    #error  "rkhport.h, Missing rkh_dyne_get() macro."
 	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should return an event
-	 *  \a e to the event pool \a mpd.	
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_dyne_put( mpd, e )									\
-	 *																	\
-	 *				rk_mpool_put( (mpd), (e) )
-	 * 	\endcode
-	 */
 
 	#ifndef rkh_dyne_put
 	    #error  "rkhport.h, Missing rkh_dyne_put() macro."
 	#endif
 
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should post an event
-	 *  \a e to the queue \a qd in FIFO policy and retrieves the result of 
-	 *  that operation, i.e. TRUE (0) if an element was successfully 
-	 *  inserted to the queue, otherwise error code.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_post_fifo( qd, e )									\
-	 *																	\
-	 *				queue_insert( (QD_T)(qd), &(e) )
-	 * 	\endcode
-	 */
-
 	#ifndef rkh_post_fifo
 	    #error  "rkhport.h, Missing rkh_post_fifo() macro."
 	#endif
 
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should post an event
-	 *  \a e to the queue \a qd in LIFO policy and retrieves the result of 
-	 *  that operation, i.e. TRUE (0) if an element was successfully 
-	 *  inserted to the queue, otherwise error code.	
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_post_lifo( qd, e )									\
-	 *																	\
-	 *				queue_insert_lifo( (QD_T)(qd), &(e) )
-	 * 	\endcode
-	 */
-
 	#ifndef rkh_post_lifo
 	    #error  "rkhport.h, Missing rkh_post_lifo() macro."
 	#endif
-
-	/**
-	 * 	\brief 
-	 *
-	 *  Platform-dependent macro defining how RKH should get an event
-	 *  \a e from the queue \a qd.
-	 * 	
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 * 	Example:
-	 *
-	 * 	\code
-	 *	#define rkh_get( qd, e )										\
-	 *																	\
-	 *				queue_remove( (QD_T)(qd), &(e) )
-	 * 	\endcode
-	 */
 
 	#ifndef rkh_get
 	    #error  "rkhport.h, Missing rkh_get() macro."
@@ -490,59 +345,271 @@
 #endif
 
 
+#if RKH_EN_DOXYGEN == 1
+
 /**
- *	Platform-dependent functions for trace facility support.
+ *	Defines dynamic event support.
+ *	This definitions are required only when the user application
+ *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
  */
 
-#if RKH_TRACE == 1
+/**
+ * 	Number of available memory pools. Default is \b 3.
+ *	RKH can manage up to three event pools (e.g., small, medium, and 
+ *	large events, like shirt sizes).
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ * 	
+ * 	\code
+ * 	#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
+ * 	\endcode
+ */
 
-	/**
-	 *	Open the tracing session.
-	 *
-	 *	This is a platform-dependent function invoked through the macro 
-	 *	rkh_tropen(). 
-	 *	The application must implement this function. At a minimum, the 
-	 *	function must configure the trace stream by calling rkh_trinit().
-	 *
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 */
+#define RKH_DYNE_NUM_POOLS
+
+/**
+ * 	\brief 
+ * 	Platform-dependent macro defining the event pool initialization.
+ *
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ * 	
+ * 	\code
+ * 	#define rkh_dyne_init( mpd, pm, ps, bs )						\
+ * 																	\
+ * 				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
+ *													(RK_MPBS_T)(bs) )
+ *	\endcode
+ *
+ * 	\param mpd		memory pool descriptor.
+ * 	\param pm	 	pointer to memory from which memory blocks are allocated.
+ * 	\param ps		pool size. Size of the memory pool storage in byte.
+ * 	\param bs		block size. This number determines the size of each memory 
+ * 					block in the pool.
+ *
+ * 	\return
+ * 	TRUE (0) if the memory pool was successfully initialized, 
+ * 	otherwise error code.
+ */
+
+#define rkh_dyne_init( mpd, pm, ps, bs )
+
+/**
+ * 	\brief 
+ * 	Platform-dependent macro defining how RKH should obtain the
+ * 	event pool block size.
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ *
+ * 	\code
+ * 	#define rkh_dyne_event_size( mpd )								\
+ * 																	\
+ * 				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
+ * 	\endcode
+ *
+ * 	\param mpd		memory pool descriptor.
+ *
+ * 	\return
+ * 	The size of memory block in bytes.
+ */
+
+#define rkh_dyne_event_size( mpd )
+
+/**
+ * 	\brief 
+ * 	Platform-dependent macro defining how RKH should obtain an event
+ * 	\a e from the event pool \a mpd.
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ *
+ * 	\code
+ *	#define rkh_dyne_get( mpd, e )									\
+ *																	\
+ *				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
+ * 	\endcode
+ *
+ * 	\param mpd		memory pool descriptor.
+ * 	\param e 		pointer to the event structure into which the received 
+ * 					item will be copied.
+ *
+ * 	\return
+ * 	A pointer to a new memory block or NULL if the pool runs out of blocks.
+ */
+
+#define rkh_dyne_get( mpd, e )
+
+/**
+ * 	\brief 
+ *  Platform-dependent macro defining how RKH should return an event
+ *  \a e to the event pool \a mpd.	
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ *
+ * 	\code
+ *	#define rkh_dyne_put( mpd, e )									\
+ *																	\
+ *				rk_mpool_put( (mpd), (e) )
+ * 	\endcode
+ *
+ * 	\param mpd		memory pool descriptor.
+ * 	\param e 		pointer to the event structure into which the received 
+ * 					item will be copied.
+ *
+ * 	\return
+ * 	TRUE (0) if the memory block was succesfully returned to proper 
+ * 	memory pool, otherwise error code.
+ */
+
+#define rkh_dyne_put( mpd, e )
+
+/**
+ * 	\brief 
+ *  Platform-dependent macro defining how RKH should post an event
+ *  \a e to the queue \a qd in FIFO policy and retrieves the result of 
+ *  that operation, i.e. TRUE (0) if an element was successfully 
+ *  inserted to the queue, otherwise error code.
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ *
+ * 	\code
+ *	#define rkh_post_fifo( qd, e )									\
+ *																	\
+ *				queue_insert( (QD_T)(qd), &(e) )
+ * 	\endcode
+ *
+ * 	\param qd		queue descriptor.
+ * 	\param e	 	pointer to the event that is to be placed on the queue.  
+ *					The size of the elements the queue will hold was defined when 
+ *					the queue was created.
+ * 	\return
+ * 	TRUE (0) if the element was successfully inserted, 
+ *	otherwise error code.
+ */
+
+#define rkh_post_fifo( qd, e )
+
+/**
+ * 	\brief 
+ *  Platform-dependent macro defining how RKH should post an event
+ *  \a e to the queue \a qd in LIFO policy and retrieves the result of 
+ *  that operation, i.e. TRUE (0) if an element was successfully 
+ *  inserted to the queue, otherwise error code.	
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ *
+ * 	\code
+ *	#define rkh_post_lifo( qd, e )									\
+ *																	\
+ *				queue_insert_lifo( (QD_T)(qd), &(e) )
+ * 	\endcode
+ *
+ * 	\param qd		queue descriptor.
+ * 	\param e	 	pointer to the event that is to be placed on the queue.  
+ *					The size of the elements the queue will hold was defined when 
+ *					the queue was created.
+ * 	\return
+ * 	TRUE (0) if the element was successfully inserted, 
+ *	otherwise error code.
+ */
+
+#define rkh_post_lifo( qd, e )
+
+/**
+ * 	\brief 
+ *  Platform-dependent macro defining how RKH should get an event
+ *  \a e from the queue \a qd.
+ *
+ * 	\param qd		queue descriptor.
+ * 	\param e 		pointer to the event structure into which the received 
+ * 					item will be copied.
+ * 	\return
+ * 	TRUE (0) if an event was successfully removed from the queue, otherwise 
+ * 	error code.
+ * 	
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ * 	Example:
+ *
+ * 	\code
+ *	#define rkh_get( qd, e )										\
+ *																	\
+ *				queue_remove( (QD_T)(qd), &(e) )
+ * 	\endcode
+ */
+
+#define rkh_get( qd, e )
+
+/**
+ * 	\brief 
+ *	Open the tracing session.
+ *
+ *	This is a platform-dependent function invoked through the macro 
+ *	rkh_tropen(). 
+ *	The application must implement this function. At a minimum, the 
+ *	function must configure the trace stream by calling rkh_trinit().
+ *
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ */
+
+#define rkh_tropen
+
+/**
+ * 	\brief 
+ *	Close the tracing session.
+ *
+ *	This is a platform-dependent function invoked through the macro 
+ *	rkh_trclose(). 
+ *	The application must implement this function.
+ *
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ */
+
+#define rkh_trclose
+
+/**
+ * 	\brief 
+ *	Flush the trace stream.
+ *
+ *	This is a platform-dependent function invoked through the macro 
+ *	rkh_trflush(). 
+ * 	When the RKH trace an event, all the information related to it has to 
+ * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
+ * 	This place is a trace stream. Frequently, events traced are stored in 
+ * 	the stream until it is flushed.
+ *
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ */
+
+#define rkh_trflush
+
+#endif
+
+
+#if RKH_TRACE == 1
 
 	#ifndef rkh_tropen
 		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_open() within application level."
 	#endif
 
-	/**
-	 *	Close the tracing session.
-	 *
-	 *	This is a platform-dependent function invoked through the macro 
-	 *	rkh_trclose(). 
-	 *	The application must implement this function.
-	 *
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 */
-
 	#ifndef rkh_trclose
 		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_close() within application level."
 	#endif
-
-	/**
-	 *	Flush the trace stream.
-	 *
-	 *	This is a platform-dependent function invoked through the macro 
-	 *	rkh_trflush(). 
-	 * 	When the RKH trace an event, all the information related to it has to 
-	 * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
-	 * 	This place is a trace stream. Frequently, events traced are stored in 
-	 * 	the stream until it is flushed.
-	 *
-	 * 	\note 
-	 *
-	 * 	Typically, must be define it in the specific port file (rkhport.h).
-	 */
 
 	#ifndef rkh_trflush
 		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_flush() within application level."
@@ -556,25 +623,27 @@
 
 #if RKH_TRACE == 1 && RKH_EN_TIMESTAMP == 1
 
+	#ifndef rkh_trgetts
+		#error  "rkhtrace.h, When enabling RKH_TRACE and RKH_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level."
+	#endif
+#else
+	#undef rkh_trgetts
+	
 	/**
+	 * 	\brief
 	 *	Retrieves a timestamp to be placed in a trace event.
-	 *
+	 * 
 	 *	This is a platform-dependent function invoked through the macro 
 	 *	rkh_trgetts(). 
 	 *	The data returned is defined in compile-time by means of 
 	 *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
 	 *
 	 * 	\returns
-	 *
-	 * 	Timestamp.
+	 * 	Timestamp (RKHTS_T data type).
 	 */
 
-	#ifndef rkh_trgetts
-		#error  "rkhtrace.h, When enabling RKH_TRACE and RKH_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level."
-	#endif
-#else
-	#undef rkh_trgetts
-	#define rkh_trgetts()
+	#define rkh_trgetts
+
 #endif
 
 
@@ -675,11 +744,11 @@ struct rkh_t;
 
 
 /**
+ * 	\brief
  * 	Entry action.
  *
  * 	The actions that are always executed when a state is entered 
  * 	should be specified as entry actions.
- *
  * 	An entry function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
  * 	RKH_EN_ENT_HSM_ARG.
@@ -711,11 +780,11 @@ struct rkh_t;
 
 
 /**
+ * 	\brief
  * 	Exit action.
  *
  * 	The actions that are always execute when a state is exited should be 
  * 	exit actions.
- *
  * 	An exit function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
  * 	RKH_EN_EXT_HSM_ARG.
@@ -746,11 +815,11 @@ struct rkh_t;
 
 
 /**
+ * 	\brief
  * 	Initialization action.
  *
  * 	The application code must trigger the initial transition explicitly 
  * 	by invoking 'rkh_init_hsm'.
- *
  * 	An init function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
  * 	RKH_EN_INIT_HSM_ARG.
@@ -780,11 +849,11 @@ struct rkh_t;
 
 
 /**
+ * 	\brief
  * 	Event preprocessor.
  *
  * 	Before sending the arrived event to state machine, it can be previously 
  * 	processed using the	event preprocessor function.
- *
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. The first parameter is optional in compile-time
  * 	according to RKH_EN_PPRO_HSM_ARG.
@@ -804,12 +873,12 @@ struct rkh_t;
 
 
 /**
- * 	Action:
+ * 	\brief
+ * 	Actions.
  *
  * 	Actions are small atomic behaviors executed at specified points 
  * 	in a state machine. Actions are assumed to take an insignificant 
  * 	amount of time to execute and are noninterruptible.
- *
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
  * 	according to RKH_EN_ACT_EVT_ARG' and RKH_EN_ACT_HSM_ARG.
@@ -839,7 +908,8 @@ struct rkh_t;
 
 
 /**
- * 	Guard:
+ * 	\brief
+ * 	Guard.
  *
  *	A guard is a boolean condition that returns a TRUE (RKH_GTRUE) or 
  *	FALSE (RKH_GFALSE) value that controls whether or not a transition 
@@ -888,7 +958,6 @@ struct rkh_t;
 
 /**
  * 	\brief 
- *
  * 	Maintains the basic information of a state.
  */
 
@@ -930,7 +999,6 @@ typedef struct rkhbase_t
 
 /**
  * 	\brief
- *
  * 	Describes the state transition. 
  *
  * 	Transitions represent the response of a state machine to events. 
@@ -968,7 +1036,6 @@ typedef struct rkhtr_t
 
 /**
  *	\brief
- *
  * 	Describes a regular state.
  *
  * 	It can either be a composite or basic state.
@@ -1066,7 +1133,6 @@ typedef struct rkhsreg_t
 
 /**
  * 	\brief 
- *
  * 	Describes the conditional pseudostate.
  */
 
@@ -1088,7 +1154,6 @@ typedef struct rkhscond_t
 
 /**
  * 	\brief 
- *
  * 	Describes the junction pseudostate.
  */
 
@@ -1116,7 +1181,6 @@ typedef struct rkhsjunct_t
 
 /**
  * 	\brief 
- *
  * 	Describes the history pseudostate
  *
  * 	It can be either be shallow or deep.
@@ -1147,11 +1211,10 @@ typedef struct rkhshist_t
 
 /**
  * 	\brief 
- *
- * 	Describes the HSM's performance information.
+ * 	Describes the state-machine's performance information.
  *
  * 	Defines the data structure into which the performance 
- * 	information for HSM is stored.
+ * 	information for state machine is stored.
  */
 
 typedef struct rkh_info_t
@@ -1163,17 +1226,13 @@ typedef struct rkh_info_t
 
 /**
  * 	\brief 
- *
- * 	Describes the HSM. 
- *
- * 	It maintains the vital information related with a hierarchical 
- * 	state machine.
+ * 	Describes the state machine.
  */
 
 typedef struct rkh_t
 {
 	/**	
-	 *	HSM descriptor.
+	 *	State machine descriptor.
 	 */
 
 	rkhuint8 id;
@@ -1217,7 +1276,7 @@ typedef struct rkh_t
 #if RKH_EN_HSM_DATA == 1
 	
 	/** 
-	 * 	Points to optional HSM's data.
+	 * 	Points to optional state-machine's data.
 	 */
 
 	void *hdata;

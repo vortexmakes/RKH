@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -188,13 +188,13 @@ rkh_trace_flush( <span class="keywordtype">void</span> )
 
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">log</a> == RKH_TRLOG )
             fprintf( fdbg, <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    <a class="code" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts</a>(),
+                                                    <a class="code" href="rkhitl_8h.html#a651fd3bf4126b5344cb35a9364263649" title="Retrieves a timestamp to be placed in a trace event.">rkh_trgetts</a>(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">print</a> == RKH_TRPRINT )
             printf( <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    <a class="code" href="rkhitl_8h.html#a54d4c28e8ec104c9b77230df6c22be36" title="Number of available memory pools. Default is 3. RKH can manage up to three event...">rkh_trgetts</a>(),
+                                                    <a class="code" href="rkhitl_8h.html#a651fd3bf4126b5344cb35a9364263649" title="Retrieves a timestamp to be placed in a trace event.">rkh_trgetts</a>(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
@@ -214,7 +214,7 @@ main( <span class="keywordtype">void</span> )
 {
     <span class="keywordtype">int</span> c;
 
-    <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
+    <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created HSM calling its initializing function.">rkh_init_hsm</a>( &amp;my );
     srand( ( <span class="keywordtype">unsigned</span> )time( NULL ) );
 
     print_banner();
@@ -229,19 +229,19 @@ main( <span class="keywordtype">void</span> )
         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == ESC )
             <span class="keywordflow">break</span>;
         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == <span class="charliteral">&#39;r&#39;</span> )
-            <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a>( &amp;my );
+            <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created HSM calling its initializing function.">rkh_init_hsm</a>( &amp;my );
         <span class="keywordflow">else</span>
         {
             mye.event = kbmap( c );
             mye.ts = ( rkhuint16 )rand();
-            <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a>( &amp;my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
+            <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a HSM in a non-preemtive model.">rkh_engine</a>( &amp;my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
         }
     }
 
     rkh_trace_close();
 }
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jun 28 15:46:35 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 29 13:53:35 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

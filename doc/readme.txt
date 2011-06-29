@@ -362,12 +362,104 @@ typedef signed int		HInt;
 \endcode
 
 
-\page Usage Representing a state-machine
+\page qref Quick reference
+
+\n
+This section is ....
+
+- \ref qref0
+- \ref qref1
+- \ref qref2
+- \ref qref3
+- \ref qref4
+- \ref qref5
+- \ref qref6
+- \ref qref7
+- \ref qref8
+- \ref qref9
+- \ref qref10
+
+<HR>
+\section qref0 How to define a state machine
+
+\b RKH provides the RKH_CREATE_HSM() macro which provides a easy way for
+declaring a state machine structure, so that the RKH_T structure remains 
+encapsulated. RKH expects the following parameters listed below to 
+instantiate a state machine object.
+
+- \b name		name of state machine object. \b Represents the top state
+				of state diagram.
+- \b id			the numerical value of state machine ID.
+- \b ppty		state machine properties. The available properties are
+				enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
+- \b is			pointer to regular initial state. This state could be 
+				defined either composite or basic.
+- \b ia			pointer to initialization action. The function prototype 
+				is defined as RKHINIT_T. This argument is optional, thus
+				it could be declared as NULL.
+- \b hd			pointer to state-machine's abstract data. This argument is 
+				optional, thus it could be declared as NULL. Also, could be 
+				discarded it setting RKH_EN_HSM_DATA to zero (0) in 
+				\b rkhcfg.h file.
+
+
+<HR>
+\section qref1 How to declare a superstate
+
+Bla bla bla.
+
+<HR>
+\section qref2 How to declare a substate
+
+Bla bla bla.
+
+<HR>
+\section qref3 How to define a state transition table
+
+Bla bla bla.
+
+<HR>
+\section qref4 How to declare a conditional pseudostate
+
+Bla bla bla.
+
+<HR>
+\section qref5 How to declare a history pseudostate
+
+Bla bla bla.
+
+<HR>
+\section qref6 How to declare a junction pseudostate
+
+Bla bla bla.
+
+<HR>
+\section qref7 Using dynamic and static events
+
+Bla bla bla.
+
+<HR>
+\section qref8 Deferring events
+
+Bla bla bla.
+
+<HR>
+\section qref9 Using assertions
+
+Bla bla bla.
+
+<HR>
+\section qref10 Debugging a application based on RKH's state machines
+
+Bla bla bla.
+
+
+\page Usage Representing a state machine
 
 \n
 As stated above, RKH is a generic, flexible, modular, highly portable, 
 ANSI-C compliant, and open-source development tool for implementing 
-hierarchical state-machines based on modern state-machine concepts. This 
+hierarchical state machines based on modern state machine concepts. This 
 modern techniques are used to give an abstract description of the dynamic 
 behavior of a system in a substantial manner.
 
@@ -399,7 +491,7 @@ and efficient implementation. Broadly speaking, the RKH implementation has
 been designed from the ground up to be used in 8-bits platforms but can be 
 easily adapted to 16 or 32-bits platforms.
 
-The goal in this section is to explain how to represent a state-machine 
+The goal in this section is to explain how to represent a state machine 
 using the RKH framework. To do that is proposed a simple example, which is 
 shown in the \ref fig1 "Figure 1".
 
@@ -433,13 +525,13 @@ Th header file is located in the application directory:
 					Note that this header file is located in the application 
 					directory.
 
-- \b "my.c": 		contains the implementation of the "my" state-machine, 
+- \b "my.c": 		contains the implementation of the "my" state machine, 
 					which illustrates all aspects of implementing 
-					state-machines with RKH. Please correlate this 
+					state machines with RKH. Please correlate this 
 					implementation with the "my" state diagram in 
 					\ref fig1 "Figure 1".
 					In this file are specifically declared the 
-					state-machine, also its 
+					state machine, also its 
 					states and pseudostates. See the \ref my_c file.
 					Note that this source file is located in the application 
 					directory.
@@ -453,7 +545,7 @@ Th header file is located in the application directory:
 					application 
 
 - \b "my.h": 		this header file contains the definitions of objet 
-					structures (state-machine, states, and pseudostates) and
+					structures (state machine, states, and pseudostates) and
 					other facilities shared among the components of the
 					application. See the \ref my_h file.
 					Note that this header file is located in the application 
@@ -491,9 +583,9 @@ presented above, sorted by state nesting level.
 \image html sttbl.jpg "Figure 2 - State nesting"
 
 <HR>
-\section rep2 Representing the state-machine
+\section rep2 Representing the state machine
 
-Now, this section explains how to implement the "my" state-machine 
+Now, this section explains how to implement the "my" state machine 
 using the RKH framework, which is shown in \ref fig1 "Figure 1".
 
 -# \ref rep_sm
@@ -506,10 +598,10 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 -# \ref rep_inc
 
 \n
-\subsection rep_sm Declaring the state-machine (top-state)
+\subsection rep_sm Declaring the state machine (top-state)
 
 \n
-The object structure of "my" state-machine is declared by means of 
+The object structure of "my" state machine is declared by means of 
 RKH_CREATE_HSM() macro, which is explained in \c rkh.h file.
 According to "my" state diagram:
 \n
@@ -521,8 +613,8 @@ RKH_CREATE_HSM( my, 0, HCAL, &S1, my_init, &mydata );
 where:
 \n
 	- \e \b name =	"my". State-machine (top-state) name. Represents the 
-					state-machine structure.
-	- \e \b id =	"0". The value of state-machine ID. The user application 
+					state machine structure.
+	- \e \b id =	"0". The value of state machine ID. The user application 
 					defines the available ids in \c rkhdata.h file. 
 	- \e \b ppty =	"HCAL". Enables the state nesting. 
 	- \e \b is =	"S1". Pointer to regular initial state. This state could 
@@ -530,7 +622,7 @@ where:
 	- \e \b ia =	"my_init". Pointer to initialization action. The function 
 					prototype is defined as #RKHINIT_T. This argument is 
 					optional, thus it could be declared as NULL.
-	- \e \b hd =	"mydata". Pointer to state-machine's abstract data. This 
+	- \e \b hd =	"mydata". Pointer to state machine's abstract data. This 
 					argument is optional, thus it could be declared as NULL.
 \n
 \n
@@ -898,7 +990,7 @@ RKH_END_BRANCH_TABLE
 \subsection rep_inc Including files
 
 The following listing shows a fragment of "my.c" source file, which 
-illustatres some aspects of implementing state-machines with RKH.
+illustatres some aspects of implementing state machines with RKH.
 
 \code
 (1) #include "rkh.h"
@@ -929,7 +1021,7 @@ illustatres some aspects of implementing state-machines with RKH.
 \li (1) Every application C-file that uses RKH must include the rkh.h 
 		header file. This header file contains the specific adaptation 
 		of RKH to the given processor and compiler, also includes the
-		RKH interface to implement state-machines. The port file is located
+		RKH interface to implement state machines. The port file is located
 		in the application directory.
 
 \li (2) The "myevt.h" header file contains the declarations of triggering 
@@ -938,19 +1030,19 @@ illustatres some aspects of implementing state-machines with RKH.
 		directory.
 
 \li (3) The "my.h" header file contains the definitions of objet 
-		structures (state-machine, states, and pseudostates) and
+		structures (state machine, states, and pseudostates) and
 		other facilities shared among the components of the application. 
 
 \li (4) This header file defines the actions to be executed.
 
-\li (5) The "my" state-machine maintains its own data in the structure 
+\li (5) The "my" state machine maintains its own data in the structure 
 		MYDATA_T, which is defined in the "my.h" header file.
 
 \n
-\subsection rep_def Defining the state-machine
+\subsection rep_def Defining the state machine
 
 The following listing shows the "my.h" header file, which 
-illustatres some important aspects of implementing state-machines with RKH.
+illustatres some important aspects of implementing state machines with RKH.
 
 \code
 #ifndef __MY_H__
@@ -969,7 +1061,7 @@ illustatres some important aspects of implementing state-machines with RKH.
 	} MYEVT_T;
 
 
-/*	Defines the state-machine data */
+/*	Defines the state machine data */
 
 (5)	typedef struct
 	{
@@ -978,7 +1070,7 @@ illustatres some important aspects of implementing state-machines with RKH.
 	} MYHDATA_T;
 
 
-/*	Defines the state-machine. */
+/*	Defines the state machine. */
 
 (6)	RKH_DCLR_HSM( my );
 
@@ -1006,9 +1098,9 @@ illustatres some important aspects of implementing state-machines with RKH.
 		base structure. Consequently, can always safely pass a pointer 
 		to MYEVT_T to any C function that expects a pointer to #RKHEVT_T.
 
-\li (5) The MYHDATA_T defines the state-machine data. 
+\li (5) The MYHDATA_T defines the state machine data. 
 
-\li (6) Defines the state-machine as a global object.
+\li (6) Defines the state machine as a global object.
 
 \li (7) Defines the states and pseudostates using the corresponding macos
 		listed above:
@@ -1045,12 +1137,12 @@ function prototypes are explicitly defined in \c rkhitl.h file.
 	contains the guard conditions attached to transitions.
 
 - \b Preprocessor \b action (#RKHPPRO_T): 	
-	this action is executed before sending occured event to state-machine.
+	this action is executed before sending occured event to state machine.
 
 Aditionally, the preprocessor options listed in \c rkhcfg.h allows 
 to customize the prototypes of each action. See \ref cfg section for 
 more information about that.
-The used actions in the "my" state-machine implementation are shown in
+The used actions in the "my" state machine implementation are shown in
 \ref myact_c file.
 
 \n According to "my" state diagram the initial action looks as follow:
@@ -1240,7 +1332,7 @@ directory.
 
 \li (1) Initialize the RKH trace module.
 
-\li (2) Initialize the "my" state-machine. RKH invokes the my_init() function.
+\li (2) Initialize the "my" state machine. RKH invokes the my_init() function.
 
 \li (3) Gets key pressed from the standard input.
 
@@ -1275,7 +1367,7 @@ event.
 
 The definition of events and the mapping between these and their 
 corresponding names is hard-coded in the RKH implementation. Therefore, 
-these events are common for all the state-machine applications and never 
+these events are common for all the state machine applications and never 
 change (they are always traced). 
 The trace events are associated with a integer value and are explicity 
 listed and defined (enumerated) as shown below in this section.
@@ -1285,7 +1377,7 @@ or each trace event (also named arguments) being generated, including,
 t least, the following:
 
 - the trace event identifier (\c #RKHTR_EVENTS enumerated list),
-- instrumented application (state-machine),
+- instrumented application (state machine),
 - a timestamp (optional),
 - any extra data that the system wants to associate with the event 
 (optional).
@@ -1354,7 +1446,7 @@ target state.
 \n \n Records the identification number and string name of the exited state.
 
 - \b RKH_EN_INIT_HSM
-\n \n Records the initialization process of state-machine.
+\n \n Records the initialization process of state machine.
 
 - \b RKH_EN_SGT_TGT
 \n \n Records the identification number and string name of the transition segment
@@ -1527,26 +1619,26 @@ Available options:
 
 -	\b RKH_EN_INIT_HSM_ARG
 	\n \n Determines the initialization function prototype of the
-	state-machines. When RKH_EN_INIT_HSM_ARG is set to one (1) this
-	function adds as argument a pointer to state-machine structure 
+	state machines. When RKH_EN_INIT_HSM_ARG is set to one (1) this
+	function adds as argument a pointer to state machine structure 
 	RKH_T. See #RKHINIT_T structure definition.
 
 -	\b RKH_EN_ENT_HSM_ARG
 	\n \n Determines the function prototype of the state entry. 
 	When RKH_EN_ENT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
+	argument a pointer to state machine structure RKH_T. See 
 	#RKHENT_T structure definition.
 
 -	\b RKH_EN_EXT_HSM_ARG
 	\n \n Determines the function prototype of the state exit. 
 	When RKH_EN_EXT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
+	argument a pointer to state machine structure RKH_T. See 
 	#RKHEXT_T structure definition.
 
 -	\b RKH_EN_ACT_HSM_ARG
 	\n \n Determines the function prototype of the transition action. 
 	When RKH_EN_ACT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
+	argument a pointer to state machine structure RKH_T. See 
 	#RKHACT_T structure definition.
 
 -	\b RKH_EN_ACT_EVT_ARG
@@ -1564,13 +1656,13 @@ Available options:
 -	\b RKH_EN_GRD_HSM_ARG
 	\n \n Determines the function prototype of the transition guard.
 	When RKH_EN_GRD_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
+	argument a pointer to state machine structure RKH_T. See 
 	#RKHGUARD_T structure definition.
 
 -	\b RKH_EN_PPRO_HSM_ARG
 	\n \n Determines the function prototype of the event preprocessor.
 	When RKH_EN_PPRO_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
+	argument a pointer to state machine structure RKH_T. See 
 	#RKHPPRO_T structure definition.
 
 -	\b RKH_EN_STATE_NAME
@@ -1580,13 +1672,13 @@ Available options:
 	See #RKHBASE_T structure definition.
 
 -	\b RKH_EN_HSM_NAME	
-	\n \n When RKH_EN_HSM_NAME is set to one (1) the state-machine
+	\n \n When RKH_EN_HSM_NAME is set to one (1) the state machine
 	structure RKH_T includes its own name as a null-terminated string. 
 	When a particular application requires runtime debugging, this option 
 	must be enabled.
 
 -	\b RKH_EN_HSM_DATA
-	\n \n When RKH_EN_HSM_DATA is set to one (1) the state-machine structure
+	\n \n When RKH_EN_HSM_DATA is set to one (1) the state machine structure
 	 RKH_T allows to reference a data object, which maintains additional 
 	 information.
 
@@ -1595,7 +1687,7 @@ Available options:
 	can use a function to preprocessing the ocurred events.
 
 -	\b RKH_EN_GET_INFO	
-	\n \n When RKH_EN_GET_INFO is set to one (1) the state-machine structure
+	\n \n When RKH_EN_GET_INFO is set to one (1) the state machine structure
 	 RKH_T includes additional performance information by means of 
 	 RKH_INFO_T structure.
 
@@ -1631,7 +1723,7 @@ Available options:
 	\n \n If it's enabled (1) records the exited state.
 
 -	\b RKH_EN_INIT_HSM
-	\n \n If it's enabled (1) records the initialization process of state-machine.
+	\n \n If it's enabled (1) records the initialization process of state machine.
 
 -	\b RKH_EN_SGT_TGT
 	\n \n If it's enabled (1) records the target state of transition segment.

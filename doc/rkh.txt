@@ -27,6 +27,7 @@ David Harel</EM>
 - \ref Installation
 - \ref Porting
 - \ref cfg
+- \ref qref
 - \ref Usage
 - \ref dbg
 - \ref Download

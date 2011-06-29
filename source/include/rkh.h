@@ -112,6 +112,7 @@ typedef enum
 
 
 /** 	
+ * 	\brief
  *  State machine properties.
  */
 
@@ -119,7 +120,7 @@ typedef enum
 {
 	/**
 	 * 	Used as state machine property.
-	 * 	This macro enables state nesting in a particular state-machine.
+	 * 	This macro enables state nesting in a particular state machine.
 	 */
 
 	HCAL,
@@ -127,7 +128,7 @@ typedef enum
 
 	/**
 	 * 	Used as state machine property.
-	 * 	This macro disables state nesting in a particular state-machine.
+	 * 	This macro disables state nesting in a particular state machine.
 	 * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
 	 * 	RKH are	not included: state nesting, composite state, history 
 	 * 	(shallow and deep) pseudostate, entry action, and exit action.
@@ -141,17 +142,17 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro creates a HSM control block. 
  *
- *	\note
- *	
- *	See RKH_T structure definition for more information.
+ *	\sa
+ *	RKH_T structure definition for more information.
  *
- * 	\param name		state-machine (top-state) name. Represents a HSM structure.
- * 	\param id		the value of HSM ID.
+ * 	\param name		name of state machine object. \b Represents the top state
+					of state diagram.
+ * 	\param id		the numerical value of state machine ID.
  * 	\param ppty		state machine properties. The available properties are
- * 					enumerated in RKH_HPPTY_T enumeration in the rkh.h
- * 					file.
+ * 					enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
  * 	\param is		pointer to regular initial state. This state could be 
  * 					defined either composite or basic.
  * 	\param ia		pointer to initialization action. The function prototype 
@@ -167,11 +168,11 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro creates a composite state.
  *
- *	\note
- *
- *	See RKHSREG_T structure definition for more information.
+ *	\sa
+ *	RKHSREG_T structure definition for more information.
  *
  * 	\param name		state name. Represents a composite state structure.
  * 	\param id		the value of state ID.	
@@ -198,11 +199,11 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro creates a basic state.
  *
- *	\note
- *
- *	See RKHSREG_T structure definition for more information.
+ *	\sa
+ *	RKHSREG_T structure definition for more information.
  *
  * 	\param name		state name. Represents a basic state structure.
  * 	\param id		the value of state ID.	
@@ -218,7 +219,7 @@ typedef enum
  *					Aditionally, implementing the single inheritance in C 
  *					is very simply by literally embedding the base type, 
  *					RKHPPRO_T in this case, as the first member of the 
- *					derived structure. See member "prepro" of RKHSREG_T 
+ *					derived structure. See \a prepro member of RKHSREG_T 
  *					structure for more information.
  */
 
@@ -233,21 +234,22 @@ typedef enum
 								}
 
 /**
- *	This macro creates a conditional pseudostate. A condition connector has 
- *	one incoming transition and can have several outgoing transition segments 
- *	called branches. Branches are labeled with guards that determine which 
- *	one is to be actually taken. Since the condition connector is an OR 
- *	connector, only one of the branches can be taken. Each 
- *	condition connector can have one special branch with a guard labeled 
- *	rkh_else, which is taken if all the guards on the other branches are 
- *	false. 
+ * 	\brief
+ *	This macro creates a conditional pseudostate. 
+ *
+ *	A condition connector has one incoming transition and can have several 
+ *	outgoing transition segments called branches. Branches are labeled with 
+ *	guards that determine which one is to be actually taken. 
+ *	Since the condition connector is an OR connector, only one of the branches 
+ *	can be taken. Each condition connector can have one special branch with 
+ *	a guard labeled rkh_else, which is taken if all the guards on the other 
+ *	branches are false. 
  *	Branches cannot contain triggers, but in addition to a guard they may 
  *	contain actions. A branch can enter another condition connector, thus 
  *	providing for the nesting of branches.
  *	
- *	\note
- *
- *	See RKHSCOND_T structure definition for more information.
+ *	\sa
+ *	RKHSCOND_T structure definition for more information.
  *
  * 	\param name		pseudostate name. Represents a conditional pseudostate 
  * 					structure.
@@ -266,13 +268,14 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro creates a junction pseudostate.
+ *
  *	Transitions arrows can be joined using junction pseudostate. 
  *	Multiple entrances and exits may be attached to a junction.
  *
- *	\note
- *
- *	See RKHSJUNC_T structure definition for more information.
+ *	\sa
+ *	RKHSJUNC_T structure definition for more information.
  *
  * 	\param name		pseudostate name. Represents a junction pseudostate 
  * 					structure.
@@ -292,12 +295,13 @@ typedef enum
 
 
 /**
- *	This macro creates a deep history pseudostate. Deep history 
- *	applies downwards to all levels of nesting.
+ * 	\brief
+ *	This macro creates a deep history pseudostate. 
  *
- *	\note
+ *	Deep history applies downwards to all levels of nesting.
  *
- *	See RKHSHIST_T structure definition for more information.
+ *	\sa
+ *	RKHSHIST_T structure definition for more information.
  *
  *	Arguments:
  *
@@ -319,14 +323,15 @@ typedef enum
 
 
 /**
- *	This macro creates a shallow history pseudostate. Shallow 
- *	history means that history applies to the current nesting context 
+ * 	\brief
+ *	This macro creates a shallow history pseudostate. 
+ *
+ *	Shallow history means that history applies to the current nesting context 
  *	only – states nested more deeply are not affected by the 
  *	presence of a history pseudostates in a higher context.
  *	
- *	\note
- *
- *	See RKHSHIST_T structure definition for more information.
+ *	\sa
+ *	RKHSHIST_T structure definition for more information.
  *
  * 	\param name		pseudostate name. Represents a shallow history pseudostate 
  * 					structure.
@@ -358,11 +363,11 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro defines a regular state transition.
  *
- *	\note
- *
- *	See RKHTR_T structure definition for more information.
+ *	\sa
+ *	RKHTR_T structure definition for more information.
  *
  * 	\param e		triggering event.
  * 	\param g		pointer to guard function. This argument is 
@@ -376,11 +381,11 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro defines an internal state transition.
  *
- *	\note
- *
- *	See RKHTR_T structure definition for more information.
+ *	\sa
+ *	RKHTR_T structure definition for more information.
  *
  * 	\param e		triggering event.
  * 	\param g		pointer to guard function.	
@@ -419,14 +424,15 @@ typedef enum
 
 
 /**
- *	This macro defines a branch in the branch table. Each condition
- *	connector can have one special branch with a guard labeled rkh_else, 
- *	which is taken if all the guards on the other branches are false.
- *	
+ * 	\brief
+ *	This macro defines a branch in the branch table. 
  *
- *	\note
+ *	Each condition connector can have one special branch with a guard 
+ *	labeled rkh_else, which is taken if all the guards on the other 
+ *	branches are false.
  *
- *	See RKHTR_T structure definition for more information.
+ *	\sa
+ *	RKHTR_T structure definition for more information.
  *
  * 	\param g		branch guard. Branches are labeled with guards that 
  * 					determine which one is to be actually taken. Use rkh_else
@@ -448,6 +454,7 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro is used to terminate a state transition table.
  */
 
@@ -455,6 +462,7 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro indicates the root state of a HSM.
  */
 
@@ -462,6 +470,7 @@ typedef enum
 
 
 /**
+ * 	\brief
  * 	This macro declares a previously created HSM to be used 
  * 	as a global object. Generally, the HSMs are declared in HSM 
  * 	dependent header file.
@@ -507,10 +516,10 @@ enum
 
 
 /**
+ *	\brief
  *	Posts an event directly to the event queue \a qd using the LIFO policy.
  *
  * 	\note 
- *
  *	For memory efficiency and best performance the AO's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  * 	The LIFO policy should be used only with great caution because it
@@ -528,10 +537,10 @@ void rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
 
 
 /**
+ *	\brief
  *	Posts an event directly to the event queue \a qd using the FIFO policy.
  *
  * 	\note
- *
  *	For memory efficiency and best performance the AO's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *	At this time, this functions are required only when the user 
@@ -547,6 +556,7 @@ void rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
 
 
 /**
+ * 	\brief
  *	Defer an event to a given separate event queue.
  *
  * 	Event deferral comes in very handy when an event arrives in a 
@@ -561,7 +571,6 @@ void rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
  * 	event queue by means of rkh_recall() function.
  *	
  *	\note
- *
  *	For memory efficiency and best performance the deferred event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *  An active object can use multiple event queues to defer events of
@@ -577,6 +586,7 @@ void rkh_defer( HUInt qd, RKHEVT_T *evt );
 
 
 /**
+ * 	\brief
  * 	Recall a deferred event from a given event queue.
  *
  * 	This function is part of the event deferral support. An active object
@@ -586,12 +596,10 @@ void rkh_defer( HUInt qd, RKHEVT_T *evt );
  * 	\a qdd.
  *
  * 	\note
- *
  *	For memory efficiency and best performance the destination event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *
  * 	\returns 
- *
  * 	The pointer to the recalled event to the caller, or NULL if no 
  * 	event has been recalled.
  */
@@ -600,12 +608,13 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
 
 
 /**
+ * 	\brief
  *	This macro dynamically creates a new event of type 'et' with the signal.
+ *
  *	The basic policy is to allocate the event from the first pool that has 
  *	a block size big enough to fit the requested event size.
  *	RKH can manage up to three event pools (e.g., small, medium, and 
  *	large events, like shirt sizes). Thus, ensure the 
- *
  *	It returns a pointer to the event already cast to the event type 
  *	(et*). Here is an example of dynamic event allocation with the macro 
  *	rkh_alloc_event():
@@ -631,6 +640,7 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
 
 
 /**
+ * 	\brief
  * 	Recycle a dynamic event.
  *
  * 	This function implements a simple garbage collector for the dynamic 
@@ -658,6 +668,7 @@ void rkh_gc( RKHEVT_T *evt );
 
 
 /**
+ * 	\brief
  *	This macro set the event 'evt' with 'e' signal and establishes it as one 
  *	static event.
  *
@@ -672,6 +683,7 @@ void rkh_gc( RKHEVT_T *evt );
 
 
 /**
+ * 	\brief
  * 	Inits a previously created HSM calling its initializing function.
  *
  * 	\param ph		pointer to HSM control block. Represents a previously 
@@ -682,11 +694,13 @@ void rkh_init_hsm( RKH_T *ph );
 
 
 /**
- *	Executes a HSM in a non-preemtive model. In this model, before the 
- *	system handles a new event it can store it until the previous event 
- *	has completed processing. This model is called run to completion or 
- *	RTC. Thus, the system processes events in discrete, indivisible RTC 
- *	steps.
+ * 	\brief
+ *	Executes a HSM in a non-preemtive model. 
+ *
+ *	In this model, before the system handles a new event it can store it 
+ *	until the previous event has completed processing. This model is 
+ *	called run to completion or RTC. Thus, the system processes events in 
+ *	discrete, indivisible RTC steps.
  *
  * 	\param ph		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.
@@ -703,6 +717,7 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 
 /**
+ * 	\brief
  * 	This macro retrieves the state ID of HSM control block.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
@@ -719,6 +734,7 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 
 /**	
+ * 	\brief
  * 	This macro retrieves the current state name of HSM control block.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
@@ -734,6 +750,7 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 								((RKHBASE_T*)(ph->state))->name	
 
 /**	
+ * 	\brief
  * 	This macro retrieves the HSM's data.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
@@ -750,12 +767,14 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 
 /**	
+ * 	\brief
  * 	This macro retrieves the state's abstract data.
+ *
  *	Aditionally, by means of single inheritance in C it could be used 
  *	as state's abstract data. Aditionally, implementing the single 
  *	inheritance in C is very simply by literally embedding the base type, 
  *	RKHPPRO_T in this case, as the first member of the derived structure. 
- *	See member "prepro" of RKHSREG_T structure for more information.
+ *	See member \a prepro of RKHSREG_T structure for more information.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.
@@ -771,6 +790,7 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 
 /**
+ * 	\brief
  * 	Erase the history of a state. It can be a shallow or deep history.
  *
  * 	\param h 		pointer to history pseudostate.
@@ -780,6 +800,7 @@ void rkh_clear_history( rkhrom RKHSHIST_T *h );
 
 
 /**
+ * 	\brief
  * 	Clear performance information for a particular HSM.
  *
  * 	Information is available during run-time for each HSM. This 
@@ -787,9 +808,8 @@ void rkh_clear_history( rkhrom RKHSHIST_T *h );
  * 	the application is performing properly, as well as helping to
  * 	optimize the application.
  *
- *	\note
- *
- *	See RKH_INFO_T structure definition for more information.
+ *	\sa
+ *	RKH_INFO_T structure definition for more information.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.
@@ -799,11 +819,11 @@ void rkh_clear_info( RKH_T *ph );
 
 
 /**
+ * 	\brief
  * 	Retrieves performance information for a particular HSM.
  *
- *	Note:
- *
- *	See RKH_INFO_T structure definition for more information.
+ *	\sa
+ *	RKH_INFO_T structure definition for more information.
  *
  * 	\param ph 		pointer to HSM control block. Represents a previously 
  * 					created HSM structure.

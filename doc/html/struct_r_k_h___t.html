@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -27,7 +27,7 @@
 </div>
 <div class="contents">
 <h1>RKH_T Struct Reference</h1><!-- doxytag: class="RKH_T" -->
-<p>Describes the HSM.  
+<p>Describes the state machine.  
 <a href="#_details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>&gt;</code></p>
@@ -43,10 +43,9 @@
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_r_k_h___i_n_f_o___t.html">RKH_INFO_T</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#a995c420f07ac4e4bf06e6f2d2d170085">hinfo</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>Describes the HSM. </p>
-<p>It maintains the vital information related with a hierarchical state machine. </p>
+<p>Describes the state machine. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01173">1173</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01232">1232</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 <hr/><h2>Field Documentation</h2>
 <a class="anchor" id="ae750a3f034fdd4c894568d1380300b48"></a><!-- doxytag: member="RKH_T::hdata" ref="ae750a3f034fdd4c894568d1380300b48" args="" -->
 <div class="memitem">
@@ -58,9 +57,9 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Points to optional HSM's data. </p>
+<p>Points to optional state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01223">1223</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01282">1282</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -76,7 +75,7 @@
 <div class="memdoc">
 <p>Maintains the optional performance information. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01231">1231</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01290">1290</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -90,9 +89,9 @@
       </table>
 </div>
 <div class="memdoc">
-<p>HSM descriptor. </p>
+<p>State machine descriptor. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01179">1179</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01238">1238</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -108,7 +107,7 @@
 <div class="memdoc">
 <p>Points to initializing action function. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01216">1216</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01275">1275</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -124,7 +123,7 @@
 <div class="memdoc">
 <p>Points to initial state. The initial state must be a composite state or basic state. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01204">1204</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01263">1263</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -140,7 +139,7 @@
 <div class="memdoc">
 <p>State name string. String terminated in '\0' that represents the name of state. It generally used for debugging. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01197">1197</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01256">1256</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -156,7 +155,7 @@
 <div class="memdoc">
 <p>State machine properties. The available properties are enumerated in RKH_HPPTY_T enumeration in the <a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a> file. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01187">1187</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01246">1246</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -172,7 +171,7 @@
 <div class="memdoc">
 <p>Points to current state. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01210">1210</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01269">1269</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -180,7 +179,7 @@
 <li><a class="el" href="rkhitl_8h_source.html">rkhitl.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jun 28 15:46:35 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 29 13:53:35 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
