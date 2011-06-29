@@ -729,7 +729,7 @@ rkh_recall( HUInt qdd, HUInt qds )
     if( ( r = rkh_get( qds, evt ) ) == 0 )     			/* event available? */
 	{
 		/* post it to the front of the AO's queue */
-        rkh_put_lifo( qds, evt );
+        rkh_put_lifo( qdd, evt );
         rkh_enter_critical();
 
         if( evt->dynamic_ != 0 )           		  /* is it a dynamic event? */
