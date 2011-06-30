@@ -112,10 +112,10 @@ Representing the state machine</a></h2>
 <h3><a class="anchor" id="rep_sm">
 Declaring the state machine (top-state)</a></h3>
 <p><br/>
- The object structure of "my" state machine is declared by means of <a class="el" href="rkh_8h.html#a6cd51b397f904a73a38861b8f40e551c" title="This macro creates a HSM control block.">RKH_CREATE_HSM()</a> macro, which is explained in <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file. According to "my" state diagram: <br/>
+ The object structure of "my" state machine is declared by means of <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> macro, which is explained in <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file. According to "my" state diagram: <br/>
  <br/>
  </p>
-<div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#a6cd51b397f904a73a38861b8f40e551c" title="This macro creates a HSM control block.">RKH_CREATE_HSM</a>( my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
+<div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM</a>( my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
 </pre></div><p> <br/>
  where: <br/>
 </p>
@@ -509,7 +509,7 @@ Defining the state machine</a></h3>
 
 <span class="comment">/*  Defines the state machine. */</span>
 
-(6) <a class="code" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a previously created HSM to be used as a global object. Generally...">RKH_DCLR_HSM</a>( my );
+(6) <a class="code" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM</a>( my );
 
 
 <span class="comment">/*  Defines states and pseudostates. */</span>
@@ -765,7 +765,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 29 13:53:35 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 14:54:01 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

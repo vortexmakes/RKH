@@ -27,6 +27,14 @@
 #include "myact.h"
 
 
+typedef struct
+{
+	RKH_T sm;
+	rkhuint8 x;
+	rkhuint8 y;
+} MYSM_T;
+
+
 /*
  *	Defines HSM's data.
  */

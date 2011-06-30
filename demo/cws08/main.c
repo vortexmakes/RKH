@@ -20,12 +20,12 @@ main( void )
 {
 	const RKHE_T *pe;
 	
-	rkh_init_hsm( &my );
+	rkh_init_hsm( my );
 
 	for( pe = event_list; *pe != RKH_ANY; ++pe  )
 	{
 		rkh_set_static_event( &mye, *pe );
 		mye.ts = 0;
-		rkh_engine( &my, ( RKHEVT_T *)&mye );
+		rkh_engine( my, ( RKHEVT_T *)&mye );
 	}	
 }

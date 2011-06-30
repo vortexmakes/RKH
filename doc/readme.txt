@@ -378,6 +378,8 @@ This section is ....
 - \ref qref8
 - \ref qref9
 - \ref qref10
+- \ref qref11
+- \ref qref12
 
 <HR>
 \section qref0 How to define a state machine
@@ -449,10 +451,19 @@ Bla bla bla.
 Bla bla bla.
 
 <HR>
-\section qref10 Debugging a application based on RKH's state machines
+\section qref10 Debugging an application based on RKH's state machines
 
 Bla bla bla.
 
+<HR>
+\section qref11 Using single inheritance in C
+
+Bla bla bla.
+
+<HR>
+\section qref12 Using events with parameters
+
+Bla bla bla.
 
 \page Usage Representing a state machine
 

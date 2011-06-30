@@ -68,21 +68,25 @@
 <a name="l00051"></a>00051 <span class="preprocessor"></span><span class="preprocessor">    #include &quot;lnxgcc/rkhport.h&quot;</span>
 <a name="l00052"></a>00052 <span class="preprocessor">#endif</span>
 <a name="l00053"></a>00053 <span class="preprocessor"></span>
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 <span class="comment">/*</span>
-<a name="l00056"></a>00056 <span class="comment"> *  If rkhrom has not been defined then rkhport.h has not yet been </span>
-<a name="l00057"></a>00057 <span class="comment"> *  included - as every rkhport.h provides a rkhrom definition.</span>
-<a name="l00058"></a>00058 <span class="comment"> */</span>
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="preprocessor">#ifndef rkhrom</span>
-<a name="l00061"></a>00061 <span class="preprocessor"></span><span class="preprocessor">    #error &quot;rkhplat.h: Missing definition of platform to be used.\</span>
-<a name="l00062"></a>00062 <span class="preprocessor">    See Porting chapter in readme file for more information&quot;</span>
-<a name="l00063"></a>00063 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00064"></a>00064 <span class="preprocessor"></span>
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="preprocessor">#endif</span>
+<a name="l00054"></a>00054 <span class="preprocessor">#ifdef __CWS08RKSYS__</span>
+<a name="l00055"></a>00055 <span class="preprocessor"></span><span class="preprocessor">    #include &quot;..\portable\cws08rksys\rkhport.h&quot;</span>
+<a name="l00056"></a>00056 <span class="preprocessor">#endif</span>
+<a name="l00057"></a>00057 <span class="preprocessor"></span>
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="comment">/*</span>
+<a name="l00060"></a>00060 <span class="comment"> *  If rkhrom has not been defined then rkhport.h has not yet been </span>
+<a name="l00061"></a>00061 <span class="comment"> *  included - as every rkhport.h provides a rkhrom definition.</span>
+<a name="l00062"></a>00062 <span class="comment"> */</span>
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064 <span class="preprocessor">#ifndef rkhrom</span>
+<a name="l00065"></a>00065 <span class="preprocessor"></span><span class="preprocessor">    #error &quot;rkhplat.h: Missing definition of platform to be used.\</span>
+<a name="l00066"></a>00066 <span class="preprocessor">    See Porting chapter in readme file for more information&quot;</span>
+<a name="l00067"></a>00067 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00068"></a>00068 <span class="preprocessor"></span>
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 29 13:53:34 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 14:54:01 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

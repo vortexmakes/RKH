@@ -191,7 +191,7 @@ main( void )
 {
 	int c;
 
-	rkh_init_hsm( &my );
+	rkh_init_hsm( my );
 	srand( ( unsigned )time( NULL ) );
 
 	print_banner();
@@ -206,12 +206,12 @@ main( void )
 		else if ( c == ESC )
 			break;
 		else if ( c == 'r' )
-			rkh_init_hsm( &my );
+			rkh_init_hsm( my );
 		else
 		{
 			rkh_set_static_event( &mye, kbmap( c ) );
 			mye.ts = ( rkhuint16 )rand();
-			rkh_engine( &my, ( RKHEVT_T *)&mye );
+			rkh_engine( my, ( RKHEVT_T *)&mye );
 		}
 	}
 
