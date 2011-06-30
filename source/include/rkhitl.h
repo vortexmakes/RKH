@@ -88,6 +88,10 @@
  *  Verifies configurations from rkhcfg.h include file.
  */
 
+#ifndef RKH_EN_RT_INIT_HSM_OBJ
+#error "rkhcfg.h, Missing RKH_EN_RT_INIT_HSM_OBJ: Enable (1) code generation to initialize the state machine object in runtime."
+#endif
+
 #if RKH_TRACE == 1
 	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_HSM_NAME != 1 )
 	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_HSM_NAME"
@@ -1245,16 +1249,15 @@ typedef struct rkh_t
 
 	rkhuint8 ppty;
 
-#if RKH_EN_HSM_NAME	== 1
-	
 	/**	
 	 *	State name string. String terminated in '\\0' that 
 	 *	represents the name of state. It generally used for 
 	 *	debugging.
 	 */
-
+#if RKH_EN_HSM_NAME	== 1
 	char *name;
 #endif
+
 	/** 
 	 * 	Points to initial state. The initial state must be a
 	 * 	composite state or basic state.
@@ -1273,22 +1276,23 @@ typedef struct rkh_t
 	 */
 
 	RKHINIT_T init_action;
-#if RKH_EN_HSM_DATA == 1
-	
+
 	/** 
 	 * 	Points to optional state-machine's data.
 	 */
 
+#if RKH_EN_HSM_DATA == 1
 	void *hdata;
 #endif
-#if RKH_EN_GET_INFO == 1
 
 	/** 
 	 * 	Maintains the optional performance information.
 	 */
 
+#if RKH_EN_GET_INFO == 1
 	RKH_INFO_T hinfo;
 #endif	
+
 } RKH_T;
 
 

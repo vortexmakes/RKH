@@ -143,12 +143,35 @@ typedef enum
 
 /**
  * 	\brief
- *	This macro creates a HSM control block. 
+ *	This macro creates a state machine object derived from RKH_T.
+ *	Frequently, RKH_CREATE_HSM() is used within state-machine's module 
+ *	(.c file), thus the structure definition is in fact entirely encapsulated 
+ *	in its module and is inaccessible to the rest of the application. 
+ *	However, use the RKH_DCLR_HSM() macro to declare a "opaque" pointer 
+ *	to that state machine structure to be used in the rest of the application
+ *	but hiding the proper definition.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKH_T sm;
+ *		rkhuint8 x;
+ *		rkhuint8 y;
+ *	} MYSM_T;
+ *
+ * 	//	static instance of state machine object
+ *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
+ *	\endcode
  *
  *	\sa
- *	RKH_T structure definition for more information.
+ *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
  *
- * 	\param name		name of state machine object. \b Represents the top state
+ * 	\param sm_t		type of state machine structure.
+ * 	\param name		name of state machine object. Represents the top state
 					of state diagram.
  * 	\param id		the numerical value of state machine ID.
  * 	\param ppty		state machine properties. The available properties are
@@ -162,9 +185,10 @@ typedef enum
  * 					thus it could be declared as NULL.
  */
 
-#define RKH_CREATE_HSM( name, id, ppty, is, ia, hd )					\
+#define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\
 																		\
-								RKH_T name = CHSM( id,ppty,name,is,ia,hd )
+				static sm_t s_##name = CHSM( id,ppty,name,is,ia,hd );	\
+				RKH_T * const name = ( RKH_T* )&s_##name
 
 
 /**
@@ -471,14 +495,26 @@ typedef enum
 
 /**
  * 	\brief
- * 	This macro declares a previously created HSM to be used 
- * 	as a global object. Generally, the HSMs are declared in HSM 
- * 	dependent header file.
+ * 	This macro declares a opaque pointer to previously created state machine 
+ * 	to be used as a global object. 
  *
- * 	\param h		HSM name.
+ * 	This global pointer represent the state machine in the application. 
+ * 	The state machine pointers are "opaque" because they cannot access the 
+ * 	whole state machine structure, but only the part inherited from the RKH_T 
+ * 	structure. The power of an "opaque" pointer is that it allows to 
+ * 	completely hide the definition of the state machine structure and make 
+ * 	it inaccessible to the rest of the application. 
+ *	
+ *	\note
+ * 	Generally, this macro is used in the state-machine's header file.
+ * 	
+ * 	\sa
+ * 	RKH_CREATE_HSM() macro.
+ * 	
+ * 	\param h		name of state machine.
  */
 
-#define RKH_DCLR_HSM( h )		extern RKH_T h
+#define RKH_DCLR_HSM( h )		extern RKH_T * const h
 
 
 /**@{
@@ -499,6 +535,11 @@ typedef enum
 #define RKH_DCLR_SHIST_STATE	extern rkhrom RKHSHIST_T
 
 /*@}*/
+
+
+void
+rkh_init_hsm_obj( RKH_T *sm, char *name, rkhuint8 id, rkhuint8 ppty, 
+						rkhrom RKHSREG_T *is, RKHINIT_T ia, void *hd );
 
 
 /**
