@@ -164,6 +164,9 @@ typedef enum
  *
  * 	//	static instance of state machine object
  *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
+ *
+ *	//	...dispatchig events
+ *	rkh_engine( my, ( RKHEVT_T* )myevt );
  *	\endcode
  *
  *	\sa

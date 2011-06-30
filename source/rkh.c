@@ -759,18 +759,18 @@ rkh_recall( HUInt qdd, HUInt qds )
 #if RKH_EN_RT_INIT_HSM_OBJ == 1
 
 void
-rkh_init_hsm_obj( RKH_T *sm, char *name, rkhuint8 id, rkhuint8 ppty, 
+rkh_init_hsm_obj( RKH_T *ph, char *name, rkhuint8 id, rkhuint8 ppty, 
 						rkhrom RKHSREG_T *is, RKHINIT_T ia, void *hd )
 {
-	sm->id = id;
-	sm->ppty = ppty;
+	ph->id = id;
+	ph->ppty = ppty;
 	#if RKH_EN_HSM_NAME	== 1
-	sm->name = name;
+	ph->name = name;
 	#endif
-	sm->state = sm->init_state = is;
-	sm->init_action = ia;
+	ph->state = ph->init_state = is;
+	ph->init_action = ia;
 	#if RKH_EN_HSM_DATA == 1
-	sm->hdata = hd;
+	ph->hdata = hd;
 	#endif
 }
 
