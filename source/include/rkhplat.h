@@ -51,7 +51,7 @@
    	#include "lnxgcc/rkhport.h"
 #endif
 
-#ifdef __VCRKSYS__
+#ifdef __CWS08RKSYS__
 	#include "..\portable\cws08rksys\rkhport.h"
 #endif
 
