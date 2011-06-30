@@ -349,6 +349,11 @@
 #endif
 
 
+#ifndef RKH_EN_DOXYGEN
+	#define RKH_EN_DOXYGEN	0
+#endif
+
+
 #if RKH_EN_DOXYGEN == 1
 
 /**
