@@ -36,7 +36,6 @@
 #define RKH_EN_PPRO					0	/* 	Include input preprocessor function */
 #define RKH_EN_GET_INFO				0	/* 	Include get information function */
 #define RKH_EN_REENTRANT			0	/* 	Enable (1) or Disable (0) HSM re-entrancy */
-#define RKH_EN_RT_INIT_HSM_OBJ		0	/* 	Enable (1) code generation to initialize the state machine object in runtime. */
 
 #define RKH_TRACE					1	/* 	Enable (1) or Disable (0) trace mode */
 #define RKH_TRACE_ALL				0	/* 	Include all trace points */

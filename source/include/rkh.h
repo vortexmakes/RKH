@@ -190,7 +190,8 @@ typedef enum
 
 #define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\
 																		\
-				static sm_t s_##name = CHSM( id,ppty,name,is,ia,hd );	\
+	static rkhrom ROMRKH_T rs_##name = { id,ppty,#name,is,ia };			\
+				static sm_t s_##name = { &rs_##name,is,hd };			\
 				RKH_T * const name = ( RKH_T* )&s_##name
 
 
@@ -538,11 +539,6 @@ typedef enum
 #define RKH_DCLR_SHIST_STATE	extern rkhrom RKHSHIST_T
 
 /*@}*/
-
-
-void
-rkh_init_hsm_obj( RKH_T *sm, char *name, rkhuint8 id, rkhuint8 ppty, 
-						rkhrom RKHSREG_T *is, RKHINIT_T ia, void *hd );
 
 
 /**

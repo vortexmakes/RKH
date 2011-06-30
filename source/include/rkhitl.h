@@ -88,18 +88,18 @@
  *  Verifies configurations from rkhcfg.h include file.
  */
 
-#ifndef RKH_EN_RT_INIT_HSM_OBJ
-#error "rkhcfg.h, Missing RKH_EN_RT_INIT_HSM_OBJ: Enable (1) code generation to initialize the state machine object in runtime."
-#endif
-
 #if RKH_TRACE == 1
 	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_HSM_NAME != 1 )
 	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_HSM_NAME"
 	#endif
 #endif
 
+#ifndef RKH_EN_HCAL
+	#error "rkhcfg.h, Missing RKH_EN_HCAL: Enable (1) or Disable (0) state nesting"
+#endif
+
 #ifndef RKH_MAX_HCAL_DEPTH
-#error "rkhcfg.h, Missing RKH_MAX_HCAL_DEPTH: Max. # of hierarchical levels"
+	#error "rkhcfg.h, Missing RKH_MAX_HCAL_DEPTH: Max. # of hierarchical levels"
 #else
 	#if RKH_MAX_HCAL_DEPTH == 0 || RKH_MAX_HCAL_DEPTH > 8
 	#error  "rkhcfg.h, RKH_MAX_HCAL_DEPTH must be > 0 and <= 8"
@@ -840,8 +840,8 @@ struct rkh_t;
 
 	#define rkh_exec_init( h )					\
 	{											\
-		if( (h)->init_action != NULL )			\
-			(*(h)->init_action)( h );			\
+		if( (h)->romrkh->init_action != NULL )	\
+			(*(h)->romrkh->init_action)( h );	\
 	}
 
 #else
@@ -850,8 +850,8 @@ struct rkh_t;
 
 	#define rkh_exec_init( h )					\
 	{											\
-		if( (h)->init_action != NULL )			\
-			(*(h)->init_action)();				\
+		if( (h)->romrkh->init_action != NULL )	\
+			(*(h)->romrkh->init_action)();		\
 	}
 
 #endif
@@ -1233,12 +1233,7 @@ typedef struct rkh_info_t
 } RKH_INFO_T;
 
 
-/**
- * 	\brief 
- * 	Describes the state machine.
- */
-
-typedef struct rkh_t
+typedef struct
 {
 	/**	
 	 *	State machine descriptor.
@@ -1271,16 +1266,32 @@ typedef struct rkh_t
 	rkhrom RKHSREG_T *init_state;
 
 	/** 
-	 * 	Points to current state.
-	 */
-
-	rkhrom RKHSREG_T *state;
-
-	/** 
 	 * 	Points to initializing action function.
 	 */
 
 	RKHINIT_T init_action;
+
+} ROMRKH_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the state machine.
+ */
+
+typedef struct rkh_t
+{
+	/**
+	 * 	Points to constant state machine properties
+	 */
+	
+	rkhrom ROMRKH_T *romrkh;
+
+	/** 
+	 * 	Points to current state.
+	 */
+
+	rkhrom RKHSREG_T *state;
 
 	/** 
 	 * 	Points to optional state-machine's data.
@@ -1289,7 +1300,7 @@ typedef struct rkh_t
 #if RKH_EN_HSM_DATA == 1
 	void *hdata;
 #endif
-
+	
 	/** 
 	 * 	Maintains the optional performance information.
 	 */
