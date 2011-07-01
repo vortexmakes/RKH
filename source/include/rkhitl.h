@@ -1233,10 +1233,23 @@ typedef struct rkh_info_t
 } RKH_INFO_T;
 
 
+/**
+ * 	\brief
+ * 	Constant parameters of state machine.
+ *
+ *	The constant key parameters of a state machine are allocated within. 
+ *	ROMRKH_T is a ROM base structure of RKH_T.
+ *
+ *	\sa
+ *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
+ */
+
 typedef struct
 {
 	/**	
-	 *	State machine descriptor.
+	 *	State machine descriptor. It's generally used for 
+	 *	debugging and 'rktrace' module.
 	 */
 
 	rkhuint8 id;
@@ -1251,7 +1264,7 @@ typedef struct
 
 	/**	
 	 *	State name string. String terminated in '\\0' that 
-	 *	represents the name of state. It generally used for 
+	 *	represents the name of state. It's generally used for 
 	 *	debugging.
 	 */
 #if RKH_EN_HSM_NAME	== 1
@@ -1277,6 +1290,41 @@ typedef struct
 /**
  * 	\brief 
  * 	Describes the state machine.
+ *
+ *	This structure resides in RAM because its members are dinamically updated
+ *	by RKH (context of state machine).
+ *	The \b #romrkh member points to ROMRKH_T structure, allocated in ROM, 
+ *	to reduce the size of RAM consume. The key parameters of a state machine 
+ *	are allocated within. Therefore cannot be modified in runtime.
+ *
+ * 	RKH_T is not intended to be instantiated directly, but rather
+ * 	serves as the base structure for derivation of state machines in the
+ * 	application code.
+ * 	The following example illustrates how to derive an state machine from
+ * 	RKH_T. Please note that the RKH_T member sm is defined as the
+ * 	FIRST member of the derived struct.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKH_T sm;		// base structure
+ *		rkhuint8 x;		// private member
+ *		rkhuint8 y;		// private member
+ *	} MYSM_T;
+ *
+ * 	//	static instance of state machine object
+ *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
+ *
+ *	//	...dispatchig events
+ *	rkh_engine( my, ( RKHEVT_T* )myevt );
+ *	\endcode
+ *
+ *	\sa
+ *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
  */
 
 typedef struct rkh_t

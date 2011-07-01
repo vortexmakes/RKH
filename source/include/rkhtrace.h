@@ -371,7 +371,6 @@ typedef enum
 
 /**
  * 	\brief
- *
  * 	Specifies the behavior of the instrumented state-machine. 
  *
  * 	The members of this structure can be set through rkh_trcontrol()
@@ -409,7 +408,6 @@ typedef struct
 
 /**
  * 	\brief
- *
  * 	Describes a trace event. 
  */
 
@@ -422,7 +420,7 @@ typedef struct
 	rkhuint8 id;
 
 	/**
-	 *	HSM descriptor. 
+	 *	State machine descriptor. 
 	 *	It's used as instrumented state-machine identifier.
 	 */
 

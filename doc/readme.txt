@@ -365,7 +365,7 @@ typedef signed int		HInt;
 \page qref Quick reference
 
 \n
-This section is ....
+\todo
 
 - \ref qref0
 - \ref qref1
@@ -384,86 +384,67 @@ This section is ....
 <HR>
 \section qref0 How to define a state machine
 
-\b RKH provides the RKH_CREATE_HSM() macro which provides a easy way for
-declaring a state machine structure, so that the RKH_T structure remains 
-encapsulated. RKH expects the following parameters listed below to 
-instantiate a state machine object.
-
-- \b name		name of state machine object. \b Represents the top state
-				of state diagram.
-- \b id			the numerical value of state machine ID.
-- \b ppty		state machine properties. The available properties are
-				enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
-- \b is			pointer to regular initial state. This state could be 
-				defined either composite or basic.
-- \b ia			pointer to initialization action. The function prototype 
-				is defined as RKHINIT_T. This argument is optional, thus
-				it could be declared as NULL.
-- \b hd			pointer to state-machine's abstract data. This argument is 
-				optional, thus it could be declared as NULL. Also, could be 
-				discarded it setting RKH_EN_HSM_DATA to zero (0) in 
-				\b rkhcfg.h file.
-
+\todo
 
 <HR>
 \section qref1 How to declare a superstate
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref2 How to declare a substate
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref3 How to define a state transition table
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref4 How to declare a conditional pseudostate
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref5 How to declare a history pseudostate
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref6 How to declare a junction pseudostate
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref7 Using dynamic and static events
 
-Bla bla bla.
+\todo
 
 <HR>
-\section qref8 Deferring events
+\section qref8 Deferring and recalling events
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref9 Using assertions
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref10 Debugging an application based on RKH's state machines
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref11 Using single inheritance in C
 
-Bla bla bla.
+\todo
 
 <HR>
 \section qref12 Using events with parameters
 
-Bla bla bla.
+\todo
 
 \page Usage Representing a state machine
 

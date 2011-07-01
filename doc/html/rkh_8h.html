@@ -38,7 +38,7 @@
 <tr><td colspan="2"><h2>Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>&nbsp;&nbsp;&nbsp;rkh_else</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146">RKH_CREATE_HSM</a>(sm_t, name, id, ppty, is, ia, hd)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition.  <a href="#a290baf778561e431e02c611bb5dd9146"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition. <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> is not intended to be instantiated directly, but rather serves as the base structure for derivation of state machines in the application code. The following example illustrates how to derive an state machine from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Please note that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member sm is defined as the FIRST member of the derived struct.  <a href="#a290baf778561e431e02c611bb5dd9146"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce">RKH_CREATE_COMP_STATE</a>(name, id, en, ex, parent, defchild, history)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a composite state.  <a href="#acc24b2221cd374e66732a09fb24b56ce"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>(name, id, en, ex, parent, prepro)</td></tr>
@@ -198,7 +198,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00678">678</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00683">683</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00469">469</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00479">479</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00250">250</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00260">260</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -336,7 +336,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00445">445</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00455">455</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -410,7 +410,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00213">213</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00223">223</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -454,7 +454,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00283">283</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00293">293</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -505,7 +505,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00338">338</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00348">348</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -555,10 +555,11 @@
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
-                <span class="keyword">static</span> sm_t s_##name = CHSM( <span class="keywordtype">id</span>,ppty,name,is,ia,hd );   \
+    <span class="keyword">static</span> rkhrom <a class="code" href="struct_r_o_m_r_k_h___t.html" title="Constant parameters of state machine.">ROMRKH_T</a> rs_##name = { id,ppty,#name,is,ia };         \
+                <span class="keyword">static</span> sm_t s_##name = { &amp;rs_##name,is,hd };            \
                 <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> * <span class="keyword">const</span> name = ( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>* )&amp;s_##name
 </pre></div>
-<p>This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition. </p>
+<p>This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition. <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> is not intended to be instantiated directly, but rather serves as the base structure for derivation of state machines in the application code. The following example illustrates how to derive an state machine from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Please note that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member sm is defined as the FIRST member of the derived struct. </p>
 <p>Example: </p>
 <div class="fragment"><pre class="fragment">    <span class="comment">//  ...within state-machine&#39;s module</span>
 
@@ -571,6 +572,9 @@
 
     <span class="comment">//  static instance of state machine object</span>
     <a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM</a>( MYSM_T, my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
+
+    <span class="comment">//  ...dispatchig events</span>
+    <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a HSM in a non-preemtive model.">rkh_engine</a>( my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>* )myevt );
 </pre></div><dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> structure definition for more information. Also, <a class="el" href="struct_r_k_h_e_v_t___t.html">single inheritance in C </a>.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -585,7 +589,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00188">188</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00197">197</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -639,7 +643,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00312">312</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00322">322</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -689,7 +693,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00366">366</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00376">376</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -718,7 +722,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00384">384</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00394">394</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +740,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00531">531</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00541">541</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -754,7 +758,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00530">530</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00540">540</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -772,7 +776,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00532">532</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00542">542</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -790,7 +794,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00534">534</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00544">544</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -821,7 +825,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00517">517</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00527">527</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -839,7 +843,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00533">533</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00543">543</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -857,7 +861,7 @@
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
 <p>Generally, the states are declared in HSM dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00535">535</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00545">545</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -873,7 +877,7 @@
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00434">434</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00444">444</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -905,7 +909,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00772">772</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00777">777</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -937,7 +941,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00789">789</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00794">794</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -969,7 +973,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00805">805</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00810">810</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1002,7 +1006,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state's abstract data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00828">828</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00833">833</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1037,7 +1041,7 @@
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00723">723</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00728">728</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1078,7 +1082,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00419">419</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00429">429</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1125,7 +1129,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00404">404</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00414">414</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1152,7 +1156,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00552">552</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00557">557</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1557,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 14:54:01 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 23:07:58 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

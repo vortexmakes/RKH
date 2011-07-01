@@ -1,7 +1,6 @@
 /**
  * 	\file rkhcfg.h
  *	\brief
- *	
  * 	RKH configuration file.
  */
 

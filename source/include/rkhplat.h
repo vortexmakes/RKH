@@ -26,7 +26,6 @@
 /**
  * 	\file rkhplat.h
  *	\brief
- *
  *	RKH platform-dependent interface.
  */
 

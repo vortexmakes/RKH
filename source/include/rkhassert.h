@@ -26,7 +26,6 @@
 /**
  * 	\file rkhassert.h
  *	\brief
- *
  *	Assert event definitions.
  */
 

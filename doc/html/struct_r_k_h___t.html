@@ -33,19 +33,33 @@
 <p><code>#include &lt;<a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>&gt;</code></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Data Fields</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#ac8f4c99787d4630c6d075f30d71ff82d">id</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#a583ae75b740707aaa98f88dc7aebf20b">ppty</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#a0a9088fc7cfa0f123efde5ef25f34a7a">name</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">rkhrom <a class="el" href="struct_r_k_h_s_r_e_g___t.html">RKHSREG_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#ab0ceba5ab4edf93f38cda77b99bcd954">init_state</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">rkhrom <a class="el" href="struct_r_o_m_r_k_h___t.html">ROMRKH_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#afe6073b0b2a695c63c6792b4befe3c27">romrkh</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">rkhrom <a class="el" href="struct_r_k_h_s_r_e_g___t.html">RKHSREG_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#afacfd9e7d97c9852ba862252cd2dd6ee">state</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#a0ff3e30e31d64fae099d622e145ff51d">init_action</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#ae750a3f034fdd4c894568d1380300b48">hdata</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_r_k_h___i_n_f_o___t.html">RKH_INFO_T</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h___t.html#a995c420f07ac4e4bf06e6f2d2d170085">hinfo</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Describes the state machine. </p>
+<p>This structure resides in RAM because its members are dinamically updated by RKH (context of state machine). The <b><a class="el" href="struct_r_k_h___t.html#afe6073b0b2a695c63c6792b4befe3c27">romrkh</a></b> member points to <a class="el" href="struct_r_o_m_r_k_h___t.html" title="Constant parameters of state machine.">ROMRKH_T</a> structure, allocated in ROM, to reduce the size of RAM consume. The key parameters of a state machine are allocated within. Therefore cannot be modified in runtime.</p>
+<p><a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> is not intended to be instantiated directly, but rather serves as the base structure for derivation of state machines in the application code. The following example illustrates how to derive an state machine from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Please note that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member sm is defined as the FIRST member of the derived struct.</p>
+<p>Example: </p>
+<div class="fragment"><pre class="fragment">    <span class="comment">//  ...within state-machine&#39;s module</span>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01236">1236</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+    <span class="keyword">typedef</span> <span class="keyword">struct</span>
+    {
+        <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> sm;
+        rkhuint8 x;
+        rkhuint8 y;
+    } MYSM_T;
+
+    <span class="comment">//  static instance of state machine object</span>
+    <a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM</a>( MYSM_T, my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
+
+    <span class="comment">//  ...dispatchig events</span>
+    <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a HSM in a non-preemtive model.">rkh_engine</a>( my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>* )myevt );
+</pre></div><dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> structure definition for more information. Also, <a class="el" href="struct_r_k_h_e_v_t___t.html">single inheritance in C </a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01330">1330</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 <hr/><h2>Field Documentation</h2>
 <a class="anchor" id="ae750a3f034fdd4c894568d1380300b48"></a><!-- doxytag: member="RKH_T::hdata" ref="ae750a3f034fdd4c894568d1380300b48" args="" -->
 <div class="memitem">
@@ -59,7 +73,7 @@
 <div class="memdoc">
 <p>Points to optional state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01285">1285</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01349">1349</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -75,87 +89,23 @@
 <div class="memdoc">
 <p>Maintains the optional performance information. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01293">1293</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01357">1357</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac8f4c99787d4630c6d075f30d71ff82d"></a><!-- doxytag: member="RKH_T::id" ref="ac8f4c99787d4630c6d075f30d71ff82d" args="" -->
+<a class="anchor" id="afe6073b0b2a695c63c6792b4befe3c27"></a><!-- doxytag: member="RKH_T::romrkh" ref="afe6073b0b2a695c63c6792b4befe3c27" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">rkhuint8 <a class="el" href="struct_r_k_h___t.html#ac8f4c99787d4630c6d075f30d71ff82d">RKH_T::id</a></td>
+          <td class="memname">rkhrom <a class="el" href="struct_r_o_m_r_k_h___t.html">ROMRKH_T</a>* <a class="el" href="struct_r_k_h___t.html#afe6073b0b2a695c63c6792b4befe3c27">RKH_T::romrkh</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>State machine descriptor. </p>
+<p>Points to constant state machine properties </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01242">1242</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0ff3e30e31d64fae099d622e145ff51d"></a><!-- doxytag: member="RKH_T::init_action" ref="a0ff3e30e31d64fae099d622e145ff51d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159">RKHINIT_T</a> <a class="el" href="struct_r_k_h___t.html#a0ff3e30e31d64fae099d622e145ff51d">RKH_T::init_action</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Points to initializing action function. </p>
-
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01278">1278</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab0ceba5ab4edf93f38cda77b99bcd954"></a><!-- doxytag: member="RKH_T::init_state" ref="ab0ceba5ab4edf93f38cda77b99bcd954" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">rkhrom <a class="el" href="struct_r_k_h_s_r_e_g___t.html">RKHSREG_T</a>* <a class="el" href="struct_r_k_h___t.html#ab0ceba5ab4edf93f38cda77b99bcd954">RKH_T::init_state</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Points to initial state. The initial state must be a composite state or basic state. </p>
-
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01266">1266</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0a9088fc7cfa0f123efde5ef25f34a7a"></a><!-- doxytag: member="RKH_T::name" ref="a0a9088fc7cfa0f123efde5ef25f34a7a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* <a class="el" href="struct_r_k_h___t.html#a0a9088fc7cfa0f123efde5ef25f34a7a">RKH_T::name</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>State name string. String terminated in '\0' that represents the name of state. It generally used for debugging. </p>
-
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01258">1258</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a583ae75b740707aaa98f88dc7aebf20b"></a><!-- doxytag: member="RKH_T::ppty" ref="a583ae75b740707aaa98f88dc7aebf20b" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">rkhuint8 <a class="el" href="struct_r_k_h___t.html#a583ae75b740707aaa98f88dc7aebf20b">RKH_T::ppty</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>State machine properties. The available properties are enumerated in RKH_HPPTY_T enumeration in the <a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a> file. </p>
-
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01250">1250</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01336">1336</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -171,7 +121,7 @@
 <div class="memdoc">
 <p>Points to current state. </p>
 
-<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01272">1272</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhitl_8h_source.html#l01342">1342</a> of file <a class="el" href="rkhitl_8h_source.html">rkhitl.h</a>.</p>
 
 </div>
 </div>
@@ -179,7 +129,7 @@
 <li><a class="el" href="rkhitl_8h_source.html">rkhitl.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 14:54:01 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 23:07:58 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

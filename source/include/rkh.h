@@ -26,7 +26,6 @@
 /**
  * 	\file rkh.h
  *	\brief
- *	
  * 	RKH platform-independent interface.
  *
  * 	This header file must be included in all modules 
@@ -144,12 +143,19 @@ typedef enum
 /**
  * 	\brief
  *	This macro creates a state machine object derived from RKH_T.
+ *
  *	Frequently, RKH_CREATE_HSM() is used within state-machine's module 
  *	(.c file), thus the structure definition is in fact entirely encapsulated 
  *	in its module and is inaccessible to the rest of the application. 
  *	However, use the RKH_DCLR_HSM() macro to declare a "opaque" pointer 
  *	to that state machine structure to be used in the rest of the application
  *	but hiding the proper definition.
+ * 	RKH_T is not intended to be instantiated directly, but rather
+ * 	serves as the base structure for derivation of state machines in the
+ * 	application code.
+ * 	The following example illustrates how to derive an state machine from
+ * 	RKH_T. Please note that the RKH_T member sm is defined as the
+ * 	FIRST member of the derived struct.
  *
  *	Example:
  *	\code
@@ -157,9 +163,9 @@ typedef enum
  *
  *	typedef struct
  *	{
- *		RKH_T sm;
- *		rkhuint8 x;
- *		rkhuint8 y;
+ *		RKH_T sm;		// base structure
+ *		rkhuint8 x;		// private member
+ *		rkhuint8 y;		// private member
  *	} MYSM_T;
  *
  * 	//	static instance of state machine object
@@ -184,8 +190,8 @@ typedef enum
  * 	\param ia		pointer to initialization action. The function prototype 
  * 					is defined as RKHINIT_T. This argument is optional, thus
  * 					it could be declared as NULL.
- * 	\param hd		pointer to HSM's abstract data. This argument is optional, 
- * 					thus it could be declared as NULL.
+ * 	\param hd		pointer to state-machine's abstract data. This argument 
+ * 					is optional, thus it could be declared as NULL.
  */
 
 #define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\
@@ -491,7 +497,7 @@ typedef enum
 
 /**
  * 	\brief
- *	This macro indicates the root state of a HSM.
+ *	This macro indicates the root state of a state machine.
  */
 
 #define RKH_ROOT				NULL
@@ -528,7 +534,7 @@ typedef enum
  *
  * 	\note
  *
- * 	Generally, the states are declared in HSM dependent header file.
+ * 	Generally, the states are declared in state machine dependent header file.
  */
 
 #define RKH_DCLR_COMP_STATE		extern rkhrom RKHSREG_T
@@ -724,10 +730,10 @@ void rkh_gc( RKHEVT_T *evt );
 
 /**
  * 	\brief
- * 	Inits a previously created HSM calling its initializing function.
+ * 	Inits a previously created state machine calling its initializing function.
  *
- * 	\param ph		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
  */
 
 void rkh_init_hsm( RKH_T *ph );
@@ -735,17 +741,17 @@ void rkh_init_hsm( RKH_T *ph );
 
 /**
  * 	\brief
- *	Executes a HSM in a non-preemtive model. 
+ *	Executes a state machine in a non-preemtive model. 
  *
  *	In this model, before the system handles a new event it can store it 
  *	until the previous event has completed processing. This model is 
  *	called run to completion or RTC. Thus, the system processes events in 
  *	discrete, indivisible RTC steps.
  *
- * 	\param ph		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
- *	\param pevt		pointer to arrived event. It's used as HSM's input 
- *					alphabet.
+ * 	\param ph		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
+ *	\param pevt		pointer to arrived event. It's used as state-machine's 
+ *					input alphabet.
  *
  *	\return
  *
@@ -758,10 +764,10 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 /**
  * 	\brief
- * 	This macro retrieves the state ID of HSM control block.
+ * 	This macro retrieves the state ID of state machine control block.
  *
- * 	\param ph 		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph 		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
  *
  * 	\return
  *
@@ -775,10 +781,10 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 /**	
  * 	\brief
- * 	This macro retrieves the current state name of HSM control block.
+ * 	This macro retrieves the current state name of state machine control block.
  *
- * 	\param ph 		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph 		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
  *
  * 	\returns
  *
@@ -791,10 +797,10 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 
 /**	
  * 	\brief
- * 	This macro retrieves the HSM's data.
+ * 	This macro retrieves the state-machine's data.
  *
- * 	\param ph 		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph 		pointer to state-machine control block. Represents a 
+ * 					previously created HSM structure.
  *
  * 	\returns
  *
@@ -816,8 +822,8 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
  *	RKHPPRO_T in this case, as the first member of the derived structure. 
  *	See member \a prepro of RKHSREG_T structure for more information.
  *
- * 	\param ph 		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph 		pointer to state machine control block. Represents a 
+ * 					previously created state machine structure.
  *
  * 	\returns
  *
@@ -841,9 +847,9 @@ void rkh_clear_history( rkhrom RKHSHIST_T *h );
 
 /**
  * 	\brief
- * 	Clear performance information for a particular HSM.
+ * 	Clear performance information for a particular state machine.
  *
- * 	Information is available during run-time for each HSM. This 
+ * 	Information is available during run-time for each state machine. This 
  * 	information can be useful in determining whether
  * 	the application is performing properly, as well as helping to
  * 	optimize the application.
@@ -851,8 +857,8 @@ void rkh_clear_history( rkhrom RKHSHIST_T *h );
  *	\sa
  *	RKH_INFO_T structure definition for more information.
  *
- * 	\param ph 		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph 		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
  */
 
 void rkh_clear_info( RKH_T *ph );
@@ -860,13 +866,13 @@ void rkh_clear_info( RKH_T *ph );
 
 /**
  * 	\brief
- * 	Retrieves performance information for a particular HSM.
+ * 	Retrieves performance information for a particular state machine.
  *
  *	\sa
  *	RKH_INFO_T structure definition for more information.
  *
- * 	\param ph 		pointer to HSM control block. Represents a previously 
- * 					created HSM structure.
+ * 	\param ph 		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
  *	
  * 	\return
  *
