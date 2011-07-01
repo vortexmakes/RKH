@@ -35,16 +35,25 @@
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Data Structures</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_c_f_g___t.html">RKHTRCFG_T</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Specifies the behavior of the instrumented state-machine.  <a href="struct_r_k_h_t_r_c_f_g___t.html#_details">More...</a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Specifies the behavior of the instrumented state machine.  <a href="struct_r_k_h_t_r_c_f_g___t.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html">RKHTREVT_T</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Describes a trace event.  <a href="struct_r_k_h_t_r_e_v_t___t.html#_details">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2>Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef rkhuint8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Defines the size of trace timestamp.  <a href="#ac1c8f83d90dd35c56d542055ec75128d"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#af0362adb4170a5c28efde2f2c48a6eae">RKHTR_RC</a> </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Return codes from <a class="el" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf" title="Get a trace event from the stream.">rkh_trgetnext()</a> function. </p>
+<br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a85f2b063d4964f17d2a23d860f4f9ef5">RKHTR_CTRL</a> </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Enable or disable the trace facility for a instrumented state machine. It's used as argument of <a class="el" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8" title="Starts or stops the tracing session of an instrumented state machine.">rkh_trcontrol()</a> function. </p>
+<br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a1920b47c8fdd23d068adc49b2ca43bf6">RKHTR_CFGPRT</a> </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Defines printable or not the trace events for a instrumented state machine. </p>
+ <a href="rkhtrace_8h.html#a1920b47c8fdd23d068adc49b2ca43bf6">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a54aee1587b4928ce04bcf5a741c7e17a">RKHTR_CFGLOG</a> </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Defines logged or not the trace events for a instrumented state machine. </p>
+ <a href="rkhtrace_8h.html#a54aee1587b4928ce04bcf5a741c7e17a">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e">RKHTR_EVENTS</a> { <br/>
 &nbsp;&nbsp;<a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ead483ed5733cf57b12e370a5eca698ab9">RKHTR_EVENT</a>, 
 <a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eafcf52184dc38c3ec20cf06824304560a">RKHTR_TRN_SRC</a>, 
@@ -65,24 +74,34 @@
 <a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea90a6fb0e01042f47d2e3c52078292959">RKHTR_NUM_ACTSGT</a>
 <br/>
  }</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>List of event traced. </p>
+ <a href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be">rkh_trinit</a> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd4d666a904135e156d86fc69f3f72be"></a><!-- doxytag: member="rkhtrace.h::rkh_trinit" ref="abd4d666a904135e156d86fc69f3f72be" args="(void)" -->
+void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be">rkh_trinit</a> (void)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Inits the trace facility module. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig</a> (HUInt trix, HUInt log, HUInt print)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Each of instrumented state machine applications has its own tracing facility configuration.  <a href="#a0b89e13c03bc2ea009a9e6f5853676b4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8">rkh_trcontrol</a> (HUInt trix, HUInt opt)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Starts or stops the tracing session of an instrumented state machine.  <a href="#a10fed4975543f508a42d007ff5a6c4d8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_r_k_h_t_r_c_f_g___t.html">RKHTRCFG_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb">rkh_trgetcfg</a> (HUInt trix)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves the tracing configuration that specifies the behavior of the session.  <a href="#acfa80e7df97b94f13d4ccb602b2acbeb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#ac7cad1917f535bb2884306cbc6a473fd">rkh_trevt</a> (<a class="el" href="struct_r_k_h_t_r_e_v_t___t.html">RKHTREVT_T</a> *ptre)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Post a trace event in the stream. The event is stored by copy, not by reference.  <a href="#ac7cad1917f535bb2884306cbc6a473fd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">HUInt&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf">rkh_trgetnext</a> (<a class="el" href="struct_r_k_h_t_r_e_v_t___t.html">RKHTREVT_T</a> *ptre)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get a trace event from the stream.  <a href="#a393a44cb15fe09aeff5904835aa8cccf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">rkhuint16&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkhtrace_8h.html#a3e4c7998e4e74404359f48fa98e11eac">rkh_trgetqty</a> (void)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves the number of trace events stored in the stream.  <a href="#a3e4c7998e4e74404359f48fa98e11eac"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Platform-independent interface for RKH trace facility. </p>
 <p>When a program needs to be traced, it has to generate some information each time it reaches a "significant step" (certain instruction in the program's source code). In the standard terminology, this step is called a trace point, and the tracing information which is generated at that point is called a trace event. A program containing one or more of this trace points is named instrumented application.</p>
 <p>There is one class of trace events: RKH trace events, which are generated by the RKH source code.</p>
-<p>The definition of events and the mapping between these and their corresponding names is hard-coded in the RKH implementation. Therefore, these events are common for all the state-machine applications and never change (they are always traced). The trace events are associated with a integer value and are explicity listed and defined (enumerated) as shown below in this file.</p>
+<p>The definition of events and the mapping between these and their corresponding names is hard-coded in the RKH implementation. Therefore, these events are common for all the state machine applications and never change (they are always traced). The trace events are associated with a integer value and are explicity listed and defined (enumerated) as shown below in this file.</p>
 <p>The standard defines that the trace system has to store some information for each trace event (also named arguments) being generated, including, at least, the following:</p>
 <ul>
 <li>the trace event identifier (RKHTR_EVENTS enumerated list),</li>
-<li>instrumented application (state-machine),</li>
+<li>instrumented application (state machine),</li>
 <li>a timestamp (optional),</li>
 <li>any extra data that the system wants to associate with the event (optional).</li>
 </ul>
@@ -100,9 +119,11 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Defines the size of trace timestamp. The valid values [in bits] are 8, 16 or 32. Default is 8. This type is configurable via the preprocessor switch RKH_SIZEOF_TIMESTAMP. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00221">221</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Defines the size of trace timestamp. </p>
+<p>The valid values [in bits] are 8, 16 or 32. Default is 8. This type is configurable via the RKH_SIZEOF_TIMESTAMP preprocessor option. </p>
+
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00232">232</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -117,9 +138,11 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Defines logged or not the trace events for a instrumented state-machine. It's used as argument of <a class="el" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig()</a> function. This number isn't internally used by RKH trace module. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00111">111</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Defines logged or not the trace events for a instrumented state machine. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>It's used as argument of <a class="el" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4" title="Each of instrumented state machine applications has its own tracing facility configuration...">rkh_trconfig()</a> function. This number isn't internally used by RKH trace module. </dd></dl>
+
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00119">119</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -133,25 +156,11 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Defines printable or not the trace events for a instrumented state-machine. It's used as argument of <a class="el" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig()</a> function. This number isn't internally used by RKH trace module. </p>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00099">99</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Defines printable or not the trace events for a instrumented state machine. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>It's used as argument of <a class="el" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4" title="Each of instrumented state machine applications has its own tracing facility configuration...">rkh_trconfig()</a> function. This number isn't internally used by RKH trace module. </dd></dl>
 
-</div>
-</div>
-<a class="anchor" id="a85f2b063d4964f17d2a23d860f4f9ef5"></a><!-- doxytag: member="rkhtrace.h::RKHTR_CTRL" ref="a85f2b063d4964f17d2a23d860f4f9ef5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="rkhtrace_8h.html#a85f2b063d4964f17d2a23d860f4f9ef5">RKHTR_CTRL</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Enable or disable the trace facility for a instrumented state-machine. It's used as argument of <a class="el" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8">rkh_trcontrol()</a> function. </p>
-
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00087">87</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00104">104</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -165,7 +174,8 @@
       </table>
 </div>
 <div class="memdoc">
-<p>List of event traced.</p>
+
+<p>List of event traced. </p>
 <p>The list below defines the available trace events. This traces are placed within RKH source code, at key points of interest, called trace points. </p>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="ab4932f0e74c5782ff29068ca6ec0cd0ead483ed5733cf57b12e370a5eca698ab9"></a><!-- doxytag: member="RKHTR_EVENT" ref="ab4932f0e74c5782ff29068ca6ec0cd0ead483ed5733cf57b12e370a5eca698ab9" args="" -->RKHTR_EVENT</em>&nbsp;</td><td>
@@ -190,7 +200,7 @@
 <p>If it's enabled (1) records the exited state. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ab4932f0e74c5782ff29068ca6ec0cd0ea7b3b5f5e6e76689a397d8f1123e231c2"></a><!-- doxytag: member="RKHTR_INIT_HSM" ref="ab4932f0e74c5782ff29068ca6ec0cd0ea7b3b5f5e6e76689a397d8f1123e231c2" args="" -->RKHTR_INIT_HSM</em>&nbsp;</td><td>
-<p>If it's enabled (1) records the initialization process of state-machine. </p>
+<p>If it's enabled (1) records the initialization process of state machine. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ab4932f0e74c5782ff29068ca6ec0cd0ea9f1baee90615baf688c6b28e57c3b313"></a><!-- doxytag: member="RKHTR_SGT_TGT" ref="ab4932f0e74c5782ff29068ca6ec0cd0ea9f1baee90615baf688c6b28e57c3b313" args="" -->RKHTR_SGT_TGT</em>&nbsp;</td><td>
 <p>If it's enabled (1) records the target state of transition segment. </p>
@@ -208,23 +218,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00125">125</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af0362adb4170a5c28efde2f2c48a6eae"></a><!-- doxytag: member="rkhtrace.h::RKHTR_RC" ref="af0362adb4170a5c28efde2f2c48a6eae" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="rkhtrace_8h.html#af0362adb4170a5c28efde2f2c48a6eae">RKHTR_RC</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Return codes from <a class="el" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf">rkh_trgetnext()</a> function. </p>
-
-<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00076">76</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
+<p>Definition at line <a class="el" href="rkhtrace_8h_source.html#l00134">134</a> of file <a class="el" href="rkhtrace_8h_source.html">rkhtrace.h</a>.</p>
 
 </div>
 </div>
@@ -259,12 +253,13 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Each of instrumented state-machine applications has its own tracing facility configuration.</p>
+
+<p>Each of instrumented state machine applications has its own tracing facility configuration. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>trix</em>&nbsp;</td><td>instrumented state-machine descriptor. This number must be unique. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>log</em>&nbsp;</td><td>defines logged or not the trace events for a instrumented state-machine. Use RKH_TRLOG or RKH_TRNLOG for that. This number isn't internally used by RKH trace module. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>print</em>&nbsp;</td><td>defines printable or not the trace events for a instrumented state-machine. Use RKH_TRPRINT or RKH_TRNPRINT for that. This number isn't internally used by RKH trace module. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>trix</em>&nbsp;</td><td>instrumented state machine descriptor. This number must be unique. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>log</em>&nbsp;</td><td>defines logged or not the trace events for a instrumented state machine. Use RKH_TRLOG or RKH_TRNLOG for that. This number isn't internally used by RKH trace module. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>print</em>&nbsp;</td><td>defines printable or not the trace events for a instrumented state machine. Use RKH_TRPRINT or RKH_TRNPRINT for that. This number isn't internally used by RKH trace module. </td></tr>
   </table>
   </dd>
 </dl>
@@ -295,10 +290,11 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Starts or stops the tracing session of an instrumented state-machine.</p>
+
+<p>Starts or stops the tracing session of an instrumented state machine. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>trix</em>&nbsp;</td><td>instrumented state-machine descriptor. This number must be unique. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>trix</em>&nbsp;</td><td>instrumented state machine descriptor. This number must be unique. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>opt</em>&nbsp;</td><td>control option. Use RKH_TRSTART to start recording events. </td></tr>
   </table>
   </dd>
@@ -321,7 +317,8 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Post a trace event in the stream. The event is stored by copy, not by reference.</p>
+
+<p>Post a trace event in the stream. The event is stored by copy, not by reference. </p>
 <p>When the RKH trace an event, all the information related to it has to be stored within the trace stream. This function is indirectly called by means of mktrevt() macro.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -347,15 +344,15 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Retrieves the tracing configuration that specifies the behavior of the session.</p>
+
+<p>Retrieves the tracing configuration that specifies the behavior of the session. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>trix</em>&nbsp;</td><td>instrumented state-machine descriptor. This number must be unique.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>trix</em>&nbsp;</td><td>instrumented state machine descriptor. This number must be unique.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
-<p>Pointer to tracing configuration structure. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>Pointer to tracing configuration structure. </dd></dl>
 
 </div>
 </div>
@@ -374,7 +371,8 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Get a trace event from the stream.</p>
+
+<p>Get a trace event from the stream. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>ptre</em>&nbsp;</td><td>pointer to the buffer into which the event retrieved will be copied.</td></tr>
@@ -401,33 +399,14 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Retrieves the number of trace events stored in the stream.</p>
-<dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
-<p>Number of trace events stored in the stream. </p>
 
-</div>
-</div>
-<a class="anchor" id="abd4d666a904135e156d86fc69f3f72be"></a><!-- doxytag: member="rkhtrace.h::rkh_trinit" ref="abd4d666a904135e156d86fc69f3f72be" args="(void)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rkh_trinit </td>
-          <td>(</td>
-          <td class="paramtype">void&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Inits the trace facility module. </p>
+<p>Retrieves the number of trace events stored in the stream. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>Number of trace events stored in the stream. </dd></dl>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 10:38:23 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 13:59:33 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

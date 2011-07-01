@@ -40,7 +40,7 @@
  * 	
  * 	The definition of events and the mapping between these and their 
  * 	corresponding names is hard-coded in the RKH implementation. Therefore, 
- * 	these events are common for all the state-machine applications and never 
+ * 	these events are common for all the state machine applications and never 
  * 	change (they are always traced). 
  * 	The trace events are associated with a integer value and are explicity 
  * 	listed and defined (enumerated) as shown below in this file.
@@ -50,7 +50,7 @@
  *	at least, the following:
  *
  * 	- the trace event identifier (RKHTR_EVENTS enumerated list),
- * 	- instrumented application (state-machine),
+ * 	- instrumented application (state machine),
  * 	- a timestamp (optional),
  * 	- any extra data that the system wants to associate with the event 
  * 	(optional).
@@ -70,6 +70,7 @@
 
 
 /**
+ * 	\brief
  * 	Return codes from rkh_trgetnext() function.
  */
 
@@ -80,7 +81,8 @@ typedef enum
 
 
 /**
- * 	Enable or disable the trace facility for a instrumented state-machine.
+ * 	\brief
+ * 	Enable or disable the trace facility for a instrumented state machine.
  * 	It's used as argument of rkh_trcontrol() function.
  */
 
@@ -91,9 +93,12 @@ typedef enum
 
 
 /**
- * 	Defines printable or not the trace events for a instrumented 
- * 	state-machine. It's used as argument of rkh_trconfig() function.
- * 	This number isn't internally used by RKH trace module.
+ * 	\brief
+ * 	Defines printable or not the trace events for a instrumented state machine.
+ *
+ * 	\note
+ * 	It's used as argument of rkh_trconfig() function. This number isn't 
+ * 	internally used by RKH trace module.
  */
 
 typedef enum
@@ -103,9 +108,12 @@ typedef enum
 
 
 /**
- * 	Defines logged or not the trace events for a instrumented 
- * 	state-machine. It's used as argument of rkh_trconfig() function.
- * 	This number isn't internally used by RKH trace module.
+ * 	\brief
+ * 	Defines logged or not the trace events for a instrumented state machine. 
+ *
+ * 	\note
+ * 	It's used as argument of rkh_trconfig() function. This number isn't 
+ * 	internally used by RKH trace module.
  */
 
 typedef enum
@@ -115,6 +123,7 @@ typedef enum
 
 
 /**
+ * 	\brief
  * 	List of event traced.
  *
  *	The list below defines the available trace events. This traces are 
@@ -168,7 +177,7 @@ typedef enum
 
 	/**
 	 * 	If it's enabled (1) records the initialization process 
-	 * 	of state-machine.
+	 * 	of state machine.
 	 */
 
 	RKHTR_INIT_HSM,
@@ -206,9 +215,11 @@ typedef enum
 
 
 /** 
- * 	Defines the size of trace timestamp. The valid values [in bits] are 
- * 	8, 16 or 32. Default is 8. This type is configurable via the 
- * 	preprocessor switch RKH_SIZEOF_TIMESTAMP.
+ * 	\brief
+ * 	Defines the size of trace timestamp. 
+ *
+ * 	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ * 	configurable via the RKH_SIZEOF_TIMESTAMP preprocessor option.
  */
 
 #if RKH_SIZEOF_TIMESTAMP == 8
@@ -371,7 +382,7 @@ typedef enum
 
 /**
  * 	\brief
- * 	Specifies the behavior of the instrumented state-machine. 
+ * 	Specifies the behavior of the instrumented state machine. 
  *
  * 	The members of this structure can be set through rkh_trcontrol()
  * 	function.
@@ -380,7 +391,7 @@ typedef enum
 typedef struct
 {
 	/**
-	 * 	When enabling tracing for a state-machine, trace module records 
+	 * 	When enabling tracing for a state machine, trace module records 
 	 * 	the trace events.
 	 */
 
@@ -421,7 +432,7 @@ typedef struct
 
 	/**
 	 *	State machine descriptor. 
-	 *	It's used as instrumented state-machine identifier.
+	 *	It's used as instrumented state machine identifier.
 	 */
 
 	rkhuint8 smix;
@@ -455,6 +466,7 @@ typedef struct
 
 
 /**
+ * 	\brief
  * 	Inits the trace facility module.
  */
 
@@ -462,17 +474,18 @@ void rkh_trinit( void );
 
 
 /**
- * 	Each of instrumented state-machine applications has its own tracing
+ * 	\brief
+ * 	Each of instrumented state machine applications has its own tracing
  * 	facility configuration.
  *
- * 	\param trix		instrumented state-machine descriptor. This number 
+ * 	\param trix		instrumented state machine descriptor. This number 
  * 					must be unique.
  * 	\param log		defines logged or not the trace events for a 
- * 					instrumented state-machine. Use RKH_TRLOG or
+ * 					instrumented state machine. Use RKH_TRLOG or
  * 					RKH_TRNLOG for that. This number isn't internally 
  * 					used by RKH trace module.
  * 	\param print	defines printable or not the trace events for a 
- * 					instrumented state-machine. Use RKH_TRPRINT or
+ * 					instrumented state machine. Use RKH_TRPRINT or
  * 					RKH_TRNPRINT for that. This number isn't internally 
  * 					used by RKH trace module.
  */
@@ -481,10 +494,11 @@ void rkh_trconfig( HUInt trix, HUInt log, HUInt print );
 
 
 /**
+ * 	\brief
  * 	Starts or stops the tracing session of an instrumented 
- * 	state-machine.
+ * 	state machine.
  *
- * 	\param trix		instrumented state-machine descriptor. This number 
+ * 	\param trix		instrumented state machine descriptor. This number 
  * 					must be unique.
  * 	\param opt		control option. Use RKH_TRSTART to start recording
  * 					events.	
@@ -494,14 +508,14 @@ void rkh_trcontrol( HUInt trix, HUInt opt );
 
 
 /**
+ * 	\brief
  *	Retrieves the tracing configuration that specifies the behavior of 
  *	the session.
  *
- * 	\param trix		instrumented state-machine descriptor. This number 
+ * 	\param trix		instrumented state machine descriptor. This number 
  * 					must be unique.
  *
  * 	\returns
- *
  * 	Pointer to tracing configuration structure.
  */
 
@@ -509,6 +523,7 @@ RKHTRCFG_T *rkh_trgetcfg( HUInt trix );
 
 
 /**
+ * 	\brief
  *	Post a trace event in the stream. The event is stored by 
  *	copy, not by reference.
  *
@@ -524,6 +539,7 @@ void rkh_trevt( RKHTREVT_T *ptre );
 
 
 /**
+ * 	\brief
  *	Get a trace event from the stream.
  *
  * 	\param ptre		pointer to the buffer into which the event retrieved
@@ -539,10 +555,10 @@ HUInt rkh_trgetnext( RKHTREVT_T *ptre );
 
 
 /**
+ * 	\brief
  *	Retrieves the number of trace events stored in the stream.
  *
  * 	\returns
- *
  * 	Number of trace events stored in the stream.
  */
 

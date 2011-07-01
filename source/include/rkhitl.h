@@ -591,6 +591,38 @@
  *	rkh_tropen(). 
  *	The application must implement this function. At a minimum, the 
  *	function must configure the trace stream by calling rkh_trinit().
+ *	
+ *	Example:
+ *
+ *	\code
+ *	//	...in rkhport.h
+ *
+ *	#define rkh_tropen			rkh_trace_open
+ *
+ * 	//	...in some application module
+ *
+ *	void 
+ *	my_rkh_trace_open( void )
+ *	{
+ *		RKHTRCFG_T *pcfg;
+ *		
+ *		rkh_trinit();
+ *		rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
+ *		rkh_trcontrol( MY, RKH_TRSTART );
+ *		
+ *		if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
+ *		{
+ *			perror( "Can't open file\n" );
+ *			exit( EXIT_FAILURE );
+ *		}
+ *		fprintf( fdbg, 
+ *			"---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
+ *		pcfg = rkh_trgetcfg( MY );
+ *		if( pcfg->print == RKH_TRPRINT )
+ *			printf( "---- RKH trace log session - 
+ *					"__DATE__" - "__TIME__" ----\n\n" );
+ *	}
+ *	\endcode
  *
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
@@ -607,6 +639,22 @@
  *	This is a platform-dependent function invoked through the macro 
  *	rkh_trclose(). 
  *	The application must implement this function.
+ *
+ *	Example:
+ *
+ *	\code
+ *	//	...in rkhport.h
+ *
+ *	#define rkh_trclose			rkh_trace_close
+ *
+ * 	//	...in some application module
+ *
+ *	void 
+ *	rkh_trace_close( void )
+ *	{
+ *		fclose( fdbg );
+ *	}
+ *	\endcode
  *
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
@@ -626,6 +674,40 @@
  * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
  * 	This place is a trace stream. Frequently, events traced are stored in 
  * 	the stream until it is flushed.
+ *
+ *	Example:
+ *
+ *	\code
+ *	//	...in rkhport.h
+ *
+ *	#define rkh_trflush				rkh_trace_flush
+ *
+ * 	//	...in some application module
+ *
+ * 	void 
+ * 	rkh_trace_flush( void )
+ * 	{
+ * 		RKHTREVT_T te;
+ * 		RKHTRCFG_T *pcfg;
+ *
+ * 		while( rkh_trgetnext( &te ) != RKH_TREMPTY )
+ * 		{
+ * 			pcfg = rkh_trgetcfg( te.smix );
+ * 			if( pcfg->log == RKH_TRLOG )
+ * 				fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
+ *													rkh_trgetts(),
+ *													tremap[ te.id ],
+ *													smmap[ te.smix ],
+ *													format_trevt_args( &te ) );
+ *			if( pcfg->print == RKH_TRPRINT )
+ *				printf( "%05d [ %-16s ] - %s : %s\n",
+ *													rkh_trgetts(),
+ *													tremap[ te.id ],
+ *													smmap[ te.smix ],
+ *													format_trevt_args( &te ) );
+ *		}
+ *	}
+ *	\endcode
  *
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
@@ -674,6 +756,22 @@
 	 *	rkh_trgetts(). 
 	 *	The data returned is defined in compile-time by means of 
 	 *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
+ 	 *
+	 *	Example:
+	 *
+	 *	\code
+	 *	//	...in rkhport.h
+	 *
+	 *	#define rkh_trtrgetts				rkh_trace_getts
+	 *
+	 * 	//	...in some application module
+	 *	
+	 *	RKHTS_T 
+	 *	rkh_trace_getts( void )
+	 *	{
+	 *		return ( RKHTS_T )clock();
+	 *	}
+	 *	\endcode
 	 *
 	 * 	\returns
 	 * 	Timestamp (RKHTS_T data type).

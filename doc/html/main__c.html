@@ -149,11 +149,11 @@ print_banner( <span class="keywordtype">void</span> )
 <span class="keywordtype">void</span> 
 rkh_trace_open( <span class="keywordtype">void</span> )
 {
-    <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *pcfg;
+    <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state machine.">RKHTRCFG_T</a> *pcfg;
 
-    <a class="code" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be">rkh_trinit</a>();
-    <a class="code" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4">rkh_trconfig</a>( MY, RKH_TRLOG, RKH_TRPRINT );
-    <a class="code" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8">rkh_trcontrol</a>( MY, RKH_TRSTART );
+    <a class="code" href="rkhtrace_8h.html#abd4d666a904135e156d86fc69f3f72be" title="Inits the trace facility module.">rkh_trinit</a>();
+    <a class="code" href="rkhtrace_8h.html#a0b89e13c03bc2ea009a9e6f5853676b4" title="Each of instrumented state machine applications has its own tracing facility configuration...">rkh_trconfig</a>( MY, RKH_TRLOG, RKH_TRPRINT );
+    <a class="code" href="rkhtrace_8h.html#a10fed4975543f508a42d007ff5a6c4d8" title="Starts or stops the tracing session of an instrumented state machine.">rkh_trcontrol</a>( MY, RKH_TRSTART );
 
     <span class="keywordflow">if</span>( ( fdbg = fopen( <span class="stringliteral">&quot;../mylog.txt&quot;</span>, <span class="stringliteral">&quot;w+&quot;</span> ) ) == NULL )
     {
@@ -163,7 +163,7 @@ rkh_trace_open( <span class="keywordtype">void</span> )
 
     fprintf( fdbg, <span class="stringliteral">&quot;---- RKH trace log session - &quot;</span>__DATE__<span class="stringliteral">&quot; - &quot;</span>__TIME__<span class="stringliteral">&quot; ----\n\n&quot;</span> );
     
-    pcfg = <a class="code" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb">rkh_trgetcfg</a>( MY );
+    pcfg = <a class="code" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb" title="Retrieves the tracing configuration that specifies the behavior of the session.">rkh_trgetcfg</a>( MY );
     <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">print</a> == RKH_TRPRINT )
         printf( <span class="stringliteral">&quot;---- RKH trace log session - &quot;</span>__DATE__<span class="stringliteral">&quot; - &quot;</span>__TIME__<span class="stringliteral">&quot; ----\n\n&quot;</span> );
 }
@@ -180,11 +180,11 @@ rkh_trace_close( <span class="keywordtype">void</span> )
 rkh_trace_flush( <span class="keywordtype">void</span> )
 {
     <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a> te;
-    <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state-machine.">RKHTRCFG_T</a> *pcfg;
+    <a class="code" href="struct_r_k_h_t_r_c_f_g___t.html" title="Specifies the behavior of the instrumented state machine.">RKHTRCFG_T</a> *pcfg;
 
-    <span class="keywordflow">while</span>( <a class="code" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf">rkh_trgetnext</a>( &amp;te ) != RKH_TREMPTY )
+    <span class="keywordflow">while</span>( <a class="code" href="rkhtrace_8h.html#a393a44cb15fe09aeff5904835aa8cccf" title="Get a trace event from the stream.">rkh_trgetnext</a>( &amp;te ) != RKH_TREMPTY )
     {
-        pcfg = <a class="code" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb">rkh_trgetcfg</a>( te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> );
+        pcfg = <a class="code" href="rkhtrace_8h.html#acfa80e7df97b94f13d4ccb602b2acbeb" title="Retrieves the tracing configuration that specifies the behavior of the session.">rkh_trgetcfg</a>( te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> );
 
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">log</a> == RKH_TRLOG )
             fprintf( fdbg, <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
@@ -202,10 +202,10 @@ rkh_trace_flush( <span class="keywordtype">void</span> )
 }
 
 
-<a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> 
+<a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d" title="Defines the size of trace timestamp.">RKHTS_T</a> 
 rkh_trace_getts( <span class="keywordtype">void</span> )
 {
-    <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d">RKHTS_T</a> )clock();
+    <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d" title="Defines the size of trace timestamp.">RKHTS_T</a> )clock();
 }
 
 
@@ -241,7 +241,7 @@ main( <span class="keywordtype">void</span> )
     rkh_trace_close();
 }
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 10:38:23 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 13:59:33 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

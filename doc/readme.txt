@@ -1385,15 +1385,16 @@ shows how to make that.
 <HR>
 \section trusing Using tracing tool
 
-- The option \c RKH_TRACE must be set to one (1), it should be defined in 
-the specific application configuration file named \c rkhcfg.h. 
+- The option \b RKH_TRACE must be set to one (1), it should be defined in 
+the specific application configuration file named \b rkhcfg.h. 
 
-- The trace events of interest must be defined in the \c rkhcfg.h file. See
-\c #RKHTR_EVENTS enumeration and \ref trcfg section.
+- The trace events of interest must be defined in the \b rkhcfg.h file. See
+\b #RKHTR_EVENTS enumeration and \ref trcfg section.
 
 - The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and 
 rkh_trace_getts() are platform-dependent functions, therefore the user
-application must implement it. 
+application must implement it. These function prototypes are definied
+within \b rkhtrace.h file.
 This functions are invoked through the rkh_tropen(), rkh_trclose(), 
 rkh_trflush(), and rkh_trgetts() macros. 
 
