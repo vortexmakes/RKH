@@ -50,6 +50,14 @@
 <span class="preprocessor">#include &quot;myact.h&quot;</span>
 
 
+<span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> sm;       <span class="comment">// base structure</span>
+    rkhuint8 z;     <span class="comment">// private member</span>
+    rkhuint8 w;     <span class="comment">// private member</span>
+} MYSM_T;
+
+
 <span class="comment">/*</span>
 <span class="comment">    Defines HSM&#39;s data.</span>
 <span class="comment"> */</span>
@@ -61,7 +69,7 @@
 <span class="comment">    Defines HSM.</span>
 <span class="comment"> */</span>
 
-<a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM</a>( my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
+<a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM</a>( MYSM_T, my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
 
 
 <span class="comment">/*</span>
@@ -166,7 +174,7 @@
 
 <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table.">RKH_END_BRANCH_TABLE</a>
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 23:07:58 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 10:38:23 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -80,7 +80,7 @@ Using directory structure</a></h2>
 <li><code>\portable:</code> contains platform-independent header files to be used by RKH applications. Each platform-dependent file should be placed in a directory that represents the platform to be used. Each platform directory should be placed within <code>\portable</code> directory, i.e.: <code>\portable\&lt;platform&gt;\rkhport.h</code>. The <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a> shows three RKH port directories: <code>\portable\cw08</code> (Codewarrior for Freescale S08), <code>\portable\lnxgcc</code> (Linux GCC), and <code>\portable\vc08</code> (Visual C++ 2008).</li>
 </ul>
 <ul>
-<li><code>rkh.c:</code> platform-independent source code of RKH. This file requires inclusion of only one platform-specific header file named <code>rkhport.h</code>. It's indirectly included by <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file and it's described in detail in section <a class="el" href="_porting.html">Porting</a>.</li>
+<li><b>rkh.c:</b> platform-independent source code of RKH. This file requires inclusion of only one platform-specific header file named <code>rkhport.h</code>. It's indirectly included by <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file and it's described in detail in section <a class="el" href="_porting.html">Porting</a>.</li>
 </ul>
 <ul>
 <li><code>rkhtrace.c:</code> platform-independent source code of runtime debugging.</li>
@@ -146,7 +146,7 @@ rkhtrace.h  - Trace facility
  <b>Application</b> </p>
 <p>Next, should be created the configuration file <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> to be included within the application directory. See <a class="el" href="cfg.html">Configuration</a> section for more information. This file is mandatory and it's used by RKH. </p>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 23:07:58 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 10:38:23 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

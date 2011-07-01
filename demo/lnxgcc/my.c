@@ -46,7 +46,7 @@ static MYHDATA_T mydata;
  *	Defines HSM.
  */
 
-RKH_CREATE_HSM( my, 0, HCAL, &S1, my_init, &mydata );
+RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
 
 
 /*

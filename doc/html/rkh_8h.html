@@ -38,7 +38,7 @@
 <tr><td colspan="2"><h2>Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>&nbsp;&nbsp;&nbsp;rkh_else</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146">RKH_CREATE_HSM</a>(sm_t, name, id, ppty, is, ia, hd)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition. <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> is not intended to be instantiated directly, but rather serves as the base structure for derivation of state machines in the application code. The following example illustrates how to derive an state machine from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Please note that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member sm is defined as the FIRST member of the derived struct.  <a href="#a290baf778561e431e02c611bb5dd9146"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>.  <a href="#a290baf778561e431e02c611bb5dd9146"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce">RKH_CREATE_COMP_STATE</a>(name, id, en, ex, parent, defchild, history)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a composite state.  <a href="#acc24b2221cd374e66732a09fb24b56ce"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">RKH_CREATE_BASIC_STATE</a>(name, id, en, ex, parent, prepro)</td></tr>
@@ -65,7 +65,7 @@
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro is used to terminate a state transition table. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2b1332a21797445c49710b6074ddb9b"></a><!-- doxytag: member="rkh.h::RKH_ROOT" ref="af2b1332a21797445c49710b6074ddb9b" args="" -->
 #define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b">RKH_ROOT</a>&nbsp;&nbsp;&nbsp;NULL</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro indicates the root state of a HSM. <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro indicates the root state of a state machine. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1">RKH_DCLR_HSM</a>(h)&nbsp;&nbsp;&nbsp;extern <a class="el" href="struct_r_k_h___t.html">RKH_T</a> * const h</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro declares a opaque pointer to previously created state machine to be used as a global object.  <a href="#a0681b6c5bbb43a2290ed60b021c2abd1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">rkh_alloc_event</a>(et, e)</td></tr>
@@ -73,11 +73,11 @@
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a17ecc578a95f10567c300a1cf648e13d">rkh_set_static_event</a>(evt, es)&nbsp;&nbsp;&nbsp;mksevt( evt, es )</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro set the event 'evt' with 'e' signal and establishes it as one static event.  <a href="#a17ecc578a95f10567c300a1cf648e13d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ae32100c17bee5afab9b31d9132ad41bb">rkh_get_cstate_id</a>(ph)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state ID of HSM control block.  <a href="#ae32100c17bee5afab9b31d9132ad41bb"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state ID of state machine control block.  <a href="#ae32100c17bee5afab9b31d9132ad41bb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a9417335cf8e391658a5566c695c2813b">rkh_get_cstate_name</a>(ph)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the current state name of HSM control block.  <a href="#a9417335cf8e391658a5566c695c2813b"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the current state name of state machine control block.  <a href="#a9417335cf8e391658a5566c695c2813b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>(ph)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the HSM's data.  <a href="#a7fe577bfbd5492f9e946a22d1e88c70d"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state-machine's data.  <a href="#a7fe577bfbd5492f9e946a22d1e88c70d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65">rkh_get_sdata</a>(ph)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state's abstract data.  <a href="#aafa7b99c6789668667bf529f20bb6c65"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
@@ -128,15 +128,15 @@
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a6d09c23f535c6e03355918e96b802974">rkh_gc</a> (<a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *evt)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Recycle a dynamic event.  <a href="#a6d09c23f535c6e03355918e96b802974"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985">rkh_init_hsm</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Inits a previously created HSM calling its initializing function.  <a href="#a48cd2bb428383f544f4eea92f78b7985"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Inits a previously created state machine calling its initializing function.  <a href="#a48cd2bb428383f544f4eea92f78b7985"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">HUInt&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55">rkh_engine</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *pevt)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Executes a HSM in a non-preemtive model.  <a href="#a380f0c7ce60d43d96b7963d12f4aae55"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Executes a state machine in a non-preemtive model.  <a href="#a380f0c7ce60d43d96b7963d12f4aae55"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a522044fea14a01a5197ccd35a5a0eb79">rkh_clear_history</a> (rkhrom <a class="el" href="struct_r_k_h_s_h_i_s_t___t.html">RKHSHIST_T</a> *h)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erase the history of a state. It can be a shallow or deep history.  <a href="#a522044fea14a01a5197ccd35a5a0eb79"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a8738812d2675799e9a982e86fb5c4e52">rkh_clear_info</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clear performance information for a particular HSM.  <a href="#a8738812d2675799e9a982e86fb5c4e52"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clear performance information for a particular state machine.  <a href="#a8738812d2675799e9a982e86fb5c4e52"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_r_k_h___i_n_f_o___t.html">RKH_INFO_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a4dc5198b4e6e7d11ce12a53179cba8ce">rkh_get_info</a> (<a class="el" href="struct_r_k_h___t.html">RKH_T</a> *ph)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves performance information for a particular HSM.  <a href="#a4dc5198b4e6e7d11ce12a53179cba8ce"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves performance information for a particular state machine.  <a href="#a4dc5198b4e6e7d11ce12a53179cba8ce"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>RKH platform-independent interface. </p>
@@ -157,7 +157,7 @@
 <p>Each condition connector can have one special branch with a guard labeled ELSE, which is taken if all the guards on the other branches are false.</p>
 <p>A guard function takes the state machine pointer and the event pointer as arguments. These parameters are optional in compile-time according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00111">111</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00110">110</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -198,7 +198,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00683">683</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00684">684</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00479">479</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00480">480</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00260">260</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00261">261</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -336,7 +336,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00455">455</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00456">456</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -410,7 +410,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00223">223</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00224">224</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -454,7 +454,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00293">293</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00294">294</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -505,7 +505,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00348">348</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00349">349</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -559,22 +559,23 @@
                 <span class="keyword">static</span> sm_t s_##name = { &amp;rs_##name,is,hd };            \
                 <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> * <span class="keyword">const</span> name = ( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>* )&amp;s_##name
 </pre></div>
-<p>This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition. <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> is not intended to be instantiated directly, but rather serves as the base structure for derivation of state machines in the application code. The following example illustrates how to derive an state machine from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Please note that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member sm is defined as the FIRST member of the derived struct. </p>
+<p>This macro creates a state machine object derived from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. </p>
+<p>Frequently, <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM()</a> is used within state-machine's module (.c file), thus the structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. However, use the <a class="el" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1" title="This macro declares a opaque pointer to previously created state machine to be used...">RKH_DCLR_HSM()</a> macro to declare a "opaque" pointer to that state machine structure to be used in the rest of the application but hiding the proper definition. <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> is not intended to be instantiated directly, but rather serves as the base structure for derivation of state machines in the application code. The following example illustrates how to derive an state machine from <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a>. Please note that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member sm is defined as the FIRST member of the derived struct.</p>
 <p>Example: </p>
 <div class="fragment"><pre class="fragment">    <span class="comment">//  ...within state-machine&#39;s module</span>
 
     <span class="keyword">typedef</span> <span class="keyword">struct</span>
     {
-        <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> sm;
-        rkhuint8 x;
-        rkhuint8 y;
+        <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> sm;       <span class="comment">// base structure</span>
+        rkhuint8 x;     <span class="comment">// private member</span>
+        rkhuint8 y;     <span class="comment">// private member</span>
     } MYSM_T;
 
     <span class="comment">//  static instance of state machine object</span>
-    <a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM</a>( MYSM_T, my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
+    <a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM</a>( MYSM_T, my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
 
     <span class="comment">//  ...dispatchig events</span>
-    <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a HSM in a non-preemtive model.">rkh_engine</a>( my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>* )myevt );
+    <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a state machine in a non-preemtive model.">rkh_engine</a>( my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a>* )myevt );
 </pre></div><dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> structure definition for more information. Also, <a class="el" href="struct_r_k_h_e_v_t___t.html">single inheritance in C </a>.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -584,12 +585,12 @@
     <tr><td valign="top"></td><td valign="top"><em>ppty</em>&nbsp;</td><td>state machine properties. The available properties are enumerated in RKH_HPPTY_T enumeration in the <a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a> file. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>is</em>&nbsp;</td><td>pointer to regular initial state. This state could be defined either composite or basic. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>ia</em>&nbsp;</td><td>pointer to initialization action. The function prototype is defined as RKHINIT_T. This argument is optional, thus it could be declared as NULL. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>hd</em>&nbsp;</td><td>pointer to HSM's abstract data. This argument is optional, thus it could be declared as NULL. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>hd</em>&nbsp;</td><td>pointer to state-machine's abstract data. This argument is optional, thus it could be declared as NULL or eliminated with RKH_EN_HSM_DATA option. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00197">197</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00198">198</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +644,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00322">322</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00323">323</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -693,7 +694,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00376">376</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00377">377</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -722,7 +723,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00394">394</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00395">395</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -738,9 +739,9 @@
 <div class="memdoc">
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>Generally, the states are declared in HSM dependent header file. </p>
+<p>Generally, the states are declared in state machine dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00541">541</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00542">542</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -756,9 +757,9 @@
 <div class="memdoc">
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>Generally, the states are declared in HSM dependent header file. </p>
+<p>Generally, the states are declared in state machine dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00540">540</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00541">541</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -774,9 +775,9 @@
 <div class="memdoc">
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>Generally, the states are declared in HSM dependent header file. </p>
+<p>Generally, the states are declared in state machine dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00542">542</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00543">543</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -792,9 +793,9 @@
 <div class="memdoc">
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>Generally, the states are declared in HSM dependent header file. </p>
+<p>Generally, the states are declared in state machine dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00544">544</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00545">545</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -817,7 +818,7 @@
 <p>This macro declares a opaque pointer to previously created state machine to be used as a global object. </p>
 <p>This global pointer represent the state machine in the application. The state machine pointers are "opaque" because they cannot access the whole state machine structure, but only the part inherited from the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> structure. The power of an "opaque" pointer is that it allows to completely hide the definition of the state machine structure and make it inaccessible to the rest of the application.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file.</dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> macro.</dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM()</a> macro.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>h</em>&nbsp;</td><td>name of state machine. </td></tr>
@@ -825,7 +826,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00527">527</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00528">528</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -841,9 +842,9 @@
 <div class="memdoc">
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>Generally, the states are declared in HSM dependent header file. </p>
+<p>Generally, the states are declared in state machine dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00543">543</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00544">544</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -859,9 +860,9 @@
 <div class="memdoc">
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd></dd></dl>
-<p>Generally, the states are declared in HSM dependent header file. </p>
+<p>Generally, the states are declared in state machine dependent header file. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00545">545</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00546">546</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -877,7 +878,7 @@
 <div class="memdoc">
 <p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00444">444</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00445">445</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -899,17 +900,17 @@
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 ((<a class="code" href="struct_r_k_h_b_a_s_e___t.html" title="Maintains the basic information of a state.">RKHBASE_T</a>*)(ph-&gt;state))-&gt;id
 </pre></div>
-<p>This macro retrieves the state ID of HSM control block. </p>
+<p>This macro retrieves the state ID of state machine control block. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00777">777</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00778">778</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -931,17 +932,17 @@
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 ((<a class="code" href="struct_r_k_h_b_a_s_e___t.html" title="Maintains the basic information of a state.">RKHBASE_T</a>*)(ph-&gt;state))-&gt;name
 </pre></div>
-<p>This macro retrieves the current state name of HSM control block. </p>
+<p>This macro retrieves the current state name of state machine control block. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00794">794</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00795">795</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -963,17 +964,17 @@
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 ((ph)-&gt;hdata)
 </pre></div>
-<p>This macro retrieves the HSM's data. </p>
+<p>This macro retrieves the state-machine's data. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state-machine control block. Represents a previously created HSM structure.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00810">810</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00811">811</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -999,14 +1000,14 @@
 <p>Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure. See member <em>prepro</em> of <a class="el" href="struct_r_k_h_s_r_e_g___t.html" title="Describes a regular state.">RKHSREG_T</a> structure for more information.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created state machine structure.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state's abstract data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00833">833</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00834">834</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1041,7 +1042,7 @@
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00728">728</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00729">729</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1082,7 +1083,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00429">429</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00430">430</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1130,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00414">414</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00415">415</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1156,7 +1157,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00557">557</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00558">558</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1177,7 +1178,7 @@
 <p>Used as state machine property. This macro enables state nesting in a particular state machine. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a243967727eeb1814b24badfeda7b25b7a0338024d4d0d5bffed604c279f8f5550"></a><!-- doxytag: member="FLAT" ref="a243967727eeb1814b24badfeda7b25b7a0338024d4d0d5bffed604c279f8f5550" args="" -->FLAT</em>&nbsp;</td><td>
-<p>Used as state machine property. This macro disables state nesting in a particular state machine. When FLAT is used in <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> macro some important features of RKH are not included: state nesting, composite state, history (shallow and deep) pseudostate, entry action, and exit action. </p>
+<p>Used as state machine property. This macro disables state nesting in a particular state machine. When FLAT is used in <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM()</a> macro some important features of RKH are not included: state nesting, composite state, history (shallow and deep) pseudostate, entry action, and exit action. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a243967727eeb1814b24badfeda7b25b7aac7de3818e7e86853c5306edd63bced3"></a><!-- doxytag: member="RKH_NUM_HPPTY" ref="a243967727eeb1814b24badfeda7b25b7aac7de3818e7e86853c5306edd63bced3" args="" -->RKH_NUM_HPPTY</em>&nbsp;</td><td>
 <p>Number of state machines properties </p>
@@ -1186,7 +1187,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00119">119</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00118">118</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1200,7 +1201,7 @@
       </table>
 </div>
 <div class="memdoc">
-<p>Return codes from <a class="el" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a HSM in a non-preemtive model.">rkh_engine()</a> function. </p>
+<p>Return codes from <a class="el" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a state machine in a non-preemtive model.">rkh_engine()</a> function. </p>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd"></a><!-- doxytag: member="RKH_OK" ref="ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd" args="" -->RKH_OK</em>&nbsp;</td><td>
 <p>The arrived event was succesfully processed and HSM resides in a allowed state. </p>
@@ -1230,7 +1231,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00049">49</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00048">48</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1277,12 +1278,12 @@
 </div>
 <div class="memdoc">
 
-<p>Clear performance information for a particular HSM. </p>
-<p>Information is available during run-time for each HSM. This information can be useful in determining whether the application is performing properly, as well as helping to optimize the application.</p>
+<p>Clear performance information for a particular state machine. </p>
+<p>Information is available during run-time for each state machine. This information can be useful in determining whether the application is performing properly, as well as helping to optimize the application.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h___i_n_f_o___t.html" title="Describes the state-machine&#39;s performance information.">RKH_INFO_T</a> structure definition for more information.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1352,12 +1353,12 @@
 </div>
 <div class="memdoc">
 
-<p>Executes a HSM in a non-preemtive model. </p>
+<p>Executes a state machine in a non-preemtive model. </p>
 <p>In this model, before the system handles a new event it can store it until the previous event has completed processing. This model is called run to completion or RTC. Thus, the system processes events in discrete, indivisible RTC steps.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>pevt</em>&nbsp;</td><td>pointer to arrived event. It's used as HSM's input alphabet.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>pevt</em>&nbsp;</td><td>pointer to arrived event. It's used as state-machine's input alphabet.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1411,11 +1412,11 @@
 </div>
 <div class="memdoc">
 
-<p>Retrieves performance information for a particular HSM. </p>
+<p>Retrieves performance information for a particular state machine. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h___i_n_f_o___t.html" title="Describes the state-machine&#39;s performance information.">RKH_INFO_T</a> structure definition for more information.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1440,10 +1441,10 @@
 </div>
 <div class="memdoc">
 
-<p>Inits a previously created HSM calling its initializing function. </p>
+<p>Inits a previously created state machine calling its initializing function. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to HSM control block. Represents a previously created HSM structure. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1557,7 +1558,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 23:07:58 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 10:38:23 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

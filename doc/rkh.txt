@@ -24,10 +24,10 @@ David Harel</EM>
 
 - \ref Overview
 - \ref Purpose
+- \ref qref
 - \ref Installation
 - \ref Porting
 - \ref cfg
-- \ref qref
 - \ref Usage
 - \ref dbg
 - \ref Download
@@ -60,10 +60,11 @@ behavior of a system in a substantial manner.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
 - Support local transitions.
-- Support mechanism for \link rkh_defer() deferring events \endlink.
-- Support \link RKHEVT_T dynamic events \endlink.
-- Support systems-friendly \link rkhassert() assertion \endlink macros.
-- Support \link RKHEVT_T event dispatching with parameters \endlink.
+- Support mechanism for \link rkh_defer() deferring events\endlink.
+- Support \link RKHEVT_T dynamic events\endlink.
+- Support a easy way to use \link RKHEVT_T events with arguments\endlink.
+- Support systems-friendly \link rkhassert() assertion\endlink macros.
+- Support \link RKHEVT_T event dispatching with parameters\endlink.
 
 
 <HR>

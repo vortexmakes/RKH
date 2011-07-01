@@ -191,7 +191,8 @@ typedef enum
  * 					is defined as RKHINIT_T. This argument is optional, thus
  * 					it could be declared as NULL.
  * 	\param hd		pointer to state-machine's abstract data. This argument 
- * 					is optional, thus it could be declared as NULL.
+ * 					is optional, thus it could be declared as NULL or 
+ * 					eliminated with RKH_EN_HSM_DATA option.
  */
 
 #define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\

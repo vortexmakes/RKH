@@ -215,11 +215,15 @@
  *	Example:
  *
  *	\code
+ *	//	...defining
  *	#define rkh_assert( event )								\
  *															\
  *				printf( "RKHASSERT = [%02d] from %s()", 	\
  *				event, __FUNCTION__ );						\
  *				__debugbreak();
+ *
+ *	//	...using
+    rkhassert( evt != NULL, RKH_AE_NOT_ALLOC );
  *	\endcode
  *	
  *	\note
@@ -229,6 +233,8 @@
  *
  * 	\param exp		expression to be checked.
  * 	\param event	reported code.
+ * 	
+ * 	\sa rkhallege(), rkhrequire(), rkhensure(), and rkhinvariant() macros.
  */
 
 #if RKH_ASSERT == 1
@@ -402,6 +408,8 @@
  * 	\return
  * 	TRUE (0) if the memory pool was successfully initialized, 
  * 	otherwise error code.
+ *
+ * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_dyne_init( mpd, pm, ps, bs )
@@ -425,6 +433,8 @@
  *
  * 	\return
  * 	The size of memory block in bytes.
+ *
+ * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_dyne_event_size( mpd )
@@ -450,6 +460,8 @@
  *
  * 	\return
  * 	A pointer to a new memory block or NULL if the pool runs out of blocks.
+ *
+ * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_dyne_get( mpd, e )
@@ -476,6 +488,8 @@
  * 	\return
  * 	TRUE (0) if the memory block was succesfully returned to proper 
  * 	memory pool, otherwise error code.
+ *
+ * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_dyne_put( mpd, e )
@@ -504,6 +518,8 @@
  * 	\return
  * 	TRUE (0) if the element was successfully inserted, 
  *	otherwise error code.
+ *
+ * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_post_fifo( qd, e )
@@ -532,6 +548,9 @@
  * 	\return
  * 	TRUE (0) if the element was successfully inserted, 
  *	otherwise error code.
+ *
+ * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
+ * 	rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_post_lifo( qd, e )
@@ -557,6 +576,9 @@
  *																	\
  *				queue_remove( (QD_T)(qd), &(e) )
  * 	\endcode
+ *
+ * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
+ * 	rkh_set_static_event() and rkh_gc().
  */
 
 #define rkh_get( qd, e )
@@ -572,6 +594,8 @@
  *
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
+ *
+ * 	\sa \b rkhtrace.h file.
  */
 
 #define rkh_tropen
@@ -586,6 +610,8 @@
  *
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
+ *
+ * 	\sa \b rkhtrace.h file.
  */
 
 #define rkh_trclose
@@ -603,6 +629,8 @@
  *
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
+ *
+ * 	\sa \b rkhtrace.h file.
  */
 
 #define rkh_trflush
@@ -649,6 +677,8 @@
 	 *
 	 * 	\returns
 	 * 	Timestamp (RKHTS_T data type).
+ 	 *
+	 * 	\sa \b rkhtrace.h file.
 	 */
 
 	#define rkh_trgetts
@@ -710,6 +740,9 @@
  * 	\note
  * 	The RKH takes the \a 'e' member of RKHEVT_T structure for triggering a 
  * 	state transition.
+ *
+ * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
+ * 	rkh_set_static_event() and rkh_gc().
  */
 
 typedef struct
@@ -740,6 +773,9 @@ typedef struct
  *
  * 	This function is internal to RKH and the user application should 
  * 	not call it. Please use #rkh_alloc_event() macro.
+ *
+ * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
+ * 	rkh_set_static_event() and rkh_gc().
  */
 
 RKHEVT_T *rkh_ae( rkhuint8 es, RKHE_T e );
@@ -760,7 +796,7 @@ struct rkh_t;
  * 	should be specified as entry actions.
  * 	An entry function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
- * 	RKH_EN_ENT_HSM_ARG.
+ * 	\b RKH_EN_ENT_HSM_ARG macro.
  */
 
 
@@ -796,7 +832,7 @@ struct rkh_t;
  * 	exit actions.
  * 	An exit function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
- * 	RKH_EN_EXT_HSM_ARG.
+ * 	\b RKH_EN_EXT_HSM_ARG.
  */
 
 #if RKH_EN_EXT_HSM_ARG == 1
@@ -828,10 +864,10 @@ struct rkh_t;
  * 	Initialization action.
  *
  * 	The application code must trigger the initial transition explicitly 
- * 	by invoking 'rkh_init_hsm'.
+ * 	by invoking rkh_init_hsm() function.
  * 	An init function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
- * 	RKH_EN_INIT_HSM_ARG.
+ * 	\b RKH_EN_INIT_HSM_ARG macro.
  */
 
 #if RKH_EN_INIT_HSM_ARG == 1
@@ -865,7 +901,7 @@ struct rkh_t;
  * 	processed using the	event preprocessor function.
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. The first parameter is optional in compile-time
- * 	according to RKH_EN_PPRO_HSM_ARG.
+ * 	according to \b RKH_EN_PPRO_HSM_ARG macro.
  */
 
 #if RKH_EN_PPRO_HSM_ARG == 1
@@ -890,7 +926,7 @@ struct rkh_t;
  * 	amount of time to execute and are noninterruptible.
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to RKH_EN_ACT_EVT_ARG' and RKH_EN_ACT_HSM_ARG.
+ * 	according to \b RKH_EN_ACT_EVT_ARG and \b RKH_EN_ACT_HSM_ARG.
  */
 
 #if RKH_EN_ACT_EVT_ARG == 1 && RKH_EN_ACT_HSM_ARG == 1
@@ -934,7 +970,7 @@ struct rkh_t;
  *
  * 	A guard function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
+ * 	according to \b RKH_EN_GRD_EVT_ARG and \b RKH_EN_GRD_HSM_ARG.
  */
 
 #if RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 1
@@ -976,12 +1012,12 @@ typedef struct rkhbase_t
 	 *	Contains the type of a particular state and can have 
 	 *	the following values:
 	 *
-	 *	- RKH_COMPOSITE: 		composite state.
-	 *	- RKH_BASIC: 			basic state.
-	 *	- RKH_JUNCTION: 		junction pseudostate.
-	 *	- RKH_CONDITIONAL: 		conditional pseudostate.
-	 *	- RKH_SHISTORY: 		shadow history pseudostate.
-	 *	- RKH_DHISTORY: 		deep history pseudostate.
+	 *	- \b RKH_COMPOSITE: 		composite state.
+	 *	- \b RKH_BASIC: 			basic state.
+	 *	- \b RKH_JUNCTION: 		junction pseudostate.
+	 *	- \b RKH_CONDITIONAL: 		conditional pseudostate.
+	 *	- \b RKH_SHISTORY: 		shadow history pseudostate.
+	 *	- \b RKH_DHISTORY: 		deep history pseudostate.
 	 */
 
 	HUInt type;					

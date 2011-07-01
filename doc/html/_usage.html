@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>RKH: Representing a state machine</title>
+<title>RKH: Representing a state machine \e step \e by \e step</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -21,7 +21,7 @@
 <div class="contents">
 
 
-<h1><a class="anchor" id="Usage">Representing a state machine </a></h1><p><br/>
+<h1><a class="anchor" id="Usage">Representing a state machine <em>step</em> <em>by</em> <em>step</em> </a></h1><p><br/>
  As stated above, RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, and open-source development tool for implementing hierarchical state machines based on modern state machine concepts. This modern techniques are used to give an abstract description of the dynamic behavior of a system in a substantial manner.</p>
 <p><b> The key features of the RKH framework: </b></p>
 <ul>
@@ -38,10 +38,11 @@
 <li>Support conditional, junction, and history pseudostates.</li>
 <li>Support compound transitions with guards.</li>
 <li>Support local transitions.</li>
-<li>Support mechanism for <a class="el" href="rkh_8h.html#af359d4e8f6cec6ca30f5797ee263af52">deferring events </a>.</li>
-<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">dynamic events </a>.</li>
-<li>Support systems-friendly <a class="el" href="rkhitl_8h.html#a701f7ea7c001444bc1ec0052c4a85c8b">assertion </a> macros.</li>
-<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">event dispatching with parameters </a>.</li>
+<li>Support mechanism for <a class="el" href="rkh_8h.html#af359d4e8f6cec6ca30f5797ee263af52">deferring events</a>.</li>
+<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">dynamic events</a>.</li>
+<li>Support a easy way to use <a class="el" href="struct_r_k_h_e_v_t___t.html">events with arguments</a>.</li>
+<li>Support systems-friendly <a class="el" href="rkhitl_8h.html#a701f7ea7c001444bc1ec0052c4a85c8b">assertion</a> macros.</li>
+<li>Support <a class="el" href="struct_r_k_h_e_v_t___t.html">event dispatching with parameters</a>.</li>
 </ul>
 <p>The RKH not implements neither entire UML specs. nor entire Statechart specs. Instead, the RKH intention is to support just enough basic concepts of that powerful tools to facilitate the reactive-system modeling holding a solid, and efficient implementation. Broadly speaking, the RKH implementation has been designed from the ground up to be used in 8-bits platforms but can be easily adapted to 16 or 32-bits platforms.</p>
 <p>The goal in this section is to explain how to represent a state machine using the RKH framework. To do that is proposed a simple example, which is shown in the <a class="el" href="_usage.html#fig1">Figure 1</a>.</p>
@@ -61,28 +62,27 @@
 <hr/>
  <h2><a class="anchor" id="rep0">
 Preparing the application files</a></h2>
-<p>The sample code for the example presented above port to x86 is located in the directory \demo\vc08\. The directory contains the Visual C++ 2008 project files to build the application. See <a class="el" href="_installation.html">Installation</a> section about RKH files.</p>
-<p>Th header file is located in the application directory:</p>
+<p>The sample code for the example presented above port to x86 is located in the directory \demo\vc08\. The directory contains the Visual C++ 2008 project files to build the application. See <a class="el" href="_installation.html">Installation</a> section about RKH files. The application files are listed below:</p>
 <ul>
-<li><b>"rkhcfg.h"</b>: this file adapts and configures RKH. See <a class="el" href="cfg.html">Configuration</a> section. In the \demo directory there are other <a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a> files already in existence and it's suggested that these are used as a reference. See the application <a class="el" href="rkhcfg__h.html">"rkhcfg.h"</a> file. Note that this header file is located in the application directory.</li>
+<li><b>"rkhcfg.h"</b>: this file adapts and configures RKH. See <a class="el" href="cfg.html">Configuration</a> section. In the \demo directory there are other <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> files already in existence and it's suggested that these are used as a reference. See the application <a class="el" href="rkhcfg__h.html">"rkhcfg.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"my.c"</b>: contains the implementation of the "my" state machine, which illustrates all aspects of implementing state machines with RKH. Please correlate this implementation with the "my" state diagram in <a class="el" href="_usage.html#fig1">Figure 1</a>. In this file are specifically declared the state machine, also its states and pseudostates. See the <a class="el" href="my__c.html">"my.c"</a> file. Note that this source file is located in the application directory.</li>
+<li><b>"my.c"</b>: this module implements the "my" state machine, which illustrates all aspects of implementing state machines with RKH framework. Please correlate this implementation with the "my" state diagram in <a class="el" href="_usage.html#fig1">Figure 1</a>. See the <a class="el" href="my__c.html">"my.c"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myact.c"</b>: this source file declares each of entry, exit, transition, and guard actions to be executed. Note that the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. Also, note that this source file is located in the application</li>
+<li><b>"myact.c"</b>: this module declares each of entry, exit, transition, and guard actions to be executed. Note that the <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"my.h"</b>: this header file contains the definitions of objet structures (state machine, states, and pseudostates) and other facilities shared among the components of the application. See the <a class="el" href="my__h.html">"my.h"</a> file. Note that this header file is located in the application directory.</li>
+<li><b>"my.h"</b>: this header file contains the definitions of objet structures (state machine, states, and pseudostates) and other facilities shared among the components of the application. See the <a class="el" href="my__h.html">"my.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myact.h"</b>: this header file defines the actions to be executed. Note that the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. See the <a class="el" href="myact__h.html">"myact.h"</a> file. Note that this header file is located in the application directory.</li>
+<li><b>"myact.h"</b>: this header file defines the actions to be executed. Note that the <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. See the <a class="el" href="myact__h.html">"myact.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myevt.h"</b>: because events are explicitly shared among most of the application components, it's convenient to declare them in the separate header file "myevt.h". See the <a class="el" href="myevt__h.html">"myevt.h"</a> file. Note that this header file is located in the application directory.</li>
+<li><b>"myevt.h"</b>: because events are explicitly shared among most of the application components, it's convenient to declare them in the separate header file "myevt.h". See the <a class="el" href="myevt__h.html">"myevt.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"main.c"</b>: this file contains the main() function along with an example for using the RKH trace facility. See the <a class="el" href="main__c.html">"main.c"</a> file. Note that this source file is located in the application</li>
+<li><b>"main.c"</b>: this file contains the <code>main()</code> function along with an example for using the RKH trace facility. See the <a class="el" href="main__c.html">"main.c"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <hr/>
  <h2><a class="anchor" id="rep1">
@@ -112,63 +112,69 @@ Representing the state machine</a></h2>
 <h3><a class="anchor" id="rep_sm">
 Declaring the state machine (top-state)</a></h3>
 <p><br/>
- The object structure of "my" state machine is declared by means of <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM()</a> macro, which is explained in <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file. According to "my" state diagram: <br/>
+ The object structure of "my" state machine is instantiated by means of <a class="el" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM()</a> macro, which is explained in <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file. As noted below, the <code>MYSM_T</code> state machine object is an extension of <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> structure. Therefore, to do that the <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> member <code>sm</code> is defined as the FIRST member of the derived struct. The structure definition is in fact entirely encapsulated in its module and is inaccessible to the rest of the application. According to "my" state diagram: <br/>
  <br/>
  </p>
-<div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T. Frequently, RKH_CREATE_HSM()...">RKH_CREATE_HSM</a>( my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
+<div class="fragment"><pre class="fragment"><span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> sm;       <span class="comment">// base structure</span>
+    rkhuint8 z;     <span class="comment">// private member</span>
+    rkhuint8 w;     <span class="comment">// private member</span>
+} MYSM_T;
+
+<a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146" title="This macro creates a state machine object derived from RKH_T.">RKH_CREATE_HSM</a>( MYSM_T, my, 0, <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7af9de2b2b683900d16cf6a78acb458eda">HCAL</a>, &amp;S1, my_init, &amp;mydata );
 </pre></div><p> <br/>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "my". State-machine (top-state) name. Represents the state machine structure.</li>
-<li><em><b>id</b> =</em> "0". The value of state machine ID. The user application defines the available ids in <code>rkhdata.h</code> file.</li>
-<li><em><b>ppty</b> =</em> "HCAL". Enables the state nesting.</li>
-<li><em><b>is</b> =</em> "S1". Pointer to regular initial state. This state could be defined either composite or basic.</li>
-<li><em><b>ia</b> =</em> "my_init". Pointer to initialization action. The function prototype is defined as <a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159" title="Initialization action.">RKHINIT_T</a>. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>hd</b> =</em> "mydata". Pointer to state machine's abstract data. This argument is optional, thus it could be declared as NULL. <br/>
+<li><b>sm_t</b> = <code>"MYSM_T"</code> state machine structure.</li>
+<li><b>name</b> = "my". Name of state machine object. Represents the top state of state diagram.</li>
+<li><b>id</b> = "0". The numerical value of state machine ID.</li>
+<li><b>ppty</b> = "HCAL". Enables the state nesting. The available properties are enumerated in RKH_HPPTY_T enumeration in the <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file.</li>
+<li><b>is</b> = "S1". Pointer to initial state. This state could be defined either composite or basic.</li>
+<li><b>ia</b> = "my_init". Pointer to initialization action. The function prototype is defined as <a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159" title="Initialization action.">RKHINIT_T</a>. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>hd</b> = "mydata". Pointer to state-machine's abstract data. This argument is optional, thus it could be declared as NULL or eliminated with RKH_EN_HSM_DATA option. <br/>
  <br/>
  </li>
 </ul>
 <h3><a class="anchor" id="rep_cs">
 Declaring the composite states</a></h3>
 <p><br/>
- The <a class="el" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE()</a> macro, which is defined in the <code>rkhm.h</code> file, is used for creating the composite states.</p>
-<p>According to "my" state diagram the declaration of composite state "S1" looks as follow:</p>
-<div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit, <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a HSM.">RKH_ROOT</a>, &amp;S11, &amp;DH );
+ The <a class="el" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE()</a> macro, which is defined in the <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file, is used for creating the composite states. According to "my" state diagram the declaration of composite state "S1" looks as follow:</p>
+<div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit, <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, &amp;S11, &amp;DH );
 </pre></div><p> <br/>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "S1". State name. Represents the composite state structure.</li>
-<li><em><b>id</b> =</em> "0". The value of state ID.</li>
-<li><em><b>en</b> =</em> "set_y_0". Pointer to state entry action. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>ex</b> =</em> "dummy_exit". Pointer to state exit action. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>parent</b> =</em> "RKH_ROOT". Pointer to parent state.</li>
-<li><em><b>defchild</b> =</em> "S11". Pointer to default child state or pseudostate.</li>
-<li><em><b>history</b> =</em> "DH". Pointer to history pseudostate. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>name</b> = "S1". State name. Represents a composite state structure.</li>
+<li><b>id</b> = "0". The value of state ID.</li>
+<li><b>en</b> = "set_y_0". Pointer to state entry action. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>ex</b> = "dummy_exit". Pointer to state exit action. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>parent</b> = "RKH_ROOT". Pointer to parent state.</li>
+<li><b>defchild</b> = "S11". Pointer to default child state or pseudostate.</li>
+<li><b>history</b> = "DH". Pointer to history pseudostate. This argument is optional, thus it could be declared as NULL.</li>
 </ul>
 <p>In like manner, the rest composite states are declared as shown below: <br/>
  </p>
 <div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S11, 0, NULL, NULL,  &amp;S1,        &amp;S111,  &amp;H );
-<a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S3,  0, NULL, NULL,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a HSM.">RKH_ROOT</a>,   &amp;S31,   NULL );
+<a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S3,  0, NULL, NULL,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>,   &amp;S31,   NULL );
 </pre></div><p> <br/>
  </p>
 <h3><a class="anchor" id="rep_bs">
 Declaring the basic states</a></h3>
 <p><br/>
- The <a class="el" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE()</a> macro, which is defined in the <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file, is used for creating the basic states.</p>
-<p>According to "my" state diagram the declaration of basic state "S12" looks as follow:</p>
+ The <a class="el" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE()</a> macro, which is defined in the <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file, is used for creating the basic states. According to "my" state diagram the declaration of basic state "S12" looks as follow:</p>
 <div class="fragment"><pre class="fragment"><a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S12,    0, set_x_3, NULL, &amp;S1, NULL );
 </pre></div><p> <br/>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "S12". State name. Represents the basic state structure.</li>
-<li><em><b>id</b> =</em> "0". The value of state ID.</li>
-<li><em><b>en</b> =</em> "set_x_3". Pointer to state entry action. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>ex</b> =</em> "NULL". Pointer to state exit action. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>parent</b> =</em> "S1". Pointer to parent state.</li>
-<li><em><b>prepro</b> =</em> "NULL". Pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL. Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure. <b>Example:</b> </li>
+<li><b>name</b> = "S12". State name. Represents the basic state structure.</li>
+<li><b>id</b> = "0". The value of state ID.</li>
+<li><b>en</b> = "set_x_3". Pointer to state entry action. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>ex</b> = "NULL". Pointer to state exit action. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>parent</b> = "S1". Pointer to parent state.</li>
+<li><b>prepro</b> = "NULL". Pointer to input preprocessor function. This argument is optional, thus it could be declared as NULL. Aditionally, by means of single inheritance in C it could be used as state's abstract data. Aditionally, implementing the single inheritance in C is very simply by literally embedding the base type, RKHPPRO_T in this case, as the first member of the derived structure. <b>Example:</b> </li>
 </ul>
 <div class="fragment"><pre class="fragment"><span class="keyword">static</span>
 <a class="code" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>
@@ -192,7 +198,7 @@ action( <span class="keyword">const</span> <span class="keyword">struct</span> r
 {
     SDATA_T *popt;
 
-    popt = (SDATA_T *)<a class="code" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65" title="This macro retrieves the state&amp;#39;s abstract data.">rkh_get_sdata</a>( ph );
+    popt = ( SDATA_T* )<a class="code" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65" title="This macro retrieves the state&amp;#39;s abstract data.">rkh_get_sdata</a>( ph );
     <span class="keywordflow">return</span> popt-&gt;min &gt; 1 &amp;&amp; popt-&gt;max &lt; 4 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 } 
 
@@ -209,7 +215,7 @@ action( <span class="keyword">const</span> <span class="keyword">struct</span> r
 <h3><a class="anchor" id="rep_cjh">
 Declaring the pseudostates</a></h3>
 <p><br/>
- The conditional, junction, shallow history, and deep history pseudostates are created using <a class="el" href="rkh_8h.html#ade7387dead9112bd67580de3350aee51" title="This macro creates a conditional pseudostate.">RKH_CREATE_COND_STATE()</a>, <a class="el" href="rkh_8h.html#a9f73c81d95a4bd5bec21e10ea6f05add" title="This macro creates a junction pseudostate.">RKH_CREATE_JUNCTION_STATE()</a>, <a class="el" href="rkh_8h.html#a7a5376dd9929642f5b6e31def6d92bb4" title="This macro creates a shallow history pseudostate.">RKH_CREATE_SHALLOW_HISTORY_STATE()</a>, and <a class="el" href="rkh_8h.html#a49995aa34cddd68fcc6416655ca408f8" title="This macro creates a deep history pseudostate.">RKH_CREATE_DEEP_HISTORY_STATE()</a> macros respectively, which are explained in <code><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></code> file.</p>
+ The conditional, junction, shallow history, and deep history pseudostates are created using <a class="el" href="rkh_8h.html#ade7387dead9112bd67580de3350aee51" title="This macro creates a conditional pseudostate.">RKH_CREATE_COND_STATE()</a>, <a class="el" href="rkh_8h.html#a9f73c81d95a4bd5bec21e10ea6f05add" title="This macro creates a junction pseudostate.">RKH_CREATE_JUNCTION_STATE()</a>, <a class="el" href="rkh_8h.html#a7a5376dd9929642f5b6e31def6d92bb4" title="This macro creates a shallow history pseudostate.">RKH_CREATE_SHALLOW_HISTORY_STATE()</a>, and <a class="el" href="rkh_8h.html#a49995aa34cddd68fcc6416655ca408f8" title="This macro creates a deep history pseudostate.">RKH_CREATE_DEEP_HISTORY_STATE()</a> macros respectively, which are explained in <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file.</p>
 <p><br/>
  According to "my" state diagram the declaration of conditional pseudostate "C1" looks as follow: <br/>
  </p>
@@ -219,8 +225,8 @@ Declaring the pseudostates</a></h3>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "C1"/"C2". Pseudostate name. Represents the conditional pseudostate structure.</li>
-<li><em><b>id</b> =</em> "0"/"0". The value of state ID.</li>
+<li><b>name</b> = "C1"/"C2". Pseudostate name. Represents the conditional pseudostate structure.</li>
+<li><b>id</b> = "0"/"0". The value of state ID.</li>
 </ul>
 <p><br/>
  According to "my" state diagram the declaration of juction pseudostate "J" looks as follow: <br/>
@@ -230,10 +236,10 @@ Declaring the pseudostates</a></h3>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "J". Pseudostate name. Represents the junction pseudostate structure.</li>
-<li><em><b>id</b> =</em> "0". The value of state ID.</li>
-<li><em><b>action</b> =</em> "NULL". Pointer to transition action. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>target</b> =</em> "S3". Pointer to target state.</li>
+<li><b>name</b> = "J". Pseudostate name. Represents the junction pseudostate structure.</li>
+<li><b>id</b> = "0". The value of state ID.</li>
+<li><b>action</b> = "NULL". Pointer to transition action. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>target</b> = "S3". Pointer to target state.</li>
 </ul>
 <p><br/>
  According to "my" state diagram the declaration of shallow history pseudostate "H" looks as follow: <br/>
@@ -243,9 +249,9 @@ Declaring the pseudostates</a></h3>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "H". Pseudostate name. Represents the shallow history pseudostate structure.</li>
-<li><em><b>id</b> =</em> "0". The value of state ID.</li>
-<li><em><b>parent</b> =</em> "S11". Pointer to parent state.</li>
+<li><b>name</b> = "H". Pseudostate name. Represents the shallow history pseudostate structure.</li>
+<li><b>id</b> = "0". The value of state ID.</li>
+<li><b>parent</b> = "S11". Pointer to parent state.</li>
 </ul>
 <p><br/>
  According to "my" state diagram the declaration of deep history pseudostate "DH" looks as follow: <br/>
@@ -255,9 +261,9 @@ Declaring the pseudostates</a></h3>
  where: <br/>
 </p>
 <ul>
-<li><em><b>name</b> =</em> "DH". Pseudostate name. Represents the deep history pseudostate structure.</li>
-<li><em><b>id</b> =</em> "0". The value of state ID.</li>
-<li><em><b>parent</b> =</em> "S1". Pointer to parent state.</li>
+<li><b>name</b> = "DH". Pseudostate name. Represents the deep history pseudostate structure.</li>
+<li><b>id</b> = "0". The value of state ID.</li>
+<li><b>parent</b> = "S1". Pointer to parent state.</li>
 </ul>
 <p><br/>
  </p>
@@ -281,27 +287,27 @@ Declaring transition and branch tables</a></h3>
 </ul>
 <ul>
 <li>(2) Declares a regular transition using <a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG()</a> macro. Where:<ul>
-<li><em><b>event</b> =</em> "ONE". Triggering event.</li>
-<li><em><b>guard</b> =</em> "x_equal_1". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>action</b> =</em> "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>target</b> <b>state</b> =</em> "S1". Pointer to target state.</li>
+<li><b>event</b> = "ONE". Triggering event.</li>
+<li><b>guard</b> = "x_equal_1". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>action</b> = "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>target</b> <b>state</b> = "S1". Pointer to target state.</li>
 </ul>
 </li>
 </ul>
 <ul>
 <li>(3) Declares a regular transition using <a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG()</a> macro. Note that the RKH implementation supports exclusively the local state transition semantics, that is, a local transition doesn't cause exit from the source state if the target state is a substate of the source. In addition, local state transition doesn't cause exit and reentry to the target state if the target is a superstate of the source state. Where:<ul>
-<li><em><b>event</b> =</em> "TWO". Triggering event.</li>
-<li><em><b>guard</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>action</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>target</b> <b>state</b> =</em> "S2". Pointer to target state.</li>
+<li><b>event</b> = "TWO". Triggering event.</li>
+<li><b>guard</b> = "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>action</b> = "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>target</b> <b>state</b> = "S2". Pointer to target state.</li>
 </ul>
 </li>
 </ul>
 <ul>
 <li>(4) Declares an internal transition using <a class="el" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT()</a> macro. Where:<ul>
-<li><em><b>event</b> =</em> "FOUR". Triggering event.</li>
-<li><em><b>guard</b> =</em> "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>action</b> =</em> "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>event</b> = "FOUR". Triggering event.</li>
+<li><b>guard</b> = "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>action</b> = "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
 </ul>
 </li>
 </ul>
@@ -320,9 +326,9 @@ Declaring transition and branch tables</a></h3>
 </ul>
 <ul>
 <li>(2) Declares a branch. Where:<ul>
-<li><em><b>guard</b> =</em> "x1". branch guard.</li>
-<li><em><b>action</b> =</em> "NULL". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
-<li><em><b>target</b> <b>state</b> =</em> "S3". Pointer to target state.</li>
+<li><b>guard</b> = "x1". branch guard.</li>
+<li><b>action</b> = "NULL". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
+<li><b>target</b> <b>state</b> = "S3". Pointer to target state.</li>
 </ul>
 </li>
 </ul>
@@ -339,7 +345,7 @@ Declaring transition and branch tables</a></h3>
 <span class="comment">    Defines states and pseudostates.</span>
 <span class="comment"> */</span>
 
-<a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S2, 0, NULL, NULL,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a HSM.">RKH_ROOT</a>, NULL );
+<a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S2, 0, NULL, NULL,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, NULL );
 <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S2 )
 
     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
@@ -350,7 +356,7 @@ Declaring transition and branch tables</a></h3>
 
 <a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
 
-<a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a HSM.">RKH_ROOT</a>, &amp;S11, &amp;DH );
+<a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, &amp;S11, &amp;DH );
 <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S1 )
 
     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
@@ -463,7 +469,7 @@ Including files</a></h3>
 
 <span class="comment">/* ... */</span>
 </pre></div><ul>
-<li>(1) Every application C-file that uses RKH must include the <a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a> header file. This header file contains the specific adaptation of RKH to the given processor and compiler, also includes the RKH interface to implement state machines. The port file is located in the application directory.</li>
+<li>(1) Every application C-file that uses RKH must include the <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> header file. This header file contains the specific adaptation of RKH to the given processor and compiler, also includes the RKH interface to implement state machines. The port file is located in the application directory.</li>
 </ul>
 <ul>
 <li>(2) The "myevt.h" header file contains the declarations of triggering events shared among the components of the application. This header file is located in the application directory.</li>
@@ -579,7 +585,7 @@ Declaring and defining actions</a></h3>
 <div class="fragment"><pre class="fragment"><span class="keywordtype">void</span> 
 my_init( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;x = pd-&gt;y = 0;
 }
 </pre></div><p><br/>
@@ -588,7 +594,7 @@ my_init( <span class="keyword">const</span> <span class="keyword">struct</span> 
 <div class="fragment"><pre class="fragment"><span class="keywordtype">void</span>
 set_y_2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;y = 2;
     printf( <span class="stringliteral">&quot;action: &quot;</span>__FUNCTION__<span class="stringliteral">&quot;()\n&quot;</span> );
     printf( <span class="stringliteral">&quot;event.ts = %05d\n&quot;</span>, (( MYEVT_T* )pe )-&gt;ts );
@@ -599,7 +605,7 @@ set_y_2( <span class="keyword">const</span> <span class="keyword">struct</span> 
 <span class="keywordtype">void</span>
 set_y_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;y = 1;
     printf( <span class="stringliteral">&quot;action: &quot;</span>__FUNCTION__<span class="stringliteral">&quot;()\n&quot;</span> );
     printf( <span class="stringliteral">&quot;event.ts = %05d\n&quot;</span>, (( MYEVT_T* )pe )-&gt;ts );
@@ -616,7 +622,7 @@ dummy_act( <span class="keyword">const</span> <span class="keyword">struct</span
 <span class="keywordtype">void</span>
 show_data( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     printf( <span class="stringliteral">&quot;data.x = %02d - data.y = %02d\n&quot;</span>, pd-&gt;x, pd-&gt;y );
 }
 </pre></div><p><br/>
@@ -625,7 +631,7 @@ show_data( <span class="keyword">const</span> <span class="keyword">struct</span
 <div class="fragment"><pre class="fragment"><span class="keywordtype">void</span>
 set_x_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;x = 1;
 }
 
@@ -633,7 +639,7 @@ set_x_1( <span class="keyword">const</span> <span class="keyword">struct</span> 
 <span class="keywordtype">void</span>
 set_x_2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;x = 2;
 }
 
@@ -641,7 +647,7 @@ set_x_2( <span class="keyword">const</span> <span class="keyword">struct</span> 
 <span class="keywordtype">void</span>
 set_x_3( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;x = 3;
 }
 
@@ -649,7 +655,7 @@ set_x_3( <span class="keyword">const</span> <span class="keyword">struct</span> 
 <span class="keywordtype">void</span>
 set_y_0( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     pd-&gt;y = 0;
 }
 </pre></div><p><br/>
@@ -665,7 +671,7 @@ dummy_exit( <span class="keyword">const</span> <span class="keyword">struct</spa
 <div class="fragment"><pre class="fragment">HUInt
 x_equal_1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
 
     <span class="keywordflow">return</span> pd-&gt;x == 1 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
@@ -675,7 +681,7 @@ x_equal_1( <span class="keyword">const</span> <span class="keyword">struct</span
 <div class="fragment"><pre class="fragment">HUInt
 y1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;y == 1 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 
@@ -683,7 +689,7 @@ y1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t
 HUInt
 y2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;y == 2 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 
@@ -691,7 +697,7 @@ y2( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t
 HUInt
 x1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;x == 1 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 
@@ -699,7 +705,7 @@ x1( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t
 HUInt
 x2_or_x3( <span class="keyword">const</span> <span class="keyword">struct</span> rkh_t *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pe )
 {
-    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the HSM&amp;#39;s data.">rkh_get_data</a>( ph );
+    pd = <a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d" title="This macro retrieves the state-machine&amp;#39;s data.">rkh_get_data</a>( ph );
     <span class="keywordflow">return</span> pd-&gt;x == 2 || pd-&gt;x == 3 ? <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a> : <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>;
 }
 </pre></div><p><br/>
@@ -714,7 +720,7 @@ Running</a></h2>
         <span class="keywordtype">int</span> c;
 
 (1)     rkh_trace_open();
-(2)     <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created HSM calling its initializing function.">rkh_init_hsm</a>( &amp;my );
+(2)     <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created state machine calling its initializing function.">rkh_init_hsm</a>( &amp;my );
         srand( ( <span class="keywordtype">unsigned</span> )time( NULL ) );
 
         forever
@@ -726,12 +732,12 @@ Running</a></h2>
             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == ESC )
 (5)             <span class="keywordflow">break</span>;
             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( c == <span class="charliteral">&#39;r&#39;</span> )
-                <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created HSM calling its initializing function.">rkh_init_hsm</a>( &amp;my );
+                <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created state machine calling its initializing function.">rkh_init_hsm</a>( &amp;my );
             <span class="keywordflow">else</span>
             {
 (6)             mye.event = kbmap( c );
 (7)             mye.ts = ( rkhuint16 )rand();
-(8)             <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a HSM in a non-preemtive model.">rkh_engine</a>( &amp;my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
+(8)             <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a state machine in a non-preemtive model.">rkh_engine</a>( &amp;my, ( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *)&amp;mye );
             }
         }
 
@@ -765,7 +771,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jun 30 23:07:58 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri Jul 1 10:38:23 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
