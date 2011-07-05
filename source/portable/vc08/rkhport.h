@@ -107,13 +107,13 @@ typedef signed int		HInt;
  */
 
 #define RKH_DYNE_NUM_POOLS					3
-#define rkh_dyne_init( mpd, pm, ps, bs )
-#define rkh_dyne_event_size( mpd )
-#define rkh_dyne_get( mpd, e )
-#define rkh_dyne_put( mpd, e )
-#define rkh_post_fifo( qd, e )
-#define rkh_post_lifo( qd, e )
-#define rkh_get( qd, e )
+#define rkh_dyne_init( mpd, pm, ps, bs )	(void)0
+#define rkh_dyne_event_size( mpd )			0
+#define rkh_dyne_get( mpd, e )				(void)0
+#define rkh_dyne_put( mpd, e )				(void)0
+#define rkh_post_fifo( qd, e )				0
+#define rkh_post_lifo( qd, e )				0
+#define rkh_get( qd, e )					0
 
 
 #endif

@@ -734,9 +734,12 @@
 		#error  "rkhport.h, When enabling RKH_TRACE must be defined the platform-dependent function rkh_trace_flush() within application level."
 	#endif
 #else
-	#define rkh_tropen()
-	#define rkh_trclose()
-	#define rkh_trflush()
+	#undef rkh_tropen
+	#define rkh_tropen
+	#undef rkh_trclose
+	#define rkh_trclose
+	#undef rkh_trflush
+	#define rkh_trflush
 #endif
 
 
