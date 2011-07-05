@@ -534,8 +534,7 @@ typedef enum
  * 	as a global object.  
  *
  * 	\note
- *
- * 	Generally, the states are declared in state machine dependent header file.
+ * 	Generally, this macro is used in the state-machine's header file.
  */
 
 #define RKH_DCLR_COMP_STATE		extern rkhrom RKHSREG_T
@@ -719,6 +718,14 @@ void rkh_gc( RKHEVT_T *evt );
  *	This macro set the event 'evt' with 'e' signal and establishes it as one 
  *	static event.
  *
+ *	Example:
+ *	\code
+ *	...
+ *	RKHEVT_T e;
+ *
+ *	rkh_set_static_event( &e, TOUT );
+ *	\endcode
+ *
  * 	\param evt		pointer to event structure derived from RKHEVT_T.
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
@@ -820,7 +827,7 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
  *	Aditionally, by means of single inheritance in C it could be used 
  *	as state's abstract data. Aditionally, implementing the single 
  *	inheritance in C is very simply by literally embedding the base type, 
- *	RKHPPRO_T in this case, as the first member of the derived structure. 
+ *	#RKHPPRO_T in this case, as the first member of the derived structure. 
  *	See member \a prepro of RKHSREG_T structure for more information.
  *
  * 	\param ph 		pointer to state machine control block. Represents a 

@@ -378,6 +378,7 @@ typedef signed int		HInt;
 - \ref qref10
 - \ref qref11
 - \ref qref12
+- \ref qref13
 
 \n
 <HR>
@@ -442,6 +443,16 @@ typedef signed int		HInt;
 
 <HR>
 \section qref12 Using events with parameters
+
+\todo
+
+<HR>
+\section qref13 Preprocessing events before of dispatch it
+
+\todo
+
+<HR>
+\section qref14 Actions
 
 \todo
 

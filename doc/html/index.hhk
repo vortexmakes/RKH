@@ -11,7 +11,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="myact__h.html"><param name="Name" value=""myact.h""></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="myevt__h.html"><param name="Name" value=""myevt.h""></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhcfg__h.html"><param name="Name" value=""rkhcfg.h""></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="__RKHPORT_H__"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_j_u_n_c___t.html"><param name="Name" value="action"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_j_u_n_c___t.html"><param name="Name" value="RKHSJUNC_T"></OBJECT>
@@ -41,20 +40,20 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="hdata"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="hinfo"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="history"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="id"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="Name" value="id"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="RKH_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="Name" value="RKHBASE_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_e_v_t___t.html"><param name="Name" value="RKHTREVT_T"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="ROMRKH_T"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="init_action"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="init_state"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="init_action"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="init_state"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="_installation.html"><param name="Name" value="Installation"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_c_f_g___t.html"><param name="Name" value="log"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="name"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="Name" value="name"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="RKH_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_b_a_s_e___t.html"><param name="Name" value="RKHBASE_T"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="ROMRKH_T"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_e_v_t___t.html"><param name="Name" value="num"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_h_i_s_t___t.html"><param name="Name" value="parent"></OBJECT>
@@ -63,11 +62,12 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="RKHSREG_T"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="_porting.html"><param name="Name" value="Porting"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="ppty"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="ppty"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_r_e_g___t.html"><param name="Name" value="prepro"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_c_f_g___t.html"><param name="Name" value="print"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="qref.html"><param name="Name" value="Quick reference"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___i_n_f_o___t.html"><param name="Name" value="rcvevt"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="_usage.html"><param name="Name" value="Representing a state-machine"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="_usage.html"><param name="Name" value="Representing a state machine \e step \e by \e step"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_c_f_g___t.html"><param name="Name" value="res"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="rkh.h"></OBJECT>
   <UL>
@@ -194,11 +194,7 @@
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="hdata"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="hinfo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="id"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="init_action"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="init_state"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="name"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="ppty"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="romrkh"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="state"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_trclose"></OBJECT>
@@ -208,6 +204,8 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_trflush"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trgetcfg"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trgetnext"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trgetqty"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_trgetts"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trinit"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkh_8h.html"><param name="Name" value="RKH_TRINT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_tropen"></OBJECT>
@@ -257,6 +255,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_post_lifo"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_trclose"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_trflush"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_trgetts"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="rkh_tropen"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="RKH_VERSION"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhitl_8h.html"><param name="Name" value="RKHACT_T"></OBJECT>
@@ -323,12 +322,12 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="RKHTR_TRN_TGT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkhtrace.h"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="__RKHPORT_H__"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trconfig"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trcontrol"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trevt"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trgetcfg"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trgetnext"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trgetqty"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="rkh_trinit"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="RKHTR_ENTRY"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="RKHTR_EVENT"></OBJECT>
@@ -358,6 +357,15 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_e_v_t___t.html"><param name="Name" value="smix"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="rkhtrace_8h.html"><param name="Name" value="RKHTS_T"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="romrkh"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="ROMRKH_T"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="id"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="init_action"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="init_state"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="name"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_o_m_r_k_h___t.html"><param name="Name" value="ppty"></OBJECT>
+  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r_e_v_t___t.html"><param name="Name" value="smix"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h___t.html"><param name="Name" value="state"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_h_i_s_t___t.html"><param name="Name" value="target"></OBJECT>
@@ -366,6 +374,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_j_u_n_c___t.html"><param name="Name" value="RKHSJUNC_T"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_t_r___t.html"><param name="Name" value="RKHTR_T"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="todo.html"><param name="Name" value="Todo List"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="trtbl"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_r_k_h_s_c_o_n_d___t.html"><param name="Name" value="RKHSCOND_T"></OBJECT>

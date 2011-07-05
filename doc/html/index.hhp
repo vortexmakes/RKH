@@ -30,6 +30,7 @@ rkhplat_8h.html
 rkhtrace_8h.html
 _installation.html
 _porting.html
+qref.html
 _usage.html
 dbg.html
 cfg.html
@@ -40,6 +41,7 @@ myact__h.html
 myevt__h.html
 rkhcfg__h.html
 main__c.html
+todo.html
 annotated.html
 classes.html
 functions.html
@@ -55,6 +57,7 @@ struct_r_k_h_s_r_e_g___t.html
 struct_r_k_h_t_r___t.html
 struct_r_k_h_t_r_c_f_g___t.html
 struct_r_k_h_t_r_e_v_t___t.html
+struct_r_o_m_r_k_h___t.html
 files.html
 globals.html
 globals_func.html
