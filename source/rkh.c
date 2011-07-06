@@ -66,6 +66,7 @@
 #define is_pseudo( s )					((CB(s)->type&RKH_REGULAR)==0)
 #define is_composite( s )				(CB(s)->type==RKH_COMPOSITE)
 #define is_hcal( ph )					((ph)->romrkh->ppty==HCAL)
+#define is_not_conditional( s )			(CB(s)->type!=RKH_CONDITIONAL)
 
 
 #if RKH_TRACE == 1
@@ -124,9 +125,9 @@
 
 #define find_branch( btbl, t )											\
 																		\
-	for( tr = btbl; tr->event != RKH_ANY; ++tr )						\
-		if( is_valid_guard( tr ) &&										\
-				rkh_call_guard( tr, ph, pe ) == RKH_GTRUE )				\
+	for( t = btbl; t->event != RKH_ANY; ++t )							\
+		if( is_valid_guard( t ) &&										\
+				rkh_call_guard( t, ph, pe ) == RKH_GTRUE )				\
 			break;
 
 
@@ -420,6 +421,13 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		rkh_rec_sgt( te, ph->romrkh->id, CB( ets )->id, stname( ets ) );
 		inc_step();
 
+		if( is_valid_guard( tr ) && 
+				rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
+		{
+			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
+			return RKH_GUARD_FALSE;
+		}
+
 		while( is_pseudo( ets ) || is_composite( ets ) )
 		{
 			switch( CB(ets)->type )
@@ -447,13 +455,14 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #if RKH_EN_PSEUDOSTATE == 1 && RKH_EN_CONDITIONAL
 				case RKH_CONDITIONAL:
 					
-					if( is_valid_guard( tr ) && 
+#if TEST_GUARD
+					if( is_not_conditional( ets ) && is_valid_guard( tr ) && 
 							rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
 						return RKH_GUARD_FALSE;
 					}
-
+#endif
 
 					find_branch( CC(ets)->trtbl, tr );
 
@@ -528,11 +537,15 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #endif
 	}
 
-	if( is_valid_guard( tr ) && rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
+#if TEST_GUARD
+	if( trash == 0 &&
+		is_valid_guard( tr ) && 
+			rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
 	{
 		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
 		return RKH_GUARD_FALSE;
 	}
+#endif
 
 #if RKH_EN_HCAL == 1
 	if( is_hcal( ph ) && is_not_internal_transition() )
