@@ -67,6 +67,7 @@
 #define is_composite( s )				(CB(s)->type==RKH_COMPOSITE)
 #define is_hcal( ph )					((ph)->romrkh->ppty==HCAL)
 #define is_not_conditional( s )			(CB(s)->type!=RKH_CONDITIONAL)
+#define TEST_GUARD						1
 
 
 #if RKH_TRACE == 1
@@ -421,12 +422,14 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		rkh_rec_sgt( te, ph->romrkh->id, CB( ets )->id, stname( ets ) );
 		inc_step();
 
+#if TEST_GUARD == 1
 		if( is_valid_guard( tr ) && 
 				rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
 			return RKH_GUARD_FALSE;
 		}
+#endif
 
 		while( is_pseudo( ets ) || is_composite( ets ) )
 		{
@@ -455,7 +458,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #if RKH_EN_PSEUDOSTATE == 1 && RKH_EN_CONDITIONAL
 				case RKH_CONDITIONAL:
 					
-#if TEST_GUARD
+#if TEST_GUARD == 0
 					if( is_not_conditional( ets ) && is_valid_guard( tr ) && 
 							rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
 					{
@@ -537,7 +540,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #endif
 	}
 
-#if TEST_GUARD
+#if TEST_GUARD == 0
 	if( trash == 0 &&
 		is_valid_guard( tr ) && 
 			rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
