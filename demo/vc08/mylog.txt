@@ -1,6 +1,10 @@
----- RKH trace log session - Jul  1 2011 - 10:08:54 ----
+---- RKH trace log session - Jul  7 2011 - 14:34:16 ----
 
-24564 [ RKHTR_EVENT      ] - MY : 1
-24564 [ RKHTR_EXIT       ] - MY : S111 [0]
-24564 [ RKHTR_ENTRY      ] - MY : S112 [0]
-24564 [ RKHTR_NXT_STATE  ] - MY : S112 [0]
+07415 [ RKHTR_EVENT      ] - MY : 1
+07415 [ RKHTR_EXIT       ] - MY : S111 [0]
+07415 [ RKHTR_ENTRY      ] - MY : S112 [0]
+07415 [ RKHTR_NXT_STATE  ] - MY : S112 [0]
+10816 [ RKHTR_EVENT      ] - MY : 1
+10817 [ RKHTR_EXIT       ] - MY : S112 [0]
+10817 [ RKHTR_ENTRY      ] - MY : S111 [0]
+10817 [ RKHTR_NXT_STATE  ] - MY : S111 [0]

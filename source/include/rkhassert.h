@@ -41,32 +41,48 @@
 typedef enum
 {
 	/**
-	 *	Indicates a detected error in rkh_ae() function.
+	 *	When calling to rkh_init_hsm() function.
+	 */
+
+	RKH_IHSM_SM_BAD_PARAMS,
+	RKH_ENG_EXCEED_HCAL_LEVEL,
+	RKH_ENG_EXCEED_TR_SEGS, 
+	RKH_ENG_UNKNOWN_STATE,
+
+
+	/**
+	 *	When calling to rkh_engine() function.
+	 */
+
+	RKH_ENG_SM_BAD_PARAMS ,
+
+	/**
+	 *	When calling to rkh_ae() function.
 	 */
 
 	RKH_AE_RUNOUT_POOLS,
 	RKH_AE_NOT_ALLOC,
 
 	/**
-	 *	Indicates a detected error in rkh_gc() function.
+	 *	When calling to rkh_gc() function.
 	 */
 
 	RKH_GC_RUNOUT_POOLS,
 
 	/**
-	 *	Indicates a detected error in rkh_recall() function.
+	 *	When calling to rkh_recall() function.
 	 */
 
 	RKH_RC_FAIL,
 
 	/**
-	 *	Indicates a detected error in rkh_put_fifo() function.
+	 *	When calling to rkh_put_fifo() function.
 	 */
 
 	RKH_PF_NO_ROOM,
 
 	/**
-	 *	Indicates a detected error in rkh_put_lifo() function.
+	 *	When calling to rkh_put_lifo() function.
 	 */
 
 	RKH_PL_NO_ROOM,

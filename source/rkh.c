@@ -308,6 +308,10 @@ rkh_init_hsm( RKH_T *ph )
 	rkhrom RKHSREG_T *s;
 #endif
 
+    rkhassert( 	ph != NULL, 
+				ph->romrkh->init_state != NULL,
+				RKH_IHSM_SM_BAD_PARAMS );
+
 	rkh_rec_init_hsm( te, ph->romrkh->id, CB( ph->romrkh->init_state )->id, 
 										stname( ph->romrkh->init_state ) );
 
@@ -352,6 +356,8 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #if RKH_TRACE == 1
 	HUInt step;
 #endif
+
+    rkhassert( 	ph != NULL && pe != NULL, RKH_ENG_SM_BAD_PARAMS );
 
 	pgh = ph;
 	pgevt = pe;
@@ -401,6 +407,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 	if( rkh_add_list( &act_list, tr->action, RKH_MAX_TR_SEGS ) )
 	{
 		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_TR_SEGS );
+		rkhassert( 0, RKH_ENG_EXCEED_TR_SEGS );
 		return RKH_EXCEED_TR_SEGS;
 	}
 
@@ -448,6 +455,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_HCAL_LEVEL );
+						rkhassert( 0, RKH_ENG_EXCEED_HCAL_LEVEL );
 						return RKH_EXCEED_HCAL_LEVEL;
 					}
 
@@ -480,6 +488,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
+						rkhassert( 0, RKH_ENG_EXCEED_TR_SEGS );
 						return RKH_EXCEED_TR_SEGS;
 					}
 
@@ -490,11 +499,15 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #if RKH_EN_PSEUDOSTATE == 1 && RKH_EN_JUNCTION
 				case RKH_JUNCTION:
 
+					/* Should be added: test transition guard and call it */
+					/* ... */
+
 					if( rkh_add_list( &act_list, CJ(ets)->action, 
 															RKH_MAX_TR_SEGS ) )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
+						rkhassert( 0, RKH_ENG_EXCEED_TR_SEGS );
 						return RKH_EXCEED_TR_SEGS;
 					}
 
@@ -519,6 +532,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					break;
 				default:
 					rkh_rec_rtn_code( te, ph->romrkh->id, RKH_UNKNOWN_STATE );
+					rkhassert( 0, RKH_ENG_UNKNOWN_STATE );
 					return RKH_UNKNOWN_STATE;
 			}
 
@@ -535,6 +549,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		else if( rkh_add_list( &snd, CV( ets ), RKH_MAX_HCAL_DEPTH ) )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
+			rkhassert( 0, RKH_ENG_EXCEED_HCAL_LEVEL );
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
 #endif
@@ -557,6 +572,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		if( rkh_make_setxn( &sx, ss ) || rkh_make_setxn( &sn, ts ) )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
+			rkhassert( 0, RKH_ENG_EXCEED_HCAL_LEVEL );
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
 
@@ -708,6 +724,8 @@ rkh_gc( RKHEVT_T *evt )
 }
 
 
+#if RKH_EN_DYNAMIC_EVENT == 1
+
 void 
 rkh_put_fifo( HUInt qd, RKHEVT_T *evt )
 {
@@ -730,6 +748,8 @@ rkh_put_lifo( HUInt qd, RKHEVT_T *evt )
 
     rkhallege( rkh_post_fifo( qd, evt ) == 0, RKH_PL_NO_ROOM ); 
 }
+
+#endif
 
 
 #if RKH_EN_DEFERRED_EVENT == 1

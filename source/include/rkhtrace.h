@@ -564,5 +564,38 @@ HUInt rkh_trgetnext( RKHTREVT_T *ptre );
 
 rkhuint16 rkh_trgetqty( void );
 
+/**
+ * 	\brief
+ *	Retrieves a timestamp to be placed in a trace event.
+ * 
+ *	This is a platform-dependent function invoked through the macro 
+ *	rkh_trgetts(). 
+ *	The data returned is defined in compile-time by means of 
+ *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
+ *
+ *	Example:
+ *
+ *	\code
+ *	//	...in rkhport.h
+ *
+ *	#define rkh_trtrgetts				rkh_trace_getts
+ *
+ * 	//	...in some application module
+ *	
+ *	RKHTS_T 
+ *	rkh_trace_getts( void )
+ *	{
+ *		return ( RKHTS_T )clock();
+ *	}
+ *	\endcode
+ *
+ * 	\returns
+ * 	Timestamp (RKHTS_T data type).
+ *
+ * 	\sa \b rkhtrace.h file.
+ */
+
+RKHTS_T rkh_trace_getts( void );
+
 
 #endif
