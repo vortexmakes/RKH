@@ -106,12 +106,193 @@
 	#endif
 #endif
 
-
 #ifndef RKH_MAX_TR_SEGS
 #error "rkhcfg.h, Missing RKH_MAX_TR_SEGS: Max. # of transition segments"
 #else
 	#if RKH_MAX_TR_SEGS == 0 || RKH_MAX_TR_SEGS > 8
 	#error  "rkhcfg.h, RKH_MAX_TR_SEGS must be > 0 and <= 8"
+	#endif
+#endif
+
+#ifndef RKH_NUM_STATE_MACHINES
+#error "rkhcfg.h, Missing RKH_NUM_STATE_MACHINES: Max. # of state machines"
+#else
+	#if RKH_NUM_STATE_MACHINES == 0 || RKH_NUM_STATE_MACHINES > 32
+	#error  "rkhcfg.h, RKH_NUM_STATE_MACHINES must be > 0 and <= 32"
+	#endif
+#endif
+
+#ifndef RKH_EN_DYNAMIC_EVENT
+	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support."
+#endif
+
+#ifndef RKH_EN_DEFERRED_EVENT
+	#error "rkhcfg.h, Missing RKH_EN_DEFERRED_EVENT: Enable (1) or Disable (0) deferred event support. For using this feature the dynamic event support must be set to one."
+#else
+	#if RKH_EN_DEFERRED_EVENT == 1
+		#if RKH_EN_DYNAMIC_EVENT == 0
+	    #error  "rkhport.h, For using deferred events support feature the dynamic event support must be set to one (RKH_EN_DYNAMIC_EVENT)."
+		#endif
+	#endif
+#endif
+
+#ifndef RKH_EN_PSEUDOSTATE
+	#error "rkhcfg.h, Missing RKH_EN_PSEUDOSTATE: Enable (1) or Disable (0) pseudostates."
+#endif
+
+#ifndef RKH_EN_DEEP_HISTORY
+	#error "rkhcfg.h, Missing RKH_EN_DEEP_HISTORY: Include deep history. Must be set to one RKH_EN_PSEUDOSTATE."
+#endif
+
+#ifndef RKH_EN_SHALLOW_HISTORY
+	#error "rkhcfg.h, Missing RKH_EN_SHALLOW_HISTORY: Include shallow history. Must be set to one RKH_EN_PSEUDOSTATE."
+#endif
+
+#ifndef RKH_EN_JUNCTION
+	#error "rkhcfg.h, Missing RKH_EN_JUNCTION: Include junction. Must be set to one RKH_EN_PSEUDOSTATE."
+#endif
+
+#ifndef RKH_EN_CONDITIONAL	
+	#error "rkhcfg.h, Missing RKH_EN_CONDITIONAL: Include conditional. Must be set to one RKH_EN_PSEUDOSTATE."
+#endif
+
+#ifndef RKH_EN_INIT_HSM_ARG
+	#error "rkhcfg.h, Missing RKH_EN_INIT_HSM_ARG: Enable (1) or Disable (0) state machine arg from initialization action."
+#endif
+
+#ifndef RKH_EN_ENT_HSM_ARG
+	#error "rkhcfg.h, Missing RKH_EN_ENT_HSM_ARG: Enable (1) or Disable (0) state machine arg from entry action."
+#endif
+
+#ifndef RKH_EN_EXT_HSM_ARG
+	#error "rkhcfg.h, Missing RKH_EN_EXT_HSM_ARG: Enable (1) or Disable (0) state machine arg from exit action."
+#endif
+
+#ifndef RKH_EN_ACT_HSM_ARG
+	#error "rkhcfg.h, Missing RKH_EN_ACT_HSM_ARG: Enable (1) or Disable (0) state machine arg from transition action."
+#endif
+
+#ifndef RKH_EN_ACT_EVT_ARG
+	#error "rkhcfg.h, Missing RKH_EN_ACT_EVT_ARG: Enable (1) or Disable (0) event arg from guard function."
+#endif
+
+#ifndef RKH_EN_GRD_EVT_ARG
+	#error "rkhcfg.h, Missing RKH_EN_GRD_EVT_ARG: Enable (1) or Disable (0) event arg from guard function."
+#endif
+
+#ifndef RKH_EN_GRD_HSM_ARG
+	#error "rkhcfg.h, Missing RKH_EN_GRD_EVT_ARG: Enable (1) or Disable (0) state machine arg from guard function."
+#endif
+
+#ifndef RKH_EN_PPRO_HSM_ARG
+	#error "rkhcfg.h, Missing RKH_EN_PPRO_HSM_ARG: Enable (1) or Disable (0) state machine arg from event preprocessor function."
+#endif
+
+#ifndef RKH_EN_STATE_NAME
+	#error "rkhcfg.h, Missing RKH_EN_STATE_NAME: Include state name as string within state machine object."
+#endif
+
+#ifndef RKH_EN_HSM_NAME	
+	#error "rkhcfg.h, Missing RKH_EN_HSM_NAME: Include state machine name as string within state machine object."
+#endif
+
+#ifndef RKH_EN_HSM_DATA
+	#error "rkhcfg.h, Missing RKH_EN_HSM_DATA: Include state machine data within state machine object."
+#endif
+
+#ifndef RKH_EN_PPRO	
+	#error "rkhcfg.h, Missing RKH_EN_PPRO: Include input preprocessor function within basic state object."
+#endif
+
+#ifndef RKH_EN_GET_INFO
+	#error "rkhcfg.h, Missing RKH_EN_GET_INFO: Include get information function."
+#endif
+
+#ifndef RKH_EN_REENTRANT
+	#error "rkhcfg.h, Missing RKH_EN_REENTRANT: Enable (1) or Disable (0) state machine re-entrancy."
+#endif
+
+#ifndef RKH_TRACE
+	#error "rkhcfg.h, Missing RKH_TRACE: Enable (1) or Disable (0) trace mode."
+#endif
+
+#ifndef RKH_TRACE_ALL
+	#error "rkhcfg.h, Missing RKH_TRACE_ALL: Include all trace points."
+#endif
+
+#ifndef RKH_EN_EVENT
+	#error "rkhcfg.h, Missing RKH_EN_EVENT: Enable (1) or Disable (0) trace point - triggering event."
+#endif
+
+#ifndef RKH_EN_TRN_SRC
+	#error "rkhcfg.h, Missing RKH_EN_TRN_SRC: Enable (1) or Disable (0) trace point - transition source state."
+#endif
+
+#ifndef RKH_EN_TRN_TGT	
+	#error "rkhcfg.h, Missing RKH_EN_TRN_TGT: Enable (1) or Disable (0) trace point - transition target state."
+#endif
+
+#ifndef RKH_EN_NXT_STATE
+	#error "rkhcfg.h, Missing RKH_EN_NXT_STATE: Enable (1) or Disable (0) trace point - next state."
+#endif
+
+#ifndef RKH_EN_INT_TRAN	
+	#error "rkhcfg.h, Missing RKH_EN_INT_TRAN: Enable (1) or Disable (0) trace point - internal transition."
+#endif
+
+#ifndef RKH_EN_ENTRY
+	#error "rkhcfg.h, Missing RKH_EN_ENTRY: Enable (1) or Disable (0) trace point - entry state."
+#endif
+
+#ifndef RKH_EN_EXIT	
+	#error "rkhcfg.h, Missing RKH_EN_EXIT: Enable (1) or Disable (0) trace point - exit state."
+#endif
+
+#ifndef RKH_EN_INIT_HSM
+	#error "rkhcfg.h, Missing RKH_EN_INIT_HSM: Enable (1) or Disable (0) trace point - initializing state machine."
+#endif
+
+#ifndef RKH_EN_SGT
+	#error "rkhcfg.h, Missing RKH_EN_SGT: Enable (1) or Disable (0) trace point - target state of transition segment."
+#endif
+
+#ifndef RKH_EN_RTN_CODE
+	#error "rkhcfg.h, Missing RKH_EN_RTN_CODE: Enable (1) or Disable (0) trace point - code returned by rkh_engine() function."
+#endif
+
+#ifndef RKH_EN_NUM_ENEX
+	#error "rkhcfg.h, Missing RKH_EN_NUM_ENEX: Enable (1) or Disable (0) trace point - # of enter and exited states."
+#endif
+
+#ifndef RKH_EN_NUM_ACTSGT
+	#error "rkhcfg.h, Missing RKH_EN_NUM_ACTSGT: Enable (1) or Disable (0) trace point - # of transition actions to be executed and number of transition segments."
+#endif
+
+#ifndef RKH_EN_TIMESTAMP
+	#error "rkhcfg.h, Missing RKH_EN_TIMESTAMP: Enable (1) or Disable (0) trace timestamp."
+#endif
+
+#ifndef RKH_SIZEOF_TIMESTAMP
+	#error "rkhcfg.h, Missing RKH_SIZEOF_TIMESTAMP: Defines the size of timestamp [in bits]: 8, 16 or 32."
+#endif
+
+#ifndef RKH_MAX_NUM_TRACES
+	#error "rkhcfg.h, Missing RKH_MAX_NUM_TRACES: Max. number of trace events in the stream."
+#else
+	#if RKH_MAX_NUM_TRACES == 0 || RKH_MAX_NUM_TRACES > 256
+	#error  "rkhcfg.h, RKH_MAX_NUM_TRACES must be > 0 and <= 256"
+	#endif
+#endif
+
+#ifndef RKH_EN_TRACE_STRING
+	#error "rkhcfg.h, Missing RKH_EN_TRACE_STRING: Enable (1) or Disable (0) the string argument of trace event."
+#endif
+
+#ifndef RKH_MAX_TRACE_STRING_SIZE
+	#error "rkhcfg.h, Missing RKH_MAX_TRACE_STRING_SIZE: Defines the size of string argument of trace event."
+#else
+	#if RKH_MAX_TRACE_STRING_SIZE == 0 || RKH_MAX_TRACE_STRING_SIZE > 128
+	#error  "rkhcfg.h, RKH_MAX_TRACE_STRING_SIZE must be > 0 and <= 32"
 	#endif
 #endif
 
