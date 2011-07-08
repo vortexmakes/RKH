@@ -32,6 +32,7 @@
 
 #define RKH_EN_STATE_NAME			1	/* 	Include state name as string within state machine object */
 #define RKH_EN_HSM_NAME				1	/* 	Include state machine name as string within state machine object */
+#define RKH_EN_HSM_ID				1	/* 	Include state machine ID within state machine object */
 #define RKH_EN_HSM_DATA				1	/*	Include state machine data within state machine object */
 #define RKH_EN_PPRO					0	/* 	Include input preprocessor function within basic state object */
 #define RKH_EN_GET_INFO				0	/* 	Include get information function */

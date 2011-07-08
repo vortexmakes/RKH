@@ -89,8 +89,8 @@
  */
 
 #if RKH_TRACE == 1
-	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_HSM_NAME != 1 )
-	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_HSM_NAME"
+	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_HSM_NAME != 1 || RKH_EN_HSM_ID != 1 )
+	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_HSM_NAME or RKH_EN_HSM_ID"
 	#endif
 #endif
 
@@ -192,8 +192,12 @@
 	#error "rkhcfg.h, Missing RKH_EN_STATE_NAME: Include state name as string within state machine object."
 #endif
 
-#ifndef RKH_EN_HSM_NAME	
-	#error "rkhcfg.h, Missing RKH_EN_HSM_NAME: Include state machine name as string within state machine object."
+#ifndef RKH_EN_HSM_ID	
+	#error "rkhcfg.h, Missing RKH_EN_HSM_ID: Include state machine name as string within state machine object."
+#endif
+
+#ifndef RKH_EN_HSM_ID
+	#error "rkhcfg.h, Missing RKH_EN_HSM_ID: Include state machine ID within state machine object."
 #endif
 
 #ifndef RKH_EN_HSM_DATA
@@ -314,6 +318,36 @@
 #define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
 
 
+#if RKH_EN_HSM_NAME	== 1
+	#if RKH_EN_HSM_ID == 1
+		#define mkrrkh(id,ppty,n,is,ia)		{id,ppty,#n,is,ia}
+	#else
+		#define mkrrkh(id,ppty,n,is,ia)		{ppty,#n,is,ia}
+	#endif
+#else
+	#if RKH_EN_HSM_ID == 1
+		#define mkrrkh(id,ppty,n,is,ia)		{id,ppty,is,ia}
+	#else
+		#define mkrrkh(id,ppty,n,is,ia)		{ppty,is,ia}
+	#endif
+#endif
+
+
+#if RKH_EN_GET_INFO	== 1
+	#if RKH_EN_HSM_DATA	== 1
+		#define mkrkh( n,is,hd )			{n,is,hd,{0,0}}
+	#else
+		#define mkrkh( n,is,hd )			{n,is,{0,0}}
+	#endif
+#else
+	#if RKH_EN_HSM_DATA	== 1
+		#define mkrkh( n,is,hd )			{n,is,hd}
+	#else
+		#define mkrkh( n,is,hd )			{n,is}
+	#endif
+#endif
+
+
 #if RKH_EN_STATE_NAME == 1
 	#define mkbase(t,id,name)			{t,id,#name}
 #else
@@ -337,37 +371,6 @@
 		#define mkbasic(en,ex,p,n,pp)		n##_trtbl
 		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl
 	#endif
-#endif
-
-
-#if RKH_EN_HSM_NAME	== 1
-#if RKH_EN_GET_INFO	== 1
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia,hd,{0,0}}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia,{0,0}}
-	#endif
-#else
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia,hd}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,#n,is,is,ia}
-	#endif
-#endif
-#else
-#if RKH_EN_GET_INFO	== 1
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia,hd,{0,0}}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia,{0,0}}
-	#endif
-#else
-	#if RKH_EN_HSM_DATA	== 1
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia,hd}
-	#else
-		#define CHSM( id,p,n,is,ia,hd )	{id,p,is,is,ia}
-	#endif
-#endif
 #endif
 
 
@@ -1570,7 +1573,9 @@ typedef struct
 	 *	debugging and 'rktrace' module.
 	 */
 
+#if RKH_EN_HSM_ID == 1
 	rkhuint8 id;
+#endif
 
 	/**
 	 * 	State machine properties. The available properties are

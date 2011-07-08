@@ -197,8 +197,8 @@ typedef enum
 
 #define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\
 																		\
-	static rkhrom ROMRKH_T rs_##name = { id,ppty,#name,is,ia };			\
-				static sm_t s_##name = { &rs_##name,is,hd };			\
+	static rkhrom ROMRKH_T rs_##name = mkrrkh( id,ppty,name,is,ia );	\
+				static sm_t s_##name = mkrkh( &rs_##name,is,hd );		\
 				RKH_T * const name = ( RKH_T* )&s_##name
 
 
