@@ -181,7 +181,7 @@ typedef enum
  *
  * 	\param sm_t		type of state machine structure.
  * 	\param name		name of state machine object. Represents the top state
-					of state diagram.
+ *					of state diagram.
  * 	\param id		the numerical value of state machine ID.
  * 	\param ppty		state machine properties. The available properties are
  * 					enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
@@ -545,6 +545,46 @@ typedef enum
 #define RKH_DCLR_SHIST_STATE	extern rkhrom RKHSHIST_T
 
 /*@}*/
+
+
+/**
+ * 	\brief
+ * 	Declares a previously created state machine to be used as a 
+ * 	global object.  
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKH_T sm;		// base structure
+ *		rkhuint8 x;		// private member
+ *		rkhuint8 y;		// private member
+ *	} MYSM_T;
+ *
+ * 	//	static instance of state machine object
+ *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
+ *
+ *	//	g_my: global pointer to "my" state machine object.
+ *	RKH_DCLR_SM_GLOBAL( MYSM_T, my, g_my );
+ *	\endcode
+ *
+ *	\sa
+ *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
+ *
+ * 	\param sm_t		type of state machine structure.
+ * 	\param sm		name of state machine object.
+ * 	\param gob		name of global object.
+ *
+ * 	\note
+ * 	Generally, this macro is used in the state-machine's module.
+ */
+
+#define RKH_DCLR_SM_GLOBAL( sm_t, sm, gob )								\
+																		\
+							sm_t * const gob = &s_##sm;
 
 
 /**
