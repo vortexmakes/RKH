@@ -193,7 +193,7 @@
 #endif
 
 #ifndef RKH_EN_HSM_ID	
-	#error "rkhcfg.h, Missing RKH_EN_HSM_ID: Include state machine name as string within state machine object."
+	#error "rkhcfg.h, Missing RKH_EN_HSM_ID: Include state machine ID within state machine object."
 #endif
 
 #ifndef RKH_EN_HSM_ID
