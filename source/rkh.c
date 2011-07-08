@@ -308,7 +308,7 @@ rkh_init_hsm( RKH_T *ph )
 	rkhrom RKHSREG_T *s;
 #endif
 
-    rkhassert( 	ph != NULL, 
+    rkhassert( 	ph != NULL && 
 				ph->romrkh->init_state != NULL,
 				RKH_IHSM_SM_BAD_PARAMS );
 
