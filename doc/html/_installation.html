@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -80,12 +80,12 @@ Using directory structure</a></h2>
 <li><code>\portable:</code> contains platform-independent header files to be used by RKH applications. Each platform-dependent file should be placed in a directory that represents the platform to be used. Each platform directory should be placed within <code>\portable</code> directory, i.e.: <code>\portable\&lt;platform&gt;\rkhport.h</code>. The <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a> shows three RKH port directories: <code>\portable\cw08</code> (Codewarrior for Freescale S08), <code>\portable\lnxgcc</code> (Linux GCC), and <code>\portable\vc08</code> (Visual C++ 2008).</li>
 </ul>
 <ul>
-<li><b>rkh.c:</b> platform-independent source code of RKH. This file requires inclusion of only one platform-specific header file named <code>rkhport.h</code>. It's indirectly included by <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file and it's described in detail in section <a class="el" href="_porting.html">Porting</a>.</li>
+<li><b>rkh.c:</b> platform-independent source code of RKH. This file requires inclusion of only one platform-specific header file named <b>rkhport.h</b>. It's indirectly included by <b><a class="el" href="rkh_8h.html" title="RKH platform-independent interface.">rkh.h</a></b> file and it's described in detail in section <a class="el" href="_porting.html">Porting</a>.</li>
 </ul>
 <ul>
 <li><code>rkhtrace.c:</code> platform-independent source code of runtime debugging.</li>
 </ul>
-<p>Next, each <code>rkhport.h</code> must be referenced from <code><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></code> header file, located in <code>\include</code> directory. The idea behind conditional compilation is that a <code>rkhport.h</code> can be selectively compiled, depending upon whether a specific value has been defined. The next listing shows the <code><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></code> file according to <code>\portable</code> directory from <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a>, where <code>___CWS08__</code>, <code>___LNXGCC__</code>, and <code>__VC__</code> are used to instruct the C/C++ compiler to include header files from the specific RKH port directory.</p>
+<p>Next, each <b>rkhport.h</b> must be referenced from <b><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></b> header file, located in <code>\include</code> directory. The idea behind conditional compilation is that a <b>rkhport.h</b> can be selectively compiled, depending upon whether a specific value has been defined. The next listing shows the <b><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></b> file according to <code>\portable</code> directory from <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a>, where <code>___CWS08__</code>, <code>___LNXGCC__</code>, and <code>__VC__</code> are used to instruct the C/C++ compiler to include header files from the specific RKH port directory.</p>
 <div class="fragment"><pre class="fragment"><span class="preprocessor">#if __CWS08__</span>
 <span class="preprocessor"></span><span class="preprocessor">    #include &quot;..\portable\cw08\rkhport.h&quot;</span>
 <span class="preprocessor">#elif __VC__</span>
@@ -98,7 +98,7 @@ Using directory structure</a></h2>
 </pre></div><p>The path of platform-dependent file must be relative.</p>
 <p><br/>
  <b>Demo</b> <b>application</b> </p>
-<p>Then, should be created a directory within <code>\demo</code> with the name of application that will make use of RKH. For example: <code>\demo\vc08</code>, as shown in <a class="el" href="_installation.html#demo_dir">Figure 3 Demo application directories</a>. This directory includes the files needed by the application. Aditionallity, should be created the RKH configuration file <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> to be included within the application directory. See <a class="el" href="cfg.html">Configuration</a> section. This file is mandatory and it's used by RKH.</p>
+<p>Then, should be created a directory within <code>\demo</code> with the name of application that will make use of RKH. For example: <code>\demo\vc08</code>, as shown in <a class="el" href="_installation.html#demo_dir">Figure 3 Demo application directories</a>. This directory includes the files needed by the application. Aditionallity, should be created the RKH configuration file <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> to be included within the application directory. See <a class="el" href="cfg.html">Configuration</a> section. This file is mandatory and it's used by RKH.</p>
 <p><a class="anchor" id="demo_dir"></a> <br/>
  <b> Figure 3 Demo application directories </b> </p>
 <div class="fragment"><pre class="fragment">&lt;root&gt;                  - RKH-root directory
@@ -140,13 +140,13 @@ rkhplat.h   - Supported and portable platforms
 rkhtrace.h  - Trace facility
 </pre></div><p>Required include files extracted from <code>\portable\&lt;platform&gt;</code> directory:</p>
 <div class="fragment"><pre class="fragment">rkhport.h   - RKH platform-dependent include file
-</pre></div><p>The <code>rkhport.h</code> must be referenced from <code><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></code> file as shown below:</p>
+</pre></div><p>The <code>rkhport.h</code> must be referenced from <b><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></b> file as shown below:</p>
 <div class="fragment"><pre class="fragment"><span class="preprocessor">#include &quot;rkhport.h&quot;</span>
 </pre></div><p><br/>
  <b>Application</b> </p>
-<p>Next, should be created the configuration file <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> to be included within the application directory. See <a class="el" href="cfg.html">Configuration</a> section for more information. This file is mandatory and it's used by RKH. </p>
+<p>Next, should be created the configuration file <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> to be included within the application directory. See <a class="el" href="cfg.html">Configuration</a> section for more information. This file is mandatory and it's used by RKH. </p>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jul 4 09:15:47 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jul 12 22:55:00 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

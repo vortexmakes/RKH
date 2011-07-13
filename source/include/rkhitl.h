@@ -1569,8 +1569,9 @@ typedef struct rkh_info_t
 typedef struct
 {
 	/**	
-	 *	State machine descriptor. It's generally used for 
-	 *	debugging and 'rktrace' module.
+	 *	State machine descriptor. This number allows to uniquely identify 
+	 *	a state machine. When a particular application requires runtime 
+	 *	debugging (native tracing features), this option must be enabled. 
 	 */
 
 #if RKH_EN_HSM_ID == 1
@@ -1578,31 +1579,34 @@ typedef struct
 #endif
 
 	/**
-	 * 	State machine properties. The available properties are
-	 * 	enumerated in RKH_HPPTY_T enumeration in the rkh.h
-	 * 	file.
+	 * 	State machine properties. The available properties are enumerated 
+	 * 	in RKH_HPPTY_T enumeration in the rkh.h	file.
 	 */
 
 	rkhuint8 ppty;
 
 	/**	
-	 *	State name string. String terminated in '\\0' that 
-	 *	represents the name of state. It's generally used for 
-	 *	debugging.
+	 *	Name of state machine. Represents the top state of state diagram.
+	 *	String terminated in '\\0' that represents the name of state state 
+	 *	machine. When a particular application requires runtime debugging 
+	 *	(native tracing features), this option must be enabled.
 	 */
+
 #if RKH_EN_HSM_NAME	== 1
 	char *name;
 #endif
 
 	/** 
-	 * 	Points to initial state. The initial state must be a
-	 * 	composite state or basic state.
+	 * 	Points to initial state. The initial state must be a composite state 
+	 * 	or basic state.
 	 */
 
 	rkhrom RKHSREG_T *init_state;
 
 	/** 
-	 * 	Points to initializing action function.
+	 * 	Points to initializing action function (optional). The function 
+	 * 	prototype is defined as RKHINIT_T. This argument is optional, thus 
+	 * 	it could be declared as NULL.
 	 */
 
 	RKHINIT_T init_action;
@@ -1665,7 +1669,10 @@ typedef struct rkh_t
 	rkhrom RKHSREG_T *state;
 
 	/** 
-	 * 	Points to optional state-machine's data.
+	 * 	Points to state-machine's data (optional). 
+	 * 	This argument is optional, thus it could be declared as NULL or 
+	 * 	eliminated with RKH_EN_HSM_DATA option. Could be used to pass 
+	 * 	arguments to the state machine like an argc/argv.
 	 */
 
 #if RKH_EN_HSM_DATA == 1

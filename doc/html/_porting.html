@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -22,7 +22,7 @@
 
 
 <h1><a class="anchor" id="Porting">Porting </a></h1><p>This section describes how to adapt the RKH to various platforms, which is a process called porting. RKH contains a clearly defined abstraction layer, which encapsulates all the platform-specific code and cleanly separates it from platform-neutral code.</p>
-<p>Porting RKH implies to create the platform-dependent file, called <code>rhhport.h</code>. In this file must be defined the data types that uses RKH. The RKH directories and files are described in detail in <a class="el" href="_installation.html">Installation</a> section. The next sections listed below describes the aspects to be considered:</p>
+<p>Porting RKH implies to create the platform-dependent file, called <b>rhhport.h</b>. In this file must be defined the data types that uses RKH. The RKH directories and files are described in detail in <a class="el" href="_installation.html">Installation</a> section. The next sections listed below describes the aspects to be considered:</p>
 <ul>
 <li><a class="el" href="_porting.html#data">Data types definitions</a></li>
 <li><a class="el" href="_porting.html#rom">ROM allocator</a></li>
@@ -32,7 +32,7 @@
 <hr/>
  <h2><a class="anchor" id="data">
 Data types definitions</a></h2>
-<p>The RKH uses a set of integer quantities. That maybe machine or compiler dependent. These types must be defined in <code>rkhport.h</code> file as shown in <a class="el" href="_porting.html#rkhp">"rkhport.h" A port file example</a>.</p>
+<p>The RKH uses a set of integer quantities. That maybe machine or compiler dependent. These types must be defined in <b>rkhport.h</b> file as shown in <a class="el" href="_porting.html#rkhp">"rkhport.h" A port file example</a>.</p>
 <ul>
 <li><b>rkhint8</b> <br/>
  <br/>
@@ -78,7 +78,7 @@ Data types definitions</a></h2>
 <hr/>
  <h2><a class="anchor" id="rom">
 ROM allocator</a></h2>
-<p>For declaring an object that its value will not be changed and that will be stored in ROM, must be defined in <code>rkhport.h</code> the <code>rkhrom</code> macro, as shown in <a class="el" href="_porting.html#rkhp">"rkhport.h" A port file example</a>.</p>
+<p>For declaring an object that its value will not be changed and that will be stored in ROM, must be defined in <b>rkhport.h</b> the <code>rkhrom</code> macro, as shown in <a class="el" href="_porting.html#rkhp">"rkhport.h" A port file example</a>.</p>
 <div class="fragment"><pre class="fragment"><span class="preprocessor">#define rkhrom</span>
 </pre></div><p>The following listing shows an example of such definitions for a x86 platform and Visual C++ 2008.</p>
 <div class="fragment"><pre class="fragment"><span class="keyword">typedef</span> <span class="keywordtype">signed</span> <span class="keywordtype">char</span>     rkhint8;
@@ -95,9 +95,9 @@ ROM allocator</a></h2>
 </pre></div><hr/>
  <h2><a class="anchor" id="files">
 Platform-dependent files</a></h2>
-<p>The header file <code>rkhport.h</code> adapts and configures RKH. This file has already discussed in <a class="el" href="_installation.html">Installation</a> section. However, this section includes here again the explanation of this important file.</p>
+<p>The header file <b>rkhport.h</b> adapts and configures RKH. This file has already discussed in <a class="el" href="_installation.html">Installation</a> section. However, this section includes here again the explanation of this important file.</p>
 <p>The \portable directory contains platform-independent header files to be used by RKH applications. Each platform-dependent file should be placed in a directory that represents the platform to be used, called port directory. Each port directory should be placed within <code>\portable</code>, i.e.: <code>\portable\&lt;platform&gt;\rkhport.h</code>. The <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a> shows three RKH port directories: <code>\portable\cw08</code> (Codewarrior for Freescale S08), <code>\portable\lnxgcc</code> (Linux GCC), and <code>\portable\vc08</code> (Visual C++ 2008).</p>
-<p>Next, each <code>rkhport.h</code> must be referenced from <code><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></code> header file, located in <code>\include</code> directory. The idea behind conditional compilation is that a <code>rkhport.h</code> can be selectively compiled, depending upon whether a specific value has been defined. The next listing shows the <code><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></code> file according to <code>\portable</code> directory from <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a>, where <code>___CWS08__</code>, <code>___LNXGCC__</code>, and <code>__VC__</code> are used to instruct the C/C++ compiler to include header files from the specific RKH port directory.</p>
+<p>Next, each <b>rkhport.h</b> must be referenced from <b><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></b> header file, located in <code>\include</code> directory. The idea behind conditional compilation is that a <b>rkhport.h</b> can be selectively compiled, depending upon whether a specific value has been defined. The next listing shows the <b><a class="el" href="rkhplat_8h.html" title="RKH platform-dependent interface.">rkhplat.h</a></b> file according to <code>\portable</code> directory from <a class="el" href="_installation.html#src_dir">Figure 2 RKH source directory</a>, where <code>___CWS08__</code>, <code>___LNXGCC__</code>, and <code>__VC__</code> are used to instruct the C/C++ compiler to include header files from the specific RKH port directory.</p>
 <div class="fragment"><pre class="fragment"><span class="preprocessor">#if __CWS08__</span>
 <span class="preprocessor"></span><span class="preprocessor">    #include &quot;..\portable\cw08\rkhport.h&quot;</span>
 <span class="preprocessor">#elif __VC__</span>
@@ -111,7 +111,7 @@ Platform-dependent files</a></h2>
 <hr/>
  <h2><a class="anchor" id="rkhp">
 "rkhport.h" A port file example</a></h2>
-<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &quot;<a class="code" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a>&quot;</span>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &quot;rkhcfg.h&quot;</span>
 
 
 <span class="comment">/*</span>
@@ -146,7 +146,7 @@ Platform-dependent files</a></h2>
 
 <span class="preprocessor">#define rkhrom          const   </span>
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jul 4 09:15:47 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jul 12 22:55:00 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

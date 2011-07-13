@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>RKH: Representing a state machine \e step \e by \e step</title>
+<title>RKH: Representing a state machine: step by step guide</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -21,7 +21,7 @@
 <div class="contents">
 
 
-<h1><a class="anchor" id="Usage">Representing a state machine <em>step</em> <em>by</em> <em>step</em> </a></h1><p><br/>
+<h1><a class="anchor" id="Usage">Representing a state machine: step by step guide </a></h1><p><br/>
  As stated above, RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, and open-source development tool for implementing hierarchical state machines based on modern state machine concepts. This modern techniques are used to give an abstract description of the dynamic behavior of a system in a substantial manner.</p>
 <p><b> The key features of the RKH framework: </b></p>
 <ul>
@@ -64,19 +64,19 @@
 Preparing the application files</a></h2>
 <p>The sample code for the example presented above port to x86 is located in the directory \demo\vc08\. The directory contains the Visual C++ 2008 project files to build the application. See <a class="el" href="_installation.html">Installation</a> section about RKH files. The application files are listed below:</p>
 <ul>
-<li><b>"rkhcfg.h"</b>: this file adapts and configures RKH. See <a class="el" href="cfg.html">Configuration</a> section. In the \demo directory there are other <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> files already in existence and it's suggested that these are used as a reference. See the application <a class="el" href="rkhcfg__h.html">"rkhcfg.h"</a> file. Note that this file is located in the application directory.</li>
+<li><b>"rkhcfg.h"</b>: this file adapts and configures RKH. See <a class="el" href="cfg.html">Configuration</a> section. In the \demo directory there are other <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> files already in existence and it's suggested that these are used as a reference. See the application <a class="el" href="rkhcfg__h.html">"rkhcfg.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
 <li><b>"my.c"</b>: this module implements the "my" state machine, which illustrates all aspects of implementing state machines with RKH framework. Please correlate this implementation with the "my" state diagram in <a class="el" href="_usage.html#fig1">Figure 1</a>. See the <a class="el" href="my__c.html">"my.c"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myact.c"</b>: this module declares each of entry, exit, transition, and guard actions to be executed. Note that the <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. Note that this file is located in the application directory.</li>
+<li><b>"myact.c"</b>: this module declares each of entry, exit, transition, and guard actions to be executed. Note that the <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
 <li><b>"my.h"</b>: this header file contains the definitions of objet structures (state machine, states, and pseudostates) and other facilities shared among the components of the application. See the <a class="el" href="my__h.html">"my.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
-<li><b>"myact.h"</b>: this header file defines the actions to be executed. Note that the <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. See the <a class="el" href="myact__h.html">"myact.h"</a> file. Note that this file is located in the application directory.</li>
+<li><b>"myact.h"</b>: this header file defines the actions to be executed. Note that the <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> file defines the function prototype of actions. See <a class="el" href="cfg.html">Configuration</a> section about of available options and <a class="el" href="myact__c.html">"myact.c"</a> file. See the <a class="el" href="myact__h.html">"myact.h"</a> file. Note that this file is located in the application directory.</li>
 </ul>
 <ul>
 <li><b>"myevt.h"</b>: because events are explicitly shared among most of the application components, it's convenient to declare them in the separate header file "myevt.h". See the <a class="el" href="myevt__h.html">"myevt.h"</a> file. Note that this file is located in the application directory.</li>
@@ -559,7 +559,7 @@ Defining the state machine</a></h3>
 <h3><a class="anchor" id="rep_act">
 Declaring and defining actions</a></h3>
 <p><br/>
- The following enlists the action to be automatically executed by RKH. The function prototypes are explicitly defined in <code><a class="el" href="rkhitl_8h.html" title="RKH engine interface.">rkhitl.h</a></code> file.</p>
+ The following enlists the action to be automatically executed by RKH. The function prototypes are explicitly defined in <b><a class="el" href="rkhitl_8h.html" title="RKH engine interface.">rkhitl.h</a></b> file.</p>
 <ul>
 <li><b>Initiallization</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#addede414aa719152174d56d6bd2c7159" title="Initialization action.">RKHINIT_T</a>): the state transition originating at the black ball is called the initial transition. An initial transition can have associated actions, which RKH invokes to execute the topmost initial transition.</li>
 </ul>
@@ -578,7 +578,7 @@ Declaring and defining actions</a></h3>
 <ul>
 <li><b>Preprocessor</b> <b>action</b> (<a class="el" href="rkhitl_8h.html#a3b113df002d9c5d3422f369fd701ffe3" title="Event preprocessor.">RKHPPRO_T</a>): this action is executed before sending occured event to state machine.</li>
 </ul>
-<p>Aditionally, the preprocessor options listed in <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> allows to customize the prototypes of each action. See <a class="el" href="cfg.html">Configuration</a> section for more information about that. The used actions in the "my" state machine implementation are shown in <a class="el" href="myact__c.html">"myact.c"</a> file.</p>
+<p>Aditionally, the preprocessor options listed in <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> allows to customize the prototypes of each action. See <a class="el" href="cfg.html">Configuration</a> section for more information about that. The used actions in the "my" state machine implementation are shown in <a class="el" href="myact__c.html">"myact.c"</a> file.</p>
 <p><br/>
  According to "my" state diagram the initial action looks as follow: <br/>
  </p>
@@ -771,7 +771,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jul 4 09:15:47 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jul 12 22:55:00 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

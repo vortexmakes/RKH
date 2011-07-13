@@ -179,20 +179,28 @@ typedef enum
  *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
  *	single inheritance in C \endlink.
  *
- * 	\param sm_t		type of state machine structure.
- * 	\param name		name of state machine object. Represents the top state
- *					of state diagram.
- * 	\param id		the numerical value of state machine ID.
+ * 	\param sm_t		data type of state machine structure.
+ * 	\param name		name of state machine. Represents the top state of state 
+ * 					diagram. String terminated in '\\0' that represents the 
+ * 					name of state machine. When a particular application 
+ * 					requires runtime debugging (native tracing features), this 
+ * 					option must be enabled.
+ * 	\param id		state machine descriptor. This number allows to uniquely 
+ * 					identify a state machine. When a particular application 
+ * 					requires runtime debugging (native tracing features), this 
+ * 					option must be enabled. 
  * 	\param ppty		state machine properties. The available properties are
  * 					enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
  * 	\param is		pointer to regular initial state. This state could be 
  * 					defined either composite or basic.
- * 	\param ia		pointer to initialization action. The function prototype 
- * 					is defined as RKHINIT_T. This argument is optional, thus
- * 					it could be declared as NULL.
- * 	\param hd		pointer to state-machine's abstract data. This argument 
- * 					is optional, thus it could be declared as NULL or 
- * 					eliminated with RKH_EN_HSM_DATA option.
+ * 	\param ia		pointer to initialization action (optional). The function 
+ * 					prototype is defined as RKHINIT_T. This argument is 
+ * 					optional, thus it could be declared as NULL.
+ * 	\param hd		pointer to state-machine's data (optional). 
+ * 					This argument is optional, thus it could be declared as 
+ * 					NULL or eliminated with RKH_EN_HSM_DATA option. Could be 
+ * 					used to pass arguments to the state machine like an 
+ * 					argc/argv.
  */
 
 #define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\

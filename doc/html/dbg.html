@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -42,19 +42,19 @@
  <h2><a class="anchor" id="trusing">
 Using tracing tool</a></h2>
 <ul>
-<li>The option <b>RKH_TRACE</b> must be set to one (1), it should be defined in the specific application configuration file named <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b>.</li>
+<li>The option <b>RKH_TRACE</b> must be set to one (1), it should be defined in the specific application configuration file named <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b>.</li>
 </ul>
 <ul>
-<li>The trace events of interest must be defined in the <b><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></b> file. See <b><a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e" title="List of event traced.">RKHTR_EVENTS</a></b> enumeration and <a class="el" href="dbg.html#trcfg">Trace tool configuration</a> section.</li>
+<li>The trace events of interest must be defined in the <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> file. See <b><a class="el" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0e" title="List of event traced.">RKHTR_EVENTS</a></b> enumeration and <a class="el" href="dbg.html#trcfg">Trace tool configuration</a> section.</li>
 </ul>
 <ul>
-<li>The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and rkh_trace_getts() are platform-dependent functions, therefore the user application must implement it. These function prototypes are definied within <b><a class="el" href="rkhtrace_8h.html" title="Platform-independent interface for RKH trace facility.">rkhtrace.h</a></b> file. This functions are invoked through the <a class="el" href="rkhitl_8h.html#ad7206e434895adb3916d781ce1415754" title="Open the tracing session.">rkh_tropen()</a>, <a class="el" href="rkhitl_8h.html#adafe1fed0b5a1f82fe9c979243e18587" title="Close the tracing session.">rkh_trclose()</a>, <a class="el" href="rkhitl_8h.html#aa0cb202fd1bf782439f2bdb7a02a47ed" title="Flush the trace stream.">rkh_trflush()</a>, and <a class="el" href="rkhitl_8h.html#a651fd3bf4126b5344cb35a9364263649" title="Retrieves a timestamp to be placed in a trace event.">rkh_trgetts()</a> macros.</li>
+<li>The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and <a class="el" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6" title="Retrieves a timestamp to be placed in a trace event.">rkh_trace_getts()</a> are platform-dependent functions, therefore the user application must implement it. These function prototypes are definied within <b><a class="el" href="rkhtrace_8h.html" title="Platform-independent interface for RKH trace facility.">rkhtrace.h</a></b> file. This functions are invoked through the <a class="el" href="rkhitl_8h.html#ad7206e434895adb3916d781ce1415754" title="Open the tracing session.">rkh_tropen()</a>, <a class="el" href="rkhitl_8h.html#adafe1fed0b5a1f82fe9c979243e18587" title="Close the tracing session.">rkh_trclose()</a>, <a class="el" href="rkhitl_8h.html#aa0cb202fd1bf782439f2bdb7a02a47ed" title="Flush the trace stream.">rkh_trflush()</a>, and <a class="el" href="rkhitl_8h.html#a651fd3bf4126b5344cb35a9364263649" title="Retrieves a timestamp to be placed in a trace event.">rkh_trgetts()</a> macros.</li>
 </ul>
 <ul>
-<li>The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options configures the <code><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a></code> trace event structure and should be defined in the <code><a class="el" href="rkhcfg_8h.html" title="RKH configuration file.">rkhcfg.h</a></code> file.</li>
+<li>The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options configures the <code><a class="el" href="struct_r_k_h_t_r_e_v_t___t.html" title="Describes a trace event.">RKHTREVT_T</a></code> trace event structure and should be defined in the <b><a class="el" href="rkhcfg_8h_source.html">rkhcfg.h</a></b> file.</li>
 </ul>
 <ul>
-<li>See <code><a class="el" href="rkhtrace_8h.html" title="Platform-independent interface for RKH trace facility.">rkhtrace.h</a></code> header file for more information.</li>
+<li>See <b><a class="el" href="rkhtrace_8h.html" title="Platform-independent interface for RKH trace facility.">rkhtrace.h</a></b> header file for more information.</li>
 </ul>
 <hr/>
  <h2><a class="anchor" id="trcfg">
@@ -123,7 +123,7 @@ Trace tool configuration</a></h2>
 <hr/>
  <h2><a class="anchor" id="trexample">
 Example use</a></h2>
-<p>The following listing shows an implementation example of rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and rkh_trace_getts() functions:</p>
+<p>The following listing shows an implementation example of rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and <a class="el" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6" title="Retrieves a timestamp to be placed in a trace event.">rkh_trace_getts()</a> functions:</p>
 <div class="fragment"><pre class="fragment"><span class="keywordtype">void</span> 
 rkh_trace_open( <span class="keywordtype">void</span> )
 {
@@ -175,7 +175,7 @@ rkh_trace_flush( <span class="keywordtype">void</span> )
 
 
 <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d" title="Defines the size of trace timestamp.">RKHTS_T</a> 
-rkh_trace_getts( <span class="keywordtype">void</span> )
+<a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6" title="Retrieves a timestamp to be placed in a trace event.">rkh_trace_getts</a>( <span class="keywordtype">void</span> )
 {
     <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d" title="Defines the size of trace timestamp.">RKHTS_T</a> )clock();
 }
@@ -206,7 +206,7 @@ rkh_trace_getts( <span class="keywordtype">void</span> )
 00104 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea8be40e23be633dfc1a77059494e3a18e">RKHTR_NXT_STATE</a>  ] - MY : S21 [0]
 00105 [ <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>   ] - MY : <a class="code" href="rkh_8h.html#ad7ffdf67be28296726e65d6b7223f5e3a567323b6c0efa1f3368064615c9d5dcd">RKH_OK</a>
 </pre></div> </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jul 4 09:15:47 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jul 12 22:55:01 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

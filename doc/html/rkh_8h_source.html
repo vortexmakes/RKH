@@ -11,7 +11,7 @@
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -90,198 +90,203 @@
 <a name="l00140"></a>00140 } <a class="code" href="rkh_8h.html#a243967727eeb1814b24badfeda7b25b7" title="State machine properties.">RKH_HPPTY_T</a>;
 <a name="l00141"></a>00141 
 <a name="l00142"></a>00142 
-<a name="l00198"></a><a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146">00198</a> <span class="preprocessor">#define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )              \</span>
-<a name="l00199"></a>00199 <span class="preprocessor">                                                                        \</span>
-<a name="l00200"></a>00200 <span class="preprocessor">    static rkhrom ROMRKH_T rs_##name = { id,ppty,#name,is,ia };         \</span>
-<a name="l00201"></a>00201 <span class="preprocessor">                static sm_t s_##name = { &amp;rs_##name,is,hd };            \</span>
-<a name="l00202"></a>00202 <span class="preprocessor">                RKH_T * const name = ( RKH_T* )&amp;s_##name</span>
-<a name="l00203"></a>00203 <span class="preprocessor"></span>
-<a name="l00204"></a>00204 
-<a name="l00224"></a><a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce">00224</a> <span class="preprocessor">#define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )  \</span>
-<a name="l00225"></a>00225 <span class="preprocessor">                                                                        \</span>
-<a name="l00226"></a>00226 <span class="preprocessor">                                extern rkhrom RKHTR_T name##_trtbl[];   \</span>
-<a name="l00227"></a>00227 <span class="preprocessor">                                                                        \</span>
-<a name="l00228"></a>00228 <span class="preprocessor">                                rkhrom RKHSREG_T name =                 \</span>
-<a name="l00229"></a>00229 <span class="preprocessor">                                {                                       \</span>
-<a name="l00230"></a>00230 <span class="preprocessor">                                    mkbase(RKH_COMPOSITE,id,name),      \</span>
-<a name="l00231"></a>00231 <span class="preprocessor">                                    mkcomp(en,ex,parent,name,           \</span>
-<a name="l00232"></a>00232 <span class="preprocessor">                                                defchild,history)       \</span>
-<a name="l00233"></a>00233 <span class="preprocessor">                                }</span>
-<a name="l00234"></a>00234 <span class="preprocessor"></span>
-<a name="l00235"></a>00235 
-<a name="l00261"></a><a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">00261</a> <span class="preprocessor">#define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )           \</span>
-<a name="l00262"></a>00262 <span class="preprocessor">                                                                        \</span>
-<a name="l00263"></a>00263 <span class="preprocessor">                                extern rkhrom RKHTR_T name##_trtbl[];   \</span>
-<a name="l00264"></a>00264 <span class="preprocessor">                                                                        \</span>
-<a name="l00265"></a>00265 <span class="preprocessor">                                rkhrom RKHSREG_T name =                 \</span>
-<a name="l00266"></a>00266 <span class="preprocessor">                                {                                       \</span>
-<a name="l00267"></a>00267 <span class="preprocessor">                                    mkbase(RKH_BASIC,id,name),          \</span>
-<a name="l00268"></a>00268 <span class="preprocessor">                                    mkbasic(en,ex,parent,name,prepro)   \</span>
-<a name="l00269"></a>00269 <span class="preprocessor">                                }</span>
-<a name="l00270"></a>00270 <span class="preprocessor"></span>
-<a name="l00294"></a><a class="code" href="rkh_8h.html#ade7387dead9112bd67580de3350aee51">00294</a> <span class="preprocessor">#define RKH_CREATE_COND_STATE( name,id )                                \</span>
-<a name="l00295"></a>00295 <span class="preprocessor">                                                                        \</span>
-<a name="l00296"></a>00296 <span class="preprocessor">                                extern rkhrom RKHTR_T name##_trtbl[];   \</span>
-<a name="l00297"></a>00297 <span class="preprocessor">                                                                        \</span>
-<a name="l00298"></a>00298 <span class="preprocessor">                                rkhrom RKHSCOND_T name =                \</span>
-<a name="l00299"></a>00299 <span class="preprocessor">                                {                                       \</span>
-<a name="l00300"></a>00300 <span class="preprocessor">                                    mkbase(RKH_CONDITIONAL,id,name),    \</span>
-<a name="l00301"></a>00301 <span class="preprocessor">                                    name##_trtbl                        \</span>
-<a name="l00302"></a>00302 <span class="preprocessor">                                }</span>
-<a name="l00303"></a>00303 <span class="preprocessor"></span>
-<a name="l00304"></a>00304 
-<a name="l00323"></a><a class="code" href="rkh_8h.html#a9f73c81d95a4bd5bec21e10ea6f05add">00323</a> <span class="preprocessor">#define RKH_CREATE_JUNCTION_STATE( name,id,action,target )              \</span>
-<a name="l00324"></a>00324 <span class="preprocessor">                                                                        \</span>
-<a name="l00325"></a>00325 <span class="preprocessor">                                rkhrom RKHSJUNC_T name =                \</span>
-<a name="l00326"></a>00326 <span class="preprocessor">                                {                                       \</span>
-<a name="l00327"></a>00327 <span class="preprocessor">                                    mkbase(RKH_JUNCTION,id,name),       \</span>
-<a name="l00328"></a>00328 <span class="preprocessor">                                    action, target                      \</span>
-<a name="l00329"></a>00329 <span class="preprocessor">                                }</span>
-<a name="l00330"></a>00330 <span class="preprocessor"></span>
-<a name="l00331"></a>00331 
-<a name="l00349"></a><a class="code" href="rkh_8h.html#a49995aa34cddd68fcc6416655ca408f8">00349</a> <span class="preprocessor">#define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )                 \</span>
-<a name="l00350"></a>00350 <span class="preprocessor">                                                                        \</span>
-<a name="l00351"></a>00351 <span class="preprocessor">                                static rkhrom RKHSREG_T *ram##name;     \</span>
-<a name="l00352"></a>00352 <span class="preprocessor">                                                                        \</span>
-<a name="l00353"></a>00353 <span class="preprocessor">                                rkhrom RKHSHIST_T name =                \</span>
-<a name="l00354"></a>00354 <span class="preprocessor">                                {                                       \</span>
-<a name="l00355"></a>00355 <span class="preprocessor">                                    mkbase(RKH_DHISTORY,id,name),       \</span>
-<a name="l00356"></a>00356 <span class="preprocessor">                                    parent,&amp;ram##name                   \</span>
-<a name="l00357"></a>00357 <span class="preprocessor">                                }</span>
-<a name="l00358"></a>00358 <span class="preprocessor"></span>
-<a name="l00359"></a>00359 
-<a name="l00377"></a><a class="code" href="rkh_8h.html#a7a5376dd9929642f5b6e31def6d92bb4">00377</a> <span class="preprocessor">#define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )              \</span>
-<a name="l00378"></a>00378 <span class="preprocessor">                                                                        \</span>
-<a name="l00379"></a>00379 <span class="preprocessor">                                static rkhrom RKHSREG_T *ram##name;     \</span>
-<a name="l00380"></a>00380 <span class="preprocessor">                                                                        \</span>
-<a name="l00381"></a>00381 <span class="preprocessor">                                rkhrom RKHSHIST_T name =                \</span>
-<a name="l00382"></a>00382 <span class="preprocessor">                                {                                       \</span>
-<a name="l00383"></a>00383 <span class="preprocessor">                                    mkbase(RKH_SHISTORY,id,name),       \</span>
-<a name="l00384"></a>00384 <span class="preprocessor">                                    parent,&amp;ram##name                   \</span>
-<a name="l00385"></a>00385 <span class="preprocessor">                                }</span>
-<a name="l00386"></a>00386 <span class="preprocessor"></span>
-<a name="l00387"></a>00387 
-<a name="l00395"></a><a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">00395</a> <span class="preprocessor">#define RKH_CREATE_TRANS_TABLE( name )                                  \</span>
-<a name="l00396"></a>00396 <span class="preprocessor">                                                                        \</span>
-<a name="l00397"></a>00397 <span class="preprocessor">                                static rkhrom RKHTR_T name##_trtbl[]={</span>
-<a name="l00398"></a>00398 <span class="preprocessor"></span>
-<a name="l00399"></a>00399 
-<a name="l00415"></a><a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">00415</a> <span class="preprocessor">#define RKH_TRREG( e, g, a, t ) { e, g, a, t }</span>
-<a name="l00416"></a>00416 <span class="preprocessor"></span>
-<a name="l00417"></a>00417 
-<a name="l00430"></a><a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf">00430</a> <span class="preprocessor">#define RKH_TRINT( e, g, a )    { e, g, a, NULL }</span>
-<a name="l00431"></a>00431 <span class="preprocessor"></span>
-<a name="l00432"></a>00432 
-<a name="l00433"></a>00433 <span class="comment">/*</span>
-<a name="l00434"></a>00434 <span class="comment"> *  This macro is internal to RKH and the user application should </span>
-<a name="l00435"></a>00435 <span class="comment"> *  not call it.</span>
-<a name="l00436"></a>00436 <span class="comment"> */</span>
-<a name="l00437"></a>00437 
-<a name="l00438"></a>00438 <span class="preprocessor">#define RKH_ETRTBL              { RKH_ANY, NULL, NULL, NULL }</span>
+<a name="l00206"></a><a class="code" href="rkh_8h.html#a290baf778561e431e02c611bb5dd9146">00206</a> <span class="preprocessor">#define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )              \</span>
+<a name="l00207"></a>00207 <span class="preprocessor">                                                                        \</span>
+<a name="l00208"></a>00208 <span class="preprocessor">    static rkhrom ROMRKH_T rs_##name = mkrrkh( id,ppty,name,is,ia );    \</span>
+<a name="l00209"></a>00209 <span class="preprocessor">                static sm_t s_##name = mkrkh( &amp;rs_##name,is,hd );       \</span>
+<a name="l00210"></a>00210 <span class="preprocessor">                RKH_T * const name = ( RKH_T* )&amp;s_##name</span>
+<a name="l00211"></a>00211 <span class="preprocessor"></span>
+<a name="l00212"></a>00212 
+<a name="l00232"></a><a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce">00232</a> <span class="preprocessor">#define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )  \</span>
+<a name="l00233"></a>00233 <span class="preprocessor">                                                                        \</span>
+<a name="l00234"></a>00234 <span class="preprocessor">                                extern rkhrom RKHTR_T name##_trtbl[];   \</span>
+<a name="l00235"></a>00235 <span class="preprocessor">                                                                        \</span>
+<a name="l00236"></a>00236 <span class="preprocessor">                                rkhrom RKHSREG_T name =                 \</span>
+<a name="l00237"></a>00237 <span class="preprocessor">                                {                                       \</span>
+<a name="l00238"></a>00238 <span class="preprocessor">                                    mkbase(RKH_COMPOSITE,id,name),      \</span>
+<a name="l00239"></a>00239 <span class="preprocessor">                                    mkcomp(en,ex,parent,name,           \</span>
+<a name="l00240"></a>00240 <span class="preprocessor">                                                defchild,history)       \</span>
+<a name="l00241"></a>00241 <span class="preprocessor">                                }</span>
+<a name="l00242"></a>00242 <span class="preprocessor"></span>
+<a name="l00243"></a>00243 
+<a name="l00269"></a><a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44">00269</a> <span class="preprocessor">#define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )           \</span>
+<a name="l00270"></a>00270 <span class="preprocessor">                                                                        \</span>
+<a name="l00271"></a>00271 <span class="preprocessor">                                extern rkhrom RKHTR_T name##_trtbl[];   \</span>
+<a name="l00272"></a>00272 <span class="preprocessor">                                                                        \</span>
+<a name="l00273"></a>00273 <span class="preprocessor">                                rkhrom RKHSREG_T name =                 \</span>
+<a name="l00274"></a>00274 <span class="preprocessor">                                {                                       \</span>
+<a name="l00275"></a>00275 <span class="preprocessor">                                    mkbase(RKH_BASIC,id,name),          \</span>
+<a name="l00276"></a>00276 <span class="preprocessor">                                    mkbasic(en,ex,parent,name,prepro)   \</span>
+<a name="l00277"></a>00277 <span class="preprocessor">                                }</span>
+<a name="l00278"></a>00278 <span class="preprocessor"></span>
+<a name="l00302"></a><a class="code" href="rkh_8h.html#ade7387dead9112bd67580de3350aee51">00302</a> <span class="preprocessor">#define RKH_CREATE_COND_STATE( name,id )                                \</span>
+<a name="l00303"></a>00303 <span class="preprocessor">                                                                        \</span>
+<a name="l00304"></a>00304 <span class="preprocessor">                                extern rkhrom RKHTR_T name##_trtbl[];   \</span>
+<a name="l00305"></a>00305 <span class="preprocessor">                                                                        \</span>
+<a name="l00306"></a>00306 <span class="preprocessor">                                rkhrom RKHSCOND_T name =                \</span>
+<a name="l00307"></a>00307 <span class="preprocessor">                                {                                       \</span>
+<a name="l00308"></a>00308 <span class="preprocessor">                                    mkbase(RKH_CONDITIONAL,id,name),    \</span>
+<a name="l00309"></a>00309 <span class="preprocessor">                                    name##_trtbl                        \</span>
+<a name="l00310"></a>00310 <span class="preprocessor">                                }</span>
+<a name="l00311"></a>00311 <span class="preprocessor"></span>
+<a name="l00312"></a>00312 
+<a name="l00331"></a><a class="code" href="rkh_8h.html#a9f73c81d95a4bd5bec21e10ea6f05add">00331</a> <span class="preprocessor">#define RKH_CREATE_JUNCTION_STATE( name,id,action,target )              \</span>
+<a name="l00332"></a>00332 <span class="preprocessor">                                                                        \</span>
+<a name="l00333"></a>00333 <span class="preprocessor">                                rkhrom RKHSJUNC_T name =                \</span>
+<a name="l00334"></a>00334 <span class="preprocessor">                                {                                       \</span>
+<a name="l00335"></a>00335 <span class="preprocessor">                                    mkbase(RKH_JUNCTION,id,name),       \</span>
+<a name="l00336"></a>00336 <span class="preprocessor">                                    action, target                      \</span>
+<a name="l00337"></a>00337 <span class="preprocessor">                                }</span>
+<a name="l00338"></a>00338 <span class="preprocessor"></span>
+<a name="l00339"></a>00339 
+<a name="l00357"></a><a class="code" href="rkh_8h.html#a49995aa34cddd68fcc6416655ca408f8">00357</a> <span class="preprocessor">#define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )                 \</span>
+<a name="l00358"></a>00358 <span class="preprocessor">                                                                        \</span>
+<a name="l00359"></a>00359 <span class="preprocessor">                                static rkhrom RKHSREG_T *ram##name;     \</span>
+<a name="l00360"></a>00360 <span class="preprocessor">                                                                        \</span>
+<a name="l00361"></a>00361 <span class="preprocessor">                                rkhrom RKHSHIST_T name =                \</span>
+<a name="l00362"></a>00362 <span class="preprocessor">                                {                                       \</span>
+<a name="l00363"></a>00363 <span class="preprocessor">                                    mkbase(RKH_DHISTORY,id,name),       \</span>
+<a name="l00364"></a>00364 <span class="preprocessor">                                    parent,&amp;ram##name                   \</span>
+<a name="l00365"></a>00365 <span class="preprocessor">                                }</span>
+<a name="l00366"></a>00366 <span class="preprocessor"></span>
+<a name="l00367"></a>00367 
+<a name="l00385"></a><a class="code" href="rkh_8h.html#a7a5376dd9929642f5b6e31def6d92bb4">00385</a> <span class="preprocessor">#define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )              \</span>
+<a name="l00386"></a>00386 <span class="preprocessor">                                                                        \</span>
+<a name="l00387"></a>00387 <span class="preprocessor">                                static rkhrom RKHSREG_T *ram##name;     \</span>
+<a name="l00388"></a>00388 <span class="preprocessor">                                                                        \</span>
+<a name="l00389"></a>00389 <span class="preprocessor">                                rkhrom RKHSHIST_T name =                \</span>
+<a name="l00390"></a>00390 <span class="preprocessor">                                {                                       \</span>
+<a name="l00391"></a>00391 <span class="preprocessor">                                    mkbase(RKH_SHISTORY,id,name),       \</span>
+<a name="l00392"></a>00392 <span class="preprocessor">                                    parent,&amp;ram##name                   \</span>
+<a name="l00393"></a>00393 <span class="preprocessor">                                }</span>
+<a name="l00394"></a>00394 <span class="preprocessor"></span>
+<a name="l00395"></a>00395 
+<a name="l00403"></a><a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">00403</a> <span class="preprocessor">#define RKH_CREATE_TRANS_TABLE( name )                                  \</span>
+<a name="l00404"></a>00404 <span class="preprocessor">                                                                        \</span>
+<a name="l00405"></a>00405 <span class="preprocessor">                                static rkhrom RKHTR_T name##_trtbl[]={</span>
+<a name="l00406"></a>00406 <span class="preprocessor"></span>
+<a name="l00407"></a>00407 
+<a name="l00423"></a><a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">00423</a> <span class="preprocessor">#define RKH_TRREG( e, g, a, t ) { e, g, a, t }</span>
+<a name="l00424"></a>00424 <span class="preprocessor"></span>
+<a name="l00425"></a>00425 
+<a name="l00438"></a><a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf">00438</a> <span class="preprocessor">#define RKH_TRINT( e, g, a )    { e, g, a, NULL }</span>
 <a name="l00439"></a>00439 <span class="preprocessor"></span>
 <a name="l00440"></a>00440 
-<a name="l00445"></a><a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">00445</a> <span class="preprocessor">#define RKH_END_TRANS_TABLE     RKH_ETRTBL};</span>
-<a name="l00446"></a>00446 <span class="preprocessor"></span>
-<a name="l00447"></a>00447 
-<a name="l00456"></a><a class="code" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">00456</a> <span class="preprocessor">#define RKH_CREATE_BRANCH_TABLE( name )                             \</span>
-<a name="l00457"></a>00457 <span class="preprocessor">                                                                    \</span>
-<a name="l00458"></a>00458 <span class="preprocessor">                                RKH_CREATE_TRANS_TABLE( name )</span>
-<a name="l00459"></a>00459 <span class="preprocessor"></span>
-<a name="l00460"></a>00460 
-<a name="l00480"></a><a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">00480</a> <span class="preprocessor">#define RKH_BRANCH( g, a, t )   { 0, g, a, t }</span>
-<a name="l00481"></a>00481 <span class="preprocessor"></span>
-<a name="l00482"></a>00482 
-<a name="l00483"></a>00483 <span class="comment">/*</span>
-<a name="l00484"></a>00484 <span class="comment"> *  This macro is internal to RKH and the user application should </span>
-<a name="l00485"></a>00485 <span class="comment"> *  not call it.</span>
-<a name="l00486"></a>00486 <span class="comment"> */</span>
-<a name="l00487"></a>00487 
-<a name="l00488"></a>00488 <span class="preprocessor">#define RKH_EBTBL               { RKH_ANY, NULL, NULL, NULL }</span>
+<a name="l00441"></a>00441 <span class="comment">/*</span>
+<a name="l00442"></a>00442 <span class="comment"> *  This macro is internal to RKH and the user application should </span>
+<a name="l00443"></a>00443 <span class="comment"> *  not call it.</span>
+<a name="l00444"></a>00444 <span class="comment"> */</span>
+<a name="l00445"></a>00445 
+<a name="l00446"></a>00446 <span class="preprocessor">#define RKH_ETRTBL              { RKH_ANY, NULL, NULL, NULL }</span>
+<a name="l00447"></a>00447 <span class="preprocessor"></span>
+<a name="l00448"></a>00448 
+<a name="l00453"></a><a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">00453</a> <span class="preprocessor">#define RKH_END_TRANS_TABLE     RKH_ETRTBL};</span>
+<a name="l00454"></a>00454 <span class="preprocessor"></span>
+<a name="l00455"></a>00455 
+<a name="l00464"></a><a class="code" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">00464</a> <span class="preprocessor">#define RKH_CREATE_BRANCH_TABLE( name )                             \</span>
+<a name="l00465"></a>00465 <span class="preprocessor">                                                                    \</span>
+<a name="l00466"></a>00466 <span class="preprocessor">                                RKH_CREATE_TRANS_TABLE( name )</span>
+<a name="l00467"></a>00467 <span class="preprocessor"></span>
+<a name="l00468"></a>00468 
+<a name="l00488"></a><a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">00488</a> <span class="preprocessor">#define RKH_BRANCH( g, a, t )   { 0, g, a, t }</span>
 <a name="l00489"></a>00489 <span class="preprocessor"></span>
 <a name="l00490"></a>00490 
-<a name="l00496"></a><a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53">00496</a> <span class="preprocessor">#define RKH_END_BRANCH_TABLE    RKH_EBTBL};</span>
+<a name="l00491"></a>00491 <span class="comment">/*</span>
+<a name="l00492"></a>00492 <span class="comment"> *  This macro is internal to RKH and the user application should </span>
+<a name="l00493"></a>00493 <span class="comment"> *  not call it.</span>
+<a name="l00494"></a>00494 <span class="comment"> */</span>
+<a name="l00495"></a>00495 
+<a name="l00496"></a>00496 <span class="preprocessor">#define RKH_EBTBL               { RKH_ANY, NULL, NULL, NULL }</span>
 <a name="l00497"></a>00497 <span class="preprocessor"></span>
 <a name="l00498"></a>00498 
-<a name="l00504"></a><a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b">00504</a> <span class="preprocessor">#define RKH_ROOT                NULL</span>
+<a name="l00504"></a><a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53">00504</a> <span class="preprocessor">#define RKH_END_BRANCH_TABLE    RKH_EBTBL};</span>
 <a name="l00505"></a>00505 <span class="preprocessor"></span>
 <a name="l00506"></a>00506 
-<a name="l00528"></a><a class="code" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1">00528</a> <span class="preprocessor">#define RKH_DCLR_HSM( h )       extern RKH_T * const h</span>
-<a name="l00529"></a>00529 <span class="preprocessor"></span>
-<a name="l00530"></a>00530 
-<a name="l00540"></a><a class="code" href="rkh_8h.html#ab856423b3e65be3f55b7df3b2984e5fe">00540</a> <span class="preprocessor">#define RKH_DCLR_COMP_STATE     extern rkhrom RKHSREG_T</span>
-<a name="l00541"></a><a class="code" href="rkh_8h.html#a483ad8fd1a11d5b823e58a2884e40f22">00541</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_BASIC_STATE    extern rkhrom RKHSREG_T</span>
-<a name="l00542"></a><a class="code" href="rkh_8h.html#ae15f169feaafe7cf7e335e24e76039b9">00542</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_COND_STATE     extern rkhrom RKHSCOND_T</span>
-<a name="l00543"></a><a class="code" href="rkh_8h.html#a2862a673eba565cd2888ca5fb3405a38">00543</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_JUNC_STATE     extern rkhrom RKHSJUNC_T</span>
-<a name="l00544"></a><a class="code" href="rkh_8h.html#a042e46c64f90aa08a92db9e9d30e1959">00544</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_DHIST_STATE    extern rkhrom RKHSHIST_T </span>
-<a name="l00545"></a><a class="code" href="rkh_8h.html#aa618e2849fbd748f672bd5e0b3b6bb16">00545</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_SHIST_STATE    extern rkhrom RKHSHIST_T</span>
-<a name="l00546"></a>00546 <span class="preprocessor"></span>
-<a name="l00557"></a>00557 <span class="keyword">enum</span>
-<a name="l00558"></a>00558 {
-<a name="l00559"></a><a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">00559</a>     <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>, 
-<a name="l00560"></a><a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">00560</a>     <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a>   
-<a name="l00561"></a>00561 };
-<a name="l00562"></a>00562 
-<a name="l00563"></a>00563 
-<a name="l00582"></a>00582 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#ad45fff41ba029b0548a744a846fba126" title="Posts an event directly to the event queue qd using the LIFO policy.">rkh_put_fifo</a>( HUInt qd, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
-<a name="l00583"></a>00583 
-<a name="l00584"></a>00584 
-<a name="l00601"></a>00601 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#ac66a92c3f209ce2da2b0710e691412bf" title="Posts an event directly to the event queue qd using the FIFO policy.">rkh_put_lifo</a>( HUInt qd, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
-<a name="l00602"></a>00602 
-<a name="l00603"></a>00603 
-<a name="l00631"></a>00631 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#af359d4e8f6cec6ca30f5797ee263af52" title="Defer an event to a given separate event queue.">rkh_defer</a>( HUInt qd, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
+<a name="l00512"></a><a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b">00512</a> <span class="preprocessor">#define RKH_ROOT                NULL</span>
+<a name="l00513"></a>00513 <span class="preprocessor"></span>
+<a name="l00514"></a>00514 
+<a name="l00536"></a><a class="code" href="rkh_8h.html#a0681b6c5bbb43a2290ed60b021c2abd1">00536</a> <span class="preprocessor">#define RKH_DCLR_HSM( h )       extern RKH_T * const h</span>
+<a name="l00537"></a>00537 <span class="preprocessor"></span>
+<a name="l00538"></a>00538 
+<a name="l00548"></a><a class="code" href="rkh_8h.html#ab856423b3e65be3f55b7df3b2984e5fe">00548</a> <span class="preprocessor">#define RKH_DCLR_COMP_STATE     extern rkhrom RKHSREG_T</span>
+<a name="l00549"></a><a class="code" href="rkh_8h.html#a483ad8fd1a11d5b823e58a2884e40f22">00549</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_BASIC_STATE    extern rkhrom RKHSREG_T</span>
+<a name="l00550"></a><a class="code" href="rkh_8h.html#ae15f169feaafe7cf7e335e24e76039b9">00550</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_COND_STATE     extern rkhrom RKHSCOND_T</span>
+<a name="l00551"></a><a class="code" href="rkh_8h.html#a2862a673eba565cd2888ca5fb3405a38">00551</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_JUNC_STATE     extern rkhrom RKHSJUNC_T</span>
+<a name="l00552"></a><a class="code" href="rkh_8h.html#a042e46c64f90aa08a92db9e9d30e1959">00552</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_DHIST_STATE    extern rkhrom RKHSHIST_T </span>
+<a name="l00553"></a><a class="code" href="rkh_8h.html#aa618e2849fbd748f672bd5e0b3b6bb16">00553</a> <span class="preprocessor"></span><span class="preprocessor">#define RKH_DCLR_SHIST_STATE    extern rkhrom RKHSHIST_T</span>
+<a name="l00554"></a>00554 <span class="preprocessor"></span>
+<a name="l00593"></a><a class="code" href="rkh_8h.html#afafab03a0e8aa09a8ef350afa1c59964">00593</a> <span class="preprocessor">#define RKH_DCLR_SM_GLOBAL( sm_t, sm, gob )                             \</span>
+<a name="l00594"></a>00594 <span class="preprocessor">                                                                        \</span>
+<a name="l00595"></a>00595 <span class="preprocessor">                            sm_t * const gob = &amp;s_##sm;</span>
+<a name="l00596"></a>00596 <span class="preprocessor"></span>
+<a name="l00597"></a>00597 
+<a name="l00605"></a>00605 <span class="keyword">enum</span>
+<a name="l00606"></a>00606 {
+<a name="l00607"></a><a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">00607</a>     <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab2834a90f78254076ef72298dc9e5e95">RKH_GFALSE</a>, 
+<a name="l00608"></a><a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">00608</a>     <a class="code" href="rkh_8h.html#a06fc87d81c62e9abb8790b6e5713c55bafe08c2d352ce11183556bab12489e736">RKH_GTRUE</a>   
+<a name="l00609"></a>00609 };
+<a name="l00610"></a>00610 
+<a name="l00611"></a>00611 
+<a name="l00630"></a>00630 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#ad45fff41ba029b0548a744a846fba126" title="Posts an event directly to the event queue qd using the LIFO policy.">rkh_put_fifo</a>( HUInt qd, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
+<a name="l00631"></a>00631 
 <a name="l00632"></a>00632 
-<a name="l00633"></a>00633 
-<a name="l00653"></a>00653 <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *<a class="code" href="rkh_8h.html#a7a45f14cc8f32bcad2798dafbe28ed1d" title="Recall a deferred event from a given event queue.">rkh_recall</a>( HUInt qdd, HUInt qds );
-<a name="l00654"></a>00654 
-<a name="l00655"></a>00655 
-<a name="l00683"></a><a class="code" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">00683</a> <span class="preprocessor">#define rkh_alloc_event( et, e )                                        \</span>
-<a name="l00684"></a>00684 <span class="preprocessor">                                                                        \</span>
-<a name="l00685"></a>00685 <span class="preprocessor">                                (et*)rkh_ae(sizeof(et),(RKHE_T)(e))</span>
-<a name="l00686"></a>00686 <span class="preprocessor"></span>
-<a name="l00687"></a>00687 
-<a name="l00713"></a>00713 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a6d09c23f535c6e03355918e96b802974" title="Recycle a dynamic event.">rkh_gc</a>( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
-<a name="l00714"></a>00714 
-<a name="l00715"></a>00715 
-<a name="l00728"></a><a class="code" href="rkh_8h.html#a17ecc578a95f10567c300a1cf648e13d">00728</a> <span class="preprocessor">#define rkh_set_static_event( evt, es )         mksevt( evt, es )</span>
-<a name="l00729"></a>00729 <span class="preprocessor"></span>
-<a name="l00730"></a>00730 
-<a name="l00739"></a>00739 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created state machine calling its initializing function.">rkh_init_hsm</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph );
-<a name="l00740"></a>00740 
-<a name="l00741"></a>00741 
-<a name="l00762"></a>00762 HUInt <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a state machine in a non-preemtive model.">rkh_engine</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pevt );
+<a name="l00649"></a>00649 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#ac66a92c3f209ce2da2b0710e691412bf" title="Posts an event directly to the event queue qd using the FIFO policy.">rkh_put_lifo</a>( HUInt qd, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
+<a name="l00650"></a>00650 
+<a name="l00651"></a>00651 
+<a name="l00679"></a>00679 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#af359d4e8f6cec6ca30f5797ee263af52" title="Defer an event to a given separate event queue.">rkh_defer</a>( HUInt qd, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
+<a name="l00680"></a>00680 
+<a name="l00681"></a>00681 
+<a name="l00701"></a>00701 <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *<a class="code" href="rkh_8h.html#a7a45f14cc8f32bcad2798dafbe28ed1d" title="Recall a deferred event from a given event queue.">rkh_recall</a>( HUInt qdd, HUInt qds );
+<a name="l00702"></a>00702 
+<a name="l00703"></a>00703 
+<a name="l00731"></a><a class="code" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">00731</a> <span class="preprocessor">#define rkh_alloc_event( et, e )                                        \</span>
+<a name="l00732"></a>00732 <span class="preprocessor">                                                                        \</span>
+<a name="l00733"></a>00733 <span class="preprocessor">                                (et*)rkh_ae(sizeof(et),(RKHE_T)(e))</span>
+<a name="l00734"></a>00734 <span class="preprocessor"></span>
+<a name="l00735"></a>00735 
+<a name="l00761"></a>00761 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a6d09c23f535c6e03355918e96b802974" title="Recycle a dynamic event.">rkh_gc</a>( <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *evt );
+<a name="l00762"></a>00762 
 <a name="l00763"></a>00763 
-<a name="l00764"></a>00764 
-<a name="l00777"></a><a class="code" href="rkh_8h.html#ae32100c17bee5afab9b31d9132ad41bb">00777</a> <span class="preprocessor">#define rkh_get_cstate_id( ph )                                         \</span>
-<a name="l00778"></a>00778 <span class="preprocessor">                                                                        \</span>
-<a name="l00779"></a>00779 <span class="preprocessor">                                ((RKHBASE_T*)(ph-&gt;state))-&gt;id   </span>
-<a name="l00780"></a>00780 <span class="preprocessor"></span>
-<a name="l00781"></a>00781 
-<a name="l00794"></a><a class="code" href="rkh_8h.html#a9417335cf8e391658a5566c695c2813b">00794</a> <span class="preprocessor">#define rkh_get_cstate_name( ph )                                       \</span>
-<a name="l00795"></a>00795 <span class="preprocessor">                                                                        \</span>
-<a name="l00796"></a>00796 <span class="preprocessor">                                ((RKHBASE_T*)(ph-&gt;state))-&gt;name </span>
-<a name="l00797"></a>00797 <span class="preprocessor"></span>
-<a name="l00810"></a><a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">00810</a> <span class="preprocessor">#define rkh_get_data( ph )                                              \</span>
-<a name="l00811"></a>00811 <span class="preprocessor">                                                                        \</span>
-<a name="l00812"></a>00812 <span class="preprocessor">                                ((ph)-&gt;hdata)   </span>
-<a name="l00813"></a>00813 <span class="preprocessor"></span>
-<a name="l00814"></a>00814 
-<a name="l00833"></a><a class="code" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65">00833</a> <span class="preprocessor">#define rkh_get_sdata( ph )                                             \</span>
+<a name="l00784"></a><a class="code" href="rkh_8h.html#a17ecc578a95f10567c300a1cf648e13d">00784</a> <span class="preprocessor">#define rkh_set_static_event( evt, es )         mksevt( evt, es )</span>
+<a name="l00785"></a>00785 <span class="preprocessor"></span>
+<a name="l00786"></a>00786 
+<a name="l00795"></a>00795 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a48cd2bb428383f544f4eea92f78b7985" title="Inits a previously created state machine calling its initializing function.">rkh_init_hsm</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph );
+<a name="l00796"></a>00796 
+<a name="l00797"></a>00797 
+<a name="l00818"></a>00818 HUInt <a class="code" href="rkh_8h.html#a380f0c7ce60d43d96b7963d12f4aae55" title="Executes a state machine in a non-preemtive model.">rkh_engine</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph, <a class="code" href="struct_r_k_h_e_v_t___t.html" title="Represents events without parameters.">RKHEVT_T</a> *pevt );
+<a name="l00819"></a>00819 
+<a name="l00820"></a>00820 
+<a name="l00833"></a><a class="code" href="rkh_8h.html#ae32100c17bee5afab9b31d9132ad41bb">00833</a> <span class="preprocessor">#define rkh_get_cstate_id( ph )                                         \</span>
 <a name="l00834"></a>00834 <span class="preprocessor">                                                                        \</span>
-<a name="l00835"></a>00835 <span class="preprocessor">                                ((ph)-&gt;state-&gt;sdata)    </span>
+<a name="l00835"></a>00835 <span class="preprocessor">                                ((RKHBASE_T*)(ph-&gt;state))-&gt;id   </span>
 <a name="l00836"></a>00836 <span class="preprocessor"></span>
 <a name="l00837"></a>00837 
-<a name="l00845"></a>00845 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a522044fea14a01a5197ccd35a5a0eb79" title="Erase the history of a state. It can be a shallow or deep history.">rkh_clear_history</a>( rkhrom <a class="code" href="struct_r_k_h_s_h_i_s_t___t.html" title="Describes the history pseudostate.">RKHSHIST_T</a> *h );
-<a name="l00846"></a>00846 
-<a name="l00847"></a>00847 
-<a name="l00864"></a>00864 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a8738812d2675799e9a982e86fb5c4e52" title="Clear performance information for a particular state machine.">rkh_clear_info</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph );
-<a name="l00865"></a>00865 
-<a name="l00866"></a>00866 
-<a name="l00882"></a>00882 <a class="code" href="struct_r_k_h___i_n_f_o___t.html" title="Describes the state-machine&amp;#39;s performance information.">RKH_INFO_T</a> *<a class="code" href="rkh_8h.html#a4dc5198b4e6e7d11ce12a53179cba8ce" title="Retrieves performance information for a particular state machine.">rkh_get_info</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph );
-<a name="l00883"></a>00883 
-<a name="l00884"></a>00884 
-<a name="l00885"></a>00885 <span class="preprocessor">#endif</span>
+<a name="l00850"></a><a class="code" href="rkh_8h.html#a9417335cf8e391658a5566c695c2813b">00850</a> <span class="preprocessor">#define rkh_get_cstate_name( ph )                                       \</span>
+<a name="l00851"></a>00851 <span class="preprocessor">                                                                        \</span>
+<a name="l00852"></a>00852 <span class="preprocessor">                                ((RKHBASE_T*)(ph-&gt;state))-&gt;name </span>
+<a name="l00853"></a>00853 <span class="preprocessor"></span>
+<a name="l00866"></a><a class="code" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">00866</a> <span class="preprocessor">#define rkh_get_data( ph )                                              \</span>
+<a name="l00867"></a>00867 <span class="preprocessor">                                                                        \</span>
+<a name="l00868"></a>00868 <span class="preprocessor">                                ((ph)-&gt;hdata)   </span>
+<a name="l00869"></a>00869 <span class="preprocessor"></span>
+<a name="l00870"></a>00870 
+<a name="l00889"></a><a class="code" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65">00889</a> <span class="preprocessor">#define rkh_get_sdata( ph )                                             \</span>
+<a name="l00890"></a>00890 <span class="preprocessor">                                                                        \</span>
+<a name="l00891"></a>00891 <span class="preprocessor">                                ((ph)-&gt;state-&gt;sdata)    </span>
+<a name="l00892"></a>00892 <span class="preprocessor"></span>
+<a name="l00893"></a>00893 
+<a name="l00901"></a>00901 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a522044fea14a01a5197ccd35a5a0eb79" title="Erase the history of a state. It can be a shallow or deep history.">rkh_clear_history</a>( rkhrom <a class="code" href="struct_r_k_h_s_h_i_s_t___t.html" title="Describes the history pseudostate.">RKHSHIST_T</a> *h );
+<a name="l00902"></a>00902 
+<a name="l00903"></a>00903 
+<a name="l00920"></a>00920 <span class="keywordtype">void</span> <a class="code" href="rkh_8h.html#a8738812d2675799e9a982e86fb5c4e52" title="Clear performance information for a particular state machine.">rkh_clear_info</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph );
+<a name="l00921"></a>00921 
+<a name="l00922"></a>00922 
+<a name="l00938"></a>00938 <a class="code" href="struct_r_k_h___i_n_f_o___t.html" title="Describes the state-machine&amp;#39;s performance information.">RKH_INFO_T</a> *<a class="code" href="rkh_8h.html#a4dc5198b4e6e7d11ce12a53179cba8ce" title="Retrieves performance information for a particular state machine.">rkh_get_info</a>( <a class="code" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> *ph );
+<a name="l00939"></a>00939 
+<a name="l00940"></a>00940 
+<a name="l00941"></a>00941 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Jul 4 09:15:47 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jul 12 22:55:00 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

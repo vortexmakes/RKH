@@ -83,16 +83,16 @@ directories: \c \\portable\\cw08 (Codewarrior for Freescale S08),
 
 - \b rkh.c: platform-independent source code of RKH. This file 
 requires inclusion of only one platform-specific header file named 
-\c rkhport.h. It's indirectly included by \b rkh.h file and it's 
+\b rkhport.h. It's indirectly included by \b rkh.h file and it's 
 described in detail in section \ref Porting.
 
 - \c rkhtrace.c: platform-independent source code of runtime debugging.
 
-Next, each \c rkhport.h must be referenced from \c rkhplat.h header file,
+Next, each \b rkhport.h must be referenced from \b rkhplat.h header file,
 located in \c \\include directory. The idea behind conditional 
-compilation is that a \c rkhport.h can be selectively compiled, depending 
+compilation is that a \b rkhport.h can be selectively compiled, depending 
 upon whether a specific value has been defined. The next listing shows 
-the \c rkhplat.h file according to \c \\portable directory from
+the \b rkhplat.h file according to \c \\portable directory from
 \ref src_dir "Figure 2 RKH source directory", where \c ___CWS08__, 
 \c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler 
 to include header files from the specific RKH port directory.
@@ -117,7 +117,7 @@ Then, should be created a directory within \c \\demo with the name of
 application that will make use of RKH. For example: \c \\demo\\vc08, as
 shown in \ref demo_dir "Figure 3 Demo application directories". 
 This directory includes the files needed by the application. 
-Aditionallity, should be created the RKH configuration file \c rkhcfg.h 
+Aditionallity, should be created the RKH configuration file \b rkhcfg.h 
 to be included within the application directory. See \ref cfg section. 
 This file is mandatory and it's used by RKH.
 
@@ -181,7 +181,7 @@ Required include files extracted from \c \\portable\\\<platform\> directory:
 rkhport.h	- RKH platform-dependent include file
 \endcode
 
-The \c rkhport.h must be referenced from \c rkhplat.h file as shown below:
+The \c rkhport.h must be referenced from \b rkhplat.h file as shown below:
 
 \code
 #include "rkhport.h"
@@ -189,7 +189,7 @@ The \c rkhport.h must be referenced from \c rkhplat.h file as shown below:
 
 \n \b Application
 
-Next, should be created the configuration file \c rkhcfg.h to be included 
+Next, should be created the configuration file \b rkhcfg.h to be included 
 within the application directory. See \ref cfg section for more information. 
 This file is mandatory and it's used by RKH.
 
@@ -202,7 +202,7 @@ layer, which encapsulates all the platform-specific code and cleanly
 separates it from platform-neutral code.
 
 Porting RKH implies to create the platform-dependent file, called 
-\c rhhport.h. In this file must be defined the data types 
+\b rhhport.h. In this file must be defined the data types 
 that uses RKH.
 The RKH directories and files are described in detail in 
 \ref Installation section. The next sections listed below describes 
@@ -217,7 +217,7 @@ the aspects to be considered:
 \section data Data types definitions
 
 The RKH uses a set of integer quantities. That maybe machine or compiler
-dependent. These types must be defined in \c rkhport.h file as shown 
+dependent. These types must be defined in \b rkhport.h file as shown 
 in \ref rkhp.
 
 - \b rkhint8
@@ -257,7 +257,7 @@ types.
 \section rom ROM allocator
 
 For declaring an object that its value will not be changed and that
-will be stored in ROM, must be defined in \c rkhport.h the 
+will be stored in ROM, must be defined in \b rkhport.h the 
 \c rkhrom macro, as shown in \ref rkhp.
 
 \code
@@ -284,7 +284,7 @@ typedef signed int		HInt;
 <HR>
 \section files Platform-dependent files
 
-The header file \c rkhport.h adapts and configures RKH. This
+The header file \b rkhport.h adapts and configures RKH. This
 file has already discussed in \ref Installation section. However,
 this section includes here again the explanation of this important file.
 
@@ -298,11 +298,11 @@ i.e.: \c \\portable\\\<platform\>\\rkhport.h. The
 directories: \c \\portable\\cw08 (Codewarrior for Freescale S08), 
 \c \\portable\\lnxgcc (Linux GCC), and \c \\portable\\vc08 (Visual C++ 2008).
 
-Next, each \c rkhport.h must be referenced from \c rkhplat.h header file,
+Next, each \b rkhport.h must be referenced from \b rkhplat.h header file,
 located in \c \\include directory. The idea behind conditional 
-compilation is that a \c rkhport.h can be selectively compiled, depending 
+compilation is that a \b rkhport.h can be selectively compiled, depending 
 upon whether a specific value has been defined. The next listing shows 
-the \c rkhplat.h file according to \c \\portable directory from
+the \b rkhplat.h file according to \c \\portable directory from
 \ref src_dir "Figure 2 RKH source directory", where \c ___CWS08__,
 \c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler to 
 include header files from the specific RKH port directory.
@@ -379,40 +379,152 @@ typedef signed int		HInt;
 - \ref qref11
 - \ref qref12
 - \ref qref13
+- \ref qref14
+- \ref qref15
 
 \n
 <HR>
-\section qref0 How to define a state machine
+\section qref0 Defining a state machine
+
+A state machine is defined with the RKH_CREATE_HSM() macro and declared with
+the RKH_DCLR_HSM() macro. Frequently, each state machine is encapsulated
+inside a dedicated source file (.c file), from which the RKH_CREATE_HSM() 
+macro is used, thus the structure definition is in fact entirely encapsulated 
+in its module and is inaccessible to the rest of the application. However, as
+a general rule, the state machine must be declared inside a header file 
+(.h file) by means of RKH_DCLR_HSM() macro.
+We will develop one example of state machine creation to illustrate the use 
+of this macro. We will give our hierarchical state machine the name \c my. 
+If you wanted to create a "flat" state machine, you would use the #FLAT 
+parameter rather than the #HCAL parameter.
+
+Defining the state machine
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+	typedef struct
+	{
+		rkhuint8 argv_channel;
+		rkhuint16 argv_timer;
+		rkhuint32 argv_density;
+	} MYDATA_T;
+
+(2)	static MYDATA_T mydata;
+
+
+(3) RKH_CREATE_HSM( 	RKH_T, 		// state machine data type
+(4) 					my, 		// state machine name
+(5) 					0, 			// ID
+(6) 					HCAL, 		// hierarchical state machine
+(7) 					&S1, 		// initial state
+(8) 					my_init, 	// initial action function
+(9) 					&mydata );	// no data
+\endcode
+
+Declaring the state machine
+\n
+\code
+//	my.h: state-machine's header file
+//	declaring the 'my' state machine 
+
+RKH_DCLR_HSM( my );
+\endcode
+
+\b Explanation
+
+\li (1)	Frequently, each state machine is encapsulated inside a dedicated 
+		source file (.c file), from which the RKH_CREATE_HSM() macro is used.
+\li (2)	In this example, \c mydata structure is used like an argc/argv. 
+\li (3)	Data type of state machine object. RKH_T is not intended to be 
+		instantiated directly, but rather serves as the base structure for 
+		derivation of state machines in the	application code. The following 
+		example illustrates how to derive an state machine from RKH_T. 
+		Please note that the RKH_T member \c sm is defined as the FIRST 
+		member of the derived struct.
+
+\code
+typedef struct
+{
+	RKH_T sm;		// base structure
+	rkhuint8 x;		// private member
+	rkhuint8 y;		// private member
+} MYSM_T;
+
+//	static instance of state machine object
+RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
+\endcode
+
+\li (4)	\c my is the state machine. Represents the top state of state diagram. 
+\li (5)	\c 0 is the state machine descriptor. This number allows to uniquely 
+		identify a state machine.
+\li (6)	the \c my state machine is defined as a hierarchical state machine. 
+		The available property options are enumerated in RKH_HPPTY_T 
+		enumeration in the \b rkh.h file.
+\li (7)	\c S1 is the initial state.
+\li (8)	the \c my_init function defines the topmost initial transition in 
+		the \c my state machine. 
+		The function prototype is defined as RKHINIT_T. This argument is 
+		(optional), thus it could be declared as NULL.
+\li (9) \c mydata is used like a argc/argv. This argument is optional, thus 
+		it could be declared as NULL or eliminated with RKH_EN_HSM_DATA 
+		option. Could be used to pass arguments to the state machine like 
+		an argc/argv.
+
+\b Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_EN_HSM_NAME:	When RKH_EN_HSM_NAME is set to one (1) the state 
+						machine structure RKH_T includes its own name as a 
+						null-terminated string. When a particular application 
+						requires runtime debugging (native tracing features), 
+						this option must be enabled.
+- \b RKH_EN_HSM_DATA:	When RKH_EN_HSM_DATA is set to one (1) the state 
+						machine structure RKH_T allows to reference a data 
+						object, which maintains additional information.
+- \b RKH_EN_HSM_ID:		When RKH_EN_HSM_ID is set to one (1) the state machine
+						structure RKH_T includes a ID number that could be
+						used to uniquely identify a state machine, also called
+						state machine descriptor. When a particular application 
+						requires runtime debugging (native tracing features), 
+						this option must be enabled.
+
+<HR>
+\section qref1 Defining a superstate
 
 \todo
 
 <HR>
-\section qref1 How to declare a superstate
+\section qref2 Defining a substate
 
 \todo
 
 <HR>
-\section qref2 How to declare a substate
+\section qref3 Defining a state transition table
 
 \todo
 
 <HR>
-\section qref3 How to define a state transition table
+\section qref4 Defining a conditional pseudostate
 
 \todo
 
 <HR>
-\section qref4 How to declare a conditional pseudostate
+\section qref5 Defining a history pseudostate
 
 \todo
 
 <HR>
-\section qref5 How to declare a history pseudostate
-
-\todo
-
-<HR>
-\section qref6 How to declare a junction pseudostate
+\section qref6 Defining a junction pseudostate
 
 \todo
 
@@ -456,7 +568,12 @@ typedef signed int		HInt;
 
 \todo
 
-\page Usage Representing a state machine \e step \e by \e step
+<HR>
+\section qref15 Initializing a state machine and dispatching events
+
+\todo
+
+\page Usage Representing a state machine: step by step guide
 
 \n
 As stated above, RKH is a generic, flexible, modular, highly portable, 
@@ -1116,7 +1233,7 @@ illustatres some important aspects of implementing state machines with RKH.
 \subsection rep_act Declaring and defining actions
 
 \n The following enlists the action to be automatically executed by RKH. The
-function prototypes are explicitly defined in \c rkhitl.h file.
+function prototypes are explicitly defined in \b rkhitl.h file.
 
 - \b Initiallization \b action (#RKHINIT_T): 
 	the state transition originating at the black ball is called the 
@@ -1138,7 +1255,7 @@ function prototypes are explicitly defined in \c rkhitl.h file.
 - \b Preprocessor \b action (#RKHPPRO_T): 	
 	this action is executed before sending occured event to state machine.
 
-Aditionally, the preprocessor options listed in \c rkhcfg.h allows 
+Aditionally, the preprocessor options listed in \b rkhcfg.h allows 
 to customize the prototypes of each action. See \ref cfg section for 
 more information about that.
 The used actions in the "my" state machine implementation are shown in
@@ -1412,9 +1529,9 @@ rkh_trflush(), and rkh_trgetts() macros.
 - The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, 
 RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options 
 configures the \c #RKHTREVT_T trace event structure and should be defined 
-in the \c rkhcfg.h file.
+in the \b rkhcfg.h file.
 
-- See \c rkhtrace.h header file for more information.
+- See \b rkhtrace.h header file for more information.
 
 <HR>
 \section trcfg Trace tool configuration
@@ -1561,11 +1678,11 @@ output generated:
 \page cfg Configuration
 
 Each RKH application must have its own configuration file, called 
-\c rkhcfg.h. This file adapts and configures RKH by means of compiler
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \c rkhcfg.h header file.
+\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
 
 Available options:
 
