@@ -426,7 +426,6 @@ Declaring the state machine
 \n
 \code
 //	my.h: state-machine's header file
-//	declaring the 'my' state machine 
 
 RKH_DCLR_HSM( my );
 \endcode
@@ -436,13 +435,14 @@ RKH_DCLR_HSM( my );
 \li (1)	Frequently, each state machine is encapsulated inside a dedicated 
 		source file (.c file), from which the RKH_CREATE_HSM() macro is used.
 \li (2)	In this example, \c mydata structure is used like an argc/argv. 
-\li (3)	Data type of state machine object. RKH_T is not intended to be 
-		instantiated directly, but rather serves as the base structure for 
-		derivation of state machines in the	application code. The following 
-		example illustrates how to derive an state machine from RKH_T. 
+\li (3)	The RKH_T defines the \c my state machine structure.
+		On the other hand, almost every state machine must also store other 
+		"extended-state" information. You supply this additional information 
+		by means of data members enlisted after the base structure member
+		\c sm. The following example illustrates how to derive an 
+		state machine from RKH_T. 
 		Please note that the RKH_T member \c sm is defined as the FIRST 
 		member of the derived struct.
-
 \code
 typedef struct
 {
@@ -454,6 +454,10 @@ typedef struct
 //	static instance of state machine object
 RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
 \endcode
+
+		RKH_T is not intended to be instantiated directly, but rather serves 
+		as the base structure for derivation of state machines in the 
+		application code.
 
 \li (4)	\c my is the state machine. Represents the top state of state diagram. 
 \li (5)	\c 0 is the state machine descriptor. This number allows to uniquely 
@@ -501,27 +505,55 @@ structure. See \ref cfg section for more information.
 <HR>
 \section qref1 Defining a superstate
 
-\todo
+A super-state or composite-state is defined with the RKH_CREATE_COMP_STATE()
+macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each
+composite state is defined inside a dedicated source file (.c file), which 
+also includes the state machine definition.
+We will develop one example of composite state definition to illustrate the 
+use of this macro. We will give our composite state the name \c S1. 
+If you wanted to create a "flat" state machine, you would use the #FLAT 
+parameter rather than the #HCAL parameter.
 
-<HR>
-\section qref2 Defining a substate
+Defining a composite state
+\n
+\code
+(1)	//	my.c: state-machine's module
 
-\todo
+(2)	RKH_CREATE_COMP_STATE( 	S1, 
+(3)							0, 
+(4)							set_y_0, 
+(5)							dummy_exit, 
+(6)							RKH_ROOT, 
+(7)							&S11, 
+(8)							&DH );
+\endcode
 
-<HR>
-\section qref3 Defining a state transition table
+Declaring a composite state
+\n
+\code
+//	my.h: state-machine's header file
 
-\todo
+RKH_DCLR_COMP_STATE( S1 );
+\endcode
 
-<HR>
-\section qref4 Defining a conditional pseudostate
+\b Explanation
 
-\todo
+\li (1)	.
+\li (2)	.
 
-<HR>
-\section qref5 Defining a history pseudostate
+\b Customization
 
-\todo
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_EN_HSM_NAME:	When RKH_EN_HSM_NAME is set to one (1) the state 
 
 <HR>
 \section qref6 Defining a junction pseudostate
