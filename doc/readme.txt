@@ -443,6 +443,10 @@ RKH_DCLR_HSM( my );
 		state machine from RKH_T. 
 		Please note that the RKH_T member \c sm is defined as the FIRST 
 		member of the derived struct.
+		RKH_T is not intended to be instantiated directly, but rather serves 
+		as the base structure for derivation of state machines in the 
+		application code.
+
 \code
 typedef struct
 {
@@ -455,10 +459,6 @@ typedef struct
 RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
 \endcode
 
-		RKH_T is not intended to be instantiated directly, but rather serves 
-		as the base structure for derivation of state machines in the 
-		application code.
-
 \li (4)	\c my is the state machine. Represents the top state of state diagram. 
 \li (5)	\c 0 is the state machine descriptor. This number allows to uniquely 
 		identify a state machine.
@@ -469,7 +469,9 @@ RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
 \li (8)	the \c my_init function defines the topmost initial transition in 
 		the \c my state machine. 
 		The function prototype is defined as RKHINIT_T. This argument is 
-		(optional), thus it could be declared as NULL.
+		(optional), thus it could be declared as NULL. The application code 
+		must trigger the initial transition explicitly by invoking 
+		rkh_init_hsm() function.
 \li (9) \c mydata is used like a argc/argv. This argument is optional, thus 
 		it could be declared as NULL or eliminated with RKH_EN_HSM_DATA 
 		option. Could be used to pass arguments to the state machine like 
@@ -511,8 +513,6 @@ composite state is defined inside a dedicated source file (.c file), which
 also includes the state machine definition.
 We will develop one example of composite state definition to illustrate the 
 use of this macro. We will give our composite state the name \c S1. 
-If you wanted to create a "flat" state machine, you would use the #FLAT 
-parameter rather than the #HCAL parameter.
 
 Defining a composite state
 \n
@@ -521,11 +521,11 @@ Defining a composite state
 
 (2)	RKH_CREATE_COMP_STATE( 	S1, 
 (3)							0, 
-(4)							set_y_0, 
-(5)							dummy_exit, 
-(6)							RKH_ROOT, 
+(4)							turn_on, 
+(5)							turn_off, 
+(6)							&SA, 
 (7)							&S11, 
-(8)							&DH );
+(8)							&H );
 \endcode
 
 Declaring a composite state
@@ -538,8 +538,32 @@ RKH_DCLR_COMP_STATE( S1 );
 
 \b Explanation
 
-\li (1)	.
-\li (2)	.
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_COMP_STATE() macro is used.
+\li (2)	\c S1 is the state name. Represents a composite state structure.
+\li (3)	\c 0 is the value of state ID.
+\li (4)	\c turn_on defines the entry action to be executed unconditionally 
+		upon the entry to the \c S1 state. This argument is optional, 
+		thus it could be declared as NULL. The RKHENT_T defines the function 
+		prototype.
+\li (5)	\c turn_off defines the exit action, which is executed upon exit 
+		from the \c S1 state. This argument is optional, thus it could be 
+		declared as NULL. The RKHEXT_T defines the function prototype.
+\li (6)	\c SA is the parent state of \c S1. If a state has no 
+		explicit superstate means that it is implicitly nested in 
+		the "top" state, and the parent state is defined by means of RKH_ROOT
+		macro.  The "top" state is a UML concept that denotes 
+		the ultimate root of the state hierarchy in a hierarchical state 
+		machine.
+\li (7)	\c S11 is the default state of \c S1 state machine. At each level 
+		of nesting, a superstate can have a private initial transition that
+		designates the active substate after the superstate is entered 
+		directly. Here the initial transition of state \c S1 designates the 
+		state \c S11 as the initial active substate.
+\li (7)	\c H is the history pseudostate. This argument is optional, thus 
+		it could be declared as NULL. See RKH_CREATE_SHALLOW_HISTORY_STATE() 
+		macro and RKH_CREATE_DEEP_HISTORY_STATE().
 
 \b Customization
 
@@ -553,7 +577,42 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HSM_NAME:	When RKH_EN_HSM_NAME is set to one (1) the state 
+- \b RKH_EN_HCAL:	Enable (1) or disable (0) the state nesting.
+					When RKH_EN_HCAL is set to zero (0) some important 
+					features of RKH are	not included: state nesting, 
+					composite state, history (shallow and deep)
+					pseudostate, entry action, and exit action.
+- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
+					structure includes its own name as a null-terminated 
+					string. When a particular application requires runtime 
+					debugging, this option must be enabled. 
+					See #RKHBASE_T structure definition.
+- \b RKH_EN_STATE_ID:
+					When RKH_EN_STATE_ID is set to one (1) the state structure 
+					includes an ID number (also called descriptor). 
+					This number allows to uniquely identify a state. 
+					When a particular application requires runtime debugging 
+					(native tracing features), this option must be enabled. 
+
+<HR>
+\section qref2 Defining a basic state
+
+\todo
+
+<HR>
+\section qref3 Defining a conditional pseudostate
+
+\todo
+
+<HR>
+\section qref4 Defining a shallow history pseudostate
+
+\todo
+
+<HR>
+\section qref5 Defining a deep history pseudostate
+
+\todo
 
 <HR>
 \section qref6 Defining a junction pseudostate
@@ -1820,11 +1879,25 @@ Available options:
 	application requires runtime debugging, this option must be enabled. 
 	See #RKHBASE_T structure definition.
 
+-	\b RKH_EN_STATE_ID	
+	\n \n When RKH_EN_STATE_ID is set to one (1) the state structure 
+	includes an ID number (also called descriptor). 
+	This number allows to uniquely identify a state. When a particular 
+	application requires runtime debugging (native tracing features), 
+	this option must be enabled. 
+
 -	\b RKH_EN_HSM_NAME	
 	\n \n When RKH_EN_HSM_NAME is set to one (1) the state machine
 	structure RKH_T includes its own name as a null-terminated string. 
 	When a particular application requires runtime debugging, this option 
 	must be enabled.
+
+-	\b RKH_EN_HSM_ID	
+	\n \n When RKH_EN_HSM_ID is set to one (1) the state machine
+	structure RKH_T includes an ID number (also called descriptor). 
+	This number allows to uniquely identify a state. When a particular 
+	application requires runtime debugging (native tracing features), 
+	this option must be enabled. 
 
 -	\b RKH_EN_HSM_DATA
 	\n \n When RKH_EN_HSM_DATA is set to one (1) the state machine structure

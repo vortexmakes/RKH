@@ -36,6 +36,7 @@
 #define RKH_EN_PPRO_HSM_ARG			1	/* 	Enable (1) or Disable (0) state machine arg from event preprocessor function */
 
 #define RKH_EN_STATE_NAME			1	/* 	Include state name as string within state machine object */
+#define RKH_EN_STATE_ID				1	/*	Include an ID number (also called descriptor) within state structure */
 #define RKH_EN_HSM_NAME				1	/* 	Include state machine name as string within state machine object */
 #define RKH_EN_HSM_DATA				1	/*	Include state machine data within state machine object */
 #define RKH_EN_PPRO					0	/* 	Include input preprocessor function within basic state object */

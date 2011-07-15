@@ -129,9 +129,19 @@
  When RKH_EN_STATE_NAME is set to one (1) the state structure includes its own name as a null-terminated string. When a particular application requires runtime debugging, this option must be enabled. See <a class="el" href="struct_r_k_h_b_a_s_e___t.html" title="Maintains the basic information of a state.">RKHBASE_T</a> structure definition.</li>
 </ul>
 <ul>
+<li><b>RKH_EN_STATE_ID</b> <br/>
+ <br/>
+ When RKH_EN_STATE_ID is set to one (1) the state structure includes an ID number (also called descriptor). This number allows to uniquely identify a state. When a particular application requires runtime debugging (native tracing features), this option must be enabled.</li>
+</ul>
+<ul>
 <li><b>RKH_EN_HSM_NAME</b> <br/>
  <br/>
  When RKH_EN_HSM_NAME is set to one (1) the state machine structure <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> includes its own name as a null-terminated string. When a particular application requires runtime debugging, this option must be enabled.</li>
+</ul>
+<ul>
+<li><b>RKH_EN_HSM_ID</b> <br/>
+ <br/>
+ When RKH_EN_HSM_ID is set to one (1) the state machine structure <a class="el" href="struct_r_k_h___t.html" title="Describes the state machine.">RKH_T</a> includes an ID number (also called descriptor). This number allows to uniquely identify a state. When a particular application requires runtime debugging (native tracing features), this option must be enabled.</li>
 </ul>
 <ul>
 <li><b>RKH_EN_HSM_DATA</b> <br/>
@@ -254,7 +264,7 @@
  Enable (1) or Disable (0) assert support. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jul 13 20:19:04 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jul 14 22:52:25 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

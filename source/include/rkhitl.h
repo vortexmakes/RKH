@@ -89,8 +89,8 @@
  */
 
 #if RKH_TRACE == 1
-	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_HSM_NAME != 1 || RKH_EN_HSM_ID != 1 )
-	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_HSM_NAME or RKH_EN_HSM_ID"
+	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_STATE_ID != 1 || RKH_EN_HSM_NAME != 1 || RKH_EN_HSM_ID != 1 )
+	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_STATE_ID or RKH_EN_HSM_NAME or RKH_EN_HSM_ID"
 	#endif
 #endif
 
@@ -190,6 +190,10 @@
 
 #ifndef RKH_EN_STATE_NAME
 	#error "rkhcfg.h, Missing RKH_EN_STATE_NAME: Include state name as string within state machine object."
+#endif
+
+#ifndef RKH_EN_STATE_ID
+	#error "rkhcfg.h, Missing RKH_EN_STATE_ID: Include an ID number (also called descriptor) within state structure."
 #endif
 
 #ifndef RKH_EN_HSM_ID	
@@ -349,9 +353,17 @@
 
 
 #if RKH_EN_STATE_NAME == 1
-	#define mkbase(t,id,name)			{t,id,#name}
+	#if RKH_EN_STATE_ID == 1
+		#define mkbase(t,id,name)			{t,id,#name}
+	#else
+		#define mkbase(t,id,name)			{t,#name}
+	#endif
 #else
-	#define mkbase(t,id,name)			{t,id}
+	#if RKH_EN_STATE_ID == 1
+		#define mkbase(t,id,name)			{t,id}
+	#else
+		#define mkbase(t,id,name)			{t}
+	#endif
 #endif
 
 
@@ -1297,10 +1309,10 @@ typedef struct rkhbase_t
 	 *	Contains the type of a particular state and can have 
 	 *	the following values:
 	 *
-	 *	- \b RKH_COMPOSITE: 		composite state.
-	 *	- \b RKH_BASIC: 			basic state.
+	 *	- \b RKH_COMPOSITE: 	composite state.
+	 *	- \b RKH_BASIC: 		basic state.
 	 *	- \b RKH_JUNCTION: 		junction pseudostate.
-	 *	- \b RKH_CONDITIONAL: 		conditional pseudostate.
+	 *	- \b RKH_CONDITIONAL: 	conditional pseudostate.
 	 *	- \b RKH_SHISTORY: 		shadow history pseudostate.
 	 *	- \b RKH_DHISTORY: 		deep history pseudostate.
 	 */
@@ -1312,16 +1324,16 @@ typedef struct rkhbase_t
 	 *	This number isn't internally used by RKH framework.
 	 */
 
+#if RKH_EN_STATE_ID == 1
 	HUInt id;
-
-#if RKH_EN_STATE_NAME == 1
+#endif
 
 	/**	
 	 *	State name. 
 	 *	String terminated in '\\0' that represents the name 
 	 *	of state. It's generally used for debugging.
 	 */
-
+#if RKH_EN_STATE_NAME == 1
 	char *name;
 #endif
 } RKHBASE_T;
