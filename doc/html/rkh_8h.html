@@ -52,17 +52,18 @@
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a7a5376dd9929642f5b6e31def6d92bb4">RKH_CREATE_SHALLOW_HISTORY_STATE</a>(name, id, parent)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a shallow history pseudostate.  <a href="#a7a5376dd9929642f5b6e31def6d92bb4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>(name)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro creates a state transition table. This table have the general structure shown below:  <a href="#aef55bd044383009972f38c332f8210a9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6">RKH_TRREG</a>(e, g, a, t)&nbsp;&nbsp;&nbsp;{ e, g, a, t }</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro defines a regular state transition.  <a href="#ab0fc2ccb4b73d57ea0c0f478353a00f6"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro defines a regular state transition. The general syntax of an expression labelling a transition in a statechart is <em>"i[c]/a"</em> where <em>i</em> is the input that triggers the transition, <em>c</em> is a condition that guards the transition from being taken unless it is true when <em>i</em> occurs, and <em>a</em> is an action that is carried out if and when the transition is taken. All of these parts are optional.  <a href="#ab0fc2ccb4b73d57ea0c0f478353a00f6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf">RKH_TRINT</a>(e, g, a)&nbsp;&nbsp;&nbsp;{ e, g, a, NULL }</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro defines an internal state transition.  <a href="#ac257d157f98ef172e5e8c8725a293bdf"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro defines an internal state transition. Internal transitions are simple reactions to events that never lead to change of state and consequently never cause execution of exit actions, entry actions, or initial transitions.  <a href="#ac257d157f98ef172e5e8c8725a293bdf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>&nbsp;&nbsp;&nbsp;RKH_ETRTBL};</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro is used to terminate a state transition table. This table have the general structure shown below:  <a href="#a0e90290b709c86a39384ea5a4c95ac4f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>(name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033">RKH_BRANCH</a>(g, a, t)&nbsp;&nbsp;&nbsp;{ 0, g, a, t }</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro defines a branch in the branch table.  <a href="#ad1ebb38b7398d7f4ec60ef3e0922d033"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a179912e226da08c982c9e93d77886c53"></a><!-- doxytag: member="rkh.h::RKH_END_BRANCH_TABLE" ref="a179912e226da08c982c9e93d77886c53" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>&nbsp;&nbsp;&nbsp;RKH_EBTBL};</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro is used to terminate a state transition table. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53">RKH_END_BRANCH_TABLE</a>&nbsp;&nbsp;&nbsp;RKH_EBTBL};</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro is used to terminate a state transition table. This table have the general structure shown below:  <a href="#a179912e226da08c982c9e93d77886c53"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2b1332a21797445c49710b6074ddb9b"></a><!-- doxytag: member="rkh.h::RKH_ROOT" ref="af2b1332a21797445c49710b6074ddb9b" args="" -->
 #define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b">RKH_ROOT</a>&nbsp;&nbsp;&nbsp;NULL</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro indicates the root state of a state machine. <br/></td></tr>
@@ -71,13 +72,15 @@
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#afafab03a0e8aa09a8ef350afa1c59964">RKH_DCLR_SM_GLOBAL</a>(sm_t, sm, gob)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declares a previously created state machine to be used as a global object.  <a href="#afafab03a0e8aa09a8ef350afa1c59964"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633">rkh_alloc_event</a>(et, e)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro dynamically creates a new event of type 'et' with the signal.  <a href="#aa3d052c0df7c60868b53bb1b4eafd633"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro dynamically creates a new event of type 'et' with its signal.  <a href="#aa3d052c0df7c60868b53bb1b4eafd633"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a17ecc578a95f10567c300a1cf648e13d">rkh_set_static_event</a>(evt, es)&nbsp;&nbsp;&nbsp;mksevt( evt, es )</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro set the event 'evt' with 'e' signal and establishes it as one static event.  <a href="#a17ecc578a95f10567c300a1cf648e13d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ae32100c17bee5afab9b31d9132ad41bb">rkh_get_cstate_id</a>(ph)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state ID of state machine control block.  <a href="#ae32100c17bee5afab9b31d9132ad41bb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a9417335cf8e391658a5566c695c2813b">rkh_get_cstate_name</a>(ph)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the current state name of state machine control block.  <a href="#a9417335cf8e391658a5566c695c2813b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a1475446904ee4cfabcdf22baebf57d1c">rkh_get_sm_name</a>(ph)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state machine's name.  <a href="#a1475446904ee4cfabcdf22baebf57d1c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a7fe577bfbd5492f9e946a22d1e88c70d">rkh_get_data</a>(ph)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This macro retrieves the state-machine's data.  <a href="#a7fe577bfbd5492f9e946a22d1e88c70d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#aafa7b99c6789668667bf529f20bb6c65">rkh_get_sdata</a>(ph)</td></tr>
@@ -120,9 +123,9 @@
  }</td></tr>
 <tr><td colspan="2"><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ad45fff41ba029b0548a744a846fba126">rkh_put_fifo</a> (HUInt qd, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *evt)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Posts an event directly to the event queue <em>qd</em> using the LIFO policy.  <a href="#ad45fff41ba029b0548a744a846fba126"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Posts an event directly to the event queue <em>qd</em> using the FIFO policy.  <a href="#ad45fff41ba029b0548a744a846fba126"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#ac66a92c3f209ce2da2b0710e691412bf">rkh_put_lifo</a> (HUInt qd, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *evt)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Posts an event directly to the event queue <em>qd</em> using the FIFO policy.  <a href="#ac66a92c3f209ce2da2b0710e691412bf"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Posts an event directly to the event queue <em>qd</em> using the LIFO policy.  <a href="#ac66a92c3f209ce2da2b0710e691412bf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#af359d4e8f6cec6ca30f5797ee263af52">rkh_defer</a> (HUInt qd, <a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *evt)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Defer an event to a given separate event queue.  <a href="#af359d4e8f6cec6ca30f5797ee263af52"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_r_k_h_e_v_t___t.html">RKHEVT_T</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="rkh_8h.html#a7a45f14cc8f32bcad2798dafbe28ed1d">rkh_recall</a> (HUInt qdd, HUInt qds)</td></tr>
@@ -186,9 +189,9 @@
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 (et*)<a class="code" href="rkhitl_8h.html#adbd1a50ba630ea1a0dc689f14f28801b">rkh_ae</a>(<span class="keyword">sizeof</span>(et),(<a class="code" href="rkhitl_8h.html#a0bf45cc6ed91f21b3c840d0b29c450b2">RKHE_T</a>)(e))
 </pre></div>
-<p>This macro dynamically creates a new event of type 'et' with the signal. </p>
-<p>The basic policy is to allocate the event from the first pool that has a block size big enough to fit the requested event size. RKH can manage up to three event pools (e.g., small, medium, and large events, like shirt sizes). Thus, ensure the It returns a pointer to the event already cast to the event type (et*). Here is an example of dynamic event allocation with the macro <a class="el" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633" title="This macro dynamically creates a new event of type &#39;et&#39; with the signal.">rkh_alloc_event()</a>:</p>
-<div class="fragment"><pre class="fragment">    MYEVT_T *mye = <a class="code" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633" title="This macro dynamically creates a new event of type &amp;#39;et&amp;#39; with the signal.">rkh_alloc_event</a>( MYEVT_T, DATA );
+<p>This macro dynamically creates a new event of type 'et' with its signal. </p>
+<p>The basic policy is to allocate the event from the first pool that has a block size big enough to fit the requested event size. RKH can manage up to three event pools (e.g., small, medium, and large events, like shirt sizes). It returns a pointer to the event already cast to the event type (et*). Here is an example of dynamic event allocation with the macro <a class="el" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633" title="This macro dynamically creates a new event of type &#39;et&#39; with its signal.">rkh_alloc_event()</a>:</p>
+<div class="fragment"><pre class="fragment">    MYEVT_T *mye = <a class="code" href="rkh_8h.html#aa3d052c0df7c60868b53bb1b4eafd633" title="This macro dynamically creates a new event of type &amp;#39;et&amp;#39; with its signal.">rkh_alloc_event</a>( MYEVT_T, DATA );
     mye-&gt;y = mye-&gt;x = 0;
     ...
 </pre></div><dl class="note"><dt><b>Note:</b></dt><dd>The assertions inside <a class="el" href="rkhitl_8h.html#adbd1a50ba630ea1a0dc689f14f28801b">rkh_ae()</a> function guarantee that the pointer is valid, so you don't need to check the pointer returned from <a class="el" href="rkhitl_8h.html#adbd1a50ba630ea1a0dc689f14f28801b">rkh_ae()</a>, unlike the value returned from malloc(), which you should check.</dd></dl>
@@ -200,7 +203,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00731">731</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00827">827</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -231,8 +234,13 @@
 <div class="memdoc">
 
 <p>This macro defines a branch in the branch table. </p>
-<p>Each condition connector can have one special branch with a guard labeled rkh_else, which is taken if all the guards on the other branches are false.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</dd></dl>
+<p>Each condition connector can have one special branch with a guard labeled rkh_else, which is taken if all the guards on the other branches are false. The general syntax of an expression labelling a branch in a statechart is <em>"[c]/a"</em> where <em>c</em> is a condition that guards the transition from being taken unless it is true, and <em>a</em> is an action that is carried out if and when the transition is taken. All of these parts are optional.</p>
+<p>Example: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>( C1 )
+        <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( power_ok,   enable_process, &amp;S22    ),
+        <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( <a class="code" href="rkh_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>,       abort,          &amp;S4     ),
+        <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>
+</pre></div><dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>g</em>&nbsp;</td><td>branch guard. Branches are labeled with guards that determine which one is to be actually taken. Use rkh_else when if all the guards on the other branches are false. </td></tr>
@@ -242,7 +250,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00488">488</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00570">570</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -329,8 +337,15 @@
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
-                                <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( name )
-</pre></div><p>This macro creates a branch table. Use the 'RKH_END_BRANCH_TABLE' macro to terminate the branch table. Use rkh_else when if all the guards on the other branches are false.</p>
+                                <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( name )
+</pre></div><p>This macro creates a branch table. This table have the general structure shown below: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>( ps_name )          <span class="comment">// branch table begin</span>
+        <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( ... )                       <span class="comment">// branch</span>
+        <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( ... )                       <span class="comment">// branch</span>
+        ...
+    <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>                        <span class="comment">// branch table end</span>
+</pre></div><p>Each branch table always begins with the macro <a class="el" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE()</a> and ends with the macro <a class="el" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE()</a>. In RKH branches are defined by the macro <a class="el" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH()</a>.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd>This macro is not terminated with the semicolon. Use rkh_else() when if all the guards on the other branches are false.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>conditional pseudostate name. </td></tr>
@@ -338,7 +353,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00464">464</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00534">534</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -717,7 +732,15 @@
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment">\
                                 <span class="keyword">static</span> rkhrom <a class="code" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> name##_trtbl[]={
-</pre></div><p>This macro creates a state transition table. Use the 'RKH_END_TRANS_TABLE' macro to terminate the transition table.</p>
+</pre></div>
+<p>This macro creates a state transition table. This table have the general structure shown below: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( state_name )        <span class="comment">// transition table begin</span>
+        RKH_TRxx( ... )                         <span class="comment">// transition</span>
+        RKH_TRxx( ... )                         <span class="comment">// transition</span>
+        ...
+    <a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>                         <span class="comment">// transition table end</span>
+</pre></div><p>Each transition table always begins with the macro <a class="el" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE()</a> and ends with the macro <a class="el" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE()</a>. As noted above, sandwiched between these macros are the transitions macros that actually represent behavior of state.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd>This macro is not terminated with the semicolon.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>state name. </td></tr>
@@ -725,7 +748,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00403">403</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00419">419</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +765,7 @@
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00549">549</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00645">645</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -759,7 +782,7 @@
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00548">548</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00644">644</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -776,7 +799,7 @@
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00550">550</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00646">646</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -793,7 +816,7 @@
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00552">552</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00648">648</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -824,7 +847,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00536">536</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00632">632</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -841,7 +864,7 @@
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00551">551</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00647">647</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -858,7 +881,7 @@
 <p>Declares a previously created state/pseudostate to be used as a global object.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's header file. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00553">553</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00649">649</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -917,7 +940,31 @@
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>Generally, this macro is used in the state-machine's module. </dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00593">593</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00689">689</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a179912e226da08c982c9e93d77886c53"></a><!-- doxytag: member="rkh.h::RKH_END_BRANCH_TABLE" ref="a179912e226da08c982c9e93d77886c53" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RKH_END_BRANCH_TABLE&nbsp;&nbsp;&nbsp;RKH_EBTBL};</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>This macro is used to terminate a state transition table. This table have the general structure shown below: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>( ps_name )          <span class="comment">// branch table begin</span>
+        <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( ... )                       <span class="comment">// branch</span>
+        <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( ... )                       <span class="comment">// branch</span>
+        ...
+    <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>                        <span class="comment">// branch table end</span>
+</pre></div><p>Each branch table always begins with the macro <a class="el" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE()</a> and ends with the macro <a class="el" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE()</a>.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd>This macro is not terminated with the semicolon. </dd></dl>
+
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00600">600</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -931,9 +978,17 @@
       </table>
 </div>
 <div class="memdoc">
-<p>This macro is used to terminate a state transition table. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00453">453</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>This macro is used to terminate a state transition table. This table have the general structure shown below: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( state_name )        <span class="comment">// transition table begin</span>
+        RKH_TRxx( ... )                         <span class="comment">// transition</span>
+        RKH_TRxx( ... )                         <span class="comment">// transition</span>
+        ...
+    <a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>                         <span class="comment">// transition table end</span>
+</pre></div><p>Each transition table always begins with the macro <a class="el" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE()</a> and ends with the macro <a class="el" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE()</a>. As noted above, sandwiched between these macros are the transitions macros that actually represent behavior of state.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd>This macro is not terminated with the semicolon. </dd></dl>
+
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00509">509</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -965,7 +1020,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Id of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00833">833</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00929">929</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -997,7 +1052,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Name of current state. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00850">850</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00946">946</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1029,7 +1084,7 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state-machine's data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00866">866</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00980">980</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1117,39 @@
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <p>Pointer to state's abstract data. </p>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00889">889</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l01003">1003</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1475446904ee4cfabcdf22baebf57d1c"></a><!-- doxytag: member="rkh.h::rkh_get_sm_name" ref="a1475446904ee4cfabcdf22baebf57d1c" args="(ph)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define rkh_get_sm_name</td>
+          <td>(</td>
+          <td class="paramtype">ph&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">\
+                                (ph)-&gt;romrkh-&gt;name
+</pre></div>
+<p>This macro retrieves the state machine's name. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>ph</em>&nbsp;</td><td>pointer to state machine control block. Represents a previously created HSM structure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
+<p>Name of state machine. </p>
+
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00963">963</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1102,7 +1189,7 @@
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00784">784</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00880">880</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1132,8 +1219,12 @@
 </div>
 <div class="memdoc">
 
-<p>This macro defines an internal state transition. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</dd></dl>
+<p>This macro defines an internal state transition. Internal transitions are simple reactions to events that never lead to change of state and consequently never cause execution of exit actions, entry actions, or initial transitions. </p>
+<p>Example: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>(  RCV_DATA,           <span class="comment">// triggering event</span>
+                is_sync,            <span class="comment">// guard function</span>
+                store_data )        <span class="comment">// action function</span>
+</pre></div> <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>e</em>&nbsp;</td><td>triggering event. </td></tr>
@@ -1143,7 +1234,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00438">438</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00477">477</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1178,8 +1269,13 @@
 </div>
 <div class="memdoc">
 
-<p>This macro defines a regular state transition. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</dd></dl>
+<p>This macro defines a regular state transition. The general syntax of an expression labelling a transition in a statechart is <em>"i[c]/a"</em> where <em>i</em> is the input that triggers the transition, <em>c</em> is a condition that guards the transition from being taken unless it is true when <em>i</em> occurs, and <em>a</em> is an action that is carried out if and when the transition is taken. All of these parts are optional. </p>
+<p>Example: </p>
+<div class="fragment"><pre class="fragment">    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>(  TOUT0,              <span class="comment">// triggering event</span>
+                is_full,            <span class="comment">// guard function</span>
+                drop_frame,         <span class="comment">// action function</span>
+                &amp;WAIT_SYNC )        <span class="comment">// next state</span>
+</pre></div><dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="struct_r_k_h_t_r___t.html" title="Describes the state transition.">RKHTR_T</a> structure definition for more information.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>e</em>&nbsp;</td><td>triggering event. </td></tr>
@@ -1190,7 +1286,7 @@
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00423">423</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00453">453</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1217,7 +1313,7 @@
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="rkh_8h_source.html#l00605">605</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
+<p>Definition at line <a class="el" href="rkh_8h_source.html#l00701">701</a> of file <a class="el" href="rkh_8h_source.html">rkh.h</a>.</p>
 
 </div>
 </div>
@@ -1536,8 +1632,8 @@
 </div>
 <div class="memdoc">
 
-<p>Posts an event directly to the event queue <em>qd</em> using the LIFO policy. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>For memory efficiency and best performance the AO's event queue, STORE ONLY POINTERS to events, not the whole event objects. The LIFO policy should be used only with great caution because it alters order of events in the queue. At this time, this functions are required only when the user application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1). The assertion inside it guarantee that the pointer is valid, so is not necessary to check the pointer returned from <a class="el" href="rkh_8h.html#ad45fff41ba029b0548a744a846fba126" title="Posts an event directly to the event queue qd using the LIFO policy.">rkh_put_fifo()</a>.</dd></dl>
+<p>Posts an event directly to the event queue <em>qd</em> using the FIFO policy. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>For memory efficiency and best performance the AO's event queue, STORE ONLY POINTERS to events, not the whole event objects. The LIFO policy should be used only with great caution because it alters order of events in the queue. At this time, this functions are required only when the user application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1). The assertion inside it guarantee that the pointer is valid, so is not necessary to check the pointer returned from <a class="el" href="rkh_8h.html#ad45fff41ba029b0548a744a846fba126" title="Posts an event directly to the event queue qd using the FIFO policy.">rkh_put_fifo()</a>.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>qd</em>&nbsp;</td><td>event queue descriptor. </td></tr>
@@ -1573,8 +1669,8 @@
 </div>
 <div class="memdoc">
 
-<p>Posts an event directly to the event queue <em>qd</em> using the FIFO policy. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>For memory efficiency and best performance the AO's event queue, STORE ONLY POINTERS to events, not the whole event objects. At this time, this functions are required only when the user application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1). The assertion inside it guarantee that the pointer is valid, so is not necessary to check the pointer returned from <a class="el" href="rkh_8h.html#ac66a92c3f209ce2da2b0710e691412bf" title="Posts an event directly to the event queue qd using the FIFO policy.">rkh_put_lifo()</a>.</dd></dl>
+<p>Posts an event directly to the event queue <em>qd</em> using the LIFO policy. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>For memory efficiency and best performance the AO's event queue, STORE ONLY POINTERS to events, not the whole event objects. At this time, this functions are required only when the user application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1). The assertion inside it guarantee that the pointer is valid, so is not necessary to check the pointer returned from <a class="el" href="rkh_8h.html#ac66a92c3f209ce2da2b0710e691412bf" title="Posts an event directly to the event queue qd using the LIFO policy.">rkh_put_lifo()</a>.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>qd</em>&nbsp;</td><td>event queue descriptor. </td></tr>
@@ -1618,7 +1714,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jul 14 22:52:25 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 21 02:11:56 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

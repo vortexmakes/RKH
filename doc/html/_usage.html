@@ -270,23 +270,23 @@ Declaring the pseudostates</a></h3>
 <h3><a class="anchor" id="rep_st">
 Declaring transition and branch tables</a></h3>
 <p><br/>
- The basic and composite states requires a state transition table. The <a class="el" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE()</a> macro creates a state transition table. Use the <a class="el" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a> macro to terminate it. Similarly, the condiotional pseudostates requires a branch table. This <a class="el" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a> macro creates a branch table. Use the <a class="el" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table.">RKH_END_BRANCH_TABLE</a> macro to terminate it.</p>
+ The basic and composite states requires a state transition table. The <a class="el" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE()</a> macro creates a state transition table. Use the <a class="el" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a> macro to terminate it. Similarly, the condiotional pseudostates requires a branch table. This <a class="el" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a> macro creates a branch table. Use the <a class="el" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a> macro to terminate it.</p>
 <p><br/>
  According to "my" state diagram the state transition table of state "S2" looks as follow:</p>
-<div class="fragment"><pre class="fragment">(1) <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S2 )
+<div class="fragment"><pre class="fragment">(1) <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S2 )
 
-(2)     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
-(3)     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
-        <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
-(4)     <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
-        <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT</a>( SIX,     NULL,       show_data ),
+(2)     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
+(3)     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
+        <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
+(4)     <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
+        <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
-(5) <a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a> 
+(5) <a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a> 
 </pre></div><ul>
 <li>(1) Declares the state transition table of state "S2".</li>
 </ul>
 <ul>
-<li>(2) Declares a regular transition using <a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG()</a> macro. Where:<ul>
+<li>(2) Declares a regular transition using <a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG()</a> macro. Where:<ul>
 <li><b>event</b> = "ONE". Triggering event.</li>
 <li><b>guard</b> = "x_equal_1". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
 <li><b>action</b> = "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
@@ -295,7 +295,7 @@ Declaring transition and branch tables</a></h3>
 </li>
 </ul>
 <ul>
-<li>(3) Declares a regular transition using <a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG()</a> macro. Note that the RKH implementation supports exclusively the local state transition semantics, that is, a local transition doesn't cause exit from the source state if the target state is a substate of the source. In addition, local state transition doesn't cause exit and reentry to the target state if the target is a superstate of the source state. Where:<ul>
+<li>(3) Declares a regular transition using <a class="el" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG()</a> macro. Note that the RKH implementation supports exclusively the local state transition semantics, that is, a local transition doesn't cause exit from the source state if the target state is a substate of the source. In addition, local state transition doesn't cause exit and reentry to the target state if the target is a superstate of the source state. Where:<ul>
 <li><b>event</b> = "TWO". Triggering event.</li>
 <li><b>guard</b> = "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
 <li><b>action</b> = "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
@@ -304,7 +304,7 @@ Declaring transition and branch tables</a></h3>
 </li>
 </ul>
 <ul>
-<li>(4) Declares an internal transition using <a class="el" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT()</a> macro. Where:<ul>
+<li>(4) Declares an internal transition using <a class="el" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT()</a> macro. Where:<ul>
 <li><b>event</b> = "FOUR". Triggering event.</li>
 <li><b>guard</b> = "NULL". Pointer to guard function. This argument is optional, thus it could be declared as NULL.</li>
 <li><b>action</b> = "dummy_act". Pointer to action function. This argument is optional, thus it could be declared as NULL.</li>
@@ -320,7 +320,7 @@ Declaring transition and branch tables</a></h3>
 (2)     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( x1,         dummy_act,  &amp;S3 ),
         <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( x2_or_x3,   NULL,       &amp;S32 ),
 (3)     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( <a class="code" href="rkh_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>,       NULL,       &amp;S2 ),
-(4) <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table.">RKH_END_BRANCH_TABLE</a>
+(4) <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>
 </pre></div><ul>
 <li>(1) Declares the branch table of state of "C2".</li>
 </ul>
@@ -346,82 +346,82 @@ Declaring transition and branch tables</a></h3>
 <span class="comment"> */</span>
 
 <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S2, 0, NULL, NULL,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S2 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S2 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
-    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
-    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT</a>( SIX,     NULL,       show_data ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S2 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;C2 ),
+    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>( FOUR,    NULL,       dummy_act ),
+    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, &amp;S11, &amp;DH );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S1 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S1 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( FIVE,    NULL,       NULL,       &amp;S12 ),
-    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT</a>( SIX,     NULL,       show_data ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( FIVE,    NULL,       NULL,       &amp;S12 ),
+    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S12, 0, set_x_3, NULL, &amp;S1, NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S12 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S12 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;J ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( FOUR,    NULL,       set_y_1,    &amp;S2 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;J ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( FOUR,    NULL,       set_y_1,    &amp;S2 ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S11, 0, NULL, NULL, &amp;S1, &amp;S111, &amp;H );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S11 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S11 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S112 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( FOUR,    NULL,       NULL,       &amp;S12 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S112 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( FOUR,    NULL,       NULL,       &amp;S12 ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S111, 0, set_x_1, NULL, &amp;S11, NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S111 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S111 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S112 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S112 ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S112, 0, set_x_2, NULL, &amp;S11, NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S112 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S112 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S111 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S11 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;J ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S111 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;S11 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;J ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#a7a5376dd9929642f5b6e31def6d92bb4" title="This macro creates a shallow history pseudostate.">RKH_CREATE_SHALLOW_HISTORY_STATE</a>( H, 0, &amp;S11 );
 <a class="code" href="rkh_8h.html#a49995aa34cddd68fcc6416655ca408f8" title="This macro creates a deep history pseudostate.">RKH_CREATE_DEEP_HISTORY_STATE</a>( DH, 0, &amp;S1 );
 
 <a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S3, 0, NULL, NULL,  RKH_ROOT, &amp;S31,  NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S3 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S3 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;C1 ),
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
-    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition.">RKH_TRINT</a>( SIX,     NULL,       show_data ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( TWO,     NULL,       NULL,       &amp;C1 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
+    <a class="code" href="rkh_8h.html#ac257d157f98ef172e5e8c8725a293bdf" title="This macro defines an internal state transition. Internal transitions are simple...">RKH_TRINT</a>( SIX,     NULL,       show_data ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S31, 0, NULL, NULL, &amp;S3, NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S31 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S31 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S32 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S32 ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 <a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S32, 0, NULL, NULL, &amp;S3, NULL );
-<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9">RKH_CREATE_TRANS_TABLE</a>( S32 )
+<a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S32 )
 
-    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition.">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S31 ),
+    <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     NULL,       NULL,       &amp;S31 ),
 
-<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f">RKH_END_TRANS_TABLE</a>
+<a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
 
 <a class="code" href="rkh_8h.html#a9f73c81d95a4bd5bec21e10ea6f05add" title="This macro creates a junction pseudostate.">RKH_CREATE_JUNCTION_STATE</a>( J, 0, NULL, &amp;S3 );
@@ -432,7 +432,7 @@ Declaring transition and branch tables</a></h3>
     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( y1,     NULL,       &amp;H ),
     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( y2,     dummy_act,  &amp;DH ),
 
-<a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table.">RKH_END_BRANCH_TABLE</a>
+<a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>
 
 <a class="code" href="rkh_8h.html#ade7387dead9112bd67580de3350aee51" title="This macro creates a conditional pseudostate.">RKH_CREATE_COND_STATE</a>( C2, 0 );
 <a class="code" href="rkh_8h.html#a57353c7dab6539b0a7ae92142b73ad2e">RKH_CREATE_BRANCH_TABLE</a>( C2 )
@@ -441,7 +441,7 @@ Declaring transition and branch tables</a></h3>
     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( x2_or_x3,   NULL,       &amp;S32 ),
     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( <a class="code" href="rkh_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>,       NULL,       &amp;S2 ),
 
-<a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table.">RKH_END_BRANCH_TABLE</a>
+<a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>
 </pre></div><h3><a class="anchor" id="rep_inc">
 Including files</a></h3>
 <p>The following listing shows a fragment of "my.c" source file, which illustatres some aspects of implementing state machines with RKH.</p>
@@ -771,7 +771,7 @@ Running</a></h2>
 <li>(9) Terminates the program and close debug session. </li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu Jul 14 22:52:25 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 21 02:11:56 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
