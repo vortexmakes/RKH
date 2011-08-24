@@ -394,8 +394,24 @@ typedef enum
 
 
 /**
- *	This macro creates a state transition table. Use the 
- *	'RKH_END_TRANS_TABLE' macro to terminate the transition table.
+ * 	\brief
+ *	This macro creates a state transition table. This table have the general 
+ *	structure shown below:
+ *	\code
+ *	RKH_CREATE_TRANS_TABLE( state_name )		// transition table begin
+ *		RKH_TRxx( ... )							// transition
+ *		RKH_TRxx( ... )							// transition
+ *		...
+ *	RKH_END_TRANS_TABLE							// transition table end
+ *	\endcode
+ *
+ * 	Each transition table always begins with the macro RKH_CREATE_TRANS_TABLE() 
+ * 	and ends with the macro RKH_END_TRANS_TABLE().
+ *	As noted above, sandwiched between these macros are the transitions macros 
+ *	that actually represent behavior of state.
+ *
+ *	\sa
+ *	This macro is not terminated with the semicolon.
  *
  * 	\param name		state name.
  */
@@ -408,6 +424,20 @@ typedef enum
 /**
  * 	\brief
  *	This macro defines a regular state transition.
+ *	The general syntax of an expression labelling a transition in a 
+ *	statechart is \e "i[c]/a" where \e i is the input that triggers the 
+ *	transition, \e c is a condition that guards the transition from being 
+ *	taken unless it is true when \e i occurs, and \e a is an action that 
+ *	is carried out if and when the transition is taken. All of these parts 
+ *	are optional.
+ *
+ *	Example:
+ *	\code
+ *	RKH_TRREG( 	TOUT0, 				// triggering event
+ *				is_full, 			// guard function
+ *				drop_frame, 		// action function
+ *				&WAIT_SYNC )		// next state
+ *	\endcode
  *
  *	\sa
  *	RKHTR_T structure definition for more information.
@@ -426,7 +456,16 @@ typedef enum
 /**
  * 	\brief
  *	This macro defines an internal state transition.
+ *	Internal transitions are simple reactions to events that never lead 
+ *	to change of state and consequently never cause execution of exit 
+ *	actions, entry actions, or initial transitions.
  *
+ *	Example:
+ *	\code
+ *	RKH_TRINT( 	RCV_DATA, 			// triggering event
+ *				is_sync, 			// guard function
+ *				store_data ) 		// action function
+ *	\endcode
  *	\sa
  *	RKHTR_T structure definition for more information.
  *
@@ -447,16 +486,47 @@ typedef enum
 
 
 /**
+ * 	\brief
  *	This macro is used to terminate a state transition table.
+ *	This table have the general structure shown below:
+ *	\code
+ *	RKH_CREATE_TRANS_TABLE( state_name )		// transition table begin
+ *		RKH_TRxx( ... )							// transition
+ *		RKH_TRxx( ... )							// transition
+ *		...
+ *	RKH_END_TRANS_TABLE							// transition table end
+ *	\endcode
+ *
+ * 	Each transition table always begins with the macro RKH_CREATE_TRANS_TABLE() 
+ * 	and ends with the macro RKH_END_TRANS_TABLE().
+ *	As noted above, sandwiched between these macros are the transitions macros 
+ *	that actually represent behavior of state.
+ *
+ *	\sa
+ *	This macro is not terminated with the semicolon.
  */
 
 #define RKH_END_TRANS_TABLE		RKH_ETRTBL};
 
 
 /**
- *	This macro creates a branch table. Use the 
- *	'RKH_END_BRANCH_TABLE' macro to terminate the branch table.
- *	Use rkh_else when if all the guards on the other branches are false.
+ *	This macro creates a branch table. This table have the general 
+ *	structure shown below:
+ *	\code
+ *	RKH_CREATE_BRANCH_TABLE( ps_name )			// branch table begin
+ *		RKH_BRANCH( ... )						// branch
+ *		RKH_BRANCH( ... )						// branch
+ *		...
+ *	RKH_END_BRANCH_TABLE						// branch table end
+ *	\endcode
+ *
+ * 	Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE() 
+ * 	and ends with the macro RKH_END_BRANCH_TABLE().
+ * 	In RKH branches are defined by the macro RKH_BRANCH().
+ *
+ *	\sa
+ *	This macro is not terminated with the semicolon. 
+ *	Use rkh_else() when if all the guards on the other branches are false.
  *
  * 	\param name		conditional pseudostate name.
  */
@@ -473,6 +543,18 @@ typedef enum
  *	Each condition connector can have one special branch with a guard 
  *	labeled rkh_else, which is taken if all the guards on the other 
  *	branches are false.
+ *	The general syntax of an expression labelling a branch in a statechart is
+ *	\e "[c]/a" where \e c is a condition that guards the transition from 
+ *	being taken unless it is true, and \e a is an action that is carried out 
+ *	if and when the transition is taken. All of these parts are optional. 
+ *	
+ *	Example:
+ *	\code
+ *	RKH_CREATE_BRANCH_TABLE( C1 )
+ *		RKH_BRANCH( power_ok, 	enable_process,	&S22	),
+ *		RKH_BRANCH( ELSE, 		abort,			&S4 	),
+ *		RKH_END_BRANCH_TABLE
+ *	\endcode
  *
  *	\sa
  *	RKHTR_T structure definition for more information.
@@ -499,6 +581,20 @@ typedef enum
 /**
  * 	\brief
  *	This macro is used to terminate a state transition table.
+ *	This table have the general structure shown below:
+ *	\code
+ *	RKH_CREATE_BRANCH_TABLE( ps_name )			// branch table begin
+ *		RKH_BRANCH( ... )						// branch
+ *		RKH_BRANCH( ... )						// branch
+ *		...
+ *	RKH_END_BRANCH_TABLE						// branch table end
+ *	\endcode
+ *
+ * 	Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE() 
+ * 	and ends with the macro RKH_END_BRANCH_TABLE().
+ *
+ *	\sa
+ *	This macro is not terminated with the semicolon. 
  */
 
 #define RKH_END_BRANCH_TABLE	RKH_EBTBL};
@@ -611,7 +707,7 @@ enum
 
 /**
  *	\brief
- *	Posts an event directly to the event queue \a qd using the LIFO policy.
+ *	Posts an event directly to the event queue \a qd using the FIFO policy.
  *
  * 	\note 
  *	For memory efficiency and best performance the AO's event queue, 
@@ -632,7 +728,7 @@ void rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
 
 /**
  *	\brief
- *	Posts an event directly to the event queue \a qd using the FIFO policy.
+ *	Posts an event directly to the event queue \a qd using the LIFO policy.
  *
  * 	\note
  *	For memory efficiency and best performance the AO's event queue, 
@@ -703,12 +799,12 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
 
 /**
  * 	\brief
- *	This macro dynamically creates a new event of type 'et' with the signal.
+ *	This macro dynamically creates a new event of type 'et' with its signal.
  *
  *	The basic policy is to allocate the event from the first pool that has 
  *	a block size big enough to fit the requested event size.
  *	RKH can manage up to three event pools (e.g., small, medium, and 
- *	large events, like shirt sizes). Thus, ensure the 
+ *	large events, like shirt sizes).
  *	It returns a pointer to the event already cast to the event type 
  *	(et*). Here is an example of dynamic event allocation with the macro 
  *	rkh_alloc_event():
@@ -850,6 +946,24 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
 #define rkh_get_cstate_name( ph )										\
 																		\
 								((RKHBASE_T*)(ph->state))->name	
+
+
+/**	
+ * 	\brief
+ * 	This macro retrieves the state machine's name.
+ *
+ * 	\param ph 		pointer to state machine control block. Represents a 
+ * 					previously created HSM structure.
+ *
+ * 	\returns
+ *
+ * 	Name of state machine.
+ */
+
+#define rkh_get_sm_name( ph )											\
+																		\
+								(ph)->romrkh->name
+
 
 /**	
  * 	\brief

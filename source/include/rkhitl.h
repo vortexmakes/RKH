@@ -1090,9 +1090,15 @@ struct rkh_t;
  * 	Entry action.
  *
  * 	The actions that are always executed when a state is entered 
- * 	should be specified as entry actions.
+ * 	should be specified as entry actions. UML statecharts provide optional 
+ * 	entry and exit actions, which are associated with states rather than 
+ * 	transitions, as in a Moore automaton.
  * 	An entry function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
+ * 	RKH_CREATE_BASIC_STATE() macros.
  * 	\b RKH_EN_ENT_HSM_ARG macro.
  */
 
@@ -1126,10 +1132,16 @@ struct rkh_t;
  * 	Exit action.
  *
  * 	The actions that are always execute when a state is exited should be 
- * 	exit actions.
+ * 	exit actions. UML statecharts provide optional entry and exit actions, 
+ * 	which are associated with states rather than transitions, as in a 
+ * 	Moore automaton.
  * 	An exit function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
  * 	\b RKH_EN_EXT_HSM_ARG.
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
+ * 	RKH_CREATE_BASIC_STATE() macros.
  */
 
 #if RKH_EN_EXT_HSM_ARG == 1
@@ -1160,11 +1172,18 @@ struct rkh_t;
  * 	\brief
  * 	Initialization action.
  *
- * 	The application code must trigger the initial transition explicitly 
- * 	by invoking rkh_init_hsm() function.
+ * 	Frequently, the state transition originating at the black ball is called 
+ * 	the initial transition. Such transition designates the first active state 
+ * 	after the state machine object is created. An initial transition can have 
+ * 	associated actions, which in the UML notation are enlisted after the forward 
+ * 	slash ( / ). In RKH framework, the application code must trigger the initial 
+ * 	transition explicitly by invoking rkh_init_hsm() function.
  * 	An init function takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
  * 	\b RKH_EN_INIT_HSM_ARG macro.
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_CREATE_HSM() macro.
  */
 
 #if RKH_EN_INIT_HSM_ARG == 1
@@ -1196,9 +1215,16 @@ struct rkh_t;
  *
  * 	Before sending the arrived event to state machine, it can be previously 
  * 	processed using the	event preprocessor function.
+ * 	Additionally, the RKH framework provide optional event preprocessor 
+ * 	action, which are associated with states rather than transitions, 
+ * 	as in a Moore automaton.
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. The first parameter is optional in compile-time
  * 	according to \b RKH_EN_PPRO_HSM_ARG macro.
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
+ * 	RKH_CREATE_BASIC_STATE() macros.
  */
 
 #if RKH_EN_PPRO_HSM_ARG == 1
@@ -1220,10 +1246,19 @@ struct rkh_t;
  *
  * 	Actions are small atomic behaviors executed at specified points 
  * 	in a state machine. Actions are assumed to take an insignificant 
- * 	amount of time to execute and are noninterruptible.
+ * 	amount of time to execute and are noninterruptible. UML statecharts 
+ * 	are extended state machines with characteristics of both Mealy and 
+ * 	Moore automata. In statecharts, actions generally depend on both 
+ * 	the state of the system and the triggering event, as in a Mealy 
+ * 	automaton. Additionally, UML statecharts provide optional entry and 
+ * 	exit actions, which are associated with states rather than transitions, 
+ * 	as in a Moore automaton.
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
  * 	according to \b RKH_EN_ACT_EVT_ARG and \b RKH_EN_ACT_HSM_ARG.
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
  */
 
 #if RKH_EN_ACT_EVT_ARG == 1 && RKH_EN_ACT_HSM_ARG == 1
@@ -1260,14 +1295,15 @@ struct rkh_t;
  *	guard evaluates to TRUE. As long as the guard evaluated to FALSE, 
  *	the triggering event would be discarded and the transition would 
  *	not be taken.
- *	
  *	Each condition connector can have one special branch with a guard 
  *	labeled rkh_else, which is taken if all the guards on the other 
  *	branches are false. 
- *
  * 	A guard function takes the state machine pointer and the event 
  * 	pointer as arguments. These parameters are optional in compile-time
  * 	according to \b RKH_EN_GRD_EVT_ARG and \b RKH_EN_GRD_HSM_ARG.
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_BRANCH() macro. 
  */
 
 #if RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 1
