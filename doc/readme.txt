@@ -1465,7 +1465,7 @@ that the event is no longer referenced.
 <HR>
 \section qref9 Using assertions
 
-\todo
+\copydetails rkhassert.h
 
 <HR>
 \section qref10 Debugging an application based on RKH's state machines

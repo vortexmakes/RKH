@@ -1004,7 +1004,7 @@ ENUM_VALUES_PER_LINE   = 2
 # JavaScript, DHTML, CSS and frames is required (i.e. any modern browser). 
 # Windows users are probably better off using the HTML help feature.
 
-GENERATE_TREEVIEW      = YES
+GENERATE_TREEVIEW      = NO
 
 # By enabling USE_INLINE_TREES, doxygen will generate the Groups, Directories, 
 # and Class Hierarchy pages using a tree view instead of an ordered list.
@@ -1033,7 +1033,7 @@ FORMULA_FONTSIZE       = 10
 # typically be disabled. For large projects the javascript based search engine 
 # can be slow, then enabling SERVER_BASED_SEARCH may provide a better solution.
 
-SEARCHENGINE           = NO
+SEARCHENGINE           = YES
 
 # When the SERVER_BASED_SEARCH tag is enabled the search engine will be
 # implemented using a PHP enabled web server instead of at the web client
@@ -1350,7 +1350,6 @@ PREDEFINED             = RKH_EN_DYNAMIC_EVENT \
                          RKH_EN_GET_INFO \
                          RKH_TRACE_ALL \
                          RKH_ASSERT \
-                         rkh_assert \
                          RKH_EN_DOXYGEN
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
