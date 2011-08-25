@@ -11,6 +11,7 @@
 #include "my.h"
 #include "myevt.h"
 #include "rkhdata.h"
+#include "rkhassert.h"
 
 
 #define tostring( expr )		#expr
@@ -184,6 +185,14 @@ rkh_trace_flush( void )
 													smmap[ te.smix ],
 													format_trevt_args( &te ) );
 	}
+}
+
+
+void 
+rkh_assert( rkhrom char * const file, HUInt fnum, int line )
+{
+	printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, file, fnum );
+	__debugbreak();
 }
 
 

@@ -10,6 +10,7 @@
 #include "rkh.h"
 #include "my.h"
 #include "myevt.h"
+#include "rkhassert.h"
 
 
 #define tostring( expr )		#expr
@@ -183,6 +184,15 @@ RKHTS_T
 rkh_trace_getts( void )
 {
 	return ( RKHTS_T )clock();
+}
+
+
+void 
+rkh_assert( rkhrom char * const file, HUInt fnum, int line )
+{
+	printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, file, fnum );
+	for(;;)
+		;
 }
 
 

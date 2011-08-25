@@ -63,9 +63,6 @@
 #define RKH_MAX_TRACE_STRING_SIZE	4	/*	Defines the size of string argument of trace event */
 
 #define RKH_ASSERT					1	/* 	Enable (1) or Disable (0) assert support. */
-#define rkh_assert( event )			printf( "RKHASSERT = [%02d] from %s()", 	\
-														event, __FUNCTION__ );	\
-									__debugbreak();
 
 
 #endif
