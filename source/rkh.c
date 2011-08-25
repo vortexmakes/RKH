@@ -38,6 +38,8 @@
 #include "rkhassert.h"
 
 
+RKH_THIS_MODULE( 1, rkh );
+
 #define EXIT_LIST						0x0
 #define ACT_LIST						0x01
 #define SN_LIST							0x02
@@ -309,8 +311,7 @@ rkh_init_hsm( RKH_T *ph )
 #endif
 
     rkhassert( 	ph != NULL && 
-				ph->romrkh->init_state != NULL,
-				RKH_IHSM_SM_BAD_PARAMS );
+				ph->romrkh->init_state != NULL );
 
 	rkh_rec_init_hsm( te, ph->romrkh->id, CB( ph->romrkh->init_state )->id, 
 										stname( ph->romrkh->init_state ) );
@@ -357,7 +358,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 	HUInt step;
 #endif
 
-    rkhassert( 	ph != NULL && pe != NULL, RKH_ENG_SM_BAD_PARAMS );
+    rkhassert( 	ph != NULL && pe != NULL );
 
 	pgh = ph;
 	pgevt = pe;
@@ -407,7 +408,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 	if( rkh_add_list( &act_list, tr->action, RKH_MAX_TR_SEGS ) )
 	{
 		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_TR_SEGS );
-		rkhassert( 0, RKH_ENG_EXCEED_TR_SEGS );
+		rkherror();
 		return RKH_EXCEED_TR_SEGS;
 	}
 
@@ -455,7 +456,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_HCAL_LEVEL );
-						rkhassert( 0, RKH_ENG_EXCEED_HCAL_LEVEL );
+						rkherror();
 						return RKH_EXCEED_HCAL_LEVEL;
 					}
 
@@ -488,7 +489,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
-						rkhassert( 0, RKH_ENG_EXCEED_TR_SEGS );
+						rkherror();
 						return RKH_EXCEED_TR_SEGS;
 					}
 
@@ -507,7 +508,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
-						rkhassert( 0, RKH_ENG_EXCEED_TR_SEGS );
+						rkherror();
 						return RKH_EXCEED_TR_SEGS;
 					}
 
@@ -532,7 +533,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					break;
 				default:
 					rkh_rec_rtn_code( te, ph->romrkh->id, RKH_UNKNOWN_STATE );
-					rkhassert( 0, RKH_ENG_UNKNOWN_STATE );
+					rkherror();
 					return RKH_UNKNOWN_STATE;
 			}
 
@@ -549,7 +550,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		else if( rkh_add_list( &snd, CV( ets ), RKH_MAX_HCAL_DEPTH ) )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
-			rkhassert( 0, RKH_ENG_EXCEED_HCAL_LEVEL );
+			rkherror();
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
 #endif
@@ -572,7 +573,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		if( rkh_make_setxn( &sx, ss ) || rkh_make_setxn( &sn, ts ) )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
-			rkhassert( 0, RKH_ENG_EXCEED_HCAL_LEVEL );
+			rkherror();
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
 
@@ -682,12 +683,12 @@ rkh_ae( rkhuint8 es, RKHE_T e )
 	{
         ++idx;
 									  /* cannot run out of registered pools */
-        rkhassert( idx < RKH_DYNE_NUM_POOLS, RKH_AE_RUNOUT_POOLS );
+        rkhassert( idx < RKH_DYNE_NUM_POOLS );
     }
 
     rkh_dyne_get( idx, evt );        		 /* get e -- platform-dependent */
 							             /* pool must not run out of events */
-    rkhassert( evt != NULL, RKH_AE_NOT_ALLOC );
+    rkhassert( evt != NULL );
     evt->e = e;                                /* set signal for this event */
 
 	/* 
@@ -717,7 +718,7 @@ rkh_gc( RKHEVT_T *evt )
             rkhuint8 idx = (rkhuint8)( ( evt->dynamic_ >> 6 ) - 1 );
             rkh_exit_critical();
 
-            rkhassert( idx < RKH_DYNE_NUM_POOLS, RKH_GC_RUNOUT_POOLS );
+            rkhassert( idx < RKH_DYNE_NUM_POOLS );
             rkh_dyne_put( idx, evt );
         }
     }
@@ -782,7 +783,7 @@ rkh_recall( HUInt qdd, HUInt qds )
              * did NOT decrement the reference counter) and once in the
              * AO's event queue.
              */
-            rkhassert(( evt->dynamic_&0x3F ) > 1, RKH_RC_FAIL );
+            rkhassert(( evt->dynamic_&0x3F ) > 1 );
 
             /* 
 			 * We need to decrement the reference counter once, to account
