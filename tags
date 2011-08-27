@@ -161,7 +161,7 @@ RKH_DCLR_JUNC_STATE	.\source\include\rkh.h	647;"	d
 RKH_DCLR_SHIST_STATE	.\source\include\rkh.h	649;"	d
 RKH_DCLR_SM_GLOBAL	.\source\include\rkh.h	689;"	d
 RKH_DHISTORY	.\source\include\rkhitl.h	322;"	d
-RKH_DYNE_NUM_POOLS	.\source\include\rkhitl.h	581;"	d
+RKH_DYNE_NUM_POOLS	.\source\include\rkhitl.h	470;"	d
 RKH_DYNE_NUM_POOLS	.\source\portable\cws08rksys\rkhport.h	100;"	d
 RKH_DYNE_NUM_POOLS	.\source\portable\vc08\rkhport.h	109;"	d
 RKH_DYNE_NUM_POOLS	.\source\portable\vc08rksys\rkhport.h	100;"	d
@@ -192,7 +192,7 @@ RKH_EN_DEFERRED_EVENT	.\demo\cws08\rkhcfg.h	16;"	d
 RKH_EN_DEFERRED_EVENT	.\demo\lnxgcc\rkhcfg.h	16;"	d
 RKH_EN_DEFERRED_EVENT	.\demo\vc08\rkhcfg.h	16;"	d
 RKH_EN_DEFERRED_EVENT	.\doc\rkhcfg.h	16;"	d
-RKH_EN_DOXYGEN	.\source\include\rkhitl.h	555;"	d
+RKH_EN_DOXYGEN	.\source\include\rkhitl.h	444;"	d
 RKH_EN_DYNAMIC_EVENT	.\demo\cws08\rkhcfg.h	15;"	d
 RKH_EN_DYNAMIC_EVENT	.\demo\lnxgcc\rkhcfg.h	15;"	d
 RKH_EN_DYNAMIC_EVENT	.\demo\vc08\rkhcfg.h	15;"	d
@@ -380,6 +380,7 @@ RKH_SIZEOF_TIMESTAMP	.\demo\lnxgcc\rkhcfg.h	60;"	d
 RKH_SIZEOF_TIMESTAMP	.\demo\vc08\rkhcfg.h	60;"	d
 RKH_SIZEOF_TIMESTAMP	.\doc\rkhcfg.h	60;"	d
 RKH_T	.\source\include\rkhitl.h	/^} RKH_T;$/;"	t
+RKH_THIS_MODULE	.\source\include\rkhassert.h	48;"	d
 RKH_TRACE	.\demo\cws08\rkhcfg.h	42;"	d
 RKH_TRACE	.\demo\lnxgcc\rkhcfg.h	42;"	d
 RKH_TRACE	.\demo\vc08\rkhcfg.h	42;"	d
@@ -2410,8 +2411,8 @@ mkrrkh	.\source\include\rkhitl.h	327;"	d
 mkrrkh	.\source\include\rkhitl.h	329;"	d
 mkrrkh	.\source\include\rkhitl.h	333;"	d
 mkrrkh	.\source\include\rkhitl.h	335;"	d
-mksevt	.\source\include\rkhitl.h	506;"	d
-mksevt	.\source\include\rkhitl.h	510;"	d
+mksevt	.\source\include\rkhitl.h	395;"	d
+mksevt	.\source\include\rkhitl.h	399;"	d
 mktrevt	.\source\include\rkhtrace.h	341;"	d
 mktrevt	.\source\include\rkhtrace.h	351;"	d
 mktrevt	.\source\include\rkhtrace.h	361;"	d
@@ -2460,35 +2461,33 @@ rkh_alloc_event	.\source\include\rkh.h	827;"	d
 rkh_assert	.\demo\lnxgcc\rkhcfg.h	66;"	d
 rkh_assert	.\demo\vc08\rkhcfg.h	66;"	d
 rkh_assert	.\doc\rkhcfg.h	66;"	d
-rkh_assert	.\source\include\rkhitl.h	467;"	d
-rkh_assert	.\source\include\rkhitl.h	468;"	d
-rkh_call_action	.\source\include\rkhitl.h	1267;"	d
-rkh_call_action	.\source\include\rkhitl.h	1272;"	d
-rkh_call_action	.\source\include\rkhitl.h	1277;"	d
-rkh_call_action	.\source\include\rkhitl.h	1282;"	d
-rkh_call_guard	.\source\include\rkhitl.h	1312;"	d
-rkh_call_guard	.\source\include\rkhitl.h	1318;"	d
-rkh_call_guard	.\source\include\rkhitl.h	1325;"	d
-rkh_call_guard	.\source\include\rkhitl.h	1331;"	d
-rkh_call_prepro	.\source\include\rkhitl.h	1233;"	d
-rkh_call_prepro	.\source\include\rkhitl.h	1238;"	d
+rkh_call_action	.\source\include\rkhitl.h	1156;"	d
+rkh_call_action	.\source\include\rkhitl.h	1161;"	d
+rkh_call_action	.\source\include\rkhitl.h	1166;"	d
+rkh_call_action	.\source\include\rkhitl.h	1171;"	d
+rkh_call_guard	.\source\include\rkhitl.h	1201;"	d
+rkh_call_guard	.\source\include\rkhitl.h	1207;"	d
+rkh_call_guard	.\source\include\rkhitl.h	1214;"	d
+rkh_call_guard	.\source\include\rkhitl.h	1220;"	d
+rkh_call_prepro	.\source\include\rkhitl.h	1122;"	d
+rkh_call_prepro	.\source\include\rkhitl.h	1127;"	d
 rkh_clear_history	.\source\rkh.c	/^rkh_clear_history( rkhrom RKHSHIST_T *h )$/;"	f
 rkh_clear_info	.\source\rkh.c	/^rkh_clear_info( RKH_T *ph )$/;"	f
 rkh_defer	.\source\rkh.c	/^rkh_defer( HUInt qd, RKHEVT_T *evt )$/;"	f
 rkh_define_ex_en_states	.\source\rkh.c	106;"	d	file:
-rkh_dyne_event_size	.\source\include\rkhitl.h	636;"	d
+rkh_dyne_event_size	.\source\include\rkhitl.h	525;"	d
 rkh_dyne_event_size	.\source\portable\cws08rksys\rkhport.h	106;"	d
 rkh_dyne_event_size	.\source\portable\vc08\rkhport.h	111;"	d
 rkh_dyne_event_size	.\source\portable\vc08rksys\rkhport.h	106;"	d
-rkh_dyne_get	.\source\include\rkhitl.h	663;"	d
+rkh_dyne_get	.\source\include\rkhitl.h	552;"	d
 rkh_dyne_get	.\source\portable\cws08rksys\rkhport.h	110;"	d
 rkh_dyne_get	.\source\portable\vc08\rkhport.h	112;"	d
 rkh_dyne_get	.\source\portable\vc08rksys\rkhport.h	110;"	d
-rkh_dyne_init	.\source\include\rkhitl.h	611;"	d
+rkh_dyne_init	.\source\include\rkhitl.h	500;"	d
 rkh_dyne_init	.\source\portable\cws08rksys\rkhport.h	102;"	d
 rkh_dyne_init	.\source\portable\vc08\rkhport.h	110;"	d
 rkh_dyne_init	.\source\portable\vc08rksys\rkhport.h	102;"	d
-rkh_dyne_put	.\source\include\rkhitl.h	691;"	d
+rkh_dyne_put	.\source\include\rkhitl.h	580;"	d
 rkh_dyne_put	.\source\portable\cws08rksys\rkhport.h	114;"	d
 rkh_dyne_put	.\source\portable\vc08\rkhport.h	113;"	d
 rkh_dyne_put	.\source\portable\vc08rksys\rkhport.h	114;"	d
@@ -2502,19 +2501,19 @@ rkh_enter_critical	.\source\portable\cws08rksys\rkhport.h	85;"	d
 rkh_enter_critical	.\source\portable\lnxgcc\rkhport.h	84;"	d
 rkh_enter_critical	.\source\portable\vc08\rkhport.h	85;"	d
 rkh_enter_critical	.\source\portable\vc08rksys\rkhport.h	85;"	d
-rkh_exec_entry	.\source\include\rkhitl.h	1110;"	d
-rkh_exec_entry	.\source\include\rkhitl.h	1120;"	d
-rkh_exec_exit	.\source\include\rkhitl.h	1151;"	d
-rkh_exec_exit	.\source\include\rkhitl.h	1161;"	d
-rkh_exec_init	.\source\include\rkhitl.h	1193;"	d
-rkh_exec_init	.\source\include\rkhitl.h	1203;"	d
+rkh_exec_entry	.\source\include\rkhitl.h	1009;"	d
+rkh_exec_entry	.\source\include\rkhitl.h	999;"	d
+rkh_exec_exit	.\source\include\rkhitl.h	1040;"	d
+rkh_exec_exit	.\source\include\rkhitl.h	1050;"	d
+rkh_exec_init	.\source\include\rkhitl.h	1082;"	d
+rkh_exec_init	.\source\include\rkhitl.h	1092;"	d
 rkh_exit_critical	.\source\portable\cws08\rkhport.h	85;"	d
 rkh_exit_critical	.\source\portable\cws08rksys\rkhport.h	86;"	d
 rkh_exit_critical	.\source\portable\lnxgcc\rkhport.h	85;"	d
 rkh_exit_critical	.\source\portable\vc08\rkhport.h	86;"	d
 rkh_exit_critical	.\source\portable\vc08rksys\rkhport.h	86;"	d
 rkh_gc	.\source\rkh.c	/^rkh_gc( RKHEVT_T *evt )$/;"	f
-rkh_get	.\source\include\rkhitl.h	780;"	d
+rkh_get	.\source\include\rkhitl.h	669;"	d
 rkh_get	.\source\portable\cws08rksys\rkhport.h	124;"	d
 rkh_get	.\source\portable\vc08\rkhport.h	116;"	d
 rkh_get	.\source\portable\vc08rksys\rkhport.h	124;"	d
@@ -2530,11 +2529,11 @@ rkh_init_list	.\source\rkh.c	/^rkh_init_list( void *pl )$/;"	f	file:
 rkh_insert_trevt	.\source\rkhtrace.c	/^rkh_insert_trevt( RKHTREVT_T *p )$/;"	f	file:
 rkh_is_trenabled	.\source\rkhtrace.c	/^rkh_is_trenabled( HUInt trix )$/;"	f	file:
 rkh_make_setxn	.\source\rkh.c	/^rkh_make_setxn( RKHSLIST_T *to, rkhrom RKHSREG_T *from )$/;"	f	file:
-rkh_post_fifo	.\source\include\rkhitl.h	721;"	d
+rkh_post_fifo	.\source\include\rkhitl.h	610;"	d
 rkh_post_fifo	.\source\portable\cws08rksys\rkhport.h	118;"	d
 rkh_post_fifo	.\source\portable\vc08\rkhport.h	114;"	d
 rkh_post_fifo	.\source\portable\vc08rksys\rkhport.h	118;"	d
-rkh_post_lifo	.\source\include\rkhitl.h	752;"	d
+rkh_post_lifo	.\source\include\rkhitl.h	641;"	d
 rkh_post_lifo	.\source\portable\cws08rksys\rkhport.h	121;"	d
 rkh_post_lifo	.\source\portable\vc08\rkhport.h	115;"	d
 rkh_post_lifo	.\source\portable\vc08rksys\rkhport.h	121;"	d
@@ -2591,37 +2590,39 @@ rkh_trace_getts	.\demo\vc08\main.c	/^rkh_trace_getts( void )$/;"	f
 rkh_trace_open	.\demo\lnxgcc\main.c	/^rkh_trace_open( void )$/;"	f
 rkh_trace_open	.\demo\vc08\main.c	/^rkh_trace_open( void )$/;"	f
 rkh_traverse_list	.\source\rkh.c	/^rkh_traverse_list( void *plist, HUInt lname )$/;"	f	file:
-rkh_trclose	.\source\include\rkhitl.h	861;"	d
-rkh_trclose	.\source\include\rkhitl.h	935;"	d
-rkh_trclose	.\source\include\rkhitl.h	936;"	d
+rkh_trclose	.\source\include\rkhitl.h	750;"	d
+rkh_trclose	.\source\include\rkhitl.h	824;"	d
+rkh_trclose	.\source\include\rkhitl.h	825;"	d
 rkh_trclose	.\source\portable\vc08\rkhport.h	97;"	d
 rkh_trconfig	.\source\rkhtrace.c	/^rkh_trconfig( HUInt trix, HUInt log, HUInt print )$/;"	f
 rkh_trcontrol	.\source\rkhtrace.c	/^rkh_trcontrol( HUInt trix, HUInt opt )$/;"	f
 rkh_trevt	.\source\rkhtrace.c	/^rkh_trevt( RKHTREVT_T *ptre )$/;"	f
-rkh_trflush	.\source\include\rkhitl.h	914;"	d
-rkh_trflush	.\source\include\rkhitl.h	937;"	d
-rkh_trflush	.\source\include\rkhitl.h	938;"	d
+rkh_trflush	.\source\include\rkhitl.h	803;"	d
+rkh_trflush	.\source\include\rkhitl.h	826;"	d
+rkh_trflush	.\source\include\rkhitl.h	827;"	d
 rkh_trflush	.\source\portable\vc08\rkhport.h	98;"	d
 rkh_trgetcfg	.\source\rkhtrace.c	/^rkh_trgetcfg( HUInt trix )$/;"	f
 rkh_trgetnext	.\source\rkhtrace.c	/^rkh_trgetnext( RKHTREVT_T *p )$/;"	f
 rkh_trgetqty	.\source\rkhtrace.c	/^rkh_trgetqty( void )$/;"	f
-rkh_trgetts	.\source\include\rkhitl.h	948;"	d
-rkh_trgetts	.\source\include\rkhitl.h	981;"	d
+rkh_trgetts	.\source\include\rkhitl.h	837;"	d
+rkh_trgetts	.\source\include\rkhitl.h	870;"	d
 rkh_trgetts	.\source\portable\vc08\rkhport.h	99;"	d
 rkh_trinit	.\source\rkhtrace.c	/^rkh_trinit( void )$/;"	f
-rkh_tropen	.\source\include\rkhitl.h	829;"	d
-rkh_tropen	.\source\include\rkhitl.h	933;"	d
-rkh_tropen	.\source\include\rkhitl.h	934;"	d
+rkh_tropen	.\source\include\rkhitl.h	718;"	d
+rkh_tropen	.\source\include\rkhitl.h	822;"	d
+rkh_tropen	.\source\include\rkhitl.h	823;"	d
 rkh_tropen	.\source\portable\vc08\rkhport.h	96;"	d
 rkh_update_deep_hist	.\source\rkh.c	/^rkh_update_deep_hist( rkhrom RKHSREG_T *from )$/;"	f	file:
 rkh_update_deep_hist	.\source\rkh.c	243;"	d	file:
 rkh_update_shallow_hist	.\source\rkh.c	99;"	d	file:
-rkhallege	.\source\include\rkhitl.h	461;"	d
-rkhallege	.\source\include\rkhitl.h	465;"	d
-rkhassert	.\source\include\rkhitl.h	438;"	d
-rkhassert	.\source\include\rkhitl.h	464;"	d
+rkhallege	.\source\include\rkhassert.h	140;"	d
+rkhallege	.\source\include\rkhassert.h	157;"	d
+rkhassert	.\source\include\rkhassert.h	156;"	d
+rkhassert	.\source\include\rkhassert.h	78;"	d
 rkhbase_t	.\source\include\rkhitl.h	/^typedef struct rkhbase_t$/;"	s
-rkhensure	.\source\include\rkhitl.h	491;"	d
+rkhensure	.\source\include\rkhassert.h	181;"	d
+rkherror	.\source\include\rkhassert.h	152;"	d
+rkherror	.\source\include\rkhassert.h	158;"	d
 rkhint16	.\source\portable\cws08\rkhport.h	/^typedef signed int 		rkhint16;$/;"	t
 rkhint16	.\source\portable\cws08rksys\rkhport.h	/^typedef signed int 		rkhint16;$/;"	t
 rkhint16	.\source\portable\lnxgcc\rkhport.h	/^typedef signed short 	rkhint16;$/;"	t
@@ -2637,8 +2638,8 @@ rkhint8	.\source\portable\cws08rksys\rkhport.h	/^typedef signed char 	rkhint8;$/
 rkhint8	.\source\portable\lnxgcc\rkhport.h	/^typedef signed char 	rkhint8;$/;"	t
 rkhint8	.\source\portable\vc08\rkhport.h	/^typedef signed char 	rkhint8;$/;"	t
 rkhint8	.\source\portable\vc08rksys\rkhport.h	/^typedef signed char 	rkhint8;$/;"	t
-rkhinvariant	.\source\include\rkhitl.h	502;"	d
-rkhrequire	.\source\include\rkhitl.h	480;"	d
+rkhinvariant	.\source\include\rkhassert.h	192;"	d
+rkhrequire	.\source\include\rkhassert.h	170;"	d
 rkhrom	.\source\portable\cws08\rkhport.h	68;"	d
 rkhrom	.\source\portable\cws08rksys\rkhport.h	69;"	d
 rkhrom	.\source\portable\lnxgcc\rkhport.h	68;"	d
@@ -2665,6 +2666,7 @@ rkhuint8	.\source\portable\lnxgcc\rkhport.h	/^typedef unsigned char 	rkhuint8;$/
 rkhuint8	.\source\portable\vc08\rkhport.h	/^typedef unsigned char 	rkhuint8;$/;"	t
 rkhuint8	.\source\portable\vc08rksys\rkhport.h	/^typedef unsigned char 	rkhuint8;$/;"	t
 romrkh	.\source\include\rkhitl.h	/^	rkhrom ROMRKH_T *romrkh;$/;"	m	struct:rkh_t
+rs_file	.\source\include\rkhassert.h	/^							static rkhrom char * const rs_file = #__fname;$/;"	v
 sb	.\source\include\rkhtrace.h	/^	char sb[ RKH_MAX_TRACE_STRING_SIZE + 1 ];$/;"	m
 set_x_1	.\demo\cws08\myact.c	/^set_x_1( const struct rkh_t *ph )$/;"	f
 set_x_1	.\demo\lnxgcc\myact.c	/^set_x_1( const struct rkh_t *ph )$/;"	f
