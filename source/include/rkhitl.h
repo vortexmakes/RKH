@@ -1067,7 +1067,7 @@ struct rkh_t;
  * 	associated actions, which in the UML notation are enlisted after the forward 
  * 	slash ( / ). In RKH framework, the application code must trigger the initial 
  * 	transition explicitly by invoking rkh_init_hsm() function.
- * 	An init function takes the state machine pointer as argument. 
+ * 	An init action takes the state machine pointer as argument. 
  * 	This parameter is optional in compile-time according to 
  * 	\b RKH_EN_INIT_HSM_ARG macro.
  *
@@ -1104,10 +1104,10 @@ struct rkh_t;
  *
  * 	Before sending the arrived event to state machine, it can be previously 
  * 	processed using the	event preprocessor function.
- * 	Additionally, the RKH framework provide optional event preprocessor 
+ * 	The RKH framework provides optional event preprocessor 
  * 	action, which are associated with states rather than transitions, 
  * 	as in a Moore automaton.
- * 	An action function takes the state machine pointer and the event 
+ * 	This action takes the state machine pointer and the event 
  * 	pointer as arguments. The first parameter is optional in compile-time
  * 	according to \b RKH_EN_PPRO_HSM_ARG macro.
  *
