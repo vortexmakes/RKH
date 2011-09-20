@@ -95,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <span class="comment">    Defines states and pseudostates.</span>
 <span class="comment"> */</span>
 
-<a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S2, 0, NULL, NULL,  RKH_ROOT, NULL );
+<a class="code" href="rkh_8h.html#a3567a7f91a5dc5759747dc8528357b44" title="This macro creates a basic state.">RKH_CREATE_BASIC_STATE</a>( S2, 0, NULL, NULL,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, NULL );
 <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S2 )
 
     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( ONE,     x_equal_1,  dummy_act,  &amp;S1 ),
@@ -106,7 +106,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <a class="code" href="rkh_8h.html#a0e90290b709c86a39384ea5a4c95ac4f" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_TRANS_TABLE</a>
 
-<a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit,  RKH_ROOT, &amp;S11, &amp;DH );
+<a class="code" href="rkh_8h.html#acc24b2221cd374e66732a09fb24b56ce" title="This macro creates a composite state.">RKH_CREATE_COMP_STATE</a>( S1, 0, set_y_0, dummy_exit,  <a class="code" href="rkh_8h.html#af2b1332a21797445c49710b6074ddb9b" title="This macro indicates the root state of a state machine.">RKH_ROOT</a>, &amp;S11, &amp;DH );
 <a class="code" href="rkh_8h.html#aef55bd044383009972f38c332f8210a9" title="This macro creates a state transition table. This table have the general structure...">RKH_CREATE_TRANS_TABLE</a>( S1 )
 
     <a class="code" href="rkh_8h.html#ab0fc2ccb4b73d57ea0c0f478353a00f6" title="This macro defines a regular state transition. The general syntax of an expression...">RKH_TRREG</a>( THREE,   NULL,       NULL,       &amp;S3 ),
@@ -189,7 +189,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( x1,         dummy_act,  &amp;S3 ),
     <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( x2_or_x3,   NULL,       &amp;S32 ),
-    <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( ELSE,       NULL,       &amp;S2 ),
+    <a class="code" href="rkh_8h.html#ad1ebb38b7398d7f4ec60ef3e0922d033" title="This macro defines a branch in the branch table.">RKH_BRANCH</a>( <a class="code" href="rkh_8h.html#a0a70ee0cbf5b1738be4c9463c529ce72">ELSE</a>,       NULL,       &amp;S2 ),
 
 <a class="code" href="rkh_8h.html#a179912e226da08c982c9e93d77886c53" title="This macro is used to terminate a state transition table. This table have the general...">RKH_END_BRANCH_TABLE</a>
 </pre></div> </div>
@@ -207,7 +207,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sat Aug 27 00:18:57 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 30 20:34:33 2011 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

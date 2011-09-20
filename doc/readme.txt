@@ -420,7 +420,7 @@ parameter rather than the #HCAL parameter.
 (6) 					HCAL, 		// hierarchical state machine
 (7) 					&S1, 		// initial state
 (8) 					my_init, 	// initial action function
-(9) 					&mydata );	// no data
+(9) 					&mydata );	// associated data
 \endcode
 
 <b>Declaring the state machine</b>
@@ -466,7 +466,7 @@ RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
 		The available property options are enumerated in RKH_HPPTY_T 
 		enumeration in the \b rkh.h file.
 \li (7)	\c S1 is the initial state.
-\li (8)	the \c my_init function defines the topmost initial transition in 
+\li (8)	the \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
 		The function prototype is defined as RKHINIT_T. This argument is 
 		(optional), thus it could be declared as NULL. The application code 
@@ -544,11 +544,11 @@ Explanation
 		RKH_CREATE_COMP_STATE() macro is used.
 \li (2)	\c S1 is the state name. Represents a composite state structure.
 \li (3)	\c 0 is the value of state ID.
-\li (4)	\c turn_on defines the entry action to be executed unconditionally 
+\li (4)	\c turn_on() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S1 state. This argument is optional, 
 		thus it could be declared as NULL. The RKHENT_T defines the function 
 		prototype.
-\li (5)	\c turn_off defines the exit action, which is executed upon exit 
+\li (5)	\c turn_off() defines the exit action, which is executed upon exit 
 		from the \c S1 state. This argument is optional, thus it could be 
 		declared as NULL. The RKHEXT_T defines the function prototype.
 \li (6)	\c SA is the parent state of \c S1. If a state has no 
@@ -636,11 +636,11 @@ Explanation
 		RKH_CREATE_BASIC_STATE() macro is used.
 \li (2)	\c S11 is the state name. Represents a substate structure.
 \li (3)	\c 4 is the value of state ID.
-\li (4)	\c start_process defines the entry action to be executed unconditionally 
+\li (4)	\c start_process() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S11 state. This argument is optional, 
 		thus it could be declared as NULL. The RKHENT_T defines the function 
 		prototype.
-\li (5)	\c stop_process defines the exit action, which is executed upon exit 
+\li (5)	\c stop_process() defines the exit action, which is executed upon exit 
 		from the \c S11 state. This argument is optional, thus it could be 
 		declared as NULL. The RKHEXT_T defines the function prototype.
 \li (6)	\c S1 is the parent state of \c S11. If a state has no 
@@ -649,7 +649,7 @@ Explanation
 		macro.  The "top" state is a UML concept that denotes 
 		the ultimate root of the state hierarchy in a hierarchical state 
 		machine.
-\li (7)	\c in_keyb defines the event preprocessor action. Before sending the 
+\li (7)	\c in_keyb() defines the event preprocessor action. Before sending the 
 		arrived event to state machine, it can be previously processed using 
 		the	event preprocessor function. An action function takes the state 
 		machine pointer and the event pointer as arguments. The first 
@@ -671,8 +671,8 @@ in_keyb( RKHEVT_T *pe )
 \endcode
 
 \li (7)	Aditionally, by means of single inheritance in C it could be 
-		used as state's abstract data.
-		Aditionally, implementing the single inheritance in C is very 
+		used to supply additional information to state.
+		Implementing the single inheritance in C is very 
 		simply by literally embedding the base type, RKHPPRO_T in 
 		this case, as the first member of the derived structure.
 		This argument is optional, thus it could be declared as NULL.
@@ -681,7 +681,7 @@ in_keyb( RKHEVT_T *pe )
 typedef struct
 {
 	RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-	unsigned min:4;
+	unsigned min:4;		// addtional information...
 	unsigned max:4;
 	char *buff;
 } SDATA_T;				// this data type will be used in S12 context
@@ -774,10 +774,10 @@ that actually represent behavior of state.
 
 \li (2)	The RKH_TRINT() macro defines a internal transition, where 
 \c RCV_DATA is the triggering event, \c is_sync is the guard function, 
-and \c store_data is the action function to be taken.
+and \c store_data() is the action function to be taken.
 
 \li (3)	The RKH_TRREG() macro defines a regular state transition, where 
-\c TOUT0 is the triggering event, \c drop_frame is the action function to 
+\c TOUT0 is the triggering event, \c drop_frame() is the action function to 
 be taken, and \c WAIT_SYNC is the target state. Note that it is not guarded.
 
 \li (4)	The RKH_END_TRANS_TABLE() macro ends transition table.
@@ -905,10 +905,10 @@ As noted above, sandwiched between these macros are the segment macros
 that actually comprise the condition connector.
 
 \li (2)	The RKH_BRANCH() macro defines a branch segment, where 
-\c power_ok is the guard function, \c enable_process is the action function 
+\c power_ok() is the guard function, \c enable_process is the action function 
 to be taken, and S22 is the target state.
 
-\li (3)	If all the guards on the other branches are false \c abort function 
+\li (3)	If all the guards on the other branches are false \c abort() function 
 will be invoked, and \c S4 will be the next state.
 
 \li (4)	The RKH_END_BRANCH_TABLE() macro ends branch table.
@@ -1524,7 +1524,7 @@ The following listing shows an example of the main() function
 implementation and demostrates how to use the RKH API.
 
 \note
-See \ref Usage "Representing a state machine: step by step guide" section 
+See \ref Usage "Representing a state machine: step by step" section 
 for more information about this.
 
 \code
@@ -1586,945 +1586,6 @@ for more information about this.
 		require explicit casting from the generic base structure #RKHEVT_T 
 		to the specific derived structure MYEVT_T.
 \li (11)	Terminates the program and close debug session.
-
-\page Usage Representing a state machine: step by step guide
-
-\n
-As stated above, RKH is a generic, flexible, modular, highly portable, 
-ANSI-C compliant, and open-source development tool for implementing 
-hierarchical state machines based on modern state machine concepts. This 
-modern techniques are used to give an abstract description of the dynamic 
-behavior of a system in a substantial manner.
-
-<STRONG> The key features of the RKH framework: </STRONG>
-
-- State machines representation is based on state tables.
-- Representing a state machine with RKH is intuitive, and easy.
-- Reflects the state diagram without obfuscation.
-- The RKH application are highly maintainable.
-- Easy to integrate with any event queuing and dispatching mechanism.
-- Useful in embedded systems.
-- The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
-- Flexible and \ref cfg "user-configurable code generation".
-- Very small footprint.
-- Support hierarchically nested states, and flat state machine.
-- Support conditional, junction, and history pseudostates.
-- Support compound transitions with guards.
-- Support local transitions.
-- Support mechanism for \link rkh_defer() deferring events\endlink.
-- Support \link RKHEVT_T dynamic events\endlink.
-- Support a easy way to use \link RKHEVT_T events with arguments\endlink.
-- Support systems-friendly \link rkhassert() assertion\endlink macros.
-- Support \link RKHEVT_T event dispatching with parameters\endlink.
-
-
-The RKH not implements neither entire UML specs. nor entire Statechart specs. 
-Instead, the RKH intention is to support just enough basic concepts of that 
-powerful tools to facilitate the reactive-system modeling holding a solid, 
-and efficient implementation. Broadly speaking, the RKH implementation has 
-been designed from the ground up to be used in 8-bits platforms but can be 
-easily adapted to 16 or 32-bits platforms.
-
-The goal in this section is to explain how to represent a state machine 
-using the RKH framework. To do that is proposed a simple example, which is 
-shown in the \ref fig1 "Figure 1".
-
-\n
-\anchor fig1
-\image html my.png "Figure 1 - \"my\" state diagram"
-
-\n This section summarizes the main rules and concepts for making the most
-out of RKH features.
-
-- \ref rep0
-- \ref rep1
-- \ref rep2
-- \ref rep3
-
-<HR>
-\anchor its
-\image html its.png "Figure 2 - \"top-state\""
-<HR>
-
-\anchor is1
-\image html is1.png "Figure 3 - composed state \"S1\""
-<HR>
-
-\anchor is111_s112
-\image html is111_s112.png "Figure 4 - basic states \"S111\" and \"S112\""
-<HR>
-
-\anchor ic
-\image html ic.png "Figure 5 - conditional pseudostates \"C1\" and \"C2\""
-<HR>
-
-\anchor ij
-\image html ij.png "Figure 6 - junction pseudostate \"J\""
-<HR>
-
-\anchor ih
-\image html ih.png "Figure 7 - history pseudostates \"H\" and \"DH\""
-<HR>
-
-\anchor is2
-\image html is2.png "Figure 8 - basic state \"S2\""
-<HR>
-
-\anchor is12
-\image html is12.png "Figure 9 - basic state \"S12\""
-<HR>
-
-\anchor is11
-\image html is11.png "Figure 10 - composed state \"S11\""
-<HR>
-
-\anchor is3
-\image html is3.png "Figure 11 - composed state \"S3\""
-<HR>
-
-\anchor is31_s32
-\image html is31_s32.png "Figure 11 - basic states \"S31\" and \"S32\""
-<HR>
-
-\section rep0 Preparing the application files
-
-The sample code for the example presented above port to x86 is located 
-in the directory \\demo\\vc08\\. The directory contains the Visual C++ 2008
-project files to build the application. See \ref Installation section 
-about RKH files. The application files are listed below: 
-
-- \b "rkhcfg.h":	this file adapts and configures RKH. See \ref cfg section. 
-					In the \\demo directory there are other \b rkhcfg.h files
-					already in existence and it's suggested that these 
-					are used as a reference. See the application \ref rkhcfg_h 
-					file. 
-					Note that this file is located in the application directory.
-
-- \b "my.c": 		this module implements the "my" state machine, which 
-					illustrates all aspects of implementing state machines 
-					with RKH framework. Please correlate this implementation 
-					with the "my" state diagram in \ref fig1 "Figure 1".
-					See the \ref my_c file.
-					Note that this file is located in the application directory.
-
-- \b "myact.c": 	this module declares each of entry, exit, transition, 
-					and guard actions to be executed.
-					Note that the \b rkhcfg.h file defines the function
-					prototype of actions. See \ref cfg section about of 
-					available options and \ref myact_c file.
-					Note that this file is located in the application directory.
-
-- \b "my.h": 		this header file contains the definitions of objet 
-					structures (state machine, states, and pseudostates) and
-					other facilities shared among the components of the
-					application. See the \ref my_h file.
-					Note that this file is located in the application directory.
-
-- \b "myact.h":		this header file defines the actions to be executed.
-					Note that the \b rkhcfg.h file defines the function
-					prototype of actions. See \ref cfg section about of 
-					available options and \ref myact_c file.
-					See the \ref myact_h file.
-					Note that this file is located in the application directory.
-
-- \b "myevt.h":		because events are explicitly shared among most of the 
-					application components, it's convenient to declare them 
-					in the separate header file "myevt.h".
-					See the \ref myevt_h file.
-					Note that this file is located in the application directory.
-
-- \b "main.c": 		this file contains the \c main() function along with 
-					an example for using the RKH trace facility.
-					See the \ref main_c file.
-					Note that this file is located in the application directory.
-
-<HR>
-\section rep1 Identify and classify states and pseudostates
-
-The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
-presented above, sorted by state nesting level.
-
-\n
-\anchor fig2
-\image html sttbl.jpg "Figure 2 - State nesting"
-
-<HR>
-\section rep2 Representing the state machine
-
-Now, this section explains how to implement the "my" state machine 
-using the RKH framework, which is shown in \ref fig1 "Figure 1".
-
--# \ref rep_sm
--# \ref rep_cs
--# \ref rep_bs
--# \ref rep_cjh
--# \ref rep_st
--# \ref rep_def
--# \ref rep_act
--# \ref rep_inc
-
-\n
-\subsection rep_sm Declaring the state machine (top-state)
-
-\n
-The object structure of "my" state machine is instantiated by means of 
-RKH_CREATE_HSM() macro, which is explained in \b rkh.h file.
-As noted below, the \c MYSM_T state machine object is an extension of 
-RKH_T structure. Therefore, to do that the RKH_T member \c sm is defined as 
-the FIRST member of the derived struct. The structure definition is in fact 
-entirely encapsulated in its module and is inaccessible to the rest of the 
-application. According to "my" state diagram:
-\n \n
-\code
-typedef struct
-{
-	RKH_T sm;		// base structure
-	rkhuint8 z;		// private member
-	rkhuint8 w;		// private member
-} MYSM_T;
-
-RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
-\endcode
-\n
-where:
-\n
-	- \b sm_t =	\c "MYSM_T" state machine structure.
-	- \b name =	"my". Name of state machine object. Represents the top state
-				of state diagram.
-	- \b id =	"0". The numerical value of state machine ID. 
-	- \b ppty =	"HCAL". Enables the state nesting. The available properties 
-				are	enumerated in RKH_HPPTY_T enumeration in the \b rkh.h 
-				file. 
-	- \b is =	"S1". Pointer to initial state. This state could be defined 
-				either composite or basic.
-	- \b ia =	"my_init". Pointer to initialization action. The function 
-				prototype is defined as #RKHINIT_T. This argument is 
-				optional, thus it could be declared as NULL.
-	- \b hd =	"mydata". Pointer to state-machine's abstract data. This 
-				argument is optional, thus it could be declared as NULL or 
-				eliminated with RKH_EN_HSM_DATA option.
-\n
-\n
-\subsection rep_cs Declaring the composite states
-\n
-The RKH_CREATE_COMP_STATE() macro, which is defined in the \b rkh.h file,
-is used for creating the composite states. According to "my" state diagram 
-the declaration of composite state "S1" looks as follow:
-
-\code
-RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit, RKH_ROOT, &S11, &DH );
-\endcode
-\n
-where:
-\n
-	- \b name =	"S1". State name. Represents a composite state structure.
-	- \b id =	"0". The value of state ID.
-	- \b en =	"set_y_0". Pointer to state entry action. This argument is 
-				optional, thus it could be declared as NULL.
-	- \b ex =	"dummy_exit". Pointer to state exit action. This argument 
-				is optional, thus it could be declared as NULL.
-	- \b parent =	"RKH_ROOT". Pointer to parent state. 
-	- \b defchild =	"S11". Pointer to default child state or pseudostate. 
-	- \b history =	"DH". Pointer to history pseudostate. This argument 
-					is optional, thus it could be declared as NULL.
-
-In like manner, the rest composite states are declared as shown below:
-\n
-\code
-RKH_CREATE_COMP_STATE( S11, 0, NULL, NULL, 	&S1, 		&S111,	&H );
-RKH_CREATE_COMP_STATE( S3, 	0, NULL, NULL,  RKH_ROOT, 	&S31,  	NULL );
-\endcode
-\n
-\subsection rep_bs Declaring the basic states
-\n
-The RKH_CREATE_BASIC_STATE() macro, which is defined in the \b rkh.h file,
-is used for creating the basic states. According to "my" state diagram the 
-declaration of basic state "S12" looks as follow:
-
-\code
-RKH_CREATE_BASIC_STATE( S12, 	0, set_x_3, NULL, &S1, NULL );
-\endcode
-\n
-where:
-\n
-	- \b name =	"S12". State name. Represents the basic state structure.
-	- \b id =	"0". The value of state ID.
-	- \b en =	"set_x_3". Pointer to state entry action. This argument is 
-				optional, thus it could be declared as NULL.
-	- \b ex =	"NULL". Pointer to state exit action. This argument is 
-				optional, thus it could be declared as NULL.
-	- \b parent =	"S1". Pointer to parent state. 
-	- \b prepro =	"NULL". Pointer to input preprocessor function. This 
-					argument is optional, thus it could be declared as 
-					NULL.
-					Aditionally, by means of single inheritance in C it 
-					could be used as state's abstract data.	Aditionally, 
-					implementing the single inheritance in C is very 
-					simply by literally embedding the base type, 
-					RKHPPRO_T in this case, as the first member of the 
-					derived structure.
-					\b Example:
-
-\code
-static
-RKHE_T
-preprocessor( RKHEVT_T *pe )
-{
-		...
-}
-
-typedef struct
-{
-	RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-	unsigned min:4;
-	unsigned max:4;
-	char *buff;
-} SDATA_T;
-	
-static const SDATA_T option = { preprocessor, 4, 8, token1 };
-
-HUInt
-action( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	SDATA_T *popt;
-
-	popt = ( SDATA_T* )rkh_get_sdata( ph );
-	return popt->min > 1 && popt->max < 4 ? RKH_GTRUE : RKH_GFALSE;
-} 
-
-RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, preprocessor ); 
-RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, NULL, &S2, (RKHPPRO_T*)&option ); 
-\endcode
-
-In like manner, the rest basic states are declared as shown below:
-\n
-\code
-RKH_CREATE_BASIC_STATE( S111, 	0, set_x_1, NULL, &S11, NULL );
-RKH_CREATE_BASIC_STATE( S112,	0, set_x_2, NULL, &S11, NULL );
-RKH_CREATE_BASIC_STATE( S31, 	0, NULL, 	NULL, &S3, 	NULL );
-RKH_CREATE_BASIC_STATE( S32, 	0, NULL, 	NULL, &S3, 	NULL );
-\endcode
-\n
-\subsection rep_cjh Declaring the pseudostates
-\n
-The conditional, junction, shallow history, and deep history pseudostates 
-are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
-RKH_CREATE_SHALLOW_HISTORY_STATE(), and RKH_CREATE_DEEP_HISTORY_STATE() 
-macros respectively, which are explained in \b rkh.h file.
-
-\n According to "my" state diagram the declaration of conditional 
-pseudostate "C1" looks as follow:
-\n
-\code
-RKH_CREATE_COND_STATE( C1, 0 );
-RKH_CREATE_COND_STATE( C2, 0 );
-\endcode
-\n
-where:
-\n
-	- \b name =	"C1"/"C2". Pseudostate name. Represents the conditional 
-					pseudostate structure.
-	- \b id =	"0"/"0". The value of state ID.
-
-\n According to "my" state diagram the declaration of juction pseudostate
-"J" looks as follow:
-\n
-\code
-RKH_CREATE_JUNCTION_STATE( J, 0, NULL, &S3 );
-\endcode
-\n
-where:
-\n
-	- \b name =	"J". Pseudostate name. Represents the junction
-					pseudostate structure.
-	- \b id =	"0". The value of state ID.
-	- \b action =	"NULL". Pointer to transition action. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b target =	"S3". Pointer to target state.
-
-\n According to "my" state diagram the declaration of shallow history 
-pseudostate "H" looks as follow:
-\n
-\code
-RKH_CREATE_SHALLOW_HISTORY_STATE( H, 0, &S11 );
-\endcode
-\n
-where:
-\n
-	- \b name =	"H". Pseudostate name. Represents the shallow history 
-					pseudostate structure.
-	- \b id =	"0". The value of state ID.
-	- \b parent =	"S11". Pointer to parent state.
-
-\n According to "my" state diagram the declaration of deep history 
-pseudostate "DH" looks as follow:
-\n
-\code
-RKH_CREATE_DEEP_HISTORY_STATE( DH, 0, &S1 );
-\endcode
-\n
-where:
-\n
-	- \b name =	"DH". Pseudostate name. Represents the deep history 
-					pseudostate structure.
-	- \b id =	"0". The value of state ID.
-	- \b parent =	"S1". Pointer to parent state.
-
-\n
-\subsection rep_st Declaring transition and branch tables
-
-\n
-The basic and composite states requires a state transition table.
-The #RKH_CREATE_TRANS_TABLE() macro creates a state transition table. Use the 
-#RKH_END_TRANS_TABLE macro to terminate it.
-Similarly, the condiotional pseudostates requires a branch table. 
-This #RKH_CREATE_BRANCH_TABLE macro creates a branch table. Use the 
-#RKH_END_BRANCH_TABLE macro to terminate it.
-
-\n According to "my" state diagram the state transition table of state "S2"
-looks as follow:
-
-\code
-(1)	RKH_CREATE_TRANS_TABLE( S2 )
-
-(2)		RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
-(3)		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
-		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
-(4)		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
-		RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-(5)	RKH_END_TRANS_TABLE	
-\endcode
-
-\li (1) Declares the state transition table of state "S2".
-
-\li (2) Declares a regular transition using RKH_TRREG() macro. Where:
-	- \b event =	"ONE". Triggering event. 
-	- \b guard = 	"x_equal_1". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b action = 	"dummy_act". Pointer to action function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b target \b state =	"S1". Pointer to target state.
-
-
-\li (3) Declares a regular transition using RKH_TRREG() macro. Note that the RKH
-		implementation supports exclusively the local state transition semantics, 
-		that is, a local transition doesn't cause exit from the source state 
-		if the target state is a substate of the source. In addition, local state 
-		transition doesn't cause exit and reentry to the target state if the 
-		target is a superstate of the source state. Where:
-	- \b event =	"TWO". Triggering event. 
-	- \b guard =	"NULL". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b action =	"NULL". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b target \b state = "S2". Pointer to target state.
-
-\li (4) Declares an internal transition using RKH_TRINT() macro. Where:
-	- \b event =	"FOUR". Triggering event. 
-	- \b guard =	"NULL". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b action =	"dummy_act". Pointer to action function. This argument is 
-					optional, thus it could be declared as NULL.
-
-\li (4) Terminates the transition table.
-
-\n According to "my" state diagram the branch table of "C2" looks as follow:
-
-\code
-(1)	RKH_CREATE_BRANCH_TABLE( C2 )
-(2)		RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
-		RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
-(3)		RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
-(4)	RKH_END_BRANCH_TABLE
-
-\endcode
-
-\li (1) Declares the branch table of state of "C2".
-
-\li (2) Declares a branch. Where:
-	- \b guard =	"x1". branch guard. 
-	- \b action = 	"NULL". Pointer to action function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \b target \b state = "S3". Pointer to target state.
-
-\li (3) Declares an "else" branch. Each condition connector can have one 
-		special branch with a guard labeled ELSE, which is taken 
-		if all the guards on the other branches are false. 
-
-\li (4) Terminates the branch table.
-
-\n In like manner, the rest tables are declared as shown below:
-\n
-\code
-/*
- *	Defines states and pseudostates.
- */
-
-RKH_CREATE_BASIC_STATE( S2, 0, NULL, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( S2 )
-
-	RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
-	RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
-	RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit,  RKH_ROOT, &S11, &DH );
-RKH_CREATE_TRANS_TABLE( S1 )
-
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_TRREG( FIVE, 	NULL, 		NULL, 		&S12 ),
-	RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S12, 0, set_x_3, NULL, &S1, NULL );
-RKH_CREATE_TRANS_TABLE( S12 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&J ),
-	RKH_TRREG( FOUR, 	NULL, 		set_y_1, 	&S2 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_COMP_STATE( S11, 0, NULL, NULL, &S1, &S111, &H );
-RKH_CREATE_TRANS_TABLE( S11 )
-
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S112 ),
-	RKH_TRREG( FOUR, 	NULL, 		NULL, 		&S12 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, NULL );
-RKH_CREATE_TRANS_TABLE( S111 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S112 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S112, 0, set_x_2, NULL, &S11, NULL );
-RKH_CREATE_TRANS_TABLE( S112 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S111 ),
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S11 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&J ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_SHALLOW_HISTORY_STATE( H, 0, &S11 );
-RKH_CREATE_DEEP_HISTORY_STATE( DH, 0, &S1 );
-
-RKH_CREATE_COMP_STATE( S3, 0, NULL, NULL,  RKH_ROOT, &S31,  NULL );
-RKH_CREATE_TRANS_TABLE( S3 )
-
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&C1 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S31, 0, NULL, NULL, &S3, NULL );
-RKH_CREATE_TRANS_TABLE( S31 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S32 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S32, 0, NULL, NULL, &S3, NULL );
-RKH_CREATE_TRANS_TABLE( S32 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S31 ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_JUNCTION_STATE( J, 0, NULL, &S3 );
-
-RKH_CREATE_COND_STATE( C1, 0 );
-RKH_CREATE_BRANCH_TABLE( C1 )
-
-	RKH_BRANCH( y1, 	NULL, 		&H ),
-	RKH_BRANCH( y2, 	dummy_act, 	&DH ),
-
-RKH_END_BRANCH_TABLE
-
-RKH_CREATE_COND_STATE( C2, 0 );
-RKH_CREATE_BRANCH_TABLE( C2 )
-
-	RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
-	RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
-	RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
-
-RKH_END_BRANCH_TABLE
-\endcode
-
-
-\subsection rep_inc Including files
-
-The following listing shows a fragment of "my.c" source file, which 
-illustatres some aspects of implementing state machines with RKH.
-
-\code
-(1) #include "rkh.h"
-
-
-/*	Includes file of event definitions. */
-
-(2) #include "myevt.h"
-
-
-/* Includes file of HSM definitions. */
-
-(3) #include "my.h"
-
-
-/* Includes file of action/guard definitions. */
-
-(4) #include "myact.h"
-
-
-/* Defines HSM's data. */
-
-(5) static MYHDATA_T mydata;
-
-/* ... */
-\endcode
-
-\li (1) Every application C-file that uses RKH must include the \b rkh.h 
-		header file. This header file contains the specific adaptation 
-		of RKH to the given processor and compiler, also includes the
-		RKH interface to implement state machines. The port file is located
-		in the application directory.
-
-\li (2) The "myevt.h" header file contains the declarations of triggering 
-		events shared among the components of the
-		application. This header file is located in the application 
-		directory.
-
-\li (3) The "my.h" header file contains the definitions of objet 
-		structures (state machine, states, and pseudostates) and
-		other facilities shared among the components of the application. 
-
-\li (4) This header file defines the actions to be executed.
-
-\li (5) The "my" state machine maintains its own data in the structure 
-		MYDATA_T, which is defined in the "my.h" header file.
-
-\n
-\subsection rep_def Defining the state machine
-
-The following listing shows the "my.h" header file, which 
-illustatres some important aspects of implementing state machines with RKH.
-
-\code
-#ifndef __MY_H__
-#define __MY_H__
-
-
-(1)	#include "rkh.h"
-
-
-/*	Defines the event structure. */
-
-(2)	typedef struct
-	{
-(3)		RKHEVT_T event;
-(4)		rkhuint16 ts;
-	} MYEVT_T;
-
-
-/*	Defines the state machine data */
-
-(5)	typedef struct
-	{
-		rkhuint8 x;
-		rkhuint8 y;
-	} MYHDATA_T;
-
-
-/*	Defines the state machine. */
-
-(6)	RKH_DCLR_HSM( my );
-
-
-/*	Defines states and pseudostates. */
-
-(7)	RKH_DCLR_COMP_STATE		S1,S3,S11;
-	RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;
-	RKH_DCLR_COND_STATE		C1,C2;
-	RKH_DCLR_JUNC_STATE		J;
-	RKH_DCLR_DHIST_STATE	DH;
-	RKH_DCLR_SHIST_STATE	H;
-
-
-#endif
-\endcode
-
-\li (1) RKH interfaces.
-
-\li (2-4) The MYEVT_T structure declares an event with the parameter "ts".
-		Such nesting of structures always aligns the data member 
-		#RKHEVT_T at the beginning of every instance of the derived 
-		structure. In particular, this alignment lets treat a pointer to 
-		the derived MYEVT_T structure as a pointer to the #RKHEVT_T 
-		base structure. Consequently, can always safely pass a pointer 
-		to MYEVT_T to any C function that expects a pointer to #RKHEVT_T.
-
-\li (5) The MYHDATA_T defines the state machine data. 
-
-\li (6) Defines the state machine as a global object.
-
-\li (7) Defines the states and pseudostates using the corresponding macos
-		listed above:
-		\n
-		\n
-		- #RKH_DCLR_COMP_STATE: composite state.
-		- #RKH_DCLR_BASIC_STATE: basic state.
-		- #RKH_DCLR_COND_STATE: conditional pseudostate.
-		- #RKH_DCLR_JUNC_STATE: junction pseudostate.
-		- #RKH_DCLR_DHIST_STATE: deep history pseudostate.
-		- #RKH_DCLR_SHIST_STATE: shallow history pseudostate.
-
-\n
-\subsection rep_act Declaring and defining actions
-
-\n The following enlists the action to be automatically executed by RKH. The
-function prototypes are explicitly defined in \b rkhitl.h file.
-
-- \b Initiallization \b action (#RKHINIT_T): 
-	the state transition originating at the black ball is called the 
-	initial transition.	An initial transition can have associated 
-	actions, which RKH invokes to execute the topmost initial transition.
-
-- \b Transition \b action (#RKHACT_T): 		
-	enlists any actions associated with the transition.
-
-- \b Entry \b action (#RKHENT_T): 			
-	this action is executed upon entry to a state.
-
-- \b Exit \b action (#RKHEXT_T): 			
-	this action is executed upon exit from a state.
-
-- \b Guard \b action (#RKHGUARD_T):
-	contains the guard conditions attached to transitions.
-
-- \b Preprocessor \b action (#RKHPPRO_T): 	
-	this action is executed before sending occured event to state machine.
-
-Aditionally, the preprocessor options listed in \b rkhcfg.h allows 
-to customize the prototypes of each action. See \ref cfg section for 
-more information about that.
-The used actions in the "my" state machine implementation are shown in
-\ref myact_c file.
-
-\n According to "my" state diagram the initial action looks as follow:
-\n
-\code
-void 
-my_init( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = pd->y = 0;
-}
-\endcode
-
-\n According to "my" state diagram the transition actions looks as follow:
-\n
-\code
-void
-set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	pd->y = 2;
-	printf( "action: "__FUNCTION__"()\n" );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
-}
-
-
-void
-set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	pd->y = 1;
-	printf( "action: "__FUNCTION__"()\n" );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
-}
-
-
-void
-dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-}
-
-
-void
-show_data( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
-}
-\endcode
-
-\n According to "my" state diagram the entry actions looks as follow:
-\n
-\code
-void
-set_x_1( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = 1;
-}
-
-
-void
-set_x_2( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = 2;
-}
-
-
-void
-set_x_3( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = 3;
-}
-
-
-void
-set_y_0( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->y = 0;
-}
-\endcode
-
-\n According to "my" state diagram the exit actions looks as follow:
-\n
-\code
-void
-dummy_exit( const struct rkh_t *ph )
-{
-}
-\endcode
-
-\n According to "my" state diagram the guards looks as follow:
-\n
-\code
-HUInt
-x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-
-	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
-\endcode
-
-\n According to "my" state diagram the branch selection functions looks 
-as follow:
-\n
-\code
-HUInt
-y1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->y == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
-
-
-HUInt
-y2( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->y == 2 ? RKH_GTRUE : RKH_GFALSE;
-}
-
-
-HUInt
-x1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
-
-
-HUInt
-x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->x == 2 || pd->x == 3 ? RKH_GTRUE : RKH_GFALSE;
-}
-\endcode
-
-\n After declaring each actions in "myact.c" it must be defined in 
-\ref myact_h file.
-
-<HR>
-
-\section rep3 Running
-
-The following listing shows the main() function implementation. This function
-is included in the \ref main_c file, it's located in the application 
-directory.
-
-\code
-	void
-	main( void )
-	{
-		int c;
-
-(1)		rkh_trace_open();
-(2)		rkh_init_hsm( &my );
-		srand( ( unsigned )time( NULL ) );
-
-		forever
-		{
-(3)			c = mygetch();
-		
-			if( c == 'p' )
-(4)				rkh_trace_flush();
-			else if ( c == ESC )
-(5)				break;
-			else if ( c == 'r' )
-				rkh_init_hsm( &my );
-			else
-			{
-(6)				mye.event = kbmap( c );
-(7)				mye.ts = ( rkhuint16 )rand();
-(8)				rkh_engine( &my, ( RKHEVT_T *)&mye );
-			}
-		}
-
-(9)		rkh_trace_close();
-	}
-\endcode
-
-\li (1) Initialize the RKH trace module.
-
-\li (2) Initialize the "my" state machine. RKH invokes the my_init() function.
-
-\li (3) Gets key pressed from the standard input.
-
-\li (4) Flushs the trace stream to the desired host.
-
-\li (5) Terminates the program.
-
-\li (6) The	event generated by pressing a key on the keyboard is stored 
-		in the "event" member of MYEVT_T structure.
-
-\li (7)	The	event has associated parameters that convey a random number.
-
-\li (8)	Events with parameters, such as the MYEVT_T, require explicit 
-		casting from the generic base structure #RKHEVT_T to the specific 
-		derived structure MYEVT_T.
-
-\li (9)	Terminates the program and close debug session.
-
 
 \page dbg Debugging tool
 
@@ -2949,5 +2010,25 @@ Available options:
 
 -	\b RKH_ASSERT
 	\n \n Enable (1) or Disable (0) assert support.
+
+*/
+
+
+/**
+\page Usage Representing a state machine: step by step
+
+\n The goal in this section is to explain how to represent a state machine 
+using the RKH framework. To do that is proposed a simple example, which is 
+shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
+rules and concepts for making the most out of RKH features.
+
+- \subpage basics
+- \subpage preparing
+- \subpage identify
+- \subpage representing
+- \subpage running
+
+\anchor fig1
+\image html my.png "Figure 1 - \"my\" state diagram"
 
 */
