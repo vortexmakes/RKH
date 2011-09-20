@@ -1231,6 +1231,9 @@ struct rkh_t;
 typedef struct rkhbase_t
 {
 	/**	
+ 	 * 	\brief
+	 * 	State type.
+	 *
 	 *	Contains the type of a particular state and can have 
 	 *	the following values:
 	 *
@@ -1245,7 +1248,9 @@ typedef struct rkhbase_t
 	HUInt type;					
 
 	/**	
+ 	 * 	\brief
 	 *	State ID. 
+	 *
 	 *	This number isn't internally used by RKH framework.
 	 */
 
@@ -1254,7 +1259,9 @@ typedef struct rkhbase_t
 #endif
 
 	/**	
+ 	 * 	\brief
 	 *	State name. 
+	 *
 	 *	String terminated in '\\0' that represents the name 
 	 *	of state. It's generally used for debugging.
 	 */
@@ -1276,24 +1283,28 @@ typedef struct rkhbase_t
 typedef struct rkhtr_t
 {
 	/** 	
+ 	 * 	\brief
 	 *  Triggering event.
 	 */
 
 	RKHE_T event;
 	
 	/**	
+ 	 * 	\brief
 	 *	Points to guard function.
 	 */
 
 	RKHGUARD_T guard;
 	
 	/** 	
+ 	 * 	\brief
 	 *  Points to transition action.
 	 */
 
 	RKHACT_T action;
 
 	/** 	
+ 	 * 	\brief
 	 *  Points to target state.
 	 */
 
@@ -1311,6 +1322,7 @@ typedef struct rkhtr_t
 typedef struct rkhsreg_t
 {
 	/**	
+ 	 * 	\brief
 	 *	Maintains the basic information of state.
 	 */
 
@@ -1318,18 +1330,21 @@ typedef struct rkhsreg_t
 
 #if RKH_EN_HCAL == 1
 	/**	
+ 	 * 	\brief
 	 *	Points to entry action.
 	 */
 
 	RKHENT_T enter;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to exit action.
 	 */
 
 	RKHEXT_T exit;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to state's parent.
 	 */
 
@@ -1337,6 +1352,7 @@ typedef struct rkhsreg_t
 #endif
 
 	/**	
+ 	 * 	\brief
 	 *	Points to state transition table.
 	 */
 
@@ -1344,12 +1360,14 @@ typedef struct rkhsreg_t
 
 #if RKH_EN_HCAL == 1
 	/**	
+ 	 * 	\brief
 	 *	Points to state's default child.
 	 */
 
 	rkhrom void *defchild;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to state's history. 
 	 */
 
@@ -1357,6 +1375,7 @@ typedef struct rkhsreg_t
 #endif
 
 	/**	
+ 	 * 	\brief
 	 *	Points to event preprocessor.
 	 *
 	 *	Aditionally, by means of single inheritance in C it could be 
@@ -1406,12 +1425,14 @@ typedef struct rkhsreg_t
 typedef struct rkhscond_t
 {
 	/**
+ 	 * 	\brief
 	 *	Maintains the basic information of state.
 	 */
 
 	struct rkhbase_t base;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to branch table.
 	 */
 
@@ -1427,18 +1448,21 @@ typedef struct rkhscond_t
 typedef struct rkhsjunct_t
 {
 	/**	
+ 	 * 	\brief
 	 *	Maintains the basic information of state.
 	 */
 
 	struct rkhbase_t base;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to action function.
 	 */
 
 	RKHACT_T action;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to target state or pseudostate.
 	 */
 
@@ -1456,18 +1480,21 @@ typedef struct rkhsjunct_t
 typedef struct rkhshist_t
 {
 	/**	
+ 	 * 	\brief
 	 *	Maintains the basic information of state.
 	 */
 
 	struct rkhbase_t base;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to state's parent.
 	 */
 
 	rkhrom RKHSREG_T *parent;
 
 	/**	
+ 	 * 	\brief
 	 *	Points to RAM memory location which stores
 	 *	the state's history.
 	 */
@@ -1506,7 +1533,10 @@ typedef struct rkh_info_t
 typedef struct
 {
 	/**	
-	 *	State machine descriptor. This number allows to uniquely identify 
+ 	 * 	\brief
+	 *	State machine descriptor. 
+	 *
+	 *	This number allows to uniquely identify 
 	 *	a state machine. When a particular application requires runtime 
 	 *	debugging (native tracing features), this option must be enabled. 
 	 */
@@ -1516,14 +1546,20 @@ typedef struct
 #endif
 
 	/**
-	 * 	State machine properties. The available properties are enumerated 
+ 	 * 	\brief
+	 * 	State machine properties. 
+	 *
+	 * 	The available properties are enumerated 
 	 * 	in RKH_HPPTY_T enumeration in the rkh.h	file.
 	 */
 
 	rkhuint8 ppty;
 
 	/**	
-	 *	Name of state machine. Represents the top state of state diagram.
+ 	 * 	\brief
+	 *	Name of state machine. 
+	 *
+	 *	Represents the top state of state diagram.
 	 *	String terminated in '\\0' that represents the name of state state 
 	 *	machine. When a particular application requires runtime debugging 
 	 *	(native tracing features), this option must be enabled.
@@ -1534,16 +1570,21 @@ typedef struct
 #endif
 
 	/** 
-	 * 	Points to initial state. The initial state must be a composite state 
+ 	 * 	\brief
+	 * 	Points to initial state. 
+	 *
+	 * 	The initial state must be a composite state 
 	 * 	or basic state.
 	 */
 
 	rkhrom RKHSREG_T *init_state;
 
 	/** 
-	 * 	Points to initializing action function (optional). The function 
-	 * 	prototype is defined as RKHINIT_T. This argument is optional, thus 
-	 * 	it could be declared as NULL.
+ 	 * 	\brief
+	 * 	Points to initializing action function (optional). 
+	 *
+	 * 	The function prototype is defined as RKHINIT_T. This argument 
+	 * 	is optional, thus it could be declared as NULL.
 	 */
 
 	RKHINIT_T init_action;
@@ -1594,19 +1635,23 @@ typedef struct
 typedef struct rkh_t
 {
 	/**
+ 	 * 	\brief
 	 * 	Points to constant state machine properties
 	 */
 	
 	rkhrom ROMRKH_T *romrkh;
 
 	/** 
+ 	 * 	\brief
 	 * 	Points to current state.
 	 */
 
 	rkhrom RKHSREG_T *state;
 
 	/** 
+ 	 * 	\brief
 	 * 	Points to state-machine's data (optional). 
+	 *
 	 * 	This argument is optional, thus it could be declared as NULL or 
 	 * 	eliminated with RKH_EN_HSM_DATA option. Could be used to pass 
 	 * 	arguments to the state machine like an argc/argv.
@@ -1617,6 +1662,7 @@ typedef struct rkh_t
 #endif
 	
 	/** 
+ 	 * 	\brief
 	 * 	Maintains the optional performance information.
 	 */
 

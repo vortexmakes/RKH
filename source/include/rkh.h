@@ -144,6 +144,10 @@ typedef enum
  * 	\brief
  *	This macro creates a state machine object derived from RKH_T.
  *
+ * 	In the UML specification, every state machine has a top state 
+ * 	(the abstract root of every state machine hierarchy), which contains 
+ * 	all the other elements of the entire state machine. RKH provides the 
+ * 	top state using the macro RKH_CREATE_HSM().
  *	Frequently, RKH_CREATE_HSM() is used within state-machine's module 
  *	(.c file), thus the structure definition is in fact entirely encapsulated 
  *	in its module and is inaccessible to the rest of the application. 
