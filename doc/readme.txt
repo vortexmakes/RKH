@@ -210,6 +210,9 @@ the aspects to be considered:
 
 - \ref data
 - \ref rom
+- \ref crt
+- \ref dyn
+- \ref trc
 - \ref files
 - \ref rkhp
 
@@ -248,7 +251,7 @@ with among all integer types.
 
 \note
 
-The \c HUInt and \c HInt will normally be the natural size 
+The \c HUInt and \c HInt will normally be the Platform-dependentnatural size 
 for a particular machine. These types designates an integer 
 type that is usually fastest to operate with among all integer 
 types.
@@ -279,6 +282,75 @@ typedef unsigned int	HUInt;
 typedef signed int		HInt;
 
 #define rkhrom			const	
+\endcode
+
+<HR>
+\section crt Critical section
+
+RKH needs to disable interrupts in order to access critical sections of code 
+and to reenable interrupts when done. To hide the actual implementation 
+method available for a particular processor, compiler, an OS, RKH defines 
+the following two macros to disable and enable interrupts 
+rkh_enter_critical() and define rkh_exit_critical() respectively. These 
+macros are always together to wrap critical sections of code.
+
+\code
+#define rkh_enter_critical()
+#define rkh_exit_critical()
+\endcode
+
+<HR>
+\section trc Trace facility
+
+Defines trace facility support. This definitions are required only when the 
+user application is used trace facility (of course, RKH_TRACE == 1).
+\n See \ref dbg section for more information.
+
+\code
+#define rkh_tropen							rkh_trace_open
+#define rkh_trclose							rkh_trace_close
+#define rkh_trflush							rkh_trace_flush
+#define rkh_trgetts							rkh_trace_getts
+\endcode
+
+<HR>
+\section dyn Dynamic event support
+
+Defines dynamic event support. This definitions are required only when the 
+user application is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
+\n See \ref qref7 section for more information.
+
+\code
+#include "rkmpool.h"
+#include "queue.h"
+
+
+#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
+
+#define rkh_dyne_init( mpd, pm, ps, bs )							\
+				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
+												(RK_MPBS_T)(bs) )
+
+#define rkh_dyne_event_size( mpd )									\
+																	\
+				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
+
+#define rkh_dyne_get( mpd, e )										\
+																	\
+				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
+
+#define rkh_dyne_put( mpd, e )										\
+																	\
+				rk_mpool_put( (mpd), (e) )
+
+#define rkh_post_fifo( qd, e )										\
+				queue_insert( (QD_T)(qd), &(e) )
+
+#define rkh_post_lifo( qd, e )										\
+				queue_insert_lifo( (QD_T)(qd), &(e) )
+
+#define rkh_get( qd, e )											\
+				queue_remove( (QD_T)(qd), &(e) )
 \endcode
 
 <HR>
@@ -359,6 +431,75 @@ typedef signed int		HInt;
  */
 
 #define rkhrom			const	
+
+
+/*
+ * 	RKH needs to disable interrupts in order to access critical
+ * 	sections of code and to reenable interrupts when done.
+ * 	
+ * 	To hide the actual implementation method available for a
+ * 	particular processor, compiler, an OS, RKH defines the 
+ * 	following two macros to disable and enable interrupts 
+ * 	rkh_enter_critical() and define rkh_exit_critical() respectively.
+ * 	
+ * 	These macros are always together to wrap critical sections of
+ * 	code.
+ */
+
+#define rkh_enter_critical()
+#define rkh_exit_critical()
+
+
+/*
+ *	Defines trace facility support.
+ *
+ *	This definitions are required only when the user application
+ *	is used trace facility (of course, RKH_TRACE == 1).
+ */
+
+#define rkh_tropen							rkh_trace_open
+#define rkh_trclose							rkh_trace_close
+#define rkh_trflush							rkh_trace_flush
+#define rkh_trgetts							rkh_trace_getts
+
+
+/*
+ *	Defines dynamic event support.
+ *
+ *	This definitions are required only when the user application
+ *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
+ */
+
+#include "rkmpool.h"
+#include "queue.h"
+
+
+#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
+
+#define rkh_dyne_init( mpd, pm, ps, bs )							\
+				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
+												(RK_MPBS_T)(bs) )
+
+#define rkh_dyne_event_size( mpd )									\
+																	\
+				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
+
+#define rkh_dyne_get( mpd, e )										\
+																	\
+				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
+
+#define rkh_dyne_put( mpd, e )										\
+																	\
+				rk_mpool_put( (mpd), (e) )
+
+#define rkh_post_fifo( qd, e )										\
+				queue_insert( (QD_T)(qd), &(e) )
+
+#define rkh_post_lifo( qd, e )										\
+				queue_insert_lifo( (QD_T)(qd), &(e) )
+
+#define rkh_get( qd, e )											\
+				queue_remove( (QD_T)(qd), &(e) )
 \endcode
 
 

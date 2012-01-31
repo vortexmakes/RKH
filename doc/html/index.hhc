@@ -14,38 +14,83 @@
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Quick reference"><param name="Local" value="qref.html"><param name="ImageNumber" value="11"></OBJECT>
   <UL>
   </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value="Representing a state machine \e step \e by \e step"><param name="Local" value="_usage.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Debugging tool"><param name="Local" value="dbg.html"><param name="ImageNumber" value="11"></OBJECT>
   <UL>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Configuration"><param name="Local" value="cfg.html"><param name="ImageNumber" value="11"></OBJECT>
   <UL>
   </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""my.c""><param name="Local" value="my__c.html"><param name="ImageNumber" value="11"></OBJECT>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Representing a state machine: step by step"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""my.h""><param name="Local" value="my__h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""myact.c""><param name="Local" value="myact__c.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""myact.h""><param name="Local" value="myact__h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""myevt.h""><param name="Local" value="myevt__h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""rkhcfg.h""><param name="Local" value="rkhcfg__h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value=""main.c""><param name="Local" value="main__c.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
-  </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value="Todo List"><param name="Local" value="todo.html"><param name="ImageNumber" value="11"></OBJECT>
-  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Basics"><param name="Local" value="basics.html"><param name="ImageNumber" value="11"></OBJECT>
+    <UL>
+    </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Preparing the application files"><param name="ImageNumber" value="1"></OBJECT>
+    <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""rkhcfg.h""><param name="Local" value="rkhcfg__h.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""my.c""><param name="Local" value="my__c.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""myact.c""><param name="Local" value="myact__c.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""my.h""><param name="Local" value="my__h.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""myact.c""><param name="Local" value="myact__c.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""myact.h""><param name="Local" value="myact__h.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""myevt.h""><param name="Local" value="myevt__h.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""main.c""><param name="Local" value="main__c.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Identify and classify states and pseudostates"><param name="Local" value="identify.html"><param name="ImageNumber" value="11"></OBJECT>
+    <UL>
+    </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Representing the state machine"><param name="ImageNumber" value="1"></OBJECT>
+    <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="1. Instantiating the state machine (and defining the top state)"><param name="Local" value="rep__sm.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="2. Instantiating the composite states"><param name="Local" value="rep__cs.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="3. Declaring the basic states"><param name="Local" value="rep__bs.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="4. Declaring the pseudostates"><param name="Local" value="rep__cjh.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="5. Defining the state machine's objects"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value=""my.h""><param name="Local" value="my__h.html"><param name="ImageNumber" value="11"></OBJECT>
+        <UL>
+        </UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="6. Declaring the actions"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value=""myact.c""><param name="Local" value="myact__c.html"><param name="ImageNumber" value="11"></OBJECT>
+        <UL>
+        </UL>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="7. Include files"><param name="Local" value="rep__inc.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Running"><param name="ImageNumber" value="1"></OBJECT>
+    <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value=""main.c""><param name="Local" value="main__c.html"><param name="ImageNumber" value="11"></OBJECT>
+      <UL>
+      </UL>
+    </UL>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Data Structures"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
@@ -67,7 +112,7 @@
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkh.h"><param name="Local" value="rkh_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhassert.h"><param name="Local" value="rkhassert_8h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhcfg.h"><param name="Local" value="rkhcfg_8h.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhcfg.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhitl.h"><param name="Local" value="rkhitl_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhplat.h"><param name="Local" value="rkhplat_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="rkhtrace.h"><param name="Local" value="rkhtrace_8h.html"><param name="ImageNumber" value="11"></OBJECT>

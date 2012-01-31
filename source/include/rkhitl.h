@@ -395,9 +395,13 @@
 	#define mksevt( evt, es )											\
 								((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
 								((RKHEVT_T*)(evt))->dynamic_ = 0;
+	#define mkievt( evt, es )											\
+								rkhrom RKHEVT_T evt = { es, 0 }
 #else
 	#define mksevt( evt, es )											\
 								((RKHEVT_T*)(evt))->e = (RKHE_T)es;
+	#define mkievt( evt, es )											\
+								rkhrom RKHEVT_T evt = { es }
 #endif
 
 
@@ -670,7 +674,7 @@
 
 /**
  * 	\brief 
- *	Open the tracing session.
+ *	Platform-dependent macro opening the tracing session.
  *
  *	This is a platform-dependent function invoked through the macro 
  *	rkh_tropen(). 
@@ -719,7 +723,7 @@
 
 /**
  * 	\brief 
- *	Close the tracing session.
+ *	Platform-dependent macro closing the tracing session.
  *
  *	This is a platform-dependent function invoked through the macro 
  *	rkh_trclose(). 
@@ -751,7 +755,7 @@
 
 /**
  * 	\brief 
- *	Flush the trace stream.
+ *	Platform-dependent macro flushing the trace stream.
  *
  *	This is a platform-dependent function invoked through the macro 
  *	rkh_trflush(). 

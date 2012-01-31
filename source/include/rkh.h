@@ -866,6 +866,9 @@ void rkh_gc( RKHEVT_T *evt );
  *	This macro set the event 'evt' with 'e' signal and establishes it as one 
  *	static event.
  *
+ *	\sa
+ *	RKH_DCLR_STATIC_EVENT() macro.
+ *
  *	Example:
  *	\code
  *	...
@@ -882,6 +885,35 @@ void rkh_gc( RKHEVT_T *evt );
  */
 
 #define rkh_set_static_event( evt, es )			mksevt( evt, es )
+
+
+/**
+ * 	\brief
+ *	This macro declares and initializes the event structure 'evt' with 
+ *	'e' signal and establishes it as one static event.
+ *	The created event object is explicitly placed in ROM.
+ *
+ *	Example:
+ *	\code
+ *	...
+ *	static RKH_DCLR_STATIC_EVENT( etimer, RPC_TIMER_RET );
+ *	...
+ *	void
+ *	offhook( void )
+ *	{
+ *		...
+ *		rkh_put_fifo( qphone, &etimer );
+ *	}
+ *	\endcode
+ *
+ * 	\param evt		name of event structure (RKHEVT_T).
+ * 	\param es		event signal. The RKH takes this value for triggering 
+ * 					a state transition.
+ *
+ * 	\returns
+ */
+
+#define RKH_DCLR_STATIC_EVENT( evt, es )		mkievt( evt, es )
 
 
 /**

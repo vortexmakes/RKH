@@ -36,6 +36,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div class="navpath"><a class="el" href="_usage.html">Representing a state machine: step by step</a>&nbsp;&raquo;&nbsp;<a class="el" href="running.html">Running</a>
+  </div>
 </div>
 <div class="contents">
 
@@ -115,7 +117,7 @@ format_trevt_args( <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title=
     <span class="keywordflow">switch</span>( ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> )
     {
         <span class="keywordflow">case</span> <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea7b3b5f5e6e76689a397d8f1123e231c2">RKHTR_INIT_HSM</a>:
-            sprintf( fmt, <span class="stringliteral">&quot;is = %s [%d]&quot;</span>, ptre-&gt;sb, ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">num</a> );
+            sprintf( fmt, <span class="stringliteral">&quot;is = %s [%d]&quot;</span>, ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a4c5e8720e023eecec5b3152c5508fc1a">sb</a>, ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">num</a> );
             <span class="keywordflow">break</span>;
         <span class="keywordflow">case</span> <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ead83151d7314cf1565126500bfab53154">RKHTR_INT_TRAN</a>:
             sprintf( fmt, <span class="stringliteral">&quot;&quot;</span> );
@@ -126,7 +128,7 @@ format_trevt_args( <a class="code" href="struct_r_k_h_t_r_e_v_t___t.html" title=
         <span class="keywordflow">case</span> <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea8be40e23be633dfc1a77059494e3a18e">RKHTR_NXT_STATE</a>:
         <span class="keywordflow">case</span> <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea792fb0c1c6395a6a4b5dcb49613a14a1">RKHTR_ENTRY</a>:
         <span class="keywordflow">case</span> <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0ea23c3fb60e14a4e36e0ba1eea780d988d">RKHTR_EXIT</a>:
-            sprintf( fmt, <span class="stringliteral">&quot;%s [%d]&quot;</span>, ptre-&gt;sb, ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">num</a> );
+            sprintf( fmt, <span class="stringliteral">&quot;%s [%d]&quot;</span>, ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a4c5e8720e023eecec5b3152c5508fc1a">sb</a>, ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">num</a> );
             <span class="keywordflow">break</span>;
         <span class="keywordflow">case</span> <a class="code" href="rkhtrace_8h.html#ab4932f0e74c5782ff29068ca6ec0cd0eaec806e33ce45cc56f529111e78f83a32">RKHTR_RTN_CODE</a>:
             sprintf( fmt, <span class="stringliteral">&quot;%s&quot;</span>, rcmap[ ptre-&gt;<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a8113fdcd2f03ef6626f3b15ca544b007">num</a> ] );
@@ -207,13 +209,13 @@ rkh_trace_flush( <span class="keywordtype">void</span> )
 
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a47a6578c1ed2a7022df793b10278a47c">log</a> == RKH_TRLOG )
             fprintf( fdbg, <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    <a class="code" href="rkhitl_8h.html#a651fd3bf4126b5344cb35a9364263649" title="Retrieves a timestamp to be placed in a trace event.">rkh_trgetts</a>(),
+                                                    rkh_trgetts(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
         <span class="keywordflow">if</span>( pcfg-&gt;<a class="code" href="struct_r_k_h_t_r_c_f_g___t.html#a7b9c54a9eb913e432cff9e8fff0e6286">print</a> == RKH_TRPRINT )
             printf( <span class="stringliteral">&quot;%05d [ %-16s ] - %s : %s\n&quot;</span>,
-                                                    <a class="code" href="rkhitl_8h.html#a651fd3bf4126b5344cb35a9364263649" title="Retrieves a timestamp to be placed in a trace event.">rkh_trgetts</a>(),
+                                                    rkh_trgetts(),
                                                     tremap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#a80da6d45130b3df12d3eab8317e6519a">id</a> ],
                                                     smmap[ te.<a class="code" href="struct_r_k_h_t_r_e_v_t___t.html#af9131283d24451caaf93b179861af225">smix</a> ],
                                                     format_trevt_args( &amp;te ) );
@@ -221,10 +223,10 @@ rkh_trace_flush( <span class="keywordtype">void</span> )
 }
 
 
-<a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d" title="Defines the size of trace timestamp.">RKHTS_T</a> 
+<a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020" title="Defines the size of trace timestamp.">RKHTS_T</a> 
 <a class="code" href="rkhtrace_8h.html#a7bd4d6fe303eaa1b4314e3175c746bc6" title="Retrieves a timestamp to be placed in a trace event.">rkh_trace_getts</a>( <span class="keywordtype">void</span> )
 {
-    <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#ac1c8f83d90dd35c56d542055ec75128d" title="Defines the size of trace timestamp.">RKHTS_T</a> )clock();
+    <span class="keywordflow">return</span> ( <a class="code" href="rkhtrace_8h.html#aeddd927f5f2549bebd9e864cf5bb9020" title="Defines the size of trace timestamp.">RKHTS_T</a> )clock();
 }
 
 
@@ -274,7 +276,7 @@ main( <span class="keywordtype">void</span> )
 </iframe>
 </div>
 
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 30 20:34:33 2011 for RKH by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Jan 31 14:53:19 2012 for RKH by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
