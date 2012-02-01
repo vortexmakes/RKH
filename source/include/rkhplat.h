@@ -54,6 +54,9 @@
 	#include "..\portable\cws08rksys\rkhport.h"
 #endif
 
+#ifdef __CWCFV1RKSYS__
+	#include "..\portable\cwcfv1rksys\rkhport.h"
+#endif
 
 /*
  *	If rkhrom has not been defined then	rkhport.h has not yet been 
