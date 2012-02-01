@@ -1,5 +1,6 @@
 /**
 \page preparing Preparing the application files
+\image html rkh_bunner.jpg
 
 The sample code for the example presented above port to x86 is located 
 in the directory \\demo\\vc08\\. The directory contains the Visual C++ 2008
@@ -55,6 +56,7 @@ about RKH files. The application files are listed below:
 
 /**
 \page identify Identify and classify states and pseudostates
+\image html rkh_bunner.jpg
 
 The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
 presented above, sorted by state nesting level.
@@ -67,6 +69,7 @@ presented above, sorted by state nesting level.
 
 /**
 \page representing Representing the state machine
+\image html rkh_bunner.jpg
 
 Now, this section explains how to implement the "my" state machine 
 using the RKH framework, which is shown in \ref fig1 "Figure 1".
@@ -83,6 +86,7 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 
 /**
 \page basics Basics
+\image html rkh_bunner.jpg
 
 As mentioned previously, RKH is a generic, flexible, modular, highly portable, 
 ANSI-C compliant, and open-source development tool for implementing 
@@ -124,6 +128,7 @@ easily adapted to 16 or 32-bits platforms.
 
 /**
 \page rep_sm 1. Instantiating the state machine (and defining the top state)
+\image html rkh_bunner.jpg
 
 A state machine is defined with the RKH_CREATE_HSM() macro and declared with
 the RKH_DCLR_HSM() macro. Frequently, each state machine is encapsulated
@@ -220,6 +225,7 @@ Explanation
 
 /**
 \page rep_cs 2. Instantiating the composite states
+\image html rkh_bunner.jpg
 
 A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
 macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
@@ -315,6 +321,7 @@ Also, shows its implementation using the RKH framework.
 
 /**
 \page rep_bs 3. Declaring the basic states
+\image html rkh_bunner.jpg
 
 A basic state (also called substate) is defined with the 
 RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
@@ -434,6 +441,7 @@ Also, shows its implementation using the RKH framework.
 
 /**
 \page rep_cjh 4. Declaring the pseudostates
+\image html rkh_bunner.jpg
 
 The conditional, junction, shallow history, and deep history pseudostates 
 are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
@@ -511,6 +519,7 @@ functions.
 
 /**
 \page rep_def 5. Defining the state machine's objects 
+\image html rkh_bunner.jpg
 
 The "my.h" header file contains the definitions of objet structures 
 (state machine, states, and pseudostates) and other facilities shared among 
@@ -590,6 +599,7 @@ aspects of implementing state machines with RKH.
 
 /**
 \page rep_act 6. Declaring the actions
+\image html rkh_bunner.jpg
 
 The used actions in the "my" state machine implementation are shown in
 \subpage myact_c file.
@@ -741,6 +751,7 @@ x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
 
 /**
 \page rep_inc 7. Include files
+\image html rkh_bunner.jpg
 
 The following listing shows a fragment of "my.c" source file, which 
 illustatres some aspects of implementing state machines with RKH.
@@ -789,6 +800,7 @@ illustatres some aspects of implementing state machines with RKH.
 
 /**
 \page running Running
+\image html rkh_bunner.jpg
 
 <b>Run-to-completation execution model</b>
 
@@ -826,8 +838,6 @@ During a transition, a number of actions may be executed. If such an action
 is a synchronous operation invocation on an object executing a state machine, 
 then the transition step is not completed until the invoked object completes 
 its run-to-completion step.
-
-<b> IMAGEN </b>
 
 Run-to-completion may be implemented in various ways. The most common way to 
 do that is by an event-loop running in its own thread, and that reads 
@@ -869,8 +879,6 @@ the long RTC step to allow a higher-priority active object to run. As long
 as the active objects don't share resources, they can run concurrently and 
 complete their RTC steps independently.
 
-<b> IMAGEN </b>
-
 <b>Simple cooperative kernel</b>
 
 The active object computing model can also work with nonpreemptive kernels. 
@@ -907,8 +915,6 @@ handle events quickly without a need to busy-wait for events.
 event arrives.) Also note that often you can make the task-level response as 
 fast as you need by breaking up longer RTC steps into shorter ones.
 
-<b> EXAMPLE </b>
-
 Now consider how the scenario depicted in Figure 6.3(A) plays out under 
 the vanilla kernel. The scenario begins with a low-priority active object 
 executing its RTC step (dispatch() function) and a high-priority active 
@@ -935,10 +941,6 @@ of wasting CPU cycles for polling the event queues. Posting an event to any
 of the active object queues should unblock the kernel. Of course, this 
 requires integrating the vanilla kernel with the underlying multitasking 
 system.
-
-Explicar también:
-1) Un thread para varias máquinas de estados. 
-		Ver book Real-time Concepts ...
 
 The following listing shows the main() function implementation. This function
 is included in the \subpage main_c file, which is located in the application 

@@ -1,4 +1,5 @@
 /** \page Installation Installation
+\image html rkh_bunner.jpg
 
 The RKH project is organized through a hierarchical directory structure
 to facilitate its distribution, support and maintenance.
@@ -195,6 +196,7 @@ This file is mandatory and it's used by RKH.
 
 
 \page Porting Porting
+\image html rkh_bunner.jpg
 
 This section describes how to adapt the RKH to various platforms, which
 is a process called porting. RKH contains a clearly defined abstraction
@@ -504,6 +506,7 @@ typedef signed int		HInt;
 
 
 \page qref Quick reference
+\image html rkh_bunner.jpg
 
 \n
 - \ref qref0
@@ -1729,6 +1732,7 @@ for more information about this.
 \li (11)	Terminates the program and close debug session.
 
 \page dbg Debugging tool
+\image html rkh_bunner.jpg
 
 When a program needs to be traced, it has to generate some information 
 each time it reaches a "significant step" (certain instruction in the 
@@ -1936,6 +1940,7 @@ output generated:
 
 
 \page cfg Configuration
+\image html rkh_bunner.jpg
 
 Each RKH application must have its own configuration file, called 
 \b rkhcfg.h. This file adapts and configures RKH by means of compiler
@@ -2157,6 +2162,7 @@ Available options:
 
 /**
 \page Usage Representing a state machine: step by step
+\image html rkh_bunner.jpg
 
 \n The goal in this section is to explain how to represent a state machine 
 using the RKH framework. To do that is proposed a simple example, which is 

@@ -6,6 +6,8 @@
 /**
 \anchor main_page
 \mainpage RKH Reference Manual
+\image html rkh_super_bunner.jpg
+
 
 \n
 <EM> "A behavioral description of a system specifies dynamic aspects of the
@@ -129,8 +131,8 @@ along with RKH package. If not, see <http://www.gnu.org/licenses/>.
 
 Contact information:
 
-RKH web site:	http://http://sourceforge.net/projects/rkh-reactivesys/
-\n e-mail:			francuccilea@gmail.com
+RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+\n e-mail:		francuccilea@gmail.com
 
 <HR>
 \section ack Acknowlegments
