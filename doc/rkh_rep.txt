@@ -2,6 +2,10 @@
 \page preparing Preparing the application files
 \image html rkh_bunner.jpg
 
+\n
+\ref basics "< Basics"\n
+\ref identify "> Identify and classify states and pseudostates"\n\n
+
 The sample code for the example presented above port to x86 is located 
 in the directory \\demo\\vc08\\. The directory contains the Visual C++ 2008
 project files to build the application. See \ref Installation section 
@@ -51,6 +55,10 @@ about RKH files. The application files are listed below:
 					an example for using the RKH trace facility.
 					See the \subpage main_c file.
 					Note that this file is located in the application directory.
+
+\n
+\ref basics "< Basics"\n
+\ref identify "> Identify and classify states and pseudostates"\n\n
 */
 
 
@@ -58,18 +66,31 @@ about RKH files. The application files are listed below:
 \page identify Identify and classify states and pseudostates
 \image html rkh_bunner.jpg
 
+\n
+\ref preparing "< Preparing the application files"\n
+\ref representing "> Representing the state machine"\n\n
+
 The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
 presented above, sorted by state nesting level.
 
 \n
 \anchor fig2
 \image html sttbl.jpg "Figure 2 - State nesting"
+
+\n
+\ref preparing "< Preparing the application files"\n
+\ref representing "> Representing the state machine"\n\n
+
 */
 
 
 /**
 \page representing Representing the state machine
 \image html rkh_bunner.jpg
+
+\n
+\ref identify "< Identify and classify states and pseudostates"\n
+\ref running "> Running"\n\n
 
 Now, this section explains how to implement the "my" state machine 
 using the RKH framework, which is shown in \ref fig1 "Figure 1".
@@ -82,11 +103,19 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 - \subpage rep_act
 - \subpage rep_inc
 
+\n
+\ref identify "< Identify and classify states and pseudostates"\n
+\ref running "> Running"\n\n
+
 */
 
 /**
 \page basics Basics
 \image html rkh_bunner.jpg
+
+\n
+\ref Usage "< Representing a state machine"\n
+\ref preparing "> Preparing the application files"\n\n
 
 As mentioned previously, RKH is a generic, flexible, modular, highly portable, 
 ANSI-C compliant, and open-source development tool for implementing 
@@ -123,6 +152,8 @@ and efficient implementation. Broadly speaking, the RKH implementation has
 been designed from the ground up to be used in 8-bits platforms but can be 
 easily adapted to 16 or 32-bits platforms.
 
+\ref Usage "< Representing a state machine"\n
+\ref preparing "> Preparing the application files"
 */
 
 
@@ -802,6 +833,10 @@ illustatres some aspects of implementing state machines with RKH.
 \page running Running
 \image html rkh_bunner.jpg
 
+\n
+\ref representing "< Representing the state machine"\n
+\ref Usage "> Representing a state machine: step by step"\n\n
+
 <b>Run-to-completation execution model</b>
 
 Event occurrences are detected, dispatched, and then processed by the state 
@@ -1005,4 +1040,8 @@ directory.
 		require explicit casting from the generic base structure #RKHEVT_T 
 		to the specific derived structure MYEVT_T.
 \li (11)	Terminates the program and close debug session.
+
+\n
+\ref representing "< Representing the state machine"\n
+\ref Usage "> Representing a state machine: step by step"\n\n
 */

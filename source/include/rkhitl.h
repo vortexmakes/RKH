@@ -61,7 +61,7 @@
 /**	
  *	Version string of RKH.
  *
- *	Date: 06/24/2011
+ *	Date: 02/01/2012
  */
 
 #define RKH_VERSION					"1.1.5"
