@@ -161,6 +161,10 @@ easily adapted to 16 or 32-bits platforms.
 \page rep_sm 1. Instantiating the state machine (and defining the top state)
 \image html rkh_bunner.jpg
 
+\n
+\ref representing "< Representing the state machine"\n
+\ref rep_cs "> Instantiating the composite states"\n\n
+
 A state machine is defined with the RKH_CREATE_HSM() macro and declared with
 the RKH_DCLR_HSM() macro. Frequently, each state machine is encapsulated
 inside a dedicated source file (.c file), from which the RKH_CREATE_HSM() 
@@ -251,12 +255,19 @@ Explanation
 		it could be declared as NULL or eliminated with RKH_EN_HSM_DATA 
 		option. Could be used to pass arguments to the state machine like 
 		an argc/argv.
+\n
+\ref representing "< Representing the state machine"\n
+\ref rep_cs "> Instantiating the composite states"\n\n
 */
 
 
 /**
 \page rep_cs 2. Instantiating the composite states
 \image html rkh_bunner.jpg
+
+\n
+\ref rep_sm "< Instantiating the state machine"\n
+\ref rep_bs "> Declaring the basic states"\n\n
 
 A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
 macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
@@ -347,12 +358,21 @@ Also, shows its implementation using the RKH framework.
 \image html is11.png "Figure 6 - composite state \"S11\""
 
 \n
+
+\n
+\ref rep_sm "< Instantiating the state machine"\n
+\ref rep_bs "> Declaring the basic states"\n\n
+
 */
 
 
 /**
 \page rep_bs 3. Declaring the basic states
 \image html rkh_bunner.jpg
+
+\n
+\ref rep_cs "< Instantiating the composite states"\n
+\ref rep_cjh "> Declaring the pseudostates"\n\n
 
 A basic state (also called substate) is defined with the 
 RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
@@ -467,12 +487,20 @@ Also, shows its implementation using the RKH framework.
 \n
 \anchor is31_s32
 \image html is31_s32.png "Figure 10 - basic states \"S31\", and \"S32\""
+
+\n
+\ref rep_cs "< Instantiating the composite states"\n
+\ref rep_cjh "> Declaring the pseudostates"\n\n
 */
 
 
 /**
 \page rep_cjh 4. Declaring the pseudostates
 \image html rkh_bunner.jpg
+
+\n
+\ref rep_bs "< Declaring the basic states"\n
+\ref rep_def "> Defining the state machine's objects"\n\n
 
 The conditional, junction, shallow history, and deep history pseudostates 
 are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
@@ -545,12 +573,20 @@ functions.
 \n
 \anchor ih
 \image html ih.png "Figure 14 - history pseudostates \"H\" and \"DH\""
+
+\n
+\ref rep_bs "< Declaring the basic states"\n
+\ref rep_def "> Defining the state machine's objects"\n\n
 */
 
 
 /**
 \page rep_def 5. Defining the state machine's objects 
 \image html rkh_bunner.jpg
+
+\n
+\ref rep_cjh "< Declaring the pseudostates"\n
+\ref rep_act "> Declaring the actions"\n\n
 
 The "my.h" header file contains the definitions of objet structures 
 (state machine, states, and pseudostates) and other facilities shared among 
@@ -625,12 +661,19 @@ aspects of implementing state machines with RKH.
 		- #RKH_DCLR_DHIST_STATE: 	deep history pseudostate.
 		- #RKH_DCLR_SHIST_STATE: 	shallow history pseudostate.
 
+\n
+\ref rep_cjh "< Declaring the pseudostates"\n
+\ref rep_act "> Declaring the actions"\n\n
 */
 
 
 /**
 \page rep_act 6. Declaring the actions
 \image html rkh_bunner.jpg
+
+\n
+\ref rep_def "< Defining the state machine's objects"\n
+\ref rep_inc "> Include files"\n\n
 
 The used actions in the "my" state machine implementation are shown in
 \subpage myact_c file.
@@ -777,12 +820,19 @@ x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
 }
 \endcode
 
+\n
+\ref rep_def "< Defining the state machine's objects"\n
+\ref rep_inc "> Include files"\n\n
 */
 
 
 /**
 \page rep_inc 7. Include files
 \image html rkh_bunner.jpg
+
+\n
+\ref rep_act "< Declaring the actions"\n
+\ref representing "> Representing the state machine"\n\n
 
 The following listing shows a fragment of "my.c" source file, which 
 illustatres some aspects of implementing state machines with RKH.
@@ -826,6 +876,9 @@ illustatres some aspects of implementing state machines with RKH.
 
 \li (4) This header file defines the actions to be executed.
 
+\n
+\ref rep_act "< Declaring the actions"\n
+\ref representing "> Representing the state machine"\n\n
 */
 
 
