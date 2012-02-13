@@ -64,7 +64,7 @@
  *	Date: 02/01/2012
  */
 
-#define RKH_VERSION					"1.1.5"
+#define RKH_VERSION					"1.1.6"
 
 
 /**	
