@@ -115,13 +115,13 @@ RKH_THIS_MODULE( 1, rkh );
 
 #define rkh_process_input( s, h, pe )									\
 																		\
-	(s)->prepro != NULL ? rkh_call_prepro(s,h,pe) : (pe->e)
+	(RKHE_T)(((s)->prepro != NULL)?rkh_call_prepro(s,h,pe):((pe)->e))
 
 #else
 
 #define rkh_process_input( s, h, pe )									\
 																		\
-	(pe->e)
+	(RKHE_T)((pe)->e)
 
 #endif
 
