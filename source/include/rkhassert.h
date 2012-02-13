@@ -206,7 +206,7 @@
 	 * 	\a exp evaluates to FALSE.
      */
 
-	#define rkhallege( exp, event )			rkhassert( exp, event )
+	#define rkhallege( exp )				rkhassert( exp )
 
     
 	/** 
@@ -238,7 +238,7 @@
  *	a better documentation of the intention of this assertion.
  */
 
-#define rkhrequire( exp, event )			rkhassert( exp, event )
+#define rkhrequire( exp )				rkhassert( exp )
 
 
 /**
@@ -249,7 +249,7 @@
  *	a better documentation of the intention of this assertion.
  */
 
-#define rkhensure( exp, event )				rkhassert( exp, event )
+#define rkhensure( exp )				rkhassert( exp )
 
 
 /**
@@ -260,7 +260,7 @@
  *	a better documentation of the intention of this assertion.
  */
 
-#define rkhinvariant( exp, event )			rkhassert( exp, event )
+#define rkhinvariant( exp )				rkhassert( exp )
 
 
 #endif
