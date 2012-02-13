@@ -89,6 +89,11 @@ e-mail: francuccilea@gmail.com
 
 	This file resumes the changes across project version releases.
 
+Changes between V1.1.6 and V1.1.5 released 02/13/2012
+
+	+	Fixed bug in call rkhallege() macro.
+	+	Fixed bug in rkhallege(), rkhrequire(), rkhensure(), and rkhinvariant() macro.
+
 Changes between V1.1.4 and V1.1.5 released 02/01/2012
 
 	+	Added support for Codewarrior Coldfire V1.
