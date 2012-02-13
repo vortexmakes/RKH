@@ -735,7 +735,7 @@ rkh_put_fifo( HUInt qd, RKHEVT_T *evt )
         ++evt->dynamic_;
     rkh_exit_critical();
 
-    rkhallege( rkh_post_fifo( qd, evt ) == 0, RKH_PF_NO_ROOM ); 
+    rkhallege( rkh_post_fifo( qd, evt ) == 0 ); 
 }
 
 
@@ -747,7 +747,7 @@ rkh_put_lifo( HUInt qd, RKHEVT_T *evt )
         ++evt->dynamic_;
     rkh_exit_critical();
 
-    rkhallege( rkh_post_fifo( qd, evt ) == 0, RKH_PL_NO_ROOM ); 
+    rkhallege( rkh_post_fifo( qd, evt ) == 0 ); 
 }
 
 #endif
