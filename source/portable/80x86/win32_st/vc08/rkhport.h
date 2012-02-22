@@ -33,7 +33,11 @@
 
 
 #include "rkhcfg.h"
-#include <stdio.h>
+
+#include <windows.h>
+#include "rkhque.h"
+#include "rkhmp.h"
+#include "rkh.h"
 
 
 /*
@@ -82,8 +86,8 @@ typedef signed int		HInt;
  * 	code.
  */
 
-#define rkh_enter_critical()
-#define rkh_exit_critical()
+#define RKH_ENTER_CRITICAL()
+#define RKH_EXIT_CRITICAL()
 
 
 /*
@@ -93,27 +97,44 @@ typedef signed int		HInt;
  *	is used trace facility (of course, RKH_TRACE == 1).
  */
 
-#define rkh_tropen							rkh_trace_open
-#define rkh_trclose							rkh_trace_close
-#define rkh_trflush							rkh_trace_flush
-#define rkh_trgetts							rkh_trace_getts
+#define rkh_tropen					rkh_trace_open
+#define rkh_trclose					rkh_trace_close
+#define rkh_trflush					rkh_trace_flush
+#define rkh_trgetts					rkh_trace_getts
 
 
-/*
- *	Defines dynamic event support.
- *
- *	This definitions are required only when the user application
- *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
- */
+#define RKH_EQ_TYPE              	RKHQ_T
+#define RKH_OSDATA_TYPE          	HANDLE
+#define RKH_THREAD_TYPE             HANDLE
 
-#define RKH_DYNE_NUM_POOLS					3
-#define rkh_dyne_init( mpd, pm, ps, bs )	(void)0
-#define rkh_dyne_event_size( mpd )			0
-#define rkh_dyne_get( mpd, e )				(void)0
-#define rkh_dyne_put( mpd, e )				(void)0
-#define rkh_post_fifo( qd, e )				0
-#define rkh_post_lifo( qd, e )				0
-#define rkh_get( qd, e )					0
+
+#define RKH_CPUSR_TYPE
+#define RKH_ENTER_CRITICAL(sr)		EnterCriticalSection( &csection )
+#define RKH_EXIT_CRITICAL(sr)		LeaveCriticalSection( &csection )
+
+
+#define RKH_SMA_BLOCK( sma ) 								\
+    Q_ASSERT((me_)->eQueue.frontEvt != (QEvent *)0)
+
+#define RKH_SMA_READY( sma ) 								\
+    QPSet64_insert(&QF_readySet_, (me_)->prio); 			\
+    (void)SetEvent(QF_win32Event_)
+
+#define RKH_SMA_UNREADY( sma ) 								\
+    QPSet64_remove(&QF_readySet_, (me_)->prio)
+
+
+#define RKH_DYNE_TYPE				RKHMP_T
+#define RKH_DYNE_INIT( mp, poolSto_, poolSize_, evtSize_) 	\
+    QMPool_init(&(mp), poolSto_, poolSize_, evtSize_)
+#define RKH_DYNE_GET_ESIZE( mp )   	((mp).blockSize)
+#define QF_DYNE_GET( mp, e )       ((e) = (QEvent *)QMPool_get( &(mp) ))
+#define QF_DYNE_PUT( mp, e )       (QMPool_put( &(mp), e ))
+
+
+extern CRITICAL_SECTION csection;
+extern HANDLE  sma_is_ready;
+extern RKH_RG64_T rkh_rdygrp;
 
 
 #endif
