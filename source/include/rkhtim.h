@@ -1,19 +1,19 @@
-/*
+/**
  * 	rkhtim.h
  *
  *	Implements a software timer facility.
  */
 
+
 #ifndef __RKHTIM_H__
 #define __RKHTIM_H__
 
 
-#include "mytypes.h"
-#include "rksys.h"
-#include "task.h"
+#include "rkh.h"
 
 
-/*
+/**
+ * 	\brief
  * 	Timer mode.
  *
  *	ONESHOT:	the started soft timer will run in oneshot mode. Once the 

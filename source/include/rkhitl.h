@@ -88,6 +88,12 @@
  *  Verifies configurations from rkhcfg.h include file.
  */
 
+
+#ifndef RKH_SIZEOF_QNE
+	#error "rkhcfg.h, RKH_SIZEOF_QNE must be defined, expected 8, 16 or 32"
+#endif
+
+
 #if RKH_TRACE == 1
 	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_STATE_ID != 1 || RKH_EN_HSM_NAME != 1 || RKH_EN_HSM_ID != 1 )
 	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_STATE_ID or RKH_EN_HSM_NAME or RKH_EN_HSM_ID"
@@ -444,6 +450,57 @@
 #endif
 
 
+#ifndef RKH_DIS_INTERRUPT
+	#error  "rkhport.h, Must be defined the platform-dependent macro RKH_DIS_INTERRUPT."
+#endif
+
+#ifndef RKH_ENA_INTERRUPT
+	#error  "rkhport.h, Must be defined the platform-dependent macro RKH_ENA_INTERRUPT."
+#endif
+
+
+#ifndef RKH_CRITICAL_METHOD
+	#define RKH_CRITICAL_METHOD		2
+#endif
+
+#if RKH_CRITICAL_METHOD == 1
+	#define RKH_iSR_CRITICAL
+	#define RKH_iENTER_CRITICAL()		RKH_DIS_INTERRUPT()
+	#define RKH_iEXIT_CRITICAL()		RKH_ENA_INTERRUPT()
+#elif RKH_CRITICAL_METHOD == 2
+	#define RKH_iSR_CRITICAL
+	#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( dummy )
+	#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
+#elif RKH_CRITICAL_METHOD == 3
+
+	/** 
+	 * 	\brief
+	 * 	This macro is internal to RKH and the user application should 
+	 * 	not call it.
+	 */
+
+	#define RKH_iSR_CRITICAL			RKH_CPUSR_TYPE sr
+
+	/** 
+	 * 	\brief
+	 * 	This macro is internal to RKH and the user application should 
+	 * 	not call it.
+	 */
+
+	#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( sr )
+
+	/** 
+	 * 	\brief
+	 * 	This macro is internal to RKH and the user application should 
+	 * 	not call it.
+	 */
+
+	#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( sr )
+#else
+	#error "RKH_CRITICAL_METHOD defined incorrectly, expected 1, 2 or 3"
+#endif
+
+
 #ifndef RKH_EN_DOXYGEN
 	#define RKH_EN_DOXYGEN	0
 #endif
@@ -686,7 +743,7 @@
  *	\code
  *	//	...in rkhport.h
  *
- *	#define rkh_tropen			rkh_trace_open
+ *	#define rkh_tropen			my_rkh_trace_open
  *
  * 	//	...in some application module
  *

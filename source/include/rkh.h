@@ -814,7 +814,7 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
  *	rkh_alloc_event():
  *
  *	\code
- *	MYEVT_T *mye = rkh_alloc_event( MYEVT_T, DATA );
+ *	MYEVT_T *mye = RKH_ALLOC_EVENT( MYEVT_T, DATA );
  *	mye->y = mye->x = 0;
  *	...
  *	\endcode
@@ -828,7 +828,7 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
  * 	\param e		event signal.
  */
 
-#define rkh_alloc_event( et, e )										\
+#define RKH_ALLOC_EVENT( et, e )										\
 																		\
 								(et*)rkh_ae(sizeof(et),(RKHE_T)(e))
 
@@ -874,7 +874,7 @@ void rkh_gc( RKHEVT_T *evt );
  *	...
  *	RKHEVT_T e;
  *
- *	rkh_set_static_event( &e, TOUT );
+ *	RKH_SET_STATIC_EVENT( &e, TOUT );
  *	\endcode
  *
  * 	\param evt		pointer to event structure derived from RKHEVT_T.
@@ -884,7 +884,7 @@ void rkh_gc( RKHEVT_T *evt );
  * 	\returns
  */
 
-#define rkh_set_static_event( evt, es )			mksevt( evt, es )
+#define RKH_SET_STATIC_EVENT( evt, es )			mksevt( evt, es )
 
 
 /**
@@ -1086,6 +1086,96 @@ void rkh_clear_info( RKH_T *ph );
  */
 
 RKH_INFO_T *rkh_get_info( RKH_T *ph );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_init( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_scheduler( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_stop( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_create( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_delete( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_get_info( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_chgprio( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_put_fifo( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_put_lifo( void );
+
+
+/**
+ * 	\brief
+ *
+ *	\sa
+ */
+
+void rkh_sma_get( void );
 
 
 #endif

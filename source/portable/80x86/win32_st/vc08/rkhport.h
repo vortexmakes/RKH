@@ -54,12 +54,12 @@
  * 	types.
  */
 
-typedef signed char 	rkhint8;
-typedef signed short 	rkhint16;
-typedef signed long		rkhint32;
-typedef unsigned char 	rkhuint8;
-typedef unsigned short 	rkhuint16;
-typedef unsigned long	rkhuint32;
+typedef signed char 	rkhi8_t;
+typedef signed short 	rkhi16_t;
+typedef signed long		rkhi32_t;
+typedef unsigned char 	rkhui8_t;
+typedef unsigned short 	rkhui16_t;
+typedef unsigned long	rkhui32_t;
 
 typedef unsigned int	HUInt;
 typedef signed int		HInt;
@@ -73,21 +73,9 @@ typedef signed int		HInt;
 #define rkhrom			const	
 
 
-/*
- * 	RKH needs to disable interrupts in order to access critical
- * 	sections of code and to reenable interrupts when done.
- * 	
- * 	To hide the actual implementation method available for a
- * 	particular processor, compiler, an OS, RKH defines the 
- * 	following two macros to disable and enable interrupts 
- * 	rkh_enter_critical() and define rkh_exit_critical() respectively.
- * 	
- * 	These macros are always together to wrap critical sections of
- * 	code.
- */
-
-#define RKH_ENTER_CRITICAL()
-#define RKH_EXIT_CRITICAL()
+#define RKH_CPUSR_TYPE
+#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
+#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
 
 
 /*
@@ -108,11 +96,6 @@ typedef signed int		HInt;
 #define RKH_THREAD_TYPE             HANDLE
 
 
-#define RKH_CPUSR_TYPE
-#define RKH_ENTER_CRITICAL(sr)		EnterCriticalSection( &csection )
-#define RKH_EXIT_CRITICAL(sr)		LeaveCriticalSection( &csection )
-
-
 #define RKH_SMA_BLOCK( sma ) 								\
     Q_ASSERT((me_)->eQueue.frontEvt != (QEvent *)0)
 
@@ -127,9 +110,10 @@ typedef signed int		HInt;
 #define RKH_DYNE_TYPE				RKHMP_T
 #define RKH_DYNE_INIT( mp, poolSto_, poolSize_, evtSize_) 	\
     QMPool_init(&(mp), poolSto_, poolSize_, evtSize_)
-#define RKH_DYNE_GET_ESIZE( mp )   	((mp).blockSize)
-#define QF_DYNE_GET( mp, e )       ((e) = (QEvent *)QMPool_get( &(mp) ))
-#define QF_DYNE_PUT( mp, e )       (QMPool_put( &(mp), e ))
+#define RKH_DYNE_GET_ESIZE( mp )	((mp).blockSize)
+#define QF_DYNE_GET( mp, e )		((e) = (QEvent *)QMPool_get( &(mp) ))
+#define QF_DYNE_PUT( mp, e )		(QMPool_put( &(mp), e ))
+
 
 
 extern CRITICAL_SECTION csection;

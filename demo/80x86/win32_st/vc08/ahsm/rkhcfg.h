@@ -65,4 +65,23 @@
 #define RKH_ASSERT					1	/* 	Enable (1) or Disable (0) assert support. */
 
 
+/* ### NEW CONFIGS ### */
+
+#define RKH_NUM_SMA					8
+
+#define RKH_SIZEOF_EVENT			4
+#define RKH_SIZEOF_QNE				4
+#define RKH_SIZEOF_MPBS				4
+#define RKH_SIZEOF_MPNB				4
+#define RKH_SIZEOF_TNT				8
+
+#define RKH_CRITICAL_METHOD			3
+
+#define RKH_NUM_MP					8
+
+#define RKH_EN_NATIVE_SCHEDULER		1
+#define RKH_EN_NATIVE_PUTFIFO		1
+#define RKH_EN_NATIVE_PUTLIFO		1
+#define RKH_EN_NATIVE_GET			1
+
 #endif
