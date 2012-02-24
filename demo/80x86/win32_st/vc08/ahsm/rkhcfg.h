@@ -84,4 +84,6 @@
 #define RKH_EN_NATIVE_PUTLIFO		1
 #define RKH_EN_NATIVE_GET			1
 
+#if RKH_EN_RQUEUE_GET_INFO == 1
+#if RKH_EN_RQUEUE_GET_LWMARK == 1
 #endif

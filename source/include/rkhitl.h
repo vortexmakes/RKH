@@ -94,6 +94,11 @@
 #endif
 
 
+#ifndef RKH_SIZEOF_TNT
+	#error "rkhcfg.h, RKH_SIZEOF_TNT must be defined, expected 8, 16 or 32"
+#endif
+
+
 #if RKH_TRACE == 1
 	#if RKH_EN_TRACE_STRING == 1 && ( RKH_EN_STATE_NAME != 1 || RKH_EN_STATE_ID != 1 || RKH_EN_HSM_NAME != 1 || RKH_EN_HSM_ID != 1 )
 	#error  "rkhcfg.h, When enabling RKH_TRACE and RKH_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_EN_STATE_NAME or RKH_EN_STATE_ID or RKH_EN_HSM_NAME or RKH_EN_HSM_ID"
@@ -394,6 +399,15 @@
 
 #ifndef RKH_ASSERT
 	#define RKH_ASSERT		0
+#endif
+
+
+#if RKH_EN_TIM_HOOK == 0
+	#define rkh_mktimer( t,s,th )										\
+				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
+#else
+	#define rkh_mktimer( t,s,th )										\
+				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s) )
 #endif
 
 

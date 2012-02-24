@@ -1103,7 +1103,7 @@ void rkh_init( void );
  *	\sa
  */
 
-void rkh_scheduler( void );
+void rkh_scheduler_enter( void );
 
 
 /**

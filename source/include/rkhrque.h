@@ -92,10 +92,10 @@ enum
  * 	queues is stored.
  *
  *	The application must allocate an RKH_RQ_INFO_T data structure used to 
- *	receive data. The performance information is available during run-time 
- *	for each of the RKH services. This can be useful in determining whether 
- *	the application is performing properly, as well as helping to optimize the 
- *	application.
+ *	receive information. The performance information is available during 
+ *	run-time for each of the RKH services. This can be useful in determining 
+ *	whether the application is performing properly, as well as helping to 
+ *	optimize the application.
  */
 
 typedef struct rkh_qinfo_t
@@ -158,7 +158,9 @@ typedef struct
 	char *pend;
 
 	/**
-	 * 	Performance information.
+	 * 	Performance information. This member is optional, thus it could be 
+	 * 	declared as NULL or eliminated in compile-time with 
+	 * 	RKH_EN_RQUEUE_GET_INFO.
 	 */
 
 #if RKH_EN_RQUEUE_GET_INFO == 1
@@ -171,7 +173,7 @@ typedef struct
 	 *	proper sizing of the queue.
 	 */
 
-#if RKH_EN_QUEUE_GET_LWMARK == 1
+#if RKH_EN_RQUEUE_GET_LWMARK == 1
 	RKH_RQNE_T nmin;	
 #endif
 
@@ -179,10 +181,11 @@ typedef struct
 
 
 /**
- *	Initializes the previously allocated RKHRQ_T data strcuture.
+ * \brief
+ *	Initializes the previously allocated queue data strcuture RKHRQ_T.
  *
  *	\note 
- *	See 'RKH_RQ_T' structure for more information.
+ *	See RKHRQ_T structure for more information.
  *
  * 	\param q		pointer to previously allocated queue structure.
  * 	\param ps 		pointer to an array of pointers that holds the elements. 
@@ -330,7 +333,6 @@ HUInt rkh_rque_read( RKHRQ_T *q, void *pe );
 /**
  * 	\brief
  * 	Retrieves performance information for a particular queue. 
- *
  *	The application must allocate an RKH_RQ_INFO_T data structure used to 
  *	receive data. The performance information is available during run-time 
  *	for each of the RKH services. This can be useful in determining whether 
@@ -338,7 +340,9 @@ HUInt rkh_rque_read( RKHRQ_T *q, void *pe );
  *	application.
  *
  * 	\note
- * 	See RKH_RQ_INFO_T structure for more information.
+ * 	See RKH_RQ_INFO_T structure for more information. This function is 
+ * 	optional, thus it could be eliminated in compile-time with 
+ * 	RKH_EN_RQUEUE_GET_INFO.
  *
  * 	\param q		pointer to previously created queue.
  * 	\param pqi		pointer to the buffer into which the performance 
@@ -351,6 +355,10 @@ void rkh_rque_get_info( RKHRQ_T *q, RKH_RQ_INFO_T *pqi );
 /**
  * 	\brief
  * 	Clear performance information for a particular queue.
+ *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_RQUEUE_GET_INFO.
  *
  * 	\param q		pointer to previously created queue.
  */

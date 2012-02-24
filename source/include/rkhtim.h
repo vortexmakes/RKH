@@ -1,7 +1,33 @@
+/*
+ *	file: rkhtim.h
+ *	Last updated for version: 1.0.00
+ *	Date of the last update:  Feb 24, 2012
+ *
+ * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *
+ * 	RKH is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ *  RKH is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with RKH, see copying.txt file.
+ *
+ * Contact information:
+ * RKH web site:	http://
+ * e-mail:			francuccilea@gmail.com
+ */
+
 /**
  * 	rkhtim.h
  *
- *	Implements a software timer facility.
+ * 	\brief
+ * 	Platform-independent interface for supporting timer services.
  */
 
 
@@ -12,209 +38,279 @@
 #include "rkh.h"
 
 
-/**
+/** 
  * 	\brief
- * 	Timer mode.
+ * 	This data type defines the dynamic range of the time delays measured in 
+ * 	clock ticks (maximum number of ticks).
  *
- *	ONESHOT:	the started soft timer will run in oneshot mode. Once the 
- *				timeout will expire and the callback function will be 
- *				executed. The timer won't be re-started automatically.
- *
- *	RETRIG: 	the started soft timer will run in periodic mode. Once the 
- *				timeout will expire and the callback function will be 
- *				executed the timer will be re-started (re-triggered) again 
- *				automatically.
+ *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ *	configurable via the preprocessor switch RKH_SIZEOF_TNT.
  */
 
-enum
-{
-	ONESHOT, RETRIG
-};
-
-
-/*	Return codes */
-
-enum
-{
-	TIMER_OK, TIMER_NO
-};
-
-
-typedef MInt TIM_T;
-
-
-#if RKSYS_TIMER_SIMPLE_CB == 0
-
-typedef void (*STCB_T)( TIM_T timd, void *stp );
-
+#if RKH_SIZEOF_TNT == 8
+	typedef rkhui8_t RKH_TCTR_T;
+#elif RKH_SIZEOF_TNT == 16
+	typedef rkhui16_t RKH_TCTR_T;
+#elif RKH_SIZEOF_TNT == 32
+	typedef rkhui32_t RKH_TCTR_T;
 #else
-
-typedef void (*STCB_T)( void );
-
+	typedef rkhui8_t RKH_TCTR_T;
 #endif
 
 
-/*
+/**
+ * 	\brief
  * 	Defines the data structure into which the performance information for
  * 	software timers is stored.
+ *
+ *	The application must allocate an RKH_TIM_INFO_T data structure used to 
+ *	receive information. The performance information is available during 
+ *	run-time for each of the RKH services. This can be useful in determining 
+ *	whether the application is performing properly, as well as helping to 
+ *	optimize the application.
+ */
+
+typedef struct rkh_tim_info_t
+{
+	rkhui16_t nexp;			/** # of expirations */
+	rkhui16_t nstart;		/**	# of start requests */
+	rkhui16_t nstop;		/**	# of stop requests */
+} RKH_TIM_INFO_T;
+
+
+/**
+ * 	\brief
+ * 	Defines the data structure used to maintain information that allows the 
+ * 	timer-handling facility to update and expire software timers. 
  */
 
 typedef struct
 {
-	ushort expirations;			/*	number of expirations */
-	ushort kicks;				/*	number of kick requests */
-	ushort kills;				/*	number of kill requests */
-	ushort reassigns;			/*	number of reassign requests */
-} TIMER_INFO_T;
+	/**
+	 * 	Timer event.
+	 */
+
+	RKHEVT_T e;
+
+	/**
+	 * 	Points to next timer structure in the doubly linked list.
+	 */
+
+	RKHT_T *tnext;
+
+	/**
+	 * 	Points to previous timer structure in the doubly linked list.
+	 */
+
+	RKHT_T *tprev;
+
+	/**
+	 * 	State machine application (SMA) that receives the timer event.
+	 */
+
+	RKHSMA_T *sma;
+
+	/**
+	 * 	Tick down-counter.
+	 */
+
+	RKH_TCTR_T tick;
+
+	/**
+	 * 	Number of ticks for all timer expirations after the first (expiration 
+	 * 	period). A zero for this parameter makes the timer a one-shot timer, 
+	 * 	otherwise, for periodic timers, any value in range.
+	 */
+
+	RKH_TCTR_T period;
+
+	/**
+	 *	Hook function to call when the timer expires. This member is optional, 
+	 *	thus it could be declared as NULL or eliminated in compile-time with 
+	 *	RKH_EN_TIMER_HOOK.
+	 */
+
+#if RKH_EN_TIMER_HOOK == 1
+	RKH_THK_T timhk;
+#endif
+
+	/**
+	 * 	Performance information. This member is optional, thus it could be 
+	 * 	declared as NULL or eliminated in compile-time with 
+	 * 	RKSYS_TIMER_GET_INFO.
+	 */
+
+#if RKSYS_TIMER_GET_INFO == 1
+	RKH_TIM_INFO_T tinfo;
+#endif
+} RKHT_T;
 
 
-/*
- * 	stimer_init:
- *
- * 	Initializes the available timer slots.
+/**
+ * 	\brief
+ * 	Keep tracks and updates the started timers. 
+ * 	If one or more timers expires the assigned event is directly posted into 
+ * 	the state machine application queue and associated hook function is 
+ * 	executed (if it's used). The expiration events of timers that expire at 
+ * 	the same time are executed in the order they were started.
+ * 	This function must be placed where will be incrementing the system tick. 
+ * 	Normally this is placed in a timer ISR routine.
  */
 
-void stimer_init( void );
+void rkh_tim_handler( void );
 
 
-/*
- * 	stimer_handler:
+/**
+ * 	\brief
+ *	Initializes the previously allocated timer structure RKHT_T. 
+ *	The timer is initialized in a non-active state (stopped). In this case, a 
+ *	subsequent start service call is necessary to get the timer actually 
+ *	started.
  *
- * 	Keep tracks and updates the started timers. If one or more timers 
- * 	expires the associated callback function is executed. This function 
- * 	must be placed where will be incrementing the system tick. Normally 
- * 	this is placed in a timer ISR routine.
- */
-
-void stimer_handler( void );
-
-
-/*
- * 	stimer_assign:
- *
- *	Assigns a timer. This operation allocates a soft-timer structure. 
- *	Any software module intending to install a soft timer must first 
- *	create a timer structure. The timer structure contains control 
- *	information that allows the timer-handling facility to update and 
- *	expire soft timers. 
- *
- * 	Arguments:
+ *	\note 
+ *	See RKHT_T structure for more information.
  *		
- *	'type': 	timer type.
- *	'stcb': 	callback function to be called at the timer expiration.
- *	'stp': 		parameter of callback function. 
- *
- *	Returns: 
- *
- *	The number of timer descriptor identifying the newly created timer.
+ *	\param t		pointer to previously allocated timer structure. Any 
+ *					software module intending to install a software timer must 
+ *					first allocate a timer structure RKHT_T.
+ *	\param thk 		hook function to be called at the timer expiration. This 
+ *					member is optional, thus it could be declared as NULL or 
+ *					eliminated in compile-time with RKH_EN_TIMER_HOOK.
+ *	\param sig		signal of the event to be directly posted (using the FIFO 
+ *					policy) into the event queue of the target agreed state 
+ *					machine application.
  */
 
-#if RKSYS_TIMER_SIMPLE_CB == 0
+#define rkh_tim_init( t, sig, thk )				rkh_mktimer( t, sig, thk )
 
-TIM_T stimer_assign( uchar type, STCB_T stcb, void *stp );
-
+#if RKH_EN_TIMER_HOOK == 0
+	void rkh_itim_init( RKHT_T *t, RKHE_T sig );
 #else
-
-TIM_T stimer_assign( uchar type, STCB_T stcb );
-
+	void rkh_itim_init( RKHT_T *t, RKHE_T sig, RKH_THK_T thk );
 #endif
 
 
-/*
- * 	stimer_reassign:
+/**
+ * 	\brief
+ * 	Start a timer as one-shot timer.
+ * 	This operation installs a previously created timer into	the timer-handling 
+ * 	facility. The timer begins running at the completion of this operation. 
+ * 	The timer won't be re-started automatically.
  *
- * 	Reassigns the callback function and its parameter to previously created
- * 	timer. If timer is running must be restarted.
- *
- * 	Arguments:
- *
- * 	'timd': 	a timer descriptor identifying a previously created timer.
- *	'stcb': 	callback function to be called at the timer expiration.
- *	'stp': 		parameter of callback function. 
+ *	\param t		pointer to previously created timer structure.
+ *	\param sma		state machine application (SMA) that receives the timer 
+ *					event.
+ * 	\param tick 	number of ticks for timer expiration.
  */
 
-#if RKSYS_TIMER_SIMPLE_CB == 0
-
-void stimer_reassign( TIM_T timd, STCB_T stcb, void *stp );
-
-#else
-
-void stimer_reassign( TIM_T timd, STCB_T stcb );
-
-#endif
+#define rkh_tim_oneshot( t, sma, tick )						\
+				do{											\
+					(t)->period = 0;						\
+					rkh_tim_start( (t), (sma), (itick) );
+				}while(0)
 
 
-/*
- * 	stimer_kill:
+/**
+ * 	\brief
+ * 	Start a timer as periodic timer.
+ * 	This operation installs a previously created timer into	the timer-handling 
+ * 	facility. The timer begins running at the completion of this operation.
+ * 	Once the timeout will expire the timer will be re-started (re-triggered) 
+ * 	again automatically.
  *
- * 	Kills a timer. This operation kills a previously created timer, 
- * 	freeing the memory occupied by the timer structure.
- *
- * 	Arguments:
- *
- * 	'timd': 	a timer descriptor identifying a previously created timer.
+ *	\param t		pointer to previously created timer structure.
+ *	\param sma		state machine application (SMA) that receives the timer 
+ *					event.
+ * 	\param itick 	number initial of ticks for timer expiration.
+ * 	\param period 	number of ticks for all timer expirations after the first 
+ * 					(expiration period). A zero for this parameter makes the 
+ * 					timer a one-shot timer, otherwise, for periodic timers, 
+ * 					any value in range.
  */
 
-void stimer_kill( TIM_T timd );
+#define rkh_tim_periodic( t, sma, itick, period )			\
+				do{											\
+					(t)->period = (period);					\
+					rkh_tim_start( (t), (sma), (itick) );	\
+				}while(0)
 
 
-/*
- * 	stimer_kick:
+/**
+ * 	\brief
+ * 	Start a timer. 
+ * 	This operation installs a previously created timer into	the timer-handling 
+ * 	facility. The timer begins running at the completion of this operation.
  *
- * 	Kicks a timer. This operation installs a previously created timer into
- * 	the timer-handling facility. The timer begins running at the completion 
- * 	of this operation.
- *
- * 	Arguments:
- *
- * 	'timd': 	a timer descriptor identifying a previously created timer.
- * 	'tout': 	timeout or expiration time in ticks.
+ *	\param t		pointer to previously created timer structure.
+ * 	\param itick 	number of ticks for timer expiration.
  */
 
-void stimer_kick( TIM_T timd, RKTICK_T tout );
+void rkh_tim_start( RKHT_T *t, RKHSMA_T *sma, RKH_TCTR_T itick );
 
 
-/*
- * 	stimer_stop:
+/**
+ * 	\brief
+ * 	Restart a timer with a new number of ticks. 
+ * 	The timer begins running at the completion of this operation.
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_TIM_RESTART.
  *
- *	Stops a currently running timer. This operation stops a timer by 
- * 	removing the currently running timer from the timer-handling facility.
- *
- * 	Arguments:
- *
- * 	'timd': 	a timer descriptor identifying a previously created timer.
+ *	\param t		pointer to previously created timer structure.
+ * 	\param itick 	number of initial ticks for timer expiration.
  */
 
-void stimer_stop( TIM_T timd );
+void rkh_tim_restart( RKHT_T *t, RKH_TCTR_T itick );
 
 
-/*
- * 	stimer_clear_info:
+/**
+ * 	\brief
+ *	Stops a running timer. 
+ *	This operation stops a timer by removing the currently running timer from 
+ *	the timer-handling facility. If the timer is already stopped, this service 
+ *	has no effect.
  *
+ *	\param t		pointer to previously created timer structure.
+ */
+
+void stimer_stop( RKHT_T *t );
+
+
+/**
+ * 	\brief
+ * 	Retrieves performance information for a particular queue. 
+ *
+ *	The application must allocate an RKH_TIM_INFO_T data structure used to 
+ *	receive data. The performance information is available during run-time 
+ *	for each of the RKH services. This can be useful in determining whether 
+ *	the application is performing properly, as well as helping to optimize the 
+ *	application.
+ *
+ * 	\note
+ * 	See RKH_TIM_INFO_T structure for more information. This function is 
+ * 	optional, thus it could be eliminated in compile-time with 
+ * 	RKSYS_TIMER_GET_INFO.
+ *
+ *	\param t		pointer to previously created timer structure.
+ * 	\param pti		pointer to the buffer into which the performance 
+ * 					information will be copied by reference.
+ */
+
+void stimer_get_info( RKHT_T *t, RKH_TIM_INFO_T *pti );
+
+
+/**
+ * 	\brief
  * 	Clear performance information for a particular software timer.
  *
- * 	Information is available during run-time for each of the RKSYS
- * 	resources. This information can be useful in determining whether
- * 	the application is performing properly, as well as helping to
- * 	optimize the application.
+ * 	\note
+ * 	See RKH_TIM_INFO_T structure for more information. This function is 
+ * 	optional, thus it could be eliminated in compile-time with 
+ * 	RKSYS_TIMER_GET_INFO.
  *
- * 	'timd':		timer descriptor.
+ *	\param t		pointer to previously created timer structure.
  */
 
-void stimer_clear_info( TIM_T timd );
-
-
-/*
- * 	stimer_get_info:
- *
- * 	Retrieves performance information for a particular software timer.
- *
- * 	'timd':		timer descriptor.
- * 	'pti':		pointer to the buffer into which the performance information
- * 				will be copied by reference.
- */
-
-void stimer_get_info( TIM_T timd, TIMER_INFO_T *pti );
+void stimer_clear_info( RKHT_T *t );
 
 
 #endif
