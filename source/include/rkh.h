@@ -41,62 +41,6 @@
 #include "rkhitl.h"
 
 
-/** 	
- *  Return codes from rkh_engine() function.
- */
-
-typedef enum
-{
-	/**
-	 * 	The arrived event was succesfully processed and HSM 
-	 * 	resides in a allowed state.
-	 */
-
-	RKH_OK,
-
-	/**
-	 * 	The arrived event was't founded in the transition table. 
-	 */
-
-	RKH_INPUT_NOT_FOUND,
-
-	/**
-	 * 	The branch function returned a value not founded 
-	 * 	in the branch table.
-	 */
-
-	RKH_CONDITION_NOT_FOUND,
-
-	/**
-	 * 	The transition was cancelled by guard function.
-	 */
-
-	RKH_GUARD_FALSE,
-
-	/**
-	 * 	Unknown state. 
-	 */
-
-	RKH_UNKNOWN_STATE,
-
-	/**
-	 * 	The transition exceeded the allowed hierarchical level.
-	 */
-
-	RKH_EXCEED_HCAL_LEVEL,
-
-	/**
-	 * 	The transition exceeded the allowed number of segments 
-	 * 	within a compound transtion.
-	 */
-
-	RKH_EXCEED_TR_SEGS,
-
-	/** Number of returned codes */
-	RKH_NUM_CODES
-} RKH_RCODE_T;
-
-
 /**
  * 	Each condition connector can have one special branch with a guard 
  *	labeled ELSE, which is taken if all the guards on the other 
@@ -108,110 +52,6 @@ typedef enum
  */
 
 #define ELSE		rkh_else
-
-
-/** 	
- * 	\brief
- *  State machine properties.
- */
-
-typedef enum
-{
-	/**
-	 * 	Used as state machine property.
-	 * 	This macro enables state nesting in a particular state machine.
-	 */
-
-	HCAL,
-
-
-	/**
-	 * 	Used as state machine property.
-	 * 	This macro disables state nesting in a particular state machine.
-	 * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
-	 * 	RKH are	not included: state nesting, composite state, history 
-	 * 	(shallow and deep) pseudostate, entry action, and exit action.
-	 */
-
-	FLAT,
-
-	/** Number of state machines properties */
-	RKH_NUM_HPPTY
-} RKH_HPPTY_T;
-
-
-/**
- * 	\brief
- *	This macro creates a state machine object derived from RKH_T.
- *
- * 	In the UML specification, every state machine has a top state 
- * 	(the abstract root of every state machine hierarchy), which contains 
- * 	all the other elements of the entire state machine. RKH provides the 
- * 	top state using the macro RKH_CREATE_HSM().
- *	Frequently, RKH_CREATE_HSM() is used within state-machine's module 
- *	(.c file), thus the structure definition is in fact entirely encapsulated 
- *	in its module and is inaccessible to the rest of the application. 
- *	However, use the RKH_DCLR_HSM() macro to declare a "opaque" pointer 
- *	to that state machine structure to be used in the rest of the application
- *	but hiding the proper definition.
- * 	RKH_T is not intended to be instantiated directly, but rather
- * 	serves as the base structure for derivation of state machines in the
- * 	application code.
- * 	The following example illustrates how to derive an state machine from
- * 	RKH_T. Please note that the RKH_T member sm is defined as the
- * 	FIRST member of the derived struct.
- *
- *	Example:
- *	\code
- *	//	...within state-machine's module
- *
- *	typedef struct
- *	{
- *		RKH_T sm;		// base structure
- *		rkhuint8 x;		// private member
- *		rkhuint8 y;		// private member
- *	} MYSM_T;
- *
- * 	//	static instance of state machine object
- *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
- *
- *	//	...dispatchig events
- *	rkh_engine( my, ( RKHEVT_T* )myevt );
- *	\endcode
- *
- *	\sa
- *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink.
- *
- * 	\param sm_t		data type of state machine structure.
- * 	\param name		name of state machine. Represents the top state of state 
- * 					diagram. String terminated in '\\0' that represents the 
- * 					name of state machine. When a particular application 
- * 					requires runtime debugging (native tracing features), this 
- * 					option must be enabled.
- * 	\param id		state machine descriptor. This number allows to uniquely 
- * 					identify a state machine. When a particular application 
- * 					requires runtime debugging (native tracing features), this 
- * 					option must be enabled. 
- * 	\param ppty		state machine properties. The available properties are
- * 					enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
- * 	\param is		pointer to regular initial state. This state could be 
- * 					defined either composite or basic.
- * 	\param ia		pointer to initialization action (optional). The function 
- * 					prototype is defined as RKHINIT_T. This argument is 
- * 					optional, thus it could be declared as NULL.
- * 	\param hd		pointer to state-machine's data (optional). 
- * 					This argument is optional, thus it could be declared as 
- * 					NULL or eliminated with RKH_EN_HSM_DATA option. Could be 
- * 					used to pass arguments to the state machine like an 
- * 					argc/argv.
- */
-
-#define RKH_CREATE_HSM( sm_t, name, id, ppty, is, ia, hd )				\
-																		\
-	static rkhrom ROMRKH_T rs_##name = mkrrkh( id,ppty,name,is,ia );	\
-				static sm_t s_##name = mkrkh( &rs_##name,is,hd );		\
-				RKH_T * const name = ( RKH_T* )&s_##name
 
 
 /**
@@ -619,21 +459,21 @@ typedef enum
  *
  * 	This global pointer represent the state machine in the application. 
  * 	The state machine pointers are "opaque" because they cannot access the 
- * 	whole state machine structure, but only the part inherited from the RKH_T 
- * 	structure. The power of an "opaque" pointer is that it allows to 
+ * 	whole state machine structure, but only the part inherited from the 
+ * 	RKHSMA_T structure. The power of an "opaque" pointer is that it allows to 
  * 	completely hide the definition of the state machine structure and make 
  * 	it inaccessible to the rest of the application. 
  *	
  *	\note
- * 	Generally, this macro is used in the state-machine's header file.
+ * 	Generally, this macro is used in the SMA's header file.
  * 	
  * 	\sa
- * 	RKH_CREATE_HSM() macro.
+ * 	RKH_SMA_CREATE().
  * 	
- * 	\param h		name of state machine.
+ * 	\param sma		pointer to previously created state machine application.
  */
 
-#define RKH_DCLR_HSM( h )		extern RKH_T * const h
+#define RKH_SMA_DCLR_HSM( sma )		extern RKHSMA_T *const sma
 
 
 /**@{
@@ -657,42 +497,115 @@ typedef enum
 
 /**
  * 	\brief
- * 	Declares a previously created state machine to be used as a 
- * 	global object.  
+ * 	Declares a previously created SMA to be used as a global object.  
  *
  *	Example:
  *	\code
- *	//	...within state-machine's module
- *
- *	typedef struct
- *	{
- *		RKH_T sm;		// base structure
- *		rkhuint8 x;		// private member
- *		rkhuint8 y;		// private member
- *	} MYSM_T;
- *
- * 	//	static instance of state machine object
- *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
- *
- *	//	g_my: global pointer to "my" state machine object.
+ *	//	g_my: global pointer to SMA "my".
  *	RKH_DCLR_SM_GLOBAL( MYSM_T, my, g_my );
  *	\endcode
  *
  *	\sa
- *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
  *	single inheritance in C \endlink.
  *
- * 	\param sm_t		type of state machine structure.
- * 	\param sm		name of state machine object.
- * 	\param gob		name of global object.
+ * 	\param sma_t		data type of SMA.
+ * 	\param sm			name of previously created SMA.
+ * 	\param gob			name of global object.
  *
  * 	\note
  * 	Generally, this macro is used in the state-machine's module.
  */
 
-#define RKH_DCLR_SM_GLOBAL( sm_t, sm, gob )								\
-																		\
-							sm_t * const gob = &s_##sm;
+#define RKH_DCLR_SM_GLOBAL( sma_t, sm, gob )				\
+															\
+							sma_t * const gob = &s_##sm;
+
+
+/** 	
+ *  Return codes from rkh_engine() function.
+ */
+
+typedef enum
+{
+	/**
+	 * 	The arrived event was succesfully processed and HSM 
+	 * 	resides in a allowed state.
+	 */
+
+	RKH_OK,
+
+	/**
+	 * 	The arrived event was't founded in the transition table. 
+	 */
+
+	RKH_INPUT_NOT_FOUND,
+
+	/**
+	 * 	The branch function returned a value not founded 
+	 * 	in the branch table.
+	 */
+
+	RKH_CONDITION_NOT_FOUND,
+
+	/**
+	 * 	The transition was cancelled by guard function.
+	 */
+
+	RKH_GUARD_FALSE,
+
+	/**
+	 * 	Unknown state. 
+	 */
+
+	RKH_UNKNOWN_STATE,
+
+	/**
+	 * 	The transition exceeded the allowed hierarchical level.
+	 */
+
+	RKH_EXCEED_HCAL_LEVEL,
+
+	/**
+	 * 	The transition exceeded the allowed number of segments 
+	 * 	within a compound transtion.
+	 */
+
+	RKH_EXCEED_TR_SEGS,
+
+	/** Number of returned codes */
+	RKH_NUM_CODES
+} RKH_RCODE_T;
+
+
+/** 	
+ * 	\brief
+ *  State machine properties.
+ */
+
+typedef enum
+{
+	/**
+	 * 	Used as state machine property.
+	 * 	This macro enables state nesting in a particular state machine.
+	 */
+
+	HCAL,
+
+
+	/**
+	 * 	Used as state machine property.
+	 * 	This macro disables state nesting in a particular state machine.
+	 * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
+	 * 	RKH are	not included: state nesting, composite state, history 
+	 * 	(shallow and deep) pseudostate, entry action, and exit action.
+	 */
+
+	FLAT,
+
+	/** Number of state machines properties */
+	RKH_NUM_HPPTY
+} RKH_HPPTY_T;
 
 
 /**
@@ -710,43 +623,292 @@ enum
 
 
 /**
- *	\brief
- *	Posts an event directly to the event queue \a qd using the FIFO policy.
- *
- * 	\note 
- *	For memory efficiency and best performance the AO's event queue, 
- *	STORE ONLY POINTERS to events, not the whole event objects.
- * 	The LIFO policy should be used only with great caution because it
- * 	alters order of events in the queue.
- *	At this time, this functions are required only when the user 
- *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
- *	The assertion inside it guarantee that the pointer is valid, so is not 
- *	necessary to check the pointer returned from rkh_put_fifo().
- *
- * 	\param qd		event queue descriptor.
- * 	\param evt		pointer to event.
+ * 	\brief
+ * 	Initializes the RKH framework. 
+ * 	A requirement of RKH is that must be called rkh_init() before call any 
+ * 	of its other services. This function initializes all of RKH's variables 
+ * 	and data structures.
  */
 
-void rkh_put_fifo( HUInt qd, RKHEVT_T *evt );
+void rkh_init( void );
 
 
 /**
- *	\brief
- *	Posts an event directly to the event queue \a qd using the LIFO policy.
+ * 	\brief
+ * 	RKH is started.
+ * 	This entry function turns over control to RKH (and does not return!).
+ * 	This function runs the highest priority state machine application (SMA) 
+ * 	that is ready to run in run-to-completation model. 
+ *
+ * 	\note 
+ * 	The call to this function does not return. Hence, any code after it will 
+ * 	never be executed.
+ * 	
+ * 	\note 
+ * 	This function is strongly platform-dependent. All RKH ports must implement 
+ * 	rkh_enter().
+ */
+
+void rkh_enter( void );
+
+
+/**
+ * 	\brief	
+ * 	Exit the RKH framework.
+ * 	Function invoked by the application layer to exit the RKH application and 
+ * 	return control to the underlying OS/Kernel.
+ *
+ * 	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform. 
+ *	Some RKH ports might not require implementing this function at all, 
+ *	because many embedded applications don't have anything to exit to.
+ */
+
+void rkh_exit( void );
+
+
+/**
+ * 	\brief
+ * 	Initialize a previously created state machine application.
+ *
+ * 	A state machine application (SMA) is declared with the RKHSMA_T data type 
+ * 	and is defined with the rkh_sma_create() service.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKHSMA_T sm;	// base structure
+ *		rkhui8_t x;		// private member
+ *		rkhui8_t y;		// private member
+ *	} MYSM_T;
+ *
+ * 	//	static instance of SMA object
+ *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *
+ *	void
+ *	main( void )
+ *	{
+ *		// ...
+ *		rkh_sma_init( my, 4, qsto, sizeof( RKHEVT_T* ), (void*)0, 0 );
+ *		// ...
+ *	}
+ *	\endcode
+ * 	
+ *	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform.
+ *
+ * 	\param sma			pointer to previously created state machine 
+ * 						application.
+ * 	\param prio			state machine application priority. A unique priority 
+ * 						number must be assigned to each SMA from 0 to 
+ * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
+ * 						priority. 
+ * 	\param qs			base address of the event storage area. A message 
+ * 						storage area is declared as an array of pointers to 
+ * 						voids.
+ * 	\param qsize		size of the storage event area [in number of entries].
+ * 	\param stks			starting address of the stack's memory area.
+ * 	\param stksize		size of stack memory area [in bytes].
+ */
+
+void rkh_sma_init(	RKHSMA_T *sma, rkhui8_t prio, const void **qs, 
+					RKH_RQNE_T qsize, void *stks, rkhui32_t stksize );
+
+
+/**
+ * 	\brief
+ * 	Declare and allocate a SMA (active object) derived from RKHSMA_T, 
+ * 	initialize and assign a state machine to previously declared SMA.
+ *
+ * 	In the UML specification, every state machine has a top state 
+ * 	(the abstract root of every state machine hierarchy), which contains 
+ * 	all the other elements of the entire state machine. RKH provides the 
+ * 	top state using the macro RKH_SMA_CREATE().
+ *	Frequently, RKH_SMA_CREATE() is used within state-machine's module 
+ *	(.c file), thus the structure definition is in fact entirely encapsulated 
+ *	in its module and is inaccessible to the rest of the application. 
+ *	However, use the RKH_SMA_DCLR_HSM() macro to declare a "opaque" pointer 
+ *	to that state machine structure to be used in the rest of the application
+ *	but hiding the proper definition.
+ * 	RKHSMA_T is not intended to be instantiated directly, but rather
+ * 	serves as the base structure for derivation of state machines in the
+ * 	application code.
+ * 	The following example illustrates how to derive an state machine from
+ * 	RKHSMA_T. Please note that the RKHSMA_T member sm is defined as the
+ * 	FIRST member of the derived structure.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKHSMA_T sm;	// base structure
+ *		rkhui8_t x;		// private member
+ *		rkhui8_t y;		// private member
+ *	} MYSM_T;
+ *
+ * 	//	static instance of SMA object
+ *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	\endcode
+ *
+ * 	\param sma			pointer to previously created state machine 
+ * 						application.
+ * 	\param name			name of state machine application. Represents the top 
+ * 						state of state diagram. String terminated in '\\0' that 
+ * 						represents the name of state machine. When a particular 
+ * 						user application requires runtime debugging (native 
+ * 						tracing features), the option ??? must be enabled.
+ * 	\param ppty			state machine properties. The available properties are
+ * 						enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
+ * 	\param istate		pointer to initial state. This state could be defined 
+ * 						either composite or basic (not pseudo-state).
+ * 	\param ievent		pointer to an event that will be passed to state 
+ * 						machine application when it starts. Could be used to 
+ * 						pass arguments to the state machine like an argc/argv.
+ * 	\param iaction		pointer to initialization action (optional). The function 
+ * 						prototype is defined as RKHINIT_T. This argument is 
+ * 						optional, thus it could be declared as NULL.
+ */
+
+#define RKH_SMA_CREATE( sma_t, name, ppty, istate, iaction, ievent )		\
+																			\
+	static rkhrom ROMRKH_T rs_##name = mkrrkh( ppty,name,istate,iaction );	\
+	static sma_t s_##name = mkrkh( &rs_##name,istate,ievent );				\
+	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
+
+
+/**
+ * 	\brief
+ * 	Terminate a state machine application. 
+ * 	A state machine application may call this service to terminate itself. Once 
+ * 	terminated, the state machine application must be re-created in order for 
+ * 	it to execute again.
+ * 	
+ *	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform.
+ *
+ * 	\param sma			pointer to previously created state machine 
+ * 						application.
+ */
+
+void rkh_sma_terminate( RKHSMA_T *sma );
+
+
+/**
+ * 	\brief
+ * 	Retrieves performance information for a particular state machine 
+ * 	application. 
+ *	The user application must allocate an RKH_SMAI_T data structure used to 
+ *	receive data. The performance information is available during run-time 
+ *	for each of the RKH services. This can be useful in determining whether 
+ *	the application is performing properly, as well as helping to optimize the 
+ *	application.
+ *	This information provides a "snapshot" a particular instant in time, i.e., 
+ *	when the service is invoked.
  *
  * 	\note
- *	For memory efficiency and best performance the AO's event queue, 
+ * 	See RKH_SMAI_T structure for more information. This function is 
+ * 	optional, thus it could be eliminated in compile-time with 
+ * 	RKH_EN_SMA_GET_INFO.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ * 	\param psi		pointer to the buffer into which the performance 
+ * 					information will be copied by reference.
+ */
+
+void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
+
+
+/**
+ * 	\brief
+ * 	Clear performance information for a particular state machine application.
+ *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_SMA_GET_INFO.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ */
+
+void rkh_sma_clear_info( RKHSMA_T *sma );
+
+
+/**
+ * 	\brief
+ * 	Send an event to a state machine application through a queue using the 
+ * 	FIFO policy. 
+ * 	A message is a pointer size variable and its use is application specific. 
+ *
+ * 	\note 
+ *	For memory efficiency and best performance the SMA's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *	At this time, this functions are required only when the user 
  *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
  *	The assertion inside it guarantee that the pointer is valid, so is not 
- *	necessary to check the pointer returned from rkh_put_lifo().
+ *	necessary to check the pointer returned from rkh_sma_post_fifo().
  *
- * 	\param qd		event queue descriptor.
- * 	\param evt		pointer to event.
+ *	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ * 	\param e		actual event sent to the state machine application.
  */
 
-void rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
+void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
+
+
+/**
+ * 	\brief
+ * 	Send an event to a state machine application through a queue using the 
+ * 	LIFO policy. 
+ * 	A message is a pointer size variable and its use is application specific. 
+ *
+ * 	\note
+ *	For memory efficiency and best performance the SMA's event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	The assertion inside it guarantee that the pointer is valid, so is not 
+ *	necessary to check the pointer returned from rkh_sma_post_lifo().
+ *
+ *	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ * 	\param e		actual event sent to the state machine application.
+ */
+
+void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
+
+
+/**
+ * 	\brief
+ * 	Get an event from the event queue of an state machine application. 
+ * 	The events received are pointer size variables and their use is 
+ * 	application specific.
+ *
+ *	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform.
+ *	Depending on the underlying OS or kernel, if no event is present at the 
+ *	queue, the function will block the current thread until an event is 
+ *	received.
+ *
+ *	\return
+ * 	'0' if an element was successfully removed from the queue, otherwise 
+ * 	error code.
+ */
+
+HUInt rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e );
 
 
 /**
@@ -757,37 +919,38 @@ void rkh_put_lifo( HUInt qd, RKHEVT_T *evt );
  * 	particularly inconvenient moment but can be deferred for some later time, 
  * 	when the system is in a much better position to handle the event. RKH 
  * 	supports very efficient event deferring and recalling mechanisms.
- * 	This function is part of the event deferral mechanism. An active object
- * 	uses this function to defer an event \a evt to the event queue \a qd. 
+ * 	This function is part of the event deferral mechanism. An SMA 
+ * 	uses this function to defer an event \a e to the event queue \a q. 
  * 	RKH correctly accounts for another outstanding reference to the event 
  * 	and will not recycle the event at the end of the RTC step. 
- * 	Later, the active object might recall one event at a time from the 
+ * 	Later, the SMA might recall one event at a time from the 
  * 	event queue by means of rkh_recall() function.
  *	
  *	\note
  *	For memory efficiency and best performance the deferred event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
- *  An active object can use multiple event queues to defer events of
+ *  An SMA can use multiple event queues to defer events of
  *  different kinds.
  *	The assertion inside it guarantee that operation is valid, so is not 
  *	necessary to check the value returned from it.
  *
- * 	\param qd		event queue descriptor.
- * 	\param evt		pointer to event.
+ * 	\param sma		pointer to previously created state machine application.
+ * 	\param q		pointer to previously created queue.
+ * 	\param e		pointer to event.
  */
 
-void rkh_defer( HUInt qd, RKHEVT_T *evt );
+void rkh_defer( RKHSMA_T *sma, RKHRQ_T *q, const RKHEVT_T *e );
 
 
 /**
  * 	\brief
  * 	Recall a deferred event from a given event queue.
  *
- * 	This function is part of the event deferral support. An active object
+ * 	This function is part of the event deferral support. An SMA 
  * 	uses this function to recall a deferred event from a given event queue. 
  * 	Recalling an event means that it is removed from the deferred event 
- * 	queue \a qds and posted (LIFO) to the event queue of the active object
- * 	\a qdd.
+ * 	queue \a q and posted (LIFO) to the event queue of the \a sma state 
+ * 	machine application.
  *
  * 	\note
  *	For memory efficiency and best performance the destination event queue, 
@@ -798,7 +961,7 @@ void rkh_defer( HUInt qd, RKHEVT_T *evt );
  * 	event has been recalled.
  */
 
-RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
+RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
 
 
 /**
@@ -829,7 +992,6 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
  */
 
 #define RKH_ALLOC_EVENT( et, e )										\
-																		\
 								(et*)rkh_ae(sizeof(et),(RKHE_T)(e))
 
 
@@ -855,15 +1017,15 @@ RKHEVT_T *rkh_recall( HUInt qdd, HUInt qds );
  * 	The garbage collector must be explicitly invoked at all appropriate 
  * 	contexts, when an event can become garbage (automatic garbage collection).
  *
- * 	\param evt		pointer to event to be potentially recycled.
+ * 	\param e		pointer to event to be potentially recycled.
  */
 
-void rkh_gc( RKHEVT_T *evt );
+void rkh_gc( RKHEVT_T *e );
 
 
 /**
  * 	\brief
- *	This macro set the event 'evt' with 'e' signal and establishes it as one 
+ *	This macro set the event \a e with \a es signal and establishes it as one 
  *	static event.
  *
  *	\sa
@@ -877,20 +1039,20 @@ void rkh_gc( RKHEVT_T *evt );
  *	RKH_SET_STATIC_EVENT( &e, TOUT );
  *	\endcode
  *
- * 	\param evt		pointer to event structure derived from RKHEVT_T.
+ * 	\param e		pointer to event structure derived from RKHEVT_T.
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
  *
  * 	\returns
  */
 
-#define RKH_SET_STATIC_EVENT( evt, es )			mksevt( evt, es )
+#define RKH_SET_STATIC_EVENT( e, es )			mksevt( e, es )
 
 
 /**
  * 	\brief
- *	This macro declares and initializes the event structure 'evt' with 
- *	'e' signal and establishes it as one static event.
+ *	This macro declares and initializes the event structure \a e with 
+ *	\a es signal and establishes it as one static event.
  *	The created event object is explicitly placed in ROM.
  *
  *	Example:
@@ -906,25 +1068,24 @@ void rkh_gc( RKHEVT_T *evt );
  *	}
  *	\endcode
  *
- * 	\param evt		name of event structure (RKHEVT_T).
+ * 	\param e		name of event structure (RKHEVT_T).
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
  *
  * 	\returns
  */
 
-#define RKH_DCLR_STATIC_EVENT( evt, es )		mkievt( evt, es )
+#define RKH_DCLR_STATIC_EVENT( e, es )		mkievt( e, es )
 
 
 /**
  * 	\brief
- * 	Inits a previously created state machine calling its initializing function.
+ * 	Inits a previously created state machine calling its initializing action.
  *
- * 	\param ph		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
+ * 	\param sma		pointer to previously created state machine application.
  */
 
-void rkh_init_hsm( RKH_T *ph );
+void rkh_init_hsm( RKHSMA_T *sma );
 
 
 /**
@@ -936,86 +1097,57 @@ void rkh_init_hsm( RKH_T *ph );
  *	called run to completion or RTC. Thus, the system processes events in 
  *	discrete, indivisible RTC steps.
  *
- * 	\param ph		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
- *	\param pevt		pointer to arrived event. It's used as state-machine's 
+ * 	\param sma		pointer to previously created state machine application.
+ *	\param e		pointer to arrived event. It's used as state-machine's 
  *					input alphabet.
  *
  *	\return
- *
  *	Result RKH_RCODE_T code.
- *	
  */
 
-HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
+HUInt rkh_engine( RKHSMA_T *sma, RKHEVT_T *e );
 
 
 /**
  * 	\brief
- * 	This macro retrieves the state ID of state machine control block.
+ * 	This macro retrieves the state ID of SMA.
  *
- * 	\param ph 		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
+ * 	\param sma		pointer to previously created state machine application.
  *
  * 	\return
- *
  * 	Id of current state.
  */
 
-#define rkh_get_cstate_id( ph )											\
-																		\
-								((RKHBASE_T*)(ph->state))->id	
+#define rkh_get_cstate_id( sma )									\
+								((RKHBASE_T*)((sma)->state))->id	
 
 
 /**	
  * 	\brief
- * 	This macro retrieves the current state name of state machine control block.
+ * 	This macro retrieves the current state name of SMA.
  *
- * 	\param ph 		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
+ * 	\param sma		pointer to previously created state machine application.
  *
  * 	\returns
- *
  * 	Name of current state.
  */
 
-#define rkh_get_cstate_name( ph )										\
-																		\
-								((RKHBASE_T*)(ph->state))->name	
+#define rkh_get_cstate_name( sma )									\
+								((RKHBASE_T*)((sma)->state))->name	
 
 
 /**	
  * 	\brief
- * 	This macro retrieves the state machine's name.
+ * 	This macro retrieves the SMA's name.
  *
- * 	\param ph 		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
+ * 	\param sma		pointer to previously created state machine application.
  *
  * 	\returns
- *
  * 	Name of state machine.
  */
 
-#define rkh_get_sm_name( ph )											\
-																		\
-								(ph)->romrkh->name
-
-
-/**	
- * 	\brief
- * 	This macro retrieves the state-machine's data.
- *
- * 	\param ph 		pointer to state-machine control block. Represents a 
- * 					previously created HSM structure.
- *
- * 	\returns
- *
- * 	Pointer to state-machine's data.
- */
-
-#define rkh_get_data( ph )												\
-																		\
-								((ph)->hdata)	
+#define rkh_get_sm_name( sma )						\
+								(sma)->romrkh->name
 
 
 /**	
@@ -1028,17 +1160,14 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
  *	#RKHPPRO_T in this case, as the first member of the derived structure. 
  *	See member \a prepro of RKHSREG_T structure for more information.
  *
- * 	\param ph 		pointer to state machine control block. Represents a 
- * 					previously created state machine structure.
+ * 	\param sma		pointer to previously created state machine application.
  *
  * 	\returns
- *
  * 	Pointer to state's abstract data.
  */
 
-#define rkh_get_sdata( ph )												\
-																		\
-								((ph)->state->sdata)	
+#define rkh_get_sdata( sma )							\
+								((sma)->state->sdata)	
 
 
 /**
@@ -1049,133 +1178,6 @@ HUInt rkh_engine( RKH_T *ph, RKHEVT_T *pevt );
  */
 
 void rkh_clear_history( rkhrom RKHSHIST_T *h );
-
-
-/**
- * 	\brief
- * 	Clear performance information for a particular state machine.
- *
- * 	Information is available during run-time for each state machine. This 
- * 	information can be useful in determining whether
- * 	the application is performing properly, as well as helping to
- * 	optimize the application.
- *
- *	\sa
- *	RKH_INFO_T structure definition for more information.
- *
- * 	\param ph 		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
- */
-
-void rkh_clear_info( RKH_T *ph );
-
-
-/**
- * 	\brief
- * 	Retrieves performance information for a particular state machine.
- *
- *	\sa
- *	RKH_INFO_T structure definition for more information.
- *
- * 	\param ph 		pointer to state machine control block. Represents a 
- * 					previously created HSM structure.
- *	
- * 	\return
- *
- * 	A pointer to performance information structure.
- */
-
-RKH_INFO_T *rkh_get_info( RKH_T *ph );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_init( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_scheduler_enter( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_stop( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_create( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_delete( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_get_info( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_chgprio( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_put_fifo( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_put_lifo( void );
-
-
-/**
- * 	\brief
- *
- *	\sa
- */
-
-void rkh_sma_get( void );
 
 
 #endif
