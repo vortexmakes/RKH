@@ -114,7 +114,7 @@ typedef struct
 	 * 	Tick down-counter.
 	 */
 
-	RKH_TCTR_T tick;
+	RKH_TCTR_T ntick;
 
 	/**
 	 * 	Number of ticks for all timer expirations after the first (expiration 
@@ -136,12 +136,11 @@ typedef struct
 
 	/**
 	 * 	Performance information. This member is optional, thus it could be 
-	 * 	declared as NULL or eliminated in compile-time with 
-	 * 	RKSYS_TIMER_GET_INFO.
+	 * 	eliminated in compile-time with RKSYS_TIMER_GET_INFO.
 	 */
 
 #if RKSYS_TIMER_GET_INFO == 1
-	RKH_TIMERI_T tinfo;
+	RKH_TIMERI_T ti;
 #endif
 } RKHT_T;
 
@@ -163,6 +162,9 @@ void rkh_timer_handler( void );
 /**
  * 	\brief
  *	Initializes the previously allocated timer structure RKHT_T. 
+ *
+ * 	A timer is declared with the RKHT_T data type and is defined with the 
+ * 	rkh_timer_init() service.
  *	The timer is initialized in a non-active state (stopped). In this case, a 
  *	subsequent start service call is necessary to get the timer actually 
  *	started.

@@ -1,13 +1,39 @@
 /*
- * 	rkhmp.h
+ *	file: rkhmp.h
+ *	Last updated for version: 1.0.00
+ *	Date of the last update:  Feb 27, 2012
  *
+ * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *
+ * 	RKH is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ *  RKH is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with RKH, see copying.txt file.
+ *
+ * Contact information:
+ * RKH web site:	http://
+ * e-mail:			francuccilea@gmail.com
+ */
+
+/**
+ * 	\file rkhmp.h
+ *
+ * 	\brief
  * 	Implements a pool of fixed-size memory blocks.
+ *
  * 	Since memory block pools consist of fixed-size blocks, there are 
  * 	never any fragmentation problems. Of course, fragmentation causes 
  * 	behavior that is inherently un-deterministic. In addition, the time
  * 	required to allocate and free a fixed-size memory is comparable to 
  * 	that of simple linked-list manipulation.
- *
  * 	Lack of flexibility is the main drawback of fixed-size memory pools. 
  * 	The block size of a pool must be large enough to handle the worst 
  * 	case memory requirements of its users. Of course, memory may be wasted 
@@ -17,281 +43,269 @@
  */
 
 
-#ifndef __RKMP_H__
-#define __RKMP_H__
+#ifndef __RKHMP_H__
+#define __RKHMP_H__
 
 
 #include "rkh.h"
 
 
-/*
- * 	Return codes.
- */
-
-enum
-{
-	RKMPOOL_OK, 
-	RKMPOOL_NO_FREE_BLKS, 
-	RKMPOOL_FULL, 
-	RKMPOOL_NO_POOL
-};
-
-
-/*
- * 	Memory pool descriptor type.
- */
-
-typedef KUInt RK_MPD_T;
-
-
-/*
- * 	Defines the data structure into which the information about the memory
- * 	pool is stored.
- */
-
-typedef struct
-{
-	/*
-	 * 	Size (in bytes) of each memory block.
-	 */
-
-	RK_MPBS_T blk_size;
-
-	/*
-	 * 	Total number of memory blocks in the pool.
-	 */
-
-	RK_MPCTR_T nblocks;
-
-	/*
-	 * 	Number of memory blocks free.
-	 */
-
-	RK_MPCTR_T nfree;
-
-	/*
-	 * 	Number of memory blocks used.
-	 */
-
-	RK_MPCTR_T nused;
-} RK_MPOOL_DATA_T;
-
-
-/*
+/**
  * 	Defines the data structure into which the performance information for
  * 	memory pools is stored.
  */
 
 typedef struct
 {
-	/*
+	/**
+	 * 	\brief
 	 * 	Number of pool create requests.
 	 */
 
-	rkint8 inits;
+	rkhui8_t inits;
 
-	/*	
+	/**	
+	 * 	\brief
 	 *	Number of get memory block requests.
 	 */
 
-	rkint16 gets;
+	rkhui16_t gets;
 	
-	/*	
+	/**	
+	 * 	\brief
 	 *	Number of put memory block requests.
 	 */
 
-	rkint16 puts;
+	rkhui16_t puts;
 	
-	/*	
-	 *	Number of RKMPOOL_NO_FREE_BLKS retrieves.
+	/**	
+	 * 	\brief
+	 *	Number of no free retrieves.
 	 */
 
-	rkint8 free;
+	rkhui8_t free;
 
-	/*	
-	 *	Number of RKMPOOL_FULL retrieves.
+	/**	
+	 * 	\brief
+	 *	Number of full retrieves.
 	 */
 
-	rkint8 full;
-} RK_MPOOL_INFO_T;
+	rkhui8_t full;
+} RKH_MPI_T;
 
 
-/*
- * 	rk_mpool_init:
+/**
+ * 	Describes the memory pool.
+ */
+
+typedef struct
+{
+	/**
+	 * 	\brief
+	 * 	Size (in bytes) of each memory block.
+	 */
+
+	RKH_MPBS_T bsize;
+
+	/**
+	 * 	\brief
+	 * 	Total number of memory blocks in the pool.
+	 */
+
+	RKH_MPNB_T nblocks;
+
+	/**
+	 * 	\brief
+	 * 	Number of memory blocks free.
+	 */
+
+	RK_MPNB_T nfree;
+
+	/**
+	 * 	\brief
+	 * 	Number of memory blocks used.
+	 */
+
+	RK_MPNB_T nused;
+
+	/**
+	 * 	Performance information. This member is optional, thus it could be 
+	 * 	eliminated in compile-time with RKH_EN_MP_GET_INFO.
+	 */
+
+#if RKH_EN_MP_GET_INFO == 1
+	RKH_MPI_T mpi;
+#endif
+} RKHMP_T;
+
+
+/**
+ * 	\brief
+ *	Initializes the previously allocated memory pool data strcuture RKHMP_T.
  *
- * 	Initialize a previously defined memory pool.
+ * 	A memory block pool is declared with the RKHMP_T data type and is defined 
+ * 	with the rkh_mp_init() service.
+ *
+ *	\note 
+ *	See RKHMP_T structure for more information.
  *
  * 	A general challenge in writing this function is portability, 
  * 	because storage allocation is intrinsically machine-dependent. Perhaps 
  * 	the trickiest aspect here is the proper and optimal alignment of the 
  * 	blocks within the contiguous memory buffer. In particular, the alignment 
  * 	of blocks must be such that every new block can be treated as a pointer 
- * 	to the next block [Miro Samek].
- *	
+ * 	to the next block [MS].
  *	Internally, this function rounds up the block size so that it can fit 
  *	an integer number of pointers. This is done to achieve proper alignment 
  *	of the blocks within the pool. Due to the rounding of block size the 
  *	actual capacity of the pool might be less than (pool_size/blk_size). 
- *	[Miro Samek]
+ *	[MS]
  *
- *	Check the capacity of the pool by calling the rk_mpool_get_nfree() 
+ *	Check the capacity of the pool by calling the rkh_mp_get_nfree() 
  *	function.
  *
- * 	Arguments:
- *
- * 	'mpd':			memory pool descriptor.
- * 	'pmem': 		pointer to memory from which memory blocks are allocated.
- * 	'pool_size':	pool size. Size of the memory pool storage in byte.
- * 	'blk_size':		block size. This number determines the size of each memory 
+ * 	\param mp		pointer to previously allocated memory pool structure.
+ * 	\param sstart	storage start. Pointer to memory from which memory blocks 
+ * 					are allocated.
+ * 	\param ssize:	storage size. Size of the memory pool storage in bytes.
+ * 	\param bsize	block size. This number determines the size of each memory 
  * 					block in the pool.
- *
- * 	Returns:
- *
- * 	RKMPOOL_OK if the memory pool was successfully initialized, 
- * 	otherwise error code.
  */
 
-KUInt rk_mpool_init( RK_MPD_T mpd, void *pmem, rkint16 pool_size, 
-														RK_MPBS_T blk_size );
+void rkh_mp_init( 	RKHMP_T *mp, void *sstart, rkhui16_t ssize, 
+					RKH_MPBS_T bsize );
 
 
-/*
- * 	rk_mpool_get:
- *
+/**
+ * 	\brief
  * 	This function is used to get a memory block from one of the created
  * 	memory pool.
  * 	
- * 	Arguments:
+ * 	\param mp		pointer to previously allocated memory pool structure.
  *
- * 	'mpd':		memory pool descriptor.
- *
- * 	Returns:
- *
+ * 	\return
  * 	A pointer to a new memory block or NULL if the pool runs out of blocks.
  */
 
-void *rk_mpool_get( RK_MPD_T mpd );
+void *rk_mpool_get( RKHMP_T *mp );
 
 
-/*
- * 	rk_mpool_put:
- *
+/**
+ * 	\brief
  * 	When the application is done with the memory block, it must be returned
- * 	to the appropiate memory pool.
- * 	The block must be allocated from the same memory pool to which it 
- * 	is returned. 
+ * 	to the appropiate memory pool. The block must be allocated from the same 
+ * 	memory pool to which it is returned. 
  * 	
- * 	Arguments:
- *
- * 	'mpd':		memory pool descriptor.
- * 	'blk':		pointer to the returned memory block.
- *
- * 	Returns:
- *
- * 	RKMPOOL_OK if the memory block was succesfully returned to proper 
- * 	memory pool, otherwise error code.
+ * 	\param mp		pointer to previously allocated memory pool structure.
+ * 	\param blk		pointer to the returned memory block.
  */
 
-KUInt rk_mpool_put( RK_MPD_T mpd, void *blk );
+void rkh_mp_put( RKHMP_T *mp, void *blk );
 
 
-/*
- * 	rk_mpool_get_blksize:
- *
+/**
+ * 	\brief
  * 	This function returns the size of memory block in bytes.
  * 	
- * 	Arguments:
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_MP_GET_BS.
  *
- * 	'mpd':		memory pool descriptor.
+ * 	\param mp		pointer to previously allocated memory pool structure.
  *
- * 	Returns:
- *
+ * 	\return
  * 	The size of memory block in bytes.
  */
 
-RK_MPBS_T rk_mpool_get_blksize( RK_MPD_T mpd );
+RKH_MPBS_T rkh_mp_get_blksize( RKHMP_T *mp );
 
 
-/*
- * 	rk_mpool_get_nfree:
- *
- * 	This function returns the current number of free memory blocks 
- * 	in the pool.
+/**
+ * 	\brief
+ * 	This function returns the current number of free memory blocks in the 
+ * 	pool.
  * 	
- * 	Arguments:
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_MP_GET_NFREE.
+ * 	
+ * 	\param mp		pointer to previously allocated memory pool structure.
  *
- * 	'mpd':		memory pool descriptor.
- *
- * 	Returns:
- *
+ * 	\return
  * 	The number of free memory blocks in the pool.
  */
 
-RK_MPCTR_T rk_mpool_get_nfree( RK_MPD_T mpd );
+RKH_MPNB_T rkh_mp_get_nfree( RKHMP_T *mp );
 
 
-/*
- * 	rk_mpool_get_low_wmark:
- *
- * 	This function returns the lowest number of free blocks ever 
- * 	present in the pool.
- *	This number provides valuable empirical data for proper sizing 
+/**
+ * 	\brief
+ * 	This function returns the lowest number of free blocks ever present in 
+ * 	the pool. This number provides valuable empirical data for proper sizing 
  *	of the memory pool.
  * 	
- * 	Arguments:
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_MP_GET_LWM.
+ * 	
+ * 	\param mp		pointer to previously allocated memory pool structure.
  *
- * 	'mpd':		memory pool descriptor.
- *
- * 	Returns:
- *
+ * 	\return
  * 	Lowest number of free blocks ever present in the pool.
  */
 
-RK_MPCTR_T rk_mpool_get_low_wmark( RK_MPD_T mpd );
+RKH_MPNB_T rkh_mp_get_low_wmark( RKHMP_T *mp );
 
 
-/*
- * 	rk_mpool_query:
- *
+/**
+ * 	\brief
  * 	This function is used to obtain information about the memory pool.
  * 	
- * 	Arguments:
- *
- * 	'mpd':		memory pool descriptor.
- * 	'data':		pointer to the buffer into which the information about the
- * 				memory pool will be copied by reference.
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_MP_QUERY.
+ * 	
+ * 	\param mp		pointer to previously allocated memory pool structure.
+ * 	\param data		pointer to the buffer into which the information about the
+ * 					memory pool will be copied by reference.
  */
 
-void rk_mpool_query( RK_MPD_T mpd, RK_MPOOL_DATA_T *data );
+void rkh_mp_query( RKHMP_T *mp, RKH_MP_DATA_T *data );
 
 
-/*
- * 	rk_mpool_clear_info:
- *
- * 	Clear performance information for a particular memory pool.
+/**
+ * 	\brief
+ * 	Retrieves performance information for a particular memory pool.
  *
  * 	Information is available during run-time for each of the RKSYS
  * 	resources. This information can be useful in determining whether
  * 	the application is performing properly, as well as helping to
  * 	optimize the application.
+ * 	
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_MP_GET_INFO.
  *
- * 	'mpd':		memory pool descriptor.
+ * 	\param mp		pointer to previously allocated memory pool structure.
+ * 	\param mpi		pointer to the buffer into which the performance information
+ * 					will be copied by reference.
  */
 
-void rk_mpool_clear_info( RK_MPD_T qd );
+void rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi );
 
 
-/*
- * 	rk_mpool_get_info:
+/**
+ * 	\brief
+ * 	Clear performance information for a particular memory pool.
  *
- * 	Retrieves performance information for a particular memory pool.
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_EN_MP_GET_INFO.
  *
- * 	'mpd':		memory pool descriptor.
- * 	'pmpi':		pointer to the buffer into which the performance information
- * 				will be copied by reference.
+ * 	\param mp		pointer to previously allocated memory pool structure.
  */
 
-void rk_mpool_get_info( RK_MPD_T mpd, RK_MPOOL_INFO_T *pmpi );
+void rkh_mp_clear_info( RKHMP_T *mp );
 
 
 #endif

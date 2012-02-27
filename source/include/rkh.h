@@ -25,11 +25,11 @@
 
 /**
  * 	\file rkh.h
+ *
  *	\brief
  * 	RKH platform-independent interface.
  *
- * 	This header file must be included in all modules 
- * 	(*.c files) that use RKH.
+ * 	This header file must be included in all modules (*.c files) that use RKH.
  */
 
 
@@ -39,6 +39,209 @@
 
 #include <stdlib.h>
 #include "rkhitl.h"
+
+
+/**
+ * 	\brief 
+ * 	Defines the data structure into which the collected performance 
+ * 	information for state machine is stored.
+ * 	
+ * 	This member is optional, thus it could be declared as NULL or eliminated 
+ * 	in compile-time with RKH_EN_SMA_GET_INFO.
+ */
+
+typedef struct rkh_smai_t
+{
+	rkhui16_t ndevt;			/**< # of dispatched events */
+	rkhui16_t exectr;			/**< # of executed transitions */
+} RKH_SMAI_T;
+
+
+/**
+ * 	\brief
+ * 	Constant parameters of state machine.
+ *
+ *	The constant key parameters of a state machine are allocated within. 
+ *	ROMRKH_T is a ROM base structure of RKH_T.
+ *
+ *	\sa
+ *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
+ */
+
+typedef struct romrkh_t
+{
+	/**
+	 * 	\brief
+	 * 	SMA priority. 
+	 *
+	 * 	A unique priority number must be assigned to each SMA from 0 to 
+	 * 	RKH_LOWEST_PRIO. The lower the number, the higher the priority. 
+	 */
+
+	rkhui8_t prio;
+
+	/**
+ 	 * 	\brief
+	 * 	State machine properties. 
+	 *
+	 * 	The available properties are enumerated in RKH_HPPTY_T enumeration in 
+	 * 	the rkh.h file.
+	 */
+
+	rkhui8 ppty;
+
+	/**	
+ 	 * 	\brief
+	 * 	Name of state machine application. 
+	 *
+	 * 	Represents the top state of state diagram. String terminated in '\\0' 
+	 * 	that represents the name of state machine. When a particular user 
+	 * 	application requires runtime debugging (native tracing features), 
+	 * 	the option RKH_EN_SMA_NAME must be enabled.
+	 */
+
+#if RKH_EN_SMA_NAME	== 1
+	const char *name;
+#endif
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to initial state. 
+	 *
+	 * 	This state could be defined either composite or basic 
+	 * 	(not pseudo-state).
+	 */
+
+	rkhrom RKHSREG_T *istate;
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to initializing action (optional). 
+	 *
+	 * 	The function prototype is defined as RKHINIT_T. This argument is 
+	 * 	optional, thus it could be declared as NULL.
+	 */
+
+	RKHINIT_T iaction;
+
+	/**
+	 * 	\brief
+	 *	Pointer to an event that will be passed to state machine application 
+	 *	when it starts. Could be used to pass arguments to the state machine 
+	 *	like an argc/argv. This argument is optional, thus it could be 
+	 *	declared as NULL or eliminated in compile-time with RKH_EN_SMA_IEVENT.
+	 */
+
+#if RKH_EN_SMA_IEVENT == 1
+	const RKHEVT_T ievent;
+#endif
+} ROMRKH_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the SMA (active object in UML).
+ *
+ *	This structure resides in RAM because its members are dinamically updated
+ *	by RKH (context of state machine).
+ *	The \b #romrkh member points to ROMRKH_T structure, allocated in ROM, 
+ *	to reduce the size of RAM consume. The key parameters of a state machine 
+ *	are allocated within. Therefore cannot be modified in runtime.
+ *
+ * 	RKH_T is not intended to be instantiated directly, but rather
+ * 	serves as the base structure for derivation of state machines in the
+ * 	application code.
+ * 	The following example illustrates how to derive an state machine from
+ * 	RKH_T. Please note that the RKH_T member sm is defined as the
+ * 	FIRST member of the derived struct.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKHSMA_T sm;	// base structure
+ *		rkhui8_t x;		// private member
+ *		rkhui8_t y;		// private member
+ *	} MYSM_T;
+ *
+ * 	//	static instance of SMA object
+ *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	\endcode
+ *
+ *	\sa
+ *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
+ */
+
+typedef struct rkhsma_t
+{
+	/**
+ 	 * 	\brief
+	 * 	Points to state machine object.
+	 */
+	
+	rkhrom ROMRKH_T *romrkh;
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to current state.
+	 */
+
+	rkhrom RKHSREG_T *state;
+
+	/**
+	 * 	\brief
+	 * 	OS-dependent thread of control of the SMA. 
+	 * 	This member is optional, thus it could be declared as NULL or 
+	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD.
+	 */
+
+#if RKH_EN_SMA_THREAD == 1
+	RKH_THREAD_TYPE thread;
+#endif
+
+	/**
+	 * 	\brief
+	 *	OS-dependent thread data.
+	 * 	This member is optional, thus it could be declared as NULL or 
+	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD_DATA.
+	 */
+
+#if RKH_EN_SMA_THREAD == 1 && RKH_EN_SMA_THREAD_DATA == 1
+	RKH_OSDATA_TYPE osdata;
+#endif
+
+	/**
+	 * 	\brief
+	 * 	Event queue of the SMA.
+	 * 	It's OS-dependent.
+	 */
+
+	RKH_EQ_TYPE equeue;
+
+	/**
+	 * 	\brief
+	 * 	The Boolean loop variable determining if the thread routine
+	 * 	of the SMA is running.
+	 */
+
+	rkhui8_t running;
+
+	/** 
+ 	 * 	\brief
+	 * 	Performance information. This member is optional, thus it could be 
+	 * 	declared as NULL or eliminated in compile-time with 
+	 * 	RKH_EN_SMA_GET_INFO.
+	 */
+
+#if RKH_EN_SMA_GET_INFO == 1
+	RKH_SMAI_T sinfo;
+#endif	
+
+} RKHSMA_T;
 
 
 /**
@@ -609,17 +812,19 @@ typedef enum
 
 
 /**
- * 	This values are retrived by guard functions. A guard is a boolean 
- * 	condition that returns a TRUE or FALSE value that controls
- * 	whether or not a transition is taken following the receipt of 
+ * 	\brief
+ * 	This values are retrived by guard functions. 
+ *
+ * 	A guard is a boolean condition that returns a TRUE or FALSE value that 
+ * 	controls whether or not a transition is taken following the receipt of 
  * 	a triggering event.
  */
 
-enum
+typedef enum
 {
 	RKH_GFALSE,	/**< False condition */
 	RKH_GTRUE	/**< True condition */
-};
+} RKH_GRET_T;
 
 
 /**
@@ -704,10 +909,6 @@ void rkh_exit( void );
  *
  * 	\param sma			pointer to previously created state machine 
  * 						application.
- * 	\param prio			state machine application priority. A unique priority 
- * 						number must be assigned to each SMA from 0 to 
- * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
- * 						priority. 
  * 	\param qs			base address of the event storage area. A message 
  * 						storage area is declared as an array of pointers to 
  * 						voids.
@@ -716,8 +917,8 @@ void rkh_exit( void );
  * 	\param stksize		size of stack memory area [in bytes].
  */
 
-void rkh_sma_init(	RKHSMA_T *sma, rkhui8_t prio, const void **qs, 
-					RKH_RQNE_T qsize, void *stks, rkhui32_t stksize );
+void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+					void *stks, rkhui32_t stksize );
 
 
 /**
@@ -763,23 +964,30 @@ void rkh_sma_init(	RKHSMA_T *sma, rkhui8_t prio, const void **qs,
  * 						state of state diagram. String terminated in '\\0' that 
  * 						represents the name of state machine. When a particular 
  * 						user application requires runtime debugging (native 
- * 						tracing features), the option ??? must be enabled.
+ * 						tracing features), the option RKH_EN_SMA_NAME must be 
+ * 						enabled.
+ * 	\param prio			state machine application priority. A unique priority 
+ * 						number must be assigned to each SMA from 0 to 
+ * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
+ * 						priority. 
  * 	\param ppty			state machine properties. The available properties are
  * 						enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
  * 	\param istate		pointer to initial state. This state could be defined 
  * 						either composite or basic (not pseudo-state).
- * 	\param ievent		pointer to an event that will be passed to state 
- * 						machine application when it starts. Could be used to 
- * 						pass arguments to the state machine like an argc/argv.
  * 	\param iaction		pointer to initialization action (optional). The function 
  * 						prototype is defined as RKHINIT_T. This argument is 
  * 						optional, thus it could be declared as NULL.
+ * 	\param ievent		pointer to an event that will be passed to state 
+ * 						machine application when it starts. Could be used to 
+ * 						pass arguments to the state machine like an argc/argv.
  */
 
-#define RKH_SMA_CREATE( sma_t, name, ppty, istate, iaction, ievent )		\
+#define RKH_SMA_CREATE( sma_t, name, prio, ppty, istate, iaction, ievent )	\
 																			\
-	static rkhrom ROMRKH_T rs_##name = mkrrkh( ppty,name,istate,iaction );	\
-	static sma_t s_##name = mkrkh( &rs_##name,istate,ievent );				\
+	static rkhrom ROMRKH_T rs_##name = MKRRKH( 	(prio), (ppty), (name), 	\
+												(istate), (iaction), 		\
+												(ievent) );					\
+	static sma_t s_##name = MKSMA( &rs_##name,(istate) );					\
 	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
 
 
@@ -966,15 +1174,14 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
 
 /**
  * 	\brief
- *	This macro dynamically creates a new event of type 'et' with its signal.
+ *	This macro dynamically creates a new event of type \a et with its signal.
  *
- *	The basic policy is to allocate the event from the first pool that has 
- *	a block size big enough to fit the requested event size.
- *	RKH can manage up to three event pools (e.g., small, medium, and 
- *	large events, like shirt sizes).
- *	It returns a pointer to the event already cast to the event type 
+ *	The basic policy is to allocate the event from the first pool that has a 
+ *	block size big enough to fit the requested event size. RKH can manage up 
+ *	to three event pools (e.g., small, medium, and large events, like shirt 
+ *	sizes). It returns a pointer to the event already cast to the event type 
  *	(et*). Here is an example of dynamic event allocation with the macro 
- *	rkh_alloc_event():
+ *	RKH_ALLOC_EVENT():
  *
  *	\code
  *	MYEVT_T *mye = RKH_ALLOC_EVENT( MYEVT_T, DATA );
@@ -1007,13 +1214,9 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  * 	counter drops to zero (meaning that no more references are outstanding 
  * 	for this event). The dynamic event is recycled by returning it to the 
  * 	pool from which	it was originally allocated. The pool-of-origin 
- * 	information is stored in the upper 2-MSBs of the e->dynamic_ attribute 
- * 	[MS]. Note that the data member dynamic_ of a dynamic event cannot be 
- * 	zero because the two most significant bits of the byte hold the pool 
- * 	ID, with valid values of 1, 2, or 3.
+ * 	information is stored in the e->pool member.
  * 	
  * 	\note 
- *
  * 	The garbage collector must be explicitly invoked at all appropriate 
  * 	contexts, when an event can become garbage (automatic garbage collection).
  *
@@ -1025,8 +1228,8 @@ void rkh_gc( RKHEVT_T *e );
 
 /**
  * 	\brief
- *	This macro set the event \a e with \a es signal and establishes it as one 
- *	static event.
+ *	This macro initialize an event \a e with \a es signal and establishes 
+ *	it as one static event.
  *
  *	\sa
  *	RKH_DCLR_STATIC_EVENT() macro.
@@ -1046,14 +1249,15 @@ void rkh_gc( RKHEVT_T *e );
  * 	\returns
  */
 
-#define RKH_SET_STATIC_EVENT( e, es )			mksevt( e, es )
+#define RKH_SET_STATIC_EVENT( e, es )					\
+										mksevt( e, es )
 
 
 /**
  * 	\brief
- *	This macro declares and initializes the event structure \a e with 
- *	\a es signal and establishes it as one static event.
- *	The created event object is explicitly placed in ROM.
+ *	This macro declares and initializes the event structure \a e with \a es 
+ *	signal and establishes it as one static event. The created event object 
+ *	is explicitly placed in ROM.
  *
  *	Example:
  *	\code
@@ -1071,11 +1275,10 @@ void rkh_gc( RKHEVT_T *e );
  * 	\param e		name of event structure (RKHEVT_T).
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
- *
- * 	\returns
  */
 
-#define RKH_DCLR_STATIC_EVENT( e, es )		mkievt( e, es )
+#define RKH_DCLR_STATIC_EVENT( e, es )					\
+										mkievt( e, es )
 
 
 /**

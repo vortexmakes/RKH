@@ -333,34 +333,27 @@
 #define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
 
 
-#if RKH_EN_HSM_NAME	== 1
-	#if RKH_EN_HSM_ID == 1
-		#define mkrrkh(id,ppty,n,is,ia)		{id,ppty,#n,is,ia}
+#if RKH_EN_SMA_NAME	== 1
+	#if RKH_EN_SMA_IEVENT == 1
+		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
+						{(prio),(ppty),#n,(is),(ia),(ie)}
 	#else
-		#define mkrrkh(id,ppty,n,is,ia)		{ppty,#n,is,ia}
+		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
+						{(prio),(ppty),#n,(is),(ia)}
 	#endif
 #else
-	#if RKH_EN_HSM_ID == 1
-		#define mkrrkh(id,ppty,n,is,ia)		{id,ppty,is,ia}
+	#if RKH_EN_SMA_IEVENT == 1
+		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
+						{(prio),(ppty),(is),(ia),(ie)}
 	#else
-		#define mkrrkh(id,ppty,n,is,ia)		{ppty,is,ia}
+		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
+						{(prio),(ppty),(is),(ia)}
 	#endif
 #endif
 
 
-#if RKH_EN_GET_INFO	== 1
-	#if RKH_EN_HSM_DATA	== 1
-		#define mkrkh( n,is,hd )			{n,is,hd,{0,0}}
-	#else
-		#define mkrkh( n,is,hd )			{n,is,{0,0}}
-	#endif
-#else
-	#if RKH_EN_HSM_DATA	== 1
-		#define mkrkh( n,is,hd )			{n,is,hd}
-	#else
-		#define mkrkh( n,is,hd )			{n,is}
-	#endif
-#endif
+#define MKSMA( rr, s )					\
+						{ (rr), (s) }
 
 
 #if RKH_EN_STATE_NAME == 1
@@ -954,13 +947,13 @@
  */
 
 #if RKH_SIZEOF_EVENT == 8
-	typedef rkhuint8 RKHE_T;
+	typedef rkhui8_t RKHE_T;
 #elif RKH_SIZEOF_EVENT == 16
-	typedef rkhuint16 RKHE_T;
+	typedef rkhui16_t RKHE_T;
 #elif RKH_SIZEOF_EVENT == 32
-	typedef rkhuint32 RKHE_T;
+	typedef rkhui32_t RKHE_T;
 #else
-	typedef rkhuint8 RKHE_T;
+	typedef rkhui8_t RKHE_T;
 #endif
 
 
@@ -1019,7 +1012,8 @@ typedef struct
 	 */
 
 #if RKH_EN_DYNAMIC_EVENT == 1
-	rkhuint8 dynamic_;
+	rkhui8_t dynamic_;
+	rkhui8_t pool;
 #endif
 } RKHEVT_T;
 
@@ -1039,7 +1033,7 @@ typedef struct
  * 	rkh_set_static_event() and rkh_gc().
  */
 
-RKHEVT_T *rkh_ae( rkhuint8 es, RKHE_T e );
+RKHEVT_T *rkh_ae( rkhui8_t es, RKHE_T e );
 
 
 /*
@@ -1576,176 +1570,6 @@ typedef struct rkhshist_t
 
 	rkhrom RKHSREG_T **target;
 } RKHSHIST_T;
-
-
-/**
- * 	\brief 
- * 	Describes the state-machine's performance information.
- *
- * 	Defines the data structure into which the performance 
- * 	information for state machine is stored.
- */
-
-typedef struct rkh_info_t
-{
-	rkhuint16 rcvevt;			/**<	# of received events */
-	rkhuint16 exectr;			/**<	# of executed transitions */
-} RKH_INFO_T;
-
-
-/**
- * 	\brief
- * 	Constant parameters of state machine.
- *
- *	The constant key parameters of a state machine are allocated within. 
- *	ROMRKH_T is a ROM base structure of RKH_T.
- *
- *	\sa
- *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink.
- */
-
-typedef struct
-{
-	/**	
- 	 * 	\brief
-	 *	State machine descriptor. 
-	 *
-	 *	This number allows to uniquely identify 
-	 *	a state machine. When a particular application requires runtime 
-	 *	debugging (native tracing features), this option must be enabled. 
-	 */
-
-#if RKH_EN_HSM_ID == 1
-	rkhuint8 id;
-#endif
-
-	/**
- 	 * 	\brief
-	 * 	State machine properties. 
-	 *
-	 * 	The available properties are enumerated 
-	 * 	in RKH_HPPTY_T enumeration in the rkh.h	file.
-	 */
-
-	rkhuint8 ppty;
-
-	/**	
- 	 * 	\brief
-	 *	Name of state machine. 
-	 *
-	 *	Represents the top state of state diagram.
-	 *	String terminated in '\\0' that represents the name of state state 
-	 *	machine. When a particular application requires runtime debugging 
-	 *	(native tracing features), this option must be enabled.
-	 */
-
-#if RKH_EN_HSM_NAME	== 1
-	char *name;
-#endif
-
-	/** 
- 	 * 	\brief
-	 * 	Points to initial state. 
-	 *
-	 * 	The initial state must be a composite state 
-	 * 	or basic state.
-	 */
-
-	rkhrom RKHSREG_T *init_state;
-
-	/** 
- 	 * 	\brief
-	 * 	Points to initializing action function (optional). 
-	 *
-	 * 	The function prototype is defined as RKHINIT_T. This argument 
-	 * 	is optional, thus it could be declared as NULL.
-	 */
-
-	RKHINIT_T init_action;
-
-} ROMRKH_T;
-
-
-/**
- * 	\brief 
- * 	Describes the state machine.
- *
- *	This structure resides in RAM because its members are dinamically updated
- *	by RKH (context of state machine).
- *	The \b #romrkh member points to ROMRKH_T structure, allocated in ROM, 
- *	to reduce the size of RAM consume. The key parameters of a state machine 
- *	are allocated within. Therefore cannot be modified in runtime.
- *
- * 	RKH_T is not intended to be instantiated directly, but rather
- * 	serves as the base structure for derivation of state machines in the
- * 	application code.
- * 	The following example illustrates how to derive an state machine from
- * 	RKH_T. Please note that the RKH_T member sm is defined as the
- * 	FIRST member of the derived struct.
- *
- *	Example:
- *	\code
- *	//	...within state-machine's module
- *
- *	typedef struct
- *	{
- *		RKH_T sm;		// base structure
- *		rkhuint8 x;		// private member
- *		rkhuint8 y;		// private member
- *	} MYSM_T;
- *
- * 	//	static instance of state machine object
- *	RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
- *
- *	//	...dispatchig events
- *	rkh_engine( my, ( RKHEVT_T* )myevt );
- *	\endcode
- *
- *	\sa
- *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink.
- */
-
-typedef struct rkh_t
-{
-	/**
- 	 * 	\brief
-	 * 	Points to constant state machine properties
-	 */
-	
-	rkhrom ROMRKH_T *romrkh;
-
-	/** 
- 	 * 	\brief
-	 * 	Points to current state.
-	 */
-
-	rkhrom RKHSREG_T *state;
-
-	/** 
- 	 * 	\brief
-	 * 	Points to state-machine's data (optional). 
-	 *
-	 * 	This argument is optional, thus it could be declared as NULL or 
-	 * 	eliminated with RKH_EN_HSM_DATA option. Could be used to pass 
-	 * 	arguments to the state machine like an argc/argv.
-	 */
-
-#if RKH_EN_HSM_DATA == 1
-	void *hdata;
-#endif
-	
-	/** 
- 	 * 	\brief
-	 * 	Maintains the optional performance information.
-	 */
-
-#if RKH_EN_GET_INFO == 1
-	RKH_INFO_T hinfo;
-#endif	
-
-} RKH_T;
 
 
 #endif

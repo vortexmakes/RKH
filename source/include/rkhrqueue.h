@@ -157,16 +157,6 @@ typedef struct
 
 	char *pend;
 
-	/**
-	 * 	Performance information. This member is optional, thus it could be 
-	 * 	declared as NULL or eliminated in compile-time with 
-	 * 	RKH_EN_RQUEUE_GET_INFO.
-	 */
-
-#if RKH_EN_RQUEUE_GET_INFO == 1
-	RKH_RQI_T qinfo;
-#endif
-
 	/** 
 	 * 	Minimum number of free elements ever in this queue.
 	 *	The nmin low-watermark provides valuable empirical data for 
@@ -177,6 +167,15 @@ typedef struct
 	RKH_RQNE_T nmin;	
 #endif
 
+	/**
+	 * 	Performance information. This member is optional, thus it could be 
+	 * 	eliminated in compile-time with RKH_EN_RQUEUE_GET_INFO.
+	 */
+
+#if RKH_EN_RQUEUE_GET_INFO == 1
+	RKH_RQI_T rqi;
+#endif
+
 } RKHRQ_T;
 
 
@@ -184,17 +183,23 @@ typedef struct
  * \brief
  *	Initializes the previously allocated queue data strcuture RKHRQ_T.
  *
+ * 	A queue is declared with the RKHRQ_T data type and is defined with the 
+ * 	rkh_rqueue_init() service.
+ *
  *	\note 
  *	See RKHRQ_T structure for more information.
  *
  * 	\param q		pointer to previously allocated queue structure.
- * 	\param ps 		pointer to an array of pointers that holds the elements. 
- * 					This array must be declared as an array of void pointers.
+ * 	\param sstart	storage start. Pointer to an array of pointers that holds 
+ * 					the elements. This array must be declared as an array of 
+ * 					void pointers.
+ * 	\param ssize	storage size [in bytes].
  *	\param sched	indicates whether the queue is schedulable (RKH_Q_SCHED) 
  *					or not (RKH_Q_NOSCHED). 
  */
 
-void rkh_rqueue_init( RKHRQ_T *q, const void **ps, rkhui8_t sched );
+void rkh_rqueue_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
+						rkhui8_t sched );
 
 
 /**
