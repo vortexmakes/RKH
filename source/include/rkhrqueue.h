@@ -1,5 +1,5 @@
 /*
- *	file: rkhrqueue.h
+ *	file: rkhrq.h
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 23, 2012
  *
@@ -24,7 +24,7 @@
  */
 
 /**
- * 	\file rkhrqueue.h
+ * 	\file rkhrq.h
  *
  *	\brief
  * 	Platform-independent interface for supporting queue (by reference) 
@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __RKHRQUEUE_H__
-#define __RKHRQUEUE_H__
+#ifndef __RKHRQ_H__
+#define __RKHRQ_H__
 
 
 #include "rkh.h"
@@ -50,40 +50,21 @@
  * 	When a queue is initialized as RKH_Q_NOSCHED it never block.
  */
 
-enum
+typedef enum
 {
-	RKH_Q_SCHED, RKH_Q_NOSCHED
-};
+	RKH_Q_SCHED, 
+	RKH_Q_NOSCHED
+} RKH_RQSCH_T;
 
 
 /**
  * 	Return codes from queue operations.
  */
 
-enum
+typedef enum
 {
 	RKH_RQ_OK, RKH_RQ_EMPTY, RKH_RQ_FULL
-};
-
-
-/** 
- * 	\brief
- * 	This data type defines the maximum number of elements that any queue 
- *	can contain. 
- *
- *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_SIZEOF_QNE.
- */
-
-#if RKH_SIZEOF_QNE == 8
-	typedef rkhui8_t RKH_RQNE_T;
-#elif RKH_SIZEOF_QNE == 16
-	typedef rkhui16_t RKH_RQNE_T;
-#elif RKH_SIZEOF_QNE == 32
-	typedef rkhui32_t RKH_RQNE_T;
-#else
-	typedef rkhui8_t RKH_RQNE_T;
-#endif
+} RKH_RQCODE_T;
 
 
 /**
@@ -163,7 +144,7 @@ typedef struct
 	 *	proper sizing of the queue.
 	 */
 
-#if RKH_EN_RQUEUE_GET_LWMARK == 1
+#if RKH_RQ_EN_GET_LWMARK == 1
 	RKH_RQNE_T nmin;	
 #endif
 
@@ -184,7 +165,7 @@ typedef struct
  *	Initializes the previously allocated queue data strcuture RKHRQ_T.
  *
  * 	A queue is declared with the RKHRQ_T data type and is defined with the 
- * 	rkh_rqueue_init() service.
+ * 	rkh_rq_init() service.
  *
  *	\note 
  *	See RKHRQ_T structure for more information.
@@ -198,7 +179,7 @@ typedef struct
  *					or not (RKH_Q_NOSCHED). 
  */
 
-void rkh_rqueue_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
+void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
 						rkhui8_t sched );
 
 
@@ -212,8 +193,8 @@ void rkh_rqueue_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	'1' (TRUE) if queue is empty, otherwise '0' (FALSE).
  */
 
-#define rkh_rqueue_is_empty( q )								\
-				(HUInt)(rkh_rqueue_get_num((RKHRQ_T*)(q))==0)
+#define rkh_rq_is_empty( q )								\
+				(HUInt)(rkh_rq_get_num((RKHRQ_T*)(q))==0)
 
 
 /**
@@ -226,7 +207,7 @@ void rkh_rqueue_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	'1' (TRUE) if queue is full, otherwise '0' (FALSE).
  */
 
-HUInt rkh_rqueue_is_full( RKHRQ_T *q );
+HUInt rkh_rq_is_full( RKHRQ_T *q );
 
 
 /**
@@ -236,7 +217,7 @@ HUInt rkh_rqueue_is_full( RKHRQ_T *q );
  * 	\param q		pointer to previously created queue.
  */
 
-RKH_RQNE_T rkh_rqueue_get_num( RKHRQ_T *q );
+RKH_RQNE_T rkh_rq_get_num( RKHRQ_T *q );
 
 
 /**
@@ -248,11 +229,15 @@ RKH_RQNE_T rkh_rqueue_get_num( RKHRQ_T *q );
  * 	
  * 	\param q		pointer to previously created queue.
  *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_RQ_EN_GET_LWMARK.
+ *
  * 	\return
  * 	Lowest number of free elements ever present in the queue.
  */
 
-RKH_RQNE_T rkh_rqueue_get_lwm( RKHRQ_T *q );
+RKH_RQNE_T rkh_rq_get_lwm( RKHRQ_T *q );
 
 
 /*
@@ -269,7 +254,7 @@ RKH_RQNE_T rkh_rqueue_get_lwm( RKHRQ_T *q );
  * 	error code.
  */
 
-HUInt rkh_rqueue_get( RKHRQ_T *q, void *pe );
+HUInt rkh_rq_get( RKHRQ_T *q, void *pe );
 
 
 /**
@@ -286,7 +271,7 @@ HUInt rkh_rqueue_get( RKHRQ_T *q, void *pe );
  * 	\param pe		pointer-sized variable and is application specific.
  */
 
-void rkh_rqueue_put_fifo( RKHRQ_T *q, const void *pe );
+void rkh_rq_put_fifo( RKHRQ_T *q, const void *pe );
 
 
 /**
@@ -303,12 +288,16 @@ void rkh_rqueue_put_fifo( RKHRQ_T *q, const void *pe );
  * 	\param pe		pointer-sized variable and is application specific.
  */
 
-void rkh_rqueue_put_lifo( RKHRQ_T *q, const void *pe );
+void rkh_rq_put_lifo( RKHRQ_T *q, const void *pe );
 
 
 /**
  * 	\brief
  *	Depletes a queue. 
+ *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_RQ_EN_DEPLETE.
  *
  *	Empties the contents of the queue and eliminates all stored elements.
  *		
@@ -322,6 +311,10 @@ void queue_deplete( RKHRQ_T *q );
  * 	\brief
  *	Read an element from a queue without remove it.
  *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_RQ_EN_READ.
+ *
  * 	\param q		pointer to previously created queue from which the 
  * 					elements are received.
  * 	\param pe		pointer to the buffer into which the received item will be 
@@ -332,7 +325,7 @@ void queue_deplete( RKHRQ_T *q );
  * 	error code.
  */
 
-HUInt rkh_rqueue_read( RKHRQ_T *q, void *pe ); 
+HUInt rkh_rq_read( RKHRQ_T *q, void *pe ); 
 
 
 /**
@@ -349,14 +342,14 @@ HUInt rkh_rqueue_read( RKHRQ_T *q, void *pe );
  * 	\note
  * 	See RKH_RQI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_EN_RQUEUE_GET_INFO.
+ * 	RKH_RQ_EN_GET_INFO.
  *
  * 	\param q		pointer to previously created queue.
  * 	\param pqi		pointer to the buffer into which the performance 
  * 					information will be copied by reference.
  */
 
-void rkh_rqueue_get_info( RKHRQ_T *q, RKH_RQI_T *pqi );
+void rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi );
 
 
 /**
@@ -365,12 +358,12 @@ void rkh_rqueue_get_info( RKHRQ_T *q, RKH_RQI_T *pqi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_RQUEUE_GET_INFO.
+ * 	with RKH_RQ_EN_GET_INFO.
  *
  * 	\param q		pointer to previously created queue.
  */
 
-void rkh_rqueue_clear_info( RKHRQ_T *q );
+void rkh_rq_clear_info( RKHRQ_T *q );
 
 
 #endif

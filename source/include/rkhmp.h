@@ -102,38 +102,85 @@ typedef struct
 {
 	/**
 	 * 	\brief
-	 * 	Size (in bytes) of each memory block.
+	 *	The head of the linked list of free blocks. 
+	 *
+	 *	The only data member strictly required for allocating and freeing 
+	 *	blocks in the pool is the head of the free list 'free'.
 	 */
 
-	RKH_MPBS_T bsize;
-
+	void *free;
+	
 	/**
 	 * 	\brief
-	 * 	Total number of memory blocks in the pool.
-	 */
-
-	RKH_MPNB_T nblocks;
-
-	/**
-	 * 	\brief
-	 * 	Number of memory blocks free.
+	 * 	Number of free blocks remaining. 
 	 */
 
 	RK_MPNB_T nfree;
 
 	/**
 	 * 	\brief
-	 * 	Number of memory blocks used.
+	 * 	Total number of blocks in bytes. 
+	 *
+	 * 	The type RKH_MPNB_T is configurable by the macro RKH_MP_SIZEOF_NBLOCK. 
+	 * 	The valid values [in bits] are 8, 16 or 32. Default is 8. The dynamic 
+	 * 	range of the RKH_MPNB_T data type determines the maximum number of 
+	 * 	blocks that can be stored in the pool.
 	 */
 
-	RK_MPNB_T nused;
+	RKH_MPNB_T nblocks;
+
+	/**
+	 * 	\brief
+	 * 	Maximum block size in bytes. 
+	 *
+	 * 	The type RKH_MPBS_T is configurable by the macro 
+	 * 	RKH_MP_SIZEOF_BSIZE. The valid values [in bits] are 8, 16 or 32. 
+	 * 	Default is 8. The dynamic range of the RKH_MPBS_T data type determines 
+	 * 	the maximum size of blocks that can be managed by the pool manager.
+	 */
+
+	RKH_MPBS_T bsize;
+
+#if RKH_MP_REDUCED == 0
+
+	/** 
+	 * 	\brief
+	 * 	The start of the original pool buffer.
+	 *
+	 * 	The start and end pointers are used as delimiters of the valid range
+	 * 	of memory blocks managed by this pool.
+	 */
+
+	void *start;
+
+	/**
+	 * 	\brief
+	 * 	The last block in this pool.
+	 */
+
+	void *end;
+
+	/**
+	 * 	\brief
+	 * 	Minimum number of free blocks ever in this pool, i.e. holds 
+	 * 	the lowest number of free blocks ever present in the pool.
+	 *
+	 *	The nmin low-watermark provides valuable empirical data for 
+	 *	proper sizing of the memory pool.
+	 */
+
+#if RKSYS_MPOOL_GET_LWMARK == 1
+	RKH_MPNB_T nmin;
+#endif
+
+#endif
 
 	/**
 	 * 	Performance information. This member is optional, thus it could be 
-	 * 	eliminated in compile-time with RKH_EN_MP_GET_INFO.
+	 * 	eliminated in compile-time with RKH_MP_EN_GET_INFO.
 	 */
 
-#if RKH_EN_MP_GET_INFO == 1
+#if RKH_MP_EN_GET_INFO == 1
 	RKH_MPI_T mpi;
 #endif
 } RKHMP_T;
@@ -209,7 +256,7 @@ void rkh_mp_put( RKHMP_T *mp, void *blk );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_MP_GET_BS.
+ * 	with RKH_MP_EN_GET_BSIZE.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -227,7 +274,7 @@ RKH_MPBS_T rkh_mp_get_blksize( RKHMP_T *mp );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_MP_GET_NFREE.
+ * 	with RKH_MP_EN_GET_NFREE.
  * 	
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -246,7 +293,7 @@ RKH_MPNB_T rkh_mp_get_nfree( RKHMP_T *mp );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_MP_GET_LWM.
+ * 	with RKH_MP_EN_GET_LWM.
  * 	
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -255,22 +302,6 @@ RKH_MPNB_T rkh_mp_get_nfree( RKHMP_T *mp );
  */
 
 RKH_MPNB_T rkh_mp_get_low_wmark( RKHMP_T *mp );
-
-
-/**
- * 	\brief
- * 	This function is used to obtain information about the memory pool.
- * 	
- * 	\note
- * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_MP_QUERY.
- * 	
- * 	\param mp		pointer to previously allocated memory pool structure.
- * 	\param data		pointer to the buffer into which the information about the
- * 					memory pool will be copied by reference.
- */
-
-void rkh_mp_query( RKHMP_T *mp, RKH_MP_DATA_T *data );
 
 
 /**
@@ -284,7 +315,7 @@ void rkh_mp_query( RKHMP_T *mp, RKH_MP_DATA_T *data );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_MP_GET_INFO.
+ * 	with RKH_MP_EN_GET_INFO.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  * 	\param mpi		pointer to the buffer into which the performance information
@@ -300,7 +331,7 @@ void rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_MP_GET_INFO.
+ * 	with RKH_MP_EN_GET_INFO.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  */

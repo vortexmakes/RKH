@@ -90,12 +90,175 @@
 
 
 #ifndef RKH_SIZEOF_QNE
-	#error "rkhcfg.h, RKH_SIZEOF_QNE must be defined, expected 8, 16 or 32"
+	#error "rkhcfg.h, Missing RKH_SIZEOF_QNE, expected 8, 16 or 32"
 #endif
 
 
 #ifndef RKH_SIZEOF_TNT
-	#error "rkhcfg.h, RKH_SIZEOF_TNT must be defined, expected 8, 16 or 32"
+	#error "rkhcfg.h, Missing RKH_SIZEOF_TNT, expected 8, 16 or 32"
+#endif
+
+
+#ifndef RKH_MP_SIZEOF_BSIZE
+	#error "rkhcfg.h, Missing RKH_MP_SIZEOF_BSIZE: expected 8, 16 or 32"
+#endif
+
+
+#ifndef RKH_MP_SIZEOF_NBLOCK
+	#error "rkhcfg.h, Missing RKH_MP_SIZEOF_NBLOCK: expected 8, 16 or 32"
+#endif
+
+
+#ifndef RKH_MP_EN
+	#error "rkhcfg.h, Missing RKH_MP_EN: Enable (1) or Disable (0) native memory pool"
+#endif
+
+
+#ifndef RKH_MP_EN_GET_INFO
+	#error "rkhcfg.h, Missing RKH_MP_EN_GET_INFO: Include (1) get information function"
+#endif
+
+
+#ifndef RKH_MP_EN_GET_BSIZE
+	#error "rkhcfg.h, Missing RKH_MP_EN_GET_BSIZE: Include (1) get block size function"
+#endif
+
+
+#ifndef RKH_MP_EN_GET_NFREE
+	#error "rkhcfg.h, Missing RKH_MP_EN_GET_NFREE: Include (1) get # of free blocks function"
+#endif
+
+
+#ifndef RKH_MP_EN_GET_LWM
+	#error "rkhcfg.h, Missing RKH_MP_EN_GET_LWM: Include (1) get lowest # of free blocks function"
+#endif
+
+
+#ifndef RKH_MP_REDUCED
+	#error "rkhcfg.h, Missing RKH_MP_REDUCED: Include (0) all memory pool facilities"
+#endif
+
+
+/** 
+ * 	Defines the size of memory block size. The valid values [in bits] are 
+ * 	8, 16 or 32. Default is 8. This type is configurable via the 
+ * 	preprocessor switch RKH_MP_SIZEOF_BSIZE.
+ */
+
+#if RKH_MP_SIZEOF_BSIZE == 8
+	typedef rkhui8_t RKH_MPBS_T;
+#elif RKH_MP_SIZEOF_BSIZE == 16
+	typedef rkhui16_t RKH_MPBS_T;
+#elif RKH_MP_SIZEOF_BSIZE == 32
+	typedef rkhui32_t RKH_MPBS_T;
+#else
+	typedef rkhui8_t RKH_MPBS_T;
+#endif
+
+
+/** 
+ * 	Defines the size of number of memory block size. The valid values 
+ * 	[in bits] are 8, 16 or 32. Default is 8. This type is configurable via 
+ * 	the preprocessor switch RKH_MP_SIZEOF_NBLOCK.
+ */
+
+#if RKH_MP_SIZEOF_NBLOCK == 8
+	typedef rkhui8_t RKH_MPNB_T;
+#elif RKH_MP_SIZEOF_NBLOCK == 16
+	typedef rkhui16_t RKH_MPNB_T;
+#elif RKH_MP_SIZEOF_NBLOCK == 32
+	typedef rkhui32_t RKH_MPNB_T;
+#else
+	typedef rkhui8_t RKH_MPNB_T;
+#endif
+
+
+#ifndef RKH_RQ_SIZEOF_NELEM
+	#error "rkhcfg.h, Missing RKH_RQ_SIZEOF_NELEM: expected 8, 16 or 32"
+#endif
+
+
+#ifndef RKH_RQ_EN_GET_LWMARK
+	#error "rkhcfg.h, Missing RKH_RQ_EN_GET_LWMARK: Include (1) get queue low watermark function"
+#endif
+
+
+#ifndef RKH_RQ_EN_GET_INFO
+	#error "rkhcfg.h, Missing RKH_RQ_EN_GET_INFO: Include (1) get queue information function"
+#endif
+
+
+#ifndef RKH_RQ_EN_READ
+	#error "rkhcfg.h, Missing RKH_RQ_EN_READ: Include (1) queue read function"
+#endif
+
+
+#ifndef RKH_RQ_EN_DEPLETE
+	#error "rkhcfg.h, Missing RKH_RQ_EN_DEPLETE: Include (1) queue deplete function"
+#endif
+
+
+/** 
+ * 	\brief
+ * 	This data type defines the maximum number of elements that any queue 
+ *	can contain. 
+ *
+ *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ *	configurable via the preprocessor switch RKH_RQ_SIZEOF_NELEM.
+ */
+
+#if RKH_RQ_SIZEOF_NELEM == 8
+	typedef rkhui8_t RKH_RQNE_T;
+#elif RKH_RQ_SIZEOF_NELEM == 16
+	typedef rkhui16_t RKH_RQNE_T;
+#elif RKH_RQ_SIZEOF_NELEM == 32
+	typedef rkhui32_t RKH_RQNE_T;
+#else
+	typedef rkhui8_t RKH_RQNE_T;
+#endif
+
+
+#ifndef RKH_TIMER_SIZEOF_NTIMER
+	#error "rkhcfg.h, Missing RKH_TIMER_SIZEOF_NTIMER: expected 8, 16 or 32"
+#endif
+
+
+#if RKH_TIMER_EN_HOOK == 0
+	#define rkh_mktimer( t,s,th )										\
+				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
+#else
+	#define rkh_mktimer( t,s,th )										\
+				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s) )
+#endif
+
+
+#ifndef RKH_TIMER_EN_GET_INFO
+	#error "rkhcfg.h, Missing RKH_TIMER_EN_GET_INFO: Include (1) get timer information function"
+#endif
+
+
+#ifndef RKH_TIMER_EN_RESTART
+	#error "rkhcfg.h, Missing RKH_TIMER_EN_RESTART: Include (1) restart timer function"
+#endif
+
+
+/** 
+ * 	\brief
+ * 	This data type defines the dynamic range of the time delays measured in 
+ * 	clock ticks (maximum number of ticks).
+ *
+ *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ *	configurable via the preprocessor switch RKH_TIMER_SIZEOF_NTIMER.
+ */
+
+#if RKH_TIMER_SIZEOF_NTIMER == 8
+	typedef rkhui8_t RKH_TNT_T;
+#elif RKH_TIMER_SIZEOF_NTIMER == 16
+	typedef rkhui16_t RKH_TNT_T;
+#elif RKH_TIMER_SIZEOF_NTIMER == 32
+	typedef rkhui32_t RKH_TNT_T;
+#else
+	typedef rkhui8_t RKH_TNT_T;
 #endif
 
 
@@ -392,15 +555,6 @@
 
 #ifndef RKH_ASSERT
 	#define RKH_ASSERT		0
-#endif
-
-
-#if RKH_EN_TIM_HOOK == 0
-	#define rkh_mktimer( t,s,th )										\
-				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
-#else
-	#define rkh_mktimer( t,s,th )										\
-				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s) )
 #endif
 
 

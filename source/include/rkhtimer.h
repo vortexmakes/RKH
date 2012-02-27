@@ -38,26 +38,6 @@
 #include "rkh.h"
 
 
-/** 
- * 	\brief
- * 	This data type defines the dynamic range of the time delays measured in 
- * 	clock ticks (maximum number of ticks).
- *
- *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_SIZEOF_TNT.
- */
-
-#if RKH_SIZEOF_TNT == 8
-	typedef rkhui8_t RKH_TCTR_T;
-#elif RKH_SIZEOF_TNT == 16
-	typedef rkhui16_t RKH_TCTR_T;
-#elif RKH_SIZEOF_TNT == 32
-	typedef rkhui32_t RKH_TCTR_T;
-#else
-	typedef rkhui8_t RKH_TCTR_T;
-#endif
-
-
 /**
  * 	\brief
  * 	Defines the data structure into which the performance information for
@@ -114,7 +94,7 @@ typedef struct
 	 * 	Tick down-counter.
 	 */
 
-	RKH_TCTR_T ntick;
+	RKH_TNT_T ntick;
 
 	/**
 	 * 	Number of ticks for all timer expirations after the first (expiration 
@@ -122,24 +102,24 @@ typedef struct
 	 * 	otherwise, for periodic timers, any value in range.
 	 */
 
-	RKH_TCTR_T period;
+	RKH_TNT_T period;
 
 	/**
 	 *	Hook function to call when the timer expires. This member is optional, 
 	 *	thus it could be declared as NULL or eliminated in compile-time with 
-	 *	RKH_EN_TIMER_HOOK.
+	 *	RKH_TIMER_EN_HOOK.
 	 */
 
-#if RKH_EN_TIMER_HOOK == 1
+#if RKH_TIMER_EN_HOOK == 1
 	RKH_THK_T timhk;
 #endif
 
 	/**
 	 * 	Performance information. This member is optional, thus it could be 
-	 * 	eliminated in compile-time with RKSYS_TIMER_GET_INFO.
+	 * 	eliminated in compile-time with RKH_TIMER_EN_GET_INFO.
 	 */
 
-#if RKSYS_TIMER_GET_INFO == 1
+#if RKH_TIMER_EN_GET_INFO == 1
 	RKH_TIMERI_T ti;
 #endif
 } RKHT_T;
@@ -177,7 +157,7 @@ void rkh_timer_handler( void );
  *					first allocate a timer structure RKHT_T.
  *	\param thk 		hook function to be called at the timer expiration. This 
  *					member is optional, thus it could be declared as NULL or 
- *					eliminated in compile-time with RKH_EN_TIMER_HOOK.
+ *					eliminated in compile-time with RKH_TIMER_EN_HOOK.
  *	\param sig		signal of the event to be directly posted (using the FIFO 
  *					policy) into the event queue of the target agreed state 
  *					machine application.
@@ -185,7 +165,7 @@ void rkh_timer_handler( void );
 
 #define rkh_timer_init( t, sig, thk )		rkh_mktimer( t, sig, thk )
 
-#if RKH_EN_TIMER_HOOK == 0
+#if RKH_TIMER_EN_HOOK == 0
 	void rkh_itim_init( RKHT_T *t, RKHE_T sig );
 #else
 	void rkh_itim_init( RKHT_T *t, RKHE_T sig, RKH_THK_T thk );
@@ -247,7 +227,7 @@ void rkh_timer_handler( void );
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_timer_start( RKHT_T *t, RKHSMA_T *sma, RKH_TCTR_T itick );
+void rkh_timer_start( RKHT_T *t, RKHSMA_T *sma, RKH_TNT_T itick );
 
 
 /**
@@ -255,13 +235,13 @@ void rkh_timer_start( RKHT_T *t, RKHSMA_T *sma, RKH_TCTR_T itick );
  * 	Restart a timer with a new number of ticks. 
  * 	The timer begins running at the completion of this operation.
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_TIMER_RESTART.
+ * 	with RKH_TIMER_EN_RESTART.
  *
  *	\param t		pointer to previously created timer structure.
  * 	\param itick 	number of initial ticks for timer expiration.
  */
 
-void rkh_timer_restart( RKHT_T *t, RKH_TCTR_T itick );
+void rkh_timer_restart( RKHT_T *t, RKH_TNT_T itick );
 
 
 /**
@@ -292,7 +272,7 @@ void rkh_timer_stop( RKHT_T *t );
  * 	\note
  * 	See RKH_TIMERI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKSYS_TIMER_GET_INFO.
+ * 	RKH_TIMER_EN_GET_INFO.
  *
  *	\param t		pointer to previously created timer structure.
  * 	\param pti		pointer to the buffer into which the performance 
@@ -309,7 +289,7 @@ void rkh_timer_get_info( RKHT_T *t, RKH_TIMERI_T *pti );
  * 	\note
  * 	See RKH_TIMERI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKSYS_TIMER_GET_INFO.
+ * 	RKH_TIMER_EN_GET_INFO.
  *
  *	\param t		pointer to previously created timer structure.
  */

@@ -33,39 +33,39 @@
 #define __RKHCFG_H__
 
 
-#define RKH_SM_MAX_HCAL_DEPTH			4	/* 	CFG01 */
-#define RKH_SM_MAX_TR_SEGS				4	/* 	CFG01 */
-#define RKH_SM_EN_HCAL					1	/* 	CFG00 */
-#define RKH_SM_EN_PSEUDOSTATE			1	/* 	CFG01 */
-#define RKH_SM_EN_DEEP_HISTORY			1	/* 	CFG01 */
-#define RKH_SM_EN_SHALLOW_HISTORY		1	/* 	CFG01 */
-#define RKH_SM_EN_JUNCTION				1	/* 	CFG01 */
-#define RKH_SM_EN_CONDITIONAL			1	/* 	CFG01 */
-#define RKH_SM_EN_INIT_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SM_EN_ENT_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SM_EN_EXT_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SM_EN_ACT_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SM_EN_ACT_ARG_EVT			1	/* 	CFG01 */
-#define RKH_SM_EN_GRD_ARG_EVT			1	/* 	CFG01 */
-#define RKH_SM_EN_GRD_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SM_EN_PPRO_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SM_EN_STATE_NAME			1	/* 	CFG01 */
-#define RKH_SM_EN_STATE_ID				1	/* 	CFG01 */
-#define RKH_SM_EN_PPRO					0	/* 	CFG01 */
+#define RKH_MAX_SMA						8	/* 	CFG01 */ 
+#define RKH_CRITICAL_METHOD				3	/* 	CFG01 */ 
+#define RKH_EN_REENTRANT				0	/* 	CFG01 */
+#define RKH_EN_DEFERRED_EVENT			0	/* 	CFG01 */
+#define RKH_SIZEOF_EVENT				4	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_SCHEDULER			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_PUTFIFO			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_PUTLIFO			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_GET				1	/* 	CFG01 */ 
+#define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
 
-#define RKH_SMA_CRITICAL_METHOD			3	/* 	CFG01 */ 
+#define RKH_SMA_MAX_HCAL_DEPTH			4	/* 	CFG01 */
+#define RKH_SMA_MAX_TR_SEGS				4	/* 	CFG01 */
+#define RKH_SMA_EN_HCAL					1	/* 	CFG00 */
+#define RKH_SMA_EN_PSEUDOSTATE			1	/* 	CFG01 */
+#define RKH_SMA_EN_DEEP_HISTORY			1	/* 	CFG01 */
+#define RKH_SMA_EN_SHALLOW_HISTORY		1	/* 	CFG01 */
+#define RKH_SMA_EN_JUNCTION				1	/* 	CFG01 */
+#define RKH_SMA_EN_CONDITIONAL			1	/* 	CFG01 */
+#define RKH_SMA_EN_INIT_ARG_SMA			1	/* 	CFG01 */
+#define RKH_SMA_EN_ENT_ARG_SMA			1	/* 	CFG01 */
+#define RKH_SMA_EN_EXT_ARG_SMA			1	/* 	CFG01 */
+#define RKH_SMA_EN_ACT_ARG_SMA			1	/* 	CFG01 */
+#define RKH_SMA_EN_ACT_ARG_EVT			1	/* 	CFG01 */
+#define RKH_SMA_EN_GRD_ARG_EVT			1	/* 	CFG01 */
+#define RKH_SMA_EN_GRD_ARG_SMA			1	/* 	CFG01 */
+#define RKH_SMA_EN_PPRO_ARG_SMA			1	/* 	CFG01 */
+#define RKH_SMA_EN_STATE_NAME			1	/* 	CFG01 */
+#define RKH_SMA_EN_STATE_ID				1	/* 	CFG01 */
+#define RKH_SMA_EN_PPRO					0	/* 	CFG01 */
 #define RKH_SMA_EN_NAME					1	/* 	CFG01 */
 #define RKH_SMA_EN_IEVENT				1	/* 	CFG01 */
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
-#define RKH_SMA_EN_REENTRANT			0	/* 	CFG01 */
-#define RKH_SMA_EN_DYNAMIC_EVENT		0	/* 	CFG01 */
-#define RKH_SMA_EN_DEFERRED_EVENT		0	/* 	CFG01 */
-#define RKH_SMA_MAX						8	/* 	CFG01 */ 
-#define RKH_SMA_SIZEOF_EVENT			4	/* 	CFG01 */ 
-#define RKH_SMA_EN_NATIVE_SCHEDULER		1	/* 	CFG01 */ 
-#define RKH_SMA_EN_NATIVE_PUTFIFO		1	/* 	CFG01 */ 
-#define RKH_SMA_EN_NATIVE_PUTLIFO		1	/* 	CFG01 */ 
-#define RKH_SMA_EN_NATIVE_GET			1	/* 	CFG01 */ 
 
 #define RKH_TR_EN						1	/* 	CFG01 */
 #define RKH_TR_ALL						0	/* 	CFG01 */
@@ -89,16 +89,27 @@
 
 #define RKH_ASSERT_EN					1	/* 	CFG01 */
 
-#define RKH_SIZEOF_QNE				4	/* 	CFG01 */ 
-#define RKH_SIZEOF_MPBS				4	/* 	CFG01 */ 
-#define RKH_SIZEOF_MPNB				4	/* 	CFG01 */ 
-#define RKH_SIZEOF_TNT				8	/* 	CFG01 */ 
+#define RKH_RQ_SIZEOF_NELEM				8	/* 	CFG01 */ 
+#define RKH_RQ_EN_GET_LWMARK			1	/* 	CFG01 */ 
+#define RKH_RQ_EN_GET_INFO				1	/* 	CFG01 */ 
+#define	RKH_RQ_EN_READ					1	/* 	CFG01 */ 
+#define	RKH_RQ_EN_DEPLETE				1	/* 	CFG01 */ 
 
-#define RKH_RQ_EN_GET_INFO			1	/* 	CFG01 */ 
-#define RKH_RQ_EN_GET_LWMARK		1	/* 	CFG01 */ 
+#define RKH_MP_EN						1	/* 	CFG01 */ 
+#define RKH_MP_MAX						8	/* 	CFG01 */ 
+#define RKH_MP_REDUCED					1	/* 	CFG01 */ 
+#define RKH_MP_SIZEOF_BSIZE				4	/* 	CFG01 */ 
+#define RKH_MP_SIZEOF_NBLOCK			4	/* 	CFG01 */ 
+#define RKH_MP_EN_GET_BSIZE				1	/* 	CFG01 */ 
+#define RKH_MP_EN_GET_NFREE				1	/* 	CFG01 */ 
+#define RKH_MP_EN_GET_LWM				1	/* 	CFG01 */ 
+#define RKH_MP_EN_GET_INFO				1	/* 	CFG01 */ 
 
-#define RKH_MP_MAX					8	/* 	CFG01 */ 
-#define RKH_TIMER_EN_???			1	/* 	CFG01 */
+#define RKH_TIMER_EN					1	/* 	CFG01 */
+#define RKH_TIMER_SIZEOF_NTIMER			1	/* 	CFG01 */
+#define RKH_TIMER_EN_HOOK				1	/* 	CFG01 */
+#define RKH_TIMER_EN_GET_INFO			1	/* 	CFG01 */
+#define RKH_TIMER_EN_RESTART			1	/* 	CFG01 */
 
 
 #endif
