@@ -113,7 +113,7 @@ typedef struct romrkh_t
 	 * 	(not pseudo-state).
 	 */
 
-	rkhrom RKHSREG_T *istate;
+	RKHROM RKHSREG_T *istate;
 
 	/** 
  	 * 	\brief
@@ -183,14 +183,14 @@ typedef struct rkhsma_t
 	 * 	Points to state machine object.
 	 */
 	
-	rkhrom ROMRKH_T *romrkh;
+	RKHROM ROMRKH_T *romrkh;
 
 	/** 
  	 * 	\brief
 	 * 	Points to current state.
 	 */
 
-	rkhrom RKHSREG_T *state;
+	RKHROM RKHSREG_T *state;
 
 	/**
 	 * 	\brief
@@ -278,9 +278,9 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )	\
 																		\
-								extern rkhrom RKHTR_T name##_trtbl[];	\
+								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								rkhrom RKHSREG_T name =					\
+								RKHROM RKHSREG_T name =					\
 								{										\
 									mkbase(RKH_COMPOSITE,id,name),		\
 									mkcomp(en,ex,parent,name,			\
@@ -315,9 +315,9 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
 																		\
-								extern rkhrom RKHTR_T name##_trtbl[];	\
+								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								rkhrom RKHSREG_T name =					\
+								RKHROM RKHSREG_T name =					\
 								{										\
 									mkbase(RKH_BASIC,id,name),			\
 									mkbasic(en,ex,parent,name,prepro)	\
@@ -348,9 +348,9 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_COND_STATE( name,id )								\
 																		\
-								extern rkhrom RKHTR_T name##_trtbl[];	\
+								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								rkhrom RKHSCOND_T name =				\
+								RKHROM RKHSCOND_T name =				\
 								{										\
 									mkbase(RKH_CONDITIONAL,id,name),	\
 									name##_trtbl 						\
@@ -377,7 +377,7 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_JUNCTION_STATE( name,id,action,target )				\
 																		\
-								rkhrom RKHSJUNC_T name =				\
+								RKHROM RKHSJUNC_T name =				\
 								{										\
 									mkbase(RKH_JUNCTION,id,name),		\
 									action,	target 						\
@@ -403,9 +403,9 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )					\
 																		\
-								static rkhrom RKHSREG_T *ram##name;		\
+								static RKHROM RKHSREG_T *ram##name;		\
 																		\
-								rkhrom RKHSHIST_T name =				\
+								RKHROM RKHSHIST_T name =				\
 								{										\
 									mkbase(RKH_DHISTORY,id,name),		\
 									parent,&ram##name 					\
@@ -431,9 +431,9 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )				\
 																		\
-								static rkhrom RKHSREG_T *ram##name;		\
+								static RKHROM RKHSREG_T *ram##name;		\
 																		\
-								rkhrom RKHSHIST_T name =				\
+								RKHROM RKHSHIST_T name =				\
 								{										\
 									mkbase(RKH_SHISTORY,id,name),		\
 									parent,&ram##name 					\
@@ -465,7 +465,7 @@ typedef struct rkhsma_t
 
 #define RKH_CREATE_TRANS_TABLE( name )									\
 																		\
-								static rkhrom RKHTR_T name##_trtbl[]={
+								static RKHROM RKHTR_T name##_trtbl[]={
 
 
 /**
@@ -688,12 +688,12 @@ typedef struct rkhsma_t
  * 	Generally, this macro is used in the state-machine's header file.
  */
 
-#define RKH_DCLR_COMP_STATE		extern rkhrom RKHSREG_T
-#define RKH_DCLR_BASIC_STATE	extern rkhrom RKHSREG_T
-#define RKH_DCLR_COND_STATE		extern rkhrom RKHSCOND_T
-#define RKH_DCLR_JUNC_STATE		extern rkhrom RKHSJUNC_T
-#define RKH_DCLR_DHIST_STATE	extern rkhrom RKHSHIST_T 
-#define RKH_DCLR_SHIST_STATE	extern rkhrom RKHSHIST_T
+#define RKH_DCLR_COMP_STATE		extern RKHROM RKHSREG_T
+#define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSREG_T
+#define RKH_DCLR_COND_STATE		extern RKHROM RKHSCOND_T
+#define RKH_DCLR_JUNC_STATE		extern RKHROM RKHSJUNC_T
+#define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
+#define RKH_DCLR_SHIST_STATE	extern RKHROM RKHSHIST_T
 
 /*@}*/
 
@@ -984,7 +984,7 @@ void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize,
 
 #define RKH_SMA_CREATE( sma_t, name, prio, ppty, istate, iaction, ievent )	\
 																			\
-	static rkhrom ROMRKH_T rs_##name = MKRRKH( 	(prio), (ppty), (name), 	\
+	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	(prio), (ppty), (name), 	\
 												(istate), (iaction), 		\
 												(ievent) );					\
 	static sma_t s_##name = MKSMA( &rs_##name,(istate) );					\
@@ -1380,7 +1380,7 @@ HUInt rkh_engine( RKHSMA_T *sma, RKHEVT_T *e );
  * 	\param h 		pointer to history pseudostate.
  */
 
-void rkh_clear_history( rkhrom RKHSHIST_T *h );
+void rkh_clear_history( RKHROM RKHSHIST_T *h );
 
 
 #endif

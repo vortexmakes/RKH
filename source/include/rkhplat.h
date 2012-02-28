@@ -59,11 +59,11 @@
 #endif
 
 /*
- *	If rkhrom has not been defined then	rkhport.h has not yet been 
- *	included - as every rkhport.h provides a rkhrom definition.
+ *	If RKHROM has not been defined then	rkhport.h has not yet been 
+ *	included - as every rkhport.h provides a RKHROM definition.
  */
 
-#ifndef rkhrom
+#ifndef RKHROM
 	#error "rkhplat.h: Missing definition of platform to be used.\
 	See Porting chapter in readme file for more information"
 #endif

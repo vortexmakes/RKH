@@ -13,14 +13,14 @@
 typedef struct
 {
 	RKHEVT_T event;
-	rkhuint16 ts;
+	rkhui16_t ts;
 } MYEVT_T;
 
 
 typedef struct
 {
-	rkhuint8 x;
-	rkhuint8 y;
+	rkhui8_t x;
+	rkhui8_t y;
 } MYHDATA_T;
 
 

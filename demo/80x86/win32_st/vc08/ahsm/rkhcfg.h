@@ -34,15 +34,18 @@
 
 
 #define RKH_MAX_SMA						8	/* 	CFG01 */ 
+#define RKH_LOWEST_PRIO					8	/* 	CFG01 */ 
 #define RKH_CRITICAL_METHOD				3	/* 	CFG01 */ 
 #define RKH_EN_REENTRANT				0	/* 	CFG01 */
 #define RKH_EN_DEFERRED_EVENT			0	/* 	CFG01 */
 #define RKH_SIZEOF_EVENT				4	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_SCHEDULER			1	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_PUTFIFO			1	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_PUTLIFO			1	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_GET				1	/* 	CFG01 */ 
 #define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
+#define RKH_ASSERT_EN					1	/* 	CFG01 */
+
+#define RKH_EN_NATIVE_SCHEDULER			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_POSTFIFO			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_POSTLIFO			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_GET				1	/* 	CFG01 */ 
 
 #define RKH_SMA_MAX_HCAL_DEPTH			4	/* 	CFG01 */
 #define RKH_SMA_MAX_TR_SEGS				4	/* 	CFG01 */
@@ -87,8 +90,7 @@
 #define RKH_TR_EN_TRACE_STRING			1	/* 	CFG01 */
 #define RKH_TR_MAX_TRACE_STRING_SIZE	4	/* 	CFG01 */
 
-#define RKH_ASSERT_EN					1	/* 	CFG01 */
-
+#define RKH_RQ_EN						1	/* 	CFG01 */ 
 #define RKH_RQ_SIZEOF_NELEM				8	/* 	CFG01 */ 
 #define RKH_RQ_EN_GET_LWMARK			1	/* 	CFG01 */ 
 #define RKH_RQ_EN_GET_INFO				1	/* 	CFG01 */ 

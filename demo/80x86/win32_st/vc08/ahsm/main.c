@@ -189,7 +189,7 @@ rkh_trace_flush( void )
 
 
 void 
-rkh_assert( rkhrom char * const file, HUInt fnum, int line )
+rkh_assert( RKHROM char * const file, HUInt fnum, int line )
 {
 	printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, file, fnum );
 	__debugbreak();
@@ -220,7 +220,7 @@ main( void )
 		else
 		{
 			rkh_set_static_event( &mye, kbmap( c ) );
-			mye.ts = ( rkhuint16 )rand();
+			mye.ts = ( rkhui16_t )rand();
 			rkh_engine( my, ( RKHEVT_T* )&mye );
 		}
 	}

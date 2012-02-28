@@ -30,8 +30,8 @@
 typedef struct
 {
 	RKH_T sm;
-	rkhuint8 x;
-	rkhuint8 y;
+	rkhui8_t x;
+	rkhui8_t y;
 } MYSM_T;
 
 

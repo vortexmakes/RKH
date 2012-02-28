@@ -15,9 +15,9 @@ static RKHTREVT_T trstream[ RKH_MAX_NUM_TRACES ];
 static RKHTREVT_T *trin, *trout;
 
 #if RKH_MAX_NUM_TRACES > 255
-static rkhuint16 trqty;
+static rkhui16_t trqty;
 #else
-static rkhuint8 trqty;
+static rkhui8_t trqty;
 #endif
 
 
@@ -123,7 +123,7 @@ rkh_trgetnext( RKHTREVT_T *p )
 }
 
 
-rkhuint16
+rkhui16_t
 rkh_trgetqty( void )
 {
 	return trqty;

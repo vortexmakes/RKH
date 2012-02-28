@@ -78,8 +78,8 @@
  *  Verifies port file from rkhport.h included in rkhplat.h.
  */
 
-#ifndef rkhrom
-#error "rkhport.h, Missing rkhrom: Qualifier for ROM data storage. \
+#ifndef RKHROM
+#error "rkhport.h, Missing RKHROM: Qualifier for ROM data storage. \
 	See Porting chapter in readme file for more information"
 #endif
 
@@ -563,12 +563,12 @@
 								((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
 								((RKHEVT_T*)(evt))->dynamic_ = 0;
 	#define mkievt( evt, es )											\
-								rkhrom RKHEVT_T evt = { es, 0 }
+								RKHROM RKHEVT_T evt = { es, 0 }
 #else
 	#define mksevt( evt, es )											\
 								((RKHEVT_T*)(evt))->e = (RKHE_T)es;
 	#define mkievt( evt, es )											\
-								rkhrom RKHEVT_T evt = { es }
+								RKHROM RKHEVT_T evt = { es }
 #endif
 
 
@@ -1531,7 +1531,7 @@ typedef struct rkhtr_t
 	 *  Points to target state.
 	 */
 
-	rkhrom void *target;
+	RKHROM void *target;
 } RKHTR_T;
 
 
@@ -1571,7 +1571,7 @@ typedef struct rkhsreg_t
 	 *	Points to state's parent.
 	 */
 
-	rkhrom struct rkhsreg_t *parent;
+	RKHROM struct rkhsreg_t *parent;
 #endif
 
 	/**	
@@ -1579,7 +1579,7 @@ typedef struct rkhsreg_t
 	 *	Points to state transition table.
 	 */
 
-	rkhrom struct rkhtr_t *trtbl;
+	RKHROM struct rkhtr_t *trtbl;
 
 #if RKH_EN_HCAL == 1
 	/**	
@@ -1587,14 +1587,14 @@ typedef struct rkhsreg_t
 	 *	Points to state's default child.
 	 */
 
-	rkhrom void *defchild;
+	RKHROM void *defchild;
 
 	/**	
  	 * 	\brief
 	 *	Points to state's history. 
 	 */
 
-	rkhrom struct rkhshist_t *history;
+	RKHROM struct rkhshist_t *history;
 #endif
 
 	/**	
@@ -1659,7 +1659,7 @@ typedef struct rkhscond_t
 	 *	Points to branch table.
 	 */
 
-	rkhrom struct rkhtr_t *trtbl;
+	RKHROM struct rkhtr_t *trtbl;
 } RKHSCOND_T;
 
 
@@ -1689,7 +1689,7 @@ typedef struct rkhsjunct_t
 	 *	Points to target state or pseudostate.
 	 */
 
-	rkhrom void *target;
+	RKHROM void *target;
 } RKHSJUNC_T;
 
 
@@ -1714,7 +1714,7 @@ typedef struct rkhshist_t
 	 *	Points to state's parent.
 	 */
 
-	rkhrom RKHSREG_T *parent;
+	RKHROM RKHSREG_T *parent;
 
 	/**	
  	 * 	\brief
@@ -1722,7 +1722,7 @@ typedef struct rkhshist_t
 	 *	the state's history.
 	 */
 
-	rkhrom RKHSREG_T **target;
+	RKHROM RKHSREG_T **target;
 } RKHSHIST_T;
 
 

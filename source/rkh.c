@@ -150,7 +150,7 @@ typedef struct
 } RKHALIST_T;
 
 
-static rkhrom RKHTR_T tr_null = { RKH_ANY, NULL, NULL, NULL };
+static RKHROM RKHTR_T tr_null = { RKH_ANY, NULL, NULL, NULL };
 static RKHALIST_T act_list;
 #if RKH_EN_HCAL == 1
 static RKHSLIST_T snd, sx, sn;
@@ -165,9 +165,9 @@ static RKHTREVT_T te;
 
 
 static
-rkhrom
+RKHROM
 RKHTR_T *
-find_trans( rkhrom RKHTR_T *ptr, RKHE_T input )
+find_trans( RKHROM RKHTR_T *ptr, RKHE_T input )
 {
 	for( ; ptr->event != input && ptr->event != RKH_ANY; ++ptr )
 		;
@@ -178,9 +178,9 @@ find_trans( rkhrom RKHTR_T *ptr, RKHE_T input )
 #if RKH_EN_HCAL == 1
 static
 HUInt
-rkh_make_setxn( RKHSLIST_T *to, rkhrom RKHSREG_T *from )
+rkh_make_setxn( RKHSLIST_T *to, RKHROM RKHSREG_T *from )
 {
-	rkhrom RKHSREG_T *s;
+	RKHROM RKHSREG_T *s;
 
 	for( to->qty = 0, s = from, to->p = to->list; 
 			s != NULL; s = s->parent, ++to->qty, ++to->p )
@@ -230,10 +230,10 @@ rkh_add_list( void *pl, void *pe, HUInt max )
 
 static
 void
-rkh_update_deep_hist( rkhrom RKHSREG_T *from )
+rkh_update_deep_hist( RKHROM RKHSREG_T *from )
 {
-	rkhrom RKHSREG_T *s;
-	rkhrom RKHSHIST_T *h;
+	RKHROM RKHSREG_T *s;
+	RKHROM RKHSHIST_T *h;
 
 	for( s = from->parent; s != NULL; s = s->parent )
 		if( ( h = s->history ) != NULL && CB(h)->type == RKH_DHISTORY )
@@ -254,7 +254,7 @@ rkh_traverse_list( void *plist, HUInt lname )
 	void *q;
 	RKHSLIST_T *pl;
 #if RKH_EN_HCAL == 1 && RKH_EN_PSEUDOSTATE == 1 && RKH_EN_SHALLOW_HISTORY == 1
-	rkhrom RKHSHIST_T *h;
+	RKHROM RKHSHIST_T *h;
 #endif
 
 	pl = ( RKHSLIST_T* )plist;
@@ -307,10 +307,10 @@ void
 rkh_init_hsm( RKH_T *ph )
 {
 #if RKH_EN_HCAL == 1
-	rkhrom RKHSREG_T *s;
+	RKHROM RKHSREG_T *s;
 #endif
 
-    rkhassert( 	ph != NULL && 
+    RKHASSERT( 	ph != NULL && 
 				ph->romrkh->init_state != NULL );
 
 	rkh_rec_init_hsm( te, ph->romrkh->id, CB( ph->romrkh->init_state )->id, 
@@ -338,7 +338,7 @@ rkh_init_hsm( RKH_T *ph )
 				( RKH_EN_SHALLOW_HISTORY == 1 || RKH_EN_DEEP_HISTORY == 1 )
 
 void
-rkh_clear_history( rkhrom RKHSHIST_T *h )
+rkh_clear_history( RKHROM RKHSHIST_T *h )
 {
 	*h->target = NULL;
 }
@@ -349,16 +349,16 @@ rkh_clear_history( rkhrom RKHSHIST_T *h )
 HUInt
 rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 {
-	rkhrom RKHSREG_T *ss, *s, *ts;
-	rkhrom void *ets;
-	rkhrom RKHTR_T *tr;
+	RKHROM RKHSREG_T *ss, *s, *ts;
+	RKHROM void *ets;
+	RKHROM RKHTR_T *tr;
 	HUInt first_regular, inttr;
 	RKHE_T in;
 #if RKH_TRACE == 1
 	HUInt step;
 #endif
 
-    rkhassert( 	ph != NULL && pe != NULL );
+    RKHASSERT( 	ph != NULL && pe != NULL );
 
 	pgh = ph;
 	pgevt = pe;
@@ -408,7 +408,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 	if( rkh_add_list( &act_list, tr->action, RKH_MAX_TR_SEGS ) )
 	{
 		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_TR_SEGS );
-		rkherror();
+		RKHERROR();
 		return RKH_EXCEED_TR_SEGS;
 	}
 
@@ -456,7 +456,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_HCAL_LEVEL );
-						rkherror();
+						RKHERROR();
 						return RKH_EXCEED_HCAL_LEVEL;
 					}
 
@@ -489,7 +489,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
-						rkherror();
+						RKHERROR();
 						return RKH_EXCEED_TR_SEGS;
 					}
 
@@ -508,7 +508,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					{
 						rkh_rec_rtn_code( te, ph->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
-						rkherror();
+						RKHERROR();
 						return RKH_EXCEED_TR_SEGS;
 					}
 
@@ -533,7 +533,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 					break;
 				default:
 					rkh_rec_rtn_code( te, ph->romrkh->id, RKH_UNKNOWN_STATE );
-					rkherror();
+					RKHERROR();
 					return RKH_UNKNOWN_STATE;
 			}
 
@@ -550,7 +550,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		else if( rkh_add_list( &snd, CV( ets ), RKH_MAX_HCAL_DEPTH ) )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
-			rkherror();
+			RKHERROR();
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
 #endif
@@ -573,7 +573,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		if( rkh_make_setxn( &sx, ss ) || rkh_make_setxn( &sn, ts ) )
 		{
 			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
-			rkherror();
+			RKHERROR();
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
 

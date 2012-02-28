@@ -39,8 +39,8 @@
  *	
  *	\note 
  *	The preprocessor switch RKH_ASSERT disables checking assertions.
- * 	In particular macros rkhassert(), rkhrequire(), rkhensure(),
- * 	rkhinvariant(), and rkherror() do NOT evaluate the test condition
+ * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
+ * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
  * 	passed as the argument to these macros. One notable exception is the
  * 	macro rkhallege(), that still evaluates the test condition, but does
  * 	not report assertion failures when the switch RKH_ASSERT is defined.
@@ -50,7 +50,7 @@
  *	...
  *	some_function( const char *p, int size )
  *	{
- *		rkhassert( 	p != NULL &&
+ *		RKHASSERT( 	p != NULL &&
  *					size > 0  &&
  *					size < MAX_SIZE );
  *		...
@@ -82,7 +82,7 @@
  *	The following listing shows a illustrative example for VC2008 IDE:
  *	\code
  *	void 
- *	rkh_assert( rkhrom char * const file, HUInt fnum, int line )
+ *	rkh_assert( RKHROM char * const file, HUInt fnum, int line )
  *	{
  *		printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, 
  *														file, fnum );
@@ -100,8 +100,8 @@
 
     /** 
 	 *	\brief
-	 *	Callback invoked in case the condition passed to rkhassert(),
-	 * 	rkhrequire(), rkhensure(), rkherror(), or rkhallege() evaluates 
+	 *	Callback invoked in case the condition passed to RKHASSERT(),
+	 * 	RKHREQUIRE(), RKHENSURE(), RKHERROR(), or RKHALLEGE() evaluates 
 	 * 	to FALSE.
 	 *
 	 * 	If the expression evaluates to FALSE (0), the function rkh_assert() 
@@ -129,7 +129,7 @@
 	 *	The following listing shows a illustrative example for VC2008 IDE:
 	 *	\code
 	 *	void 
-	 *	rkh_assert( rkhrom char * const file, HUInt fnum, int line )
+	 *	rkh_assert( RKHROM char * const file, HUInt fnum, int line )
 	 *	{
 	 *		printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, 
 	 *														file, fnum );
@@ -145,7 +145,7 @@
 	 * 	\param line 		line number at which the assertion failed
      */
 
-	void rkh_assert( const char * const file, HUInt fnum, int line );
+	void rkh_assert( const char *const file, HUInt fnum, int line );
 
 
 	/**
@@ -161,11 +161,11 @@
 																	\
 							enum { F_NUM = __fnum }; 				\
 							void __dummy##__fnum( void ){}			\
-							static rkhrom char * const rs_file = #__fname;
+							static RKHROM char * const rs_file = #__fname;
 
 	/**
 	 * 	\brief 
-	 * 	The rkhassert() macro is used to check expressions that ought to 
+	 * 	The RKHASSERT() macro is used to check expressions that ought to 
 	 * 	be true as long as the program is running correctly. 
 	 *
 	 *	Example of use:
@@ -173,7 +173,7 @@
 	 *	...
 	 *	some_function( const char *p, int size )
 	 *	{
-	 *		rkhassert( 	p != NULL &&
+	 *		RKHASSERT( 	p != NULL &&
 	 *					size > 0  &&
 	 *					size < MAX_SIZE );
 	 *		...
@@ -182,11 +182,11 @@
 	 *
 	 * 	\param exp		expression to be checked.
 	 * 	
-	 * 	\sa rkhallege(), rkhrequire(), rkhensure(), rkherror() and 
-	 * 	rkhinvariant() macros.
+	 * 	\sa RKHALLEGE(), RKHREQUIRE(), RKHENSURE(), RKHERROR() and 
+	 * 	RKHINVARIANT() macros.
 	 */
 
-	#define rkhassert( exp )						\
+	#define RKHASSERT( exp )						\
 		if( ( exp ) )								\
 		{}											\
 		else										\
@@ -197,16 +197,16 @@
     /** 
  	 * 	\brief 
 	 * 	General purpose assertion that ALWAYS evaluates the \a exp
-	 * 	argument and calls the rkhassert() macro if the \a exp	evaluates 
+	 * 	argument and calls the RKHASSERT() macro if the \a exp	evaluates 
 	 * 	to FALSE.
 	 *
 	 * 	\note The \a exp argument IS always evaluated even when assertions 
 	 * 	are disabled with the RKH_ASSERT macro. When the RKH_ASSERT macro 
-	 * 	is defined, the rkhassert() macro is NOT called, even if the
+	 * 	is defined, the RKHASSERT() macro is NOT called, even if the
 	 * 	\a exp evaluates to FALSE.
      */
 
-	#define rkhallege( exp )				rkhassert( exp )
+	#define RKHALLEGE( exp )				RKHASSERT( exp )
 
     
 	/** 
@@ -218,15 +218,15 @@
 	 * 	Can be disabled with the RKH_ASSERT switch.
 	 */
 
-    #define rkherror() 							\
+    #define RKHERROR() 							\
 									(rkh_assert(rs_file,F_NUM,__LINE__))
 
 #else
 	#define RKH_THIS_MODULE( __fnum, __fname )
 
-	#define rkhassert( exp )				((void)0)
-	#define rkhallege( exp )				((void)(exp))
-	#define rkherror( exp )					((void)0)
+	#define RKHASSERT( exp )				((void)0)
+	#define RKHALLEGE( exp )				((void)(exp))
+	#define RKHERROR( exp )					((void)0)
 #endif
 
 
@@ -234,33 +234,33 @@
  * 	\brief
  *	This macro checks the precondition. 
  *
- *	This macro is equivalent to rkhassert() macro, except the name provides 
+ *	This macro is equivalent to RKHASSERT() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
 
-#define rkhrequire( exp )				rkhassert( exp )
+#define RKHREQUIRE( exp )				RKHASSERT( exp )
 
 
 /**
  * 	\brief
  *	This macro checks the postcondition. 
  *
- *	This macro is equivalent to rkhassert() macro, except the name provides 
+ *	This macro is equivalent to RKHASSERT() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
 
-#define rkhensure( exp )				rkhassert( exp )
+#define RKHENSURE( exp )				RKHASSERT( exp )
 
 
 /**
  * 	\brief
  *	This macro is used to check a loop invariant. 
  *
- *	This macro is equivalent to rkhassert() macro, except the name provides 
+ *	This macro is equivalent to RKHASSERT() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
 
-#define rkhinvariant( exp )				rkhassert( exp )
+#define RKHINVARIANT( exp )				RKHASSERT( exp )
 
 
 #endif

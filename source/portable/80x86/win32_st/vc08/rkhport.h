@@ -1,7 +1,7 @@
 /*
  *	file: rkhport.h - Visual Studio 2008 port
  *	Last updated for version: 1.0.00
- *	Date of the last update:  May 28, 2010
+ *	Date of the last update:  Feb 27, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -32,12 +32,12 @@
 #define __RKHPORT_H__
 
 
-#include "rkhcfg.h"
-
 #include <windows.h>
-#include "rkhque.h"
+#include "rkhcfg.h"
+#include "rkhassert.h"
+#include "rkhrque.h"
 #include "rkhmp.h"
-#include "rkh.h"
+#include "rkhrdy.h"
 
 
 /*
@@ -66,11 +66,11 @@ typedef signed int		HInt;
 
 
 /*
- * 	Declaring an object rkhrom announces that its value will
+ * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.
  */
 
-#define rkhrom			const	
+#define RKHROM			const	
 
 
 #define RKH_CPUSR_TYPE
@@ -85,19 +85,19 @@ typedef signed int		HInt;
  *	is used trace facility (of course, RKH_TRACE == 1).
  */
 
-#define rkh_tropen					rkh_trace_open
-#define rkh_trclose					rkh_trace_close
-#define rkh_trflush					rkh_trace_flush
-#define rkh_trgetts					rkh_trace_getts
+#define rkh_tropen						rkh_trace_open
+#define rkh_trclose						rkh_trace_close
+#define rkh_trflush						rkh_trace_flush
+#define rkh_trgetts						rkh_trace_getts
 
 
-#define RKH_EQ_TYPE              	RKHQ_T
-#define RKH_OSDATA_TYPE          	HANDLE
-#define RKH_THREAD_TYPE             HANDLE
+#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_THREAD_TYPE             	HANDLE
 
 
 #define RKH_SMA_BLOCK( sma ) 								\
-    Q_ASSERT((me_)->eQueue.frontEvt != (QEvent *)0)
+    RKHASSERT( (sma)->eq.qty != 0 )
 
 #define RKH_SMA_READY( sma ) 								\
     QPSet64_insert(&QF_readySet_, (me_)->prio); 			\
@@ -107,13 +107,19 @@ typedef signed int		HInt;
     QPSet64_remove(&QF_readySet_, (me_)->prio)
 
 
-#define RKH_DYNE_TYPE				RKHMP_T
-#define RKH_DYNE_INIT( mp, poolSto_, poolSize_, evtSize_) 	\
-    QMPool_init(&(mp), poolSto_, poolSize_, evtSize_)
-#define RKH_DYNE_GET_ESIZE( mp )	((mp).blockSize)
-#define QF_DYNE_GET( mp, e )		((e) = (QEvent *)QMPool_get( &(mp) ))
-#define QF_DYNE_PUT( mp, e )		(QMPool_put( &(mp), e ))
+#define RKH_DYNE_TYPE					RKHMP_T
 
+#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
+    			rkh_mp_init( &(mp), sstart, ssize, esize )
+
+#define RKH_DYNE_GET_ESIZE( mp )							\
+				( (mp).bsize )
+
+#define QF_DYNE_GET( mp, e )								\
+				( (e) = (RKHEVT_T*)rk_mpool_get( &(mp) ) )
+
+#define QF_DYNE_PUT( mp, e )								\
+				( rkh_mp_put( &(mp), e ) )
 
 
 extern CRITICAL_SECTION csection;

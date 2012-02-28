@@ -223,13 +223,13 @@ typedef enum
  */
 
 #if RKH_SIZEOF_TIMESTAMP == 8
-	typedef rkhuint8 RKHTS_T;
+	typedef rkhui8_t RKHTS_T;
 #elif RKH_SIZEOF_TIMESTAMP == 16
-	typedef rkhuint16 RKHTS_T;
+	typedef rkhui16_t RKHTS_T;
 #elif RKH_SIZEOF_TIMESTAMP == 32
-	typedef rkhuint32 RKHTS_T;
+	typedef rkhui32_t RKHTS_T;
 #else
-	typedef rkhuint8 RKHTS_T;
+	typedef rkhui8_t RKHTS_T;
 #endif
 
 
@@ -428,14 +428,14 @@ typedef struct
 	 *	Trace event identifier. 
 	 */
 
-	rkhuint8 id;
+	rkhui8_t id;
 
 	/**
 	 *	State machine descriptor. 
 	 *	It's used as instrumented state machine identifier.
 	 */
 
-	rkhuint8 smix;
+	rkhui8_t smix;
 
 	/**
 	 *	Timestamp. 
@@ -451,7 +451,7 @@ typedef struct
 	 *	Trace event argument. 
 	 */
 
-	rkhuint8 num;
+	rkhui8_t num;
 
 	/**
 	 *	Trace event argument. 
@@ -562,7 +562,7 @@ HUInt rkh_trgetnext( RKHTREVT_T *ptre );
  * 	Number of trace events stored in the stream.
  */
 
-rkhuint16 rkh_trgetqty( void );
+rkhui16_t rkh_trgetqty( void );
 
 /**
  * 	\brief
