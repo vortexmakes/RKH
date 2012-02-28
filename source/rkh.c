@@ -40,6 +40,7 @@
 
 RKH_THIS_MODULE( 1, rkh );
 
+
 #define EXIT_LIST						0x0
 #define ACT_LIST						0x01
 #define SN_LIST							0x02
@@ -53,7 +54,7 @@ RKH_THIS_MODULE( 1, rkh );
 #define CA( p )							((RKHACT_T)p)
 #define CP( p )							((RKHPPRO_T)p)
 #define CV( p )							((void*)p)
-#define CM( p )							((const RKH_T*)p)
+#define CM( p )							((const RKHSMA_T*)p)
 
 
 #define is_not_internal_transition()	(inttr == 0)
@@ -67,12 +68,12 @@ RKH_THIS_MODULE( 1, rkh );
 #define is_not_valid_conditional(s)		((s)->cdl == NULL)
 #define is_pseudo( s )					((CB(s)->type&RKH_REGULAR)==0)
 #define is_composite( s )				(CB(s)->type==RKH_COMPOSITE)
-#define is_hcal( ph )					((ph)->romrkh->ppty==HCAL)
+#define is_hcal( sma )					((sma)->romrkh->ppty==HCAL)
 #define is_not_conditional( s )			(CB(s)->type!=RKH_CONDITIONAL)
 #define TEST_GUARD						1
 
 
-#if RKH_TRACE == 1
+#if RKH_TR_EN == 1
 	#define clr_step()					(step = 0)
 	#define inc_step()					++step
 	#define get_step()					step
@@ -82,7 +83,7 @@ RKH_THIS_MODULE( 1, rkh );
 	#define get_step()
 #endif
 
-#if RKH_EN_GET_INFO == 1
+#if RKH_SMA_EN_GET_INFO == 1
 	#define info_rcv_events( p )		++p->hinfo.rcvevt
 	#define info_exec_trs( p )			++p->hinfo.exectr
 #else
@@ -91,7 +92,7 @@ RKH_THIS_MODULE( 1, rkh );
 #endif
 
 
-#if RKH_EN_STATE_NAME == 1
+#if RKH_SMA_EN_STATE_NAME == 1
 #define stname( s )						CB( (s) )->name
 #else
 #define stname( s )						NULL	
@@ -111,7 +112,7 @@ RKH_THIS_MODULE( 1, rkh );
 			--sn.qty,--sx.qty, --sn.p, --sx.p )
 
 
-#if RKH_EN_PPRO == 1
+#if RKH_SMA_EN_PPRO == 1
 
 #define rkh_process_input( s, h, pe )									\
 																		\
@@ -130,13 +131,13 @@ RKH_THIS_MODULE( 1, rkh );
 																		\
 	for( t = btbl; t->event != RKH_ANY; ++t )							\
 		if( is_valid_guard( t ) &&										\
-				rkh_call_guard( t, ph, pe ) == RKH_GTRUE )				\
+				rkh_call_guard( t, sma, pe ) == RKH_GTRUE )				\
 			break;
 
 
 typedef struct
 {
-	void *list[ RKH_MAX_HCAL_DEPTH	];
+	void *list[ RKH_SMA_MAX_HCAL_DEPTH	];
 	void **p;
 	HUInt qty;
 } RKHSLIST_T;
@@ -152,14 +153,14 @@ typedef struct
 
 static RKHROM RKHTR_T tr_null = { RKH_ANY, NULL, NULL, NULL };
 static RKHALIST_T act_list;
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 static RKHSLIST_T snd, sx, sn;
 #endif
 
 static RKHEVT_T *pgevt;
-static RKH_T *pgh;
+static RKHSMA_T *pgh;
 
-#if RKH_TRACE == 1
+#if RKH_SMA_TR_EN == 1
 static RKHTREVT_T te;
 #endif
 
@@ -175,7 +176,7 @@ find_trans( RKHROM RKHTR_T *ptr, RKHE_T input )
 }
 
 
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 static
 HUInt
 rkh_make_setxn( RKHSLIST_T *to, RKHROM RKHSREG_T *from )
@@ -186,7 +187,7 @@ rkh_make_setxn( RKHSLIST_T *to, RKHROM RKHSREG_T *from )
 			s != NULL; s = s->parent, ++to->qty, ++to->p )
 	{
 		*to->p = CV( s );
-		if( to->qty >= RKH_MAX_HCAL_DEPTH )
+		if( to->qty >= RKH_SMA_MAX_HCAL_DEPTH )
 			return 1;
 	}
 	return 0;
@@ -226,7 +227,7 @@ rkh_add_list( void *pl, void *pe, HUInt max )
 }
 
 
-#if RKH_EN_HCAL == 1 && RKH_EN_PSEUDOSTATE == 1 && RKH_EN_DEEP_HISTORY == 1
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_DEEP_HISTORY == 1
 
 static
 void
@@ -253,12 +254,12 @@ rkh_traverse_list( void *plist, HUInt lname )
 {
 	void *q;
 	RKHSLIST_T *pl;
-#if RKH_EN_HCAL == 1 && RKH_EN_PSEUDOSTATE == 1 && RKH_EN_SHALLOW_HISTORY == 1
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
 	RKHROM RKHSHIST_T *h;
 #endif
 
 	pl = ( RKHSLIST_T* )plist;
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 	pl->p = lname == SN_LIST ? &pl->list[ pl->qty - 1 ] : pl->list;
 #else
 	pl->p = pl->list;
@@ -269,10 +270,10 @@ rkh_traverse_list( void *plist, HUInt lname )
 
 		switch( lname )
 		{
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 			case EXIT_LIST:
 				rkh_exec_exit( CR( q ), CM( pgh ) );
-#if RKH_EN_PSEUDOSTATE == 1 && RKH_EN_SHALLOW_HISTORY == 1
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
 				if( rkh_update_shallow_hist( q, h ) )
 					*h->target = CR( q );
 #endif
@@ -282,7 +283,7 @@ rkh_traverse_list( void *plist, HUInt lname )
 			case ACT_LIST:
 				rkh_call_action( CM( pgh ), pgevt );
 				break;
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 			case SND_LIST:
 			case SN_LIST:
 				rkh_exec_entry( CR( q ), CM( pgh ) );
@@ -293,7 +294,7 @@ rkh_traverse_list( void *plist, HUInt lname )
 		
 		--pl->qty;
 
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 		if( lname == SN_LIST )
 			--pl->p;
 		else
@@ -304,38 +305,38 @@ rkh_traverse_list( void *plist, HUInt lname )
 
 
 void 
-rkh_init_hsm( RKH_T *ph )
+rkh_init_hsm( RKHSMA_T *sma )
 {
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 	RKHROM RKHSREG_T *s;
 #endif
 
-    RKHASSERT( 	ph != NULL && 
-				ph->romrkh->init_state != NULL );
+    RKHASSERT( 	sma != NULL && 
+				sma->romrkh->istate != NULL );
 
-	rkh_rec_init_hsm( te, ph->romrkh->id, CB( ph->romrkh->init_state )->id, 
-										stname( ph->romrkh->init_state ) );
+	rkh_rec_init_hsm( te, sma->romrkh->id, CB( sma->romrkh->istate )->id, 
+										stname( sma->romrkh->istate ) );
 
-	rkh_exec_init( ph );
+	rkh_exec_init( sma );
 
-#if RKH_EN_HCAL == 1
-	if( is_hcal( ph ) )
+#if RKH_SMA_EN_HCAL == 1
+	if( is_hcal( sma ) )
 	{
-		for( s = ph->romrkh->init_state; s != NULL; s = s->defchild )
+		for( s = sma->romrkh->istate; s != NULL; s = s->defchild )
 		{
-			ph->state = s;
-			rkh_exec_entry( s, CM( ph ) );
-			rkh_rec_entry( te, ph->romrkh->id, CB( s )->id, stname( s ) );
+			sma->state = s;
+			rkh_exec_entry( s, CM( sma ) );
+			rkh_rec_entry( te, sma->romrkh->id, CB( s )->id, stname( s ) );
 		}
 
-		rkh_update_deep_hist( ph->state );
+		rkh_update_deep_hist( sma->state );
 	}
 #endif
 }
 
 
-#if RKH_EN_HCAL == 1 && RKH_EN_PSEUDOSTATE == 1 && \
-				( RKH_EN_SHALLOW_HISTORY == 1 || RKH_EN_DEEP_HISTORY == 1 )
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && \
+				( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
 
 void
 rkh_clear_history( RKHROM RKHSHIST_T *h )
@@ -347,94 +348,94 @@ rkh_clear_history( RKHROM RKHSHIST_T *h )
 
 
 HUInt
-rkh_engine( RKH_T *ph, RKHEVT_T *pe )
+rkh_engine( RKHSMA_T *sma, RKHEVT_T *pe )
 {
 	RKHROM RKHSREG_T *ss, *s, *ts;
 	RKHROM void *ets;
 	RKHROM RKHTR_T *tr;
 	HUInt first_regular, inttr;
 	RKHE_T in;
-#if RKH_TRACE == 1
+#if RKH_TR_EN == 1
 	HUInt step;
 #endif
 
-    RKHASSERT( 	ph != NULL && pe != NULL );
+    RKHASSERT( 	sma != NULL && pe != NULL );
 
-	pgh = ph;
+	pgh = sma;
 	pgevt = pe;
 	inttr = 0;
-	info_rcv_events( ph );
+	info_rcv_events( sma );
 
 	/* Stage 1 */
-	ss = ph->state;
+	ss = sma->state;
 
 	/* Stage 2 */
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 	for( s = ss; s != NULL; s = s->parent )
 	{
-		in = rkh_process_input( s, ph, pe );	
+		in = rkh_process_input( s, sma, pe );	
 		tr = find_trans( s->trtbl, in );
 		if( is_found_trans( tr ) )
 			break;
 	}
 #else
 	s = ss;
-	in = rkh_process_input( s, ph, pe );	
+	in = rkh_process_input( s, sma, pe );	
 	tr = find_trans( s->trtbl, in );
 #endif
 
 	if( is_not_found_trans( tr ) )
 	{
-		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_INPUT_NOT_FOUND );
+		rkh_rec_rtn_code( te, sma->romrkh->id, RKH_INPUT_NOT_FOUND );
 		return RKH_INPUT_NOT_FOUND;
 	}
 
 	/* Stage 3 */
 	ets = tr->target;
 	ts = CR( ets );
-	rkh_rec_event( 	te, ph->romrkh->id, in );
+	rkh_rec_event( 	te, sma->romrkh->id, in );
 
 	/* Stage 4 */
 	first_regular = 1;
 	rkh_init_list( &act_list );
 	
-#if RKH_EN_HCAL == 1
-	if( is_hcal( ph ) )
+#if RKH_SMA_EN_HCAL == 1
+	if( is_hcal( sma ) )
 		rkh_init_list( &snd );
 #endif
 
 	clr_step();
 
-	if( rkh_add_list( &act_list, tr->action, RKH_MAX_TR_SEGS ) )
+	if( rkh_add_list( &act_list, tr->action, RKH_SMA_MAX_TR_SEGS ) )
 	{
-		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_TR_SEGS );
+		rkh_rec_rtn_code( te, sma->romrkh->id, RKH_EXCEED_TR_SEGS );
 		RKHERROR();
 		return RKH_EXCEED_TR_SEGS;
 	}
 
-	rkh_rec_src_state( te, ph->romrkh->id, CB( ss )->id, stname( ss ) );
+	rkh_rec_src_state( te, sma->romrkh->id, CB( ss )->id, stname( ss ) );
 
 	if( is_internal_transition( ets ) )
 	{
 		inttr = 1;
-		rkh_rec_int_tran( te, ph->romrkh->id );
+		rkh_rec_int_tran( te, sma->romrkh->id );
 	}
 	else
 	{
 		inttr = 0;
-		rkh_rec_tgt_state( te, ph->romrkh->id, CB( ts )->id, stname( ts ) );
+		rkh_rec_tgt_state( te, sma->romrkh->id, CB( ts )->id, stname( ts ) );
 	}
 
 	if( is_not_internal_transition() )
 	{
-		rkh_rec_sgt( te, ph->romrkh->id, CB( ets )->id, stname( ets ) );
+		rkh_rec_sgt( te, sma->romrkh->id, CB( ets )->id, stname( ets ) );
 		inc_step();
 
 #if TEST_GUARD == 1
 		if( is_valid_guard( tr ) && 
-				rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
+				rkh_call_guard( tr, sma, pe ) == RKH_GFALSE )
 		{
-			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
+			rkh_rec_rtn_code( te, sma->romrkh->id, RKH_GUARD_FALSE );
 			return RKH_GUARD_FALSE;
 		}
 #endif
@@ -443,7 +444,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 		{
 			switch( CB(ets)->type )
 			{
-#if RKH_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == 1
 				case RKH_COMPOSITE:
 
 					if( first_regular )
@@ -452,9 +453,9 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 						first_regular = 0;
 					}
 					else if( rkh_add_list( &snd, CV( ets ), 
-													RKH_MAX_HCAL_DEPTH ) )
+													RKH_SMA_MAX_HCAL_DEPTH ) )
 					{
-						rkh_rec_rtn_code( te, ph->romrkh->id, 
+						rkh_rec_rtn_code( te, sma->romrkh->id, 
 													RKH_EXCEED_HCAL_LEVEL );
 						RKHERROR();
 						return RKH_EXCEED_HCAL_LEVEL;
@@ -464,14 +465,14 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 
 					break;
 #endif
-#if RKH_EN_PSEUDOSTATE == 1 && RKH_EN_CONDITIONAL
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CONDITIONAL
 				case RKH_CONDITIONAL:
 					
 #if TEST_GUARD == 0
 					if( is_not_conditional( ets ) && is_valid_guard( tr ) && 
-							rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
+							rkh_call_guard( tr, sma, pe ) == RKH_GFALSE )
 					{
-						rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
+						rkh_rec_rtn_code( te, sma->romrkh->id, RKH_GUARD_FALSE );
 						return RKH_GUARD_FALSE;
 					}
 #endif
@@ -480,14 +481,14 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 
 					if( is_not_found_trans( tr ) )
 					{
-						rkh_rec_rtn_code( te, ph->romrkh->id, 
+						rkh_rec_rtn_code( te, sma->romrkh->id, 
 													RKH_CONDITION_NOT_FOUND );
 						return RKH_CONDITION_NOT_FOUND;
 					}
 
-					if( rkh_add_list( &act_list, tr->action, RKH_MAX_TR_SEGS ) )
+					if( rkh_add_list( &act_list, tr->action, RKH_SMA_MAX_TR_SEGS ) )
 					{
-						rkh_rec_rtn_code( te, ph->romrkh->id, 
+						rkh_rec_rtn_code( te, sma->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
 						RKHERROR();
 						return RKH_EXCEED_TR_SEGS;
@@ -497,16 +498,16 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 
 					break;
 #endif
-#if RKH_EN_PSEUDOSTATE == 1 && RKH_EN_JUNCTION
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_JUNCTION
 				case RKH_JUNCTION:
 
 					/* Should be added: test transition guard and call it */
 					/* ... */
 
 					if( rkh_add_list( &act_list, CJ(ets)->action, 
-															RKH_MAX_TR_SEGS ) )
+															RKH_SMA_MAX_TR_SEGS ) )
 					{
-						rkh_rec_rtn_code( te, ph->romrkh->id, 
+						rkh_rec_rtn_code( te, sma->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
 						RKHERROR();
 						return RKH_EXCEED_TR_SEGS;
@@ -517,7 +518,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 
 					break;
 #endif
-#if RKH_EN_HCAL == 1 && RKH_EN_PSEUDOSTATE == 1 && \
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && \
 					( RKH_EN_SHALLOW_HISTORY == 1 || RKH_EN_DEEP_HISTORY == 1 )
 				case RKH_SHISTORY:
 				case RKH_DHISTORY:
@@ -532,12 +533,12 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #endif
 					break;
 				default:
-					rkh_rec_rtn_code( te, ph->romrkh->id, RKH_UNKNOWN_STATE );
+					rkh_rec_rtn_code( te, sma->romrkh->id, RKH_UNKNOWN_STATE );
 					RKHERROR();
 					return RKH_UNKNOWN_STATE;
 			}
 
-			rkh_rec_sgt( te, ph->romrkh->id, CB( ets )->id, stname( ets ) );
+			rkh_rec_sgt( te, sma->romrkh->id, CB( ets )->id, stname( ets ) );
 			inc_step();
 		}
 	}
@@ -546,10 +547,10 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 	{
 		if( first_regular )
 			ts = CR( ets );
-#if RKH_EN_HCAL == 1
-		else if( rkh_add_list( &snd, CV( ets ), RKH_MAX_HCAL_DEPTH ) )
+#if RKH_SMA_EN_HCAL == 1
+		else if( rkh_add_list( &snd, CV( ets ), RKH_SMA_MAX_HCAL_DEPTH ) )
 		{
-			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
+			rkh_rec_rtn_code( te, sma->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
 			RKHERROR();
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
@@ -559,20 +560,20 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #if TEST_GUARD == 0
 	if( trash == 0 &&
 		is_valid_guard( tr ) && 
-			rkh_call_guard( tr, ph, pe ) == RKH_GFALSE )
+			rkh_call_guard( tr, sma, pe ) == RKH_GFALSE )
 	{
-		rkh_rec_rtn_code( te, ph->romrkh->id, RKH_GUARD_FALSE );
+		rkh_rec_rtn_code( te, sma->romrkh->id, RKH_GUARD_FALSE );
 		return RKH_GUARD_FALSE;
 	}
 #endif
 
-#if RKH_EN_HCAL == 1
-	if( is_hcal( ph ) && is_not_internal_transition() )
+#if RKH_SMA_EN_HCAL == 1
+	if( is_hcal( sma ) && is_not_internal_transition() )
 	{
 		/* Stage 5 & 6 */
 		if( rkh_make_setxn( &sx, ss ) || rkh_make_setxn( &sn, ts ) )
 		{
-			rkh_rec_rtn_code( te, ph->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
+			rkh_rec_rtn_code( te, sma->romrkh->id, RKH_EXCEED_HCAL_LEVEL );
 			RKHERROR();
 			return RKH_EXCEED_HCAL_LEVEL;
 		}
@@ -582,7 +583,7 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 
 		/* Stage 8 */
 		rkh_define_ex_en_states();
-		rkh_rec_num_enex( te, ph->romrkh->id, 
+		rkh_rec_num_enex( te, sma->romrkh->id, 
 									(((sn.qty + snd.qty) << 4) | sx.qty) );
 
 		/* Stage 9 */
@@ -591,15 +592,15 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #endif
 
 	/* Stage 10 */
-	rkh_rec_num_actsgt( te, ph->romrkh->id, 
+	rkh_rec_num_actsgt( te, sma->romrkh->id, 
 									((act_list.qty << 4) | get_step()) );
 	rkh_traverse_list( &act_list, ACT_LIST );
 
 	if( is_not_internal_transition() )
 	{
 		/* Stage 11 */
-#if RKH_EN_HCAL == 1
-		if( is_hcal( ph ) )
+#if RKH_SMA_EN_HCAL == 1
+		if( is_hcal( sma ) )
 		{
 			rkh_traverse_list( &sn, SN_LIST );
 			rkh_traverse_list( &snd, SND_LIST );
@@ -607,43 +608,43 @@ rkh_engine( RKH_T *ph, RKHEVT_T *pe )
 #endif
 
 		/* Stage 12 */
-		ph->state = CR( ets );
-		rkh_rec_nxt_state( te, ph->romrkh->id, CB( ets )->id, stname( ets ) );
+		sma->state = CR( ets );
+		rkh_rec_nxt_state( te, sma->romrkh->id, CB( ets )->id, stname( ets ) );
 	}
 
-	info_exec_trs( ph );
-	rkh_rec_rtn_code( te, ph->romrkh->id, RKH_OK );
+	info_exec_trs( sma );
+	rkh_rec_rtn_code( te, sma->romrkh->id, RKH_OK );
 	return RKH_OK;
 }
 
 
-#if RKH_EN_GET_INFO == 1
+#if RKH_SMA_EN_GET_INFO == 1
 
 void 
-rkh_clear_info( RKH_T *ph )
+rkh_clear_info( RKHSMA_T *sma )
 {
-	ph->hinfo.rcvevt = ph->hinfo.exectr = 0;
+	sma->hinfo.rcvevt = sma->hinfo.exectr = 0;
 }
 
 
 RKH_INFO_T *
-rkh_get_info( RKH_T *ph )
+rkh_get_info( RKHSMA_T *sma )
 {
-	return &ph->hinfo;
+	return &sma->hinfo;
 }
 
 #endif
 
 
-#if RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 1
+#if RKH_SMA_EN_GRD_ARG_EVT == 1 && RKH_SMA_EN_GRD_ARG_SMA == 1
 
 HUInt 
-rkh_else( const struct rkh_t *ph, RKHEVT_T *pe )
+rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	return RKH_GTRUE;
 }
 
-#elif RKH_EN_GRD_EVT_ARG == 1 && RKH_EN_GRD_HSM_ARG == 0
+#elif RKH_SMA_EN_GRD_ARG_EVT == 1 && RKH_SMA_EN_GRD_ARG_SMA == 0
 	
 HUInt 
 rkh_else( RKHEVT_T *pe )
@@ -651,10 +652,10 @@ rkh_else( RKHEVT_T *pe )
 	return RKH_GTRUE;
 }
 
-#elif RKH_EN_GRD_EVT_ARG == 0 && RKH_EN_GRD_HSM_ARG == 1
+#elif RKH_SMA_EN_GRD_ARG_EVT == 0 && RKH_SMA_EN_GRD_ARG_SMA == 1
 	
 HUInt 
-rkh_else( const struct rkh_t *ph )
+rkh_else( const struct rkhsma_t *sma )
 {
 	return RKH_GTRUE;
 }

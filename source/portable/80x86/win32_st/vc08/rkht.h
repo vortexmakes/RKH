@@ -1,7 +1,7 @@
 /*
- *	file: rkhport.c - Visual Studio 2008 port
+ *	file: rkht.h - Visual Studio 2008 port
  *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 22, 2012
+ *	Date of the last update:  Feb 28, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -24,10 +24,37 @@
  */
 
 /*
- * 	rkhport.c
+ * 	rkht.h
  */
 
 
-CRITICAL_SECTION QF_win32CritSect_;	/* Win32 critical section */
-HANDLE QF_win32Event_;          	/* Win32 event to signal when AOs are ready */
-RKHRG_T rkhrg;						/* ready set of active objects */
+#ifndef __RKHT_H__
+#define __RKHT_H__
+
+
+/*
+ * 	Portable data types.
+ *
+ * 	The RKH uses a set of integer quantities. That maybe 
+ * 	machine or compiler	dependent.
+ *
+ * 	Note:
+ *
+ * 	The 'HUInt' and 'HInt' will normally be the natural size 
+ * 	for a particular machine. These types designates an integer 
+ * 	type that is usually fastest to operate with among all integer 
+ * 	types.
+ */
+
+typedef signed char 	rkhi8_t;
+typedef signed short 	rkhi16_t;
+typedef signed long		rkhi32_t;
+typedef unsigned char 	rkhui8_t;
+typedef unsigned short 	rkhui16_t;
+typedef unsigned long	rkhui32_t;
+
+typedef unsigned int	HUInt;
+typedef signed int		HInt;
+
+
+#endif

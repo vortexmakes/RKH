@@ -17,9 +17,9 @@ static MYHDATA_T *pd;
  */
 
 void 
-my_init( const struct rkh_t *ph )
+my_init( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->x = pd->y = 0;
 }
 
@@ -30,33 +30,33 @@ my_init( const struct rkh_t *ph )
 
 
 void
-set_x_1( const struct rkh_t *ph )
+set_x_1( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->x = 1;
 }
 
 
 void
-set_x_2( const struct rkh_t *ph )
+set_x_2( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->x = 2;
 }
 
 
 void
-set_x_3( const struct rkh_t *ph )
+set_x_3( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->x = 3;
 }
 
 
 void
-set_y_0( const struct rkh_t *ph )
+set_y_0( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->y = 0;
 }
 
@@ -66,7 +66,7 @@ set_y_0( const struct rkh_t *ph )
  */
 
 void 
-dummy_exit( const struct rkh_t *ph )
+dummy_exit( const struct rkhsma_t *sma )
 {
 }
 
@@ -83,9 +83,9 @@ dummy_exit( const struct rkh_t *ph )
 
 
 void
-set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )
+set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->y = 2;
 	printf( "action: %s()\n", __FUNCTION__ );
 	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
@@ -94,9 +94,9 @@ set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )
 
 
 void
-set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )
+set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	pd->y = 1;
 	printf( "action: %s()\n", __FUNCTION__ );
 	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
@@ -105,15 +105,15 @@ set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )
 
 
 void
-dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
+dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 }
 
 
 void
-show_data( const struct rkh_t *ph, RKHEVT_T *pe )
+show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
 }
 
@@ -124,33 +124,33 @@ show_data( const struct rkh_t *ph, RKHEVT_T *pe )
 
 
 HUInt
-y1( const struct rkh_t *ph, RKHEVT_T *pe )
+y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	return pd->y == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
 HUInt
-y2( const struct rkh_t *ph, RKHEVT_T *pe )
+y2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	return pd->y == 2 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
 HUInt
-x1( const struct rkh_t *ph, RKHEVT_T *pe )
+x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
 HUInt
-x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
+x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 	return pd->x == 2 || pd->x == 3 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -161,9 +161,9 @@ x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
 
 
 HUInt
-x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
+x_equal_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
+	pd = rkh_get_data( sma );
 
 	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }

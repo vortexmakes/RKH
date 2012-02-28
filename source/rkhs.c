@@ -59,33 +59,9 @@
 RKH_THIS_MODULE( 2, rkhs );
 
 
-void 
-rkh_init( void )
-{
-}
+/* Globals */
 
+RKHRG_T rkhrg;						/* ready group of SMAs */
 
-void
-rkh_scheduler( void )
-{
-}
-
-
-void
-rkh_stop( void )
-{
-}
-
-
-void
-rkh_sma_create( void )
-{
-}
-
-
-void
-rkh_sma_delete( void )
-{
-}
 
 #endif

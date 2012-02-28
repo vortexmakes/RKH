@@ -47,7 +47,7 @@
 #define __RKHMP_H__
 
 
-#include "rkh.h"
+#include "rkhtype.h"
 
 
 /**

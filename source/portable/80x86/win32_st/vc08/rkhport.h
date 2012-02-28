@@ -33,36 +33,13 @@
 
 
 #include <windows.h>
+/*
 #include "rkhcfg.h"
 #include "rkhassert.h"
-#include "rkhrque.h"
+#include "rkhrq.h"
 #include "rkhmp.h"
+#include "rkhrdy.h"*/
 #include "rkhrdy.h"
-
-
-/*
- * 	Portable data types.
- *
- * 	The RKH uses a set of integer quantities. That maybe 
- * 	machine or compiler	dependent.
- *
- * 	Note:
- *
- * 	The 'HUInt' and 'HInt' will normally be the natural size 
- * 	for a particular machine. These types designates an integer 
- * 	type that is usually fastest to operate with among all integer 
- * 	types.
- */
-
-typedef signed char 	rkhi8_t;
-typedef signed short 	rkhi16_t;
-typedef signed long		rkhi32_t;
-typedef unsigned char 	rkhui8_t;
-typedef unsigned short 	rkhui16_t;
-typedef unsigned long	rkhui32_t;
-
-typedef unsigned int	HUInt;
-typedef signed int		HInt;
 
 
 /*
@@ -73,6 +50,8 @@ typedef signed int		HInt;
 #define RKHROM			const	
 
 
+#define RKH_DIS_INTERRUPT()
+#define RKH_ENA_INTERRUPT()
 #define RKH_CPUSR_TYPE
 #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
 #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
@@ -96,15 +75,18 @@ typedef signed int		HInt;
 #define RKH_THREAD_TYPE             	HANDLE
 
 
-#define RKH_SMA_BLOCK( sma ) 								\
-    RKHASSERT( (sma)->eq.qty != 0 )
+#define RKH_SMA_BLOCK( sma ) 						\
+			    RKHASSERT( (sma)->eq.qty != 0 )
 
-#define RKH_SMA_READY( sma ) 								\
-    QPSet64_insert(&QF_readySet_, (me_)->prio); 			\
-    (void)SetEvent(QF_win32Event_)
+#define RKH_SMA_READY( sma ) 						\
+			    rkh_rdyins( (sma)->prio ); 			\
+			    (void)SetEvent( sma_is_ready )
 
-#define RKH_SMA_UNREADY( sma ) 								\
-    QPSet64_remove(&QF_readySet_, (me_)->prio)
+#define RKH_SMA_UNREADY( sma ) 				\
+			    rkh_rdyrem( (sma)->prio )
+
+#define RKH_WAIT_FOR_EVENTS() 				\
+    ((void)WaitForSingleObject(sma_is_ready, (DWORD)INFINITE))
 
 
 #define RKH_DYNE_TYPE					RKHMP_T
@@ -123,8 +105,8 @@ typedef signed int		HInt;
 
 
 extern CRITICAL_SECTION csection;
-extern HANDLE  sma_is_ready;
-extern RKH_RG64_T rkh_rdygrp;
+extern HANDLE sma_is_ready;
+extern RKHRG_T rkhrg;
 
 
 #endif

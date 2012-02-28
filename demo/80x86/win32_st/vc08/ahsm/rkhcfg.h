@@ -42,14 +42,14 @@
 #define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
 #define RKH_ASSERT_EN					1	/* 	CFG01 */
 
-#define RKH_EN_NATIVE_SCHEDULER			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_SCHEDULER			0	/* 	CFG01 */ 
 #define RKH_EN_NATIVE_POSTFIFO			1	/* 	CFG01 */ 
 #define RKH_EN_NATIVE_POSTLIFO			1	/* 	CFG01 */ 
 #define RKH_EN_NATIVE_GET				1	/* 	CFG01 */ 
 
+#define RKH_SMA_EN_HCAL					1	/* 	CFG00 */
 #define RKH_SMA_MAX_HCAL_DEPTH			4	/* 	CFG01 */
 #define RKH_SMA_MAX_TR_SEGS				4	/* 	CFG01 */
-#define RKH_SMA_EN_HCAL					1	/* 	CFG00 */
 #define RKH_SMA_EN_PSEUDOSTATE			1	/* 	CFG01 */
 #define RKH_SMA_EN_DEEP_HISTORY			1	/* 	CFG01 */
 #define RKH_SMA_EN_SHALLOW_HISTORY		1	/* 	CFG01 */
@@ -108,10 +108,10 @@
 #define RKH_MP_EN_GET_INFO				1	/* 	CFG01 */ 
 
 #define RKH_TIMER_EN					1	/* 	CFG01 */
-#define RKH_TIMER_SIZEOF_NTIMER			1	/* 	CFG01 */
 #define RKH_TIMER_EN_HOOK				1	/* 	CFG01 */
 #define RKH_TIMER_EN_GET_INFO			1	/* 	CFG01 */
 #define RKH_TIMER_EN_RESTART			1	/* 	CFG01 */
+#define RKH_TIMER_SIZEOF_NTIMER			1	/* 	CFG01 */
 
 
 #endif

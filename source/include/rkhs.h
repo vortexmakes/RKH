@@ -34,67 +34,43 @@
 #define __RKS_H__
 
 
-#include "rkhitl.h"
+#include "rkhcfg.h"
 #include "rkh.h"
 #include "rkhassert.h"
 
 
-/**
- *	Defines the event queue type for the RKS scheduler.
- */
+#if RKH_EN_NATIVE_SCHEDULER == 1
 
-#define RKH_EQ_TYPE					RKHQ_T
+#define RKH_EQ_TYPE				RKHQ_T
 
 
-/**
- * 	Defines event queue support.
- */
+#define RKH_SMA_BLOCK( sma ) 				\
+			    RKHASSERT( (sma)->eq.qty != 0 )
 
-#define SMA_EQ_WAIT( sma ) 								\
-    Q_ASSERT((me_)->eQueue.frontEvt != (QEvent *)0)
+#define RKH_SMA_READY( sma ) 				\
+			    rkh_rdyins( (sma)->prio )
 
-#if RKH_MAX_SMA <= 8
-    #define SMA_EQ_EVENT( sma ) 						\
-        QPSet8_insert(&QF_readySet_, (me_)->prio)
+#define RKH_SMA_UNREADY( sma ) 				\
+			    rkh_rdyrem( (sma)->prio )
 
-    #define SMA_EQ_IS_EMPTY( sma ) 						\
-        QPSet8_remove(&QF_readySet_, (me_)->prio)
-#else
-    #define SMA_EQ_EVENT( sma ) 						\
-        QPSet64_insert(&QF_readySet_, (me_)->prio)
 
-    #define SMA_EQ_IS_EMPTY_( sma ) 					\
-        QPSet64_remove(&QF_readySet_, (me_)->prio)
+#define RKH_DYNE_TYPE			RKHMP_T
+
+#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
+    			rkh_mp_init( &(mp), sstart, ssize, esize )
+
+#define RKH_DYNE_GET_ESIZE( mp )	\
+				( (mp).bsize )
+
+#define QF_DYNE_GET( mp, e )								\
+				( (e) = (RKHEVT_T*)rk_mpool_get( &(mp) ) )
+
+#define QF_DYNE_PUT( mp, e )				\
+				( rkh_mp_put( &(mp), e ) )
+
+
+extern RKHRG_T rkhrg;
+
+
 #endif
-
-
-/**
- *	Defines the event pool type for the RKS scheduler.
- */
-
-#define RKH_EP_TYPE              	RKHMP_T
-
-
-/**
- * 	Defines event pool support.
- */
-
-#define RKH_EP_INIT(p_, poolSto_, poolSize_, evtSize_) 	\
-    QMPool_init(&(p_), (poolSto_), (poolSize_), (QMPoolSize)(evtSize_))
-#define RKH_EP_GET_ESIZE(p_)    	((p_).blockSize)
-#define RKH_EP_GET(p_, e_)       	((e_) = (QEvent *)QMPool_get(&(p_)))
-#define RKH_EP_PUT(p_, e_)       	(QMPool_put(&(p_), (e_)))
-                                         
-
-/** 
- * 	RKH ready group of state machine applications.
- */
-
-#if RKH_MAX_SMA <= 8
-    extern RKH_RG8_T rkh_rdygrp;	
-#else
-    extern RKH_RG64_T rkh_rdygrp;
-#endif
-
-
 #endif

@@ -41,7 +41,7 @@
 #define __RKHRQ_H__
 
 
-#include "rkh.h"
+#include "rkhtype.h"
 
 
 /**

@@ -39,6 +39,25 @@
 
 #include <stdlib.h>
 #include "rkhitl.h"
+#include "rkhrq.h"
+
+
+/**
+ * 	\brief
+ * 	rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a 
+ * 	bit mask.
+ */
+
+extern RKHROM rkhui8_t rkh_maptbl[ 8 ];
+
+
+/**
+ * 	\brief
+ * 	rkh_unmaptbl[] is a table in ROM, used to return the bit position of the 
+ * 	highest priority bit set - a number between 0 and 7.
+ */
+
+extern RKHROM rkhui8_t rkh_unmaptbl[ 256 ];
 
 
 /**
@@ -65,7 +84,7 @@ typedef struct rkh_smai_t
  *	ROMRKH_T is a ROM base structure of RKH_T.
  *
  *	\sa
- *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
  *	single inheritance in C \endlink.
  */
 
@@ -89,7 +108,7 @@ typedef struct romrkh_t
 	 * 	the rkh.h file.
 	 */
 
-	rkhui8 ppty;
+	rkhui8_t ppty;
 
 	/**	
  	 * 	\brief
@@ -149,11 +168,11 @@ typedef struct romrkh_t
  *	to reduce the size of RAM consume. The key parameters of a state machine 
  *	are allocated within. Therefore cannot be modified in runtime.
  *
- * 	RKH_T is not intended to be instantiated directly, but rather
+ * 	RKHSMA_T is not intended to be instantiated directly, but rather
  * 	serves as the base structure for derivation of state machines in the
  * 	application code.
  * 	The following example illustrates how to derive an state machine from
- * 	RKH_T. Please note that the RKH_T member sm is defined as the
+ * 	RKH_T. Please note that the RKHSMA_T member sm is defined as the
  * 	FIRST member of the derived struct.
  *
  *	Example:
@@ -172,7 +191,7 @@ typedef struct romrkh_t
  *	\endcode
  *
  *	\sa
- *	RKH_T structure definition for more information. Also, \link RKHEVT_T 
+ *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
  *	single inheritance in C \endlink.
  */
 

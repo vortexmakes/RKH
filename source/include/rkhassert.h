@@ -226,7 +226,7 @@
 
 	#define RKHASSERT( exp )				((void)0)
 	#define RKHALLEGE( exp )				((void)(exp))
-	#define RKHERROR( exp )					((void)0)
+	#define RKHERROR()						((void)0)
 #endif
 
 

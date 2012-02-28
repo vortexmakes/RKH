@@ -1,7 +1,7 @@
 /*
- *	file: rkhplat.h
+ *	file: rkhtype.h
  *	Last updated for version: 1.0.00
- *	Date of the last update:  May 28, 2010
+ *	Date of the last update:  Feb 28, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -24,52 +24,18 @@
  */
 
 /**
- * 	\file rkhplat.h
+ * 	\file rkhtype.h
  *	\brief
  *	RKH platform-dependent interface.
  */
 
 
-#ifndef __RKHPLAT_H__
-#define __RKHPLAT_H__
+#ifndef __RKHTYPE_H__
+#define __RKHTYPE_H__
 
-
-#ifdef __CWS08__
-	#include "..\portable\cws08\rkhport.h"
-#endif
-
-#ifdef __VC__
-	#include "..\portable\vc08\rkhport.h"
-#endif
-
-#ifdef __VCRKSYS__
-	#include "..\portable\vc08rksys\rkhport.h"
-#endif
-
-#ifdef __LNXGCC__
-   	#include "lnxgcc/rkhport.h"
-#endif
-
-#ifdef __CWS08RKSYS__
-	#include "..\portable\cws08rksys\rkhport.h"
-#endif
-
-#ifdef __CWCFV1RKSYS__
-	#include "..\portable\cwcfv1rksys\rkhport.h"
-#endif
 
 #ifdef __W32STVC08__
-	#include "..\portable\80x86\win32_st\vc08\rkhport.h"
-#endif
-
-/*
- *	If RKHROM has not been defined then	rkhport.h has not yet been 
- *	included - as every rkhport.h provides a RKHROM definition.
- */
-
-#ifndef RKHROM
-	#error "rkhplat.h: Missing definition of platform to be used.\
-	See Porting chapter in readme file for more information"
+	#include "..\portable\80x86\win32_st\vc08\rkht.h"
 #endif
 
 

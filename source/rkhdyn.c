@@ -82,7 +82,7 @@ rkh_gc( RKHEVT_T *evt )
         else        /* this is the last reference to this event, recycle it */
 		{
                                                       /* cannot wrap around */
-            rkhui8_t idx = (rkhuint8)( ( evt->dynamic_ >> 6 ) - 1 );
+            rkhui8_t idx = (rkhui8_t)( ( evt->dynamic_ >> 6 ) - 1 );
             rkh_exit_critical();
 
             RKHASSERT( idx < RKH_DYNE_NUM_POOLS );

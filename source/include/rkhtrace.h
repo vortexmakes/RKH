@@ -65,7 +65,7 @@
 #define __RKHTRACE_H__
 
 
-#include "rkhitl.h"
+#include "rkhtype.h"
 #include <string.h>
 
 
