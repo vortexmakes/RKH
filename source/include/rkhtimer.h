@@ -36,6 +36,7 @@
 
 
 #include "rkh.h"
+#include "rkhevt.h"
 
 
 typedef void ( *RKH_THK_T )( struct rkht_t *t );

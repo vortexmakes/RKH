@@ -37,6 +37,7 @@
 #include "rkhcfg.h"
 #include "rkh.h"
 #include "rkhassert.h"
+#include "rkhevt.h"
 
 
 #if RKH_EN_NATIVE_SCHEDULER == 1

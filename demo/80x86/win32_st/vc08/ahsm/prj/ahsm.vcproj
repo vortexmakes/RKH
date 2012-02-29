@@ -257,6 +257,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\..\..\source\include\rkhevt.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\..\..\source\include\rkhitl.h"
 					>
 				</File>
