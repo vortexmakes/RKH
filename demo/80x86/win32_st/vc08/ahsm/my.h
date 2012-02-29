@@ -17,18 +17,11 @@ typedef struct
 } MYEVT_T;
 
 
-typedef struct
-{
-	rkhui8_t x;
-	rkhui8_t y;
-} MYHDATA_T;
-
-
 /*
  *	Declare HSM.
  */
 
-RKH_DCLR_HSM( my );
+RKH_SMA_DCLR_HSM( my );
 
 
 /*

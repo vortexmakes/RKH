@@ -29,24 +29,17 @@
 
 typedef struct
 {
-	RKH_T sm;
-	rkhui8_t x;
-	rkhui8_t y;
-} MYSM_T;
+	RKHSMA_T sma;	/* base structure */
+	rkhui8_t x;		/* private member */
+	rkhui8_t y;		/* private member */
+} MYSM_T;			/* SMA derived from RKHSMA_T structure */
 
 
 /*
- *	Defines HSM's data.
+ *	Defines SMA "my".
  */
 
-static MYHDATA_T mydata;
-
-
-/*
- *	Defines HSM.
- */
-
-RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
+RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_init, NULL );
 
 
 /*

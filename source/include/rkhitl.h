@@ -139,40 +139,6 @@
 #endif
 
 
-/** 
- * 	Defines the size of memory block size. The valid values [in bits] are 
- * 	8, 16 or 32. Default is 8. This type is configurable via the 
- * 	preprocessor switch RKH_MP_SIZEOF_BSIZE.
- */
-
-#if RKH_MP_SIZEOF_BSIZE == 8
-	typedef rkhui8_t RKH_MPBS_T;
-#elif RKH_MP_SIZEOF_BSIZE == 16
-	typedef rkhui16_t RKH_MPBS_T;
-#elif RKH_MP_SIZEOF_BSIZE == 32
-	typedef rkhui32_t RKH_MPBS_T;
-#else
-	typedef rkhui8_t RKH_MPBS_T;
-#endif
-
-
-/** 
- * 	Defines the size of number of memory block size. The valid values 
- * 	[in bits] are 8, 16 or 32. Default is 8. This type is configurable via 
- * 	the preprocessor switch RKH_MP_SIZEOF_NBLOCK.
- */
-
-#if RKH_MP_SIZEOF_NBLOCK == 8
-	typedef rkhui8_t RKH_MPNB_T;
-#elif RKH_MP_SIZEOF_NBLOCK == 16
-	typedef rkhui16_t RKH_MPNB_T;
-#elif RKH_MP_SIZEOF_NBLOCK == 32
-	typedef rkhui32_t RKH_MPNB_T;
-#else
-	typedef rkhui8_t RKH_MPNB_T;
-#endif
-
-
 #ifndef RKH_RQ_EN
 	#error "rkhcfg.h, Missing RKH_RQ_EN: Enable (1) or Disable (0) native queue"
 #endif
@@ -203,26 +169,6 @@
 #endif
 
 
-/** 
- * 	\brief
- * 	This data type defines the maximum number of elements that any queue 
- *	can contain. 
- *
- *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_RQ_SIZEOF_NELEM.
- */
-
-#if RKH_RQ_SIZEOF_NELEM == 8
-	typedef rkhui8_t RKH_RQNE_T;
-#elif RKH_RQ_SIZEOF_NELEM == 16
-	typedef rkhui16_t RKH_RQNE_T;
-#elif RKH_RQ_SIZEOF_NELEM == 32
-	typedef rkhui32_t RKH_RQNE_T;
-#else
-	typedef rkhui8_t RKH_RQNE_T;
-#endif
-
-
 #ifndef RKH_TIMER_EN
 	#error "rkhcfg.h, Missing RKH_TIMER_EN: Enable (1) or Disable (0) native timer facility"
 #endif
@@ -249,26 +195,6 @@
 
 #ifndef RKH_TIMER_EN_RESTART
 	#error "rkhcfg.h, Missing RKH_TIMER_EN_RESTART: Include (1) restart timer function"
-#endif
-
-
-/** 
- * 	\brief
- * 	This data type defines the dynamic range of the time delays measured in 
- * 	clock ticks (maximum number of ticks).
- *
- *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_TIMER_SIZEOF_NTIMER.
- */
-
-#if RKH_TIMER_SIZEOF_NTIMER == 8
-	typedef rkhui8_t RKH_TNT_T;
-#elif RKH_TIMER_SIZEOF_NTIMER == 16
-	typedef rkhui16_t RKH_TNT_T;
-#elif RKH_TIMER_SIZEOF_NTIMER == 32
-	typedef rkhui32_t RKH_TNT_T;
-#else
-	typedef rkhui8_t RKH_TNT_T;
 #endif
 
 
@@ -593,6 +519,10 @@
 	#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
 #elif RKH_CRITICAL_METHOD == 3
 
+	#ifndef RKH_CPUSR_TYPE
+		#error  "rkhport.h, Must be defined the platform-dependent macro RKH_CPUSR_TYPE"
+	#endif
+
 	/** 
 	 * 	\brief
 	 * 	This macro is internal to RKH and the user application should 
@@ -648,7 +578,7 @@
  * 	\endcode
  */
 
-#define RKH_DYNE_NUM_POOLS
+//#define RKH_DYNE_NUM_POOLS
 
 /**
  * 	\brief 
@@ -678,7 +608,7 @@
  * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_dyne_init( mpd, pm, ps, bs )
+//#define rkh_dyne_init( mpd, pm, ps, bs )
 
 /**
  * 	\brief 
@@ -703,7 +633,7 @@
  * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_dyne_event_size( mpd )
+//#define rkh_dyne_event_size( mpd )
 
 /**
  * 	\brief 
@@ -730,7 +660,7 @@
  * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_dyne_get( mpd, e )
+//#define rkh_dyne_get( mpd, e )
 
 /**
  * 	\brief 
@@ -758,7 +688,7 @@
  * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_dyne_put( mpd, e )
+//#define rkh_dyne_put( mpd, e )
 
 /**
  * 	\brief 
@@ -788,7 +718,7 @@
  * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_post_fifo( qd, e )
+//#define rkh_post_fifo( qd, e )
 
 /**
  * 	\brief 
@@ -819,7 +749,7 @@
  * 	rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_post_lifo( qd, e )
+//#define rkh_post_lifo( qd, e )
 
 /**
  * 	\brief 
@@ -847,7 +777,7 @@
  * 	rkh_set_static_event() and rkh_gc().
  */
 
-#define rkh_get( qd, e )
+//#define rkh_get( qd, e )
 
 /**
  * 	\brief 
@@ -1070,6 +1000,23 @@
 #endif
 
 
+/** 
+ * 	Defines the data type of event size. The valid values [in bits] are 
+ * 	8, 16 or 32. Default is 8. This type is configurable via the 
+ * 	preprocessor switch RKH_SIZEOF_ESIZE.
+ */
+
+#if RKH_SIZEOF_ESIZE == 8
+	typedef rkhui8_t RKHES_T;
+#elif RKH_SIZEOF_ESIZE == 16
+	typedef rkhui16_t RKHES_T;
+#elif RKH_SIZEOF_ESIZE == 32
+	typedef rkhui32_t RKHES_T;
+#else
+	typedef rkhui8_t RKHES_T;
+#endif
+
+
 /**	
  * 	\brief 
  * 	Represents events without parameters.
@@ -1129,24 +1076,6 @@ typedef struct
 	rkhui8_t pool;
 #endif
 } RKHEVT_T;
-
-
-/**
- * 	Internal RKH implementation of the dynamic event allocator. 
- *
- * 	\param es		size of event [in bytes].
- * 	\param e		event signal.
- * 	
- * 	\note
- *
- * 	This function is internal to RKH and the user application should 
- * 	not call it. Please use #rkh_alloc_event() macro.
- *
- * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
- * 	rkh_set_static_event() and rkh_gc().
- */
-
-RKHEVT_T *rkh_ae( rkhui8_t es, RKHE_T e );
 
 
 /*

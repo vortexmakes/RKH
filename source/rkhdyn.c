@@ -34,35 +34,44 @@
 #include "rkhassert.h"
 
 
+#if RKH_EN_DYNAMIC_EVENT == 1
+
+
+RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
+rkhui8_t rkhnpool;
+
 RKH_THIS_MODULE( 3, rkhdyn );
 
 
-#if RKH_EN_DYNAMIC_EVENT == 1
-
 RKHEVT_T *
-rkh_ae( rkhui8_t es, RKHE_T e )
+rkh_ae( RKHES_T esize, RKHE_T e )
 {
     RKHEVT_T *evt;
 
               /* find the pool index that fits the requested event size ... */
     rkhui8_t idx = 0;
-    while( es > rkh_dyne_event_size( idx ) ) 
+	RKH_DYNE_TYPE *ep = rkh_epl;
+
+    while( esize > RKH_DYNE_GET_ESIZE( ep ) ) 
 	{
         ++idx;
+		++ep;
 									  /* cannot run out of registered pools */
-        RKHASSERT( idx < RKH_DYNE_NUM_POOLS );
+        RKHASSERT( idx < rkhnpool );
     }
 
-    rkh_dyne_get( idx, evt );        		 /* get e -- platform-dependent */
+    RKH_DYNE_GET( ep, evt );                 /* get e -- platform-dependent */
 							             /* pool must not run out of events */
     RKHASSERT( evt != NULL );
     evt->e = e;                                /* set signal for this event */
 
 	/* 
 	 * Store the dynamic attributes of the event:
-	 * the pool ID and the reference counter == 0
+	 * the pool ID and the reference counter = 0
 	 */
-    evt->dynamic_ = (rkhui8_t)( ( idx + 1 ) << 6 );
+    evt->dynamic_ = 0;
+    evt->pool = idx + 1;
+
     return evt;	
 }
 
@@ -70,23 +79,25 @@ rkh_ae( rkhui8_t es, RKHE_T e )
 void 
 rkh_gc( RKHEVT_T *evt )
 {
+	RKH_iSR_CRITICAL;
+	
     if( evt->dynamic_ != 0 )                      /* is it a dynamic event? */
 	{
-        rkh_enter_critical();
+        RKH_iENTER_CRITICAL();
 
-        if( ( evt->dynamic_ & 0x3F ) > 1 )      /* isn't this the last ref? */
+        if( evt->dynamic_ > 1 )                 /* isn't this the last ref? */
 		{
-            --evt->dynamic_;              /*decrement the reference counter */
-            rkh_exit_critical();
+            --evt->dynamic_;             /* decrement the reference counter */
+            RKH_iEXIT_CRITICAL();
         }
         else        /* this is the last reference to this event, recycle it */
 		{
                                                       /* cannot wrap around */
-            rkhui8_t idx = (rkhui8_t)( ( evt->dynamic_ >> 6 ) - 1 );
-            rkh_exit_critical();
+            rkhui8_t idx = (rkhui8_t)( evt->pool - 1 );
+            RKH_iEXIT_CRITICAL();
 
-            RKHASSERT( idx < RKH_DYNE_NUM_POOLS );
-            rkh_dyne_put( idx, evt );
+            RKHASSERT( idx < RKH_MAX_EPOOL );
+            RKH_DYNE_PUT( &rkh_epl[ idx ], evt );
         }
     }
 }
@@ -96,10 +107,12 @@ rkh_gc( RKHEVT_T *evt )
 void 
 rkh_sma_put_fifo( HUInt qd, RKHEVT_T *evt )
 {
-    rkh_enter_critical();
+	RKH_iSR_CRITICAL;
+
+    RKH_iENTER_CRITICAL();
     if( evt->dynamic_ != 0 ) 
         ++evt->dynamic_;
-    rkh_exit_critical();
+    RKH_iEXIT_CRITICAL();
 
     RKHALLEGE( rkh_post_fifo( qd, evt ) == 0 ); 
 }
@@ -110,10 +123,12 @@ rkh_sma_put_fifo( HUInt qd, RKHEVT_T *evt )
 void 
 rkh_sma_put_lifo( HUInt qd, RKHEVT_T *evt )
 {
-    rkh_enter_critical();
+	RKH_iSR_CRITICAL;
+
+    RKH_iENTER_CRITICAL();
     if( evt->dynamic_ != 0 ) 
         ++evt->dynamic_;
-    rkh_exit_critical();
+    RKH_iEXIT_CRITICAL();
 
     RKHALLEGE( rkh_post_fifo( qd, evt ) == 0 ); 
 }
@@ -131,7 +146,7 @@ rkh_sma_get( void )
 #if RKH_EN_DEFERRED_EVENT == 1
 
 void 
-rkh_defer( HUInt qd, RKHEVT_T *evt )
+void rkh_defer( RKHSMA_T *sma, RKHRQ_T *q, const RKHEVT_T *e )
 { 
 	rkh_put_fifo( qd, evt );
 }
@@ -142,13 +157,14 @@ rkh_recall( HUInt qdd, HUInt qds )
 {
     RKHEVT_T *evt;
 	HUInt r;
+	RKH_iSR_CRITICAL;
 	
 										/* get an event from deferred queue */
     if( ( r = rkh_get( qds, evt ) ) == 0 )     			/* event available? */
 	{
 		/* post it to the front of the AO's queue */
         rkh_put_lifo( qdd, evt );
-        rkh_enter_critical();
+        RKH_iENTER_CRITICAL();
 
         if( evt->dynamic_ != 0 )           		  /* is it a dynamic event? */
 		{
@@ -158,7 +174,7 @@ rkh_recall( HUInt qdd, HUInt qds )
              * did NOT decrement the reference counter) and once in the
              * AO's event queue.
              */
-            RKHASSERT(( evt->dynamic_&0x3F ) > 1 );
+            RKHASSERT( evt->dynamic_ > 1 );
 
             /* 
 			 * We need to decrement the reference counter once, to account
@@ -166,10 +182,17 @@ rkh_recall( HUInt qdd, HUInt qds )
              */
             --evt->dynamic_;
         }
-		rkh_exit_critical();
+		RKH_iEXIT_CRITICAL();
     }
     return r != 0 ? NULL : evt;
 }
 #endif
+
+
+void 
+rkh_dyne_regs( void *sstart, rkhui32_t ssize, RKH_MPBS_T esize )
+{
+}
+
 
 #endif

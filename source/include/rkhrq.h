@@ -41,7 +41,28 @@
 #define __RKHRQ_H__
 
 
+#include "rkhcfg.h"
 #include "rkhtype.h"
+
+
+/** 
+ * 	\brief
+ * 	This data type defines the maximum number of elements that any queue 
+ *	can contain. 
+ *
+ *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ *	configurable via the preprocessor switch RKH_RQ_SIZEOF_NELEM.
+ */
+
+#if RKH_RQ_SIZEOF_NELEM == 8
+	typedef rkhui8_t RKH_RQNE_T;
+#elif RKH_RQ_SIZEOF_NELEM == 16
+	typedef rkhui16_t RKH_RQNE_T;
+#elif RKH_RQ_SIZEOF_NELEM == 32
+	typedef rkhui32_t RKH_RQNE_T;
+#else
+	typedef rkhui8_t RKH_RQNE_T;
+#endif
 
 
 /**

@@ -38,6 +38,26 @@
 #include "rkh.h"
 
 
+/** 
+ * 	\brief
+ * 	This data type defines the dynamic range of the time delays measured in 
+ * 	clock ticks (maximum number of ticks).
+ *
+ *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ *	configurable via the preprocessor switch RKH_TIMER_SIZEOF_NTIMER.
+ */
+
+#if RKH_TIMER_SIZEOF_NTIMER == 8
+	typedef rkhui8_t RKH_TNT_T;
+#elif RKH_TIMER_SIZEOF_NTIMER == 16
+	typedef rkhui16_t RKH_TNT_T;
+#elif RKH_TIMER_SIZEOF_NTIMER == 32
+	typedef rkhui32_t RKH_TNT_T;
+#else
+	typedef rkhui8_t RKH_TNT_T;
+#endif
+
+
 /**
  * 	\brief
  * 	Defines the data structure into which the performance information for

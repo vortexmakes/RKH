@@ -219,100 +219,100 @@ typedef enum
  * 	Defines the size of trace timestamp. 
  *
  * 	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- * 	configurable via the RKH_SIZEOF_TIMESTAMP preprocessor option.
+ * 	configurable via the RKH_TR_SIZEOF_TIMESTAMP preprocessor option.
  */
 
-#if RKH_SIZEOF_TIMESTAMP == 8
+#if RKH_TR_SIZEOF_TIMESTAMP == 8
 	typedef rkhui8_t RKHTS_T;
-#elif RKH_SIZEOF_TIMESTAMP == 16
+#elif RKH_TR_SIZEOF_TIMESTAMP == 16
 	typedef rkhui16_t RKHTS_T;
-#elif RKH_SIZEOF_TIMESTAMP == 32
+#elif RKH_TR_SIZEOF_TIMESTAMP == 32
 	typedef rkhui32_t RKHTS_T;
 #else
 	typedef rkhui8_t RKHTS_T;
 #endif
 
 
-#if RKH_TRACE == 1
+#if RKH_TR_EN == 1
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_EVENT == 1
+	#if RKH_TR_TRACE_ALL == 1 || RKH_TR_EN_EVENT == 1
 	#define rkh_rec_event( e, s, n )				\
 					mktrevt( (e), RKHTR_EVENT, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_event( e, s, n )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_TRN_SRC == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_TRN_SRC == 1
 	#define rkh_rec_src_state( e, s, n, str )		\
 					mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_src_state( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_TRN_TGT == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_TRN_TGT == 1
 	#define rkh_rec_tgt_state( e, s, n, str )		\
 					mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_tgt_state( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_NXT_STATE == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_NXT_STATE == 1
 	#define rkh_rec_nxt_state( e, s, n, str )		\
 					mktrevt( (e), RKHTR_NXT_STATE, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_nxt_state( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_INT_TRAN == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_INT_TRAN == 1
 	#define rkh_rec_int_tran( e, s )				\
 					mktrevt( (e), RKHTR_INT_TRAN, (s), rkh_trgetts(), 0, NULL )
 	#else
 	#define rkh_rec_int_tran( e, s )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_ENTRY == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_ENTRY == 1
 	#define rkh_rec_entry( e, s, n, str )			\
 					mktrevt( (e), RKHTR_ENTRY, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_entry( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_EXIT == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_EXIT == 1
 	#define rkh_rec_exit( e, s, n, str )			\
 					mktrevt( (e), RKHTR_EXIT, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_exit( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_INIT_HSM == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_INIT_HSM == 1
 	#define rkh_rec_init_hsm( e, s, n, str )		\
 					mktrevt( (e), RKHTR_INIT_HSM, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_init_hsm( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_SGT == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_SGT == 1
 	#define rkh_rec_sgt( e, s, n, str )				\
 					mktrevt( (e), RKHTR_SGT_TGT, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_sgt( e, s, n, str )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_RTN_CODE == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_RTN_CODE == 1
 	#define rkh_rec_rtn_code( e, s, n )				\
 					mktrevt( (e), RKHTR_RTN_CODE, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_rtn_code( e, s, n )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_NUM_ENEX == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_NUM_ENEX == 1
 	#define rkh_rec_num_enex( e, s, n )				\
 					mktrevt( (e), RKHTR_NUM_ENEX, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_num_enex( e, s, n )
 	#endif
 
-	#if RKH_TRACE_ALL == 1 || RKH_EN_NUM_ACTSGT == 1
+	#if RKH_TR_ALL == 1 || RKH_TR_EN_NUM_ACTSGT == 1
 	#define rkh_rec_num_actsgt( e, s, n )			\
 					mktrevt( (e), RKHTR_NUM_ACTSGT, (s), rkh_trgetts(), (n), NULL )
 	#else
@@ -336,8 +336,8 @@ typedef enum
 
 
 #if RKH_TRACE == 1
-#if RKH_EN_TIMESTAMP == 1
-	#if RKH_EN_TRACE_STRING	== 1
+#if RKH_TR_EN_TIMESTAMP == 1
+	#if RKH_TR_EN_TRACE_STRING	== 1
 		#define mktrevt( e, i, s, t, n, str )			\
 														\
 								(e).id = i;				\
@@ -357,7 +357,7 @@ typedef enum
 								rkh_trevt( &(e) )
 	#endif
 #else
-	#if RKH_EN_TRACE_STRING	== 1
+	#if RKH_TR_EN_TRACE_STRING	== 1
 		#define mktrevt( e, i, s, t, n, str )			\
 														\
 								(e).id = i;				\
@@ -440,10 +440,10 @@ typedef struct
 	/**
 	 *	Timestamp. 
 	 *	This is a optional member in compile-time by means of 
-	 *	RKH_EN_TIMESTAMP preprocessor directive.
+	 *	RKH_TR_EN_TIMESTAMP preprocessor directive.
 	 */
 
-	#if RKH_EN_TIMESTAMP == 1
+	#if RKH_TR_EN_TIMESTAMP == 1
 	RKHTS_T ts;
 	#endif
 
@@ -456,11 +456,11 @@ typedef struct
 	/**
 	 *	Trace event argument. 
 	 *	This is a optional argument in compile-time by means of 
-	 *	RKH_EN_TRACE_STRING	preprocessor directive.
+	 *	RKH_TR_EN_TRACE_STRING	preprocessor directive.
 	 */
 
-	#if RKH_EN_TRACE_STRING == 1
-	char sb[ RKH_MAX_TRACE_STRING_SIZE + 1 ];
+	#if RKH_TR_EN_TRACE_STRING == 1
+	char sb[ RKH_TR_MAX_TRACE_STRING_SIZE + 1 ];
 	#endif
 } RKHTREVT_T;
 
@@ -571,7 +571,7 @@ rkhui16_t rkh_trgetqty( void );
  *	This is a platform-dependent function invoked through the macro 
  *	rkh_trgetts(). 
  *	The data returned is defined in compile-time by means of 
- *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
+ *	RKH_TR_SIZEOF_TIMESTAMP preprocessor directive.
  *
  *	Example:
  *

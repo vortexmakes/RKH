@@ -92,16 +92,16 @@
 #define RKH_DYNE_TYPE					RKHMP_T
 
 #define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
-    			rkh_mp_init( &(mp), sstart, ssize, esize )
+    			rkh_mp_init( (mp), sstart, ssize, esize )
 
 #define RKH_DYNE_GET_ESIZE( mp )							\
-				( (mp).bsize )
+				( (mp)->bsize )
 
-#define QF_DYNE_GET( mp, e )								\
-				( (e) = (RKHEVT_T*)rk_mpool_get( &(mp) ) )
+#define RKH_DYNE_GET( mp, e )								\
+				( (e) = (RKHEVT_T*)rk_mpool_get( (mp) ) )
 
-#define QF_DYNE_PUT( mp, e )								\
-				( rkh_mp_put( &(mp), e ) )
+#define RKH_DYNE_PUT( mp, e )								\
+				( rkh_mp_put( (mp), e ) )
 
 
 extern CRITICAL_SECTION csection;

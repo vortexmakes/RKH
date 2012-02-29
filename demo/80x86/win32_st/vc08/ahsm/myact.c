@@ -9,6 +9,13 @@
 #include "myevt.h"
 
 	
+typedef struct
+{
+	rkhui8_t x;
+	rkhui8_t y;
+} MYHDATA_T;
+
+
 static MYHDATA_T *pd;
 
 

@@ -48,6 +48,41 @@
 
 
 #include "rkhtype.h"
+#include "rkhcfg.h"
+
+
+/** 
+ * 	Defines the size of number of memory block size. The valid values 
+ * 	[in bits] are 8, 16 or 32. Default is 8. This type is configurable via 
+ * 	the preprocessor switch RKH_MP_SIZEOF_NBLOCK.
+ */
+
+#if RKH_MP_SIZEOF_NBLOCK == 8
+	typedef rkhui8_t RKH_MPNB_T;
+#elif RKH_MP_SIZEOF_NBLOCK == 16
+	typedef rkhui16_t RKH_MPNB_T;
+#elif RKH_MP_SIZEOF_NBLOCK == 32
+	typedef rkhui32_t RKH_MPNB_T;
+#else
+	typedef rkhui8_t RKH_MPNB_T;
+#endif
+
+
+/** 
+ * 	Defines the size of memory block size. The valid values [in bits] are 
+ * 	8, 16 or 32. Default is 8. This type is configurable via the 
+ * 	preprocessor switch RKH_MP_SIZEOF_BSIZE.
+ */
+
+#if RKH_MP_SIZEOF_BSIZE == 8
+	typedef rkhui8_t RKH_MPBS_T;
+#elif RKH_MP_SIZEOF_BSIZE == 16
+	typedef rkhui16_t RKH_MPBS_T;
+#elif RKH_MP_SIZEOF_BSIZE == 32
+	typedef rkhui32_t RKH_MPBS_T;
+#else
+	typedef rkhui8_t RKH_MPBS_T;
+#endif
 
 
 /**
@@ -115,7 +150,7 @@ typedef struct
 	 * 	Number of free blocks remaining. 
 	 */
 
-	RK_MPNB_T nfree;
+	RKH_MPNB_T nfree;
 
 	/**
 	 * 	\brief

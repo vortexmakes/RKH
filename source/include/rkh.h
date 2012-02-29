@@ -40,6 +40,7 @@
 #include <stdlib.h>
 #include "rkhitl.h"
 #include "rkhrq.h"
+#include "rkhmp.h"
 
 
 /**
@@ -120,7 +121,7 @@ typedef struct romrkh_t
 	 * 	the option RKH_EN_SMA_NAME must be enabled.
 	 */
 
-#if RKH_EN_SMA_NAME	== 1
+#if RKH_SMA_EN_NAME	== 1
 	const char *name;
 #endif
 
@@ -149,11 +150,11 @@ typedef struct romrkh_t
 	 *	Pointer to an event that will be passed to state machine application 
 	 *	when it starts. Could be used to pass arguments to the state machine 
 	 *	like an argc/argv. This argument is optional, thus it could be 
-	 *	declared as NULL or eliminated in compile-time with RKH_EN_SMA_IEVENT.
+	 *	declared as NULL or eliminated in compile-time with RKH_SMA_EN_IEVENT.
 	 */
 
-#if RKH_EN_SMA_IEVENT == 1
-	const RKHEVT_T ievent;
+#if RKH_SMA_EN_IEVENT == 1
+	const RKHEVT_T *ievent;
 #endif
 } ROMRKH_T;
 
@@ -818,7 +819,7 @@ typedef enum
 	/**
 	 * 	Used as state machine property.
 	 * 	This macro disables state nesting in a particular state machine.
-	 * 	When FLAT is used in RKH_CREATE_HSM() macro some important features of 
+	 * 	When FLAT is used in RKH_SMA_CREATE() macro some important features of 
 	 * 	RKH are	not included: state nesting, composite state, history 
 	 * 	(shallow and deep) pseudostate, entry action, and exit action.
 	 */
@@ -974,10 +975,10 @@ void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize,
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
- * 	\param sma			pointer to previously created state machine 
+ * 	\param sma_t		pointer to previously created state machine 
  * 						application.
  * 	\param name			name of state machine application. Represents the top 
  * 						state of state diagram. String terminated in '\\0' that 
@@ -1003,10 +1004,10 @@ void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize,
 
 #define RKH_SMA_CREATE( sma_t, name, prio, ppty, istate, iaction, ievent )	\
 																			\
-	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	(prio), (ppty), (name), 	\
-												(istate), (iaction), 		\
-												(ievent) );					\
-	static sma_t s_##name = MKSMA( &rs_##name,(istate) );					\
+	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, name, 	\
+												istate, iaction, 		\
+												ievent );					\
+	static sma_t s_##name = MKSMA( &rs_##name,istate );					\
 	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
 
 
@@ -1192,6 +1193,53 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
 
 
 /**
+ * 	Event pool list.
+ */
+
+extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
+
+
+/**
+ * 	# of initialized event pools.
+ */
+
+extern rkhui8_t rkhnpool;
+
+
+/**
+ * 	\brief
+ *
+ * 	Registers a new event pool into the event pool list.
+ *
+ * 	\param sstart	storage start. Pointer to memory from which memory blocks 
+ * 					are allocated.
+ * 	\param ssize:	storage size. Size of the memory pool storage in bytes.
+ * 	\param bsize	block size. This number determines the size of each memory 
+ * 					block in the pool.
+ */
+
+void rkh_dyne_regs( void *sstart, rkhui32_t ssize, RKHES_T esize );
+
+
+/**
+ * 	Internal RKH implementation of the dynamic event allocator. 
+ *
+ * 	\note
+ *
+ * 	This function is internal to RKH and the user application should 
+ * 	not call it. Please use #rkh_alloc_event() macro.
+ *
+ * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
+ * 	rkh_set_static_event() and rkh_gc().
+ *
+ * 	\param esize	size of event [in bytes].
+ * 	\param e		event signal.
+ */
+
+RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
+
+
+/**
  * 	\brief
  *	This macro dynamically creates a new event of type \a et with its signal.
  *
@@ -1218,7 +1266,7 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  */
 
 #define RKH_ALLOC_EVENT( et, e )										\
-								(et*)rkh_ae(sizeof(et),(RKHE_T)(e))
+						(et*)rkh_ae((RKHES_T)sizeof(et),(RKHE_T)(e))
 
 
 /**
