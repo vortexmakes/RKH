@@ -29,9 +29,10 @@
  */
 
 
-#include "rkhitl.h"
 #include "rkh.h"
-#include "rkhassert.h"
+
+
+RKH_THIS_MODULE( 2, rkhdyn );
 
 
 #if RKH_EN_DYNAMIC_EVENT == 1
@@ -39,8 +40,6 @@
 
 RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
 rkhui8_t rkhnpool;
-
-RKH_THIS_MODULE( 3, rkhdyn );
 
 
 RKHEVT_T *

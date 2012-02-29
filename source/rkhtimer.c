@@ -35,9 +35,15 @@
 #include "rkh.h"
 
 
+RKH_THIS_MODULE( 6, rkhtimer );
+
+
 void 
 rkh_timer_handler( void )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
@@ -48,34 +54,52 @@ rkh_itim_init( RKHT_T *t, RKHE_T sig )
 rkh_itim_init( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )
 #endif
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_timer_start( RKHT_T *t, RKHSMA_T *sma, RKH_TNT_T itick )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_timer_restart( RKHT_T *t, RKH_TNT_T itick )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_timer_stop( RKHT_T *t )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_timer_get_info( RKHT_T *t, RKH_TIMERI_T *pti )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_timer_clear_info( RKHT_T *t )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }

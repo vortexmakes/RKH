@@ -183,6 +183,10 @@
 				RelativePath="..\myact.c"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
+				>
+			</File>
 			<Filter
 				Name="rkh"
 				>
@@ -243,6 +247,14 @@
 			</File>
 			<File
 				RelativePath="..\rkhdata.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h"
 				>
 			</File>
 			<Filter

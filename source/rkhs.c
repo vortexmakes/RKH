@@ -48,15 +48,13 @@
  */
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1
-
-
-#include "rkhitl.h"
 #include "rkh.h"
-#include "rkhassert.h"
 
 
-RKH_THIS_MODULE( 2, rkhs );
+RKH_THIS_MODULE( 5, rkhs );
+
+
+#if RKH_EN_NATIVE_SCHEDULER == 1
 
 
 /* Globals */

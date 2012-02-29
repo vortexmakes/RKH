@@ -44,52 +44,80 @@
 
 
 #include "rkhmp.h"
+#include "rkh.h"
+
+
+RKH_THIS_MODULE( 3, rkhmp );
 
 
 void 
 rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize, 
 												RKH_MPBS_T bsize )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void *
 rkh_mp_get( RKHMP_T *mp )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_mp_put( RKHMP_T *mp, void *blk )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 RKH_MPBS_T 
 rkh_mp_get_blksize( RKHMP_T *mp )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 RKH_MPNB_T 
 rkh_mp_get_nfree( RKHMP_T *mp )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 RKH_MPNB_T 
 rkh_mp_get_low_wmark( RKHMP_T *mp )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_mp_clear_info( RKHMP_T *mp )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }

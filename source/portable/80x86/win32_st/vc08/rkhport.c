@@ -28,6 +28,37 @@
  */
 
 
-CRITICAL_SECTION QF_win32CritSect_;	/* Win32 critical section */
-HANDLE QF_win32Event_;          	/* Win32 event to signal when AOs are ready */
+#include "rkh.h"
+
+
+CRITICAL_SECTION csection;	/* Win32 critical section */
+HANDLE sma_is_ready;          	/* Win32 event to signal when AOs are ready */
 RKHRG_T rkhrg;						/* ready set of active objects */
+
+
+
+void 
+rkh_init( void )
+{
+}
+
+
+void rkh_enter( void )
+{
+}
+
+
+void rkh_exit( void )
+{
+}
+
+
+void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+					void *stks, rkhui32_t stksize )
+{
+}
+
+
+void rkh_sma_terminate( RKHSMA_T *sma )
+{
+}

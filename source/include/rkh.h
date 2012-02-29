@@ -42,6 +42,7 @@
 #include "rkhrq.h"
 #include "rkhmp.h"
 #include "rkhevt.h"
+#include "rkhassert.h"
 
 
 /**
@@ -854,6 +855,10 @@ typedef enum
  * 	A requirement of RKH is that must be called rkh_init() before call any 
  * 	of its other services. This function initializes all of RKH's variables 
  * 	and data structures.
+ *
+ * 	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform. 
  */
 
 void rkh_init( void );
@@ -871,8 +876,8 @@ void rkh_init( void );
  * 	never be executed.
  * 	
  * 	\note 
- * 	This function is strongly platform-dependent. All RKH ports must implement 
- * 	rkh_enter().
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform. 
  */
 
 void rkh_enter( void );
@@ -889,6 +894,10 @@ void rkh_enter( void );
  *	defined in the RKH port to a particular platform. 
  *	Some RKH ports might not require implementing this function at all, 
  *	because many embedded applications don't have anything to exit to.
+ * 	
+ * 	\note 
+ *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	defined in the RKH port to a particular platform. 
  */
 
 void rkh_exit( void );
@@ -925,7 +934,7 @@ void rkh_exit( void );
  *	\endcode
  * 	
  *	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	Platform-dependent function. All RKH ports and must be 
  *	defined in the RKH port to a particular platform.
  *
  * 	\param sma			pointer to previously created state machine 
@@ -1020,7 +1029,7 @@ void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize,
  * 	it to execute again.
  * 	
  *	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	Platform-dependent function. All RKH ports and must be 
  *	defined in the RKH port to a particular platform.
  *
  * 	\param sma			pointer to previously created state machine 
@@ -1084,7 +1093,7 @@ void rkh_sma_clear_info( RKHSMA_T *sma );
  *	necessary to check the pointer returned from rkh_sma_post_fifo().
  *
  *	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	Platform-dependent function. All RKH ports and must be 
  *	defined in the RKH port to a particular platform.
  *
  * 	\param sma		pointer to previously created state machine application.
@@ -1109,7 +1118,7 @@ void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
  *	necessary to check the pointer returned from rkh_sma_post_lifo().
  *
  *	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	Platform-dependent function. All RKH ports and must be 
  *	defined in the RKH port to a particular platform.
  *
  * 	\param sma		pointer to previously created state machine application.
@@ -1126,7 +1135,7 @@ void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
  * 	application specific.
  *
  *	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
+ *	Platform-dependent function. All RKH ports and must be 
  *	defined in the RKH port to a particular platform.
  *	Depending on the underlying OS or kernel, if no event is present at the 
  *	queue, the function will block the current thread until an event is 

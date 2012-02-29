@@ -7,6 +7,9 @@
 #include "rkhtrace.h"
 
 
+RKH_THIS_MODULE( 7, rkhtrace );
+
+
 #if RKH_TRACE == 1
 
 

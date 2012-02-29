@@ -237,84 +237,84 @@ typedef enum
 
 	#if RKH_TR_TRACE_ALL == 1 || RKH_TR_EN_EVENT == 1
 	#define rkh_rec_event( e, s, n )				\
-					mktrevt( (e), RKHTR_EVENT, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_EVENT, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_event( e, s, n )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_TRN_SRC == 1
 	#define rkh_rec_src_state( e, s, n, str )		\
-					mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_src_state( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_TRN_TGT == 1
 	#define rkh_rec_tgt_state( e, s, n, str )		\
-					mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_tgt_state( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_NXT_STATE == 1
 	#define rkh_rec_nxt_state( e, s, n, str )		\
-					mktrevt( (e), RKHTR_NXT_STATE, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_NXT_STATE, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_nxt_state( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_INT_TRAN == 1
 	#define rkh_rec_int_tran( e, s )				\
-					mktrevt( (e), RKHTR_INT_TRAN, (s), rkh_trgetts(), 0, NULL )
+				mktrevt( (e), RKHTR_INT_TRAN, (s), rkh_trgetts(), 0, NULL )
 	#else
 	#define rkh_rec_int_tran( e, s )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_ENTRY == 1
 	#define rkh_rec_entry( e, s, n, str )			\
-					mktrevt( (e), RKHTR_ENTRY, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_ENTRY, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_entry( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_EXIT == 1
 	#define rkh_rec_exit( e, s, n, str )			\
-					mktrevt( (e), RKHTR_EXIT, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_EXIT, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_exit( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_INIT_HSM == 1
 	#define rkh_rec_init_hsm( e, s, n, str )		\
-					mktrevt( (e), RKHTR_INIT_HSM, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_INIT_HSM, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_init_hsm( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_SGT == 1
 	#define rkh_rec_sgt( e, s, n, str )				\
-					mktrevt( (e), RKHTR_SGT_TGT, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_SGT_TGT, (s), rkh_trgetts(), (n), (str) )
 	#else
 	#define rkh_rec_sgt( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_RTN_CODE == 1
 	#define rkh_rec_rtn_code( e, s, n )				\
-					mktrevt( (e), RKHTR_RTN_CODE, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_RTN_CODE, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_rtn_code( e, s, n )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_NUM_ENEX == 1
 	#define rkh_rec_num_enex( e, s, n )				\
-					mktrevt( (e), RKHTR_NUM_ENEX, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_NUM_ENEX, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_num_enex( e, s, n )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_NUM_ACTSGT == 1
 	#define rkh_rec_num_actsgt( e, s, n )			\
-					mktrevt( (e), RKHTR_NUM_ACTSGT, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_NUM_ACTSGT, (s), rkh_trgetts(), (n), NULL )
 	#else
 	#define rkh_rec_num_actsgt( e, s, n )
 	#endif

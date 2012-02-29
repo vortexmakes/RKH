@@ -76,6 +76,7 @@
 #define __RKHRDY_H__
 
 
+#include "rkhcfg.h"
 #include "rkhtype.h"
 
 

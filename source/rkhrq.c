@@ -37,70 +37,107 @@
 
 
 #include "rkhrq.h"
+#include "rkh.h"
+
+
+RKH_THIS_MODULE( 4, rkhrq );
 
 
 void 
 rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
 													rkhui8_t sched )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 HUInt 
 rkh_rq_is_full( RKHRQ_T *q )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 RKH_RQNE_T 
 rkh_rq_get_num( RKHRQ_T *q )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 RKH_RQNE_T 
 rkh_rq_get_lwm( RKHRQ_T *q )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 HUInt 
 rkh_rq_get( RKHRQ_T *q, void *pe )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 queue_deplete( RKHRQ_T *q )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 HUInt 
 rkh_rq_read( RKHRQ_T *q, void *pe )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
 
 
 void 
 rkh_rq_clear_info( RKHRQ_T *q )
 {
+	RKH_iSR_CRITICAL;
+	RKH_iENTER_CRITICAL();
+	RKH_iEXIT_CRITICAL();
 }
