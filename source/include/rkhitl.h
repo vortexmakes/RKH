@@ -591,7 +591,7 @@
  * 	\code
  * 	#define rkh_dyne_init( mpd, pm, ps, bs )						\
  * 																	\
- * 				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
+ * 				rkh_mp_init( (mpd), (pm), (rkint16)(ps),			\
  *													(RK_MPBS_T)(bs) )
  *	\endcode
  *

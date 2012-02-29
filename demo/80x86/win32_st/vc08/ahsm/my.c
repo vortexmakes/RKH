@@ -27,14 +27,6 @@
 #include "myact.h"
 
 
-typedef struct
-{
-	RKHSMA_T sma;	/* base structure */
-	rkhui8_t x;		/* private member */
-	rkhui8_t y;		/* private member */
-} MYSM_T;			/* SMA derived from RKHSMA_T structure */
-
-
 /*
  *	Defines SMA "my".
  */

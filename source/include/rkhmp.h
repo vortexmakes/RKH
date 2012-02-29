@@ -27,7 +27,8 @@
  * 	\file rkhmp.h
  *
  * 	\brief
- * 	Implements a pool of fixed-size memory blocks.
+ * 	Platform-independent interface for supporting fixed-size memory blocks 
+ * 	services.
  *
  * 	Since memory block pools consist of fixed-size blocks, there are 
  * 	never any fragmentation problems. Of course, fragmentation causes 
@@ -269,7 +270,7 @@ void rkh_mp_init( 	RKHMP_T *mp, void *sstart, rkhui16_t ssize,
  * 	A pointer to a new memory block or NULL if the pool runs out of blocks.
  */
 
-void *rk_mpool_get( RKHMP_T *mp );
+void *rkh_mp_get( RKHMP_T *mp );
 
 
 /**

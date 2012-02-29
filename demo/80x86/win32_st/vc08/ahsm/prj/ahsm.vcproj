@@ -195,11 +195,23 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\..\..\source\rkhmp.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\..\source\rkhrq.c"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\..\..\source\rkhs.c"
 					>
 				</File>
 				<File
 					RelativePath="..\..\..\..\..\..\source\rkhtbl.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\..\source\rkhtimer.c"
 					>
 				</File>
 				<File

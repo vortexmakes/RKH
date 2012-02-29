@@ -38,6 +38,9 @@
 #include "rkh.h"
 
 
+typedef void ( *RKH_THK_T )( struct rkht_t *t );
+
+
 /** 
  * 	\brief
  * 	This data type defines the dynamic range of the time delays measured in 
@@ -84,7 +87,7 @@ typedef struct rkh_timer_info_t
  * 	timer-handling facility to update and expire software timers. 
  */
 
-typedef struct
+typedef struct rkht_t
 {
 	/**
 	 * 	Timer event.
@@ -96,13 +99,13 @@ typedef struct
 	 * 	Points to next timer structure in the doubly linked list.
 	 */
 
-	RKHT_T *tnext;
+	struct rkht_t *tnext;
 
 	/**
 	 * 	Points to previous timer structure in the doubly linked list.
 	 */
 
-	RKHT_T *tprev;
+	struct rkht_t *tprev;
 
 	/**
 	 * 	State machine application (SMA) that receives the timer event.
@@ -208,7 +211,7 @@ void rkh_timer_handler( void );
 #define rkh_timer_oneshot( t, sma, tick )						\
 				do{												\
 					(t)->period = 0;							\
-					rkh_timer_start( (t), (sma), (itick) );
+					rkh_timer_start( (t), (sma), (itick) );		\
 				}while(0)
 
 

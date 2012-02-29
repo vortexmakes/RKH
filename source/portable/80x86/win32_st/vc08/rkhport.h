@@ -39,6 +39,7 @@
 #include "rkhrq.h"
 #include "rkhmp.h"
 #include "rkhrdy.h"*/
+#include "rkhmp.h"
 #include "rkhrdy.h"
 
 
@@ -98,7 +99,7 @@
 				( (mp)->bsize )
 
 #define RKH_DYNE_GET( mp, e )								\
-				( (e) = (RKHEVT_T*)rk_mpool_get( (mp) ) )
+				( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
 
 #define RKH_DYNE_PUT( mp, e )								\
 				( rkh_mp_put( (mp), e ) )

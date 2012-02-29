@@ -19,7 +19,7 @@
 #define forever					for(;;)
 #define kbmap( c )				( c - '0' )
 
-#ifdef __VC__
+#ifdef __W32STVC08__
 	#include <conio.h>
 	#define mygetch()			getch()
 #elif __LNXGCC__
@@ -219,7 +219,7 @@ main( void )
 			rkh_init_hsm( my );
 		else
 		{
-			rkh_set_static_event( &mye, kbmap( c ) );
+			RKH_SET_STATIC_EVENT( &mye, kbmap( c ) );
 			mye.ts = ( rkhui16_t )rand();
 			rkh_engine( my, ( RKHEVT_T* )&mye );
 		}
