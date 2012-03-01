@@ -53,7 +53,7 @@
 
 #define RKH_DIS_INTERRUPT()
 #define RKH_ENA_INTERRUPT()
-#define RKH_CPUSR_TYPE
+//#define RKH_CPUSR_TYPE
 #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
 #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
 

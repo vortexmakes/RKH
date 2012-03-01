@@ -45,7 +45,7 @@
 #define RKH_EQ_TYPE				RKHQ_T
 
 
-#define RKH_SMA_BLOCK( sma ) 				\
+#define RKH_SMA_BLOCK( sma ) 					\
 			    RKHASSERT( (sma)->eq.qty != 0 )
 
 #define RKH_SMA_READY( sma ) 				\

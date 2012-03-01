@@ -44,8 +44,7 @@ RKH_THIS_MODULE( 4, rkhrq );
 
 
 void 
-rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
-													rkhui8_t sched )
+rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize )
 {
 	RKH_iSR_CRITICAL;
 	RKH_iENTER_CRITICAL();

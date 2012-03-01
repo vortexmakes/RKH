@@ -57,9 +57,33 @@ RKH_THIS_MODULE( 5, rkhs );
 #if RKH_EN_NATIVE_SCHEDULER == 1
 
 
-/* Globals */
+RKHRG_T rkhrg;				/* ready group of SMAs */
 
-RKHRG_T rkhrg;						/* ready group of SMAs */
 
+void 
+rkh_init( void )
+{
+}
+
+
+void rkh_enter( void )
+{
+}
+
+
+void rkh_exit( void )
+{
+}
+
+
+void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+						void *stks, rkhui32_t stksize )
+{
+}
+
+
+void rkh_sma_terminate( RKHSMA_T *sma )
+{
+}
 
 #endif

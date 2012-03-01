@@ -66,19 +66,6 @@
 
 
 /**
- * 	\brief
- * 	Queue property.
- * 	When a queue is initialized as RKH_Q_NOSCHED it never block.
- */
-
-typedef enum
-{
-	RKH_Q_SCHED, 
-	RKH_Q_NOSCHED
-} RKH_RQSCH_T;
-
-
-/**
  * 	Return codes from queue operations.
  */
 
@@ -116,13 +103,6 @@ typedef struct rkh_qinfo_t
 
 typedef struct
 {
-	/** 
-	 *	Indicates whether the queue is schedulable (RKH_Q_SCHED) 
-	 *	or not (RKH_Q_NOSCHED) 
-	 */
-
-	rkhui8_t sched;
-
 	/**
 	 * 	Number of elements.
 	 */
@@ -196,12 +176,9 @@ typedef struct
  * 					the elements. This array must be declared as an array of 
  * 					void pointers.
  * 	\param ssize	storage size [in bytes].
- *	\param sched	indicates whether the queue is schedulable (RKH_Q_SCHED) 
- *					or not (RKH_Q_NOSCHED). 
  */
 
-void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
-						rkhui8_t sched );
+void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize );
 
 
 /**

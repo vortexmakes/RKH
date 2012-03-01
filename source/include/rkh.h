@@ -905,10 +905,10 @@ void rkh_exit( void );
 
 /**
  * 	\brief
- * 	Initialize a previously created state machine application.
+ * 	Initializes and activates a previously created state machine application.
  *
  * 	A state machine application (SMA) is declared with the RKHSMA_T data type 
- * 	and is defined with the rkh_sma_create() service.
+ * 	and is defined with the rkh_sma_activate() service.
  *
  *	Example:
  *	\code
@@ -928,7 +928,7 @@ void rkh_exit( void );
  *	main( void )
  *	{
  *		// ...
- *		rkh_sma_init( my, 4, qsto, sizeof( RKHEVT_T* ), (void*)0, 0 );
+ *		rkh_sma_activate( my, 4, qsto, sizeof( RKHEVT_T* ), (void*)0, 0 );
  *		// ...
  *	}
  *	\endcode
@@ -947,8 +947,8 @@ void rkh_exit( void );
  * 	\param stksize		size of stack memory area [in bytes].
  */
 
-void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
-					void *stks, rkhui32_t stksize );
+void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+						void *stks, rkhui32_t stksize );
 
 
 /**
@@ -1014,10 +1014,10 @@ void rkh_sma_init(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize,
 
 #define RKH_SMA_CREATE( sma_t, name, prio, ppty, istate, iaction, ievent )	\
 																			\
-	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, name, 	\
-												istate, iaction, 		\
+	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, name, 			\
+												istate, iaction, 			\
 												ievent );					\
-	static sma_t s_##name = MKSMA( &rs_##name,istate );					\
+	static sma_t s_##name = MKSMA( &rs_##name,istate );						\
 	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
 
 
@@ -1172,12 +1172,11 @@ HUInt rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e );
  *	The assertion inside it guarantee that operation is valid, so is not 
  *	necessary to check the value returned from it.
  *
- * 	\param sma		pointer to previously created state machine application.
  * 	\param q		pointer to previously created queue.
  * 	\param e		pointer to event.
  */
 
-void rkh_defer( RKHSMA_T *sma, RKHRQ_T *q, const RKHEVT_T *e );
+void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e );
 
 
 /**

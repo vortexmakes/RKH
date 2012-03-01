@@ -524,33 +524,35 @@
 	#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
 #elif RKH_CRITICAL_METHOD == 3
 
-	#ifndef RKH_CPUSR_TYPE
-		#error  "rkhport.h, Must be defined the platform-dependent macro RKH_CPUSR_TYPE"
+	#ifdef RKH_CPUSR_TYPE
+		/** 
+		 * 	\brief
+		 * 	This macro is internal to RKH and the user application should 
+		 * 	not call it.
+		 */
+
+		#define RKH_iSR_CRITICAL			RKH_CPUSR_TYPE sr
+
+		/** 
+		 * 	\brief
+		 * 	This macro is internal to RKH and the user application should 
+		 * 	not call it.
+		 */
+
+		#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( sr )
+
+		/** 
+		 * 	\brief
+		 * 	This macro is internal to RKH and the user application should 
+		 * 	not call it.
+		 */
+
+		#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( sr )
+	#else
+		#define RKH_iSR_CRITICAL
+		#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( dummy )
+		#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
 	#endif
-
-	/** 
-	 * 	\brief
-	 * 	This macro is internal to RKH and the user application should 
-	 * 	not call it.
-	 */
-
-	#define RKH_iSR_CRITICAL			RKH_CPUSR_TYPE sr
-
-	/** 
-	 * 	\brief
-	 * 	This macro is internal to RKH and the user application should 
-	 * 	not call it.
-	 */
-
-	#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( sr )
-
-	/** 
-	 * 	\brief
-	 * 	This macro is internal to RKH and the user application should 
-	 * 	not call it.
-	 */
-
-	#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( sr )
 #else
 	#error "RKH_CRITICAL_METHOD defined incorrectly, expected 1, 2 or 3"
 #endif

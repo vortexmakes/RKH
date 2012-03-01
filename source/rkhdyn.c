@@ -30,6 +30,7 @@
 
 
 #include "rkh.h"
+#include "rkhrq.h"
 
 
 RKH_THIS_MODULE( 2, rkhdyn );
@@ -76,67 +77,69 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 
 
 void 
-rkh_gc( RKHEVT_T *evt )
+rkh_gc( RKHEVT_T *e )
 {
 	RKH_iSR_CRITICAL;
 	
-    if( evt->dynamic_ != 0 )                      /* is it a dynamic event? */
+    if( e->dynamic_ != 0 )                      /* is it a dynamic event? */
 	{
         RKH_iENTER_CRITICAL();
 
-        if( evt->dynamic_ > 1 )                 /* isn't this the last ref? */
+        if( e->dynamic_ > 1 )                 /* isn't this the last ref? */
 		{
-            --evt->dynamic_;             /* decrement the reference counter */
+            --e->dynamic_;             /* decrement the reference counter */
             RKH_iEXIT_CRITICAL();
         }
         else        /* this is the last reference to this event, recycle it */
 		{
                                                       /* cannot wrap around */
-            rkhui8_t idx = (rkhui8_t)( evt->pool - 1 );
+            rkhui8_t idx = (rkhui8_t)( e->pool - 1 );
             RKH_iEXIT_CRITICAL();
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
-            RKH_DYNE_PUT( &rkh_epl[ idx ], evt );
+            RKH_DYNE_PUT( &rkh_epl[ idx ], e );
         }
     }
 }
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_PUTFIFO == 1
+#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_POSTFIFO == 1
 void 
-rkh_sma_put_fifo( HUInt qd, RKHEVT_T *evt )
+rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
 	RKH_iSR_CRITICAL;
 
     RKH_iENTER_CRITICAL();
-    if( evt->dynamic_ != 0 ) 
-        ++evt->dynamic_;
-    RKH_iEXIT_CRITICAL();
+    if( (( RKHEVT_T *)e )->pool != 0 ) 
+        ++(( RKHEVT_T *)e )->dynamic_;
 
-    RKHALLEGE( rkh_post_fifo( qd, evt ) == 0 ); 
+	RKH_SMA_READY( sma );
+    rkh_rq_put_fifo( sma->equeue, e );
+    RKH_iEXIT_CRITICAL();
 }
 #endif
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_PUTLIFO == 1
+#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_POSTLIFO == 1
 void 
-rkh_sma_put_lifo( HUInt qd, RKHEVT_T *evt )
+rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
 	RKH_iSR_CRITICAL;
 
     RKH_iENTER_CRITICAL();
-    if( evt->dynamic_ != 0 ) 
-        ++evt->dynamic_;
-    RKH_iEXIT_CRITICAL();
+    if( (( RKHEVT_T *)e )->pool != 0 ) 
+        ++(( RKHEVT_T *)e )->dynamic_;
 
-    RKHALLEGE( rkh_post_fifo( qd, evt ) == 0 ); 
+	RKH_SMA_READY( sma );
+    rkh_rq_put_lifo( sma->equeue, e );
+    RKH_iEXIT_CRITICAL();
 }
 #endif
 
 
 #if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_GET == 1
-void
-rkh_sma_get( void )
+HUInt 
+rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e )
 {
 }
 #endif
@@ -145,51 +148,51 @@ rkh_sma_get( void )
 #if RKH_EN_DEFERRED_EVENT == 1
 
 void 
-void rkh_defer( RKHSMA_T *sma, RKHRQ_T *q, const RKHEVT_T *e )
+void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 { 
-	rkh_put_fifo( qd, evt );
+    rkh_rq_put_fifo( q, e );
 }
 
 
 RKHEVT_T *
-rkh_recall( HUInt qdd, HUInt qds )
+rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 {
-    RKHEVT_T *evt;
+    RKHEVT_T *e;
 	HUInt r;
 	RKH_iSR_CRITICAL;
 	
 										/* get an event from deferred queue */
-    if( ( r = rkh_get( qds, evt ) ) == 0 )     			/* event available? */
+    if( ( r = rkh_rq_get( q, e ) ) == RKH_RQ_OK )       /* event available? */
 	{
-		/* post it to the front of the AO's queue */
-        rkh_put_lifo( qdd, evt );
+		/* post it to the front of the SMA's queue */
+		rkh_sma_post_lifo( sma, e );
         RKH_iENTER_CRITICAL();
 
-        if( evt->dynamic_ != 0 )           		  /* is it a dynamic event? */
+        if( e->dynamic_ != 0 )           		  /* is it a dynamic event? */
 		{
             /* 
-			 * After posting to the AO's queue the event must be referenced
+			 * After posting to the SMA's queue the event must be referenced
              * at least twice: once in the deferred event queue (eq->get()
              * did NOT decrement the reference counter) and once in the
-             * AO's event queue.
+             * SMA's event queue.
              */
-            RKHASSERT( evt->dynamic_ > 1 );
+            RKHASSERT( e->dynamic_ > 1 );
 
             /* 
 			 * We need to decrement the reference counter once, to account
              * for removing the event from the deferred event queue.
              */
-            --evt->dynamic_;
+            --e->dynamic_;
         }
 		RKH_iEXIT_CRITICAL();
     }
-    return r != 0 ? NULL : evt;
+    return r != 0 ? NULL : e;
 }
 #endif
 
 
 void 
-rkh_dyne_regs( void *sstart, rkhui32_t ssize, RKH_MPBS_T esize )
+rkh_dyne_regs( void *sstart, rkhui32_t ssize, RKHES_T esize )
 {
 }
 
