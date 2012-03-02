@@ -161,7 +161,7 @@
 
 
 #ifndef RKH_RQ_SIZEOF_NELEM
-	#error "rkhcfg.h, Missing RKH_RQ_SIZEOF_NELEM: expected 8, 16 or 32"
+	#error "rkhcfg.h, Missing RKH_RQ_SIZEOF_NELEM: expected o, 16 or 32"
 #endif
 
 
@@ -216,7 +216,7 @@
 
 #if RKH_TR_EN == 1
 	#if RKH_TR_EN_TRACE_STRING == 1 && ( RKH_SMA_EN_STATE_NAME != 1 || RKH_SMA_EN_STATE_ID != 1 || RKH_SMA_EN_NAME != 1 )
-	#error  "rkhcfg.h, when enabling rkh_tr_en and RKH_TR_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_SMA_EN_STATE_NAME or RKH_SMA_EN_STATE_ID or RKH_SMA_EN_NAME"
+	#error  "rkhcfg.h, when enabling RKH_TR_EN and RKH_TR_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_SMA_EN_STATE_NAME or RKH_SMA_EN_STATE_ID or RKH_SMA_EN_NAME"
 	#endif
 #endif
 
@@ -708,296 +708,76 @@
 
 //#define rkh_dyne_put( mpd, e )
 
-/**
- * 	\brief 
- *  Platform-dependent macro defining how RKH should post an event
- *  \a e to the queue \a qd in FIFO policy and retrieves the result of 
- *  that operation, i.e. TRUE (0) if an element was successfully 
- *  inserted to the queue, otherwise error code.
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- *
- * 	\code
- *	#define rkh_post_fifo( qd, e )									\
- *																	\
- *				queue_insert( (QD_T)(qd), &(e) )
- * 	\endcode
- *
- * 	\param qd		queue descriptor.
- * 	\param e	 	pointer to the event that is to be placed on the queue.  
- *					The size of the elements the queue will hold was defined when 
- *					the queue was created.
- * 	\return
- * 	TRUE (0) if the element was successfully inserted, 
- *	otherwise error code.
- *
- * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
- */
-
-//#define rkh_post_fifo( qd, e )
-
-/**
- * 	\brief 
- *  Platform-dependent macro defining how RKH should post an event
- *  \a e to the queue \a qd in LIFO policy and retrieves the result of 
- *  that operation, i.e. TRUE (0) if an element was successfully 
- *  inserted to the queue, otherwise error code.	
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- *
- * 	\code
- *	#define rkh_post_lifo( qd, e )									\
- *																	\
- *				queue_insert_lifo( (QD_T)(qd), &(e) )
- * 	\endcode
- *
- * 	\param qd		queue descriptor.
- * 	\param e	 	pointer to the event that is to be placed on the queue.  
- *					The size of the elements the queue will hold was defined when 
- *					the queue was created.
- * 	\return
- * 	TRUE (0) if the element was successfully inserted, 
- *	otherwise error code.
- *
- * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
- * 	rkh_set_static_event() and rkh_gc().
- */
-
-//#define rkh_post_lifo( qd, e )
-
-/**
- * 	\brief 
- *  Platform-dependent macro defining how RKH should get an event
- *  \a e from the queue \a qd.
- *
- * 	\param qd		queue descriptor.
- * 	\param e 		pointer to the event structure into which the received 
- * 					item will be copied.
- * 	\return
- * 	TRUE (0) if an event was successfully removed from the queue, otherwise 
- * 	error code.
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- *
- * 	\code
- *	#define rkh_get( qd, e )										\
- *																	\
- *				queue_remove( (QD_T)(qd), &(e) )
- * 	\endcode
- *
- * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
- * 	rkh_set_static_event() and rkh_gc().
- */
-
-//#define rkh_get( qd, e )
-
-/**
- * 	\brief 
- *	Platform-dependent macro opening the tracing session.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_tropen(). 
- *	The application must implement this function. At a minimum, the 
- *	function must configure the trace stream by calling rkh_trinit().
- *	
- *	Example:
- *
- *	\code
- *	//	...in rkhport.h
- *
- *	#define rkh_tropen			my_rkh_trace_open
- *
- * 	//	...in some application module
- *
- *	void 
- *	my_rkh_trace_open( void )
- *	{
- *		RKHTRCFG_T *pcfg;
- *		
- *		rkh_trinit();
- *		rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
- *		rkh_trcontrol( MY, RKH_TRSTART );
- *		
- *		if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
- *		{
- *			perror( "Can't open file\n" );
- *			exit( EXIT_FAILURE );
- *		}
- *		fprintf( fdbg, 
- *			"---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
- *		pcfg = rkh_trgetcfg( MY );
- *		if( pcfg->print == RKH_TRPRINT )
- *			printf( "---- RKH trace log session - 
- *					"__DATE__" - "__TIME__" ----\n\n" );
- *	}
- *	\endcode
- *
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- *
- * 	\sa \b rkhtrace.h file.
- */
-
-#define rkh_tropen
-
-/**
- * 	\brief 
- *	Platform-dependent macro closing the tracing session.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trclose(). 
- *	The application must implement this function.
- *
- *	Example:
- *
- *	\code
- *	//	...in rkhport.h
- *
- *	#define rkh_trclose			rkh_trace_close
- *
- * 	//	...in some application module
- *
- *	void 
- *	rkh_trace_close( void )
- *	{
- *		fclose( fdbg );
- *	}
- *	\endcode
- *
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- *
- * 	\sa \b rkhtrace.h file.
- */
-
-#define rkh_trclose
-
-/**
- * 	\brief 
- *	Platform-dependent macro flushing the trace stream.
- *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trflush(). 
- * 	When the RKH trace an event, all the information related to it has to 
- * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
- * 	This place is a trace stream. Frequently, events traced are stored in 
- * 	the stream until it is flushed.
- *
- *	Example:
- *
- *	\code
- *	//	...in rkhport.h
- *
- *	#define rkh_trflush				rkh_trace_flush
- *
- * 	//	...in some application module
- *
- * 	void 
- * 	rkh_trace_flush( void )
- * 	{
- * 		RKHTREVT_T te;
- * 		RKHTRCFG_T *pcfg;
- *
- * 		while( rkh_trgetnext( &te ) != RKH_TREMPTY )
- * 		{
- * 			pcfg = rkh_trgetcfg( te.smix );
- * 			if( pcfg->log == RKH_TRLOG )
- * 				fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
- *													rkh_trgetts(),
- *													tremap[ te.id ],
- *													smmap[ te.smix ],
- *													format_trevt_args( &te ) );
- *			if( pcfg->print == RKH_TRPRINT )
- *				printf( "%05d [ %-16s ] - %s : %s\n",
- *													rkh_trgetts(),
- *													tremap[ te.id ],
- *													smmap[ te.smix ],
- *													format_trevt_args( &te ) );
- *		}
- *	}
- *	\endcode
- *
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- *
- * 	\sa \b rkhtrace.h file.
- */
-
-#define rkh_trflush
-
 #endif
 
 
-#if RKH_TR_EN == 1
-
-	#ifndef rkh_tropen
-		#error  "rkhport.h, When enabling RKH_TR_EN must be defined the platform-dependent function rkh_trace_open() within application level."
-	#endif
-
-	#ifndef rkh_trclose
-		#error  "rkhport.h, When enabling RKH_TR_EN must be defined the platform-dependent function rkh_trace_close() within application level."
-	#endif
-
-	#ifndef rkh_trflush
-		#error  "rkhport.h, When enabling RKH_TR_EN must be defined the platform-dependent function rkh_trace_flush() within application level."
-	#endif
+#ifndef RKH_HK_EN_DISPATCH
+	#error "rkhcfg.h, Missing RKH_HK_EN_DISPATCH: Include (1) or remove (0) the dispatch hook function"
 #else
-	#undef rkh_tropen
-	#define rkh_tropen
-	#undef rkh_trclose
-	#define rkh_trclose
-	#undef rkh_trflush
-	#define rkh_trflush
+	#if RKH_HK_EN_DISPATCH == 1
+		#define RKH_HK_DISPATCH( sma, e )		rkh_hk_dispatch( sma, e )
+	#elif RKH_HK_EN_DISPATCH == 0
+		#define RKH_HK_DISPATCH( sma, e )
+	#else
+		#define RKH_HK_DISPATCH( sma, e )
+		#error "rkhcfg.h, Wrong RKH_HK_EN_DISPATCH definition: expected 0 or 1"
+	#endif
 #endif
 
 
-#if RKH_TR_EN == 1 && RKH_TR_EN_TIMESTAMP == 1
-
-	#ifndef rkh_trgetts
-		#error  "rkhtrace.h, When enabling RKH_TR_EN and RKH_TR_EN_TIMESTAMP is set to one (1) must be defined the platform-dependent function rkh_trace_getts() within application level."
-	#endif
+#ifndef RKH_HK_EN_SIGNAL
+	#error "rkhcfg.h, Missing RKH_HK_EN_SIGNAL: Include (1) or remove (0) the signal hook function"
 #else
-	#undef rkh_trgetts
-	
-	/**
-	 * 	\brief
-	 *	Retrieves a timestamp to be placed in a trace event.
-	 * 
-	 *	This is a platform-dependent function invoked through the macro 
-	 *	rkh_trgetts(). 
-	 *	The data returned is defined in compile-time by means of 
-	 *	RKH_SIZEOF_TIMESTAMP preprocessor directive.
- 	 *
-	 *	Example:
-	 *
-	 *	\code
-	 *	//	...in rkhport.h
-	 *
-	 *	#define rkh_trtrgetts				rkh_trace_getts
-	 *
-	 * 	//	...in some application module
-	 *	
-	 *	RKHTS_T 
-	 *	rkh_trace_getts( void )
-	 *	{
-	 *		return ( RKHTS_T )clock();
-	 *	}
-	 *	\endcode
-	 *
-	 * 	\returns
-	 * 	Timestamp (RKHTS_T data type).
- 	 *
-	 * 	\sa \b rkhtrace.h file.
-	 */
+	#if RKH_HK_EN_SIGNAL == 1
+		#define RKH_HK_SIGNAL( e )		rkh_hk_signal( e )
+	#elif RKH_HK_EN_SIGNAL == 0
+		#define RKH_HK_SIGNAL( e )
+	#else
+		#define RKH_HK_SIGNAL( e )
+		#error "rkhcfg.h, Wrong RKH_HK_EN_SIGNAL definition: expected 0 or 1"
+	#endif
+#endif
 
-	#define rkh_trgetts
 
+#ifndef RKH_HK_EN_TIMEOUT
+	#error "rkhcfg.h, Missing RKH_HK_EN_TIMEOUT: Include (1) or remove (0) the timeout hook function"
+#else
+	#if RKH_HK_EN_TIMEOUT == 1
+		#define RKH_HK_TIMEOUT( t )		rkh_hk_timeout( t )
+	#elif RKH_HK_EN_TIMEOUT == 0
+		#define RKH_HK_TIMEOUT( t )
+	#else
+		#define RKH_HK_TIMEOUT( t )
+		#error "rkhcfg.h, Wrong RKH_HK_EN_TIMEOUT definition: expected 0 or 1"
+	#endif
+#endif
+
+
+#ifndef RKH_HK_EN_START
+	#error "rkhcfg.h, Missing RKH_HK_EN_START: Include (1) or remove (0) the start hook function"
+#else
+	#if RKH_HK_EN_START == 1
+		#define RKH_HK_START()			rkh_hk_start()
+	#elif RKH_HK_EN_START == 0
+		#define RKH_HK_START()
+	#else
+		#define RKH_HK_START()
+		#error "rkhcfg.h, Wrong RKH_HK_EN_START definition: expected 0 or 1"
+	#endif
+#endif
+
+
+#ifndef RKH_HK_EN_EXIT
+	#error "rkhcfg.h, Missing RKH_HK_EN_EXIT: Include (1) or remove (0) the exit hook function"
+#else
+	#if RKH_HK_EN_EXIT == 1
+		#define RKH_HK_EXIT()			rkh_hk_exit()
+	#elif RKH_HK_EN_EXIT == 0
+		#define RKH_HK_EXIT()
+	#else
+		#define RKH_HK_EXIT()
+		#error "rkhcfg.h, Wrong RKH_HK_EN_EXIT definition: expected 0 or 1"
+	#endif
 #endif
 
 

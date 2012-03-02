@@ -115,7 +115,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
         ++(( RKHEVT_T *)e )->dynamic_;
 
 	RKH_SMA_READY( sma );
-    rkh_rq_put_fifo( sma->equeue, e );
+    rkh_rq_put_fifo( &sma->equeue, e );
     RKH_iEXIT_CRITICAL();
 }
 #endif
@@ -132,7 +132,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
         ++(( RKHEVT_T *)e )->dynamic_;
 
 	RKH_SMA_READY( sma );
-    rkh_rq_put_lifo( sma->equeue, e );
+    rkh_rq_put_lifo( &sma->equeue, e );
     RKH_iEXIT_CRITICAL();
 }
 #endif

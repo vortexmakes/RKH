@@ -30,7 +30,7 @@ rkh_is_trenabled( HUInt trix )
 {
 	RKHTRCFG_T *p;
 
-	p = rkh_trgetcfg( trix );
+	p = rkh_trace_getcfg( trix );
 	return p->enable;
 }
 
@@ -73,14 +73,14 @@ rkh_remove_trevt( RKHTREVT_T *p )
 
 
 RKHTRCFG_T *
-rkh_trgetcfg( HUInt trix )
+rkh_trace_getcfg( HUInt trix )
 {
 	return &trcfgs[ trix ];
 }
 
 
 void
-rkh_trinit( void )
+rkh_trace_init( void )
 {
 	trin = trout = trstream;
 	trqty = 0;
@@ -88,11 +88,11 @@ rkh_trinit( void )
 
 
 void
-rkh_trconfig( HUInt trix, HUInt log, HUInt print )
+rkh_trace_config( HUInt trix, HUInt log, HUInt print )
 {
 	RKHTRCFG_T *p;
 
-	p = rkh_trgetcfg( trix );
+	p = rkh_trace_getcfg( trix );
 
 	p->log = log;
 	p->print = print;
@@ -100,17 +100,17 @@ rkh_trconfig( HUInt trix, HUInt log, HUInt print )
 
 
 void 
-rkh_trcontrol( HUInt trix, HUInt opt )
+rkh_trace_control( HUInt trix, HUInt opt )
 {
 	RKHTRCFG_T *p;
 
-	p = rkh_trgetcfg( trix );
+	p = rkh_trace_getcfg( trix );
 	p->enable = opt;
 }
 
 
 void 
-rkh_trevt( RKHTREVT_T *ptre )
+rkh_trace_evt( RKHTREVT_T *ptre )
 {
 	if( rkh_is_trenabled( ptre->smix ) == RKH_TRSTOP )
 		return;
@@ -120,14 +120,14 @@ rkh_trevt( RKHTREVT_T *ptre )
 
 
 HUInt
-rkh_trgetnext( RKHTREVT_T *p )
+rkh_trace_getnext( RKHTREVT_T *p )
 {
 	return rkh_remove_trevt( p );
 }
 
 
 rkhui16_t
-rkh_trgetqty( void )
+rkh_trace_getqty( void )
 {
 	return trqty;
 }

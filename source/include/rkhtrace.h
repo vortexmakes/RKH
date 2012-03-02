@@ -71,7 +71,7 @@
 
 /**
  * 	\brief
- * 	Return codes from rkh_trgetnext() function.
+ * 	Return codes from rkh_trace_getnext() function.
  */
 
 typedef enum
@@ -83,7 +83,7 @@ typedef enum
 /**
  * 	\brief
  * 	Enable or disable the trace facility for a instrumented state machine.
- * 	It's used as argument of rkh_trcontrol() function.
+ * 	It's used as argument of rkh_trace_control() function.
  */
 
 typedef enum
@@ -97,7 +97,7 @@ typedef enum
  * 	Defines printable or not the trace events for a instrumented state machine.
  *
  * 	\note
- * 	It's used as argument of rkh_trconfig() function. This number isn't 
+ * 	It's used as argument of rkh_trace_config() function. This number isn't 
  * 	internally used by RKH trace module.
  */
 
@@ -112,7 +112,7 @@ typedef enum
  * 	Defines logged or not the trace events for a instrumented state machine. 
  *
  * 	\note
- * 	It's used as argument of rkh_trconfig() function. This number isn't 
+ * 	It's used as argument of rkh_trace_config() function. This number isn't 
  * 	internally used by RKH trace module.
  */
 
@@ -237,84 +237,84 @@ typedef enum
 
 	#if RKH_TR_TRACE_ALL == 1 || RKH_TR_EN_EVENT == 1
 	#define rkh_rec_event( e, s, n )				\
-				mktrevt( (e), RKHTR_EVENT, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_EVENT, (s), rkh_trace_getts(), (n), NULL )
 	#else
 	#define rkh_rec_event( e, s, n )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_TRN_SRC == 1
 	#define rkh_rec_src_state( e, s, n, str )		\
-				mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_TRN_SRC, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_src_state( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_TRN_TGT == 1
 	#define rkh_rec_tgt_state( e, s, n, str )		\
-				mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_TRN_TGT, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_tgt_state( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_NXT_STATE == 1
 	#define rkh_rec_nxt_state( e, s, n, str )		\
-				mktrevt( (e), RKHTR_NXT_STATE, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_NXT_STATE, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_nxt_state( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_INT_TRAN == 1
 	#define rkh_rec_int_tran( e, s )				\
-				mktrevt( (e), RKHTR_INT_TRAN, (s), rkh_trgetts(), 0, NULL )
+				mktrevt( (e), RKHTR_INT_TRAN, (s), rkh_trace_getts(), 0, NULL )
 	#else
 	#define rkh_rec_int_tran( e, s )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_ENTRY == 1
 	#define rkh_rec_entry( e, s, n, str )			\
-				mktrevt( (e), RKHTR_ENTRY, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_ENTRY, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_entry( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_EXIT == 1
 	#define rkh_rec_exit( e, s, n, str )			\
-				mktrevt( (e), RKHTR_EXIT, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_EXIT, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_exit( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_INIT_HSM == 1
 	#define rkh_rec_init_hsm( e, s, n, str )		\
-				mktrevt( (e), RKHTR_INIT_HSM, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_INIT_HSM, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_init_hsm( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_SGT == 1
 	#define rkh_rec_sgt( e, s, n, str )				\
-				mktrevt( (e), RKHTR_SGT_TGT, (s), rkh_trgetts(), (n), (str) )
+				mktrevt( (e), RKHTR_SGT_TGT, (s), rkh_trace_getts(), (n), (str) )
 	#else
 	#define rkh_rec_sgt( e, s, n, str )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_RTN_CODE == 1
 	#define rkh_rec_rtn_code( e, s, n )				\
-				mktrevt( (e), RKHTR_RTN_CODE, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_RTN_CODE, (s), rkh_trace_getts(), (n), NULL )
 	#else
 	#define rkh_rec_rtn_code( e, s, n )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_NUM_ENEX == 1
 	#define rkh_rec_num_enex( e, s, n )				\
-				mktrevt( (e), RKHTR_NUM_ENEX, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_NUM_ENEX, (s), rkh_trace_getts(), (n), NULL )
 	#else
 	#define rkh_rec_num_enex( e, s, n )
 	#endif
 
 	#if RKH_TR_ALL == 1 || RKH_TR_EN_NUM_ACTSGT == 1
 	#define rkh_rec_num_actsgt( e, s, n )			\
-				mktrevt( (e), RKHTR_NUM_ACTSGT, (s), rkh_trgetts(), (n), NULL )
+				mktrevt( (e), RKHTR_NUM_ACTSGT, (s), rkh_trace_getts(), (n), NULL )
 	#else
 	#define rkh_rec_num_actsgt( e, s, n )
 	#endif
@@ -346,7 +346,7 @@ typedef enum
 								(e).num = n;			\
 								if( str != NULL )		\
 								strcpy( (e).sb, str );	\
-								rkh_trevt( &(e) )
+								rkh_trace_evt( &(e) )
 	#else
 		#define mktrevt( e, i, s, t, n, str )			\
 														\
@@ -354,7 +354,7 @@ typedef enum
 								(e).smix = s;			\
 								(e).ts = t;				\
 								(e).num = n;			\
-								rkh_trevt( &(e) )
+								rkh_trace_evt( &(e) )
 	#endif
 #else
 	#if RKH_TR_EN_TRACE_STRING	== 1
@@ -365,14 +365,14 @@ typedef enum
 								(e).num = n;			\
 								if( str != NULL )		\
 								strcpy( (e).sb, str );	\
-								rkh_trevt( &(e) )
+								rkh_trace_evt( &(e) )
 	#else
 		#define mktrevt( e, i, s, t, n, str )			\
 														\
 								(e).id = i;				\
 								(e).smix = s;			\
 								(e).num = n;			\
-								rkh_trevt( &(e) )
+								rkh_trace_evt( &(e) )
 	#endif
 #endif
 #else
@@ -384,7 +384,7 @@ typedef enum
  * 	\brief
  * 	Specifies the behavior of the instrumented state machine. 
  *
- * 	The members of this structure can be set through rkh_trcontrol()
+ * 	The members of this structure can be set through rkh_trace_control()
  * 	function.
  */
 
@@ -470,7 +470,7 @@ typedef struct
  * 	Inits the trace facility module.
  */
 
-void rkh_trinit( void );
+void rkh_trace_init( void );
 
 
 /**
@@ -490,7 +490,7 @@ void rkh_trinit( void );
  * 					used by RKH trace module.
  */
 
-void rkh_trconfig( HUInt trix, HUInt log, HUInt print );
+void rkh_trace_config( HUInt trix, HUInt log, HUInt print );
 
 
 /**
@@ -504,7 +504,7 @@ void rkh_trconfig( HUInt trix, HUInt log, HUInt print );
  * 					events.	
  */
 
-void rkh_trcontrol( HUInt trix, HUInt opt );
+void rkh_trace_control( HUInt trix, HUInt opt );
 
 
 /**
@@ -519,7 +519,7 @@ void rkh_trcontrol( HUInt trix, HUInt opt );
  * 	Pointer to tracing configuration structure.
  */
 
-RKHTRCFG_T *rkh_trgetcfg( HUInt trix );
+RKHTRCFG_T *rkh_trace_getcfg( HUInt trix );
 
 
 /**
@@ -535,7 +535,7 @@ RKHTRCFG_T *rkh_trgetcfg( HUInt trix );
  * 					the stream.
  */
 
-void rkh_trevt( RKHTREVT_T *ptre );
+void rkh_trace_evt( RKHTREVT_T *ptre );
 
 
 /**
@@ -551,7 +551,7 @@ void rkh_trevt( RKHTREVT_T *ptre );
  *	otherwise error code.
  */
 
-HUInt rkh_trgetnext( RKHTREVT_T *ptre );
+HUInt rkh_trace_getnext( RKHTREVT_T *ptre );
 
 
 /**
@@ -562,40 +562,7 @@ HUInt rkh_trgetnext( RKHTREVT_T *ptre );
  * 	Number of trace events stored in the stream.
  */
 
-rkhui16_t rkh_trgetqty( void );
-
-/**
- * 	\brief
- *	Retrieves a timestamp to be placed in a trace event.
- * 
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trgetts(). 
- *	The data returned is defined in compile-time by means of 
- *	RKH_TR_SIZEOF_TIMESTAMP preprocessor directive.
- *
- *	Example:
- *
- *	\code
- *	//	...in rkhport.h
- *
- *	#define rkh_trtrgetts				rkh_trace_getts
- *
- * 	//	...in some application module
- *	
- *	RKHTS_T 
- *	rkh_trace_getts( void )
- *	{
- *		return ( RKHTS_T )clock();
- *	}
- *	\endcode
- *
- * 	\returns
- * 	Timestamp (RKHTS_T data type).
- *
- * 	\sa \b rkhtrace.h file.
- */
-
-RKHTS_T rkh_trace_getts( void );
+rkhui16_t rkh_trace_getqty( void );
 
 
 #endif

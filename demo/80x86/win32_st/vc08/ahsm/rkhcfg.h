@@ -42,6 +42,11 @@
 #define RKH_SIZEOF_EVENT				4	/* 	CFG01 */ 
 #define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
 #define RKH_ASSERT_EN					1	/* 	CFG01 */
+#define RKH_HK_EN_DISPATCH				1	/* 	CFG01 */
+#define RKH_HK_EN_SIGNAL				1	/* 	CFG01 */
+#define RKH_HK_EN_TIMEOUT				1	/* 	CFG01 */
+#define RKH_HK_EN_START					1	/* 	CFG01 */
+#define RKH_HK_EN_EXIT					1	/* 	CFG01 */
 
 #define RKH_EN_NATIVE_SCHEDULER			0	/* 	CFG01 */ 
 #define RKH_EN_NATIVE_EQUEUE			1	/* 	CFG01 */ 

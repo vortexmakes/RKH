@@ -130,9 +130,9 @@ rkh_trace_open( void )
 {
 	RKHTRCFG_T *pcfg;
 
-	rkh_trinit();
-	rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
-	rkh_trcontrol( MY, RKH_TRSTART );
+	rkh_trace_init();
+	rkh_trace_config( MY, RKH_TRLOG, RKH_TRPRINT );
+	rkh_trace_control( MY, RKH_TRSTART );
 
 	if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
 	{
@@ -142,7 +142,7 @@ rkh_trace_open( void )
 
 	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 	
-	pcfg = rkh_trgetcfg( MY );
+	pcfg = rkh_trace_getcfg( MY );
 	if( pcfg->print == RKH_TRPRINT )
 		printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 }
@@ -168,19 +168,19 @@ rkh_trace_flush( void )
 	RKHTREVT_T te;
 	RKHTRCFG_T *pcfg;
 
-	while( rkh_trgetnext( &te ) != RKH_TREMPTY )
+	while( rkh_trace_getnext( &te ) != RKH_TREMPTY )
 	{
-		pcfg = rkh_trgetcfg( te.smix );
+		pcfg = rkh_trace_getcfg( te.smix );
 
 		if( pcfg->log == RKH_TRLOG )
 			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
-													rkh_trgetts(),
+													rkh_trace_getts(),
 													tremap[ te.id ],
 													smmap[ te.smix ],
 													format_trevt_args( &te ) );
 		if( pcfg->print == RKH_TRPRINT )
 			printf( "%05d [ %-16s ] - %s : %s\n",
-													rkh_trgetts(),
+													rkh_trace_getts(),
 													tremap[ te.id ],
 													smmap[ te.smix ],
 													format_trevt_args( &te ) );

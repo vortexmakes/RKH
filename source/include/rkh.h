@@ -84,7 +84,7 @@ extern rkhui8_t rkhnpool;
  * 	information for state machine is stored.
  * 	
  * 	This member is optional, thus it could be declared as NULL or eliminated 
- * 	in compile-time with RKH_EN_SMA_GET_INFO.
+ * 	in compile-time with RKH_EN_SMA_GET_INFO = 0.
  */
 
 typedef struct rkh_smai_t
@@ -167,7 +167,8 @@ typedef struct romrkh_t
 	 *	Pointer to an event that will be passed to state machine application 
 	 *	when it starts. Could be used to pass arguments to the state machine 
 	 *	like an argc/argv. This argument is optional, thus it could be 
-	 *	declared as NULL or eliminated in compile-time with RKH_SMA_EN_IEVENT.
+	 *	declared as NULL or eliminated in compile-time with 
+	 *	RKH_SMA_EN_IEVENT = 0.
 	 */
 
 #if RKH_SMA_EN_IEVENT == 1
@@ -233,7 +234,7 @@ typedef struct rkhsma_t
 	 * 	\brief
 	 * 	OS-dependent thread of control of the SMA. 
 	 * 	This member is optional, thus it could be declared as NULL or 
-	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD.
+	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD = 0.
 	 */
 
 #if RKH_EN_SMA_THREAD == 1
@@ -244,7 +245,7 @@ typedef struct rkhsma_t
 	 * 	\brief
 	 *	OS-dependent thread data.
 	 * 	This member is optional, thus it could be declared as NULL or 
-	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD_DATA.
+	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD_DATA = 0.
 	 */
 
 #if RKH_EN_SMA_THREAD == 1 && RKH_EN_SMA_THREAD_DATA == 1
@@ -271,7 +272,7 @@ typedef struct rkhsma_t
  	 * 	\brief
 	 * 	Performance information. This member is optional, thus it could be 
 	 * 	declared as NULL or eliminated in compile-time with 
-	 * 	RKH_EN_SMA_GET_INFO.
+	 * 	RKH_EN_SMA_GET_INFO = 0.
 	 */
 
 #if RKH_EN_SMA_GET_INFO == 1
@@ -1156,7 +1157,7 @@ HUInt rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e );
  * 	\note
  * 	See RKH_SMAI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_EN_SMA_GET_INFO.
+ * 	RKH_EN_SMA_GET_INFO = 0.
  *
  * 	\param sma		pointer to previously created state machine application.
  * 	\param psi		pointer to the buffer into which the performance 
@@ -1172,7 +1173,7 @@ void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_SMA_GET_INFO.
+ * 	with RKH_EN_SMA_GET_INFO = 0.
  *
  * 	\param sma		pointer to previously created state machine application.
  */
@@ -1376,6 +1377,100 @@ void rkh_gc( RKHEVT_T *e );
 
 /**
  * 	\brief
+ * 	When dispatching an event to a SMA the dispatch hook function will be 
+ * 	executed.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ *	\param e		pointer to arrived event.
+ *
+ *	\note
+ *	The dispatch hook will only get called if RKH_HK_EN_DISPATCH is set to 1 
+ *	within rkhcfg.h file. When this is set the application must provide the 
+ *	hook function. 
+ */
+
+void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
+
+
+/**
+ * 	\brief
+ * 	When the producer of an event directly posts the event to the event queue 
+ * 	of the consumer SMA the rkh_hk_signal() will optionally called.
+ * 	
+ *	\note
+ *	The signal hook will only get called if RKH_HK_EN_SIGNAL is set to 1 
+ *	within rkhcfg.h file. When this is set the application must provide the 
+ *	hook function. 
+ *
+ *	\param e		pointer to arrived event.
+ */
+
+void rkh_hk_signal( RKHEVT_T *e );
+
+
+/**
+ * 	\brief
+ * 	If a timer expires the rkh_hk_timeout() function is called just before the 
+ * 	assigned event is directly posted into the state machine application 
+ * 	queue. 
+ * 	
+ *	\note
+ *	The timeout hook will only get called if RKH_HK_EN_TIMEOUT is set to 1 
+ *	within rkhcfg.h file. When this is set the application must provide the 
+ *	hook function. 
+ *
+ *	\param t		pointer to previously allocated timer structure. 
+ *					A cast to RKHT_T data type must be internally implemented 
+ *					to get the appropiated timer control block.
+ */
+
+void rkh_hk_timeout( const void *t );
+
+
+/**
+ * 	\brief
+ * 	This hook function is called just before the RKH takes over control of 
+ * 	the application.
+ *
+ *	\note
+ *	The start hook will only get called if RKH_HK_EN_START is set to 1 
+ *	within rkhcfg.h file. When this is set the application must provide the 
+ *	hook function. 
+ *
+ */
+
+void rkh_hk_start( void );
+
+
+/**
+ * 	\brief
+ * 	This hook function is called just before the RKH returns the the 
+ * 	underlying OS/RTOS.
+ *
+ *	\note
+ *	The exit hook will only get called if RKH_HK_EN_EXIT is set to 1 
+ *	within rkhcfg.h file. When this is set the application must provide the 
+ *	hook function. 
+ *
+ */
+void rkh_hk_exit( void );
+
+
+/**
+ * 	\brief
+ * 	An idle hook function will only get executed when there are no SMAs of 
+ * 	higher priority that are ready to run. 
+ *
+ * 	This makes the idle hook function an ideal place to put the processor 
+ * 	into a low power state - providing an automatic power saving whenever 
+ * 	there is no processing to be performed.
+ */
+
+void rkh_hk_idle( void );
+
+
+/**
+ * 	\brief
  * 	Inits a previously created state machine calling its initializing action.
  *
  * 	\param sma		pointer to previously created state machine application.
@@ -1474,6 +1569,160 @@ HUInt rkh_engine( RKHSMA_T *sma, RKHEVT_T *e );
  */
 
 void rkh_clear_history( RKHROM RKHSHIST_T *h );
+
+
+/**
+ * 	\brief 
+ *	Open the tracing session.
+ *
+ * 	\note
+ *	This function is application-specific and the user needs to define it. 
+ *	At a minimum, the function must configure the trace stream by calling 
+ *	rkh_trace_init() function.
+ * 
+ *	Example:
+ *
+ *	\code
+ * 	//	...in some application module
+ *
+ *	void 
+ *	my_rkh_trace_open( void )
+ *	{
+ *		RKHTRCFG_T *pcfg;
+ *		
+ *		rkh_trace_init();
+ *		rkh_trace_config( MY, RKH_TRLOG, RKH_TRPRINT );
+ *		rkh_trace_control( MY, RKH_TRSTART );
+ *		
+ *		if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
+ *		{
+ *			perror( "Can't open file\n" );
+ *			exit( EXIT_FAILURE );
+ *		}
+ *		fprintf( fdbg, 
+ *			"---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
+ *		pcfg = rkh_trace_getcfg( MY );
+ *		if( pcfg->print == RKH_TRPRINT )
+ *			printf( "---- RKH trace log session - 
+ *					"__DATE__" - "__TIME__" ----\n\n" );
+ *	}
+ *	\endcode
+ *
+ * 	\sa \b rkhtrace.h file.
+ */
+
+void rkh_trace_open( void );
+
+
+/**
+ * 	\brief 
+ *	Close the tracing session.
+ *
+ * 	\note
+ *	This function is application-specific and the user needs to define it. 
+ *	At a minimum, the function must configure the trace stream by calling 
+ *	rkh_trace_init() function.
+ *
+ *	Example:
+ *
+ *	\code
+ * 	//	...in some application module
+ *
+ *	void 
+ *	rkh_trace_close( void )
+ *	{
+ *		fclose( fdbg );
+ *	}
+ *	\endcode
+ *
+ * 	\sa \b rkhtrace.h file.
+ */
+
+void rkh_trace_close( void );
+
+
+/**
+ * 	\brief 
+ *	Platform-dependent macro flushing the trace stream.
+ *
+ *	This is a platform-dependent function invoked through the macro 
+ *	rkh_trflush(). 
+ * 	When the RKH trace an event, all the information related to it has to 
+ * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
+ * 	This place is a trace stream. Frequently, events traced are stored in 
+ * 	the stream until it is flushed.
+ *
+ *	Example:
+ *
+ *	\code
+ * 	//	...in some application module
+ *
+ * 	void 
+ * 	rkh_trace_flush( void )
+ * 	{
+ * 		RKHTREVT_T te;
+ * 		RKHTRCFG_T *pcfg;
+ *
+ * 		while( rkh_trace_getnext( &te ) != RKH_TREMPTY )
+ * 		{
+ * 			pcfg = rkh_trace_getcfg( te.smix );
+ * 			if( pcfg->log == RKH_TRLOG )
+ * 				fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
+ *													rkh_trace_getts(),
+ *													tremap[ te.id ],
+ *													smmap[ te.smix ],
+ *													format_trevt_args( &te ) );
+ *			if( pcfg->print == RKH_TRPRINT )
+ *				printf( "%05d [ %-16s ] - %s : %s\n",
+ *													rkh_trace_getts(),
+ *													tremap[ te.id ],
+ *													smmap[ te.smix ],
+ *													format_trevt_args( &te ) );
+ *		}
+ *	}
+ *	\endcode
+ *
+ * 	\note 
+ * 	Typically, must be define it in the specific port file (rkhport.h).
+ *
+ * 	\sa \b rkhtrace.h file.
+ */
+
+void rkh_trace_flush( void );
+
+
+/**
+ * 	\brief
+ *	Retrieves a timestamp to be placed in a trace event.
+ * 
+ * 	\note
+ *	This function is application-specific and the user needs to define it. 
+ *	At a minimum, the function must configure the trace stream by calling 
+ *	rkh_trace_init() function.
+ *
+ * 	\note
+ *	The data returned is defined in compile-time by means of 
+ *	RKH_SIZEOF_TIMESTAMP.
+ *
+ *	Example:
+ *
+ *	\code
+ * 	//	...in some application module
+ *	
+ *	RKHTS_T 
+ *	rkh_trace_getts( void )
+ *	{
+ *		return ( RKHTS_T )clock();
+ *	}
+ *	\endcode
+ *
+ * 	\returns
+ * 	Timestamp (RKHTS_T data type).
+ *
+ * 	\sa \b rkhtrace.h file.
+ */
+
+RKHTS_T rkh_trace_getts( void );
 
 
 #endif

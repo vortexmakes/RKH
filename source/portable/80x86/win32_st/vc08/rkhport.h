@@ -40,6 +40,11 @@
 #include "rkhrdy.h"
 
 
+extern CRITICAL_SECTION csection;
+extern HANDLE sma_is_ready;
+extern RKHRG_T rkhrg;
+
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.
@@ -55,19 +60,6 @@
 #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
 
 
-/*
- *	Defines trace facility support.
- *
- *	This definitions are required only when the user application
- *	is used trace facility (of course, RKH_TRACE == 1).
- */
-
-#define rkh_tropen						rkh_trace_open
-#define rkh_trclose						rkh_trace_close
-#define rkh_trflush						rkh_trace_flush
-#define rkh_trgetts						rkh_trace_getts
-
-
 #define RKH_EQ_TYPE              		RKHRQ_T
 #define RKH_OSDATA_TYPE          		HANDLE
 #define RKH_THREAD_TYPE             	HANDLE
@@ -77,13 +69,13 @@
 			    RKHASSERT( (sma)->eq.qty != 0 )
 
 #define RKH_SMA_READY( sma ) 						\
-			    rkh_rdyins( (sma)->prio ); 			\
+			    rkh_rdyins( (sma)->romrkh->prio ); 	\
 			    (void)SetEvent( sma_is_ready )
 
-#define RKH_SMA_UNREADY( sma ) 				\
-			    rkh_rdyrem( (sma)->prio )
+#define RKH_SMA_UNREADY( sma ) 						\
+			    rkh_rdyrem( (sma)->romrkh->prio )
 
-#define RKH_WAIT_FOR_EVENTS() 				\
+#define RKH_WAIT_FOR_EVENTS() 						\
     ((void)WaitForSingleObject(sma_is_ready, (DWORD)INFINITE))
 
 
@@ -100,11 +92,6 @@
 
 #define RKH_DYNE_PUT( mp, e )								\
 				( rkh_mp_put( (mp), e ) )
-
-
-extern CRITICAL_SECTION csection;
-extern HANDLE sma_is_ready;
-extern RKHRG_T rkhrg;
 
 
 #endif
