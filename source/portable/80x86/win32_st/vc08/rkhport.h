@@ -33,12 +33,9 @@
 
 
 #include <windows.h>
-/*
-#include "rkhcfg.h"
-#include "rkhassert.h"
+
+#include "rkhtype.h"
 #include "rkhrq.h"
-#include "rkhmp.h"
-#include "rkhrdy.h"*/
 #include "rkhmp.h"
 #include "rkhrdy.h"
 

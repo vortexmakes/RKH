@@ -48,6 +48,7 @@
  */
 
 
+#include "rkhassert.h"
 #include "rkh.h"
 
 

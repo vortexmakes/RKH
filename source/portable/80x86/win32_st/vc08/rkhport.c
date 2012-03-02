@@ -36,7 +36,6 @@ HANDLE sma_is_ready;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
 
 
-
 void 
 rkh_init( void )
 {

@@ -3,15 +3,15 @@
  */
 
 
-#include "rkh.h"
+#include "rkhassert.h"
 #include "rkhtrace.h"
+#include "rkh.h"
 
 
 RKH_THIS_MODULE( 7, rkhtrace );
 
 
 #if RKH_TRACE == 1
-
 
 static RKHTRCFG_T trcfgs[ RKH_NUM_STATE_MACHINES ];
 static RKHTREVT_T trstream[ RKH_MAX_NUM_TRACES ];

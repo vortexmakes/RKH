@@ -41,7 +41,6 @@
 #include "rkhitl.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
-#include "rkhevt.h"
 #include "rkhassert.h"
 
 
@@ -61,6 +60,22 @@ extern RKHROM rkhui8_t rkh_maptbl[ 8 ];
  */
 
 extern RKHROM rkhui8_t rkh_unmaptbl[ 256 ];
+
+
+/**
+ * 	\brief
+ * 	Event pool list.
+ */
+
+extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
+
+
+/**
+ * 	\brief
+ * 	# of initialized event pools.
+ */
+
+extern rkhui8_t rkhnpool;
 
 
 /**
@@ -857,8 +872,10 @@ typedef enum
  * 	and data structures.
  *
  * 	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
- *	defined in the RKH port to a particular platform. 
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
  */
 
 void rkh_init( void );
@@ -866,7 +883,7 @@ void rkh_init( void );
 
 /**
  * 	\brief
- * 	RKH is started.
+ * 	RKH framework is started.
  * 	This entry function turns over control to RKH (and does not return!).
  * 	This function runs the highest priority state machine application (SMA) 
  * 	that is ready to run in run-to-completation model. 
@@ -876,8 +893,10 @@ void rkh_init( void );
  * 	never be executed.
  * 	
  * 	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
- *	defined in the RKH port to a particular platform. 
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
  */
 
 void rkh_enter( void );
@@ -896,8 +915,10 @@ void rkh_enter( void );
  *	because many embedded applications don't have anything to exit to.
  * 	
  * 	\note 
- *	This function is strongly platform-dependent. All RKH ports and must be 
- *	defined in the RKH port to a particular platform. 
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
  */
 
 void rkh_exit( void );
@@ -934,8 +955,10 @@ void rkh_exit( void );
  *	\endcode
  * 	
  *	\note 
- *	Platform-dependent function. All RKH ports and must be 
- *	defined in the RKH port to a particular platform.
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
  *
  * 	\param sma			pointer to previously created state machine 
  * 						application.
@@ -1029,14 +1052,93 @@ void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize,
  * 	it to execute again.
  * 	
  *	\note 
- *	Platform-dependent function. All RKH ports and must be 
- *	defined in the RKH port to a particular platform.
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
  *
  * 	\param sma			pointer to previously created state machine 
  * 						application.
  */
 
 void rkh_sma_terminate( RKHSMA_T *sma );
+
+
+/**
+ * 	\brief
+ * 	Send an event to a state machine application through a queue using the 
+ * 	FIFO policy. 
+ * 	A message is a pointer size variable and its use is application specific. 
+ *
+ * 	\note 
+ *	For memory efficiency and best performance the SMA's event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	The assertion inside it guarantee that the pointer is valid, so is not 
+ *	necessary to check the pointer returned from rkh_sma_post_fifo().
+ *
+ *	\note 
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ * 	\param e		actual event sent to the state machine application.
+ */
+
+void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
+
+
+/**
+ * 	\brief
+ * 	Send an event to a state machine application through a queue using the 
+ * 	LIFO policy. 
+ * 	A message is a pointer size variable and its use is application specific. 
+ *
+ * 	\note
+ *	For memory efficiency and best performance the SMA's event queue, 
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *	At this time, this functions are required only when the user 
+ *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
+ *	The assertion inside it guarantee that the pointer is valid, so is not 
+ *	necessary to check the pointer returned from rkh_sma_post_lifo().
+ *
+ *	\note 
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ * 	\param e		actual event sent to the state machine application.
+ */
+
+void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
+
+
+/**
+ * 	\brief
+ * 	Get an event from the event queue of an state machine application. 
+ * 	The events received are pointer size variables and their use is 
+ * 	application specific.
+ *
+ *	\note 
+ *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	port file to a particular platform. However, only the ports to the 
+ *	external OS/RTOS usually need some code to bolt the framework to the 
+ *	external OS/RTOS.
+ *	Depending on the underlying OS or kernel, if no event is present at the 
+ *	queue, the function will block the current thread until an event is 
+ *	received.
+ *
+ *	\return
+ * 	'0' if an element was successfully removed from the queue, otherwise 
+ * 	error code.
+ */
+
+HUInt rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e );
 
 
 /**
@@ -1076,77 +1178,6 @@ void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
  */
 
 void rkh_sma_clear_info( RKHSMA_T *sma );
-
-
-/**
- * 	\brief
- * 	Send an event to a state machine application through a queue using the 
- * 	FIFO policy. 
- * 	A message is a pointer size variable and its use is application specific. 
- *
- * 	\note 
- *	For memory efficiency and best performance the SMA's event queue, 
- *	STORE ONLY POINTERS to events, not the whole event objects.
- *	At this time, this functions are required only when the user 
- *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
- *	The assertion inside it guarantee that the pointer is valid, so is not 
- *	necessary to check the pointer returned from rkh_sma_post_fifo().
- *
- *	\note 
- *	Platform-dependent function. All RKH ports and must be 
- *	defined in the RKH port to a particular platform.
- *
- * 	\param sma		pointer to previously created state machine application.
- * 	\param e		actual event sent to the state machine application.
- */
-
-void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
-
-
-/**
- * 	\brief
- * 	Send an event to a state machine application through a queue using the 
- * 	LIFO policy. 
- * 	A message is a pointer size variable and its use is application specific. 
- *
- * 	\note
- *	For memory efficiency and best performance the SMA's event queue, 
- *	STORE ONLY POINTERS to events, not the whole event objects.
- *	At this time, this functions are required only when the user 
- *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
- *	The assertion inside it guarantee that the pointer is valid, so is not 
- *	necessary to check the pointer returned from rkh_sma_post_lifo().
- *
- *	\note 
- *	Platform-dependent function. All RKH ports and must be 
- *	defined in the RKH port to a particular platform.
- *
- * 	\param sma		pointer to previously created state machine application.
- * 	\param e		actual event sent to the state machine application.
- */
-
-void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
-
-
-/**
- * 	\brief
- * 	Get an event from the event queue of an state machine application. 
- * 	The events received are pointer size variables and their use is 
- * 	application specific.
- *
- *	\note 
- *	Platform-dependent function. All RKH ports and must be 
- *	defined in the RKH port to a particular platform.
- *	Depending on the underlying OS or kernel, if no event is present at the 
- *	queue, the function will block the current thread until an event is 
- *	received.
- *
- *	\return
- * 	'0' if an element was successfully removed from the queue, otherwise 
- * 	error code.
- */
-
-HUInt rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e );
 
 
 /**
@@ -1199,20 +1230,6 @@ void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e );
  */
 
 RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
-
-
-/**
- * 	Event pool list.
- */
-
-extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
-
-
-/**
- * 	# of initialized event pools.
- */
-
-extern rkhui8_t rkhnpool;
 
 
 /**

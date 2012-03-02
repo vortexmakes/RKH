@@ -44,9 +44,7 @@
 #define RKH_ASSERT_EN					1	/* 	CFG01 */
 
 #define RKH_EN_NATIVE_SCHEDULER			0	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_POSTFIFO			1	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_POSTLIFO			1	/* 	CFG01 */ 
-#define RKH_EN_NATIVE_GET				1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_EQUEUE			1	/* 	CFG01 */ 
 
 #define RKH_SMA_EN_HCAL					1	/* 	CFG00 */
 #define RKH_SMA_MAX_HCAL_DEPTH			4	/* 	CFG01 */

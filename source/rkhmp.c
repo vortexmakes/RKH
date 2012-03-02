@@ -43,6 +43,7 @@
  */
 
 
+#include "rkhassert.h"
 #include "rkhmp.h"
 #include "rkh.h"
 

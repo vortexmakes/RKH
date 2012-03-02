@@ -1,5 +1,5 @@
 /*
- *	file: rks.h
+ *	file: rkhs.h
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 22, 2012
  *
@@ -24,19 +24,18 @@
  */
 
 /**
- * 	\file rks.h
+ * 	\file rkhs.h
  *	\brief
  *	Platform-independent interface to the RKS scheduler.
  */
 
 
-#ifndef __RKS_H__
-#define __RKS_H__
+#ifndef __RKHS_H__
+#define __RKHS_H__
 
 
 #include "rkhcfg.h"
 #include "rkh.h"
-#include "rkhassert.h"
 #include "rkhevt.h"
 
 

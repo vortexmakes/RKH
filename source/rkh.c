@@ -33,7 +33,6 @@
 
 #include <stdlib.h>
 
-#include "rkhitl.h"
 #include "rkh.h"
 #include "rkhassert.h"
 

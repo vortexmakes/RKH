@@ -29,8 +29,9 @@
  */
 
 
-#include "rkh.h"
 #include "rkhrq.h"
+#include "rkhassert.h"
+#include "rkh.h"
 
 
 RKH_THIS_MODULE( 2, rkhdyn );
@@ -103,7 +104,7 @@ rkh_gc( RKHEVT_T *e )
 }
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_POSTFIFO == 1
+#if RKH_EN_NATIVE_EQUEUE == 1
 void 
 rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
@@ -120,7 +121,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 #endif
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_POSTLIFO == 1
+#if RKH_EN_NATIVE_EQUEUE == 1
 void 
 rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
@@ -137,7 +138,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 #endif
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_NATIVE_GET == 1
+#if RKH_EN_NATIVE_EQUEUE == 1
 HUInt 
 rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e )
 {
@@ -146,7 +147,6 @@ rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e )
 
 
 #if RKH_EN_DEFERRED_EVENT == 1
-
 void 
 void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 { 

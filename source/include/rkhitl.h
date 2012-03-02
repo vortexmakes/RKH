@@ -94,6 +94,17 @@
  *  Verifies configurations from rkhcfg.h include file.
  */
 
+#ifndef RKH_EN_NATIVE_EQUEUE
+	#error "rkhcfg.h, Missing RKH_RQ_EN: Enable (1) or Disable (0) native queue"
+#else
+	#if RKH_EN_NATIVE_EQUEUE == 1
+		#if RKH_RQ_EN != 1
+			#error "rkhcfg.h, When using the native event queue for SMAs must be enabled (1) the RKH_RQ_EN to include the (r) queue module"
+		#endif
+	#endif
+#endif
+
+
 #ifndef RKH_RQ_SIZEOF_NELEM
 	#error "rkhcfg.h, Missing RKH_RQ_SIZEOF_NELEM, expected 8, 16 or 32"
 #endif
