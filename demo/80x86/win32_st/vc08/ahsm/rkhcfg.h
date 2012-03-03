@@ -103,7 +103,7 @@
 
 #define RKH_MP_EN						1	/* 	CFG01 */ 
 #define RKH_MP_MAX						8	/* 	CFG01 */ 
-#define RKH_MP_REDUCED					1	/* 	CFG01 */ 
+#define RKH_MP_REDUCED					0	/* 	CFG01 */ 
 #define RKH_MP_SIZEOF_BSIZE				4	/* 	CFG01 */ 
 #define RKH_MP_SIZEOF_NBLOCK			4	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_BSIZE				1	/* 	CFG01 */ 

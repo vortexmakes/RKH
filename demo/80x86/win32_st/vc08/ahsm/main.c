@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "rkh.h"
+#include "rkhtrace.h"
 #include "my.h"
 #include "myevt.h"
 #include "rkhdata.h"
@@ -21,7 +22,7 @@
 
 #ifdef __W32STVC08__
 	#include <conio.h>
-	#define mygetch()			getch()
+	#define mygetch()			_getch()
 #elif __LNXGCC__
 	#define mygetch()			gnu_getch()
 #endif

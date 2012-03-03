@@ -1445,7 +1445,8 @@ void rkh_hk_start( void );
 /**
  * 	\brief
  * 	This hook function is called just before the RKH returns the the 
- * 	underlying OS/RTOS.
+ * 	underlying OS/RTOS. Usually, the rkh_hk_exit() is useful when executing
+ * 	clean-up code upon SMA terminate or framework exit.
  *
  *	\note
  *	The exit hook will only get called if RKH_HK_EN_EXIT is set to 1 

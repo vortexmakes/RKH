@@ -105,14 +105,14 @@ typedef struct
 	 *	Number of get memory block requests.
 	 */
 
-	rkhui16_t gets;
+	rkhui8_t gets;
 	
 	/**	
 	 * 	\brief
 	 *	Number of put memory block requests.
 	 */
 
-	rkhui16_t puts;
+	rkhui8_t puts;
 	
 	/**	
 	 * 	\brief
@@ -205,7 +205,7 @@ typedef struct
 	 *	proper sizing of the memory pool.
 	 */
 
-#if RKSYS_MPOOL_GET_LWMARK == 1
+#if RKH_MP_EN_GET_LWM == 1
 	RKH_MPNB_T nmin;
 #endif
 

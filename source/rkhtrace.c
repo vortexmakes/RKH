@@ -11,13 +11,13 @@
 RKH_THIS_MODULE( 7, rkhtrace );
 
 
-#if RKH_TRACE == 1
+#if RKH_TR_EN == 1
 
-static RKHTRCFG_T trcfgs[ RKH_NUM_STATE_MACHINES ];
-static RKHTREVT_T trstream[ RKH_MAX_NUM_TRACES ];
+static RKHTRCFG_T trcfgs[ RKH_MAX_SMA ];
+static RKHTREVT_T trstream[ RKH_TR_MAX_NUM_TRACES ];
 static RKHTREVT_T *trin, *trout;
 
-#if RKH_MAX_NUM_TRACES > 255
+#if RKH_TR_MAX_NUM_TRACES > 255
 static rkhui16_t trqty;
 #else
 static rkhui8_t trqty;
@@ -41,12 +41,12 @@ rkh_insert_trevt( RKHTREVT_T *p )
 {
 	*trin = *p;
 
-	if( ++trin >= trstream + RKH_MAX_NUM_TRACES )
+	if( ++trin >= trstream + RKH_TR_MAX_NUM_TRACES )
 		trin = trstream;
 
-	if( ++trqty >= RKH_MAX_NUM_TRACES )
+	if( ++trqty >= RKH_TR_MAX_NUM_TRACES )
 	{
-		trqty = RKH_MAX_NUM_TRACES;
+		trqty = RKH_TR_MAX_NUM_TRACES;
 		trout = trin;
 	}
 
@@ -63,7 +63,7 @@ rkh_remove_trevt( RKHTREVT_T *p )
 
 	*p = *trout;
 
-	if( ++trout >= trstream + RKH_MAX_NUM_TRACES )
+	if( ++trout >= trstream + RKH_TR_MAX_NUM_TRACES )
 		trout = trstream;
 
 	--trqty;

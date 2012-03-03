@@ -48,25 +48,138 @@
 #include "rkh.h"
 
 
+#if RKH_MP_EN == 1
+
 RKH_THIS_MODULE( 3, rkhmp );
+
+
+/*
+ * 	Structure representing a free block.
+ */
+
+typedef struct rkh_free_blk_t
+{
+    struct rkh_free_blk_t *next;
+} RKH_FREE_BLK_T;
 
 
 void 
 rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize, 
 												RKH_MPBS_T bsize )
 {
-	RKH_iSR_CRITICAL;
-	RKH_iENTER_CRITICAL();
-	RKH_iEXIT_CRITICAL();
+	//RKH_iSR_CRITICAL;
+	//RKH_iENTER_CRITICAL();
+	//RKH_iEXIT_CRITICAL();
+
+    RKH_FREE_BLK_T *fb;
+    rkhui8_t corr;
+    RKH_MPNB_T nblocks;
+
+    /* 
+	 * The memory block must be valid and the pool size (\a ssize) must fit 
+	 * at least one free block and the block size (\a bsize) must not be too 
+	 * close to the top of the dynamic range.
+     */
+
+	RKHASSERT( 	sstart != NULL && 
+				ssize >= sizeof( RKH_FREE_BLK_T ) &&
+				(RKH_MPBS_T)( bsize + sizeof( RKH_FREE_BLK_T ) ) > bsize );
+
+	/* 
+	 * If the alignment is a power of two, the following formulas 
+	 * provide the number of padding bytes required to align the 
+	 * start of a data structure:
+	 *
+	 * padding = align - (offset & (align - 1))
+	 * new offset = (offset + align - 1) & ~(align - 1)
+	 */
+
+    corr = (rkhui8_t)((rkhui32_t)sstart & (rkhui32_t)(sizeof(RKH_FREE_BLK_T) - 1));
+
+    if( corr != 0 )	/* alignment needed? */ 
+	{
+        corr = sizeof( RKH_FREE_BLK_T ) - corr;    /* amount to align 'sstart' */
+        ssize -= ( rkhui16_t )corr;     /* reduce the available pool size */
+    }
+
+    /* 
+	 * (1) Align the head of free list at the free block-size boundary.
+	 */
+
+    mp->free = ( void* )( ( rkhui8_t* )sstart + corr );
+
+    /* 
+	 * (2) Round up the 'bsize' to fit an integer # free blocks, no division.
+	 */
+
+    mp->bsize = sizeof( RKH_FREE_BLK_T );         /* start with just one */
+    nblocks = 1;              /* # free blocks that fit in one memory block */
+
+    while( mp->bsize < bsize )
+	{
+        mp->bsize += sizeof( RKH_FREE_BLK_T );
+        ++nblocks;
+    }
+	
+    bsize = mp->bsize;      /* use the rounded-up value from now on */
+	
+	/* 
+	 * The pool buffer must fit at least one rounded-up block.
+	 */
+
+	RKHASSERT( ssize >= ( rkhui16_t )bsize );
+
+	/* 
+	 * (3) Chain all blocks together in a free-list... 
+	 */
+
+    ssize -= ( rkhui16_t )bsize;        /* don't count the last block */
+    mp->nblocks = 1;                    /* the last block already in the pool */
+    fb = ( RKH_FREE_BLK_T* )mp->free;  /*start at the head of the free list */
+
+    while( ssize >= ( rkhui16_t )bsize ) 
+	{
+        fb->next = &fb[ nblocks ]; /* point the next link to the next block */
+        fb = fb->next;                         /* advance to the next block */
+        ssize -= (rkhui16_t)bsize;  /* reduce the available pool size */
+        ++mp->nblocks;               /* increment the number of blocks so far */
+    }
+
+    fb->next  = ( RKH_FREE_BLK_T* )0;        /* the last link points to NULL */
+    mp->nfree = mp->nblocks;                          /* all blocks are free */
+#if RKH_MP_EN_GET_LWM == 1 && RKH_MP_REDUCED == 0
+    mp->nmin  = mp->nblocks;            /* the minimum number of free blocks */
+#endif
+#if RKH_MP_REDUCED == 0
+    mp->start = sstart;               /* the original start this pool buffer */
+    mp->end   = fb;                         /* the last block in this pool */
+#endif
 }
 
 
 void *
 rkh_mp_get( RKHMP_T *mp )
 {
+    RKH_FREE_BLK_T *fb;
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mp != ( RKHMP_T* )0 && mp->bsize != 0 );
+
 	RKH_iENTER_CRITICAL();
+
+    fb = ( RKH_FREE_BLK_T* )mp->free;           /* get a free block or NULL */
+    if( fb != NULL )							   /* free block available? */
+	{
+        mp->free = fb->next;    /* adjust list head to the next free block */
+        --mp->nfree;                                /* one less free block */
+#if RKH_MP_EN_GET_LWM == 1 && RKH_MP_REDUCED == 0
+        if( mp->nmin > mp->nfree )
+            mp->nmin = mp->nfree;          /* remember the minimum so far */
+#endif
+    }
+
 	RKH_iEXIT_CRITICAL();
+    return fb;            /* return the block or NULL pointer to the caller */
 }
 
 
@@ -74,43 +187,111 @@ void
 rkh_mp_put( RKHMP_T *mp, void *blk )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mp != ( RKHMP_T* )0 );
+	RKHASSERT( mp->bsize != 0 );
+
+#if RKH_MP_REDUCED == 0
+    RKHASSERT(	mp->start <= blk && 				    /* must be in range */
+				blk <= mp->end && 
+				mp->nfree <= mp->nblocks  ); /* # free blocks must be < total */
+#else
+    RKHASSERT(	mp->nfree <= mp->nblocks ); /* # free blocks must be < total */
+#endif
+
 	RKH_iENTER_CRITICAL();
+	
+	/* link into free list */
+    ( ( RKH_FREE_BLK_T* )blk )->next = ( RKH_FREE_BLK_T* )mp->free;
+    mp->free = blk;                    /* set as new head of the free list */
+    ++mp->nfree;                       /* one more free block in this pool */
+	
 	RKH_iEXIT_CRITICAL();
 }
 
 
+#if RKH_MP_GET_BLKSIZE == 1
 RKH_MPBS_T 
 rkh_mp_get_blksize( RKHMP_T *mp )
 {
+    RK_MPCTR_T bs;
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mpd != ( RKHMP_T* )0 );
+
 	RKH_iENTER_CRITICAL();
+    bs = pmp->blk_size;
 	RKH_iEXIT_CRITICAL();
+
+    return bs;
 }
+#endif
 
 
+#if RKH_MP_EN_GET_NFREE == 1 && RKH_MP_REDUCED == 0
 RKH_MPNB_T 
 rkh_mp_get_nfree( RKHMP_T *mp )
 {
+    RKH_MPNB_T nfree;
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mpd != ( RKHMP_T* )0 );
+
 	RKH_iENTER_CRITICAL();
+    nfree = mp->nfree;
 	RKH_iEXIT_CRITICAL();
+
+    return nfree;
 }
+#endif
 
 
+#if RKH_MP_EN_GET_LWM == 1 && RKH_MP_REDUCED == 0
 RKH_MPNB_T 
 rkh_mp_get_low_wmark( RKHMP_T *mp )
 {
+    RKH_MPNB_T nmin;
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mpd != ( RKHMP_T* )0 );
+
 	RKH_iENTER_CRITICAL();
+    nmin = mp->nmin;
+	RKH_iEXIT_CRITICAL();
+
+    return nmin;
+}
+#endif
+
+
+#if RKH_MP_QUERY == 1 && RKH_MP_REDUCED == 0
+void 
+rkh_mp_query( RKHMP_T *mp, RKH_MPDATA_T *data )
+{
+	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mpd != ( RKHMP_T* )0 && data != NULL );
+
+	RKH_iENTER_CRITICAL();
+    data->blk_size = pmp->blk_size;
+    data->nblocks = pmp->ntot;
+    data->nfree = pmp->nfree;
+    data->nused = pmp->ntot - pmp->nfree;
 	RKH_iEXIT_CRITICAL();
 }
+#endif
 
 
+#if RKH_MP_EN_GET_INFO == 1 && RKH_MP_REDUCED == 0
 void 
 rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mp != ( RKHMP_T* )0 && mpi != ( RKH_MPI_T* )0 );
+
 	RKH_iENTER_CRITICAL();
+	*mpi = mp->mpi;
 	RKH_iEXIT_CRITICAL();
 }
 
@@ -118,7 +299,16 @@ rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
 void 
 rkh_mp_clear_info( RKHMP_T *mp )
 {
+	RKH_MPI_T *pmpi;
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( mp != ( RKHMP_T* )0 );
+	pmpi = &mp->mpi;
+
 	RKH_iENTER_CRITICAL();
+	pmpi->inits = pmpi->gets = pmpi->puts = pmpi->free = pmpi->full = 0;
 	RKH_iEXIT_CRITICAL();
 }
+#endif
+
+#endif
