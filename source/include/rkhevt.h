@@ -41,6 +41,9 @@
 #include "rkhcfg.h"
 
 
+#define RCE( e )			(( RKHEVT_T*)(e))
+
+
 /** 
  * 	Defines the size of event. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. This type is configurable via the 

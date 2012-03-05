@@ -121,20 +121,17 @@ typedef struct
 	 */
 
 	void **pout;
-	//char **pout;
 
 	/**
 	 * 	Points to the next place of queued item.
 	 */
 
 	void **pin;
-	//char **pin;
 
 	/**
 	 * 	Points to beginning of the queue storage area.
 	 */
 
-	//const char **pstart;
 	const void **pstart;
 
 	/**
@@ -142,6 +139,13 @@ typedef struct
 	 */
 
 	void **pend;
+
+	/**
+	 * 	Points to the associated SMA that receives the enqueued events.
+	 * 	If \a sma is set to NULL they never block.
+	 */
+
+	void *sma;
 
 	/** 
 	 * 	Minimum number of free elements ever in this queue.
@@ -180,9 +184,12 @@ typedef struct
  * 					the elements. This array must be declared as an array of 
  * 					void pointers.
  * 	\param ssize	storage size [in the units of void pointers].
+ * 	\param sma		pointer to associated SMA that receives the enqueued 
+ * 					events. If \a sma is set to NULL they never block.
  */
 
-void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize );
+void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
+					void *sma );
 
 
 /**

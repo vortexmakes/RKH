@@ -38,6 +38,7 @@
 
 #include "rkhassert.h"
 #include "rkhrq.h"
+#include "rkhrdy.h"
 #include "rkh.h"
 
 
@@ -62,7 +63,7 @@ RKH_THIS_MODULE( 4, rkhrq );
 
 
 void 
-rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize )
+rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, void *sma )
 {
 	RKH_iSR_CRITICAL;
 	RKH_iENTER_CRITICAL();
@@ -72,7 +73,8 @@ rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize )
 	q->pin = q->pout = ( void ** )sstart;
 	q->nelems = ssize;
 	q->qty = 0;
-	q->pend = ( void* )&sstart[ ssize ];
+	q->pend = ( void ** )&sstart[ ssize ];
+	q->sma = sma;	
 #if RKH_RQ_EN_GET_LWMARK == 1
 	q->nmin = 0;
 #endif
@@ -188,7 +190,10 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 	if( q->pin == q->pend )
 		q->pin = ( void ** )q->pstart;
 
-#if RKH_RQ_GET_LWMARK == 1
+	if( q->sma != ( void * )0 )
+		RKH_SMA_READY( ( RKHSMA_T * )( q->sma ) );
+
+#if RKH_RQ_EN_GET_LWMARK == 1
 	if( q->nmin > ( q->nelems - q->qty ) )
 		q->nmin = ( q->nelems - q->qty );
 #endif
@@ -223,6 +228,9 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 	++q->qty;
 
 	RKH_IUPDT_PUT( q );
+
+	if( q->sma != ( void * )0 )
+		RKH_SMA_READY( ( RKHSMA_T * )( q->sma ) );
 
 #if RKH_RQ_EN_GET_LWMARK == 1
 	if( q->nmin > ( q->nelems - q->qty ) )

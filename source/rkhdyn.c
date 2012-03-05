@@ -111,12 +111,11 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_iSR_CRITICAL;
 
     RKH_iENTER_CRITICAL();
-    if( (( RKHEVT_T *)e )->pool != 0 ) 
-        ++(( RKHEVT_T *)e )->dynamic_;
-
-	RKH_SMA_READY( sma );
-    rkh_rq_put_fifo( &sma->equeue, e );
+    if( RCE( e )->pool != 0 ) 
+        ++RCE( e )->dynamic_;
     RKH_iEXIT_CRITICAL();
+
+    rkh_rq_put_fifo( &sma->equeue, e );
 }
 #endif
 
@@ -128,12 +127,11 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_iSR_CRITICAL;
 
     RKH_iENTER_CRITICAL();
-    if( (( RKHEVT_T *)e )->pool != 0 ) 
-        ++(( RKHEVT_T *)e )->dynamic_;
-
-	RKH_SMA_READY( sma );
-    rkh_rq_put_lifo( &sma->equeue, e );
+    if( RCE( e )->pool != 0 ) 
+        ++RCE( e )->dynamic_;
     RKH_iEXIT_CRITICAL();
+
+    rkh_rq_put_lifo( &sma->equeue, e );
 }
 #endif
 
@@ -142,6 +140,13 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 HUInt 
 rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e )
 {
+	HUInt r;
+	RKH_iSR_CRITICAL;
+
+    RKH_iENTER_CRITICAL();
+	r = rkh_rq_get( &sma->equeue, e );
+	RKHASSERT( r == RKH_RQ_EMPTY );
+    RKH_iEXIT_CRITICAL();
 }
 #endif
 

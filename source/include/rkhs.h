@@ -44,13 +44,13 @@
 #define RKH_EQ_TYPE				RKHQ_T
 
 
-#define RKH_SMA_BLOCK( sma ) 						\
+#define RKH_SMA_BLOCK( sma ) 					\
 			    RKHASSERT( (sma)->eq.qty != 0 )
 
-#define RKH_SMA_READY( sma ) 						\
+#define RKH_SMA_READY( sma ) 					\
 			    rkh_rdyins( (sma)->romrkh->prio )
 
-#define RKH_SMA_UNREADY( sma ) 						\
+#define RKH_SMA_UNREADY( sma ) 					\
 			    rkh_rdyrem( (sma)->romrkh->prio )
 
 
