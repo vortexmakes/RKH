@@ -111,7 +111,7 @@ typedef struct
  *	This macro evaluates to TRUE if all SMAs are not ready to run.
  */
 
-#define rkh_rdyisempty()			\
+#define rkh_rdy_isempty()			\
 				(rkhrg.grp == 0)
 			
 
@@ -120,7 +120,7 @@ typedef struct
  *	This macro evaluates to TRUE if any SMA is ready to run.
  */
 
-#define rkh_rdyisnempty()			\
+#define rkh_rdy_isnempty()			\
 				(rkhrg.grp != 0)
 
 
@@ -136,7 +136,7 @@ typedef struct
  * 	\param p		number of SMA's priotity.
  */
 
-#define rkh_rdyins( p )											\
+#define rkh_rdy_ins( p )											\
 			do{													\
 				rkhrg.grp |= rkh_maptbl[(p) >> 3];				\
 				rkhrg.tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07];	\
@@ -154,7 +154,7 @@ typedef struct
  * 	\param p		number of SMA's priotity.
  */
 
-#define rkh_rdyrem( p )												\
+#define rkh_rdy_rem( p )												\
 			do{														\
 				if((rkhrg.tbl[(p)>>3] &= ~rkh_maptbl[(p)&0x07])==0)\
 					rkhrg.grp &= ~rkh_maptbl[(p)>>3];				\
@@ -175,7 +175,7 @@ typedef struct
  * 	\param p		the found highest priority is assigned to \a p.
  */
 
-#define rkh_rdyfindh( p )											\
+#define rkh_rdy_findh( p )											\
 			do{														\
 				(p) = rkh_unmaptbl[ rkhrg.grp ];					\
 				(p) = ((p) << 3) + rkh_unmaptbl[rkhrg.tbl[(p)]];	\

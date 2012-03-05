@@ -69,11 +69,11 @@ extern RKHRG_T rkhrg;
 			    RKHASSERT( (sma)->eq.qty != 0 )
 
 #define RKH_SMA_READY( sma ) 						\
-			    rkh_rdyins( (sma)->romrkh->prio ); 	\
+			    rkh_rdy_ins( (sma)->romrkh->prio ); 	\
 			    (void)SetEvent( sma_is_ready )
 
 #define RKH_SMA_UNREADY( sma ) 						\
-			    rkh_rdyrem( (sma)->romrkh->prio )
+			    rkh_rdy_rem( (sma)->romrkh->prio )
 
 #define RKH_WAIT_FOR_EVENTS() 						\
     ((void)WaitForSingleObject(sma_is_ready, (DWORD)INFINITE))

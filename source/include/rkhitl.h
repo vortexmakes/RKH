@@ -67,10 +67,10 @@
 /**	
  *	Version string of RKH.
  *
- *	Date: 02/01/2012
+ *	Date: xx/xx/2012
  */
 
-#define RKH_VERSION					"1.1.6"
+#define RKH_VERSION					"2.0"
 
 
 /**	
@@ -88,6 +88,9 @@
 #error "rkhport.h, Missing RKHROM: Qualifier for ROM data storage. \
 	See Porting chapter in readme file for more information"
 #endif
+
+
+#define FOREVER						for(;;)
 
 
 /* 	
@@ -889,26 +892,35 @@ struct rkh_t;
  * 	This callback is referenced from RKH_CREATE_HSM() macro.
  */
 
-#if RKH_SMA_EN_INIT_ARG_SMA == 1
-
-	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma );
-
-	#define rkh_exec_init( h )					\
-	{											\
-		if( (h)->romrkh->iaction != NULL )	\
-			(*(h)->romrkh->iaction)( h );	\
+#if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 1
+	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma, 
+										const struct rkhevt_t *e );
+	#define rkh_exec_init( h )										\
+	{																\
+		if( (h)->romrkh->iaction != NULL )							\
+			(*(h)->romrkh->iaction)( (h), (h)->romrkh->ievent );	\
 	}
-
-#else
-	
-	typedef void ( *RKHINIT_T )( void );
-
+#elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 0
+	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma );
 	#define rkh_exec_init( h )					\
 	{											\
+		if( (h)->romrkh->iaction != NULL )		\
+			(*(h)->romrkh->iaction)( (h) );		\
+	}
+#elif RKH_SMA_EN_INIT_ARG_SMA == 0 && RKH_SMA_EN_INIT_ARG_IE == 1
+	typedef void ( *RKHINIT_T )( const struct rkhevt_t *e );
+	#define rkh_exec_init( h )								\
+	{														\
+		if( (h)->romrkh->iaction != NULL )					\
+			(*(h)->romrkh->iaction)( (h)->romrkh->ievent );	\
+	}
+#else
+	typedef void ( *RKHINIT_T )( void );
+	#define rkh_exec_init( h )				\
+	{										\
 		if( (h)->romrkh->iaction != NULL )	\
 			(*(h)->romrkh->iaction)();		\
 	}
-
 #endif
 
 

@@ -43,16 +43,14 @@
 
 #define RKH_EQ_TYPE				RKHQ_T
 
-
 #define RKH_SMA_BLOCK( sma ) 					\
 			    RKHASSERT( (sma)->eq.qty != 0 )
 
 #define RKH_SMA_READY( sma ) 					\
-			    rkh_rdyins( (sma)->romrkh->prio )
+			    rkh_rdy_ins( (sma)->romrkh->prio )
 
 #define RKH_SMA_UNREADY( sma ) 					\
-			    rkh_rdyrem( (sma)->romrkh->prio )
-
+			    rkh_rdyr_em( (sma)->romrkh->prio )
 
 #define RKH_DYNE_TYPE			RKHMP_T
 

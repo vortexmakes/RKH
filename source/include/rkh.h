@@ -72,6 +72,16 @@ extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
+ * 	Priority arranged table of registered SMA.
+ * 	A unique priority number must be assigned to each SMA from 0 to 
+ * 	RKH_LOWEST_PRIO. The lower the number, the higher the priority. 
+ */
+
+extern RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];
+
+
+/**
+ * 	\brief
  * 	# of initialized event pools.
  */
 
@@ -1454,6 +1464,7 @@ void rkh_hk_start( void );
  *	hook function. 
  *
  */
+
 void rkh_hk_exit( void );
 
 

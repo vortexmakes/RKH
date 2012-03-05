@@ -67,19 +67,53 @@ rkh_init( void )
 }
 
 
-void rkh_enter( void )
+void 
+rkh_enter( void )
 {
+	RKHSMAT_T *shr;			/* SMA ready with highest priority */
+	const RKHEVT_T *e;
+	rkhui8_t prio;
+
+	/* Invoke the start hook */
+	rkh_hk_start();
+
+    FOREVER
+	{
+		RKH_DIS_INTERRUPT();
+
+        if( rkh_rdy_isnempty() )
+		{
+			rkh_rdy_findh( prio );
+            shr = rkh_sptbl[ prio ];
+			RKH_ENA_INTERRUPT();
+
+            rkh_sma_get( shr, e );
+			rkh_engine( shr, e );
+            rkh_gc( e );
+        }
+        else 
+            rkh_hk_idle();
+    }
+	
 }
 
 
 void rkh_exit( void )
 {
+	rkh_hk_exit();			/* Invoke the exit hook */
 }
 
 
 void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
+	//RKHREQUIRE( ((uint8_t)0 < prio) && (prio <= (uint8_t)QF_MAX_ACTIVE)
+	//	              && (stkSto == (void *)0) );
+    ( void )stksize;
+	rkh_rq_init( sma->equeue, qs, qsize, sma );
+    sma->prio = prio;
+    //QF_add_(me);                     /* make QF aware of this active object */
+    rkh_init_hsm( sma );
 }
 
 

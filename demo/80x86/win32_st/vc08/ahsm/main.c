@@ -126,6 +126,27 @@ print_banner( void )
 }
 
 
+/* Define hook functions */
+
+void 
+rkh_hk_start( void )
+{
+}
+
+
+void 
+rkh_hk_exit( void )
+{
+}
+
+
+void 
+rkh_hk_idle( void )
+{
+	RKH_ENA_INTERRUPT();
+}
+
+
 void 
 rkh_trace_open( void )
 {
