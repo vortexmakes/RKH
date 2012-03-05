@@ -41,19 +41,23 @@
 #include "rkh.h"
 
 
+#if RKH_RQ_EN == 1
+
 RKH_THIS_MODULE( 4, rkhrq );
 
 
 #if RKH_RQ_EN_GET_INFO == 1
-	#define RKH_IUPDT_INSERT( q )		++q->rqi.nputs
-	#define RKH_IUPDT_REMOVE( q )		++q->rqi.ngets
+	#define RKH_IUPDT_PUT( q )			++q->rqi.nputs
+	#define RKH_IUPDT_GET( q )			++q->rqi.ngets
 	#define RKH_IUPDT_EMPTY( q )		++q->rqi.nempty
 	#define RKH_IUPDT_FULL( q )			++q->rqi.nfull
+	#define RKH_IUPDT_READ( q )			++q->rqi.nreads
 #else
-	#define RKH_IUPDT_INSERT( q )
-	#define RKH_IUPDT_REMOVE( q )
+	#define RKH_IUPDT_PUT( q )
+	#define RKH_IUPDT_GET( q )
 	#define RKH_IUPDT_EMPTY( q )
 	#define RKH_IUPDT_FULL( q )
+	#define RKH_IUPDT_READ( q )
 #endif
 
 
@@ -64,15 +68,17 @@ rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize )
 	RKH_iENTER_CRITICAL();
 	RKH_iEXIT_CRITICAL();
 
-	q->pstart = q->pin = q->pout = sstart;
-	q->nelem = ssize;
+	q->pstart = sstart;
+	q->pin = q->pout = ( void ** )sstart;
+	q->nelems = ssize;
 	q->qty = 0;
-	q->pend = sstart + ssize;
+	q->pend = ( void* )&sstart[ ssize ];
 #if RKH_RQ_EN_GET_LWMARK == 1
 	q->nmin = 0;
 #endif
 #if RKH_RQ_EN_GET_INFO == 1
-	q->rqi.nputs = q->rqi.ngets = q->rqi.nempty = q->rqi.nfull = 0;
+	q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 
+		q->rqi.nfull = 0;
 #endif
 }
 
@@ -90,11 +96,12 @@ rkh_rq_is_full( RKHRQ_T *q )
 	qty = q->qty;
 	RKH_iEXIT_CRITICAL();
 
-	return qty == q->nelem;
+	return qty == q->nelems;
 }
 #endif
 
 
+#if RKH_RQ_EN_GET_NELEMS == 1
 RKH_RQNE_T 
 rkh_rq_get_num( RKHRQ_T *q )
 {
@@ -109,9 +116,10 @@ rkh_rq_get_num( RKHRQ_T *q )
 
 	return qty;
 }
+#endif
 
 
-#if RKH_RQ_EN_GET_LWM == 1
+#if RKH_RQ_EN_GET_LWMARK == 1
 RKH_RQNE_T 
 rkh_rq_get_lwm( RKHRQ_T *q )
 {
@@ -135,23 +143,22 @@ rkh_rq_get( RKHRQ_T *q, void *pe )
 	RKH_iSR_CRITICAL;
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
+	RKH_iENTER_CRITICAL();
 
 	if( q->qty == 0 )
 	{
 		RKH_IUPDT_EMPTY( q );
+		RKH_iEXIT_CRITICAL();
 		return RKH_RQ_EMPTY;
 	}
 
-	RKH_iENTER_CRITICAL();
-
-	pe = *q->pout;
-
-	if( ++q->pout >= q->pend )
-		q->pout = q->pstart;
-
+	pe = *q->pout++;
 	--q->qty;
-	RKH_IUPDT_REMOVE( q );
 
+	if( q->pout == q->pend )
+		q->pout = ( void ** )q->pstart;
+
+	RKH_IUPDT_GET( q );
 	RKH_iEXIT_CRITICAL();
 
 	//rktrace_remove_queue( qd );
@@ -166,64 +173,120 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_iENTER_CRITICAL();
+	RKHASSERT( q->qty < q->nelems );
 
-	if( q->qty >= q->nelem )
+	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );
 		RKH_iEXIT_CRITICAL();
-		return RKH_RQ_FULL;
+		return;
 	}
 
-	*q->pin = pe;
-
-	if( ++q->pin >= q->pend )
-		q->pin = q->pstart;
-
+	*q->pin++ = ( char* )pe;
 	++q->qty;
-#if RKH_RQ_GET_LWM == 1
-	if( q->nmin > ( q->nelem - q->qty ) )
-		q->nmin = ( q->nelem - q->qty );
-#endif
-	RKH_IUPDT_INSERT( q );
-	RKH_iEXIT_CRITICAL();
 
+	if( q->pin == q->pend )
+		q->pin = ( void ** )q->pstart;
+
+#if RKH_RQ_GET_LWMARK == 1
+	if( q->nmin > ( q->nelems - q->qty ) )
+		q->nmin = ( q->nelems - q->qty );
+#endif
+	RKH_IUPDT_PUT( q );
+	RKH_iEXIT_CRITICAL();
 	//rktrace_insert_queue( qd );
-	return RKH_RQ_OK;
 }
 
 
+#if RKH_RQ_EN_PUT_LIFO == 1
 void 
 rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_iENTER_CRITICAL();
+	RKHASSERT( q->qty < q->nelems );
+
+	if( q->qty >= q->nelems )
+	{
+		RKH_IUPDT_FULL( q );
+		RKH_iEXIT_CRITICAL();
+		return;
+	}
+
+	if( q->pout == q->pstart )
+		q->pout = q->pend;
+
+	--q->pout;
+	*q->pout = ( void * )pe;
+	++q->qty;
+
+	RKH_IUPDT_PUT( q );
+
+#if RKH_RQ_EN_GET_LWMARK == 1
+	if( q->nmin > ( q->nelems - q->qty ) )
+		q->nmin = ( q->nelems - q->qty );
+#endif
+
 	RKH_iEXIT_CRITICAL();
+	//rktrace_insert_queue( qd );
 }
+#endif
 
 
+#if RKH_RQ_EN_DEPLETE == 1
 void 
 queue_deplete( RKHRQ_T *q )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( q != ( RKHRQ_T* )0 );
 	RKH_iENTER_CRITICAL();
+	q->qty = 0;
+	q->pin = q->pout = ( void ** )q->pstart;
 	RKH_iEXIT_CRITICAL();
+	
+	//rktrace_deplete_queue( qd );
 }
+#endif
 
 
+#if RKH_RQ_EN_READ == 1
 HUInt 
 rkh_rq_read( RKHRQ_T *q, void *pe )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_iENTER_CRITICAL();
+
+	if( q->qty == 0 )
+	{
+		RKH_IUPDT_EMPTY( q );
+		RKH_iEXIT_CRITICAL();
+		return RKH_RQ_EMPTY;
+	}
+
+	pe = *q->pout;
+
+	RKH_IUPDT_READ( q );
 	RKH_iEXIT_CRITICAL();
+
+	//rktrace_read_queue( qd );
+	return RKH_RQ_OK;
 }
+#endif
 
 
+#if RKH_RQ_EN_GET_INFO == 1
 void 
 rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 {
 	RKH_iSR_CRITICAL;
+
 	RKH_iENTER_CRITICAL();
+	*pqi = q->rqi;
 	RKH_iEXIT_CRITICAL();
 }
 
@@ -231,7 +294,15 @@ rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 void 
 rkh_rq_clear_info( RKHRQ_T *q )
 {
+	RKH_RQI_T *prqi;
 	RKH_iSR_CRITICAL;
+
+	prqi = &q->rqi;
+
 	RKH_iENTER_CRITICAL();
+	prqi->nputs = prqi->ngets = prqi->nreads = prqi->nempty = prqi->nfull = 0;
 	RKH_iEXIT_CRITICAL();
 }
+#endif
+
+#endif

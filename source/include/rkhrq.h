@@ -91,6 +91,7 @@ typedef struct rkh_qinfo_t
 {
 	rkhui16_t nputs;		/*	# of put requests */
 	rkhui16_t ngets;		/*	# of get requests */
+	rkhui16_t nreads;		/*	# of queue read requests */
 	rkhui16_t nempty;		/*	# of queue empty retrieves */
 	rkhui16_t nfull;		/*	# of queue full retrieves */
 } RKH_RQI_T;
@@ -107,7 +108,7 @@ typedef struct
 	 * 	Number of elements.
 	 */
 
-	RKH_RQNE_T nelem;
+	RKH_RQNE_T nelems;
 
 	/** 	
 	 *  Number of elements currently in the queue.
@@ -119,25 +120,28 @@ typedef struct
 	 *	Points to the free next place in the storage area.
 	 */
 
-	void *pout;
+	void **pout;
+	//char **pout;
 
 	/**
 	 * 	Points to the next place of queued item.
 	 */
 
-	void *pin;
+	void **pin;
+	//char **pin;
 
 	/**
 	 * 	Points to beginning of the queue storage area.
 	 */
 
+	//const char **pstart;
 	const void **pstart;
 
 	/**
 	 * 	Points to the end of the queue storage area.
 	 */
 
-	char *pend;
+	void **pend;
 
 	/** 
 	 * 	Minimum number of free elements ever in this queue.
@@ -344,7 +348,7 @@ HUInt rkh_rq_read( RKHRQ_T *q, void *pe );
  *
  * 	\param q		pointer to previously created queue.
  * 	\param pqi		pointer to the buffer into which the performance 
- * 					information will be copied by reference.
+ * 					information will be copied.
  */
 
 void rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi );

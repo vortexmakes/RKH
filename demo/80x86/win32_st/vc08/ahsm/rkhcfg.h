@@ -100,6 +100,9 @@
 #define RKH_RQ_EN_GET_INFO				1	/* 	CFG01 */ 
 #define	RKH_RQ_EN_READ					1	/* 	CFG01 */ 
 #define	RKH_RQ_EN_DEPLETE				1	/* 	CFG01 */ 
+#define	RKH_RQ_EN_IS_FULL				1	/* 	CFG01 */ 
+#define	RKH_RQ_EN_GET_NELEMS			1	/* 	CFG01 */ 
+#define	RKH_RQ_EN_PUT_LIFO				1	/* 	CFG01 */ 
 
 #define RKH_MP_EN						1	/* 	CFG01 */ 
 #define RKH_MP_MAX						8	/* 	CFG01 */ 
