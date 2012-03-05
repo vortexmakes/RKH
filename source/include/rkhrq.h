@@ -175,7 +175,7 @@ typedef struct
  * 	\param sstart	storage start. Pointer to an array of pointers that holds 
  * 					the elements. This array must be declared as an array of 
  * 					void pointers.
- * 	\param ssize	storage size [in bytes].
+ * 	\param ssize	storage size [in the units of void pointers].
  */
 
 void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize );

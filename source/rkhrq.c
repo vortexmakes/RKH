@@ -44,48 +44,118 @@
 RKH_THIS_MODULE( 4, rkhrq );
 
 
+#if RKH_RQ_EN_GET_INFO == 1
+	#define RKH_IUPDT_INSERT( q )		++q->rqi.nputs
+	#define RKH_IUPDT_REMOVE( q )		++q->rqi.ngets
+	#define RKH_IUPDT_EMPTY( q )		++q->rqi.nempty
+	#define RKH_IUPDT_FULL( q )			++q->rqi.nfull
+#else
+	#define RKH_IUPDT_INSERT( q )
+	#define RKH_IUPDT_REMOVE( q )
+	#define RKH_IUPDT_EMPTY( q )
+	#define RKH_IUPDT_FULL( q )
+#endif
+
+
 void 
 rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize )
 {
 	RKH_iSR_CRITICAL;
 	RKH_iENTER_CRITICAL();
 	RKH_iEXIT_CRITICAL();
+
+	q->pstart = q->pin = q->pout = sstart;
+	q->nelem = ssize;
+	q->qty = 0;
+	q->pend = sstart + ssize;
+#if RKH_RQ_EN_GET_LWMARK == 1
+	q->nmin = 0;
+#endif
+#if RKH_RQ_EN_GET_INFO == 1
+	q->rqi.nputs = q->rqi.ngets = q->rqi.nempty = q->rqi.nfull = 0;
+#endif
 }
 
 
+#if RKH_RQ_EN_IS_FULL == 1
 HUInt 
 rkh_rq_is_full( RKHRQ_T *q )
 {
+	RKH_RQNE_T qty;
 	RKH_iSR_CRITICAL;
+	
+	RKHASSERT( q != ( RKHRQ_T* )0 );
+	
 	RKH_iENTER_CRITICAL();
+	qty = q->qty;
 	RKH_iEXIT_CRITICAL();
+
+	return qty == q->nelem;
 }
+#endif
 
 
 RKH_RQNE_T 
 rkh_rq_get_num( RKHRQ_T *q )
 {
+	RKH_RQNE_T qty;
 	RKH_iSR_CRITICAL;
+	
+	RKHASSERT( q != ( RKHRQ_T* )0 );
+	
 	RKH_iENTER_CRITICAL();
+	qty = q->qty;
 	RKH_iEXIT_CRITICAL();
+
+	return qty;
 }
 
 
+#if RKH_RQ_EN_GET_LWM == 1
 RKH_RQNE_T 
 rkh_rq_get_lwm( RKHRQ_T *q )
 {
+	RKH_RQNE_T nmin;
 	RKH_iSR_CRITICAL;
+	
+	RKHASSERT( q != ( RKHRQ_T* )0 );
+	
 	RKH_iENTER_CRITICAL();
+	nmin = q->nmin;
 	RKH_iEXIT_CRITICAL();
+
+	return nmin;
 }
+#endif
 
 
 HUInt 
 rkh_rq_get( RKHRQ_T *q, void *pe )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
+
+	if( q->qty == 0 )
+	{
+		RKH_IUPDT_EMPTY( q );
+		return RKH_RQ_EMPTY;
+	}
+
 	RKH_iENTER_CRITICAL();
+
+	pe = *q->pout;
+
+	if( ++q->pout >= q->pend )
+		q->pout = q->pstart;
+
+	--q->qty;
+	RKH_IUPDT_REMOVE( q );
+
 	RKH_iEXIT_CRITICAL();
+
+	//rktrace_remove_queue( qd );
+	return RKH_RQ_OK;
 }
 
 
@@ -93,8 +163,32 @@ void
 rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 {
 	RKH_iSR_CRITICAL;
+
+	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_iENTER_CRITICAL();
+
+	if( q->qty >= q->nelem )
+	{
+		RKH_IUPDT_FULL( q );
+		RKH_iEXIT_CRITICAL();
+		return RKH_RQ_FULL;
+	}
+
+	*q->pin = pe;
+
+	if( ++q->pin >= q->pend )
+		q->pin = q->pstart;
+
+	++q->qty;
+#if RKH_RQ_GET_LWM == 1
+	if( q->nmin > ( q->nelem - q->qty ) )
+		q->nmin = ( q->nelem - q->qty );
+#endif
+	RKH_IUPDT_INSERT( q );
 	RKH_iEXIT_CRITICAL();
+
+	//rktrace_insert_queue( qd );
+	return RKH_RQ_OK;
 }
 
 
