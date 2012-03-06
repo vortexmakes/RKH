@@ -159,10 +159,21 @@
 	
 	#define RKH_THIS_MODULE( __fnum, __fname )						\
 																	\
-							enum { F_NUM = __fnum }; 				\
-							void __dummy##__fnum( void ){}			\
-							static RKHROM char * const rs_file = #__fname;
+					enum { F_NUM = __fnum }; 						\
+					void __dummy##__fnum( void ){}					\
+					static RKHROM char * const rs_file = #__fname;
 
+
+	/**
+	 *	\brief
+	 *	This macro appears at the top of each C/C++ source file defining 
+	 *	a name for that file. This macro use a 
+	 */
+	
+	#define RKH_THIS_FILE											\
+																	\
+					enum { F_NUM = 0 }; 							\
+					static RKHROM char * const rs_file = __FILE__;
 	/**
 	 * 	\brief 
 	 * 	The RKHASSERT() macro is used to check expressions that ought to 

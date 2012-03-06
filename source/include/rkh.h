@@ -281,6 +281,14 @@ extern RKHROM rkhui8_t rkh_unmaptbl[ 256 ];
 
 /**
  * 	\brief
+ * 	String describing the RKH version. 
+ */
+
+extern RKHROM char rkh_version[];
+
+
+/**
+ * 	\brief
  * 	Event pool list.
  */
 
@@ -940,6 +948,21 @@ void rkh_exit( void );
 
 /**
  * 	\brief
+ * 	Keep tracks and updates the started timers. 
+ *
+ * 	If one or more timers expires the assigned event is directly posted into 
+ * 	the state machine application queue and associated hook function is 
+ * 	executed (if it's used). The expiration events of timers that expire at 
+ * 	the same time are executed in the order they were started.
+ * 	This function must be placed where will be incrementing the system tick. 
+ * 	Normally this is placed in a timer ISR routine.
+ */
+
+void rkh_time_tick( void );
+
+
+/**
+ * 	\brief
  * 	Initializes and activates a previously created state machine application.
  *
  * 	A state machine application (SMA) is declared with the RKHSMA_T data type 
@@ -978,13 +1001,13 @@ void rkh_exit( void );
  * 						application.
  * 	\param qs			base address of the event storage area. A message 
  * 						storage area is declared as an array of pointers to 
- * 						voids.
+ * 						RKH events.
  * 	\param qsize		size of the storage event area [in number of entries].
  * 	\param stks			starting address of the stack's memory area.
  * 	\param stksize		size of stack memory area [in bytes].
  */
 
-void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize );
 
 

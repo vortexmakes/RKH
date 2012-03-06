@@ -64,13 +64,45 @@
 
 #include "rkhevt.h"
 
+
 /**	
- *	Version string of RKH.
+ * 	\brief
+ *	This macro expands to the binary representation of the RKH version.
  *
+ *	The version number is composed as 0xABCC, where:
+ *	the number A (1-digit) denoted the major revision, the number B (1-digit)
+ *	denoted the minor revision, and the number C (2-digit) indicated the 
+ *	release number. For example, the code for 2.2.04 is 0x2204.
+ *	
  *	Date: xx/xx/2012
  */
 
-#define RKH_VERSION					"2.0"
+#define RKH_VERSION_CODE			0x2000U
+
+
+/**
+ * 	\brief
+ * 	This macro retrieves a pointer to string describing the RKH version. 
+ * 	For example, "2.2.04".
+ */
+
+#define RKH_RELEASE					rkh_version
+
+
+/**
+ * 	\brief
+ * 	This is the macro used to build an integer version code from the 
+ * 	individual numbers that build up a version number. 
+ *
+ * 	For example, RKH_VERSION(2,2,04) expands to 0x2204. This macro is very 
+ * 	useful when needs to compare the current version and a known checkpoint.
+ *
+ * 	\param a		major revision
+ * 	\param b		minor revision
+ * 	\param c		release number
+ */
+
+#define RKH_VERSION( a, b, c )
 
 
 /**	

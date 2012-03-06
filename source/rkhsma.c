@@ -36,6 +36,22 @@
 RKH_THIS_MODULE( 8, rkhsma );
 
 
+/*
+ * 	String describing the RKH version.
+ */
+
+RKHROM char rkh_version[] = 
+{
+	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 12)	& 0x0F) + (rkhui8_t)'0' ),
+	(char)'.',
+	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 8)	& 0x0F) + (rkhui8_t)'0' ),
+	(char)'.',
+	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 4)	& 0x0F) + (rkhui8_t)'0' ),
+	(char)( (rkhui8_t)(RKH_VERSION_CODE 		& 0x0F) + (rkhui8_t)'0' ),
+	(char)'\0',
+};
+
+
 RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
 
 

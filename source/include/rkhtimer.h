@@ -151,20 +151,6 @@ typedef struct rkht_t
 
 /**
  * 	\brief
- * 	Keep tracks and updates the started timers. 
- * 	If one or more timers expires the assigned event is directly posted into 
- * 	the state machine application queue and associated hook function is 
- * 	executed (if it's used). The expiration events of timers that expire at 
- * 	the same time are executed in the order they were started.
- * 	This function must be placed where will be incrementing the system tick. 
- * 	Normally this is placed in a timer ISR routine.
- */
-
-void rkh_timer_handler( void );
-
-
-/**
- * 	\brief
  *	Initializes the previously allocated timer structure RKHT_T. 
  *
  * 	A timer is declared with the RKHT_T data type and is defined with the 

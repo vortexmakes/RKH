@@ -113,7 +113,7 @@ rkh_exit( void )
 
 
 void 
-rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
 	RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA ) 
