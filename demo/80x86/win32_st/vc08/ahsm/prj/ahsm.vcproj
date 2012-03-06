@@ -211,6 +211,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\..\..\source\rkhsma.c"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\..\..\source\rkhtbl.c"
 					>
 				</File>

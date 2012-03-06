@@ -31,33 +31,78 @@
 #include "rkh.h"
 
 
+RKH_THIS_MODULE( 9, rkhport );
+
 CRITICAL_SECTION csection;		/* Win32 critical section */
-HANDLE sma_is_ready;          	/* Win32 event to signal when SMAs are ready */
+HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
+
+static rkhui8_t running;
 
 
 void 
 rkh_init( void )
 {
+    InitializeCriticalSection( &csection );
+    sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
 }
 
 
-void rkh_enter( void )
+void 
+rkh_enter( void )
 {
+	rkhui8_t prio;
+	RKHSMA_T *sma;
+	RKHEVT_T *e;
+
+    rkh_hk_start();
+    running = 1;
+
+    while( running )
+	{
+        RKH_ENTER_CRITICAL( dummy );
+        if( rkh_rdy_isnot_empty( rkhrg ) ) 
+		{
+			rkh_rdy_findh( rkhrg, prio )
+            RKH_EXIT_CRITICAL( dummy );
+
+            sma = rkh_sptbl[ prio ];
+            e = rkh_sma_get( sma );
+            rkh_engine( sma, e );
+            rkh_gc( e );
+        }
+        else
+            rkh_hk_idle();
+    }
+
+    rkh_hk_exit();
+    CloseHandle( sma_is_rdy );
+    DeleteCriticalSection( &csection );	
 }
 
 
-void rkh_exit( void )
+void 
+rkh_exit( void )
 {
+    running = 0;	
 }
 
 
-void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+void 
+rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
+	RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA ) 
+						&& ( stks == ( void * )0 ) );
+    ( void )stksize;
+	rkh_rq_init( &sma->equeue, qs, qsize, sma );
+	rkh_sma_register( sma );
+    rkh_init_hsm( sma );
 }
 
 
-void rkh_sma_terminate( RKHSMA_T *sma )
+void 
+rkh_sma_terminate( RKHSMA_T *sma )
 {
+	rkh_sma_unregister( sma );
 }

@@ -29,7 +29,6 @@
  */
 
 
-#include "rkhrq.h"
 #include "rkhassert.h"
 #include "rkh.h"
 
@@ -37,4 +36,34 @@
 RKH_THIS_MODULE( 8, rkhsma );
 
 
-RKHSMA_T *rkh_sptbl[];			/* registered SMA table */
+RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
+
+
+void 
+rkh_sma_register( RKHSMA_T *sma )
+{
+    rkhui8_t prio = sma->romrkh->prio;
+	RKH_iSR_CRITICAL;
+
+    RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )
+              && ( rkh_sptbl[ prio ] == ( RKHSMA_T * )0 ) );
+
+	RKH_iENTER_CRITICAL();
+    rkh_sptbl[ prio ] = sma;
+	RKH_iEXIT_CRITICAL();
+}
+
+
+void 
+rkh_sma_unregister( RKHSMA_T *sma )
+{
+    rkhui8_t prio = sma->romrkh->prio;
+	RKH_iSR_CRITICAL;
+
+    RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )
+              && ( rkh_sptbl[ prio ] == sma ) );
+
+	RKH_iENTER_CRITICAL();
+    rkh_sptbl[ prio ] = ( RKHSMA_T * )0;
+	RKH_iEXIT_CRITICAL();
+}

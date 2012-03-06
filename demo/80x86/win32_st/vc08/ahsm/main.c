@@ -17,7 +17,6 @@
 
 #define tostring( expr )		#expr
 #define ESC						0x1B
-#define forever					for(;;)
 #define kbmap( c )				( c - '0' )
 
 #ifdef __W32STVC08__
@@ -229,7 +228,7 @@ main( void )
 	print_banner();
 	rkh_trace_open();
 
-	forever
+	FOREVER
 	{
 		c = mygetch();
 		

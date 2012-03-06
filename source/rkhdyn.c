@@ -137,16 +137,17 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 
 
 #if RKH_EN_NATIVE_EQUEUE == 1
-HUInt 
-rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e )
+RKHEVT_T *
+rkh_sma_get( RKHSMA_T *sma )
 {
-	HUInt r;
+	RKHEVT_T *e;
 	RKH_iSR_CRITICAL;
 
     RKH_iENTER_CRITICAL();
-	r = rkh_rq_get( &sma->equeue, e );
-	RKHASSERT( r == RKH_RQ_EMPTY );
+	e = rkh_rq_get( &sma->equeue );
+	RKHASSERT( e != ( RKHEVT_T * )0 );
     RKH_iEXIT_CRITICAL();
+	return e;
 }
 #endif
 
@@ -163,17 +164,16 @@ RKHEVT_T *
 rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 {
     RKHEVT_T *e;
-	HUInt r;
 	RKH_iSR_CRITICAL;
 	
-										/* get an event from deferred queue */
-    if( ( r = rkh_rq_get( q, e ) ) == RKH_RQ_OK )       /* event available? */
+	e = rkh_rq_get( sma );		/* get an event from deferred queue */
+    if( e != ( RKHEVT_T * ) )	/* event available? */
 	{
 		/* post it to the front of the SMA's queue */
 		rkh_sma_post_lifo( sma, e );
         RKH_iENTER_CRITICAL();
 
-        if( e->dynamic_ != 0 )           		  /* is it a dynamic event? */
+        if( e->dynamic_ != 0 )	/* is it a dynamic event? */
 		{
             /* 
 			 * After posting to the SMA's queue the event must be referenced
@@ -191,7 +191,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
         }
 		RKH_iEXIT_CRITICAL();
     }
-    return r != 0 ? NULL : e;
+    return e;
 }
 #endif
 

@@ -41,7 +41,7 @@
 
 
 extern CRITICAL_SECTION csection;
-extern HANDLE sma_is_ready;
+extern HANDLE sma_is_rdy;
 extern RKHRG_T rkhrg;
 
 
@@ -65,18 +65,18 @@ extern RKHRG_T rkhrg;
 #define RKH_THREAD_TYPE             	HANDLE
 
 
-#define RKH_SMA_BLOCK( sma ) 						\
+#define RKH_SMA_BLOCK( sma ) 								\
 			    RKHASSERT( (sma)->eq.qty != 0 )
 
-#define RKH_SMA_READY( sma ) 						\
-			    rkh_rdy_ins( (sma)->romrkh->prio ); 	\
-			    (void)SetEvent( sma_is_ready )
+#define RKH_SMA_READY( rg, sma ) 							\
+			    rkh_rdy_ins( (rg), (sma)->romrkh->prio ); 	\
+			    (void)SetEvent( sma_is_rdy )
 
-#define RKH_SMA_UNREADY( sma ) 						\
-			    rkh_rdy_rem( (sma)->romrkh->prio )
+#define RKH_SMA_UNREADY( rg, sma ) 							\
+			    rkh_rdy_rem( (rg), (sma)->romrkh->prio )
 
-#define RKH_WAIT_FOR_EVENTS() 						\
-    ((void)WaitForSingleObject(sma_is_ready, (DWORD)INFINITE))
+#define RKH_WAIT_FOR_EVENTS() 								\
+    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 
 
 #define RKH_DYNE_TYPE					RKHMP_T

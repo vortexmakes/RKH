@@ -45,50 +45,6 @@
 
 
 /**
- * 	\brief
- * 	rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a 
- * 	bit mask.
- */
-
-extern RKHROM rkhui8_t rkh_maptbl[ 8 ];
-
-
-/**
- * 	\brief
- * 	rkh_unmaptbl[] is a table in ROM, used to return the bit position of the 
- * 	highest priority bit set - a number between 0 and 7.
- */
-
-extern RKHROM rkhui8_t rkh_unmaptbl[ 256 ];
-
-
-/**
- * 	\brief
- * 	Event pool list.
- */
-
-extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
-
-
-/**
- * 	\brief
- * 	Priority arranged table of registered SMA.
- * 	A unique priority number must be assigned to each SMA from 0 to 
- * 	RKH_LOWEST_PRIO. The lower the number, the higher the priority. 
- */
-
-extern RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];
-
-
-/**
- * 	\brief
- * 	# of initialized event pools.
- */
-
-extern rkhui8_t rkhnpool;
-
-
-/**
  * 	\brief 
  * 	Defines the data structure into which the collected performance 
  * 	information for state machine is stored.
@@ -290,6 +246,53 @@ typedef struct rkhsma_t
 #endif	
 
 } RKHSMA_T;
+
+
+/**
+ * 	\brief
+ * 	Priority arranged table of registered SMA.
+ *
+ * 	Register a state machine application into the framework implies to store 
+ * 	a pointer to the SMA in the priority table. A unique priority number must 
+ * 	be assigned to each SMA from 0 to RKH_LOWEST_PRIO. The lower the number, 
+ * 	the higher the priority. 
+ */
+
+extern RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];
+
+
+/**
+ * 	\brief
+ * 	rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a 
+ * 	bit mask.
+ */
+
+extern RKHROM rkhui8_t rkh_maptbl[ 8 ];
+
+
+/**
+ * 	\brief
+ * 	rkh_unmaptbl[] is a table in ROM, used to return the bit position of the 
+ * 	highest priority bit set - a number between 0 and 7.
+ */
+
+extern RKHROM rkhui8_t rkh_unmaptbl[ 256 ];
+
+
+/**
+ * 	\brief
+ * 	Event pool list.
+ */
+
+extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
+
+
+/**
+ * 	\brief
+ * 	# of initialized event pools.
+ */
+
+extern rkhui8_t rkhnpool;
 
 
 /**
@@ -1145,11 +1148,11 @@ void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
  *	received.
  *
  *	\return
- * 	'0' if an element was successfully removed from the queue, otherwise 
- * 	error code.
+ * 	A non-NULL pointer indicates that a event pointer was available, 
+ * 	otherwise a NULL pointer.
  */
 
-HUInt rkh_sma_get( RKHSMA_T *sma, RKHEVT_T *e );
+RKHEVT_T *rkh_sma_get( RKHSMA_T *sma );
 
 
 /**
@@ -1189,6 +1192,28 @@ void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
  */
 
 void rkh_sma_clear_info( RKHSMA_T *sma );
+
+
+/**
+ * 	\brief
+ * 	Registers a state machine application into the framework, which implies 
+ * 	to store a pointer to the SMA in the priority table.
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ */
+
+void rkh_sma_register( RKHSMA_T *sma );
+
+
+/**
+ * 	\brief
+ *	Removes the SMA from the priority table, and thus from the framework, 
+ *	by simply replacing the link to the SMA being deleted with a NULL pointer.
+ * 	
+ * 	\param sma		pointer to previously created state machine application.
+ */
+
+void rkh_sma_unregister( RKHSMA_T *sma );
 
 
 /**

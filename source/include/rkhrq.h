@@ -259,11 +259,9 @@ RKH_RQNE_T rkh_rq_get_lwm( RKHRQ_T *q );
  * 					copied.
  *
  * 	\return
- * 	RKH_RQ_OK if an element was successfully removed from the queue, otherwise 
- * 	error code.
  */
 
-HUInt rkh_rq_get( RKHRQ_T *q, void *pe );
+void *rkh_rq_get( RKHRQ_T *q );
 
 
 /**

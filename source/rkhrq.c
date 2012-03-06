@@ -139,22 +139,23 @@ rkh_rq_get_lwm( RKHRQ_T *q )
 #endif
 
 
-HUInt 
-rkh_rq_get( RKHRQ_T *q, void *pe )
+void *
+rkh_rq_get( RKHRQ_T *q  )
 {
+	void *e = ( void * )0;
 	RKH_iSR_CRITICAL;
 
-	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
+	RKHASSERT( q != ( RKHRQ_T* )0 );
 	RKH_iENTER_CRITICAL();
 
 	if( q->qty == 0 )
 	{
 		RKH_IUPDT_EMPTY( q );
 		RKH_iEXIT_CRITICAL();
-		return RKH_RQ_EMPTY;
+		return e;
 	}
 
-	pe = *q->pout++;
+	e = *q->pout++;
 	--q->qty;
 
 	if( q->pout == q->pend )
@@ -164,7 +165,7 @@ rkh_rq_get( RKHRQ_T *q, void *pe )
 	RKH_iEXIT_CRITICAL();
 
 	//rktrace_remove_queue( qd );
-	return RKH_RQ_OK;
+	return e;
 }
 
 
@@ -191,7 +192,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 		q->pin = ( void ** )q->pstart;
 
 	if( q->sma != ( void * )0 )
-		RKH_SMA_READY( ( RKHSMA_T * )( q->sma ) );
+		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 
 #if RKH_RQ_EN_GET_LWMARK == 1
 	if( q->nmin > ( q->nelems - q->qty ) )
@@ -230,7 +231,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 	RKH_IUPDT_PUT( q );
 
 	if( q->sma != ( void * )0 )
-		RKH_SMA_READY( ( RKHSMA_T * )( q->sma ) );
+		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 
 #if RKH_RQ_EN_GET_LWMARK == 1
 	if( q->nmin > ( q->nelems - q->qty ) )

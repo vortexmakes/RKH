@@ -109,19 +109,23 @@ typedef struct
 /**
  * 	\brief
  *	This macro evaluates to TRUE if all SMAs are not ready to run.
+ *
+ * 	\param rg		ready group.
  */
 
-#define rkh_rdy_isempty()			\
-				(rkhrg.grp == 0)
+#define rkh_rdy_is_empty( rg )			\
+					( (rg).grp == 0 )
 			
 
 /**
  * 	\brief
  *	This macro evaluates to TRUE if any SMA is ready to run.
+ *
+ * 	\param rg		ready group.
  */
 
-#define rkh_rdy_isnempty()			\
-				(rkhrg.grp != 0)
+#define rkh_rdy_isnot_empty( rg )		\
+					( (rg).grp != 0 )
 
 
 /**
@@ -134,12 +138,13 @@ typedef struct
  * 	a table in ROM, used to equate an index from 0 to 7 to a bit mask.
  *
  * 	\param p		number of SMA's priotity.
+ * 	\param rg		ready group.
  */
 
-#define rkh_rdy_ins( p )											\
+#define rkh_rdy_ins( rg, p )									\
 			do{													\
-				rkhrg.grp |= rkh_maptbl[(p) >> 3];				\
-				rkhrg.tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07];	\
+				(rg).grp |= rkh_maptbl[(p) >> 3];				\
+				(rg).tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07];	\
 			} while(0);
 
 
@@ -154,10 +159,10 @@ typedef struct
  * 	\param p		number of SMA's priotity.
  */
 
-#define rkh_rdy_rem( p )												\
+#define rkh_rdy_rem( rg, p )										\
 			do{														\
-				if((rkhrg.tbl[(p)>>3] &= ~rkh_maptbl[(p)&0x07])==0)\
-					rkhrg.grp &= ~rkh_maptbl[(p)>>3];				\
+				if(((rg).tbl[(p)>>3] &= ~rkh_maptbl[(p)&0x07])==0)	\
+					(rg).grp &= ~rkh_maptbl[(p)>>3];				\
 			} while(0);
 
 
@@ -175,10 +180,10 @@ typedef struct
  * 	\param p		the found highest priority is assigned to \a p.
  */
 
-#define rkh_rdy_findh( p )											\
-			do{														\
-				(p) = rkh_unmaptbl[ rkhrg.grp ];					\
-				(p) = ((p) << 3) + rkh_unmaptbl[rkhrg.tbl[(p)]];	\
+#define rkh_rdy_findh( rg, p )									\
+			do{													\
+				(p) = rkh_unmaptbl[ (rg).grp ];					\
+				(p) = ((p) << 3) + rkh_unmaptbl[(rg).tbl[(p)]];	\
 			} while(0);
 
 

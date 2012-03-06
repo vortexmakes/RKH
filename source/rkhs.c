@@ -71,7 +71,7 @@ void
 rkh_enter( void )
 {
 	RKHSMAT_T *shr;			/* SMA ready with highest priority */
-	const RKHEVT_T *e;
+	RKHEVT_T *e;
 	rkhui8_t prio;
 
 	/* Invoke the start hook */
@@ -81,44 +81,54 @@ rkh_enter( void )
 	{
 		RKH_DIS_INTERRUPT();
 
-        if( rkh_rdy_isnempty() )
+        if( rkh_rdy_isnot_empty( rkhrg ) )
 		{
-			rkh_rdy_findh( prio );
+			rkh_rdy_findh( rkhrg, prio );
             shr = rkh_sptbl[ prio ];
 			RKH_ENA_INTERRUPT();
 
-            rkh_sma_get( shr, e );
+            e = rkh_sma_get( shr );
 			rkh_engine( shr, e );
             rkh_gc( e );
         }
         else 
+		/*
+		 * rkh_hk_idle() must be called with interrupts DISABLED because the 
+		 * determination of the idle condition (no events in the queues) can 
+		 * change at any time by an interrupt posting events to a queue. The 
+		 * rkh_hk_idle() MUST enable interrups internally, perhaps at the 
+		 * same time as putting the CPU into a power-saving mode.
+		 */			
             rkh_hk_idle();
     }
 	
 }
 
 
-void rkh_exit( void )
+void 
+rkh_exit( void )
 {
 	rkh_hk_exit();			/* Invoke the exit hook */
 }
 
 
-void rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
+void 
+rkh_sma_activate(	RKHSMA_T *sma, const void **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
-	//RKHREQUIRE( ((uint8_t)0 < prio) && (prio <= (uint8_t)QF_MAX_ACTIVE)
-	//	              && (stkSto == (void *)0) );
+	RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA ) 
+						&& ( stks == ( void * )0 ) );
     ( void )stksize;
-	rkh_rq_init( sma->equeue, qs, qsize, sma );
-    sma->prio = prio;
-    //QF_add_(me);                     /* make QF aware of this active object */
+	rkh_rq_init( &sma->equeue, qs, qsize, sma );
+	rkh_sma_register( sma );
     rkh_init_hsm( sma );
 }
 
 
-void rkh_sma_terminate( RKHSMA_T *sma )
+void 
+rkh_sma_terminate( RKHSMA_T *sma )
 {
+	rkh_sma_unregister( sma );
 }
 
 #endif
