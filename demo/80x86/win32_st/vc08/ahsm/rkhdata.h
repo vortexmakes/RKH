@@ -9,7 +9,7 @@
 
 enum
 {
-	MY, RKH_NUM_RKHS
+	MY
 };
 
 

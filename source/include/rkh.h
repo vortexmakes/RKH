@@ -101,11 +101,25 @@ typedef struct romrkh_t
 	 * 	Represents the top state of state diagram. String terminated in '\\0' 
 	 * 	that represents the name of state machine. When a particular user 
 	 * 	application requires runtime debugging (native tracing features), 
-	 * 	the option RKH_EN_SMA_NAME must be enabled.
+	 * 	the option RKH_EN_SMA_NAME must be set to one.
 	 */
 
 #if RKH_SMA_EN_NAME	== 1
 	const char *name;
+#endif
+
+	/**	
+ 	 * 	\brief
+	 * 	ID of state machine application. 
+	 * 	
+	 * 	ID of state machine application. This number allows to uniquely 
+	 * 	identify a state machine. When a particular application requires 
+	 * 	runtime tracing (native tracing features), the option RKH_EN_SMA_ID 
+	 * 	must be set to one. 
+	 */
+
+#if RKH_SMA_EN_ID	== 1
+	rkhui8_t id;
 #endif
 
 	/** 
@@ -172,7 +186,7 @@ typedef struct romrkh_t
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, 0, my, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
  *	\sa
@@ -309,8 +323,10 @@ extern rkhui8_t rkhnpool;
  *	branches are false.
  *
  * 	A guard function takes the state machine pointer and the event 
- * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG.
+ * 	pointer as arguments.
+ * 	These arguments are optional, thus they could be eliminated in 
+ * 	compile-time by means of RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG 
+ * 	preprocessor directives.
  */
 
 #define ELSE		rkh_else
@@ -980,7 +996,7 @@ void rkh_time_tick( void );
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, 0, my, HCAL, &S1, my_iaction, &my_ievent );
  *
  *	void
  *	main( void )
@@ -1045,7 +1061,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, 0, my, 0, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
  * 	\param sma_t		pointer to previously created state machine 
@@ -1053,31 +1069,35 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  * 	\param name			name of state machine application. Represents the top 
  * 						state of state diagram. String terminated in '\\0' that 
  * 						represents the name of state machine. When a particular 
- * 						user application requires runtime debugging (native 
+ * 						user application requires runtime tracing (native 
  * 						tracing features), the option RKH_EN_SMA_NAME must be 
- * 						enabled.
+ * 						set to one.
+ * 	\param id			ID of state machine application. This number allows 
+ * 						to uniquely identify a state machine. When a 
+ * 						particular application requires runtime tracing
+ * 						(native tracing features), the option RKH_EN_SMA_ID 
+ * 						must be set to one. 
  * 	\param prio			state machine application priority. A unique priority 
  * 						number must be assigned to each SMA from 0 to 
  * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
  * 						priority. 
  * 	\param ppty			state machine properties. The available properties are
  * 						enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
- * 	\param istate		pointer to initial state. This state could be defined 
+ * 	\param ist			pointer to initial state. This state could be defined 
  * 						either composite or basic (not pseudo-state).
- * 	\param iaction		pointer to initialization action (optional). The function 
+ * 	\param iact			pointer to initialization action (optional). The function 
  * 						prototype is defined as RKHINIT_T. This argument is 
  * 						optional, thus it could be declared as NULL.
- * 	\param ievent		pointer to an event that will be passed to state 
+ * 	\param ievt			pointer to an event that will be passed to state 
  * 						machine application when it starts. Could be used to 
  * 						pass arguments to the state machine like an argc/argv.
  */
 
-#define RKH_SMA_CREATE( sma_t, name, prio, ppty, istate, iaction, ievent )	\
+#define RKH_SMA_CREATE( sma_t, id, name, prio, ppty, ist, iact, ievt )		\
 																			\
-	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, name, 			\
-												istate, iaction, 			\
-												ievent );					\
-	static sma_t s_##name = MKSMA( &rs_##name,istate );						\
+	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, name, id, 		\
+												ist, iact, ievt );			\
+	static sma_t s_##name = MKSMA( &rs_##name,ist );						\
 	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
 
 
@@ -1651,7 +1671,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *		RKHTRCFG_T *pcfg;
  *		
  *		rkh_trace_init();
- *		rkh_trace_config( MY, RKH_TRLOG, RKH_TRPRINT );
+ *		rkh_trace_config( MY, RKH_TR_EN_LOG, RKH_TR_EN_PRINT );
  *		rkh_trace_control( MY, RKH_TRSTART );
  *		
  *		if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
@@ -1662,7 +1682,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *		fprintf( fdbg, 
  *			"---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
  *		pcfg = rkh_trace_getcfg( MY );
- *		if( pcfg->print == RKH_TRPRINT )
+ *		if( pcfg->print == RKH_TR_EN_PRINT )
  *			printf( "---- RKH trace log session - 
  *					"__DATE__" - "__TIME__" ----\n\n" );
  *	}
@@ -1726,13 +1746,13 @@ void rkh_trace_close( void );
  * 		while( rkh_trace_getnext( &te ) != RKH_TREMPTY )
  * 		{
  * 			pcfg = rkh_trace_getcfg( te.smix );
- * 			if( pcfg->log == RKH_TRLOG )
+ * 			if( pcfg->log == RKH_TR_EN_LOG )
  * 				fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
  *													rkh_trace_getts(),
  *													tremap[ te.id ],
  *													smmap[ te.smix ],
  *													format_trevt_args( &te ) );
- *			if( pcfg->print == RKH_TRPRINT )
+ *			if( pcfg->print == RKH_TR_EN_PRINT )
  *				printf( "%05d [ %-16s ] - %s : %s\n",
  *													rkh_trace_getts(),
  *													tremap[ te.id ],

@@ -48,9 +48,9 @@
 #include "rkh.h"
 
 
-#if RKH_MP_EN == 1
-
 RKH_THIS_MODULE( 3, rkhmp );
+
+#if RKH_MP_EN == 1
 
 
 /*

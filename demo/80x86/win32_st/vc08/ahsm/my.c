@@ -31,7 +31,7 @@
  *	Defines SMA "my".
  */
 
-RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_init, NULL );
+RKH_SMA_CREATE( MYSM_T, 0, my, 0, HCAL, &S1, my_init, NULL );
 
 
 /*

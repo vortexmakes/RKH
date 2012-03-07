@@ -250,8 +250,8 @@
 
 
 #if RKH_TR_EN == 1
-	#if RKH_TR_EN_TRACE_STRING == 1 && ( RKH_SMA_EN_STATE_NAME != 1 || RKH_SMA_EN_STATE_ID != 1 || RKH_SMA_EN_NAME != 1 )
-	#error  "rkhcfg.h, when enabling RKH_TR_EN and RKH_TR_EN_TRACE_STRING is set to one (1), must be set to one (1) both RKH_SMA_EN_STATE_NAME or RKH_SMA_EN_STATE_ID or RKH_SMA_EN_NAME"
+	#if RKH_TR_EN_STRING == 1 && ( RKH_SMA_EN_STATE_NAME != 1 || RKH_SMA_EN_STATE_ID != 1 || RKH_SMA_EN_NAME != 1 )
+	#error  "rkhcfg.h, when enabling RKH_TR_EN and RKH_TR_EN_STRING is set to one (1), must be set to one (1) both RKH_SMA_EN_STATE_NAME or RKH_SMA_EN_STATE_ID or RKH_SMA_EN_NAME"
 	#endif
 #endif
 
@@ -441,14 +441,14 @@
 	#endif
 #endif
 
-#ifndef RKH_TR_EN_TRACE_STRING
-	#error "rkhcfg.h, Missing RKH_TR_EN_TRACE_STRING: Enable (1) or Disable (0) the string argument of trace event."
+#ifndef RKH_TR_EN_STRING
+	#error "rkhcfg.h, Missing RKH_TR_EN_STRING: Enable (1) or Disable (0) the string argument of trace event."
 #endif
 
-#ifndef RKH_TR_MAX_TRACE_STRING_SIZE
-	#error "rkhcfg.h, Missing RKH_TR_MAX_TRACE_STRING_SIZE: Defines the size of string argument of trace event."
+#ifndef RKH_TR_MAX_STRING_SIZE
+	#error "rkhcfg.h, Missing RKH_TR_MAX_STRING_SIZE: Defines the size of string argument of trace event."
 #else
-	#if RKH_TR_MAX_TRACE_STRING_SIZE == 0 || RKH_TR_MAX_TRACE_STRING_SIZE > 128
+	#if RKH_TR_MAX_STRING_SIZE == 0 || RKH_TR_MAX_STRING_SIZE > 128
 	#error  "rkhcfg.h, RKH_MAX_TRACE_STRING_SIZE must be > 0 and <= 32"
 	#endif
 #endif
@@ -471,21 +471,41 @@
 #define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
 
 
-#if RKH_SMA_EN_NAME	== 1
-	#if RKH_SMA_EN_IEVENT == 1
-		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
-						{(prio),(ppty),#n,(is),(ia),(ie)}
+#if RKH_SMA_EN_ID == 1
+	#if RKH_SMA_EN_NAME	== 1
+		#if RKH_SMA_EN_IEVENT == 1
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),#n,(id),(is),(ia),(ie)}
+		#else
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),#n,(id),(is),(ia)}
+		#endif
 	#else
-		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
-						{(prio),(ppty),#n,(is),(ia)}
+		#if RKH_SMA_EN_IEVENT == 1
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),(id),(is),(ia),(ie)}
+		#else
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),(id),(is),(ia)}
+		#endif
 	#endif
 #else
-	#if RKH_SMA_EN_IEVENT == 1
-		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
-						{(prio),(ppty),(is),(ia),(ie)}
+	#if RKH_SMA_EN_NAME	== 1
+		#if RKH_SMA_EN_IEVENT == 1
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),#n,(is),(ia),(ie)}
+		#else
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),#n,(is),(ia)}
+		#endif
 	#else
-		#define MKRRKH(prio,ppty,n,is,ia,ie)				\
-						{(prio),(ppty),(is),(ia)}
+		#if RKH_SMA_EN_IEVENT == 1
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),(is),(ia),(ie)}
+		#else
+			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
+							{(prio),(ppty),(is),(ia)}
+		#endif
 	#endif
 #endif
 
@@ -560,15 +580,49 @@
 	#define RKH_CRITICAL_METHOD		2
 #endif
 
+/**
+ * 	RKH need to disable interrupts in order to access critical sections of 
+ * 	code, and re-enable interrupts when done. This allows RKH to protect 
+ * 	critical code from being entered simultaneously from either multiple 
+ * 	SMAs or ISRs. Every processor generally provide instructions to 
+ * 	disable/enable interrupts and the C compiler must have a mechanism to 
+ * 	perform these operations directly from C. Some compilers will allows 
+ * 	to insert in-line assembly language statements in the C source code. 
+ * 	This makes it quite easy to insert processor instructions to enable and 
+ * 	disable interrupts. Other compilers will actually contain language 
+ * 	extensions to enable and disable interrupts directly from C. To hide the 
+ * 	implementation method chosen by the compiler manufacturer, RKH defines 
+ * 	two macros to disable and enable interrupts: 
+ * 	RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
+ *
+ * 	Method #1:
+ *
+ * 	The first and simplest way to implement these two macros is to invoke 
+ * 	the processor instruction to disable interrupts for RKH_ENTER_CRITICAL() 
+ * 	and the enable interrupts instruction for RKH_EXIT_CRITICAL(). There is, 
+ * 	however, a little problem with this scenario. If it's called the RKH 
+ * 	function with interrupts disabled then, upon return from RKH, interrupts 
+ * 	would be enabled!.
+ * 	
+ * 	Method #2:
+ *
+ * 	The second way to implement RKH_ENTER_CRITICAL() is to save the interrupt 
+ * 	disable status onto the stack and then, disable interrupts. 
+ * 	RKH_EXIT_CRITICAL() would simply be implemented by restoring the interrupt 
+ * 	status from the stack. Using this scheme, if it's called a RKH service 
+ * 	with either interrupts enabled or disabled then, the status would be 
+ * 	preserved across the call. If calls a RKH service with interrupts disabled,
+ * 	is potentially extending the interrupt latency of application. The 
+ * 	application can use RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL() to also 
+ * 	protect critical sections of code. As a general rule, should always call 
+ * 	RKH services with interrupts enabled!.
+ */
+
 #if RKH_CRITICAL_METHOD == 1
 	#define RKH_iSR_CRITICAL
 	#define RKH_iENTER_CRITICAL()		RKH_DIS_INTERRUPT()
 	#define RKH_iEXIT_CRITICAL()		RKH_ENA_INTERRUPT()
 #elif RKH_CRITICAL_METHOD == 2
-	#define RKH_iSR_CRITICAL
-	#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( dummy )
-	#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
-#elif RKH_CRITICAL_METHOD == 3
 
 	#ifdef RKH_CPUSR_TYPE
 		/** 
@@ -600,7 +654,7 @@
 		#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
 	#endif
 #else
-	#error "RKH_CRITICAL_METHOD defined incorrectly, expected 1, 2 or 3"
+	#error "RKH_CRITICAL_METHOD defined incorrectly, expected 1, or 2"
 #endif
 
 
@@ -832,7 +886,8 @@ struct rkh_t;
  * 	entry and exit actions, which are associated with states rather than 
  * 	transitions, as in a Moore automaton.
  * 	An entry function takes the state machine pointer as argument. 
- * 	This parameter is optional in compile-time according to 
+ * 	This argument is optional, thus it could be eliminated in 
+ * 	compile-time by means of RKH_SMA_EN_ENT_ARG_SMA.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
@@ -874,8 +929,8 @@ struct rkh_t;
  * 	which are associated with states rather than transitions, as in a 
  * 	Moore automaton.
  * 	An exit function takes the state machine pointer as argument. 
- * 	This parameter is optional in compile-time according to 
- * 	\b RKH_SMA_EN_EXT_ARG_SMA.
+ * 	This argument is optional, thus it could be eliminated in 
+ * 	compile-time by means of RKH_SMA_EN_EXT_ARG_SMA.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
@@ -917,8 +972,8 @@ struct rkh_t;
  * 	slash ( / ). In RKH framework, the application code must trigger the initial 
  * 	transition explicitly by invoking rkh_init_hsm() function.
  * 	An init action takes the state machine pointer as argument. 
- * 	This parameter is optional in compile-time according to 
- * 	\b RKH_SMA_EN_INIT_ARG_SMA macro.
+ * 	This argument is optional, thus it could be eliminated in 
+ * 	compile-time by means of RKH_SMA_EN_INIT_ARG_SMA.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_HSM() macro.
@@ -966,8 +1021,9 @@ struct rkh_t;
  * 	action, which are associated with states rather than transitions, 
  * 	as in a Moore automaton.
  * 	This action takes the state machine pointer and the event 
- * 	pointer as arguments. The first parameter is optional in compile-time
- * 	according to \b RKH_SMA_EN_PPRO_ARG_SMA macro.
+ * 	pointer as arguments. 
+ * 	This argument is optional, thus it could be eliminated in 
+ * 	compile-time by means of RKH_SMA_EN_PPRO_ARG_SMA.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
@@ -1001,8 +1057,10 @@ struct rkh_t;
  * 	exit actions, which are associated with states rather than transitions, 
  * 	as in a Moore automaton.
  * 	An action function takes the state machine pointer and the event 
- * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to \b RKH_SMA_EN_ACT_ARG_EVT and \b RKH_SMA_EN_ACT_ARG_SMA.
+ * 	pointer as arguments. 
+ * 	These arguments are optional, thus they could be eliminated in 
+ * 	compile-time by means of RKH_SMA_EN_ACT_ARG_EVT and \b 
+ * 	RKH_SMA_EN_ACT_ARG_SMA.
  *
  * 	\note
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
@@ -1046,8 +1104,10 @@ struct rkh_t;
  *	labeled rkh_else, which is taken if all the guards on the other 
  *	branches are false. 
  * 	A guard function takes the state machine pointer and the event 
- * 	pointer as arguments. These parameters are optional in compile-time
- * 	according to \b RKH_SMA_EN_GRD_ARG_EVT and \b RKH_SMA_EN_GRD_ARG_SMA.
+ * 	pointer as arguments. 
+ * 	These arguments are optional, thus they could be eliminated in 
+ * 	compile-time by means of \b RKH_SMA_EN_GRD_ARG_EVT and 
+ * 	\b RKH_SMA_EN_GRD_ARG_SMA.
  *
  * 	\note
  * 	This callback is referenced from RKH_BRANCH() macro. 

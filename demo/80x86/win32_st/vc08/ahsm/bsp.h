@@ -31,7 +31,7 @@
 #define BSP_TICKS_PER_SEC   		100
 
 
-bsp_init( int argc, char *argv[] );
+void bsp_init( int argc, char *argv[] );
 
 
 #endif

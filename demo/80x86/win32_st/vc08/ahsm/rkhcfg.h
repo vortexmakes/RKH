@@ -72,6 +72,7 @@
 #define RKH_SMA_EN_STATE_ID				1	/* 	CFG01 */
 #define RKH_SMA_EN_PPRO					0	/* 	CFG01 */
 #define RKH_SMA_EN_NAME					1	/* 	CFG01 */
+#define RKH_SMA_EN_ID					1	/* 	CFG01 */
 #define RKH_SMA_EN_IEVENT				1	/* 	CFG01 */
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
 
@@ -92,8 +93,8 @@
 #define RKH_TR_EN_TIMESTAMP				1	/* 	CFG01 */
 #define RKH_TR_SIZEOF_TIMESTAMP			16	/* 	CFG01 */
 #define RKH_TR_MAX_NUM_TRACES			16	/* 	CFG01 */
-#define RKH_TR_EN_TRACE_STRING			1	/* 	CFG01 */
-#define RKH_TR_MAX_TRACE_STRING_SIZE	4	/* 	CFG01 */
+#define RKH_TR_EN_STRING				1	/* 	CFG01 */
+#define RKH_TR_MAX_STRING_SIZE			4	/* 	CFG01 */
 
 #define RKH_RQ_EN						1	/* 	CFG01 */ 
 #define RKH_RQ_SIZEOF_NELEM				8	/* 	CFG01 */ 

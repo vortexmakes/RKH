@@ -39,6 +39,9 @@ static
 HUInt
 rkh_insert_trevt( RKHTREVT_T *p )
 {
+	RKH_iSR_CRITICAL;
+
+	RKH_iENTER_CRITICAL();
 	*trin = *p;
 
 	if( ++trin >= trstream + RKH_TR_MAX_NUM_TRACES )
@@ -49,6 +52,7 @@ rkh_insert_trevt( RKHTREVT_T *p )
 		trqty = RKH_TR_MAX_NUM_TRACES;
 		trout = trin;
 	}
+	RKH_iEXIT_CRITICAL();
 
 	return RKH_TROK;
 }
@@ -58,8 +62,14 @@ static
 HUInt
 rkh_remove_trevt( RKHTREVT_T *p )
 {
+	RKH_iSR_CRITICAL;
+
+	RKH_iENTER_CRITICAL();
 	if( trqty == 0 )
+	{
+		RKH_iEXIT_CRITICAL();
 		return RKH_TREMPTY;
+	}
 
 	*p = *trout;
 
@@ -68,6 +78,7 @@ rkh_remove_trevt( RKHTREVT_T *p )
 
 	--trqty;
 
+	RKH_iEXIT_CRITICAL();
 	return RKH_TROK;
 }
 

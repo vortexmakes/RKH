@@ -26,6 +26,7 @@
 
 #include "bsp.h"
 #include "my.h"
+#include "rkhdata.h"
 #include "rkh.h"
 
 #include <conio.h>
@@ -221,12 +222,14 @@ static
 void
 print_banner( void )
 {
-	printf( "Demo description: \n\n" );
-	printf( "The goal of this demo application is to explain how to \n" );
-	printf( "represent a state machine using the RKH framework. To do \n" );
-	printf( "that is proposed a simple and abstract example, which is \n" );
-	printf( "shown in the documentation file Figure 1 section \n" );
-	printf( "\"Representing a State Machine\". \n\n\n" );
+	printf(	"Abstract Hierarchical State Machine (ahsm) example\n"
+    		"RKH v%s\n\n", RKH_RELEASE );
+	printf(	"Description: \n\n"
+			"The goal of this demo application is to explain how to \n"
+			"represent a state machine using the RKH framework. To do \n"
+			"that is proposed a simple and abstract example, which is \n"
+			"shown in the documentation file Figure 1 section \n"
+			"\"Representing a State Machine\". \n\n\n" );
 
 	printf( "1.- Press <numbers> to send events to state machine. \n" );
 	printf( "2.- Press 'p' to see related information about transitions, \n" );
@@ -242,7 +245,7 @@ rkh_trace_open( void )
 	RKHTRCFG_T *pcfg;
 
 	rkh_trace_init();
-	rkh_trace_config( MY, RKH_TRLOG, RKH_TRPRINT );
+	rkh_trace_config( MY, RKH_TR_EN_LOG, RKH_TR_EN_PRINT );
 	rkh_trace_control( MY, RKH_TRSTART );
 
 	if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
@@ -254,7 +257,7 @@ rkh_trace_open( void )
 	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 	
 	pcfg = rkh_trace_getcfg( MY );
-	if( pcfg->print == RKH_TRPRINT )
+	if( pcfg->print == RKH_TR_EN_PRINT )
 		printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 }
 
@@ -283,13 +286,13 @@ rkh_trace_flush( void )
 	{
 		pcfg = rkh_trace_getcfg( te.smix );
 
-		if( pcfg->log == RKH_TRLOG )
+		if( pcfg->log == RKH_TR_EN_LOG )
 			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
 													rkh_trace_getts(),
 													tremap[ te.id ],
 													smmap[ te.smix ],
 													format_trevt_args( &te ) );
-		if( pcfg->print == RKH_TRPRINT )
+		if( pcfg->print == RKH_TR_EN_PRINT )
 			printf( "%05d [ %-16s ] - %s : %s\n",
 													rkh_trace_getts(),
 													tremap[ te.id ],
@@ -304,7 +307,4 @@ bsp_init( int argc, char *argv[] )
 {
 	srand( ( unsigned )time( NULL ) );
 	print_banner();
-    printf(	"Abstract Hierarchical State Machine example"
-			"\nRKH %s\n"
-			"Press ESC to quit...\n", RKH_RELEASE );
 }
