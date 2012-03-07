@@ -65,10 +65,6 @@ RKH_THIS_MODULE( 4, rkhrq );
 void 
 rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, void *sma )
 {
-	RKH_iSR_CRITICAL;
-	RKH_iENTER_CRITICAL();
-	RKH_iEXIT_CRITICAL();
-
 	q->pstart = sstart;
 	q->pin = q->pout = ( void ** )sstart;
 	q->nelems = ssize;
@@ -164,7 +160,7 @@ rkh_rq_get( RKHRQ_T *q  )
 	RKH_IUPDT_GET( q );
 	RKH_iEXIT_CRITICAL();
 
-	//rktrace_remove_queue( qd );
+	//RKH_REC_RQ_GET( qd );
 	return e;
 }
 
@@ -200,7 +196,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 #endif
 	RKH_IUPDT_PUT( q );
 	RKH_iEXIT_CRITICAL();
-	//rktrace_insert_queue( qd );
+	//RKH_REC_RQ_PUTF( qd );
 }
 
 
@@ -239,7 +235,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 #endif
 
 	RKH_iEXIT_CRITICAL();
-	//rktrace_insert_queue( qd );
+	//RKH_REC_RQ_PUTF( qd );
 }
 #endif
 
@@ -256,7 +252,7 @@ queue_deplete( RKHRQ_T *q )
 	q->pin = q->pout = ( void ** )q->pstart;
 	RKH_iEXIT_CRITICAL();
 	
-	//rktrace_deplete_queue( qd );
+	//RKH_REC_RQ_DEP( qd );
 }
 #endif
 
@@ -282,7 +278,7 @@ rkh_rq_read( RKHRQ_T *q, void *pe )
 	RKH_IUPDT_READ( q );
 	RKH_iEXIT_CRITICAL();
 
-	//rktrace_read_queue( qd );
+	//RKH_REC_RQRD( qd );
 	return RKH_RQ_OK;
 }
 #endif

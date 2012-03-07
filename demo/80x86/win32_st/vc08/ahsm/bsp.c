@@ -284,19 +284,19 @@ rkh_trace_flush( void )
 
 	while( rkh_trace_getnext( &te ) != RKH_TREMPTY )
 	{
-		pcfg = rkh_trace_getcfg( te.smix );
+		pcfg = rkh_trace_getcfg( te.smaid );
 
 		if( pcfg->log == RKH_TR_EN_LOG )
 			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
 													rkh_trace_getts(),
 													tremap[ te.id ],
-													smmap[ te.smix ],
+													smmap[ te.smaid ],
 													format_trevt_args( &te ) );
 		if( pcfg->print == RKH_TR_EN_PRINT )
 			printf( "%05d [ %-16s ] - %s : %s\n",
 													rkh_trace_getts(),
 													tremap[ te.id ],
-													smmap[ te.smix ],
+													smmap[ te.smaid ],
 													format_trevt_args( &te ) );
 	}
 }

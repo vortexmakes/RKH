@@ -166,7 +166,7 @@ typedef struct rkht_t
  *					software module intending to install a software timer must 
  *					first allocate a timer structure RKHT_T.
  *	\param thk 		hook function to be called at the timer expiration. This 
- *					member is optional, thus it could be declared as NULL or 
+ *					argument is optional, thus it could be declared as NULL or 
  *					eliminated in compile-time with RKH_TIMER_EN_HOOK.
  *	\param sig		signal of the event to be directly posted (using the FIFO 
  *					policy) into the event queue of the target agreed state 

@@ -210,7 +210,8 @@ typedef enum
 
 	RKHTR_NUM_ACTSGT,
 
-	RKHTR_NUM_EVENTS
+	RKHTR_NUM_SMA_EVENTS
+	 
 } RKHTR_EVENTS;
 
 
@@ -317,7 +318,6 @@ typedef enum
 	#else
 		#define RKH_REC_NUM_ACTSGT( e, s, n )
 	#endif
-
 #else
 	#define RKH_REC_EVENT( e, s, n )
 	#define RKH_REC_SRC_STATE( e, s, n, str )
@@ -339,7 +339,7 @@ typedef enum
 	#if RKH_TR_EN_STRING == 1
 		#define MKTREVT( e, i, s, t, n, str )			\
 							(e).id = i;					\
-							(e).smix = s;				\
+							(e).smaid = s;				\
 							(e).ts = t;					\
 							(e).num = n;				\
 							if( str != NULL )			\
@@ -348,7 +348,7 @@ typedef enum
 	#else
 		#define MKTREVT( e, i, s, t, n, str )			\
 							(e).id = i;					\
-							(e).smix = s;				\
+							(e).smaid = s;				\
 							(e).ts = t;					\
 							(e).num = n;				\
 							rkh_trace_evt( &(e) )
@@ -357,7 +357,7 @@ typedef enum
 	#if RKH_TR_EN_STRING == 1
 		#define MKTREVT( e, i, s, t, n, str )			\
 							(e).id = i;					\
-							(e).smix = s;				\
+							(e).smaid = s;				\
 							(e).num = n;				\
 							if( str != NULL )			\
 								strcpy( (e).sb, str );	\
@@ -365,7 +365,7 @@ typedef enum
 	#else
 		#define MKTREVT( e, i, s, t, n, str )			\
 							(e).id = i;					\
-							(e).smix = s;				\
+							(e).smaid = s;				\
 							(e).num = n;				\
 							rkh_trace_evt( &(e) )
 	#endif
@@ -432,7 +432,7 @@ typedef struct
 	 *	It's used as instrumented state machine identifier.
 	 */
 
-	rkhui8_t smix;
+	rkhui8_t smaid;
 
 	/**
 	 *	Timestamp. 

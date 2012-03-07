@@ -24,6 +24,7 @@ static rkhui8_t trqty;
 #endif
 
 
+#if 0
 static
 HUInt
 rkh_is_trenabled( HUInt trix )
@@ -56,6 +57,7 @@ rkh_insert_trevt( RKHTREVT_T *p )
 
 	return RKH_TROK;
 }
+#endif
 
 
 static
@@ -77,7 +79,6 @@ rkh_remove_trevt( RKHTREVT_T *p )
 		trout = trstream;
 
 	--trqty;
-
 	RKH_iEXIT_CRITICAL();
 	return RKH_TROK;
 }
@@ -123,10 +124,28 @@ rkh_trace_control( HUInt trix, HUInt opt )
 void 
 rkh_trace_evt( RKHTREVT_T *ptre )
 {
-	if( rkh_is_trenabled( ptre->smix ) == RKH_TRSTOP )
+	RKHTRCFG_T *pc;
+	RKH_iSR_CRITICAL;
+	
+	RKH_iENTER_CRITICAL();
+	pc = rkh_trace_getcfg( ptre->smaid );
+	if( pc->enable == RKH_TRSTOP )
+	{
+		RKH_iEXIT_CRITICAL();
 		return;
+	}
 
-	rkh_insert_trevt( ptre );
+	*trin = *ptre;
+
+	if( ++trin >= trstream + RKH_TR_MAX_NUM_TRACES )
+		trin = trstream;
+
+	if( ++trqty >= RKH_TR_MAX_NUM_TRACES )
+	{
+		trqty = RKH_TR_MAX_NUM_TRACES;
+		trout = trin;
+	}
+	RKH_iEXIT_CRITICAL();
 }
 
 
