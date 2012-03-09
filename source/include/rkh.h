@@ -974,7 +974,7 @@ void rkh_exit( void );
  * 	Normally this is placed in a timer ISR routine.
  */
 
-void rkh_time_tick( void );
+void rkh_timer_tick( void );
 
 
 /**

@@ -24,7 +24,7 @@
  */
 
 /**
- * 	rkhtimer.h
+ * 	\file rkhtimer.h
  *
  * 	\brief
  * 	Platform-independent interface for supporting timer services.

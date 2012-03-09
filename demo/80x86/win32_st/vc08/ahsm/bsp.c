@@ -92,7 +92,7 @@ isr_tmr_thread( LPVOID par )			/* Win32 thread to emulate timer ISR */
     ( void )par;
     while( running ) 
 	{
-		rkh_time_tick();
+		rkh_timer_tick();
         Sleep( tick_msec );
     }
     return 0;

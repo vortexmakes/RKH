@@ -40,7 +40,7 @@ RKH_THIS_MODULE( 6, rkhtimer );
 
 
 void 
-rkh_time_tick( void )
+rkh_timer_tick( void )
 {
 	RKH_iSR_CRITICAL;
 	RKH_iENTER_CRITICAL();

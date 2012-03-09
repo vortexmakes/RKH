@@ -311,7 +311,7 @@ void rkh_rq_put_lifo( RKHRQ_T *q, const void *pe );
  * 	\param q		pointer to previously created queue.
  */
 
-void queue_deplete( RKHRQ_T *q );
+void rkh_rq_deplete( RKHRQ_T *q );
 
 
 /**

@@ -10,7 +10,7 @@
 #include "rkhdata.h"
 
 
-#define QSTO_SIZE				16
+#define QSTO_SIZE			16
 
 static RKHEVT_T *qsto[ QSTO_SIZE ];
 
@@ -22,6 +22,7 @@ main( int argc, char *argv[] )
 	rkh_trace_open();
 	rkh_init();
 	
+
 	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
 	rkh_enter();
 
