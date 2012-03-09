@@ -52,7 +52,7 @@
 #define RKH_EN_EXIT					1	/*	Enable (1) or Disable (0) trace point - exit state */
 #define RKH_EN_INIT_HSM				0	/*	Enable (1) or Disable (0) trace point - initializing state-machine */
 #define RKH_EN_SGT					0	/*	Enable (1) or Disable (0) trace point - target state of transition segment */
-#define RKH_EN_RTN_CODE				0	/*	Enable (1) or Disable (0) trace point - code returned by rkh_engine() function */
+#define RKH_EN_RTN_CODE				0	/*	Enable (1) or Disable (0) trace point - code returned by rkh_dispatch() function */
 #define RKH_EN_NUM_ENEX				0	/*	Enable (1) or Disable (0) trace point - number of enter and exited states */
 #define RKH_EN_NUM_ACTSGT			0	/*	Enable (1) or Disable (0) trace point - number of transition actions to be executed and number of transition segments */
 

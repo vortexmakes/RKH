@@ -68,7 +68,7 @@ rkh_enter( void )
 
             sma = rkh_sptbl[ prio ];
             e = rkh_sma_get( sma );
-            rkh_engine( sma, e );
+            rkh_dispatch( sma, e );
             rkh_gc( e );
         }
         else

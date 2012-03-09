@@ -191,7 +191,7 @@ typedef enum
 
 	/**
 	 * 	If it's enabled (1) records the code returned by 
-	 * 	rkh_engine() function.
+	 * 	rkh_dispatch() function.
 	 */
 
 	RKHTR_RTN_CODE,

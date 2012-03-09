@@ -801,7 +801,7 @@ extern rkhui8_t rkhnpool;
 
 
 /** 	
- *  Return codes from rkh_engine() function.
+ *  Return codes from rkh_dispatch() function.
  */
 
 typedef enum
@@ -1576,7 +1576,7 @@ void rkh_init_hsm( RKHSMA_T *sma );
  *	Result RKH_RCODE_T code.
  */
 
-HUInt rkh_engine( RKHSMA_T *sma, RKHEVT_T *e );
+HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
 
 
 /**

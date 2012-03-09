@@ -347,7 +347,7 @@ rkh_clear_history( RKHROM RKHSHIST_T *h )
 
 
 HUInt
-rkh_engine( RKHSMA_T *sma, RKHEVT_T *pe )
+rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 {
 	RKHROM RKHSREG_T *ss, *s, *ts;
 	RKHROM void *ets;

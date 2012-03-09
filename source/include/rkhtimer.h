@@ -234,6 +234,8 @@ typedef struct rkht_t
  * 	facility. The timer begins running at the completion of this operation.
  *
  *	\param t		pointer to previously created timer structure.
+ *	\param sma		state machine application (SMA) that receives the timer 
+ *					event.
  * 	\param itick 	number of ticks for timer expiration.
  */
 

@@ -414,7 +414,7 @@
 #endif
 
 #ifndef RKH_TR_EN_RTN_CODE
-	#error "rkhcfg.h, Missing RKH_TR_EN_RTN_CODE: Enable (1) or Disable (0) trace point - code returned by rkh_engine() function."
+	#error "rkhcfg.h, Missing RKH_TR_EN_RTN_CODE: Enable (1) or Disable (0) trace point - code returned by rkh_dispatch() function."
 #endif
 
 #ifndef RKH_TR_EN_NUM_ENEX

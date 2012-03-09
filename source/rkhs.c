@@ -88,7 +88,7 @@ rkh_enter( void )
 			RKH_ENA_INTERRUPT();
 
             e = rkh_sma_get( shr );
-			rkh_engine( shr, e );
+			rkh_dispatch( shr, e );
             rkh_gc( e );
         }
         else 
