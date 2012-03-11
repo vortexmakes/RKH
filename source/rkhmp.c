@@ -67,9 +67,9 @@ void
 rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize, 
 												RKH_MPBS_T bsize )
 {
-	//RKH_iSR_CRITICAL;
-	//RKH_iENTER_CRITICAL();
-	//RKH_iEXIT_CRITICAL();
+	//RKH_SR_CRITICAL_;
+	//RKH_ENTER_CRITICAL_();
+	//RKH_EXIT_CRITICAL_();
 
     RKH_FREE_BLK_T *fb;
     rkhui8_t corr;
@@ -94,12 +94,12 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 	 * new offset = (offset + align - 1) & ~(align - 1)
 	 */
 
-    corr = (rkhui8_t)((rkhui32_t)sstart & (rkhui32_t)(sizeof(RKH_FREE_BLK_T) - 1));
+    corr = (rkhui8_t)((rkhui32_t)sstart&(rkhui32_t)(sizeof(RKH_FREE_BLK_T)-1));
 
     if( corr != 0 )	/* alignment needed? */ 
 	{
-        corr = sizeof( RKH_FREE_BLK_T ) - corr;    /* amount to align 'sstart' */
-        ssize -= ( rkhui16_t )corr;     /* reduce the available pool size */
+        corr = sizeof( RKH_FREE_BLK_T ) - corr;	/* amount to align 'sstart' */
+        ssize -= ( rkhui16_t )corr;	/* reduce the available pool size */
     }
 
     /* 
@@ -161,11 +161,11 @@ void *
 rkh_mp_get( RKHMP_T *mp )
 {
     RKH_FREE_BLK_T *fb;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mp != ( RKHMP_T* )0 && mp->bsize != 0 );
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 
     fb = ( RKH_FREE_BLK_T* )mp->free;           /* get a free block or NULL */
     if( fb != NULL )							   /* free block available? */
@@ -178,7 +178,7 @@ rkh_mp_get( RKHMP_T *mp )
 #endif
     }
 
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
     return fb;            /* return the block or NULL pointer to the caller */
 }
 
@@ -186,7 +186,7 @@ rkh_mp_get( RKHMP_T *mp )
 void 
 rkh_mp_put( RKHMP_T *mp, void *blk )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 	RKHASSERT( mp->bsize != 0 );
@@ -199,14 +199,14 @@ rkh_mp_put( RKHMP_T *mp, void *blk )
     RKHASSERT(	mp->nfree <= mp->nblocks ); /* # free blocks must be < total */
 #endif
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	
 	/* link into free list */
     ( ( RKH_FREE_BLK_T* )blk )->next = ( RKH_FREE_BLK_T* )mp->free;
     mp->free = blk;                    /* set as new head of the free list */
     ++mp->nfree;                       /* one more free block in this pool */
 	
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 
 
@@ -215,13 +215,13 @@ RKH_MPBS_T
 rkh_mp_get_blksize( RKHMP_T *mp )
 {
     RK_MPCTR_T bs;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mpd != ( RKHMP_T* )0 );
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
     bs = pmp->blk_size;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
     return bs;
 }
@@ -233,13 +233,13 @@ RKH_MPNB_T
 rkh_mp_get_nfree( RKHMP_T *mp )
 {
     RKH_MPNB_T nfree;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mpd != ( RKHMP_T* )0 );
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
     nfree = mp->nfree;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
     return nfree;
 }
@@ -251,13 +251,13 @@ RKH_MPNB_T
 rkh_mp_get_low_wmark( RKHMP_T *mp )
 {
     RKH_MPNB_T nmin;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mpd != ( RKHMP_T* )0 );
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
     nmin = mp->nmin;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
     return nmin;
 }
@@ -268,16 +268,16 @@ rkh_mp_get_low_wmark( RKHMP_T *mp )
 void 
 rkh_mp_query( RKHMP_T *mp, RKH_MPDATA_T *data )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mpd != ( RKHMP_T* )0 && data != NULL );
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
     data->blk_size = pmp->blk_size;
     data->nblocks = pmp->ntot;
     data->nfree = pmp->nfree;
     data->nused = pmp->ntot - pmp->nfree;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 #endif
 
@@ -286,13 +286,13 @@ rkh_mp_query( RKHMP_T *mp, RKH_MPDATA_T *data )
 void 
 rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mp != ( RKHMP_T* )0 && mpi != ( RKH_MPI_T* )0 );
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	*mpi = mp->mpi;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 
 
@@ -300,14 +300,14 @@ void
 rkh_mp_clear_info( RKHMP_T *mp )
 {
 	RKH_MPI_T *pmpi;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 	pmpi = &mp->mpi;
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	pmpi->inits = pmpi->gets = pmpi->puts = pmpi->free = pmpi->full = 0;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 #endif
 

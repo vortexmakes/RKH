@@ -1,7 +1,7 @@
 /*
- *	file: rkhsma.c
+ *	file: rkhtim.c
  *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 23, 2012
+ *	Date of the last update:  Feb 24, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -24,62 +24,83 @@
  */
 
 /**
- * 	\file rkhsma.c
- *	\brief
+ * 	rkhtim.c
+ *
+ * 	\brief
+ * 	Implements a timer services.
  */
 
 
 #include "rkhassert.h"
+#include "rkhtim.h"
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 8, rkhsma );
-
-
-/*
- * 	String describing the RKH version.
- */
-
-RKHROM char rkh_version[] = 
-{
-	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 12)	& 0x0F) + (rkhui8_t)'0' ),
-	(char)'.',
-	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 8)	& 0x0F) + (rkhui8_t)'0' ),
-	(char)'.',
-	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 4)	& 0x0F) + (rkhui8_t)'0' ),
-	(char)( (rkhui8_t)(RKH_VERSION_CODE 		& 0x0F) + (rkhui8_t)'0' ),
-	(char)'\0',
-};
-
-
-RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
+RKH_THIS_MODULE( 6, rkhtim );
 
 
 void 
-rkh_sma_register( RKHSMA_T *sma )
+rkh_tim_tick( void )
 {
-    rkhui8_t prio = sma->romrkh->prio;
 	RKH_SR_CRITICAL_;
-
-    RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )
-              && ( rkh_sptbl[ prio ] == ( RKHSMA_T * )0 ) );
-
 	RKH_ENTER_CRITICAL_();
-    rkh_sptbl[ prio ] = sma;
 	RKH_EXIT_CRITICAL_();
 }
 
 
 void 
-rkh_sma_unregister( RKHSMA_T *sma )
+#if RKH_TIMER_EN_HOOK == 0
+rkh_tim_init_( RKHT_T *t, RKHE_T sig )
+#else
+rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )
+#endif
 {
-    rkhui8_t prio = sma->romrkh->prio;
 	RKH_SR_CRITICAL_;
-
-    RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )
-              && ( rkh_sptbl[ prio ] == sma ) );
-
 	RKH_ENTER_CRITICAL_();
-    rkh_sptbl[ prio ] = ( RKHSMA_T * )0;
+	RKH_EXIT_CRITICAL_();
+}
+
+
+void 
+rkh_tim_start( RKHT_T *t, RKHSMA_T *sma, RKH_TNT_T itick )
+{
+	RKH_SR_CRITICAL_;
+	RKH_ENTER_CRITICAL_();
+	RKH_EXIT_CRITICAL_();
+}
+
+
+void 
+rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
+{
+	RKH_SR_CRITICAL_;
+	RKH_ENTER_CRITICAL_();
+	RKH_EXIT_CRITICAL_();
+}
+
+
+void 
+rkh_tim_stop( RKHT_T *t )
+{
+	RKH_SR_CRITICAL_;
+	RKH_ENTER_CRITICAL_();
+	RKH_EXIT_CRITICAL_();
+}
+
+
+void 
+rkh_tim_get_info( RKHT_T *t, RKH_TIMERI_T *pti )
+{
+	RKH_SR_CRITICAL_;
+	RKH_ENTER_CRITICAL_();
+	RKH_EXIT_CRITICAL_();
+}
+
+
+void 
+rkh_tim_clear_info( RKHT_T *t )
+{
+	RKH_SR_CRITICAL_;
+	RKH_ENTER_CRITICAL_();
 	RKH_EXIT_CRITICAL_();
 }

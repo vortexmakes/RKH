@@ -86,13 +86,13 @@ HUInt
 rkh_rq_is_full( RKHRQ_T *q )
 {
 	RKH_RQNE_T qty;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 	
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
 	return qty == q->nelems;
 }
@@ -104,13 +104,13 @@ RKH_RQNE_T
 rkh_rq_get_num( RKHRQ_T *q )
 {
 	RKH_RQNE_T qty;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 	
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
 	return qty;
 }
@@ -122,13 +122,13 @@ RKH_RQNE_T
 rkh_rq_get_lwm( RKHRQ_T *q )
 {
 	RKH_RQNE_T nmin;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 	
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	nmin = q->nmin;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
 	return nmin;
 }
@@ -139,15 +139,14 @@ void *
 rkh_rq_get( RKHRQ_T *q  )
 {
 	void *e = ( void * )0;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( q != ( RKHRQ_T* )0 );
-	RKH_iENTER_CRITICAL();
-
+	RKH_ENTER_CRITICAL_();
 	if( q->qty == 0 )
 	{
 		RKH_IUPDT_EMPTY( q );
-		RKH_iEXIT_CRITICAL();
+		RKH_EXIT_CRITICAL_();
 		return e;
 	}
 
@@ -158,8 +157,7 @@ rkh_rq_get( RKHRQ_T *q  )
 		q->pout = ( void ** )q->pstart;
 
 	RKH_IUPDT_GET( q );
-	RKH_iEXIT_CRITICAL();
-
+	RKH_EXIT_CRITICAL_();
 	//RKH_REC_RQ_GET( qd );
 	return e;
 }
@@ -168,16 +166,15 @@ rkh_rq_get( RKHRQ_T *q  )
 void 
 rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	RKHASSERT( q->qty < q->nelems );
-
 	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );
-		RKH_iEXIT_CRITICAL();
+		RKH_EXIT_CRITICAL_();
 		return;
 	}
 
@@ -195,8 +192,8 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 		q->nmin = ( q->nelems - q->qty );
 #endif
 	RKH_IUPDT_PUT( q );
-	RKH_iEXIT_CRITICAL();
-	//RKH_REC_RQ_PUTF( qd );
+	RKH_EXIT_CRITICAL_();
+	//RKH_TRREC_RQ_PUT_FIFO( q, q->qty, q->nmin );
 }
 
 
@@ -204,16 +201,15 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 void 
 rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	RKHASSERT( q->qty < q->nelems );
-
 	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );
-		RKH_iEXIT_CRITICAL();
+		RKH_EXIT_CRITICAL_();
 		return;
 	}
 
@@ -233,8 +229,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 	if( q->nmin > ( q->nelems - q->qty ) )
 		q->nmin = ( q->nelems - q->qty );
 #endif
-
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 	//RKH_REC_RQ_PUTF( qd );
 }
 #endif
@@ -244,13 +239,13 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 void 
 queue_deplete( RKHRQ_T *q )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( q != ( RKHRQ_T* )0 );
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	q->qty = 0;
 	q->pin = q->pout = ( void ** )q->pstart;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 	
 	//RKH_REC_RQ_DEP( qd );
 }
@@ -261,22 +256,22 @@ queue_deplete( RKHRQ_T *q )
 HUInt 
 rkh_rq_read( RKHRQ_T *q, void *pe )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 
 	if( q->qty == 0 )
 	{
 		RKH_IUPDT_EMPTY( q );
-		RKH_iEXIT_CRITICAL();
+		RKH_EXIT_CRITICAL_();
 		return RKH_RQ_EMPTY;
 	}
 
 	pe = *q->pout;
 
 	RKH_IUPDT_READ( q );
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
 	//RKH_REC_RQRD( qd );
 	return RKH_RQ_OK;
@@ -288,11 +283,11 @@ rkh_rq_read( RKHRQ_T *q, void *pe )
 void 
 rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	*pqi = q->rqi;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 
 
@@ -300,13 +295,13 @@ void
 rkh_rq_clear_info( RKHRQ_T *q )
 {
 	RKH_RQI_T *prqi;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
 	prqi = &q->rqi;
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	prqi->nputs = prqi->ngets = prqi->nreads = prqi->nempty = prqi->nfull = 0;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 #endif
 

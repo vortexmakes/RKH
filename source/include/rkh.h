@@ -974,7 +974,7 @@ void rkh_exit( void );
  * 	Normally this is placed in a timer ISR routine.
  */
 
-void rkh_timer_tick( void );
+void rkh_tim_tick( void );
 
 
 /**
@@ -1313,7 +1313,6 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
 
 /**
  * 	\brief
- *
  * 	Registers a new event pool into the event pool list.
  *
  * 	\param sstart	storage start. Pointer to memory from which memory blocks 
@@ -1323,14 +1322,13 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  * 					block in the pool.
  */
 
-void rkh_dyne_regs( void *sstart, rkhui32_t ssize, RKHES_T esize );
+void rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize );
 
 
 /**
  * 	Internal RKH implementation of the dynamic event allocator. 
  *
  * 	\note
- *
  * 	This function is internal to RKH and the user application should 
  * 	not call it. Please use #rkh_alloc_event() macro.
  *

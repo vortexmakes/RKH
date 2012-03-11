@@ -36,7 +36,6 @@
 #define RKH_MAX_SMA						8	/* 	CFG01 */ 
 #define RKH_MAX_EPOOL					4	/* 	CFG01 */ 
 #define RKH_LOWEST_PRIO					8	/* 	CFG01 */ 
-#define RKH_CRITICAL_METHOD				2	/* 	CFG01 */ 
 #define RKH_EN_REENTRANT				0	/* 	CFG01 */
 #define RKH_EN_DEFERRED_EVENT			0	/* 	CFG01 */
 #define RKH_SIZEOF_EVENT				4	/* 	CFG01 */ 

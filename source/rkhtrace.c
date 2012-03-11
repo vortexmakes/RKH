@@ -40,9 +40,9 @@ static
 HUInt
 rkh_insert_trevt( RKHTREVT_T *p )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	*trin = *p;
 
 	if( ++trin >= trstream + RKH_TR_MAX_NUM_TRACES )
@@ -53,7 +53,7 @@ rkh_insert_trevt( RKHTREVT_T *p )
 		trqty = RKH_TR_MAX_NUM_TRACES;
 		trout = trin;
 	}
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 
 	return RKH_TROK;
 }
@@ -64,12 +64,12 @@ static
 HUInt
 rkh_remove_trevt( RKHTREVT_T *p )
 {
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	if( trqty == 0 )
 	{
-		RKH_iEXIT_CRITICAL();
+		RKH_EXIT_CRITICAL_();
 		return RKH_TREMPTY;
 	}
 
@@ -79,7 +79,7 @@ rkh_remove_trevt( RKHTREVT_T *p )
 		trout = trstream;
 
 	--trqty;
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 	return RKH_TROK;
 }
 
@@ -125,13 +125,13 @@ void
 rkh_trace_evt( RKHTREVT_T *ptre )
 {
 	RKHTRCFG_T *pc;
-	RKH_iSR_CRITICAL;
+	RKH_SR_CRITICAL_;
 	
-	RKH_iENTER_CRITICAL();
+	RKH_ENTER_CRITICAL_();
 	pc = rkh_trace_getcfg( ptre->smaid );
 	if( pc->enable == RKH_TRSTOP )
 	{
-		RKH_iEXIT_CRITICAL();
+		RKH_EXIT_CRITICAL_();
 		return;
 	}
 
@@ -145,7 +145,7 @@ rkh_trace_evt( RKHTREVT_T *ptre )
 		trqty = RKH_TR_MAX_NUM_TRACES;
 		trout = trin;
 	}
-	RKH_iEXIT_CRITICAL();
+	RKH_EXIT_CRITICAL_();
 }
 
 

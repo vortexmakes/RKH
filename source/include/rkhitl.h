@@ -232,10 +232,10 @@
 
 #if RKH_TIMER_EN_HOOK == 0
 	#define rkh_mktimer( t,s,th )										\
-				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
+				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
 #else
 	#define rkh_mktimer( t,s,th )										\
-				rkh_itim_init( (RKHT_T*)(t), (RKHE_T)(s) )
+				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s) )
 #endif
 
 
@@ -576,10 +576,6 @@
 #endif
 
 
-#ifndef RKH_CRITICAL_METHOD
-	#define RKH_CRITICAL_METHOD		2
-#endif
-
 /**
  * 	RKH need to disable interrupts in order to access critical sections of 
  * 	code, and re-enable interrupts when done. This allows RKH to protect 
@@ -595,19 +591,8 @@
  * 	two macros to disable and enable interrupts: 
  * 	RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
  *
- * 	Method #1:
- *
- * 	The first and simplest way to implement these two macros is to invoke 
- * 	the processor instruction to disable interrupts for RKH_ENTER_CRITICAL() 
- * 	and the enable interrupts instruction for RKH_EXIT_CRITICAL(). There is, 
- * 	however, a little problem with this scenario. If it's called the RKH 
- * 	function with interrupts disabled then, upon return from RKH, interrupts 
- * 	would be enabled!.
- * 	
- * 	Method #2:
- *
- * 	The second way to implement RKH_ENTER_CRITICAL() is to save the interrupt 
- * 	disable status onto the stack and then, disable interrupts. 
+ * 	The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto 
+ * 	the stack and then, disable interrupts. 
  * 	RKH_EXIT_CRITICAL() would simply be implemented by restoring the interrupt 
  * 	status from the stack. Using this scheme, if it's called a RKH service 
  * 	with either interrupts enabled or disabled then, the status would be 
@@ -618,43 +603,34 @@
  * 	RKH services with interrupts enabled!.
  */
 
-#if RKH_CRITICAL_METHOD == 1
-	#define RKH_iSR_CRITICAL
-	#define RKH_iENTER_CRITICAL()		RKH_DIS_INTERRUPT()
-	#define RKH_iEXIT_CRITICAL()		RKH_ENA_INTERRUPT()
-#elif RKH_CRITICAL_METHOD == 2
+#ifdef RKH_CPUSR_TYPE
+	/** 
+	 * 	\brief
+	 * 	This macro is internal to RKH and the user application should 
+	 * 	not call it.
+	 */
 
-	#ifdef RKH_CPUSR_TYPE
-		/** 
-		 * 	\brief
-		 * 	This macro is internal to RKH and the user application should 
-		 * 	not call it.
-		 */
+	#define RKH_SR_CRITICAL_			RKH_CPUSR_TYPE sr
 
-		#define RKH_iSR_CRITICAL			RKH_CPUSR_TYPE sr
+	/** 
+	 * 	\brief
+	 * 	This macro is internal to RKH and the user application should 
+	 * 	not call it.
+	 */
 
-		/** 
-		 * 	\brief
-		 * 	This macro is internal to RKH and the user application should 
-		 * 	not call it.
-		 */
+	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( sr )
 
-		#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( sr )
+	/** 
+	 * 	\brief
+	 * 	This macro is internal to RKH and the user application should 
+	 * 	not call it.
+	 */
 
-		/** 
-		 * 	\brief
-		 * 	This macro is internal to RKH and the user application should 
-		 * 	not call it.
-		 */
-
-		#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( sr )
-	#else
-		#define RKH_iSR_CRITICAL
-		#define RKH_iENTER_CRITICAL()		RKH_ENTER_CRITICAL( dummy )
-		#define RKH_iEXIT_CRITICAL()		RKH_EXIT_CRITICAL( dummy )
-	#endif
+	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
 #else
-	#error "RKH_CRITICAL_METHOD defined incorrectly, expected 1, or 2"
+	#define RKH_SR_CRITICAL_
+	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( dummy )
+	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( dummy )
 #endif
 
 

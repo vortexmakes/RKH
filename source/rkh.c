@@ -471,7 +471,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					if( is_not_conditional( ets ) && is_valid_guard( tr ) && 
 							rkh_call_guard( tr, sma, pe ) == RKH_GFALSE )
 					{
-						RKH_REC_RTN_CODE( te, sma->romrkh->id, RKH_GUARD_FALSE );
+						RKH_REC_RTN_CODE( te,sma->romrkh->id,RKH_GUARD_FALSE );
 						return RKH_GUARD_FALSE;
 					}
 #endif
@@ -485,7 +485,8 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						return RKH_CONDITION_NOT_FOUND;
 					}
 
-					if( rkh_add_list( &act_list, tr->action, RKH_SMA_MAX_TR_SEGS ) )
+					if( rkh_add_list(&act_list, tr->action, 
+													RKH_SMA_MAX_TR_SEGS ) )
 					{
 						RKH_REC_RTN_CODE( te, sma->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
@@ -504,7 +505,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					/* ... */
 
 					if( rkh_add_list( &act_list, CJ(ets)->action, 
-															RKH_SMA_MAX_TR_SEGS ) )
+													RKH_SMA_MAX_TR_SEGS ) )
 					{
 						RKH_REC_RTN_CODE( te, sma->romrkh->id, 
 													RKH_EXCEED_TR_SEGS );
