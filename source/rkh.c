@@ -72,7 +72,7 @@ RKH_THIS_MODULE( 1, rkh );
 #define TEST_GUARD						1
 
 
-#if RKH_TR_EN == 1
+#if RKH_TRC_EN == 1
 	#define clr_step()					(step = 0)
 	#define inc_step()					++step
 	#define get_step()					step
@@ -144,7 +144,7 @@ typedef struct
 
 typedef struct
 {
-	void *list[ RKH_EXCEED_TR_SEGS ];
+	void *list[ RKH_EXCEED_TRC_SEGS ];
 	void **p;
 	HUInt qty;
 } RKHALIST_T;
@@ -159,7 +159,7 @@ static RKHSLIST_T snd, sx, sn;
 static RKHEVT_T *pgevt;
 static RKHSMA_T *pgh;
 
-#if RKH_SMA_TR_EN == 1
+#if RKH_SMA_TRC_EN == 1
 static RKHTREVT_T te;
 #endif
 
@@ -354,7 +354,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKHROM RKHTR_T *tr;
 	HUInt first_regular, inttr;
 	RKHE_T in;
-#if RKH_TR_EN == 1
+#if RKH_TRC_EN == 1
 	HUInt step;
 #endif
 
@@ -405,11 +405,11 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 	clr_step();
 
-	if( rkh_add_list( &act_list, tr->action, RKH_SMA_MAX_TR_SEGS ) )
+	if( rkh_add_list( &act_list, tr->action, RKH_SMA_MAX_TRC_SEGS ) )
 	{
-		RKH_REC_RTN_CODE( te, sma->romrkh->id, RKH_EXCEED_TR_SEGS );
+		RKH_REC_RTN_CODE( te, sma->romrkh->id, RKH_EXCEED_TRC_SEGS );
 		RKHERROR();
-		return RKH_EXCEED_TR_SEGS;
+		return RKH_EXCEED_TRC_SEGS;
 	}
 
 	RKH_REC_SRC_STATE( te, sma->romrkh->id, CB( ss )->id, stname( ss ) );
@@ -486,12 +486,12 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					}
 
 					if( rkh_add_list(&act_list, tr->action, 
-													RKH_SMA_MAX_TR_SEGS ) )
+													RKH_SMA_MAX_TRC_SEGS ) )
 					{
 						RKH_REC_RTN_CODE( te, sma->romrkh->id, 
-													RKH_EXCEED_TR_SEGS );
+													RKH_EXCEED_TRC_SEGS );
 						RKHERROR();
-						return RKH_EXCEED_TR_SEGS;
+						return RKH_EXCEED_TRC_SEGS;
 					}
 
 					ets = tr->target;
@@ -505,12 +505,12 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					/* ... */
 
 					if( rkh_add_list( &act_list, CJ(ets)->action, 
-													RKH_SMA_MAX_TR_SEGS ) )
+													RKH_SMA_MAX_TRC_SEGS ) )
 					{
 						RKH_REC_RTN_CODE( te, sma->romrkh->id, 
-													RKH_EXCEED_TR_SEGS );
+													RKH_EXCEED_TRC_SEGS );
 						RKHERROR();
-						return RKH_EXCEED_TR_SEGS;
+						return RKH_EXCEED_TRC_SEGS;
 					}
 
 					ets = CJ(ets)->target;

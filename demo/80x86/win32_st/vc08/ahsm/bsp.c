@@ -81,7 +81,7 @@ static const char *rcmap[] =
 	tostring( RKH_GUARD_FALSE				),
 	tostring( RKH_UNKNOWN_STATE				),
 	tostring( RKH_EXCEED_HCAL_LEVEL			),
-	tostring( RKH_EXCEED_TR_SEGS 			)
+	tostring( RKH_EXCEED_TRC_SEGS 			)
 };
 
 
@@ -111,7 +111,7 @@ isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == 'p' )
-			rkh_trace_flush();
+			rkh_trc_flush();
 		else if ( c == ESC )
 			break;
 		else if ( c == 'r' )
@@ -240,13 +240,13 @@ print_banner( void )
 
 
 void 
-rkh_trace_open( void )
+rkh_trc_open( void )
 {
 	RKHTRCFG_T *pcfg;
 
-	rkh_trace_init();
-	rkh_trace_config( MY, RKH_TR_EN_LOG, RKH_TR_EN_PRINT );
-	rkh_trace_control( MY, RKH_TRSTART );
+	rkh_trc_init();
+	rkh_trc_config( MY, RKH_TRC_EN_LOG, RKH_TRC_EN_PRINT );
+	rkh_trc_control( MY, RKH_TRC_START );
 
 	if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
 	{
@@ -256,45 +256,45 @@ rkh_trace_open( void )
 
 	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 	
-	pcfg = rkh_trace_getcfg( MY );
-	if( pcfg->print == RKH_TR_EN_PRINT )
+	pcfg = rkh_trc_getcfg( MY );
+	if( pcfg->print == RKH_TRC_EN_PRINT )
 		printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 }
 
 
 void 
-rkh_trace_close( void )
+rkh_trc_close( void )
 {
 	fclose( fdbg );
 }
 
 
 RKHTS_T 
-rkh_trace_getts( void )
+rkh_trc_getts( void )
 {
 	return ( RKHTS_T )clock();
 }
 
 
 void 
-rkh_trace_flush( void )
+rkh_trc_flush( void )
 {
 	RKHTREVT_T te;
 	RKHTRCFG_T *pcfg;
 
-	while( rkh_trace_getnext( &te ) != RKH_TREMPTY )
+	while( rkh_trc_getnext( &te ) != RKH_TRC_EMPTY )
 	{
-		pcfg = rkh_trace_getcfg( te.smaid );
+		pcfg = rkh_trc_getcfg( te.smaid );
 
-		if( pcfg->log == RKH_TR_EN_LOG )
+		if( pcfg->log == RKH_TRC_EN_LOG )
 			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
-													rkh_trace_getts(),
+													rkh_trc_getts(),
 													tremap[ te.id ],
 													smmap[ te.smaid ],
 													format_trevt_args( &te ) );
-		if( pcfg->print == RKH_TR_EN_PRINT )
+		if( pcfg->print == RKH_TRC_EN_PRINT )
 			printf( "%05d [ %-16s ] - %s : %s\n",
-													rkh_trace_getts(),
+													rkh_trc_getts(),
 													tremap[ te.id ],
 													smmap[ te.smaid ],
 													format_trevt_args( &te ) );

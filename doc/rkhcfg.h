@@ -9,7 +9,7 @@
 
 #define RKH_EN_HCAL					1	/* 	Enable (1) or Disable (0) state nesting */
 #define RKH_MAX_HCAL_DEPTH			4	/* 	Max. number of hierarchical levels */
-#define RKH_MAX_TR_SEGS				4	/* 	Max. number of transition segments */
+#define RKH_MAX_TRC_SEGS				4	/* 	Max. number of transition segments */
 #define RKH_NUM_STATE_MACHINES		1	/*	Number of defined state machines */		
 #define RKH_SIZEOF_EVENT			8	/* 	Defines the size of event [in bits]: 8, 16 or 32 */
 #define RKH_EN_DYNAMIC_EVENT		0	/*	Enable (1) or Disable (0) dynamic event support. */
@@ -56,8 +56,8 @@
 #define RKH_EN_NUM_ENEX				0	/*	Enable (1) or Disable (0) trace point - number of enter and exited states */
 #define RKH_EN_NUM_ACTSGT			0	/*	Enable (1) or Disable (0) trace point - number of transition actions to be executed and number of transition segments */
 
-#define RKH_EN_TIMESTAMP			1	/*	Enable (1) or Disable (0) trace timestamp */
-#define RKH_SIZEOF_TIMESTAMP		16	/* 	Defines the size of timestamp [in bits]: 8, 16 or 32 */
+#define RKH_EN_TSTAMP			1	/*	Enable (1) or Disable (0) trace timestamp */
+#define RKH_SIZEOF_TSTAMP		16	/* 	Defines the size of timestamp [in bits]: 8, 16 or 32 */
 #define RKH_MAX_NUM_TRACES			16	/*	Max. number of trace events in the stream */
 #define RKH_EN_TRACE_STRING			1	/*	Enable (1) or Disable (0) the string argument of trace event */
 #define RKH_MAX_TRACE_STRING_SIZE	4	/*	Defines the size of string argument of trace event */

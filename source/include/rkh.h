@@ -849,7 +849,7 @@ typedef enum
 	 * 	within a compound transtion.
 	 */
 
-	RKH_EXCEED_TR_SEGS,
+	RKH_EXCEED_TRC_SEGS,
 
 	/** Number of returned codes */
 	RKH_NUM_CODES
@@ -1656,7 +1656,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	\note
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, the function must configure the trace stream by calling 
- *	rkh_trace_init() function.
+ *	rkh_trc_init() function.
  * 
  *	Example:
  *
@@ -1664,13 +1664,13 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	//	...in some application module
  *
  *	void 
- *	my_rkh_trace_open( void )
+ *	my_rkh_trc_open( void )
  *	{
  *		RKHTRCFG_T *pcfg;
  *		
- *		rkh_trace_init();
- *		rkh_trace_config( MY, RKH_TR_EN_LOG, RKH_TR_EN_PRINT );
- *		rkh_trace_control( MY, RKH_TRSTART );
+ *		rkh_trc_init();
+ *		rkh_trc_config( MY, RKH_TRC_EN_LOG, RKH_TRC_EN_PRINT );
+ *		rkh_trc_control( MY, RKH_TRC_START );
  *		
  *		if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
  *		{
@@ -1679,17 +1679,17 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *		}
  *		fprintf( fdbg, 
  *			"---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
- *		pcfg = rkh_trace_getcfg( MY );
- *		if( pcfg->print == RKH_TR_EN_PRINT )
+ *		pcfg = rkh_trc_getcfg( MY );
+ *		if( pcfg->print == RKH_TRC_EN_PRINT )
  *			printf( "---- RKH trace log session - 
  *					"__DATE__" - "__TIME__" ----\n\n" );
  *	}
  *	\endcode
  *
- * 	\sa \b rkhtrace.h file.
+ * 	\sa \b rkhtrc.h file.
  */
 
-void rkh_trace_open( void );
+void rkh_trc_open( void );
 
 
 /**
@@ -1699,7 +1699,7 @@ void rkh_trace_open( void );
  * 	\note
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, the function must configure the trace stream by calling 
- *	rkh_trace_init() function.
+ *	rkh_trc_init() function.
  *
  *	Example:
  *
@@ -1707,16 +1707,16 @@ void rkh_trace_open( void );
  * 	//	...in some application module
  *
  *	void 
- *	rkh_trace_close( void )
+ *	rkh_trc_close( void )
  *	{
  *		fclose( fdbg );
  *	}
  *	\endcode
  *
- * 	\sa \b rkhtrace.h file.
+ * 	\sa \b rkhtrc.h file.
  */
 
-void rkh_trace_close( void );
+void rkh_trc_close( void );
 
 
 /**
@@ -1736,23 +1736,23 @@ void rkh_trace_close( void );
  * 	//	...in some application module
  *
  * 	void 
- * 	rkh_trace_flush( void )
+ * 	rkh_trc_flush( void )
  * 	{
  * 		RKHTREVT_T te;
  * 		RKHTRCFG_T *pcfg;
  *
- * 		while( rkh_trace_getnext( &te ) != RKH_TREMPTY )
+ * 		while( rkh_trc_getnext( &te ) != RKH_TRC_EMPTY )
  * 		{
- * 			pcfg = rkh_trace_getcfg( te.smaid );
- * 			if( pcfg->log == RKH_TR_EN_LOG )
+ * 			pcfg = rkh_trc_getcfg( te.smaid );
+ * 			if( pcfg->log == RKH_TRC_EN_LOG )
  * 				fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
- *													rkh_trace_getts(),
+ *													rkh_trc_getts(),
  *													tremap[ te.id ],
  *													smmap[ te.smaid ],
  *													format_trevt_args( &te ) );
- *			if( pcfg->print == RKH_TR_EN_PRINT )
+ *			if( pcfg->print == RKH_TRC_EN_PRINT )
  *				printf( "%05d [ %-16s ] - %s : %s\n",
- *													rkh_trace_getts(),
+ *													rkh_trc_getts(),
  *													tremap[ te.id ],
  *													smmap[ te.smaid ],
  *													format_trevt_args( &te ) );
@@ -1763,10 +1763,10 @@ void rkh_trace_close( void );
  * 	\note 
  * 	Typically, must be define it in the specific port file (rkhport.h).
  *
- * 	\sa \b rkhtrace.h file.
+ * 	\sa \b rkhtrc.h file.
  */
 
-void rkh_trace_flush( void );
+void rkh_trc_flush( void );
 
 
 /**
@@ -1776,11 +1776,11 @@ void rkh_trace_flush( void );
  * 	\note
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, the function must configure the trace stream by calling 
- *	rkh_trace_init() function.
+ *	rkh_trc_init() function.
  *
  * 	\note
  *	The data returned is defined in compile-time by means of 
- *	RKH_SIZEOF_TIMESTAMP.
+ *	RKH_SIZEOF_TSTAMP.
  *
  *	Example:
  *
@@ -1788,7 +1788,7 @@ void rkh_trace_flush( void );
  * 	//	...in some application module
  *	
  *	RKHTS_T 
- *	rkh_trace_getts( void )
+ *	rkh_trc_getts( void )
  *	{
  *		return ( RKHTS_T )clock();
  *	}
@@ -1797,10 +1797,10 @@ void rkh_trace_flush( void );
  * 	\returns
  * 	Timestamp (RKHTS_T data type).
  *
- * 	\sa \b rkhtrace.h file.
+ * 	\sa \b rkhtrc.h file.
  */
 
-RKHTS_T rkh_trace_getts( void );
+RKHTS_T rkh_trc_getts( void );
 
 
 #endif

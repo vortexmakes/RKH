@@ -62,8 +62,8 @@ RKH_THIS_MODULE( 4, rkhrq );
 #endif
 
 
-void 
-rkh_rq_init( RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, void *sma )
+void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
+					void *sma )
 {
 	q->pstart = sstart;
 	q->pin = q->pout = ( void ** )sstart;

@@ -63,7 +63,7 @@ rkh_enter( void )
         RKH_ENTER_CRITICAL( dummy );
         if( rkh_rdy_isnot_empty( rkhrg ) ) 
 		{
-			rkh_rdy_findh( rkhrg, prio )
+			rkh_rdy_findh( rkhrg, prio );
             RKH_EXIT_CRITICAL( dummy );
 
             sma = rkh_sptbl[ prio ];

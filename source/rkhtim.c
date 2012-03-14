@@ -49,7 +49,7 @@ rkh_tim_tick( void )
 
 
 void 
-#if RKH_TIMER_EN_HOOK == 0
+#if RKH_TIM_EN_HOOK == 0
 rkh_tim_init_( RKHT_T *t, RKHE_T sig )
 #else
 rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )

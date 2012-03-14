@@ -227,7 +227,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhtrace.c"
+					RelativePath="..\..\..\..\..\..\source\rkhtrc.c"
 					>
 				</File>
 			</Filter>
@@ -305,11 +305,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhtimer.h"
+					RelativePath="..\..\..\..\..\..\source\include\rkhtim.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhtrace.h"
+					RelativePath="..\..\..\..\..\..\source\include\rkhtrc.h"
 					>
 				</File>
 				<File

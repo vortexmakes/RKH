@@ -19,13 +19,13 @@ int
 main( int argc, char *argv[] )
 {
 	bsp_init( argc, argv );
-	rkh_trace_open();
+	rkh_trc_open();
 	rkh_init();
 	
 
 	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
 	rkh_enter();
 
-	rkh_trace_close();
+	rkh_trc_close();
 	return 0;
 }

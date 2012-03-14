@@ -145,7 +145,7 @@ typedef struct
 			do{													\
 				(rg).grp |= rkh_maptbl[(p) >> 3];				\
 				(rg).tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07];	\
-			} while(0);
+			} while(0)
 
 
 /**
@@ -163,7 +163,7 @@ typedef struct
 			do{														\
 				if(((rg).tbl[(p)>>3] &= ~rkh_maptbl[(p)&0x07])==0)	\
 					(rg).grp &= ~rkh_maptbl[(p)>>3];				\
-			} while(0);
+			} while(0)
 
 
 /**
@@ -184,7 +184,7 @@ typedef struct
 			do{													\
 				(p) = rkh_unmaptbl[ (rg).grp ];					\
 				(p) = ((p) << 3) + rkh_unmaptbl[(rg).tbl[(p)]];	\
-			} while(0);
+			} while(0)
 
 
 #endif
