@@ -40,7 +40,7 @@
 #define kbmap( c )					( c - '0' )
 
 
-RKH_THIS_FILE;
+RKH_THIS_MODULE
 
 static char fmt[ 64 ];
 static MYEVT_T mye;
@@ -171,10 +171,10 @@ rkh_hk_idle( void )					/* called within critical section */
 
 
 void 
-rkh_assert( RKHROM char * const file, HUInt fnum, int line )
+rkh_assert( RKHROM char * const file, int line )
 {
 	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
-						"file (#%02d)", line, file, fnum );
+						"file\n", line, file );
 	__debugbreak();
 	rkh_exit();
 }
@@ -222,8 +222,10 @@ static
 void
 print_banner( void )
 {
-	printf(	"Abstract Hierarchical State Machine (ahsm) example\n"
-    		"RKH v%s\n\n", RKH_RELEASE );
+	printf(	"Abstract Hierarchical State Machine (AHSM) example\n" );
+	printf(	"RKH v%s\n", RKH_RELEASE );
+	printf(	"Port v%s\n", rkh_get_port_version() );
+	printf(	"Port description: %s\n\n", rkh_get_port_desc() );
 	printf(	"Description: \n\n"
 			"The goal of this demo application is to explain how to \n"
 			"represent a state machine using the RKH framework. To do \n"
@@ -242,23 +244,17 @@ print_banner( void )
 void 
 rkh_trc_open( void )
 {
-	RKHTRCFG_T *pcfg;
-
 	rkh_trc_init();
-	rkh_trc_config( MY, RKH_TRC_EN_LOG, RKH_TRC_EN_PRINT );
-	rkh_trc_control( MY, RKH_TRC_START );
+	rkh_trc_control( RKH_TRC_START );
 
-	if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
+	if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
 	{
 		perror( "Can't open file\n" );
 		exit( EXIT_FAILURE );
 	}
 
 	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
-	
-	pcfg = rkh_trc_getcfg( MY );
-	if( pcfg->print == RKH_TRC_EN_PRINT )
-		printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
+	printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
 }
 
 
@@ -279,25 +275,22 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	RKHTREVT_T te;
-	RKHTRCFG_T *pcfg;
+	rkhui8_t *tre;
 
-	while( rkh_trc_getnext( &te ) != RKH_TRC_EMPTY )
+	while( ( tre = rkh_trc_get_oldest() ) != ( rkhui8_t* )0 )
 	{
-		pcfg = rkh_trc_getcfg( te.smaid );
-
-		if( pcfg->log == RKH_TRC_EN_LOG )
-			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
+#if 0
+		fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
 													rkh_trc_getts(),
 													tremap[ te.id ],
 													smmap[ te.smaid ],
 													format_trevt_args( &te ) );
-		if( pcfg->print == RKH_TRC_EN_PRINT )
-			printf( "%05d [ %-16s ] - %s : %s\n",
+		printf( "%05d [ %-16s ] - %s : %s\n",
 													rkh_trc_getts(),
 													tremap[ te.id ],
 													smmap[ te.smaid ],
 													format_trevt_args( &te ) );
+#endif
 	}
 }
 

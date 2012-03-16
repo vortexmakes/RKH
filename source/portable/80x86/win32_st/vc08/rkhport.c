@@ -31,13 +31,31 @@
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 9, rkhport );
+RKH_MODULE_NAME( rkhport );
+RKH_MODULE_VERSION( rkhport, 1.00 );
+RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" );
 
 CRITICAL_SECTION csection;		/* Win32 critical section */
 HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
 
 static rkhui8_t running;
+
+
+const 
+char *
+rkh_get_port_version( void )
+{
+	return RKH_MODULE_GET_VERSION();
+}
+
+
+const 
+char *
+rkh_get_port_desc( void )
+{
+	return RKH_MODULE_GET_DESC();
+}
 
 
 void 
@@ -95,9 +113,9 @@ void
 rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
-	RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA ) 
-						&& ( stks == ( void * )0 ) );
+	RKHREQUIRE( stks == ( void * )0 );
     ( void )stksize;
+
 	rkh_rq_init( &sma->equeue, qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_init_hsm( sma );

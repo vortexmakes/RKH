@@ -45,6 +45,10 @@ extern HANDLE sma_is_rdy;
 extern RKHRG_T rkhrg;
 
 
+const char *rkh_get_port_version( void );
+const char *rkh_get_port_desc( void );
+
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.

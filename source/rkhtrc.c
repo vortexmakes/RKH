@@ -8,7 +8,7 @@
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 7, rkhtrc );
+RKH_MODULE_NAME( rkhtrc );
 
 
 #if RKH_TRC_EN == 1

@@ -52,7 +52,7 @@
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 5, rkhs );
+RKH_MODULE_NAME( rkhs );
 
 
 #if RKH_EN_NATIVE_SCHEDULER == 1
@@ -119,9 +119,9 @@ void
 rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
-	RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA ) 
-						&& ( stks == ( void * )0 ) );
+	RKHREQUIRE( stks == ( void * )0 );
     ( void )stksize;
+
 	rkh_rq_init( &sma->equeue, qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_init_hsm( sma );

@@ -82,10 +82,10 @@
  *	The following listing shows a illustrative example for VC2008 IDE:
  *	\code
  *	void 
- *	rkh_assert( RKHROM char * const file, HUInt fnum, int line )
+ *	rkh_assert( RKHROM char * const file, int line )
  *	{
- *		printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, 
- *														file, fnum );
+ *		printf( "RKHASSERT: [%d] line from %s file\n", line, 
+ *														file );
  *		__debugbreak();
  *	}
  *	\endcode
@@ -96,7 +96,7 @@
 #define __RKHASSERT_H__
 
 
-#if RKH_ASSERT == 1
+#if RKH_ASSERT_EN == 1
 
     /** 
 	 *	\brief
@@ -129,10 +129,10 @@
 	 *	The following listing shows a illustrative example for VC2008 IDE:
 	 *	\code
 	 *	void 
-	 *	rkh_assert( RKHROM char * const file, HUInt fnum, int line )
+	 *	rkh_assert( RKHROM char * const file, int line )
 	 *	{
-	 *		printf( "RKHASSERT: [%d] line from %s file (#%02d)", line, 
-	 *														file, fnum );
+	 *		printf( "RKHASSERT: [%d] line from %s file\n", line, 
+	 *														file );
 	 *		__debugbreak();
 	 *	}
 	 *	\endcode
@@ -141,39 +141,34 @@
 	 *	This function must be defined by the user application. 
 	 * 
 	 * 	\param file			file name where the assertion failed
-	 * 	\param fnum 		file number where the assertion failed
 	 * 	\param line 		line number at which the assertion failed
      */
 
-	void rkh_assert( const char *const file, HUInt fnum, int line );
+	void rkh_assert( const char *const file, int line );
 
 
 	/**
 	 *	\brief
 	 *	This macro appears at the top of each C/C++ source file defining 
-	 *	a number and a name for that file.
+	 *	a name for that file.
 	 *
-	 * 	\param __fnum 		file number where the assertion failed
 	 * 	\param __fname		file name where the assertion failed
 	 */
 	
-	#define RKH_THIS_MODULE( __fnum, __fname )						\
-																	\
-					enum { F_NUM = __fnum }; 						\
-					void __dummy##__fnum( void ){}					\
-					static RKHROM char * const rs_file = #__fname;
+	#define RKH_MODULE_NAME( __fname )						\
+					static RKHROM char *const m_name = #__fname
 
 
 	/**
 	 *	\brief
 	 *	This macro appears at the top of each C/C++ source file defining 
-	 *	a name for that file. This macro use a 
+	 *	a name for that file, by means of __FILE__ compiler directive.
 	 */
 	
-	#define RKH_THIS_FILE											\
-																	\
-					enum { F_NUM = 0 }; 							\
-					static RKHROM char * const rs_file = __FILE__;
+	#define RKH_THIS_MODULE									\
+					static RKHROM char *const m_name = __FILE__;
+
+
 	/**
 	 * 	\brief 
 	 * 	The RKHASSERT() macro is used to check expressions that ought to 
@@ -197,12 +192,12 @@
 	 * 	RKHINVARIANT() macros.
 	 */
 
-	#define RKHASSERT( exp )						\
-		if( ( exp ) )								\
-		{}											\
-		else										\
-		{											\
-			rkh_assert( rs_file, F_NUM, __LINE__ );	\
+	#define RKHASSERT( exp )					\
+		if( ( exp ) )							\
+		{}										\
+		else									\
+		{										\
+			rkh_assert( m_name, __LINE__ );		\
 		}
 
     /** 
@@ -230,11 +225,10 @@
 	 */
 
     #define RKHERROR() 							\
-									(rkh_assert(rs_file,F_NUM,__LINE__))
+									rkh_assert(m_name,__LINE__)
 
 #else
-	#define RKH_THIS_MODULE( __fnum, __fname )
-
+	#define RKH_MODULE_NAME( __fname )
 	#define RKHASSERT( exp )				((void)0)
 	#define RKHALLEGE( exp )				((void)(exp))
 	#define RKHERROR()						((void)0)

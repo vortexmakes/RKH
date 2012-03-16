@@ -36,7 +36,7 @@
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 6, rkhtim );
+RKH_MODULE_NAME( rkhtim );
 
 
 void 

@@ -34,7 +34,7 @@
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 2, rkhdyn );
+RKH_MODULE_NAME( rkhdyn );
 
 
 #if RKH_EN_DYNAMIC_EVENT == 1

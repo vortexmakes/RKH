@@ -44,7 +44,7 @@
 
 #if RKH_RQ_EN == 1
 
-RKH_THIS_MODULE( 4, rkhrq );
+RKH_MODULE_NAME( rkhrq );
 
 
 #if RKH_RQ_EN_GET_INFO == 1

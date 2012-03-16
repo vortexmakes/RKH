@@ -37,7 +37,7 @@
 #include "rkhassert.h"
 
 
-RKH_THIS_MODULE( 1, rkh );
+RKH_MODULE_NAME( rkh );
 
 
 #define EXIT_LIST						0x0

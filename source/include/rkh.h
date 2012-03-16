@@ -45,6 +45,54 @@
 
 
 /**
+ *	\brief
+ *	This macro appears at the top of each C/C++ source file defining 
+ *	the version string for that file (module).
+ *
+ * 	\param __fname		file (module) name.
+ * 	\param __version 	file (module) version.
+ */
+
+#define RKH_MODULE_VERSION( __fname, __version )				\
+						static RKHROM char *const m_version = #__version
+
+
+/**
+ *	\brief
+ *	Get the module version.
+ *
+ * 	\param __fname		file (module) name.
+ */
+
+#define RKH_MODULE_GET_VERSION()		\
+						((const char*)m_version)
+
+
+/**
+ *	\brief
+ *	This macro appears at the top of each C/C++ source file defining 
+ *	the description string for that file (module).
+ *
+ * 	\param __fname		file (module) name.
+ * 	\param __desc	 	file (module) description.
+ */
+
+#define RKH_MODULE_DESC( __fname, __desc )				\
+						static RKHROM char *const m_desc = __desc
+
+
+/**
+ *	\brief
+ *	Get the module description.
+ *
+ * 	\param __fname		file (module) name.
+ */
+
+#define RKH_MODULE_GET_DESC()		\
+						((const char*)m_desc)
+
+
+/**
  * 	\brief 
  * 	Defines the data structure into which the collected performance 
  * 	information for state machine is stored.

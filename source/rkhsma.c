@@ -33,7 +33,7 @@
 #include "rkh.h"
 
 
-RKH_THIS_MODULE( 8, rkhsma );
+RKH_MODULE_NAME( rkhsma );
 
 
 /*
