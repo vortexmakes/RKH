@@ -102,8 +102,6 @@
 #define RKH_TRC_SIZEOF_EVENT			16	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_POINTER			32	/* 	CFG01 */
 
-
-
 #define RKH_RQ_EN						1	/* 	CFG01 */ 
 #define RKH_RQ_SIZEOF_NELEM				8	/* 	CFG01 */ 
 #define RKH_RQ_EN_GET_LWMARK			1	/* 	CFG01 */ 

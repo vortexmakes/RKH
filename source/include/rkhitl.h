@@ -255,6 +255,12 @@
 	#endif
 #endif
 
+#if RKH_TRC_EN == 1 && RKH_TRC_EN_TSTAMP == 1
+	#if RKH_TRC_SIZEOF_EVENT < (RKH_TRC_SIZEOF_TSTAMP/8 + 1)
+		#error 	"rkhcfg.h, The size of trace event buffer is deficient. It must be defined to store at least the event ID (1-byte) and the timestamp if it's defined."
+	#endif
+#endif
+
 #ifndef RKH_SMA_EN_HCAL
 	#error "rkhcfg.h, Missing RKH_SMA_EN_HCAL: Enable (1) or Disable (0) state nesting"
 #endif

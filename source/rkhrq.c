@@ -143,6 +143,7 @@ rkh_rq_get( RKHRQ_T *q  )
 
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	RKH_ENTER_CRITICAL_();
+
 	if( q->qty == 0 )
 	{
 		RKH_IUPDT_EMPTY( q );
@@ -171,6 +172,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
 	RKHASSERT( q->qty < q->nelems );
+
 	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );
@@ -206,6 +208,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
 	RKHASSERT( q->qty < q->nelems );
+
 	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );

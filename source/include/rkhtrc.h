@@ -55,9 +55,20 @@
  * 	- any extra data that the system wants to associate with the event 
  * 	(optional).
  *
- * 	When the RKH reachs a trace point, all the information related to 
- * 	it has to be stored somewhere before it can be retrieved, in order to 
- * 	be analyzed. This place is named trace stream.
+ * 	When the system or an application trace an event, all the information 
+ * 	related to it has to be stored somewhere before it can be retrieved, in 
+ * 	order to be analyzed. This place is a trace stream. Formally speaking, a 
+ * 	trace stream is defined as a non-persistent, internal (opaque) data 
+ * 	object containing a sequence of trace events plus some internal 
+ * 	information to interpret those trace events.
+ *	
+ *	Also, the streams also support filtering. The application can define and 
+ *	apply a filter to a trace stream. Basically, the filter establishes which 
+ *	event types the stream is accepting (and hence storing) and which are not.
+ *	Therefore, trace events corresponding to types which are filtered out 
+ *	from a certain stream will not be stored in the stream. The stream in the 
+ *	system can potentially be applied a different filter. This filter can be 
+ *	applied, removed or changed at any time.
  */
 
 
@@ -68,17 +79,6 @@
 #include "rkhtype.h"
 #include "rkhcfg.h"
 #include <string.h>
-
-
-/**
- * 	\brief
- * 	Return codes from rkh_trc_getnext() function.
- */
-
-typedef enum
-{
-	RKH_TRC_OK, RKH_TRC_EMPTY
-} RKHTR_RC;
 
 
 /**
@@ -95,282 +95,180 @@ typedef enum
 
 /**
  * 	\brief
- * 	List of event traced.
- *
- *	The list below defines the available trace events. This traces are 
- *	placed within RKH source code, at key points of interest, called 
- *	trace points.
+ * 	RKH trace events.
  */
 
-typedef enum
+typedef enum rkh_trc_events
 {
-	/** 
-	 * 	If it's enabled (1) records the triggering event.
-	 */
-
-	RKHTR_EVENT,
+	/* --- Memory Pool (MP) ------------------ */
+	RKH_TRCE_MP_INIT,
+	RKH_TRCE_MP_GET,
+	RKH_TRCE_MP_PUT,
 	
-	/**
-	 * 	If it's enabled (1) records the source state of transition.
-	 */
+	/* --- Queue (RQ) ------------------------ */
+	RKH_TRCE_RQ_INIT,
+	RKH_TRCE_RQ_GET,
+	RKH_TRCE_RQ_PUT_FIFO,
+	RKH_TRCE_RQ_PUT_LIFO,
+	RKH_TRCE_RQ_DEPLETE,
 
-	RKHTR_TRN_SRC,
+	/* --- State Machine Application (SMA) --- */
+	RKH_TRCE_SMA_ACTIVATE,
+	RKH_TRCE_SMA_TERMINATE,
+	RKH_TRCE_SMA_GET,
+	RKH_TRCE_SMA_POST_FIFO,
+	RKH_TRCE_SMA_POST_LIFO,
+	RKH_TRCE_SMA_REGISTER,
+	RKH_TRCE_SMA_UNREGISTER,
 
-	/**
-	 * 	If it's enabled (1) records the target state of transition.
-	 */
+	/* --- State machine (SM) ---------------- */
+	RKH_TRCE_SM_INIT,
+	RKH_TRCE_SM_CLEAR_HIST,
+	RKH_TRCE_SM_TRN,
+	RKH_TRCE_SM_STATE,
+	RKH_TRCE_SM_EN_STATE,
+	RKH_TRCE_SM_EX_STATE,
+	RKH_TRCE_SM_NUM_ENEX,
+	RKH_TRCE_SM_NUM_TRNACT,
+	RKH_TRCE_SM_STATE_INCOMP,
+	RKH_TRCE_SM_DISPATCH_RC,
 
-	RKHTR_TRN_TGT,
+	/* --- Timer (TIM) ----------------------- */
+	RKH_TRCE_TIM_INIT,
+	RKH_TRCE_TIM_START,
+	RKH_TRCE_TIM_RESTART,
+	RKH_TRCE_TIM_STOP,
 
-	/**
-	 * 	If it's enabled (1) records the next state of transition.
-	 */
+	/* --- Framework (RKH) ----------------------- */
+	RKH_TRCE_FWK_AE,
+	RKH_TRCE_FWK_GC,
+	RKH_TRCE_FWK_GC_RECYCLE,
+	RKH_TRCE_FWK_EP_REGISTER,
+	RKH_TRCE_FWK_DEFER,
+	RKH_TRCE_FWK_RECALL,
+	RKH_TRCE_FWK_DISPATCH,
+	RKH_TRCE_FWK_ENTER,
+	RKH_TRCE_FWK_EXIT,
+	RKH_TRCE_FWK_INIT,
 
-	RKHTR_NXT_STATE,
-
-	/**
-	 * 	If it's enabled (1) records the internal transition.
-	 */
-
-	RKHTR_INT_TRAN,
-
-	/**
-	 * 	If it's enabled (1) records the entered state.
-	 */
-
-	RKHTR_ENTRY,
-
-	/**
-	 * 	If it's enabled (1) records the exited state.
-	 */
-
-	RKHTR_EXIT,
-
-	/**
-	 * 	If it's enabled (1) records the initialization process 
-	 * 	of state machine.
-	 */
-
-	RKHTR_INIT_HSM,
-
-	/**
-	 * 	If it's enabled (1) records the target state of 
-	 * 	transition segment.
-	 */
-
-	RKHTR_SGT_TGT,
-
-	/**
-	 * 	If it's enabled (1) records the code returned by 
-	 * 	rkh_dispatch() function.
-	 */
-
-	RKHTR_RTN_CODE,
-
-	/**
-	 * 	If it's enabled (1) records the number of entered 
-	 * 	and exited states.
-	 */
-
-	RKHTR_NUM_ENEX,
-
-	/**
-	 * 	If it's enabled (1) records the number of transition 
-	 * 	actions and transition segments.
-	 */
-
-	RKHTR_NUM_ACTSGT,
-
-	RKHTR_NUM_SMA_EVENTS
+	RKH_TRCE_USER
 	 
-} RKHTR_EVENTS;
+} RKH_TRC_EVENTS;
 
 
 /** 
  * 	\brief
  * 	Defines the size of trace timestamp. 
  *
- * 	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
+ * 	The valid values [in bits] are 8, 16 or 32. Default is 16. This type is 
  * 	configurable via the RKH_TRC_SIZEOF_TSTAMP preprocessor option.
  */
 
 #if RKH_TRC_SIZEOF_TSTAMP == 8
 	typedef rkhui8_t RKHTS_T;
-	#define RKH_TRCE_TSTAMP()					\
-				RKH_TRCE_UI8( rkh_trc_getts() )
+	#define RKH_TRC_TSTAMP()					\
+				RKH_TRC_UI8( rkh_trc_getts() )
 #elif RKH_TRC_SIZEOF_TSTAMP == 16
 	typedef rkhui16_t RKHTS_T;
-	#define RKH_TRCE_TSTAMP()					\
-				RKH_TRCE_UI8( rkh_trc_getts() )
+	#define RKH_TRC_TSTAMP()					\
+				RKH_TRC_UI16( rkh_trc_getts() )
 #elif RKH_TRC_SIZEOF_TSTAMP == 32
 	typedef rkhui32_t RKHTS_T;
-	#define RKH_TRCE_TSTAMP()					\
-				RKH_TRCE_UI8( rkh_trc_getts() )
+	#define RKH_TRC_TSTAMP()					\
+				RKH_TRC_UI32( rkh_trc_getts() )
 #else
-	typedef rkhui8_t RKHTS_T;
-	#define RKH_TRCE_TSTAMP()					\
-				RKH_TRCE_UI8( rkh_trc_getts() )
+	typedef rkhui16_t RKHTS_T;
+	#define RKH_TRC_TSTAMP()					\
+				RKH_TRC_UI16( rkh_trc_getts() )
 #endif
 
 
-#define RKH_TRCE_BEGIN()
-#define RKH_TRCE_END()
+#define RKH_TRC_BEGIN( treid )	\
+			rkh_trc_begin();	\
+			RKH_TRC_HDR( treid )
 
-#define RKH_TRCE_UI8( d )	\
+#define RKH_TRC_END()
+
+#define RKH_TRC_UI8( d )	\
 			rkh_trc_ui8( d )
 
-#define RKH_TRCE_UI16( d )	\
+#define RKH_TRC_UI16( d )	\
 			rkh_trc_ui16( d )
 
-#define RKH_TRCE_UI32( d )	\
+#define RKH_TRC_UI32( d )	\
 			rkh_trc_ui32( d )
 
 
 #if RKH_TRC_EN_TSTAMP == 1
-	#define RKH_TRCE_HDR( teid ) 		\
-				RKH_TRCE_UI8( teid );	\
-				RKH_TRCE_TSTAMP()
+	#define RKH_TRC_HDR( treid ) 		\
+				RKH_TRC_UI8( treid );	\
+				RKH_TRC_TSTAMP()
 #else
-	#define RKH_TRCE_HDR( teid ) 		\
-				RKH_TRCE_UI8( teid )
+	#define RKH_TRC_HDR( treid ) 		\
+				RKH_TRC_UI8( treid )
 #endif
 
 
 #if RKH_TRC_SIZEOF_POINTER == 16
-	#define RKH_TRCE_OBJ_( obj )	\
-				RKH_TRCE_UI16( obj )
+	#define RKH_TRC_OBJ( obj )	\
+				RKH_TRC_UI16( obj )
 #elif RKH_TRC_SIZEOF_POINTER == 32
-	#define RKH_TRCE_OBJ_( obj )	\
-				RKH_TRCE_UI32( obj )
+	#define RKH_TRC_OBJ( obj )	\
+				RKH_TRC_UI32( obj )
 #else
-	#define RKH_TRCE_OBJ_( obj )	\
-				RKH_TRCE_UI32( obj )
+	#define RKH_TRC_OBJ( obj )	\
+				RKH_TRC_UI32( obj )
 #endif
 
 
 #if RKH_TIMER_SIZEOF_NTIMER == 8
-	#define RKH_TRCE_NTICK_( nt )	\
-				RKH_TRCE_UI8( nt )
+	#define RKH_TRC_NTICK( nt )	\
+				RKH_TRC_UI8( nt )
 #elif RKH_TIMER_SIZEOF_NTIMER == 16
-	#define RKH_TRCE_NTICK_( nt )	\
-				RKH_TRCE_UI16( nt )
+	#define RKH_TRC_NTICK( nt )	\
+				RKH_TRC_UI16( nt )
 #elif RKH_TIMER_SIZEOF_NTIMER == 32
-	#define RKH_TRCE_NTICK_( nt )	\
-				RKH_TRCE_UI32( nt )
+	#define RKH_TRC_NTICK( nt )	\
+				RKH_TRC_UI32( nt )
 #else
-	#define RKH_TRCE_NTICK_( nt )	\
-				RKH_TRCE_UI8( nt )
+	#define RKH_TRC_NTICK( nt )	\
+				RKH_TRC_UI8( nt )
 #endif
 
 
 #if RKH_TRC_EN == 1
 
-	/* --- Memory Pool (MP) --- */
-	/* --- Queue (RQ) --- */
+	/* --- Memory Pool (MP) ------------------ */
+	/* --- Queue (RQ) ------------------------ */
 	/* --- State Machine Application (SMA) --- */
-	/* --- State machine (SM) --- */
+	/* --- State machine (SM) ---------------- */
 
-	/* --- Timer (TIM) --- */
-
+	/* --- Timer (TIM) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
-		#define RKH_TRCREC_TIM_START( t, nt, sma ) 			\
-					RKH_TRCE_BEGIN(); 						\
-						RKH_TRCE_HDR( RKH_TRC_TIM_START );	\
-						RKH_TRCE_OBJ( t ); 					\
-						RKH_TRCE_NTICK_( nt ); 				\
-						RKH_TRCE_OBJ( sma ); 				\
-					RKH_TRCE_END()
-	#else
-		#define RKH_TRCREC_TIM_START( t, nt, sma )
-	#endif
+		#define RKH_TRC_TIM_INIT( t, sig )					\
+					RKH_TRC_BEGIN( RKH_TRCE_TIM_INIT );		\
+					RKH_TRC_END()
 
+		#define RKH_TRCR_TIM_START(	t, nt, sma )			\
+					RKH_TRC_BEGIN( RKH_TRCE_TIM_START );	\
+						RKH_TRC_OBJ( t ); 					\
+						RKH_TRC_NTICK( nt ); 				\
+						RKH_TRC_OBJ( sma ); 				\
+					RKH_TRC_END()
 	
-	/* --- OLD --- */
-	#if RKH_TRC_TRACE_ALL == 1 || RKH_TRC_EN_EVENT == 1
-		#define RKH_REC_EVENT( e, s, n )
-	#else
-		#define RKH_REC_EVENT( e, s, n )
-	#endif
+		#define RKH_TRCR_TIM_RESTART( t, nt )				\
+					RKH_TRC_BEGIN( RKH_TRCE_TIM_RESTART );	\
+					RKH_TRC_END()
 
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TRN_SRC == 1
-		#define RKH_REC_SRC_STATE( e, s, n, str )
+		#define RKH_TRCR_TIM_STOP( t )						\
+					RKH_TRC_BEGIN( RKH_TRCE_TIM_STOP );		\
+					RKH_TRC_END()
 	#else
-		#define RKH_REC_SRC_STATE( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TRN_TGT == 1
-		#define RKH_REC_TGT_STATE( e, s, n, str )
-	#else
-		#define RKH_REC_TGT_STATE( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_NXT_STATE == 1
-		#define RKH_REC_NXT_STATE( e, s, n, str )
-	#else
-		#define RKH_REC_NXT_STATE( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_INT_TRAN == 1
-		#define RKH_REC_INT_TRAN( e, s )
-	#else
-		#define RKH_REC_INT_TRAN( e, s )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_ENTRY == 1
-		#define RKH_REC_ENTRY( e, s, n, str )
-	#else
-		#define RKH_REC_ENTRY( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_EXIT == 1
-		#define RKH_REC_EXIT( e, s, n, str )
-	#else
-		#define RKH_REC_EXIT( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_INIT_HSM == 1
-		#define RKH_REC_INIT_HSM( e, s, n, str )
-	#else
-		#define RKH_REC_INIT_HSM( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SGT == 1
-		#define RKH_REC_SGT( e, s, n, str )
-	#else
-		#define RKH_REC_SGT( e, s, n, str )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RTN_CODE == 1
-		#define RKH_REC_RTN_CODE( e, s, n )
-	#else
-		#define RKH_REC_RTN_CODE( e, s, n )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_NUM_ENEX == 1
-		#define RKH_REC_NUM_ENEX( e, s, n )
-	#else
-		#define RKH_REC_NUM_ENEX( e, s, n )
-	#endif
-
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_NUM_ACTSGT == 1
-		#define RKH_REC_NUM_ACTSGT( e, s, n )
-	#else
-		#define RKH_REC_NUM_ACTSGT( e, s, n )
+		#define RKH_TRCR_TIM_START( t, nt, sma )
 	#endif
 
 #else
-	#define RKH_REC_EVENT( e, s, n )
-	#define RKH_REC_SRC_STATE( e, s, n, str )
-	#define RKH_REC_TGT_STATE( e, s, n, str )
-	#define RKH_REC_NXT_STATE( e, s, n, str )
-	#define RKH_REC_INT_TRAN( e, s )
-	#define RKH_REC_ENTRY( e, s, n, str )
-	#define RKH_REC_EXIT( e, s, n, str )
-	#define RKH_REC_INIT_HSM( e, s, n, str )
-	#define RKH_REC_SGT( e, s, n, str )
-	#define RKH_REC_RTN_CODE( e, s, n )
-	#define RKH_REC_NUM_ENEX( e, s, n )
-	#define RKH_REC_NUM_ACTSGT( e, s, n )
+	#define RKH_TRCR_TIM_START( t, nt, sma )
 #endif
 
 
@@ -393,15 +291,18 @@ typedef enum
  *	
  *	\note
  *	The timestamp is optional, thus it could be eliminated from the trace 
- *	event in compile-time with RKH_TRC_TSTAMP_EN = 0.
+ *	event in compile-time with RKH_TRC_EN_TSTAMP = 0.
+ *	\note
+ *	The trace stream is an array of buffers.
+ *
  */
 
-typedef rkhui8_t RKH_TRCEVT_T[ RKH_TRC_SIZEOF_EVENT ];
+typedef rkhui8_t RKH_TRCE_T[ RKH_TRC_SIZEOF_EVENT ];
 
 
 /**
  * 	\brief
- * 	Inits the trace facility module.
+ * 	Initializes the RKH's trace record service.
  */
 
 void rkh_trc_init( void );
@@ -409,10 +310,13 @@ void rkh_trc_init( void );
 
 /**
  * 	\brief
- * 	Starts or stops the tracing session.
+ * 	Starts or stops the tracing session. 
+ * 	The stream can be in two different states: running (RKH_TRC_START) or 
+ * 	suspended (RKH_TRC_STOP). These two states determine whether or not the 
+ * 	stream is accepting events to be stored.
  *
- * 	\param opt		control option. Use RKH_TRC_START to start recording
- * 					events.	
+ * 	\param opt		control option. Use RKH_TRC_START to start recording 
+ * 					events.
  */
 
 void rkh_trc_control( HUInt opt );
@@ -420,20 +324,75 @@ void rkh_trc_control( HUInt opt );
 
 /**
  * 	\brief
- *	Retrieves a pointer to oldest trace event in trace stream.
- *
- * 	\param ptrce		pointer to the buffer into which the event retrieved
- * 						will be copied.
+ *	Retrieves a pointer to oldest trace event in the trace stream. 
+ *	Frequently, this function is used by the called trace analyzer.
  *
  * 	\returns
- * 	RKH_TRC_OK if trace stream was not empty, otherwise RKH_TRC_EMPTY.
+ * 	A pointer to the beginning of the buffer into which the trace event was 
+ * 	stored if trace stream was not empty, otherwise NULL pointer.
  */
 
-HUInt rkh_trc_get( RKH_TRCEVT_T *ptrce );
+rkhui8_t *rkh_trc_get_oldest( void );
 
+
+/**
+ * 	\brief
+ * 	Get the next trace event buffer from the trace stream. The retrieved 
+ * 	buffer will be used to record a new trace event.
+ *
+ * 	\returns
+ * 	A pointer to the beginning of the reserved buffer into which the trace 
+ * 	event will be copied if trace stream was not stopped, otherwise NULL 
+ * 	pointer.
+ */
+
+rkhui8_t *rkh_trc_get_nextbuf( void );
+
+
+/**
+ * 	\brief
+ * 	Filters the types of events to be traced. 
+ *
+ * 	The stream is initially created with an empty filter (that is, without 
+ * 	filtering any event type). If this is not the required behavior, the 
+ * 	application can build a set of event types, include the appropriate event 
+ * 	types in it, and apply it as a filter to the stream. After that, the 
+ * 	stream will reject any event whose type is in the filter set.
+ */
+
+void rkh_trc_filter( void );
+
+
+/**
+ * 	\brief
+ * 	Get a buffer from the trace stream. The retrieved buffer will be used 
+ * 	to record a new trace event.
+ */
+
+void rkh_trc_begin( void );
+
+
+/**
+ * 	\brief
+ * 	Store a 8-bit data into the current trace event buffer.
+ */
 
 void rkh_trc_ui8( rkhui8_t d );
+
+
+/**
+ * 	\brief
+ * 	Store a 16-bit data into the current trace event buffer.
+ */
+
 void rkh_trc_ui16( rkhui16_t d );
+
+
+/**
+ * 	\brief
+ * 	Store a 32-bit data into the current trace event buffer.
+ */
+
 void rkh_trc_ui32( rkhui32_t d );
 
 

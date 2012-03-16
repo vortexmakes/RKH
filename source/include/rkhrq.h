@@ -249,7 +249,7 @@ RKH_RQNE_T rkh_rq_get_num( RKHRQ_T *q );
 RKH_RQNE_T rkh_rq_get_lwm( RKHRQ_T *q );
 
 
-/*
+/**
  * 	\brief
  *	Get and remove an element from a queue.
  *

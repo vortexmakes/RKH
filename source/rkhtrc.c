@@ -13,41 +13,20 @@ RKH_THIS_MODULE( 7, rkhtrc );
 
 #if RKH_TRC_EN == 1
 
-static RKH_TRCEVT_T trcstm[ RKH_TRC_MAX_TRACES ];
-static RKH_TRCEVT_T *trcin, *trcout;
+static RKH_TRCE_T trcstm[ RKH_TRC_MAX_TRACES ];
+static RKH_TRCE_T *trcin, *trcout, *trcend;
 static rkhui8_t trcqty;
 static rkhui8_t trcctrl;
-
-
-static
-HUInt
-rkh_remove_trevt( RKHTREVT_T *p )
-{
-	RKH_SR_CRITICAL_;
-
-	RKH_ENTER_CRITICAL_();
-	if( trcqty == 0 )
-	{
-		RKH_EXIT_CRITICAL_();
-		return RKH_TRC_EMPTY;
-	}
-
-	*p = *trcout;
-
-	if( ++trcout >= trstm + RKH_TRC_MAX_TRACES )
-		trcout = trcsm;
-
-	--trcqty;
-	RKH_EXIT_CRITICAL_();
-	return RKH_TRC_OK;
-}
+static rkhui8_t *trcb;
 
 
 void
 rkh_trc_init( void )
 {
-	trcin = trcout = trcsm;
+	trcin = trcout = trcstm;
 	trcqty = 0;
+	trcend = &trcstm[ RKH_TRC_MAX_TRACES ];
+	trcctrl = RKH_TRC_START;
 }
 
 
@@ -57,61 +36,96 @@ rkh_trc_control( HUInt opt )
 	RKH_SR_CRITICAL_;
 
 	RKH_ENTER_CRITICAL_();
-	rkh_trc_enable = opt;
+	trcctrl = opt;
 	RKH_EXIT_CRITICAL_();
 }
 
 
-void 
-rkh_trc_evt( RKHTREVT_T *ptre )
+rkhui8_t *
+rkh_trc_get_nextbuf( void )
 {
-	RKHTRCFG_T *pc;
+	rkhui8_t *tre = ( rkhui8_t* )0;
 	RKH_SR_CRITICAL_;
 	
 	RKH_ENTER_CRITICAL_();
-	pc = rkh_trc_getcfg( ptre->smaid );
-	if( pc->enable == RKH_TRSTOP )
-	{
-		RKH_EXIT_CRITICAL_();
-		return;
-	}
 
-	*trcin = *ptre;
+	tre = ( rkhui8_t* )trcin++;
+	++trcqty;
 
-	if( ++trcin >= trcstm + RKH_TRC_MAX_TRACES )
-		trcin = trcsm;
+	if( trcin == trcend )
+		trcin = trcstm;
 
-	if( ++trcqty >= RKH_TRC_MAX_TRACES )
+	if( trcqty >= RKH_TRC_MAX_TRACES )
 	{
 		trcqty = RKH_TRC_MAX_TRACES;
 		trcout = trcin;
 	}
 	RKH_EXIT_CRITICAL_();
+	return tre;
 }
 
 
-HUInt
-rkh_trc_get( RKH_TRCEVT_T *ptrce )
+rkhui8_t *
+rkh_trc_get_oldest( void )
 {
-	return RKH_TRC_EMPTY;
+	rkhui8_t *tre = ( rkhui8_t* )0;
+	RKH_SR_CRITICAL_;
+
+	RKH_ENTER_CRITICAL_();
+
+	if( trcqty == 0 )
+	{
+		RKH_EXIT_CRITICAL_();
+		return tre;
+	}
+
+	tre = ( rkhui8_t* )trcout++;
+	--trcqty;
+
+	if( trcout >= trcend )
+		trcout = trcstm;
+
+	RKH_EXIT_CRITICAL_();
+	return tre;
+}
+
+
+void
+rkh_trc_begin( void )
+{
+	RKH_SR_CRITICAL_;
+
+	RKH_ENTER_CRITICAL_();
+	trcb = rkh_trc_get_nextbuf();
 }
 
 
 void 
 rkh_trc_ui8( rkhui8_t d )
 {
+	*trcb++ = d;
 }
 
 
 void 
 rkh_trc_ui16( rkhui16_t d )
 {
+	*trcb++ = (rkhui8_t)d;
+	d >>= 8;
+	*trcb++ = (rkhui8_t)d;
 }
 
 
 void 
 rkh_trc_ui32( rkhui32_t d )
 {
+	*trcb++ = (rkhui8_t)d;
+	d >>= 8;
+	*trcb++ = (rkhui8_t)d;
+	d >>= 8;
+	*trcb++ = (rkhui8_t)d;
+	d >>= 8;
+	*trcb++ = (rkhui8_t)d;
 }
 
 
