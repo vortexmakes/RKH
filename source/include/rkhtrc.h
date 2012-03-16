@@ -108,30 +108,32 @@ typedef enum rkh_trc_events
 	/* --- Queue (RQ) ------------------------ */
 	RKH_TRCE_RQ_INIT,
 	RKH_TRCE_RQ_GET,
-	RKH_TRCE_RQ_PUT_FIFO,
-	RKH_TRCE_RQ_PUT_LIFO,
+	RKH_TRCE_RQ_FIFO,
+	RKH_TRCE_RQ_LIFO,
+	RKH_TRCE_RQ_FULL,
 	RKH_TRCE_RQ_DEPLETE,
 
 	/* --- State Machine Application (SMA) --- */
-	RKH_TRCE_SMA_ACTIVATE,
-	RKH_TRCE_SMA_TERMINATE,
+	RKH_TRCE_SMA_ACT,
+	RKH_TRCE_SMA_TERM,
 	RKH_TRCE_SMA_GET,
-	RKH_TRCE_SMA_POST_FIFO,
-	RKH_TRCE_SMA_POST_LIFO,
-	RKH_TRCE_SMA_REGISTER,
-	RKH_TRCE_SMA_UNREGISTER,
+	RKH_TRCE_SMA_FIFO,
+	RKH_TRCE_SMA_LIFO,
+	RKH_TRCE_SMA_REG,
+	RKH_TRCE_SMA_UNREG,
 
 	/* --- State machine (SM) ---------------- */
 	RKH_TRCE_SM_INIT,
-	RKH_TRCE_SM_CLEAR_HIST,
+	RKH_TRCE_SM_CLRH,
+	RKH_TRCE_SM_DCH,
 	RKH_TRCE_SM_TRN,
 	RKH_TRCE_SM_STATE,
-	RKH_TRCE_SM_EN_STATE,
-	RKH_TRCE_SM_EX_STATE,
-	RKH_TRCE_SM_NUM_ENEX,
-	RKH_TRCE_SM_NUM_TRNACT,
-	RKH_TRCE_SM_STATE_INCOMP,
-	RKH_TRCE_SM_DISPATCH_RC,
+	RKH_TRCE_SM_ENSTATE,
+	RKH_TRCE_SM_EXSTATE,
+	RKH_TRCE_SM_NENEX,
+	RKH_TRCE_SM_NTRNACT,
+	RKH_TRCE_SM_CSTATE,
+	RKH_TRCE_SM_DCH_RC,
 
 	/* --- Timer (TIM) ----------------------- */
 	RKH_TRCE_TIM_INIT,
@@ -140,16 +142,15 @@ typedef enum rkh_trc_events
 	RKH_TRCE_TIM_STOP,
 
 	/* --- Framework (RKH) ----------------------- */
+	RKH_TRCE_FWK_INIT,
+	RKH_TRCE_FWK_EN,
+	RKH_TRCE_FWK_EX,
+	RKH_TRCE_FWK_EPREG,
 	RKH_TRCE_FWK_AE,
 	RKH_TRCE_FWK_GC,
-	RKH_TRCE_FWK_GC_RECYCLE,
-	RKH_TRCE_FWK_EP_REGISTER,
+	RKH_TRCE_FWK_GCR,
 	RKH_TRCE_FWK_DEFER,
-	RKH_TRCE_FWK_RECALL,
-	RKH_TRCE_FWK_DISPATCH,
-	RKH_TRCE_FWK_ENTER,
-	RKH_TRCE_FWK_EXIT,
-	RKH_TRCE_FWK_INIT,
+	RKH_TRCE_FWK_RCALL,
 
 	RKH_TRCE_USER
 	 
@@ -236,17 +237,276 @@ typedef enum rkh_trc_events
 #endif
 
 
-#if RKH_TRC_EN == 1
+#if RKH_MP_SIZEOF_NBLOCK == 8
+	#define RKH_TRC_NBLK( nt )	\
+				RKH_TRC_UI8( nt )
+#elif RKH_MP_SIZEOF_NBLOCK == 16
+	#define RKH_TRC_NBLK( nt )	\
+				RKH_TRC_UI16( nt )
+#elif RKH_MP_SIZEOF_NBLOCK == 32
+	#define RKH_TRC_NBLK( nt )	\
+				RKH_TRC_UI32( nt )
+#else
+	#define RKH_TRC_NBLK( nt )	\
+				RKH_TRC_UI8( nt )
+#endif
 
+
+#if RKH_RQ_SIZEOF_NELEM == 8
+	#define RKH_TRC_NE( nt )	\
+				RKH_TRC_UI8( nt )
+#elif RKH_MP_SIZEOF_NELEM == 16
+	#define RKH_TRC_NE( nt )	\
+				RKH_TRC_UI16( nt )
+#elif RKH_MP_SIZEOF_NELEM == 32
+	#define RKH_TRC_NE( nt )	\
+				RKH_TRC_UI32( nt )
+#else
+	#define RKH_TRC_NE( nt )	\
+				RKH_TRC_UI8( nt )
+#endif
+
+
+#if RKH_SIZEOF_EVENT == 8
+	#define RKH_TRC_EVT( e )	\
+				RKH_TRC_UI8( e )
+#elif RKH_SIZEOF_EVENT == 16
+	#define RKH_TRC_EVT( e )	\
+				RKH_TRC_UI16( e )
+#elif RKH_SIZEOF_EVENT == 32
+	#define RKH_TRC_EVT( e )	\
+				RKH_TRC_UI32( e )
+#else
+	#define RKH_TRC_EVT( e )	\
+				RKH_TRC_UI8( e )
+#endif
+
+
+#if RKH_SIZEOF_ESIZE == 8
+	#define RKH_TRC_ES( es )	\
+				RKH_TRC_UI8( es )
+#elif RKH_SIZEOF_ESIZE == 16
+	#define RKH_TRC_ES( es )	\
+				RKH_TRC_UI16( es )
+#elif RKH_SIZEOF_ESIZE == 32
+	#define RKH_TRC_ES( es )	\
+				RKH_TRC_UI32( es )
+#else
+	#define RKH_TRC_ES( es )	\
+				RKH_TRC_UI8( es )
+#endif
+
+
+#if RKH_TRC_EN == 1
 	/* --- Memory Pool (MP) ------------------ */
+	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_MP == 1
+		#define RKH_TRCR_MP_INIT( mp, nblock )				\
+					RKH_TRC_BEGIN( RKH_TRCE_MP_INIT );		\
+						RKH_TRC_OBJ( mp ); 					\
+						RKH_TRC_NBLK( nblock ); 			\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_MP_GET( mp, nfree )				\
+					RKH_TRC_BEGIN( RKH_TRCE_MP_GET );		\
+						RKH_TRC_OBJ( mp ); 					\
+						RKH_TRC_NBLK( nfree ); 				\
+					RKH_TRC_END()
+	
+		#define RKH_TRCR_MP_PUT( mp, nfree )				\
+					RKH_TRC_BEGIN( RKH_TRCE_MP_PUT );		\
+						RKH_TRC_OBJ( mp ); 					\
+						RKH_TRC_NBLK( nfree ); 				\
+					RKH_TRC_END()
+	#else
+		#define RKH_TRCR_MP_INIT( mp, nblock )
+		#define RKH_TRCR_MP_GET( mp, nfree )
+		#define RKH_TRCR_MP_PUT( mp, nfree )
+	#endif
+
 	/* --- Queue (RQ) ------------------------ */
+	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RQ == 1
+		#define RKH_TRCR_RQ_INIT( q, size, sma )			\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_INIT );		\
+						RKH_TRC_OBJ( q ); 					\
+						RKH_TRC_NE( size ); 				\
+						RKH_TRC_OBJ( sma ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_RQ_GET( q, qty )					\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_GET );		\
+						RKH_TRC_OBJ( q ); 					\
+						RKH_TRC_NE( qty ); 					\
+					RKH_TRC_END()
+	
+		#define RKH_TRCR_RQ_FIFO( q, qty )					\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_FIFO );		\
+						RKH_TRC_OBJ( q ); 					\
+						RKH_TRC_NE( qty ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_RQ_LIFO( q, qty )					\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_LIFO );		\
+						RKH_TRC_OBJ( q ); 					\
+						RKH_TRC_NE( qty ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_RQ_FULL( q )						\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_FULL );		\
+						RKH_TRC_OBJ( q ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_RQ_DEPLETE( q )					\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_DEPLETE );	\
+						RKH_TRC_OBJ( q ); 					\
+					RKH_TRC_END()
+	#else
+		#define RKH_TRCR_RQ_INIT( q, size, sma )
+		#define RKH_TRCR_RQ_GET( q, qty )
+		#define RKH_TRCR_RQ_FIFO( q, qty )
+		#define RKH_TRCR_RQ_LIFO( q, qty )
+		#define RKH_TRCR_RQ_FULL( q )
+		#define RKH_TRCR_RQ_DEPLETE( q )
+	#endif
+
 	/* --- State Machine Application (SMA) --- */
+	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SMA == 1
+		#define RKH_TRCR_SMA_ACT( sma )						\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_ACT );		\
+						RKH_TRC_OBJ( sma ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SMA_TERM( sma )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_TERM );		\
+						RKH_TRC_OBJ( sma ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SMA_GET( sma, e )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_GET );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_EVT( e->e ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SMA_FIFO( sma, e )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_FIFO );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_EVT( e->e ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SMA_LIFO( sma, e )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_LIFO );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_EVT( e->e ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SMA_REG( sma, prio )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_REG );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_UI8( prio ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SMA_UNREG( sma, prio )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SMA_UNREG );	\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_UI8( prio ); 				\
+					RKH_TRC_END()
+	#else
+		#define RKH_TRCR_SMA_ACT( sma )
+		#define RKH_TRCR_SMA_TERM( sma )
+		#define RKH_TRCR_SMA_GET( sma, e )
+		#define RKH_TRCR_SMA_FIFO( sma, e )
+		#define RKH_TRCR_SMA_LIFO( sma, e )
+		#define RKH_TRCR_SMA_REG( sma, prio )
+		#define RKH_TRCR_SMA_UNREG( sma, prio )
+	#endif
+
 	/* --- State machine (SM) ---------------- */
+	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SM == 1
+		#define RKH_TRCR_SM_INIT( sma, is )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_INIT );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( is ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_DCH( sma, e )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_DCH );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_EVT( e->e ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_CLRH( sma, h )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_CLRH );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( h ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_TRN( sma, ss, ts )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_TRN );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( ss ); 					\
+						RKH_TRC_OBJ( ts ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_STATE( sma, s )					\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_STATE );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( s ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_ENSTATE( sma, s )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_ENSTATE );	\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( s ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_EXSTATE( sma, s )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_EXSTATE );	\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( s ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_NENEX( sma, nenex )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_NENEX );		\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_UI8( nenex ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_NTRNACT( sma, nta )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_NTRNACT );	\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_UI8( nta ); 				\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_CSTATE( sma, s )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_CSTATE );	\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_OBJ( s ); 					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_SM_DCH_RC( sma, rc )				\
+					RKH_TRC_BEGIN( RKH_TRCE_SM_DCH_RC );	\
+						RKH_TRC_OBJ( sma ); 				\
+						RKH_TRC_UI8( rc ); 					\
+					RKH_TRC_END()
+	#else
+		#define RKH_TRCR_SM_INIT( sma, is )
+		#define RKH_TRCR_SM_CLRH( sma, h )
+		#define RKH_TRCR_SM_DCH( sma, e )
+		#define RKH_TRCR_SM_TRN( sma, ss, ts )
+		#define RKH_TRCR_SM_STATE( sma, s )
+		#define RKH_TRCR_SM_ENSTATE( sma, s )
+		#define RKH_TRCR_SM_EXSTATE( sma, s )
+		#define RKH_TRCR_SM_NENEX( sma, nenex )
+		#define RKH_TRCR_SM_NTRNACT( sma, nta )
+		#define RKH_TRCR_SM_CSTATE( sma, s )
+		#define RKH_TRCR_SM_DCH_RC( sma, rc )
+	#endif
 
 	/* --- Timer (TIM) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
-		#define RKH_TRC_TIM_INIT( t, sig )					\
+		#define RKH_TRCR_TIM_INIT( t, e )					\
 					RKH_TRC_BEGIN( RKH_TRCE_TIM_INIT );		\
+						RKH_TRC_OBJ( t ); 					\
+						RKH_TRC_EVT( e->e ); 				\
 					RKH_TRC_END()
 
 		#define RKH_TRCR_TIM_START(	t, nt, sma )			\
@@ -258,17 +518,79 @@ typedef enum rkh_trc_events
 	
 		#define RKH_TRCR_TIM_RESTART( t, nt )				\
 					RKH_TRC_BEGIN( RKH_TRCE_TIM_RESTART );	\
+						RKH_TRC_OBJ( t ); 					\
+						RKH_TRC_NTICK( nt ); 				\
 					RKH_TRC_END()
 
 		#define RKH_TRCR_TIM_STOP( t )						\
 					RKH_TRC_BEGIN( RKH_TRCE_TIM_STOP );		\
+						RKH_TRC_OBJ( t ); 					\
 					RKH_TRC_END()
 	#else
+		#define RKH_TRCR_TIM_INIT( t, sig )
 		#define RKH_TRCR_TIM_START( t, nt, sma )
+		#define RKH_TRCR_TIM_RESTART( t, nt )
+		#define RKH_TRCR_TIM_STOP( t )
 	#endif
 
-#else
-	#define RKH_TRCR_TIM_START( t, nt, sma )
+	/* --- Framework (RKH) ----------------------- */
+	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
+		#define RKH_TRCR_FWK_INIT()							\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_INIT );		\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_EN()							\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_EN );		\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_EX()							\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_EX );		\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_EPREG( ssize, esize )			\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_EPREG );	\
+					RKH_TRC_UI32( ssize );					\
+					RKH_TRC_ES( esize );					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_AE( esize, e )					\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_AE );		\
+					RKH_TRC_ES( esize );					\
+					RKH_TRC_EVT( e->e );					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_GC( e )						\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_GC );		\
+					RKH_TRC_EVT( e->e );					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_GCR( e )						\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_GCR );		\
+					RKH_TRC_EVT( e->e );					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_DEFER( q, e )					\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_DEFER );	\
+					RKH_TRC_OBJ( q );						\
+					RKH_TRC_EVT( e->e );					\
+					RKH_TRC_END()
+
+		#define RKH_TRCR_FWK_RCALL( sma, e )				\
+					RKH_TRC_BEGIN( RKH_TRCE_FWK_RCALL );	\
+					RKH_TRC_OBJ( sma );						\
+					RKH_TRC_EVT( e->e );					\
+					RKH_TRC_END()
+	#else
+		#define RKH_TRCR_FWK_INIT()
+		#define RKH_TRCR_FWK_EN()
+		#define RKH_TRCR_FWK_EX()
+		#define RKH_TRCR_FWK_EPREG( ssize, esize )
+		#define RKH_TRCR_FWK_AE( esize, e )
+		#define RKH_TRCR_FWK_GC( e )
+		#define RKH_TRCR_FWK_GCR( e )
+		#define RKH_TRCR_FWK_DEFER( q, e )
+		#define RKH_TRCR_FWK_RCALL( sma, e )
+	#endif
 #endif
 
 

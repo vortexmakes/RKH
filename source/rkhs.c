@@ -64,6 +64,7 @@ RKHRG_T rkhrg;				/* ready group of SMAs */
 void 
 rkh_init( void )
 {
+	RKH_TRCR_FWK_INIT();
 }
 
 
@@ -76,6 +77,7 @@ rkh_enter( void )
 
 	/* Invoke the start hook */
 	rkh_hk_start();
+	RKH_TRCR_FWK_EN();
 
     FOREVER
 	{
@@ -109,6 +111,7 @@ void
 rkh_exit( void )
 {
 	rkh_hk_exit();			/* Invoke the exit hook */
+	RKH_TRCR_FWK_EX();
 }
 
 
@@ -122,6 +125,7 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 	rkh_rq_init( &sma->equeue, qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_init_hsm( sma );
+	RKH_TRCR_SMA_ACT( sma );
 }
 
 
@@ -129,6 +133,7 @@ void
 rkh_sma_terminate( RKHSMA_T *sma )
 {
 	rkh_sma_unregister( sma );
+	RKH_TRCR_SMA_TERM( sma );
 }
 
 #endif

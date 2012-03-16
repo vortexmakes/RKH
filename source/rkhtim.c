@@ -55,9 +55,7 @@ rkh_tim_init_( RKHT_T *t, RKHE_T sig )
 rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )
 #endif
 {
-	RKH_SR_CRITICAL_;
-	RKH_ENTER_CRITICAL_();
-	RKH_EXIT_CRITICAL_();
+	RKH_TRCR_TIM_INIT( t, sig );
 }
 
 
@@ -67,6 +65,7 @@ rkh_tim_start( RKHT_T *t, RKHSMA_T *sma, RKH_TNT_T itick )
 	RKH_SR_CRITICAL_;
 	RKH_ENTER_CRITICAL_();
 	RKH_EXIT_CRITICAL_();
+	RKH_TRCR_TIM_START( t, itick, sma );
 }
 
 
@@ -76,6 +75,7 @@ rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
 	RKH_SR_CRITICAL_;
 	RKH_ENTER_CRITICAL_();
 	RKH_EXIT_CRITICAL_();
+	RKH_TRCR_TIM_RESTART( t, itick );
 }
 
 
@@ -85,6 +85,7 @@ rkh_tim_stop( RKHT_T *t )
 	RKH_SR_CRITICAL_;
 	RKH_ENTER_CRITICAL_();
 	RKH_EXIT_CRITICAL_();
+	RKH_TRCR_TIM_STOP( t );
 }
 
 
