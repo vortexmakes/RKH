@@ -137,8 +137,8 @@ typedef struct
  * 	used to determine the index into rkhrg.tbl[]. Note that rkh_maptbl[] is 
  * 	a table in ROM, used to equate an index from 0 to 7 to a bit mask.
  *
- * 	\param p		number of SMA's priotity.
  * 	\param rg		ready group.
+ * 	\param p		number of SMA's priotity.
  */
 
 #define rkh_rdy_ins( rg, p )									\
@@ -156,6 +156,7 @@ typedef struct
  * 	rkhrg.grp only if all SMAs in a group are not ready to run, i.e. all bits
  * 	in rkhrg.tbl[prio >> 3] are 0.
  *
+ * 	\param rg		ready group.
  * 	\param p		number of SMA's priotity.
  */
 
@@ -177,6 +178,7 @@ typedef struct
  *	has the highest priority. Using this byte to index the table returns the 
  *	bit position of the highest priority bit set, a number between 0 and 7.
  *  
+ * 	\param rg		ready group.
  * 	\param p		the found highest priority is assigned to \a p.
  */
 

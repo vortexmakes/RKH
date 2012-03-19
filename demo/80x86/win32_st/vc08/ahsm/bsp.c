@@ -28,6 +28,7 @@
 #include "my.h"
 #include "rkhdata.h"
 #include "rkh.h"
+#include "trazer.h"
 
 #include <conio.h>
 #include <stdlib.h>
@@ -46,7 +47,7 @@ static char fmt[ 64 ];
 static MYEVT_T mye;
 FILE *fdbg;
 static DWORD tick_msec = 10;		/* clock tick in msec (argument for Sleep()) */
-static rkhui8_t running;
+rkhui8_t running;
 
 
 static const char *tremap[] =
@@ -112,8 +113,6 @@ isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
 		
 		if( c == 'p' )
 			rkh_trc_flush();
-		else if ( c == ESC )
-			break;
 		else if ( c == 'r' )
 			rkh_init_hsm( my );
 		else
@@ -152,7 +151,7 @@ rkh_hk_start( void )
 void 
 rkh_hk_exit( void ) 
 {
-    running = (rkhui8_t)0;
+    running = 0;
 }
 
 
@@ -160,12 +159,11 @@ void
 rkh_hk_idle( void )					/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
-#if 0
+#if 1
     if( _kbhit() )					/* any key pressed? */
-        if( _getch() == 0x1B )		/* see if the ESC key pressed */
-            QF_PUBLISH(Q_NEW(QEvent, TERMINATE_SIG), (void *)0);
+        if( _getch() == ESC )		/* see if the ESC key pressed */
+			rkh_exit();
 #endif
-
     RKH_WAIT_FOR_EVENTS();        /* yield the CPU until new event(s) arrive */
 }
 
@@ -177,44 +175,6 @@ rkh_assert( RKHROM char * const file, int line )
 						"file\n", line, file );
 	__debugbreak();
 	rkh_exit();
-}
-
-
-static
-char *
-format_trevt_args( RKHTREVT_T *ptre )
-{
-	switch( ptre->id )
-	{
-		case RKHTR_INIT_HSM:
-			sprintf( fmt, "is = %s [%d]", ptre->sb, ptre->num );
-			break;
-		case RKHTR_INT_TRAN:
-			sprintf( fmt, "" );
-			break;
-		case RKHTR_SGT_TGT:
-		case RKHTR_TRN_SRC:
-		case RKHTR_TRN_TGT:
-		case RKHTR_NXT_STATE:
-		case RKHTR_ENTRY:
-		case RKHTR_EXIT:
-			sprintf( fmt, "%s [%d]", ptre->sb, ptre->num );
-			break;
-		case RKHTR_RTN_CODE:
-			sprintf( fmt, "%s", rcmap[ ptre->num ] );
-			break;
-		case RKHTR_NUM_ENEX:
-		case RKHTR_NUM_ACTSGT:
-			sprintf( fmt, "%d - %d", ( ( ptre->num ) >> 4 ) & 0x0F, 
-										( ptre->num & 0x0F  ) );
-			break;
-		case RKHTR_EVENT:
-			sprintf( fmt, "%d", ptre->num );
-			break;
-		default:
-			return NULL;
-	}
-	return fmt;
 }
 
 
@@ -278,20 +238,7 @@ rkh_trc_flush( void )
 	rkhui8_t *tre;
 
 	while( ( tre = rkh_trc_get_oldest() ) != ( rkhui8_t* )0 )
-	{
-#if 0
-		fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
-													rkh_trc_getts(),
-													tremap[ te.id ],
-													smmap[ te.smaid ],
-													format_trevt_args( &te ) );
-		printf( "%05d [ %-16s ] - %s : %s\n",
-													rkh_trc_getts(),
-													tremap[ te.id ],
-													smmap[ te.smaid ],
-													format_trevt_args( &te ) );
-#endif
-	}
+		trazer_parse( tre );
 }
 
 

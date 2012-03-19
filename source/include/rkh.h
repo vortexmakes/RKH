@@ -60,8 +60,6 @@
 /**
  *	\brief
  *	Get the module version.
- *
- * 	\param __fname		file (module) name.
  */
 
 #define RKH_MODULE_GET_VERSION()		\
@@ -84,8 +82,6 @@
 /**
  *	\brief
  *	Get the module description.
- *
- * 	\param __fname		file (module) name.
  */
 
 #define RKH_MODULE_GET_DESC()		\
@@ -1366,7 +1362,7 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  * 	\param sstart	storage start. Pointer to memory from which memory blocks 
  * 					are allocated.
  * 	\param ssize:	storage size. Size of the memory pool storage in bytes.
- * 	\param bsize	block size. This number determines the size of each memory 
+ * 	\param esize	event size. This number determines the size of each memory 
  * 					block in the pool.
  */
 
@@ -1378,7 +1374,7 @@ void rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize );
  *
  * 	\note
  * 	This function is internal to RKH and the user application should 
- * 	not call it. Please use #rkh_alloc_event() macro.
+ * 	not call it. Please use #RKH_ALLOC_EVENT() macro.
  *
  * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
  * 	rkh_set_static_event() and rkh_gc().

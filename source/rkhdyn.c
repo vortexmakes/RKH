@@ -73,7 +73,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
     evt->dynamic_ = 0;
     evt->pool = idx + 1;
 
-	RKH_TRCR_FWK_AE( esize, e );
+	RKH_TRCR_FWK_AE( esize, evt );
     return evt;	
 }
 

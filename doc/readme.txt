@@ -1752,8 +1752,7 @@ point is called a trace event. A program containing one or more of this
 trace points is named instrumented application.
 
 There is one class of trace events: RKH trace events, which are generated 
-by the RKH source code. The \c #RKHTREVT_T structure describes the RKH trace 
-event.
+by the RKH source code. The \c #RKH_TRCE_T describes the RKH trace event.
 
 The definition of events and the mapping between these and their 
 corresponding names is hard-coded in the RKH implementation. Therefore, 
@@ -1766,7 +1765,7 @@ The standard defines that the trace system has to store some information
 or each trace event (also named arguments) being generated, including, 
 t least, the following:
 
-- the trace event identifier (\c #RKHTR_EVENTS enumerated list),
+- the trace event identifier (\c #RKH_TRC_EVENTS enumerated list),
 - instrumented application (state machine),
 - a timestamp (optional),
 - any extra data that the system wants to associate with the event 
@@ -1791,7 +1790,7 @@ shows how to make that.
 the specific application configuration file named \b rkhcfg.h. 
 
 - The trace events of interest must be defined in the \b rkhcfg.h file. See
-\b #RKHTR_EVENTS enumeration and \ref trcfg section.
+\b #RKH_TRC_EVENTS enumeration and \ref trcfg section.
 
 - The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and 
 rkh_trace_getts() are platform-dependent functions, therefore the user
@@ -1802,7 +1801,7 @@ rkh_trflush(), and rkh_trgetts() macros.
 
 - The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, 
 RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options 
-configures the \c #RKHTREVT_T trace event structure and should be defined 
+configures the \c #RKH_TRCE_T trace event structure and should be defined 
 in the \b rkhcfg.h file.
 
 - See \b rkhtrace.h header file for more information.

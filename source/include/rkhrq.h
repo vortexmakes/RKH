@@ -255,10 +255,6 @@ RKH_RQNE_T rkh_rq_get_lwm( RKHRQ_T *q );
  *
  * 	\param q		pointer to previously created queue from which the 
  * 					elements are received.
- * 	\param pe		pointer to the buffer into which the received item will be 
- * 					copied.
- *
- * 	\return
  */
 
 void *rkh_rq_get( RKHRQ_T *q );

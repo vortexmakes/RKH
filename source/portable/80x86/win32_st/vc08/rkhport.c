@@ -39,7 +39,7 @@ CRITICAL_SECTION csection;		/* Win32 critical section */
 HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
 
-static rkhui8_t running;
+extern rkhui8_t running;
 
 
 const 
@@ -63,6 +63,7 @@ rkh_init( void )
 {
     InitializeCriticalSection( &csection );
     sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
+	rkh_trc_open();
 	RKH_TRCR_FWK_INIT();
 }
 
@@ -104,7 +105,7 @@ rkh_enter( void )
 void 
 rkh_exit( void )
 {
-    running = 0;	
+	rkh_hk_exit();
 	RKH_TRCR_FWK_EX();
 }
 

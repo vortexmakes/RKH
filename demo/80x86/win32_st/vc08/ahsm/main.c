@@ -19,10 +19,8 @@ int
 main( int argc, char *argv[] )
 {
 	bsp_init( argc, argv );
-	rkh_trc_open();
 	rkh_init();
 	
-
 	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
 	rkh_enter();
 

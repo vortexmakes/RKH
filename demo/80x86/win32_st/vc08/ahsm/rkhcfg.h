@@ -52,7 +52,7 @@
 
 #define RKH_SMA_EN_HCAL					1	/* 	CFG00 */
 #define RKH_SMA_MAX_HCAL_DEPTH			4	/* 	CFG01 */
-#define RKH_SMA_MAX_TRC_SEGS				4	/* 	CFG01 */
+#define RKH_SMA_MAX_TRC_SEGS			4	/* 	CFG01 */
 #define RKH_SMA_EN_PSEUDOSTATE			1	/* 	CFG01 */
 #define RKH_SMA_EN_DEEP_HISTORY			1	/* 	CFG01 */
 #define RKH_SMA_EN_SHALLOW_HISTORY		1	/* 	CFG01 */
@@ -76,10 +76,10 @@
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
 
 #define RKH_TRC_EN						1	/* 	CFG01 */
-#define RKH_TRC_MP_EN					1	/* 	CFG01 */
-#define RKH_TRC_RQ_EN					1	/* 	CFG01 */
-#define RKH_TRC_SMA_EN					1	/* 	CFG01 */
-#define RKH_TRC_TIM_EN					1	/* 	CFG01 */
+#define RKH_TRC_EN_MP					1	/* 	CFG01 */
+#define RKH_TRC_EN_RQ					1	/* 	CFG01 */
+#define RKH_TRC_EN_SMA					1	/* 	CFG01 */
+#define RKH_TRC_EN_TIM					1	/* 	CFG01 */
 
 #define RKH_TRC_ALL						0	/* 	CFG01 */
 #define RKH_TRC_EN_EVENT				1	/* 	CFG01 */
@@ -115,17 +115,17 @@
 #define RKH_MP_EN						1	/* 	CFG01 */ 
 #define RKH_MP_MAX						8	/* 	CFG01 */ 
 #define RKH_MP_REDUCED					0	/* 	CFG01 */ 
-#define RKH_MP_SIZEOF_BSIZE				4	/* 	CFG01 */ 
-#define RKH_MP_SIZEOF_NBLOCK			4	/* 	CFG01 */ 
+#define RKH_MP_SIZEOF_BSIZE				8	/* 	CFG01 */ 
+#define RKH_MP_SIZEOF_NBLOCK			8	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_BSIZE				1	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_NFREE				1	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_LWM				1	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_INFO				1	/* 	CFG01 */ 
 
-#define RKH_TIM_EN					1	/* 	CFG01 */
-#define RKH_TIM_EN_HOOK				1	/* 	CFG01 */
-#define RKH_TIM_EN_GET_INFO			1	/* 	CFG01 */
-#define RKH_TIM_EN_RESTART			1	/* 	CFG01 */
+#define RKH_TIM_EN						1	/* 	CFG01 */
+#define RKH_TIM_EN_HOOK					1	/* 	CFG01 */
+#define RKH_TIM_EN_GET_INFO				1	/* 	CFG01 */
+#define RKH_TIM_EN_RESTART				1	/* 	CFG01 */
 #define RKH_TIMER_SIZEOF_NTIMER			1	/* 	CFG01 */
 
 

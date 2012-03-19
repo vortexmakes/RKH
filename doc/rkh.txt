@@ -65,7 +65,7 @@ behavior of a system in a substantial manner.
 - Support mechanism for \link rkh_defer() deferring events\endlink.
 - Support \link RKHEVT_T dynamic events\endlink.
 - Support a easy way to use \link RKHEVT_T events with arguments\endlink.
-- Support systems-friendly \link rkhassert() assertion\endlink macros.
+- Support systems-friendly \link RKHASSERT() assertion\endlink macros.
 - Support \link RKHEVT_T event dispatching with parameters\endlink.
 
 

@@ -111,7 +111,7 @@ typedef enum rkh_trc_events
 	RKH_TRCE_RQ_FIFO,
 	RKH_TRCE_RQ_LIFO,
 	RKH_TRCE_RQ_FULL,
-	RKH_TRCE_RQ_DEPLETE,
+	RKH_TRCE_RQ_DPT,
 
 	/* --- State Machine Application (SMA) --- */
 	RKH_TRCE_SMA_ACT,
@@ -141,7 +141,7 @@ typedef enum rkh_trc_events
 	RKH_TRCE_TIM_RESTART,
 	RKH_TRCE_TIM_STOP,
 
-	/* --- Framework (RKH) ----------------------- */
+	/* --- Framework (RKH) ------------------- */
 	RKH_TRCE_FWK_INIT,
 	RKH_TRCE_FWK_EN,
 	RKH_TRCE_FWK_EX,
@@ -184,11 +184,14 @@ typedef enum rkh_trc_events
 #endif
 
 
-#define RKH_TRC_BEGIN( treid )	\
-			rkh_trc_begin();	\
+#define RKH_TRC_BEGIN( treid )		\
+			RKH_SR_CRITICAL_;		\
+			RKH_ENTER_CRITICAL_();	\
+			rkh_trc_begin();		\
 			RKH_TRC_HDR( treid )
 
-#define RKH_TRC_END()
+#define RKH_TRC_END()				\
+			RKH_EXIT_CRITICAL_()
 
 #define RKH_TRC_UI8( d )	\
 			rkh_trc_ui8( (d) )
@@ -212,13 +215,13 @@ typedef enum rkh_trc_events
 
 #if RKH_TRC_SIZEOF_POINTER == 16
 	#define RKH_TRC_SYM( sym )	\
-				RKH_TRC_UI16( sym )
+				RKH_TRC_UI16( (rkhui16_t)sym )
 #elif RKH_TRC_SIZEOF_POINTER == 32
 	#define RKH_TRC_SYM( sym )	\
-				RKH_TRC_UI32( sym )
+				RKH_TRC_UI32( (rkhui32_t)sym )
 #else
 	#define RKH_TRC_SYM( sym )	\
-				RKH_TRC_UI32( sym )
+				RKH_TRC_UI32( (rkhui32_t)sym )
 #endif
 
 
@@ -356,7 +359,7 @@ typedef enum rkh_trc_events
 					RKH_TRC_END()
 
 		#define RKH_TRCR_RQ_DEPLETE( q )					\
-					RKH_TRC_BEGIN( RKH_TRCE_RQ_DEPLETE );	\
+					RKH_TRC_BEGIN( RKH_TRCE_RQ_DPT );		\
 						RKH_TRC_SYM( q ); 					\
 					RKH_TRC_END()
 	#else
@@ -380,22 +383,22 @@ typedef enum rkh_trc_events
 						RKH_TRC_SYM( sma ); 				\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_SMA_GET( sma, e )					\
+		#define RKH_TRCR_SMA_GET( sma, ev )					\
 					RKH_TRC_BEGIN( RKH_TRCE_SMA_GET );		\
 						RKH_TRC_SYM( sma ); 				\
-						RKH_TRC_SIG( e->e ); 				\
+						RKH_TRC_SIG( ev->e ); 				\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_SMA_FIFO( sma, e )					\
+		#define RKH_TRCR_SMA_FIFO( sma, ev )					\
 					RKH_TRC_BEGIN( RKH_TRCE_SMA_FIFO );		\
 						RKH_TRC_SYM( sma ); 				\
-						RKH_TRC_SIG( e->e ); 				\
+						RKH_TRC_SIG( ev->e ); 				\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_SMA_LIFO( sma, e )					\
+		#define RKH_TRCR_SMA_LIFO( sma, ev )					\
 					RKH_TRC_BEGIN( RKH_TRCE_SMA_LIFO );		\
 						RKH_TRC_SYM( sma ); 				\
-						RKH_TRC_SIG( e->e ); 				\
+						RKH_TRC_SIG( ev->e ); 				\
 					RKH_TRC_END()
 
 		#define RKH_TRCR_SMA_REG( sma, prio )				\
@@ -427,10 +430,10 @@ typedef enum rkh_trc_events
 						RKH_TRC_SYM( is ); 					\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_SM_DCH( sma, e )					\
+		#define RKH_TRCR_SM_DCH( sma, ev )					\
 					RKH_TRC_BEGIN( RKH_TRCE_SM_DCH );		\
 						RKH_TRC_SYM( sma ); 				\
-						RKH_TRC_SIG( e->e ); 				\
+						RKH_TRC_SIG( ev->e ); 				\
 					RKH_TRC_END()
 
 		#define RKH_TRCR_SM_CLRH( sma, h )					\
@@ -503,10 +506,10 @@ typedef enum rkh_trc_events
 
 	/* --- Timer (TIM) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
-		#define RKH_TRCR_TIM_INIT( t, e )					\
+		#define RKH_TRCR_TIM_INIT( t, sig )					\
 					RKH_TRC_BEGIN( RKH_TRCE_TIM_INIT );		\
 						RKH_TRC_SYM( t ); 					\
-						RKH_TRC_SIG( e->e ); 				\
+						RKH_TRC_SIG( sig ); 				\
 					RKH_TRC_END()
 
 		#define RKH_TRCR_TIM_START(	t, nt, sma )			\
@@ -553,32 +556,32 @@ typedef enum rkh_trc_events
 					RKH_TRC_ES( esize );					\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_FWK_AE( esize, e )					\
+		#define RKH_TRCR_FWK_AE( esize, ev )					\
 					RKH_TRC_BEGIN( RKH_TRCE_FWK_AE );		\
 					RKH_TRC_ES( esize );					\
-					RKH_TRC_SIG( e->e );					\
+					RKH_TRC_SIG( ev->e );					\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_FWK_GC( e )						\
+		#define RKH_TRCR_FWK_GC( ev )						\
 					RKH_TRC_BEGIN( RKH_TRCE_FWK_GC );		\
-					RKH_TRC_SIG( e->e );					\
+					RKH_TRC_SIG( ev->e );					\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_FWK_GCR( e )						\
+		#define RKH_TRCR_FWK_GCR( ev )						\
 					RKH_TRC_BEGIN( RKH_TRCE_FWK_GCR );		\
-					RKH_TRC_SIG( e->e );					\
+					RKH_TRC_SIG( ev->e );					\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_FWK_DEFER( q, e )					\
+		#define RKH_TRCR_FWK_DEFER( q, ev )					\
 					RKH_TRC_BEGIN( RKH_TRCE_FWK_DEFER );	\
 					RKH_TRC_SYM( q );						\
-					RKH_TRC_SIG( e->e );					\
+					RKH_TRC_SIG( ev->e );					\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_FWK_RCALL( sma, e )				\
+		#define RKH_TRCR_FWK_RCALL( sma, ev )				\
 					RKH_TRC_BEGIN( RKH_TRCE_FWK_RCALL );	\
 					RKH_TRC_SYM( sma );						\
-					RKH_TRC_SIG( e->e );					\
+					RKH_TRC_SIG( ev->e );					\
 					RKH_TRC_END()
 	#else
 		#define RKH_TRCR_FWK_INIT()
