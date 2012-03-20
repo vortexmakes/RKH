@@ -67,7 +67,7 @@ typedef void ( *RKH_THK_T )( struct rkht_t *t );
  * 	Defines the data structure into which the performance information for
  * 	software timers is stored.
  *
- *	The application must allocate an RKH_TIMERI_T data structure used to 
+ *	The application must allocate an RKH_TINFO_T data structure used to 
  *	receive information. The performance information is available during 
  *	run-time for each of the RKH services. This can be useful in determining 
  *	whether the application is performing properly, as well as helping to 
@@ -79,7 +79,7 @@ typedef struct rkh_tim_info_t
 	rkhui16_t nexp;			/** # of expirations */
 	rkhui16_t nstart;		/**	# of start requests */
 	rkhui16_t nstop;		/**	# of stop requests */
-} RKH_TIMERI_T;
+} RKH_TINFO_T;
 
 
 /**
@@ -94,7 +94,7 @@ typedef struct rkht_t
 	 * 	Timer event.
 	 */
 
-	RKHEVT_T e;
+	RKHEVT_T evt;
 
 	/**
 	 * 	Points to next timer structure in the doubly linked list.
@@ -144,7 +144,7 @@ typedef struct rkht_t
 	 */
 
 #if RKH_TIM_EN_GET_INFO == 1
-	RKH_TIMERI_T ti;
+	RKH_TINFO_T info;
 #endif
 } RKHT_T;
 
@@ -273,7 +273,7 @@ void rkh_tim_stop( RKHT_T *t );
  * 	\brief
  * 	Retrieves performance information for a particular queue. 
  *
- *	The user application must allocate an RKH_TIMERI_T data structure used 
+ *	The user application must allocate an RKH_TINFO_T data structure used 
  *	to receive data. The performance information is available during run-time 
  *	for each of the RKH services. This can be useful in determining whether 
  *	the application is performing properly, as well as helping to optimize the 
@@ -282,16 +282,16 @@ void rkh_tim_stop( RKHT_T *t );
  *	when the service is invoked.
  *
  * 	\note
- * 	See RKH_TIMERI_T structure for more information. This function is 
+ * 	See RKH_TINFO_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
  * 	RKH_TIM_EN_GET_INFO.
  *
  *	\param t		pointer to previously created timer structure.
- * 	\param pti		pointer to the buffer into which the performance 
+ * 	\param info		pointer to the buffer into which the performance 
  * 					information will be copied by reference.
  */
 
-void rkh_tim_get_info( RKHT_T *t, RKH_TIMERI_T *pti );
+void rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info );
 
 
 /**
@@ -299,7 +299,7 @@ void rkh_tim_get_info( RKHT_T *t, RKH_TIMERI_T *pti );
  * 	Clear performance information for a particular software timer.
  *
  * 	\note
- * 	See RKH_TIMERI_T structure for more information. This function is 
+ * 	See RKH_TINFO_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
  * 	RKH_TIM_EN_GET_INFO.
  *
