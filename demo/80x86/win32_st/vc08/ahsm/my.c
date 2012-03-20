@@ -43,6 +43,7 @@ RKH_CREATE_TRANS_TABLE( S2 )
 
 	RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
 	RKH_TRINT( SIX, 	NULL, 		show_data ),
+	RKH_TRINT( TERM, 	NULL, 		terminate ),
 	RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
@@ -53,6 +54,7 @@ RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit,  RKH_ROOT, &S11, &DH );
 RKH_CREATE_TRANS_TABLE( S1 )
 
 	RKH_TRINT( SIX, 	NULL, 		show_data ),
+	RKH_TRINT( TERM, 	NULL, 		terminate ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
 	RKH_TRREG( FIVE, 	NULL, 		NULL, 		&S12 ),
 
@@ -97,6 +99,7 @@ RKH_CREATE_COMP_STATE( S3, 0, NULL, NULL,  RKH_ROOT, &S31,  NULL );
 RKH_CREATE_TRANS_TABLE( S3 )
 
 	RKH_TRINT( SIX, 	NULL, 		show_data ),
+	RKH_TRINT( TERM, 	NULL, 		terminate ),
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&C1 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
 

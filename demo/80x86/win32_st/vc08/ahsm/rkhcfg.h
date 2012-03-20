@@ -80,6 +80,7 @@
 #define RKH_TRC_EN_RQ					1	/* 	CFG01 */
 #define RKH_TRC_EN_SMA					1	/* 	CFG01 */
 #define RKH_TRC_EN_TIM					1	/* 	CFG01 */
+#define RKH_TRC_EN_SM					1	/* 	CFG01 */
 
 #define RKH_TRC_ALL						0	/* 	CFG01 */
 #define RKH_TRC_EN_EVENT				1	/* 	CFG01 */

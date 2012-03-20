@@ -389,7 +389,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	/* Stage 3 */
 	ets = tr->target;
 	ts = CR( ets );
-	RKH_TRCR_SM_DCH( sma, e );
+	RKH_TRCR_SM_DCH( sma, pe );
 
 	/* Stage 4 */
 	first_regular = 1;
@@ -409,7 +409,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		return RKH_EXCEED_TRC_SEGS;
 	}
 
-	RKH_TRCR_SM_TRN( sma, ss, ts )
+	RKH_TRCR_SM_TRN( sma, ss, ts );
 	if( is_internal_transition( ets ) )
 		inttr = 1;
 	else
@@ -524,7 +524,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					return RKH_UNKNOWN_STATE;
 			}
 
-			RKH_TRCR_SM_CSTATE( sma, ets )
+			RKH_TRCR_SM_CSTATE( sma, ets );
 			inc_step();
 		}
 	}
@@ -569,7 +569,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 		/* Stage 8 */
 		rkh_define_ex_en_states();
-		RKH_TRCR_SM_NENEX( sma, (((sn.qty + snd.qty) << 4) | sx.qty) )
+		RKH_TRCR_SM_NENEX( sma, (((sn.qty + snd.qty) << 4) | sx.qty) );
 
 		/* Stage 9 */
 		rkh_traverse_list( &sx, EXIT_LIST );

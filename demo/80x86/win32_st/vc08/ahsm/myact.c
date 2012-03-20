@@ -110,6 +110,14 @@ show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 }
 
 
+void 
+terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	printf( "action: %s()\n", __FUNCTION__ );
+	rkh_exit();
+}
+
+
 /*
  *	Defines branch's guards
  */

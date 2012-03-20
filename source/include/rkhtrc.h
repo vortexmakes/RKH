@@ -328,10 +328,10 @@ typedef enum rkh_trc_events
 
 	/* --- Queue (RQ) ------------------------ */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RQ == 1
-		#define RKH_TRCR_RQ_INIT( q, size, sma )			\
+		#define RKH_TRCR_RQ_INIT( q, nelem, sma )			\
 					RKH_TRC_BEGIN( RKH_TRCE_RQ_INIT );		\
 						RKH_TRC_SYM( q ); 					\
-						RKH_TRC_NE( size ); 				\
+						RKH_TRC_NE( nelem ); 				\
 						RKH_TRC_SYM( sma ); 				\
 					RKH_TRC_END()
 
@@ -363,7 +363,7 @@ typedef enum rkh_trc_events
 						RKH_TRC_SYM( q ); 					\
 					RKH_TRC_END()
 	#else
-		#define RKH_TRCR_RQ_INIT( q, size, sma )
+		#define RKH_TRCR_RQ_INIT( q, nelem, sma )
 		#define RKH_TRCR_RQ_GET( q, qty )
 		#define RKH_TRCR_RQ_FIFO( q, qty )
 		#define RKH_TRCR_RQ_LIFO( q, qty )

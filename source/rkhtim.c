@@ -49,7 +49,11 @@ rkh_tim_tick( void )
 	RKHT_T *t;
 	RKH_SR_CRITICAL_;
 
+	if( thead == CPT( 0 ) )	/* is empty list? */
+		return;
+
 	RKH_ENTER_CRITICAL_();
+
 	for( t = thead; t->tnext != CPT( 0 ); t = t->tnext )
 	{
 		if( !--t->ntick )

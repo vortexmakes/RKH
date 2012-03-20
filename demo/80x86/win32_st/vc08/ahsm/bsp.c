@@ -28,6 +28,7 @@
 #include "my.h"
 #include "rkhdata.h"
 #include "rkh.h"
+#include "myevt.h"
 #include "trazer.h"
 
 #include <conio.h>
@@ -36,7 +37,6 @@
 #include <time.h>
 
 
-#define tostring( expr )			#expr
 #define ESC							0x1B
 #define kbmap( c )					( c - '0' )
 
@@ -48,42 +48,6 @@ static MYEVT_T mye;
 FILE *fdbg;
 static DWORD tick_msec = 10;		/* clock tick in msec (argument for Sleep()) */
 rkhui8_t running;
-
-
-static const char *tremap[] =
-{
-	tostring( RKHTR_EVENT 		),
-	tostring( RKHTR_TRN_SRC		),
-	tostring( RKHTR_TRN_TGT		),
-	tostring( RKHTR_NXT_STATE	),
-	tostring( RKHTR_INT_TRAN	),
-	tostring( RKHTR_ENTRY		),
-	tostring( RKHTR_EXIT		),
-	tostring( RKHTR_INIT_HSM	),
-	tostring( RKHTR_SGT_TGT		),
-	tostring( RKHTR_RTN_CODE	),
-	tostring( RKHTR_NUM_ENEX	),
-	tostring( RKHTR_NUM_ACTSGT	)
-};
-
-
-static const char *smmap[] =
-{
-	tostring( MY )
-};
-
-
-static const char *rcmap[] =
-{
-	tostring( RKH_OK 						),
-	tostring( RKH_INPUT_NOT_FOUND			),
-	tostring( RKH_CONDITIONAL_NOT_FOUND		),
-	tostring( RKH_CONDITION_NOT_FOUND		),
-	tostring( RKH_GUARD_FALSE				),
-	tostring( RKH_UNKNOWN_STATE				),
-	tostring( RKH_EXCEED_HCAL_LEVEL			),
-	tostring( RKH_EXCEED_TRC_SEGS 			)
-};
 
 
 static 
@@ -113,6 +77,11 @@ isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
 		
 		if( c == 'p' )
 			rkh_trc_flush();
+		else if ( c == ESC )
+		{
+			RKH_SET_STATIC_EVENT( &mye, TERM );
+			rkh_sma_post_fifo( my, ( RKHEVT_T* )&mye );
+		}
 		else if ( c == 'r' )
 			rkh_init_hsm( my );
 		else
@@ -151,6 +120,7 @@ rkh_hk_start( void )
 void 
 rkh_hk_exit( void ) 
 {
+	rkh_trc_flush();
     running = 0;
 }
 
@@ -159,12 +129,12 @@ void
 rkh_hk_idle( void )					/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
-#if 1
+#if 0
     if( _kbhit() )					/* any key pressed? */
         if( _getch() == ESC )		/* see if the ESC key pressed */
-			rkh_exit();
 #endif
-    RKH_WAIT_FOR_EVENTS();        /* yield the CPU until new event(s) arrive */
+	rkh_trc_flush();
+    RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
 
 
@@ -206,6 +176,7 @@ rkh_trc_open( void )
 {
 	rkh_trc_init();
 	rkh_trc_control( RKH_TRC_START );
+	trazer_init();
 
 	if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
 	{

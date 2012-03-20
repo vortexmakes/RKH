@@ -31,5 +31,6 @@
 #include "rkh.h"
 
 void trazer_parse( rkhui8_t *tre );
+void trazer_init( void );
 
 #endif

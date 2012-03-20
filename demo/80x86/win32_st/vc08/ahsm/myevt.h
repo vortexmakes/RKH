@@ -19,7 +19,8 @@ enum
 	THREE,
 	FOUR,
 	FIVE,
-	SIX
+	SIX,
+	TERM	
 };
 
 

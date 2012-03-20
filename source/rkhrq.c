@@ -158,6 +158,9 @@ rkh_rq_get( RKHRQ_T *q  )
 	if( q->pout == q->pend )
 		q->pout = ( void ** )q->pstart;
 
+	if( q->sma != ( void * )0 )
+		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+
 	RKH_IUPDT_GET( q );
 	RKH_EXIT_CRITICAL_();
 	RKH_TRCR_RQ_GET( q, q->qty );
