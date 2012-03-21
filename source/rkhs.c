@@ -64,7 +64,7 @@ RKHRG_T rkhrg;				/* ready group of SMAs */
 void 
 rkh_init( void )
 {
-	RKH_TRCR_FWK_INIT();
+	RKH_TRCR_RKH_INIT();
 }
 
 
@@ -77,7 +77,7 @@ rkh_enter( void )
 
 	/* Invoke the start hook */
 	rkh_hk_start();
-	RKH_TRCR_FWK_EN();
+	RKH_TRCR_RKH_EN();
 
     FOREVER
 	{
@@ -111,7 +111,7 @@ void
 rkh_exit( void )
 {
 	rkh_hk_exit();			/* Invoke the exit hook */
-	RKH_TRCR_FWK_EX();
+	RKH_TRCR_RKH_EX();
 }
 
 

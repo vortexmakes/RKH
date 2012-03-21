@@ -73,7 +73,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
     evt->dynamic_ = 0;
     evt->pool = idx + 1;
 
-	RKH_TRCR_FWK_AE( esize, evt );
+	RKH_TRCR_RKH_AE( esize, evt );
     return evt;	
 }
 
@@ -91,7 +91,7 @@ rkh_gc( RKHEVT_T *e )
 		{
             --e->dynamic_;             /* decrement the reference counter */
             RKH_EXIT_CRITICAL_();
-			RKH_TRCR_FWK_GC( e );
+			RKH_TRCR_RKH_GC( e );
         }
         else        /* this is the last reference to this event, recycle it */
 		{
@@ -101,7 +101,7 @@ rkh_gc( RKHEVT_T *e )
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
             RKH_DYNE_PUT( &rkh_epl[ idx ], e );
-			RKH_TRCR_FWK_GCR( e );
+			RKH_TRCR_RKH_GCR( e );
         }
     }
 }
@@ -163,7 +163,7 @@ void
 void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 { 
     rkh_rq_put_fifo( q, e );
-	RKH_TRCR_FWK_DEFER( q, e );
+	RKH_TRCR_RKH_DEFER( q, e );
 }
 
 
@@ -178,7 +178,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 	{
 		/* post it to the front of the SMA's queue */
 		rkh_sma_post_lifo( sma, e );
-		RKH_TRCR_FWK_RCALL( sma, e );
+		RKH_TRCR_RKH_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
 
         if( e->dynamic_ != 0 )	/* is it a dynamic event? */
@@ -207,7 +207,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 void 
 rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 {
-	RKH_TRCR_FWK_EPREG( ssize, esize );
+	RKH_TRCR_RKH_EPREG( ssize, esize );
 }
 
 

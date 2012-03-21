@@ -75,15 +75,11 @@ isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
 	{
 		c = _getch();
 		
-		if( c == 'p' )
-			rkh_trc_flush();
-		else if ( c == ESC )
+		if( c == ESC )
 		{
 			RKH_SET_STATIC_EVENT( &mye, TERM );
 			rkh_sma_post_fifo( my, ( RKHEVT_T* )&mye );
 		}
-		else if ( c == 'r' )
-			rkh_init_hsm( my );
 		else
 		{
 			RKH_SET_STATIC_EVENT( &mye, kbmap( c ) );
@@ -126,13 +122,9 @@ rkh_hk_exit( void )
 
 
 void 
-rkh_hk_idle( void )					/* called within critical section */
+rkh_hk_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
-#if 0
-    if( _kbhit() )					/* any key pressed? */
-        if( _getch() == ESC )		/* see if the ESC key pressed */
-#endif
 	rkh_trc_flush();
     RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
@@ -152,10 +144,10 @@ static
 void
 print_banner( void )
 {
-	printf(	"Abstract Hierarchical State Machine (AHSM) example\n" );
-	printf(	"RKH v%s\n", RKH_RELEASE );
-	printf(	"Port v%s\n", rkh_get_port_version() );
-	printf(	"Port description: %s\n\n", rkh_get_port_desc() );
+	printf(	"Abstract Hierarchical State Machine (AHSM) example\n\n" );
+	printf(	"RKH version      = %s\n", RKH_RELEASE );
+	printf(	"Port version     = %s\n", rkh_get_port_version() );
+	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
 	printf(	"Description: \n\n"
 			"The goal of this demo application is to explain how to \n"
 			"represent a state machine using the RKH framework. To do \n"
@@ -164,10 +156,7 @@ print_banner( void )
 			"\"Representing a State Machine\". \n\n\n" );
 
 	printf( "1.- Press <numbers> to send events to state machine. \n" );
-	printf( "2.- Press 'p' to see related information about transitions, \n" );
-	printf( "    state changes, and so on.\n" );
-	printf( "3.- Press 'r' to reset state machine.\n" );
-	printf( "4.- Press ESC to quit \n\n\n" );
+	printf( "2.- Press ESC to quit \n\n\n" );
 }
 
 

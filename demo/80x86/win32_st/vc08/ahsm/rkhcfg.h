@@ -67,10 +67,8 @@
 #define RKH_SMA_EN_GRD_ARG_EVT			1	/* 	CFG01 */
 #define RKH_SMA_EN_GRD_ARG_SMA			1	/* 	CFG01 */
 #define RKH_SMA_EN_PPRO_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SMA_EN_STATE_NAME			1	/* 	CFG01 */
 #define RKH_SMA_EN_STATE_ID				1	/* 	CFG01 */
 #define RKH_SMA_EN_PPRO					0	/* 	CFG01 */
-#define RKH_SMA_EN_NAME					1	/* 	CFG01 */
 #define RKH_SMA_EN_ID					1	/* 	CFG01 */
 #define RKH_SMA_EN_IEVENT				1	/* 	CFG01 */
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
@@ -98,7 +96,6 @@
 #define RKH_TRC_EN_TSTAMP				1	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_TSTAMP			16	/* 	CFG01 */
 #define RKH_TRC_MAX_TRACES				16	/* 	CFG01 */
-#define RKH_TRC_EN_STRING				1	/* 	CFG01 */
 #define RKH_TRC_MAX_STRING_SIZE			4	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_EVENT			16	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_POINTER			32	/* 	CFG01 */

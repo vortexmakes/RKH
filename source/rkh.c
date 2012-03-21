@@ -91,13 +91,6 @@ RKH_MODULE_NAME( rkh );
 #endif
 
 
-#if RKH_SMA_EN_STATE_NAME == 1
-#define stname( s )						CB( (s) )->name
-#else
-#define stname( s )						NULL	
-#endif
-
-
 #define rkh_update_shallow_hist( s, h )									\
 																		\
 	CR(s)->parent != NULL && 											\
@@ -569,7 +562,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 		/* Stage 8 */
 		rkh_define_ex_en_states();
-		RKH_TRCR_SM_NENEX( sma, (((sn.qty + snd.qty) << 4) | sx.qty) );
+		RKH_TRCR_SM_NENEX( sma, sn.qty + snd.qty, sx.qty );
 
 		/* Stage 9 */
 		rkh_traverse_list( &sx, EXIT_LIST );

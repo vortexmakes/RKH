@@ -64,7 +64,7 @@ rkh_init( void )
     InitializeCriticalSection( &csection );
     sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
 	rkh_trc_open();
-	RKH_TRCR_FWK_INIT();
+	RKH_TRCR_RKH_INIT();
 }
 
 
@@ -76,7 +76,7 @@ rkh_enter( void )
 	RKHEVT_T *e;
 
     rkh_hk_start();
-	RKH_TRCR_FWK_EN();
+	RKH_TRCR_RKH_EN();
     running = 1;
 
     while( running )
@@ -106,7 +106,7 @@ void
 rkh_exit( void )
 {
 	rkh_hk_exit();
-	RKH_TRCR_FWK_EX();
+	RKH_TRCR_RKH_EX();
 }
 
 

@@ -140,20 +140,6 @@ typedef struct romrkh_t
 
 	/**	
  	 * 	\brief
-	 * 	Name of state machine application. 
-	 *
-	 * 	Represents the top state of state diagram. String terminated in '\\0' 
-	 * 	that represents the name of state machine. When a particular user 
-	 * 	application requires runtime debugging (native tracing features), 
-	 * 	the option RKH_EN_SMA_NAME must be set to one.
-	 */
-
-#if RKH_SMA_EN_NAME	== 1
-	const char *name;
-#endif
-
-	/**	
- 	 * 	\brief
 	 * 	ID of state machine application. 
 	 * 	
 	 * 	ID of state machine application. This number allows to uniquely 
@@ -401,7 +387,7 @@ extern rkhui8_t rkhnpool;
 																		\
 								RKHROM RKHSREG_T name =					\
 								{										\
-									mkbase(RKH_COMPOSITE,id,name),		\
+									mkbase(RKH_COMPOSITE,id),			\
 									mkcomp(en,ex,parent,name,			\
 												defchild,history)		\
 								}
@@ -438,7 +424,7 @@ extern rkhui8_t rkhnpool;
 																		\
 								RKHROM RKHSREG_T name =					\
 								{										\
-									mkbase(RKH_BASIC,id,name),			\
+									mkbase(RKH_BASIC,id),				\
 									mkbasic(en,ex,parent,name,prepro)	\
 								}
 
@@ -471,7 +457,7 @@ extern rkhui8_t rkhnpool;
 																		\
 								RKHROM RKHSCOND_T name =				\
 								{										\
-									mkbase(RKH_CONDITIONAL,id,name),	\
+									mkbase(RKH_CONDITIONAL,id),			\
 									name##_trtbl 						\
 								}
 
@@ -498,7 +484,7 @@ extern rkhui8_t rkhnpool;
 																		\
 								RKHROM RKHSJUNC_T name =				\
 								{										\
-									mkbase(RKH_JUNCTION,id,name),		\
+									mkbase(RKH_JUNCTION,id),			\
 									action,	target 						\
 								}
 
@@ -526,7 +512,7 @@ extern rkhui8_t rkhnpool;
 																		\
 								RKHROM RKHSHIST_T name =				\
 								{										\
-									mkbase(RKH_DHISTORY,id,name),		\
+									mkbase(RKH_DHISTORY,id),			\
 									parent,&ram##name 					\
 								}
 
@@ -554,7 +540,7 @@ extern rkhui8_t rkhnpool;
 																		\
 								RKHROM RKHSHIST_T name =				\
 								{										\
-									mkbase(RKH_SHISTORY,id,name),		\
+									mkbase(RKH_SHISTORY,id),			\
 									parent,&ram##name 					\
 								}
 
@@ -1139,8 +1125,8 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 
 #define RKH_SMA_CREATE( sma_t, id, name, prio, ppty, ist, iact, ievt )		\
 																			\
-	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, name, id, 		\
-												ist, iact, ievt );			\
+	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, id, ist, 		\
+												iact, ievt );				\
 	static sma_t s_##name = MKSMA( &rs_##name,ist );						\
 	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
 

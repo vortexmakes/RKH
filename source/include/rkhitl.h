@@ -249,11 +249,18 @@
 #endif
 
 
-#if RKH_TRC_EN == 1
-	#if RKH_TRC_EN_STRING == 1 && ( RKH_SMA_EN_STATE_NAME != 1 || RKH_SMA_EN_STATE_ID != 1 || RKH_SMA_EN_NAME != 1 )
-	#error  "rkhcfg.h, when enabling RKH_TRC_EN and RKH_TRC_EN_STRING is set to one (1), must be set to one (1) both RKH_SMA_EN_STATE_NAME or RKH_SMA_EN_STATE_ID or RKH_SMA_EN_NAME"
+#if RKH_TRC_EN == 1 && RKH_TRC_EN_SM == 1
+	#if RKH_SMA_EN_STATE_ID != 1
+		#error  "rkhcfg.h, When enabling RKH_TRC_EN and RKH_TRC_EN_SM must be set to one (1) RKH_SMA_EN_STATE_ID"
 	#endif
 #endif
+
+#if RKH_TRC_EN == 1 && RKH_TRC_EN_SMA == 1
+	#if RKH_SMA_EN_ID != 1
+		#error  "rkhcfg.h, When enabling RKH_TRC_EN and RKH_TRC_EN_SMA must be set to one (1) RKH_SMA_EN_ID"
+	#endif
+#endif
+
 
 #if RKH_TRC_EN == 1 && RKH_TRC_EN_TSTAMP == 1
 	#if RKH_TRC_SIZEOF_EVENT < (RKH_TRC_SIZEOF_TSTAMP/8 + 1)
@@ -355,10 +362,6 @@
 	#error "rkhcfg.h, Missing RKH_SMA_EN_PPRO_ARG_SMA: Enable (1) or Disable (0) state machine arg from event preprocessor function."
 #endif
 
-#ifndef RKH_SMA_EN_STATE_NAME
-	#error "rkhcfg.h, Missing RKH_SMA_EN_STATE_NAME: Include state name as string within state machine object."
-#endif
-
 #ifndef RKH_SMA_EN_STATE_ID
 	#error "rkhcfg.h, Missing RKH_SMA_EN_STATE_ID: Include an ID number (also called descriptor) within state structure."
 #endif
@@ -447,10 +450,6 @@
 	#endif
 #endif
 
-#ifndef RKH_TRC_EN_STRING
-	#error "rkhcfg.h, Missing RKH_TRC_EN_STRING: Enable (1) or Disable (0) the string argument of trace event."
-#endif
-
 #ifndef RKH_TRC_MAX_STRING_SIZE
 	#error "rkhcfg.h, Missing RKH_TRC_MAX_STRING_SIZE: Defines the size of string argument of trace event."
 #else
@@ -478,40 +477,20 @@
 
 
 #if RKH_SMA_EN_ID == 1
-	#if RKH_SMA_EN_NAME	== 1
-		#if RKH_SMA_EN_IEVENT == 1
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),#n,(id),(is),(ia),(ie)}
-		#else
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),#n,(id),(is),(ia)}
-		#endif
+	#if RKH_SMA_EN_IEVENT == 1
+		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
+						{(prio),(ppty),(id),(is),(ia),(ie)}
 	#else
-		#if RKH_SMA_EN_IEVENT == 1
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),(id),(is),(ia),(ie)}
-		#else
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),(id),(is),(ia)}
-		#endif
+		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
+						{(prio),(ppty),(id),(is),(ia)}
 	#endif
 #else
-	#if RKH_SMA_EN_NAME	== 1
-		#if RKH_SMA_EN_IEVENT == 1
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),#n,(is),(ia),(ie)}
-		#else
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),#n,(is),(ia)}
-		#endif
+	#if RKH_SMA_EN_IEVENT == 1
+		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
+						{(prio),(ppty),(is),(ia),(ie)}
 	#else
-		#if RKH_SMA_EN_IEVENT == 1
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),(is),(ia),(ie)}
-		#else
-			#define MKRRKH(prio,ppty,n,id,is,ia,ie)				\
-							{(prio),(ppty),(is),(ia)}
-		#endif
+		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
+						{(prio),(ppty),(is),(ia)}
 	#endif
 #endif
 
@@ -520,18 +499,10 @@
 						{ (rr), (s) }
 
 
-#if RKH_SMA_EN_STATE_NAME == 1
-	#if RKH_SMA_EN_STATE_ID == 1
-		#define mkbase(t,id,name)			{t,id,#name}
-	#else
-		#define mkbase(t,id,name)			{t,#name}
-	#endif
+#if RKH_SMA_EN_STATE_ID == 1
+	#define mkbase(t,id)			{t,id}
 #else
-	#if RKH_SMA_EN_STATE_ID == 1
-		#define mkbase(t,id,name)			{t,id}
-	#else
-		#define mkbase(t,id,name)			{t}
-	#endif
+	#define mkbase(t,id)			{t}
 #endif
 
 
@@ -1156,17 +1127,6 @@ typedef struct rkhbase_t
 
 #if RKH_SMA_EN_STATE_ID == 1
 	HUInt id;
-#endif
-
-	/**	
- 	 * 	\brief
-	 *	State name. 
-	 *
-	 *	String terminated in '\\0' that represents the name 
-	 *	of state. It's generally used for debugging.
-	 */
-#if RKH_SMA_EN_STATE_NAME == 1
-	char *name;
 #endif
 } RKHBASE_T;
 
