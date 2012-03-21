@@ -20,6 +20,10 @@ enum
 	FOUR,
 	FIVE,
 	SIX,
+	SEVEN,
+	EIGHT,
+	NINE,
+	TOUT,
 	TERM	
 };
 

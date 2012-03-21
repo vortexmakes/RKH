@@ -336,7 +336,7 @@ extern RKHROM char rkh_version[];
  * 	Event pool list.
  */
 
-extern RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
+extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 
 /**

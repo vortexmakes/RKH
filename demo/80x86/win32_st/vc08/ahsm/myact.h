@@ -49,6 +49,7 @@ void set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void show_data( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe );
 
 
 /*

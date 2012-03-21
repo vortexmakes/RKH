@@ -7,9 +7,14 @@
 #include "rkh.h"
 #include "my.h"
 #include "myevt.h"
+#include "rkhtim.h"
 
 
-#define CMY( s )			(( MYSM_T* )(s))
+#define MY_TICK			10
+#define CMY( s )		(( MYSM_T* )(s))
+
+
+RKHT_T my_timer;
 
 
 /*
@@ -20,6 +25,7 @@ void
 my_init( const struct rkhsma_t *sma )
 {
 	CMY( sma )->x = CMY( sma )->y = 0;
+	rkh_tim_init( &my_timer, TOUT, 0 );
 }
 
 
@@ -113,8 +119,14 @@ show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 void 
 terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	printf( "action: %s()\n", __FUNCTION__ );
 	rkh_exit();
+}
+
+
+void 
+start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
 }
 
 

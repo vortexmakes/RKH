@@ -165,7 +165,6 @@ rkh_trc_open( void )
 {
 	rkh_trc_init();
 	rkh_trc_control( RKH_TRC_START );
-	trazer_init();
 
 	if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
 	{
@@ -173,8 +172,7 @@ rkh_trc_open( void )
 		exit( EXIT_FAILURE );
 	}
 
-	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
-	printf( "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
+	trazer_init();
 }
 
 

@@ -41,6 +41,7 @@
 #define RKH_SIZEOF_EVENT				4	/* 	CFG01 */ 
 #define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
 #define RKH_ASSERT_EN					1	/* 	CFG01 */
+#define RKH_SIZEOF_ESIZE				16	/* 	CFG01 */
 #define RKH_HK_EN_DISPATCH				1	/* 	CFG01 */
 #define RKH_HK_EN_SIGNAL				1	/* 	CFG01 */
 #define RKH_HK_EN_TIMEOUT				1	/* 	CFG01 */
@@ -74,36 +75,34 @@
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
 
 #define RKH_TRC_EN						1	/* 	CFG01 */
-#define RKH_TRC_EN_MP					1	/* 	CFG01 */
-#define RKH_TRC_EN_RQ					1	/* 	CFG01 */
-#define RKH_TRC_EN_SMA					1	/* 	CFG01 */
-#define RKH_TRC_EN_TIM					1	/* 	CFG01 */
-#define RKH_TRC_EN_SM					1	/* 	CFG01 */
-
-#define RKH_TRC_ALL						0	/* 	CFG01 */
-#define RKH_TRC_EN_EVENT				1	/* 	CFG01 */
-#define RKH_TRC_EN_TRN_SRC				0	/* 	CFG01 */
-#define RKH_TRC_EN_TRN_TGT				0	/* 	CFG01 */
-#define RKH_TRC_EN_NXT_STATE			1	/* 	CFG01 */
-#define RKH_TRC_EN_INT_TRAN				0	/* 	CFG01 */
-#define RKH_TRC_EN_ENTRY				1	/* 	CFG01 */
-#define RKH_TRC_EN_EXIT					1	/* 	CFG01 */
-#define RKH_TRC_EN_INIT_HSM				0	/* 	CFG01 */
-#define RKH_TRC_EN_SGT					0	/* 	CFG01 */
-#define RKH_TRC_EN_RTN_CODE				0	/* 	CFG01 */
-#define RKH_TRC_EN_NUM_ENEX				0	/* 	CFG01 */
-#define RKH_TRC_EN_NUM_ACTSGT			0	/* 	CFG01 */
+#define RKH_TRC_ALL						1	/* 	CFG01 */
+#define RKH_TRC_EN_MP					0	/* 	CFG01 */
+#define RKH_TRC_EN_RQ					0	/* 	CFG01 */
+#define RKH_TRC_EN_SMA					0	/* 	CFG01 */
+#define RKH_TRC_EN_TIM					0	/* 	CFG01 */
+#define RKH_TRC_EN_SM					0	/* 	CFG01 */
+#define RKH_TRC_EN_RKH					0	/* 	CFG01 */
+#define RKH_TRC_EN_SM_INIT				1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_DCH				1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_CLRH				1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_TRN				1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_STATE				1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_ENSTATE			1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_EXSTATE			1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_NENEX				1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_NTRNACT			1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_CSTATE			1	/* 	CFG01 */
+#define RKH_TRC_EN_SM_DCH_RC			1	/* 	CFG01 */
 #define RKH_TRC_EN_TSTAMP				1	/* 	CFG01 */
-#define RKH_TRC_SIZEOF_TSTAMP			16	/* 	CFG01 */
+#define RKH_TRC_SIZEOF_TSTAMP			32	/* 	CFG01 */
 #define RKH_TRC_MAX_TRACES				16	/* 	CFG01 */
-#define RKH_TRC_MAX_STRING_SIZE			4	/* 	CFG01 */
-#define RKH_TRC_SIZEOF_EVENT			16	/* 	CFG01 */
+#define RKH_TRC_SIZEOF_EVENT			17	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_POINTER			32	/* 	CFG01 */
 
 #define RKH_RQ_EN						1	/* 	CFG01 */ 
 #define RKH_RQ_SIZEOF_NELEM				8	/* 	CFG01 */ 
 #define RKH_RQ_EN_GET_LWMARK			1	/* 	CFG01 */ 
-#define RKH_RQ_EN_GET_INFO				1	/* 	CFG01 */ 
+#define RKH_RQ_EN_GET_INFO				0	/* 	CFG01 */ 
 #define	RKH_RQ_EN_READ					1	/* 	CFG01 */ 
 #define	RKH_RQ_EN_DEPLETE				1	/* 	CFG01 */ 
 #define	RKH_RQ_EN_IS_FULL				1	/* 	CFG01 */ 
@@ -118,13 +117,13 @@
 #define RKH_MP_EN_GET_BSIZE				1	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_NFREE				1	/* 	CFG01 */ 
 #define RKH_MP_EN_GET_LWM				1	/* 	CFG01 */ 
-#define RKH_MP_EN_GET_INFO				1	/* 	CFG01 */ 
+#define RKH_MP_EN_GET_INFO				0	/* 	CFG01 */ 
 
 #define RKH_TIM_EN						1	/* 	CFG01 */
 #define RKH_TIM_EN_HOOK					1	/* 	CFG01 */
-#define RKH_TIM_EN_GET_INFO				1	/* 	CFG01 */
+#define RKH_TIM_EN_GET_INFO				0	/* 	CFG01 */
 #define RKH_TIM_EN_RESTART				1	/* 	CFG01 */
-#define RKH_TIMER_SIZEOF_NTIMER			1	/* 	CFG01 */
+#define RKH_TIM_SIZEOF_NTIMER			1	/* 	CFG01 */
 
 
 #endif

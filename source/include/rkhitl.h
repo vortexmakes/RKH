@@ -145,8 +145,8 @@
 #endif
 
 
-#ifndef RKH_TIMER_SIZEOF_NTIMER
-	#error "rkhcfg.h, Missing RKH_TIMER_SIZEOF_NTIMER, expected 8, 16 or 32"
+#ifndef RKH_TIM_SIZEOF_NTIMER
+	#error "rkhcfg.h, Missing RKH_TIM_SIZEOF_NTIMER, expected 8, 16 or 32"
 #endif
 
 
@@ -225,17 +225,17 @@
 #endif
 
 
-#ifndef RKH_TIMER_SIZEOF_NTIMER
-	#error "rkhcfg.h, Missing RKH_TIMER_SIZEOF_NTIMER: expected 8, 16 or 32"
+#ifndef RKH_TIM_SIZEOF_NTIMER
+	#error "rkhcfg.h, Missing RKH_TIM_SIZEOF_NTIMER: expected 8, 16 or 32"
 #endif
 
 
 #if RKH_TIM_EN_HOOK == 0
 	#define rkh_mktimer( t,s,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
+				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s) )
 #else
 	#define rkh_mktimer( t,s,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s) )
+				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
 #endif
 
 
@@ -386,54 +386,6 @@
 	#error "rkhcfg.h, Missing RKH_TRC_ALL: Include all trace points."
 #endif
 
-#ifndef RKH_TRC_EN_EVENT
-	#error "rkhcfg.h, Missing RKH_TRC_EN_EVENT: Enable (1) or Disable (0) trace point - triggering event."
-#endif
-
-#ifndef RKH_TRC_EN_TRN_SRC
-	#error "rkhcfg.h, Missing RKH_TRC_EN_TRN_SRC: Enable (1) or Disable (0) trace point - transition source state."
-#endif
-
-#ifndef RKH_TRC_EN_TRN_TGT	
-	#error "rkhcfg.h, Missing RKH_TRC_EN_TRN_TGT: Enable (1) or Disable (0) trace point - transition target state."
-#endif
-
-#ifndef RKH_TRC_EN_NXT_STATE
-	#error "rkhcfg.h, Missing RKH_TRC_EN_NXT_STATE: Enable (1) or Disable (0) trace point - next state."
-#endif
-
-#ifndef RKH_TRC_EN_INT_TRAN	
-	#error "rkhcfg.h, Missing RKH_TRC_EN_INT_TRAN: Enable (1) or Disable (0) trace point - internal transition."
-#endif
-
-#ifndef RKH_TRC_EN_ENTRY
-	#error "rkhcfg.h, Missing RKH_TRC_EN_ENTRY: Enable (1) or Disable (0) trace point - entry state."
-#endif
-
-#ifndef RKH_TRC_EN_EXIT	
-	#error "rkhcfg.h, Missing RKH_TRC_EN_EXIT: Enable (1) or Disable (0) trace point - exit state."
-#endif
-
-#ifndef RKH_TRC_EN_INIT_HSM
-	#error "rkhcfg.h, Missing RKH_TRC_EN_INIT_HSM: Enable (1) or Disable (0) trace point - initializing state machine."
-#endif
-
-#ifndef RKH_TRC_EN_SGT
-	#error "rkhcfg.h, Missing RKH_TRC_EN_SGT: Enable (1) or Disable (0) trace point - target state of transition segment."
-#endif
-
-#ifndef RKH_TRC_EN_RTN_CODE
-	#error "rkhcfg.h, Missing RKH_TRC_EN_RTN_CODE: Enable (1) or Disable (0) trace point - code returned by rkh_dispatch() function."
-#endif
-
-#ifndef RKH_TRC_EN_NUM_ENEX
-	#error "rkhcfg.h, Missing RKH_TRC_EN_NUM_ENEX: Enable (1) or Disable (0) trace point - # of enter and exited states."
-#endif
-
-#ifndef RKH_TRC_EN_NUM_ACTSGT
-	#error "rkhcfg.h, Missing RKH_TRC_EN_NUM_ACTSGT: Enable (1) or Disable (0) trace point - # of transition actions to be executed and number of transition segments."
-#endif
-
 #ifndef RKH_TRC_EN_TSTAMP
 	#error "rkhcfg.h, Missing RKH_TRC_EN_TSTAMP: Enable (1) or Disable (0) trace timestamp."
 #endif
@@ -447,14 +399,6 @@
 #else
 	#if RKH_TRC_MAX_TRACES == 0 || RKH_TRC_MAX_TRACES > 256
 	#error  "rkhcfg.h, RKH_TRC_MAX_TRACES must be > 0 and <= 256"
-	#endif
-#endif
-
-#ifndef RKH_TRC_MAX_STRING_SIZE
-	#error "rkhcfg.h, Missing RKH_TRC_MAX_STRING_SIZE: Defines the size of string argument of trace event."
-#else
-	#if RKH_TRC_MAX_STRING_SIZE == 0 || RKH_TRC_MAX_STRING_SIZE > 128
-	#error  "rkhcfg.h, RKH_MAX_TRACE_STRING_SIZE must be > 0 and <= 32"
 	#endif
 #endif
 

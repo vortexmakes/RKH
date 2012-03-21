@@ -40,7 +40,7 @@ RKH_MODULE_NAME( rkhdyn );
 #if RKH_EN_DYNAMIC_EVENT == 1
 
 
-RKH_DYNE_TYPE rkh_epl[ RKH_MAX_EPOOL ];
+RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 rkhui8_t rkhnpool;
 
 
@@ -51,7 +51,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 
               /* find the pool index that fits the requested event size ... */
     rkhui8_t idx = 0;
-	RKH_DYNE_TYPE *ep = rkh_epl;
+	RKH_DYNE_TYPE *ep = rkheplist;
 
     while( esize > RKH_DYNE_GET_ESIZE( ep ) ) 
 	{
@@ -100,7 +100,7 @@ rkh_gc( RKHEVT_T *e )
             RKH_EXIT_CRITICAL_();
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
-            RKH_DYNE_PUT( &rkh_epl[ idx ], e );
+            RKH_DYNE_PUT( &rkheplist[ idx ], e );
 			RKH_TRCR_RKH_GCR( e );
         }
     }
@@ -207,6 +207,11 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 void 
 rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 {
+	RKHASSERT( ( rkhnpool + 1 ) <= RKH_MAX_EPOOL );
+
+	++rkhnpool;
+	RKH_DYNE_INIT( &rkheplist[ rkhnpool - 1 ], sstart, ssize, esize );
+
 	RKH_TRCR_RKH_EPREG( ssize, esize );
 }
 

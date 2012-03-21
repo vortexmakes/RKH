@@ -48,14 +48,14 @@ typedef void ( *RKH_THK_T )( struct rkht_t *t );
  * 	clock ticks (maximum number of ticks).
  *
  *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_TIMER_SIZEOF_NTIMER.
+ *	configurable via the preprocessor switch RKH_TIM_SIZEOF_NTIMER.
  */
 
-#if RKH_TIMER_SIZEOF_NTIMER == 8
+#if RKH_TIM_SIZEOF_NTIMER == 8
 	typedef rkhui8_t RKH_TNT_T;
-#elif RKH_TIMER_SIZEOF_NTIMER == 16
+#elif RKH_TIM_SIZEOF_NTIMER == 16
 	typedef rkhui16_t RKH_TNT_T;
-#elif RKH_TIMER_SIZEOF_NTIMER == 32
+#elif RKH_TIM_SIZEOF_NTIMER == 32
 	typedef rkhui32_t RKH_TNT_T;
 #else
 	typedef rkhui8_t RKH_TNT_T;
@@ -112,7 +112,7 @@ typedef struct rkht_t
 	 * 	State machine application (SMA) that receives the timer event.
 	 */
 
-	RKHSMA_T *sma;
+	const RKHSMA_T *sma;
 
 	/**
 	 * 	Tick down-counter.
@@ -192,10 +192,10 @@ typedef struct rkht_t
  *	\param t		pointer to previously created timer structure.
  *	\param sma		state machine application (SMA) that receives the timer 
  *					event.
- * 	\param tick 	number of ticks for timer expiration.
+ * 	\param itick 	number of ticks for timer expiration.
  */
 
-#define rkh_tim_oneshot( t, sma, tick )						\
+#define rkh_tim_oneshot( t, sma, itick )						\
 				do{												\
 					(t)->period = 0;							\
 					rkh_tim_start( (t), (sma), (itick) );		\
@@ -239,7 +239,7 @@ typedef struct rkht_t
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_tim_start( RKHT_T *t, RKHSMA_T *sma, RKH_TNT_T itick );
+void rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick );
 
 
 /**

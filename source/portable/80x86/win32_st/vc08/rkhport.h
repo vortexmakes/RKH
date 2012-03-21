@@ -86,7 +86,7 @@ const char *rkh_get_port_desc( void );
 #define RKH_DYNE_TYPE					RKHMP_T
 
 #define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
-    			rkh_mp_init( (mp), sstart, ssize, esize )
+    			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
 
 #define RKH_DYNE_GET_ESIZE( mp )							\
 				( (mp)->bsize )

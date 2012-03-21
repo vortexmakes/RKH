@@ -55,7 +55,7 @@
 #define RKH_DYNE_TYPE			RKHMP_T
 
 #define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
-    			rkh_mp_init( (mp), sstart, ssize, esize )
+    			rkh_mp_init( (mp), sstart, (rkhui16_t)ssize, (RKHNB_T)esize )
 
 #define RKH_DYNE_GET_ESIZE( mp )	\
 				( (mp)->bsize )

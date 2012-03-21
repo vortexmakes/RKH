@@ -54,7 +54,7 @@ rkh_tim_tick( void )
 
 	RKH_ENTER_CRITICAL_();
 
-	for( t = thead; t->tnext != CPT( 0 ); t = t->tnext )
+	for( t = thead; t != CPT( 0 ); t = t->tnext )
 	{
 		if( !--t->ntick )
 		{
@@ -72,7 +72,7 @@ rkh_tim_tick( void )
 				}
 
 			}
-			rkh_sma_post_fifo( t->sma, &t->evt );
+ 			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
 		}
 
 	}
@@ -99,12 +99,12 @@ rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )
 
 
 void 
-rkh_tim_start( RKHT_T *t, RKHSMA_T *sma, RKH_TNT_T itick )
+rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 {
 	RKH_SR_CRITICAL_;
 	
 	RKHREQUIRE( 	t != ( RKHT_T* )0 && 
-					sma != ( RKHSMA_T* )0 && 
+					sma != ( const RKHSMA_T* )0 && 
 					itick != 0 &&
 					t->tprev != ( RKHT_T* )0 );
 
@@ -180,6 +180,7 @@ rkh_tim_stop( RKHT_T *t )
 }
 
 
+#if RKH_TIM_EN_GET_INFO	== 1
 void 
 rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info )
 {
@@ -203,3 +204,4 @@ rkh_tim_clear_info( RKHT_T *t )
 	pi->nexp = pi->nstart = pi->nstop = 0;
 	RKH_EXIT_CRITICAL_();
 }
+#endif
