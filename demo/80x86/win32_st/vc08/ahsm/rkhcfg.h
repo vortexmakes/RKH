@@ -38,7 +38,7 @@
 #define RKH_LOWEST_PRIO					8	/* 	CFG01 */ 
 #define RKH_EN_REENTRANT				0	/* 	CFG01 */
 #define RKH_EN_DEFERRED_EVENT			0	/* 	CFG01 */
-#define RKH_SIZEOF_EVENT				4	/* 	CFG01 */ 
+#define RKH_SIZEOF_EVENT				8	/* 	CFG01 */ 
 #define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
 #define RKH_ASSERT_EN					1	/* 	CFG01 */
 #define RKH_SIZEOF_ESIZE				16	/* 	CFG01 */
@@ -75,6 +75,8 @@
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
 
 #define RKH_TRC_EN						1	/* 	CFG01 */
+#define RKH_TRC_MAX_EVENTS				16	/* 	CFG01 */
+#define RKH_TRC_RUNTIME_FILTER			1	/* 	CFG01 */
 #define RKH_TRC_ALL						1	/* 	CFG01 */
 #define RKH_TRC_EN_MP					0	/* 	CFG01 */
 #define RKH_TRC_EN_RQ					0	/* 	CFG01 */
@@ -123,7 +125,7 @@
 #define RKH_TIM_EN_HOOK					1	/* 	CFG01 */
 #define RKH_TIM_EN_GET_INFO				0	/* 	CFG01 */
 #define RKH_TIM_EN_RESTART				1	/* 	CFG01 */
-#define RKH_TIM_SIZEOF_NTIMER			1	/* 	CFG01 */
+#define RKH_TIM_SIZEOF_NTIMER			16	/* 	CFG01 */
 
 
 #endif

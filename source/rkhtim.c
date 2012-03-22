@@ -43,6 +43,35 @@ RKH_MODULE_NAME( rkhtim );
 static RKHT_T *thead;
 
 
+static
+void
+rem_from_list( RKHT_T *t )
+{
+	if( thead == t )					/* is first timer in the list? */
+		thead = t->tnext;
+	else
+	{
+		t->tprev->tnext = t->tnext;
+		if( t->tnext != ( RKHT_T* )0 )	/* is last timer in the list? */
+			t->tnext->tprev = t->tprev;
+	}
+	RKH_TRCR_TIM_REM( t );
+}
+
+
+static
+void
+add_to_list( RKHT_T *t )
+{
+	if( thead != ( RKHT_T* )0 )			/* is empty list? */
+		thead->tprev = t;
+
+	t->tnext = thead;
+	thead = t;
+	t->tprev = t;
+}
+
+
 void 
 rkh_tim_tick( void )
 {
@@ -60,18 +89,8 @@ rkh_tim_tick( void )
 		{
 			if( t->period != 0 )
 				t->ntick = t->period;
-			else	/* it's a oneshot timer */
-			{
-				if( thead == t )
-					thead = t->tnext;
-				else
-				{
-					t->tprev->tnext = t->tnext;
-					if( t->tnext != ( RKHT_T* )0 )
-						t->tnext->tprev = t->tprev;
-				}
-
-			}
+			else
+				rem_from_list( t );
  			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
 			RKH_TRCR_TIM_TOUT( t );
 		}
@@ -113,15 +132,9 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 	t->ntick = itick;
 
 	RKH_ENTER_CRITICAL_();
-
-	if( thead != ( RKHT_T* )0 )
-		thead->tprev = t;
-
-	t->tnext = thead;
-	thead = t;
-	t->tprev = t;
-
+	add_to_list( t );
 	RKH_EXIT_CRITICAL_();
+
 	RKH_TRCR_TIM_START( t, itick, sma );
 }
 
@@ -140,14 +153,7 @@ rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
 
 	t->ntick = itick;
 	if( t->tprev == ( RKHT_T* )0 )
-	{
-		if( thead != ( RKHT_T* )0 )
-			thead->tprev = t;
-	
-		t->tnext = thead;
-		thead = t;
-		t->tprev = t;
-	}
+		add_to_list( t );
 
 	RKH_EXIT_CRITICAL_();
 	RKH_TRCR_TIM_RESTART( t, itick );
@@ -162,19 +168,16 @@ rkh_tim_stop( RKHT_T *t )
 	RKHREQUIRE( t != ( RKHT_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
-	
+
 	if( t->tprev == ( RKHT_T* )0 )
+	{
+		RKH_TRCR_TIM_ATTEMPT_STOP( t );
+		RKH_EXIT_CRITICAL_();
 		return;
+	}
 
 	t->ntick = 0;
-	if( thead == t )
-		thead = t->tnext;				/* first timer in the list */
-	else
-	{
-		t->tprev->tnext = t->tnext;
-		if( t->tnext != ( RKHT_T* )0 )
-			t->tnext->tprev = t->tprev;	/* last timer in the list */
-	}
+	rem_from_list( t );
 
 	RKH_EXIT_CRITICAL_();
 	RKH_TRCR_TIM_STOP( t );

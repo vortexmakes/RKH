@@ -4,6 +4,7 @@
 
 
 #include "rkh.h"
+#include "rkhtrc.h"
 #include "bsp.h"
 #include "my.h"
 #include "myevt.h"
@@ -19,6 +20,14 @@ int
 main( int argc, char *argv[] )
 {
 	bsp_init( argc, argv );
+
+	/* set trace filters */
+	RKH_FILTER_OFF_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_OFF_EVENT( RKH_TRC_ALL_EVENTS );
+	RKH_FILTER_ON_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_INIT );
+	RKH_FILTER_ON_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_START );
+	RKH_FILTER_ON_GROUP_EVENT( RKH_TRCG_RQ, RKH_TRC_ALL_EVENTS );
+
 	rkh_init();
 	
 	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );

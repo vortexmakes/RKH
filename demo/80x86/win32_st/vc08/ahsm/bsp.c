@@ -45,14 +45,14 @@ RKH_THIS_MODULE
 
 static char fmt[ 64 ];
 FILE *fdbg;
-static DWORD tick_msec = 10;		/* clock tick in msec (argument for Sleep()) */
+static DWORD tick_msec;			/* clock tick in msec */
 rkhui8_t running;
 MYEVT_T *mye;
 static RKH_DCLR_STATIC_EVENT( eterm, TERM );
 
 static 
 DWORD WINAPI 
-isr_tmr_thread( LPVOID par )			/* Win32 thread to emulate timer ISR */
+isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
 {
     ( void )par;
     while( running ) 
@@ -96,7 +96,7 @@ rkh_hk_start( void )
     HANDLE hth_tmr, hth_kbd;
 
 	/* set the desired tick rate */
-    tick_msec = 1000UL / BSP_TICKS_PER_SEC;
+    tick_msec = 1000UL/BSP_TICKS_PER_SEC;
     running = (rkhui8_t)1;
 	
 	/* create the ISR timer thread */

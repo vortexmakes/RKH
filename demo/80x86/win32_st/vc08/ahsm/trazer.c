@@ -41,6 +41,9 @@ RKH_THIS_MODULE
 							RKH_TRC_EN_SMA == 1 || RKH_TRC_EN_TIM == 1 || 	\
 							RKH_TRC_EN_SM == 1 || RKH_TRC_EN_RKH == 1 ))
 
+#define TRAZER_NTRE			RKH_TRCE_USER
+#define TRAZER_NTRG			RKH_TRCG_NGROUP
+
 
 /*
  * 	Application dependent macros and typedefs
@@ -254,6 +257,10 @@ static const TRE_T traces[] =
 	MKTR( 	RKH_TRCE_TIM_STOP,	"TIM", "STOP", 
 			"timer=%s", 					h_1sym ),
 	MKTR( 	RKH_TRCE_TIM_TOUT,	"TIM", "TIMEOUT", 
+			"timer=%s", 					h_1sym ),
+	MKTR( 	RKH_TRCE_TIM_REM,	"TIM", "REMOVED", 
+			"timer=%s", 					h_1sym ),
+	MKTR( 	RKH_TRCE_TIM_ATTEMPT_STOP,	"TIM", "ATTEMPT_STOP", 
 			"timer=%s", 					h_1sym ),
 
 	/* --- Framework (RKH) ------------------- */
@@ -643,6 +650,8 @@ trazer_init( void )
 #if TRAZER_EN == 1 
 	printf( "---- RKH trace log session ----\n\n" );
 	printf( "Date = "__DATE__ __TIME__"\n" );
+	printf( "Number of trace events = %d\n", TRAZER_NTRE );
+	printf( "Number of trace groups = %d\n", TRAZER_NTRG );
 	printf( "Configurations = \n\n" );
 	printf( "   TRAZER_SIZEOF_SIG     = %d\n", TRAZER_SIZEOF_SIG );
 	printf( "   TRAZER_SIZEOF_TSTAMP  = %d\n", TRAZER_SIZEOF_TSTAMP );
@@ -662,6 +671,8 @@ trazer_init( void )
 
 	fprintf( fdbg, "---- RKH trace log session ----\n" );
 	fprintf( fdbg, "date : "__DATE__ __TIME__"\n" );
+	fprintf( fdbg, "Number of trace events = %d\n", TRAZER_NTRE );
+	fprintf( fdbg, "Number of trace groups = %d\n", TRAZER_NTRG );
 	fprintf( fdbg, "Configurations = \n\n" );
 	fprintf( fdbg, "   TRAZER_SIZEOF_SIG     = %d\n", TRAZER_SIZEOF_SIG );
 	fprintf( fdbg, "   TRAZER_SIZEOF_TSTAMP  = %d\n", TRAZER_SIZEOF_TSTAMP );

@@ -32,6 +32,7 @@ void set_y_0( const struct rkhsma_t *sma );
  */
 
 void dummy_exit( const struct rkhsma_t *sma );
+void clean_exit( const struct rkhsma_t *sma );
 
 
 /*
@@ -50,12 +51,14 @@ void dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void show_data( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void stop_timer( const struct rkhsma_t *sma, RKHEVT_T *pe );
 
 
 /*
  *	Defines branch's guards
  */
 
+HUInt y0( const struct rkhsma_t *sma, RKHEVT_T *pe );
 HUInt y1( const struct rkhsma_t *sma, RKHEVT_T *pe );
 HUInt y2( const struct rkhsma_t *sma, RKHEVT_T *pe );
 HUInt x1( const struct rkhsma_t *sma, RKHEVT_T *pe );

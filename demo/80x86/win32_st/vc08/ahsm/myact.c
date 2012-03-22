@@ -10,7 +10,7 @@
 #include "rkhtim.h"
 
 
-#define MY_TICK			10
+#define MY_TICK			1000
 #define CMY( s )		(( MYSM_T* )(s))
 
 
@@ -72,6 +72,13 @@ dummy_exit( const struct rkhsma_t *sma )
 }
 
 
+void 
+clean_exit( const struct rkhsma_t *sma )
+{
+	rkh_tim_stop( &my_timer );
+}
+
+
 /*
  *	Defines state preprocessor functions
  */
@@ -130,9 +137,23 @@ start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 }
 
 
+void 
+stop_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	rkh_tim_stop( &my_timer );
+}
+
+
 /*
  *	Defines branch's guards
  */
+
+
+HUInt
+y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
+}
 
 
 HUInt
