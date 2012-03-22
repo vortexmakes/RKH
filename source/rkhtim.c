@@ -60,7 +60,7 @@ rkh_tim_tick( void )
 		{
 			if( t->period != 0 )
 				t->ntick = t->period;
-			else
+			else	/* it's a oneshot timer */
 			{
 				if( thead == t )
 					thead = t->tnext;
@@ -73,6 +73,7 @@ rkh_tim_tick( void )
 
 			}
  			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
+			RKH_TRCR_TIM_TOUT( t );
 		}
 
 	}

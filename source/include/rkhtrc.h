@@ -140,6 +140,7 @@ typedef enum rkh_trc_events
 	RKH_TRCE_TIM_START,
 	RKH_TRCE_TIM_RESTART,
 	RKH_TRCE_TIM_STOP,
+	RKH_TRCE_TIM_TOUT,
 
 	/* --- Framework (RKH) ------------------- */
 	RKH_TRCE_RKH_INIT,
@@ -552,11 +553,17 @@ typedef enum rkh_trc_events
 					RKH_TRC_BEGIN( RKH_TRCE_TIM_STOP );		\
 						RKH_TRC_SYM( t ); 					\
 					RKH_TRC_END()
+
+		#define RKH_TRCR_TIM_TOUT( t )						\
+					RKH_TRC_BEGIN( RKH_TRCE_TIM_TOUT );		\
+						RKH_TRC_SYM( t ); 					\
+					RKH_TRC_END()
 	#else
 		#define RKH_TRCR_TIM_INIT( t, sig )
 		#define RKH_TRCR_TIM_START( t, nt, sma )
 		#define RKH_TRCR_TIM_RESTART( t, nt )
 		#define RKH_TRCR_TIM_STOP( t )
+		#define RKH_TRCR_TIM_TOUT( t )
 	#endif
 
 	/* --- Framework (RKH) ----------------------- */
@@ -573,8 +580,9 @@ typedef enum rkh_trc_events
 					RKH_TRC_BEGIN( RKH_TRCE_RKH_EX );		\
 					RKH_TRC_END()
 
-		#define RKH_TRCR_RKH_EPREG( ssize, esize )			\
+		#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )	\
 					RKH_TRC_BEGIN( RKH_TRCE_RKH_EPREG );	\
+					RKH_TRC_UI8( epix );					\
 					RKH_TRC_UI32( ssize );					\
 					RKH_TRC_ES( esize );					\
 					RKH_TRC_END()
@@ -610,7 +618,7 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_RKH_INIT()
 		#define RKH_TRCR_RKH_EN()
 		#define RKH_TRCR_RKH_EX()
-		#define RKH_TRCR_RKH_EPREG( ssize, esize )
+		#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )
 		#define RKH_TRCR_RKH_AE( esize, ev )
 		#define RKH_TRCR_RKH_GC( ev )
 		#define RKH_TRCR_RKH_GCR( ev )
@@ -658,12 +666,13 @@ typedef enum rkh_trc_events
 	#define RKH_TRCR_TIM_START( t, nt, sma )
 	#define RKH_TRCR_TIM_RESTART( t, nt )
 	#define RKH_TRCR_TIM_STOP( t )
+	#define RKH_TRCR_TIM_TOUT( t )
 
 	/* --- Framework (RKH) ----------------------- */
 	#define RKH_TRCR_RKH_INIT()
 	#define RKH_TRCR_RKH_EN()
 	#define RKH_TRCR_RKH_EX()
-	#define RKH_TRCR_RKH_EPREG( ssize, esize )
+	#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )
 	#define RKH_TRCR_RKH_AE( esize, ev )
 	#define RKH_TRCR_RKH_GC( ev )
 	#define RKH_TRCR_RKH_GCR( ev )

@@ -229,11 +229,11 @@ static const TRE_T traces[] =
 			"sma=%s, sig=%s", 				h_symevt ),
 	MKTR( 	RKH_TRCE_SM_TRN,	"SM", "TRANSITION", 
 			"sma=%s, sstate=%s, tstate=%s", h_3sym ),
-	MKTR( 	RKH_TRCE_SM_STATE,	"SM", "STATE", 
+	MKTR( 	RKH_TRCE_SM_STATE,	"SM", "CURRENT_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_ENSTATE,"SM", "ENSTATE", 
+	MKTR( 	RKH_TRCE_SM_ENSTATE,"SM", "ENTRY_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_EXSTATE,"SM", "EXSTATE", 
+	MKTR( 	RKH_TRCE_SM_EXSTATE,"SM", "EXIT_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
 	MKTR( 	RKH_TRCE_SM_NENEX,	"SM", "NUM_EN_EX", 
 			"sma=%s, nentry=%d, nexit=%d",	h_sym2u8 ),
@@ -241,7 +241,7 @@ static const TRE_T traces[] =
 			"sma=%s, ntrnaction=%d", 		h_symu8 ),
 	MKTR( 	RKH_TRCE_SM_CSTATE,	"SM", "COMP_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_DCH_RC,	"SM", "DISPATCH_RC", 
+	MKTR( 	RKH_TRCE_SM_DCH_RC,	"SM", "DISPATCH_RCODE", 
 			"sma=%s, retcode=%s", 			h_symrc ),
 
 	/* --- Timer (TIM) ----------------------- */
@@ -253,6 +253,8 @@ static const TRE_T traces[] =
 			"timer=%s, ntick=%5d", 			h_symntick ),
 	MKTR( 	RKH_TRCE_TIM_STOP,	"TIM", "STOP", 
 			"timer=%s", 					h_1sym ),
+	MKTR( 	RKH_TRCE_TIM_TOUT,	"TIM", "TIMEOUT", 
+			"timer=%s", 					h_1sym ),
 
 	/* --- Framework (RKH) ------------------- */
 	MKTR( 	RKH_TRCE_RKH_INIT,	"RKH", "INIT", 
@@ -262,8 +264,8 @@ static const TRE_T traces[] =
 	MKTR( 	RKH_TRCE_RKH_EX,	"RKH", "EXIT", 
 			"", 							h_none ),
 	MKTR( 	RKH_TRCE_RKH_EPREG,	"RKH", "EPOOL_REG", 
-			"ssize=%d, esize=%d", 			h_epreg ),
-	MKTR( 	RKH_TRCE_RKH_AE,	"RKH", "ALLOC_EVT", 
+			"epix =%d, ssize=%d, esize=%d",	h_epreg ),
+	MKTR( 	RKH_TRCE_RKH_AE,	"RKH", "ALLOC_EVENT", 
 			"esize=%d, sig=%s", 			h_ae ),
 	MKTR( 	RKH_TRCE_RKH_GC,	"RKH", "GC", 
 			"sig=%s", 						h_evt ),
@@ -308,9 +310,9 @@ static const char *rctbl[] =				/* dispatch ret code table */
 
 
 #if TRAZER_SIZEOF_TSTAMP == 2
-	static const char *trheader = "%5d %-4s| %-12s : ";
+	static const char *trheader = "%5d %-4s| %-15s : ";
 #else
-	static const char *trheader = "%10d %-4s| %-12s : ";
+	static const char *trheader = "%10d %-4s| %-15s : ";
 #endif
 
 
@@ -330,6 +332,8 @@ make_symtbl( void )
 	MKO( my, 			"my"		);
 	MKO( &my->equeue,	"my_queue"	);
 	MKO( &my_timer, 	"my_timer"	);
+	MKO( &rkheplist[0], "ep0"		);
+	MKO( &rkheplist[1], "ep1"		);
 	MKO( &S1, 			"S1"		);
 	MKO( &S11, 			"S11"		);
 	MKO( &S111, 		"S111"		);
@@ -579,10 +583,12 @@ h_epreg( const struct tre_t *tre )
 {
 	unsigned long u32;
 	TRZES_T esize;
+	unsigned char u8;
 
+	u8 = (unsigned char)assemble( sizeof( char ) );
 	u32 = (unsigned long)assemble( sizeof( long ) );
 	esize = (TRZES_T)assemble( sizeof( TRZES_T ) );
-	sprintf( fmt, tre->fmt, u32, esize  );
+	sprintf( fmt, tre->fmt, u8, u32, esize  );
 	return fmt;
 }
 

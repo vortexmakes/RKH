@@ -38,6 +38,8 @@ RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" );
 
 #define SIZEOF_EP0STO				64
 #define SIZEOF_EP0_BLOCK			4
+#define SIZEOF_EP1STO				64
+#define SIZEOF_EP1_BLOCK			8
 
 
 CRITICAL_SECTION csection;		/* Win32 critical section */
@@ -45,7 +47,8 @@ HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
 
 extern rkhui8_t running;
-static rkhui8_t ep0sto[ SIZEOF_EP0STO ];
+static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ];
 
 
 const 
@@ -71,6 +74,7 @@ rkh_init( void )
     sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
 	rkh_trc_open();
 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 	RKH_TRCR_RKH_INIT();
 }
 

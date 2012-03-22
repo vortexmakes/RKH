@@ -49,7 +49,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 {
     RKHEVT_T *evt;
 
-              /* find the pool index that fits the requested event size ... */
+    /* find the pool index that fits the requested event size ... */
     rkhui8_t idx = 0;
 	RKH_DYNE_TYPE *ep = rkheplist;
 
@@ -57,18 +57,18 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 	{
         ++idx;
 		++ep;
-									  /* cannot run out of registered pools */
+		/* cannot run out of registered pools */
         RKHASSERT( idx < rkhnpool );
     }
 
-    RKH_DYNE_GET( ep, evt );                 /* get e -- platform-dependent */
-							             /* pool must not run out of events */
-    RKHASSERT( evt != NULL );
-    evt->e = e;                                /* set signal for this event */
+    RKH_DYNE_GET( ep, evt );	/* get e -- platform-dependent */
+							    /* pool must not run out of events */
+    RKHASSERT( evt != ( RKHEVT_T* )0 );
+    evt->e = e;                 /* set signal for this event */
 
 	/* 
-	 * Store the dynamic attributes of the event:
-	 * the pool ID and the reference counter = 0
+	 * Store the dynamic attributes of the event: the pool ID and the 
+	 * reference counter = 0
 	 */
     evt->dynamic_ = 0;
     evt->pool = idx + 1;
@@ -83,25 +83,25 @@ rkh_gc( RKHEVT_T *e )
 {
 	RKH_SR_CRITICAL_;
 	
-    if( e->dynamic_ != 0 )                      /* is it a dynamic event? */
+    if( e->dynamic_ != 0 )		/* is it a dynamic event? */
 	{
         RKH_ENTER_CRITICAL_();
 
-        if( e->dynamic_ > 1 )                 /* isn't this the last ref? */
+        if( e->dynamic_ > 1 )	/* isn't this the last ref? */
 		{
-            --e->dynamic_;             /* decrement the reference counter */
+            --e->dynamic_;		/* decrement the reference counter */
             RKH_EXIT_CRITICAL_();
 			RKH_TRCR_RKH_GC( e );
         }
-        else        /* this is the last reference to this event, recycle it */
+        else	/* this is the last reference to this event, recycle it */
 		{
-                                                      /* cannot wrap around */
+			/* cannot wrap around */
             rkhui8_t idx = (rkhui8_t)( e->pool - 1 );
             RKH_EXIT_CRITICAL_();
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
-            RKH_DYNE_PUT( &rkheplist[ idx ], e );
 			RKH_TRCR_RKH_GCR( e );
+            RKH_DYNE_PUT( &rkheplist[ idx ], e );
         }
     }
 }
@@ -211,8 +211,7 @@ rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 
 	++rkhnpool;
 	RKH_DYNE_INIT( &rkheplist[ rkhnpool - 1 ], sstart, ssize, esize );
-
-	RKH_TRCR_RKH_EPREG( ssize, esize );
+	RKH_TRCR_RKH_EPREG( rkhnpool, ssize, esize );
 }
 
 

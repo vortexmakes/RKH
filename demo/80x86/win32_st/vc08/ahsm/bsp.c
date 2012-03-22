@@ -44,11 +44,11 @@
 RKH_THIS_MODULE
 
 static char fmt[ 64 ];
-static MYEVT_T mye;
 FILE *fdbg;
 static DWORD tick_msec = 10;		/* clock tick in msec (argument for Sleep()) */
 rkhui8_t running;
-
+MYEVT_T *mye;
+static RKH_DCLR_STATIC_EVENT( eterm, TERM );
 
 static 
 DWORD WINAPI 
@@ -69,6 +69,7 @@ DWORD WINAPI
 isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
 {
 	int c;
+	MYEVT_T *mye;
 
     ( void )par;
     while( running ) 
@@ -76,15 +77,12 @@ isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == ESC )
-		{
-			RKH_SET_STATIC_EVENT( &mye, TERM );
-			rkh_sma_post_fifo( my, ( RKHEVT_T* )&mye );
-		}
+			rkh_sma_post_fifo( my, &eterm );
 		else
 		{
-			RKH_SET_STATIC_EVENT( &mye, kbmap( c ) );
-			mye.ts = ( rkhui16_t )rand();
-			rkh_sma_post_fifo( my, ( RKHEVT_T* )&mye );
+			mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+			mye->ts = ( rkhui16_t )rand();
+			rkh_sma_post_fifo( my, ( RKHEVT_T* )mye );
 		}
     }
     return 0;
