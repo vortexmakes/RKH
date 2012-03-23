@@ -55,6 +55,7 @@ RKH_CREATE_TRANS_TABLE( S1 )
 
 	RKH_TRINT( SIX, 	NULL, 		show_data ),
 	RKH_TRINT( TERM, 	NULL, 		terminate ),
+	RKH_TRREG( TWO, 	NULL, 		set_y_2,	&S2 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
 	RKH_TRREG( FIVE, 	NULL, 		NULL, 		&S12 ),
 
@@ -63,6 +64,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE( S12, 2, set_x_3, NULL, &S1, NULL );
 RKH_CREATE_TRANS_TABLE( S12 )
 
+	RKH_TRINT( SEVEN, 	NULL, 		gen_events ),
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&J ),
 	RKH_TRREG( FOUR, 	NULL, 		set_y_1, 	&S2 ),
 

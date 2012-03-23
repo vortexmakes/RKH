@@ -296,14 +296,21 @@ void rkh_rq_put_lifo( RKHRQ_T *q, const void *pe );
 
 /**
  * 	\brief
- *	Depletes a queue. 
- *
+ *	Depletes a queue. Empties the contents of the queue and eliminates all 
+ *	stored elements.
+ *	
+ *	\note
+ *	This function should be used with great care because, when to flush the 
+ *	queue, the references are LOOSE to what the queue entries are pointing 
+ *	to and thus, could cause 'memory leaks'. In other words, the data 
+ *	pointing to that's being referenced by the queue entries should, most 
+ *	likely, need to be deallocated. To flush a queue that contains entries, 
+ *	is much safer instead repeateadly use rkh_rq_get();
+ * 
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
  * 	with RKH_RQ_EN_DEPLETE.
  *
- *	Empties the contents of the queue and eliminates all stored elements.
- *		
  * 	\param q		pointer to previously created queue.
  */
 

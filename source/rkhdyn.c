@@ -152,6 +152,7 @@ rkh_sma_get( RKHSMA_T *sma )
 	e = rkh_rq_get( &sma->equeue );
 	RKHASSERT( e != ( RKHEVT_T * )0 );
     RKH_EXIT_CRITICAL_();
+
 	RKH_TRCR_SMA_GET( sma, e );
 	return e;
 }

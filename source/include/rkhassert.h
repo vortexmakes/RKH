@@ -229,6 +229,7 @@
 
 #else
 	#define RKH_MODULE_NAME( __fname )
+	#define RKH_THIS_MODULE
 	#define RKHASSERT( exp )				((void)0)
 	#define RKHALLEGE( exp )				((void)(exp))
 	#define RKHERROR()						((void)0)

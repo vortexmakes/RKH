@@ -223,6 +223,7 @@ typedef enum rkh_trc_events
 	RKH_TRCE_RQ_LIFO,
 	RKH_TRCE_RQ_FULL,
 	RKH_TRCE_RQ_DPT,
+	RKH_TRCE_RQ_GET_LAST,
 
 	/* --- State Machine Application events (SMA group) --- */
 	RKH_TRCE_SMA_ACT,
@@ -491,6 +492,11 @@ typedef enum rkh_trc_events
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_DPT )	\
 						RKH_TRC_SYM( q ); 							\
 					RKH_TRC_END()
+
+		#define RKH_TRCR_RQ_GET_LAST( q )							\
+					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_GET_LAST )	\
+						RKH_TRC_SYM( q ); 							\
+					RKH_TRC_END()
 	#else
 		#define RKH_TRCR_RQ_INIT( q, nelem, sma )
 		#define RKH_TRCR_RQ_GET( q, qty )
@@ -498,6 +504,7 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_RQ_LIFO( q, qty )
 		#define RKH_TRCR_RQ_FULL( q )
 		#define RKH_TRCR_RQ_DEPLETE( q )
+		#define RKH_TRCR_RQ_GET_LAST( q )
 	#endif
 
 	/* --- State Machine Application (SMA) --- */
@@ -778,6 +785,7 @@ typedef enum rkh_trc_events
 	#define RKH_TRCR_RQ_LIFO( q, qty )
 	#define RKH_TRCR_RQ_FULL( q )
 	#define RKH_TRCR_RQ_DEPLETE( q )
+	#define RKH_TRCR_RQ_GET_LAST( q )
 
 	/* --- State Machine Application (SMA) --- */
 	#define RKH_TRCR_SMA_ACT( sma )

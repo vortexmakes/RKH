@@ -324,8 +324,7 @@ rkh_init_hsm( RKHSMA_T *sma )
 }
 
 
-#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && \
-				( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && ( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
 
 void
 rkh_clear_history( RKHROM RKHSHIST_T *h )
@@ -383,6 +382,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	ets = tr->target;
 	ts = CR( ets );
 	RKH_TRCR_SM_DCH( sma, pe );
+	RKH_TRCR_SM_TRN( sma, s, ts );
 
 	/* Stage 4 */
 	first_regular = 1;
@@ -402,7 +402,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		return RKH_EXCEED_TRC_SEGS;
 	}
 
-	RKH_TRCR_SM_TRN( sma, ss, ts );
 	if( is_internal_transition( ets ) )
 		inttr = 1;
 	else
@@ -446,7 +445,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 					break;
 #endif
-#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CONDITIONAL
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CONDITIONAL == 1
 				case RKH_CONDITIONAL:
 					
 #if TEST_GUARD == 0
@@ -497,8 +496,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 					break;
 #endif
-#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && \
-					( RKH_EN_SHALLOW_HISTORY == 1 || RKH_EN_DEEP_HISTORY == 1 )
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && ( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
 				case RKH_SHISTORY:
 				case RKH_DHISTORY:
 

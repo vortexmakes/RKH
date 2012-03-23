@@ -43,6 +43,7 @@ RKH_THIS_MODULE
 
 #define TRAZER_NTRE			RKH_TRCE_USER
 #define TRAZER_NTRG			RKH_TRCG_NGROUP
+#define CC(s)				((const char*)(s))
 
 
 /*
@@ -136,7 +137,7 @@ RKH_THIS_MODULE
 				objtbl[i].name = nm
 
 #define EOSIGTBL	\
-				{ 0, (const char*)0 }
+				{ 0, CC( 0 ) }
 
 
 typedef char *(*HDLR_T)( const struct tre_t *tre );
@@ -171,7 +172,7 @@ static char *h_none( const struct tre_t *tre ),
 			*h_evt( const struct tre_t *tre ),
 			*h_1sym( const struct tre_t *tre ),
 			*h_2sym( const struct tre_t *tre ),
-			*h_3sym( const struct tre_t *tre ),
+			*h_symtrn( const struct tre_t *tre ),
 			*h_symrc( const struct tre_t *tre ),
 			*h_symu8( const struct tre_t *tre ),
 			*h_sym2u8( const struct tre_t *tre ),
@@ -206,6 +207,8 @@ static const TRE_T traces[] =
 			"rq=%s", 						h_1sym ),
 	MKTR( 	RKH_TRCE_RQ_DPT,	"RQ", "DEPLETE", 
 			"rq=%s", 						h_1sym ),
+	MKTR( 	RKH_TRCE_RQ_GET_LAST,	"RQ", "GET_LAST", 
+			"rq=%s", 						h_1sym ),
 
 	/* --- State Machine Application (SMA) --- */
 	MKTR( 	RKH_TRCE_SMA_ACT,	"SMA", "ACTIVATE", 
@@ -231,7 +234,7 @@ static const TRE_T traces[] =
 	MKTR( 	RKH_TRCE_SM_DCH,	"SM", "DISPATCH", 
 			"sma=%s, sig=%s", 				h_symevt ),
 	MKTR( 	RKH_TRCE_SM_TRN,	"SM", "TRANSITION", 
-			"sma=%s, sstate=%s, tstate=%s", h_3sym ),
+			"sma=%s, sstate=%s, tstate=%s", h_symtrn ),
 	MKTR( 	RKH_TRCE_SM_STATE,	"SM", "CURRENT_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
 	MKTR( 	RKH_TRCE_SM_ENSTATE,"SM", "ENTRY_STATE", 
@@ -276,7 +279,7 @@ static const TRE_T traces[] =
 			"esize=%d, sig=%s", 			h_ae ),
 	MKTR( 	RKH_TRCE_RKH_GC,	"RKH", "GC", 
 			"sig=%s", 						h_evt ),
-	MKTR( 	RKH_TRCE_RKH_GCR,	"RKH", "GCR", 
+	MKTR( 	RKH_TRCE_RKH_GCR,	"RKH", "GC_RECYCLE", 
 			"sig=%s", 						h_evt ),
 	MKTR( 	RKH_TRCE_RKH_DEFER,	"RKH", "DEFER", 
 			"rq=%s, sig=%s", 				h_symevt ),
@@ -350,8 +353,13 @@ make_symtbl( void )
 	MKO( &S3, 			"S3" 		);
 	MKO( &S31, 			"S31" 		);
 	MKO( &S32, 			"S32"		);
+	MKO( &C1, 			"C1" 		);
+	MKO( &C2, 			"C2" 		);
+	MKO( &J, 			"J" 		);
+	MKO( &DH, 			"DH" 		);
+	MKO( &H, 			"H" 		);
 
-	MKO( 0, 			(const char*)0 );
+	MKO( 0, 			CC( 0 ) );
 }
 
 
@@ -364,7 +372,7 @@ map_obj( unsigned long adr )
 	for( p = objtbl; p->name != 0; ++p )
 		if( p->adr == adr )
 			return p->name;
-	return ( const char* )0;
+	return CC( 0 );
 }
 
 
@@ -377,7 +385,7 @@ map_sig( TRZE_T sig )
 	for( p = sigtbl; p->name != 0; ++p )
 		if( p->sig == sig )
 			return p->name;
-	return ( const char* )0;
+	return CC( 0 );
 }
 
 
@@ -441,15 +449,15 @@ h_2sym( const struct tre_t *tre )
 
 
 char *
-h_3sym( const struct tre_t *tre )
+h_symtrn( const struct tre_t *tre )
 {
-	unsigned long obj1, obj2, obj3;
+	unsigned long smaobj, ssobj, tsobj;
 
-	obj1 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
-	obj2 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
-	obj3 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
-	sprintf( fmt, tre->fmt, map_obj( obj1 ), map_obj( obj2 ), 
-												map_obj( obj3 ) );
+	smaobj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
+	ssobj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
+	tsobj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
+	sprintf( fmt, tre->fmt, map_obj( smaobj ), map_obj( ssobj ), 
+					tsobj == 0 ? map_obj( ssobj ) : map_obj( tsobj ) );
 	return fmt;
 }
 

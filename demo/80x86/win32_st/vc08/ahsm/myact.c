@@ -94,9 +94,6 @@ void
 set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	CMY( sma )->y = 2;
-	printf( "action: %s()\n", __FUNCTION__ );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", CMY( sma )->x, CMY( sma )->y );
 }
 
 
@@ -104,9 +101,6 @@ void
 set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	CMY( sma )->y = 1;
-	printf( "action: %s()\n", __FUNCTION__ );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", CMY( sma )->x, CMY( sma )->y );
 }
 
 
@@ -119,7 +113,6 @@ dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe )
 void
 show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	printf( "data.x = %02d - data.y = %02d\n", CMY( sma )->x, CMY( sma )->y );
 }
 
 
@@ -141,6 +134,21 @@ void
 stop_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	rkh_tim_stop( &my_timer );
+}
+
+
+void 
+gen_events( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	MYEVT_T *e;
+
+	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
+	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
+	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
+	e->ts = ( rkhui16_t )rand();
+	rkh_sma_post_fifo( my, ( RKHEVT_T* )e );
+	rkh_sma_post_fifo( my, ( RKHEVT_T* )e );
+	rkh_sma_post_fifo( my, ( RKHEVT_T* )e );
 }
 
 

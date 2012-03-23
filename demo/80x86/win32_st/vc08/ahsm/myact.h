@@ -52,6 +52,7 @@ void show_data( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void stop_timer( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void gen_events( const struct rkhsma_t *sma, RKHEVT_T *pe );
 
 
 /*

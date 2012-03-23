@@ -145,7 +145,9 @@ rkh_rq_get( RKHRQ_T *q  )
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	RKH_ENTER_CRITICAL_();
 
-	if( q->qty == 0 )
+	if( q->sma != ( void * )0 )
+		RKH_SMA_BLOCK( sma );
+	else
 	{
 		RKH_IUPDT_EMPTY( q );
 		RKH_EXIT_CRITICAL_();
@@ -158,12 +160,19 @@ rkh_rq_get( RKHRQ_T *q  )
 	if( q->pout == q->pend )
 		q->pout = ( void ** )q->pstart;
 
-	if( q->sma != ( void * )0 )
-		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T * )( q->sma ) );
-
 	RKH_IUPDT_GET( q );
-	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_RQ_GET( q, q->qty );
+
+	if( q->sma != ( void * )0 && q->qty == 0 )
+	{
+		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+		RKH_EXIT_CRITICAL_();
+		RKH_TRCR_RQ_GET_LAST( q );
+	}
+	else
+	{
+		RKH_TRCR_RQ_GET( q, q->qty );
+		RKH_EXIT_CRITICAL_();
+	}
 	return e;
 }
 
@@ -252,6 +261,8 @@ queue_deplete( RKHRQ_T *q )
 	RKH_ENTER_CRITICAL_();
 	q->qty = 0;
 	q->pin = q->pout = ( void ** )q->pstart;
+	if( q->sma != ( void * )0 )
+		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T* )( q->sma ) );
 	RKH_EXIT_CRITICAL_();
 	
 	RKH_TRCR_RQ_DEPLETE( q );

@@ -38,7 +38,7 @@ RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" );
 
 #define SIZEOF_EP0STO				64
 #define SIZEOF_EP0_BLOCK			4
-#define SIZEOF_EP1STO				64
+#define SIZEOF_EP1STO				32
 #define SIZEOF_EP1_BLOCK			8
 
 
