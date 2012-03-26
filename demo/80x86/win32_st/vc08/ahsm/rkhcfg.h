@@ -47,6 +47,8 @@
 #define RKH_HK_EN_TIMEOUT				1	/* 	CFG01 */
 #define RKH_HK_EN_START					1	/* 	CFG01 */
 #define RKH_HK_EN_EXIT					1	/* 	CFG01 */
+#define RKH_EN_SMA_THREAD 				1	/* 	CFG01 */
+#define RKH_EN_SMA_THREAD_DATA			1	/* 	CFG01 */
 
 #define RKH_EN_NATIVE_SCHEDULER			0	/* 	CFG01 */ 
 #define RKH_EN_NATIVE_EQUEUE			1	/* 	CFG01 */ 

@@ -52,21 +52,6 @@
 	#define RKH_SMA_UNREADY( rg, sma ) 						\
 					rkh_rdyr_em( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
-	#define RKH_DYNE_TYPE			RKHMP_T
-
-	#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
-				rkh_mp_init( (mp), sstart, (rkhui16_t)ssize, (RKHNB_T)esize )
-
-	#define RKH_DYNE_GET_ESIZE( mp )	\
-					( (mp)->bsize )
-
-	#define RKH_DYNE_GET( mp, e )								\
-					( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
-
-	#define RKH_DYNE_PUT( mp, e )				\
-					( rkh_mp_put( (mp), e ) )
-
-
 	extern RKHRG_T rkhrg;
 
 #endif
