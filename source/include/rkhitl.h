@@ -771,6 +771,58 @@ struct rkh_t;
 
 
 /**
+ * 	\brief
+ * 	Initialization action.
+ *
+ * 	Frequently, the state transition originating at the black ball is called 
+ * 	the initial transition. Such transition designates the first active state 
+ * 	after the state machine object is created. An initial transition can have 
+ * 	associated actions, which in the UML notation are enlisted after the forward 
+ * 	slash ( / ). In RKH framework, the application code must trigger the initial 
+ * 	transition explicitly by invoking rkh_init_hsm() function.
+ * 	An init action takes the state machine pointer as argument. 
+ * 	This argument is optional, thus it could be eliminated in 
+ * 	compile-time by means of RKH_SMA_EN_INIT_ARG_SMA.
+ *
+ * 	\note
+ * 	This callback is referenced from RKH_CREATE_HSM() macro.
+ */
+
+#define CIA( s )	((RKHINIT_T)((s)->romrkh->iaction))
+
+#if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 1
+	typedef void ( *RKHINIT_T )( const void *sma, 
+										const struct rkhevt_t *e );
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))( (h), (h)->romrkh->ievent );				\
+	}
+#elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 0
+	typedef void ( *RKHINIT_T )( const void *sma );
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))( (h) );										\
+	}
+#elif RKH_SMA_EN_INIT_ARG_SMA == 0 && RKH_SMA_EN_INIT_ARG_IE == 1
+	typedef void ( *RKHINIT_T )( const struct rkhevt_t *e );
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))( (h)->romrkh->ievent );						\
+	}
+#else
+	typedef void ( *RKHINIT_T )( void );
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))();											\
+	}
+#endif
+
+
+/**
  * 	\brief 
  * 	Defines the data structure into which the collected performance 
  * 	information for state machine is stored.
@@ -852,7 +904,7 @@ typedef struct romrkh_t
 	 * 	optional, thus it could be declared as NULL.
 	 */
 
-	void *iaction;
+	RKHINIT_T iaction;
 
 	/**
 	 * 	\brief
@@ -1055,58 +1107,6 @@ typedef struct rkhsma_t
 
 #endif
 
-
-
-/**
- * 	\brief
- * 	Initialization action.
- *
- * 	Frequently, the state transition originating at the black ball is called 
- * 	the initial transition. Such transition designates the first active state 
- * 	after the state machine object is created. An initial transition can have 
- * 	associated actions, which in the UML notation are enlisted after the forward 
- * 	slash ( / ). In RKH framework, the application code must trigger the initial 
- * 	transition explicitly by invoking rkh_init_hsm() function.
- * 	An init action takes the state machine pointer as argument. 
- * 	This argument is optional, thus it could be eliminated in 
- * 	compile-time by means of RKH_SMA_EN_INIT_ARG_SMA.
- *
- * 	\note
- * 	This callback is referenced from RKH_CREATE_HSM() macro.
- */
-
-#define CIA( s )	((RKHINIT_T*)((s)->romrkh->iaction))
-
-#if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 1
-	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma, 
-										const struct rkhevt_t *e );
-	#define rkh_exec_init( h )										\
-	{																\
-		if( CIA( h ) != NULL )										\
-			(*CIA( h ))( (h), (h)->romrkh->ievent );				\
-	}
-#elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 0
-	typedef void ( *RKHINIT_T )( const RKHSMA_T *sma );
-	#define rkh_exec_init( h )										\
-	{																\
-		if( CIA( h ) != NULL )										\
-			(*CIA( h ))( (h) );										\
-	}
-#elif RKH_SMA_EN_INIT_ARG_SMA == 0 && RKH_SMA_EN_INIT_ARG_IE == 1
-	typedef void ( *RKHINIT_T )( const struct rkhevt_t *e );
-	#define rkh_exec_init( h )										\
-	{																\
-		if( CIA( h ) != NULL )										\
-			(*CIA( h ))( (h)->romrkh->ievent );						\
-	}
-#else
-	typedef void ( *RKHINIT_T )( void );
-	#define rkh_exec_init( h )										\
-	{																\
-		if( CIA( h ) != NULL )										\
-			(*CIA( h ))();											\
-	}
-#endif
 
 
 /**

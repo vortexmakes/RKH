@@ -435,8 +435,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						ts = CR( ets );
 						first_regular = 0;
 					}
-					else if( rkh_add_list( 	&snd, 
-											CV( ets ), 
+					else if( rkh_add_list( 	&snd, CV( ets ), 
 											RKH_SMA_MAX_HCAL_DEPTH ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_HCAL_LEVEL );
