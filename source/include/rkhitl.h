@@ -130,12 +130,28 @@
  */
 
 #ifndef RKH_EN_NATIVE_EQUEUE
-	#error "rkhcfg.h, Missing RKH_RQ_EN: Enable (1) or Disable (0) native queue"
+	#error "rkhcfg.h, Missing RKH_EN_NATIVE_EQUEUE: Enable (1) or Disable (0) native queue"
 #else
-	#if RKH_EN_NATIVE_EQUEUE == 1
-		#if RKH_RQ_EN != 1
-			#error "rkhcfg.h, When using the native event queue for SMAs must be enabled (1) the RKH_RQ_EN to include the (r) queue module"
-		#endif
+	#if RKH_EN_NATIVE_EQUEUE == 1 && RKH_RQ_EN != 1
+		#error "rkhcfg.h, When using the native event queue for SMAs must be enabled (1) the RKH_RQ_EN to include the (r) queue module"
+	#endif
+#endif
+
+
+#ifndef RKH_EN_DYNAMIC_EVENT
+	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support"
+#else
+	#if RKH_EN_DYNAMIC_EVENT == 0 && RKH_EN_NATIVE_DYN_EVENT != 0
+		#error "rkhcfg.h, When disabling the dynamic dynamic event support must be disabled (0) the RKH_EN_NATIVE_DYN_EVENT."
+	#endif
+#endif
+
+
+#ifndef RKH_EN_NATIVE_DYN_EVENT
+	#error "rkhcfg.h, Missing RKH_EN_NATIVE_DYN_EVENT: Enable (1) or Disable (0) native dynamic event support."
+#else
+	#if RKH_EN_NATIVE_DYN_EVENT == 1 && RKH_MP_EN != 1
+		#error "rkhcfg.h, When using the native dynamic memory management must be enabled (1) the RKH_MP_EN to include the memory pool module."
 	#endif
 #endif
 
@@ -296,18 +312,8 @@
 	#endif
 #endif
 
-#ifndef RKH_EN_DYNAMIC_EVENT
-	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support."
-#endif
-
 #ifndef RKH_EN_DEFERRED_EVENT
 	#error "rkhcfg.h, Missing RKH_EN_DEFERRED_EVENT: Enable (1) or Disable (0) deferred event support. For using this feature the dynamic event support must be set to one."
-#else
-	#if RKH_EN_DEFERRED_EVENT == 1
-		#if RKH_EN_DYNAMIC_EVENT == 0
-	    #error  "rkhport.h, For using deferred events support feature the dynamic event support must be set to one (RKH_EN_DYNAMIC_EVENT)."
-		#endif
-	#endif
 #endif
 
 #ifndef RKH_SMA_EN_PSEUDOSTATE
@@ -474,19 +480,11 @@
 #endif
 
 
-#if RKH_EN_DYNAMIC_EVENT == 1
-	#define mksevt( evt, es )											\
-								((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
-								((RKHEVT_T*)(evt))->dynamic_ = 0;
-	#define mkievt( evt, es )											\
-								RKHROM RKHEVT_T evt = { es, 0 }
-#else
-	#define mksevt( evt, es )											\
-								((RKHEVT_T*)(evt))->e = (RKHE_T)es;
-	#define mkievt( evt, es )											\
-								RKHROM RKHEVT_T evt = { es }
-#endif
-
+#define mksevt( evt, es )		\
+							((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
+							((RKHEVT_T*)(evt))->nref = 0;
+#define mkievt( evt, es )		\
+							RKHROM RKHEVT_T evt = { es, 0 }
 
 #ifndef RKH_DIS_INTERRUPT
 	#error  "rkhport.h, Must be defined the platform-dependent macro RKH_DIS_INTERRUPT"
@@ -564,8 +562,6 @@
 
 /**
  *	Defines dynamic event support.
- *	This definitions are required only when the user application
- *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
  */
 
 /**

@@ -96,6 +96,9 @@
 #define __RKHASSERT_H__
 
 
+#include "rkhcfg.h"
+
+
 #if RKH_ASSERT_EN == 1
 
     /** 
@@ -156,7 +159,7 @@
 	 */
 	
 	#define RKH_MODULE_NAME( __fname )						\
-					static RKHROM char *const m_name = #__fname
+					static RKHROM char *const m_name = #__fname;
 
 
 	/**

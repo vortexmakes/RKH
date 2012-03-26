@@ -34,28 +34,8 @@
 #define __RKHPLAT_H__
 
 
-#ifdef __CWS08__
-	#include "..\portable\cws08\rkhport.h"
-#endif
-
-#ifdef __VC__
-	#include "..\portable\vc08\rkhport.h"
-#endif
-
-#ifdef __VCRKSYS__
-	#include "..\portable\vc08rksys\rkhport.h"
-#endif
-
-#ifdef __LNXGCC__
-   	#include "lnxgcc/rkhport.h"
-#endif
-
-#ifdef __CWS08RKSYS__
-	#include "..\portable\cws08rksys\rkhport.h"
-#endif
-
-#ifdef __CWCFV1RKSYS__
-	#include "..\portable\cwcfv1rksys\rkhport.h"
+#ifdef __CFV1CW63__
+	#include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
 #endif
 
 #ifdef __W32STVC08__

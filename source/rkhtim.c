@@ -36,7 +36,7 @@
 #include "rkh.h"
 
 
-RKH_MODULE_NAME( rkhtim );
+RKH_MODULE_NAME( rkhtim )
 
 
 #define CPT( p )		(( RKHT_T* )(p))

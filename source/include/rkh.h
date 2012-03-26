@@ -54,7 +54,7 @@
  */
 
 #define RKH_MODULE_VERSION( __fname, __version )				\
-						static RKHROM char *const m_version = #__version
+						static RKHROM char *const m_version = #__version;
 
 
 /**
@@ -63,7 +63,7 @@
  */
 
 #define RKH_MODULE_GET_VERSION()		\
-						((const char*)m_version)
+						((const char*)m_version);
 
 
 /**
@@ -76,7 +76,7 @@
  */
 
 #define RKH_MODULE_DESC( __fname, __desc )				\
-						static RKHROM char *const m_desc = __desc
+						static RKHROM char *const m_desc = __desc;
 
 
 /**
@@ -86,6 +86,25 @@
 
 #define RKH_MODULE_GET_DESC()		\
 						((const char*)m_desc)
+
+
+#if RKH_EN_NATIVE_DYN_EVENT == 1
+
+	#define RKH_DYNE_TYPE			RKHMP_T
+
+	#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
+    			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
+
+	#define RKH_DYNE_GET_ESIZE( mp )					\
+				( (mp)->bsize )
+
+	#define RKH_DYNE_GET( mp, e )						\
+				( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
+
+	#define RKH_DYNE_PUT( mp, e )						\
+				( rkh_mp_put( (mp), e ) )
+
+#endif
 
 
 /**
@@ -337,14 +356,6 @@ extern RKHROM char rkh_version[];
  */
 
 extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
-
-
-/**
- * 	\brief
- * 	# of initialized event pools.
- */
-
-extern rkhui8_t rkhnpool;
 
 
 /**
@@ -1160,8 +1171,6 @@ void rkh_sma_terminate( RKHSMA_T *sma );
  * 	\note 
  *	For memory efficiency and best performance the SMA's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
- *	At this time, this functions are required only when the user 
- *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
  *	The assertion inside it guarantee that the pointer is valid, so is not 
  *	necessary to check the pointer returned from rkh_sma_post_fifo().
  *
@@ -1187,8 +1196,6 @@ void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
  * 	\note
  *	For memory efficiency and best performance the SMA's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
- *	At this time, this functions are required only when the user 
- *	application is used dynamic event (RKH_EN_DYNAMIC_EVENT == 1).
  *	The assertion inside it guarantee that the pointer is valid, so is not 
  *	necessary to check the pointer returned from rkh_sma_post_lifo().
  *
@@ -1406,10 +1413,10 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	\brief
  * 	Recycle a dynamic event.
  *
- * 	This function implements a simple garbage collector for the dynamic 
+ * 	This macro implements a simple garbage collector for the dynamic 
  * 	events.	Only dynamic events are candidates for recycling. (A dynamic 
  * 	event is one that is allocated from an event pool, which is determined 
- * 	as non-zero	e->dynamic_ attribute.) Next, the function decrements the 
+ * 	as non-zero	e->nref attribute.) Next, the function decrements the 
  * 	reference counter of the event, and recycles the event only if the 
  * 	counter drops to zero (meaning that no more references are outstanding 
  * 	for this event). The dynamic event is recycled by returning it to the 
@@ -1417,13 +1424,24 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	information is stored in the e->pool member.
  * 	
  * 	\note 
+ * 	The function rkh_gc() is internal to RKH and the user application should 
+ * 	not call it. Please use #RKH_GC() macro.
+ * 	\note 
  * 	The garbage collector must be explicitly invoked at all appropriate 
  * 	contexts, when an event can become garbage (automatic garbage collection).
+ * 	\note
+ * 	When setting RKH_EN_DYNAMIC_EVENT = 0 the garbage collector has not 
+ * 	effect, thus it's eliminated in compile-time.
  *
  * 	\param e		pointer to event to be potentially recycled.
  */
 
-void rkh_gc( RKHEVT_T *e );
+#if RKH_EN_DYNAMIC_EVENT == 1
+	#define RKH_GC( e ) 		rkh_gc( e )
+	void rkh_gc( RKHEVT_T *e );
+#else
+	#define RKH_GC( e )
+#endif
 
 
 /**

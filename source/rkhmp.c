@@ -48,7 +48,7 @@
 #include "rkh.h"
 
 
-RKH_MODULE_NAME( rkhmp );
+RKH_MODULE_NAME( rkhmp )
 
 #if RKH_MP_EN == 1
 

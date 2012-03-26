@@ -83,19 +83,4 @@ const char *rkh_get_port_desc( void );
     ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 
 
-#define RKH_DYNE_TYPE					RKHMP_T
-
-#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 			\
-    			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
-
-#define RKH_DYNE_GET_ESIZE( mp )							\
-				( (mp)->bsize )
-
-#define RKH_DYNE_GET( mp, e )								\
-				( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
-
-#define RKH_DYNE_PUT( mp, e )								\
-				( rkh_mp_put( (mp), e ) )
-
-
 #endif

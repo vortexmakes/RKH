@@ -39,8 +39,8 @@
 #define RKH_EN_REENTRANT				0	/* 	CFG01 */
 #define RKH_EN_DEFERRED_EVENT			0	/* 	CFG01 */
 #define RKH_SIZEOF_EVENT				8	/* 	CFG01 */ 
-#define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */ 
 #define RKH_ASSERT_EN					0	/* 	CFG01 */
+#define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */
 #define RKH_SIZEOF_ESIZE				16	/* 	CFG01 */
 #define RKH_HK_EN_DISPATCH				1	/* 	CFG01 */
 #define RKH_HK_EN_SIGNAL				1	/* 	CFG01 */
@@ -50,6 +50,7 @@
 
 #define RKH_EN_NATIVE_SCHEDULER			0	/* 	CFG01 */ 
 #define RKH_EN_NATIVE_EQUEUE			1	/* 	CFG01 */ 
+#define RKH_EN_NATIVE_DYN_EVENT			1	/* 	CFG01 */ 
 
 #define RKH_SMA_EN_HCAL					1	/* 	CFG00 */
 #define RKH_SMA_MAX_HCAL_DEPTH			4	/* 	CFG01 */

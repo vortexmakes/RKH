@@ -31,9 +31,9 @@
 #include "rkh.h"
 
 
-RKH_MODULE_NAME( rkhport );
-RKH_MODULE_VERSION( rkhport, 1.00 );
-RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" );
+RKH_MODULE_NAME( rkhport )
+RKH_MODULE_VERSION( rkhport, 1.00 )
+RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" )
 
 
 #define SIZEOF_EP0STO				64
@@ -101,7 +101,7 @@ rkh_enter( void )
             sma = rkh_sptbl[ prio ];
             e = rkh_sma_get( sma );
             rkh_dispatch( sma, e );
-            rkh_gc( e );
+            RKH_GC( e );
         }
         else
             rkh_hk_idle();

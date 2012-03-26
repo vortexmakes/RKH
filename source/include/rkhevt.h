@@ -132,10 +132,8 @@ typedef struct
 	 * 	Attributes of dynamic event (0 for static event).
 	 */
 
-#if RKH_EN_DYNAMIC_EVENT == 1
-	rkhui8_t dynamic_;
+	rkhui8_t nref;
 	rkhui8_t pool;
-#endif
 } RKHEVT_T;
 
 

@@ -52,7 +52,7 @@
 #include "rkh.h"
 
 
-RKH_MODULE_NAME( rkhs );
+RKH_MODULE_NAME( rkhs )
 
 
 #if RKH_EN_NATIVE_SCHEDULER == 1
@@ -71,27 +71,25 @@ rkh_init( void )
 void 
 rkh_enter( void )
 {
-	RKHSMAT_T *shr;			/* SMA ready with highest priority */
-	RKHEVT_T *e;
 	rkhui8_t prio;
+	RKHSMA_T *sma;
+	RKHEVT_T *e;
 
-	/* Invoke the start hook */
 	rkh_hk_start();
 	RKH_TRCR_RKH_EN();
 
     FOREVER
 	{
 		RKH_DIS_INTERRUPT();
-
         if( rkh_rdy_isnot_empty( rkhrg ) )
 		{
 			rkh_rdy_findh( rkhrg, prio );
-            shr = rkh_sptbl[ prio ];
+            sma = rkh_sptbl[ prio ];
 			RKH_ENA_INTERRUPT();
 
-            e = rkh_sma_get( shr );
-			rkh_dispatch( shr, e );
-            rkh_gc( e );
+            e = rkh_sma_get( sma );
+			rkh_dispatch( sma, e );
+            RKH_GC( e );
         }
         else 
 		/*

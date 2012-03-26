@@ -34,6 +34,10 @@
 #define __RKHTYPE_H__
 
 
+#ifdef __CFV1CW63__
+	#include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
+#endif
+
 #ifdef __W32STVC08__
 	#include "..\portable\80x86\win32_st\vc08\rkht.h"
 #endif

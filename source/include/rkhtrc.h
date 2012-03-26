@@ -303,7 +303,7 @@ typedef enum rkh_trc_events
 #if RKH_TRC_RUNTIME_FILTER == 1
 	#define RKH_TRC_BEGIN( grp, eid )			\
 				RKH_SR_CRITICAL_;				\
-				if(rkh_trc_ison_(grp, eid)) {	\
+				if(rkh_trc_isoff_(grp, eid)) {	\
 					RKH_ENTER_CRITICAL_();		\
 					rkh_trc_begin();			\
 					RKH_TRC_HDR( eid );
@@ -910,7 +910,7 @@ rkhui8_t *rkh_trc_get_nextbuf( void );
 #if RKH_TRC_RUNTIME_FILTER == 1
 	/**
 	 * 	\brief
-	 * 	Emit all trace events from a specific group. 
+	 * 	Suppress all trace events from a specific group. 
 	 */
 
 	#define RKH_FILTER_ON_GROUP( grp )				\
@@ -918,7 +918,7 @@ rkhui8_t *rkh_trc_get_nextbuf( void );
 
 	/**
 	 * 	\brief
-	 * 	Suppress all trace events from a specific group. 
+	 * 	Emit all trace events from a specific group. 
 	 */
 
 	#define RKH_FILTER_OFF_GROUP( grp )				\
@@ -1043,7 +1043,7 @@ void rkh_trc_filter_event_( rkhui8_t rule, rkhui8_t evt );
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
  */
 
-HUInt rkh_trc_ison_( rkhui8_t grp, rkhui8_t e );
+HUInt rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e );
 
 
 /**

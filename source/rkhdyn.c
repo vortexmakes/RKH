@@ -34,14 +34,20 @@
 #include "rkh.h"
 
 
-RKH_MODULE_NAME( rkhdyn );
+RKH_MODULE_NAME( rkhdyn )
 
 
 #if RKH_EN_DYNAMIC_EVENT == 1
 
-
 RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
-rkhui8_t rkhnpool;
+
+
+/**
+ * 	\brief
+ * 	# of initialized event pools.
+ */
+
+static rkhui8_t rkhnpool;
 
 
 RKHEVT_T *
@@ -70,7 +76,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 	 * Store the dynamic attributes of the event: the pool ID and the 
 	 * reference counter = 0
 	 */
-    evt->dynamic_ = 0;
+    evt->nref = 0;
     evt->pool = idx + 1;
 
 	RKH_TRCR_RKH_AE( esize, evt );
@@ -83,13 +89,13 @@ rkh_gc( RKHEVT_T *e )
 {
 	RKH_SR_CRITICAL_;
 	
-    if( e->dynamic_ != 0 )		/* is it a dynamic event? */
+    if( e->nref != 0 )		/* is it a dynamic event? */
 	{
         RKH_ENTER_CRITICAL_();
 
-        if( e->dynamic_ > 1 )	/* isn't this the last ref? */
+        if( e->nref > 1 )	/* isn't this the last ref? */
 		{
-            --e->dynamic_;		/* decrement the reference counter */
+            --e->nref;		/* decrement the reference counter */
             RKH_EXIT_CRITICAL_();
 			RKH_TRCR_RKH_GC( e );
         }
@@ -107,6 +113,18 @@ rkh_gc( RKHEVT_T *e )
 }
 
 
+void 
+rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
+{
+	RKHASSERT( ( rkhnpool + 1 ) <= RKH_MAX_EPOOL );
+
+	++rkhnpool;
+	RKH_DYNE_INIT( &rkheplist[ rkhnpool - 1 ], sstart, ssize, esize );
+	RKH_TRCR_RKH_EPREG( rkhnpool, ssize, esize );
+}
+#endif
+
+
 #if RKH_EN_NATIVE_EQUEUE == 1
 void 
 rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
@@ -115,7 +133,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 
     RKH_ENTER_CRITICAL_();
     if( RCE( e )->pool != 0 ) 
-        ++RCE( e )->dynamic_;
+        ++RCE( e )->nref;
     RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_fifo( &sma->equeue, e );
@@ -132,7 +150,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 
     RKH_ENTER_CRITICAL_();
     if( RCE( e )->pool != 0 ) 
-        ++RCE( e )->dynamic_;
+        ++RCE( e )->nref;
     RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_lifo( &sma->equeue, e );
@@ -182,7 +200,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 		RKH_TRCR_RKH_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
 
-        if( e->dynamic_ != 0 )	/* is it a dynamic event? */
+        if( e->nref != 0 )	/* is it a dynamic event? */
 		{
             /* 
 			 * After posting to the SMA's queue the event must be referenced
@@ -190,30 +208,16 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
              * did NOT decrement the reference counter) and once in the
              * SMA's event queue.
              */
-            RKHASSERT( e->dynamic_ > 1 );
+            RKHASSERT( e->nref > 1 );
 
             /* 
 			 * We need to decrement the reference counter once, to account
              * for removing the event from the deferred event queue.
              */
-            --e->dynamic_;
+            --e->nref;
         }
 		RKH_EXIT_CRITICAL_();
     }
     return e;
 }
-#endif
-
-
-void 
-rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
-{
-	RKHASSERT( ( rkhnpool + 1 ) <= RKH_MAX_EPOOL );
-
-	++rkhnpool;
-	RKH_DYNE_INIT( &rkheplist[ rkhnpool - 1 ], sstart, ssize, esize );
-	RKH_TRCR_RKH_EPREG( rkhnpool, ssize, esize );
-}
-
-
 #endif
