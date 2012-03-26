@@ -70,14 +70,14 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_SMA_BLOCK( sma ) 								\
-			    RKHASSERT( (sma)->eq.qty != 0 )
+			    RKHASSERT( ((RKHSMA_T*)(sma))->eq.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 							\
-			    rkh_rdy_ins( (rg), (sma)->romrkh->prio ); 	\
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
 			    (void)SetEvent( sma_is_rdy )
 
 #define RKH_SMA_UNREADY( rg, sma ) 							\
-			    rkh_rdy_rem( (rg), (sma)->romrkh->prio )
+			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
 #define RKH_WAIT_FOR_EVENTS() 								\
     ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))

@@ -812,7 +812,6 @@ struct rkh_t;
 #endif
 
 
-
 /**
  * 	\brief
  * 	Exit action.

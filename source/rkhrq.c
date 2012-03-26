@@ -146,7 +146,7 @@ rkh_rq_get( RKHRQ_T *q  )
 	RKH_ENTER_CRITICAL_();
 
 	if( q->sma != ( void * )0 )
-		RKH_SMA_BLOCK( sma );
+		RKH_SMA_BLOCK( q->sma );
 	else
 	{
 		RKH_IUPDT_EMPTY( q );
