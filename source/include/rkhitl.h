@@ -771,6 +771,210 @@ struct rkh_t;
 
 
 /**
+ * 	\brief 
+ * 	Defines the data structure into which the collected performance 
+ * 	information for state machine is stored.
+ * 	
+ * 	This member is optional, thus it could be declared as NULL or eliminated 
+ * 	in compile-time with RKH_EN_SMA_GET_INFO = 0.
+ */
+
+typedef struct rkh_smai_t
+{
+	rkhui16_t ndevt;			/**< # of dispatched events */
+	rkhui16_t exectr;			/**< # of executed transitions */
+} RKH_SMAI_T;
+
+
+/**
+ * 	\brief
+ * 	Constant parameters of state machine.
+ *
+ *	The constant key parameters of a state machine are allocated within. 
+ *	ROMRKH_T is a ROM base structure of RKH_T.
+ *
+ *	\sa
+ *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
+ */
+
+typedef struct romrkh_t
+{
+	/**
+	 * 	\brief
+	 * 	SMA priority. 
+	 *
+	 * 	A unique priority number must be assigned to each SMA from 0 to 
+	 * 	RKH_LOWEST_PRIO. The lower the number, the higher the priority. 
+	 */
+
+	rkhui8_t prio;
+
+	/**
+ 	 * 	\brief
+	 * 	State machine properties. 
+	 *
+	 * 	The available properties are enumerated in RKH_HPPTY_T enumeration in 
+	 * 	the rkh.h file.
+	 */
+
+	rkhui8_t ppty;
+
+	/**	
+ 	 * 	\brief
+	 * 	ID of state machine application. 
+	 * 	
+	 * 	ID of state machine application. This number allows to uniquely 
+	 * 	identify a state machine. When a particular application requires 
+	 * 	runtime tracing (native tracing features), the option RKH_EN_SMA_ID 
+	 * 	must be set to one. 
+	 */
+
+#if RKH_SMA_EN_ID	== 1
+	rkhui8_t id;
+#endif
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to initial state. 
+	 *
+	 * 	This state could be defined either composite or basic 
+	 * 	(not pseudo-state).
+	 */
+
+	RKHROM struct rkhsreg_t *istate;
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to initializing action (optional). 
+	 *
+	 * 	The function prototype is defined as RKHINIT_T. This argument is 
+	 * 	optional, thus it could be declared as NULL.
+	 */
+
+	void *iaction;
+
+	/**
+	 * 	\brief
+	 *	Pointer to an event that will be passed to state machine application 
+	 *	when it starts. Could be used to pass arguments to the state machine 
+	 *	like an argc/argv. This argument is optional, thus it could be 
+	 *	declared as NULL or eliminated in compile-time with 
+	 *	RKH_SMA_EN_IEVENT = 0.
+	 */
+
+#if RKH_SMA_EN_IEVENT == 1
+	const RKHEVT_T *ievent;
+#endif
+} ROMRKH_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the SMA (active object in UML).
+ *
+ *	This structure resides in RAM because its members are dinamically updated
+ *	by RKH (context of state machine).
+ *	The \b #romrkh member points to ROMRKH_T structure, allocated in ROM, 
+ *	to reduce the size of RAM consume. The key parameters of a state machine 
+ *	are allocated within. Therefore cannot be modified in runtime.
+ *
+ * 	RKHSMA_T is not intended to be instantiated directly, but rather
+ * 	serves as the base structure for derivation of state machines in the
+ * 	application code.
+ * 	The following example illustrates how to derive an state machine from
+ * 	RKH_T. Please note that the RKHSMA_T member sm is defined as the
+ * 	FIRST member of the derived struct.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKHSMA_T sm;	// base structure
+ *		rkhui8_t x;		// private member
+ *		rkhui8_t y;		// private member
+ *	} MYSM_T;
+ *
+ * 	//	static instance of SMA object
+ *	RKH_SMA_CREATE( MYSM_T, 0, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	\endcode
+ *
+ *	\sa
+ *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
+ *	single inheritance in C \endlink.
+ */
+
+typedef struct rkhsma_t
+{
+	/**
+ 	 * 	\brief
+	 * 	Points to state machine object.
+	 */
+	
+	RKHROM ROMRKH_T *romrkh;
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to current state.
+	 */
+
+	RKHROM struct rkhsreg_t *state;
+
+	/**
+	 * 	\brief
+	 * 	OS-dependent thread of control of the SMA. 
+	 * 	This member is optional, thus it could be declared as NULL or 
+	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD = 0.
+	 */
+
+#if RKH_EN_SMA_THREAD == 1
+	RKH_THREAD_TYPE thread;
+#endif
+
+	/**
+	 * 	\brief
+	 *	OS-dependent thread data.
+	 * 	This member is optional, thus it could be declared as NULL or 
+	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD_DATA = 0.
+	 */
+
+#if RKH_EN_SMA_THREAD == 1 && RKH_EN_SMA_THREAD_DATA == 1
+	RKH_OSDATA_TYPE osdata;
+#endif
+
+	/**
+	 * 	\brief
+	 * 	Event queue of the SMA.
+	 * 	It's OS-dependent.
+	 */
+
+	RKH_EQ_TYPE equeue;
+
+	/**
+	 * 	\brief
+	 * 	The Boolean loop variable determining if the thread routine
+	 * 	of the SMA is running.
+	 */
+
+	rkhui8_t running;
+
+	/** 
+ 	 * 	\brief
+	 * 	Performance information. This member is optional, thus it could be 
+	 * 	declared as NULL or eliminated in compile-time with 
+	 * 	RKH_EN_SMA_GET_INFO = 0.
+	 */
+
+#if RKH_EN_SMA_GET_INFO == 1
+	RKH_SMAI_T sinfo;
+#endif	
+
+} RKHSMA_T;
+
+
+/**
  * 	\brief
  * 	Entry action.
  *
@@ -871,34 +1075,36 @@ struct rkh_t;
  * 	This callback is referenced from RKH_CREATE_HSM() macro.
  */
 
+#define CIA( s )	((RKHINIT_T*)((s)->romrkh->iaction))
+
 #if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 1
 	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma, 
 										const struct rkhevt_t *e );
 	#define rkh_exec_init( h )										\
 	{																\
-		if( (h)->romrkh->iaction != NULL )							\
-			(*(h)->romrkh->iaction)( (h), (h)->romrkh->ievent );	\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))( (h), (h)->romrkh->ievent );				\
 	}
 #elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 0
-	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma );
-	#define rkh_exec_init( h )					\
-	{											\
-		if( (h)->romrkh->iaction != NULL )		\
-			(*(h)->romrkh->iaction)( (h) );		\
+	typedef void ( *RKHINIT_T )( const RKHSMA_T *sma );
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))( (h) );										\
 	}
 #elif RKH_SMA_EN_INIT_ARG_SMA == 0 && RKH_SMA_EN_INIT_ARG_IE == 1
 	typedef void ( *RKHINIT_T )( const struct rkhevt_t *e );
-	#define rkh_exec_init( h )								\
-	{														\
-		if( (h)->romrkh->iaction != NULL )					\
-			(*(h)->romrkh->iaction)( (h)->romrkh->ievent );	\
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))( (h)->romrkh->ievent );						\
 	}
 #else
 	typedef void ( *RKHINIT_T )( void );
-	#define rkh_exec_init( h )				\
-	{										\
-		if( (h)->romrkh->iaction != NULL )	\
-			(*(h)->romrkh->iaction)();		\
+	#define rkh_exec_init( h )										\
+	{																\
+		if( CIA( h ) != NULL )										\
+			(*CIA( h ))();											\
 	}
 #endif
 
@@ -958,25 +1164,27 @@ struct rkh_t;
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
  */
 
+#define CTA( ta )	((RKHACT_T*)(ta))
+
 #if RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 1
 
 	typedef void (*RKHACT_T)( const struct rkhsma_t *sma, RKHEVT_T *pe );
-	#define rkh_call_action(h,e)	(*CA( q ))( h, e )
+	#define rkh_call_action(h,e)	(*CTA( q ))( h, e )
 
 #elif RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 0
 	
 	typedef void (*RKHACT_T)( RKHEVT_T *pe );
-	#define rkh_call_action(h,e)	(*CA( q ))( e )
+	#define rkh_call_action(h,e)	(*CTA( q ))( e )
 
 #elif RKH_SMA_EN_ACT_ARG_EVT == 0 && RKH_SMA_EN_ACT_ARG_SMA == 1
 	
 	typedef void (*RKHACT_T)( const struct rkhsma_t *sma );
-	#define rkh_call_action(h,e)	(*CA( q ))( h )
+	#define rkh_call_action(h,e)	(*CTA( q ))( h )
 
 #else
 	
 	typedef void (*RKHACT_T)( void );
-	#define rkh_call_action(h,e)	(*CA( q ))()
+	#define rkh_call_action(h,e)	(*CTA( q ))()
 
 #endif
 

@@ -107,6 +107,7 @@
 #endif
 
 
+#if 0
 /**
  * 	\brief 
  * 	Defines the data structure into which the collected performance 
@@ -309,6 +310,7 @@ typedef struct rkhsma_t
 #endif	
 
 } RKHSMA_T;
+#endif
 
 
 /**
@@ -581,7 +583,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_TRANS_TABLE( name )									\
 																		\
-								static RKHROM RKHTR_T name##_trtbl[]={
+								RKHROM RKHTR_T name##_trtbl[]={
 
 
 /**

@@ -39,7 +39,7 @@
 #include "rkhevt.h"
 
 
-typedef void ( *RKH_THK_T )( struct rkht_t *t );
+typedef void ( *RKH_THK_T )( void *t );
 
 
 /** 
@@ -196,10 +196,8 @@ typedef struct rkht_t
  */
 
 #define rkh_tim_oneshot( t, sma, itick )						\
-				do{												\
 					(t)->period = 0;							\
-					rkh_tim_start( (t), (sma), (itick) );		\
-				}while(0)
+					rkh_tim_start( t, sma, itick )
 
 
 /**
@@ -221,10 +219,8 @@ typedef struct rkht_t
  */
 
 #define rkh_tim_periodic( t, sma, itick, period )				\
-				do{												\
 					(t)->period = (period);						\
-					rkh_tim_start( (t), (sma), (itick) );		\
-				}while(0)
+					rkh_tim_start( (t), (sma), (itick) )
 
 
 /**

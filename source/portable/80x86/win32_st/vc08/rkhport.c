@@ -125,7 +125,7 @@ void
 rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
-	RKHREQUIRE( stks == ( void * )0 );
+    ( void )stks;
     ( void )stksize;
 
 	rkh_rq_init( &sma->equeue, qs, qsize, sma );

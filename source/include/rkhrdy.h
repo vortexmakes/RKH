@@ -142,10 +142,8 @@ typedef struct
  */
 
 #define rkh_rdy_ins( rg, p )									\
-			do{													\
 				(rg).grp |= rkh_maptbl[(p) >> 3];				\
-				(rg).tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07];	\
-			} while(0)
+				(rg).tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07]
 
 
 /**
@@ -161,10 +159,8 @@ typedef struct
  */
 
 #define rkh_rdy_rem( rg, p )										\
-			do{														\
 				if(((rg).tbl[(p)>>3] &= ~rkh_maptbl[(p)&0x07])==0)	\
-					(rg).grp &= ~rkh_maptbl[(p)>>3];				\
-			} while(0)
+					(rg).grp &= ~rkh_maptbl[(p)>>3]
 
 
 /**
@@ -183,10 +179,8 @@ typedef struct
  */
 
 #define rkh_rdy_findh( rg, p )									\
-			do{													\
 				(p) = rkh_unmaptbl[ (rg).grp ];					\
-				(p) = ((p) << 3) + rkh_unmaptbl[(rg).tbl[(p)]];	\
-			} while(0)
+				(p) = ((p) << 3) + rkh_unmaptbl[(rg).tbl[(p)]]
 
 
 #endif

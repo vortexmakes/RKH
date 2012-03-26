@@ -140,7 +140,9 @@ RKH_THIS_MODULE
 				{ 0, CC( 0 ) }
 
 
-typedef char *(*HDLR_T)( const struct tre_t *tre );
+#define CTE( te )		((const struct tre_t*)(te))
+
+typedef char *(*HDLR_T)( const void *tre );
 
 typedef struct tre_t
 {
@@ -166,22 +168,22 @@ typedef struct symsig_t
 } SYMSIG_T;
 
 
-static char *h_none( const struct tre_t *tre ),
-			*h_epreg( const struct tre_t *tre ),
-			*h_ae( const struct tre_t *tre ),
-			*h_evt( const struct tre_t *tre ),
-			*h_1sym( const struct tre_t *tre ),
-			*h_2sym( const struct tre_t *tre ),
-			*h_symtrn( const struct tre_t *tre ),
-			*h_symrc( const struct tre_t *tre ),
-			*h_symu8( const struct tre_t *tre ),
-			*h_sym2u8( const struct tre_t *tre ),
-			*h_symevt( const struct tre_t *tre ),
-			*h_symnblk( const struct tre_t *tre ),
-			*h_2symnused( const struct tre_t *tre ),
-			*h_symnused( const struct tre_t *tre ),
-			*h_2symntick( const struct tre_t *tre ),
-			*h_symntick( const struct tre_t *tre );
+static char *h_none( const void *tre ),
+			*h_epreg( const void *tre ),
+			*h_ae( const void *tre ),
+			*h_evt( const void *tre ),
+			*h_1sym( const void *tre ),
+			*h_2sym( const void *tre ),
+			*h_symtrn( const void *tre ),
+			*h_symrc( const void *tre ),
+			*h_symu8( const void *tre ),
+			*h_sym2u8( const void *tre ),
+			*h_symevt( const void *tre ),
+			*h_symnblk( const void *tre ),
+			*h_2symnused( const void *tre ),
+			*h_symnused( const void *tre ),
+			*h_2symntick( const void *tre ),
+			*h_symntick( const void *tre );
 
 
 static const TRE_T traces[] =
@@ -418,91 +420,93 @@ assemble( int size )
 
 
 char *
-h_none( const struct tre_t *tre )
+h_none( const void *tre )
 {
+	(void)tre;
+
 	strcpy( fmt, " " );
 	return fmt;
 }
 
 
 char *
-h_1sym( const struct tre_t *tre )
+h_1sym( const void *tre )
 {
 	unsigned long obj;
 
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
-	sprintf( fmt, tre->fmt, map_obj( obj ) );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ) );
 	return fmt;
 }
 
 
 char *
-h_2sym( const struct tre_t *tre )
+h_2sym( const void *tre )
 {
 	unsigned long obj1, obj2;
 
 	obj1 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	obj2 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
-	sprintf( fmt, tre->fmt, map_obj( obj1 ), map_obj( obj2 ) );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj1 ), map_obj( obj2 ) );
 	return fmt;
 }
 
 
 char *
-h_symtrn( const struct tre_t *tre )
+h_symtrn( const void *tre )
 {
 	unsigned long smaobj, ssobj, tsobj;
 
 	smaobj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	ssobj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	tsobj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
-	sprintf( fmt, tre->fmt, map_obj( smaobj ), map_obj( ssobj ), 
+	sprintf( fmt, CTE( tre )->fmt, map_obj( smaobj ), map_obj( ssobj ), 
 					tsobj == 0 ? map_obj( ssobj ) : map_obj( tsobj ) );
 	return fmt;
 }
 
 
 char *
-h_symrc( const struct tre_t *tre )
+h_symrc( const void *tre )
 {
 	unsigned long obj;
 	unsigned char u8;
 
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	u8 = (unsigned char)assemble( sizeof( char ) );
-	sprintf( fmt, tre->fmt, map_obj( obj ), rctbl[ u8 ] );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ), rctbl[ u8 ] );
 	return fmt;
 }
 
 
 char *
-h_symu8( const struct tre_t *tre )
+h_symu8( const void *tre )
 {
 	unsigned long obj;
 	unsigned char u8;
 
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	u8 = (unsigned char)assemble( sizeof( char ) );
-	sprintf( fmt, tre->fmt, map_obj( obj ), u8 );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ), u8 );
 	return fmt;
 }
 
 
 char *
-h_symnblk( const struct tre_t *tre )
+h_symnblk( const void *tre )
 {
 	unsigned long obj;
 	TRZNB_T nblock;
 
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	nblock = (TRZNB_T)assemble( sizeof( TRZNB_T ) );
-	sprintf( fmt, tre->fmt, map_obj( obj ), nblock );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ), nblock );
 	return fmt;
 }
 
 
 char *
-h_2symnused( const struct tre_t *tre )
+h_2symnused( const void *tre )
 {
 	unsigned long obj1, obj2;
 	TRZNE_T nelem;
@@ -510,26 +514,26 @@ h_2symnused( const struct tre_t *tre )
 	obj1 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	obj2 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	nelem = (TRZNE_T)assemble( sizeof( TRZNE_T ) );
-	sprintf( fmt, tre->fmt, map_obj( obj1 ), map_obj( obj2 ), nelem );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj1 ), map_obj( obj2 ), nelem );
 	return fmt;
 }
 
 
 char *
-h_symnused( const struct tre_t *tre )
+h_symnused( const void *tre )
 {
 	unsigned long obj;
 	TRZNE_T nelem;
 
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	nelem = (TRZNE_T)assemble( sizeof( TRZNE_T ) );
-	sprintf( fmt, tre->fmt, map_obj( obj ), nelem );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ), nelem );
 	return fmt;
 }
 
 
 char *
-h_2symntick( const struct tre_t *tre )
+h_2symntick( const void *tre )
 {
 	unsigned long obj1, obj2;
 	TRZNT_T ntick;
@@ -537,26 +541,26 @@ h_2symntick( const struct tre_t *tre )
 	obj1 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	obj2 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	ntick = (TRZNT_T)assemble( sizeof( TRZNT_T ) );
-	sprintf( fmt, tre->fmt, map_obj( obj1 ), map_obj( obj2 ), ntick );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj1 ), map_obj( obj2 ), ntick );
 	return fmt;
 }
 
 
 char *
-h_symntick( const struct tre_t *tre )
+h_symntick( const void *tre )
 {
 	unsigned long obj1;
 	TRZNT_T ntick;
 
 	obj1 = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	ntick = (TRZNT_T)assemble( sizeof( TRZNT_T ) );
-	sprintf( fmt, tre->fmt, map_obj( obj1 ), ntick );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj1 ), ntick );
 	return fmt;
 }
 
 
 char *
-h_sym2u8( const struct tre_t *tre )
+h_sym2u8( const void *tre )
 {
 	unsigned long obj;
 	unsigned char u8_1, u8_2;
@@ -564,37 +568,37 @@ h_sym2u8( const struct tre_t *tre )
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	u8_1 = (unsigned char)assemble( sizeof( char ) );
 	u8_2 = (unsigned char)assemble( sizeof( char ) );
-	sprintf( fmt, tre->fmt, map_obj( obj ), u8_1, u8_2 );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ), u8_1, u8_2 );
 	return fmt;
 }
 
 
 char *
-h_evt( const struct tre_t *tre )
+h_evt( const void *tre )
 {
 	TRZE_T e;
 
 	e = (TRZE_T)assemble( sizeof( TRZE_T ) );
-	sprintf( fmt, tre->fmt, map_sig( e ) );
+	sprintf( fmt, CTE( tre )->fmt, map_sig( e ) );
 	return fmt;
 }
 
 
 char *
-h_symevt( const struct tre_t *tre )
+h_symevt( const void *tre )
 {
 	unsigned long obj;
 	TRZE_T e;
 
 	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
 	e = (TRZE_T)assemble( sizeof( TRZE_T ) );
-	sprintf( fmt, tre->fmt, map_obj( obj ), map_sig( e ) );
+	sprintf( fmt, CTE( tre )->fmt, map_obj( obj ), map_sig( e ) );
 	return fmt;
 }
 
 
 char *
-h_epreg( const struct tre_t *tre )
+h_epreg( const void *tre )
 {
 	unsigned long u32;
 	TRZES_T esize;
@@ -603,20 +607,20 @@ h_epreg( const struct tre_t *tre )
 	u8 = (unsigned char)assemble( sizeof( char ) );
 	u32 = (unsigned long)assemble( sizeof( long ) );
 	esize = (TRZES_T)assemble( sizeof( TRZES_T ) );
-	sprintf( fmt, tre->fmt, u8, u32, esize  );
+	sprintf( fmt, CTE( tre )->fmt, u8, u32, esize  );
 	return fmt;
 }
 
 
 char *
-h_ae( const struct tre_t *tre )
+h_ae( const void *tre )
 {
 	TRZES_T esize;
 	TRZE_T e;
 
 	esize = (TRZES_T)assemble( sizeof( TRZES_T ) );
 	e = (TRZE_T)assemble( sizeof( TRZE_T ) );
-	sprintf( fmt, tre->fmt, esize, map_sig( e ) );
+	sprintf( fmt, CTE( tre )->fmt, esize, map_sig( e ) );
 	return fmt;
 }
 
@@ -636,7 +640,7 @@ trazer_parse( rkhui8_t *tre )
 			ts = ( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP );
 			printf( trheader, ts, ftr->group, ftr->name );
 			fprintf( fdbg, trheader, ts, ftr->group, ftr->name );
-			printf( "%s\n", (*ftr->fmt_args)( ftr ) );
+			printf( "%s\n", (*ftr->fmt_args)( CTE( ftr ) ) );
 			fprintf( fdbg, "%s\n", fmt );
 		}
 		return;

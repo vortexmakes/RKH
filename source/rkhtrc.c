@@ -22,7 +22,7 @@ rkhui8_t trcgfilter;						/* trace group filter table */
 static RKH_TRCE_T trcstm[ RKH_TRC_MAX_TRACES ];
 static RKH_TRCE_T *trcin, *trcout, *trcend;
 static rkhui8_t trcqty;
-static rkhui8_t trcctrl;
+static HUInt trcctrl;
 static rkhui8_t *trcb;
 
 

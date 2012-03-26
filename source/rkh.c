@@ -131,7 +131,7 @@ typedef struct
 {
 	void *list[ RKH_SMA_MAX_HCAL_DEPTH	];
 	void **p;
-	HUInt qty;
+	rkhui8_t qty;
 } RKHSLIST_T;
 
 
@@ -139,7 +139,7 @@ typedef struct
 {
 	void *list[ RKH_EXCEED_TRC_SEGS ];
 	void **p;
-	HUInt qty;
+	rkhui8_t qty;
 } RKHALIST_T;
 
 
@@ -344,7 +344,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	HUInt first_regular, inttr;
 	RKHE_T in;
 #if RKH_TRC_EN == 1
-	HUInt step;
+	rkhui8_t step;
 #endif
 
     RKHASSERT( 	sma != NULL && pe != NULL );
@@ -359,7 +359,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 	/* Stage 2 */
 #if RKH_SMA_EN_HCAL == 1
-	for( s = ss; s != NULL; s = s->parent )
+	for( s = ss, tr = NULL; s != NULL; s = s->parent )
 	{
 		in = rkh_process_input( s, sma, pe );	
 		tr = find_trans( s->trtbl, in );
@@ -395,7 +395,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 	clr_step();
 
-	if( rkh_add_list( &act_list, tr->action, RKH_SMA_MAX_TRC_SEGS ) )
+	if( rkh_add_list( 	&act_list, 
+						tr->action, 
+						RKH_SMA_MAX_TRC_SEGS ) )
 	{
 		RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 		RKHERROR();
@@ -433,8 +435,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						ts = CR( ets );
 						first_regular = 0;
 					}
-					else if( rkh_add_list( &snd, CV( ets ), 
-													RKH_SMA_MAX_HCAL_DEPTH ) )
+					else if( rkh_add_list( 	&snd, 
+											CV( ets ), 
+											RKH_SMA_MAX_HCAL_DEPTH ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_HCAL_LEVEL );
 						RKHERROR();
@@ -465,8 +468,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						return RKH_CONDITION_NOT_FOUND;
 					}
 
-					if( rkh_add_list(&act_list, tr->action, 
-													RKH_SMA_MAX_TRC_SEGS ) )
+					if( rkh_add_list(	&act_list, 
+										tr->action, 
+										RKH_SMA_MAX_TRC_SEGS ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 						RKHERROR();
@@ -483,8 +487,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					/* Should be added: test transition guard and call it */
 					/* ... */
 
-					if( rkh_add_list( &act_list, CJ(ets)->action, 
-													RKH_SMA_MAX_TRC_SEGS ) )
+					if( rkh_add_list( 	&act_list, 
+										CJ(ets)->action, 
+										RKH_SMA_MAX_TRC_SEGS ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 						RKHERROR();
@@ -616,6 +621,8 @@ rkh_get_info( RKHSMA_T *sma )
 HUInt 
 rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 	return RKH_GTRUE;
 }
 
@@ -624,6 +631,7 @@ rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt 
 rkh_else( RKHEVT_T *pe )
 {
+	(void)pe;
 	return RKH_GTRUE;
 }
 
@@ -632,6 +640,7 @@ rkh_else( RKHEVT_T *pe )
 HUInt 
 rkh_else( const struct rkhsma_t *sma )
 {
+	(void)sma;
 	return RKH_GTRUE;
 }
 

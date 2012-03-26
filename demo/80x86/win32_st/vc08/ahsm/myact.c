@@ -69,12 +69,14 @@ set_y_0( const struct rkhsma_t *sma )
 void 
 dummy_exit( const struct rkhsma_t *sma )
 {
+	(void)sma;
 }
 
 
 void 
 clean_exit( const struct rkhsma_t *sma )
 {
+	(void)sma;
 	rkh_tim_stop( &my_timer );
 }
 
@@ -93,6 +95,7 @@ clean_exit( const struct rkhsma_t *sma )
 void
 set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	CMY( sma )->y = 2;
 }
 
@@ -100,6 +103,7 @@ set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 void
 set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	CMY( sma )->y = 1;
 }
 
@@ -107,18 +111,24 @@ set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 void
 dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 }
 
 
 void
 show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 }
 
 
 void 
 terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 	rkh_exit();
 }
 
@@ -126,6 +136,8 @@ terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 void 
 start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
 }
 
@@ -133,6 +145,8 @@ start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 void 
 stop_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 	rkh_tim_stop( &my_timer );
 }
 
@@ -142,6 +156,8 @@ gen_events( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	MYEVT_T *e;
 
+	(void)sma;
+	(void)pe;
 	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
 	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
 	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
@@ -160,6 +176,7 @@ gen_events( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt
 y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -167,6 +184,7 @@ y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt
 y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -174,6 +192,7 @@ y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt
 y2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -181,6 +200,7 @@ y2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt
 x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -188,6 +208,7 @@ x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt
 x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -200,5 +221,6 @@ x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 HUInt
 x_equal_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
+	(void)pe;
 	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }

@@ -201,6 +201,9 @@ rkh_trc_flush( void )
 void 
 bsp_init( int argc, char *argv[] )
 {
+	(void)argc;
+	(void)argv;
+
 	srand( ( unsigned )time( NULL ) );
 	print_banner();
 }
