@@ -41,7 +41,7 @@
 
 #if RKH_EN_NATIVE_SCHEDULER == 1
 
-	#define RKH_EQ_TYPE				RKHQ_T
+	#define RKH_EQ_TYPE				RKHRQ_T
 
 	#define RKH_SMA_BLOCK( sma ) 							\
 					RKHASSERT( ((RKHSMA_T*)(sma))->eq.qty != 0 )
