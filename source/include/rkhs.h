@@ -44,7 +44,7 @@
 	#define RKH_EQ_TYPE				RKHRQ_T
 
 	#define RKH_SMA_BLOCK( sma ) 							\
-					RKHASSERT( ((RKHSMA_T*)(sma))->eq.qty != 0 )
+					RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
 
 	#define RKH_SMA_READY( rg, sma ) 						\
 					rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
