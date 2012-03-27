@@ -400,11 +400,11 @@
 	#error "rkhcfg.h, Missing RKH_TRC_SIZEOF_TSTAMP: Defines the size of timestamp [in bits]: 8, 16 or 32."
 #endif
 
-#ifndef RKH_TRC_MAX_TRACES
-	#error "rkhcfg.h, Missing RKH_TRC_MAX_TRACES: Max. number of trace events in the stream."
+#ifndef RKH_TRC_SIZEOF_STREAM
+	#error "rkhcfg.h, Missing RKH_TRC_SIZEOF_STREAM: Max. number of trace events in the stream."
 #else
-	#if RKH_TRC_MAX_TRACES == 0 || RKH_TRC_MAX_TRACES > 256
-	#error  "rkhcfg.h, RKH_TRC_MAX_TRACES must be > 0 and <= 256"
+	#if RKH_TRC_SIZEOF_STREAM == 0 || RKH_TRC_SIZEOF_STREAM > 256
+	#error  "rkhcfg.h, RKH_TRC_SIZEOF_STREAM must be > 0 and <= 256"
 	#endif
 #endif
 

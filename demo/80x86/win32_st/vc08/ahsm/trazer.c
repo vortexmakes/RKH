@@ -625,9 +625,51 @@ h_ae( const void *tre )
 }
 
 
-void 
-trazer_parse( rkhui8_t *tre )
+enum
 {
+	WAIT_FLG, COLLECT
+};
+
+static rkhui8_t state = WAIT_FLG;
+
+
+static
+void
+parser_init( void )
+{
+	state = COLLECT;
+	printf( "%02X\n", RKH_FLG );
+}
+
+
+static
+void
+parser_collect( rkhui8_t d )
+{
+	printf( "%02X ", d );
+}
+
+
+void 
+trazer_parse( rkhui8_t d )
+{
+	switch( state )
+	{
+		case WAIT_FLG:
+			if( d == RKH_FLG )
+				parser_init();
+			break;
+		case COLLECT:
+			if( d == RKH_FLG )
+				parser_init();
+			else
+				parser_collect( d );
+			break;
+		default:
+			break;
+	}
+
+#if 0
 #if RKH_TRC_EN == 1 
 	const TRE_T *ftr;			/* received trace event */
 	TRZTS_T ts;
@@ -652,6 +694,7 @@ trazer_parse( rkhui8_t *tre )
 										ftr->name, ftr->group, ftr - traces );
 #else
 	( void )tre;
+#endif
 #endif
 }
 

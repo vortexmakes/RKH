@@ -39,7 +39,7 @@
 #define RKH_EN_REENTRANT				0	/* 	CFG01 */
 #define RKH_EN_DEFERRED_EVENT			1	/* 	CFG01 */
 #define RKH_SIZEOF_EVENT				8	/* 	CFG01 */ 
-#define RKH_ASSERT_EN					1	/* 	CFG01 */
+#define RKH_ASSERT_EN					0	/* 	CFG01 */
 #define RKH_EN_DYNAMIC_EVENT			1	/* 	CFG01 */
 #define RKH_SIZEOF_ESIZE				16	/* 	CFG01 */
 #define RKH_HK_EN_DISPATCH				1	/* 	CFG01 */
@@ -100,7 +100,7 @@
 #define RKH_TRC_EN_SM_DCH_RC			1	/* 	CFG01 */
 #define RKH_TRC_EN_TSTAMP				1	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_TSTAMP			32	/* 	CFG01 */
-#define RKH_TRC_MAX_TRACES				16	/* 	CFG01 */
+#define RKH_TRC_SIZEOF_STREAM			256	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_EVENT			17	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_POINTER			32	/* 	CFG01 */
 

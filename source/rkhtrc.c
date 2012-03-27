@@ -19,11 +19,15 @@ rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS ];	/* trace event filter table */
 rkhui8_t trcgfilter;						/* trace group filter table */
 #endif
 
-static RKH_TRCE_T trcstm[ RKH_TRC_MAX_TRACES ];
+static RKH_TRCE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
 static RKH_TRCE_T *trcin, *trcout, *trcend;
-static rkhui8_t trcqty;
 static HUInt trcctrl;
-static rkhui8_t chk;
+rkhui8_t chk;
+#if RKH_TRC_SIZEOF_STREAM < 255
+static rkhui8_t trcqty;
+#else
+static rkhui16_t trcqty;
+#endif
 
 
 void
@@ -31,7 +35,7 @@ rkh_trc_init( void )
 {
 	trcin = trcout = trcstm;
 	trcqty = 0;
-	trcend = &trcstm[ RKH_TRC_MAX_TRACES ];
+	trcend = &trcstm[ RKH_TRC_SIZEOF_STREAM ];
 	trcctrl = RKH_TRC_START;
 	RKH_TRC_UI8_RAW( RKH_FLG );
 }
@@ -57,9 +61,9 @@ rkh_trc_put( rkhui8_t b )
 	if( trcin == trcend )
 		trcin = trcstm;
 
-	if( trcqty >= RKH_TRC_MAX_TRACES )
+	if( trcqty >= RKH_TRC_SIZEOF_STREAM )
 	{
-		trcqty = RKH_TRC_MAX_TRACES;
+		trcqty = RKH_TRC_SIZEOF_STREAM;
 		trcout = trcin;
 	}
 }
@@ -158,22 +162,22 @@ rkh_trc_ui8( rkhui8_t d )
 void 
 rkh_trc_ui16( rkhui16_t d )
 {
-	rkh_trc_put( (rkhui8_t)d );
+	rkh_trc_ui8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_put( (rkhui8_t)d );
+	rkh_trc_ui8( (rkhui8_t)d );
 }
 
 
 void 
 rkh_trc_ui32( rkhui32_t d )
 {
-	rkh_trc_put( (rkhui8_t)d );
+	rkh_trc_ui8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_put( (rkhui8_t)d );
+	rkh_trc_ui8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_put( (rkhui8_t)d );
+	rkh_trc_ui8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_put( (rkhui8_t)d );
+	rkh_trc_ui8( (rkhui8_t)d );
 }
 
 

@@ -62,7 +62,7 @@ rkh_sma_register( RKHSMA_T *sma )
 	RKH_SR_CRITICAL_;
 
     RKHREQUIRE( ( 0 < prio ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )
-              && ( rkh_sptbl[ prio ] == ( RKHSMA_T * )0 ) );
+              && ( rkh_sptbl[ prio ] != ( RKHSMA_T * )0 ) );
 
 	RKH_ENTER_CRITICAL_();
     rkh_sptbl[ prio ] = sma;

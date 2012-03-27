@@ -191,10 +191,10 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *tre;
+	rkhui8_t *d;
 
-	while( ( tre = rkh_trc_get_oldest() ) != ( rkhui8_t* )0 )
-		trazer_parse( tre );
+	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+		trazer_parse( *d );
 }
 
 
