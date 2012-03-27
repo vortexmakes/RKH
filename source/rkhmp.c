@@ -94,7 +94,8 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 
     if( corr != 0 )	/* alignment needed? */ 
 	{
-        corr = sizeof( RKH_FREE_BLK_T ) - corr;	/* amount to align 'sstart' */
+		/* amount to align 'sstart' */
+        corr = (rkhui8_t)(sizeof( RKH_FREE_BLK_T ) - corr);
         ssize -= ( rkhui16_t )corr;	/* reduce the available pool size */
     }
 

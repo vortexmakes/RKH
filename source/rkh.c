@@ -564,7 +564,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 		/* Stage 8 */
 		rkh_define_ex_en_states();
-		RKH_TRCR_SM_NENEX( sma, sn.qty + snd.qty, sx.qty );
+		RKH_TRCR_SM_NENEX( sma, (rkhui8_t)( sn.qty + snd.qty ), sx.qty );
 
 		/* Stage 9 */
 		rkh_traverse_list( &sx, EXIT_LIST );
@@ -572,7 +572,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 #endif
 
 	/* Stage 10 */
-	RKH_TRCR_SM_NTRNACT( sma, ((act_list.qty << 4) | get_step()) );
+	RKH_TRCR_SM_NTRNACT( sma, (rkhui8_t)((act_list.qty << 4) | get_step()) );
 	rkh_traverse_list( &act_list, ACT_LIST );
 
 	if( is_not_internal_transition() )

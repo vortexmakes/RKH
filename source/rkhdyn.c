@@ -179,7 +179,7 @@ rkh_sma_get( RKHSMA_T *sma )
 
 #if RKH_EN_DEFERRED_EVENT == 1
 void 
-void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
+rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 { 
     rkh_rq_put_fifo( q, e );
 	RKH_TRCR_RKH_DEFER( q, e );
@@ -192,8 +192,8 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
     RKHEVT_T *e;
 	RKH_SR_CRITICAL_;
 	
-	e = rkh_rq_get( sma );		/* get an event from deferred queue */
-    if( e != ( RKHEVT_T * ) )	/* event available? */
+	e = rkh_rq_get( q );		/* get an event from deferred queue */
+    if( e != ( RKHEVT_T* )0 )	/* event available? */
 	{
 		/* post it to the front of the SMA's queue */
 		rkh_sma_post_lifo( sma, e );
