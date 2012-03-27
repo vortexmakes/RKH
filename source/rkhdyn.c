@@ -77,7 +77,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 	 * reference counter = 0
 	 */
     evt->nref = 0;
-    evt->pool = idx + 1;
+    evt->pool = (rkhui8_t)( idx + (rkhui8_t)1 );
 
 	RKH_TRCR_RKH_AE( esize, evt );
     return evt;	
@@ -116,7 +116,7 @@ rkh_gc( RKHEVT_T *e )
 void 
 rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 {
-	RKHASSERT( ( rkhnpool + 1 ) <= RKH_MAX_EPOOL );
+	RKHASSERT( ( (rkhui8_t)(rkhnpool + (rkhui8_t)1) ) <= RKH_MAX_EPOOL );
 
 	++rkhnpool;
 	RKH_DYNE_INIT( &rkheplist[ rkhnpool - 1 ], sstart, ssize, esize );
