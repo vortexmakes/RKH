@@ -180,7 +180,8 @@ typedef struct
 
 #define rkh_rdy_findh( rg, p )									\
 				(p) = rkh_unmaptbl[ (rg).grp ];					\
-				(p) = ((p) << 3) + rkh_unmaptbl[(rg).tbl[(p)]]
+				(p) = (rkhui8_t)(((p) << 3) +	\
+						(rkhui8_t)rkh_unmaptbl[(rg).tbl[(p)]])
 
 
 #endif
