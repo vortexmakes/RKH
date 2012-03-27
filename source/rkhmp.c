@@ -216,7 +216,7 @@ rkh_mp_get_blksize( RKHMP_T *mp )
     RK_MPCTR_T bs;
 	RKH_SR_CRITICAL_;
 
-	RKHASSERT( mpd != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKHMP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     bs = pmp->blk_size;
@@ -234,7 +234,7 @@ rkh_mp_get_nfree( RKHMP_T *mp )
     RKH_MPNB_T nfree;
 	RKH_SR_CRITICAL_;
 
-	RKHASSERT( mpd != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKHMP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     nfree = mp->nfree;
@@ -252,7 +252,7 @@ rkh_mp_get_low_wmark( RKHMP_T *mp )
     RKH_MPNB_T nmin;
 	RKH_SR_CRITICAL_;
 
-	RKHASSERT( mpd != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKHMP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     nmin = mp->nmin;
@@ -269,7 +269,7 @@ rkh_mp_query( RKHMP_T *mp, RKH_MPDATA_T *data )
 {
 	RKH_SR_CRITICAL_;
 
-	RKHASSERT( mpd != ( RKHMP_T* )0 && data != NULL );
+	RKHASSERT( mp != ( RKHMP_T* )0 && data != NULL );
 
 	RKH_ENTER_CRITICAL_();
     data->blk_size = pmp->blk_size;
