@@ -114,7 +114,7 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp )
 {
 	if( grp == RKH_TRC_ALL_GROUPS )
 	{
-		trcgfilter = ( ctrl == FILTER_ON ) ? (rkhui8_t)0xFF : (rkhui8_t)0;
+		trcgfilter = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0);
 		return;
 	}
 
@@ -133,8 +133,8 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 
 	if( evt == RKH_TRC_ALL_EVENTS )
 	{
-		for( p = trceftbl, ix = 0, c = ( ctrl == FILTER_ON ) ? 
-											(rkhui8_t)0xFF : (rkhui8_t)0; 
+		for( p = trceftbl, ix = 0, c = (rkhui8_t)((ctrl == FILTER_ON) ? 
+											0xFF : 0); 
 					ix < RKH_TRC_MAX_EVENTS; ++ix, ++p )
 			*p = c;
 		return;
