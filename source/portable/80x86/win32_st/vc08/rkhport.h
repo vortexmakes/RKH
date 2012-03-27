@@ -80,7 +80,7 @@ const char *rkh_get_port_desc( void );
 			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
 #define RKH_WAIT_FOR_EVENTS() 								\
-    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
+			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 
 
 #endif

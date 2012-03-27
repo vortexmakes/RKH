@@ -22,7 +22,7 @@ RKHT_T my_timer;
  */
 
 void 
-my_init( const struct rkhsma_t *sma )
+my_init( const void *sma )
 {
 	CMY( sma )->x = CMY( sma )->y = 0;
 	rkh_tim_init( &my_timer, TOUT, 0 );
