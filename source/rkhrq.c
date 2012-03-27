@@ -205,8 +205,8 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 
 #if RKH_RQ_EN_GET_LWMARK == 1
-	if( q->nmin > ( q->nelems - q->qty ) )
-		q->nmin = ( q->nelems - q->qty );
+	if( q->nmin > (RKH_RQNE_T)( q->nelems - q->qty ) )
+		q->nmin = (RKH_RQNE_T)( q->nelems - q->qty );
 #endif
 	RKH_IUPDT_PUT( q );
 	RKH_EXIT_CRITICAL_();
@@ -244,8 +244,8 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 
 #if RKH_RQ_EN_GET_LWMARK == 1
-	if( q->nmin > ( q->nelems - q->qty ) )
-		q->nmin = ( q->nelems - q->qty );
+	if( q->nmin > (RKH_RQNE_T)( q->nelems - q->qty ) )
+		q->nmin = (RKH_RQNE_T)( q->nelems - q->qty );
 #endif
 	RKH_EXIT_CRITICAL_();
 	RKH_TRCR_RQ_LIFO( q, q->qty );
