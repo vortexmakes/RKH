@@ -47,15 +47,10 @@ rkh_trc_control( HUInt opt )
 }
 
 
-rkhui8_t *
-rkh_trc_get_nextbuf( void )
+void
+rkh_trc_put( rkhui8_t b )
 {
-	rkhui8_t *tre = ( rkhui8_t* )0;
-	RKH_SR_CRITICAL_;
-	
-	RKH_ENTER_CRITICAL_();
-
-	tre = ( rkhui8_t* )trcin++;
+	*trcin++ = b;
 	++trcqty;
 
 	if( trcin == trcend )
@@ -66,32 +61,23 @@ rkh_trc_get_nextbuf( void )
 		trcqty = RKH_TRC_MAX_TRACES;
 		trcout = trcin;
 	}
-	RKH_EXIT_CRITICAL_();
-	return tre;
 }
 
 
 rkhui8_t *
-rkh_trc_get_oldest( void )
+rkh_trc_get( void )
 {
 	rkhui8_t *tre = ( rkhui8_t* )0;
-	RKH_SR_CRITICAL_;
-
-	RKH_ENTER_CRITICAL_();
 
 	if( trcqty == 0 )
-	{
-		RKH_EXIT_CRITICAL_();
 		return tre;
-	}
 
-	tre = ( rkhui8_t* )trcout++;
+	tre = trcout++;
 	--trcqty;
 
 	if( trcout >= trcend )
 		trcout = trcstm;
 
-	RKH_EXIT_CRITICAL_();
 	return tre;
 }
 

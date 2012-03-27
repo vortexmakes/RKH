@@ -851,12 +851,9 @@ typedef enum rkh_trc_events
  *	\note
  *	The timestamp is optional, thus it could be eliminated from the trace 
  *	event in compile-time with RKH_TRC_EN_TSTAMP = 0.
- *	\note
- *	The trace stream is an array of buffers.
- *
  */
 
-typedef rkhui8_t RKH_TRCE_T[ RKH_TRC_SIZEOF_EVENT ];
+typedef rkhui8_t RKH_TRCE_T;
 
 
 /**
@@ -882,29 +879,30 @@ void rkh_trc_control( HUInt opt );
 
 /**
  * 	\brief
- *	Retrieves a pointer to oldest trace event in the trace stream. 
+ *	Retrieves a pointer to oldest stored byte in the trace stream. 
  *	Frequently, this function is used by the called trace analyzer.
  *
+ * \note
+ * 	The data is stored in a single ring buffer, called trace stream. In this 
+ *	manner the recorder always holds the most recent history.
+ *
  * 	\returns
- * 	A pointer to the beginning of the buffer into which the trace event was 
- * 	stored if trace stream was not empty, otherwise NULL pointer.
+ * 	A pointer to the oldest stored byte if trace stream was not empty, 
+ * 	otherwise NULL pointer.
  */
 
-rkhui8_t *rkh_trc_get_oldest( void );
+rkhui8_t *rkh_trc_get( void );
 
 
 /**
  * 	\brief
- * 	Get the next trace event buffer from the trace stream. The retrieved 
- * 	buffer will be used to record a new trace event.
+ * 	Put a data byte into the trace stream. 
  *
- * 	\returns
- * 	A pointer to the beginning of the reserved buffer into which the trace 
- * 	event will be copied if trace stream was not stopped, otherwise NULL 
- * 	pointer.
+ * 	The data is stored in a single ring buffer, called trace stream. In this 
+ *	manner the recorder always holds the most recent history.
  */
 
-rkhui8_t *rkh_trc_get_nextbuf( void );
+void rkh_trc_put( rkhui8_t b );
 
 
 #if RKH_TRC_RUNTIME_FILTER == 1

@@ -39,6 +39,13 @@
 #include "rkhevt.h"
 
 
+/**
+ * 	\brief
+ * 	The prototype of callback function (hook) to call when the timer expires.
+ *
+ * 	\param t		pointer to elapsed timer (RKHT_T data structure).
+ */
+
 typedef void ( *RKH_THK_T )( void *t );
 
 
@@ -212,14 +219,14 @@ typedef struct rkht_t
  *	\param sma		state machine application (SMA) that receives the timer 
  *					event.
  * 	\param itick 	number initial of ticks for timer expiration.
- * 	\param period 	number of ticks for all timer expirations after the first 
+ * 	\param per	 	number of ticks for all timer expirations after the first 
  * 					(expiration period). A zero for this parameter makes the 
  * 					timer a one-shot timer, otherwise, for periodic timers, 
  * 					any value in range.
  */
 
-#define rkh_tim_periodic( t, sma, itick, period )				\
-					(t)->period = (period);						\
+#define rkh_tim_periodic( t, sma, itick, per )				\
+					(t)->period = (per);					\
 					rkh_tim_start( (t), (sma), (itick) )
 
 
