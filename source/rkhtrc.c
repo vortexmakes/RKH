@@ -23,7 +23,7 @@ static RKH_TRCE_T trcstm[ RKH_TRC_MAX_TRACES ];
 static RKH_TRCE_T *trcin, *trcout, *trcend;
 static rkhui8_t trcqty;
 static HUInt trcctrl;
-static rkhui8_t *trcb;
+static rkhui8_t chk;
 
 
 void
@@ -33,6 +33,7 @@ rkh_trc_init( void )
 	trcqty = 0;
 	trcend = &trcstm[ RKH_TRC_MAX_TRACES ];
 	trcctrl = RKH_TRC_START;
+	RKH_TRC_UI8_RAW( RKH_FLG );
 }
 
 
@@ -136,36 +137,43 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 void
 rkh_trc_begin( void )
 {
-	trcb = rkh_trc_get_nextbuf();
+	chk = 0;
 }
 
 
 void 
 rkh_trc_ui8( rkhui8_t d )
 {
-	*trcb++ = d;
+	chk = (rkhui8_t)( chk + d );
+	if( d == RKH_FLG || d == RKH_ESC )
+	{
+		rkh_trc_put( RKH_ESC );
+		rkh_trc_put( d ^ RKH_XBT );
+	}
+	else
+		rkh_trc_put( d );
 }
 
 
 void 
 rkh_trc_ui16( rkhui16_t d )
 {
-	*trcb++ = (rkhui8_t)d;
+	rkh_trc_put( (rkhui8_t)d );
 	d >>= 8;
-	*trcb++ = (rkhui8_t)d;
+	rkh_trc_put( (rkhui8_t)d );
 }
 
 
 void 
 rkh_trc_ui32( rkhui32_t d )
 {
-	*trcb++ = (rkhui8_t)d;
+	rkh_trc_put( (rkhui8_t)d );
 	d >>= 8;
-	*trcb++ = (rkhui8_t)d;
+	rkh_trc_put( (rkhui8_t)d );
 	d >>= 8;
-	*trcb++ = (rkhui8_t)d;
+	rkh_trc_put( (rkhui8_t)d );
 	d >>= 8;
-	*trcb++ = (rkhui8_t)d;
+	rkh_trc_put( (rkhui8_t)d );
 }
 
 

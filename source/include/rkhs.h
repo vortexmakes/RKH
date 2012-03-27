@@ -50,7 +50,7 @@
 					rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
 	#define RKH_SMA_UNREADY( rg, sma ) 						\
-					rkh_rdyr_em( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+					rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
 	extern RKHRG_T rkhrg;
 

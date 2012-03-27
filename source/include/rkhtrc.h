@@ -273,6 +273,30 @@ typedef enum rkh_trc_events
 } RKH_TRC_EVENTS;
 
 
+#define RKH_XBT		0x20	/* x-ored byte for stuffing a single byte */
+#define RKH_FLG		0x7E	/* flag byte, used as a trace event delimiter */
+#define RKH_ESC		0x7D	/* escape byte stuffing a single byte */
+
+
+/* 
+ * 	Inserts the previously calculated checksum as:
+ * 	checksum = 0 - sum mod-256 -> ~(sum mod-256) + 1.
+ */
+
+#define RKH_TRC_CHK()						\
+				chk = (rkhui8_t)(~chk + 1); \
+				rkh_trc_ui8( chk )
+
+
+/* 
+ * 	Inserts directly into the trace stream the flag byte in a raw (without 
+ * 	escaped sequence) manner.
+ */
+
+#define RKH_TRC_FLG()						\
+				RKH_TRC_UI8_RAW( RKH_FLG )
+
+
 /** 
  * 	\brief
  * 	Defines the size of trace timestamp. 
@@ -322,6 +346,9 @@ typedef enum rkh_trc_events
 				RKH_EXIT_CRITICAL_();
 #endif
 
+
+#define RKH_TRC_UI8_RAW( d )	\
+			rkh_trc_put( (d) )
 
 #define RKH_TRC_UI8( d )	\
 			rkh_trc_ui8( (d) )
