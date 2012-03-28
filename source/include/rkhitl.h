@@ -1164,7 +1164,7 @@ typedef struct rkhsma_t
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
  */
 
-#define CTA( ta )	((RKHACT_T*)(ta))
+#define CTA( ta )	((RKHACT_T)(ta))
 
 #if RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 1
 

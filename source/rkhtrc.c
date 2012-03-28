@@ -15,8 +15,9 @@ RKH_MODULE_NAME( rkhtrc )
 #if RKH_TRC_EN == 1
 
 #if RKH_TRC_RUNTIME_FILTER == 1
-rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS ];	/* trace event filter table */
-rkhui8_t trcgfilter;						/* trace group filter table */
+/* trace event filter table */
+rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
+rkhui8_t trcgfilter;	/* trace group filter table */
 #endif
 
 static RKH_TRCE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
@@ -126,7 +127,7 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 	{
 		for( p = trceftbl, ix = 0, c = (rkhui8_t)((ctrl == FILTER_ON) ? 
 											0xFF : 0); 
-					ix < RKH_TRC_MAX_EVENTS; ++ix, ++p )
+					ix < RKH_TRC_MAX_EVENTS_PER_GROUP; ++ix, ++p )
 			*p = c;
 		return;
 	}
@@ -138,10 +139,20 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 }
 #endif
 
+
 void
-rkh_trc_begin( void )
+rkh_trc_begin( rkhui8_t eid )
 {
 	chk = 0;
+	RKH_TRC_HDR( eid );
+}
+
+
+void
+rkh_trc_end( void )
+{
+	RKH_TRC_CHK();
+	RKH_TRC_FLG();
 }
 
 
@@ -152,7 +163,7 @@ rkh_trc_ui8( rkhui8_t d )
 	if( d == RKH_FLG || d == RKH_ESC )
 	{
 		rkh_trc_put( RKH_ESC );
-		rkh_trc_put( d ^ RKH_XBT );
+		rkh_trc_put( d ^ RKH_XOR );
 	}
 	else
 		rkh_trc_put( d );

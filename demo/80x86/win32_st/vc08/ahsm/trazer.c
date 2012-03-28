@@ -168,6 +168,8 @@ typedef struct symsig_t
 } SYMSIG_T;
 
 
+#if RKH_TRC_EN == 1 
+
 static char *h_none( const void *tre ),
 			*h_epreg( const void *tre ),
 			*h_ae( const void *tre ),
@@ -328,12 +330,23 @@ static const char *rctbl[] =				/* dispatch ret code table */
 #endif
 
 
+#define PARSER_MAX_SIZE_BUF			64
+
+
+enum
+{
+	PARSER_WFLAG, PARSER_COLLECT, PARSER_ESCAPING
+};
+
+
 static SYMOBJ_T objtbl[ 128 ];		/* object symbol table */
 static rkhui8_t *trb;				/* points to trace event buffer */
 static char fmt[ 128 ];
 extern FILE *fdbg;
 
 extern RKHT_T my_timer;
+static rkhui8_t state = PARSER_WFLAG;
+static rkhui8_t tr[ PARSER_MAX_SIZE_BUF ], *ptr, trix;
 
 static
 void
@@ -625,20 +638,14 @@ h_ae( const void *tre )
 }
 
 
-enum
-{
-	WAIT_FLG, COLLECT
-};
-
-static rkhui8_t state = WAIT_FLG;
 
 
 static
 void
 parser_init( void )
 {
-	state = COLLECT;
-	printf( "%02X\n", RKH_FLG );
+	ptr = tr;
+	trix = 0;
 }
 
 
@@ -646,39 +653,27 @@ static
 void
 parser_collect( rkhui8_t d )
 {
-	printf( "%02X ", d );
+	if( ++trix > PARSER_MAX_SIZE_BUF )
+	{
+		state = PARSER_WFLAG;
+		return;
+	}
+	*ptr++ = d;
 }
 
 
-void 
-trazer_parse( rkhui8_t d )
+static
+void
+parser( void )
 {
-	switch( state )
-	{
-		case WAIT_FLG:
-			if( d == RKH_FLG )
-				parser_init();
-			break;
-		case COLLECT:
-			if( d == RKH_FLG )
-				parser_init();
-			else
-				parser_collect( d );
-			break;
-		default:
-			break;
-	}
-
-#if 0
-#if RKH_TRC_EN == 1 
 	const TRE_T *ftr;			/* received trace event */
 	TRZTS_T ts;
 
-	if( ( ftr = find_trevt( tre[ 0 ] ) ) != ( TRE_T* )0 )
+	if( ( ftr = find_trevt( tr[ 0 ] ) ) != ( TRE_T* )0 )
 	{
 		if( ftr->fmt_args != ( HDLR_T )0 )
 		{
-			trb = tre + 1;		/* from timestamp field */
+			trb = tr + 1;		/* from timestamp field */
 			ts = ( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP );
 			printf( trheader, ts, ftr->group, ftr->name );
 			fprintf( fdbg, trheader, ts, ftr->group, ftr->name );
@@ -692,9 +687,51 @@ trazer_parse( rkhui8_t d )
 										ftr->name, ftr->group, ftr - traces );
 	fprintf( fdbg, "Unknown trace event = %s (%d), group = %s\n",	
 										ftr->name, ftr->group, ftr - traces );
-#else
-	( void )tre;
+}
+
 #endif
+
+void 
+trazer_parse( rkhui8_t d )
+{
+#if RKH_TRC_EN == 1 
+	switch( state )
+	{
+		case PARSER_WFLAG:
+			if( d == RKH_FLG )
+			{
+				parser_init();
+				state = PARSER_COLLECT;
+			}
+			break;
+		case PARSER_COLLECT:
+			if( d == RKH_FLG )
+			{
+				parser();
+				parser_init();
+			}
+			else if( d == RKH_ESC )
+				state = PARSER_ESCAPING;
+			else
+				parser_collect( d );
+			break;
+		case PARSER_ESCAPING:
+			if( d == RKH_FLG )
+			{
+				parser_init();
+				state = PARSER_COLLECT;
+			}
+			else
+			{
+				parser_collect( d ^ RKH_XOR );
+				state = PARSER_COLLECT;
+			}
+			break;
+		default:
+			break;
+	}
+#else
+	( void )d;
 #endif
 }
 

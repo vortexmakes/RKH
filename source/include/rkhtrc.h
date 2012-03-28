@@ -87,13 +87,13 @@
  *
  * 	The trace filter management is similar to the native priority management.
  * 	In this case, each trace event is assigned a unique number 
- * 	(RKH_TRC_EVENTS). When a event is ready to record a trace it also clears 
- * 	its corresponding bit in the filter table, trceftbl[]. The size of 
+ * 	(RKH_TRC_EVENTS). When a event is ready to record a trace its 
+ * 	corresponding bit in the filter table must be clear. The size of 
  * 	trceftbl[] depends on RKH_TRC_MAX_EVENTS (see rkhcfg.h).
  *
  * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |
  *
- * 	Y's:	index into trceftbl[ RKH_TRC_MAX_EVENTS ] table.
+ * 	Y's:	index into trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ] table.
  * 	X's:	bit position in trceftbl[ Y's ].
  *
  * 	The lower 3 bits (X's) of the trace event number are used to determine 
@@ -101,7 +101,15 @@
  * 	(Y's) are used to determine the index into trceftbl[].
  */
 
-extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS ];
+#if RKH_TRC_MAX_EVENTS <= 64
+	#define RKH_TRC_MAX_EVENTS_PER_GROUP	8
+#elif RKH_TRC_MAX_EVENTS > 64 && RKH_TRC_MAX_EVENTS <= 128
+	#define RKH_TRC_MAX_EVENTS_PER_GROUP	8
+#else
+	#define RKH_TRC_MAX_EVENTS_PER_GROUP	8
+#endif
+
+extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
 
 
 /**
@@ -281,7 +289,7 @@ typedef enum rkh_trc_events
 } RKH_TRC_EVENTS;
 
 
-#define RKH_XBT		0x20	/* x-ored byte for stuffing a single byte */
+#define RKH_XOR		0x20	/* x-ored byte for stuffing a single byte */
 #define RKH_FLG		0x7E	/* flag byte, used as a trace event delimiter */
 #define RKH_ESC		0x7D	/* escape byte stuffing a single byte */
 
@@ -337,24 +345,20 @@ typedef enum rkh_trc_events
 				RKH_SR_CRITICAL_;				\
 				if(rkh_trc_isoff_(grp, eid)) {	\
 					RKH_ENTER_CRITICAL_();		\
-					rkh_trc_begin();			\
-					RKH_TRC_HDR( eid );
+					rkh_trc_begin( eid );
 
 	#define RKH_TRC_END()						\
-					RKH_TRC_CHK();				\
-					RKH_TRC_FLG();				\
+					rkh_trc_end();				\
 					RKH_EXIT_CRITICAL_();		\
 				}
 #else
 	#define RKH_TRC_BEGIN( grp, eid )			\
 				RKH_SR_CRITICAL_;				\
 				RKH_ENTER_CRITICAL_();			\
-				rkh_trc_begin();				\
-				RKH_TRC_HDR( eid );
+				rkh_trc_begin( eid );
 
 	#define RKH_TRC_END()						\
-				RKH_TRC_CHK();					\
-				RKH_TRC_FLG();					\
+				rkh_trc_end();					\
 				RKH_EXIT_CRITICAL_();
 #endif
 
@@ -1085,11 +1089,16 @@ HUInt rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e );
 
 /**
  * 	\brief
- * 	Get a buffer from the trace stream. The retrieved buffer will be used 
- * 	to record a new trace event.
  */
 
-void rkh_trc_begin( void );
+void rkh_trc_begin( rkhui8_t eid );
+
+
+/**
+ * 	\brief
+ */
+
+void rkh_trc_end( void );
 
 
 /**
