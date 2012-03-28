@@ -59,6 +59,7 @@ RKH_THIS_MODULE
 #define TRAZER_SIZEOF_ESIZE			RKH_SIZEOF_ESIZE/8
 #define TRAZER_EN_NSEQ				RKH_TRC_EN_NSEQ
 #define TRAZER_EN_CHK				RKH_TRC_EN_CHK
+#define TRAZER_EN_TSTAMP			RKH_TRC_EN_TSTAMP
 
 
 #if TRAZER_SIZEOF_SIG == 1
@@ -133,6 +134,13 @@ RKH_THIS_MODULE
 #else
 	#define get_nseq()		nseq = 0
 	#define set_to_ts()		trb = tr + 1
+#endif
+
+
+#if TRAZER_EN_TSTAMP == 1
+	#define get_ts()		( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP )
+#else
+	#define get_ts()		0
 #endif
 
 
@@ -705,7 +713,7 @@ parser( void )
 		{
 			get_nseq();
 			set_to_ts();		/* from timestamp field */
-			ts = ( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP );
+			ts = get_ts();
 			printf( trheader, ts, nseq, ftr->group, ftr->name );
 			fprintf( fdbg, trheader, ts, nseq, ftr->group, ftr->name );
 			printf( "%s\n", (*ftr->fmt_args)( CTE( ftr ) ) );
@@ -786,6 +794,7 @@ trazer_init( void )
 	printf( "   TRAZER_SIZEOF_ESIZE   = %d\n", TRAZER_SIZEOF_ESIZE );
 	printf( "   TRAZER_EN_NSEQ        = %d\n", TRAZER_EN_NSEQ );
 	printf( "   TRAZER_EN_CHK         = %d\n", TRAZER_EN_CHK );
+	printf( "   TRAZER_EN_TSTAMP      = %d\n", TRAZER_EN_TSTAMP );
 	printf( "   RKH_TRC_ALL           = %d\n", RKH_TRC_ALL );
 	printf( "   RKH_TRC_EN_MP         = %d\n", RKH_TRC_EN_MP );
 	printf( "   RKH_TRC_EN_RQ         = %d\n", RKH_TRC_EN_RQ );
@@ -809,6 +818,7 @@ trazer_init( void )
 	fprintf( fdbg, "   TRAZER_SIZEOF_ESIZE   = %d\n", TRAZER_SIZEOF_ESIZE );
 	fprintf( fdbg, "   TRAZER_EN_NSEQ        = %d\n", TRAZER_EN_NSEQ );
 	fprintf( fdbg, "   TRAZER_EN_CHK         = %d\n", TRAZER_EN_CHK );
+	fprintf( fdbg, "   TRAZER_EN_TSTAMP      = %d\n", TRAZER_EN_TSTAMP );
 	fprintf( fdbg, "   RKH_TRC_ALL        	 = %d\n", RKH_TRC_ALL );
 	fprintf( fdbg, "   RKH_TRC_EN_MP         = %d\n", RKH_TRC_EN_MP );
 	fprintf( fdbg, "   RKH_TRC_EN_RQ         = %d\n", RKH_TRC_EN_RQ );

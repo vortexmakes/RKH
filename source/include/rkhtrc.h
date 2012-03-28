@@ -336,6 +336,7 @@ typedef enum rkh_trc_events
 					RKH_TRC_UI16( rkh_trc_getts() )
 	#endif
 #else
+	typedef rkhui16_t RKHTS_T;
 	#define RKH_TRC_TSTAMP()
 #endif
 
