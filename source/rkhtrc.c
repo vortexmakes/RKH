@@ -198,5 +198,6 @@ rkh_trc_str( const char *s )
 {
 	while( *s != '\0' )
 		rkh_trc_ui8( (rkhui8_t)*s++ );
+	rkh_trc_ui8( '\0' );
 }
 #endif
