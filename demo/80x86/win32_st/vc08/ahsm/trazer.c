@@ -324,9 +324,9 @@ static const char *rctbl[] =				/* dispatch ret code table */
 
 
 #if TRAZER_SIZEOF_TSTAMP == 2
-	static const char *trheader = "%5d [%03d] %-4s| %-15s : ";
+	static const char *trheader = "%5d [%3d] %-4s| %-15s : ";
 #else
-	static const char *trheader = "%10d [%03d] %-4s| %-15s : ";
+	static const char *trheader = "%10d [%3d] %-4s| %-15s : ";
 #endif
 
 
@@ -677,8 +677,8 @@ parser( void )
 			nseq = tr[ 1 ];
 			trb = tr + 2;		/* from timestamp field */
 			ts = ( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP );
-			printf( trheader, nseq, ts, ftr->group, ftr->name );
-			fprintf( fdbg, trheader, nseq, ts, ftr->group, ftr->name );
+			printf( trheader, ts, nseq, ftr->group, ftr->name );
+			fprintf( fdbg, trheader, ts, nseq, ftr->group, ftr->name );
 			printf( "%s\n", (*ftr->fmt_args)( CTE( ftr ) ) );
 			fprintf( fdbg, "%s\n", fmt );
 		}

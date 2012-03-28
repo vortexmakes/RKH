@@ -80,6 +80,7 @@
 #define RKH_TRC_EN						1	/* 	CFG01 */
 #define RKH_TRC_MAX_EVENTS				16	/* 	CFG01 */
 #define RKH_TRC_RUNTIME_FILTER			1	/* 	CFG01 */
+#define RKH_TRC_RUNTIME_FILTER			1	/* 	CFG01 */
 #define RKH_TRC_ALL						1	/* 	CFG01 */
 #define RKH_TRC_EN_MP					0	/* 	CFG01 */
 #define RKH_TRC_EN_RQ					0	/* 	CFG01 */
@@ -98,6 +99,8 @@
 #define RKH_TRC_EN_SM_NTRNACT			1	/* 	CFG01 */
 #define RKH_TRC_EN_SM_CSTATE			1	/* 	CFG01 */
 #define RKH_TRC_EN_SM_DCH_RC			1	/* 	CFG01 */
+#define RKH_TRC_EN_NSEQ					1	/* 	CFG01 */
+#define RKH_TRC_EN_CHK					1	/* 	CFG01 */
 #define RKH_TRC_EN_TSTAMP				1	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_TSTAMP			32	/* 	CFG01 */
 #define RKH_TRC_SIZEOF_STREAM			256	/* 	CFG01 */

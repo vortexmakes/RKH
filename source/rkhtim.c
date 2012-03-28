@@ -82,7 +82,6 @@ rkh_tim_tick( void )
 		return;
 
 	RKH_ENTER_CRITICAL_();
-
 	for( t = thead; t != CPT( 0 ); t = t->tnext )
 	{
 		if( !--t->ntick )
@@ -166,7 +165,6 @@ rkh_tim_stop( RKHT_T *t )
 	RKH_SR_CRITICAL_;
 
 	RKHREQUIRE( t != ( RKHT_T* )0 );
-
 	RKH_ENTER_CRITICAL_();
 
 	if( t->tprev == ( RKHT_T* )0 )

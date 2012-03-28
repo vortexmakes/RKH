@@ -313,22 +313,26 @@ typedef enum rkh_trc_events
  * 	configurable via the RKH_TRC_SIZEOF_TSTAMP preprocessor option.
  */
 
-#if RKH_TRC_SIZEOF_TSTAMP == 8
-	typedef rkhui8_t RKHTS_T;
-	#define RKH_TRC_TSTAMP()					\
-				RKH_TRC_UI8( rkh_trc_getts() )
-#elif RKH_TRC_SIZEOF_TSTAMP == 16
-	typedef rkhui16_t RKHTS_T;
-	#define RKH_TRC_TSTAMP()					\
-				RKH_TRC_UI16( rkh_trc_getts() )
-#elif RKH_TRC_SIZEOF_TSTAMP == 32
-	typedef rkhui32_t RKHTS_T;
-	#define RKH_TRC_TSTAMP()					\
-				RKH_TRC_UI32( rkh_trc_getts() )
+#if RKH_TRC_EN_TSTAMP == 1
+	#if RKH_TRC_SIZEOF_TSTAMP == 8
+		typedef rkhui8_t RKHTS_T;
+		#define RKH_TRC_TSTAMP()					\
+					RKH_TRC_UI8( rkh_trc_getts() )
+	#elif RKH_TRC_SIZEOF_TSTAMP == 16
+		typedef rkhui16_t RKHTS_T;
+		#define RKH_TRC_TSTAMP()					\
+					RKH_TRC_UI16( rkh_trc_getts() )
+	#elif RKH_TRC_SIZEOF_TSTAMP == 32
+		typedef rkhui32_t RKHTS_T;
+		#define RKH_TRC_TSTAMP()					\
+					RKH_TRC_UI32( rkh_trc_getts() )
+	#else
+		typedef rkhui16_t RKHTS_T;
+		#define RKH_TRC_TSTAMP()					\
+					RKH_TRC_UI16( rkh_trc_getts() )
+	#endif
 #else
-	typedef rkhui16_t RKHTS_T;
-	#define RKH_TRC_TSTAMP()					\
-				RKH_TRC_UI16( rkh_trc_getts() )
+	#define RKH_TRC_TSTAMP()
 #endif
 
 
@@ -368,20 +372,12 @@ typedef enum rkh_trc_events
 			rkh_trc_ui32( (d) )
 
 
-#if RKH_TRC_EN_TSTAMP == 1
-	#define RKH_TRC_HDR( eid ) 			\
-				chk = 0;				\
-				RKH_TRC_UI8( eid );		\
-				RKH_TRC_UI8( nseq );	\
-				++nseq;					\
-				RKH_TRC_TSTAMP()
-#else
-	#define RKH_TRC_HDR( eid ) 			\
-				chk = 0;				\
-				RKH_TRC_UI8( eid );		\
-				RKH_TRC_UI8( nseq );	\
-				++nseq
-#endif
+#define RKH_TRC_HDR( eid ) 			\
+			chk = 0;				\
+			RKH_TRC_UI8( eid );		\
+			RKH_TRC_UI8( nseq );	\
+			++nseq;					\
+			RKH_TRC_TSTAMP()
 
 
 #if RKH_TRC_SIZEOF_POINTER == 16
