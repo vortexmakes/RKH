@@ -324,9 +324,9 @@ static const char *rctbl[] =				/* dispatch ret code table */
 
 
 #if TRAZER_SIZEOF_TSTAMP == 2
-	static const char *trheader = "%5d %-4s| %-15s : ";
+	static const char *trheader = "%5d [%03d] %-4s| %-15s : ";
 #else
-	static const char *trheader = "%10d %-4s| %-15s : ";
+	static const char *trheader = "%10d [%03d] %-4s| %-15s : ";
 #endif
 
 
@@ -668,15 +668,17 @@ parser( void )
 {
 	const TRE_T *ftr;			/* received trace event */
 	TRZTS_T ts;
+	rkhui8_t nseq;
 
 	if( ( ftr = find_trevt( tr[ 0 ] ) ) != ( TRE_T* )0 )
 	{
 		if( ftr->fmt_args != ( HDLR_T )0 )
 		{
-			trb = tr + 1;		/* from timestamp field */
+			nseq = tr[ 1 ];
+			trb = tr + 2;		/* from timestamp field */
 			ts = ( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP );
-			printf( trheader, ts, ftr->group, ftr->name );
-			fprintf( fdbg, trheader, ts, ftr->group, ftr->name );
+			printf( trheader, nseq, ts, ftr->group, ftr->name );
+			fprintf( fdbg, trheader, nseq, ts, ftr->group, ftr->name );
 			printf( "%s\n", (*ftr->fmt_args)( CTE( ftr ) ) );
 			fprintf( fdbg, "%s\n", fmt );
 		}
@@ -723,7 +725,7 @@ trazer_parse( rkhui8_t d )
 			}
 			else
 			{
-				parser_collect( d ^ RKH_XOR );
+				parser_collect( (rkhui8_t)(d ^ RKH_XOR) );
 				state = PARSER_COLLECT;
 			}
 			break;

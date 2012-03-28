@@ -132,14 +132,6 @@ extern rkhui8_t trcgfilter;
 
 /**
  * 	\brief
- *	Maintains the trace event checksum.
- */
-
-extern rkhui8_t chk;
-
-
-/**
- * 	\brief
  * 	Enable or disable the trace facility for a instrumented state machine.
  * 	It's used as argument of rkh_trc_control() function.
  */
@@ -377,12 +369,18 @@ typedef enum rkh_trc_events
 
 
 #if RKH_TRC_EN_TSTAMP == 1
-	#define RKH_TRC_HDR( eid ) 		\
-				RKH_TRC_UI8( eid );	\
+	#define RKH_TRC_HDR( eid ) 			\
+				chk = 0;				\
+				RKH_TRC_UI8( eid );		\
+				RKH_TRC_UI8( nseq );	\
+				++nseq;					\
 				RKH_TRC_TSTAMP()
 #else
-	#define RKH_TRC_HDR( eid ) 		\
-				RKH_TRC_UI8( eid )
+	#define RKH_TRC_HDR( eid ) 			\
+				chk = 0;				\
+				RKH_TRC_UI8( eid );		\
+				RKH_TRC_UI8( nseq );	\
+				++nseq
 #endif
 
 

@@ -23,7 +23,8 @@ rkhui8_t trcgfilter;	/* trace group filter table */
 static RKH_TRCE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
 static RKH_TRCE_T *trcin, *trcout, *trcend;
 static HUInt trcctrl;
-rkhui8_t chk;
+static rkhui8_t chk;
+static rkhui8_t nseq;
 #if RKH_TRC_SIZEOF_STREAM < 255
 static rkhui8_t trcqty;
 #else
@@ -36,6 +37,7 @@ rkh_trc_init( void )
 {
 	trcin = trcout = trcstm;
 	trcqty = 0;
+	nseq = 0;
 	trcend = &trcstm[ RKH_TRC_SIZEOF_STREAM ];
 	trcctrl = RKH_TRC_START;
 	RKH_TRC_UI8_RAW( RKH_FLG );
@@ -143,7 +145,6 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 void
 rkh_trc_begin( rkhui8_t eid )
 {
-	chk = 0;
 	RKH_TRC_HDR( eid );
 }
 
@@ -161,9 +162,9 @@ rkh_trc_ui8( rkhui8_t d )
 {
 	chk = (rkhui8_t)( chk + d );
 	if( d == RKH_FLG || d == RKH_ESC )
-	{// must at least enable interrupts
+	{
 		rkh_trc_put( RKH_ESC );
-		rkh_trc_put( d ^ RKH_XOR );
+		rkh_trc_put( (rkhui8_t)(d ^ RKH_XOR) );
 	}
 	else
 		rkh_trc_put( d );
