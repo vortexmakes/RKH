@@ -839,6 +839,8 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_RKH_GCR( ev )
 		#define RKH_TRCR_RKH_DEFER( q, ev )
 		#define RKH_TRCR_RKH_RCALL( sma, ev )
+		#define RKH_TRCR_RKH_OBJ( __o )
+		#define RKH_TRCR_RKH_SIG( __s )
 	#endif
 	
 #else
@@ -896,6 +898,8 @@ typedef enum rkh_trc_events
 	#define RKH_TRCR_RKH_GCR( ev )
 	#define RKH_TRCR_RKH_DEFER( q, ev )
 	#define RKH_TRCR_RKH_RCALL( sma, ev )
+	#define RKH_TRCR_RKH_OBJ( __o )
+	#define RKH_TRCR_RKH_SIG( __s )
 #endif
 
 
