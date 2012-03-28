@@ -64,7 +64,6 @@ RKHRG_T rkhrg;				/* ready group of SMAs */
 void 
 rkh_init( void )
 {
-	RKH_TRCR_RKH_INIT();
 }
 
 
