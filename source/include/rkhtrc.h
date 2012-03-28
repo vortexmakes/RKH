@@ -291,9 +291,13 @@ typedef enum rkh_trc_events
  * 	checksum = 0 - sum mod-256 -> ~(sum mod-256) + 1.
  */
 
-#define RKH_TRC_CHK()						\
+#if RKH_TRC_EN_CHK == 1
+	#define RKH_TRC_CHK()					\
 				chk = (rkhui8_t)(~chk + 1); \
 				rkh_trc_ui8( chk )
+#else
+	#define RKH_TRC_CHK()
+#endif
 
 
 /* 
@@ -371,6 +375,16 @@ typedef enum rkh_trc_events
 #define RKH_TRC_UI32( d )	\
 			rkh_trc_ui32( (d) )
 
+#define RKH_TRC_STR( s )	\
+			rkh_trc_str( (s) )
+
+#if RKH_TRC_EN_NSEQ == 1
+	#define RKH_TRC_NSEQ()				\
+				RKH_TRC_UI8( nseq );	\
+				++nseq
+#else
+	#define RKH_TRC_NSEQ()
+#endif
 
 #define RKH_TRC_HDR( eid ) 			\
 			chk = 0;				\
@@ -809,6 +823,27 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_RKH_DEFER( q, ev )
 		#define RKH_TRCR_RKH_RCALL( sma, ev )
 	#endif
+	
+	/* --- Symbol entry table for objects --------- */
+	#define RKH_TRCR_RKH_OBJ( obj )								\
+				do {											\
+					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_OBJ )	\
+						static const char *obj_n_ = #obj;		\
+						RKH_TRC_UI32( obj );					\
+						RKH_TRC_STR( obj_n_ );					\
+					RKH_TRC_END();								\
+				} while( 0 )
+
+	/* --- Symbol entry table for event signals ---- */
+	#define RKH_TRCR_RKH_SIG( sig, str )						\
+				do {											\
+					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_SIG )	\
+						static const char *sig_n_ = #sig;		\
+						RKH_TRC_SIG( (RKHE_T)sig );				\
+						RKH_TRC_STR( str );						\
+						RKH_TRC_END();							\
+				} while( 0 )
+	
 #else
 	/* --- Memory Pool (MP) ------------------ */
 	#define RKH_TRCR_MP_INIT( mp, nblock )
@@ -1118,5 +1153,12 @@ void rkh_trc_ui16( rkhui16_t d );
 
 void rkh_trc_ui32( rkhui32_t d );
 
+
+/**
+ * 	\brief
+ * 	Store a string terminated in '\0' into the current trace event buffer.
+ */
+
+void rkh_trc_str( const char *s );
 
 #endif

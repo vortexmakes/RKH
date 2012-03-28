@@ -57,6 +57,8 @@ RKH_THIS_MODULE
 #define TRAZER_SIZEOF_NBLOCK		RKH_MP_SIZEOF_NBLOCK/8
 #define TRAZER_SIZEOF_NELEM			RKH_RQ_SIZEOF_NELEM/8
 #define TRAZER_SIZEOF_ESIZE			RKH_SIZEOF_ESIZE/8
+#define TRAZER_EN_NSEQ				RKH_TRC_EN_NSEQ
+#define TRAZER_EN_CHK				RKH_TRC_EN_CHK
 
 
 #if TRAZER_SIZEOF_SIG == 1
@@ -347,6 +349,7 @@ extern FILE *fdbg;
 extern RKHT_T my_timer;
 static rkhui8_t state = PARSER_WFLAG;
 static rkhui8_t tr[ PARSER_MAX_SIZE_BUF ], *ptr, trix;
+
 
 static
 void
@@ -663,6 +666,23 @@ parser_collect( rkhui8_t d )
 
 
 static
+int
+parser_chk( void )
+{
+	rkhui8_t *p, chk;
+	int i;
+
+	for( chk = 0, p = tr, i = trix; i--; ++p )
+		chk = (rkhui8_t)( chk + *p );
+	return chk == 0;
+}
+
+
+/*
+ * 	Do not support TRAZER_EN_CHK = 0 and TRAZER_EN_NSEQ = 0.
+ */
+
+static
 void
 parser( void )
 {
@@ -709,7 +729,8 @@ trazer_parse( rkhui8_t d )
 		case PARSER_COLLECT:
 			if( d == RKH_FLG )
 			{
-				parser();
+				if( trix > 0 && parser_chk() )
+					parser();
 				parser_init();
 			}
 			else if( d == RKH_ESC )
@@ -754,6 +775,8 @@ trazer_init( void )
 	printf( "   TRAZER_SIZEOF_NBLOCK  = %d\n", TRAZER_SIZEOF_NBLOCK );
 	printf( "   TRAZER_SIZEOF_NELEM   = %d\n", TRAZER_SIZEOF_NELEM );
 	printf( "   TRAZER_SIZEOF_ESIZE   = %d\n", TRAZER_SIZEOF_ESIZE );
+	printf( "   TRAZER_EN_NSEQ        = %d\n", TRAZER_EN_NSEQ );
+	printf( "   TRAZER_EN_CHK         = %d\n", TRAZER_EN_CHK );
 	printf( "   RKH_TRC_ALL           = %d\n", RKH_TRC_ALL );
 	printf( "   RKH_TRC_EN_MP         = %d\n", RKH_TRC_EN_MP );
 	printf( "   RKH_TRC_EN_RQ         = %d\n", RKH_TRC_EN_RQ );
@@ -775,6 +798,8 @@ trazer_init( void )
 	fprintf( fdbg, "   TRAZER_SIZEOF_NBLOCK  = %d\n", TRAZER_SIZEOF_NBLOCK );
 	fprintf( fdbg, "   TRAZER_SIZEOF_NELEM   = %d\n", TRAZER_SIZEOF_NELEM );
 	fprintf( fdbg, "   TRAZER_SIZEOF_ESIZE   = %d\n", TRAZER_SIZEOF_ESIZE );
+	fprintf( fdbg, "   TRAZER_EN_NSEQ        = %d\n", TRAZER_EN_NSEQ );
+	fprintf( fdbg, "   TRAZER_EN_CHK         = %d\n", TRAZER_EN_CHK );
 	fprintf( fdbg, "   RKH_TRC_ALL        	 = %d\n", RKH_TRC_ALL );
 	fprintf( fdbg, "   RKH_TRC_EN_MP         = %d\n", RKH_TRC_EN_MP );
 	fprintf( fdbg, "   RKH_TRC_EN_RQ         = %d\n", RKH_TRC_EN_RQ );
