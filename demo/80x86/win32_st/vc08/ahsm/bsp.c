@@ -37,6 +37,7 @@
 #include <time.h>
 
 
+#define BIN_TRACE					1
 #define ESC							0x1B
 #define kbmap( c )					( c - '0' )
 
@@ -45,6 +46,9 @@ RKH_THIS_MODULE
 
 static char fmt[ 64 ];
 FILE *fdbg;
+#if BIN_TRACE == 1
+static FILE *ftbin;
+#endif
 static DWORD tick_msec;			/* clock tick in msec */
 rkhui8_t running;
 MYEVT_T *mye;
@@ -170,6 +174,13 @@ rkh_trc_open( void )
 		exit( EXIT_FAILURE );
 	}
 
+#if BIN_TRACE == 1
+	if( ( ftbin = fopen( "../ftbin", "w+" ) ) == NULL )
+	{
+		perror( "Can't open file\n" );
+		exit( EXIT_FAILURE );
+	}
+#endif
 	trazer_init();
 }
 
@@ -178,7 +189,18 @@ void
 rkh_trc_close( void )
 {
 	fclose( fdbg );
+#if BIN_TRACE == 1
+	fclose( ftbin );
+#endif
 }
+
+
+#if BIN_TRACE == 1
+	#define ftbin_flush( d )	\
+				fwrite ( d, 1, 1, ftbin )
+#else
+	#define ftbin_flush()
+#endif
 
 
 RKHTS_T 
@@ -194,7 +216,10 @@ rkh_trc_flush( void )
 	rkhui8_t *d;
 
 	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	{
+		ftbin_flush( d );
 		trazer_parse( *d );
+	}
 }
 
 
