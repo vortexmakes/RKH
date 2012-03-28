@@ -72,10 +72,9 @@ rkh_init( void )
 {
     InitializeCriticalSection( &csection );
     sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
-	rkh_trc_open();
+	
 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
-	RKH_TRCR_RKH_INIT();
 }
 
 

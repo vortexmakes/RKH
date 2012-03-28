@@ -203,6 +203,8 @@ static char *h_none( const void *tre ),
 			*h_symnblk( const void *tre ),
 			*h_2symnused( const void *tre ),
 			*h_symnused( const void *tre ),
+			*h_symobj( const void *tre ),
+			*h_symsig( const void *tre ),
 			*h_2symntick( const void *tre ),
 			*h_symntick( const void *tre );
 
@@ -290,8 +292,6 @@ static const TRE_T traces[] =
 			"timer=%s", 					h_1sym ),
 
 	/* --- Framework (RKH) ------------------- */
-	MKTR( 	RKH_TRCE_RKH_INIT,	"RKH", "INIT", 
-			"", 							h_none ),
 	MKTR( 	RKH_TRCE_RKH_EN,	"RKH", "ENTER", 
 			"", 							h_none ),
 	MKTR( 	RKH_TRCE_RKH_EX,	"RKH", "EXIT", 
@@ -307,7 +307,11 @@ static const TRE_T traces[] =
 	MKTR( 	RKH_TRCE_RKH_DEFER,	"RKH", "DEFER", 
 			"rq=%s, sig=%s", 				h_symevt ),
 	MKTR( 	RKH_TRCE_RKH_RCALL,	"RKH", "RECALL", 
-			"sma=%s, sig=%s", 				h_symevt )
+			"sma=%s, sig=%s", 				h_symevt ),
+	MKTR( 	RKH_TRCE_OBJ,		"RKH", "SYM_OBJ", 
+			"obj=0x%08X, sym=%s", 			h_symobj ),
+	MKTR( 	RKH_TRCE_SIG,		"RKH", "SYM_SIG", 
+			"sig=%d, sym=%s", 				h_symsig )
 };
 
 
@@ -366,6 +370,7 @@ extern FILE *fdbg;
 extern RKHT_T my_timer;
 static rkhui8_t state = PARSER_WFLAG;
 static rkhui8_t tr[ PARSER_MAX_SIZE_BUF ], *ptr, trix;
+static char symstr[ 16 ];
 
 
 static
@@ -449,6 +454,20 @@ assemble( int size )
 	for( d = 0, n = size, sh = 0; n; --n, sh += 8  )
 		d |= ( unsigned long )( *trb++ << sh );
 	return d;
+}
+
+
+static
+char *
+assemble_str( void  )
+{
+	char *p;
+
+	for( p = symstr; *trb != '\0'; ++p, ++trb )
+		*p = *trb;
+	
+	*p = '\0';
+	return symstr;
 }
 
 
@@ -658,6 +677,30 @@ h_ae( const void *tre )
 }
 
 
+char *
+h_symobj( const void *tre )
+{
+	unsigned long obj;
+	char *s;
+
+	obj = (unsigned long)assemble( TRAZER_SIZEOF_POINTER );
+	s = assemble_str();
+	sprintf( fmt, CTE( tre )->fmt, obj, s );
+	return fmt;
+}
+
+
+char *
+h_symsig( const void *tre )
+{
+	TRZE_T e;
+	char *s;
+
+	e = (TRZE_T)assemble( sizeof( TRZE_T ) );
+	s = assemble_str();
+	sprintf( fmt, CTE( tre )->fmt, e, s );
+	return fmt;
+}
 
 
 static

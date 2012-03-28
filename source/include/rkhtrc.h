@@ -265,7 +265,6 @@ typedef enum rkh_trc_events
 	RKH_TRCE_TIM_ATTEMPT_STOP,
 
 	/* --- Framework events (RKH group) ------------------- */
-	RKH_TRCE_RKH_INIT,
 	RKH_TRCE_RKH_EN,
 	RKH_TRCE_RKH_EX,
 	RKH_TRCE_RKH_EPREG,
@@ -274,6 +273,8 @@ typedef enum rkh_trc_events
 	RKH_TRCE_RKH_GCR,
 	RKH_TRCE_RKH_DEFER,
 	RKH_TRCE_RKH_RCALL,
+	RKH_TRCE_OBJ,
+	RKH_TRCE_SIG,
 
 	RKH_TRCE_USER,
 
@@ -766,10 +767,6 @@ typedef enum rkh_trc_events
 
 	/* --- Framework (RKH) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RKH == 1
-		#define RKH_TRCR_RKH_INIT()										\
-					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_INIT )	\
-					RKH_TRC_END()
-
 		#define RKH_TRCR_RKH_EN()										\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_EN )		\
 					RKH_TRC_END()
@@ -812,8 +809,28 @@ typedef enum rkh_trc_events
 						RKH_TRC_SYM( sma );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
+
+		/* --- Symbol entry table for objects --------- */
+		#define RKH_TRCR_RKH_OBJ( __o )									\
+				do{ 													\
+					static RKHROM char *const __o_n = #__o;				\
+					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_OBJ )			\
+						RKH_TRC_SYM( __o );								\
+						RKH_TRC_STR( __o_n );							\
+					RKH_TRC_END();										\
+				} while(0)
+
+		/* --- Symbol entry table for event signals ---- */
+		#define RKH_TRCR_RKH_SIG( __s )									\
+				do{ 													\
+					static RKHROM char *const __s_n = #__s;				\
+					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_SIG )			\
+						RKH_TRC_SIG( __s );								\
+						RKH_TRC_STR( __s_n );							\
+					RKH_TRC_END();										\
+				} while(0)
+
 	#else
-		#define RKH_TRCR_RKH_INIT()
 		#define RKH_TRCR_RKH_EN()
 		#define RKH_TRCR_RKH_EX()
 		#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )
@@ -823,26 +840,6 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_RKH_DEFER( q, ev )
 		#define RKH_TRCR_RKH_RCALL( sma, ev )
 	#endif
-	
-	/* --- Symbol entry table for objects --------- */
-	#define RKH_TRCR_RKH_OBJ( obj )								\
-				do {											\
-					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_OBJ )	\
-						static const char *obj_n_ = #obj;		\
-						RKH_TRC_UI32( obj );					\
-						RKH_TRC_STR( obj_n_ );					\
-					RKH_TRC_END();								\
-				} while( 0 )
-
-	/* --- Symbol entry table for event signals ---- */
-	#define RKH_TRCR_RKH_SIG( sig, str )						\
-				do {											\
-					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_SIG )	\
-						static const char *sig_n_ = #sig;		\
-						RKH_TRC_SIG( (RKHE_T)sig );				\
-						RKH_TRC_STR( str );						\
-						RKH_TRC_END();							\
-				} while( 0 )
 	
 #else
 	/* --- Memory Pool (MP) ------------------ */
@@ -891,7 +888,6 @@ typedef enum rkh_trc_events
 	#define RKH_TRCR_TIM_ATTEMPT_STOP( t )
 
 	/* --- Framework (RKH) ----------------------- */
-	#define RKH_TRCR_RKH_INIT()
 	#define RKH_TRCR_RKH_EN()
 	#define RKH_TRCR_RKH_EX()
 	#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )

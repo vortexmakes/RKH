@@ -27,9 +27,16 @@ main( int argc, char *argv[] )
 
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_MP, RKH_TRCE_MP_INIT );
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_DCH );
+	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
+	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
 
+	rkh_trc_open();
 	rkh_init();
-	
+
+	RKH_TRCR_RKH_OBJ( &rkheplist[0] );
+	RKH_TRCR_RKH_OBJ( &rkheplist[1] );
+	RKH_TRCR_RKH_SIG( ONE );
+
 	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
 	rkh_enter();
 
