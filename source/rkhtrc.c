@@ -196,7 +196,7 @@ rkh_trc_ui32( rkhui32_t d )
 void 
 rkh_trc_str( const char *s )
 {
-	while( *s != ( const char* )0 )
+	while( *s != '\0' )
 		rkh_trc_ui8( (rkhui8_t)*s++ );
 }
 #endif
