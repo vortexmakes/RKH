@@ -78,7 +78,7 @@
 #define RKH_SMA_EN_GET_INFO				0	/* 	CFG01 */
 
 #define RKH_TRC_EN						1	/* 	CFG01 */
-#define RKH_TRC_MAX_EVENTS				16	/* 	CFG01 */
+#define RKH_TRC_MAX_EVENTS				8	/* 	CFG01 */
 #define RKH_TRC_RUNTIME_FILTER			1	/* 	CFG01 */
 #define RKH_TRC_ALL						1	/* 	CFG01 */
 #define RKH_TRC_EN_MP					0	/* 	CFG01 */

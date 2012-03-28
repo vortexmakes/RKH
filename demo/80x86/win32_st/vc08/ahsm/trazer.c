@@ -127,6 +127,15 @@ RKH_THIS_MODULE
 #endif
 
 
+#if TRAZER_EN_NSEQ == 1
+	#define get_nseq()		nseq = tr[ 1 ]
+	#define set_to_ts()		trb = tr + 2
+#else
+	#define get_nseq()		nseq = 0
+	#define set_to_ts()		trb = tr + 1
+#endif
+
+
 #define MKTR( id, gn, nm, fmt, fargs )	\
 				{ id, gn, nm, fmt, fargs }
 
@@ -669,18 +678,18 @@ static
 int
 parser_chk( void )
 {
+#if TRAZER_EN_CHK == 1
 	rkhui8_t *p, chk;
 	int i;
 
 	for( chk = 0, p = tr, i = trix; i--; ++p )
 		chk = (rkhui8_t)( chk + *p );
 	return chk == 0;
+#else
+	return 1;
+#endif
 }
 
-
-/*
- * 	Do not support TRAZER_EN_CHK = 0 and TRAZER_EN_NSEQ = 0.
- */
 
 static
 void
@@ -694,8 +703,8 @@ parser( void )
 	{
 		if( ftr->fmt_args != ( HDLR_T )0 )
 		{
-			nseq = tr[ 1 ];
-			trb = tr + 2;		/* from timestamp field */
+			get_nseq();
+			set_to_ts();		/* from timestamp field */
 			ts = ( TRZTS_T )assemble( TRAZER_SIZEOF_TSTAMP );
 			printf( trheader, ts, nseq, ftr->group, ftr->name );
 			fprintf( fdbg, trheader, ts, nseq, ftr->group, ftr->name );

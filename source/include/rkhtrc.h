@@ -389,8 +389,7 @@ typedef enum rkh_trc_events
 #define RKH_TRC_HDR( eid ) 			\
 			chk = 0;				\
 			RKH_TRC_UI8( eid );		\
-			RKH_TRC_UI8( nseq );	\
-			++nseq;					\
+			RKH_TRC_NSEQ();			\
 			RKH_TRC_TSTAMP()
 
 
