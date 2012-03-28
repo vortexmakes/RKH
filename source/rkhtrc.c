@@ -161,7 +161,7 @@ rkh_trc_ui8( rkhui8_t d )
 {
 	chk = (rkhui8_t)( chk + d );
 	if( d == RKH_FLG || d == RKH_ESC )
-	{
+	{// must at least enable interrupts
 		rkh_trc_put( RKH_ESC );
 		rkh_trc_put( d ^ RKH_XOR );
 	}

@@ -1380,12 +1380,27 @@ void rkh_hk_exit( void );
 
 /**
  * 	\brief
- * 	An idle hook function will only get executed when there are no SMAs of 
- * 	higher priority that are ready to run. 
+ * 	An idle hook function will only get executed (with interrupts LOCKED) 
+ * 	when there are no SMAs of higher priority that are ready to run.
  *
  * 	This makes the idle hook function an ideal place to put the processor 
  * 	into a low power state - providing an automatic power saving whenever 
  * 	there is no processing to be performed.
+ *
+ * 	\note
+ *	The rkh_hk_idle() callback is called with interrupts locked, because the
+ *	determination of the idle condition might change by any interrupt posting
+ *	an event. This function must internally unlock interrupts, ideally
+ *	atomically with putting the CPU to the power-saving mode.
+ *
+ *	Example:
+ *	
+ *	void
+ *	rkh_hk_idle( void ) 		// NOTE: entered with interrupts DISABLED
+ *	{
+ *		RKH_ENA_INTERRUPT();	// must at least enable interrupts
+ *		...
+ *	}
  */
 
 void rkh_hk_idle( void );
