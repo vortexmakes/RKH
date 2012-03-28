@@ -90,7 +90,12 @@ rkh_tim_tick( void )
 				t->ntick = t->period;
 			else
 				rem_from_list( t );
- 			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
+			#if RKH_TIM_EN_HOOK == 1
+			if( t->timhk != ( RKH_THK_T )0 )
+				(*t->timhk)( t );
+			#endif
+			if( t->sma != ( RKHSMA_T* )0 )
+	 			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
 			RKH_TRCR_TIM_TOUT( t );
 		}
 
@@ -123,9 +128,8 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 	RKH_SR_CRITICAL_;
 	
 	RKHREQUIRE( 	t != ( RKHT_T* )0 && 
-					sma != ( const RKHSMA_T* )0 && 
 					itick != 0 &&
-					t->tprev != ( RKHT_T* )0 );
+					t->tprev == ( RKHT_T* )0 );
 
 	t->sma = sma;
 	t->ntick = itick;
@@ -144,9 +148,7 @@ rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
 	RKH_SR_CRITICAL_;
 
 	RKHREQUIRE( 	t != ( RKHT_T* )0 && 
-					t->sma != ( RKHSMA_T* )0 && 
-					itick == 0 &&
-					t->tprev == ( RKHT_T* )0 );
+					itick == 0 );
 
 	RKH_ENTER_CRITICAL_();
 
