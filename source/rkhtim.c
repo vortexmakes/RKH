@@ -39,7 +39,16 @@
 RKH_MODULE_NAME( rkhtim )
 
 
-#define CPT( p )		(( RKHT_T* )(p))
+#define CPT( p )			(( RKHT_T* )(p))
+
+#if RKH_TIM_EN_HOOK == 1
+	#define RKH_EXEC_THOOK()							\
+					if( t->timhk != ( RKH_THK_T )0 )	\
+						(*t->timhk)( t )
+#else
+	#define RKH_EXEC_THOOK()	
+#endif
+
 static RKHT_T *thead;
 
 
@@ -78,28 +87,22 @@ rkh_tim_tick( void )
 	RKHT_T *t;
 	RKH_SR_CRITICAL_;
 
-	if( thead == CPT( 0 ) )	/* is empty list? */
+	if( thead == CPT( 0 ) )				/* is empty list? */
 		return;
 
 	RKH_ENTER_CRITICAL_();
 	for( t = thead; t != CPT( 0 ); t = t->tnext )
-	{
 		if( !--t->ntick )
 		{
 			if( t->period != 0 )
 				t->ntick = t->period;
 			else
 				rem_from_list( t );
-			#if RKH_TIM_EN_HOOK == 1
-			if( t->timhk != ( RKH_THK_T )0 )
-				(*t->timhk)( t );
-			#endif
+			RKH_EXEC_THOOK();
 			if( t->sma != ( RKHSMA_T* )0 )
 	 			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
 			RKH_TRCR_TIM_TOUT( t );
 		}
-
-	}
 	RKH_EXIT_CRITICAL_();
 }
 
