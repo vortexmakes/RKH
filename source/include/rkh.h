@@ -155,6 +155,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 
 /**
+ * 	\brief
  * 	Each condition connector can have one special branch with a guard 
  *	labeled ELSE, which is taken if all the guards on the other 
  *	branches are false.
@@ -593,6 +594,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**@{
  *
+ * 	\brief
  * 	Declares a previously created state/pseudostate to be used 
  * 	as a global object.  
  *
@@ -638,6 +640,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 
 /** 	
+ * 	\brief
  *  Return codes from rkh_dispatch() function.
  */
 
@@ -877,8 +880,8 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	(.c file), thus the structure definition is in fact entirely encapsulated 
  *	in its module and is inaccessible to the rest of the application. 
  *	However, use the RKH_SMA_DCLR_HSM() macro to declare a "opaque" pointer 
- *	to that state machine structure to be used in the rest of the application
- *	but hiding the proper definition.
+ *	to that state machine application structure to be used in the rest of the 
+ *	application but hiding the proper definition.
  * 	RKHSMA_T is not intended to be instantiated directly, but rather
  * 	serves as the base structure for derivation of state machines in the
  * 	application code.
@@ -901,33 +904,30 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	RKH_SMA_CREATE( MYSM_T, 0, my, 0, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
- * 	\param sma_t		pointer to previously created state machine 
- * 						application.
- * 	\param name			name of state machine application. Represents the top 
- * 						state of state diagram. String terminated in '\\0' that 
- * 						represents the name of state machine. When a particular 
- * 						user application requires runtime tracing (native 
- * 						tracing features), the option RKH_EN_SMA_NAME must be 
- * 						set to one.
+ * 	\param sma_t		data type of the SMA. Could be derived from RKHSMA_T.
  * 	\param id			ID of state machine application. This number allows 
- * 						to uniquely identify a state machine. When a 
- * 						particular application requires runtime tracing
- * 						(native tracing features), the option RKH_EN_SMA_ID 
- * 						must be set to one. 
+ * 						to uniquely identify a state machine.
+ * 	\param name			name of state machine application. Represents the top 
+ * 						state of state diagram.
  * 	\param prio			state machine application priority. A unique priority 
  * 						number must be assigned to each SMA from 0 to 
  * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
  * 						priority. 
  * 	\param ppty			state machine properties. The available properties are
- * 						enumerated in RKH_HPPTY_T enumeration in the rkh.h file.
+ * 						enumerated in RKH_HPPTY_T enumeration in the rkh.h 
+ * 						file.
  * 	\param ist			pointer to initial state. This state could be defined 
  * 						either composite or basic (not pseudo-state).
- * 	\param iact			pointer to initialization action (optional). The function 
- * 						prototype is defined as RKHINIT_T. This argument is 
- * 						optional, thus it could be declared as NULL.
+ * 	\param iact			pointer to initialization action (optional). The 
+ * 						function prototype is defined as RKHINIT_T. This 
+ * 						argument is optional, thus it could be declared as 
+ * 						NULL.
  * 	\param ievt			pointer to an event that will be passed to state 
  * 						machine application when it starts. Could be used to 
  * 						pass arguments to the state machine like an argc/argv.
+ * 						This argument is optional, thus it could be declared 
+ * 						as NULL or eliminated in compile-time with 
+ * 						RKH_SMA_EN_IEVENT = 0.
  */
 
 #define RKH_SMA_CREATE( sma_t, id, name, prio, ppty, ist, iact, ievt )		\
@@ -1035,6 +1035,7 @@ RKHEVT_T *rkh_sma_get( RKHSMA_T *sma );
  * 	\brief
  * 	Retrieves performance information for a particular state machine 
  * 	application. 
+ *
  *	The user application must allocate an RKH_SMAI_T data structure used to 
  *	receive data. The performance information is available during run-time 
  *	for each of the RKH services. This can be useful in determining whether 
@@ -1159,6 +1160,7 @@ void rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize );
 
 
 /**
+ * 	\brief
  * 	Internal RKH implementation of the dynamic event allocator. 
  *
  * 	\note
@@ -1233,7 +1235,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  */
 
 #if RKH_EN_DYNAMIC_EVENT == 1
-	#define RKH_GC( e ) 		rkh_gc( e )
+	#define RKH_GC( e ) 			rkh_gc( e )
 	void rkh_gc( RKHEVT_T *e );
 #else
 	#define RKH_GC( e )
@@ -1356,7 +1358,6 @@ void rkh_hk_timeout( const void *t );
  *	The start hook will only get called if RKH_HK_EN_START is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
- *
  */
 
 void rkh_hk_start( void );
@@ -1372,7 +1373,6 @@ void rkh_hk_start( void );
  *	The exit hook will only get called if RKH_HK_EN_EXIT is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
- *
  */
 
 void rkh_hk_exit( void );
@@ -1450,54 +1450,6 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
 								((RKHBASE_T*)((sma)->state))->id	
 
 
-/**	
- * 	\brief
- * 	This macro retrieves the current state name of SMA.
- *
- * 	\param sma		pointer to previously created state machine application.
- *
- * 	\returns
- * 	Name of current state.
- */
-
-#define rkh_get_cstate_name( sma )									\
-								((RKHBASE_T*)((sma)->state))->name	
-
-
-/**	
- * 	\brief
- * 	This macro retrieves the SMA's name.
- *
- * 	\param sma		pointer to previously created state machine application.
- *
- * 	\returns
- * 	Name of state machine.
- */
-
-#define rkh_get_sm_name( sma )						\
-								(sma)->romrkh->name
-
-
-/**	
- * 	\brief
- * 	This macro retrieves the state's abstract data.
- *
- *	Aditionally, by means of single inheritance in C it could be used 
- *	as state's abstract data. Aditionally, implementing the single 
- *	inheritance in C is very simply by literally embedding the base type, 
- *	#RKHPPRO_T in this case, as the first member of the derived structure. 
- *	See member \a prepro of RKHSREG_T structure for more information.
- *
- * 	\param sma		pointer to previously created state machine application.
- *
- * 	\returns
- * 	Pointer to state's abstract data.
- */
-
-#define rkh_get_sdata( sma )							\
-								((sma)->state->sdata)	
-
-
 /**
  * 	\brief
  * 	Erase the history of a state. It can be a shallow or deep history.
@@ -1520,28 +1472,19 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	Example:
  *
  *	\code
- * 	//	...in some application module
- *
  *	void 
  *	my_rkh_trc_open( void )
  *	{
- *		RKHTRCFG_T *pcfg;
- *		
  *		rkh_trc_init();
- *		rkh_trc_config( MY, RKH_TRC_EN_LOG, RKH_TRC_EN_PRINT );
- *		rkh_trc_control( MY, RKH_TRC_START );
- *		
- *		if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
+ *		rkh_trc_control( RKH_TRC_START );
+ *
+ *		if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
  *		{
  *			perror( "Can't open file\n" );
  *			exit( EXIT_FAILURE );
  *		}
- *		fprintf( fdbg, 
- *			"---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
- *		pcfg = rkh_trc_getcfg( MY );
- *		if( pcfg->print == RKH_TRC_EN_PRINT )
- *			printf( "---- RKH trace log session - 
- *					"__DATE__" - "__TIME__" ----\n\n" );
+ *
+ *		trazer_init();
  *	}
  *	\endcode
  *
@@ -1563,8 +1506,6 @@ void rkh_trc_open( void );
  *	Example:
  *
  *	\code
- * 	//	...in some application module
- *
  *	void 
  *	rkh_trc_close( void )
  *	{
@@ -1592,35 +1533,18 @@ void rkh_trc_close( void );
  *	Example:
  *
  *	\code
- * 	//	...in some application module
- *
  * 	void 
  * 	rkh_trc_flush( void )
  * 	{
- * 		RKHTREVT_T te;
- * 		RKHTRCFG_T *pcfg;
- *
- * 		while( rkh_trc_getnext( &te ) != RKH_TRC_EMPTY )
+ * 		rkhui8_t *d;
+ * 		
+ * 		while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
  * 		{
- * 			pcfg = rkh_trc_getcfg( te.smaid );
- * 			if( pcfg->log == RKH_TRC_EN_LOG )
- * 				fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
- *													rkh_trc_getts(),
- *													tremap[ te.id ],
- *													smmap[ te.smaid ],
- *													format_trevt_args( &te ) );
- *			if( pcfg->print == RKH_TRC_EN_PRINT )
- *				printf( "%05d [ %-16s ] - %s : %s\n",
- *													rkh_trc_getts(),
- *													tremap[ te.id ],
- *													smmap[ te.smaid ],
- *													format_trevt_args( &te ) );
- *		}
- *	}
+ * 			ftbin_flush( d );
+ * 			trazer_parse( *d );
+ * 		}
+ * 	}
  *	\endcode
- *
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
  *
  * 	\sa \b rkhtrc.h file.
  */
@@ -1644,8 +1568,6 @@ void rkh_trc_flush( void );
  *	Example:
  *
  *	\code
- * 	//	...in some application module
- *	
  *	RKHTS_T 
  *	rkh_trc_getts( void )
  *	{

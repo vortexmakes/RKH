@@ -50,7 +50,7 @@
  *	...
  *	some_function( const char *p, int size )
  *	{
- *		RKHASSERT( 	p != NULL &&
+ *		RKHASSERT( 	p != ( const char* )0 &&
  *					size > 0  &&
  *					size < MAX_SIZE );
  *		...
@@ -182,7 +182,7 @@
 	 *	...
 	 *	some_function( const char *p, int size )
 	 *	{
-	 *		RKHASSERT( 	p != NULL &&
+	 *		RKHASSERT( 	p != ( const char* )0 &&
 	 *					size > 0  &&
 	 *					size < MAX_SIZE );
 	 *		...

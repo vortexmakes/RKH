@@ -1093,7 +1093,8 @@ void rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp );
  * 	\param evt		trace event. The available groups are enumerated in 
  * 					RKH_TRC_EVENTS.
  */
-void rkh_trc_filter_event_( rkhui8_t rule, rkhui8_t evt );
+
+void rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt );
 
 
 /**
@@ -1118,6 +1119,12 @@ HUInt rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e );
 
 /**
  * 	\brief
+ * 	Prepare the trace event to record.
+ * 	Store the event ID, the number of sequence, and the timestamp.
+ *
+ * 	\note
+ *	This function should be called indirectly through the macro 
+ *	RKH_TRC_BEGIN.
  */
 
 void rkh_trc_begin( rkhui8_t eid );
@@ -1125,6 +1132,11 @@ void rkh_trc_begin( rkhui8_t eid );
 
 /**
  * 	\brief
+ * 	Terminate the recorded trace event.
+ *
+ * 	\note
+ *	This function should be called indirectly through the macro 
+ *	RKH_TRC_END.
  */
 
 void rkh_trc_end( void );
@@ -1156,7 +1168,7 @@ void rkh_trc_ui32( rkhui32_t d );
 
 /**
  * 	\brief
- * 	Store a string terminated in '\0' into the current trace event buffer.
+ * 	Store a string terminated in '\\0' into the current trace event buffer.
  */
 
 void rkh_trc_str( const char *s );

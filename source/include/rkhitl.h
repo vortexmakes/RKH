@@ -770,6 +770,8 @@
 struct rkh_t;
 
 
+#define CIA( s )	((RKHINIT_T)((s)->romrkh->iaction))
+
 /**
  * 	\brief
  * 	Initialization action.
@@ -787,8 +789,6 @@ struct rkh_t;
  * 	\note
  * 	This callback is referenced from RKH_CREATE_HSM() macro.
  */
-
-#define CIA( s )	((RKHINIT_T)((s)->romrkh->iaction))
 
 #if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_INIT_ARG_IE == 1
 	typedef void ( *RKHINIT_T )( const void *sma, 
@@ -878,11 +878,11 @@ typedef struct romrkh_t
 	 * 	
 	 * 	ID of state machine application. This number allows to uniquely 
 	 * 	identify a state machine. When a particular application requires 
-	 * 	runtime tracing (native tracing features), the option RKH_EN_SMA_ID 
+	 * 	runtime tracing (native tracing features), the option RKH_SMA_EN_ID 
 	 * 	must be set to one. 
 	 */
 
-#if RKH_SMA_EN_ID	== 1
+#if RKH_SMA_EN_ID == 1
 	rkhui8_t id;
 #endif
 
@@ -1141,6 +1141,8 @@ typedef struct rkhsma_t
 #endif
 
 
+#define CTA( ta )	((RKHACT_T)(ta))
+
 /**
  * 	\brief
  * 	Actions.
@@ -1163,8 +1165,6 @@ typedef struct rkhsma_t
  * 	\note
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
  */
-
-#define CTA( ta )	((RKHACT_T)(ta))
 
 #if RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 1
 
