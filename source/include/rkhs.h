@@ -41,16 +41,44 @@
 
 #if RKH_EN_NATIVE_SCHEDULER == 1
 
+	/**
+	 * 	\brief
+	 * 	Data type of the event queue for SMA (active object).
+	 */
+
 	#define RKH_EQ_TYPE				RKHRQ_T
+
+	/**
+	 * 	\brief
+	 * 	Encapsulates the mechanism of blocking the used event queue.
+	 */
 
 	#define RKH_SMA_BLOCK( sma ) 							\
 					RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
 
+	/**
+	 * 	\brief
+	 * 	Encapsulates the mechanism of signaling the thread waiting on the 
+	 * 	used event queue. Thus, the SMA is inserted in the ready list as 
+	 * 	ready-to-dispatch.
+	 */
+
 	#define RKH_SMA_READY( rg, sma ) 						\
 					rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
+	/**
+	 * 	\brief
+	 * 	Informs the underlying kernel that the SMA event queue is becoming 
+	 * 	empty. Thus, the SMA is removed from the ready list.
+	 */
+
 	#define RKH_SMA_UNREADY( rg, sma ) 						\
 					rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+
+	/**
+	 * 	\brief
+	 * 	List of ready active objects.
+	 */
 
 	extern RKHRG_T rkhrg;
 

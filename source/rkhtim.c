@@ -130,7 +130,7 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 {
 	RKH_SR_CRITICAL_;
 	
-	RKHREQUIRE( 	t != ( RKHT_T* )0 && 
+	RKHREQUIRE( 	t == ( RKHT_T* )0 && 
 					itick != 0 &&
 					t->tprev == ( RKHT_T* )0 );
 

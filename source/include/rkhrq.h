@@ -341,6 +341,7 @@ HUInt rkh_rq_read( RKHRQ_T *q, void *pe );
 /**
  * 	\brief
  * 	Retrieves performance information for a particular queue. 
+ *
  *	The user application must allocate an RKH_RQI_T data structure used to 
  *	receive data. The performance information is available during run-time 
  *	for each of the RKH services. This can be useful in determining whether 
