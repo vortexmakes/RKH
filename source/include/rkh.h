@@ -473,11 +473,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a branch table. This table have the general 
  *	structure shown below:
  *	\code
- *	RKH_CREATE_BRANCH_TABLE( ps_name )			// branch table begin
- *		RKH_BRANCH( ... )						// branch
- *		RKH_BRANCH( ... )						// branch
- *		...
- *	RKH_END_BRANCH_TABLE						// branch table end
+ *	RKH_CREATE_BRANCH_TABLE( C2 )
+ *		RKH_BRANCH( is_power_ok, 	enable_process,	&power		),
+ *		RKH_BRANCH( is_switch_off, 	turnoff,		&wait		),
+ *		RKH_BRANCH( ELSE, 			abort,			&aborted	),
+ *	RKH_END_BRANCH_TABLE
  *	\endcode
  *
  * 	Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE() 
@@ -510,20 +510,22 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	
  *	Example:
  *	\code
- *	RKH_CREATE_BRANCH_TABLE( C1 )
- *		RKH_BRANCH( power_ok, 	enable_process,	&S22	),
- *		RKH_BRANCH( ELSE, 		abort,			&S4 	),
- *		RKH_END_BRANCH_TABLE
+ *	RKH_CREATE_BRANCH_TABLE( C2 )
+ *		RKH_BRANCH( is_power_ok, 	enable_process,	&power		),
+ *		RKH_BRANCH( is_switch_off, 	turnoff,		&wait		),
+ *		RKH_BRANCH( ELSE, 			abort,			&aborted	),
+ *	RKH_END_BRANCH_TABLE
  *	\endcode
  *
  *	\sa
  *	RKHTR_T structure definition for more information.
  *
- * 	\param g		branch guard. Branches are labeled with guards that 
- * 					determine which one is to be actually taken. Use rkh_else
- * 					when if all the guards on the other branches are false.
- * 	\param a		pointer to action function. This argument is 
- *					optional, thus it could be declared as NULL.
+ * 	\param g		branch guard function. Branches are labeled with guards 
+ * 					that determine which one is to be actually taken. Use 
+ * 					ELSE macro when if all the guards on the other branches 
+ * 					are false.
+ * 	\param a		pointer to transition action. This argument is optional, 
+ * 					thus it could be declared as NULL.
  * 	\param t		pointer to target state.
  */
 
@@ -543,11 +545,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro is used to terminate a state transition table.
  *	This table have the general structure shown below:
  *	\code
- *	RKH_CREATE_BRANCH_TABLE( ps_name )			// branch table begin
- *		RKH_BRANCH( ... )						// branch
- *		RKH_BRANCH( ... )						// branch
- *		...
- *	RKH_END_BRANCH_TABLE						// branch table end
+ *	RKH_CREATE_BRANCH_TABLE( C2 )
+ *		RKH_BRANCH( is_power_ok, 	enable_process,	&power		),
+ *		RKH_BRANCH( is_switch_off, 	turnoff,		&wait		),
+ *		RKH_BRANCH( ELSE, 			abort,			&aborted	),
+ *	RKH_END_BRANCH_TABLE
  *	\endcode
  *
  * 	Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE() 
@@ -635,8 +637,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_DCLR_SM_GLOBAL( sma_t, sm, gob )				\
-															\
-							sma_t * const gob = &s_##sm;
+									sma_t * const gob = &s_##sm;
 
 
 /** 	
@@ -826,7 +827,7 @@ void rkh_tim_tick( void );
  *
  *	Example:
  *	\code
- *	//	...within state-machine's module
+ *	...within state-machine application's module
  *
  *	typedef struct
  *	{
@@ -841,9 +842,8 @@ void rkh_tim_tick( void );
  *	void
  *	main( void )
  *	{
- *		// ...
+ *		...
  *		rkh_sma_activate( my, 4, qsto, sizeof( RKHEVT_T* ), (void*)0, 0 );
- *		// ...
  *	}
  *	\endcode
  * 	
@@ -891,7 +891,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *
  *	Example:
  *	\code
- *	//	...within state-machine's module
+ *	...within state-machine application's module
  *
  *	typedef struct
  *	{
@@ -941,6 +941,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 /**
  * 	\brief
  * 	Terminate a state machine application. 
+ *
  * 	A state machine application may call this service to terminate itself. Once 
  * 	terminated, the state machine application must be re-created in order for 
  * 	it to execute again.
@@ -961,15 +962,14 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 /**
  * 	\brief
  * 	Send an event to a state machine application through a queue using the 
- * 	FIFO policy. 
- * 	A message is a pointer size variable and its use is application specific. 
+ * 	FIFO policy. A message is a pointer size variable and its use is 
+ * 	application specific. 
  *
  * 	\note 
  *	For memory efficiency and best performance the SMA's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *	The assertion inside it guarantee that the pointer is valid, so is not 
  *	necessary to check the pointer returned from rkh_sma_post_fifo().
- *
  *	\note 
  *	Platform-dependent function. All RKH ports must be defined in the RKH 
  *	port file to a particular platform. However, only the ports to the 
@@ -986,15 +986,14 @@ void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
 /**
  * 	\brief
  * 	Send an event to a state machine application through a queue using the 
- * 	LIFO policy. 
- * 	A message is a pointer size variable and its use is application specific. 
+ * 	LIFO policy. A message is a pointer size variable and its use is 
+ * 	application specific. 
  *
  * 	\note
  *	For memory efficiency and best performance the SMA's event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
  *	The assertion inside it guarantee that the pointer is valid, so is not 
  *	necessary to check the pointer returned from rkh_sma_post_lifo().
- *
  *	\note 
  *	Platform-dependent function. All RKH ports must be defined in the RKH 
  *	port file to a particular platform. However, only the ports to the 
@@ -1279,7 +1278,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  *	\code
  *	...
  *	static RKH_DCLR_STATIC_EVENT( etimer, RPC_TIMER_RET );
- *	...
+ *
  *	void
  *	offhook( void )
  *	{

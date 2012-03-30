@@ -27,6 +27,32 @@
  * 	\file rkhplat.h
  *	\brief
  *	RKH platform-dependent interface.
+ *
+ * 	Each platform, compiler or processor supported by RKH must have its own 
+ * 	platform-dependent file, called rkhport.h by RKH convention. Next, each 
+ * 	rkhport.h file must be referenced from rkhplat.h header file, 
+ *	located in \\include directory.  The next listing shows an example of 
+ *	rkhplat.h, where __CFV1CW63__, and __W32STVC08__ are used to 
+ *	instruct the C/C++ compiler to include header files from the specific 
+ *	RKH port directory.
+ *
+ *	\code
+ *	#ifdef __CFV1CW63__
+ *		#include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
+ *	#endif
+ *
+ *	#ifdef __W32STVC08__
+ *		#include "..\portable\80x86\win32_st\vc08\rkhport.h"
+ *	#endif
+ *	...
+ *	\endcode
+ *
+ *	The idea behind conditional compilation is that a rkhport.h can be 
+ *	selectively compiled, depending upon whether a specific value has been 
+ *	defined.
+ *
+ *	\note
+ *	The path of platform-dependent file must be relative.
  */
 
 
@@ -42,7 +68,8 @@
 	#include "..\portable\80x86\win32_st\vc08\rkhport.h"
 #endif
 
-/*
+/**
+ * 	\brief
  *	If RKHROM has not been defined then	rkhport.h has not yet been 
  *	included - as every rkhport.h provides a RKHROM definition.
  */

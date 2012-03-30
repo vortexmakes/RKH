@@ -42,27 +42,27 @@
  * 	SMA's priority = | 0 | 0 | Y | Y | Y | X | X | X |
  *
  * 	Y's:	bit position in rkhrg.grp and 
- * 			index into rkhrg.tbl[RKH_LOWEST_PRIO / 8 + 1]
+ * 			index into rkhrg.tbl[RKH_LOWEST_PRIO / 8 + 1]\n
  * 	X's:	bit position in rkhrg.tbl[RKH_LOWEST_PRIO / 8 + 1]
  *
  * 	The lower 3 bits (X's) of the SMA's priority are used to determine the 
  * 	bit position in rkhrg.tbl[], while the next three most significant bits 
  * 	(Y's) are used to determine the index into rkhrg.tbl[]. Note that 
  * 	rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a 
- * 	bit mask.
+ * 	bit mask. \n\n
  *
  * 	To determine which priority (and thus which SMA) will run next, the 
  * 	scheduler determines the lowest priority number that has its bit set in 
  * 	rkhrg.tbl[]. The relationship between rkhrg.grp and rkhrg.tbl[] is 
  * 	given by the following rules:
  *
- * 	Bit 0 in rkhrg.grp is 1 when any bit in rkhrg.tbl[0] is 1.
- * 	Bit 1 in rkhrg.grp is 1 when any bit in rkhrg.tbl[1] is 1.
- * 	Bit 2 in rkhrg.grp is 1 when any bit in rkhrg.tbl[2] is 1.
- * 	Bit 3 in rkhrg.grp is 1 when any bit in rkhrg.tbl[3] is 1.
- * 	Bit 4 in rkhrg.grp is 1 when any bit in rkhrg.tbl[4] is 1.
- * 	Bit 5 in rkhrg.grp is 1 when any bit in rkhrg.tbl[5] is 1.
- * 	Bit 6 in rkhrg.grp is 1 when any bit in rkhrg.tbl[6] is 1.
+ * 	Bit 0 in rkhrg.grp is 1 when any bit in rkhrg.tbl[0] is 1.\n
+ * 	Bit 1 in rkhrg.grp is 1 when any bit in rkhrg.tbl[1] is 1.\n
+ * 	Bit 2 in rkhrg.grp is 1 when any bit in rkhrg.tbl[2] is 1.\n
+ * 	Bit 3 in rkhrg.grp is 1 when any bit in rkhrg.tbl[3] is 1.\n
+ * 	Bit 4 in rkhrg.grp is 1 when any bit in rkhrg.tbl[4] is 1.\n
+ * 	Bit 5 in rkhrg.grp is 1 when any bit in rkhrg.tbl[5] is 1.\n
+ * 	Bit 6 in rkhrg.grp is 1 when any bit in rkhrg.tbl[6] is 1.\n
  * 	Bit 7 in rkhrg.grp is 1 when any bit in rkhrg.tbl[7] is 1.
  * 	
  * 	[JL]
@@ -99,9 +99,30 @@
 #endif
 
 
+/**
+ * 	\brief
+ *	SMA ready table.
+ *
+ *  Each SMA that is ready to run is placed in a ready list consisting of two 
+ * 	variables, rkhrg.grp and rkhrg.tbl[]. 
+ */
+
 typedef struct
 {
+	/**
+	 * 	\brief
+	 * 	Each bit in rkhrg.grp is used to indicate whenever any SMA in a group 
+	 * 	is ready to run. 
+	 */
+
 	rkhui8_t grp;
+
+	/**
+	 * 	\brief
+	 * 	When a task is ready to run it also sets its corresponding bit in the 
+	 * 	ready table, rkhrg.tbl[].
+	 */
+
 	unsigned char tbl[ RKH_NUM_RDYGRP ];
 } RKHRG_T;
 

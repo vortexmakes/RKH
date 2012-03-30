@@ -495,9 +495,12 @@
 #endif
 
 
-/**
+/**@{
+ * 	\brief
  * 	RKH need to disable interrupts in order to access critical sections of 
- * 	code, and re-enable interrupts when done. This allows RKH to protect 
+ * 	code, and re-enable interrupts when done. 
+ *
+ * 	This allows RKH to protect 
  * 	critical code from being entered simultaneously from either multiple 
  * 	SMAs or ISRs. Every processor generally provide instructions to 
  * 	disable/enable interrupts and the C compiler must have a mechanism to 
@@ -520,37 +523,23 @@
  * 	application can use RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL() to also 
  * 	protect critical sections of code. As a general rule, should always call 
  * 	RKH services with interrupts enabled!.
+ * 	
+ * 	\note
+ * 	These macros are internal to RKH and the user application should 
+ * 	not call it.
  */
 
 #ifdef RKH_CPUSR_TYPE
-	/** 
-	 * 	\brief
-	 * 	This macro is internal to RKH and the user application should 
-	 * 	not call it.
-	 */
 
 	#define RKH_SR_CRITICAL_			RKH_CPUSR_TYPE sr
-
-	/** 
-	 * 	\brief
-	 * 	This macro is internal to RKH and the user application should 
-	 * 	not call it.
-	 */
-
 	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( sr )
-
-	/** 
-	 * 	\brief
-	 * 	This macro is internal to RKH and the user application should 
-	 * 	not call it.
-	 */
-
 	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
 #else
 	#define RKH_SR_CRITICAL_
 	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( dummy )
 	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( dummy )
 #endif
+/*@}*/
 
 
 #ifndef RKH_EN_DOXYGEN
@@ -1046,25 +1035,19 @@ typedef struct rkhsma_t
 
 
 #if RKH_SMA_EN_ENT_ARG_SMA == 1
-	
 	typedef void ( *RKHENT_T )( const struct rkhsma_t *sma );
-
 	#define rkh_exec_entry( s, h )				\
 	{											\
 		if( (s)->enter != NULL )				\
 			(*(s)->enter)( h ); 				\
 	}
-
 #else
-	
 	typedef void ( *RKHENT_T )( void );
-
 	#define rkh_exec_entry( s, h )				\
 	{											\
 		if( (s)->enter != NULL )				\
 			(*(s)->enter)(); 					\
 	}
-
 #endif
 
 
@@ -1086,25 +1069,19 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_EXT_ARG_SMA == 1
-
 	typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma );
-
 	#define rkh_exec_exit( s, h )				\
 	{											\
 		if( (s)->exit != NULL )					\
 			(*(s)->exit)( h ); 					\
 	}
-
 #else
-	
 	typedef void ( *RKHEXT_T )( void );
-
 	#define rkh_exec_exit( s, h )				\
 	{											\
 		if( (s)->exit != NULL )					\
 			(*(s)->exit)(); 					\
 	}
-
 #endif
 
 
@@ -1129,15 +1106,11 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_PPRO_ARG_SMA == 1
-
 	typedef RKHE_T ( *RKHPPRO_T )( const struct rkhsma_t *sma, RKHEVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
-
 #else
-
 	typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( e )
-
 #endif
 
 
@@ -1145,10 +1118,10 @@ typedef struct rkhsma_t
 
 /**
  * 	\brief
- * 	Actions.
+ * 	Transition action.
  *
- * 	Actions are small atomic behaviors executed at specified points 
- * 	in a state machine. Actions are assumed to take an insignificant 
+ * 	Transition actions are small atomic behaviors executed at specified points 
+ * 	in a state machine. This actions are assumed to take an insignificant 
  * 	amount of time to execute and are noninterruptible. UML statecharts 
  * 	are extended state machines with characteristics of both Mealy and 
  * 	Moore automata. In statecharts, actions generally depend on both 
@@ -1167,25 +1140,17 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 1
-
 	typedef void (*RKHACT_T)( const struct rkhsma_t *sma, RKHEVT_T *pe );
 	#define rkh_call_action(h,e)	(*CTA( q ))( h, e )
-
 #elif RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 0
-	
 	typedef void (*RKHACT_T)( RKHEVT_T *pe );
 	#define rkh_call_action(h,e)	(*CTA( q ))( e )
-
 #elif RKH_SMA_EN_ACT_ARG_EVT == 0 && RKH_SMA_EN_ACT_ARG_SMA == 1
-	
 	typedef void (*RKHACT_T)( const struct rkhsma_t *sma );
 	#define rkh_call_action(h,e)	(*CTA( q ))( h )
-
 #else
-	
 	typedef void (*RKHACT_T)( void );
 	#define rkh_call_action(h,e)	(*CTA( q ))()
-
 #endif
 
 
@@ -1214,30 +1179,21 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_GRD_ARG_EVT == 1 && RKH_SMA_EN_GRD_ARG_SMA == 1
-
 	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma, RKHEVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
 	HUInt rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe );
-
 #elif RKH_SMA_EN_GRD_ARG_EVT == 1 && RKH_SMA_EN_GRD_ARG_SMA == 0
-	
 	typedef HUInt (*RKHGUARD_T)( RKHEVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
 	HUInt rkh_else( RKHEVT_T *pe );
-
-
 #elif RKH_SMA_EN_GRD_ARG_EVT == 0 && RKH_SMA_EN_GRD_ARG_SMA == 1
-	
 	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
 	HUInt rkh_else( const struct rkhsma_t *sma );
-
 #else
-	
 	typedef HUInt (*RKHGUARD_T)( void );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
 	HUInt rkh_else( void );
-
 #endif
 
 

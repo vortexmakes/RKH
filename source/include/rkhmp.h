@@ -28,7 +28,7 @@
  *
  * 	\brief
  * 	Platform-independent interface for supporting fixed-size memory blocks 
- * 	services.
+ * 	facility.
  *
  * 	Since memory block pools consist of fixed-size blocks, there are 
  * 	never any fragmentation problems. Of course, fragmentation causes 
@@ -87,6 +87,7 @@
 
 
 /**
+ * 	\brief
  * 	Defines the data structure into which the performance information for
  * 	memory pools is stored.
  */
@@ -131,6 +132,7 @@ typedef struct
 
 
 /**
+ * 	\brief
  * 	Describes the memory pool.
  */
 
