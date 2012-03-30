@@ -175,7 +175,7 @@ rkh_trc_open( void )
 	}
 
 #if BIN_TRACE == 1
-	if( ( ftbin = fopen( "../ftbin", "w+" ) ) == NULL )
+	if( ( ftbin = fopen( "../ftbin", "w+b" ) ) == NULL )
 	{
 		perror( "Can't open file\n" );
 		exit( EXIT_FAILURE );
@@ -196,8 +196,9 @@ rkh_trc_close( void )
 
 
 #if BIN_TRACE == 1
-	#define ftbin_flush( d )	\
-				fwrite ( d, 1, 1, ftbin )
+	#define ftbin_flush( d )				\
+				fwrite ( d, 1, 1, ftbin );	\
+				fflush( ftbin )
 #else
 	#define ftbin_flush()
 #endif
