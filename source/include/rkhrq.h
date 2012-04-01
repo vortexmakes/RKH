@@ -100,9 +100,24 @@ typedef struct rkh_qinfo_t
 /**
  * 	\brief
  * 	Defines the data structure used to maintain information about the queue. 
+ *
+ * 	RKH prohibits an application from explicitly modifying the RKHRQ_T 
+ * 	structure. The RKH's queue structures can be located anywhere in memory, 
+ * 	but it is most common to make it a global structure by defining it 
+ * 	outside the scope of any function.
+ * 	An RKH queue is created when an queue (copy by reference) is declared 
+ * 	with the RKHRQ_T data type. The following listing declares "gsmque" 
+ * 	timer:
+ *
+ * 	\code
+ * 	RKHRQ_T gsmque;
+ * 	\endcode
+ *
+ * 	The declaration of queues normally appears in the declaration 
+ * 	and definition section of the application program.
  */
 
-typedef struct
+typedef struct rkhrq_t
 {
 	/**
 	 * 	Number of elements.

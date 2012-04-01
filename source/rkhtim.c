@@ -45,6 +45,9 @@ RKH_MODULE_NAME( rkhtim )
 	#define RKH_EXEC_THOOK()							\
 					if( t->timhk != ( RKH_THK_T )0 )	\
 						(*t->timhk)( t )
+	#define RKH_SET_THOOK( t, hk )		\
+					(t)->timhk = (hk)
+					
 #else
 	#define RKH_EXEC_THOOK()	
 #endif
@@ -64,6 +67,7 @@ rem_from_list( RKHT_T *t )
 		if( t->tnext != ( RKHT_T* )0 )	/* is last timer in the list? */
 			t->tnext->tprev = t->tprev;
 	}
+	t->tprev = ( RKHT_T* )0;
 	RKH_TRCR_TIM_REM( t );
 }
 
@@ -117,10 +121,8 @@ rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )
 	t->ntick = 0;
 	t->tprev = ( RKHT_T* )0;
 	RKH_SET_STATIC_EVENT( &t->evt, sig );
-#if RKH_TIM_EN_HOOK == 1
-	t->timhk = thk;
-#endif
-	
+	RKH_SET_THOOK( t, thk );
+
 	RKH_TRCR_TIM_INIT( t, sig );
 }
 
@@ -130,16 +132,17 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 {
 	RKH_SR_CRITICAL_;
 	
-	RKHREQUIRE( 	t != ( RKHT_T* )0 && 
-					itick != 0 &&
-					t->tprev == ( RKHT_T* )0 );
+	RKHREQUIRE( t != ( RKHT_T* )0 && itick != 0 );
 
-	t->sma = sma;
-	t->ntick = itick;
+	if( t->tprev == ( RKHT_T* )0 )
+	{
+		t->sma = sma;
+		t->ntick = itick;
 
-	RKH_ENTER_CRITICAL_();
-	add_to_list( t );
-	RKH_EXIT_CRITICAL_();
+		RKH_ENTER_CRITICAL_();
+		add_to_list( t );
+		RKH_EXIT_CRITICAL_();
+	}
 
 	RKH_TRCR_TIM_START( t, itick, sma );
 }
@@ -150,9 +153,7 @@ rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
 {
 	RKH_SR_CRITICAL_;
 
-	RKHREQUIRE( 	t != ( RKHT_T* )0 && 
-					itick == 0 );
-
+	RKHREQUIRE( t != ( RKHT_T* )0 && itick == 0 );
 	RKH_ENTER_CRITICAL_();
 
 	t->ntick = itick;

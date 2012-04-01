@@ -93,6 +93,20 @@ typedef struct rkh_tim_info_t
  * 	\brief
  * 	Defines the data structure used to maintain information that allows the 
  * 	timer-handling facility to update and expire software timers. 
+ *
+ * 	RKH prohibits an application from explicitly modifying the RKHT_T 
+ * 	structure. The RKH's timer structures can be located anywhere in memory, 
+ * 	but it is most common to make it a global structure by defining it 
+ * 	outside the scope of any function.
+ * 	An RKH timer is created when an application timer is declared with the 
+ * 	RKHT_T data type. The following listing declares "my_timer" timer:
+ *
+ * 	\code
+ * 	RKHT_T my_timer;
+ * 	\endcode
+ *
+ * 	The declaration of application timers normally appears in the declaration 
+ * 	and definition section of the application program.
  */
 
 typedef struct rkht_t
@@ -172,12 +186,12 @@ typedef struct rkht_t
  *	\param t		pointer to previously allocated timer structure. Any 
  *					software module intending to install a software timer must 
  *					first allocate a timer structure RKHT_T.
+ *	\param sig		signal of the event to be directly posted (using the FIFO 
+ *					policy) into the event queue of the target agreed state 
+ *					machine application at the timer expiration.
  *	\param thk 		hook function to be called at the timer expiration. This 
  *					argument is optional, thus it could be declared as NULL or 
  *					eliminated in compile-time with RKH_TIM_EN_HOOK.
- *	\param sig		signal of the event to be directly posted (using the FIFO 
- *					policy) into the event queue of the target agreed state 
- *					machine application.
  */
 
 #define rkh_tim_init( t, sig, thk )		rkh_mktimer( t, sig, thk )
@@ -192,9 +206,22 @@ typedef struct rkht_t
 /**
  * 	\brief
  * 	Start a timer as one-shot timer.
+ *
  * 	This operation installs a previously created timer into	the timer-handling 
  * 	facility. The timer begins running at the completion of this operation. 
  * 	The timer won't be re-started automatically.
+ * 	The following listing creates an application timer that executes 
+ * 	"my_timer_hook" and send the signal "TOUT" to "pwr" SMA after 100 
+ * 	timer-ticks.
+ *
+ * 	\code
+ *	#define MY_TICK				100
+ *
+ *	RKHT_T my_timer;
+ *
+ * 	rkh_tim_init( &my_timer, TOUT, my_timer_hook );
+ * 	rkh_tim_oneshot( &my_timer, pwr, MY_TICK );
+ * 	\endcode
  *
  *	\param t		pointer to previously created timer structure.
  *	\param sma		state machine application (SMA) that receives the timer 
@@ -210,10 +237,23 @@ typedef struct rkht_t
 /**
  * 	\brief
  * 	Start a timer as periodic timer.
+ *
  * 	This operation installs a previously created timer into	the timer-handling 
  * 	facility. The timer begins running at the completion of this operation.
  * 	Once the timeout will expire the timer will be re-started (re-triggered) 
  * 	again automatically.
+ * 	The following listing creates an application timer that executes 
+ * 	"my_timer_hook" and send the signal "TOUT" to "pwr" SMA after 100 
+ * 	timer-ticks initially and then after every 25 timer-ticks.
+ *
+ * 	\code
+ *	#define MY_TICK			100
+ *
+ *	RKHT_T my_timer;
+ *
+ * 	rkh_tim_init( &my_timer, TOUT, my_timer_hook );
+ * 	rkh_tim_periodic( &my_timer, pwr, MY_TICK, MY_TICK/4 );
+ * 	\endcode
  *
  *	\param t		pointer to previously created timer structure.
  *	\param sma		state machine application (SMA) that receives the timer 
