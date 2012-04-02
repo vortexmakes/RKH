@@ -66,9 +66,6 @@
  * 	Bit 7 in rkhrg.grp is 1 when any bit in rkhrg.tbl[7] is 1.
  * 	
  * 	[JL]
- *
- * 	\note
- * 	The RKH_LOWEST_PRIO is reserved by RKH's statistics facility.
  */
 
 
@@ -201,7 +198,7 @@ typedef struct
 
 #define rkh_rdy_findh( rg, p )									\
 				(p) = rkh_unmaptbl[ (rg).grp ];					\
-				(p) = (rkhui8_t)(((p) << 3) +	\
+				(p) = (rkhui8_t)(((p) << 3) +					\
 						(rkhui8_t)rkh_unmaptbl[(rg).tbl[(p)]])
 
 

@@ -91,10 +91,10 @@
  * 	corresponding bit in the filter table must be clear. The size of 
  * 	trceftbl[] depends on RKH_TRC_MAX_EVENTS (see rkhcfg.h).
  *
- * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |
+ * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n\n
  *
- * 	Y's:	index into trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ] table.
- * 	X's:	bit position in trceftbl[ Y's ].
+ * 	Y's:	index into trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ] table.\n
+ * 	X's:	bit position in trceftbl[ Y's ].\n\n
  *
  * 	The lower 3 bits (X's) of the trace event number are used to determine 
  * 	the bit position in trceftbl[], while the next four most significant bits 
@@ -119,7 +119,7 @@ extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
  * 	Each bit in trcgfilter is used to indicate whenever any trace group 
  * 	is filtered out its events. See RKH_TRC_GROUPS.
  *
- *  bit position = 7   6   5   4   3   2   1   0   -- Groups   
+ *  bit position =   7   6   5   4   3   2   1   0   -- Groups   
  * 	trcgfilter   = | Y | Y | Y | Y | Y | Y | Y | Y |
  * 				   		     |		   	     |   |___ RKH_TRCG_MP
  *						     |			     |_______ RKH_TRCG_RQ
@@ -160,8 +160,7 @@ typedef enum
 
 typedef enum
 {
-	FILTER_ON,
-	FILTER_OFF,
+	FILTER_ON, FILTER_OFF,
 } RKH_TRC_FOPT;
 
 
@@ -939,6 +938,7 @@ void rkh_trc_init( void );
 /**
  * 	\brief
  * 	Starts or stops the tracing session. 
+ *
  * 	The stream can be in two different states: running (RKH_TRC_START) or 
  * 	suspended (RKH_TRC_STOP). These two states determine whether or not the 
  * 	stream is accepting events to be stored.
@@ -1172,5 +1172,6 @@ void rkh_trc_ui32( rkhui32_t d );
  */
 
 void rkh_trc_str( const char *s );
+
 
 #endif

@@ -34,6 +34,16 @@
  * 	(SMA) and ISRs send and receive messages to communicate and synchornize 
  * 	with data. It temporarily holds pointer to messages from a sender until 
  * 	the intended receiver is ready to read them.
+ *
+ * 	The number of messages a queue can hold depends on its message size 
+ * 	(pointer size) and the size of the memory area supplied during creation. 
+ * 	To calculate the total message capacity of the queue, divide the number of 
+ * 	bytes in each message into the total number of bytes in the supplied 
+ *
+ * 	The memory area for buffering messages is specified during queue creation. 
+ * 	It can be located anywhere in the target's address space. This is an 
+ * 	important feature because it gives the application considerable 
+ * 	flexibility.
  */
 
 
@@ -112,50 +122,54 @@ typedef struct rkh_qinfo_t
  * 	\code
  * 	RKHRQ_T gsmque;
  * 	\endcode
- *
- * 	The declaration of queues normally appears in the declaration 
- * 	and definition section of the application program.
  */
 
 typedef struct rkhrq_t
 {
 	/**
+	 * 	\brief
 	 * 	Number of elements.
 	 */
 
 	RKH_RQNE_T nelems;
 
 	/** 	
+	 * 	\brief
 	 *  Number of elements currently in the queue.
 	 */
 
 	RKH_RQNE_T qty;
 
 	/**
+	 * 	\brief
 	 *	Points to the free next place in the storage area.
 	 */
 
 	void **pout;
 
 	/**
+	 * 	\brief
 	 * 	Points to the next place of queued item.
 	 */
 
 	void **pin;
 
 	/**
+	 * 	\brief
 	 * 	Points to beginning of the queue storage area.
 	 */
 
 	const void **pstart;
 
 	/**
+	 * 	\brief
 	 * 	Points to the end of the queue storage area.
 	 */
 
 	void **pend;
 
 	/**
+	 * 	\brief
 	 * 	Points to the associated SMA that receives the enqueued events.
 	 * 	If \a sma is set to NULL they never block.
 	 */
@@ -163,6 +177,7 @@ typedef struct rkhrq_t
 	void *sma;
 
 	/** 
+	 * 	\brief
 	 * 	Minimum number of free elements ever in this queue.
 	 *	The nmin low-watermark provides valuable empirical data for 
 	 *	proper sizing of the queue.
@@ -173,6 +188,7 @@ typedef struct rkhrq_t
 #endif
 
 	/**
+	 * 	\brief
 	 * 	Performance information. This member is optional, thus it could be 
 	 * 	eliminated in compile-time with RKH_RQ_EN_GET_INFO.
 	 */
@@ -189,10 +205,14 @@ typedef struct rkhrq_t
  *	Initializes the previously allocated queue data strcuture RKHRQ_T.
  *
  * 	A queue is declared with the RKHRQ_T data type and is defined with the 
- * 	rkh_rq_init() service.
+ * 	rkh_rq_init() service. The total number of messages is calculated from 
+ * 	the specified message size (pointer size) and the total number of bytes 
+ * 	in the queue. Note that if the total number of bytes specified in the 
+ * 	queue's memory area is not evenly divisible by the specified message 
+ * 	size, the remaining bytes in the memory area are not used.
  *
- *	\note 
- *	See RKHRQ_T structure for more information.
+ *	\sa 
+ *	RKHRQ_T structure for more information.
  *
  * 	\param q		pointer to previously allocated queue structure.
  * 	\param sstart	storage start. Pointer to an array of pointers that holds 
@@ -320,7 +340,7 @@ void rkh_rq_put_lifo( RKHRQ_T *q, const void *pe );
  *	to and thus, could cause 'memory leaks'. In other words, the data 
  *	pointing to that's being referenced by the queue entries should, most 
  *	likely, need to be deallocated. To flush a queue that contains entries, 
- *	is much safer instead repeateadly use rkh_rq_get();
+ *	is much safer instead repeateadly use rkh_rq_get().
  * 
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 

@@ -215,8 +215,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param ex		pointer to state exit action. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param parent	pointer to parent state.
- * 	\param prepro	pointer to input preprocessor function. This argument is 
- *					optional, thus it could be declared as NULL.
+ * 	\param prepro	pointer to input preprocessor function. This function 
+ * 					could be called "Moore" action.
+ * 					This argument is optional, thus it could be declared 
+ * 					as NULL.
  *					Aditionally, by means of single inheritance in C it 
  *					could be used as state's abstract data. 
  *					Aditionally, implementing the single inheritance in C 
@@ -807,12 +809,15 @@ void rkh_exit( void );
  * 	\brief
  * 	Keep tracks and updates the started timers. 
  *
+ *	Time intervals are measured by periodic timer interrupts. Each timer 
+ *	interrupt is called a timer-tick. The actual time between timer-ticks is 
+ *	specified by the application. 
+ * 	This function must be placed where will be incrementing the system tick. 
+ * 	Normally this function is placed in a timer ISR routine.
  * 	If one or more timers expires the assigned event is directly posted into 
- * 	the state machine application queue and associated hook function is 
+ * 	the state machine application (SMA) queue and associated hook function is 
  * 	executed (if it's used). The expiration events of timers that expire at 
  * 	the same time are executed in the order they were started.
- * 	This function must be placed where will be incrementing the system tick. 
- * 	Normally this is placed in a timer ISR routine.
  */
 
 void rkh_tim_tick( void );
@@ -1260,11 +1265,9 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	\param e		pointer to event structure derived from RKHEVT_T.
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
- *
- * 	\returns
  */
 
-#define RKH_SET_STATIC_EVENT( e, es )					\
+#define RKH_SET_STATIC_EVENT( e, es )				\
 										mksevt( e, es )
 
 

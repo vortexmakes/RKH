@@ -40,7 +40,24 @@
  * 	case memory requirements of its users. Of course, memory may be wasted 
  * 	if many different size memory requests are made to the same pool. 
  * 	A possible solution is to make several different memory block pools 
- * 	that contain different sized memory blocks.
+ * 	that contain different sized memory blocks. Each memory block pool 
+ * 	is a public resource.
+ *
+ * 	The memory block pools contain a number of fixed-size blocks. The block 
+ * 	size, in bytes, is specified during creation of the pool. Each memory 
+ * 	block in the pool imposes a small amount of overhead the size of a C 
+ * 	pointer. In addition, RKH may pad the block size in order to keep the 
+ * 	beginning of each memory block on proper alignment. 
+ * 	
+ * 	The number of memory blocks in a pool depends on the block size and the 
+ * 	total number of bytes in the memory area supplied during creation. To 
+ * 	calculate the capacity of a pool (number of blocks that will be 
+ * 	available), divide the block size (including padding and the pointer 
+ * 	overhead bytes) into the total number of bytes in the supplied memory area.
+ * 	
+ * 	The memory area for the block pool is specified during creation, and can 
+ * 	be located anywhere in the target's address space. This is an important 
+ * 	feature because of the considerable flexibility it gives the application. 
  */
 
 
@@ -133,10 +150,21 @@ typedef struct
 
 /**
  * 	\brief
- * 	Describes the memory pool.
+ * 	Defines the data structure used to memory block pool facility. 
+ *
+ * 	RKH prohibits an application from explicitly modifying the RKHMP_T 
+ * 	structure. The RKH's memory block pool structures can be located anywhere 
+ * 	in memory, but it is most common to make it a global structure by defining 
+ * 	it outside the scope of any function.
+ * 	An RKH memory pool is created when an memory pool is declared with the 
+ * 	RKHMP_T data type. The following listing declares "my_pool" memory pool:
+ *
+ * 	\code
+ * 	RKHMP_T my_pool;
+ * 	\endcode
  */
 
-typedef struct
+typedef struct rkhmp_t
 {
 	/**
 	 * 	\brief
@@ -231,9 +259,6 @@ typedef struct
  * 	A memory block pool is declared with the RKHMP_T data type and is defined 
  * 	with the rkh_mp_init() service.
  *
- *	\note 
- *	See RKHMP_T structure for more information.
- *
  * 	A general challenge in writing this function is portability, 
  * 	because storage allocation is intrinsically machine-dependent. Perhaps 
  * 	the trickiest aspect here is the proper and optimal alignment of the 
@@ -248,6 +273,9 @@ typedef struct
  *
  *	Check the capacity of the pool by calling the rkh_mp_get_nfree() 
  *	function.
+ *
+ *	\note 
+ *	See RKHMP_T structure for more information.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  * 	\param sstart	storage start. Pointer to memory from which memory blocks 

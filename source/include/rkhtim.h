@@ -27,7 +27,17 @@
  * 	\file rkhtim.h
  *
  * 	\brief
- * 	Platform-independent interface for supporting timer services.
+ * 	Platform-independent interface for supporting software timer services.
+ *
+ * 	RKH software timers enables to execute application C functions and/or 
+ * 	send an event to application state machine (SMA) at specific intervals of 
+ * 	time. It can also set an application timer to expire only once. This type 
+ * 	of timer is called a one-shot timer, while repeating interval timers are 
+ * 	called periodic timers. Each application timer is a public resource.
+ *	Time intervals are measured by periodic timer interrupts. Each timer 
+ *	interrupt is called a timer-tick. The actual time between timer-ticks is 
+ *	specified by the application. On the other hand, application timers 
+ *	execute in the order in which they become active.
  */
 
 
@@ -104,9 +114,6 @@ typedef struct rkh_tim_info_t
  * 	\code
  * 	RKHT_T my_timer;
  * 	\endcode
- *
- * 	The declaration of application timers normally appears in the declaration 
- * 	and definition section of the application program.
  */
 
 typedef struct rkht_t

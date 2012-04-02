@@ -63,7 +63,6 @@
 #define RKH_SMA_EN_JUNCTION				1	/* 	CFG01 */
 #define RKH_SMA_EN_CONDITIONAL			1	/* 	CFG01 */
 #define RKH_SMA_EN_INIT_ARG_SMA			1	/* 	CFG01 */
-#define RKH_SMA_EN_INIT_ARG_IE			0	/* 	CFG01 */
 #define RKH_SMA_EN_ENT_ARG_SMA			1	/* 	CFG01 */
 #define RKH_SMA_EN_EXT_ARG_SMA			1	/* 	CFG01 */
 #define RKH_SMA_EN_ACT_ARG_SMA			1	/* 	CFG01 */

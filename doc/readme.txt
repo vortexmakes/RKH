@@ -537,95 +537,90 @@ typedef signed int		HInt;
 <HR>
 \section qref0 Defining a state machine
 
-A state machine is defined with the RKH_CREATE_HSM() macro and declared with
-the RKH_DCLR_HSM() macro. Frequently, each state machine is encapsulated
-inside a dedicated source file (.c file), from which the RKH_CREATE_HSM() 
-macro is used, thus the structure definition is in fact entirely encapsulated 
-in its module and is inaccessible to the rest of the application. However, as
-a general rule, the state machine must be declared inside a header file 
-(.h file) by means of RKH_DCLR_HSM() macro.
-We will develop one example of state machine creation to illustrate the use 
-of this macro. We will give our hierarchical state machine the name \c my. 
-If you wanted to create a "flat" state machine, you would use the #FLAT 
-parameter rather than the #HCAL parameter.
+A state machine application is defined with the RKH_SMA_CREATE() macro and 
+declared with the RKH_SMA_DCLR_HSM() macro. Frequently, each state machine is 
+encapsulated inside a dedicated source file (.c file), from which the 
+RKH_SMA_CREATE() macro is used, thus the structure definition is in fact 
+entirely encapsulated in its module and is inaccessible to the rest of the 
+application. However, as a general rule, the state machine application must 
+be declared inside a header file (.h file) by means of RKH_SMA_DCLR_HSM() 
+macro. We will develop one example of state machine creation to illustrate 
+the use of this macro. Also, we will give our hierarchical state machine the 
+name \c my. If you wanted to create a "flat" state machine, you would use the 
+#FLAT parameter rather than the #HCAL parameter.
 
-<b>Defining the state machine</b>
+<b>Defining the state machine application</b>
 \n
 \code
-(1)	//	my.c: state-machine's module
+(1)	//	my.c: state machine application's module
 
-	typedef struct
-	{
-		rkhuint8 argv_channel;
-		rkhuint16 argv_timer;
-		rkhuint32 argv_density;
-	} MYDATA_T;
+(2) typedef struct
+    {
+		RKHSMA_T sm;	// base structure
+		rkhui8_t x;		// private member
+		rkhui8_t y;		// private member
+	} MYSM_T;
 
-(2)	static MYDATA_T mydata;
+(3) static RKH_DCLR_STATIC_EVENT( turnon, TURNON );
 
-
-(3) RKH_CREATE_HSM( 	RKH_T, 		// state machine data type
-(4) 					my, 		// state machine name
-(5) 					0, 			// ID
-(6) 					HCAL, 		// hierarchical state machine
-(7) 					&S1, 		// initial state
-(8) 					my_init, 	// initial action function
-(9) 					&mydata );	// associated data
+(4) RKH_SMA_CREATE( 	MYSM_T, 	// state machine application data type
+(5) 					3, 			// ID
+(6) 					my, 		// name
+(7)						2,			// priority number
+(8) 					HCAL, 		// hierarchical state machine
+(9) 					&S1, 		// initial state
+(10) 					my_init, 	// initial action
+(11) 					&turnon );	// initial event
 \endcode
 
 <b>Declaring the state machine</b>
 \n
 \code
-//	my.h: state-machine's header file
+//	my.h: state-machine application's header file
 
-RKH_DCLR_HSM( my );
+RKH_SMA_DCLR_HSM( my );
 \endcode
 
 Explanation
 
-\li (1)	Frequently, each state machine is encapsulated inside a dedicated 
-		source file (.c file), from which the RKH_CREATE_HSM() macro is used.
-\li (2)	In this example, \c mydata structure is used like an argc/argv. 
-\li (3)	The RKH_T defines the \c my state machine structure.
-		On the other hand, almost every state machine must also store other 
-		"extended-state" information. You supply this additional information 
-		by means of data members enlisted after the base structure member
-		\c sm. The following example illustrates how to derive an 
-		state machine from RKH_T. 
-		Please note that the RKH_T member \c sm is defined as the FIRST 
-		member of the derived struct.
-		RKH_T is not intended to be instantiated directly, but rather serves 
-		as the base structure for derivation of state machines in the 
+\li (1)	Frequently, each state machine application is encapsulated inside a 
+		dedicated source file (.c file), from which the RKH_SMA_CREATE() 
+		macro is used.
+\li (2)	The MYSM_T defines the \c my state machine application structure.
+		Almost every state machine applications must also store 
+		other "extended-state" information. You supply this additional 
+		information by means of data members enlisted after the base structure 
+		member \c sm. This illustrates how to derive an state machine 
+		application from RKHSMA_T. Please note that the RKHSMA_T member 
+		\c sm is defined as the FIRST member of the derived struct.
+		RKHSMA_T is not intended to be instantiated directly, but rather 
+		serves as the base structure for derivation of state machines in the 
 		application code.
-\code
-typedef struct
-{
-	RKH_T sm;		// base structure
-	rkhuint8 x;		// private member
-	rkhuint8 y;		// private member
-} MYSM_T;
-
-//	static instance of state machine object
-RKH_CREATE_HSM( MYSM_T, my, 0, HCAL, &S1, my_init, &mydata );
-\endcode
-
-\li (4)	\c my is the state machine. Represents the top state of state diagram. 
-\li (5)	\c 0 is the state machine descriptor. This number allows to uniquely 
-		identify a state machine.
-\li (6)	the \c my state machine is defined as a hierarchical state machine. 
+\li (3)	Declares and initializes the event structure \c turnon with \c TURNON  
+		signal and establishes it as one static event. The created event 
+		object is explicitly placed in ROM..
+\li (4)	As said below, the MYSM_T defines the \c my state machine application 
+		structure.
+\li (5)	\c 3 is the state machine application ID. This number allows to 
+		uniquely identify a state machine application.
+\li (6)	\c my is the state machine application. Represents the top state of 
+		state diagram. 
+\li (7)	\c 2 is the state machine application priority.
+\li (8)	the \c my state machine is defined as a hierarchical state machine. 
 		The available property options are enumerated in RKH_HPPTY_T 
 		enumeration in the \b rkh.h file.
-\li (7)	\c S1 is the initial state.
-\li (8)	the \c my_init() function defines the topmost initial transition in 
+\li (9)	\c S1 is the initial state.
+\li (10) \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
 		The function prototype is defined as RKHINIT_T. This argument is 
 		(optional), thus it could be declared as NULL. The application code 
 		must trigger the initial transition explicitly by invoking 
-		rkh_init_hsm() function.
-\li (9) \c mydata is used like a argc/argv. This argument is optional, thus 
-		it could be declared as NULL or eliminated with RKH_EN_HSM_DATA 
-		option. Could be used to pass arguments to the state machine like 
-		an argc/argv.
+		rkh_sma_activate() function.
+\li (11) \c turnon is a pointer to an event that will be passed to state 
+		machine application when it starts. Could be used to pass arguments 
+		to the state machine like an argc/argv. This argument is optional, 
+		thus it could be declared as NULL or eliminated in compile-time with 
+		RKH_SMA_EN_IEVENT = 0.
 
 \b Customization
 
@@ -639,20 +634,15 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HSM_NAME:	When RKH_EN_HSM_NAME is set to one (1) the state 
-						machine structure RKH_T includes its own name as a 
-						null-terminated string. When a particular application 
-						requires runtime debugging (native tracing features), 
-						this option must be enabled.
-- \b RKH_EN_HSM_DATA:	When RKH_EN_HSM_DATA is set to one (1) the state 
-						machine structure RKH_T allows to reference a data 
-						object, which maintains additional information.
-- \b RKH_EN_HSM_ID:		When RKH_EN_HSM_ID is set to one (1) the state machine
-						structure RKH_T includes a ID number that could be
-						used to uniquely identify a state machine, also called
-						state machine descriptor. When a particular application 
-						requires runtime debugging (native tracing features), 
-						this option must be enabled.
+- \b RKH_SMA_EN_IEVENT: \n
+	When RKH_SMA_EN_IEVENT is set to one (1) the RKHSMA_T structure allows to 
+	reference a event, which will be passed to state machine application when 
+	it starts. Could be used to pass arguments to the state machine like an 
+	argc/argv. \n\n
+- \b RKH_SMA_EN_ID: \n
+	When RKH_SMA_EN_ID is set to one (1) the RKHSMA_T structure includes a 
+	ID number that could be used to uniquely identify a state machine 
+	application.
 
 <HR>
 \section qref1 Defining a superstate
@@ -728,22 +718,14 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HCAL:	Enable (1) or disable (0) the state nesting.
-					When RKH_EN_HCAL is set to zero (0) some important 
-					features of RKH are	not included: state nesting, 
-					composite state, history (shallow and deep)
-					pseudostate, entry action, and exit action.
-- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
-					structure includes its own name as a null-terminated 
-					string. When a particular application requires runtime 
-					debugging, this option must be enabled. 
-					See #RKHBASE_T structure definition.
-- \b RKH_EN_STATE_ID:
-					When RKH_EN_STATE_ID is set to one (1) the state structure 
-					includes an ID number (also called descriptor). 
-					This number allows to uniquely identify a state. 
-					When a particular application requires runtime debugging 
-					(native tracing features), this option must be enabled. 
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state.
 
 <HR>
 \section qref2 Defining a basic state
@@ -857,17 +839,18 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
-					structure includes its own name as a null-terminated 
-					string. When a particular application requires runtime 
-					debugging, this option must be enabled. 
-					See #RKHBASE_T structure definition.
-- \b RKH_EN_STATE_ID:
-					When RKH_EN_STATE_ID is set to one (1) the state structure 
-					includes an ID number (also called descriptor). 
-					This number allows to uniquely identify a state. 
-					When a particular application requires runtime debugging 
-					(native tracing features), this option must be enabled. 
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PPRO: \n
+	When RKH_SMA_EN_PPRO is set to one (1) the state structure includes an 
+	reference to preprocessor function. This function could be called "Moore" 
+	action. This argument is optional, thus it could be declared as NULL. 
+	Aditionally, by means of single inheritance in C it could be used as 
+	state's abstract data. Aditionally, implementing the single inheritance 
+	in C is very simply by literally embedding the base type, RKHPPRO_T in 
+	this case, as the first member of the derived structure. See \a prepro 
+	member of RKHSREG_T structure for more information.
 
 <HR>
 \section qref16 Defining a state transition table
@@ -994,30 +977,23 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HCAL:	Enable (1) or disable (0) the state nesting.
-					When RKH_EN_HCAL is set to zero (0) some important 
-					features of RKH are	not included: state nesting, 
-					composite state, history (shallow and deep)
-					pseudostate, entry action, and exit action.
-- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
-					structure includes its own name as a null-terminated 
-					string. When a particular application requires runtime 
-					debugging, this option must be enabled. 
-					See #RKHBASE_T structure definition.
-- \b RKH_EN_STATE_ID:
-					When RKH_EN_STATE_ID is set to one (1) the state structure 
-					includes an ID number (also called descriptor). 
-					This number allows to uniquely identify a state. 
-					When a particular application requires runtime debugging 
-					(native tracing features), this option must be enabled. 
-- \b RKH_EN_PSEUDOSTATE: Enable (1) or disable (0) the pseudostates usage.
-- \b RKH_EN_CONDITIONAL: Enable (1) or disable (0) the conditional connector 
-					usage.
-- \b RKH_MAX_TR_SEGS: Determines the maximum number of linked transition 
-					segments. The smaller this number, the lower the static 
-					RAM consumption. Typically, the most of hierarchical 
-					state machines uses up to 4 transition segments. 
-					Currently RKH_MAX_TR_SEGS cannot exceed 8.
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage.\n\n 
+- \b RKH_SMA_EN_CONDITIONAL: \n
+	Enable (1) or disable (0) the conditional connector usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8.
 
 <HR>
 \section qref17 Defining a branch table
@@ -1118,29 +1094,23 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HCAL:	Enable (1) or disable (0) the state nesting.
-					When RKH_EN_HCAL is set to zero (0) some important 
-					features of RKH are	not included: state nesting, 
-					composite state, history (shallow and deep)
-					pseudostate, entry action, and exit action.
-- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
-					structure includes its own name as a null-terminated 
-					string. When a particular application requires runtime 
-					debugging, this option must be enabled. 
-					See #RKHBASE_T structure definition.
-- \b RKH_EN_STATE_ID: When RKH_EN_STATE_ID is set to one (1) the state 
-					structure includes an ID number (also called descriptor). 
-					This number allows to uniquely identify a state. 
-					When a particular application requires runtime debugging 
-					(native tracing features), this option must be enabled. 
-- \b RKH_EN_PSEUDOSTATE: Enable (1) or disable (0) the pseudostates usage.
-- \b RKH_EN_SHALLOW_HISTORY: Enable (1) or disable (0) the shallow history 
-					usage.
-- \b RKH_MAX_TR_SEGS: Determines the maximum number of linked transition 
-					segments. The smaller this number, the lower the static 
-					RAM consumption. Typically, the most of hierarchical 
-					state machines uses up to 4 transition segments. 
-					Currently RKH_MAX_TR_SEGS cannot exceed 8.
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
+- \b RKH_EN_SHALLOW_HISTORY: \n
+	Enable (1) or disable (0) the shallow history usage.
 
 <HR>
 \section qref5 Defining a deep history pseudostate
@@ -1195,29 +1165,23 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HCAL:	Enable (1) or disable (0) the state nesting.
-					When RKH_EN_HCAL is set to zero (0) some important 
-					features of RKH are	not included: state nesting, 
-					composite state, history (shallow and deep)
-					pseudostate, entry action, and exit action.
-- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
-					structure includes its own name as a null-terminated 
-					string. When a particular application requires runtime 
-					debugging, this option must be enabled. 
-					See #RKHBASE_T structure definition.
-- \b RKH_EN_STATE_ID: When RKH_EN_STATE_ID is set to one (1) the state 
-					structure includes an ID number (also called descriptor). 
-					This number allows to uniquely identify a state. 
-					When a particular application requires runtime debugging 
-					(native tracing features), this option must be enabled. 
-- \b RKH_EN_PSEUDOSTATE: Enable (1) or disable (0) the pseudostates usage.
-- \b RKH_EN_DEEP_HISTORY: Enable (1) or disable (0) the deep history 
-					usage.
-- \b RKH_MAX_TR_SEGS: Determines the maximum number of linked transition 
-					segments. The smaller this number, the lower the static 
-					RAM consumption. Typically, the most of hierarchical 
-					state machines uses up to 4 transition segments. 
-					Currently RKH_MAX_TR_SEGS cannot exceed 8.
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
+- \b RKH_EN_DEEP_HISTORY: \n
+	Enable (1) or disable (0) the deep history usage.
 
 <HR>
 \section qref6 Defining a junction pseudostate
@@ -1275,29 +1239,23 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_EN_HCAL:	Enable (1) or disable (0) the state nesting.
-					When RKH_EN_HCAL is set to zero (0) some important 
-					features of RKH are	not included: state nesting, 
-					composite state, history (shallow and deep)
-					pseudostate, entry action, and exit action.
-- \b RKH_EN_STATE_NAME:	When RKH_EN_STATE_NAME is set to one (1) the state 
-					structure includes its own name as a null-terminated 
-					string. When a particular application requires runtime 
-					debugging, this option must be enabled. 
-					See #RKHBASE_T structure definition.
-- \b RKH_EN_STATE_ID:
-					When RKH_EN_STATE_ID is set to one (1) the state structure 
-					includes an ID number (also called descriptor). 
-					This number allows to uniquely identify a state. 
-					When a particular application requires runtime debugging 
-					(native tracing features), this option must be enabled. 
-- \b RKH_EN_PSEUDOSTATE: Enable (1) or disable (0) the pseudostates usage.
-- \b RKH_EN_JUNCTION: Enable (1) or disable (0) the junction connector usage.
-- \b RKH_MAX_TR_SEGS: Determines the maximum number of linked transition 
-					segments. The smaller this number, the lower the static 
-					RAM consumption. Typically, the most of hierarchical 
-					state machines uses up to 4 transition segments. 
-					Currently RKH_MAX_TR_SEGS cannot exceed 8.
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
+- \b RKH_EN_JUNCTION: \n
+	Enable (1) or disable (0) the junction connector usage.
 
 <HR>
 \section qref14 Actions
@@ -1317,21 +1275,31 @@ is mandatory to known for properly using the framework.
 \copydetails RKHINIT_T
 
 As said above, the application must explicitly trigger initial transitions 
-in all state machines.
+in all state machines. The following listing shows the use of 
+rkh_sma_activate() function, when it's is called the initial action is 
+invoked and the state machine start. The rkh_sma_activate() is a 
+platform-dependent function. All RKH ports must be defined in the RKH port 
+file to a particular platform. However, only the 
+ports to the external OS/RTOS usually need some code to bolt the framework to 
+the external OS/RTOS.
 
 \code
-rkh_init_hsm( manager );		// calls manager's initial action
-rkh_init_hsm( gps );			// calls gps's initial action
+// start the manager state machine application
+rkh_sma_activate( 	manager, 		// state machine application (SMA)
+					qmgr, 			// event storage area for manager SMA
+					QMGR_SIZE, 		// size of the storage area
+					( void * )0, 	// not used
+					0 );			// not used
 \endcode
 
 The next listing shows an example of the initial action implementation.
 
 \code
 void 
-manager_init( const struct rkh_t *ph )
+manager_init( const struct rkh_t *sma )
 {
-	printf( "Init \"%s\" state machine ", rkh_get_sm_name( ph ) );
-	printf( "with initial state %s\n", rkh_get_cstate_name( ph ) );
+	dprint( "Init \"manager\" state machine\n" );
+	manager_turnon();	
 }
 \endcode
 
@@ -1343,9 +1311,10 @@ The next listing shows an example of the exit action implementation.
 
 \code
 void 
-idle_exit( const struct rkh_t *ph )
+idle_exit( const struct rkh_t *sma )
 {
-	printf( "Exit from "IDLE" state\n" );
+	dprint( "Exit from \"IDLE\" state\n" );
+	manager_restore();
 }
 \endcode
 
@@ -1357,9 +1326,10 @@ The next listing shows an example of the entry action implementation.
 
 \code
 void 
-wait_process_entry( const struct rkh_t *ph )
+wait_process_entry( const struct rkh_t *sma )
 {
-	printf( "Entry to "WAIT_PROCESS" state\n" );
+	dprint( "Entry to \"WAIT_PROCESS\" state\n" );
+	manager_deactivate();
 }
 \endcode
 
@@ -1371,11 +1341,16 @@ The next listing shows an example of the transition action implementation.
 
 \code
 void 
-set_config( const struct rkh_t *ph, RKHEVT_T *pe )
+set_config( const struct rkh_t *sma, RKHEVT_T *pe )
 {
-	printf( "From state machine \"%s\" ", rkh_get_sm_name( ph ) );
-	printf( "- %s -\n", __FUNCTION__ );
-	printf( "data = %02d\n", pe->e );
+	MYEVT_T *e;
+
+	(void)sma;		/* argument not used */
+	(void)pe;		/* argument not used */
+
+	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
+	e->ts = ( rkhui16_t )rand();
+	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
 }
 \endcode
 
@@ -1388,9 +1363,8 @@ action implementation.
 
 \code
 RKHE_T 
-preprocess_keys( const struct rkh_t *ph, RKHEVT_T *pe )
+preprocess_keys( const struct rkh_t *sma, RKHEVT_T *pe )
 {
-	printf( "From state machine \"%s\"\n", rkh_get_sm_name( ph ) );
     if( pe->e >= 0 && pe->e <= 9 )
         return DECIMAL;
     if( pe->e == '.' )
@@ -1408,7 +1382,7 @@ The next listing shows an example of the guard function implementation.
 
 \code
 HUInt 
-is_zero( const struct rkh_t *ph, RKHEVT_T *pe )
+is_zero( const struct rkh_t *sma, RKHEVT_T *pe )
 {
 	return get_water_level( CHANNEL( (( CHEVT_T* )pe)->ch ) ) == 0;
 }
@@ -1557,20 +1531,32 @@ static const SYSEVT_T sysevts[] =
 
 The RKH framework supports one type of asynchronous event exchange: the 
 simple mechanism of direct event posting supported through the functions
-rkh_put_fifo() and rkh_put_lifo(), when the producer of an event directly 
-posts the event to the event queue of the consumer active object.
+rkh_sma_post_fifo() and rkh_sma_post_lifo(), when the producer of an event 
+directly posts the event to the event queue of the consumer SMA 
+(active object).
 
 \code
-(1)	rkh_put_fifo( QUEUE_MGR, ( RKHEVT_T* )de );
+(1) static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+...
+
+(2)	rkh_sma_post_fifo( manager, &eterm );
 \endcode
 
-\li (1)	The dynamic event is posted directly to the \c QUEUE_MGR queue.
+\li (1)	Declares and initializes the event \a eterm with \a TERM 
+		signal and establishes it as one static event.
+\li (2)	The \c eterm event is sent directly to the \c manager SMA.
 
 \code
-(1)	rkh_put_fifo( QUEUE_COMM, ( RKHEVT_T* )&tout );
+...
+(1) mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(2) mye->ts = ( rkhui16_t )rand();
+(3) rkh_sma_post_fifo( my, ( RKHEVT_T* )mye );
 \endcode
 
-\li (1)	The static events are posted directly to the \c QUEUE_COMM queue.
+\li (1)	Dynamically creates a new event \c mye of type \a MYEVT_T with 
+		the signal returned from the kbmap() function.
+\li (2) Use the extended members of the event \c mye.
+\li (3) The \c mye event is sent directly to the \c my SMA.
 
 <b>Recycling dynamic events</b>
 
@@ -1612,9 +1598,9 @@ action implementation.
 
 \code
 RKHE_T 
-preprocess_keys( const struct rkh_t *ph, RKHEVT_T *pe )
+preprocess_keys( const struct rkh_t *sma, RKHEVT_T *pe )
 {
-	printf( "From state machine \"%s\"\n", rkh_get_sm_name( ph ) );
+	printf( "From state machine \"%s\"\n", rkh_get_sm_name( sma ) );
     if( pe->e >= 0 && pe->e <= 9 )
         return DECIMAL;
     if( pe->e == '.' )
