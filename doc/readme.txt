@@ -537,6 +537,8 @@ typedef signed int		HInt;
 <HR>
 \section qref0 Defining a state machine
 
+\n \ref qref "< Quick reference"
+
 A state machine application is defined with the RKH_SMA_CREATE() macro and 
 declared with the RKH_SMA_DCLR_HSM() macro. Frequently, each state machine is 
 encapsulated inside a dedicated source file (.c file), from which the 
@@ -644,8 +646,12 @@ structure. See \ref cfg section for more information.
 	ID number that could be used to uniquely identify a state machine 
 	application.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref1 Defining a superstate
+
+\n \ref qref "< Quick reference"
 
 A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
 macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
@@ -727,8 +733,12 @@ structure. See \ref cfg section for more information.
 	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
 	ID number. This number allows to uniquely identify a state.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref2 Defining a basic state
+
+\n \ref qref "< Quick reference"
 
 A basic state (also called substate) is defined with the 
 RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
@@ -852,8 +862,12 @@ structure. See \ref cfg section for more information.
 	this case, as the first member of the derived structure. See \a prepro 
 	member of RKHSREG_T structure for more information.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref16 Defining a state transition table
+
+\n \ref qref "< Quick reference"
 
 In RKH every state is associated with a transition table, which is composed 
 of a well-defined set of transitions.
@@ -926,8 +940,12 @@ is_sync( RKHEVT_T *pe )
 }
 \endcode
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref3 Defining a conditional pseudostate
+
+\n \ref qref "< Quick reference"
 
 A conditional pseudostate (also called choice pseudostate) is defined with 
 the RKH_CREATE_COND_STATE() macro and declared with the 
@@ -995,8 +1013,12 @@ structure. See \ref cfg section for more information.
 	of hierarchical state machines uses up to 4 transition segments. 
 	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref17 Defining a branch table
+
+\n \ref qref "< Quick reference"
 
 A condition connector has one incoming transition and can have several 
 outgoing transition segments called branches. Branches are labeled with 
@@ -1042,8 +1064,12 @@ will be invoked, and \c S4 will be the next state.
 As said above, the actions and guards in RKH framework are represented by 
 functions.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref4 Defining a shallow history pseudostate
+
+\n \ref qref "< Quick reference"
 
 A shallow history pseudostate is defined with the 
 RKH_CREATE_SHALLOW_HISTORY_STATE() macro and declared with the 
@@ -1112,8 +1138,12 @@ structure. See \ref cfg section for more information.
 - \b RKH_EN_SHALLOW_HISTORY: \n
 	Enable (1) or disable (0) the shallow history usage.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref5 Defining a deep history pseudostate
+
+\n \ref qref "< Quick reference"
 
 A deep history pseudostate is defined with the 
 RKH_CREATE_DEEP_HISTORY_STATE() macro and declared with the 
@@ -1183,8 +1213,12 @@ structure. See \ref cfg section for more information.
 - \b RKH_EN_DEEP_HISTORY: \n
 	Enable (1) or disable (0) the deep history usage.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref6 Defining a junction pseudostate
+
+\n \ref qref "< Quick reference"
 
 A conditional pseudostate (also called branch pseudostate) is defined with 
 the RKH_CREATE_JUNCTION_STATE() macro and declared with the 
@@ -1257,8 +1291,12 @@ structure. See \ref cfg section for more information.
 - \b RKH_EN_JUNCTION: \n
 	Enable (1) or disable (0) the junction connector usage.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref14 Actions
+
+\n \ref qref "< Quick reference"
 
 This section summarize the functions and its prototypes used by RKH 
 framework. As mentioned before, the framework make use the callbacks, i.e. 
@@ -1388,8 +1426,12 @@ is_zero( const struct rkh_t *sma, RKHEVT_T *pe )
 }
 \endcode
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref12 Using events with parameters
+
+\n \ref qref "< Quick reference"
 
 An event can have associated parameters, allowing the event 
 instance to convey not only the occurrence of some interesting 
@@ -1424,11 +1466,15 @@ structures derived from RKHEVT_T.
 The RKH takes the \a 'e' member of RKHEVT_T structure for triggering a 
 state transition.
 
-See also rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
-rkh_set_static_event(), and rkh_gc().
+See also rkh_sma_put_fifo(), rkh_sma_put_lifo(), RKH_ALLOC_EVENT(), 
+RKH_SET_STATIC_EVENT(), and RKH_GC().
+
+\n \ref qref "< Quick reference"
 
 <HR>
 \section qref7 Using dynamic and static events
+
+\n \ref qref "< Quick reference"
 
 In RKH as other frameworks, the actual event instances are either constant 
 events (or static events) statically allocated at compile time or dynamic events
@@ -1459,14 +1505,14 @@ allocated at runtime from one of the event pools that the framework manages.
 		int timerno;
 	} TOUT_T;
 
-(3) static const RKHEVT_T offh = { OFFHOOK, 0 };
+(3) static RKH_DCLR_STATIC_EVENT( offh, OFFHOOK );
 (4) static TOUT_T tout;
 
 ...
 
-(5) rkh_set_static_event( &tout, TIMEOUT );
-(6)	DIAL_T *de = rkh_alloc_event( DIAL_T, DIALED );
-(7)	SETUP_T *se = rkh_alloc_event( SETUP_T, SET_CONFIG );
+(5) RKH_SET_STATIC_EVENT( &tout, TIMEOUT );
+(6)	DIAL_T *de = RKH_ALLOC_EVENT( DIAL_T, DIALED );
+(7)	SETUP_T *se = RKH_ALLOC_EVENT( SETUP_T, SET_CONFIG );
 (8)	se->volume = 0;
 	se->baud_rate = DEFAULT_BAUD_RATE;
 	se->iloop = 2;
@@ -1489,7 +1535,7 @@ Explanation
 			in ROM like the \c OFFHOOK event because it can change. 
 \li (5)		This macro set the event <c>TIMEOUT( timerno )</c> with \c TIMEOUT 
 			signal and establishes it as one <em>static event</em>.
-\li (6-7) 	The rkh_alloc_event() macro dynamically creates a new instances 
+\li (6-7) 	The RKH_ALLOC_EVENT() macro dynamically creates a new instances 
 			events of type \c DIAL_T and \c SETUP_T with \c DIALED and 
 			\c SET_CONFIG signals. These events are represented like this:
 			<c>DIALED( dial, qty )</c> and 
@@ -1566,30 +1612,59 @@ no longer in charge of event processing and you are solely responsible for
 not leaking the event.
 The garbage collector actually recycles the event only when it determines 
 that the event is no longer referenced.
+The following listing illustrates how and when to invoke RKH_GC() macro 
+to recycle "dynamic" events.
 
 \code
-	void
-    main( void )
+	void 
+	rkh_enter( void )
     {
-		...
+		rkhui8_t prio;
+		RKHSMA_T *sma;
+		RKHEVT_T *e;
 
-        forever
-        {
-			...
-(1)			rkh_engine( manager, &e );
-(2)			rkh_gc( &e );
-        }
+		rkh_hk_start();
+		RKH_TRCR_RKH_EN();
+
+		FOREVER
+		{
+			RKH_DIS_INTERRUPT();
+			if( rkh_rdy_isnot_empty( rkhrg ) )
+			{
+				rkh_rdy_findh( rkhrg, prio );
+				sma = rkh_sptbl[ prio ];
+				RKH_ENA_INTERRUPT();
+
+(1)				e = rkh_sma_get( sma );
+(2)				rkh_dispatch( sma, e );
+(3)				RKH_GC( e );
+			}
+			else 
+			/*
+			 * rkh_hk_idle() must be called with interrupts DISABLED because the 
+			 * determination of the idle condition (no events in the queues) can 
+			 * change at any time by an interrupt posting events to a queue. The 
+			 * rkh_hk_idle() MUST enable interrups internally, perhaps at the 
+			 * same time as putting the CPU into a power-saving mode.
+			 */			
+				rkh_hk_idle();
+		}
     }
 \endcode
 
-\li (1)	The event \c e is dispatched to the state machine \c manager for 
-		processing.
-\li	(2) The event \c e is passed to the RKH garbage collector for recycling. 
-		As described above, the rkh_gc() function actually recycles the 
-		event only when it determines that the event is no longer referenced.
+\li (1)	An event \c e is get from the SMA queue with the highest priority.
+\li (2)	The event \c e is dispatched to the current SMA.
+\li	(2) Thus, the event \c e is passed to the RKH garbage collector for 
+		recycling. As described above, the RKH_GC() macro actually recycles 
+		the wvent only when it determines that the event is no longer 
+		referenced.
+
+\n \ref qref "< Quick reference"
 
 <HR>
 \section qref13 Preprocessing events before of dispatch it
+
+\n \ref qref "< Quick reference"
 
 \copydetails RKHPPRO_T
 
@@ -1610,8 +1685,12 @@ preprocess_keys( const struct rkh_t *sma, RKHEVT_T *pe )
 }
 \endcode
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref8 Deferring and recalling events
+
+\n \ref qref "< Quick reference"
 
 Event deferral comes in very handy when an event arrives in a 
 particularly inconvenient moment but can be deferred for some later time, 
@@ -1643,20 +1722,32 @@ STORE ONLY POINTERS to events, not the whole event objects.
 The pointer to the recalled event to the caller, or NULL if no 
 event has been recalled.
 
+\n \ref qref "< Quick reference"
+
 <HR>
 \section qref9 Using assertions
 
+\n \ref qref "< Quick reference"
+
 \copydetails rkhassert.h
+
+\n \ref qref "< Quick reference"
 
 <HR>
 \section qref10 Debugging an application based on RKH's state machines
 
+\n \ref qref "< Quick reference"
+
 Please refer to \ref dbg section. 
+
+\n \ref qref "< Quick reference"
 
 <HR>
 \section qref15 Initializing a state machine and dispatching events
 
-The following listing shows an example of the main() function 
+\n \ref qref "< Quick reference"
+
+The following listing shows an very simple example of the main() function 
 implementation and demostrates how to use the RKH API.
 
 \note
@@ -1675,53 +1766,57 @@ for more information about this.
 	...
 
 	int
-	main( void )
+	main( int argc, char *argv[] )
 	{
 		int c;
 
-(1)		rkh_init_hsm( my );
+(1)		rkh_trc_open();
+(2)		rkh_init();
+
 		srand( ( unsigned )time( NULL ) );
+(3)  	rkh_init_hsm( my );
 
-		print_banner();
-(2)		rkh_trace_open();
-
-(3)		forever
+(4)		FOREVER
 		{
-(4)			c = mygetch();
+(5)			c = mygetch();
 			
 			if( c == 'p' )
-(5)				rkh_trace_flush();
+(6)				rkh_trc_flush();
 			else if ( c == ESC )
-(6)				break;
-			else if ( c == 'r' )
-(7)				rkh_init_hsm( my );
+			{
+(7)				rkh_dispatch( my, &term );
+				break;
+			}
 			else
 			{
-(8)				rkh_set_static_event( &mye, kbmap( c ) );
-(9)				mye.ts = ( rkhuint16 )rand();
-(10)			rkh_engine( my, ( RKHEVT_T* )&mye );
+(8)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(9)				mye->ts = ( rkhui16_t )rand();
+(10)			rkh_dispatch( my, ( RKHEVT_T* )mye );
 			}
 		}
 
-(11)	rkh_trace_close();
+(11)	rkh_trc_close();
+(12)	rkh_exit();
 	}
 \endcode
 
-\li (1) Initialize the "my" state machine. RKH invokes the init action.
-\li (2) Initialize and open the RKH debug session.
-\li (3) This is the event loop of the RKH framework.
-\li (4) Gets key pressed from the standard input.
-\li (5) Flushs the trace stream to the desired host.
-\li (6) Terminates the program.
-\li (7) Reinitialize the state machine.
-\li (8) The	event generated by pressing a key on the keyboard is stored 
-		in the signal member of MYEVT_T structure.
+\li (1) Open the trace session.
+\li (2) Initialize the framework RKH.
+\li (3) Initialize the "my" state machine. 
+		RKH invokes the defined init action.
+\li (4) This is the event loop of the framework RKH.
+\li (5) Gets key pressed from the standard input.
+\li (6) Flush the trace stream.
+\li (7) Send the \c term event to \c my state machine to terminate. 
+		After that, terminates the program.
+\li (8) Allocates an event of \c MYEVT_T type (derived from RKHEVT_T) to 
+		store the key pressed.
 \li (9)	The	event has associated parameters that convey a random number.
-\li (10)	The \c mye event is dispatched to "my" state machine by means of 
-		rkh_engine() function. Events with parameters, such as the MYEVT_T, 
-		require explicit casting from the generic base structure #RKHEVT_T 
-		to the specific derived structure MYEVT_T.
-\li (11)	Terminates the program and close debug session.
+\li (10) The \c mye event is dispatched to \c my state machine. Events with 
+		parameters, such as the MYEVT_T, require explicit casting from the 
+		generic base structure #RKHEVT_T to the specific derived structure 
+		MYEVT_T.
+\li (11-12) Close the trace session and terminates the program.
 
 \ref main_page "< Home"
 

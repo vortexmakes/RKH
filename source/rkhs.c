@@ -100,7 +100,6 @@ rkh_enter( void )
 		 */			
             rkh_hk_idle();
     }
-	
 }
 
 

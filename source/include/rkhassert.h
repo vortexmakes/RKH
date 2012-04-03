@@ -28,22 +28,22 @@
  *	\brief
  *	Assert definitions.
  *	
- *	The assertions (\c assert() macro) are used to check expressions that 
+ *	The assertions (\c RKHASSERT() macro) are used to check expressions that 
  *	ought to be true as long as the program is running correctly. It is a 
  *	convenient way to insert sanity checks.
  *	A number of philosophies can be employed when deciding where to use an 
- *	\c assert() macro. Broadly speaking, the assertions only serve the 
+ *	\c RKHASSERT() macro. Broadly speaking, the assertions only serve the 
  *	purposes of catching bugs and helping documentation. Helping to document 
  *	the code means that the statements inside the assertion tell the reader 
  *	something he might not already know.
  *	
  *	\note 
- *	The preprocessor switch RKH_ASSERT disables checking assertions.
+ *	The preprocessor switch RKH_ASSERT_EN disables checking assertions.
  * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
  * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
  * 	passed as the argument to these macros. One notable exception is the
  * 	macro rkhallege(), that still evaluates the test condition, but does
- * 	not report assertion failures when the switch RKH_ASSERT is defined.
+ * 	not report assertion failures when the switch RKH_ASSERT_EN is defined.
  *
  *	Example of use:
  *	\code
@@ -51,8 +51,7 @@
  *	some_function( const char *p, int size )
  *	{
  *		RKHASSERT( 	p != ( const char* )0 &&
- *					size > 0  &&
- *					size < MAX_SIZE );
+ *					size > 0  && size < MAX_SIZE );
  *		...
  *	}
  *	\endcode
@@ -79,13 +78,13 @@
  * 	line number of assertion, and other information. A number is easier 
  * 	to fill in on a report form and easier to store in NVRAM.
  *
- *	The following listing shows a illustrative example for VC2008 IDE:
+ *	The following listing shows a illustrative example for VC8 IDE:
+ *
  *	\code
  *	void 
  *	rkh_assert( RKHROM char * const file, int line )
  *	{
- *		printf( "RKHASSERT: [%d] line from %s file\n", line, 
- *														file );
+ *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
  *		__debugbreak();
  *	}
  *	\endcode
@@ -130,18 +129,20 @@
 	 * 	to fill in on a report form and easier to store in NVRAM.
 	 *
 	 *	The following listing shows a illustrative example for VC2008 IDE:
+	 *
 	 *	\code
 	 *	void 
 	 *	rkh_assert( RKHROM char * const file, int line )
 	 *	{
-	 *		printf( "RKHASSERT: [%d] line from %s file\n", line, 
-	 *														file );
+	 *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
 	 *		__debugbreak();
 	 *	}
 	 *	\endcode
 	 *	
 	 *	\note
-	 *	This function must be defined by the user application. 
+	 *	The rkh_assert() callback will only get called if RKH_ASSERT_EN is 
+	 *	set to 1 within rkhcfg.h file. When this is set the application must 
+	 *	provide the callback function. 
 	 * 
 	 * 	\param file			file name where the assertion failed
 	 * 	\param line 		line number at which the assertion failed
@@ -210,8 +211,8 @@
 	 * 	to FALSE.
 	 *
 	 * 	\note The \a exp argument IS always evaluated even when assertions 
-	 * 	are disabled with the RKH_ASSERT macro. When the RKH_ASSERT macro 
-	 * 	is defined, the RKHASSERT() macro is NOT called, even if the
+	 * 	are disabled with the RKH_ASSERT_EN. When the RKH_ASSERT_EN is set 
+	 * 	to one (1), the RKHASSERT() macro is NOT called, even if the
 	 * 	\a exp evaluates to FALSE.
      */
 
@@ -224,7 +225,7 @@
 	 * 	ever executed.
 	 *
 	 * 	\note 
-	 * 	Can be disabled with the RKH_ASSERT switch.
+	 * 	Can be disabled with the RKH_ASSERT_EN switch.
 	 */
 
     #define RKHERROR() 							\

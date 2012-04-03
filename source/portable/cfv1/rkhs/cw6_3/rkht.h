@@ -38,8 +38,7 @@
  * 	The RKH uses a set of integer quantities. That maybe 
  * 	machine or compiler	dependent.
  *
- * 	Note:
- *
+ * 	\note
  * 	The 'HUInt' and 'HInt' will normally be the natural size 
  * 	for a particular machine. These types designates an integer 
  * 	type that is usually fastest to operate with among all integer 
