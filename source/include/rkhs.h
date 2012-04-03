@@ -27,6 +27,42 @@
  * 	\file rkhs.h
  *	\brief
  *	Platform-independent interface to the RKS scheduler.
+ *	
+ *	The active object computing model can work with nonpreemptive kernels. 
+ *	In fact, one particular cooperative kernel matches the active object 
+ *	computing model exceptionally well and can be implemented in an 
+ *	absolutely portable manner. A very powerful yet simple solution is 
+ *	exaplained below, the simple RKHS kernel.
+ *
+ *	The simple nonpreemptive kernel executes one active object at a time in 
+ *	the infinite loop (similar to the "superloop"). 
+ *	The RKHS kernel is engaged after each event is processed in the 
+ *	run-to-completion (RTC) fashion to choose the next highest-priority 
+ *	active object ready to process the next event. The RKHS scheduler is 
+ *	cooperative, which means that all active objects cooperate to share a 
+ *	single CPU and implicitly yield to each other after every RTC step. The 
+ *	kernel is nonpreemptive, meaning that every active object must completely 
+ *	process an event before any other active object can start processing 
+ *	another event.
+ *
+ *	The ISRs can preempt the execution of active objects at any time, but due 
+ *	to the simplistic nature of the RKHS kernel, every ISR returns to exactly 
+ *	the preemption point. If the ISR posts an event to any active object, the 
+ *	processing of this event won't start until the current RTC step completes. 
+ *	The maximum time an event for the highest-priority active object can be 
+ *	delayed this way is called the task-level response. With the 
+ *	nonpreemptive RKHS kernel, the task-level response is equal to the longest 
+ *	RTC step of all active objects in the system. Note that the task-level 
+ *	response of the RKHS kernel is still a lot better than the traditional 
+ *	"superloop" (a.k.a. main+ISRs) architecture.
+ *
+ *	The task-level response of the simple RKHS kernel turns out to be 
+ *	adequate for surprisingly many applications because state machines by 
+ *	nature handle events quickly without a need to busy-wait for events. 
+ *	(A state machine simply runs to completion and becomes dormant until 
+ *	another event arrives.) Also note that often you can make the task-level 
+ *	response as fast as you need by breaking up longer RTC steps into shorter 
+ *	ones.
  */
 
 

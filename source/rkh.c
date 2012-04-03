@@ -598,20 +598,29 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 
 #if RKH_SMA_EN_GET_INFO == 1
+void 
+rkh_sma_clear_info( RKHSMA_T *sma )
+{
+	RKH_SMAI_T *psi;
+	RKH_SR_CRITICAL_;
+
+	psi = &sma->sinfo;
+
+	RKH_ENTER_CRITICAL_();
+	sma->sinfo.ndevt = sma->sinfo.exectr = 0;
+	RKH_EXIT_CRITICAL_();
+}
+
 
 void 
-rkh_clear_info( RKHSMA_T *sma )
+rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi )
 {
-	sma->hinfo.rcvevt = sma->hinfo.exectr = 0;
+	RKH_SR_CRITICAL_;
+
+	RKH_ENTER_CRITICAL_();
+	*psi = sma->sinfo;
+	RKH_EXIT_CRITICAL_();
 }
-
-
-RKH_INFO_T *
-rkh_get_info( RKHSMA_T *sma )
-{
-	return &sma->hinfo;
-}
-
 #endif
 
 

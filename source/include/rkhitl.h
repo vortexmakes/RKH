@@ -142,7 +142,10 @@
 	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support"
 #else
 	#if RKH_EN_DYNAMIC_EVENT == 0 && RKH_EN_NATIVE_DYN_EVENT != 0
-		#error "rkhcfg.h, When disabling the dynamic dynamic event support must be disabled (0) the RKH_EN_NATIVE_DYN_EVENT."
+		#error "rkhcfg.h, When disabling the dynamic event support must be disabled (0) the RKH_EN_NATIVE_DYN_EVENT."
+	#endif
+	#if RKH_EN_DYNAMIC_EVENT == 1 && RKH_MAX_EPOOL == 0
+		#error "rkhcfg.h, When enabling the dynamic event support the RKH_MAX_EPOOL must be != 0"
 	#endif
 #endif
 
@@ -314,6 +317,10 @@
 
 #ifndef RKH_EN_DEFERRED_EVENT
 	#error "rkhcfg.h, Missing RKH_EN_DEFERRED_EVENT: Enable (1) or Disable (0) deferred event support. For using this feature the dynamic event support must be set to one."
+#else
+	#if RKH_EN_DEFERRED_EVENT == 1 && RKH_EN_DYNAMIC_EVENT == 0
+		#error "rkhcfg.h, When enabling the defer and recall event features the dynamic event support must be enabled (1) too"
+	#endif
 #endif
 
 #ifndef RKH_SMA_EN_PSEUDOSTATE
@@ -779,7 +786,7 @@ struct rkh_t;
 	#define rkh_exec_init( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
-			(*CIA( h ))( (h), (h)->romrkh->ievent );				\
+			(*CIA( h ))( (h), CIA(h)->romrkh->ievent );				\
 	}
 #elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_IEVENT == 0
 	typedef void ( *RKHINIT_T )( const void *sma );
@@ -793,7 +800,7 @@ struct rkh_t;
 	#define rkh_exec_init( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
-			(*CIA( h ))( (h)->romrkh->ievent );						\
+			(*CIA( h ))( CIA(h)->romrkh->ievent );					\
 	}
 #else
 	typedef void ( *RKHINIT_T )( void );
@@ -959,7 +966,12 @@ typedef struct rkhsma_t
 
 	/**
 	 * 	\brief
-	 * 	OS-dependent thread of control of the SMA. 
+	 * 	OS-dependent thread of control of the SMA.
+	 *
+     *	This data might be used in various ways, depending on the RKH port.
+     * 	In some ports thread is used to store the thread handle.
+	 *
+	 * 	\note
 	 * 	This member is optional, thus it could be declared as NULL or 
 	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD = 0.
 	 */
@@ -971,6 +983,13 @@ typedef struct rkhsma_t
 	/**
 	 * 	\brief
 	 *	OS-dependent thread data.
+	 *
+	 * 	This data might be used in various ways, depending on the RKH port.
+	 * 	In some ports it's used to block the calling thread when the native 
+	 * 	RKH queue is empty. In other RKH ports the OS-dependent	data object 
+	 * 	might be used differently.
+	 * 	
+	 * 	\note
 	 * 	This member is optional, thus it could be declared as NULL or 
 	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD_DATA = 0.
 	 */
@@ -982,7 +1001,6 @@ typedef struct rkhsma_t
 	/**
 	 * 	\brief
 	 * 	Event queue of the SMA.
-	 * 	It's OS-dependent.
 	 */
 
 	RKH_EQ_TYPE equeue;
@@ -999,10 +1017,10 @@ typedef struct rkhsma_t
  	 * 	\brief
 	 * 	Performance information. This member is optional, thus it could be 
 	 * 	declared as NULL or eliminated in compile-time with 
-	 * 	RKH_EN_SMA_GET_INFO = 0.
+	 * 	RKH_SMA_EN_GET_INFO = 0.
 	 */
 
-#if RKH_EN_SMA_GET_INFO == 1
+#if RKH_SMA_EN_GET_INFO == 1
 	RKH_SMAI_T sinfo;
 #endif	
 

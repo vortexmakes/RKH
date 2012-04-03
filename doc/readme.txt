@@ -6,196 +6,245 @@
 The RKH project is organized through a hierarchical directory structure
 to facilitate its distribution, support and maintenance.
 This structure also includes application examples and demos on several
-platforms.
+platforms. The following annotated directory tree lists the most important 
+directories and files provided in the standard RKH distribution. The 
+explanation section immediately following the directory tree explains the 
+structure in more detail.
 
-There are several ways of using RKH, one of them is to use the directory 
-structure as is and the other is to extract the necessary files for 
-including in a particular application.
-
-- \ref using_dir
-- \ref using_file
-
-<HR>
-\section using_dir Using directory structure
-
-This section describes how to use the RKH directory structure shown in
-\ref top_dir "Figure 1 Top level directories".
-	
 \anchor top_dir
-\n
+\code
+<RKH-root>				- RKH-root directory
++---demo				- RKH demo applications
++---doc					- RKH documentation
++---source				- RKH source files
+|   copying.txt			- licence file
+|   README				- change log file
+\	rkh.chm				- reference manual
+\endcode
 <STRONG> Figure 1 Top level directories </STRONG>
-\code
-<RKH-root>				- RKH-root directory
-|
-+---demo				- RKH demo applications
-+---doc					- RKH documentation
-+---source				- RKH source files
-|   copying.txt			- licence file
-|   README				- change log file
-\	rkh.chm				- reference manual
-\endcode
 
-\n <STRONG> RKH source files </STRONG>
-
-The \ref src_dir "Figure 2 RKH source directory" shows the \c \\source 
-directory.
-
-\anchor src_dir
-\n
-<STRONG> Figure 2 RKH source directory </STRONG>
-\code
-<RKH-root>				- RKH-root directory
-|
-+---demo				- RKH demo applications
-+---doc					- RKH documentation
-\---source				- RKH source files
-|   |   
-|   \---include			- RKH platform-independent include files
-|   |       rkh.h		- Framework interface
-|   |       rkhassert.h	- Assert definitions
-|   |       rkhitl.h	- Internal use only
-|   |       rkhplat.h	- Supported and portable platforms
-|   |       rkhtrace.h	- Trace facility
-|   |       
-|   \---portable		- RKH ports
-|   |   \---cws08		- Codewarrior for Freescale S08
-|   |       rkhport.h	- RKH platform-dependent include file
-|   |   \---lnxgcc		- Linux GCC
-|   |       rkhport.h	- RKH platform-dependent include file
-|   |   \---vc08		- Visual C++ 2008
-|   |       rkhport.h	- RKH platform-dependent include file
-|   |					
-|   |   rkh.c			- RKH platform-independent source code.
-|   \   rkhtrace.c		- RKH trace facility source code.
-|
-|   copying.txt			- licence file
-|   README				- change log file
-\	rkh.chm				- reference manual
-\endcode
-
-- \c \\include: contains platform-independent header files.
-
-- \c \\portable: contains platform-independent header files to be
-used by RKH applications. Each platform-dependent file should be 
-placed in a directory that represents the platform to be used. 
-Each platform directory should be placed within \c \\portable directory, 
-i.e.: \c \\portable\\\<platform\>\\rkhport.h. The 
-\ref src_dir "Figure 2 RKH source directory" shows three RKH port 
-directories: \c \\portable\\cw08 (Codewarrior for Freescale S08), 
-\c \\portable\\lnxgcc (Linux GCC), and \c \\portable\\vc08 (Visual C++ 2008).
-
-- \b rkh.c: platform-independent source code of RKH. This file 
-requires inclusion of only one platform-specific header file named 
-\b rkhport.h. It's indirectly included by \b rkh.h file and it's 
-described in detail in section \ref Porting.
-
-- \c rkhtrace.c: platform-independent source code of runtime debugging.
-
-Next, each \b rkhport.h must be referenced from \b rkhplat.h header file,
-located in \c \\include directory. The idea behind conditional 
-compilation is that a \b rkhport.h can be selectively compiled, depending 
-upon whether a specific value has been defined. The next listing shows 
-the \b rkhplat.h file according to \c \\portable directory from
-\ref src_dir "Figure 2 RKH source directory", where \c ___CWS08__, 
-\c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler 
-to include header files from the specific RKH port directory.
-
-\code
-#if __CWS08__
-	#include "..\portable\cw08\rkhport.h"
-#elif __VC__
-	#include "..\portable\vc08\rkhport.h"
-#elif __LNXGCC__
-   	#include "lnxgcc/rkhport.h"	
-#else
-	#error "rkhplat.h: Missing platform definition."
-#endif
-\endcode
-
-The path of platform-dependent file must be relative. 
-
-\n \b Demo \b application
-
-Then, should be created a directory within \c \\demo with the name of 
-application that will make use of RKH. For example: \c \\demo\\vc08, as
-shown in \ref demo_dir "Figure 3 Demo application directories". 
-This directory includes the files needed by the application. 
-Aditionallity, should be created the RKH configuration file \b rkhcfg.h 
-to be included within the application directory. See \ref cfg section. 
-This file is mandatory and it's used by RKH.
-
-\anchor demo_dir
-\n
-<STRONG> Figure 3 Demo application directories </STRONG>
-\code
-<root>					- RKH-root directory
-|
-\---demo				- RKH demo applications
-|   +---common			- Common source code
-|   +---cw08			- Application demo for Codewarrior Freescale S08 platform
-|   +---lnxgcc			- Application demo for Linux GCC platform
-|   \---vc08			- Application demo for VC08 platform
-|	    +---prj			- IDE files.
-|		main.c			- main source code
-|		my.c			- application source file
-|		my.h			- application include file
-|		myact.c			- application source file
-|		myact.h			- application include file
-|		myevt.h			- application include file
-|		mylog.txt		- log file
-|		rkhcfg.h		- RKH configuration file
-|		rkhdata.h		- application include file
-|                   
-+---doc					- RKH documentation
-|                   
-+---source				- RKH source files
-|   copying.txt			- licence file
-|   README				- change log file
-\	rkh.chm				- reference manual
-\endcode
+- \ref source_dir
+- \ref portable_dir
+- \ref demo_dir
 
 <HR>
-\section using_file Using files
+\section source_dir RKH source files
 
-Here proposes to extract from RKH directory structure, detailed	above, 
-those files required by RKH to use it in a particular application. 
-Therefore, the proposed structure is no longer necessary.
+The following figure shows the \c \\source directory.
 
-Required source files extracted from \c \\source directory:
-
+\anchor source_dir_fig
 \code
-rkh.c		- RKH platform-independent source code
-rkhtrace.c	- RKH trace tool
+(1)  <RKH-root>
+(2)  +---demo				- Demo applications
+(3)  +---doc				- Documentation
+(4)  \---source				- RKH source files
+(5)  |   \---include		- Platform-independent header files
+(6)  |   |       rkh.h
+(7)  |   |       rkhassert.h
+(8)  |	 |		 rkhevt.h
+(9)  |   |       rkhitl.h
+(10) |	 |		 rkhmp.h
+(11) |   |       rkhplat.h
+(12) |   |       rkhrdy.h
+(13) |   |       rkhrq.h
+(14) |   |       rkhs.h	
+(15) |   |       rkhtim.h
+(16) |   |       rkhtrc.h
+(17) |   \       rkhtype.h
+(18) |   +---portable		- Platform-dependent files
+(19) |   |   rkh.c
+(20) |   |   rkhdyn.c
+(21) |   |   rkhmp.c
+(22) |   |   rkhrq.c
+(23) |   |   rkhs.c
+(24) |   |   rkhsma.c
+(25) |   |   rkhtbl.c
+(26) |   |   rkhtim.c
+(27) |   \   rkhtrc.c
+(28) |   copying.txt		- licence file
+(29) |   README				- change log file
+(30) \	 rkh.chm			- reference manual
 \endcode
+<STRONG> Figure 2 RKH source directory </STRONG>
 
-Required include files extracted from \c \\include directory:
+\li (1)	RKH-root directory
+\li (2)	Demo applications
+\li (3)	Documentation
+\li (4)	RKH source code files
+\li (5)	Contains platform-independent header files
+\li (6)	Framework interface
+\li (7)	Assert definitions
+\li (8)	Event data type and other related macros
+\li (9)	Internal use only
+\li (10) Fixed-size memory block services interface
+\li (11) Supported and portable platforms
+\li (12) Native priority management
+\li (13) Queue services interface
+\li (14) Simple and cooperative scheduler interface
+\li (15) Timer services interface
+\li (16) Trace facility
+\li (17) Defines the data types that uses RKH
+\li (18) Contains platform-dependent files.
+\li (19) State machine engine
+\li (20) Dynamic event management, and event framework services
+\li (21) Fixed-size memory block
+\li (22) Queue (copy by reference)
+\li (23) Simple and cooperative scheduler
+\li (24) State machine application (SMA) registration.
+\li (25) Binary map tables.
+\li (26) Software timer.
+\li (27) Platform-independent source code of runtime tracing.
+\li (28) Licence file
+\li (29) Change log file
+\li (30) Reference manual
 
+<HR>
+\section portable_dir RKH portable directory
+
+\copydetails rkhplat.h
+\copydetails rkhtype.h
+See the \ref Porting section for more information. 
+The following figure shows the \c \\portable directory.
+
+\anchor portable_dir_fig
 \code
-rkh.h		- Framework interface
-rkhassert.h	- Assert definitions
-rkhitl.h	- Internal use only
-rkhplat.h	- Supported and portable platforms
-rkhtrace.h	- Trace facility
+	 <RKH-root>	
+	 +---demo
+	 +---doc
+	 \---source
+( 1) |   \---portable					- RKH ports
+( 2) |   |   \---80x86					- Intel x86
+( 3) |   |   | 	\---win32_st			- Win32 Single-thread
+( 4) |   |   |  | 	\---vc08			- Microsoft Visual 2008
+( 5) |   |   |  | 		|	rkhport.h
+( 6) |   |   |  |		|	rkht.h
+( 7) |   |   \  \		\ 	rkhport.c
+( 8) |   |   \---cfv1					- Freescale Coldfire V1
+( 9) |   |   | 	\---rkhs				- Use the native scheduler
+(10) |   |   |	|	\---cw6_3			- Codewarrior v6.3
+(11) |   |   |  | 	|		rkhport.h
+(12) |   |   |  |	|		rkht.h
+(13) |   |   \ 	\	\		rkhport.c
+	 |   \ 	 +---...					- Others
+	 |   |   rkh.c
+	 |   |   rkhdyn.c
+	 |   |   rkhmp.c
+     |   |   rkhrq.c
+     |   |   rkhs.c
+ 	 |   |   rkhsma.c
+ 	 |   |   rkhtbl.c
+	 |   |   rkhtim.c
+	 |   \   rkhtrc.c
+	 |   copying.txt
+	 |   README	
+	 \	 rkh.chm	
 \endcode
+<STRONG> Figure 3 RKH portable directory </STRONG>
 
-Required include files extracted from \c \\portable\\\<platform\> directory:
+\li ( 1) RKH ports. The directory \\portable contains platform-dependent 
+files to be used by RKH applications. This directory structure is the most 
+complicated because of the large number of choices available, such as 
+CPU architectures, compilers, operating systems, and compiler options. 
+Each of those choices is represented as a separate level of nesting in a 
+hierarchical directory tree, so that each dimension in the multi-dimensional 
+space of options can be extended independently from the others. Also, the 
+directory branch for each port is individually customizable, so each branch 
+can represent only choices relevant for a given CPU, operating system, 
+compiler, etc.
+\li ( 2) Intel x86. The CPU architecture is placed as the first level of 
+nesting within the \\portable directory. Examples of CPU architectures could 
+be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, etc. Please note that a 
+separate directory is needed whenever the CPU architecture is significantly 
+different.
+\li ( 3) Win32 Single-thread. The second level of nesting, under the CPU 
+architecture, is the operating system used.
+\li ( 4) Microsoft Visual 2008. The next level of nesting, under each 
+operating system directory, is the directory for the compiler used.
+\li ( 5) RKH platform-dependent include file. Frequently, defines the 
+interrupt locking method, the critical section management, among other things.
+\li ( 6) RKH platform-dependent include file. In this file is defined the 
+data types that uses RKH.
+\li ( 7) RKH platform-dependent source file.
+\li ( 8) Freescale Coldfire V1
+\li ( 9) Use the native scheduler
+\li (10) Codewarrior v6.3
+\li (11-13) Idem (5-7)
 
+<HR>
+\section demo_dir RKH demo applications
+
+The \\demo directory contains the application demos that are included in the 
+standard RKH distribution. The structure of the \\demo is the most complicated 
+because of the large number of choices available, such as CPU architectures, 
+compilers, operating systems, and compiler options. Each of those choices is 
+represented as a separate level of nesting in a hierarchical directory tree, 
+so that each dimension in the multi-dimensional space of options can be 
+extended independently from the others. Also, the directory branch for each 
+RKH port is individually customizable, so each branch can represent only 
+choices relevant for a given CPU, operating system, compiler, etc.
+
+Each RKH application must have its own configuration file, called rkhcfg.h. 
+This file adapts and configures RKH by means of compiler definitions and macros 
+allowing to restrict the resources consumed by RKH. Adjusting this definitions 
+allows to reduce the ROM and RAM consumption, and to enhance the system 
+performance in a substantial manner.
+
+\anchor demo_dir_fig
 \code
-rkhport.h	- RKH platform-dependent include file
+	 <RKH-root>	
+( 1) \---demo									- RKH demo applications
+( 2) |   |   \---80x86							- Intel x86
+( 3) |   |   | 	\---win32_st					- Win32 Single-thread
+( 4) |   |   |  | 	\---vc08					- Microsoft Visual 2008
+( 5) |   |   |  | 		\---ahsm				- State machine example
+( 6) |   |   |  | 			+---prj				- Project files
+( 7) |   |   |  |			|		rkhcfg.h	- App source and header files
+     |   |   |  |			|		main.c
+	 |   |   \  \			\ 		...
+	 |   \ 	 +---...							- Others
+	 |   |   rkh.c
+	 |   |   rkhdyn.c
+	 |   |   rkhmp.c
+     |   |   rkhrq.c
+     |   |   rkhs.c
+ 	 |   |   rkhsma.c
+ 	 |   |   rkhtbl.c
+	 |   |   rkhtim.c
+	 |   \   rkhtrc.c
+	 +---doc
+	 +---source
+	 |   copying.txt
+	 |   README	
+	 \	 rkh.chm	
 \endcode
+<STRONG> Figure 4 Demo application directories </STRONG>
 
-The \c rkhport.h must be referenced from \b rkhplat.h file as shown below:
-
-\code
-#include "rkhport.h"
-\endcode
-
-\n \b Application
-
-Next, should be created the configuration file \b rkhcfg.h to be included 
-within the application directory. See \ref cfg section for more information. 
-This file is mandatory and it's used by RKH.
-
+\li ( 1) RKH demo applications. The \\demo directory contains the application 
+examples that are included in the standard RKH distribution. The structure of 
+the \\demo is the most complicated because of the large number of choices 
+available, such as CPU architectures, compilers, operating systems, and 
+compiler options. Each of those choices is represented as a separate level 
+of nesting in a hierarchical directory tree, so that each dimension in the 
+multi-dimensional space of options can be extended independently from the 
+others. Also, the directory branch for each RKH port is individually 
+customizable, so each branch can represent only choices relevant for a 
+given CPU, operating system, compiler, etc.
+\li ( 2) Intel x86. The CPU architecture is placed as the first level of 
+nesting within the \\demo directory. Examples of CPU architectures could 
+be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, etc. Please note that a 
+separate directory is needed whenever the CPU architecture is significantly 
+different.
+\li ( 3) Win32 Single-thread. The second level of nesting, under the CPU 
+architecture, is the operating system used.
+\li ( 4) Microsoft Visual 2008. The next level of nesting, under each 
+operating system directory, is the directory for the compiler used.
+\li ( 5) Finally, the example application is located in its own directory. 
+In this case, abstract hierarchical state machine example. This application 
+is very useful to learn and explore the Statechart and UML features.
+\li ( 6) The \\ahsm\\prj\ subdirectory contains the IDE-dependent files, 
+like object files, executable, and among others.
+\li ( 7) As mentioned above, each of application that use RKH must be defined 
+its own configuration file, rkhcfg.h.
 
 \page Porting Porting
 \image html rkh_bunner.jpg
@@ -372,7 +421,7 @@ placed in a directory that represents the platform to be used, called port
 directory. 
 Each port directory should be placed within \c \\portable, 
 i.e.: \c \\portable\\\<platform\>\\rkhport.h. The 
-\ref src_dir "Figure 2 RKH source directory" shows three RKH port 
+\ref source_dir_fig "Figure 2 RKH source directory" shows three RKH port 
 directories: \c \\portable\\cw08 (Codewarrior for Freescale S08), 
 \c \\portable\\lnxgcc (Linux GCC), and \c \\portable\\vc08 (Visual C++ 2008).
 
@@ -381,7 +430,7 @@ located in \c \\include directory. The idea behind conditional
 compilation is that a \b rkhport.h can be selectively compiled, depending 
 upon whether a specific value has been defined. The next listing shows 
 the \b rkhplat.h file according to \c \\portable directory from
-\ref src_dir "Figure 2 RKH source directory", where \c ___CWS08__,
+\ref source_dir_fig "Figure 2 RKH source directory", where \c ___CWS08__,
 \c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler to 
 include header files from the specific RKH port directory.
 
@@ -2043,9 +2092,9 @@ and to enhance the system performance in a substantial manner. The
 
 Available options:
 
-- 	\b RKH_EN_HCAL
+- 	\b RKH_SMA_EN_HCAL
 	\n \n Enable (1) or disable (0) the state nesting.
-	When RKH_EN_HCAL is set to zero (0) some important features of RKH are
+	When RKH_SMA_EN_HCAL is set to zero (0) some important features of RKH are
 	not included: state nesting, composite state, history (shallow and deep)
 	pseudostate, entry action, and exit action.
 

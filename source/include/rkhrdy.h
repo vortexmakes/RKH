@@ -30,7 +30,7 @@
  * 	Native priority management.
  *
  * 	Each SMA is assigned a unique priority level between 0 and 
- * 	RKH_LOWEST_PRIO (maximum 62).
+ * 	RKH_LOWEST_PRIO.
  * 	Each SMA that is ready to run is placed in a ready list consisting of two 
  * 	variables, rkhrg.grp and rkhrg.tbl[]. SMA priorities are grouped 
  * 	(8 SMA per group) in rkhrg.grp. Each bit in rkhrg.grp is used to 
@@ -75,6 +75,9 @@
 
 #include "rkhcfg.h"
 #include "rkhtype.h"
+
+
+#define RKH_LOWEST_PRIO			RKH_MAX_SMA	
 
 
 #if RKH_MAX_SMA <= 8

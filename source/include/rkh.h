@@ -178,7 +178,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKHSREG_T structure definition for more information.
  *
  * 	\param name		state name. Represents a composite state structure.
- * 	\param id		the value of state ID.	
+ * 	\param id		the value of state ID. This argument is optional, thus it 
+ * 					could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ex		pointer to state exit action. This argument is 
@@ -209,7 +211,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKHSREG_T structure definition for more information.
  *
  * 	\param name		state name. Represents a basic state structure.
- * 	\param id		the value of state ID.	
+ * 	\param id		the value of state ID. This argument is optional, thus it 
+ * 					could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ex		pointer to state exit action. This argument is 
@@ -221,7 +225,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 					as NULL.
  *					Aditionally, by means of single inheritance in C it 
  *					could be used as state's abstract data. 
- *					Aditionally, implementing the single inheritance in C 
+ *					Moreover, implementing the single inheritance in C 
  *					is very simply by literally embedding the base type, 
  *					RKHPPRO_T in this case, as the first member of the 
  *					derived structure. See \a prepro member of RKHSREG_T 
@@ -258,7 +262,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a conditional pseudostate 
  * 					structure.
- * 	\param id		the value of state ID.	
+ * 	\param id		the value of state ID. This argument is optional, thus it 
+ * 					could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
  */
 
 #define RKH_CREATE_COND_STATE( name,id )								\
@@ -284,7 +290,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a junction pseudostate 
  * 					structure.
- * 	\param id		the value of state ID.	
+ * 	\param id		the value of state ID. This argument is optional, thus it 
+ * 					could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param action	pointer to transition action. This argument is optional, 
  * 					thus it could be declared as NULL.
  * 	\param target	pointer to target state.
@@ -312,7 +320,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a deep history 
  * 					pseudostate structure.
- * 	\param id		the value of state ID.	
+ * 	\param id		the value of state ID. This argument is optional, thus it 
+ * 					could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param parent	pointer to parent state.
  */
 
@@ -340,7 +350,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a shallow history pseudostate 
  * 					structure.
- * 	\param id		the value of state ID.	
+ * 	\param id		the value of state ID. This argument is optional, thus it 
+ * 					could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0. 	
  * 	\param parent	pointer to parent state.
  */
 
@@ -911,7 +923,9 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *
  * 	\param sma_t		data type of the SMA. Could be derived from RKHSMA_T.
  * 	\param id			ID of state machine application. This number allows 
- * 						to uniquely identify a state machine.
+ * 						to uniquely identify a state machine. This argument 
+ * 						is optional, thus it could be eliminated in 
+ * 						compile-time with RKH_SMA_EN_ID = 0.	
  * 	\param name			name of state machine application. Represents the top 
  * 						state of state diagram.
  * 	\param prio			state machine application priority. A unique priority 
@@ -1051,7 +1065,7 @@ RKHEVT_T *rkh_sma_get( RKHSMA_T *sma );
  * 	\note
  * 	See RKH_SMAI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_EN_SMA_GET_INFO = 0.
+ * 	RKH_SMA_EN_GET_INFO = 0.
  *
  * 	\param sma		pointer to previously created state machine application.
  * 	\param psi		pointer to the buffer into which the performance 
@@ -1067,7 +1081,7 @@ void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_EN_SMA_GET_INFO = 0.
+ * 	with RKH_SMA_EN_GET_INFO = 0.
  *
  * 	\param sma		pointer to previously created state machine application.
  */
@@ -1367,7 +1381,7 @@ void rkh_hk_start( void );
 
 /**
  * 	\brief
- * 	This hook function is called just before the RKH returns the the 
+ * 	This hook function is called just before the RKH returns to the 
  * 	underlying OS/RTOS. Usually, the rkh_hk_exit() is useful when executing
  * 	clean-up code upon SMA terminate or framework exit.
  *

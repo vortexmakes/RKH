@@ -42,7 +42,7 @@
  * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
  * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
  * 	passed as the argument to these macros. One notable exception is the
- * 	macro rkhallege(), that still evaluates the test condition, but does
+ * 	macro RKHALLEGE(), that still evaluates the test condition, but does
  * 	not report assertion failures when the switch RKH_ASSERT_EN is defined.
  *
  *	Example of use:
