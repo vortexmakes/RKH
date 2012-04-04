@@ -14,8 +14,7 @@ about RKH files. The application files are listed below:
 - \b "rkhcfg.h":	this file adapts and configures RKH. See \ref cfg section. 
 					In the \\demo directory there are other \b rkhcfg.h files
 					already in existence and it's suggested that these 
-					are used as a reference. See the application 
-					\subpage rkhcfg_h file. 
+					are used as a reference. See the application \b rkhcfg.h file. 
 					Note that this file is located in the application directory.
 
 - \b "my.c": 		this module implements the "my" state machine, which 

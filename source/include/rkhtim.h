@@ -295,6 +295,7 @@ void rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick );
 /**
  * 	\brief
  * 	Restart a timer with a new number of ticks. 
+ *
  * 	The timer begins running at the completion of this operation.
  * 	This function is optional, thus it could be eliminated in compile-time 
  * 	with RKH_TIM_EN_RESTART.
@@ -321,7 +322,7 @@ void rkh_tim_stop( RKHT_T *t );
 
 /**
  * 	\brief
- * 	Retrieves performance information for a particular queue. 
+ * 	Retrieves performance information for a particular software timer. 
  *
  *	The user application must allocate an RKH_TINFO_T data structure used 
  *	to receive data. The performance information is available during run-time 

@@ -680,7 +680,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -768,7 +768,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -893,7 +893,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -1039,7 +1039,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -1165,7 +1165,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
@@ -1240,7 +1240,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
@@ -1317,7 +1317,7 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -2088,215 +2088,114 @@ Each RKH application must have its own configuration file, called
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \b rkhcfg.h header file.
+\b rkhcfg.h file shows the general layout of the configuration file.
+Here is an list of all options with their documentation:
 
-Available options:
+\n<EM>Configuration options related to framework</EM>\n\n
 
-- 	\b RKH_SMA_EN_HCAL
-	\n \n Enable (1) or disable (0) the state nesting.
-	When RKH_SMA_EN_HCAL is set to zero (0) some important features of RKH are
-	not included: state nesting, composite state, history (shallow and deep)
-	pseudostate, entry action, and exit action.
+\li \b RKH_MAX_SMA \copydetails RKH_MAX_SMA
+\li \b RKH_EN_DYNAMIC_EVENT \copydetails RKH_EN_DYNAMIC_EVENT
+\li \b RKH_MAX_EPOOL \copydetails RKH_MAX_EPOOL
+\li \b RKH_SIZEOF_EVENT \copydetails RKH_SIZEOF_EVENT
+\li \b RKH_SIZEOF_ESIZE \copydetails RKH_SIZEOF_ESIZE
+\li \b RKH_EN_DEFERRED_EVENT \copydetails RKH_EN_DEFERRED_EVENT
+\li \b RKH_ASSERT_EN \copydetails RKH_ASSERT_EN
+\li \b RKH_HK_EN_DISPATCH \copydetails RKH_HK_EN_DISPATCH
+\li \b RKH_HK_EN_SIGNAL \copydetails RKH_HK_EN_SIGNAL
+\li \b RKH_HK_EN_TIMEOUT \copydetails RKH_HK_EN_TIMEOUT
+\li \b RKH_HK_EN_START \copydetails RKH_HK_EN_START
+\li \b RKH_HK_EN_EXIT \copydetails RKH_HK_EN_EXIT
+\li \b RKH_SMA_EN_IEVENT \copydetails RKH_SMA_EN_IEVENT
+\li \b RKH_EN_SMA_THREAD \copydetails RKH_EN_SMA_THREAD
+\li \b RKH_EN_SMA_THREAD_DATA \copydetails RKH_EN_SMA_THREAD_DATA
+\li \b RKH_EN_NATIVE_SCHEDULER \copydetails RKH_EN_NATIVE_SCHEDULER
+\li \b RKH_EN_NATIVE_EQUEUE \copydetails RKH_EN_NATIVE_EQUEUE
+\li \b RKH_EN_NATIVE_DYN_EVENT \copydetails RKH_EN_NATIVE_DYN_EVENT
+\li \b RKH_EN_REENTRANT \copydetails RKH_EN_REENTRANT
 
-- 	\b RKH_MAX_HCAL_DEPTH
-	\n \n Determines the maximum number of hierarchical levels. The smaller
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 levels.	Currently 
-	RKH_MAX_HCAL_DEPTH cannot exceed 8. 
+\n<EM>Configuration options related to state machine applications</EM>\n\n
 
-- 	\b RKH_MAX_TR_SEGS
-	\n \n Determines the maximum number of linked transition segments. 
-	The smaller this number, the lower the static RAM consumption. 
-	Typically, the most of hierarchical state machines uses 
-	up to 4 transition segments. Currently RKH_MAX_TR_SEGS cannot 
-	exceed 8. 
+\li \b RKH_SMA_EN_ID \copydetails RKH_SMA_EN_ID
+\li \b RKH_SMA_EN_GET_INFO \copydetails RKH_SMA_EN_GET_INFO	
+\li \b RKH_SMA_EN_STATE_ID \copydetails RKH_SMA_EN_STATE_ID	
+\li \b RKH_SMA_EN_PPRO \copydetails RKH_SMA_EN_PPRO	
+\li \b RKH_SMA_EN_HCAL \copydetails RKH_SMA_EN_HCAL	
+\li \b RKH_SMA_MAX_HCAL_DEPTH \copydetails RKH_SMA_MAX_HCAL_DEPTH
+\li \b RKH_SMA_MAX_TRC_SEGS \copydetails RKH_SMA_MAX_TRC_SEGS
+\li \b RKH_SMA_EN_PSEUDOSTATE \copydetails RKH_SMA_EN_PSEUDOSTATE
+\li \b RKH_SMA_EN_DEEP_HISTORY \copydetails RKH_SMA_EN_DEEP_HISTORY	
+\li \b RKH_SMA_EN_SHALLOW_HISTORY \copydetails RKH_SMA_EN_SHALLOW_HISTORY
+\li \b RKH_SMA_EN_JUNCTION \copydetails RKH_SMA_EN_JUNCTION	
+\li \b RKH_SMA_EN_CONDITIONAL \copydetails RKH_SMA_EN_CONDITIONAL
+\li \b RKH_SMA_EN_INIT_ARG_SMA \copydetails RKH_SMA_EN_INIT_ARG_SMA
+\li \b RKH_SMA_EN_ENT_ARG_SMA \copydetails RKH_SMA_EN_ENT_ARG_SMA
+\li \b RKH_SMA_EN_EXT_ARG_SMA \copydetails RKH_SMA_EN_EXT_ARG_SMA
+\li \b RKH_SMA_EN_ACT_ARG_SMA \copydetails RKH_SMA_EN_ACT_ARG_SMA
+\li \b RKH_SMA_EN_ACT_ARG_EVT \copydetails RKH_SMA_EN_ACT_ARG_EVT
+\li \b RKH_SMA_EN_GRD_ARG_EVT \copydetails RKH_SMA_EN_GRD_ARG_EVT
+\li \b RKH_SMA_EN_GRD_ARG_SMA \copydetails RKH_SMA_EN_GRD_ARG_SMA
+\li \b RKH_SMA_EN_PPRO_ARG_SMA \copydetails RKH_SMA_EN_PPRO_ARG_SMA
 
--	\b RKH_NUM_STATE_MACHINES
-	\n \n Number of used state machines.
+\n<EM>Configuration options related to trace facility</EM>\n\n
 
--	\b RKH_SIZEOF_EVENT
-	\n \n Determines the size [in bits] of the RKH event representation 
-	#RKHE_T. Valid values: 8, 16 or 32. Default 8.
+\li \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
 
--	\b RKH_EN_DYNAMIC_EVENT
-	\n \n Enable (1) or Disable (0) dynamic event support.
+\n<EM>Configuration options related to queue (by reference) facility</EM>\n\n
 
--	\b RKH_EN_DEFERRED_EVENT
-	\n \n Enable (1) or Disable (0) deferred event support. 
-	For using this feature the dynamic event support must be set to one.
+\li \b RKH_RQ_EN \copydetails RKH_RQ_EN
+\li \b RKH_RQ_SIZEOF_NELEM \copydetails RKH_RQ_SIZEOF_NELEM
+\li \b RKH_RQ_EN_GET_LWMARK \copydetails RKH_RQ_EN_GET_LWMARK
+\li \b RKH_RQ_EN_READ \copydetails RKH_RQ_EN_READ
+\li \b RKH_RQ_EN_DEPLETE \copydetails RKH_RQ_EN_DEPLETE
+\li \b RKH_RQ_EN_IS_FULL \copydetails RKH_RQ_EN_IS_FULL
+\li \b RKH_RQ_EN_GET_NELEMS \copydetails RKH_RQ_EN_GET_NELEMS
+\li \b RKH_RQ_EN_PUT_LIFO \copydetails RKH_RQ_EN_PUT_LIFO
+\li \b RKH_RQ_EN_GET_INFO \copydetails RKH_RQ_EN_GET_INFO
 
--	\b RKH_EN_PSEUDOSTATE
-	\n \n Enable (1) or disable (0) the pseudostates usage.
+\n<EM>Configuration options related to fixed-sized memory block facility</EM>\n\n
 
--	\b RKH_EN_DEEP_HISTORY
-	\n \n Enable (1) or disable (0) the deep history usage.
+\li \b RKH_MP_EN \copydetails RKH_MP_EN
+\li \b RKH_MP_REDUCED \copydetails RKH_MP_REDUCED
+\li \b RKH_MP_SIZEOF_BSIZE \copydetails RKH_MP_SIZEOF_BSIZE
+\li \b RKH_MP_SIZEOF_NBLOCK \copydetails RKH_MP_SIZEOF_NBLOCK
+\li \b RKH_MP_EN_GET_BSIZE \copydetails RKH_MP_EN_GET_BSIZE
+\li \b RKH_MP_EN_GET_NFREE \copydetails RKH_MP_EN_GET_NFREE	
+\li \b RKH_MP_EN_GET_LWM \copydetails RKH_MP_EN_GET_LWM	
+\li \b RKH_MP_EN_GET_INFO \copydetails RKH_MP_EN_GET_INFO
 
--	\b RKH_EN_SHALLOW_HISTORY
-	\n \n Enable (1) or disable (0) the shallow history usage.
+\n<EM>Configuration options related to software timer facility</EM>\n\n
 
--	\b RKH_EN_JUNCTION
-	\n \n Enable (1) or disable (0) the junction connector usage.
-
--	\b RKH_EN_CONDITIONAL
-	\n \n Enable (1) or disable (0) the conditional connector usage.
-
--	\b RKH_EN_INIT_HSM_ARG
-	\n \n Determines the initialization function prototype of the
-	state machines. When RKH_EN_INIT_HSM_ARG is set to one (1) this
-	function adds as argument a pointer to state machine structure 
-	RKH_T. See #RKHINIT_T structure definition.
-
--	\b RKH_EN_ENT_HSM_ARG
-	\n \n Determines the function prototype of the state entry. 
-	When RKH_EN_ENT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state machine structure RKH_T. See 
-	#RKHENT_T structure definition.
-
--	\b RKH_EN_EXT_HSM_ARG
-	\n \n Determines the function prototype of the state exit. 
-	When RKH_EN_EXT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state machine structure RKH_T. See 
-	#RKHEXT_T structure definition.
-
--	\b RKH_EN_ACT_HSM_ARG
-	\n \n Determines the function prototype of the transition action. 
-	When RKH_EN_ACT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state machine structure RKH_T. See 
-	#RKHACT_T structure definition.
-
--	\b RKH_EN_ACT_EVT_ARG
-	\n \n Determines the function prototype of the transition action. 
-	When RKH_EN_ACT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to ocurred event. See #RKHACT_T 
-	structure definition.
-
--	\b RKH_EN_GRD_EVT_ARG
-	\n \n Determines the function prototype of the transition guard.
-	When RKH_EN_GRD_EVT_ARG is set to one (1) this function adds as 
-	argument a pointer to ocurred event. See #RKHGUARD_T structure 
-	definition.
-
--	\b RKH_EN_GRD_HSM_ARG
-	\n \n Determines the function prototype of the transition guard.
-	When RKH_EN_GRD_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state machine structure RKH_T. See 
-	#RKHGUARD_T structure definition.
-
--	\b RKH_EN_PPRO_HSM_ARG
-	\n \n Determines the function prototype of the event preprocessor.
-	When RKH_EN_PPRO_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state machine structure RKH_T. See 
-	#RKHPPRO_T structure definition.
-
--	\b RKH_EN_STATE_NAME
-	\n \n When RKH_EN_STATE_NAME is set to one (1) the state structure 
-	includes its own name as a null-terminated string. When a particular 
-	application requires runtime debugging, this option must be enabled. 
-	See #RKHBASE_T structure definition.
-
--	\b RKH_EN_STATE_ID	
-	\n \n When RKH_EN_STATE_ID is set to one (1) the state structure 
-	includes an ID number (also called descriptor). 
-	This number allows to uniquely identify a state. When a particular 
-	application requires runtime debugging (native tracing features), 
-	this option must be enabled. 
-
--	\b RKH_EN_HSM_NAME	
-	\n \n When RKH_EN_HSM_NAME is set to one (1) the state machine
-	structure RKH_T includes its own name as a null-terminated string. 
-	When a particular application requires runtime debugging, this option 
-	must be enabled.
-
--	\b RKH_EN_HSM_ID	
-	\n \n When RKH_EN_HSM_ID is set to one (1) the state machine
-	structure RKH_T includes an ID number (also called descriptor). 
-	This number allows to uniquely identify a state. When a particular 
-	application requires runtime debugging (native tracing features), 
-	this option must be enabled. 
-
--	\b RKH_EN_HSM_DATA
-	\n \n When RKH_EN_HSM_DATA is set to one (1) the state machine structure
-	 RKH_T allows to reference a data object, which maintains additional 
-	 information.
-
--	\b RKH_EN_PPRO	
-	\n \n When RKH_EN_PPRO is set to one (1) either basic or composite states
-	can use a function to preprocessing the ocurred events.
-
--	\b RKH_EN_GET_INFO	
-	\n \n When RKH_EN_GET_INFO is set to one (1) the state machine structure
-	 RKH_T includes additional performance information by means of 
-	 RKH_INFO_T structure.
-
--	\b RKH_EN_REENTRANT
-	\n \n Not yet implemented.
-
--	\b RKH_TRACE
-	\n \n Enable (1) or disable (0) the trace mode. It's described in detail
-	in \ref dbg section.
-
--	\b RKH_TRACE_ALL
-	\n \n Enable (1) or disable (0) all trace points.
-
--	\b RKH_EN_EVENT
-	\n \n If it's enabled (1) records the triggering event.
-
--	\b RKH_EN_TRN_SRC
-	\n \n If it's enabled (1) records the source state of transition.
-
--	\b RKH_EN_TRN_TGT
-	\n \n If it's enabled (1) records the target state of transition.
-
--	\b RKH_EN_NXT_STATE
-	\n \n If it's enabled (1) records the next state of transition.
-
--	\b RKH_EN_INT_TRAN
-	\n \n If it's enabled (1) records the internal transition.
-
--	\b RKH_EN_ENTRY
-	\n \n If it's enabled (1) records the entered state.
-
--	\b RKH_EN_EXIT
-	\n \n If it's enabled (1) records the exited state.
-
--	\b RKH_EN_INIT_HSM
-	\n \n If it's enabled (1) records the initialization process of state machine.
-
--	\b RKH_EN_SGT_TGT
-	\n \n If it's enabled (1) records the target state of transition segment.
-
--	\b RKH_EN_RTN_CODE
-	\n \n If it's enabled (1) records the code returned by rkh_engine() function.
-
--	\b RKH_EN_NUM_ENEX
-	\n \n If it's enabled (1) records the number of entered and exited states.
-
--	\b RKH_EN_NUM_ACTSGT
-	\n \n If it's enabled (1) records the number of transition actions and transition
-	segments.
-
--	\b RKH_EN_TIMESTAMP
-	\n \n When RKH_EN_TIMESTAMP is set to one (1) the trace event structure 
-	RKHTREVT_T allows include a timestamp.
-
-- 	\b RKH_SIZEOF_TIMESTAMP
-	\n \n Determines the size [in bits] of the trace timestamp representation. 
-	Valid values: 8, 16 or 32. Default 8.
-
-- 	\b RKH_MAX_NUM_TRACES
-	\n \n Determines the maximum number of trace events in the stream. The smaller
-	this number, the lower the static RAM consumption.
-
-- 	\b RKH_EN_TRACE_STRING
-	\n \n When RKH_EN_TRACE_STRING is set to one (1) the trace event
-	structure RKHTREVT_T adds as argument an array of chars to allocate a 
-	null-terminated string.
-
-- 	\b RKH_MAX_TRACE_STRING_SIZE
-	\n \n Determines the size [in bytes] of the trace string argument.
-
--	\b RKH_ASSERT
-	\n \n Enable (1) or Disable (0) assert support.
+\li \b RKH_TIM_EN \copydetails RKH_TIM_EN	
+\li \b RKH_TIM_SIZEOF_NTIMER \copydetails RKH_TIM_SIZEOF_NTIMER
+\li \b RKH_TIM_EN_HOOK \copydetails RKH_TIM_EN_HOOK
+\li \b RKH_TIM_EN_RESTART \copydetails RKH_TIM_EN_RESTART
+\li \b RKH_TIM_EN_GET_INFO \copydetails RKH_TIM_EN_GET_INFO
 
 */
 

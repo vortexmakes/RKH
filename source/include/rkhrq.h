@@ -245,6 +245,10 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	\brief
  * 	This function query the queue.
  *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_RQ_EN_IS_FULL.
+ *
  * 	\param q		pointer to previously created queue.
  *
  * 	\return
@@ -257,6 +261,10 @@ HUInt rkh_rq_is_full( RKHRQ_T *q );
 /**
  * 	\brief
  * 	Returns the number of elements currently in the queue.
+ *
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_RQ_EN_GET_NELEMS.
  *
  * 	\param q		pointer to previously created queue.
  */
@@ -320,6 +328,9 @@ void rkh_rq_put_fifo( RKHRQ_T *q, const void *pe );
  * 	\note 
  * 	The function raises an assertion if the queue becomes full and cannot 
  * 	accept the element.
+ * 	\note
+ * 	This function is optional, thus it could be eliminated in compile-time 
+ * 	with RKH_RQ_EN_PUT_LIFO.
  *
  * 	\param q		pointer to previously created queue into which the element 
  * 					is deposited.

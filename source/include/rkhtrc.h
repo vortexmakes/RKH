@@ -913,8 +913,8 @@ typedef enum rkh_trc_events
  * 	data. The content and size of the data portion of a trace event is 
  * 	determined by the event ID. 
  *	All types of events are stored in a single ring buffer, called trace 
- *	stream, using a fixed event size of RKH_TRC_SIZEOF_EVENT bytes. In this 
- *	manner the recorder always holds the most recent history.
+ *	stream, using a variable event size. In this manner the recorder always 
+ *	holds the most recent history.
  *	On the other hand, all data are stored in little-endian order (least 
  *	significant byte first). Also, they are stored into the trace stream 1 
  *	byte at a time, thus avoiding any potential data misalignment problems.
