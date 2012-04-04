@@ -648,7 +648,6 @@ INPUT                  = ../source \
                          myact_h.txt \
                          myevt_h.txt \
                          main_c.txt \
-                         ./rkh_rep.txt \
                          rkh_rep.txt \
                          rkhcfg.h
 
@@ -1510,7 +1509,26 @@ PREDEFINED             = RKH_CPUSR_TYPE \
                          RKH_ASSERT_EN \
                          RKH_RQ_EN_GET_LWMARK \
                          RKH_RQ_EN_GET_INFO \
-                         RKH_EN_NATIVE_SCHEDULER
+                         RKH_EN_NATIVE_SCHEDULER \
+                         RKH_TRC_EN \
+                         RKH_TRC_ALL \
+                         RKH_TRC_EN_MP \
+                         RKH_TRC_EN_RQ \
+                         RKH_TRC_EN_SMA \
+                         RKH_TRC_EN_SM \
+                         RKH_TRC_EN_SM_INIT \
+                         RKH_TRC_EN_SM_DCH \
+                         RKH_TRC_EN_SM_CLRH \
+                         RKH_TRC_EN_SM_TRN \
+                         RKH_TRC_EN_SM_STATE \
+                         RKH_TRC_EN_SM_ENSTATE \
+                         RKH_TRC_EN_SM_EXSTATE \
+                         RKH_TRC_EN_SM_NENEX \
+                         RKH_TRC_EN_SM_NTRNACT \
+                         RKH_TRC_EN_SM_CSTATE \
+                         RKH_TRC_EN_SM_DCH_RC \
+                         RKH_TRC_EN_TIM \
+                         RKH_TRC_EN_RKH
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 
