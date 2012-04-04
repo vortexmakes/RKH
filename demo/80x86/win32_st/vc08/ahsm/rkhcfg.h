@@ -383,7 +383,7 @@
  *	Specify the maximum number of trace events, this number is direclty 
  *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number, 
  *	the lower the RAM consumption.
- *	See #RKH_TRC_MAX_EVENTS_PER_GROUP and \c trceftbl table.
+ *	See \c #trceftbl table.
  */
 
 #define RKH_TRC_MAX_EVENTS				8
@@ -457,14 +457,14 @@
 
 /**
  *	If the #RKH_TRC_EN_SM_DCH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "dispatch an event" trace record.
+ *	include the "start a state machine" trace record.
  */
 
 #define RKH_TRC_EN_SM_DCH				1
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "clear the history pseudostate" trace record.
+ *	include the "dispatch an event to state machine" trace record.
  */
 
 #define RKH_TRC_EN_SM_CLRH				1
@@ -499,14 +499,14 @@
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "number of entry and exit states in the transition" trace record.
+ *	include the "number of entry and exit states in transition" trace record.
  */
 
 #define RKH_TRC_EN_SM_NENEX				1
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "number of executed actions in the transition" trace record.
+ *	include the "number of executed actions in transition" trace record.
  */
 
 #define RKH_TRC_EN_SM_NTRNACT			1

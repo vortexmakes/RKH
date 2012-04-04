@@ -35,9 +35,6 @@
  * 	point is called a trace event. A program containing one or more of this 
  * 	trace points is named instrumented application.
  *
- * 	There is one class of trace events: RKH trace events, which are generated 
- * 	by the RKH source code.
- * 	
  * 	The definition of events and the mapping between these and their 
  * 	corresponding names is hard-coded in the RKH implementation. Therefore, 
  * 	these events are common for all the state machine applications and never 
@@ -49,8 +46,8 @@
  *	for each trace event (also named arguments) being generated, including, 
  *	at least, the following:
  *
- * 	- the trace event identifier (RKHTR_EVENTS enumerated list),
- * 	- instrumented application (state machine),
+ * 	- the trace event identifier (RKH_TRC_EVENTS enumerated list),
+ * 	- instrumented application (state machine applications),
  * 	- a timestamp (optional),
  * 	- any extra data that the system wants to associate with the event 
  * 	(optional).
@@ -62,7 +59,7 @@
  * 	object containing a sequence of trace events plus some internal 
  * 	information to interpret those trace events.
  *	
- *	Also, the streams also support filtering. The application can define and 
+ *	Also, the streams support runtime filtering. The application can define and 
  *	apply a filter to a trace stream. Basically, the filter establishes which 
  *	event types the stream is accepting (and hence storing) and which are not.
  *	Therefore, trace events corresponding to types which are filtered out 
@@ -83,22 +80,7 @@
 
 /**
  * 	\brief
- * 	Filter table of trace events.
- *
- * 	The trace filter management is similar to the native priority management.
- * 	In this case, each trace event is assigned a unique number 
- * 	(RKH_TRC_EVENTS). When a event is ready to record a trace its 
- * 	corresponding bit in the filter table must be clear. The size of 
- * 	trceftbl[] depends on RKH_TRC_MAX_EVENTS (see rkhcfg.h).
- *
- * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n\n
- *
- * 	Y's:	index into trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ] table.\n
- * 	X's:	bit position in trceftbl[ Y's ].\n\n
- *
- * 	The lower 3 bits (X's) of the trace event number are used to determine 
- * 	the bit position in trceftbl[], while the next four most significant bits 
- * 	(Y's) are used to determine the index into trceftbl[].
+ * 	The size of trceftbl table depends on RKH_TRC_MAX_EVENTS (see rkhcfg.h).
  */
 
 #if RKH_TRC_MAX_EVENTS <= 64
@@ -109,6 +91,27 @@
 	#define RKH_TRC_MAX_EVENTS_PER_GROUP	8
 #endif
 
+
+/**
+ * 	\brief
+ * 	Filter table of trace events.
+ *
+ * 	The trace filter management is similar to the native priority scheme.
+ * 	In this case, each trace event is assigned a unique number 
+ * 	(#RKH_TRC_EVENTS). When a event is ready to record a trace its 
+ * 	corresponding bit in the filter table must be clear. The size of 
+ * 	#trceftbl[] depends on #RKH_TRC_MAX_EVENTS (see rkhcfg.h).
+ *
+ * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n
+ *
+ * 	Y's:	index into trceftbl[ #RKH_TRC_MAX_EVENTS_PER_GROUP ] table.\n
+ * 	X's:	bit position in trceftbl[ Y's ].\n
+ *
+ * 	The lower 3 bits (X's) of the trace event number are used to determine 
+ * 	the bit position in trceftbl[], while the next four most significant bits 
+ * 	(Y's) are used to determine the index into trceftbl[].
+ */
+
 extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
 
 
@@ -116,15 +119,17 @@ extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
  * 	\brief
  * 	Filter table of trace groups.
  *
- * 	Each bit in trcgfilter is used to indicate whenever any trace group 
- * 	is filtered out its events. See RKH_TRC_GROUPS.
+ * 	Each bit in #trcgfilter is used to indicate whenever any trace group 
+ * 	is filtered out its events. See #RKH_TRC_GROUPS.
  *
+ * 	\code
  *  bit position =   7   6   5   4   3   2   1   0   -- Groups   
  * 	trcgfilter   = | Y | Y | Y | Y | Y | Y | Y | Y |
  * 				   		     |		   	     |   |___ RKH_TRCG_MP
  *						     |			     |_______ RKH_TRCG_RQ
  * 						     |				  		  ...
  * 				             |_______________________ RKH_TRCG_RKH
+ *	\endcode
  */
 
 extern rkhui8_t trcgfilter;
@@ -219,61 +224,61 @@ typedef enum rkh_trc_groups
 typedef enum rkh_trc_events
 {
 	/* --- Memory Pool events (MP group) ------------------ */
-	RKH_TRCE_MP_INIT,
-	RKH_TRCE_MP_GET,
-	RKH_TRCE_MP_PUT,
+	RKH_TRCE_MP_INIT,			/**< \copydetails RKH_TRCR_MP_INIT */
+	RKH_TRCE_MP_GET, 			/**< \copydetails RKH_TRCR_MP_GET */
+	RKH_TRCE_MP_PUT,			/**< \copydetails RKH_TRCR_MP_PUT */
 	
 	/* --- Queue events (RQ group) ------------------------ */
-	RKH_TRCE_RQ_INIT,
-	RKH_TRCE_RQ_GET,
-	RKH_TRCE_RQ_FIFO,
-	RKH_TRCE_RQ_LIFO,
-	RKH_TRCE_RQ_FULL,
-	RKH_TRCE_RQ_DPT,
-	RKH_TRCE_RQ_GET_LAST,
+	RKH_TRCE_RQ_INIT,			/**< \copydetails RKH_TRCR_RQ_INIT */
+	RKH_TRCE_RQ_GET,			/**< \copydetails RKH_TRCR_RQ_GET */
+	RKH_TRCE_RQ_FIFO,			/**< \copydetails RKH_TRCR_RQ_FIFO */
+	RKH_TRCE_RQ_LIFO,			/**< \copydetails RKH_TRCR_RQ_LIFO */
+	RKH_TRCE_RQ_FULL,			/**< \copydetails RKH_TRCR_RQ_FULL */
+	RKH_TRCE_RQ_DPT,			/**< \copydetails RKH_TRCR_RQ_DEPLETE */
+	RKH_TRCE_RQ_GET_LAST,		/**< \copydetails RKH_TRCR_RQ_GET_LAST */
 
 	/* --- State Machine Application events (SMA group) --- */
-	RKH_TRCE_SMA_ACT,
-	RKH_TRCE_SMA_TERM,
-	RKH_TRCE_SMA_GET,
-	RKH_TRCE_SMA_FIFO,
-	RKH_TRCE_SMA_LIFO,
-	RKH_TRCE_SMA_REG,
-	RKH_TRCE_SMA_UNREG,
+	RKH_TRCE_SMA_ACT,			/**< \copydetails RKH_TRCR_SMA_ACT */
+	RKH_TRCE_SMA_TERM,			/**< \copydetails RKH_TRCR_SMA_TERM */
+	RKH_TRCE_SMA_GET,			/**< \copydetails RKH_TRCR_SMA_GET */
+	RKH_TRCE_SMA_FIFO,			/**< \copydetails RKH_TRCR_SMA_FIFO */
+	RKH_TRCE_SMA_LIFO,			/**< \copydetails RKH_TRCR_SMA_LIFO */
+	RKH_TRCE_SMA_REG,			/**< \copydetails RKH_TRCR_SMA_REG */
+	RKH_TRCE_SMA_UNREG,			/**< \copydetails RKH_TRCR_SMA_UNREG */
 
 	/* --- State machine events (SM group) ---------------- */
-	RKH_TRCE_SM_INIT,
-	RKH_TRCE_SM_CLRH,
-	RKH_TRCE_SM_DCH,
-	RKH_TRCE_SM_TRN,
-	RKH_TRCE_SM_STATE,
-	RKH_TRCE_SM_ENSTATE,
-	RKH_TRCE_SM_EXSTATE,
-	RKH_TRCE_SM_NENEX,
-	RKH_TRCE_SM_NTRNACT,
-	RKH_TRCE_SM_CSTATE,
-	RKH_TRCE_SM_DCH_RC,
+	RKH_TRCE_SM_INIT,			/**< \copydetails RKH_TRCR_SM_INIT */
+	RKH_TRCE_SM_CLRH,			/**< \copydetails RKH_TRCR_SM_CLRH */
+	RKH_TRCE_SM_DCH,			/**< \copydetails RKH_TRCR_SM_DCH */
+	RKH_TRCE_SM_TRN,			/**< \copydetails RKH_TRCR_SM_TRN */
+	RKH_TRCE_SM_STATE,			/**< \copydetails RKH_TRCR_SM_STATE */
+	RKH_TRCE_SM_ENSTATE,		/**< \copydetails RKH_TRCR_SM_ENSTATE */
+	RKH_TRCE_SM_EXSTATE,		/**< \copydetails RKH_TRCR_SM_EXSTATE */
+	RKH_TRCE_SM_NENEX,			/**< \copydetails RKH_TRCR_SM_NENEX */
+	RKH_TRCE_SM_NTRNACT,		/**< \copydetails RKH_TRCR_SM_NTRNACT */
+	RKH_TRCE_SM_CSTATE,			/**< \copydetails RKH_TRCR_SM_CSTATE */
+	RKH_TRCE_SM_DCH_RC,			/**< \copydetails RKH_TRCR_SM_DCH_RC */
 
 	/* --- Timer events (TIM group) ----------------------- */
-	RKH_TRCE_TIM_INIT,
-	RKH_TRCE_TIM_START,
-	RKH_TRCE_TIM_RESTART,
-	RKH_TRCE_TIM_STOP,
-	RKH_TRCE_TIM_TOUT,
-	RKH_TRCE_TIM_REM,
-	RKH_TRCE_TIM_ATTEMPT_STOP,
+	RKH_TRCE_TIM_INIT,			/**< \copydetails RKH_TRCR_TIM_INIT */
+	RKH_TRCE_TIM_START,			/**< \copydetails RKH_TRCR_TIM_START */
+	RKH_TRCE_TIM_RESTART,		/**< \copydetails RKH_TRCR_TIM_RESTART */
+	RKH_TRCE_TIM_STOP,			/**< \copydetails RKH_TRCR_TIM_STOP */
+	RKH_TRCE_TIM_TOUT,			/**< \copydetails RKH_TRCR_TIM_TOUT */
+	RKH_TRCE_TIM_REM,			/**< \copydetails RKH_TRCR_TIM_REM */
+	RKH_TRCE_TIM_ATTEMPT_STOP,	/**< \copydetails RKH_TRCR_TIM_ATTEMPT_STOP */
 
 	/* --- Framework events (RKH group) ------------------- */
-	RKH_TRCE_RKH_EN,
-	RKH_TRCE_RKH_EX,
-	RKH_TRCE_RKH_EPREG,
-	RKH_TRCE_RKH_AE,
-	RKH_TRCE_RKH_GC,
-	RKH_TRCE_RKH_GCR,
-	RKH_TRCE_RKH_DEFER,
-	RKH_TRCE_RKH_RCALL,
-	RKH_TRCE_OBJ,
-	RKH_TRCE_SIG,
+	RKH_TRCE_RKH_EN,			/**< \copydetails RKH_TRCR_RKH_EN */
+	RKH_TRCE_RKH_EX,			/**< \copydetails RKH_TRCR_RKH_EX */
+	RKH_TRCE_RKH_EPREG,			/**< \copydetails RKH_TRCR_RKH_EPREG */
+	RKH_TRCE_RKH_AE,			/**< \copydetails RKH_TRCR_RKH_AE */
+	RKH_TRCE_RKH_GC,			/**< \copydetails RKH_TRCR_RKH_GC */
+	RKH_TRCE_RKH_GCR,			/**< \copydetails RKH_TRCR_RKH_GCR */
+	RKH_TRCE_RKH_DEFER,			/**< \copydetails RKH_TRCR_RKH_DEFER */
+	RKH_TRCE_RKH_RCALL,			/**< \copydetails RKH_TRCR_RKH_RCALL */
+	RKH_TRCE_OBJ,				/**< \copydetails RKH_TRCR_RKH_OBJ */
+	RKH_TRCE_SIG,				/**< \copydetails RKH_TRCR_RKH_SIG */
 
 	RKH_TRCE_USER,
 
@@ -484,11 +489,26 @@ typedef enum rkh_trc_events
 #if RKH_TRC_EN == 1
 	/* --- Memory Pool (MP) ------------------ */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_MP == 1
+
+		/**
+		 * 	Desc	= initialize a memory block pool\n
+		 * 	Group 	= RKH_TRCG_MP\n
+		 * 	Id 		= RKH_TRCE_MP_INIT\n
+		 * 	Args	= memory pool, nblock\n
+		 */
+
 		#define RKH_TRCR_MP_INIT( mp, nblock )						\
 					RKH_TRC_BEGIN( RKH_TRCG_MP, RKH_TRCE_MP_INIT )	\
 						RKH_TRC_SYM( mp ); 							\
 						RKH_TRC_NBLK( nblock ); 					\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= get a block from the pool\n
+		 * 	Group 	= RKH_TRCG_MP\n
+		 * 	Id 		= RKH_TRCE_MP_GET\n
+		 * 	Args	= memory pool, nfree\n
+		 */
 
 		#define RKH_TRCR_MP_GET( mp, nfree )						\
 					RKH_TRC_BEGIN( RKH_TRCG_MP, RKH_TRCE_MP_GET )	\
@@ -496,6 +516,13 @@ typedef enum rkh_trc_events
 						RKH_TRC_NBLK( nfree ); 						\
 					RKH_TRC_END()
 	
+		/**
+		 * 	Desc 	= put the block to the pool\n
+		 * 	Group 	= RKH_TRCG_MP\n
+		 * 	id 		= RKH_TRCE_MP_PUT\n
+		 * 	Args	= memory pool, nfree\n
+		 */
+
 		#define RKH_TRCR_MP_PUT( mp, nfree )						\
 					RKH_TRC_BEGIN( RKH_TRCG_MP, RKH_TRCE_MP_PUT )	\
 						RKH_TRC_SYM( mp ); 							\
@@ -509,6 +536,14 @@ typedef enum rkh_trc_events
 
 	/* --- Queue (RQ) ------------------------ */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RQ == 1
+
+		/**
+		 * 	Desc 	= initialize a queue\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_INIT\n
+		 * 	Args	= queue, sma, nelem\n
+		 */
+
 		#define RKH_TRCR_RQ_INIT( q, nelem, sma )					\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_INIT )	\
 						RKH_TRC_SYM( q ); 							\
@@ -516,17 +551,38 @@ typedef enum rkh_trc_events
 						RKH_TRC_NE( nelem ); 						\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= get a element from the queue\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_GET\n
+		 * 	Args	= queue, qty\n
+		 */
+
 		#define RKH_TRCR_RQ_GET( q, qty )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_GET )	\
 						RKH_TRC_SYM( q ); 							\
 						RKH_TRC_NE( qty ); 							\
 					RKH_TRC_END()
 	
+		/**
+		 * 	Desc 	= put a element to the queue in a FIFO manner\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_FIFO\n
+		 * 	Args	= queue, qty\n
+		 */
+
 		#define RKH_TRCR_RQ_FIFO( q, qty )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_FIFO )	\
 						RKH_TRC_SYM( q ); 							\
 						RKH_TRC_NE( qty ); 							\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= put a element to the queue in a LIFO manner\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_LIFO\n
+		 * 	Args	= queue, qty\n
+		 */
 
 		#define RKH_TRCR_RQ_LIFO( q, qty )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_LIFO )	\
@@ -534,15 +590,36 @@ typedef enum rkh_trc_events
 						RKH_TRC_NE( qty ); 							\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= query the queue\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_FULL\n
+		 * 	Args	= queue\n
+		 */
+
 		#define RKH_TRCR_RQ_FULL( q )								\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_FULL )	\
 						RKH_TRC_SYM( q ); 							\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= deplete the queue\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_DPT\n
+		 * 	Args	= queue\n
+		 */
+
 		#define RKH_TRCR_RQ_DEPLETE( q )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_DPT )	\
 						RKH_TRC_SYM( q ); 							\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= get the last element from the queue\n
+		 * 	Group 	= RKH_TRCG_RQ\n
+		 * 	Id 		= RKH_TRCE_RQ_GET_LASTv
+		 * 	Args	= queue\n
+		 */
 
 		#define RKH_TRCR_RQ_GET_LAST( q )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RQ, RKH_TRCE_RQ_GET_LAST )	\
@@ -560,15 +637,37 @@ typedef enum rkh_trc_events
 
 	/* --- State Machine Application (SMA) --- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SMA == 1
+
+		/**
+		 * 	Desc 	= activate a SMA\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_ACT\n
+		 * 	Args	= sma\n
+		 */
+
 		#define RKH_TRCR_SMA_ACT( sma )								\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_ACT )	\
 						RKH_TRC_SYM( sma ); 						\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= terminate a SMA\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_ACT\n
+		 * 	Args	= sma\n
+		 */
+
 		#define RKH_TRCR_SMA_TERM( sma )							\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_TERM )\
 						RKH_TRC_SYM( sma ); 						\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= get a event from the SMA's queue\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_ACT\n
+		 * 	Args	= sma, signal\n
+		 */
 
 		#define RKH_TRCR_SMA_GET( sma, ev )							\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_GET )	\
@@ -576,11 +675,25 @@ typedef enum rkh_trc_events
 						RKH_TRC_SIG( ev->e ); 						\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= send a event to SMA's queue in a FIFO manner\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_FIFO\n
+		 * 	Args	= sma, signal\n
+		 */
+
 		#define RKH_TRCR_SMA_FIFO( sma, ev )						\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_FIFO )\
 						RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_SIG( ev->e ); 						\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= send a event to SMA's queue in a LIFO manner\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_LIFO\n
+		 * 	Args	= sma, signal\n
+		 */
 
 		#define RKH_TRCR_SMA_LIFO( sma, ev )						\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_LIFO )\
@@ -588,11 +701,25 @@ typedef enum rkh_trc_events
 						RKH_TRC_SIG( ev->e ); 						\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= register a SMA\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_REG\n
+		 * 	Args	= sma, prio\n
+		 */
+
 		#define RKH_TRCR_SMA_REG( sma, prio )						\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_REG )	\
 						RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_UI8( prio ); 						\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= unregister a SMA\n
+		 * 	Group 	= RKH_TRCG_SMA\n
+		 * 	Id 		= RKH_TRCE_SMA_UNREG\n
+		 * 	Args	= sma, prio\n
+		 */
 
 		#define RKH_TRCR_SMA_UNREG( sma, prio )						\
 					RKH_TRC_BEGIN( RKH_TRCG_SMA, RKH_TRCE_SMA_UNREG )	\
@@ -611,6 +738,14 @@ typedef enum rkh_trc_events
 
 	/* --- State machine (SM) ---------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SM == 1
+
+		/**
+		 * 	Desc 	= start (initialize) a state machine\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_INIT\n
+		 * 	Args	= sma, initial state\n
+		 */
+
 		#if RKH_TRC_EN_SM_INIT == 1
 			#define RKH_TRCR_SM_INIT( sma, is )							\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_INIT )	\
@@ -618,6 +753,13 @@ typedef enum rkh_trc_events
 							RKH_TRC_SYM( is ); 							\
 						RKH_TRC_END()
 		#endif
+
+		/**
+		 * 	Desc 	= dispatch an event to a state machine\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_DCH\n
+		 * 	Args	= sma, initial state\n
+		 */
 
 		#if RKH_TRC_EN_SM_DCH == 1
 			#define RKH_TRCR_SM_DCH( sma, ev )							\
@@ -627,6 +769,13 @@ typedef enum rkh_trc_events
 						RKH_TRC_END()
 		#endif
 
+		/**
+		 * 	Desc 	= clear history pseudostate\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_CLRH\n
+		 * 	Args	= sma, history pseudostate\n
+		 */
+
 		#if RKH_TRC_EN_SM_CLRH == 1
 			#define RKH_TRCR_SM_CLRH( sma, h )							\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_CLRH )	\
@@ -634,6 +783,13 @@ typedef enum rkh_trc_events
 							RKH_TRC_SYM( h ); 							\
 						RKH_TRC_END()
 		#endif
+
+		/**
+		 * 	Desc 	= source and target state of transition\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_TRN\n
+		 * 	Args	= sma, source state, target state\n
+		 */
 
 		#if RKH_TRC_EN_SM_TRN == 1 
 			#define RKH_TRCR_SM_TRN( sma, ss, ts )						\
@@ -644,6 +800,13 @@ typedef enum rkh_trc_events
 						RKH_TRC_END()
 		#endif
 
+		/**
+		 * 	Desc 	= final state of transition\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_STATE\n
+		 * 	Args	= sma, final state\n
+		 */
+
 		#if RKH_TRC_EN_SM_STATE == 1
 			#define RKH_TRCR_SM_STATE( sma, s )							\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_STATE )	\
@@ -651,6 +814,13 @@ typedef enum rkh_trc_events
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
 		#endif
+
+		/**
+		 * 	Desc 	= entry state\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_ENSTATE\n
+		 * 	Args	= sma, entry state\n
+		 */
 
 		#if RKH_TRC_EN_SM_ENSTATE == 1
 			#define RKH_TRCR_SM_ENSTATE( sma, s )						\
@@ -660,6 +830,13 @@ typedef enum rkh_trc_events
 						RKH_TRC_END()
 		#endif
 
+		/**
+		 * 	Desc 	= exit state\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_EXSTATE\n
+		 * 	Args	= sma, exit state\n
+		 */
+
 		#if RKH_TRC_EN_SM_EXSTATE == 1
 			#define RKH_TRCR_SM_EXSTATE( sma, s )						\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_EXSTATE )	\
@@ -667,6 +844,13 @@ typedef enum rkh_trc_events
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
 		#endif
+
+		/**
+		 * 	Desc 	= number of entry and exit states in transition\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_NENEX\n
+		 * 	Args	= sma, nenex\n
+		 */
 
 		#if RKH_TRC_EN_SM_NENEX == 1 
 			#define RKH_TRCR_SM_NENEX( sma, nen, nex )					\
@@ -677,6 +861,13 @@ typedef enum rkh_trc_events
 						RKH_TRC_END()
 		#endif
 
+		/**
+		 * 	Desc 	= number of executed actions in transition\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_NTRNACT\n
+		 * 	Args	= sma, nta\n
+		 */
+
 		#if RKH_TRC_EN_SM_NTRNACT == 1
 			#define RKH_TRCR_SM_NTRNACT( sma, nta )						\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_NTRNACT )	\
@@ -685,6 +876,13 @@ typedef enum rkh_trc_events
 						RKH_TRC_END()
 		#endif
 
+		/**
+		 * 	Desc 	= state or pseudostate in a compound transition\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_CSTATE\n
+		 * 	Args	= sma, state/pseudosstate\n
+		 */
+
 		#if RKH_TRC_EN_SM_CSTATE == 1
 			#define RKH_TRCR_SM_CSTATE( sma, s )						\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_CSTATE )\
@@ -692,6 +890,13 @@ typedef enum rkh_trc_events
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
 		#endif
+
+		/**
+		 * 	Desc 	= returned code from dispatch function\n
+		 * 	Group 	= RKH_TRCG_SM\n
+		 * 	Id 		= RKH_TRCE_SM_DCH_RC\n
+		 * 	Args	= sma, rc\n
+		 */
 
 		#if RKH_TRC_EN_SM_DCH_RC == 1
 			#define RKH_TRCR_SM_DCH_RC( sma, rc )						\
@@ -716,11 +921,26 @@ typedef enum rkh_trc_events
 
 	/* --- Timer (TIM) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
+
+		/**
+		 * 	Desc 	= initialize a timer\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_INIT\n
+		 * 	Args	= timer, signal\n
+		 */
+
 		#define RKH_TRCR_TIM_INIT( t, sig )								\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_INIT )	\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SIG( sig ); 							\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= start a timer\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_START\n
+		 * 	Args	= timer, sma, nticks\n
+		 */
 
 		#define RKH_TRCR_TIM_START(	t, nt, sma )						\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_START )	\
@@ -729,26 +949,61 @@ typedef enum rkh_trc_events
 						RKH_TRC_NTICK( nt ); 							\
 					RKH_TRC_END()
 	
+		/**
+		 * 	Desc 	= restart a timer\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_RESTART\n
+		 * 	Args	= timer, nticks\n
+		 */
+
 		#define RKH_TRCR_TIM_RESTART( t, nt )							\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_RESTART )	\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_NTICK( nt ); 							\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= stop a timer\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_STOP\n
+		 * 	Args	= timer\n
+		 */
+
 		#define RKH_TRCR_TIM_STOP( t )									\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_STOP )	\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= timer expired\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_TOUT\n
+		 * 	Args	= timer\n
+		 */
 
 		#define RKH_TRCR_TIM_TOUT( t )									\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_TOUT )	\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= remove timer from the active timer list\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_REM\n
+		 * 	Args	= timer\n
+		 */
+
 		#define RKH_TRCR_TIM_REM( t )									\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_REM )		\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= attempt stopped a inactive timer\n
+		 * 	Group 	= RKH_TRCG_TIM\n
+		 * 	Id 		= RKH_TRCE_TIM_ATTEMPT_STOP\n
+		 * 	Args	= timer\n
+		 */
 
 		#define RKH_TRCR_TIM_ATTEMPT_STOP( t )							\
 					RKH_TRC_BEGIN( RKH_TRCG_TIM, RKH_TRCE_TIM_ATTEMPT_STOP );\
@@ -766,13 +1021,35 @@ typedef enum rkh_trc_events
 
 	/* --- Framework (RKH) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RKH == 1
+
+		/**
+		 * 	Desc 	= initialize the RKH\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_EN\n
+		 * 	Args	= \n
+		 */
+
 		#define RKH_TRCR_RKH_EN()										\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_EN )		\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= exit the RKH\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_EX\n
+		 * 	Args	= \n
+		 */
+
 		#define RKH_TRCR_RKH_EX()										\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_EX )		\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= event pool register\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_EPREG\n
+		 * 	Args	= event pool index, storage size, event size\n
+		 */
 
 		#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )				\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_EPREG )	\
@@ -781,27 +1058,62 @@ typedef enum rkh_trc_events
 						RKH_TRC_ES( esize );							\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= allocate an event\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_AE\n
+		 * 	Args	= event size, signal\n
+		 */
+
 		#define RKH_TRCR_RKH_AE( esize, ev )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_AE )		\
 						RKH_TRC_ES( esize );							\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= attempt to recycle an event\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_GC\n
+		 * 	Args	= signal\n
+		 */
+
 		#define RKH_TRCR_RKH_GC( ev )									\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_GC )		\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= effective recycling event\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_GCR\n
+		 * 	Args	= signal\n
+		 */
 
 		#define RKH_TRCR_RKH_GCR( ev )									\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_GCR )		\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
 
+		/**
+		 * 	Desc 	= defer an event\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_DEFER\n
+		 * 	Args	= signal\n
+		 */
+
 		#define RKH_TRCR_RKH_DEFER( q, ev )								\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_DEFER )	\
 						RKH_TRC_SYM( q );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= recall an event\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_RCALL\n
+		 * 	Args	= sma, signal\n
+		 */
 
 		#define RKH_TRCR_RKH_RCALL( sma, ev )							\
 					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_RKH_RCALL )	\
@@ -810,6 +1122,14 @@ typedef enum rkh_trc_events
 					RKH_TRC_END()
 
 		/* --- Symbol entry table for objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for memory object\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_OBJ\n
+		 * 	Args	= object address, object name (string)\n
+		 */
+
 		#define RKH_TRCR_RKH_OBJ( __o )									\
 				do{ 													\
 					static RKHROM char *const __o_n = #__o;				\
@@ -820,6 +1140,14 @@ typedef enum rkh_trc_events
 				} while(0)
 
 		/* --- Symbol entry table for event signals ---- */
+
+		/**
+		 * 	Desc 	= entry symbol table for signal\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_SIG\n
+		 * 	Args	= signal number, signal name (string)\n
+		 */
+
 		#define RKH_TRCR_RKH_SIG( __s )									\
 				do{ 													\
 					static RKHROM char *const __s_n = #__s;				\
@@ -1051,7 +1379,17 @@ void rkh_trc_put( rkhui8_t b );
  *	processor time. It also makes the task of interpreting the data more 
  *	difficult. Because the amount of data that the instrumented framework 
  *	generates can be overwhelming, the RKH supports several types of filters 
- *	that can use it to reduce the amount of data to be processed.
+ *	that can use it to reduce the amount of data to be processed. The available 
+ *	groups are enumerated in #RKH_TRC_GROUPS.
+ *
+ * 	Example:
+ * 	
+ * 	\code
+ * 	...
+ * 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+ * 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+ * 	...
+ * 	\endcode
  *
  *	\note
  * 	This function is internal to RKH and the user application should not call 
@@ -1081,7 +1419,21 @@ void rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp );
  *	processor time. It also makes the task of interpreting the data more 
  *	difficult. Because the amount of data that the instrumented framework 
  *	generates can be overwhelming, the RKH supports several types of filters 
- *	that can use it to reduce the amount of data to be processed.
+ *	that can use it to reduce the amount of data to be processed. The available 
+ *	events are enumerated in #RKH_TRC_EVENTS.
+ *
+ * 	Example:
+ * 	
+ * 	\code
+ * 	...
+ * 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_MP, RKH_TRCE_MP_INIT );
+ * 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_DCH );
+ * 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
+ * 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
+ * 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_START );
+ * 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_TOUT );
+ * 	...
+ * 	\endcode
  *
  *	\note
  * 	This function is internal to RKH and the user application should not call 
@@ -1090,7 +1442,7 @@ void rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp );
  * 
  * 	\param ctrl		filter option, the available options are FILTER_ON or 
  * 					FILTER_OFF.
- * 	\param evt		trace event. The available groups are enumerated in 
+ * 	\param evt		trace event. The available events are enumerated in 
  * 					RKH_TRC_EVENTS.
  */
 
@@ -1106,9 +1458,9 @@ void rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt );
  * 	it.
  *
  * 	\param grp		trace event group. The available events are 
- * 					enumerated in RKH_TRC_EVENTS.
- * 	\param e		trace event. The available events are 
  * 					enumerated in RKH_TRC_GROUPS.
+ * 	\param e		trace event. The available events are 
+ * 					enumerated in RKH_TRC_EVENTS.
  *	
  *	\return
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).

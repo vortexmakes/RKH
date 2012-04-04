@@ -1874,209 +1874,212 @@ for more information about this.
 
 \ref main_page "< Home"
 
-When a program needs to be traced, it has to generate some information 
-each time it reaches a "significant step" (certain instruction in the 
-program's source code). In the standard terminology, this step is called 
-a trace point, and the tracing information which is generated at that 
-point is called a trace event. A program containing one or more of this 
-trace points is named instrumented application.
-
-There is one class of trace events: RKH trace events, which are generated 
-by the RKH source code. The \c #RKH_TRCE_T describes the RKH trace event.
-
-The definition of events and the mapping between these and their 
-corresponding names is hard-coded in the RKH implementation. Therefore, 
-these events are common for all the state machine applications and never 
-change (they are always traced). 
-The trace events are associated with a integer value and are explicity 
-listed and defined (enumerated) as shown below in this section.
-	
-The standard defines that the trace system has to store some information 
-or each trace event (also named arguments) being generated, including, 
-t least, the following:
-
-- the trace event identifier (\c #RKH_TRC_EVENTS enumerated list),
-- instrumented application (state machine),
-- a timestamp (optional),
-- any extra data that the system wants to associate with the event 
-(optional).
-
-When the RKH reachs a trace point, all the information related to 
-it has to be stored somewhere before it can be retrieved, in order to 
-be analyzed. This place is named trace stream.
+\copydetails rkhtrc.h
 
 Each trace points cannot be changed but RKH allows enable/disable it
 in compile-time by means of C/C++ preprocessor. The \ref cfg section
 shows how to make that.
 
-- \ref trusing
 - \ref trcfg
-- \ref trexample
-
-<HR>
-\section trusing Using tracing tool
-
-- The option \b RKH_TRACE must be set to one (1), it should be defined in 
-the specific application configuration file named \b rkhcfg.h. 
-
-- The trace events of interest must be defined in the \b rkhcfg.h file. See
-\b #RKH_TRC_EVENTS enumeration and \ref trcfg section.
-
-- The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and 
-rkh_trace_getts() are platform-dependent functions, therefore the user
-application must implement it. These function prototypes are definied
-within \b rkhtrace.h file.
-This functions are invoked through the rkh_tropen(), rkh_trclose(), 
-rkh_trflush(), and rkh_trgetts() macros. 
-
-- The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, 
-RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options 
-configures the \c #RKH_TRCE_T trace event structure and should be defined 
-in the \b rkhcfg.h file.
-
-- See \b rkhtrace.h header file for more information.
+- \ref trfn
+- \ref trfil
+- \ref trtbl
 
 <HR>
 \section trcfg Trace tool configuration
 
-The \ref cfg section shows the trace event configuration options. However,
-are listed again to be described in detail. 
+First of all, RKH has a set of configuration options related to trace tool 
+facility, which an user that require this feature must be properly configure.
 
-- \b RKH_EN_EVENT
-\n \n Records the ocurred event in decimal format. See \c #RKHE_T typedef.
+\li \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
 
-- \b RKH_EN_TRN_SRC
-\n \n Records the identification number and string name of the transition 
-source state. 
-
-- \b RKH_EN_TRN_TGT
-\n \n Records the identification number and string name of the transition 
-target state.
-
-- \b RKH_EN_NXT_STATE
-\n \n Records the identification number and string name of the next state.
-
-- \b RKH_EN_INT_TRAN
-\n \n Records an internal transition.
-
-- \b RKH_EN_ENTRY
-\n \n Records the identification number and string name of the entered state.
-
-- \b RKH_EN_EXIT
-\n \n Records the identification number and string name of the exited state.
-
-- \b RKH_EN_INIT_HSM
-\n \n Records the initialization process of state machine.
-
-- \b RKH_EN_SGT_TGT
-\n \n Records the identification number and string name of the transition segment
-target state.
-
-- \b RKH_EN_RTN_CODE
-\n \n Records the code returned by rkh_engine() functionm in decimal format.
-See \c #RKH_RCODE_T enumeration.
-
-- \b RKH_EN_NUM_ENEX
-\n \n Records the number of entered and exited states.
-
-- \b RKH_EN_NUM_ACTSGT
-\n \n Records the number of transition actions and transition segments.
+See \ref cfg section for more information about that.
 
 <HR>
-\section trexample Example use
+\section trfn Implementing the trace session support
 
-The following listing shows an implementation example of rkh_trace_open(), 
-rkh_trace_close(), rkh_trace_flush(), and rkh_trace_getts() functions:
+For using the native trace facility the user should implement several 
+functions which are platform and application specific. These function 
+prototypes are definied within \b rkh.h file and listed below:
 
+\li \b rkh_trc_open() \copydetails rkh_trc_open
+
+\li \b rkh_trc_close() \copydetails rkh_trc_close
+
+\li \b rkh_trc_flush() \copydetails rkh_trc_flush
+
+\li \b rkh_trc_getts() \copydetails rkh_trc_getts
+
+<HR>
+\section trfil Using runtime trace filters
+
+Also, the streams support runtime filtering. The application can define and 
+apply a filter to a trace stream. Basically, the filter establishes which 
+event types the stream is accepting (and hence storing) and which are not.
+Therefore, trace events corresponding to types which are filtered out 
+from the stream will not be stored in the stream. The stream in the 
+system can potentially be applied a different filters. This filter can be 
+applied, removed or changed at any time. A filter could be applied either 
+specific trace event or all events from a specific group.
+
+<EM>Emit or suppress all trace events from a specific group</EM>
+
+The stream is initially created with an empty filter (that is, without 
+filtering any event type). If this is not the required behavior, the 
+application can build a set of event types, include the appropriate event 
+types in it, and apply it as a filter to the stream. After that, the 
+stream will reject any event whose type is in the filter set.
+
+Gathering many events generates a lot of data, which requires memory and 
+processor time. It also makes the task of interpreting the data more 
+difficult. Because the amount of data that the instrumented framework 
+generates can be overwhelming, the RKH supports several types of filters 
+that can use it to reduce the amount of data to be processed. The available 
+groups are enumerated in #RKH_TRC_GROUPS.
+
+Please use RKH_FILTER_ON_GROUP(), or RKH_FILTER_OFF_GROUP() macros to do 
+that.
+
+Example:
+ 	
 \code
-void 
-rkh_trace_open( void )
-{
-	rkh_trinit();
-	rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
-	rkh_trcontrol( MY, RKH_TRSTART );
-
-	if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
-	{
-		perror( "Can't open file\n" );
-		exit( EXIT_FAILURE );
-	}
-
-	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
-}
-
-
-void 
-rkh_trace_close( void )
-{
-	fclose( fdbg );
-}
-
-
-void 
-rkh_trace_flush( void )
-{
-	RKHTREVT_T te;
-	RKHTRCFG_T *pcfg;
-
-	while( rkh_trgetnext( &te ) != RKH_TREMPTY )
-	{
-		pcfg = rkh_trgetcfg( te.smix );
-
-		if( pcfg->log == RKH_TRLOG )
-			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
-													rkh_trgetts(),
-													tremap[ te.id ],
-													smmap[ te.smix ],
-													format_trevt_args( &te ) );
-		if( pcfg->print == RKH_TRPRINT )
-			printf( "%05d [ %-16s ] - %s : %s\n",
-													rkh_trgetts(),
-													tremap[ te.id ],
-													smmap[ te.smix ],
-													format_trevt_args( &te ) );
-	}
-}
-
-
-RKHTS_T 
-rkh_trace_getts( void )
-{
-	return ( RKHTS_T )clock();
-}
+...
+RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+...
 \endcode
 
-According to example shown above the following shows a fragment of 
-output generated:
+<EM>Emit or suppress a specific event</EM>
 
+The stream is initially created with an empty filter (that is, without 
+filtering any event type). If this is not the required behavior, the 
+application can build a set of event types, include the appropriate event 
+types in it, and apply it as a filter to the stream. After that, the 
+stream will reject any event whose type is in the filter set.
+
+Gathering many events generates a lot of data, which requires memory and 
+processor time. It also makes the task of interpreting the data more 
+difficult. Because the amount of data that the instrumented framework 
+generates can be overwhelming, the RKH supports several types of filters 
+that can use it to reduce the amount of data to be processed. The available 
+events are enumerated in #RKH_TRC_EVENTS.
+
+Please use RKH_FILTER_ON_EVENT(), or RKH_FILTER_OFF_EVENT() macros to do 
+that.
+
+Example:
+ 	
 \code
----- RKH trace log session - Jun 10 2010 - 11:00:42 ----
-
-00097 [ RKHTR_INIT_HSM   ] - MY : is = S1 [0]
-00097 [ RKHTR_ENTRY      ] - MY : S1 [0]
-00097 [ RKHTR_ENTRY      ] - MY : S11 [0]
-00097 [ RKHTR_ENTRY      ] - MY : S111 [0]
-00098 [ RKHTR_EVENT      ] - MY : 15
-00098 [ RKHTR_TRN_SRC    ] - MY : S111 [0]
-00098 [ RKHTR_INT_TRAN   ] - MY : 
-00098 [ RKHTR_NUM_ACTSGT ] - MY : 0 - 0
-00098 [ RKHTR_RTN_CODE   ] - MY : RKH_OK
-00099 [ RKHTR_EVENT      ] - MY : 5
-00099 [ RKHTR_TRN_SRC    ] - MY : S111 [0]
-00099 [ RKHTR_TRN_TGT    ] - MY : C11 [0]
-00100 [ RKHTR_SGT_TGT    ] - MY : C11 [0]
-00102 [ RKHTR_SGT_TGT    ] - MY : S21 [0]
-00102 [ RKHTR_NUM_ENEX   ] - MY : 2 - 3
-00104 [ RKHTR_EXIT       ] - MY : S111 [0]
-00104 [ RKHTR_EXIT       ] - MY : S11 [0]
-00104 [ RKHTR_EXIT       ] - MY : S1 [0]
-00104 [ RKHTR_NUM_ACTSGT ] - MY : 2 - 2
-00104 [ RKHTR_ENTRY      ] - MY : S2 [0]
-00104 [ RKHTR_ENTRY      ] - MY : S21 [0]
-00104 [ RKHTR_NXT_STATE  ] - MY : S21 [0]
-00105 [ RKHTR_RTN_CODE   ] - MY : RKH_OK
+...
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_MP, RKH_TRCE_MP_INIT );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_DCH );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_START );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_TOUT );
+...
 \endcode
 
+<HR>
+\section trtbl Trace event table
+
+This section provides a table that lists all the trace events and summarizes 
+the data included for each. 
+
+<EM>Memory Pool (MP)</EM>
+
+\li \b RKH_TRCR_MP_INIT \copydetails RKH_TRCR_MP_INIT
+\li \b RKH_TRCR_MP_GET \copydetails RKH_TRCR_MP_GET
+\li \b RKH_TRCR_MP_PUT \copydetails RKH_TRCR_MP_PUT
+
+<EM>Queue (RQ)</EM>
+
+\li \b RKH_TRCR_RQ_INIT \copydetails RKH_TRCR_RQ_INIT
+\li \b RKH_TRCR_RQ_GET \copydetails RKH_TRCR_RQ_GET
+\li \b RKH_TRCR_RQ_FIFO \copydetails RKH_TRCR_RQ_FIFO
+\li \b RKH_TRCR_RQ_LIFO \copydetails RKH_TRCR_RQ_LIFO
+\li \b RKH_TRCR_RQ_FULL \copydetails RKH_TRCR_RQ_FULL
+\li \b RKH_TRCR_RQ_DEPLETE \copydetails RKH_TRCR_RQ_DEPLETE
+\li \b RKH_TRCR_RQ_GET_LAST \copydetails RKH_TRCR_RQ_GET_LAST
+
+<EM>State Machine Application (SMA)</EM>
+
+\li \b RKH_TRCR_SMA_ACT \copydetails RKH_TRCR_SMA_ACT
+\li \b RKH_TRCR_SMA_TERM \copydetails RKH_TRCR_SMA_TERM
+\li \b RKH_TRCR_SMA_GET \copydetails RKH_TRCR_SMA_GET
+\li \b RKH_TRCR_SMA_FIFO \copydetails RKH_TRCR_SMA_FIFO
+\li \b RKH_TRCR_SMA_LIFO \copydetails RKH_TRCR_SMA_LIFO
+\li \b RKH_TRCR_SMA_REG \copydetails RKH_TRCR_SMA_REG
+\li \b RKH_TRCR_SMA_UNREG \copydetails RKH_TRCR_SMA_UNREG
+
+<EM>State machine (SM)</EM>
+
+\li \b RKH_TRCR_SM_INIT \copydetails RKH_TRCR_SM_INIT
+\li \b RKH_TRCR_SM_DCH \copydetails RKH_TRCR_SM_DCH
+\li \b RKH_TRCR_SM_CLRH \copydetails RKH_TRCR_SM_CLRH
+\li \b RKH_TRCR_SM_TRN \copydetails RKH_TRCR_SM_TRN
+\li \b RKH_TRCR_SM_STATE \copydetails RKH_TRCR_SM_STATE
+\li \b RKH_TRCR_SM_ENSTATE \copydetails RKH_TRCR_SM_ENSTATE
+\li \b RKH_TRCR_SM_EXSTATE \copydetails RKH_TRCR_SM_EXSTATE
+\li \b RKH_TRCR_SM_NENEX \copydetails RKH_TRCR_SM_NENEX
+\li \b RKH_TRCR_SM_NTRNACT \copydetails RKH_TRCR_SM_NTRNACT
+\li \b RKH_TRCR_SM_CSTATE \copydetails RKH_TRCR_SM_CSTATE
+\li \b RKH_TRCR_SM_DCH_RC \copydetails RKH_TRCR_SM_DCH_RC
+
+<EM>Timer (TIM)</EM>
+
+\li \b RKH_TRCR_TIM_INIT \copydetails RKH_TRCR_TIM_INIT
+\li \b RKH_TRCR_TIM_START \copydetails RKH_TRCR_TIM_START
+\li \b RKH_TRCR_TIM_RESTART \copydetails RKH_TRCR_TIM_RESTART
+\li \b RKH_TRCR_TIM_STOP \copydetails RKH_TRCR_TIM_STOP
+\li \b RKH_TRCR_TIM_TOUT \copydetails RKH_TRCR_TIM_TOUT
+\li \b RKH_TRCR_TIM_REM \copydetails RKH_TRCR_TIM_REM
+\li \b RKH_TRCR_TIM_ATTEMPT_STOP \copydetails RKH_TRCR_TIM_ATTEMPT_STOP
+
+<EM>Framework (RKH)</EM>
+
+\li \b RKH_TRCR_RKH_EN \copydetails RKH_TRCR_RKH_EN
+\li \b RKH_TRCR_RKH_EX \copydetails RKH_TRCR_RKH_EX
+\li \b RKH_TRCR_RKH_EPREG \copydetails RKH_TRCR_RKH_EPREG
+\li \b RKH_TRCR_RKH_AE \copydetails RKH_TRCR_RKH_AE
+\li \b RKH_TRCR_RKH_GC \copydetails RKH_TRCR_RKH_GC
+\li \b RKH_TRCR_RKH_GCR \copydetails RKH_TRCR_RKH_GCR
+\li \b RKH_TRCR_RKH_DEFER \copydetails RKH_TRCR_RKH_DEFER
+\li \b RKH_TRCR_RKH_RCALL \copydetails RKH_TRCR_RKH_RCALL
+
+<EM>Symbol entry table for objects</EM>
+
+\li \b RKH_TRCR_RKH_OBJ \copydetails RKH_TRCR_RKH_OBJ
+
+<EM>Symbol entry table for event signals</EM>
+
+\li \b RKH_TRCR_RKH_SIG \copydetails RKH_TRCR_RKH_SIG
 
 \page cfg Configuration
 \image html rkh_bunner.jpg

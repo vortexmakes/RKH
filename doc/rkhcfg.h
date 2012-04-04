@@ -383,7 +383,7 @@
  *	Specify the maximum number of trace events, this number is direclty 
  *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number, 
  *	the lower the RAM consumption.
- *	See #RKH_TRC_MAX_EVENTS_PER_GROUP and \c trceftbl table.
+ *	See \c #trceftbl table.
  */
 
 #define RKH_TRC_MAX_EVENTS				8

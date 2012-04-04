@@ -1480,7 +1480,6 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	\brief 
  *	Open the tracing session.
  *
- * 	\note
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, the function must configure the trace stream by calling 
  *	rkh_trc_init() function.
@@ -1489,7 +1488,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *
  *	\code
  *	void 
- *	my_rkh_trc_open( void )
+ *	rkh_trc_open( void )
  *	{
  *		rkh_trc_init();
  *		rkh_trc_control( RKH_TRC_START );
@@ -1499,7 +1498,13 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *			perror( "Can't open file\n" );
  *			exit( EXIT_FAILURE );
  *		}
- *
+ *	#if BIN_TRACE == 1
+ *		if( ( ftbin = fopen( "../ftbin", "w+b" ) ) == NULL )
+ *		{
+ *			perror( "Can't open file\n" );
+ *			exit( EXIT_FAILURE );
+ *		}
+ *	#endif
  *		trazer_init();
  *	}
  *	\endcode
@@ -1514,7 +1519,6 @@ void rkh_trc_open( void );
  * 	\brief 
  *	Close the tracing session.
  *
- * 	\note
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, the function must configure the trace stream by calling 
  *	rkh_trc_init() function.
@@ -1526,6 +1530,9 @@ void rkh_trc_open( void );
  *	rkh_trc_close( void )
  *	{
  *		fclose( fdbg );
+ *	#if BIN_TRACE == 1
+ *		fclose( ftbin );
+ *	#endif
  *	}
  *	\endcode
  *
@@ -1539,8 +1546,7 @@ void rkh_trc_close( void );
  * 	\brief 
  *	Platform-dependent macro flushing the trace stream.
  *
- *	This is a platform-dependent function invoked through the macro 
- *	rkh_trflush(). 
+ *	This function is application-specific and the user needs to define it. 
  * 	When the RKH trace an event, all the information related to it has to 
  * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
  * 	This place is a trace stream. Frequently, events traced are stored in 
@@ -1572,12 +1578,9 @@ void rkh_trc_flush( void );
  * 	\brief
  *	Retrieves a timestamp to be placed in a trace event.
  * 
- * 	\note
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, the function must configure the trace stream by calling 
  *	rkh_trc_init() function.
- *
- * 	\note
  *	The data returned is defined in compile-time by means of 
  *	RKH_SIZEOF_TSTAMP.
  *
