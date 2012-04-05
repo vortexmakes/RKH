@@ -760,12 +760,13 @@ typedef enum
 /**
  * 	\brief
  * 	Initializes the RKH framework. 
+ *
  * 	A requirement of RKH is that must be called rkh_init() before call any 
  * 	of its other services. This function initializes all of RKH's variables 
  * 	and data structures.
  *
  * 	\note 
- *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	Platform-dependent function. All RKH ports must be define it in the RKH 
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
@@ -777,6 +778,7 @@ void rkh_init( void );
 /**
  * 	\brief
  * 	RKH framework is started.
+ *
  * 	This entry function turns over control to RKH (and does not return!).
  * 	This function runs the highest priority state machine application (SMA) 
  * 	that is ready to run in run-to-completation model. 
@@ -786,7 +788,7 @@ void rkh_init( void );
  * 	never be executed.
  * 	
  * 	\note 
- *	Platform-dependent function. All RKH ports must be defined in the RKH 
+ *	Platform-dependent function. All RKH ports must be define it in the RKH 
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
@@ -798,6 +800,7 @@ void rkh_enter( void );
 /**
  * 	\brief	
  * 	Exit the RKH framework.
+ *
  * 	Function invoked by the application layer to exit the RKH application and 
  * 	return control to the underlying OS/Kernel.
  *
@@ -1318,13 +1321,13 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	When dispatching an event to a SMA the dispatch hook function will be 
  * 	executed.
  *
- * 	\param sma		pointer to previously created state machine application.
- *	\param e		pointer to arrived event.
- *
  *	\note
  *	The dispatch hook will only get called if RKH_HK_EN_DISPATCH is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
+ *
+ * 	\param sma		pointer to previously created state machine application.
+ *	\param e		pointer to arrived event.
  */
 
 void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
@@ -1411,12 +1414,14 @@ void rkh_hk_exit( void );
  *
  *	Example:
  *	
+ *	\code
  *	void
  *	rkh_hk_idle( void ) 		// NOTE: entered with interrupts DISABLED
  *	{
  *		RKH_ENA_INTERRUPT();	// must at least enable interrupts
  *		...
  *	}
+ *	\endcode
  */
 
 void rkh_hk_idle( void );

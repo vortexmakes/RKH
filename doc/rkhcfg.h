@@ -98,7 +98,7 @@
 
 /**
  *	If the #RKH_HK_EN_DISPATCH is set to 1, RKH will invoke the dispatch 
- *	hook function when dispatching an event to a SMA.
+ *	hook function rkh_hk_dispatch() when dispatching an event to a SMA.
  *	When this is set the application must provide the hook function. 
  */
 
@@ -106,7 +106,7 @@
 
 /**
  *	If the #RKH_HK_EN_SIGNAL is set to 1, RKH will invoke the signal 
- *	hook function when the producer of an event directly posts the event 
+ *	hook function rkh_hk_signal() when the producer of an event directly posts the event 
  *	to the event queue of the consumer SMA.
  *	When this is set the application must provide the hook function. 
  */
@@ -115,8 +115,9 @@
 
 /**
  *	If the #RKH_HK_EN_TIMEOUT is set to 1, RKH will invoke the timeout 
- *	hook function when a timer expires just before the assigned event is 
- *	directly posted into the state machine application queue.
+ *	hook function rkh_hk_timeout() when a timer expires just before the 
+ *	assigned event is directly posted into the state machine application 
+ *	queue.
  *	When this is set the application must provide the hook function. 
  */
 
@@ -124,7 +125,7 @@
 
 /**
  *	If the #RKH_HK_EN_START is set to 1, RKH will invoke the start 
- *	hook function just before the RKH takes over control of 
+ *	hook function rkh_hk_start() just before the RKH takes over control of 
  * 	the application.
  *	When this is set the application must provide the hook function. 
  */

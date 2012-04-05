@@ -130,7 +130,8 @@ void
 rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
 	RKH_SR_CRITICAL_;
-
+	
+	RKH_HK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
     if( RCE( e )->pool != 0 ) 
         ++RCE( e )->nref;
@@ -148,6 +149,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
 	RKH_SR_CRITICAL_;
 
+	RKH_HK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
     if( RCE( e )->pool != 0 ) 
         ++RCE( e )->nref;

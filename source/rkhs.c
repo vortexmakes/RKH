@@ -74,7 +74,7 @@ rkh_enter( void )
 	RKHSMA_T *sma;
 	RKHEVT_T *e;
 
-	rkh_hk_start();
+	RKH_HK_START();
 	RKH_TRCR_RKH_EN();
 
     FOREVER

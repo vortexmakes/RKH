@@ -550,136 +550,47 @@
 
 #if RKH_EN_DOXYGEN == 1
 
-/**
- *	Defines dynamic event support.
- */
+	/**
+	 * 	Defines the data type of the event queue for active objects. 
+	 * 	The event queue can be implemented with a message queue of 
+	 * 	the RTOS/OS. But it is also possible to use the native RKH 
+	 * 	queue RKHRQ_T type if the underlying RTOS/OS does not provide 
+	 * 	an adequate queue.
+	 */
 
-/**
- * 	Number of available memory pools. Default is \b 3.
- *	RKH can manage up to three event pools (e.g., small, medium, and 
- *	large events, like shirt sizes).
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- * 	
- * 	\code
- * 	#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
- * 	\endcode
- */
+	#define RKH_EQ_TYPE
 
-//#define RKH_DYNE_NUM_POOLS
+	/**
+	 * 	The data type RKH_THREAD_TYPE holds the thread handle 
+	 * 	associated with the active object.
+	 */
 
-/**
- * 	\brief 
- * 	Platform-dependent macro defining the event pool initialization.
- *
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- * 	
- * 	\code
- * 	#define rkh_dyne_init( mpd, pm, ps, bs )						\
- * 																	\
- * 				rkh_mp_init( (mpd), (pm), (rkint16)(ps),			\
- *													(RK_MPBS_T)(bs) )
- *	\endcode
- *
- * 	\param mpd		memory pool descriptor.
- * 	\param pm	 	pointer to memory from which memory blocks are allocated.
- * 	\param ps		pool size. Size of the memory pool storage in byte.
- * 	\param bs		block size. This number determines the size of each memory 
- * 					block in the pool.
- *
- * 	\return
- * 	TRUE (0) if the memory pool was successfully initialized, 
- * 	otherwise error code.
- *
- * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
- */
+	#define RKH_THREAD_TYPE
 
-//#define rkh_dyne_init( mpd, pm, ps, bs )
+	/**
+	 * 	The RKH_OSDATA_TYPE data member is necessary when the underlying 
+	 * 	OS does not provide an adequate queue facility, so the native RKH 
+	 * 	queue RKHRQ_T must be used. In this case the RKH_OSDATA_TYPE data 
+	 * 	member holds an operating system specific primitive to efficiently 
+	 * 	block the native RKH event queue when the queue is empty.
+	 */
 
-/**
- * 	\brief 
- * 	Platform-dependent macro defining how RKH should obtain the
- * 	event pool block size.
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- *
- * 	\code
- * 	#define rkh_dyne_event_size( mpd )								\
- * 																	\
- * 				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
- * 	\endcode
- *
- * 	\param mpd		memory pool descriptor.
- *
- * 	\return
- * 	The size of memory block in bytes.
- *
- * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
- */
+	#define RKH_OSDATA_TYPE
 
-//#define rkh_dyne_event_size( mpd )
+	/**@{
+	 * 	RKH need to disable interrupts in order to access critical sections 
+	 * 	of code, and re-enable interrupts when done. This allows RKH to 
+	 * 	protect critical code from being entered simultaneously. To hide the 
+	 * 	implementation method chosen by the processor, compiler, etc, RKH 
+	 * 	defines two macros to unconditionally disable and enable interrupts: 
+	 * 	RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously, 
+	 * 	they resides in \b rkhport.h file, which the user always need to 
+	 * 	provide.
+	 */
 
-/**
- * 	\brief 
- * 	Platform-dependent macro defining how RKH should obtain an event
- * 	\a e from the event pool \a mpd.
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- *
- * 	\code
- *	#define rkh_dyne_get( mpd, e )									\
- *																	\
- *				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
- * 	\endcode
- *
- * 	\param mpd		memory pool descriptor.
- * 	\param e 		pointer to the event structure into which the received 
- * 					item will be copied.
- *
- * 	\return
- * 	A pointer to a new memory block or NULL if the pool runs out of blocks.
- *
- * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
- */
-
-//#define rkh_dyne_get( mpd, e )
-
-/**
- * 	\brief 
- *  Platform-dependent macro defining how RKH should return an event
- *  \a e to the event pool \a mpd.	
- * 	
- * 	\note 
- * 	Typically, must be define it in the specific port file (rkhport.h).
- * 	Example:
- *
- * 	\code
- *	#define rkh_dyne_put( mpd, e )									\
- *																	\
- *				rk_mpool_put( (mpd), (e) )
- * 	\endcode
- *
- * 	\param mpd		memory pool descriptor.
- * 	\param e 		pointer to the event structure into which the received 
- * 					item will be copied.
- *
- * 	\return
- * 	TRUE (0) if the memory block was succesfully returned to proper 
- * 	memory pool, otherwise error code.
- *
- * 	\sa rkh_alloc_event(), rkh_set_static_event() and rkh_gc().
- */
-
-//#define rkh_dyne_put( mpd, e )
-
+	#define RKH_DIS_INTERRUPT()			(void)0
+	#define RKH_ENA_INTERRUPT()			(void)0
+	/*@}*/
 #endif
 
 
@@ -687,7 +598,8 @@
 	#error "rkhcfg.h, Missing RKH_HK_EN_DISPATCH: Include (1) or remove (0) the dispatch hook function"
 #else
 	#if RKH_HK_EN_DISPATCH == 1
-		#define RKH_HK_DISPATCH( sma, e )		rkh_hk_dispatch( sma, e )
+		#define RKH_HK_DISPATCH( sma, e )		\
+							rkh_hk_dispatch( sma, (RKHEVT_T*)e )
 	#elif RKH_HK_EN_DISPATCH == 0
 		#define RKH_HK_DISPATCH( sma, e )
 	#else
@@ -701,7 +613,7 @@
 	#error "rkhcfg.h, Missing RKH_HK_EN_SIGNAL: Include (1) or remove (0) the signal hook function"
 #else
 	#if RKH_HK_EN_SIGNAL == 1
-		#define RKH_HK_SIGNAL( e )		rkh_hk_signal( e )
+		#define RKH_HK_SIGNAL( e )		rkh_hk_signal( (RKHEVT_T*)e )
 	#elif RKH_HK_EN_SIGNAL == 0
 		#define RKH_HK_SIGNAL( e )
 	#else
@@ -963,7 +875,7 @@ typedef struct rkhsma_t
 	 * 	OS-dependent thread of control of the SMA.
 	 *
      *	This data might be used in various ways, depending on the RKH port.
-     * 	In some ports thread is used to store the thread handle.
+     * 	In some ports it's used to store the thread handler.
 	 *
 	 * 	\note
 	 * 	This member is optional, thus it could be declared as NULL or 
@@ -984,8 +896,8 @@ typedef struct rkhsma_t
 	 * 	might be used differently.
 	 * 	
 	 * 	\note
-	 * 	This member is optional, thus it could be declared as NULL or 
-	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD_DATA = 0.
+	 * 	This member is optional, thus it could be eliminated in compile-time 
+	 * 	with RKH_EN_SMA_THREAD_DATA = 0.
 	 */
 
 #if RKH_EN_SMA_THREAD == 1 && RKH_EN_SMA_THREAD_DATA == 1

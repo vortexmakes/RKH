@@ -354,6 +354,8 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	inttr = 0;
 	info_rcv_events( sma );
 
+	RKH_HK_DISPATCH( sma, pe );
+
 	/* Stage 1 */
 	ss = sma->state;
 

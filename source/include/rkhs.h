@@ -86,7 +86,7 @@
 
 	/**
 	 * 	\brief
-	 * 	Encapsulates the mechanism of blocking the used event queue.
+	 * 	Encapsulates the mechanism of blocking the event queue.
 	 */
 
 	#define RKH_SMA_BLOCK( sma ) 							\

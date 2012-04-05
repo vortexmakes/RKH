@@ -29,7 +29,7 @@
  *	This file defines the data types that uses RKH.
  *
  * 	The RKH uses a set of integer quantities. That maybe machine or compiler 
- * 	dependent. These types must be defined in rkht.h file. The following 
+ * 	dependent. These types must be defined in \b rkht.h file. The following 
  * 	listing shows the required data type definitions:
  *
  * 	\code
@@ -60,11 +60,13 @@
  *  typedef signed int		HInt;
  *  \endcode
  *
- * 	Next, each rkht.h file must be referenced from rkhtype.h header file, 
- *	located in \\include directory.  The next listing shows an example of 
- *	rkhtype.h, where __CFV1CW63__, and __W32STVC08__ are used to 
+ * 	Next, each \b rkht.h file must be referenced from \b rkhtype.h header 
+ * 	file, located in \\include directory.  The next listing shows an example 
+ * 	of \b rkhtype.h, where __CFV1CW63__, and __W32STVC08__ are used to 
  *	instruct the C/C++ compiler to include header files from the specific 
- *	RKH port directory.
+ *	RKH port directory. The key point of the design is that all 
+ *	platform-independent RKH source files include the same \b rkhtype.h 
+ *	header file as the application source files.
  *
  *	\code
  *	#ifdef __CFV1CW63__
@@ -77,7 +79,7 @@
  *	...
  *	\endcode
  *
- *	The idea behind conditional compilation is that a rkht.h can be 
+ *	The idea behind conditional compilation is that a \b rkht.h can be 
  *	selectively compiled, depending upon whether a specific value has been 
  *	defined.
  *

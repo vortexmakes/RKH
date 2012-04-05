@@ -102,6 +102,7 @@ rkh_tim_tick( void )
 				t->ntick = t->period;
 			else
 				rem_from_list( t );
+			RKH_HK_TIMEOUT( t );
 			RKH_EXEC_THOOK();
 			if( t->sma != ( RKHSMA_T* )0 )
 	 			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );

@@ -1528,7 +1528,8 @@ PREDEFINED             = RKH_CPUSR_TYPE \
                          RKH_TRC_EN_SM_CSTATE \
                          RKH_TRC_EN_SM_DCH_RC \
                          RKH_TRC_EN_TIM \
-                         RKH_TRC_EN_RKH
+                         RKH_TRC_EN_RKH \
+                         RKH_EN_DOXYGEN=1
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 

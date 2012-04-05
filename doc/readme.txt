@@ -162,9 +162,16 @@ architecture, is the operating system used.
 operating system directory, is the directory for the compiler used.
 \li ( 5) RKH platform-dependent include file. Frequently, defines the 
 interrupt locking method, the critical section management, among other things.
+The key point of the design is that all platform-independent RKH source 
+files include the same \b rkhplat.h header file as the application source 
+files.
 \li ( 6) RKH platform-dependent include file. In this file is defined the 
 data types that uses RKH.
-\li ( 7) RKH platform-dependent source file.
+The key point of the design is that all platform-independent RKH source 
+files include the same \b rkhtype.h header file as the application source 
+files.
+\li ( 7) RKH platform-dependent source file. The platform-specific source 
+file is optional and many ports don’t require it.
 \li ( 8) Freescale Coldfire V1
 \li ( 9) Use the native scheduler
 \li (10) Codewarrior v6.3
@@ -256,197 +263,274 @@ is a process called porting. RKH contains a clearly defined abstraction
 layer, which encapsulates all the platform-specific code and cleanly
 separates it from platform-neutral code.
 
-Porting RKH implies to create the platform-dependent file, called 
-\b rhhport.h. In this file must be defined the data types 
-that uses RKH.
+Porting RKH implies to create the a few platform-dependent files, 
+\b rhhport.h, \b rkhport.c, which frequently defines the interrupt 
+locking method, the critical section management, among other things.
 The RKH directories and files are described in detail in 
 \ref Installation section. The next sections listed below describes 
-the aspects to be considered:
+the aspects to be considered to port RKH:
 
+- \ref files
 - \ref data
 - \ref rom
-- \ref crt
+- \ref blk 
+- \ref prio
+- \ref eque
 - \ref dyn
+- \ref hk
+- \ref ilock
+- \ref crt
 - \ref trc
-- \ref files
 - \ref rkhp
 
-<HR>
+\n <HR>
+\section files Platform-dependent files
+
+\copydetails rkhplat.h
+Please, see \ref portable_dir section.
+
+\n <HR>
 \section data Data types definitions
 
-The RKH uses a set of integer quantities. That maybe machine or compiler
-dependent. These types must be defined in \b rkhport.h file as shown 
-in \ref rkhp.
+\copydetails rkhtype.h
 
-- \b rkhint8
-	\n \n Denotes a signed integer type with a width of exactly 8 bits.
-
-- \b rkhint16
-	\n \n Denotes a signed integer type with a width of exactly 16 bits.
-
-- \b rkhint32
-	\n \n Denotes a signed integer type with a width of exactly 32 bits.
-
-- \b rkhuint8
-	\n \n Denotes an unsigned integer type with a width of exactly 8 bits.
-
-- \b rkhuint16
-	\n \n Denotes an unsigned integer type with a width of exactly 16 bits.
-
-- \b rkhuint32
-	\n \n Denotes an unsigned integer type with a width of exactly 32 bits.
-
-- \b HUInt
-	\n \n Denotes an unsigned integer type that is usually fastest to operate 
-with among all integer types.
-
-- \b HInt
-	\n \n Denotes a signed integer type that is usually fastest to operate 
-with among all integer types.
-
-\note
-
-The \c HUInt and \c HInt will normally be the Platform-dependentnatural size 
-for a particular machine. These types designates an integer 
-type that is usually fastest to operate with among all integer 
-types.
-
-<HR>
+\n <HR>
 \section rom ROM allocator
 
 For declaring an object that its value will not be changed and that
-will be stored in ROM, must be defined in \b rkhport.h the 
-\c rkhrom macro, as shown in \ref rkhp.
+will be stored in ROM, must be defined in \b rkhport.h the RKHROM macro.
+
+Example:
 
 \code
-#define rkhrom
+#define RKHROM			const
 \endcode
 
-The following listing shows an example of such definitions for a
-x86 platform and Visual C++ 2008.
+\n <HR>
+\section blk Blocking mechanism
 
-\code
-typedef signed char 	rkhint8;
-typedef signed short 	rkhint16;
-typedef signed long		rkhint32;
-typedef unsigned char 	rkhuint8;
-typedef unsigned short 	rkhuint16;
-typedef unsigned long	rkhuint32;
+<EM>RKH works in conjunction with a traditional OS/RTOS?</EM>
 
-typedef unsigned int	HUInt;
-typedef signed int		HInt;
+\b YES: \n
+The RKH framework can work with virtually any traditional OS/RTOS. 
+Combined with a conventional RTOS, RKH takes full advantage of the 
+multitasking capabilities of the RTOS by executing each active object (SMA) 
+in a separate task or thread.
 
-#define rkhrom			const	
-\endcode
+\li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 0, 
+#RKH_EN_SMA_THREAD = 1, and #RKH_EN_SMA_THREAD_DATA, within the 
+\b rkhcfg.h file.
+\li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
+RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
+\li (3) Define the macros #RKH_OSDATA_TYPE, and #RKH_THREAD_TYPE in 
+\b rkhport.h according to underlying OS or RTOS. 
+\li (4) Then, implement the platform-specific functions rkh_init(), rkh_enter(), 
+rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
+are placed in \b rkhport.c.
 
-<HR>
-\section crt Critical section
+\b NO: \n
+\li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 1, 
+#RKH_EN_SMA_THREAD = 0, and #RKH_EN_SMA_THREAD_DATA = 0, within the 
+\b rkhcfg.h file.
+\li (2) Define the macros RKH_EQ_TYPE = RKHRQ_T, RKH_SMA_BLOCK(), 
+RKH_SMA_READY(), RKH_SMA_UNREADY() in \b rkhport.h. 
+\li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
+functions rkh_init(), rkh_enter(), rkh_exit(), rkh_sma_activate(), and 
+rkh_sma_terminate(). 
+\li (4) Also, the macros RKH_EQ_TYPE, RKH_SMA_BLOCK(), 
+\li (5) RKH_SMA_READY(), RKH_SMA_UNREADY() are RKH provided. 
+In this mode of operation, RKH assumes the use of native priority scheme. 
+See \b rkhs.h, \b rkhs.c, and \b rkhrdy.h files for more information.
 
-RKH needs to disable interrupts in order to access critical sections of code 
-and to reenable interrupts when done. To hide the actual implementation 
-method available for a particular processor, compiler, an OS, RKH defines 
-the following two macros to disable and enable interrupts 
-rkh_enter_critical() and define rkh_exit_critical() respectively. These 
-macros are always together to wrap critical sections of code.
+\n <HR>
+\section prio Priority mechanism
 
-\code
-#define rkh_enter_critical()
-#define rkh_exit_critical()
-\endcode
+<EM>If RKH works in conjunction with a traditional OS/RTOS, RKH provides its own 
+priority mechanism?</EM>
 
-<HR>
-\section trc Trace facility
+\b YES: \n
+\li (1) Declare an RKHRG_T variable.
+\li (2) Include the \b rkhrdy.h in rkhport.h.
+\li (3) Then, the RKH port could be use the macros rkh_rdy_is_empty(), 
+rkh_rdy_isnot_empty(), rkh_rdy_ins(), rkh_rdy_rem(), and rkh_rdy_findh(). 
+Frequently, the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
+RKH_SMA_UNREADY() use the macros provided by \b rkhrdy.h.
 
-Defines trace facility support. This definitions are required only when the 
-user application is used trace facility (of course, RKH_TRACE == 1).
-\n See \ref dbg section for more information.
+\b NO: \n
+Nothing to do.
 
-\code
-#define rkh_tropen							rkh_trace_open
-#define rkh_trclose							rkh_trace_close
-#define rkh_trflush							rkh_trace_flush
-#define rkh_trgetts							rkh_trace_getts
-\endcode
+\n <HR>
+\section eque Event queue
 
-<HR>
+<EM>If RKH works in conjunction with a traditional OS/RTOS, are implemented 
+the event queues with a message queue of the underlying OS/RTOS?</EM>
+
+\b YES: \n
+\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (2) Define the macro RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
+rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
+\b rkhport.c file.
+
+\b NO: \n
+\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 1 y RKH_RQ_EN = 1 in 
+\b rkhcfg.h
+\li (2) When using the native event queues is NOT necessary provides neither 
+the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
+\li (3) Define RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+		
+<EM>The application use the RKH native scheduler, are implemented 
+the event queues with the native queues RKHRQ_T?</EM>
+
+\b YES: \n
+\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 1 y RKH_RQ_EN = 1 in 
+\b rkhcfg.h
+\li (2) When using the native event queues is NOT necessary provides neither 
+the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
+\li (3) Define RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+		
+\b NO: \n
+\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (2) Define the macro RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
+rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
+\b rkhport.c file.
+
+\n <HR>
 \section dyn Dynamic event support
 
-Defines dynamic event support. This definitions are required only when the 
-user application is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
-\n See \ref qref7 section for more information.
+<EM>Is required events with arguments?</EM>
 
-\code
-#include "rkmpool.h"
-#include "queue.h"
+\b NO: \n
+\li (1) Define the macros RKH_EN_DYNAMIC_EVENT = 0 and 
+RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h.
 
+\b YES: \n
 
-#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
+<EM>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
+the dynamic memory support with a internal module of the underlying 
+OS/RTOS?</EM>
 
-#define rkh_dyne_init( mpd, pm, ps, bs )							\
-				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
-												(RK_MPBS_T)(bs) )
+\b YES: \n
+\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1 and 
+RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+\li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
+RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \b rkhport.h 
+according to underlying OS/RTOS.
 
-#define rkh_dyne_event_size( mpd )									\
-																	\
-				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
+\b NO: \n
+\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1,  
+RKH_EN_NATIVE_DYN_EVENT = 0, and RKH_MP_EN = 1 in \b rkhcfg.h
 
-#define rkh_dyne_get( mpd, e )										\
-																	\
-				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
+<EM>The application use the RKH native scheduler, is implemented 
+the dynamic memory support with the native fixed-size memory block pool 
+RKHMO_T?</EM>
 
-#define rkh_dyne_put( mpd, e )										\
-																	\
-				rk_mpool_put( (mpd), (e) )
+\b YES: \n
+\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1 and 
+RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
 
-#define rkh_post_fifo( qd, e )										\
-				queue_insert( (QD_T)(qd), &(e) )
+\b NO: \n
+\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1,  
+RKH_EN_NATIVE_DYN_EVENT = 0, and RKH_MP_EN = 1 in \b rkhcfg.h
 
-#define rkh_post_lifo( qd, e )										\
-				queue_insert_lifo( (QD_T)(qd), &(e) )
+\n <HR>
+\section hk Hook functions
 
-#define rkh_get( qd, e )											\
-				queue_remove( (QD_T)(qd), &(e) )
-\endcode
+A RKH port cannot and should not define all the functions that it calls, 
+because this would render the port too inflexible. The functions that RKH 
+calls but doesn't actually implement are referred to as callback or hook 
+functions. All these functions in RKH are easily indentifiable by the 
+\b "_hk_" key word used in the function name, rkh_hk_dispatch(), 
+rkh_hk_signal(), rkh_hk_timeout(), rkh_hk_start(), rkh_hk_exit(), 
+and rkh_hk_idle(). 
+Please, see RKH_HK_EN_DISPATCH, RKH_HK_EN_SIGNAL, RKH_HK_EN_TIMEOUT, 
+RKH_HK_EN_START, and RKH_HK_EN_EXIT options from the \b rkhcfg.h.\n
 
-<HR>
-\section files Platform-dependent files
+\code void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e )\endcode
+\copydetails RKH_HK_EN_DISPATCH
 
-The header file \b rkhport.h adapts and configures RKH. This
-file has already discussed in \ref Installation section. However,
-this section includes here again the explanation of this important file.
+\code void rkh_hk_signal( RKHEVT_T *e )\endcode
+\copydetails RKH_HK_EN_SIGNAL
 
-The \\portable directory contains platform-independent header files to be
-used by RKH applications. Each platform-dependent file should be 
-placed in a directory that represents the platform to be used, called port
-directory. 
-Each port directory should be placed within \c \\portable, 
-i.e.: \c \\portable\\\<platform\>\\rkhport.h. The 
-\ref source_dir_fig "Figure 2 RKH source directory" shows three RKH port 
-directories: \c \\portable\\cw08 (Codewarrior for Freescale S08), 
-\c \\portable\\lnxgcc (Linux GCC), and \c \\portable\\vc08 (Visual C++ 2008).
+\code void rkh_hk_timeout( const void *t )\endcode
+\copydetails RKH_HK_EN_TIMEOUT
 
-Next, each \b rkhport.h must be referenced from \b rkhplat.h header file,
-located in \c \\include directory. The idea behind conditional 
-compilation is that a \b rkhport.h can be selectively compiled, depending 
-upon whether a specific value has been defined. The next listing shows 
-the \b rkhplat.h file according to \c \\portable directory from
-\ref source_dir_fig "Figure 2 RKH source directory", where \c ___CWS08__,
-\c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler to 
-include header files from the specific RKH port directory.
+\code void rkh_hk_start( void )\endcode
+\copydetails RKH_HK_EN_START
 
-\code
-#if __CWS08__
-	#include "..\portable\cw08\rkhport.h"
-#elif __VC__
-	#include "..\portable\vc08\rkhport.h"
-#elif __LNXGCC__
-   	#include "lnxgcc/rkhport.h"	
-#else
-	#error "rkhplat.h: Missing platform definition."
-#endif
-\endcode
+\code void rkh_hk_exit( void )\endcode
+\copydetails RKH_HK_EN_EXIT
 
-The path of platform-dependent file must be relative.
+\code void rkh_hk_idle( void )\endcode
+\copydetails rkh_hk_idle
+
+\n <HR>
+\section ilock Interrupt locking mechanism
+
+\copydetails RKH_DIS_INTERRUPT()
+Please, see \ref Installation section about RKH port directory and files.
+
+\n <HR>
+\section crt Critical section
+
+\copydetails RKH_SR_CRITICAL_
+
+\n <HR>
+\section trc Trace facility
+
+\copydetails rkhtrc.h
+
+RKH has a set of configuration options related to trace tool 
+facility, which an user that require this feature must be properly configure 
+in the \b rkhcfg.h header file.
+
+\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li Define the macro \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
+
+See \ref cfg section for more information about that.
+
+A RKH port cannot and should not define all the functions 
+that it calls, because this would render the port too inflexible. Therefore, 
+the application-specific functions rkh_trc_open(), rkh_trc_close(), 
+rkh_trc_flush(), and rkh_trc_getts() are application provided.
+
+\code void rkh_trc_open( void )\endcode
+\copydetails rkh_trc_open
+
+\code void rkh_trc_close( void )\endcode
+\copydetails rkh_trc_close
+
+\code void rkh_trc_flush( void )\endcode
+\copydetails rkh_trc_flush
+
+\code void rkh_trc_getts( void )\endcode
+\copydetails rkh_trc_getts
 
 <HR>
 \section rkhp "rkhport.h" A port file example
@@ -1889,35 +1973,36 @@ shows how to make that.
 \section trcfg Trace tool configuration
 
 First of all, RKH has a set of configuration options related to trace tool 
-facility, which an user that require this feature must be properly configure.
+facility, which an user that require this feature must be properly configure 
+in the \b rkhcfg.h header file.
 
-\li \b RKH_TRC_EN \copydetails RKH_TRC_EN
-\li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
-\li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
-\li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
-\li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
-\li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
-\li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
-\li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
-\li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
-\li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
-\li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
-\li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
-\li \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
-\li \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
-\li \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
-\li \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
-\li \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
-\li \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
-\li \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
-\li \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
-\li \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
-\li \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
-\li \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
-\li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
-\li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
+\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li Define the macro \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
 
 See \ref cfg section for more information about that.
 
