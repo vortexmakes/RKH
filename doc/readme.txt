@@ -1964,10 +1964,15 @@ Each trace points cannot be changed but RKH allows enable/disable it
 in compile-time by means of C/C++ preprocessor. The \ref cfg section
 shows how to make that.
 
+- \ref tre
 - \ref trcfg
 - \ref trfn
 - \ref trfil
 - \ref trtbl
+
+<HR>
+\section tre Trace event structure
+
 
 <HR>
 \section trcfg Trace tool configuration

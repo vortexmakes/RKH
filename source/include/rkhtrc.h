@@ -46,8 +46,7 @@
  *	for each trace event (also named arguments) being generated, including, 
  *	at least, the following:
  *
- * 	- the trace event identifier (RKH_TRC_EVENTS enumerated list),
- * 	- instrumented application (state machine applications),
+ * 	- the trace event identifier (#RKH_TRC_EVENTS enumerated list),
  * 	- a timestamp (optional),
  * 	- any extra data that the system wants to associate with the event 
  * 	(optional).
@@ -66,6 +65,74 @@
  *	from a certain stream will not be stored in the stream. The stream in the 
  *	system can potentially be applied a different filter. This filter can be 
  *	applied, removed or changed at any time.
+ *
+ * 	<EM>RKH trace event structure</EM>
+ *
+ *	\code
+ *	(1) RKH_TRC_BEGIN( group, event )	\
+ *	(2)		RKH_TRC_ARG0( arg0 ); 		\
+ *	(3)		RKH_TRC_ARG1( arg1 ); 		\
+ *	(4)		RKH_TRC_....( ... ); 		\
+ *	(5)	RKH_TRC_END()
+ *	\endcode
+ *
+ *	\li (1,5)	Each trace event always begins with the macro RKH_TRC_BEGIN() 
+ *				and ends with the matching macro RKH_TRC_END().
+ *			 	These macros are not terminated with the semicolon.
+ *			 	The record-begin macro RKH_TRC_BEGIN() takes two arguments. 
+ *			 	The first argument 'group' is the enumerated group 
+ *			 	(#RKH_TRC_GROUPS) and the second argument 'event' is the trace 
+ *			 	event ID. Both arguments are used in the on/off filter. 
+ *			 	The runtime filter is optional and could be enabled or 
+ *			 	disabled with the #RKH_TRC_RUNTIME_FILTER in the \b rkhcfg.h 
+ *			 	file. This pair of macros locks interrupts at the beginning 
+ *			 	and unlocks at the end of each record.
+ *	\li (2-4) 	Sandwiched between these two macros are the 
+ *				argument-generating macros that actually insert individual 
+ *				event argument elements into the trace stream.
+ *
+ *	Each trace event and its arguments are placed in the trace stream like a 
+ *	simple data protocol frame. The protocol has been specifically designed 
+ *	to simplify the data management overhead in the target yet allow 
+ *	detection of any data dropouts due to the trace buffer overruns. 
+ *	The protocol has not only provisions for detecting gaps in the data and 
+ *	other errors but allows for instantaneous resynchronization after any 
+ *	error, to minimize data loss. [MS]
+ *	
+ *	Frame:
+ *
+ *	...| Event ID | Sequence Number | Timestamp | args | checksum | Flag |...
+ *
+ *	- 	Each frame starts with the trace event ID byte, which is 
+ *		one of the predefined RKH records or an application-specific record.
+ *	- 	Following the sequence number is the sequence number byte. The target 
+ *		component increments this number for every frame inserted into the 
+ *		stream. The sequence number allows the trazer tool to detect any data 
+ *		discontinuities. If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will 
+ *		add to the trace record the sequence number.
+ *	-	Following the sequence number is the timestamp. The number of bytes 
+ *		used by the timestamp is configurable by the macro 
+ *		#RKH_TRC_SIZEOF_TSTAMP.
+ *		If the #RKH_TRC_EN_TSTAMP is set to 1 then RKH will add to the 
+ *		trace record the timestamp field.
+ *	- 	Following the timestamp is zero or more data bytes for args.
+ *	- 	Following the data is the checksum byte. The checksum is computed 
+ *		over the sequence number, the trace event ID, and all the data bytes. 
+ *		If the #RKH_TRC_EN_CHK is set to 1 then RKH will add to the trace 
+ *		record a checksum byte.
+ *	- 	Following the checksum is the flag byte, which delimits the frame. 
+ *		The flag is the 0x7E. Only one flag is inserted between frames.
+ *	
+ *	To avoid confusing unintentional flag bytes that can naturally occur in 
+ *	the data stream with an intentionally sent flag, the protocol uses a 
+ *	technique known as byte stuffing or escaping to make the flag bytes 
+ *	transparent during the transmission.
+ *	Whenever the transmitter encounters a flag byte in the data, it inserts 
+ *	a 2-byte escape sequence to the output stream. The first byte is the 
+ *	escape byte, defined as binary 0x7D. The second byte is the original 
+ *	byte XOR-ed with 0x20.
+ *	The transmitter computes the checksum over the sequence number, the 
+ *	trace event ID, and all data bytes before performing any byte stuffing.
  */
 
 
@@ -80,7 +147,7 @@
 
 /**
  * 	\brief
- * 	The size of trceftbl table depends on RKH_TRC_MAX_EVENTS (see rkhcfg.h).
+ * 	The size of trceftbl table depends on #RKH_TRC_MAX_EVENTS (see rkhcfg.h).
  */
 
 #if RKH_TRC_MAX_EVENTS <= 64
@@ -347,11 +414,42 @@ typedef enum rkh_trc_events
 
 
 #if RKH_TRC_RUNTIME_FILTER == 1
+
+	/**
+	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
+	 *	and ends with the matching macro RKH_TRC_END(). These macros are 
+	 *	not terminated with the semicolon.
+	 * 	This pair of macros locks interrupts at the beginning and unlocks 
+	 * 	at the end of each record.
+	 *
+	 * 	\note
+	 * 	Both arguments are used in the on/off filter. 
+	 * 	\note
+	 * 	The runtime filter is optional and could be enabled or 
+	 * 	disabled with the RKH_TRC_RUNTIME_FILTER in the rkhcfg.h file.
+	 * 	\note
+	 * 	This macro always invokes the rkh_trc_begin() function.
+	 *
+	 *	\param grp		is the enumerated group (RKH_TRC_GROUPS).
+	 *	\param eid		is the trace event ID (RKH_TRC_EVENTS).
+	 */
+
 	#define RKH_TRC_BEGIN( grp, eid )			\
 				RKH_SR_CRITICAL_;				\
 				if(rkh_trc_isoff_(grp, eid)) {	\
 					RKH_ENTER_CRITICAL_();		\
 					rkh_trc_begin( eid );
+
+	/**
+	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
+	 *	and ends with the matching macro RKH_TRC_END(). These macros are 
+	 *	not terminated with the semicolon.
+	 * 	This pair of macros locks interrupts at the beginning and unlocks 
+	 * 	at the end of each record.
+	 *
+	 * 	\note
+	 * 	This macro always invokes the rkh_trc_end() function.
+	 */
 
 	#define RKH_TRC_END()						\
 					rkh_trc_end();				\
@@ -758,7 +856,7 @@ typedef enum rkh_trc_events
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TRCG_SM\n
 		 * 	Id 		= RKH_TRCE_SM_DCH\n
-		 * 	Args	= sma, initial state\n
+		 * 	Args	= sma, signal\n
 		 */
 
 		#if RKH_TRC_EN_SM_DCH == 1
@@ -1471,12 +1569,42 @@ HUInt rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e );
 
 /**
  * 	\brief
- * 	Prepare the trace event to record.
- * 	Store the event ID, the number of sequence, and the timestamp.
+ * 	Store the trace record header in the stream.
+ *	
+ *	By means of RKH_TRC_HDR() macro stores the listed data fields in the 
+ *	stream buffer (in that order):
+ *	
+ *	- Trace event ID [1-byte].
+ *
+ *	- Sequence number [1-byte]. If the RKH_TRC_EN_NSEQ is set to 1 then RKH 
+ *	will add to the trace record an incremental number (1-byte), used like 
+ *	a sequence number.
+ *
+ *	- Timestamp [1, 2 or 4 bytes]. If the RKH_TRC_EN_TSTAMP is set to 1 then 
+ *	RKH will add to the trace record a timestamp field. It's configurable by 
+ *	means of RKH_TRC_SIZEOF_TSTAMP. 
+ *	
+ *	The next listing shows the implemented RKH_TRC_HDR() macro:
+ *
+ *	\code
+ * 		RKH_TRC_HDR( eid ) 		\
+ * 	(1)		chk = 0;			\
+ * 	(2)		RKH_TRC_UI8( eid );	\
+ * 	(3)		RKH_TRC_NSEQ();		\
+ * 	(4)		RKH_TRC_TSTAMP()
+ * 	\endcode
+ *
+ * 	\li (1)	Initialize the trace record checksum.
+ *	\li (2)	Insert the event ID
+ *	\li (3)	Insert the sequence number
+ *	\li (4)	Insert the timestamp
  *
  * 	\note
  *	This function should be called indirectly through the macro 
  *	RKH_TRC_BEGIN.
+ *
+ *	\param eid		trace event ID. The available events are 
+ * 					enumerated in RKH_TRC_EVENTS.
  */
 
 void rkh_trc_begin( rkhui8_t eid );
@@ -1485,6 +1613,9 @@ void rkh_trc_begin( rkhui8_t eid );
 /**
  * 	\brief
  * 	Terminate the recorded trace event.
+ *
+ *	This function inserts a the flag byte, which delimits the frame. 
+ *	The flag is the 0x7E.
  *
  * 	\note
  *	This function should be called indirectly through the macro 
@@ -1497,6 +1628,8 @@ void rkh_trc_end( void );
 /**
  * 	\brief
  * 	Store a 8-bit data into the current trace event buffer.
+ *
+ * 	\param d		data
  */
 
 void rkh_trc_ui8( rkhui8_t d );
@@ -1505,6 +1638,8 @@ void rkh_trc_ui8( rkhui8_t d );
 /**
  * 	\brief
  * 	Store a 16-bit data into the current trace event buffer.
+ *
+ * 	\param d		data
  */
 
 void rkh_trc_ui16( rkhui16_t d );
@@ -1513,6 +1648,8 @@ void rkh_trc_ui16( rkhui16_t d );
 /**
  * 	\brief
  * 	Store a 32-bit data into the current trace event buffer.
+ *
+ * 	\param d		data
  */
 
 void rkh_trc_ui32( rkhui32_t d );
@@ -1521,6 +1658,8 @@ void rkh_trc_ui32( rkhui32_t d );
 /**
  * 	\brief
  * 	Store a string terminated in '\\0' into the current trace event buffer.
+ *
+ * 	\param s		pointer to string treminated in '\\0'
  */
 
 void rkh_trc_str( const char *s );
