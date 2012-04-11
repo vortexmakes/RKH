@@ -66,73 +66,7 @@
  *	system can potentially be applied a different filter. This filter can be 
  *	applied, removed or changed at any time.
  *
- * 	<EM>RKH trace event structure</EM>
- *
- *	\code
- *	(1) RKH_TRC_BEGIN( group, event )	\
- *	(2)		RKH_TRC_ARG0( arg0 ); 		\
- *	(3)		RKH_TRC_ARG1( arg1 ); 		\
- *	(4)		RKH_TRC_....( ... ); 		\
- *	(5)	RKH_TRC_END()
- *	\endcode
- *
- *	\li (1,5)	Each trace event always begins with the macro RKH_TRC_BEGIN() 
- *				and ends with the matching macro RKH_TRC_END().
- *			 	These macros are not terminated with the semicolon.
- *			 	The record-begin macro RKH_TRC_BEGIN() takes two arguments. 
- *			 	The first argument 'group' is the enumerated group 
- *			 	(#RKH_TRC_GROUPS) and the second argument 'event' is the trace 
- *			 	event ID. Both arguments are used in the on/off filter. 
- *			 	The runtime filter is optional and could be enabled or 
- *			 	disabled with the #RKH_TRC_RUNTIME_FILTER in the \b rkhcfg.h 
- *			 	file. This pair of macros locks interrupts at the beginning 
- *			 	and unlocks at the end of each record.
- *	\li (2-4) 	Sandwiched between these two macros are the 
- *				argument-generating macros that actually insert individual 
- *				event argument elements into the trace stream.
- *
- *	Each trace event and its arguments are placed in the trace stream like a 
- *	simple data protocol frame. The protocol has been specifically designed 
- *	to simplify the data management overhead in the target yet allow 
- *	detection of any data dropouts due to the trace buffer overruns. 
- *	The protocol has not only provisions for detecting gaps in the data and 
- *	other errors but allows for instantaneous resynchronization after any 
- *	error, to minimize data loss. [MS]
- *	
- *	Frame:
- *
- *	...| Event ID | Sequence Number | Timestamp | args | checksum | Flag |...
- *
- *	- 	Each frame starts with the trace event ID byte, which is 
- *		one of the predefined RKH records or an application-specific record.
- *	- 	Following the sequence number is the sequence number byte. The target 
- *		component increments this number for every frame inserted into the 
- *		stream. The sequence number allows the trazer tool to detect any data 
- *		discontinuities. If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will 
- *		add to the trace record the sequence number.
- *	-	Following the sequence number is the timestamp. The number of bytes 
- *		used by the timestamp is configurable by the macro 
- *		#RKH_TRC_SIZEOF_TSTAMP.
- *		If the #RKH_TRC_EN_TSTAMP is set to 1 then RKH will add to the 
- *		trace record the timestamp field.
- *	- 	Following the timestamp is zero or more data bytes for args.
- *	- 	Following the data is the checksum byte. The checksum is computed 
- *		over the sequence number, the trace event ID, and all the data bytes. 
- *		If the #RKH_TRC_EN_CHK is set to 1 then RKH will add to the trace 
- *		record a checksum byte.
- *	- 	Following the checksum is the flag byte, which delimits the frame. 
- *		The flag is the 0x7E. Only one flag is inserted between frames.
- *	
- *	To avoid confusing unintentional flag bytes that can naturally occur in 
- *	the data stream with an intentionally sent flag, the protocol uses a 
- *	technique known as byte stuffing or escaping to make the flag bytes 
- *	transparent during the transmission.
- *	Whenever the transmitter encounters a flag byte in the data, it inserts 
- *	a 2-byte escape sequence to the output stream. The first byte is the 
- *	escape byte, defined as binary 0x7D. The second byte is the original 
- *	byte XOR-ed with 0x20.
- *	The transmitter computes the checksum over the sequence number, the 
- *	trace event ID, and all data bytes before performing any byte stuffing.
+ *	\sa RKH_TRC_EVENTS the enumerated list of RKH trace events.
  */
 
 
@@ -286,6 +220,87 @@ typedef enum rkh_trc_groups
 /**
  * 	\brief
  * 	RKH trace events.
+ *
+ * 	<EM>RKH trace event structure</EM>
+ *
+ *	\code
+ *	(1) RKH_TRC_BEGIN( group, event )	\
+ *	(2)		RKH_TRC_ARG0( arg0 ); 		\
+ *	(3)		RKH_TRC_ARG1( arg1 ); 		\
+ *	(4)		RKH_TRC_....( ... ); 		\
+ *	(5)	RKH_TRC_END()
+ *	\endcode
+ *
+ *	\li (1,5)	Each trace event always begins with the macro RKH_TRC_BEGIN() 
+ *				and ends with the matching macro RKH_TRC_END().
+ *			 	These macros are not terminated with the semicolon.
+ *			 	The record-begin macro RKH_TRC_BEGIN() takes two arguments. 
+ *			 	The first argument 'group' is the enumerated group 
+ *			 	(#RKH_TRC_GROUPS) and the second argument 'event' is the trace 
+ *			 	event ID. Both arguments are used in the on/off filter. 
+ *			 	The runtime filter is optional and could be enabled or 
+ *			 	disabled with the #RKH_TRC_RUNTIME_FILTER in the \b rkhcfg.h 
+ *			 	file. This pair of macros locks interrupts at the beginning 
+ *			 	and unlocks at the end of each record.
+ *	\li (2-4) 	Sandwiched between these two macros are the 
+ *				argument-generating macros that actually insert individual 
+ *				event argument elements into the trace stream.
+ *
+ *	Each trace event and its arguments are placed in the trace stream like a 
+ *	simple data protocol frame. The protocol has been specifically designed 
+ *	to simplify the data management overhead in the target yet allow 
+ *	detection of any data dropouts due to the trace buffer overruns. 
+ *	The protocol has not only provisions for detecting gaps in the data and 
+ *	other errors but allows for instantaneous resynchronization after any 
+ *	error, to minimize data loss. [MS]
+ *	
+ *	\a Frame
+ *
+ * 	\code
+ *      | ...               |
+ *  (1) | event ID          | 1-byte
+ *  (2) | sequence Number   | 1-byte
+ *  (3) | timestamp         | 2,4-bytes
+ *  (4) | args              | n-byte
+ *  (5) | checksum          | 1-byte
+ *  (6) | flag              | 1-byte
+ *      | ...               |
+ *	\endcode
+ *
+ *	- 	(1) Each frame starts with the <B>trace event ID</B> byte, which is 
+ *		one of the predefined RKH records or an application-specific record.
+ *	- 	(2) Following the <B>sequence number</B> is the sequence number byte. 
+ *		The target component increments this number for every frame inserted 
+ *		into the stream. The sequence number allows the trazer tool to detect 
+ *		any data discontinuities. If the #RKH_TRC_EN_NSEQ is set to 1 then 
+ *		RKH will add to the trace record the sequence number.
+ *	-	(3) Following the sequence number is the <B>timestamp</B>. The number 
+ *		of bytes used by the timestamp is configurable by the macro 
+ *		#RKH_TRC_SIZEOF_TSTAMP.
+ *		If the #RKH_TRC_EN_TSTAMP is set to 1 then RKH will add to the 
+ *		trace record the timestamp field.
+ *	- 	(4) Following the timestamp is zero or more data bytes for <B>args</B>.
+ *	- 	(5) Following the data is the <B>checksum</B> byte. The checksum is 
+ *		computed over the sequence number, the trace event ID, and all the 
+ *		data bytes. 
+ *		If the #RKH_TRC_EN_CHK is set to 1 then RKH will add to the trace 
+ *		record a checksum byte.
+ *	- 	(6) Following the checksum is the <B>flag</B> byte, which delimits 
+ *		the frame. The flag is the 0x7E. Only one flag is inserted between 
+ *		frames.
+ *	
+ *	To avoid confusing unintentional flag bytes that can naturally occur in 
+ *	the data stream with an intentionally sent flag, the protocol uses a 
+ *	technique known as byte stuffing or escaping to make the flag bytes 
+ *	transparent during the transmission.
+ *	Whenever the transmitter encounters a flag byte in the data, it inserts 
+ *	a 2-byte escape sequence to the output stream. The first byte is the 
+ *	escape byte, defined as binary 0x7D. The second byte is the original 
+ *	byte XOR-ed with 0x20.
+ *	The transmitter computes the checksum over the sequence number, the 
+ *	trace event ID, and all data bytes before performing any byte stuffing.
+ *
+ *	\sa RKH_TRC_HDR(), RKH_TRC_END(), RKH_TRC_CHK().
  */
 
 typedef enum rkh_trc_events
@@ -353,12 +368,13 @@ typedef enum rkh_trc_events
 } RKH_TRC_EVENTS;
 
 
-#define RKH_XOR		0x20	/* x-ored byte for stuffing a single byte */
-#define RKH_FLG		0x7E	/* flag byte, used as a trace event delimiter */
-#define RKH_ESC		0x7D	/* escape byte stuffing a single byte */
+#define RKH_XOR		0x20	/** x-ored byte for stuffing a single byte */
+#define RKH_FLG		0x7E	/** flag byte, used as a trace event delimiter */
+#define RKH_ESC		0x7D	/** escape byte stuffing a single byte */
 
 
-/* 
+/**
+ * 	\brief
  * 	Inserts the previously calculated checksum as:
  * 	checksum = 0 - sum mod-256 -> ~(sum mod-256) + 1.
  */
@@ -372,7 +388,8 @@ typedef enum rkh_trc_events
 #endif
 
 
-/* 
+/**
+ * 	\brief
  * 	Inserts directly into the trace stream the flag byte in a raw (without 
  * 	escaped sequence) manner.
  */
@@ -467,20 +484,50 @@ typedef enum rkh_trc_events
 #endif
 
 
+/**
+ * 	\brief
+ * 	Insert a 1-byte without escaping it.
+ */
+
 #define RKH_TRC_UI8_RAW( d )	\
 			rkh_trc_put( (d) )
+
+/**
+ * 	\brief
+ * 	Insert a 1-byte data.
+ */
 
 #define RKH_TRC_UI8( d )	\
 			rkh_trc_ui8( (d) )
 
+/**
+ * 	\brief
+ * 	Insert a 2-byte data.
+ */
+
 #define RKH_TRC_UI16( d )	\
 			rkh_trc_ui16( (d) )
+
+/**
+ * 	\brief
+ * 	Insert a 4-byte data.
+ */
 
 #define RKH_TRC_UI32( d )	\
 			rkh_trc_ui32( (d) )
 
+/**
+ * 	\brief
+ * 	Insert a string.
+ */
+
 #define RKH_TRC_STR( s )	\
 			rkh_trc_str( (s) )
+
+/**
+ * 	\brief
+ * 	Insert the sequence number byte.
+ */
 
 #if RKH_TRC_EN_NSEQ == 1
 	#define RKH_TRC_NSEQ()				\
@@ -490,12 +537,23 @@ typedef enum rkh_trc_events
 	#define RKH_TRC_NSEQ()
 #endif
 
+
+/**
+ * 	\brief
+ *	Insert the trace event header in the stream.
+ */
+
 #define RKH_TRC_HDR( eid ) 			\
 			chk = 0;				\
 			RKH_TRC_UI8( eid );		\
 			RKH_TRC_NSEQ();			\
 			RKH_TRC_TSTAMP()
 
+
+/**
+ * 	\brief
+ * 	Insert a object address as trace record argument.
+ */
 
 #if RKH_TRC_SIZEOF_POINTER == 16
 	#define RKH_TRC_SYM( sym )	\
@@ -508,6 +566,10 @@ typedef enum rkh_trc_events
 				RKH_TRC_UI32( (rkhui32_t)sym )
 #endif
 
+
+/**
+ * 	Insert a ntick value as trace record argument.
+ */
 
 #if RKH_TIM_SIZEOF_NTIMER == 8
 	#define RKH_TRC_NTICK( nt )	\
@@ -524,6 +586,10 @@ typedef enum rkh_trc_events
 #endif
 
 
+/**
+ * 	Insert a nblock value as trace record argument.
+ */
+
 #if RKH_MP_SIZEOF_NBLOCK == 8
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI8( nb )
@@ -538,6 +604,10 @@ typedef enum rkh_trc_events
 				RKH_TRC_UI8( nb )
 #endif
 
+
+/**
+ * 	Insert a nelem value as trace record argument.
+ */
 
 #if RKH_RQ_SIZEOF_NELEM == 8
 	#define RKH_TRC_NE( ne )	\
@@ -554,6 +624,10 @@ typedef enum rkh_trc_events
 #endif
 
 
+/**
+ * 	Insert a signal number as trace record argument.
+ */
+
 #if RKH_SIZEOF_EVENT == 8
 	#define RKH_TRC_SIG( e )	\
 				RKH_TRC_UI8( e )
@@ -568,6 +642,10 @@ typedef enum rkh_trc_events
 				RKH_TRC_UI8( e )
 #endif
 
+
+/**
+ * 	Insert a event size value as trace record argument.
+ */
 
 #if RKH_SIZEOF_ESIZE == 8
 	#define RKH_TRC_ES( es )	\
@@ -715,7 +793,7 @@ typedef enum rkh_trc_events
 		/**
 		 * 	Desc 	= get the last element from the queue\n
 		 * 	Group 	= RKH_TRCG_RQ\n
-		 * 	Id 		= RKH_TRCE_RQ_GET_LASTv
+		 * 	Id 		= RKH_TRCE_RQ_GET_LAST\n
 		 * 	Args	= queue\n
 		 */
 
@@ -1225,7 +1303,20 @@ typedef enum rkh_trc_events
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TRCG_RKH\n
 		 * 	Id 		= RKH_TRCE_OBJ\n
-		 * 	Args	= object address, object name (string)\n
+		 * 	Args	= object address\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	static int g_status; 
+		 * 	static RKHT_T tdll; 
+		 *
+		 * 	RKH_TRCR_RKH_OBJ( &g_status );
+		 * 	RKH_TRCR_RKH_OBJ( &tdll );
+		 * 	\endcode
 		 */
 
 		#define RKH_TRCR_RKH_OBJ( __o )									\
@@ -1243,7 +1334,17 @@ typedef enum rkh_trc_events
 		 * 	Desc 	= entry symbol table for signal\n
 		 * 	Group 	= RKH_TRCG_RKH\n
 		 * 	Id 		= RKH_TRCE_SIG\n
-		 * 	Args	= signal number, signal name (string)\n
+		 * 	Args	= signal number\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the numerical value of the event signal to the 
+		 * 	symbolic name of the signal.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	RKH_TRCR_RKH_SIG( PWR_FAIL );
+		 * 	RKH_TRCR_RKH_SIG( PRESS_ENTER );
+		 * 	\endcode
 		 */
 
 		#define RKH_TRCR_RKH_SIG( __s )									\

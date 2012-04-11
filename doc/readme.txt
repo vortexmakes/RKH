@@ -1953,16 +1953,12 @@ for more information about this.
 
 \ref main_page "< Home"
 
-\page dbg Debugging tool
+\page dbg Tracing tool
 \image html rkh_bunner.jpg
 
 \ref main_page "< Home"
 
 \copydetails rkhtrc.h
-
-Each trace points cannot be changed but RKH allows enable/disable it
-in compile-time by means of C/C++ preprocessor. The \ref cfg section
-shows how to make that.
 
 - \ref tre
 - \ref trcfg
@@ -1972,7 +1968,7 @@ shows how to make that.
 
 <HR>
 \section tre Trace event structure
-
+\copydetails RKH_TRC_EVENTS
 
 <HR>
 \section trcfg Trace tool configuration
