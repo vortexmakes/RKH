@@ -496,53 +496,6 @@
 #endif
 
 
-/**@{
- * 	\brief
- * 	RKH need to disable interrupts in order to access critical sections of 
- * 	code, and re-enable interrupts when done. 
- *
- * 	This allows RKH to protect 
- * 	critical code from being entered simultaneously from either multiple 
- * 	SMAs or ISRs. Every processor generally provide instructions to 
- * 	disable/enable interrupts and the C compiler must have a mechanism to 
- * 	perform these operations directly from C. Some compilers will allows 
- * 	to insert in-line assembly language statements in the C source code. 
- * 	This makes it quite easy to insert processor instructions to enable and 
- * 	disable interrupts. Other compilers will actually contain language 
- * 	extensions to enable and disable interrupts directly from C. To hide the 
- * 	implementation method chosen by the compiler manufacturer, RKH defines 
- * 	two macros to disable and enable interrupts: 
- * 	RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
- *
- * 	The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto 
- * 	the stack and then, disable interrupts. 
- * 	RKH_EXIT_CRITICAL() would simply be implemented by restoring the interrupt 
- * 	status from the stack. Using this scheme, if it's called a RKH service 
- * 	with either interrupts enabled or disabled then, the status would be 
- * 	preserved across the call. If calls a RKH service with interrupts disabled,
- * 	is potentially extending the interrupt latency of application. The 
- * 	application can use RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL() to also 
- * 	protect critical sections of code. As a general rule, should always call 
- * 	RKH services with interrupts enabled!.
- * 	
- * 	\note
- * 	These macros are internal to RKH and the user application should 
- * 	not call it.
- */
-
-#ifdef RKH_CPUSR_TYPE
-
-	#define RKH_SR_CRITICAL_			RKH_CPUSR_TYPE sr
-	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( sr )
-	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
-#else
-	#define RKH_SR_CRITICAL_
-	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( dummy )
-	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( dummy )
-#endif
-/*@}*/
-
-
 #ifndef RKH_EN_DOXYGEN
 	#define RKH_EN_DOXYGEN	0
 #endif
@@ -556,6 +509,11 @@
 	 * 	the RTOS/OS. But it is also possible to use the native RKH 
 	 * 	queue RKHRQ_T type if the underlying RTOS/OS does not provide 
 	 * 	an adequate queue.
+	 *
+	 * 	<EM>Example for using the native queue</EM>
+	 * 	\code
+	 * 	#define RKH_EQ_TYPE			RKHRQ_T
+	 * 	\endcode
 	 */
 
 	#define RKH_EQ_TYPE
@@ -563,6 +521,11 @@
 	/**
 	 * 	The data type RKH_THREAD_TYPE holds the thread handle 
 	 * 	associated with the active object.
+	 *
+	 * 	<EM>Example for using the native scheduler</EM>
+	 * 	\code
+	 * 	#define RKH_THREAD_TYPE		RKHSMA_T
+	 * 	\endcode
 	 */
 
 	#define RKH_THREAD_TYPE
@@ -586,11 +549,183 @@
 	 * 	RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously, 
 	 * 	they resides in \b rkhport.h file, which the user always need to 
 	 * 	provide.
+	 *
+	 * 	<EM>Example for HCS08 CW6.3 from C:</EM>
+	 * 	\code
+	 * 	#define RKH_DIS_INTERRUPT()			DisableInterrupts
+	 * 	#define RKH_ENA_INTERRUPT()			EnableInterrupts
+	 * 	\endcode
 	 */
 
-	#define RKH_DIS_INTERRUPT()			(void)0
-	#define RKH_ENA_INTERRUPT()			(void)0
+	#define RKH_DIS_INTERRUPT()
+	#define RKH_ENA_INTERRUPT()
 	/*@}*/
+
+
+	/**@{
+	 * 	\brief
+	 * 	RKH need to disable interrupts in order to access critical sections of 
+	 * 	code, and re-enable interrupts when done. 
+	 *
+	 * 	This allows RKH to protect 
+	 * 	critical code from being entered simultaneously from either multiple 
+	 * 	SMAs or ISRs. Every processor generally provide instructions to 
+	 * 	disable/enable interrupts and the C compiler must have a mechanism to 
+	 * 	perform these operations directly from C. Some compilers will allows 
+	 * 	to insert in-line assembly language statements in the C source code. 
+	 * 	This makes it quite easy to insert processor instructions to enable and 
+	 * 	disable interrupts. Other compilers will actually contain language 
+	 * 	extensions to enable and disable interrupts directly from C. To hide the 
+	 * 	implementation method chosen by the compiler manufacturer, RKH defines 
+	 * 	two macros to disable and enable interrupts: 
+	 * 	RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
+	 *
+	 * 	The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto 
+	 * 	the stack and then, disable interrupts. 
+	 * 	RKH_EXIT_CRITICAL() would simply be implemented by restoring the interrupt 
+	 * 	status from the stack. Using this scheme, if it's called a RKH service 
+	 * 	with either interrupts enabled or disabled then, the status would be 
+	 * 	preserved across the call. If calls a RKH service with interrupts disabled,
+	 * 	is potentially extending the interrupt latency of application. The 
+	 * 	application can use RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL() to also 
+	 * 	protect critical sections of code. As a general rule, should always call 
+	 * 	RKH services with interrupts enabled!.
+	 * 	
+	 * 	\note
+	 * 	These macros are internal to RKH and the user application should 
+	 * 	not call it.
+	 *
+	 * 	<EM>Example for x86, VC2008, and win32 single thread:</EM>
+	 * 	\code
+	 * 	//#define RKH_CPUSR_TYPE
+	 * 	#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
+	 * 	#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
+	 * 	\endcode
+	 */
+
+	#define RKH_CPUSR_TYPE
+	#define RKH_SR_CRITICAL_					RKH_CPUSR_TYPE sr
+	#define RKH_ENTER_CRITICAL( dummy )
+	#define RKH_EXIT_CRITICAL( dummy )
+	/*@}*/
+
+
+	/**
+	 * 	\brief
+	 * 	Encapsulates the mechanism of blocking the event queue.
+	 *
+	 * 	\param sma		pointer to SMA.
+	 */
+
+	#define RKH_SMA_BLOCK( sma )
+
+	/**
+	 * 	\brief
+	 * 	Encapsulates the mechanism of signaling the thread waiting on the 
+	 * 	used event queue. Thus, the SMA is inserted in the ready list as 
+	 * 	ready-to-dispatch.
+	 *
+ 	 * 	\param rg		ready group.
+	 * 	\param sma		pointer to SMA.
+	 */
+
+	#define RKH_SMA_READY( rg, sma )
+
+	/**
+	 * 	\brief
+	 * 	Informs the underlying kernel that the SMA event queue is becoming 
+	 * 	empty. Thus, the SMA is removed from the ready list.
+	 *
+ 	 * 	\param rg		ready group.
+	 * 	\param sma		pointer to SMA.
+	 */
+
+	#define RKH_SMA_UNREADY( rg, sma ) 	
+
+
+	/**
+	 * 	\brief
+	 * 	Defines the data type of the fixed-size memory block for 
+	 * 	dynamic event support. 
+	 *
+	 * 	The fixed-size memory block can be implemented with a RTOS/OS 
+	 * 	service provided to that. But it's also possible to use the native 
+	 * 	RKH fixed-size memory block RKHMP_T type if the underlying RTOS/OS 
+	 * 	does not provide an adequate support.
+	 */
+
+	#define RKH_DYNE_TYPE
+
+	/**
+	 * 	\brief
+	 * 	Encapsulates the creation of a event pool. 
+	 *
+	 * 	Platform-dependent macro. Typically, must be define it in the 
+	 * 	specific port file (rkhport.h).
+	 *
+	 * 	\param mp		pointer to previously allocated memory pool structure.
+	 * 	\param sstart	storage start. Pointer to memory from which memory 
+	 * 					blocks are allocated.
+	 * 	\param ssize:	storage size. Size of the memory pool storage in bytes.
+	 * 	\param esize	event size. This number determines the size of each 
+	 * 					memory block in the pool.
+	 */
+
+	#define RKH_DYNE_INIT( mp, sstart, ssize, esize )
+
+	/**
+	 * 	\brief
+	 * 	Encapsulates how RKH should obtain the block size of pool.
+	 *
+	 * 	Platform-dependent macro. Typically, must be define it in the 
+	 * 	specific port file (rkhport.h).
+	 *
+	 * 	\param mp		pointer to previously allocated memory pool structure.
+	 */
+
+	#define RKH_DYNE_GET_ESIZE( mp )
+
+	/**
+	 * 	\brief
+	 *	Encapsulates how RKH should obtain an event \c e from the 
+	 *	event pool \c mp.
+	 * 
+	 * 	Platform-dependent macro. Typically, must be define it in the 
+	 * 	specific port file (rkhport.h).
+	 *
+	 * 	\param mp		pointer to previously allocated memory pool structure.
+	 * 	\param e		pointer to a new event or NULL if the pool 
+	 * 					runs out of blocks.
+	 */
+
+	#define RKH_DYNE_GET( mp, e )
+
+	/**
+	 * 	\brief
+	 *	Encapsulates how RKH should return an event \c e to the event 
+	 *	pool \c mp.
+	 *
+	 * 	Platform-dependent macro. Typically, must be define it in the 
+	 * 	specific port file (rkhport.h).
+	 *
+	 * 	\param mp		pointer to previously allocated memory pool structure.
+	 * 	\param e		pointer to the returned event.
+	 */
+
+	#define RKH_DYNE_PUT( mp, e )
+#endif
+
+
+#ifdef RKH_CPUSR_TYPE
+	#if RKH_EN_DOXYGEN == 0
+		#define RKH_SR_CRITICAL_			RKH_CPUSR_TYPE sr
+		#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( sr )
+		#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
+	#endif
+#else
+	#define RKH_SR_CRITICAL_
+	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( dummy )
+	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( dummy )
 #endif
 
 

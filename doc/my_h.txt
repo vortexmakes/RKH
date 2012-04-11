@@ -33,7 +33,7 @@ typedef struct
  *	Declare HSM.
  */
 
-RKH_DCLR_HSM( my );
+RKH_SMA_DCLR( my );
 
 
 /*

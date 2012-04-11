@@ -328,11 +328,100 @@ RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
 rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
 are placed in \b rkhport.c.
 
+<EM>Example for x86, VC2008, and win32 single thread</EM>
+\code
+#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_THREAD_TYPE             	HANDLE
+
+
+#define RKH_SMA_BLOCK( sma ) 								\
+				RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
+
+#define RKH_SMA_READY( rg, sma ) 							\
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
+			    (void)SetEvent( sma_is_rdy )
+
+#define RKH_SMA_UNREADY( rg, sma ) 							\
+			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+
+#define RKH_WAIT_FOR_EVENTS() 								\
+			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
+\endcode
+\code
+void 
+rkh_init( void )
+{
+	InitializeCriticalSection( &csection );
+	sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
+}
+
+void 
+rkh_enter( void )
+{
+	rkhui8_t prio;
+	RKHSMA_T *sma;
+	RKHEVT_T *e;
+
+    RKH_HK_START();
+	RKH_TRCR_RKH_EN();
+    running = 1;
+
+    while( running )
+	{
+        RKH_ENTER_CRITICAL( dummy );
+        if( rkh_rdy_isnot_empty( rkhrg ) ) 
+		{
+			rkh_rdy_findh( rkhrg, prio );
+            RKH_EXIT_CRITICAL( dummy );
+
+            sma = rkh_sptbl[ prio ];
+            e = rkh_sma_get( sma );
+            rkh_dispatch( sma, e );
+            RKH_GC( e );
+        }
+        else
+            rkh_hk_idle();
+    }
+
+    rkh_hk_exit();
+    CloseHandle( sma_is_rdy );
+    DeleteCriticalSection( &csection );	
+}
+
+void 
+rkh_exit( void )
+{
+	rkh_hk_exit();
+	RKH_TRCR_RKH_EX();
+}
+
+void 
+rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+						void *stks, rkhui32_t stksize )
+{
+    ( void )stks;
+    ( void )stksize;
+
+	rkh_rq_init( &sma->equeue, qs, qsize, sma );
+	rkh_sma_register( sma );
+    rkh_init_hsm( sma );
+	RKH_TRCR_SMA_ACT( sma );
+}
+
+void 
+rkh_sma_terminate( RKHSMA_T *sma )
+{
+	rkh_sma_unregister( sma );
+	RKH_TRCR_SMA_TERM( sma );
+}
+\endcode
+
 \b NO: \n
 \li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 1, 
 #RKH_EN_SMA_THREAD = 0, and #RKH_EN_SMA_THREAD_DATA = 0, within the 
 \b rkhcfg.h file.
-\li (2) Define the macros RKH_EQ_TYPE = RKHRQ_T, RKH_SMA_BLOCK(), 
+\li (2) Define the macros #RKH_EQ_TYPE = RKHRQ_T, RKH_SMA_BLOCK(), 
 RKH_SMA_READY(), RKH_SMA_UNREADY() in \b rkhport.h. 
 \li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
 functions rkh_init(), rkh_enter(), rkh_exit(), rkh_sma_activate(), and 
@@ -366,32 +455,80 @@ Nothing to do.
 the event queues with a message queue of the underlying OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
-\li (2) Define the macro RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
 \b rkhport.c file.
 
+<EM>Generic example</EM>
+\code
+void 
+rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
+{
+	RKH_SR_CRITICAL_;
+	
+	RKH_HK_SIGNAL( e );
+    RKH_ENTER_CRITICAL_();
+    if( RCE( e )->pool != 0 ) 
+        ++RCE( e )->nref;
+    RKH_EXIT_CRITICAL_();
+
+    os_post_fifo_message( &sma->equeue, e );
+	RKH_TRCR_SMA_FIFO( sma, e );
+}
+
+void 
+rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
+{
+	RKH_SR_CRITICAL_;
+
+	RKH_HK_SIGNAL( e );
+    RKH_ENTER_CRITICAL_();
+    if( RCE( e )->pool != 0 ) 
+        ++RCE( e )->nref;
+    RKH_EXIT_CRITICAL_();
+
+    os_post_lifo_message( &sma->equeue, e );
+	RKH_TRCR_SMA_LIFO( sma, e );
+}
+
+RKHEVT_T *
+rkh_sma_get( RKHSMA_T *sma )
+{
+	RKHEVT_T *e;
+	RKH_SR_CRITICAL_;
+
+    RKH_ENTER_CRITICAL_();
+	e = os_get_message( &sma->equeue );
+	RKHASSERT( e != ( RKHEVT_T * )0 );
+    RKH_EXIT_CRITICAL_();
+
+	RKH_TRCR_SMA_GET( sma, e );
+	return e;
+}
+\endcode
+
 \b NO: \n
-\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 1 y RKH_RQ_EN = 1 in 
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
 \b rkhcfg.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
 		
 <EM>The application use the RKH native scheduler, are implemented 
 the event queues with the native queues RKHRQ_T?</EM>
 
 \b YES: \n
-\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 1 y RKH_RQ_EN = 1 in 
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
 \b rkhcfg.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
 		
 \b NO: \n
-\li (1) Define the macro RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
-\li (2) Define the macro RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
 \b rkhport.c file.
@@ -402,8 +539,8 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 <EM>Is required events with arguments?</EM>
 
 \b NO: \n
-\li (1) Define the macros RKH_EN_DYNAMIC_EVENT = 0 and 
-RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h.
+\li (1) Define the macros #RKH_EN_DYNAMIC_EVENT = 0 and 
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h.
 
 \b YES: \n
 
@@ -412,27 +549,44 @@ the dynamic memory support with a internal module of the underlying
 OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1 and 
-RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
 RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \b rkhport.h 
 according to underlying OS/RTOS.
 
+<EM>Generic example</EM>
+\code
+#define RKH_DYNE_TYPE			RKHMP_T
+
+#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
+			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
+
+#define RKH_DYNE_GET_ESIZE( mp )					\
+			( (mp)->bsize )
+
+#define RKH_DYNE_GET( mp, e )						\
+			( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
+
+#define RKH_DYNE_PUT( mp, e )						\
+			( rkh_mp_put( (mp), e ) )
+\endcode
+
 \b NO: \n
-\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1,  
-RKH_EN_NATIVE_DYN_EVENT = 0, and RKH_MP_EN = 1 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
+#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
 
 <EM>The application use the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
 RKHMO_T?</EM>
 
 \b YES: \n
-\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1 and 
-RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
 
 \b NO: \n
-\li (1) Define the macro RKH_EN_DYNAMIC_EVENT = 1,  
-RKH_EN_NATIVE_DYN_EVENT = 0, and RKH_MP_EN = 1 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
+#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
 
 \n <HR>
 \section hk Hook functions
@@ -533,10 +687,76 @@ rkh_trc_flush(), and rkh_trc_getts() are application provided.
 \copydetails rkh_trc_getts
 
 <HR>
-\section rkhp "rkhport.h" A port file example
+\section rkhp A port file example.
+
+<EM>\b "rkhport.h" for x86, VC2008, and win32 single thread</EM>
+<EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
-#include "rkhcfg.h"
+#ifndef __RKHPORT_H__
+#define __RKHPORT_H__
+
+
+#include <windows.h>
+
+#include "rkhtype.h"
+#include "rkhrq.h"
+#include "rkhmp.h"
+#include "rkhrdy.h"
+
+
+extern CRITICAL_SECTION csection;
+extern HANDLE sma_is_rdy;
+extern RKHRG_T rkhrg;
+
+
+const char *rkh_get_port_version( void );
+const char *rkh_get_port_desc( void );
+
+
+/*
+ * 	Declaring an object RKHROM announces that its value will
+ * 	not be changed and it will be stored in ROM.
+ */
+
+#define RKHROM			const	
+
+
+#define RKH_DIS_INTERRUPT()
+#define RKH_ENA_INTERRUPT()
+//#define RKH_CPUSR_TYPE
+#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
+#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
+
+
+#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_THREAD_TYPE             	HANDLE
+
+
+#define RKH_SMA_BLOCK( sma ) 									\
+				RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
+
+#define RKH_SMA_READY( rg, sma ) 								\
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
+			    (void)SetEvent( sma_is_rdy )
+
+#define RKH_SMA_UNREADY( rg, sma ) 								\
+			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+
+#define RKH_WAIT_FOR_EVENTS() 									\
+			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
+
+
+#endif
+\endcode
+
+<EM>\b "rkht.h" for x86, VC2008, and win32 single thread</EM>
+<EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
+
+\code
+#ifndef __RKHT_H__
+#define __RKHT_H__
 
 
 /*
@@ -553,92 +773,18 @@ rkh_trc_flush(), and rkh_trc_getts() are application provided.
  * 	types.
  */
 
-typedef signed char 	rkhint8;
-typedef signed short 	rkhint16;
-typedef signed long		rkhint32;
-typedef unsigned char 	rkhuint8;
-typedef unsigned short 	rkhuint16;
-typedef unsigned long	rkhuint32;
+typedef signed char 	rkhi8_t;
+typedef signed short 	rkhi16_t;
+typedef signed long		rkhi32_t;
+typedef unsigned char 	rkhui8_t;
+typedef unsigned short 	rkhui16_t;
+typedef unsigned long	rkhui32_t;
 
 typedef unsigned int	HUInt;
 typedef signed int		HInt;
 
 
-/*
- * 	Declaring an object rkhrom announces that its value will
- * 	not be changed and it will be stored in ROM.
- */
-
-#define rkhrom			const	
-
-
-/*
- * 	RKH needs to disable interrupts in order to access critical
- * 	sections of code and to reenable interrupts when done.
- * 	
- * 	To hide the actual implementation method available for a
- * 	particular processor, compiler, an OS, RKH defines the 
- * 	following two macros to disable and enable interrupts 
- * 	rkh_enter_critical() and define rkh_exit_critical() respectively.
- * 	
- * 	These macros are always together to wrap critical sections of
- * 	code.
- */
-
-#define rkh_enter_critical()
-#define rkh_exit_critical()
-
-
-/*
- *	Defines trace facility support.
- *
- *	This definitions are required only when the user application
- *	is used trace facility (of course, RKH_TRACE == 1).
- */
-
-#define rkh_tropen							rkh_trace_open
-#define rkh_trclose							rkh_trace_close
-#define rkh_trflush							rkh_trace_flush
-#define rkh_trgetts							rkh_trace_getts
-
-
-/*
- *	Defines dynamic event support.
- *
- *	This definitions are required only when the user application
- *	is used dynamic event (of course, RKH_EN_DYNAMIC_EVENT == 1).
- */
-
-#include "rkmpool.h"
-#include "queue.h"
-
-
-#define RKH_DYNE_NUM_POOLS			RKSYS_MPOOL_NUM_POOLS
-
-#define rkh_dyne_init( mpd, pm, ps, bs )							\
-				rk_mpool_init( (mpd), (pm), (rkint16)(ps),			\
-												(RK_MPBS_T)(bs) )
-
-#define rkh_dyne_event_size( mpd )									\
-																	\
-				( RK_MPBS_T )rk_mpool_get_blksize( (mpd) )
-
-#define rkh_dyne_get( mpd, e )										\
-																	\
-				((e) = ( RKHEVT_T* )rk_mpool_get( (mpd) ))
-
-#define rkh_dyne_put( mpd, e )										\
-																	\
-				rk_mpool_put( (mpd), (e) )
-
-#define rkh_post_fifo( qd, e )										\
-				queue_insert( (QD_T)(qd), &(e) )
-
-#define rkh_post_lifo( qd, e )										\
-				queue_insert_lifo( (QD_T)(qd), &(e) )
-
-#define rkh_get( qd, e )											\
-				queue_remove( (QD_T)(qd), &(e) )
+#endif
 \endcode
 
 
@@ -673,12 +819,12 @@ typedef signed int		HInt;
 \n \ref qref "< Quick reference"
 
 A state machine application is defined with the RKH_SMA_CREATE() macro and 
-declared with the RKH_SMA_DCLR_HSM() macro. Frequently, each state machine is 
+declared with the RKH_SMA_DCLR() macro. Frequently, each state machine is 
 encapsulated inside a dedicated source file (.c file), from which the 
 RKH_SMA_CREATE() macro is used, thus the structure definition is in fact 
 entirely encapsulated in its module and is inaccessible to the rest of the 
 application. However, as a general rule, the state machine application must 
-be declared inside a header file (.h file) by means of RKH_SMA_DCLR_HSM() 
+be declared inside a header file (.h file) by means of RKH_SMA_DCLR() 
 macro. We will develop one example of state machine creation to illustrate 
 the use of this macro. Also, we will give our hierarchical state machine the 
 name \c my. If you wanted to create a "flat" state machine, you would use the 
@@ -713,7 +859,7 @@ name \c my. If you wanted to create a "flat" state machine, you would use the
 \code
 //	my.h: state-machine application's header file
 
-RKH_SMA_DCLR_HSM( my );
+RKH_SMA_DCLR( my );
 \endcode
 
 Explanation
@@ -1434,7 +1580,7 @@ structure. See \ref cfg section for more information.
 This section summarize the functions and its prototypes used by RKH 
 framework. As mentioned before, the framework make use the callbacks, i.e. 
 pointer to functions, in most of its data structures by means of 
-RKH_CREATE_HSM(), RKH_CREATE_COMP_STATE(), 
+RKH_SMA_CREATE(), RKH_CREATE_COMP_STATE(), 
 RKH_CREATE_BASIC_STATE(), RKH_TRINT(), RKH_TRREG(), RKH_BRANCH(), 
 RKH_CREATE_SHALLOW_HISTORY_STATE(), RKH_CREATE_DEEP_HISTORY_STATE(), and 
 RKH_CREATE_JUNCTION_STATE() macros.
@@ -1935,7 +2081,7 @@ for more information about this.
 
 \li (1) Open the trace session.
 \li (2) Initialize the framework RKH.
-\li (3) Initialize the "my" state machine. 
+\li (3) Initialize the \c my state machine. 
 		RKH invokes the defined init action.
 \li (4) This is the event loop of the framework RKH.
 \li (5) Gets key pressed from the standard input.
@@ -2180,7 +2326,15 @@ and to enhance the system performance in a substantial manner. The
 \b rkhcfg.h file shows the general layout of the configuration file.
 Here is an list of all options with their documentation:
 
-\n<EM>Configuration options related to framework</EM>\n\n
+- \ref cfg_fw
+- \ref cfg_sm
+- \ref cfg_tr
+- \ref cfg_q
+- \ref cfg_mp
+- \ref cfg_t
+
+<HR>
+\section cfg_fw Configuration options related to framework
 
 \li \b RKH_MAX_SMA \copydetails RKH_MAX_SMA
 \li \b RKH_EN_DYNAMIC_EVENT \copydetails RKH_EN_DYNAMIC_EVENT
@@ -2202,7 +2356,8 @@ Here is an list of all options with their documentation:
 \li \b RKH_EN_NATIVE_DYN_EVENT \copydetails RKH_EN_NATIVE_DYN_EVENT
 \li \b RKH_EN_REENTRANT \copydetails RKH_EN_REENTRANT
 
-\n<EM>Configuration options related to state machine applications</EM>\n\n
+<HR>
+\section cfg_sm Configuration options related to state machine applications
 
 \li \b RKH_SMA_EN_ID \copydetails RKH_SMA_EN_ID
 \li \b RKH_SMA_EN_GET_INFO \copydetails RKH_SMA_EN_GET_INFO	
@@ -2225,7 +2380,8 @@ Here is an list of all options with their documentation:
 \li \b RKH_SMA_EN_GRD_ARG_SMA \copydetails RKH_SMA_EN_GRD_ARG_SMA
 \li \b RKH_SMA_EN_PPRO_ARG_SMA \copydetails RKH_SMA_EN_PPRO_ARG_SMA
 
-\n<EM>Configuration options related to trace facility</EM>\n\n
+<HR>
+\section cfg_tr Configuration options related to trace facility
 
 \li \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
@@ -2255,7 +2411,8 @@ Here is an list of all options with their documentation:
 \li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
 \li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
 
-\n<EM>Configuration options related to queue (by reference) facility</EM>\n\n
+<HR>
+\section cfg_q Configuration options related to queue (by reference) facility
 
 \li \b RKH_RQ_EN \copydetails RKH_RQ_EN
 \li \b RKH_RQ_SIZEOF_NELEM \copydetails RKH_RQ_SIZEOF_NELEM
@@ -2267,7 +2424,8 @@ Here is an list of all options with their documentation:
 \li \b RKH_RQ_EN_PUT_LIFO \copydetails RKH_RQ_EN_PUT_LIFO
 \li \b RKH_RQ_EN_GET_INFO \copydetails RKH_RQ_EN_GET_INFO
 
-\n<EM>Configuration options related to fixed-sized memory block facility</EM>\n\n
+<HR>
+\section cfg_mp Configuration options related to fixed-sized memory block facility
 
 \li \b RKH_MP_EN \copydetails RKH_MP_EN
 \li \b RKH_MP_REDUCED \copydetails RKH_MP_REDUCED
@@ -2278,7 +2436,8 @@ Here is an list of all options with their documentation:
 \li \b RKH_MP_EN_GET_LWM \copydetails RKH_MP_EN_GET_LWM	
 \li \b RKH_MP_EN_GET_INFO \copydetails RKH_MP_EN_GET_INFO
 
-\n<EM>Configuration options related to software timer facility</EM>\n\n
+<HR>
+\section cfg_t Configuration options related to software timer facility
 
 \li \b RKH_TIM_EN \copydetails RKH_TIM_EN	
 \li \b RKH_TIM_SIZEOF_NTIMER \copydetails RKH_TIM_SIZEOF_NTIMER

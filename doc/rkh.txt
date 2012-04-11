@@ -58,15 +58,21 @@ behavior of a system in a substantial manner.
 - The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
 - Flexible and \ref cfg "user-configurable code generation".
 - Very small footprint.
+- Include a \link rkhs.h dispatching event mechanism \endlink based on active object's priority.
+- Include a \link rkhrq.h queue module \endlink
+- Include a \link rkhtim.h software timer module \endlink.
+- Include a \link rkhmp.h fixed-size memory block module \endlink.
+- Include a native \ref dbg.
 - Support hierarchically nested states, and flat state machine.
+- Support multiple state machines.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
 - Support local transitions.
-- Support mechanism for \link rkh_defer() deferring events\endlink.
-- Support \link RKHEVT_T dynamic events\endlink.
-- Support a easy way to use \link RKHEVT_T events with arguments\endlink.
-- Support systems-friendly \link RKHASSERT() assertion\endlink macros.
+- Include mechanism for \link rkh_defer() deferring events\endlink.
 - Support \link RKHEVT_T event dispatching with parameters\endlink.
+- Include \link RKHEVT_T dynamic events\endlink.
+- Support a easy way to use \link RKHEVT_T events with arguments\endlink.
+- Support systems-friendly \link RKHASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
 
 
 <HR>
@@ -138,7 +144,9 @@ RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
 \section ack Acknowlegments
 
 I would like to thank to Eduardo Martinez for introducing me to the reactive
-systems problems and Dario Balina for contributing with ideas and suggestions.
+systems problems and Dario Balina for they suggestions, they time, and 
+constructive criticism during lengthy period in which the RKH project 
+was being developed.
 
 */
 

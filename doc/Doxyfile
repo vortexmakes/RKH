@@ -1117,7 +1117,7 @@ DISABLE_INDEX          = NO
 # documentation. Note that a value of 0 will completely suppress the enum 
 # values from appearing in the overview section.
 
-ENUM_VALUES_PER_LINE   = 2
+ENUM_VALUES_PER_LINE   = 4
 
 # The GENERATE_TREEVIEW tag is used to specify whether a tree-like index 
 # structure should be generated to display hierarchical information. 
@@ -1194,7 +1194,7 @@ MATHJAX_EXTENSIONS     =
 # typically be disabled. For large projects the javascript based search engine 
 # can be slow, then enabling SERVER_BASED_SEARCH may provide a better solution.
 
-SEARCHENGINE           = NO
+SEARCHENGINE           = YES
 
 # When the SERVER_BASED_SEARCH tag is enabled the search engine will be 
 # implemented using a PHP enabled web server instead of at the web client 

@@ -88,7 +88,7 @@
 						((const char*)m_desc)
 
 
-#if RKH_EN_NATIVE_DYN_EVENT == 1
+#if RKH_EN_NATIVE_DYN_EVENT == 1 && RKH_EN_DOXYGEN == 0
 
 	#define RKH_DYNE_TYPE			RKHMP_T
 
@@ -587,7 +587,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 /**
  * 	\brief
  * 	This macro declares a opaque pointer to previously created state machine 
- * 	to be used as a global object. 
+ * 	application (SMA) to be used as a global object. 
  *
  * 	This global pointer represent the state machine in the application. 
  * 	The state machine pointers are "opaque" because they cannot access the 
@@ -598,6 +598,13 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	
  *	\note
  * 	Generally, this macro is used in the SMA's header file.
+ *
+ * 	Example:
+ * 	\code
+ * 	//	my.h: state-machine application's header file
+ * 	
+ * 	RKH_SMA_DCLR( my );
+ * 	\endcode
  * 	
  * 	\sa
  * 	RKH_SMA_CREATE().
@@ -605,7 +612,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param sma		pointer to previously created state machine application.
  */
 
-#define RKH_SMA_DCLR_HSM( sma )		extern RKHSMA_T *const sma
+#define RKH_SMA_DCLR( sma )		extern RKHSMA_T *const sma
 
 
 /**@{
@@ -770,6 +777,16 @@ typedef enum
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
+ *
+ *	Example for x86, VC2008, and win32 single thread:
+ *	\code
+ *	void 
+ *	rkh_init( void )
+ *	{
+ *		InitializeCriticalSection( &csection );
+ *		sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
+ *	}
+ *	\endcode
  */
 
 void rkh_init( void );
@@ -792,6 +809,42 @@ void rkh_init( void );
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
+ *
+ *	Example for x86, VC2008, and win32 single thread:
+ *	\code
+ *	void 
+ *	rkh_enter( void )
+ *	{ 
+ *		rkhui8_t prio;
+ *		RKHSMA_T *sma;
+ *		RKHEVT_T *e;
+ *
+ *		RKH_HK_START();
+ *		RKH_TRCR_RKH_EN();
+ *		running = 1;
+ *
+ *		while( running )
+ *		{
+ *			RKH_ENTER_CRITICAL( dummy );
+ *			if( rkh_rdy_isnot_empty( rkhrg ) ) 
+ *			{
+ *				rkh_rdy_findh( rkhrg, prio );
+ *				RKH_EXIT_CRITICAL( dummy );
+ *				
+ *				sma = rkh_sptbl[ prio ];
+ *				e = rkh_sma_get( sma );
+ *				rkh_dispatch( sma, e );
+ *				RKH_GC( e );
+ *			}
+ *			else
+ *				rkh_hk_idle();
+ *		}
+ *		
+ *		rkh_hk_exit();
+ *		CloseHandle( sma_is_rdy );
+ *		DeleteCriticalSection( &csection );	
+ *	}
+ *	\endcode
  */
 
 void rkh_enter( void );
@@ -815,6 +868,16 @@ void rkh_enter( void );
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
+ *
+ *	Example:
+ *	\code
+ *	void 
+ *	rkh_exit( void )
+ *	{
+ *		rkh_hk_exit();
+ *		RKH_TRCR_RKH_EX();
+ *	}
+ *	\endcode
  */
 
 void rkh_exit( void );
@@ -872,6 +935,22 @@ void rkh_tim_tick( void );
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
+ *	
+ *	Example:
+ *	\code
+ *	void 
+ *	rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+ *						void *stks, rkhui32_t stksize )
+ *	{
+ *		( void )stks;
+ *		( void )stksize;
+ *		
+ *		rkh_rq_init( &sma->equeue, qs, qsize, sma );
+ *		rkh_sma_register( sma );
+ *		rkh_init_hsm( sma );
+ *		RKH_TRCR_SMA_ACT( sma );
+ *	}
+ *	\endcode
  *
  * 	\param sma			pointer to previously created state machine 
  * 						application.
@@ -889,8 +968,8 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 
 /**
  * 	\brief
- * 	Declare and allocate a SMA (active object) derived from RKHSMA_T, 
- * 	initialize and assign a state machine to previously declared SMA.
+ * 	Declare and allocate a SMA (active object) derived from RKHSMA_T. Also, 
+ * 	initializes and assigns a state machine to previously declared SMA.
  *
  * 	In the UML specification, every state machine has a top state 
  * 	(the abstract root of every state machine hierarchy), which contains 
@@ -899,7 +978,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	Frequently, RKH_SMA_CREATE() is used within state-machine's module 
  *	(.c file), thus the structure definition is in fact entirely encapsulated 
  *	in its module and is inaccessible to the rest of the application. 
- *	However, use the RKH_SMA_DCLR_HSM() macro to declare a "opaque" pointer 
+ *	However, use the RKH_SMA_DCLR() macro to declare a "opaque" pointer 
  *	to that state machine application structure to be used in the rest of the 
  *	application but hiding the proper definition.
  * 	RKHSMA_T is not intended to be instantiated directly, but rather
@@ -929,8 +1008,8 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  * 						to uniquely identify a state machine. This argument 
  * 						is optional, thus it could be eliminated in 
  * 						compile-time with RKH_SMA_EN_ID = 0.	
- * 	\param name			name of state machine application. Represents the top 
- * 						state of state diagram.
+ * 	\param name			name of state machine application. Also, it represents 
+ * 						the top state of state diagram.
  * 	\param prio			state machine application priority. A unique priority 
  * 						number must be assigned to each SMA from 0 to 
  * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
@@ -973,6 +1052,16 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	port file to a particular platform. However, only the ports to the 
  *	external OS/RTOS usually need some code to bolt the framework to the 
  *	external OS/RTOS.
+ *
+ *	Example:
+ *	\code
+ *	void 
+ *	rkh_sma_terminate( RKHSMA_T *sma )
+ *	{
+ *		rkh_sma_unregister( sma );
+ *		RKH_TRCR_SMA_TERM( sma );
+ *	}
+ *	\endcode
  *
  * 	\param sma			pointer to previously created state machine 
  * 						application.

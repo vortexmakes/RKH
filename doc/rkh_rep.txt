@@ -6,54 +6,60 @@
 \ref basics "< Basics"\n
 \ref identify "> Identify and classify states and pseudostates"\n\n
 
-The sample code for the example presented above port to x86 is located 
-in the directory \\demo\\vc08\\. The directory contains the Visual C++ 2008
-project files to build the application. See \ref Installation section 
-about RKH files. The application files are listed below: 
+The sample code for the example presented above ported to x86 is located 
+in the directory \c \\demo\\80x86\\vc08\\win32_st\\vc08\\ahsm. It contains 
+the Visual C++ 2008 project files to build the application. Also, emulates 
+a ISR and a simple event-loop like a cooperative scheduler 
+using the native priority scheme among other RKH services. 
+See \ref Installation section about RKH files. The application files 
+are listed below: 
 
-- \b "rkhcfg.h":	this file adapts and configures RKH. See \ref cfg section. 
-					In the \\demo directory there are other \b rkhcfg.h files
-					already in existence and it's suggested that these 
-					are used as a reference. See the application \b rkhcfg.h file. 
-					Note that this file is located in the application directory.
+- \b "bsp.h":		contains the interface to the board support package and 
+					is located in the application directory.
 
-- \b "my.c": 		this module implements the "my" state machine, which 
-					illustrates all aspects of implementing state machines 
-					with RKH framework. Please correlate this implementation 
-					with the "my" state diagram in \ref fig1 "Figure 1".
-					See the \subpage my_c file.
-					Note that this file is located in the application directory.
+- \b "my.h": 		contains the definitions of objet structures (state 
+					machine, states, and pseudostates) and other facilities 
+					shared among the components of the application. 
+					See the \subpage my_h file.
 
-- \b "myact.c": 	this module declares each of entry, exit, transition, 
-					and guard actions to be executed.
-					Note that the \b rkhcfg.h file defines the function
-					prototype of actions. See \ref cfg section about of 
-					available options and \subpage myact_c file.
-					Note that this file is located in the application directory.
-
-- \b "my.h": 		this header file contains the definitions of objet 
-					structures (state machine, states, and pseudostates) and
-					other facilities shared among the components of the
-					application. See the \subpage my_h file.
-					Note that this file is located in the application directory.
-
-- \b "myact.h":		this header file defines the actions to be executed.
+- \b "myact.h":		defines the actions to be executed.
 					Note that the \b rkhcfg.h file defines the function
 					prototype of actions. See \ref cfg section about of 
 					available options and \subpage myact_c file.
 					See the \subpage myact_h file.
-					Note that this file is located in the application directory.
 
 - \b "myevt.h":		because events are explicitly shared among most of the 
 					application components, it's convenient to declare them 
 					in the separate header file "myevt.h".
 					See the \subpage myevt_h file.
-					Note that this file is located in the application directory.
 
-- \b "main.c": 		this file contains the \c main() function along with 
+- \b "rkhcfg.h":	adapts and configures RKH. See \ref cfg section. 
+					In the \\demo directory there are other \b rkhcfg.h files
+					already in existence and it's suggested that these 
+					are used as a reference.
+
+- \b "trazer.h":	implements a simple trace analyzer. 
+
+- \b "bsp.c":		contains the implementation of the board-specific 
+					functions. 
+
+- \b "main.c": 		contains the \c main() function along with 
 					an example for using the RKH trace facility.
 					See the \subpage main_c file.
-					Note that this file is located in the application directory.
+
+- \b "my.c": 		this module implements the \c my state machine, which 
+					illustrates all aspects of implementing state machines 
+					with RKH framework. Please correlate this implementation 
+					with the \c my state diagram in \ref fig1 "Figure 1".
+					See the \subpage my_c file.
+
+- \b "myact.c": 	declares each of entry, exit, transition, and guard 
+					actions to be executed.
+					Note that the \b rkhcfg.h file defines the function
+					prototype of actions. See \ref cfg section about of 
+					available options and \subpage myact_c file.
+
+- \b "trazer.c":	contains the implementation of the trace analyzer. 
 
 \n
 \ref basics "< Basics"\n
@@ -91,7 +97,7 @@ presented above, sorted by state nesting level.
 \ref identify "< Identify and classify states and pseudostates"\n
 \ref running "> Running"\n\n
 
-Now, this section explains how to implement the "my" state machine 
+Now, this section explains how to implement the \c my state machine 
 using the RKH framework, which is shown in \ref fig1 "Figure 1".
 
 - \subpage rep_sm
@@ -133,15 +139,21 @@ behavior of a system in a substantial manner.
 - The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
 - Flexible and \ref cfg "user-configurable code generation".
 - Very small footprint.
+- Include a \link rkhs.h dispatching event mechanism \endlink based on active object's priority.
+- Include a \link rkhrq.h queue module \endlink
+- Include a \link rkhtim.h software timer module \endlink.
+- Include a \link rkhmp.h fixed-size memory block module \endlink.
+- Include a native \ref dbg.
 - Support hierarchically nested states, and flat state machine.
+- Support multiple state machines.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
 - Support local transitions.
-- Support mechanism for \link rkh_defer() deferring events\endlink.
-- Support \link RKHEVT_T dynamic events\endlink.
-- Support a easy way to use \link RKHEVT_T events with arguments\endlink.
-- Support systems-friendly \link RKHASSERT() assertion\endlink macros.
+- Include mechanism for \link rkh_defer() deferring events\endlink.
 - Support \link RKHEVT_T event dispatching with parameters\endlink.
+- Include \link RKHEVT_T dynamic events\endlink.
+- Support a easy way to use \link RKHEVT_T events with arguments\endlink.
+- Support systems-friendly \link RKHASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
 
 
 The RKH not implements neither entire UML specs. nor entire Statechart specs. 
@@ -164,96 +176,107 @@ easily adapted to 16 or 32-bits platforms.
 \ref representing "< Representing the state machine"\n
 \ref rep_cs "> Instantiating the composite states"\n\n
 
-A state machine is defined with the RKH_CREATE_HSM() macro and declared with
-the RKH_DCLR_HSM() macro. Frequently, each state machine is encapsulated
-inside a dedicated source file (.c file), from which the RKH_CREATE_HSM() 
-macro is used, thus the structure definition is in fact entirely encapsulated 
-in its module and is inaccessible to the rest of the application. However, as
-a general rule, the state machine must be declared inside a header file 
-(.h file) by means of RKH_DCLR_HSM() macro.
+A state machine application (SMA) a.k.a active object, is defined with the 
+RKH_SMA_CREATE() macro and declared with the RKH_SMA_DCLR() macro. Frequently, 
+each state machine application is encapsulated inside a dedicated source 
+file (.c file), from which the RKH_SMA_CREATE() macro is used, thus the 
+structure definition is in fact entirely encapsulated in its module and is 
+inaccessible to the rest of the application. However, as a general rule, 
+the SMA must be declared inside a header file (.h file) by means of 
+RKH_SMA_DCLR() macro. This macro declares a opaque pointer to SMA to be 
+used as a global object. This global pointer represent the state machine 
+in the application. The state machine pointers are "opaque" because they 
+cannot access the whole state machine structure, but only the part inherited 
+from the RKHSMA_T structure. The power of an "opaque" pointer is that it 
+allows to completely hide the definition of the state machine structure and 
+make it inaccessible to the rest of the application. 
+
 In the UML specification, every state machine has a top state 
 (the abstract root of every state machine hierarchy), which contains 
 all the other elements of the entire state machine. RKH provides the 
-top state using the macro RKH_CREATE_HSM(). 
+top state using the macro RKH_SMA_CREATE().
+requently, RKH_SMA_CREATE() is used within state-machine's module 
+(.c file), thus the structure definition is in fact entirely encapsulated 
+in its module and is inaccessible to the rest of the application. 
+However, use the RKH_SMA_DCLR() macro to declare a "opaque" pointer 
+to that state machine application structure to be used in the rest of the 
+application but hiding the proper definition.
+RKHSMA_T is not intended to be instantiated directly, but rather
+serves as the base structure for derivation of state machines in the
+application code.
 
 The \ref its "Figure 2" highlights the top state and its relevant aspects. 
 Also, shows its implementation using the RKH framework.
 
 \n
 \anchor its
-\image html its.png "Figure 2 - Top state of state machine \"my\""
+\image html its.png "Figure 2 - Top state of state machine \c my"
 \n
 
 <b>Defining the state machine</b>
 \n
 \code
-(1)	//	my.c: state-machine's module
+	//	my.c: state machine application's module
 
-	typedef struct
-	{
-		rkhuint8 x;
-		rkhuint8 y;
-(2)	} MYHDATA_T;
-
-	typedef struct
-	{
-		RKH_T sm;		// base structure
-		rkhuint8 x;		// private member
-		rkhuint8 y;		// private member
-(3)	} MYSM_T;
-
-	static MYHDATA_T mydata;
-	...
-
-(4) RKH_CREATE_HSM( 	MYSM_T, 
-(5) 					my,
-(6) 					0,
-(7) 					HCAL,
-(8) 					&S1,
-(9) 					my_init,
-(10) 					&mydata );
+(1) RKH_SMA_CREATE( 	
+(2)						MYSM_T, 
+(3)						0, 
+(4)						my, 
+(5)						0, 
+(6)						HCAL, 
+(7)						&S1, 
+(8)						my_iaction, 
+(9)						NULL );
 \endcode
 
 <b>Declaring the state machine</b>
 \n
 \code
-//	my.h: state-machine's header file
+	//	my.h: state-machine application's header file
 
-RKH_DCLR_HSM( my );
+	typedef struct
+	{
+		RKHSMA_T sm;	// base structure
+		rkhuint8 x;		// private member
+		rkhuint8 y;		// private member
+(10)} MYSM_T;			// SMA derived from RKHSMA_T structure
+
+(11) RKH_SMA_DCLR( my );
 \endcode
 
 Explanation
 
-\li (1)	Frequently, each state machine is encapsulated inside a dedicated 
-		source file (.c file), from which the RKH_CREATE_HSM() macro is used.
-\li (2)	In this example, \c MYHDATA_T structure is used like an argc/argv. 
-\li (3)	The \c MYSM_T defines the state machine object structure \c my.
-		On the other hand, almost every state machine must also store other 
-		"extended-state" information. You supply this additional information 
-		by means of data members enlisted after the base structure member
-		\c sm. Please note that the RKH_T member \c sm is defined as the FIRST 
-		member of the derived struct.
-		RKH_T is not intended to be instantiated directly, but rather serves 
-		as the base structure for derivation of state machines in the 
-		application code.
-\li (4)	As said before, \c MYSM_T represents the state machine object struture.
-\li (5)	\c my is the state machine. Represents the top state of state diagram. 
-\li (6)	\c 0 is the state machine descriptor. This number allows to uniquely 
-		identify a state machine.
-\li (7)	the \c my state machine is defined as a hierarchical state machine. 
+\li (1)	Declares and allocates a SMA (a.k.a active object) derived from 
+		RKHSMA_T.
+\li (2)	As said before, \c MYSM_T represents the SMA object struture.
+\li (3)	\c 0 is the SMA ID. This number allows to uniquely identify a SMA. 
+		This argument is optional, thus it could be eliminated in 
+		compile-time with RKH_SMA_EN_ID = 0.
+\li (4)	\c my is the name of SMA. Also, it represents the top state of state 
+		diagram. 
+\li (5)	\c 0 is the SMA priority. A unique priority number must be assigned 
+		to each SMA from 0 to RKH_LOWEST_PRIO. The lower the number, the 
+		higher the priority. 
+\li (6)	the \c my state machine is defined as a hierarchical state machine. 
 		The available property options are enumerated in RKH_HPPTY_T 
 		enumeration in the \b rkh.h file.
-\li (8)	\c S1 is the initial state.
-\li (9)	the \c my_init() function defines the topmost initial transition in 
+\li (7)	\c S1 is the initial state.
+\li (8)	the \c my_iaction() function defines the topmost initial transition in 
 		the \c my state machine. 
 		The function prototype is defined as RKHINIT_T. This argument is 
-		(optional), thus it could be declared as NULL. The application code 
-		must trigger the initial transition explicitly by invoking 
-		rkh_init_hsm() function.
-\li (10) \c mydata is used like a argc/argv. This argument is optional, thus 
-		it could be declared as NULL or eliminated with RKH_EN_HSM_DATA 
-		option. Could be used to pass arguments to the state machine like 
-		an argc/argv.
+		(optional), thus it could be declared as NULL.
+\li (9) not used.
+\li (10)The \c MYSM_T defines the SMA object structure \c my.
+		On the other hand, almost every SMA must also store other 
+		"extended-state" information. You supply this additional information 
+		by means of data members enlisted after the base structure member
+		\c sm. Please note that the RKHSMA_T member \c sm is defined as the 
+		\b FIRST member of the derived struct.
+		RKHSMA_T is not intended to be instantiated directly, but rather 
+		serves as the base structure for derivation of state machines in the 
+		application code.
+\li (11)Declares a opaque pointer to \c my SMA to be used as a global object.
+
 \n
 \ref representing "< Representing the state machine"\n
 \ref rep_cs "> Instantiating the composite states"\n\n
@@ -580,19 +603,18 @@ functions.
 
 
 /**
-\page rep_def 5. Defining the state machine's objects 
+\page rep_def 5. Declaring the state machine's objects 
 \image html rkh_bunner.jpg
 
 \n
 \ref rep_cjh "< Declaring the pseudostates"\n
 \ref rep_act "> Declaring the actions"\n\n
 
-The "my.h" header file contains the definitions of objet structures 
-(state machine, states, and pseudostates) and other facilities shared among 
-the components of the application. See the \subpage my_h file. 
-Note that this file is located in the application directory. The following 
-listing shows the "my.h" header file, which illustatres some important 
-aspects of implementing state machines with RKH.
+The \b "my.h" file contains the definitions of objet structures (state 
+machine, states, and pseudostates) and other facilities shared among 
+the components of the application. See the "my.h" file.
+The following listing shows the \b "my.h" header file, which illustatres 
+some important aspects of implementing state machines with RKH.
 
 \code
 #ifndef __MY_H__
@@ -609,16 +631,17 @@ aspects of implementing state machines with RKH.
 	} MYEVT_T;
 
 
-(5)	typedef struct
+	typedef struct
 	{
-		rkhuint8 x;
-		rkhuint8 y;
-	} MYHDATA_T;
+		RKHSMA_T sma;	/* base structure */
+		rkhui8_t x;		/* private member */
+		rkhui8_t y;		/* private member */
+(5) } MYSM_T;			/* SMA derived from RKHSMA_T structure */
 
 
 /*	Declare the state machine */
 
-(6)	RKH_DCLR_HSM( my );
+(6)	RKH_SMA_DCLR( my );
 
 
 /*	Defines states and pseudostates. */
@@ -644,10 +667,16 @@ aspects of implementing state machines with RKH.
 		base structure. Consequently, can always safely pass a pointer 
 		to MYEVT_T to any C function that expects a pointer to #RKHEVT_T.
 
-\li (5) The MYHDATA_T defines the state machine data. 
+\li (5) The MYSM_T defines the SMA object structure \c my. On the other hand, 
+		almost every SMA must also store other "extended-state" information. 
+		You supply this additional information by means of data members 
+		enlisted after the base structure member sm. Please note that the 
+		RKHSMA_T member sm is defined as the FIRST member of the derived 
+		struct. RKHSMA_T is not intended to be instantiated directly, but 
+		rather serves as the base structure for derivation of state machines 
+		in the application code.
 
-\li (6) Declares a opaque pointer to previously created state machine to be 
-		used as a global object.
+\li (6) Declares a opaque pointer to \c my SMA to be used as a global object.
 
 \li (7) Defines the states and pseudostates using the corresponding macros
 		listed above:
@@ -674,104 +703,96 @@ aspects of implementing state machines with RKH.
 \ref rep_def "< Defining the state machine's objects"\n
 \ref rep_inc "> Include files"\n\n
 
-The used actions in the "my" state machine implementation are shown in
+The used actions in the \c my state machine implementation are shown in
 \subpage myact_c file.
 
-\n According to "my" state diagram the initial action looks as follow:
+\n According to \c my state diagram the initial action looks as follow:
 \n
 \code
 void 
 my_init( const struct rkh_t *ph )
 {
-	pd = rkh_get_data( ph );
-	pd->x = pd->y = 0;
+	CMY( sma )->x = CMY( sma )->y = 0;
 }
 \endcode
 
-\n According to "my" state diagram the transition actions looks as follow:
+\n According to \c my state diagram the transition actions looks as follow:
 \n
 \code
 void
 set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	pd->y = 2;
-	printf( "action: %s()\n", __FUNCTION__ );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
+	(void)pe;
+	CMY( sma )->y = 2;
 }
 
 
 void
 set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	pd->y = 1;
-	printf( "action: %s()\n", __FUNCTION__ );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
+	(void)pe;
+	CMY( sma )->y = 1;
 }
 
 
 void
 dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
 {
+	(void)sma;
+	(void)pe;
 }
 
 
 void
 show_data( const struct rkh_t *ph, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
+	(void)sma;
+	(void)pe;
 }
 \endcode
 
-\n According to "my" state diagram the entry actions looks as follow:
+\n According to \c my state diagram the entry actions looks as follow:
 \n
 \code
 void
-set_x_1( const struct rkh_t *ph )
+set_x_1( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
-	pd->x = 1;
+	CMY( sma )->x = 1;
 }
 
 
 void
-set_x_2( const struct rkh_t *ph )
+set_x_2( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
-	pd->x = 2;
+	CMY( sma )->x = 2;
 }
 
 
 void
-set_x_3( const struct rkh_t *ph )
+set_x_3( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
-	pd->x = 3;
+	CMY( sma )->x = 3;
 }
 
 
 void
-set_y_0( const struct rkh_t *ph )
+set_y_0( const struct rkhsma_t *sma )
 {
-	pd = rkh_get_data( ph );
-	pd->y = 0;
+	CMY( sma )->y = 0;
 }
 \endcode
 
-\n According to "my" state diagram the exit actions looks as follow:
+\n According to \c my state diagram the exit actions looks as follow:
 \n
 \code
 void 
 dummy_exit( const struct rkh_t *ph )
 {
+	(void)sma;
 }
 \endcode
 
-\n According to "my" state diagram the guards looks as follow:
+\n According to \c my state diagram the guards looks as follow:
 \n
 \code
 HUInt
@@ -783,39 +804,47 @@ x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
 }
 \endcode
 
-\n According to "my" state diagram the branch selection functions looks 
+\n According to \c my state diagram the branch selection functions looks 
 as follow:
 \n
 \code
 HUInt
-y1( const struct rkh_t *ph, RKHEVT_T *pe )
+y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	return pd->y == 1 ? RKH_GTRUE : RKH_GFALSE;
+	(void)pe;
+	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
 HUInt
-y2( const struct rkh_t *ph, RKHEVT_T *pe )
+y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	return pd->y == 2 ? RKH_GTRUE : RKH_GFALSE;
+	(void)pe;
+	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
 HUInt
-x1( const struct rkh_t *ph, RKHEVT_T *pe )
+y2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+	(void)pe;
+	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
 }
 
 
 HUInt
-x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
+x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
-	pd = rkh_get_data( ph );
-	return pd->x == 2 || pd->x == 3 ? RKH_GTRUE : RKH_GFALSE;
+	(void)pe;
+	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+
+HUInt
+x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	(void)pe;
+	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;
 }
 \endcode
 
@@ -889,209 +918,44 @@ illustatres some aspects of implementing state machines with RKH.
 \ref representing "< Representing the state machine"\n
 \ref Usage "> Representing a state machine: step by step"\n\n
 
-<b>Run-to-completation execution model</b>
+\copydetails rkhs.h
 
-Event occurrences are detected, dispatched, and then processed by the state 
-machine, one at a time. The order of dequeuing is not defined, leaving open 
-the possibility of modeling different priority-based schemes.
-The semantics of event occurrence processing is based on the 
-run-to-completion assumption, interpreted as run-to-completion (RTC) 
-processing. Run-to-completion processing means that an event occurrence can 
-only be taken from the pool and dispatched if the processing of the previous 
-current occurrence is fully completed.
+<b>Application-specific and port dependencies</b>
 
-The processing of a single event occurrence by a state machine is known as 
-a run-to-completion step. An RTC step is the period of time in which events
-are accepted and acted upon. Processing an event always completes within a 
-single model step, including exiting the source state, executing any 
-associated actions, and entering the target state. Before commencing on a 
-run-to-completion step, a state machine is in a stable state configuration 
-with all entry/exit/internal activities (but not necessarily state (do) 
-activities) completed. The same conditions apply after the run-to-completion 
-step is completed. Thus, an event occurrence will never be processed while 
-the state machine is in some intermediate and inconsistent situation. 
-The run-to-completion step is the passage between two state configurations 
-of the state machine. The run-to-completion assumption simplifies the 
-transition function of the state machine, since concurrency conflicts are 
-avoided during the processing of event, allowing the state machine to 
-safely complete its run-to-completion step.
+First of all, pay special attention to \ref Porting and 
+\ref Installation sections and then following the win32 single thread demo 
+and its own port from the directories \\demo\\80x86\\win32_st\\vc08 and 
+\\source\\portable\\80x86\\win32_st\\vc08 respectively.
+<EM>The main goal to this is to make it easy to understand the 
+event-driven code and experiment with it.</EM>
 
-When an event occurrence is detected and dispatched, it may result in one or 
-more transitions being enabled for firing. If no transition is enabled and 
-the event (type) is not in the deferred event list of the current state 
-configuration, the event occurrence is discarded and the run-to-completion 
-step is completed.
-During a transition, a number of actions may be executed. If such an action 
-is a synchronous operation invocation on an object executing a state machine, 
-then the transition step is not completed until the invoked object completes 
-its run-to-completion step.
+<b>Main function</b>
 
-Run-to-completion may be implemented in various ways. The most common way to 
-do that is by an event-loop running in its own thread, and that reads 
-event occurrences from a pool.
-
-In case of active objects, where each object has its own thread of execution, 
-it is very important to clearly distinguish the notion of run-to-completion 
-from the concept of thread pre-emption. Namely, run-to-completion event 
-handling is performed by a thread that, in principle, can be pre-empted and 
-its execution suspended in favor of another thread executing on the same 
-processing node. (This is determined by the scheduling policy of the 
-underlying thread environment — no assumptions are made about this policy.). 
-When the suspended thread is assigned processor time again, it resumes its 
-event processing from the point of pre-emption and, eventually, completes 
-its event processing.
-
-\note
-An active object is an object that, as a direct consequence of its 
-creation, commences to execute its behavior, and does not cease until 
-either the complete behavior is executed or the object is 
-terminated by some external object. (This is sometimes referred to as 
-"the object having its own thread of control"). An active object encapsulates 
-a thread of control (event loop), a private event queue, and a state machine. 
-So, Active object = thread of control + event queue + state machine.
-
-<b>Preemptive Kernel</b>
-
-In the most common and traditional implementations of the active object 
-computing model, active objects map to threads of a traditional preemptive 
-RTOS or OS. In this standard configuration the active object computing model 
-can take full advantage of the underlying RTOS capabilities. In particular, 
-if the kernel is preemptive, the active object system achieves exactly the 
-same optimal task-level response as traditional tasks.
-
-In this approach, RTC semantics of state machine execution do not mean 
-that a state machine has to monopolize the CPU for the duration of the 
-RTC step. A preemptive kernel can perform a context switch in the middle of 
-the long RTC step to allow a higher-priority active object to run. As long 
-as the active objects don't share resources, they can run concurrently and 
-complete their RTC steps independently.
-
-<b>Simple cooperative kernel</b>
-
-The active object computing model can also work with nonpreemptive kernels. 
-In fact, one particular cooperative kernel matches the active object 
-computing model exceptionally well and can be implemented in an absolutely 
-portable manner. A very powerful yet simple solution is exaplained below, the 
-simple "vanilla" kernel.
-
-The simple nonpreemptive "vanilla" kernel executes one active object at a 
-time in the infinite loop (similar to the "superloop"). 
-The "vanilla" kernel is engaged after each event is processed in the 
-run-to-completion (RTC) fashion to choose the next highest-priority active 
-object ready to process the next event. The "vanilla" scheduler is 
-cooperative, which means that all active objects cooperate to share a single
-CPU and implicitly yield to each other after every RTC step. The kernel is
-nonpreemptive, meaning that every active object must completely process an 
-event before any other active object can start processing another event.
-
-The ISRs can preempt the execution of active objects at any time, but due to 
-the simplistic nature of the "vanilla" kernel, every ISR returns to exactly 
-the preemption point. If the ISR posts an event to any active 
-object, the processing of this event won't start until the current RTC step 
-completes. The maximum time an event for the highest-priority active object 
-can be delayed this way is called the task-level response. With the 
-nonpreemptive "vanilla" kernel, the task-level response is equal to the 
-longest RTC step of all active objects in the system. Note that the 
-task-level response of the "vanilla" kernel is still a lot better than the 
-traditional "superloop" (a.k.a. main+ISRs) architecture.
-
-The task-level response of the simple "vanilla" kernel turns out to be 
-adequate for surprisingly many applications because state machines by nature 
-handle events quickly without a need to busy-wait for events. 
-(A state machine simply runs to completion and becomes dormant until another 
-event arrives.) Also note that often you can make the task-level response as 
-fast as you need by breaking up longer RTC steps into shorter ones.
-
-Now consider how the scenario depicted in Figure 6.3(A) plays out under 
-the vanilla kernel. The scenario begins with a low-priority active object 
-executing its RTC step (dispatch() function) and a high-priority active 
-object having its event queue empty. At point (2a) an interrupt preempts 
-the low-priority active object. The ISR executes and, among other things, 
-posts an event to the high-priority active object (3a).
-The interrupt returns and resumes the originally preempted low-priority 
-active object (4a).
-The low-priority object runs to completion and returns to the main loop. 
-At this point, the vanilla scheduler has a chance to run and picks the 
-highest-priority nonempty queue, which is the queue of the high-priority 
-active object (6a). The vanilla kernel calls the dispatch() function of the 
-high-priority active object, which runs to completion.
-As you can see, the task-level response of the vanilla kernel is exactly the 
-same as any other nonpreemptive kernel. Even so, the vanilla kernel achieves 
-this responsiveness without per-task stacks or complex context switching. 
-The active objects naturally collaborate to share the CPU and implicitly 
-yield to each other at the end of every RTC step. The implementation is 
-completely portable and suitable for low-end embedded systems.
-The vanilla kernel also permits executing multiple active objects inside a 
-single thread of a bigger multitasking system. In this case, the vanilla 
-scheduler should efficiently block when all event queues are empty instead 
-of wasting CPU cycles for polling the event queues. Posting an event to any 
-of the active object queues should unblock the kernel. Of course, this 
-requires integrating the vanilla kernel with the underlying multitasking 
-system.
-
-The following listing shows the main() function implementation. This function
-is included in the \subpage main_c file, which is located in the application 
-directory.
+As said above, following the win32 single thread demo and its own port 
+from the directories \\demo\\80x86\\win32_st\\vc08 and 
+\\source\\portable\\80x86\\win32_st\\vc08 respectively. 
+However, the \c main() function is shown below to illustrate the RKH concept.
 
 \code
-	...
-	typedef struct
-	{
-		RKHEVT_T event;
-		rkhuint16 ts;
-	} MYEVT_T;
+int
+main( int argc, char *argv[] )
+{
+	bsp_init( argc, argv );
 
-	static MYEVT_T mye;
-	...
+	/* set trace filters */
+	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 
-	int
-	main( void )
-	{
-		int c;
+	rkh_trc_open();
+	rkh_init();
 
-(1)		rkh_init_hsm( my );
-		srand( ( unsigned )time( NULL ) );
+	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
+	rkh_enter();
 
-		print_banner();
-(2)		rkh_trace_open();
-
-(3)		forever
-		{
-(4)			c = mygetch();
-			
-			if( c == 'p' )
-(5)				rkh_trace_flush();
-			else if ( c == ESC )
-(6)				break;
-			else if ( c == 'r' )
-(7)				rkh_init_hsm( my );
-			else
-			{
-(8)				rkh_set_static_event( &mye, kbmap( c ) );
-(9)				mye.ts = ( rkhuint16 )rand();
-(10)			rkh_engine( my, ( RKHEVT_T* )&mye );
-			}
-		}
-
-(11)	rkh_trace_close();
-	}
+	rkh_trc_close();
+	return 0;
+}
 \endcode
-
-\li (1) Initialize the "my" state machine. RKH invokes the init action.
-\li (2) Initialize and open the RKH debug session.
-\li (3) This is the event loop of the RKH framework.
-\li (4) Gets key pressed from the standard input.
-\li (5) Flushs the trace stream to the desired host.
-\li (6) Terminates the program.
-\li (7) Reinitialize the state machine.
-\li (8) The	event generated by pressing a key on the keyboard is stored 
-		in the signal member of MYEVT_T structure.
-\li (9)	The	event has associated parameters that convey a random number.
-\li (10)	The \c mye event is dispatched to "my" state machine by means of 
-		rkh_engine() function. Events with parameters, such as the MYEVT_T, 
-		require explicit casting from the generic base structure #RKHEVT_T 
-		to the specific derived structure MYEVT_T.
-\li (11)	Terminates the program and close debug session.
 
 \n
 \ref representing "< Representing the state machine"\n
