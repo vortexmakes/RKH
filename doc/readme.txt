@@ -180,7 +180,7 @@ file is optional and many ports don’t require it.
 <HR>
 \section demo_dir RKH demo applications
 
-The \\demo directory contains the application demos that are included in the 
+The \\demo directory contains the application examples that are included in the 
 standard RKH distribution. The structure of the \\demo is the most complicated 
 because of the large number of choices available, such as CPU architectures, 
 compilers, operating systems, and compiler options. Each of those choices is 
