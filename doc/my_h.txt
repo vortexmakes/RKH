@@ -12,21 +12,22 @@
 #define __MY_H__
 
 
-#include "rkhsm.h"
+#include "rkh.h"
 
 
 typedef struct
 {
 	RKHEVT_T event;
-	rkhuint16 ts;
+	rkhui16_t ts;
 } MYEVT_T;
 
 
 typedef struct
 {
-	rkhuint8 x;
-	rkhuint8 y;
-} MYHDATA_T;
+	RKHSMA_T sma;	/* base structure */
+	rkhui8_t x;		/* private member */
+	rkhui8_t y;		/* private member */
+} MYSM_T;			/* SMA derived from RKHSMA_T structure */
 
 
 /*

@@ -16,6 +16,7 @@ are listed below:
 
 - \b "bsp.h":		contains the interface to the board support package and 
 					is located in the application directory.
+					See the \subpage bsp_h file.
 
 - \b "my.h": 		contains the definitions of objet structures (state 
 					machine, states, and pseudostates) and other facilities 
@@ -39,9 +40,11 @@ are listed below:
 					are used as a reference.
 
 - \b "trazer.h":	implements a simple trace analyzer. 
+					See the \subpage trazer_h file.
 
 - \b "bsp.c":		contains the implementation of the board-specific 
 					functions. 
+					See the \subpage bsp_c file.
 
 - \b "main.c": 		contains the \c main() function along with 
 					an example for using the RKH trace facility.
@@ -60,6 +63,7 @@ are listed below:
 					available options and \subpage myact_c file.
 
 - \b "trazer.c":	contains the implementation of the trace analyzer. 
+					See the \subpage trazer_c file.
 
 \n
 \ref basics "< Basics"\n

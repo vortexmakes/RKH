@@ -649,7 +649,11 @@ INPUT                  = ../source \
                          myevt_h.txt \
                          main_c.txt \
                          rkh_rep.txt \
-                         rkhcfg.h
+                         rkhcfg.h \
+                         bsp_c.txt \
+                         bsp_h.txt \
+                         trazer_c.txt \
+                         trazer_h.txt
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -1656,7 +1660,7 @@ DOT_FONTPATH           =
 # indirect inheritance relations. Setting this tag to YES will force the 
 # the CLASS_DIAGRAMS tag to NO.
 
-CLASS_GRAPH            = NO
+CLASS_GRAPH            = YES
 
 # If the COLLABORATION_GRAPH and HAVE_DOT tags are set to YES then doxygen 
 # will generate a graph for each documented class showing the direct and 

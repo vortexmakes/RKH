@@ -24,7 +24,12 @@ enum
 	THREE,
 	FOUR,
 	FIVE,
-	SIX
+	SIX,
+	SEVEN,
+	EIGHT,
+	NINE,
+	TOUT,
+	TERM	
 };
 
 
