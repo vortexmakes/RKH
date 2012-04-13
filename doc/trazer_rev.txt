@@ -1,0 +1,9 @@
+/**
+\page rev_page_trazer Trazer revision history
+
+\section trazer_1_0 Version 1.0 Release date: Apr 07, 2012
+
+This is the intial release of the Trazer visualization tool.
+This version is compatible to use with RKH V2.0
+
+*/

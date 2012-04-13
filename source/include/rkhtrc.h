@@ -259,7 +259,7 @@ typedef enum rkh_trc_groups
  * 	\code
  *      | ...               |
  *  (1) | event ID          | 1-byte
- *  (2) | sequence Number   | 1-byte
+ *  (2) | sequence number   | 1-byte
  *  (3) | timestamp         | 2,4-bytes
  *  (4) | args              | n-byte
  *  (5) | checksum          | 1-byte
@@ -1341,7 +1341,20 @@ typedef enum rkh_trc_events
 		 * 	symbolic name of the signal.
 		 *
 		 * 	\code
-		 * 	...
+		 * 	// in the dedicated application header file resides the signal 
+		 * 	// enumeration
+		 * 	
+		 * 	enum
+		 * 	{
+		 * 		...
+		 * 		PWR_FAIL,
+		 * 		PRESS_ENTER,
+		 * 		...
+		 * 	};
+		 *
+		 * 	// frequently, the macro RKH_TRCR_RKH_SIG() is used in the 
+		 * 	// \b main.c file.
+		 *
 		 * 	RKH_TRCR_RKH_SIG( PWR_FAIL );
 		 * 	RKH_TRCR_RKH_SIG( PRESS_ENTER );
 		 * 	\endcode

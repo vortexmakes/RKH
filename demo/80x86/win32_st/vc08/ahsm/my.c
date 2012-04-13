@@ -7,13 +7,6 @@
 
 
 /*
- *	Include file of event definitions.
- */
-
-#include "myevt.h"
-
-
-/*
  *	Include file of HSM definitions.
  */
 
@@ -64,18 +57,16 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE( S12, 2, set_x_3, NULL, &S1, NULL );
 RKH_CREATE_TRANS_TABLE( S12 )
 
-	RKH_TRINT( SEVEN, 	NULL, 		gen_events ),
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&J ),
 	RKH_TRREG( FOUR, 	NULL, 		set_y_1, 	&S2 ),
 
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_STATE( S11, 3, NULL, clean_exit, &S1, &S111, &H );
+RKH_CREATE_COMP_STATE( S11, 3, NULL, NULL, &S1, &S111, &H );
 RKH_CREATE_TRANS_TABLE( S11 )
 
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S112 ),
 	RKH_TRREG( FOUR, 	NULL, 		NULL, 		&S12 ),
-	RKH_TRREG( TOUT, 	NULL, 		NULL, 		&S12 ),
 
 RKH_END_TRANS_TABLE
 
@@ -83,7 +74,6 @@ RKH_CREATE_BASIC_STATE( S111, 4, set_x_1, NULL, &S11, NULL );
 RKH_CREATE_TRANS_TABLE( S111 )
 
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S112 ),
-	RKH_TRREG( SEVEN, 	NULL, 		start_timer,&S112 ),
 
 RKH_END_TRANS_TABLE
 
@@ -93,7 +83,6 @@ RKH_CREATE_TRANS_TABLE( S112 )
 	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S111 ),
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S11 ),
 	RKH_TRREG( THREE, 	NULL, 		NULL, 		&J ),
-	RKH_TRREG( SEVEN, 	NULL, 		stop_timer, &S111 ),
 
 RKH_END_TRANS_TABLE
 

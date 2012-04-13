@@ -12,7 +12,6 @@
 #include "rkhtrc.h"
 #include "bsp.h"
 #include "my.h"
-#include "myevt.h"
 #include "rkhdata.h"
 
 

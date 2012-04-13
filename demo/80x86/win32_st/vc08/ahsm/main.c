@@ -7,7 +7,6 @@
 #include "rkhtrc.h"
 #include "bsp.h"
 #include "my.h"
-#include "myevt.h"
 #include "rkhdata.h"
 
 
@@ -25,19 +24,10 @@ main( int argc, char *argv[] )
 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 
-	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_MP, RKH_TRCE_MP_INIT );
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_DCH );
-	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
-	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
-	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_START );
-	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_TOUT );
 
 	rkh_trc_open();
 	rkh_init();
-
-	RKH_TRCR_RKH_OBJ( &rkheplist[0] );
-	RKH_TRCR_RKH_OBJ( &rkheplist[1] );
-	RKH_TRCR_RKH_SIG( ONE );
 
 	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
 	rkh_enter();

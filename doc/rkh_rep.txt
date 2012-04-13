@@ -4,7 +4,7 @@
 
 \n
 \ref basics "< Basics"\n
-\ref identify "> Identify and classify states and pseudostates"\n\n
+\ref identify_events "> Identifying, generating and sending events"\n\n
 
 The sample code for the example presented above ported to x86 is located 
 in the directory \c \\demo\\80x86\\vc08\\win32_st\\vc08\\ahsm. It contains 
@@ -28,11 +28,6 @@ are listed below:
 					prototype of actions. See \ref cfg section about of 
 					available options and \subpage myact_c file.
 					See the \subpage myact_h file.
-
-- \b "myevt.h":		because events are explicitly shared among most of the 
-					application components, it's convenient to declare them 
-					in the separate header file "myevt.h".
-					See the \subpage myevt_h file.
 
 - \b "rkhcfg.h":	adapts and configures RKH. See \ref cfg section. 
 					In the \\demo directory there are other \b rkhcfg.h files
@@ -67,16 +62,158 @@ are listed below:
 
 \n
 \ref basics "< Basics"\n
-\ref identify "> Identify and classify states and pseudostates"\n\n
+\ref identify_events "> Identifying, generating and sending events"\n\n
 */
 
 
 /**
-\page identify Identify and classify states and pseudostates
+\page identify_events Identifying, generating and sending events
 \image html rkh_bunner.jpg
 
 \n
 \ref preparing "< Preparing the application files"\n
+\ref identify "> Identifying and classifying states and pseudostates"\n
+
+The events in the \c my state machine have been identified in the state 
+diagram in \ref fig1 "Figure 1". Note that events consist really of two 
+parts. The part of the event called the signal conveys the type of the 
+occurrence (what happened). For example, the ONE signal conveys the 
+arrival of a press key '1'. An event can also contain additional 
+quantitative information about the occurrence in form of event parameters. 
+In \c my state machine, all signals are accompanied by the parameter (ts) 
+that contain the quantitative information as to timestamp. In RKH, events 
+are represented as instances of the RKHEVT_T structure provided by the 
+framework. Specifically, the RKHEVT_T structure contains the member \c e, 
+to represent the signal of that event. Event parameters are added in the 
+process of \link RKHEVT_T inheritance \endlink.
+
+- \ref ide_e
+- \ref gen_e
+
+<HR>
+\section ide_e Identifying events
+
+Because events are explicitly shared among most of the application 
+components, it is convenient to declare them in the separate header file 
+\subpage my_h, which is shown below.
+
+\code
+/*
+ *	my.h
+ */
+
+
+#ifndef __MY_H__
+#define __MY_H__
+
+
+#include "rkh.h"
+
+
+/*
+ * 	Signals
+ */
+
+enum
+{
+	ZERO,		/* press the key '0' on the keyboard */
+	ONE,		/* press the key '1' on the keyboard */
+	TWO,		/* press the key '2' on the keyboard */
+	THREE,		/* press the key '3' on the keyboard */
+	FOUR,		/* press the key '4' on the keyboard */
+	FIVE,		/* press the key '5' on the keyboard */
+	SIX,		/* press the key '6' on the keyboard */
+	TERM		/* press the key escape on the keyboard */
+};
+
+
+typedef struct
+{
+	RKHEVT_T event;
+	rkhui16_t ts;
+} MYEVT_T;
+
+...
+
+#endif
+\endcode
+
+<HR>
+\section gen_e Generating and posting events
+
+RKH supports the simple mechanism of direct event posting supported through 
+the functions rkh_sma_post_fifo() and rkh_sma_post_lifo(), where the producer 
+of an event directly posts the event to the event queue of the consumer active 
+object (SMA).
+In RKH, any part of the system can produce events, not necessarily only the 
+SMAs. For example, interrupt service routines (ISRs) or device drivers can 
+also produce events. On the other hand, only SMAs can consume events, 
+because only SMAs have event queues. The following listing provides examples 
+of posting dynamic and static events from the interrupt service routines 
+(ISRs) of the \c ahsm demo application version for the win32 single thread, 
+\subpage bsp_c file. 
+
+\code
+
+	#define ESC				0x1B
+	#define kbmap( c )		( (c) - '0' )
+
+(1)	static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+
+	...
+
+	static 
+	DWORD WINAPI 
+(2)	isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
+	{
+		int c;
+		MYEVT_T *mye;
+
+		( void )par;
+		while( running ) 
+		{
+			c = _getch();
+			
+			if( c == ESC )
+(3)				rkh_sma_post_fifo( my, &eterm );
+			else
+			{
+(4)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(5)				mye->ts = ( rkhui16_t )rand();
+(6)				rkh_sma_post_fifo( my, ( RKHEVT_T* )mye );
+			}
+		}
+		return 0;
+	}
+\endcode
+
+
+\li (1) The TERM event never changes, so it can be statically allocated just 
+		once. The RKH_DCLR_STATIC_EVENT() macro declares and initializes the 
+		event structure \e eterm with \a TERM signal and establishes it as 
+		one static event. The created event object is explicitly placed in ROM.
+\li (2)	Win32 thread to emulate keyboard ISR.
+\li (3) The static event is posted directly to the \c my SMA.
+\li (4) The macro RKH_ALLOC_EVENT() dinamically allocates an instance of 
+		MYEVT_T event from an event pool. The macro also performs the 
+		association between the signal and the allocated event.
+		The signals are generated from the key strokes by means of 
+		\c kbmap() macro.
+\li (5) The \c ts parameter of the event is assigned.
+\li (6) The dynamic event is posted directly to the \c my SMA..
+
+\n
+\ref preparing "< Preparing the application files"\n
+\ref identify "> Identifying and classifying states and pseudostates"\n
+*/
+
+
+/**
+\page identify Identifying and classifying states and pseudostates
+\image html rkh_bunner.jpg
+
+\n
+\ref identify_events "< Identifying, generating and sending events"\n
 \ref representing "> Representing the state machine"\n\n
 
 The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
@@ -87,9 +224,8 @@ presented above, sorted by state nesting level.
 \image html sttbl.jpg "Figure 2 - State nesting"
 
 \n
-\ref preparing "< Preparing the application files"\n
+\ref identify_events "< Identifying, generating and sending events"\n
 \ref representing "> Representing the state machine"\n\n
-
 */
 
 
@@ -98,7 +234,7 @@ presented above, sorted by state nesting level.
 \image html rkh_bunner.jpg
 
 \n
-\ref identify "< Identify and classify states and pseudostates"\n
+\ref identify "< Identifying and classifying states and pseudostates"\n
 \ref running "> Running"\n\n
 
 Now, this section explains how to implement the \c my state machine 
@@ -113,7 +249,7 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 - \subpage rep_inc
 
 \n
-\ref identify "< Identify and classify states and pseudostates"\n
+\ref identify "< Identifying and classifying states and pseudostates"\n
 \ref running "> Running"\n\n
 
 */
@@ -229,7 +365,7 @@ Also, shows its implementation using the RKH framework.
 (5)						0, 
 (6)						HCAL, 
 (7)						&S1, 
-(8)						my_iaction, 
+(8)						my_init, 
 (9)						NULL );
 \endcode
 
@@ -265,7 +401,7 @@ Explanation
 		The available property options are enumerated in RKH_HPPTY_T 
 		enumeration in the \b rkh.h file.
 \li (7)	\c S1 is the initial state.
-\li (8)	the \c my_iaction() function defines the topmost initial transition in 
+\li (8)	the \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
 		The function prototype is defined as RKHINIT_T. This argument is 
 		(optional), thus it could be declared as NULL.
@@ -458,7 +594,7 @@ Explanation
 		action function takes the state 
 		machine pointer and the event pointer as arguments. The first 
 		parameter is optional in compile-time according to 
-		\b RKH_EN_PPRO_HSM_ARG macro.
+		RKH_SMA_EN_PPRO_ARG_SMA macro.
 		Example:
 \code
 static
@@ -474,27 +610,7 @@ in_keyb( RKHEVT_T *pe )
 }
 \endcode
 
-\li (7)	Aditionally, by means of single inheritance in C it could be 
-		used as state's abstract data.
-		Aditionally, implementing the single inheritance in C is very 
-		simply by literally embedding the base type, RKHPPRO_T in 
-		this case, as the first member of the derived structure.
-		This argument is optional, thus it could be declared as NULL.
-		Example:
-\code
-typedef struct
-{
-	RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-	unsigned min:4;
-	unsigned max:4;
-	char *buff;
-} SDATA_T;				// this data type will be used in S12 context
-
-static const SDATA_T option = { preprocessor, 4, 8, token };
-
-/* Define S12 state as a substate of S1 */
-RKH_CREATE_BASIC_STATE( S12, 5, NULL, NULL, &S1, (RKHPPRO_T*)&option ); 
-\endcode
+\li (7)	\copydetails RKHSREG_T::prepro
 
 \n
 The following figures, \ref is111_s112 "Figure 8", 
@@ -614,10 +730,10 @@ functions.
 \ref rep_cjh "< Declaring the pseudostates"\n
 \ref rep_act "> Declaring the actions"\n\n
 
-The \b "my.h" file contains the definitions of objet structures (state 
+The \subpage my_h file contains the definitions of objet structures (state 
 machine, states, and pseudostates) and other facilities shared among 
-the components of the application. See the "my.h" file.
-The following listing shows the \b "my.h" header file, which illustatres 
+the components of the application. See the \subpage my_h file.
+The following listing shows the \subpage my_h header file, which illuminates 
 some important aspects of implementing state machines with RKH.
 
 \code
@@ -628,11 +744,28 @@ some important aspects of implementing state machines with RKH.
 (1)	#include "rkh.h"
 
 
-(2)	typedef struct
+   	/*
+ 	 * 	Signals
+ 	 */
+
+(2) enum
 	{
-(3)		RKHEVT_T event;
-(4)		rkhuint16 ts;
-	} MYEVT_T;
+		ZERO,		/* press the key '0' on the keyboard */
+		ONE,		/* press the key '1' on the keyboard */
+		TWO,		/* press the key '2' on the keyboard */
+		THREE,		/* press the key '3' on the keyboard */
+		FOUR,		/* press the key '4' on the keyboard */
+		FIVE,		/* press the key '5' on the keyboard */
+		SIX,		/* press the key '6' on the keyboard */
+		TERM		/* press the key escape on the keyboard */
+	};
+
+
+	typedef struct
+	{
+(3)		RKHEVT_T event;	/* base structure */
+(4)		rkhuint16 ts;	/* parameter 'ts'. Private member */
+	} MYEVT_T;			/* derived from RKHEVT_T structure */
 
 
 	typedef struct
@@ -663,7 +796,21 @@ some important aspects of implementing state machines with RKH.
 
 \li (1) RKH interfaces.
 
-\li (2-4) The MYEVT_T structure declares an event with the parameter "ts".
+\li (2) The events in the \c my state machine have been identified in the 
+state diagram in \ref fig1 Figure 1. Note that events consist really of two 
+parts. The part of the event called the signal conveys the type of the 
+occurrence (what happened). For example, the ONE signal conveys the arrival 
+of a press key '1'. An event can also contain additional quantitative 
+information about the occurrence in form of event parameters. In \c my state 
+machine, all signals are accompanied by the parameter (ts) that contain the 
+quantitative information as to timestamp. In RKH, events are represented as 
+instances of the RKHEVT_T structure provided by the framework. Specifically, 
+the RKHEVT_T structure contains the member e, to represent the signal of that 
+event. Event parameters are added in the process of inheritance. Because events 
+are explicitly shared among most of the application components, 
+it is convenient to declare them in the separate header file \subpage my_h.
+
+\li (3-4) The MYEVT_T structure declares an event with the parameter "ts".
 		Such nesting of structures always aligns the data member 
 		#RKHEVT_T at the beginning of every instance of the derived 
 		structure. In particular, this alignment lets treat a pointer to 
@@ -707,11 +854,21 @@ some important aspects of implementing state machines with RKH.
 \ref rep_def "< Defining the state machine's objects"\n
 \ref rep_inc "> Include files"\n\n
 
-The used actions in the \c my state machine implementation are shown in
-\subpage myact_c file.
+All init, entry, exit, and transition actions of \c my state machine 
+are implemented in \subpage myact_c file and declaring in 
+\subpage myact_h file. These files also includes transition guard 
+and branch selection functions.
 
-\n According to \c my state diagram the initial action looks as follow:
-\n
+- \ref in_a
+- \ref tr_a
+- \ref en_a
+- \ref ex_a
+- \ref gu_a
+- \ref br_a
+
+<HR>
+\section in_a Initial action of \c my state machine
+
 \code
 void 
 my_init( const struct rkh_t *ph )
@@ -720,8 +877,9 @@ my_init( const struct rkh_t *ph )
 }
 \endcode
 
-\n According to \c my state diagram the transition actions looks as follow:
-\n
+<HR>
+\section tr_a Transition actions of \c my state machine
+
 \code
 void
 set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )
@@ -755,8 +913,9 @@ show_data( const struct rkh_t *ph, RKHEVT_T *pe )
 }
 \endcode
 
-\n According to \c my state diagram the entry actions looks as follow:
-\n
+<HR>
+\section en_a Entry actions of \c my state machine
+
 \code
 void
 set_x_1( const struct rkhsma_t *sma )
@@ -786,8 +945,9 @@ set_y_0( const struct rkhsma_t *sma )
 }
 \endcode
 
-\n According to \c my state diagram the exit actions looks as follow:
-\n
+<HR>
+\section ex_a Exit actions of \c my state machine
+
 \code
 void 
 dummy_exit( const struct rkh_t *ph )
@@ -796,8 +956,9 @@ dummy_exit( const struct rkh_t *ph )
 }
 \endcode
 
-\n According to \c my state diagram the guards looks as follow:
-\n
+<HR>
+\section gu_a Transition guard functions of \c my state machine
+
 \code
 HUInt
 x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
@@ -808,9 +969,9 @@ x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
 }
 \endcode
 
-\n According to \c my state diagram the branch selection functions looks 
-as follow:
-\n
+<HR>
+\section br_a Branch selection functions of \c my state machine
+
 \code
 HUInt
 y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
@@ -866,26 +1027,21 @@ x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 \ref rep_act "< Declaring the actions"\n
 \ref representing "> Representing the state machine"\n\n
 
-The following listing shows a fragment of "my.c" source file, which 
-illustatres some aspects of implementing state machines with RKH.
+The application C-file \subpage my_c that uses RKH must include a few 
+header files. 
 
 \code
 (1) #include "rkh.h"
 
 
-/*	Includes file of event definitions. */
-
-(2) #include "myevt.h"
-
-
 /* Includes file of HSM definitions. */
 
-(3) #include "my.h"
+(2) #include "my.h"
 
 
 /* Includes file of action/guard definitions. */
 
-(4) #include "myact.h"
+(3) #include "myact.h"
 
 	...
 
@@ -897,16 +1053,12 @@ illustatres some aspects of implementing state machines with RKH.
 		RKH interface to implement state machines. The port file is located
 		in the application directory.
 
-\li (2) The "myevt.h" header file contains the declarations of triggering 
-		events shared among the components of the
-		application. This header file is located in the application 
-		directory.
+\li (2) The \subpage my_h header file contains the definitions of object 
+		structures (state machine, states, and pseudostates), event 
+		declaration, and other facilities shared among the components of 
+		the application.
 
-\li (3) The "my.h" header file contains the definitions of objet 
-		structures (state machine, states, and pseudostates) and
-		other facilities shared among the components of the application. 
-
-\li (4) This header file defines the actions to be executed.
+\li (3) This header file declares the actions to be executed.
 
 \n
 \ref rep_act "< Declaring the actions"\n

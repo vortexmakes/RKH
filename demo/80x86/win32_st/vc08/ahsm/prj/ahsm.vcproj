@@ -255,10 +255,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\myevt.h"
-				>
-			</File>
-			<File
 				RelativePath="..\rkhcfg.h"
 				>
 			</File>

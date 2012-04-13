@@ -878,7 +878,8 @@ typedef struct rkh_smai_t
  *
  *	\sa
  *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink.
+ *	single inheritance in C \endlink, and \link RKH_CREATE_BASIC_STATE 
+ *	another example \endlink.
  */
 
 typedef struct romrkh_t
@@ -986,7 +987,8 @@ typedef struct romrkh_t
  *
  *	\sa
  *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink.
+ *	single inheritance in C \endlink, and \link RKH_CREATE_BASIC_STATE 
+ *	another example \endlink.
  */
 
 typedef struct rkhsma_t
@@ -1405,27 +1407,27 @@ typedef struct rkhsreg_t
 	 *	Example:
 	 *  
 	 *  \code
-	 *  static
-	 *  RKHE_T
-	 *  preprocessor( RKHEVT_T *pe )
-	 *  {
-	 *  	...
-	 *  }
+	 *	static
+	 *	RKHE_T
+	 *	preprocessor( RKHEVT_T *pe )
+	 *	{
+	 *		...
+	 *	}
 	 *  
-	 * 	typedef struct
-	 * 	{
-	 * 		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-	 * 		unsigned min:4;
-	 * 		unsigned max:4;
-	 * 		char *buff;
-	 * 	} SDATA_T;
+	 *	typedef struct
+	 *	{
+	 *		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 *		unsigned min:4;
+	 *		unsigned max:4;
+	 *		char *buff;
+	 *	} SDATA_T;
 	 *
-	 * 	static const SDATA_T option = { preprocessor, 4, 8, token1 };
+	 *	static const SDATA_T option = { preprocessor, 4, 8, token1 };
 	 *
-	 *  RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
-	 *  								NULL, &S11, preprocessor ); 
-	 * 	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
-	 *  								NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+	 *					NULL, &S11, preprocessor ); 
+	 *	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+	 *					NULL, &S2, (RKHPPRO_T*)&option ); 
 	 * \endcode
 	 */
 

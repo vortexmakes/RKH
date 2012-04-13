@@ -23,6 +23,7 @@ structure in more detail.
 \endcode
 <STRONG> Figure 1 Top level directories </STRONG>
 
+\n
 - \ref source_dir
 - \ref portable_dir
 - \ref demo_dir
@@ -270,6 +271,7 @@ The RKH directories and files are described in detail in
 \ref Installation section. The next sections listed below describes 
 the aspects to be considered to port RKH:
 
+\n
 - \ref files
 - \ref data
 - \ref rom
@@ -792,6 +794,10 @@ typedef signed int		HInt;
 \image html rkh_bunner.jpg
 
 \ref main_page "< Home"
+
+The main objective of this section is to show and also illustrate the most 
+important concepts to apply when dealing with RKH and the event-driven 
+applications.
 
 \n
 - \ref qref0
@@ -2106,11 +2112,13 @@ for more information about this.
 
 \copydetails rkhtrc.h
 
+\n
 - \ref tre
 - \ref trcfg
 - \ref trfn
 - \ref trfil
 - \ref trtbl
+- \ref trtrazer
 
 <HR>
 \section tre Trace event structure
@@ -2313,6 +2321,24 @@ the data included for each.
 
 \li \b RKH_TRCR_RKH_SIG \copydetails RKH_TRCR_RKH_SIG
 
+<HR>
+\section trtrazer TRAZER - The fundamental RKH's tracing tool
+
+Trazer is a visualization tool that works in conjuntion with the RKH 
+framework built in trace facility. Trazer gives the possibility to display 
+selectively the recording of all events of your system, state machines, 
+queues, timers, etc.
+Trazer helps you to faster troubleshooting especially on complex problems 
+where a debugger is not sufficient, by providing a simple consolidated, 
+human-readable textual output.
+
+Given the RKH cross plataform portability, trace data may come from 8, 
+16, or 32-bits platforms. In order to that Trazer need to be configured 
+to support this diversity of plataform and the wide range of RKH framework 
+configurations. 
+
+Here is the \ref trazer
+
 \page cfg Configuration
 \image html rkh_bunner.jpg
 
@@ -2326,6 +2352,7 @@ and to enhance the system performance in a substantial manner. The
 \b rkhcfg.h file shows the general layout of the configuration file.
 Here is an list of all options with their documentation:
 
+\n
 - \ref cfg_fw
 - \ref cfg_sm
 - \ref cfg_tr
@@ -2461,6 +2488,7 @@ rules and concepts for making the most out of RKH features.
 
 - \subpage basics
 - \subpage preparing
+- \subpage identify_events
 - \subpage identify
 - \subpage representing
 - \subpage running

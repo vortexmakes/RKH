@@ -28,7 +28,6 @@
 #include "my.h"
 #include "rkhdata.h"
 #include "rkh.h"
-#include "myevt.h"
 #include "trazer.h"
 
 #include <conio.h>
@@ -39,7 +38,7 @@
 
 #define BIN_TRACE					1
 #define ESC							0x1B
-#define kbmap( c )					( c - '0' )
+#define kbmap( c )					( (c) - '0' )
 
 
 RKH_THIS_MODULE

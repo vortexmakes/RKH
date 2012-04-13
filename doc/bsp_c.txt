@@ -33,7 +33,6 @@
 #include "my.h"
 #include "rkhdata.h"
 #include "rkh.h"
-#include "myevt.h"
 #include "trazer.h"
 
 #include <conio.h>

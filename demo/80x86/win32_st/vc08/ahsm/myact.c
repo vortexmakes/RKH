@@ -6,15 +6,9 @@
 #include <stdio.h>
 #include "rkh.h"
 #include "my.h"
-#include "myevt.h"
-#include "rkhtim.h"
 
 
-#define MY_TICK			1000
 #define CMY( s )		(( MYSM_T* )(s))
-
-
-RKHT_T my_timer;
 
 
 /*
@@ -25,7 +19,6 @@ void
 my_init( const void *sma )
 {
 	CMY( sma )->x = CMY( sma )->y = 0;
-	rkh_tim_init( &my_timer, TOUT, 0 );
 }
 
 
@@ -70,14 +63,6 @@ void
 dummy_exit( const struct rkhsma_t *sma )
 {
 	(void)sma;
-}
-
-
-void 
-clean_exit( const struct rkhsma_t *sma )
-{
-	(void)sma;
-	rkh_tim_stop( &my_timer );
 }
 
 
@@ -130,41 +115,6 @@ terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 	(void)sma;
 	(void)pe;
 	rkh_exit();
-}
-
-
-void 
-start_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
-{
-	(void)sma;
-	(void)pe;
-	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
-}
-
-
-void 
-stop_timer( const struct rkhsma_t *sma, RKHEVT_T *pe )
-{
-	(void)sma;
-	(void)pe;
-	rkh_tim_stop( &my_timer );
-}
-
-
-void 
-gen_events( const struct rkhsma_t *sma, RKHEVT_T *pe )
-{
-	MYEVT_T *e;
-
-	(void)sma;
-	(void)pe;
-	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
-	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
-	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
-	e->ts = ( rkhui16_t )rand();
-	rkh_sma_post_fifo( my, ( RKHEVT_T* )e );
-	rkh_sma_post_fifo( my, ( RKHEVT_T* )e );
-	rkh_sma_post_fifo( my, ( RKHEVT_T* )e );
 }
 
 

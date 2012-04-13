@@ -15,10 +15,27 @@
 #include "rkh.h"
 
 
+/*
+ * 	Signals
+ */
+
+enum
+{
+	ZERO,		/* press the key '0' on the keyboard */
+	ONE,		/* press the key '1' on the keyboard */
+	TWO,		/* press the key '2' on the keyboard */
+	THREE,		/* press the key '3' on the keyboard */
+	FOUR,		/* press the key '4' on the keyboard */
+	FIVE,		/* press the key '5' on the keyboard */
+	SIX,		/* press the key '6' on the keyboard */
+	TERM		/* press the key escape on the keyboard */
+};
+
+
 typedef struct
 {
-	RKHEVT_T event;
-	rkhui16_t ts;
+	RKHEVT_T event;	/* base structure */
+	rkhui16_t ts;	/* event parameter. Private member */
 } MYEVT_T;
 
 

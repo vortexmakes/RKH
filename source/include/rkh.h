@@ -229,7 +229,28 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					is very simply by literally embedding the base type, 
  *					RKHPPRO_T in this case, as the first member of the 
  *					derived structure. See \a prepro member of RKHSREG_T 
- *					structure for more information.
+ *					structure for more information. Example:
+ *  				\code
+ *					static RKHE_T
+ *					preprocessor( RKHEVT_T *pe )
+ *					{
+ *						...
+ *					}
+ *					typedef struct
+ *					{
+ *						RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+ *						unsigned min:4;
+ *						unsigned max:4;
+ *						char *buff;
+ *					} SDATA_T;
+ *					
+ *					static const SDATA_T option = { preprocessor,4,8,token1 };
+ *					
+ *					RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+ *											NULL, &S11, preprocessor ); 
+ *					RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+ *											NULL, &S2, (RKHPPRO_T*)&option ); 
+ *					\endcode
  */
 
 #define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
@@ -647,7 +668,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  *	\sa
  *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink.
+ *	single inheritance in C \endlink, and \link RKH_CREATE_BASIC_STATE 
+ *	another example \endlink.
  *
  * 	\param sma_t		data type of SMA.
  * 	\param sm			name of previously created SMA.

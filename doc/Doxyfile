@@ -646,14 +646,17 @@ INPUT                  = ../source \
                          my_h.txt \
                          myact_c.txt \
                          myact_h.txt \
-                         myevt_h.txt \
                          main_c.txt \
                          rkh_rep.txt \
                          rkhcfg.h \
                          bsp_c.txt \
                          bsp_h.txt \
                          trazer_c.txt \
-                         trazer_h.txt
+                         trazer_h.txt \
+                         trazer.txt \
+                         trazer_rev.txt \
+                         trazer_cfg.txt \
+                         trazer_evt.txt
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 

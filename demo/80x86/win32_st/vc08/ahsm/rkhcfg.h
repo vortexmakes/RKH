@@ -106,8 +106,8 @@
 
 /**
  *	If the #RKH_HK_EN_SIGNAL is set to 1, RKH will invoke the signal 
- *	hook function rkh_hk_signal() when the producer of an event directly posts the event 
- *	to the event queue of the consumer SMA.
+ *	hook function rkh_hk_signal() when the producer of an event directly 
+ *	posts the event to the event queue of the consumer SMA.
  *	When this is set the application must provide the hook function. 
  */
 

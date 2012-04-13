@@ -28,7 +28,6 @@
 #include "rkh.h"
 #include "rkhcfg.h"
 #include "my.h"
-#include "myevt.h"
 #include "rkhtim.h"
 #include <stdio.h>
 
@@ -324,10 +323,6 @@ static const SYMSIG_T sigtbl[] = 			/* signal symbol table */
 	MKS( FOUR,	"FOUR"	),
 	MKS( FIVE,	"FIVE"	),
 	MKS( SIX,	"SIX"	),
-	MKS( SEVEN,	"SEVEN"	),
-	MKS( EIGHT,	"EIGHT"	),
-	MKS( NINE,	"NINE"	),
-	MKS( TOUT,	"TOUT"	),
 	MKS( TERM,	"TERM"	),
 
 	EOSIGTBL
@@ -381,9 +376,6 @@ make_symtbl( void )
 
 	MKO( my, 			"my"		);
 	MKO( &my->equeue,	"my_queue"	);
-	MKO( &my_timer, 	"my_timer"	);
-	MKO( &rkheplist[0], "ep0"		);
-	MKO( &rkheplist[1], "ep1"		);
 	MKO( &S1, 			"S1"		);
 	MKO( &S11, 			"S11"		);
 	MKO( &S111, 		"S111"		);
