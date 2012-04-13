@@ -22,7 +22,7 @@ reacts by performing actions. The events causing the reaction are called
 triggers."
 
 David Harel</EM>
-\n
+\n\n This manual includes:
 
 - \ref Overview
 - \ref Purpose
@@ -135,7 +135,97 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with RKH package. If not, see <http://www.gnu.org/licenses/>.
 
-Contact information:
+<b>Commercial Licenses</b>
+
+When the source code of your application should not be published under the 
+GNU GPLv3 license, you can use one of the following commercial licenses:
+
+<TABLE SUMMARY="RKH commercial licenses" cellSpacing=4 cellPadding=1 border=0
+ALIGN="center" VALIGN="middle">
+  <TR bgColor="#c8cedc">
+    <TD><B>&nbsp;License</B></TD>
+    <TD><B>&nbsp;Explanation</B></TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>Single Product</TD>
+    <TD>A Single Product License enables the user to embed a RKH framework 
+	into one end customer product. This license is perpetual for the 
+	life of the customer's product and is without limitation in production 
+	quantity. This license is specific to the processor used AND the specific 
+	name and model of the customer end product.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>Product Line</TD>
+    <TD>A Product Line License allows the user to embed a RKH framework into 
+	any number of end products within a product family and manufacture an 
+	unlimited number of units of each of these products for the life of the 
+	end product within the product family.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>CPU-Type</TD>
+    <TD>A CPU-Type License allows the user to embed a RKH framework into any 
+	number of end products using a single and specific processor type. The 
+	license holder may manufacture an unlimited number of units of each of 
+	these products for the life of the end product.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>Entreprise</TD>
+    <TD>A Enterprise License allows the user to embed a RKH framework into 
+	any end product that uses any CPU as long as the products are designed 
+	from a single site. The user is able to manufacture an unlimited number 
+	of units from any location worldwide.</TD>
+  </TR>
+</TABLE>
+
+<em>End-Product definition</em>
+
+An End-Product license refers to a product manufactured by the licensee using 
+one or more software components provided by Micriµm. Each end-product is 
+assumed to contain a single microprocessor, microcontroller or DSP.
+
+<em>Site definition</em>
+
+A site is defined as license facilities where a product is being developed 
+and may consist of multiple buildings located within a two (2) mile radius 
+building one or more End-Products.
+
+<b>Technical support</b>
+
+Every commercial license includes one (1) year of technical support. 
+Additionally to the unlimited e-mail support, the commercial support 
+entitles the Licensee to upgrading any licensed QP component to any newer 
+version that Quantum Leaps might release during the Support Term. The 
+original one-year Support Term can be extended annually, as described in 
+Section "Extended Support". After the expiration of the Support Term, the 
+Licensee can no longer upgrade the software under this particular license, 
+although the Licensee retains the right to use any version of the software 
+released within the Support Term.
+
+Business Model: Many first-generation open source vendors 
+(e.g., Linux companies) build their business model on a free product and 
+paid support, while Quantum Leaps charges for the product and offers free 
+1-year technical support for every commercially licensed product. As a 
+consequence, we are highly motivated to keep our software free of bugs, 
+easy to use, and to supply good documentation with many examples to minimize 
+our support load and expenses. This is in contrast to many first-generation 
+open-source vendors, where such strategy would actually lower their revenue 
+and profit from support contracts. 
+
+<b>Common to all RKH Licenses</b>
+
+- 	All are perpetual for the life of the customers product.
+- 	All are royalty free – customer can build unlimited quantities of 
+	their product.
+- 	One year maintenance is included with each new software component 
+	purchase.
+- 	Subsequent years of maintenance is optional but recommended so that
+	updates are continually provided.
+
+<b>Contact information</b>
 
 RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
 \n e-mail:		francuccilea@gmail.com

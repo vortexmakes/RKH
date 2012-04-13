@@ -30,8 +30,8 @@ This manual includes:
 Before using %Trazer you must provides the listed configurations:
 
 - \ref trazer_command to configure comunication link and general options.
-- \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, such 
-as pointer sizes, signal sizes, etc.
+- \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, 
+such as pointer sizes, signal sizes, etc.
 - \ref trazer_evtbl trace event table (\subpage trazer_evt), to define 
 parseable trace events and custom information.
 
@@ -285,8 +285,9 @@ Explanation:
 		event signal to the symbolic name of the signal. This macro also 
 		performs the trace event recording to local stream.
 
-RKH user must generate this particulars trace events as described in RKHTRACE and Trazer will take care of reemplacing 
-the numeric values by the user definition.
+RKH user must generate this particulars trace events as described in RKHTRACE 
+and Trazer will take care of reemplacing the numeric values by the user 
+definition.
 
 
 <HR>

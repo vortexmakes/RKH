@@ -23,7 +23,8 @@ structure in more detail.
 \endcode
 <STRONG> Figure 1 Top level directories </STRONG>
 
-\n
+\n This section includes:
+
 - \ref source_dir
 - \ref portable_dir
 - \ref demo_dir
@@ -271,7 +272,8 @@ The RKH directories and files are described in detail in
 \ref Installation section. The next sections listed below describes 
 the aspects to be considered to port RKH:
 
-\n
+\n This section includes:
+
 - \ref files
 - \ref data
 - \ref rom
@@ -799,7 +801,8 @@ The main objective of this section is to show and also illustrate the most
 important concepts to apply when dealing with RKH and the event-driven 
 applications.
 
-\n
+\n This section includes:
+
 - \ref qref0
 - \ref qref1
 - \ref qref2
@@ -2112,7 +2115,8 @@ for more information about this.
 
 \copydetails rkhtrc.h
 
-\n
+\n This section includes:
+
 - \ref tre
 - \ref trcfg
 - \ref trfn
@@ -2352,7 +2356,8 @@ and to enhance the system performance in a substantial manner. The
 \b rkhcfg.h file shows the general layout of the configuration file.
 Here is an list of all options with their documentation:
 
-\n
+\n This section includes:
+
 - \ref cfg_fw
 - \ref cfg_sm
 - \ref cfg_tr
@@ -2485,6 +2490,8 @@ Here is an list of all options with their documentation:
 using the RKH framework. To do that is proposed a simple example, which is 
 shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
 rules and concepts for making the most out of RKH features.
+
+\n This section includes:
 
 - \subpage basics
 - \subpage preparing

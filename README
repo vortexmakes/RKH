@@ -1,34 +1,42 @@
 
 Overview
 
-RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, and 
-open-source development tool for implementing hierarchical state machines 
-based on modern state machine concepts. This modern techniques are used to 
-give an abstract description of the dynamic behavior of a system in a 
-substantial manner.
+RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
+and open-source development tool for implementing hierarchical 
+state machines based on modern state machine concepts. This modern 
+techniques are used to give an abstract description of the dynamic 
+behavior of a system in a substantial manner.
 
 ------------------------------------------------------------------------------
 
 The main features of RKH
 
-+ State machines representation is based on state tables. 
-+ Representing a state machine with RKH is intuitive, and easy. 
-+ Reflects the state diagram without obfuscation. 
-+ The RKH application are highly maintainable. 
-+ Easy to integrate with any event queuing and dispatching mechanism. 
-+ Useful in embedded systems. 
-+ The most of the RKH implementation is independent of any particular CPU, operating system, or compiler. 
-+ Flexible and user-configurable code generation. 
-+ Very small footprint. 
-+ Support hierarchically nested states, and flat state machine. 
-+ Support conditional, junction, and history pseudostates. 
-+ Support compound transitions with guards. 
-+ Support local transitions. 
-+ Support mechanism for deferring events. 
-+ Support dynamic events. 
-+ Support a easy way to use events with arguments. 
-+ Support systems-friendly assertion macros. 
-+ Support event dispatching with parameters. 
+- State machines representation is based on state tables.
+- Representing a state machine with RKH is intuitive, and easy.
+- Reflects the state diagram without obfuscation.
+- The RKH application are highly maintainable.
+- Easy to integrate with any event queuing and dispatching mechanism.
+- Useful in embedded systems.
+- The most of the RKH implementation is independent of any particular CPU, 
+operating system, or compiler.
+- Flexible and user-configurable code generation.
+- Very small footprint.
+- Include a dispatching event mechanism based on active object's priority.
+- Include a queue module
+- Include a software timer module.
+- Include a fixed-size memory block module.
+- Include a native tracing tool.
+- Support hierarchically nested states, and flat state machine.
+- Support multiple state machines.
+- Support conditional, junction, and history pseudostates.
+- Support compound transitions with guards.
+- Support local transitions.
+- Include mechanism for deferring events.
+- Support event dispatching with parameters.
+- Include dynamic events.
+- Support a easy way to use events with arguments.
+- Support systems-friendly assertion macros like assert, allege, error, 
+require, and ensure.
 
 ------------------------------------------------------------------------------
 
@@ -85,78 +93,86 @@ e-mail: francuccilea@gmail.com
 
 ------------------------------------------------------------------------------
 	
-	RKH changelog file.
+RKH changelog file.
 
-	This file resumes the changes across project version releases.
+This file resumes the changes across project version releases.
+
+Changes between V1.1.6 and V2.0 released 04/13/2012
+
++	Added a platform abstraction layer.
++	Added queue, software timer and dynamic memory modules.
++	Added a dispatching event mechanism based on active object's priority.
++	Because of applied drastic changes this release is not compatible 
+	with previous releases.
 
 Changes between V1.1.6 and V1.1.5 released 02/13/2012
 
-	+	Fixed bug in call rkhallege() macro.
-	+	Fixed bug in rkhallege(), rkhrequire(), rkhensure(), and rkhinvariant() macro.
++	Fixed bug in call rkhallege() macro.
++	Fixed bug in rkhallege(), rkhrequire(), rkhensure(), and rkhinvariant() macro.
 
 Changes between V1.1.4 and V1.1.5 released 02/01/2012
 
-	+	Added support for Codewarrior Coldfire V1.
-	+	Added RKH_DCLR_STATIC_EVENT macro to declare and initialize a event object as one static event.
-	+	Added a new configuration option RKH_EN_STATE_ID to reduce the state structure.
-	+	Added RKH_DCLR_SM_GLOBAL macro to declare a state machine object as global pointer.
-	+	Added assertions within rkh.c module.
-	+	Added assertion events in rkhtrace.h.
-	+	Added definition of rkh_trace_getts() in rkhtrace.h.
-	+	Added condition #if RKH_EN_DYNAMIC_EVENT == 1 to include rkh_put_fifo() and rkh_put_lifo() functions.
-	+	Added checks every config. options from rkhcfg.h in rkhitl.h.
-	+	Enhanced tested version of rkh_engine() function with TEST_GUARD option, see code.
-	+	Tested version of rkh_engine() function with TEST_GUARD option, see code.
-	+	Fixed rkh_tropen, rkh_trclose, rkh_trflush and rkh_trgetts macro definitions.
-	+	Fixed rkh_tropen, rkh_trclose, rkh_trflush and rkh_trgetts macro definitions.
-	+	Changed internal RKH_T structure definition to reduce the use of precious RAM when instantiating a state machine.
-	+	Added: if is not defined RKH_EN_DOXYGEN then RKH_EN_DOXYGEN = 0
-	+	Added RKH_EN_RT_INIT_HSM_OBJ preprocessor option to include rkh_init_hsm_obj() function. Frequently, this function is not used.
-	+	Added rkh_init_hsm_obj() function to initialize a RKH_T structure in runtime.
-	+	Changed RKH_CREATE_HSM and RKH_DCLR_HSM macros to implement a easy way for deriving state machine structures from RKH_T.
-	+	Added dynamic and defer event support. This facility is implemented by means of 
-		rkh_ae(), rkh_gc(), rkh_put_fifo(), rkh_put_lifo(), rkh_defer() and rkh_recall() and
-		added member dynamic_ to RKHEVT_T structure.
-	+	Changed rkh.h file name to rkhitl.h.
-	+	Changed rkhsm.h file name to rkh.h.
-	+	Added rkh_enter_critical() and rkh_exit_critical() to be defined within rkhport.h 
-		file.
-	+	Added assert feature. This facility is defined in rkhassert.h file.
-	+	Eliminated rkhdata.h dependence from rkhtrace.c and rkh.c files.
-	+	Added RKH_NUM_STATE_MACHINES directive in rkhcfg.h and rkhtrace.c files.
-	+	Added enhanced checks to platform-dependent functions within rkhtrace.h.
-	+	Added mksevt() macro.
++	Added support for Codewarrior Coldfire V1.
++	Added RKH_DCLR_STATIC_EVENT macro to declare and initialize a event object as one static event.
++	Added a new configuration option RKH_EN_STATE_ID to reduce the state structure.
++	Added RKH_DCLR_SM_GLOBAL macro to declare a state machine object as global pointer.
++	Added assertions within rkh.c module.
++	Added assertion events in rkhtrace.h.
++	Added definition of rkh_trace_getts() in rkhtrace.h.
++	Added condition #if RKH_EN_DYNAMIC_EVENT == 1 to include rkh_put_fifo() and rkh_put_lifo() functions.
++	Added checks every config. options from rkhcfg.h in rkhitl.h.
++	Enhanced tested version of rkh_engine() function with TEST_GUARD option, see code.
++	Tested version of rkh_engine() function with TEST_GUARD option, see code.
++	Fixed rkh_tropen, rkh_trclose, rkh_trflush and rkh_trgetts macro definitions.
++	Fixed rkh_tropen, rkh_trclose, rkh_trflush and rkh_trgetts macro definitions.
++	Changed internal RKH_T structure definition to reduce the use of precious RAM when instantiating a state machine.
++	Added: if is not defined RKH_EN_DOXYGEN then RKH_EN_DOXYGEN = 0
++	Added RKH_EN_RT_INIT_HSM_OBJ preprocessor option to include rkh_init_hsm_obj() function. Frequently, this function is not used.
++	Added rkh_init_hsm_obj() function to initialize a RKH_T structure in runtime.
++	Changed RKH_CREATE_HSM and RKH_DCLR_HSM macros to implement a easy way for deriving state machine structures from RKH_T.
++	Added dynamic and defer event support. This facility is implemented by means of 
+	rkh_ae(), rkh_gc(), rkh_put_fifo(), rkh_put_lifo(), rkh_defer() and rkh_recall() and
+	added member dynamic_ to RKHEVT_T structure.
++	Changed rkh.h file name to rkhitl.h.
++	Changed rkhsm.h file name to rkh.h.
++	Added rkh_enter_critical() and rkh_exit_critical() to be defined within rkhport.h 
+	file.
++	Added assert feature. This facility is defined in rkhassert.h file.
++	Eliminated rkhdata.h dependence from rkhtrace.c and rkh.c files.
++	Added RKH_NUM_STATE_MACHINES directive in rkhcfg.h and rkhtrace.c files.
++	Added enhanced checks to platform-dependent functions within rkhtrace.h.
++	Added mksevt() macro.
 
 Changes between V1.1.3 and V1.1.4 released 06/10/2011
 
-	+	Changed RKHPPRO_T type to support pointer to HSM as argument.
-	+	Added RKH_EN_PPRO_HSM_ARG configuration.
-	+	Added RKH_HPPTY_T enumeration to be used in RKH_CREATE_HSM() macro.
-	+	Update demo and doc files.
++	Changed RKHPPRO_T type to support pointer to HSM as argument.
++	Added RKH_EN_PPRO_HSM_ARG configuration.
++	Added RKH_HPPTY_T enumeration to be used in RKH_CREATE_HSM() macro.
++	Update demo and doc files.
 
 Changes between V1.1.2 and V1.1.3 released 05/19/2011
 
-	+	Changed RKHEVT_T data type.
-	+	Added rkh_get_sdata() macro to rkhsm.h file.
-	+	Added state's abstract data by means of single inheritance.
-	+	Update demo and doc files.
++	Changed RKHEVT_T data type.
++	Added rkh_get_sdata() macro to rkhsm.h file.
++	Added state's abstract data by means of single inheritance.
++	Update demo and doc files.
 
 Changes between V1.1.0 and V1.1.2 released 05/05/2011
 
-	+	Changed external transition to local transition support. Therefore, 
-		just modified rkh_define_ex_en_states() macro to support this feature 
-		according to UML 2.0.
-	+	Modified demo directory to test local transition feature and added 
-		some improvements to main.c file.
-	+	Fixed and update doc files.
++	Changed external transition to local transition support. Therefore, 
+	just modified rkh_define_ex_en_states() macro to support this feature 
+	according to UML 2.0.
++	Modified demo directory to test local transition feature and added 
+	some improvements to main.c file.
++	Fixed and update doc files.
 
 Changes between V1.0.0 and V1.1.0 released 05/03/2011
 
-	+	Added rkh_else function to be used when if all the guards on 
-		the other branches are false.
-	+	Changed conditional (branch) pseudostate related macros. Therefore, 
-		the demo and doc files too.
-	+	Changed macros RKH_CREATE_*_STATE, RKH_CREATE_TRANS_TABLE and 
-		RKH_END_TRANS_TABLE. 
-	+	Fixed VC08 project settings.
-	+	Changed demo files.
++	Added rkh_else function to be used when if all the guards on 
+	the other branches are false.
++	Changed conditional (branch) pseudostate related macros. Therefore, 
+	the demo and doc files too.
++	Changed macros RKH_CREATE_*_STATE, RKH_CREATE_TRANS_TABLE and 
+	RKH_END_TRANS_TABLE. 
++	Fixed VC08 project settings.
++	Changed demo files.
