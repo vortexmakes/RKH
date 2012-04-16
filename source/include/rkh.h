@@ -183,8 +183,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
  * 	\param ex		pointer to state exit action. This argument is 
  *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
  * 	\param parent	pointer to parent state.
  * 	\param defchild	pointer to default child state or pseudostate.
  * 	\param history	pointer history pseudostate. This argument is 
@@ -216,8 +220,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
  * 	\param ex		pointer to state exit action. This argument is 
  *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
  * 	\param parent	pointer to parent state.
  * 	\param prepro	pointer to input preprocessor function. This function 
  * 					could be called "Moore" action.
@@ -267,16 +275,20 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\brief
  *	This macro creates a conditional pseudostate. 
  *
- *	A condition connector has one incoming transition and can have several 
- *	outgoing transition segments called branches. Branches are labeled with 
- *	guards that determine which one is to be actually taken. 
- *	Since the condition connector is an OR connector, only one of the branches 
- *	can be taken. Each condition connector can have one special branch with 
- *	a guard labeled rkh_else, which is taken if all the guards on the other 
- *	branches are false. 
- *	Branches cannot contain triggers, but in addition to a guard they may 
- *	contain actions. A branch can enter another condition connector, thus 
- *	providing for the nesting of branches.
+ * 	Choice pseudostate (a.k.a conditional) which, when reached, result in 
+ * 	the dynamic evaluation of the guards of the triggers of its outgoing 
+ * 	transitions. This realizes a dynamic conditional branch. It allows 
+ * 	splitting of transitions into multiple outgoing paths such that the 
+ * 	decision on which path to take may be a function of the results of 
+ * 	prior actions performed in the same run-to-completion step. If more 
+ * 	than one of the guards evaluates to true, an arbitrary one is selected. 
+ * 	If none of the guards evaluates to true, then the model is considered 
+ * 	ill-formed. To avoid this, it is recommended to define one outgoing 
+ * 	transition with the predefined “else” guard for every choice 
+ * 	pseudostate.
+ *	Also, branches cannot contain triggers, but in addition to a guard they 
+ *	may contain actions. A branch can enter another condition connector, 
+ *	thus providing for the nesting of branches.
  *	
  *	\sa
  *	RKHSCOND_T structure definition for more information.
@@ -1555,7 +1567,12 @@ void rkh_init_hsm( RKHSMA_T *sma );
  *	In this model, before the system handles a new event it can store it 
  *	until the previous event has completed processing. This model is 
  *	called run to completion or RTC. Thus, the system processes events in 
- *	discrete, indivisible RTC steps.
+ *	discrete, indivisible RTC steps. An RTC step is the period of time in 
+ *	which events are accepted and acted upon. Processing an event always 
+ *	completes within a single model step, including exiting the source 
+ *	state, executing any associated actions, and entering the target state.
+ *	The RKH implementation preserves the transition sequence 
+ *	imposed by Harel's Statechart and UML. 
  *
  * 	\param sma		pointer to previously created state machine application.
  *	\param e		pointer to arrived event. It's used as state-machine's 

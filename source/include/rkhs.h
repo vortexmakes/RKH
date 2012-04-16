@@ -66,6 +66,9 @@
  *	state machine, then the transition step is not completed until the invoked 
  *	object completes its run-to-completion step.
  *	
+ *	The RKH implementation preserves the transition sequence imposed by 
+ *	Harel's Statechart and UML. 
+ *
  *	Run-to-completion may be implemented in various ways. The most common way 
  *	to do that is by an event-loop running in its own thread, and that reads 
  *	event occurrences from a pool.

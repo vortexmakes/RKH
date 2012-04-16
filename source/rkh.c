@@ -137,7 +137,7 @@ typedef struct
 
 typedef struct
 {
-	void *list[ RKH_EXCEED_TRC_SEGS ];
+	void *list[ RKH_SMA_MAX_TRC_SEGS ];
 	void **p;
 	rkhui8_t qty;
 } RKHALIST_T;
@@ -151,10 +151,6 @@ static RKHSLIST_T snd, sx, sn;
 
 static RKHEVT_T *pgevt;
 static RKHSMA_T *pgh;
-
-#if RKH_SMA_TRC_EN == 1
-static RKHTREVT_T te;
-#endif
 
 
 static
@@ -482,7 +478,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 					break;
 #endif
-#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_JUNCTION
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_JUNCTION == 1
 				case RKH_JUNCTION:
 
 					/* Should be added: test transition guard and call it */

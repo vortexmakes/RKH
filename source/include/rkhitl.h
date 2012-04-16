@@ -575,21 +575,21 @@
 	 * 	to insert in-line assembly language statements in the C source code. 
 	 * 	This makes it quite easy to insert processor instructions to enable and 
 	 * 	disable interrupts. Other compilers will actually contain language 
-	 * 	extensions to enable and disable interrupts directly from C. To hide the 
-	 * 	implementation method chosen by the compiler manufacturer, RKH defines 
-	 * 	two macros to disable and enable interrupts: 
+	 * 	extensions to enable and disable interrupts directly from C. To hide 
+	 * 	the implementation method chosen by the compiler manufacturer, RKH 
+	 * 	defines two macros to disable and enable interrupts: 
 	 * 	RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
 	 *
 	 * 	The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto 
 	 * 	the stack and then, disable interrupts. 
-	 * 	RKH_EXIT_CRITICAL() would simply be implemented by restoring the interrupt 
-	 * 	status from the stack. Using this scheme, if it's called a RKH service 
-	 * 	with either interrupts enabled or disabled then, the status would be 
-	 * 	preserved across the call. If calls a RKH service with interrupts disabled,
-	 * 	is potentially extending the interrupt latency of application. The 
-	 * 	application can use RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL() to also 
-	 * 	protect critical sections of code. As a general rule, should always call 
-	 * 	RKH services with interrupts enabled!.
+	 * 	RKH_EXIT_CRITICAL() would simply be implemented by restoring the 
+	 * 	interrupt status from the stack. Using this scheme, if it's called a 
+	 * 	RKH service with either interrupts enabled or disabled then, the 
+	 * 	status would be preserved across the call. If calls a RKH service with 
+	 * 	interrupts disabled, is potentially extending the interrupt latency of 
+	 * 	application. The application can use RKH_ENTER_CRITICAL() and 
+	 * 	RKH_EXIT_CRITICAL() to also protect critical sections of code. As a 
+	 * 	general rule, should always call RKH services with interrupts enabled!.
 	 * 	
 	 * 	\note
 	 * 	These macros are internal to RKH and the user application should 
@@ -816,9 +816,9 @@ struct rkh_t;
  * 	Frequently, the state transition originating at the black ball is called 
  * 	the initial transition. Such transition designates the first active state 
  * 	after the state machine object is created. An initial transition can have 
- * 	associated actions, which in the UML notation are enlisted after the forward 
- * 	slash ( / ). In RKH framework, the application code must trigger the initial 
- * 	transition explicitly by invoking rkh_sma_activate() function.
+ * 	associated actions, which in the UML notation are enlisted after the 
+ * 	forward slash (/). In RKH framework, the application code must trigger 
+ * 	the initial transition explicitly by invoking rkh_sma_activate() function.
  */
 
 #if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_IEVENT == 1
@@ -1082,6 +1082,14 @@ typedef struct rkhsma_t
  * 	This argument is optional, thus it could be eliminated in 
  * 	compile-time by means of RKH_SMA_EN_ENT_ARG_SMA.
  *
+ * 	The RKH implementation preserves the transition sequence imposed by 
+ * 	Harel's Statechart and UML. Specifically, the implemented transition 
+ * 	sequence is as follows:
+ *
+ * 	1. Execute exit actions of the source state.
+ * 	2. Execute the transition actions.
+ * 	3. Execute entry actions of the target state.
+ * 
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
  * 	RKH_CREATE_BASIC_STATE() macros.
@@ -1117,6 +1125,14 @@ typedef struct rkhsma_t
  * 	An exit function takes the state machine pointer as argument. 
  * 	This argument is optional, thus it could be eliminated in 
  * 	compile-time by means of RKH_SMA_EN_EXT_ARG_SMA.
+ *
+ * 	The RKH implementation preserves the transition sequence imposed by 
+ * 	Harel's Statechart and UML. Specifically, the implemented transition 
+ * 	sequence is as follows:
+ *
+ * 	1. Execute exit actions of the source state.
+ * 	2. Execute the transition actions.
+ * 	3. Execute entry actions of the target state.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
@@ -1189,6 +1205,14 @@ typedef struct rkhsma_t
  * 	These arguments are optional, thus they could be eliminated in 
  * 	compile-time by means of RKH_SMA_EN_ACT_ARG_EVT and \b 
  * 	RKH_SMA_EN_ACT_ARG_SMA.
+ *
+ * 	The RKH implementation preserves the transition sequence imposed by 
+ * 	Harel's Statechart and UML. Specifically, the implemented transition 
+ * 	sequence is as follows:
+ *
+ * 	1. Execute exit actions of the source state.
+ * 	2. Execute the transition actions.
+ * 	3. Execute entry actions of the target state.
  *
  * 	\note
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
