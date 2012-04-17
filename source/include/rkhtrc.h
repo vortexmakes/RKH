@@ -1041,14 +1041,15 @@ typedef enum rkh_trc_events
 		 * 	Desc 	= number of executed actions in transition\n
 		 * 	Group 	= RKH_TRCG_SM\n
 		 * 	Id 		= RKH_TRCE_SM_NTRNACT\n
-		 * 	Args	= sma, nta\n
+		 * 	Args	= sma, nta, nts\n
 		 */
 
 		#if RKH_TRC_EN_SM_NTRNACT == 1
-			#define RKH_TRCR_SM_NTRNACT( sma, nta )						\
+			#define RKH_TRCR_SM_NTRNACT( sma, nta, nts )				\
 						RKH_TRC_BEGIN( RKH_TRCG_SM, RKH_TRCE_SM_NTRNACT )	\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_UI8( nta ); 						\
+							RKH_TRC_UI8( nts ); 						\
 						RKH_TRC_END()
 		#endif
 
@@ -1090,7 +1091,7 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_SM_ENSTATE( sma, s )
 		#define RKH_TRCR_SM_EXSTATE( sma, s )
 		#define RKH_TRCR_SM_NENEX( sma, nen, nex )
-		#define RKH_TRCR_SM_NTRNACT( sma, nta )
+		#define RKH_TRCR_SM_NTRNACT( sma, nta, nts )
 		#define RKH_TRCR_SM_CSTATE( sma, s )
 		#define RKH_TRCR_SM_DCH_RC( sma, rc )
 	#endif
@@ -1415,7 +1416,7 @@ typedef enum rkh_trc_events
 	#define RKH_TRCR_SM_ENSTATE( sma, s )
 	#define RKH_TRCR_SM_EXSTATE( sma, s )
 	#define RKH_TRCR_SM_NENEX( sma, nen, nex )
-	#define RKH_TRCR_SM_NTRNACT( sma, nta )
+	#define RKH_TRCR_SM_NTRNACT( sma, nta, nts )
 	#define RKH_TRCR_SM_CSTATE( sma, s )
 	#define RKH_TRCR_SM_DCH_RC( sma, rc )
 

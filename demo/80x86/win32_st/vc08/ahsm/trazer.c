@@ -268,7 +268,7 @@ static const TRE_T traces[] =
 	MKTR( 	RKH_TRCE_SM_NENEX,	"SM", "NUM_EN_EX", 
 			"sma=%s, nentry=%d, nexit=%d",	h_sym2u8 ),
 	MKTR( 	RKH_TRCE_SM_NTRNACT,"SM", "NUM_TRN_ACT", 
-			"sma=%s, ntrnaction=%d", 		h_symu8 ),
+			"sma=%s, ntra=%d, ntrs=%d", 	h_sym2u8 ),
 	MKTR( 	RKH_TRCE_SM_CSTATE,	"SM", "COMP_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
 	MKTR( 	RKH_TRCE_SM_DCH_RC,	"SM", "DISPATCH_RCODE", 
