@@ -1220,16 +1220,16 @@ typedef struct rkhsma_t
 
 #if RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 1
 	typedef void (*RKHACT_T)( const struct rkhsma_t *sma, RKHEVT_T *pe );
-	#define rkh_call_action(h,e)	(*CTA( q ))( h, e )
+	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h), (e) )
 #elif RKH_SMA_EN_ACT_ARG_EVT == 1 && RKH_SMA_EN_ACT_ARG_SMA == 0
 	typedef void (*RKHACT_T)( RKHEVT_T *pe );
-	#define rkh_call_action(h,e)	(*CTA( q ))( e )
+	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (e) )
 #elif RKH_SMA_EN_ACT_ARG_EVT == 0 && RKH_SMA_EN_ACT_ARG_SMA == 1
 	typedef void (*RKHACT_T)( const struct rkhsma_t *sma );
-	#define rkh_call_action(h,e)	(*CTA( q ))( h )
+	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h) )
 #else
 	typedef void (*RKHACT_T)( void );
-	#define rkh_call_action(h,e)	(*CTA( q ))()
+	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))()
 #endif
 
 
