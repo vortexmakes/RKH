@@ -84,26 +84,31 @@ RKH_MODULE_NAME( rkh )
 					break;
 
 
+#define RKH_EXEC_TRANSITION( sma, e )							\
+				for( pal = al; nal != 0; ++pal, --nal )			\
+					RKH_CALL_ACTION( *pal, (sma), (e) )
+
+
 #if RKH_TRC_EN == 1
-	#define rkh_clr_step()				(step = 0)
-	#define rkh_inc_step()				++step
-	#define rkh_get_step()				step
+	#define RKH_CLR_STEP()				(step = 0)
+	#define RKH_INC_STEP()				++step
+	#define RKH_GET_STEP()				step
 #else
-	#define rkh_clr_step()
-	#define rkh_inc_step()
-	#define rkh_get_step()
+	#define RKH_CLR_STEP()
+	#define RKH_INC_STEP()
+	#define RKH_GET_STEP()
 #endif
 
 
 #if RKH_SMA_EN_GET_INFO == 1
-	#define info_rcv_events( p )		++(p)->hinfo.rcvevt
-	#define info_exec_trs( p )			++(p)->hinfo.exectr
+	#define INFO_RCV_EVENTS( p )		++(p)->hinfo.rcvevt
+	#define INFO_EXEC_TRS( p )			++(p)->hinfo.exectr
 #else
-	#define info_rcv_events( p )
-	#define info_exec_trs( p )
+	#define INFO_RCV_EVENTS( p )		((void)0)
+	#define INFO_EXEC_TRS( p )			((void)0)
 #endif
 
-
+	                                                  /* macros for casting */
 #define CB( p )							((RKHBASE_T*)(p))
 #define CR( p )							((RKHSREG_T*)(p))
 #define CC( p )							((RKHSCOND_T*)(p))
@@ -115,91 +120,58 @@ RKH_MODULE_NAME( rkh )
 
 static RKHROM RKHTR_T tr_null = { RKH_ANY, NULL, NULL, NULL };
 
-#if RKH_SMA_EN_HCAL == 1
-                                                   /* set of entered states */
-static RKHROM RKHSREG_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
-                                                     /* state nesting depth */
-static rkhui8_t depth;
-#endif
 
-static RKHEVT_T *pgevt;
-static RKHSMA_T *pgh;
-                                      /* set of executed transition actions */
-static RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
-                                        /* pointer to transition action set */
-static RKHACT_T *pal;
-                                        /* # of executed transition actions */
-static rkhui8_t nal;
-
-
-static
-HUInt
-rkh_exec_exit_action( RKHROM RKHSREG_T *src, RKHROM RKHSREG_T *tgt, RKHSMA_T *sma, 
-							rkhui8_t *pnx, rkhui8_t *pnn )
-{
-	RKHROM RKHSREG_T *stx, *stn, **snl;
-	rkhui8_t ix_x, islca, ix_n = 0;
-#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
-	RKHROM RKHSHIST_T *h;
-#endif
-
-	for( ix_x = islca = 0, stx = src; 
-			stx != CR( 0 ); stx = stx->parent, ++ix_x )
-	{
-		for( ix_n = 0, snl = sentry, stn = tgt; 
-				stn != CR( 0 ); stn = stn->parent, ++snl, ++ix_n )
-			if( stx == stn )
-			{
-				islca = 1;								       /* found LCA */
-				break;
-			}
-			else
-				*snl = stn;				   /* add state in entry state list */
-
-		if( islca == 0 )
-		{
-					       /* perform the exit actions of the exited states */
-			RKH_EXEC_EXIT( stx, CM( sma ) );
-			 						   /* update histories of exited states */
-			RKH_UPDATE_SHALLOW_HIST( stx, h );
-			RKH_TRCR_SM_EXSTATE( 	sma,       /* this state machine object */ 
-									stx );                  /* exited state */
-		}
-		else
-			break;
-	}
-											             /* save the # of: */
-	*pnx = ix_x;                         				  /* exited states */
-	*pnn = ix_n;                         			 /* and entered states */
-	return 0;
-}
+#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
+	for( ix_n = 0, ix_x = islca = 0, stx = src; 						\
+			stx != CR( 0 ); stx = stx->parent, ++ix_x )					\
+	{																	\
+		for( ix_n = 0, snl = sentry, stn = tgt; 						\
+				stn != CR( 0 );	stn = stn->parent, ++snl, ++ix_n )		\
+			if( stx == stn )											\
+			{															\
+				islca = 1;								/* found LCA */ \
+				break;													\
+			}															\
+			else if( ix_n < RKH_SMA_MAX_HCAL_DEPTH )					\
+				*snl = stn;		    /* add state in entry state list */ \
+			else														\
+			{															\
+				RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_HCAL_LEVEL );		\
+				RKHERROR();												\
+				return RKH_EXCEED_TRC_SEGS;								\
+			}															\
+		if( islca == 0 )												\
+		{																\
+			        /* perform the exit actions of the exited states */ \
+			RKH_EXEC_EXIT( stx, CM( sma ) );							\
+			 			        /* update histories of exited states */ \
+			RKH_UPDATE_SHALLOW_HIST( stx, h );							\
+			RKH_TRCR_SM_EXSTATE( sma,   /* this state machine object */ \
+								 stx );              /* exited state */ \
+		}																\
+		else															\
+			break;														\
+	}																	\
+	                                 /* save the # of entered states */ \
+	nn = ix_n
 
 
 #if RKH_SMA_EN_HCAL == 1
-	static
-	void
-	rkh_exec_entry_action( rkhui8_t nen, RKHSMA_T *sma )
-	{
-		RKHROM RKHSREG_T *stn, **snl;
-		rkhui8_t ix_n;
-
-		/* from LCA state to target state */
-		for( ix_n = nen, snl = &sentry[ ix_n ]; ix_n != 0; --ix_n )
-		{
-			--snl;
-			RKH_EXEC_ENTRY( *snl, CM( sma ) );
-			RKH_TRCR_SM_ENSTATE( sma, *snl );
+	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )				\
+		for( ix_n = nen, snl = &sentry[ ix_n ]; ix_n != 0; --ix_n )			\
+		{																	\
+			--snl;															\
+			RKH_EXEC_ENTRY( *snl, CM( sma ) );								\
+			RKH_TRCR_SM_ENSTATE( sma, *snl );								\
+		}																	\
+		for( stn = (*snl)->defchild; stn != CR( 0 ); stn = stn->defchild )	\
+		{																	\
+			RKH_EXEC_ENTRY( stn, CM( sma ) );								\
+			RKH_TRCR_SM_ENSTATE( sma, stn );								\
 		}
-
-		/* from target state to "end" target state */
-		for( stn = (*snl)->defchild; stn != CR( 0 ); stn = stn->defchild )
-		{
-			RKH_EXEC_ENTRY( stn, CM( sma ) );
-			RKH_TRCR_SM_ENSTATE( sma, stn );
-		}
-	}
 #else
-	#define rkh_exec_entry_action( nen, sma )		((void)0)
+	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )				\
+					((void)0)
 #endif
 
 
@@ -234,15 +206,6 @@ rkh_add_tr_action( RKHACT_T *list, RKHACT_T act, rkhui8_t *num )
 #else
 	#define rkh_update_deep_hist( f )		((void)0)
 #endif
-
-
-static
-void
-rkh_exec_transition( RKHSMA_T *sma, RKHEVT_T *e, RKHACT_T *list, rkhui8_t size )
-{
-	while( size-- != 0 )
-		RKH_CALL_ACTION( *list++, sma, e );
-}
 
 
 void 
@@ -282,21 +245,34 @@ rkh_clear_history( RKHROM RKHSHIST_T *h )
 HUInt
 rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 {
-	RKHROM RKHSREG_T *cs, *s, *ts;
+	RKHROM RKHSREG_T *cs, *ts;
 	RKHROM void *ets;
 	RKHROM RKHTR_T *tr;
 	HUInt first_regular, inttr;
 	RKHE_T in;
 #if RKH_TRC_EN == 1
-	rkhui8_t step, nx, nn;
+	rkhui8_t step, nn;
 #endif
+	                      /* to deal with Statechart's transition sequence */
+	RKHROM RKHSREG_T *stn, *stx, **snl;
+	rkhui8_t ix_n, ix_x, islca;
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
+	RKHROM RKHSHIST_T *h;
+#endif
+                                                   /* set of entered states */
+	RKHROM RKHSREG_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
+                                      /* set of executed transition actions */
+	RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
+                                        /* pointer to transition action set */
+	RKHACT_T *pal;
+                                        /* # of executed transition actions */
+	rkhui8_t nal;
+
 
     RKHASSERT( 	sma != NULL && pe != NULL );
 
-	pgh = sma;
-	pgevt = pe;
 	inttr = 0;
-	info_rcv_events( sma );
+	INFO_RCV_EVENTS( sma );
 	RKH_HK_DISPATCH( sma, pe );
 															/* ---- Stage 1 */
 	cs = sma->state;						           /* get current state */
@@ -311,17 +287,17 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	                     /* stop traversing the states that are higher than */
 	                                        /* this state in the hierarchy. */
 #if RKH_SMA_EN_HCAL == 1
-	for( s = cs, tr = CT(0); s != CR(0); s = s->parent )
+	for( stn = cs, tr = CT(0); stn != CR(0); stn = stn->parent )
 	{
-		in = RKH_PROCESS_INPUT( s, sma, pe );	
-		FIND_TRANS( tr, s->trtbl, in );
+		in = RKH_PROCESS_INPUT( stn, sma, pe );	
+		FIND_TRANS( tr, stn->trtbl, in );
 		if( IS_FOUND_TRANS( tr ) )
 			break;
 	}
 #else
-	s = cs;
-	in = rkh_process_input( s, sma, pe );	
-	FIND_TRANS( tr, s->trtbl, in );
+	stn = cs;
+	in = rkh_process_input( stn, sma, pe );	
+	FIND_TRANS( tr, stn->trtbl, in );
 #endif
 
 	if( IS_NOT_FOUND_TRANS( tr ) )					   /* transition taken? */
@@ -333,19 +309,15 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	ets = tr->target;	   /* temporarily save the target of the transition */
 	ts = CR( ets );
 
+	nn = 0;
 	first_regular = 1;		   /* set first regular state in the transition */
-	depth = 0;							     /* and the state nesting depth */
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
-	rkh_clr_step();
-#if RKH_TRC_EN == 1
-	nn = nx = 0;
-#endif
-
+	RKH_CLR_STEP();
 	RKH_TRCR_SM_DCH(	sma, 				   /* this state machine object */
 						pe );									   /* event */
 	RKH_TRCR_SM_TRN( 	sma, 				   /* this state machine object */
-						s, 						 /* transition source state */
+						stn, 					 /* transition source state */
 						ts );					 /* transition target state */
 
 	                                                 /* enabled transition? */
@@ -364,7 +336,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		return RKH_EXCEED_TRC_SEGS;
 	}
 
-	rkh_inc_step();			  /* increment the number of transition segment */
+	RKH_INC_STEP();			  /* increment the number of transition segment */
 	inttr = IS_INTERNAL_TRANSITION( ets );    /* is an internal transition? */
 
 	if( IS_NOT_INTERNAL_TRANSITION() )
@@ -415,7 +387,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						return RKH_EXCEED_TRC_SEGS;
 					}
 											  /* another transition segment */
-					rkh_inc_step();
+					RKH_INC_STEP();
 					ets = tr->target;
 					break;
 #endif
@@ -432,7 +404,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						return RKH_EXCEED_TRC_SEGS;
 					}
 											  /* another transition segment */
-					rkh_inc_step();
+					RKH_INC_STEP();
 					ets = CJ(ets)->target;
 					tr = &tr_null;
 					break;
@@ -474,13 +446,13 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		   /* to the order states are exited, from low state to high state, */
 		 						      /* update histories of exited states, */
 			                     /* and, generate the set of entered states */
-		rkh_exec_exit_action( cs, ts, sma, &nx, &nn );
+		RKH_EXEC_EXIT_ACTION( cs, ts, sma, nn );
 															/* ---- Stage 5 */
 		                                             /* update deep history */
 		rkh_update_deep_hist( CR( ets ) );
 		RKH_TRCR_SM_NENEX( 	sma,               /* this state machine object */ 
-							nn,                         /* # entered states */
-							nx );                        /* # exited states */
+							ix_n,                       /* # entered states */
+							ix_x );                      /* # exited states */
 	}
 #endif
 													        /* ---- Stage 6 */
@@ -488,10 +460,10 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			         /* according to the order in which they are written on */
 				       /* the transition, from the action closest to source */
                             /* state to the action closest to target state. */
-	rkh_exec_transition( sma, pe, al, nal );
 	RKH_TRCR_SM_NTRNACT( 	sma,               /* this state machine object */ 
 							nal,                      /* # executed actions */
-							rkh_get_step() );      /* # transition segments */
+							RKH_GET_STEP() );      /* # transition segments */
+	RKH_EXEC_TRANSITION( sma, pe );
 
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
@@ -502,7 +474,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 				/* For lowest level states that were entered, which are not */
 		         /* basic states, perform default transitions (recursively) */
 		                      /* until the statechart reaches basic states. */
-		rkh_exec_entry_action( nn, sma );
+		RKH_EXEC_ENTRY_ACTION( nn, sma, stn, snl, ix_n );
 														    /* ---- Stage 8 */
 		sma->state = CR( ets );                 /* update the current state */
 		RKH_TRCR_SM_STATE( 	sma, 			   /* this state machine object */	
@@ -510,7 +482,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	}
 
 	RKH_TRCR_SM_DCH_RC( sma, RKH_OK );
-	info_exec_trs( sma );
+	INFO_EXEC_TRS( sma );
 	return RKH_OK;
 }
 
