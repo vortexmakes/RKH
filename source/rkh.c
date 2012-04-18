@@ -68,7 +68,6 @@ RKH_MODULE_NAME( rkh )
 #define is_not_valid_conditional(s)		((s)->cdl == NULL)
 #define is_pseudo( s )					((CB(s)->type&RKH_REGULAR)==0)
 #define is_composite( s )				(CB(s)->type==RKH_COMPOSITE)
-#define is_hcal( sma )					((sma)->romrkh->ppty==HCAL)
 #define is_not_conditional( s )			(CB(s)->type!=RKH_CONDITIONAL)
 
 
@@ -147,6 +146,7 @@ static RKHROM RKHTR_T tr_null = { RKH_ANY, NULL, NULL, NULL };
 static RKHALIST_T act_list;
 #if RKH_SMA_EN_HCAL == 1
 static RKHSLIST_T sx, sn;
+static RKHROM RKHSREG_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
 #endif
 
 static RKHEVT_T *pgevt;
@@ -168,27 +168,14 @@ find_trans( RKHROM RKHTR_T *ptr, RKHE_T input )
 #if RKH_SMA_EN_HCAL == 1
 static
 HUInt
-rkh_make_setxn( RKHSLIST_T *to, RKHROM RKHSREG_T *from )
-{
-	RKHROM RKHSREG_T *s;
-
-	for( to->qty = 0, s = from, to->p = to->list; 
-			s != NULL; s = s->parent, ++to->qty, ++to->p )
-	{
-		*to->p = CV( s );
-		if( to->qty >= RKH_SMA_MAX_HCAL_DEPTH )
-			return 1;
-	}
-	return 0;
-}
-
-static
-void
-rkh_exit_entry( RKHROM RKHSREG_T *src, RKHROM RKHSREG_T *tgt )
+rkh_exit_entry( RKHROM RKHSREG_T *src, RKHROM RKHSREG_T *tgt, RKHSMA_T *sma, 
+							rkhui8_t *pnx, rkhui8_t *pnn )
 {
 	RKHROM RKHSREG_T *stx, *stn, **snl;
 	rkhui8_t ix_x, islca, ix_n = 0;
-	RKHROM RKHSREG_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
+#if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
+	RKHROM RKHSHIST_T *h;
+#endif
 
 	for( ix_x = islca = 0, stx = src; 
 			stx != CR( 0 ); stx = stx->parent, ++ix_x )
@@ -205,28 +192,47 @@ rkh_exit_entry( RKHROM RKHSREG_T *src, RKHROM RKHSREG_T *tgt )
 
 		if( islca == 0 )
 		{
-			rkh_exec_exit( stx, CM( pgh ) );
-			RKH_TRCR_SM_EXSTATE( pgh, stx );
+			RKH_EXEC_EXIT( stx, CM( sma ) );
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
+			if( rkh_update_shallow_hist( stx, h ) )
+				*h->target = CR( stx );
+#endif
+			RKH_TRCR_SM_EXSTATE( sma, stx );
 		}
 		else
 			break;
 	}
 
+	*pnx = ix_x;
+	*pnn = ix_n;
+
+	return 0;
+}
+
+
+static
+void
+rkh_exec_entry( rkhui8_t nn, RKHSMA_T *sma )
+{
+	RKHROM RKHSREG_T *stn, **snl;
+	rkhui8_t ix_n;
+
 	/* from LCA state to target state */
-	for( snl = &sentry[ ix_n ]; ix_n != 0; --ix_n )
+	for( ix_n = nn, snl = &sentry[ ix_n ]; ix_n != 0; --ix_n )
 	{
 		--snl;
-		rkh_exec_entry( *snl, CM( pgh ) );
-		RKH_TRCR_SM_ENSTATE( pgh, *snl );
+		RKH_EXEC_ENTRY( *snl, CM( sma ) );
+		RKH_TRCR_SM_ENSTATE( sma, *snl );
 	}
 
 	/* from target state to least descendant state */
 	for( stn = (*snl)->defchild; stn != CR( 0 ); stn = stn->defchild )
 	{
-		rkh_exec_entry( stn, CM( pgh ) );
-		RKH_TRCR_SM_ENSTATE( pgh, stn );
+		RKH_EXEC_ENTRY( stn, CM( sma ) );
+		RKH_TRCR_SM_ENSTATE( sma, stn );
 	}
 }
+
 #endif
 
 
@@ -263,7 +269,6 @@ rkh_add_list( void *pl, void *pe, HUInt max )
 
 
 #if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_DEEP_HISTORY == 1
-
 static
 void
 rkh_update_deep_hist( RKHROM RKHSREG_T *from )
@@ -275,26 +280,9 @@ rkh_update_deep_hist( RKHROM RKHSREG_T *from )
 		if( ( h = s->history ) != NULL && CB(h)->type == RKH_DHISTORY )
 			*h->target = from;
 }
-
 #else
-
-#define rkh_update_deep_hist( f )
-
+#define rkh_update_deep_hist( f )		((void)0)
 #endif
-
-
-static
-void
-rkh_traverse_snd( RKHSMA_T *sma, RKHROM RKHSREG_T *fcs )
-{
-	RKHROM RKHSREG_T *s;
-
-	for( s = fcs; s != NULL; s = s->defchild )
-	{
-		rkh_exec_entry( s, CM( sma ) );
-		RKH_TRCR_SM_ENSTATE( sma, s );
-	}
-}
 
 
 static
@@ -321,7 +309,7 @@ rkh_traverse_list( void *plist, HUInt lname )
 		{
 #if RKH_SMA_EN_HCAL == 1
 			case EXIT_LIST:
-				rkh_exec_exit( CR( q ), CM( pgh ) );
+				RKH_EXEC_EXIT( CR( q ), CM( pgh ) );
 #if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
 				if( rkh_update_shallow_hist( q, h ) )
 					*h->target = CR( q );
@@ -335,7 +323,7 @@ rkh_traverse_list( void *plist, HUInt lname )
 #if RKH_SMA_EN_HCAL == 1
 			case SND_LIST:
 			case SN_LIST:
-				rkh_exec_entry( CR( q ), CM( pgh ) );
+				RKH_EXEC_ENTRY( CR( q ), CM( pgh ) );
 				RKH_TRCR_SM_ENSTATE( pgh, q );
 				break;
 #endif
@@ -363,20 +351,17 @@ rkh_init_hsm( RKHSMA_T *sma )
     RKHASSERT( 	sma != NULL && 
 				sma->romrkh->istate != NULL );
 	RKH_TRCR_SM_INIT( sma, sma->romrkh->istate );
-	rkh_exec_init( sma );
+	RKH_EXEC_INIT( sma );
 
 #if RKH_SMA_EN_HCAL == 1
-	if( is_hcal( sma ) )
+	for( s = sma->romrkh->istate; s != NULL; s = s->defchild )
 	{
-		for( s = sma->romrkh->istate; s != NULL; s = s->defchild )
-		{
-			sma->state = s;
-			rkh_exec_entry( s, CM( sma ) );
-			RKH_TRCR_SM_ENSTATE( sma, s );
-		}
-
-		rkh_update_deep_hist( sma->state );
+		sma->state = s;
+		RKH_EXEC_ENTRY( s, CM( sma ) );
+		RKH_TRCR_SM_ENSTATE( sma, s );
 	}
+
+	rkh_update_deep_hist( sma->state );
 #endif
 }
 
@@ -395,14 +380,14 @@ rkh_clear_history( RKHROM RKHSHIST_T *h )
 HUInt
 rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 {
-	RKHROM RKHSREG_T *cs, *s, *ts, *fcs;
+	RKHROM RKHSREG_T *cs, *s, *ts;
 	RKHROM void *ets;
 	RKHROM RKHTR_T *tr;
 	HUInt first_regular, inttr;
 	RKHE_T in;
 
 #if RKH_TRC_EN == 1
-	rkhui8_t step;
+	rkhui8_t step, nx, nn;
 #endif
 
     RKHASSERT( 	sma != NULL && pe != NULL );
@@ -411,17 +396,15 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	pgevt = pe;
 	inttr = 0;
 	info_rcv_events( sma );
-
 	RKH_HK_DISPATCH( sma, pe );
-
-	/* Stage 1 */
+															/* ---- Stage 1 */
 	cs = sma->state;						  /* get and save current state */
 
-	/* Stage 2 */
+														    /* ---- Stage 2 */
 #if RKH_SMA_EN_HCAL == 1
-										 /* find the transition to be taken: */
-										 /* s = source state */
-										 /* tr = triggered transition */
+										/* find the transition to be taken: */
+										                /* s = source state */
+										       /* tr = triggered transition */
 	for( s = cs, tr = CT(0); s != CR(0); s = s->parent )
 	{
 		in = rkh_process_input( s, sma, pe );	
@@ -440,15 +423,16 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		RKH_TRCR_SM_DCH_RC( sma, RKH_INPUT_NOT_FOUND );	   /* ignored event */
 		return RKH_INPUT_NOT_FOUND;
 	}
-
-	/* Stage 3 */
+															/* ---- Stage 3 */
 	ets = tr->target;	   /* temporarily save the target of the transition */
 	ts = CR( ets );		   /* temporarily save the target of the transition */
-	fcs = NULL;				  	   /* initialize the first composite state, */
-	first_regular = 1;		   /* the first regular state in the transition */
+	first_regular = 1;		   /* set first regular state in the transition */
 	depth = 0;							     /* and the state nesting depth */
 	rkh_init_list( &act_list );
 	rkh_clr_step();
+#if RKH_TRC_EN == 1
+	nn = nx = 0;
+#endif
 
 	RKH_TRCR_SM_DCH(	sma, 				   /* this state machine object */
 						pe );									   /* event */
@@ -456,7 +440,8 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						s, 						 /* transition source state */
 						ts );					 /* transition target state */
 
-	/* Stage 4 */
+															/* ---- Stage 4 */
+								  /* store action of the transition segment */
 	if( rkh_add_list( 	&act_list, 
 						tr->action, 
 						RKH_SMA_MAX_TRC_SEGS ) )
@@ -467,8 +452,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	}
 
 	rkh_inc_step();			  /* increment the number of transition segment */
-											  /* is an internal transition? */
-	inttr = is_internal_transition( ets );
+	inttr = is_internal_transition( ets );    /* is an internal transition? */
 
 	if( is_not_internal_transition() )
 	{
@@ -482,7 +466,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			RKH_TRCR_SM_DCH_RC( sma, RKH_GUARD_FALSE );
 			return RKH_GUARD_FALSE;
 		}
-
 								/* ... traverses the taken transition until */
    				   		  /* the segment target state (ets) == simple state */
 		while( is_pseudo( ets ) || is_composite( ets ) )
@@ -491,20 +474,25 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			{
 #if RKH_SMA_EN_HCAL == 1
 				case RKH_COMPOSITE:
-			       /* take the default child and set it as new target state */
+										 /* found a composite (super) state */
+										      /* in the compound transition */
+			         /* take from that its default child and then it is set */
+													  /*as new target state */
 					if( first_regular )
 					{
 						ts = CR( ets );
-						fcs = CR( ets )->defchild;
 						first_regular = 0;
 					}
 
-					ets = CR(ets)->defchild;
+					ets = CR( ets )->defchild;
 					break;
 #endif
 #if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CONDITIONAL == 1
 				case RKH_CONDITIONAL:
-					find_branch( CC(ets)->trtbl, tr );
+					            /* found a conditional (choice) pseudostate */
+										      /* in the compound transition */
+						/* evaluates the guards of its outgoing transitions */
+					find_branch( CC( ets )->trtbl, tr );
 
 					if( is_not_found_trans( tr ) )
 					{
@@ -520,18 +508,17 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						RKHERROR();
 						return RKH_EXCEED_TRC_SEGS;
 					}
-
+											  /* another transition segment */
 					rkh_inc_step();
 					ets = tr->target;
-
 					break;
 #endif
 #if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_JUNCTION == 1
 				case RKH_JUNCTION:
-
-					/* Should be added: test transition guard and call it */
-					/* ... */
-
+					                        /* found a junction pseudostate */
+										      /* in the compound transition */
+					  /* Should be added: test transition guard and call it */
+																	 /* ... */
 					if( rkh_add_list( 	&act_list, 
 										CJ(ets)->action, 
 										RKH_SMA_MAX_TRC_SEGS ) )
@@ -540,17 +527,17 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						RKHERROR();
 						return RKH_EXCEED_TRC_SEGS;
 					}
-
+											  /* another transition segment */
 					rkh_inc_step();
 					ets = CJ(ets)->target;
 					tr = &tr_null;
-
 					break;
 #endif
 #if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && ( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
 				case RKH_SHISTORY:
 				case RKH_DHISTORY:
-
+	                         /* found a shallow or deep history pseudostate */
+										      /* in the compound transition */
 					if( is_empty_hist( ets ) )
 						ets = CH(ets)->parent;
 					else
@@ -561,6 +548,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 #endif
 					break;
 				default:
+						                   /* fatal error: unknown state... */
 					RKH_TRCR_SM_DCH_RC( sma, RKH_UNKNOWN_STATE );
 					RKHERROR();
 					return RKH_UNKNOWN_STATE;
@@ -575,52 +563,36 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			ts = CR( ets );			  /* finally, set the main target state */
 
 #if RKH_SMA_EN_HCAL == 1
-	if( is_hcal( sma ) && is_not_internal_transition() )
+	if( is_not_internal_transition() )
 	{
-		/* Stage 5 & 6 */
-		rkh_exit_entry( cs, ts );
-
-		if( rkh_make_setxn( &sx, cs ) || rkh_make_setxn( &sn, ts ) )
-		{
-			RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_HCAL_LEVEL );
-			RKHERROR();
-			return RKH_EXCEED_HCAL_LEVEL;
-		}
-
-		/* Stage 7 */
+															/* ---- Stage 5 */
+															/* ---- Stage 6 */
+															/* ---- Stage 7 */
+															/* ---- Stage 8 */
+															/* ---- Stage 9 */
+		rkh_exit_entry( cs, ts, sma, &nx, &nn );
 		rkh_update_deep_hist( CR( ets ) );
-
-		/* Stage 8 */
-		rkh_define_ex_en_states();
-		RKH_TRCR_SM_NENEX( sma, sn.qty, sx.qty );
-
-		/* Stage 9 */
-		rkh_traverse_list( &sx, EXIT_LIST );
+		RKH_TRCR_SM_NENEX( sma, nn, nx );
 	}
 #endif
-
-	/* Stage 10 */
+													       /* ---- Stage 10 */
 	RKH_TRCR_SM_NTRNACT( sma, act_list.qty, rkh_get_step() );
 	rkh_traverse_list( &act_list, ACT_LIST );
 
 	if( is_not_internal_transition() )
 	{
-		/* Stage 11 */
+												 		   /* ---- Stage 11 */
 #if RKH_SMA_EN_HCAL == 1
-		if( is_hcal( sma ) )
-		{
-			rkh_traverse_list( &sn, SN_LIST );
-			rkh_traverse_snd( sma, fcs );
-		}
+		rkh_exec_entry( nn, sma );
 #endif
-
-		/* Stage 12 */
-		sma->state = CR( ets );
-		RKH_TRCR_SM_STATE( sma, sma->state );
+														   /* ---- Stage 12 */
+		sma->state = CR( ets );	      /* set current state to next RTC step */
+		RKH_TRCR_SM_STATE( 	sma, 			   /* this state machine object */	
+							sma->state );				   /* current state */
 	}
 
-	info_exec_trs( sma );
 	RKH_TRCR_SM_DCH_RC( sma, RKH_OK );
+	info_exec_trs( sma );
 	return RKH_OK;
 }
 

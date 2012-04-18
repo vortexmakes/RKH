@@ -824,28 +824,28 @@ struct rkh_t;
 #if RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_IEVENT == 1
 	typedef void ( *RKHINIT_T )( const void *sma, 
 										const struct rkhevt_t *e );
-	#define rkh_exec_init( h )										\
+	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( (h), CIA(h)->romrkh->ievent );				\
 	}
 #elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_IEVENT == 0
 	typedef void ( *RKHINIT_T )( const void *sma );
-	#define rkh_exec_init( h )										\
+	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( (h) );										\
 	}
 #elif RKH_SMA_EN_INIT_ARG_SMA == 0 && RKH_SMA_EN_IEVENT == 1
 	typedef void ( *RKHINIT_T )( const struct rkhevt_t *e );
-	#define rkh_exec_init( h )										\
+	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( CIA(h)->romrkh->ievent );					\
 	}
 #else
 	typedef void ( *RKHINIT_T )( void );
-	#define rkh_exec_init( h )										\
+	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))();											\
@@ -1099,14 +1099,14 @@ typedef struct rkhsma_t
 
 #if RKH_SMA_EN_ENT_ARG_SMA == 1
 	typedef void ( *RKHENT_T )( const struct rkhsma_t *sma );
-	#define rkh_exec_entry( s, h )				\
+	#define RKH_EXEC_ENTRY( s, h )				\
 	{											\
 		if( (s)->enter != NULL )				\
 			(*(s)->enter)( h ); 				\
 	}
 #else
 	typedef void ( *RKHENT_T )( void );
-	#define rkh_exec_entry( s, h )				\
+	#define RKH_EXEC_ENTRY( s, h )				\
 	{											\
 		if( (s)->enter != NULL )				\
 			(*(s)->enter)(); 					\
@@ -1141,14 +1141,14 @@ typedef struct rkhsma_t
 
 #if RKH_SMA_EN_EXT_ARG_SMA == 1
 	typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma );
-	#define rkh_exec_exit( s, h )				\
+	#define RKH_EXEC_EXIT( s, h )				\
 	{											\
 		if( (s)->exit != NULL )					\
 			(*(s)->exit)( h ); 					\
 	}
 #else
 	typedef void ( *RKHEXT_T )( void );
-	#define rkh_exec_exit( s, h )				\
+	#define RKH_EXEC_EXIT( s, h )				\
 	{											\
 		if( (s)->exit != NULL )					\
 			(*(s)->exit)(); 					\

@@ -276,7 +276,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a conditional pseudostate. 
  *
  * 	Choice pseudostate (a.k.a conditional) which, when reached, result in 
- * 	the dynamic evaluation of the guards of the triggers of its outgoing 
+ * 	the dynamic evaluation of the guards of its outgoing 
  * 	transitions. This realizes a dynamic conditional branch. It allows 
  * 	splitting of transitions into multiple outgoing paths such that the 
  * 	decision on which path to take may be a function of the results of 
