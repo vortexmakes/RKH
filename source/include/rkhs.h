@@ -113,6 +113,25 @@
 *	As long as the active objects don't share resources, they can run 
 *	concurrently and complete their RTC steps independently.
 *	
+*	Example:
+*
+* 	\anchor fig15
+* 	\image html rkhex.png "Figure 15 - A multi-automata application"
+*
+* 	WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW \n
+* 	WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW \n
+* 	WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW \n
+*
+* 	\anchor fig16
+* 	\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed priority preemptive scheduling"
+*
+*	\n Explanation:\n
+*
+*	\li (1)
+*	\li (2)
+*	\li (3)
+*	\li (4)
+*
 *	<b>Simple cooperative kernel</b>
 *	
 *	The active object computing model can also work with nonpreemptive 
@@ -151,6 +170,16 @@
 *	ones.
 *	[MS]
 *	
+* 	\anchor fig17
+* 	\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed priority cooperative scheduling"
+*
+*	\n Explanation:\n
+*
+*	\li (1)
+*	\li (2)
+*	\li (3)
+*	\li (4)
+*
 *	<B>Dealing with RTC model in a nonpreemtive manner</B>
 *	
 *	Here is the basic algorithm for interpreting the native kernel. 
