@@ -31,6 +31,8 @@ operating system, or compiler.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
 - Support local transitions.
+- Support the entry and exit actions.
+- Implement the traditional transition sequence.
 - Include mechanism for deferring events.
 - Support event dispatching with parameters.
 - Include dynamic events.
