@@ -159,7 +159,7 @@ Args: sma=%s, nentry=%d, nexit=%d
 Event: RKH_TRCE_SM_NTRNACT
 Group: SM
 Name: NUM_TRN_ACT
-Args: sma=%s, ntrnaction=%d
+Args: sma=%s, ntra=%d, ntrs=%d
 
 Event: RKH_TRCE_SM_CSTATE
 Group: SM

@@ -81,7 +81,7 @@
  *	principle, can be pre-empted and its execution suspended in favor of 
  *	another thread executing on the same processing node. 
  *	(This is determined by the scheduling policy of the underlying thread 
- *	environment — no assumptions are made about this policy.). When the 
+ *	environment, no assumptions are made about this policy.). When the 
  *	suspended thread is assigned processor time again, it resumes its event 
  *	processing from the point of pre-emption and, eventually, completes its 
  *	event processing.
@@ -113,24 +113,62 @@
 *	As long as the active objects don't share resources, they can run 
 *	concurrently and complete their RTC steps independently.
 *	
-*	Example:
-*
+*	The \ref fig15 "Figure 15" shows the events flow in a interval of time 
+*	to state machines A, B, and C, which have priority 2, 1 and 3, 
+*	respectively. 
+*	Note that, the lower the number the higher the priority. Moreover, the 
+*	\ref fig16 "Figure 16" and \ref fig17 "Figure 17" are considered to 
+*	illustrate how the preemptive kernel and cooperative kernel plays out in 
+*	an active object system like \ref fig15 "Figure 15". \n \n
+* 	
 * 	\anchor fig15
 * 	\image html rkhex.png "Figure 15 - A multi-automata application"
 *
-* 	WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW \n
-* 	WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW \n
-* 	WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW \n
+* 	\n \ref fig16 "Figure 16" demonstrates how the active objects defined 
+* 	on the \ref fig15 "Figure 15" would be scheduled by a underlying 
+* 	preemptive kernel for executing event-driven system despicted in 
+* 	\ref fig15 "Figure 15". \n \n
 *
 * 	\anchor fig16
 * 	\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed priority preemptive scheduling"
 *
-*	\n Explanation:\n
+*	\n The following explanation section illuminates the interesting 
+*	points:\n
 *
-*	\li (1)
-*	\li (2)
-*	\li (3)
-*	\li (4)
+*	\li (0) When all event queues run out of events, neither of three active 
+*	objects are able to run, the underlying kernel executes the idle task to 
+*	give the application a chance to switch the MCU to a low-power sleep mode.
+*	\li (1) The ISR executes and, among other things, posts event \b A to the 
+*	active object \b A, which is now able to execute. It has a higher 
+*	priority than the OS/RTOS idle task so is given processor time.
+*	\li (2) The preemptive kernel switches context to the active object 
+*	\b A to process the event to completation.
+*	\li (3) While active object \b A is still executing, the ISR posts the 
+*	event \b E to active object \b C, which is now able to execute, but as it 
+*	has a lower priority than active object \b A it is not scheduled any 
+*	processor time.
+*	\li (4) Once again, while active object \b A is still executing, the ISR 
+*	posts the event \b D to active object \b A, but it is already running the 
+*	event is not processed, thus respecting the RTC execution model.
+*	\li (5-6) The ISR executes and posts event \b B to the active object 
+*	\b B, which is now able to execute. Now it is able to execute. As \b B has 
+*	the higher priority \b A is suspended before it has completed processing 
+*	the event, and \b B is scheduled processor time.
+*	\li (7) Idem (3).
+*	\li (8) The active object \b B has been completed the event processing. 
+*	It cannot continue until another event has been received so suspends 
+*	itself and the active object \b A is again the highest priority active 
+*	object that is able to run so is scheduled processor time so the event 
+*	\b A processing can be resumed.
+*	\li (9) The active object \b A has been completed the event processing, 
+*	and \b A is again the highest priority active object that is able to run 
+*	so is scheduled processor time so the event \b D processing can be 
+*	completed.
+*	\li (10) Idem (5) and (6).
+*	\li (11) Idem (8).
+*	\li (12) Idem (9).
+*	\li (13) Idem (11).
+*	\li (14) Idem (0).
 *
 *	<b>Simple cooperative kernel</b>
 *	
@@ -170,15 +208,38 @@
 *	ones.
 *	[MS]
 *	
+* 	\n \ref fig16 "Figure 17" demonstrates how the active objects defined 
+* 	on the \ref fig15 "Figure 15" would be scheduled by a simple, 
+* 	cooperative, and non-preemptive kernel for executing event-driven 
+* 	system despicted in \ref fig15 "Figure 15". \n \n
+*
 * 	\anchor fig17
 * 	\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed priority cooperative scheduling"
 *
-*	\n Explanation:\n
+*	\n The following explanation section illuminates the interesting 
+*	points:\n
 *
-*	\li (1)
-*	\li (2)
-*	\li (3)
-*	\li (4)
+*	\li (0) When all event queues run out of events, neither of three active 
+*	objects are able to run, the underlying kernel executes the idle task to 
+*	give the application a chance to switch the MCU to a low-power sleep mode.
+*	\li (1) The ISR executes and, among other things, posts event \b A to the 
+*	active object \b A, which is now able to execute. It has a higher 
+*	priority than the OS/RTOS idle task so is given processor time.
+*	\li (2) The preemptive kernel switches context to the active object 
+*	\b A to process the event to completation.
+*	\li (3,4,5) While active object \b A is still executing, the ISR posts the 
+*	events \b E, \b D and \b B to active objects \b C and \b B, which are now 
+*	able to execute, but as the underlying kernel is non-preemtive one active 
+*	object \b A it is not scheduled any processor time until it has completed 
+*	the current execution.
+*	\li (6) The active object \b A has been completed the event processing. 
+*	The active object \b B is the highest priority active object that is able 
+*	to run so is scheduled processor time until is has completed the processing 
+*	of event \b B in a RTC manner.
+*	\li (7) Idem (3,4,5).
+*	\li (8) Idem (6).
+*	\li (9) Idem (3,4,5).
+*	\li (10,11,12,13) Idem (6).
 *
 *	<B>Dealing with RTC model in a nonpreemtive manner</B>
 *	

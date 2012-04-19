@@ -1,7 +1,8 @@
 /** \page Installation Installation
 \image html rkh_bunner.jpg
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home" \n
+Next: \ref Porting "Porting"
 
 The RKH project is organized through a hierarchical directory structure
 to facilitate its distribution, support and maintenance.
@@ -255,10 +256,15 @@ like object files, executable, and among others.
 \li ( 7) As mentioned above, each of application that use RKH must be defined 
 its own configuration file, rkhcfg.h.
 
+Prev: \ref main_page "Home" \n
+Next: \ref Porting "Porting"
+
 \page Porting Porting
 \image html rkh_bunner.jpg
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home" \n
+Next: \ref cfg "Configuration"
+
 
 This section describes how to adapt the RKH to various platforms, which
 is a process called porting. RKH contains a clearly defined abstraction
@@ -795,7 +801,8 @@ typedef signed int		HInt;
 \page qref Quick reference
 \image html rkh_bunner.jpg
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home" \n
+Next: \ref Installation "Installation"
 
 The main objective of this section is to show and also illustrate the most 
 important concepts to apply when dealing with RKH and the event-driven 
@@ -825,7 +832,7 @@ applications.
 <HR>
 \section qref0 Defining a state machine
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference" \n
 
 A state machine application is defined with the RKH_SMA_CREATE() macro and 
 declared with the RKH_SMA_DCLR() macro. Frequently, each state machine is 
@@ -934,12 +941,12 @@ structure. See \ref cfg section for more information.
 	ID number that could be used to uniquely identify a state machine 
 	application.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref1 Defining a superstate
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
 macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
@@ -1021,12 +1028,12 @@ structure. See \ref cfg section for more information.
 	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
 	ID number. This number allows to uniquely identify a state.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref2 Defining a basic state
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A basic state (also called substate) is defined with the 
 RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
@@ -1150,12 +1157,12 @@ structure. See \ref cfg section for more information.
 	this case, as the first member of the derived structure. See \a prepro 
 	member of RKHSREG_T structure for more information.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref16 Defining a state transition table
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 In RKH every state is associated with a transition table, which is composed 
 of a well-defined set of transitions.
@@ -1228,12 +1235,12 @@ is_sync( RKHEVT_T *pe )
 }
 \endcode
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref3 Defining a conditional pseudostate
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A conditional pseudostate (also called choice pseudostate) is defined with 
 the RKH_CREATE_COND_STATE() macro and declared with the 
@@ -1301,12 +1308,12 @@ structure. See \ref cfg section for more information.
 	of hierarchical state machines uses up to 4 transition segments. 
 	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref17 Defining a branch table
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A condition connector has one incoming transition and can have several 
 outgoing transition segments called branches. Branches are labeled with 
@@ -1352,12 +1359,12 @@ will be invoked, and \c S4 will be the next state.
 As said above, the actions and guards in RKH framework are represented by 
 functions.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref4 Defining a shallow history pseudostate
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A shallow history pseudostate is defined with the 
 RKH_CREATE_SHALLOW_HISTORY_STATE() macro and declared with the 
@@ -1426,12 +1433,12 @@ structure. See \ref cfg section for more information.
 - \b RKH_EN_SHALLOW_HISTORY: \n
 	Enable (1) or disable (0) the shallow history usage.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref5 Defining a deep history pseudostate
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A deep history pseudostate is defined with the 
 RKH_CREATE_DEEP_HISTORY_STATE() macro and declared with the 
@@ -1501,12 +1508,12 @@ structure. See \ref cfg section for more information.
 - \b RKH_EN_DEEP_HISTORY: \n
 	Enable (1) or disable (0) the deep history usage.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref6 Defining a junction pseudostate
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 A conditional pseudostate (also called branch pseudostate) is defined with 
 the RKH_CREATE_JUNCTION_STATE() macro and declared with the 
@@ -1579,12 +1586,12 @@ structure. See \ref cfg section for more information.
 - \b RKH_EN_JUNCTION: \n
 	Enable (1) or disable (0) the junction connector usage.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref14 Actions
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 This section summarize the functions and its prototypes used by RKH 
 framework. As mentioned before, the framework make use the callbacks, i.e. 
@@ -1714,12 +1721,12 @@ is_zero( const struct rkh_t *sma, RKHEVT_T *pe )
 }
 \endcode
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref12 Using events with parameters
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 An event can have associated parameters, allowing the event 
 instance to convey not only the occurrence of some interesting 
@@ -1757,12 +1764,12 @@ state transition.
 See also rkh_sma_put_fifo(), rkh_sma_put_lifo(), RKH_ALLOC_EVENT(), 
 RKH_SET_STATIC_EVENT(), and RKH_GC().
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref7 Using dynamic and static events
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 In RKH as other frameworks, the actual event instances are either constant 
 events (or static events) statically allocated at compile time or dynamic events
@@ -1947,12 +1954,12 @@ to recycle "dynamic" events.
 		the wvent only when it determines that the event is no longer 
 		referenced.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref13 Preprocessing events before of dispatch it
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 \copydetails RKHPPRO_T
 
@@ -1973,12 +1980,12 @@ preprocess_keys( const struct rkh_t *sma, RKHEVT_T *pe )
 }
 \endcode
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref8 Deferring and recalling events
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 Event deferral comes in very handy when an event arrives in a 
 particularly inconvenient moment but can be deferred for some later time, 
@@ -2010,30 +2017,30 @@ STORE ONLY POINTERS to events, not the whole event objects.
 The pointer to the recalled event to the caller, or NULL if no 
 event has been recalled.
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref9 Using assertions
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 \copydetails rkhassert.h
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref10 Debugging an application based on RKH's state machines
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 Please refer to \ref dbg section. 
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref15 Initializing a state machine and dispatching events
 
-\n \ref qref "< Quick reference"
+\n Prev: \ref qref "Quick reference"
 
 The following listing shows an very simple example of the main() function 
 implementation and demostrates how to use the RKH API.
@@ -2106,12 +2113,13 @@ for more information about this.
 		MYEVT_T.
 \li (11-12) Close the trace session and terminates the program.
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home"
 
 \page dbg Tracing tool
 \image html rkh_bunner.jpg
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home" \n
+Next: \ref Download "Download"
 
 \copydetails rkhtrc.h
 
@@ -2346,7 +2354,8 @@ Here is the \ref trazer
 \page cfg Configuration
 \image html rkh_bunner.jpg
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home" \n
+Next: \ref Usage "Representing a state machine: step by step"
 
 Each RKH application must have its own configuration file, called 
 \b rkhcfg.h. This file adapts and configures RKH by means of compiler
@@ -2484,7 +2493,8 @@ Here is an list of all options with their documentation:
 \page Usage Representing a state machine: step by step
 \image html rkh_bunner.jpg
 
-\ref main_page "< Home"
+Prev: \ref main_page "Home" \n
+Next: \ref dbg "Tracing tool"
 
 \n The goal in this section is to explain how to represent a state machine 
 using the RKH framework. To do that is proposed a simple example, which is 

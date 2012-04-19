@@ -3,8 +3,8 @@
 \image html rkh_bunner.jpg
 
 \n
-\ref basics "< Basics"\n
-\ref identify_events "> Identifying, generating and sending events"\n\n
+Prev: \ref basics "Basics"\n
+Next: \ref identify_events "Identifying, generating and sending events"\n\n
 
 The sample code for the example presented above ported to x86 is located 
 in the directory \c \\demo\\80x86\\vc08\\win32_st\\vc08\\ahsm. It contains 
@@ -61,8 +61,8 @@ are listed below:
 					See the \subpage trazer_c file.
 
 \n
-\ref basics "< Basics"\n
-\ref identify_events "> Identifying, generating and sending events"\n\n
+Prev: \ref basics "Basics"\n
+Next: \ref identify_events "Identifying, generating and sending events"\n\n
 */
 
 
@@ -71,8 +71,8 @@ are listed below:
 \image html rkh_bunner.jpg
 
 \n
-\ref preparing "< Preparing the application files"\n
-\ref identify "> Identifying and classifying states and pseudostates"\n
+Prev: \ref preparing "Preparing the application files"\n
+Next: \ref identify "Identifying and classifying states and pseudostates"\n
 
 The events in the \c my state machine have been identified in the state 
 diagram in \ref fig1 "Figure 1". Note that events consist really of two 
@@ -203,8 +203,8 @@ of posting dynamic and static events from the interrupt service routines
 \li (6) The dynamic event is posted directly to the \c my SMA..
 
 \n
-\ref preparing "< Preparing the application files"\n
-\ref identify "> Identifying and classifying states and pseudostates"\n
+Prev: \ref preparing "Preparing the application files"\n
+Next: \ref identify "Identifying and classifying states and pseudostates"\n
 */
 
 
@@ -213,8 +213,8 @@ of posting dynamic and static events from the interrupt service routines
 \image html rkh_bunner.jpg
 
 \n
-\ref identify_events "< Identifying, generating and sending events"\n
-\ref representing "> Representing the state machine"\n\n
+Prev: \ref identify_events "Identifying, generating and sending events"\n
+Next: \ref representing "Representing the state machine"\n\n
 
 The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
 presented above, sorted by state nesting level.
@@ -224,8 +224,8 @@ presented above, sorted by state nesting level.
 \image html sttbl.jpg "Figure 2 - State nesting"
 
 \n
-\ref identify_events "< Identifying, generating and sending events"\n
-\ref representing "> Representing the state machine"\n\n
+Prev: \ref identify_events "Identifying, generating and sending events"\n
+Next: \ref representing "Representing the state machine"\n\n
 */
 
 
@@ -234,8 +234,8 @@ presented above, sorted by state nesting level.
 \image html rkh_bunner.jpg
 
 \n
-\ref identify "< Identifying and classifying states and pseudostates"\n
-\ref running "> Running"\n\n
+Prev: \ref identify "Identifying and classifying states and pseudostates"\n
+Next: \ref running "Running"\n\n
 
 Now, this section explains how to implement the \c my state machine 
 using the RKH framework, which is shown in \ref fig1 "Figure 1".
@@ -249,8 +249,8 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 - \subpage rep_inc
 
 \n
-\ref identify "< Identifying and classifying states and pseudostates"\n
-\ref running "> Running"\n\n
+Prev: \ref identify "Identifying and classifying states and pseudostates"\n
+Next: \ref running "Running"\n\n
 
 */
 
@@ -259,8 +259,8 @@ using the RKH framework, which is shown in \ref fig1 "Figure 1".
 \image html rkh_bunner.jpg
 
 \n
-\ref Usage "< Representing a state machine"\n
-\ref preparing "> Preparing the application files"\n\n
+Prev: \ref Usage "Representing a state machine"\n
+Next: \ref preparing "Preparing the application files"\n\n
 
 As mentioned previously, RKH is a generic, flexible, modular, highly portable, 
 ANSI-C compliant, and open-source development tool for implementing 
@@ -305,8 +305,8 @@ and efficient implementation. Broadly speaking, the RKH implementation has
 been designed from the ground up to be used in 8-bits platforms but can be 
 easily adapted to 16 or 32-bits platforms.
 
-\ref Usage "< Representing a state machine"\n
-\ref preparing "> Preparing the application files"
+Prev: \ref Usage "Representing a state machine"\n
+Next: \ref preparing "Preparing the application files"
 */
 
 
@@ -315,8 +315,8 @@ easily adapted to 16 or 32-bits platforms.
 \image html rkh_bunner.jpg
 
 \n
-\ref representing "< Representing the state machine"\n
-\ref rep_cs "> Instantiating the composite states"\n\n
+Prev: \ref representing "Representing the state machine"\n
+Next: \ref rep_cs "Instantiating the composite states"\n\n
 
 A state machine application (SMA) a.k.a active object, is defined with the 
 RKH_SMA_CREATE() macro and declared with the RKH_SMA_DCLR() macro. Frequently, 
@@ -420,8 +420,8 @@ Explanation
 \li (11)Declares a opaque pointer to \c my SMA to be used as a global object.
 
 \n
-\ref representing "< Representing the state machine"\n
-\ref rep_cs "> Instantiating the composite states"\n\n
+Prev: \ref representing "Representing the state machine"\n
+Next: \ref rep_cs "Instantiating the composite states"\n\n
 */
 
 
@@ -430,8 +430,8 @@ Explanation
 \image html rkh_bunner.jpg
 
 \n
-\ref rep_sm "< Instantiating the state machine"\n
-\ref rep_bs "> Declaring the basic states"\n\n
+Prev: \ref rep_sm "Instantiating the state machine"\n
+Next: \ref rep_bs "Declaring the basic states"\n\n
 
 A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
 macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
@@ -524,8 +524,8 @@ Also, shows its implementation using the RKH framework.
 \n
 
 \n
-\ref rep_sm "< Instantiating the state machine"\n
-\ref rep_bs "> Declaring the basic states"\n\n
+Prev: \ref rep_sm "Instantiating the state machine"\n
+Next: \ref rep_bs "Declaring the basic states"\n\n
 
 */
 
@@ -535,8 +535,8 @@ Also, shows its implementation using the RKH framework.
 \image html rkh_bunner.jpg
 
 \n
-\ref rep_cs "< Instantiating the composite states"\n
-\ref rep_cjh "> Declaring the pseudostates"\n\n
+Prev: \ref rep_cs "Instantiating the composite states"\n
+Next: \ref rep_cjh "Declaring the pseudostates"\n\n
 
 A basic state (also called substate) is defined with the 
 RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
@@ -633,8 +633,8 @@ Also, shows its implementation using the RKH framework.
 \image html is31_s32.png "Figure 10 - basic states \"S31\", and \"S32\""
 
 \n
-\ref rep_cs "< Instantiating the composite states"\n
-\ref rep_cjh "> Declaring the pseudostates"\n\n
+Prev: \ref rep_cs "Instantiating the composite states"\n
+Next: \ref rep_cjh "Declaring the pseudostates"\n\n
 */
 
 
@@ -643,8 +643,8 @@ Also, shows its implementation using the RKH framework.
 \image html rkh_bunner.jpg
 
 \n
-\ref rep_bs "< Declaring the basic states"\n
-\ref rep_def "> Defining the state machine's objects"\n\n
+Prev: \ref rep_bs "Declaring the basic states"\n
+Next: \ref rep_def "Defining the state machine's objects"\n\n
 
 The conditional, junction, shallow history, and deep history pseudostates 
 are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
@@ -719,8 +719,8 @@ functions.
 \image html ih.png "Figure 14 - history pseudostates \"H\" and \"DH\""
 
 \n
-\ref rep_bs "< Declaring the basic states"\n
-\ref rep_def "> Defining the state machine's objects"\n\n
+Prev: \ref rep_bs "Declaring the basic states"\n
+Next: \ref rep_def "Defining the state machine's objects"\n\n
 */
 
 
@@ -729,8 +729,8 @@ functions.
 \image html rkh_bunner.jpg
 
 \n
-\ref rep_cjh "< Declaring the pseudostates"\n
-\ref rep_act "> Declaring the actions"\n\n
+Prev: \ref rep_cjh "Declaring the pseudostates"\n
+Next: \ref rep_act "Declaring the actions"\n\n
 
 The \subpage my_h file contains the definitions of objet structures (state 
 machine, states, and pseudostates) and other facilities shared among 
@@ -843,8 +843,8 @@ it is convenient to declare them in the separate header file \subpage my_h.
 		- #RKH_DCLR_SHIST_STATE: 	shallow history pseudostate.
 
 \n
-\ref rep_cjh "< Declaring the pseudostates"\n
-\ref rep_act "> Declaring the actions"\n\n
+Prev: \ref rep_cjh "Declaring the pseudostates"\n
+Next: \ref rep_act "Declaring the actions"\n\n
 */
 
 
@@ -853,8 +853,8 @@ it is convenient to declare them in the separate header file \subpage my_h.
 \image html rkh_bunner.jpg
 
 \n
-\ref rep_def "< Defining the state machine's objects"\n
-\ref rep_inc "> Include files"\n\n
+Prev: \ref rep_def "Defining the state machine's objects"\n
+Next: \ref rep_inc "Include files"\n\n
 
 All init, entry, exit, and transition actions of \c my state machine 
 are implemented in \subpage myact_c file and declaring in 
@@ -1016,8 +1016,8 @@ x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 \endcode
 
 \n
-\ref rep_def "< Defining the state machine's objects"\n
-\ref rep_inc "> Include files"\n\n
+Prev: \ref rep_def "Defining the state machine's objects"\n
+Next: \ref rep_inc "Include files"\n\n
 */
 
 
@@ -1026,8 +1026,8 @@ x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 \image html rkh_bunner.jpg
 
 \n
-\ref rep_act "< Declaring the actions"\n
-\ref representing "> Representing the state machine"\n\n
+Prev: \ref rep_act "Declaring the actions"\n
+Next: \ref representing "Representing the state machine"\n\n
 
 The application C-file \subpage my_c that uses RKH must include a few 
 header files. 
@@ -1063,8 +1063,8 @@ header files.
 \li (3) This header file declares the actions to be executed.
 
 \n
-\ref rep_act "< Declaring the actions"\n
-\ref representing "> Representing the state machine"\n\n
+Prev: \ref rep_act "Declaring the actions"\n
+Next: \ref representing "Representing the state machine"\n\n
 */
 
 
@@ -1073,8 +1073,8 @@ header files.
 \image html rkh_bunner.jpg
 
 \n
-\ref representing "< Representing the state machine"\n
-\ref Usage "> Representing a state machine: step by step"\n\n
+Prev: \ref representing "Representing the state machine"\n
+Next: \ref Usage "Representing a state machine: step by step"\n\n
 
 \copydetails rkhs.h
 
@@ -1116,6 +1116,6 @@ main( int argc, char *argv[] )
 \endcode
 
 \n
-\ref representing "< Representing the state machine"\n
-\ref Usage "> Representing a state machine: step by step"\n\n
+Prev: \ref representing "Representing the state machine"\n
+Next: \ref Usage "Representing a state machine: step by step"\n\n
 */
