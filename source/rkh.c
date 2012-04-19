@@ -41,13 +41,22 @@ RKH_MODULE_NAME( rkh )
 
 
 #define IS_NOT_INTERNAL_TRANSITION()	(inttr == 0)
-#define IS_INTERNAL_TRANSITION(s)		((s) == NULL)
-#define IS_EMPTY_HIST(s)				(*(CH(s))->target == NULL)
+#define IS_INTERNAL_TRANSITION(s)		((s) == CR(0))
+#define IS_EMPTY_HIST(s)				(*(CH(s))->target==(RKHROM void*)0 )
 #define IS_FOUND_TRANS(t)				((t)->event != RKH_ANY)
 #define IS_NOT_FOUND_TRANS(t)			((t)->event == RKH_ANY)
-#define IS_VALID_GUARD(t)				((t)->guard != NULL)
+#define IS_VALID_GUARD(t)				((t)->guard != CG(0))
 #define IS_PSEUDO( s )					((CB(s)->type&RKH_REGULAR)==0)
 #define IS_COMPOSITE( s )				(CB(s)->type==RKH_COMPOSITE)
+
+#if RKH_EN_NATIVE_SCHEDULER == 1
+	#define RKH_RAM		static
+#else
+			          /* allocate the automatic variables of rkh_dispatch() */
+										          /* function on the stack. */
+	                                   /* Therefore, the code is reentrant. */
+	#define RKH_RAM
+#endif
 
 
 #define FIND_TRANS( t, tbl, sig )							\
@@ -58,10 +67,11 @@ RKH_MODULE_NAME( rkh )
 
 #if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
 	#define RKH_UPDATE_SHALLOW_HIST( s, h )							\
-				if(	CR((s))->parent != NULL && 						\
-						((h) = CR((s))->parent->history) != NULL && \
+				if(	CR((s))->parent != CPT(0) && 					\
+						((h) = CR((s))->parent->history) != CH(0)&&	\
 				 			CB((h))->type == RKH_SHISTORY )			\
 					*(h)->target = CR( (s) )
+
 #else
 	#define RKH_UPDATE_SHALLOW_HIST( s, h )			((void)0)
 #endif
@@ -69,7 +79,7 @@ RKH_MODULE_NAME( rkh )
 
 #if RKH_SMA_EN_PPRO == 1
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
-				(RKHE_T)( ((s)->prepro != NULL) ? 					\
+				(RKHE_T)( ((s)->prepro != CPP(0)) ?					\
 						rkh_call_prepro((s),(h),(pe)) : (pe)->e )
 #else
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
@@ -90,35 +100,39 @@ RKH_MODULE_NAME( rkh )
 
 
 #if RKH_TRC_EN == 1
-	#define RKH_CLR_STEP()				(step = 0)
-	#define RKH_INC_STEP()				++step
-	#define RKH_GET_STEP()				step
+	#define RKH_CLR_STEP()			(step = 0)
+	#define RKH_INC_STEP()			++step
+	#define RKH_GET_STEP()			step
 #else
-	#define RKH_CLR_STEP()
-	#define RKH_INC_STEP()
-	#define RKH_GET_STEP()
+	#define RKH_CLR_STEP()			((void)0)
+	#define RKH_INC_STEP()			((void)0)
+	#define RKH_GET_STEP()			((void)0)
 #endif
 
 
 #if RKH_SMA_EN_GET_INFO == 1
-	#define INFO_RCV_EVENTS( p )		++(p)->hinfo.rcvevt
-	#define INFO_EXEC_TRS( p )			++(p)->hinfo.exectr
+	#define INFO_RCV_EVENTS( p )	++(p)->hinfo.rcvevt
+	#define INFO_EXEC_TRS( p )		++(p)->hinfo.exectr
 #else
-	#define INFO_RCV_EVENTS( p )		((void)0)
-	#define INFO_EXEC_TRS( p )			((void)0)
+	#define INFO_RCV_EVENTS( p )	((void)0)
+	#define INFO_EXEC_TRS( p )		((void)0)
 #endif
 
 	                                                  /* macros for casting */
-#define CB( p )							((RKHBASE_T*)(p))
-#define CR( p )							((RKHSREG_T*)(p))
-#define CC( p )							((RKHSCOND_T*)(p))
-#define CJ( p )							((RKHSJUNC_T*)(p))
-#define CH( p )							((RKHSHIST_T*)(p))
-#define CM( p )							((RKHROM RKHSMA_T*)(p))
-#define CT( p )							((RKHROM RKHTR_T*)(p))
+#define CB( p )						((RKHBASE_T*)(p))
+#define CR( p )						((RKHSREG_T*)(p))
+#define CC( p )						((RKHSCOND_T*)(p))
+#define CJ( p )						((RKHSJUNC_T*)(p))
+#define CH( p )						((RKHSHIST_T*)(p))
+#define CM( p )						((RKHROM RKHSMA_T*)(p))
+#define CT( p )						((RKHROM RKHTR_T*)(p))
+#define CPT( p )					((RKHROM struct rkhsreg_t*)(p))
+#define CPP( p )					((RKHPPRO_T)(p))
+#define CG( p )						((RKHGUARD_T)(p))
+#define CA( p )						((RKHACT_T)(p))
 
 
-static RKHROM RKHTR_T tr_null = { RKH_ANY, NULL, NULL, NULL };
+static RKHROM RKHTR_T tr_null = { RKH_ANY, CG(0), CA(0), (RKHROM void *)0 };
 
 
 #define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
@@ -199,8 +213,9 @@ rkh_add_tr_action( RKHACT_T *list, RKHACT_T act, rkhui8_t *num )
 		RKHROM RKHSREG_T *s;
 		RKHROM RKHSHIST_T *h;
 
-		for( s = from->parent; s != NULL; s = s->parent )
-			if( ( h = s->history ) != NULL && CB(h)->type == RKH_DHISTORY )
+		for( s = from->parent; s != (RKHROM RKHSREG_T *)0; s = s->parent )
+			if( ( h = s->history ) != (RKHROM RKHSHIST_T *)0 && 
+					CB(h)->type == RKH_DHISTORY )
 				*h->target = from;
 	}
 #else
@@ -215,13 +230,13 @@ rkh_init_hsm( RKHSMA_T *sma )
 	RKHROM RKHSREG_T *s;
 #endif
 
-    RKHASSERT( 	sma != NULL && 
-				sma->romrkh->istate != NULL );
+    RKHASSERT( 	sma != (RKHSMA_T *)0 && 
+				sma->romrkh->istate != (RKHROM RKHSREG_T *)0 );
 	RKH_TRCR_SM_INIT( sma, sma->romrkh->istate );
 	RKH_EXEC_INIT( sma );
 
 #if RKH_SMA_EN_HCAL == 1
-	for( s = sma->romrkh->istate; s != NULL; s = s->defchild )
+	for( s = sma->romrkh->istate; s != (RKHROM RKHSREG_T *)0; s = s->defchild )
 	{
 		sma->state = s;
 		RKH_EXEC_ENTRY( s, CM( sma ) );
@@ -237,7 +252,7 @@ rkh_init_hsm( RKHSMA_T *sma )
 void
 rkh_clear_history( RKHROM RKHSHIST_T *h )
 {
-	*h->target = NULL;
+	*h->target = (RKHROM void *)0;
 }
 #endif
 
@@ -251,25 +266,25 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	HUInt first_regular, inttr;
 	RKHE_T in;
 #if RKH_TRC_EN == 1
-	rkhui8_t step, nn;
+	rkhui8_t step;
 #endif
-	                      /* to deal with Statechart's transition sequence */
-	RKHROM RKHSREG_T *stn, *stx, **snl;
-	rkhui8_t ix_n, ix_x, islca;
 #if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
 	RKHROM RKHSHIST_T *h;
 #endif
+	                      /* to deal with Statechart's transition sequence */
+	RKH_RAM RKHROM RKHSREG_T *stn, *stx, **snl;
+	RKH_RAM rkhui8_t ix_n, ix_x, islca, nn;
                                                    /* set of entered states */
-	RKHROM RKHSREG_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
+	RKH_RAM RKHROM RKHSREG_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
                                       /* set of executed transition actions */
-	RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
+	RKH_RAM RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
                                         /* pointer to transition action set */
-	RKHACT_T *pal;
+	RKH_RAM RKHACT_T *pal;
                                         /* # of executed transition actions */
-	rkhui8_t nal;
+	RKH_RAM rkhui8_t nal;
 
 
-    RKHASSERT( 	sma != NULL && pe != NULL );
+    RKHASSERT( sma != (RKHSMA_T *)0 && pe != (RKHEVT_T *)0 );
 
 	inttr = 0;
 	INFO_RCV_EVENTS( sma );
