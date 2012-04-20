@@ -73,18 +73,14 @@ Licensing
 
 Copyright (C) 2010 Leandro Francucci. All rights reserved.
 
-RKH is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version.
+RKH is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
-details.
+RKH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along 
-with RKH package. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with RKH package. If not, see <http://www.gnu.org/licenses/>.
+
+(*) Observe that, the GPLv3 can be used for research & development and educational purposes (academic purposes). 
+(**) When the source code of your application should not be published under the GNU GPLv3 license (closed source code), please, contact contact me. See Contact information section.
 
 ------------------------------------------------------------------------------
 
