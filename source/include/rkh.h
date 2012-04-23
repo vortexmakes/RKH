@@ -1293,6 +1293,82 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  * 	\brief
  * 	Registers a new event pool into the event pool list.
  *
+ * 	Before using dynamic events (or event with arguments) the application 
+ * 	code must register the event pools, which stores the events as a 
+ * 	fixed-sized memory block. Each event pool must be registered with the 
+ * 	RKH framework, by means of the rkh_epool_register() function.
+ *
+ *	This function initializes one event pool at a time and must be called
+ * 	exactly once for each event pool before the pool can be used.
+ *
+ * 	The application code might initialize the event pools by making calls 
+ * 	to the rkh_epool_register() function. However, for the simplicity of 
+ * 	the internal implementation, the application code initialize event pools 
+ * 	in the ascending order of the event size.
+ *
+ * 	Many RTOSes provide fixed block-size heaps, a.k.a. memory pools that can
+ * 	be adapted for RKH event pools. In case such support is missing, RKH 
+ * 	provides a native RKH event pool implementation. The macro 
+ * 	#RKH_DYNE_TYPE determines the type of event pool used by a particular 
+ * 	RKH port. See structure RKHMP_T for more information.
+ *
+ * 	For adapting RKH event pools to any fixed-size memory block service RTOS 
+ * 	provided the application code must define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
+ * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT() macros.
+ *
+ *  The dynamic allocation of events is optional then if the 
+ *  #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
+ * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
+ * 	its own implementation of dynamic memory management.
+ * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
+ * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
+ * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+ * 
+ *	Example:
+ *	\code
+ *	#define SIZEOF_EP0STO				64
+ *	#define SIZEOF_EP0_BLOCK			sizeof( TOUT_T )
+ *
+ *	#define SIZEOF_EP1STO				32
+ *	#define SIZEOF_EP1_BLOCK			sizeof( DIAL_T )
+ *
+ *	#define SIZEOF_EP2STO				32
+ *	#define SIZEOF_EP2_BLOCK			sizeof( SETUP_T )
+ *	
+ *	typedef struct
+ *	{
+ *		RKHEVT_T evt;                   // base structure
+ *		int timerno;					// parameter 'timerno'
+ *	} TOUT_T;
+ *
+ *	typedef struct
+ *	{
+ *		RKHEVT_T evt;                   // base structure
+ *		char dial[ MAX_SIZE_DIAL ];     // parameter 'dial'
+ *		int qty;                        // parameter 'qty'
+ *	} DIAL_T;
+ *		
+ *	typedef struct
+ *	{
+ *		RKHEVT_T evt;                   // base structure
+ *		int volume;                     // parameter 'volume'
+ *		int baud_rate;                  // parameter 'baud_rate'
+ *		char name[ MAX_SIZE_NAME ];     // parameter 'name'
+ *		int iloop;                      // parameter 'iloop'
+ *	} SETUP_T;
+ *	
+ *	// declares the storage memory of event pool
+ *	static rkhui8_t	ep0sto[ SIZEOF_EP0STO ],
+ *					ep1sto[ SIZEOF_EP1STO ],
+ *					ep2sto[ SIZEOF_EP2STO ];
+ *
+ * 	...
+ * 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+ * 	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+ * 	rkh_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
+ * 	...
+ *	\endcode
+ *
  * 	\param sstart	storage start. Pointer to memory from which memory blocks 
  * 					are allocated.
  * 	\param ssize:	storage size. Size of the memory pool storage in bytes.

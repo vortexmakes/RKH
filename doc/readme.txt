@@ -526,7 +526,7 @@ rkh_sma_get( RKHSMA_T *sma )
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 \li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
 		
-<EM>The application use the RKH native scheduler, are implemented 
+<EM>If the application code uses the RKH native scheduler, are implemented 
 the event queues with the native queues RKHRQ_T?</EM>
 
 \b YES: \n
@@ -586,9 +586,9 @@ according to underlying OS/RTOS.
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
 #RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
 
-<EM>The application use the RKH native scheduler, is implemented 
+<EM>If the application code uses the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
-RKHMO_T?</EM>
+RKHMP_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
@@ -808,7 +808,7 @@ The main objective of this section is to show and also illustrate the most
 important concepts to apply when dealing with RKH and the event-driven 
 applications.
 
-\n This section includes:
+This section includes:
 
 - \ref qref0
 - \ref qref1
@@ -827,6 +827,7 @@ applications.
 - \ref qref9
 - \ref qref10
 - \ref qref15
+- \ref qref18
 
 \n
 <HR>
@@ -846,7 +847,14 @@ the use of this macro. Also, we will give our hierarchical state machine the
 name \c my. If you wanted to create a "flat" state machine, you would use the 
 #FLAT parameter rather than the #HCAL parameter.
 
-<b>Defining the state machine application</b>
+This section includes:
+
+- \ref qref0_1
+- \ref qref0_2
+- \ref qref0_3
+
+
+\subsection qref0_1 Defining the state machine application
 \n
 \code
 (1)	//	my.c: state machine application's module
@@ -870,7 +878,7 @@ name \c my. If you wanted to create a "flat" state machine, you would use the
 (11) 					&turnon );	// initial event
 \endcode
 
-<b>Declaring the state machine</b>
+\subsection qref0_2 Declaring the state machine
 \n
 \code
 //	my.h: state-machine application's header file
@@ -919,7 +927,7 @@ Explanation
 		thus it could be declared as NULL or eliminated in compile-time with 
 		RKH_SMA_EN_IEVENT = 0.
 
-\b Customization
+\subsection qref0_3 Customization
 
 Each RKH application must have its own configuration file, called 
 \b rkhcfg.h. This file adapts and configures RKH by means of compiler
@@ -956,7 +964,13 @@ RKH_CREATE_COMP_STATE() macro is used.
 We will develop one example of composite state definition to illustrate the 
 use of this macro. We will give our composite state the name \c S1. 
 
-<b>Defining a composite state</b>
+This section includes:
+
+- \ref qref1_1
+- \ref qref1_2
+- \ref qref1_3
+
+\subsection qref1_1 Defining a composite state
 \n
 \code
 (1)	//	my.c: state-machine's module
@@ -970,7 +984,7 @@ use of this macro. We will give our composite state the name \c S1.
 (8)							&H );
 \endcode
 
-<b>Declaring a composite state</b>
+\subsection qref1_2 Declaring a composite state
 \n
 \code
 //	my.h: state-machine's header file
@@ -1007,7 +1021,7 @@ Explanation
 		it could be declared as NULL. See RKH_CREATE_SHALLOW_HISTORY_STATE() 
 		macro and RKH_CREATE_DEEP_HISTORY_STATE().
 
-\b Customization
+\subsection qref1_3 Customization
 
 Each RKH application must have its own configuration file, called 
 \b rkhcfg.h. This file adapts and configures RKH by means of compiler
@@ -1589,7 +1603,7 @@ structure. See \ref cfg section for more information.
 \n Prev: \ref qref "Quick reference"
 
 <HR>
-\section qref14 Actions
+\section qref14 Defining entry, exit, and transition actions
 
 \n Prev: \ref qref "Quick reference"
 
@@ -1737,6 +1751,7 @@ member of the derived structure.
 For example, the structure MYEVT_T derived from the base structure 
 RKHEVT_T by embedding the RKHEVT_T instance as the first member of 
 MYEVT_T.
+See also, \ref qref7 section for more information.
 
 \code
 typedef struct
@@ -1775,7 +1790,74 @@ In RKH as other frameworks, the actual event instances are either constant
 events (or static events) statically allocated at compile time or dynamic events
 allocated at runtime from one of the event pools that the framework manages.
 
-<b>Allocating events</b>
+This section includes:
+
+- \ref qref7_1
+- \ref qref7_2
+- \ref qref7_3
+- \ref qref7_4
+- \ref qref7_5
+
+\subsection qref7_1 Registering the event pool
+
+Before using dynamic events (or event with arguments) the application code 
+must register the proper event pools, which stores the events as a 
+fixed-sized memory block. 
+Each event pool must be registered with the RKH framework, by means of the 
+rkh_epool_register() function. This function initializes one event pool at a 
+time and must be called exactly once for each event pool before the pool can 
+be used.
+
+The application code might initialize the event pools by making calls 
+to the rkh_epool_register() function. However, for the simplicity of 
+the internal implementation, the application code initialize event pools 
+in the ascending order of the event size.
+
+\code
+#define SIZEOF_EP0STO				64
+#define SIZEOF_EP0_BLOCK			sizeof( TOUT_T )
+
+#define SIZEOF_EP1STO				32
+#define SIZEOF_EP1_BLOCK			sizeof( DIAL_T )
+
+#define SIZEOF_EP2STO				32
+#define SIZEOF_EP2_BLOCK			sizeof( SETUP_T )
+
+typedef struct
+{
+	RKHEVT_T evt;                   // base structure
+	int timerno;					// parameter 'timerno'
+} TOUT_T;
+
+typedef struct
+{
+	RKHEVT_T evt;                   // base structure
+	char dial[ MAX_SIZE_DIAL ];     // parameter 'dial'
+	int qty;                        // parameter 'qty'
+} DIAL_T;
+	
+typedef struct
+{
+	RKHEVT_T evt;                   // base structure
+	int volume;                     // parameter 'volume'
+	int baud_rate;                  // parameter 'baud_rate'
+	char name[ MAX_SIZE_NAME ];     // parameter 'name'
+	int iloop;                      // parameter 'iloop'
+} SETUP_T;
+
+// declares the storage memory of event pool
+static rkhui8_t	ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ],
+				ep2sto[ SIZEOF_EP2STO ];
+
+...
+rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+rkh_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
+...
+\endcode
+
+\subsection qref7_2 Allocating events
 
 \code
 (1)	typedef struct
@@ -1853,9 +1935,9 @@ typedef struct
 } SYSEVT_T;
 
 #if SYSEVT_DEBUG == 1
-#define mkse( e, n )		{ { (e), 0 }, (n) }
+	#define mkse( e, n )		{ { (e), 0, 0 }, (n) }
 #else
-#define mkse( e, n )		{ { (e), 0 } }
+	#define mkse( e, n )		{ { (e), 0, 0 } }
 #endif
 
 static const SYSEVT_T sysevts[] =
@@ -1868,7 +1950,7 @@ static const SYSEVT_T sysevts[] =
 };
 \endcode
 
-<b>Posting events</b>
+\subsection qref7_3 Posting events
 
 The RKH framework supports one type of asynchronous event exchange: the 
 simple mechanism of direct event posting supported through the functions
@@ -1899,7 +1981,7 @@ directly posts the event to the event queue of the consumer SMA
 \li (2) Use the extended members of the event \c mye.
 \li (3) The \c mye event is sent directly to the \c my SMA.
 
-<b>Recycling dynamic events</b>
+\subsection qref7_4 Recycling dynamic events
 
 If the system make use of dynamic events facility after the processing, 
 you must not forget to call the RKH garbage collector, because now RKH is 
@@ -1935,13 +2017,13 @@ to recycle "dynamic" events.
 (3)				RKH_GC( e );
 			}
 			else 
-			/*
-			 * rkh_hk_idle() must be called with interrupts DISABLED because the 
-			 * determination of the idle condition (no events in the queues) can 
-			 * change at any time by an interrupt posting events to a queue. The 
-			 * rkh_hk_idle() MUST enable interrups internally, perhaps at the 
-			 * same time as putting the CPU into a power-saving mode.
-			 */			
+			//
+			// rkh_hk_idle() must be called with interrupts DISABLED because the 
+			// determination of the idle condition (no events in the queues) can 
+			// change at any time by an interrupt posting events to a queue. The 
+			// rkh_hk_idle() MUST enable interrups internally, perhaps at the 
+			// same time as putting the CPU into a power-saving mode.
+			//			
 				rkh_hk_idle();
 		}
     }
@@ -1953,6 +2035,28 @@ to recycle "dynamic" events.
 		recycling. As described above, the RKH_GC() macro actually recycles 
 		the wvent only when it determines that the event is no longer 
 		referenced.
+
+\subsection qref7_5 Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_EN_DYNAMIC_EVENT: \n \copydetails RKH_EN_DYNAMIC_EVENT
+- \b RKH_MAX_EPOOL: \n \copydetails RKH_MAX_EPOOL
+- \b RKH_SIZEOF_EVENT: \n \copydetails RKH_SIZEOF_EVENT
+- \b RKH_SIZEOF_ESIZE: \n \copydetails RKH_SIZEOF_ESIZE
+- \b RKH_EN_NATIVE_DYN_EVENT: \n \copydetails RKH_EN_NATIVE_DYN_EVENT
+- \b RKH_DYNE_TYPE: \n \copydetails RKH_DYNE_TYPE
+- \b RKH_DYNE_INIT: \n \copydetails RKH_DYNE_INIT
+- \b RKH_DYNE_GET_ESIZE: \n \copydetails RKH_DYNE_GET_ESIZE
+- \b RKH_DYNE_GET: \n \copydetails RKH_DYNE_GET
+- \b RKH_DYNE_PUT: \n \copydetails RKH_DYNE_PUT
 
 \n Prev: \ref qref "Quick reference"
 
@@ -2112,6 +2216,100 @@ for more information about this.
 		generic base structure #RKHEVT_T to the specific derived structure 
 		MYEVT_T.
 \li (11-12) Close the trace session and terminates the program.
+
+<HR>
+\section qref18 Using RKH software timers
+
+\n Prev: \ref qref "Quick reference" \n
+
+\copydetails rkhtim.h
+
+This section includes:
+
+- \ref qref18_1
+- \ref qref18_2
+- \ref qref18_3
+
+\subsection qref18_1 Declaring, and initializing a timer
+
+\code
+...
+(1) static RKHT_T tlayer;
+
+	void
+(2)	tlayer_tout( void *t )
+	{
+		(void)t;
+		close_layer();
+	}
+
+(3)	rkh_tim_init( 	&tlayer, 
+(4)					TOUT, 
+(5)					tlayer_tout );
+...
+\endcode
+
+Explanation
+
+\li (1)	Declares and allocates the \c tlayer timer. 
+\li (2)	Defines \c tlayer_tout() hook function, which is calls at the 
+		\c tlayer expiration.
+\li (3)	Initializes the \c tlayer timer. 
+\li (4)	\c TOUT is the signal of the event to be directly posted (using the 
+		FIFO policy) into the event queue of the target agreed state machine 
+		application at the timer expiration.
+\li (5) Registers \c tlayer_tout() hook function.
+
+\subsection qref18_2 Start and stop timers
+
+\code
+(1)	#define TPWR_TICK			100
+(2)	#define TKEY_TICK			100
+...
+(3) static RKHT_T 	tpwr,
+(4) 				tkey;
+
+(5)	rkh_tim_init( &tpwr, TPWR, NULL );
+(6)	rkh_tim_init( &tkey, TKEY, NULL );
+...
+(7) rkh_tim_oneshot( &tpwr, pwr, TPWR_TICK );
+(8) rkh_tim_periodic( &tkey, pwr, TKEY_TICK, TKEY_TICK/4 );
+...
+(9) rkh_tim_stop( &tkey );
+...
+(10)rkh_tim_restart( &tpwr, TPWR_TICK * 2 );
+\endcode
+
+Explanation
+
+\li (1-2)	Defines the number of ticks for timer expiration. 
+\li (3-4)	Declares and allocates the \c tpwr, and \c tkey timers. 
+\li (5-6)	Initializes the \c tpwr, and \c tkey timers. 
+\li (7)	Starts \c tpwr timer as one-shot timer, which posts the signal 
+		\c TPWR to 	\c pwr state machine application after TPWR_TICK 
+		timer-ticks.
+\li (8)	Starts \c tkey timer as periodic timer, which posts the signal 
+		\c TKEY to \c pwr state machine application after TKEY_TICK 
+		timer-ticks initially and then after every TKEY_TICK/4 timer-ticks.
+\li (9) Stops \c tkey timer. 
+\li (10) Restarts \c tpwr timer with a new number of ticks. 
+
+\subsection qref18_3 Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_TIM_EN: \n \copydetails RKH_TIM_EN
+- \b RKH_TIM_SIZEOF_NTIMER: \n \copydetails RKH_TIM_SIZEOF_NTIMER
+- \b RKH_TIM_EN_HOOK: \n \copydetails RKH_TIM_EN_HOOK
+- \b RKH_TIM_EN_RESTART: \n \copydetails RKH_TIM_EN_RESTART
+- \b RKH_TIM_EN_GET_INFO: \n \copydetails RKH_TIM_EN_GET_INFO
 
 Prev: \ref main_page "Home"
 
