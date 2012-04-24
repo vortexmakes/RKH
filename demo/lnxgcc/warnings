@@ -1,7 +1,0 @@
-main.c: In function ‘format_trevt_args’:
-main.c:80: warning: zero-length gnu_printf format string
-main.c: At top level:
-main.c:166: warning: return type of ‘main’ is not ‘int’
-/home/jorge/proyectos/rkh/rkhrel/demo/lnxgcc/../../source/rkh.c: In function ‘rkh_engine’:
-/home/jorge/proyectos/rkh/rkhrel/demo/lnxgcc/../../source/rkh.c:348: warning: null argument where non-null required (argument 2)
-/home/jorge/proyectos/rkh/rkhrel/demo/lnxgcc/../../source/rkh.c:348: warning: null argument where non-null required (argument 2)

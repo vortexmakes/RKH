@@ -1,324 +1,772 @@
 /** \page Installation Installation
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref Porting "Porting"
 
 The RKH project is organized through a hierarchical directory structure
 to facilitate its distribution, support and maintenance.
 This structure also includes application examples and demos on several
-platforms.
+platforms. The following annotated directory tree lists the most important 
+directories and files provided in the standard RKH distribution. The 
+explanation section immediately following the directory tree explains the 
+structure in more detail.
 
-There are several ways of using RKH, one of them is to use the directory 
-structure as is and the other is to extract the necessary files for 
-including in a particular application.
-
-- \ref using_dir
-- \ref using_file
-
-<HR>
-\section using_dir Using directory structure
-
-This section describes how to use the RKH directory structure shown in
-\ref top_dir "Figure 1 Top level directories".
-	
 \anchor top_dir
-\n
+\code
+<RKH-root>				- RKH-root directory
++---demo				- RKH demo applications
++---doc					- RKH documentation
++---source				- RKH source files
+|   copying.txt			- licence file
+|   README				- change log file
+\	rkh.chm				- reference manual
+\endcode
 <STRONG> Figure 1 Top level directories </STRONG>
-\code
-<RKH-root>				- RKH-root directory
-|
-+---demo				- RKH demo applications
-+---doc					- RKH documentation
-+---source				- RKH source files
-|   chglog.txt			- Change log file
-\	copying.txt			- licence file
-\endcode
 
-\n <STRONG> RKH source files </STRONG>
+\n This section includes:
 
-The \ref src_dir "Figure 2 RKH source directory" shows the \c \\source 
-directory.
-
-\anchor src_dir
-\n
-<STRONG> Figure 2 RKH source directory </STRONG>
-\code
-<RKH-root>				- RKH-root directory
-|
-+---demo				- RKH demo applications
-+---doc					- RKH documentation
-\---source				- RKH source files
-|   |   
-|   \---include			- RKH platform-independent include files
-|   |       rkh.h		- Internal use only
-|   |       rkhtrace.h	- Trace facility
-|   |       rkhplat.h	- Supported and portable platforms
-|   |       rkhsm.h		- Framework interface
-|   |       
-|   \---portable		- RKH ports
-|   |   \---cws08		- Codewarrior for Freescale S08
-|   |       rkhport.h	- RKH platform-dependent include file
-|   |   \---lnxgcc		- Linux GCC
-|   |       rkhport.h	- RKH platform-dependent include file
-|   |   \---vc08		- Visual C++ 2008
-|   |       rkhport.h	- RKH platform-dependent include file
-|   |					
-|   |   rkh.c			- RKH platform-independent source code.
-|   \   rkhtrace.c		- RKH trace facility source code.
-|
-|   chglog.txt			- Change log file
-\	copying.txt			- licence file
-\endcode
-
-- \c \\include: contains platform-independent header files.
-
-- \c \\portable: contains platform-independent header files to be
-used by RKH applications. Each platform-dependent file should be 
-placed in a directory that represents the platform to be used. 
-Each platform directory should be placed within \c \\portable directory, 
-i.e.: \c \\portable\\\<platform\>\\rkhport.h. The 
-\ref src_dir "Figure 2 RKH source directory" shows three RKH port 
-directories: \c \\portable\\cw08 (Codewarrior for Freescale S08), 
-\c \\portable\\lnxgcc (Linux GCC), and \c \\portable\\vc08 (Visual C++ 2008).
-
-- \c rkh.c: platform-independent source code of RKH. This file 
-requires inclusion of only one platform-specific header file named 
-\c rkhport.h. It's indirectly included by \c rkh.h file and it's 
-described in detail in section \ref Porting.
-
-- \c rkhtrace.c: platform-independent source code of runtime debugging.
-
-Next, each \c rkhport.h must be referenced from \c rkhplat.h header file,
-located in \c \\include directory. The idea behind conditional 
-compilation is that a \c rkhport.h can be selectively compiled, depending 
-upon whether a specific value has been defined. The next listing shows 
-the \c rkhplat.h file according to \c \\portable directory from
-\ref src_dir "Figure 2 RKH source directory", where \c ___CWS08__, 
-\c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler 
-to include header files from the specific RKH port directory.
-
-\code
-#if __CWS08__
-	#include "..\portable\cw08\rkhport.h"
-#elif __VC__
-	#include "..\portable\vc08\rkhport.h"
-#elif __LNXGCC__
-   	#include "lnxgcc/rkhport.h"	
-#else
-	#error "rkhplat.h: Missing platform definition."
-#endif
-\endcode
-
-The path of platform-dependent file must be relative. 
-
-\n \b Demo \b application
-
-Then, should be created a directory within \c \\demo with the name of 
-application that will make use of RKH. For example: \c \\demo\\vc08, as
-shown in \ref demo_dir "Figure 3 Demo application directories". 
-This directory includes the files needed by the application. 
-Aditionallity, should be created the RKH configuration file \c rkhcfg.h 
-to be included within the application directory. See \ref cfg section. 
-This file is mandatory and it's used by RKH.
-
-\anchor demo_dir
-\n
-<STRONG> Figure 3 Demo application directories </STRONG>
-\code
-<root>					- RKH-root directory
-|
-\---demo				- RKH demo applications
-|   +---common			- Common source code
-|   +---cw08			- Application demo for Codewarrior Freescale S08 platform
-|   +---lnxgcc			- Application demo for Linux GCC platform
-|   \---vc08			- Application demo for VC08 platform
-|		main.c			- main source code
-|		my.c			- application source file
-|		myact.c			- application source file
-|		my.h			- application include file
-|		myact.h			- application include file
-|		myevt.h			- application include file
-|		rkhcfg.h		- RKH configuration file
-|		rkhdata.h		- application include file
-|                   
-+---doc					- RKH documentation
-|                   
-+---source				- RKH source files
-|   chglog.txt			- Change log file
-\	copying.txt			- licence file
-\endcode
+- \ref source_dir
+- \ref portable_dir
+- \ref demo_dir
 
 <HR>
-\section using_file Using files
+\section source_dir RKH source files
 
-Here proposes to extract from RKH directory structure, detailed	above, 
-those files required by RKH to use it in a particular application. 
-Therefore, the proposed structure is no longer necessary.
+The following figure shows the \c \\source directory.
 
-Required source files extracted from \c \\source directory:
-
+\anchor source_dir_fig
 \code
-rkh.c		- RKH platform-independent source code
-rkhtrace.c	- RKH trace tool
+(1)  <RKH-root>
+(2)  +---demo				- Demo applications
+(3)  +---doc				- Documentation
+(4)  \---source				- RKH source files
+(5)  |   \---include		- Platform-independent header files
+(6)  |   |       rkh.h
+(7)  |   |       rkhassert.h
+(8)  |	 |		 rkhevt.h
+(9)  |   |       rkhitl.h
+(10) |	 |		 rkhmp.h
+(11) |   |       rkhplat.h
+(12) |   |       rkhrdy.h
+(13) |   |       rkhrq.h
+(14) |   |       rkhs.h	
+(15) |   |       rkhtim.h
+(16) |   |       rkhtrc.h
+(17) |   \       rkhtype.h
+(18) |   +---portable		- Platform-dependent files
+(19) |   |   rkh.c
+(20) |   |   rkhdyn.c
+(21) |   |   rkhmp.c
+(22) |   |   rkhrq.c
+(23) |   |   rkhs.c
+(24) |   |   rkhsma.c
+(25) |   |   rkhtbl.c
+(26) |   |   rkhtim.c
+(27) |   \   rkhtrc.c
+(28) |   copying.txt		- licence file
+(29) |   README				- change log file
+(30) \	 rkh.chm			- reference manual
 \endcode
+<STRONG> Figure 2 RKH source directory </STRONG>
 
-Required include files extracted from \c \\include directory:
+\li (1)	RKH-root directory
+\li (2)	Demo applications
+\li (3)	Documentation
+\li (4)	RKH source code files
+\li (5)	Contains platform-independent header files
+\li (6)	Framework interface
+\li (7)	Assert definitions
+\li (8)	Event data type and other related macros
+\li (9)	Internal use only
+\li (10) Fixed-size memory block services interface
+\li (11) Supported and portable platforms
+\li (12) Native priority management
+\li (13) Queue services interface
+\li (14) Simple and cooperative scheduler interface
+\li (15) Timer services interface
+\li (16) Trace facility
+\li (17) Defines the data types that uses RKH
+\li (18) Contains platform-dependent files.
+\li (19) State machine engine
+\li (20) Dynamic event management, and event framework services
+\li (21) Fixed-size memory block
+\li (22) Queue (copy by reference)
+\li (23) Simple and cooperative scheduler
+\li (24) State machine application (SMA) registration.
+\li (25) Binary map tables.
+\li (26) Software timer.
+\li (27) Platform-independent source code of runtime tracing.
+\li (28) Licence file
+\li (29) Change log file
+\li (30) Reference manual
 
+<HR>
+\section portable_dir RKH portable directory
+
+\copydetails rkhplat.h
+\copydetails rkhtype.h
+See the \ref Porting section for more information. 
+The following figure shows the \c \\portable directory.
+
+\anchor portable_dir_fig
 \code
-rkh.h		- Internal use only
-rkhtrace.h	- Trace facility
-rkhplat.h	- Supported and portable platform
-rkhsm.h		- Framework interface
+	 <RKH-root>	
+	 +---demo
+	 +---doc
+	 \---source
+( 1) |   \---portable					- RKH ports
+( 2) |   |   \---80x86					- Intel x86
+( 3) |   |   | 	\---win32_st			- Win32 Single-thread
+( 4) |   |   |  | 	\---vc08			- Microsoft Visual 2008
+( 5) |   |   |  | 		|	rkhport.h
+( 6) |   |   |  |		|	rkht.h
+( 7) |   |   \  \		\ 	rkhport.c
+( 8) |   |   \---cfv1					- Freescale Coldfire V1
+( 9) |   |   | 	\---rkhs				- Use the native scheduler
+(10) |   |   |	|	\---cw6_3			- Codewarrior v6.3
+(11) |   |   |  | 	|		rkhport.h
+(12) |   |   |  |	|		rkht.h
+(13) |   |   \ 	\	\		rkhport.c
+	 |   \ 	 +---...					- Others
+	 |   |   rkh.c
+	 |   |   rkhdyn.c
+	 |   |   rkhmp.c
+     |   |   rkhrq.c
+     |   |   rkhs.c
+ 	 |   |   rkhsma.c
+ 	 |   |   rkhtbl.c
+	 |   |   rkhtim.c
+	 |   \   rkhtrc.c
+	 |   copying.txt
+	 |   README	
+	 \	 rkh.chm	
 \endcode
+<STRONG> Figure 3 RKH portable directory </STRONG>
 
-Required include files extracted from \c \\portable\\\<platform\> directory:
+\li ( 1) RKH ports. The directory \\portable contains platform-dependent 
+files to be used by RKH applications. This directory structure is the most 
+complicated because of the large number of choices available, such as 
+CPU architectures, compilers, operating systems, and compiler options. 
+Each of those choices is represented as a separate level of nesting in a 
+hierarchical directory tree, so that each dimension in the multi-dimensional 
+space of options can be extended independently from the others. Also, the 
+directory branch for each port is individually customizable, so each branch 
+can represent only choices relevant for a given CPU, operating system, 
+compiler, etc.
+\li ( 2) Intel x86. The CPU architecture is placed as the first level of 
+nesting within the \\portable directory. Examples of CPU architectures could 
+be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, etc. Please note that a 
+separate directory is needed whenever the CPU architecture is significantly 
+different.
+\li ( 3) Win32 Single-thread. The second level of nesting, under the CPU 
+architecture, is the operating system used.
+\li ( 4) Microsoft Visual 2008. The next level of nesting, under each 
+operating system directory, is the directory for the compiler used.
+\li ( 5) RKH platform-dependent include file. Frequently, defines the 
+interrupt locking method, the critical section management, among other things.
+The key point of the design is that all platform-independent RKH source 
+files include the same \b rkhplat.h header file as the application source 
+files.
+\li ( 6) RKH platform-dependent include file. In this file is defined the 
+data types that uses RKH.
+The key point of the design is that all platform-independent RKH source 
+files include the same \b rkhtype.h header file as the application source 
+files.
+\li ( 7) RKH platform-dependent source file. The platform-specific source 
+file is optional and many ports don’t require it.
+\li ( 8) Freescale Coldfire V1
+\li ( 9) Use the native scheduler
+\li (10) Codewarrior v6.3
+\li (11-13) Idem (5-7)
 
+<HR>
+\section demo_dir RKH demo applications
+
+The \\demo directory contains the application examples that are included in the 
+standard RKH distribution. The structure of the \\demo is the most complicated 
+because of the large number of choices available, such as CPU architectures, 
+compilers, operating systems, and compiler options. Each of those choices is 
+represented as a separate level of nesting in a hierarchical directory tree, 
+so that each dimension in the multi-dimensional space of options can be 
+extended independently from the others. Also, the directory branch for each 
+RKH port is individually customizable, so each branch can represent only 
+choices relevant for a given CPU, operating system, compiler, etc.
+
+Each RKH application must have its own configuration file, called rkhcfg.h. 
+This file adapts and configures RKH by means of compiler definitions and macros 
+allowing to restrict the resources consumed by RKH. Adjusting this definitions 
+allows to reduce the ROM and RAM consumption, and to enhance the system 
+performance in a substantial manner.
+
+\anchor demo_dir_fig
 \code
-rkhport.h	- RKH platform-dependent include file
+	 <RKH-root>	
+( 1) \---demo									- RKH demo applications
+( 2) |   |   \---80x86							- Intel x86
+( 3) |   |   | 	\---win32_st					- Win32 Single-thread
+( 4) |   |   |  | 	\---vc08					- Microsoft Visual 2008
+( 5) |   |   |  | 		\---ahsm				- State machine example
+( 6) |   |   |  | 			+---prj				- Project files
+( 7) |   |   |  |			|		rkhcfg.h	- App source and header files
+     |   |   |  |			|		main.c
+	 |   |   \  \			\ 		...
+	 |   \ 	 +---...							- Others
+	 |   |   rkh.c
+	 |   |   rkhdyn.c
+	 |   |   rkhmp.c
+     |   |   rkhrq.c
+     |   |   rkhs.c
+ 	 |   |   rkhsma.c
+ 	 |   |   rkhtbl.c
+	 |   |   rkhtim.c
+	 |   \   rkhtrc.c
+	 +---doc
+	 +---source
+	 |   copying.txt
+	 |   README	
+	 \	 rkh.chm	
 \endcode
+<STRONG> Figure 4 Demo application directories </STRONG>
 
-The \c rkhport.h must be referenced from \c rkhplat.h file as shown below:
+\li ( 1) RKH demo applications. The \\demo directory contains the application 
+examples that are included in the standard RKH distribution. The structure of 
+the \\demo is the most complicated because of the large number of choices 
+available, such as CPU architectures, compilers, operating systems, and 
+compiler options. Each of those choices is represented as a separate level 
+of nesting in a hierarchical directory tree, so that each dimension in the 
+multi-dimensional space of options can be extended independently from the 
+others. Also, the directory branch for each RKH port is individually 
+customizable, so each branch can represent only choices relevant for a 
+given CPU, operating system, compiler, etc.
+\li ( 2) Intel x86. The CPU architecture is placed as the first level of 
+nesting within the \\demo directory. Examples of CPU architectures could 
+be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, etc. Please note that a 
+separate directory is needed whenever the CPU architecture is significantly 
+different.
+\li ( 3) Win32 Single-thread. The second level of nesting, under the CPU 
+architecture, is the operating system used.
+\li ( 4) Microsoft Visual 2008. The next level of nesting, under each 
+operating system directory, is the directory for the compiler used.
+\li ( 5) Finally, the example application is located in its own directory. 
+In this case, abstract hierarchical state machine example. This application 
+is very useful to learn and explore the Statechart and UML features.
+\li ( 6) The \\ahsm\\prj\ subdirectory contains the IDE-dependent files, 
+like object files, executable, and among others.
+\li ( 7) As mentioned above, each of application that use RKH must be defined 
+its own configuration file, rkhcfg.h.
 
-\code
-#include "rkhport.h"
-\endcode
-
-\n \b Application
-
-Next, should be created the configuration file \c rkhcfg.h to be included 
-within the application directory. See \ref cfg section for more information. 
-This file is mandatory and it's used by RKH.
-
+Prev: \ref main_page "Home" \n
+Next: \ref Porting "Porting"
 
 \page Porting Porting
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref cfg "Configuration"
+
 
 This section describes how to adapt the RKH to various platforms, which
 is a process called porting. RKH contains a clearly defined abstraction
 layer, which encapsulates all the platform-specific code and cleanly
 separates it from platform-neutral code.
 
-Porting RKH implies to create the platform-dependent file, called 
-\c rhhport.h. In this file must be defined the data types 
-that uses RKH.
+Porting RKH implies to create the a few platform-dependent files, 
+\b rhhport.h, \b rkhport.c, which frequently defines the interrupt 
+locking method, the critical section management, among other things.
 The RKH directories and files are described in detail in 
 \ref Installation section. The next sections listed below describes 
-the aspects to be considered:
+the aspects to be considered to port RKH:
 
+\n This section includes:
+
+- \ref files
 - \ref data
 - \ref rom
-- \ref files
+- \ref blk 
+- \ref prio
+- \ref eque
+- \ref dyn
+- \ref hk
+- \ref ilock
+- \ref crt
+- \ref trc
 - \ref rkhp
 
-<HR>
+\n <HR>
+\section files Platform-dependent files
+
+\copydetails rkhplat.h
+Please, see \ref portable_dir section.
+
+\n <HR>
 \section data Data types definitions
 
-The RKH uses a set of integer quantities. That maybe machine or compiler
-dependent. These types must be defined in \c rkhport.h file as shown 
-in \ref rkhp.
+\copydetails rkhtype.h
 
-- \b rkhint8
-	\n \n Denotes a signed integer type with a width of exactly 8 bits.
-
-- \b rkhint16
-	\n \n Denotes a signed integer type with a width of exactly 16 bits.
-
-- \b rkhint32
-	\n \n Denotes a signed integer type with a width of exactly 32 bits.
-
-- \b rkhuint8
-	\n \n Denotes an unsigned integer type with a width of exactly 8 bits.
-
-- \b rkhuint16
-	\n \n Denotes an unsigned integer type with a width of exactly 16 bits.
-
-- \b rkhuint32
-	\n \n Denotes an unsigned integer type with a width of exactly 32 bits.
-
-- \b HUInt
-	\n \n Denotes an unsigned integer type that is usually fastest to operate 
-with among all integer types.
-
-- \b HInt
-	\n \n Denotes a signed integer type that is usually fastest to operate 
-with among all integer types.
-
-\note
-
-The \c HUInt and \c HInt will normally be the natural size 
-for a particular machine. These types designates an integer 
-type that is usually fastest to operate with among all integer 
-types.
-
-<HR>
+\n <HR>
 \section rom ROM allocator
 
 For declaring an object that its value will not be changed and that
-will be stored in ROM, must be defined in \c rkhport.h the 
-\c rkhrom macro, as shown in \ref rkhp.
+will be stored in ROM, must be defined in \b rkhport.h the RKHROM macro.
+
+Example:
 
 \code
-#define rkhrom
+#define RKHROM			const
 \endcode
 
-The following listing shows an example of such definitions for a
-x86 platform and Visual C++ 2008.
+\n <HR>
+\section blk Blocking mechanism
 
+<EM>RKH works in conjunction with a traditional OS/RTOS?</EM>
+
+\b YES: \n
+The RKH framework can work with virtually any traditional OS/RTOS. 
+Combined with a conventional RTOS, RKH takes full advantage of the 
+multitasking capabilities of the RTOS by executing each active object (SMA) 
+in a separate task or thread.
+
+\li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 0, 
+#RKH_EN_SMA_THREAD = 1, and #RKH_EN_SMA_THREAD_DATA, within the 
+\b rkhcfg.h file.
+\li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
+RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
+\li (3) Define the macros #RKH_OSDATA_TYPE, and #RKH_THREAD_TYPE in 
+\b rkhport.h according to underlying OS or RTOS. 
+\li (4) Then, implement the platform-specific functions rkh_init(), rkh_enter(), 
+rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
+are placed in \b rkhport.c.
+
+<EM>Example for x86, VC2008, and win32 single thread</EM>
 \code
-typedef signed char 	rkhint8;
-typedef signed short 	rkhint16;
-typedef signed long		rkhint32;
-typedef unsigned char 	rkhuint8;
-typedef unsigned short 	rkhuint16;
-typedef unsigned long	rkhuint32;
+#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_THREAD_TYPE             	HANDLE
 
-typedef unsigned int	HUInt;
-typedef signed int		HInt;
 
-#define rkhrom			const	
+#define RKH_SMA_BLOCK( sma ) 								\
+				RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
+
+#define RKH_SMA_READY( rg, sma ) 							\
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
+			    (void)SetEvent( sma_is_rdy )
+
+#define RKH_SMA_UNREADY( rg, sma ) 							\
+			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+
+#define RKH_WAIT_FOR_EVENTS() 								\
+			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 \endcode
+\code
+void 
+rkh_init( void )
+{
+	InitializeCriticalSection( &csection );
+	sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
+}
+
+void 
+rkh_enter( void )
+{
+	rkhui8_t prio;
+	RKHSMA_T *sma;
+	RKHEVT_T *e;
+
+    RKH_HK_START();
+	RKH_TRCR_RKH_EN();
+    running = 1;
+
+    while( running )
+	{
+        RKH_ENTER_CRITICAL( dummy );
+        if( rkh_rdy_isnot_empty( rkhrg ) ) 
+		{
+			rkh_rdy_findh( rkhrg, prio );
+            RKH_EXIT_CRITICAL( dummy );
+
+            sma = rkh_sptbl[ prio ];
+            e = rkh_sma_get( sma );
+            rkh_dispatch( sma, e );
+            RKH_GC( e );
+        }
+        else
+            rkh_hk_idle();
+    }
+
+    rkh_hk_exit();
+    CloseHandle( sma_is_rdy );
+    DeleteCriticalSection( &csection );	
+}
+
+void 
+rkh_exit( void )
+{
+	rkh_hk_exit();
+	RKH_TRCR_RKH_EX();
+}
+
+void 
+rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+						void *stks, rkhui32_t stksize )
+{
+    ( void )stks;
+    ( void )stksize;
+
+	rkh_rq_init( &sma->equeue, qs, qsize, sma );
+	rkh_sma_register( sma );
+    rkh_init_hsm( sma );
+	RKH_TRCR_SMA_ACT( sma );
+}
+
+void 
+rkh_sma_terminate( RKHSMA_T *sma )
+{
+	rkh_sma_unregister( sma );
+	RKH_TRCR_SMA_TERM( sma );
+}
+\endcode
+
+\b NO: \n
+\li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 1, 
+#RKH_EN_SMA_THREAD = 0, and #RKH_EN_SMA_THREAD_DATA = 0, within the 
+\b rkhcfg.h file.
+\li (2) Define the macros #RKH_EQ_TYPE = RKHRQ_T, RKH_SMA_BLOCK(), 
+RKH_SMA_READY(), RKH_SMA_UNREADY() in \b rkhport.h. 
+\li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
+functions rkh_init(), rkh_enter(), rkh_exit(), rkh_sma_activate(), and 
+rkh_sma_terminate(). 
+\li (4) Also, the macros RKH_EQ_TYPE, RKH_SMA_BLOCK(), 
+\li (5) RKH_SMA_READY(), RKH_SMA_UNREADY() are RKH provided. 
+In this mode of operation, RKH assumes the use of native priority scheme. 
+See \b rkhs.h, \b rkhs.c, and \b rkhrdy.h files for more information.
+
+\n <HR>
+\section prio Priority mechanism
+
+<EM>If RKH works in conjunction with a traditional OS/RTOS, RKH provides its own 
+priority mechanism?</EM>
+
+\b YES: \n
+\li (1) Declare an RKHRG_T variable.
+\li (2) Include the \b rkhrdy.h in rkhport.h.
+\li (3) Then, the RKH port could be use the macros rkh_rdy_is_empty(), 
+rkh_rdy_isnot_empty(), rkh_rdy_ins(), rkh_rdy_rem(), and rkh_rdy_findh(). 
+Frequently, the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
+RKH_SMA_UNREADY() use the macros provided by \b rkhrdy.h.
+
+\b NO: \n
+Nothing to do.
+
+\n <HR>
+\section eque Event queue
+
+<EM>If RKH works in conjunction with a traditional OS/RTOS, are implemented 
+the event queues with a message queue of the underlying OS/RTOS?</EM>
+
+\b YES: \n
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
+rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
+\b rkhport.c file.
+
+<EM>Generic example</EM>
+\code
+void 
+rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
+{
+	RKH_SR_CRITICAL_;
+	
+	RKH_HK_SIGNAL( e );
+    RKH_ENTER_CRITICAL_();
+    if( RCE( e )->pool != 0 ) 
+        ++RCE( e )->nref;
+    RKH_EXIT_CRITICAL_();
+
+    os_post_fifo_message( &sma->equeue, e );
+	RKH_TRCR_SMA_FIFO( sma, e );
+}
+
+void 
+rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
+{
+	RKH_SR_CRITICAL_;
+
+	RKH_HK_SIGNAL( e );
+    RKH_ENTER_CRITICAL_();
+    if( RCE( e )->pool != 0 ) 
+        ++RCE( e )->nref;
+    RKH_EXIT_CRITICAL_();
+
+    os_post_lifo_message( &sma->equeue, e );
+	RKH_TRCR_SMA_LIFO( sma, e );
+}
+
+RKHEVT_T *
+rkh_sma_get( RKHSMA_T *sma )
+{
+	RKHEVT_T *e;
+	RKH_SR_CRITICAL_;
+
+    RKH_ENTER_CRITICAL_();
+	e = os_get_message( &sma->equeue );
+	RKHASSERT( e != ( RKHEVT_T * )0 );
+    RKH_EXIT_CRITICAL_();
+
+	RKH_TRCR_SMA_GET( sma, e );
+	return e;
+}
+\endcode
+
+\b NO: \n
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
+\b rkhcfg.h
+\li (2) When using the native event queues is NOT necessary provides neither 
+the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
+\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+		
+<EM>If the application code uses the RKH native scheduler, are implemented 
+the event queues with the native queues RKHRQ_T?</EM>
+
+\b YES: \n
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
+\b rkhcfg.h
+\li (2) When using the native event queues is NOT necessary provides neither 
+the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
+\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+		
+\b NO: \n
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
+rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
+\b rkhport.c file.
+
+\n <HR>
+\section dyn Dynamic event support
+
+<EM>Is required events with arguments?</EM>
+
+\b NO: \n
+\li (1) Define the macros #RKH_EN_DYNAMIC_EVENT = 0 and 
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h.
+
+\b YES: \n
+
+<EM>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
+the dynamic memory support with a internal module of the underlying 
+OS/RTOS?</EM>
+
+\b YES: \n
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+\li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
+RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \b rkhport.h 
+according to underlying OS/RTOS.
+
+<EM>Generic example</EM>
+\code
+#define RKH_DYNE_TYPE			RKHMP_T
+
+#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
+			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
+
+#define RKH_DYNE_GET_ESIZE( mp )					\
+			( (mp)->bsize )
+
+#define RKH_DYNE_GET( mp, e )						\
+			( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
+
+#define RKH_DYNE_PUT( mp, e )						\
+			( rkh_mp_put( (mp), e ) )
+\endcode
+
+\b NO: \n
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
+#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
+
+<EM>If the application code uses the RKH native scheduler, is implemented 
+the dynamic memory support with the native fixed-size memory block pool 
+RKHMP_T?</EM>
+
+\b YES: \n
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+
+\b NO: \n
+\li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
+#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
+
+\n <HR>
+\section hk Hook functions
+
+A RKH port cannot and should not define all the functions that it calls, 
+because this would render the port too inflexible. The functions that RKH 
+calls but doesn't actually implement are referred to as callback or hook 
+functions. All these functions in RKH are easily indentifiable by the 
+\b "_hk_" key word used in the function name, rkh_hk_dispatch(), 
+rkh_hk_signal(), rkh_hk_timeout(), rkh_hk_start(), rkh_hk_exit(), 
+and rkh_hk_idle(). 
+Please, see RKH_HK_EN_DISPATCH, RKH_HK_EN_SIGNAL, RKH_HK_EN_TIMEOUT, 
+RKH_HK_EN_START, and RKH_HK_EN_EXIT options from the \b rkhcfg.h.\n
+
+\code void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e )\endcode
+\copydetails RKH_HK_EN_DISPATCH
+
+\code void rkh_hk_signal( RKHEVT_T *e )\endcode
+\copydetails RKH_HK_EN_SIGNAL
+
+\code void rkh_hk_timeout( const void *t )\endcode
+\copydetails RKH_HK_EN_TIMEOUT
+
+\code void rkh_hk_start( void )\endcode
+\copydetails RKH_HK_EN_START
+
+\code void rkh_hk_exit( void )\endcode
+\copydetails RKH_HK_EN_EXIT
+
+\code void rkh_hk_idle( void )\endcode
+\copydetails rkh_hk_idle
+
+\n <HR>
+\section ilock Interrupt locking mechanism
+
+\copydetails RKH_DIS_INTERRUPT()
+Please, see \ref Installation section about RKH port directory and files.
+
+\n <HR>
+\section crt Critical section
+
+\copydetails RKH_SR_CRITICAL_
+
+\n <HR>
+\section trc Trace facility
+
+\copydetails rkhtrc.h
+
+RKH has a set of configuration options related to trace tool 
+facility, which an user that require this feature must be properly configure 
+in the \b rkhcfg.h header file.
+
+\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li Define the macro \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
+
+See \ref cfg section for more information about that.
+
+A RKH port cannot and should not define all the functions 
+that it calls, because this would render the port too inflexible. Therefore, 
+the application-specific functions rkh_trc_open(), rkh_trc_close(), 
+rkh_trc_flush(), and rkh_trc_getts() are application provided.
+
+\code void rkh_trc_open( void )\endcode
+\copydetails rkh_trc_open
+
+\code void rkh_trc_close( void )\endcode
+\copydetails rkh_trc_close
+
+\code void rkh_trc_flush( void )\endcode
+\copydetails rkh_trc_flush
+
+\code void rkh_trc_getts( void )\endcode
+\copydetails rkh_trc_getts
 
 <HR>
-\section files Platform-dependent files
+\section rkhp A port file example.
 
-The header file \c rkhport.h adapts and configures RKH. This
-file has already discussed in \ref Installation section. However,
-this section includes here again the explanation of this important file.
-
-The \\portable directory contains platform-independent header files to be
-used by RKH applications. Each platform-dependent file should be 
-placed in a directory that represents the platform to be used, called port
-directory. 
-Each port directory should be placed within \c \\portable, 
-i.e.: \c \\portable\\\<platform\>\\rkhport.h. The 
-\ref src_dir "Figure 2 RKH source directory" shows three RKH port 
-directories: \c \\portable\\cw08 (Codewarrior for Freescale S08), 
-\c \\portable\\lnxgcc (Linux GCC), and \c \\portable\\vc08 (Visual C++ 2008).
-
-Next, each \c rkhport.h must be referenced from \c rkhplat.h header file,
-located in \c \\include directory. The idea behind conditional 
-compilation is that a \c rkhport.h can be selectively compiled, depending 
-upon whether a specific value has been defined. The next listing shows 
-the \c rkhplat.h file according to \c \\portable directory from
-\ref src_dir "Figure 2 RKH source directory", where \c ___CWS08__,
-\c ___LNXGCC__, and \c __VC__ are used to instruct the C/C++ compiler to 
-include header files from the specific RKH port directory.
+<EM>\b "rkhport.h" for x86, VC2008, and win32 single thread</EM>
+<EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
-#if __CWS08__
-	#include "..\portable\cw08\rkhport.h"
-#elif __VC__
-	#include "..\portable\vc08\rkhport.h"
-#elif __LNXGCC__
-   	#include "lnxgcc/rkhport.h"	
-#else
-	#error "rkhplat.h: Missing platform definition."
+#ifndef __RKHPORT_H__
+#define __RKHPORT_H__
+
+
+#include <windows.h>
+
+#include "rkhtype.h"
+#include "rkhrq.h"
+#include "rkhmp.h"
+#include "rkhrdy.h"
+
+
+extern CRITICAL_SECTION csection;
+extern HANDLE sma_is_rdy;
+extern RKHRG_T rkhrg;
+
+
+const char *rkh_get_port_version( void );
+const char *rkh_get_port_desc( void );
+
+
+/*
+ * 	Declaring an object RKHROM announces that its value will
+ * 	not be changed and it will be stored in ROM.
+ */
+
+#define RKHROM			const	
+
+
+#define RKH_DIS_INTERRUPT()
+#define RKH_ENA_INTERRUPT()
+//#define RKH_CPUSR_TYPE
+#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
+#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
+
+
+#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_THREAD_TYPE             	HANDLE
+
+
+#define RKH_SMA_BLOCK( sma ) 									\
+				RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
+
+#define RKH_SMA_READY( rg, sma ) 								\
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
+			    (void)SetEvent( sma_is_rdy )
+
+#define RKH_SMA_UNREADY( rg, sma ) 								\
+			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+
+#define RKH_WAIT_FOR_EVENTS() 									\
+			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
+
+
 #endif
 \endcode
 
-The path of platform-dependent file must be relative.
-
-<HR>
-\section rkhp "rkhport.h" A port file example
+<EM>\b "rkht.h" for x86, VC2008, and win32 single thread</EM>
+<EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
-#include "rkhcfg.h"
+#ifndef __RKHT_H__
+#define __RKHT_H__
 
 
 /*
@@ -335,1316 +783,1932 @@ The path of platform-dependent file must be relative.
  * 	types.
  */
 
-typedef signed char 	rkhint8;
-typedef signed short 	rkhint16;
-typedef signed long		rkhint32;
-typedef unsigned char 	rkhuint8;
-typedef unsigned short 	rkhuint16;
-typedef unsigned long	rkhuint32;
+typedef signed char 	rkhi8_t;
+typedef signed short 	rkhi16_t;
+typedef signed long		rkhi32_t;
+typedef unsigned char 	rkhui8_t;
+typedef unsigned short 	rkhui16_t;
+typedef unsigned long	rkhui32_t;
 
 typedef unsigned int	HUInt;
 typedef signed int		HInt;
 
 
-/*
- * 	Declaring an object rkhrom announces that its value will
- * 	not be changed and it will be stored in ROM.
- */
-
-#define rkhrom			const	
-\endcode
-
-
-\page Usage Representing a state-machine
-
-\n
-As stated above, RKH is a generic, flexible, modular, highly portable, 
-ANSI-C compliant, and open-source development tool for implementing 
-hierarchical state-machines based on modern state-machine concepts. This 
-modern techniques are used to give an abstract description of the dynamic 
-behavior of a system in a substantial manner.
-
-<STRONG> The key features of the RKH framework: </STRONG>
-
-- State-machines representation is based on state-tables.
-- Representing a state-machine with RKH is intuitive, and easy.
-- Reflects the state-diagram without obfuscation.
-- The RKH application are highly maintainable.
-- Easy to integrate with any event queuing and dispatching mechanism.
-- Useful in embedded systems.
-- The most of the RKH implementation is independent of any particular 
-CPU, operating system, or compiler.
-- Flexible and user-configurable code generation.
-- Very small footprint.
-- Support hierarchically nested states, and flat state-machine.
-- Support conditional, junction, and history pseudostates.
-- Support compound transitions with guards.
-- Support local transitions.
-
-
-The RKH not implements neither entire UML specs. nor entire Statechart specs. 
-Instead, the RKH intention is to support just enough basic concepts of that 
-powerful tools to facilitate the reactive-system modeling holding a solid, 
-and efficient implementation. Broadly speaking, the RKH implementation has 
-been designed from the ground up to be used in 8-bits platforms but can be 
-easily adapted to 16 or 32-bits platforms.
-
-The goal in this section is to explain how to represent a state-machine 
-using the RKH framework. To do that is proposed a simple example, which is 
-shown in the \ref fig1 "Figure 1".
-
-\n
-\anchor fig1
-\image html my.jpg "Figure 1 - \"my\" State diagram"
-
-\n This section summarizes the main rules and concepts for making the most
-out of RKH features.
-
-- \ref rep0
-- \ref rep1
-- \ref rep2
-- \ref rep3
-
-<HR>
-\section rep0 Preparing the application files
-
-The sample code for the example presented above port to x86 is located 
-in the directory \\demo\\vc08\\. The directory contains the Visual C++ 2008
-project files to build the application. See \ref Installation section 
-about RKH files.
-
-Th header file is located in the application directory:
-
-- \b "rkhcfg.h":	this file adapts and configures RKH. See \ref cfg section. 
-					In the \\demo directory there are other rkhcfg.h files
-					already in existence and it's suggested that these 
-					are used as a reference. See the application 
-					\ref rkhcfg_h file.
-					Note that this header file is located in the application 
-					directory.
-
-- \b "my.c": 		contains the implementation of the "my" state-machine, 
-					which illustrates all aspects of implementing 
-					state-machines with RKH. Please correlate this 
-					implementation with the "my" state diagram in 
-					\ref fig1 "Figure 1".
-					In this file are specifically declared the 
-					state-machine, also its 
-					states and pseudostates. See the \ref my_c file.
-					Note that this source file is located in the application 
-					directory.
-
-- \b "myact.c": 	this source file declares each of entry, exit, 
-					transition, and guard actions to be executed.
-					Note that the \c rkhcfg.h file defines the function
-					prototype of actions. See \ref cfg section about of 
-					available options and \ref myact_c file.
-					Also, note that this source file is located in the 
-					application 
-
-- \b "my.h": 		this header file contains the definitions of objet 
-					structures (state-machine, states, and pseudostates) and
-					other facilities shared among the components of the
-					application. See the \ref my_h file.
-					Note that this header file is located in the application 
-					directory.
-
-- \b "myact.h":		this header file defines the actions to be executed.
-					Note that the \c rkhcfg.h file defines the function
-					prototype of actions. See \ref cfg section about of 
-					available options and \ref myact_c file.
-					See the \ref myact_h file.
-					Note that this header file is located in the application 
-					directory.
-
-- \b "myevt.h":		because events are explicitly shared 
-					among most of the application components, it's convenient 
-					to declare them in the separate header file "myevt.h".
-					See the \ref myevt_h file.
-					Note that this header file is located in the application 
-					directory.
-
-- \b "main.c": 		this file contains the main() function along with 
-					an example for using the RKH trace facility.
-					See the \ref main_c file.
-					Note that this source file is located in the 
-					application 
-
-<HR>
-\section rep1 Identify and classify states and pseudostates
-
-The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
-presented above, sorted by state nesting level.
-
-\n
-\anchor fig2
-\image html sttbl.jpg "Figure 2 - State nesting"
-
-<HR>
-\section rep2 Representing the state-machine
-
-Now, this section explains how to implement the "my" state-machine 
-using the RKH framework, which is shown in \ref fig1 "Figure 1".
-
--# \ref rep_sm
--# \ref rep_cs
--# \ref rep_bs
--# \ref rep_cjh
--# \ref rep_st
--# \ref rep_def
--# \ref rep_act
--# \ref rep_inc
-
-\n
-\subsection rep_sm Declaring the state-machine (top-state)
-
-\n
-The object structure of "my" state-machine is declared by means of 
-RKH_CREATE_HSM() macro, which is explained in \c rkhsm.h file.
-According to "my" state diagram:
-\n
-\n
-\code
-RKH_CREATE_HSM( my, 0, HCAL, &S1, my_init, &mydata );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"my". State-machine (top-state) name. Represents the 
-					state-machine structure.
-	- \e \b id =	"0". The value of state-machine ID. The user application 
-					defines the available ids in \c rkhdata.h file. 
-	- \e \b ppty =	"HCAL". Enables the state nesting. 
-	- \e \b is =	"S1". Pointer to regular initial state. This state could 
-					be defined either composite or basic.
-	- \e \b ia =	"my_init". Pointer to initialization action. The function 
-					prototype is defined as #RKHINIT_T. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b hd =	"mydata". Pointer to state-machine's abstract data. This 
-					argument is optional, thus it could be declared as NULL.
-\n
-\n
-\subsection rep_cs Declaring the composite states
-\n
-The RKH_CREATE_COMP_STATE() macro, which is defined in the \c rkhsm.h file,
-is used for creating the composite states.
-
-According to "my" state diagram the declaration of composite state "S1" looks
-as follow:
-
-\code
-RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit, RKH_ROOT, &S11, &DH );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"S1". State name. Represents the composite state structure.
-	- \e \b id =	"0". The value of state ID.
-	- \e \b en =	"set_y_0". Pointer to state entry action. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b ex =	"dummy_exit". Pointer to state exit action. This argument 
-					is optional, thus it could be declared as NULL.
-	- \e \b parent =	"RKH_ROOT". Pointer to parent state. 
-	- \e \b defchild =	"S11". Pointer to default child state or pseudostate. 
-	- \e \b history =	"DH". Pointer to history pseudostate. This argument 
-						is optional, thus it could be declared as NULL.
-
-In like manner, the rest composite states are declared as shown below:
-\n
-\code
-RKH_CREATE_COMP_STATE( S11, 0, NULL, NULL, 	&S1, 		&S111,	&H );
-RKH_CREATE_COMP_STATE( S3, 	0, NULL, NULL,  RKH_ROOT, 	&S31,  	NULL );
-\endcode
-\n
-\subsection rep_bs Declaring the basic states
-\n
-The RKH_CREATE_BASIC_STATE() macro, which is defined in the \c rkhsm.h file,
-is used for creating the basic states.
-
-According to "my" state diagram the declaration of basic state "S12" looks
-as follow:
-
-\code
-RKH_CREATE_BASIC_STATE( S12, 	0, set_x_3, NULL, &S1, NULL );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"S12". State name. Represents the basic state structure.
-	- \e \b id =	"0". The value of state ID.
-	- \e \b en =	"set_x_3". Pointer to state entry action. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b ex =	"NULL". Pointer to state exit action. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b parent =	"S1". Pointer to parent state. 
-	- \e \b prepro =	"NULL". Pointer to input preprocessor function. This 
-						argument is optional, thus it could be declared as 
-						NULL.
-						Aditionally, by means of single inheritance in C it 
-						could be used as state's abstract data.	Aditionally, 
-						implementing the single inheritance in C is very 
-						simply by literally embedding the base type, 
-						RKHPPRO_T in this case, as the first member of the 
-						derived structure.
-						\b Example:
-
-						\code
-						static
-						RKHE_T
-						preprocessor( RKHEVT_T *pe )
-						{
-								...
-						}
-
-						typedef struct
-						{
-							RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
-							unsigned min:4;
-							unsigned max:4;
-							char *buff;
-						} SDATA_T;
-							
-						static const SDATA_T option = { preprocessor, 4, 8, token1 };
-
-						HUInt
-						action( const struct rkh_t *ph, RKHEVT_T *pe )
-						{
-							SDATA_T *popt;
-
-							popt = (SDATA_T *)rkh_get_sdata( ph );
-							return popt->min > 1 && popt->max < 4 ? RKH_GTRUE : RKH_GFALSE;
-						} 
-						
-						RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, preprocessor ); 
-						RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, NULL, &S2, (RKHPPRO_T*)&option ); 
-						\endcode
-
-In like manner, the rest basic states are declared as shown below:
-\n
-\code
-RKH_CREATE_BASIC_STATE( S111, 	0, set_x_1, NULL, &S11, NULL );
-RKH_CREATE_BASIC_STATE( S112,	0, set_x_2, NULL, &S11, NULL );
-RKH_CREATE_BASIC_STATE( S31, 	0, NULL, 	NULL, &S3, 	NULL );
-RKH_CREATE_BASIC_STATE( S32, 	0, NULL, 	NULL, &S3, 	NULL );
-\endcode
-\n
-\subsection rep_cjh Declaring the pseudostates
-\n
-The conditional, junction, shallow history, and deep history pseudostates 
-are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
-RKH_CREATE_SHALLOW_HISTORY_STATE(), and RKH_CREATE_DEEP_HISTORY_STATE() 
-macros respectively, which are explained in \c rkhsm.h file.
-
-\n According to "my" state diagram the declaration of conditional 
-pseudostate "C1" looks as follow:
-\n
-\code
-RKH_CREATE_COND_STATE( C1, 0 );
-RKH_CREATE_COND_STATE( C2, 0 );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"C1"/"C2". Pseudostate name. Represents the conditional 
-					pseudostate structure.
-	- \e \b id =	"0"/"0". The value of state ID.
-
-\n According to "my" state diagram the declaration of juction pseudostate
-"J" looks as follow:
-\n
-\code
-RKH_CREATE_JUNCTION_STATE( J, 0, NULL, &S3 );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"J". Pseudostate name. Represents the junction
-					pseudostate structure.
-	- \e \b id =	"0". The value of state ID.
-	- \e \b action =	"NULL". Pointer to transition action. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b target =	"S3". Pointer to target state.
-
-\n According to "my" state diagram the declaration of shallow history 
-pseudostate "H" looks as follow:
-\n
-\code
-RKH_CREATE_SHALLOW_HISTORY_STATE( H, 0, &S11 );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"H". Pseudostate name. Represents the shallow history 
-					pseudostate structure.
-	- \e \b id =	"0". The value of state ID.
-	- \e \b parent =	"S11". Pointer to parent state.
-
-\n According to "my" state diagram the declaration of deep history 
-pseudostate "DH" looks as follow:
-\n
-\code
-RKH_CREATE_DEEP_HISTORY_STATE( DH, 0, &S1 );
-\endcode
-\n
-where:
-\n
-	- \e \b name =	"DH". Pseudostate name. Represents the deep history 
-					pseudostate structure.
-	- \e \b id =	"0". The value of state ID.
-	- \e \b parent =	"S1". Pointer to parent state.
-
-\n
-\subsection rep_st Declaring transition and branch tables
-
-\n
-The basic and composite states requires a state transition table.
-The #RKH_CREATE_TRANS_TABLE() macro creates a state transition table. Use the 
-#RKH_END_TRANS_TABLE macro to terminate it.
-Similarly, the condiotional pseudostates requires a branch table. 
-This #RKH_CREATE_BRANCH_TABLE macro creates a branch table. Use the 
-#RKH_END_BRANCH_TABLE macro to terminate it.
-
-\n According to "my" state diagram the state transition table of state "S2"
-looks as follow:
-
-\code
-(1)	RKH_CREATE_TRANS_TABLE( S2 )
-
-(2)		RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
-(3)		RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
-		RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
-(4)		RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
-		RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-(5)	RKH_END_TRANS_TABLE	
-\endcode
-
-\li (1) Declares the state transition table of state "S2".
-
-\li (2) Declares a regular transition using RKH_TRREG() macro. Where:
-	- \e \b event =	"ONE". Triggering event. 
-	- \e \b guard = "x_equal_1". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b action = "dummy_act". Pointer to action function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b target \b state = "S1". Pointer to target state.
-
-
-\li (3) Declares a regular transition using RKH_TRREG() macro. Note that the RKH
-		implementation supports exclusively the local state transition semantics, 
-		that is, a local transition doesn't cause exit from the source state 
-		if the target state is a substate of the source. In addition, local state 
-		transition doesn't cause exit and reentry to the target state if the 
-		target is a superstate of the source state. Where:
-	- \e \b event =	"TWO". Triggering event. 
-	- \e \b guard = "NULL". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b action = "NULL". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b target \b state = "S2". Pointer to target state.
-
-\li (4) Declares an internal transition using RKH_TRINT() macro. Where:
-	- \e \b event =	"FOUR". Triggering event. 
-	- \e \b guard = "NULL". Pointer to guard function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b action = "dummy_act". Pointer to action function. This argument is 
-					optional, thus it could be declared as NULL.
-
-\li (4) Terminates the transition table.
-
-\n According to "my" state diagram the branch table of "C2"
-looks as follow:
-
-\code
-(1)	RKH_CREATE_BRANCH_TABLE( C2 )
-(2)		RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
-		RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
-(3)		RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
-(4)	RKH_END_BRANCH_TABLE
-
-\endcode
-
-\li (1) Declares the branch table of state of "C2".
-
-\li (2) Declares a branch. Where:
-	- \e \b guard =	"x1". branch guard. 
-	- \e \b action = "NULL". Pointer to action function. This argument is 
-					optional, thus it could be declared as NULL.
-	- \e \b target \b state = "S3". Pointer to target state.
-
-\li (3) Declares an "else" branch. Each condition connector can have one 
-		special branch with a guard labeled ELSE, which is taken 
-		if all the guards on the other branches are false. 
-
-\li (4) Terminates the branch table.
-
-\n In like manner, the rest tables are declared as shown below:
-\n
-\code
-/*
- *	Defines states and pseudostates.
- */
-
-RKH_CREATE_BASIC_STATE( S2, 0, NULL, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( S2 )
-
-	RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
-	RKH_TRINT( FOUR, 	NULL, 		dummy_act ),
-	RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_COMP_STATE( S1, 0, set_y_0, dummy_exit,  RKH_ROOT, &S11, &DH );
-RKH_CREATE_TRANS_TABLE( S1 )
-
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_TRREG( FIVE, 	NULL, 		NULL, 		&S12 ),
-	RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S12, 0, set_x_3, NULL, &S1, NULL );
-RKH_CREATE_TRANS_TABLE( S12 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&J ),
-	RKH_TRREG( FOUR, 	NULL, 		set_y_1, 	&S2 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_COMP_STATE( S11, 0, NULL, NULL, &S1, &S111, &H );
-RKH_CREATE_TRANS_TABLE( S11 )
-
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S112 ),
-	RKH_TRREG( FOUR, 	NULL, 		NULL, 		&S12 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, NULL, &S11, NULL );
-RKH_CREATE_TRANS_TABLE( S111 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S112 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S112, 0, set_x_2, NULL, &S11, NULL );
-RKH_CREATE_TRANS_TABLE( S112 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S111 ),
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S11 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&J ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_SHALLOW_HISTORY_STATE( H, 0, &S11 );
-RKH_CREATE_DEEP_HISTORY_STATE( DH, 0, &S1 );
-
-RKH_CREATE_COMP_STATE( S3, 0, NULL, NULL,  RKH_ROOT, &S31,  NULL );
-RKH_CREATE_TRANS_TABLE( S3 )
-
-	RKH_TRREG( TWO, 	NULL, 		NULL, 		&C1 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&S3 ),
-	RKH_TRINT( SIX, 	NULL, 		show_data ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S31, 0, NULL, NULL, &S3, NULL );
-RKH_CREATE_TRANS_TABLE( S31 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S32 ),
-
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE( S32, 0, NULL, NULL, &S3, NULL );
-RKH_CREATE_TRANS_TABLE( S32 )
-
-	RKH_TRREG( ONE, 	NULL, 		NULL, 		&S31 ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_JUNCTION_STATE( J, 0, NULL, &S3 );
-
-RKH_CREATE_COND_STATE( C1, 0 );
-RKH_CREATE_BRANCH_TABLE( C1 )
-
-	RKH_BRANCH( y1, 	NULL, 		&H ),
-	RKH_BRANCH( y2, 	dummy_act, 	&DH ),
-
-RKH_END_BRANCH_TABLE
-
-RKH_CREATE_COND_STATE( C2, 0 );
-RKH_CREATE_BRANCH_TABLE( C2 )
-
-	RKH_BRANCH( x1, 		dummy_act, 	&S3 ),
-	RKH_BRANCH( x2_or_x3, 	NULL, 		&S32 ),
-	RKH_BRANCH( ELSE, 		NULL, 		&S2 ),
-
-RKH_END_BRANCH_TABLE
-\endcode
-
-
-\subsection rep_inc Including files
-
-The following listing shows a fragment of "my.c" source file, which 
-illustatres some aspects of implementing state-machines with RKH.
-
-\code
-(1) #include "rkhsm.h"
-
-
-/*	Includes file of event definitions. */
-
-(2) #include "myevt.h"
-
-
-/* Includes file of HSM definitions. */
-
-(3) #include "my.h"
-
-
-/* Includes file of action/guard definitions. */
-
-(4) #include "myact.h"
-
-
-/* Defines HSM's data. */
-
-(5) static MYHDATA_T mydata;
-
-/* ... */
-\endcode
-
-\li (1) Every application C-file that uses RKH must include the rkhsm.h 
-		header file. This header file contains the specific adaptation 
-		of RKH to the given processor and compiler, also includes the
-		RKH interface to implement state-machines. The port file is located
-		in the application directory.
-
-\li (2) The "myevt.h" header file contains the declarations of triggering 
-		events shared among the components of the
-		application. This header file is located in the application 
-		directory.
-
-\li (3) The "my.h" header file contains the definitions of objet 
-		structures (state-machine, states, and pseudostates) and
-		other facilities shared among the components of the application. 
-
-\li (4) This header file defines the actions to be executed.
-
-\li (5) The "my" state-machine maintains its own data in the structure 
-		MYDATA_T, which is defined in the "my.h" header file.
-
-\n
-\subsection rep_def Defining the state-machine
-
-The following listing shows the "my.h" header file, which 
-illustatres some important aspects of implementing state-machines with RKH.
-
-\code
-#ifndef __MY_H__
-#define __MY_H__
-
-
-(1)	#include "rkhsm.h"
-
-
-/*	Defines the event structure. */
-
-(2)	typedef struct
-	{
-(3)		RKHEVT_T event;
-(4)		rkhuint16 ts;
-	} MYEVT_T;
-
-
-/*	Defines the state-machine data */
-
-(5)	typedef struct
-	{
-		rkhuint8 x;
-		rkhuint8 y;
-	} MYHDATA_T;
-
-
-/*	Defines the state-machine. */
-
-(6)	RKH_DCLR_HSM( my );
-
-
-/*	Defines states and pseudostates. */
-
-(7)	RKH_DCLR_COMP_STATE		S1,S3,S11;
-	RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;
-	RKH_DCLR_COND_STATE		C1,C2;
-	RKH_DCLR_JUNC_STATE		J;
-	RKH_DCLR_DHIST_STATE	DH;
-	RKH_DCLR_SHIST_STATE	H;
-
-
 #endif
 \endcode
 
-\li (1) RKH interfaces.
 
-\li (2-4) The MYEVT_T structure declares an event with the parameter "ts".
-		Such nesting of structures always aligns the data member 
-		#RKHEVT_T at the beginning of every instance of the derived 
-		structure. In particular, this alignment lets treat a pointer to 
-		the derived MYEVT_T structure as a pointer to the #RKHEVT_T 
-		base structure. Consequently, can always safely pass a pointer 
-		to MYEVT_T to any C function that expects a pointer to #RKHEVT_T.
+\page qref Quick reference
+\image html rkh_bunner.jpg
 
-\li (5) The MYHDATA_T defines the state-machine data. 
+Prev: \ref main_page "Home" \n
+Next: \ref Installation "Installation"
 
-\li (6) Defines the state-machine as a global object.
+The main objective of this section is to show and also illustrate the most 
+important concepts to apply when dealing with RKH and the event-driven 
+applications.
 
-\li (7) Defines the states and pseudostates using the corresponding macos
-		listed above:
-		\n
-		\n
-		- #RKH_DCLR_COMP_STATE: composite state.
-		- #RKH_DCLR_BASIC_STATE: basic state.
-		- #RKH_DCLR_COND_STATE: conditional pseudostate.
-		- #RKH_DCLR_JUNC_STATE: junction pseudostate.
-		- #RKH_DCLR_DHIST_STATE: deep history pseudostate.
-		- #RKH_DCLR_SHIST_STATE: shallow history pseudostate.
+This section includes:
+
+- \ref qref0
+- \ref qref1
+- \ref qref2
+- \ref qref16
+- \ref qref3
+- \ref qref17
+- \ref qref4
+- \ref qref5
+- \ref qref6
+- \ref qref14
+- \ref qref12
+- \ref qref7
+- \ref qref13
+- \ref qref8
+- \ref qref9
+- \ref qref10
+- \ref qref15
+- \ref qref18
 
 \n
-\subsection rep_act Declaring and defining actions
+<HR>
+\section qref0 Defining a state machine
 
-\n The following enlists the action to be automatically executed by RKH. The
-function prototypes are explicitly defined in \c rkh.h file.
+\n Prev: \ref qref "Quick reference" \n
 
-- \b Initiallization \b action (#RKHINIT_T): 
-	the state transition originating at the black ball is called the 
-	initial transition.	An initial transition can have associated 
-	actions, which RKH invokes to execute the topmost initial transition.
+A state machine application is defined with the RKH_SMA_CREATE() macro and 
+declared with the RKH_SMA_DCLR() macro. Frequently, each state machine is 
+encapsulated inside a dedicated source file (.c file), from which the 
+RKH_SMA_CREATE() macro is used, thus the structure definition is in fact 
+entirely encapsulated in its module and is inaccessible to the rest of the 
+application. However, as a general rule, the state machine application must 
+be declared inside a header file (.h file) by means of RKH_SMA_DCLR() 
+macro. We will develop one example of state machine creation to illustrate 
+the use of this macro. Also, we will give our hierarchical state machine the 
+name \c my. If you wanted to create a "flat" state machine, you would use the 
+#FLAT parameter rather than the #HCAL parameter.
 
-- \b Transition \b action (#RKHACT_T): 		
-	enlists any actions associated with the transition.
+This section includes:
 
-- \b Entry \b action (#RKHENT_T): 			
-	this action is executed upon entry to a state.
+- \ref qref0_1
+- \ref qref0_2
+- \ref qref0_3
 
-- \b Exit \b action (#RKHEXT_T): 			
-	this action is executed upon exit from a state.
 
-- \b Guard \b action (#RKHGUARD_T):
-	contains the guard conditions attached to transitions.
-
-- \b Preprocessor \b action (#RKHPPRO_T): 	
-	this action is executed before sending occured event to state-machine.
-
-Aditionally, the preprocessor options listed in \c rkhcfg.h allows 
-to customize the prototypes of each action. See \ref cfg section for 
-more information about that.
-The used actions in the "my" state-machine implementation are shown in
-\ref myact_c file.
-
-\n According to "my" state diagram the initial action looks as follow:
-\n
-\code
-void 
-my_init( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = pd->y = 0;
-}
-\endcode
-
-\n According to "my" state diagram the transition actions looks as follow:
+\subsection qref0_1 Defining the state machine application
 \n
 \code
-void
-set_y_2( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	pd->y = 2;
-	printf( "action: "__FUNCTION__"()\n" );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
-}
+(1)	//	my.c: state machine application's module
 
+(2) typedef struct
+    {
+		RKHSMA_T sm;	// base structure
+		rkhui8_t x;		// private member
+		rkhui8_t y;		// private member
+	} MYSM_T;
 
-void
-set_y_1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	pd->y = 1;
-	printf( "action: "__FUNCTION__"()\n" );
-	printf( "event.ts = %05d\n", (( MYEVT_T* )pe )->ts );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
-}
+(3) static RKH_DCLR_STATIC_EVENT( turnon, TURNON );
 
-
-void
-dummy_act( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-}
-
-
-void
-show_data( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	printf( "data.x = %02d - data.y = %02d\n", pd->x, pd->y );
-}
+(4) RKH_SMA_CREATE( 	MYSM_T, 	// state machine application data type
+(5) 					3, 			// ID
+(6) 					my, 		// name
+(7)						2,			// priority number
+(8) 					HCAL, 		// hierarchical state machine
+(9) 					&S1, 		// initial state
+(10) 					my_init, 	// initial action
+(11) 					&turnon );	// initial event
 \endcode
 
-\n According to "my" state diagram the entry actions looks as follow:
+\subsection qref0_2 Declaring the state machine
 \n
 \code
-void
-set_x_1( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = 1;
-}
+//	my.h: state-machine application's header file
 
-
-void
-set_x_2( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = 2;
-}
-
-
-void
-set_x_3( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->x = 3;
-}
-
-
-void
-set_y_0( const struct rkh_t *ph )
-{
-	pd = rkh_get_data( ph );
-	pd->y = 0;
-}
+RKH_SMA_DCLR( my );
 \endcode
 
-\n According to "my" state diagram the exit actions looks as follow:
-\n
-\code
-void
-dummy_exit( const struct rkh_t *ph )
-{
-}
-\endcode
+Explanation
 
-\n According to "my" state diagram the guards looks as follow:
-\n
-\code
-HUInt
-x_equal_1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
+\li (1)	Frequently, each state machine application is encapsulated inside a 
+		dedicated source file (.c file), from which the RKH_SMA_CREATE() 
+		macro is used.
+\li (2)	The MYSM_T defines the \c my state machine application structure.
+		Almost every state machine applications must also store 
+		other "extended-state" information. You supply this additional 
+		information by means of data members enlisted after the base structure 
+		member \c sm. This illustrates how to derive an state machine 
+		application from RKHSMA_T. Please note that the RKHSMA_T member 
+		\c sm is defined as the FIRST member of the derived struct.
+		RKHSMA_T is not intended to be instantiated directly, but rather 
+		serves as the base structure for derivation of state machines in the 
+		application code.
+\li (3)	Declares and initializes the event structure \c turnon with \c TURNON  
+		signal and establishes it as one static event. The created event 
+		object is explicitly placed in ROM..
+\li (4)	As said below, the MYSM_T defines the \c my state machine application 
+		structure.
+\li (5)	\c 3 is the state machine application ID. This number allows to 
+		uniquely identify a state machine application.
+\li (6)	\c my is the state machine application. Represents the top state of 
+		state diagram. 
+\li (7)	\c 2 is the state machine application priority.
+\li (8)	the \c my state machine is defined as a hierarchical state machine. 
+		The available property options are enumerated in RKH_HPPTY_T 
+		enumeration in the \b rkh.h file.
+\li (9)	\c S1 is the initial state.
+\li (10) \c my_init() function defines the topmost initial transition in 
+		the \c my state machine. 
+		The function prototype is defined as RKHINIT_T. This argument is 
+		(optional), thus it could be declared as NULL. The application code 
+		must trigger the initial transition explicitly by invoking 
+		rkh_sma_activate() function.
+\li (11) \c turnon is a pointer to an event that will be passed to state 
+		machine application when it starts. Could be used to pass arguments 
+		to the state machine like an argc/argv. This argument is optional, 
+		thus it could be declared as NULL or eliminated in compile-time with 
+		RKH_SMA_EN_IEVENT = 0.
 
-	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
-\endcode
+\subsection qref0_3 Customization
 
-\n According to "my" state diagram the branch selection functions looks 
-as follow:
-\n
-\code
-HUInt
-y1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->y == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
 
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
 
-HUInt
-y2( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->y == 2 ? RKH_GTRUE : RKH_GFALSE;
-}
+- \b RKH_SMA_EN_IEVENT: \n
+	When RKH_SMA_EN_IEVENT is set to one (1) the RKHSMA_T structure allows to 
+	reference a event, which will be passed to state machine application when 
+	it starts. Could be used to pass arguments to the state machine like an 
+	argc/argv. \n\n
+- \b RKH_SMA_EN_ID: \n
+	When RKH_SMA_EN_ID is set to one (1) the RKHSMA_T structure includes a 
+	ID number that could be used to uniquely identify a state machine 
+	application.
 
-
-HUInt
-x1( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
-
-
-HUInt
-x2_or_x3( const struct rkh_t *ph, RKHEVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-	return pd->x == 2 || pd->x == 3 ? RKH_GTRUE : RKH_GFALSE;
-}
-\endcode
-
-\n After declaring each actions in "myact.c" it must be defined in 
-\ref myact_h file.
+\n Prev: \ref qref "Quick reference"
 
 <HR>
+\section qref1 Defining a superstate
 
-\section rep3 Running
+\n Prev: \ref qref "Quick reference"
 
-The following listing shows the main() function implementation. This function
-is included in the \ref main_c file, it's located in the application 
-directory.
+A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
+macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
+state machine and its states (superstates and substates) are encapsulated 
+inside a dedicated source file (.c file), from which the 
+RKH_CREATE_COMP_STATE() macro is used.
+We will develop one example of composite state definition to illustrate the 
+use of this macro. We will give our composite state the name \c S1. 
+
+This section includes:
+
+- \ref qref1_1
+- \ref qref1_2
+- \ref qref1_3
+
+\subsection qref1_1 Defining a composite state
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_COMP_STATE( 	S1, 
+(3)							0, 
+(4)							turn_on, 
+(5)							turn_off, 
+(6)							&SA, 
+(7)							&S11, 
+(8)							&H );
+\endcode
+
+\subsection qref1_2 Declaring a composite state
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_COMP_STATE( S1 );
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_COMP_STATE() macro is used.
+\li (2)	\c S1 is the state name. Represents a composite state structure.
+\li (3)	\c 0 is the value of state ID.
+\li (4)	\c turn_on() defines the entry action to be executed unconditionally 
+		upon the entry to the \c S1 state. This argument is optional, 
+		thus it could be declared as NULL. The RKHENT_T defines the function 
+		prototype.
+\li (5)	\c turn_off() defines the exit action, which is executed upon exit 
+		from the \c S1 state. This argument is optional, thus it could be 
+		declared as NULL. The RKHEXT_T defines the function prototype.
+\li (6)	\c SA is the parent state of \c S1. If a state has no 
+		explicit superstate means that it is implicitly nested in 
+		the "top" state, and the parent state is defined by means of RKH_ROOT
+		macro.  The "top" state is a UML concept that denotes 
+		the ultimate root of the state hierarchy in a hierarchical state 
+		machine.
+\li (7)	\c S11 is the default state of \c S1 state machine. At each level 
+		of nesting, a superstate can have a private initial transition that
+		designates the active substate after the superstate is entered 
+		directly. Here the initial transition of state \c S1 designates the 
+		state \c S11 as the initial active substate.
+\li (8)	\c H is the history pseudostate. This argument is optional, thus 
+		it could be declared as NULL. See RKH_CREATE_SHALLOW_HISTORY_STATE() 
+		macro and RKH_CREATE_DEEP_HISTORY_STATE().
+
+\subsection qref1_3 Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref2 Defining a basic state
+
+\n Prev: \ref qref "Quick reference"
+
+A basic state (also called substate) is defined with the 
+RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
+macro. Frequently, each state machine and its states (superstates and 
+substates) are encapsulated inside a dedicated source file (.c file), from 
+which the RKH_CREATE_BASIC_STATE() macro is used.
+We will develop one example of basic state definition to illustrate the 
+use of this macro. We will give our basic state the name \c S11. 
+As will demostrates the use of RKH_CREATE_BASIC_STATE() macro and its
+arguments is very similar to RKH_CREATE_COMP_STATE() macro.
+
+<b>Defining a basic state</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_BASIC_STATE( S11, 
+(3)							4, 
+(4)							start_process, 
+(5)							stop_process, 
+(6)							&S1, 
+(7)							in_keyb );
+\endcode
+
+<b>Declaring a basic state</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_BASIC_STATE( S11 );
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_BASIC_STATE() macro is used.
+\li (2)	\c S11 is the state name. Represents a substate structure.
+\li (3)	\c 4 is the value of state ID.
+\li (4)	\c start_process() defines the entry action to be executed unconditionally 
+		upon the entry to the \c S11 state. This argument is optional, 
+		thus it could be declared as NULL. The RKHENT_T defines the function 
+		prototype.
+\li (5)	\c stop_process() defines the exit action, which is executed upon exit 
+		from the \c S11 state. This argument is optional, thus it could be 
+		declared as NULL. The RKHEXT_T defines the function prototype.
+\li (6)	\c S1 is the parent state of \c S11. If a state has no 
+		explicit superstate means that it is implicitly nested in 
+		the "top" state, and the parent state is defined by means of RKH_ROOT
+		macro.  The "top" state is a UML concept that denotes 
+		the ultimate root of the state hierarchy in a hierarchical state 
+		machine.
+\li (7)	\c in_keyb() defines the event preprocessor action. Before sending the 
+		arrived event to state machine, it can be previously processed using 
+		the	event preprocessor function. An action function takes the state 
+		machine pointer and the event pointer as arguments. The first 
+		parameter is optional in compile-time according to 
+		\b RKH_EN_PPRO_HSM_ARG macro.
+		Example:
+\code
+static
+RKHE_T
+in_keyb( RKHEVT_T *pe )
+{
+	if( pe->e >= 0 && pe->e <= 9 )
+		return DECIMAL;
+	if( pe->e == '.' )
+		return POINT;
+	else
+		return pe->e;
+}
+\endcode
+
+\li (7)	Aditionally, by means of single inheritance in C it could be 
+		used to supply additional information to state.
+		Implementing the single inheritance in C is very 
+		simply by literally embedding the base type, RKHPPRO_T in 
+		this case, as the first member of the derived structure.
+		This argument is optional, thus it could be declared as NULL.
+		Example:
+\code
+typedef struct
+{
+	RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	unsigned min:4;		// addtional information...
+	unsigned max:4;
+	char *buff;
+} SDATA_T;				// this data type will be used in S12 context
+
+static const SDATA_T option = { preprocessor, 4, 8, token };
+
+/* Define S11 state as a substate of S1 */
+RKH_CREATE_BASIC_STATE( S11, 4, start_process, start_process, &S1, in_keyb ); 
+
+/* Define S12 state as a substate of S1 */
+RKH_CREATE_BASIC_STATE( S12, 5, NULL, NULL, &S1, (RKHPPRO_T*)&option ); 
+\endcode
+
+\b Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PPRO: \n
+	When RKH_SMA_EN_PPRO is set to one (1) the state structure includes an 
+	reference to preprocessor function. This function could be called "Moore" 
+	action. This argument is optional, thus it could be declared as NULL. 
+	Aditionally, by means of single inheritance in C it could be used as 
+	state's abstract data. Aditionally, implementing the single inheritance 
+	in C is very simply by literally embedding the base type, RKHPPRO_T in 
+	this case, as the first member of the derived structure. See \a prepro 
+	member of RKHSREG_T structure for more information.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref16 Defining a state transition table
+
+\n Prev: \ref qref "Quick reference"
+
+In RKH every state is associated with a transition table, which is composed 
+of a well-defined set of transitions.
+The general syntax of an expression labelling a transition in a statechart is
+\e "i[c]/a" where \e i is the input that triggers the transition, \e c is a 
+condition that guards the transition from being taken unless it is true when 
+\e i occurs, and \e a is an action that is carried out if and when the 
+transition is taken. All of these parts are optional. 
+Thus, in RKH each row in a table represents a transition, which is 
+well-defined by an \e event, a \e guard, an \e action, and \e target state 
+(or pseudostate). The \ref fig_trtbl "Transition table" figure shows a 
+demostrative example of that.
+
+\anchor fig_trtbl
+\image html trtbl.jpg "Transition table"
+
+\li (1)	Expressing this transition as said above:\n\n
+		<EM>RCV_DATA[ data == SYNC ]/store_data( data )</EM>\n\n
+		The \c data \c == \c SYNC expression guards the transition from being 
+		taken unless it is true. The \c store_data() function is the action to
+		be taken. Note that in RKH the guard condition is evaluated invoking 
+		to a function.
+
+\li	(2)	Expressing this transition as said above:\n\n
+		<EM>TOUT0/drop_frame()</EM>\n\n
+		This transition is not conditioned by a guard.
+
+\li	(3)	Expressing this transition as said above:\n\n
+		<EM>DISABLE/disable()</EM>\n\n
+		Similar to prior transition.
+
+
+Now, is time to represent IN_DATA's transition table by means of RKH 
+framework:
 
 \code
-	void
-	main( void )
+(1)	RKH_CREATE_TRANS_TABLE( IN_DATA )
+(2)		RKH_TRINT( RCV_DATA,	is_sync,	store_data 				),
+(3)		RKH_TRREG( TOUT0, 		NULL, 		drop_frame, &WAIT_SYNC	),
+		RKH_TRREG( DISABLE, 	NULL, 		disable, 	&IDLE		)
+(4)	RKH_END_TRANS_TABLE
+\endcode
+
+Explanation
+
+\li (1)	The RKH_CREATE_TRANS_TABLE() macro creates the \c IN_DATA's 
+transition table. Each transition table always begins with the macro 
+RKH_CREATE_TRANS_TABLE() and ends with the macro RKH_END_TRANS_TABLE().
+As noted above, sandwiched between these macros are the transitions macros 
+that actually represent behavior of state.
+
+\li (2)	The RKH_TRINT() macro defines a internal transition, where 
+\c RCV_DATA is the triggering event, \c is_sync is the guard function, 
+and \c store_data() is the action function to be taken.
+
+\li (3)	The RKH_TRREG() macro defines a regular state transition, where 
+\c TOUT0 is the triggering event, \c drop_frame() is the action function to 
+be taken, and \c WAIT_SYNC is the target state. Note that it is not guarded.
+
+\li (4)	The RKH_END_TRANS_TABLE() macro ends transition table.
+
+As said above, the actions and guards in RKH framework are represented by 
+functions. Thus, \c is_sync() could be declared as:
+
+\code
+HUInt 
+is_sync( RKHEVT_T *pe )
+{
+	return pe->e == SYNC;
+}
+\endcode
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref3 Defining a conditional pseudostate
+
+\n Prev: \ref qref "Quick reference"
+
+A conditional pseudostate (also called choice pseudostate) is defined with 
+the RKH_CREATE_COND_STATE() macro and declared with the 
+RKH_DCLR_COND_STATE() macro. Frequently, each state machine and its 
+states and pseudostates are encapsulated inside a dedicated source file 
+(.c file), from which the RKH_CREATE_COND_STATE() macro is used.
+We will develop one example of choice pseudostate definition to 
+illustrate the use of this macro. We will give our choice pseudostate 
+the name \c C1. As will demostrates the use of RKH_CREATE_COND_STATE() 
+macro and its arguments is very similar to RKH_CREATE_BASIC_STATE() macro.
+
+<b>Defining a choice pseudostate</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_COND_STATE( 	C1, 
+(3)							0 );
+\endcode
+
+<b>Declaring a choice pseudostate</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_COND_STATE( C1 );
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_BASIC_STATE() macro is used.
+\li (2)	\c C1 is the pseudostate name. Represents a choice pseudostate 
+		structure.
+\li (3)	\c 0 is the value of pseudostate ID.
+
+\b Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage.\n\n 
+- \b RKH_SMA_EN_CONDITIONAL: \n
+	Enable (1) or disable (0) the conditional connector usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref17 Defining a branch table
+
+\n Prev: \ref qref "Quick reference"
+
+A condition connector has one incoming transition and can have several 
+outgoing transition segments called branches. Branches are labeled with 
+guards that determine which one is to be actually taken. 
+Since the condition connector is an OR connector, only one of the branches 
+can be taken. Each condition connector can have one special branch with 
+a guard labeled rkh_else, which is taken if all the guards on the other 
+branches are false. 
+Branches cannot contain triggers, but in addition to a guard they may 
+contain actions. A branch can enter another condition connector, thus 
+providing for the nesting of branches.
+In RKH branches are defined by the macro RKH_BRANCH().
+The general syntax of an expression labelling a branch in a statechart is
+\e "[c]/a" where \e c is a condition that guards the transition from being 
+taken unless it is true, and \e a is an action that is carried out if and 
+when the transition is taken. All of these parts are optional. 
+Example:
+
+\code
+(1)	RKH_CREATE_BRANCH_TABLE( C1 )
+(2)		RKH_BRANCH( power_ok, 	enable_process,	&S22	),
+(3)		RKH_BRANCH( ELSE, 		abort,			&S4 	),
+(4)	RKH_END_BRANCH_TABLE
+\endcode
+
+Explanation
+
+\li (1)	The RKH_CREATE_BRANCH_TABLE() macro creates the \c C1's 
+branch table. Each table type always begins with the macro 
+RKH_CREATE_BRANCH_TABLE() and ends with the macro RKH_END_BRANCH_TABLE().
+As noted above, sandwiched between these macros are the segment macros 
+that actually comprise the condition connector.
+
+\li (2)	The RKH_BRANCH() macro defines a branch segment, where 
+\c power_ok() is the guard function, \c enable_process is the action function 
+to be taken, and S22 is the target state.
+
+\li (3)	If all the guards on the other branches are false \c abort() function 
+will be invoked, and \c S4 will be the next state.
+
+\li (4)	The RKH_END_BRANCH_TABLE() macro ends branch table.
+
+As said above, the actions and guards in RKH framework are represented by 
+functions.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref4 Defining a shallow history pseudostate
+
+\n Prev: \ref qref "Quick reference"
+
+A shallow history pseudostate is defined with the 
+RKH_CREATE_SHALLOW_HISTORY_STATE() macro and declared with the 
+RKH_DCLR_SHIST_STATE() macro. Frequently, each state machine and its 
+states and pseudostates are encapsulated inside a dedicated source file 
+(.c file), from which the RKH_CREATE_SHALLOW_HISTORY_STATE() macro is used.
+We will develop one example of shallow history pseudostate definition to 
+illustrate the use of this macro. We will give our history pseudostate 
+the name \c H1. As will demostrates the use of RKH_CREATE_SHALLOW_HISTORY_STATE() 
+macro and its arguments is very similar to RKH_CREATE_COND_STATE() macro.
+
+<b>Defining a shallow history pseudostate</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_SHALLOW_HISTORY_STATE(	H1, 
+(3)										6,
+(4)										&S1 );
+\endcode
+
+<b>Declaring a shallow history pseudostate</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_DHIST_STATE( H1 );
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_SHALLOW_HISTORY_STATE() macro is used.
+\li (2)	\c H1 is the pseudostate name. Represents a shallow history 
+		pseudostate structure.
+\li (3)	\c 6 is the value of pseudostate ID.
+\li (6)	\c S1 is the parent state of \c H1.
+
+\b Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
+- \b RKH_EN_SHALLOW_HISTORY: \n
+	Enable (1) or disable (0) the shallow history usage.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref5 Defining a deep history pseudostate
+
+\n Prev: \ref qref "Quick reference"
+
+A deep history pseudostate is defined with the 
+RKH_CREATE_DEEP_HISTORY_STATE() macro and declared with the 
+RKH_DCLR_DHIST_STATE() macro. Frequently, each state machine and its 
+states and pseudostates are encapsulated inside a dedicated source file 
+(.c file), from which the RKH_CREATE_DEEP_HISTORY_STATE() macro is used.
+We will develop one example of deep history pseudostate definition to 
+illustrate the use of this macro. We will give our history pseudostate 
+the name \c H2. As will demostrates the use of 
+RKH_CREATE_DEEP_HISTORY_STATE() macro and its arguments is very 
+similar to RKH_CREATE_SHALLOW_HISTORY_STATE() macro.
+
+<b>Defining a deep history pseudostate</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_DEEP_HISTORY_STATE(	H1, 
+(3)									7,
+(4)									&S21 );
+\endcode
+
+<b>Declaring a shallow history pseudostate</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_DHIST_STATE( H1 );
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_DEEP_HISTORY_STATE() macro is used.
+\li (2)	\c H2 is the pseudostate name. Represents a deep history 
+		pseudostate structure.
+\li (3)	\c 7 is the value of pseudostate ID.
+\li (6)	\c S21 is the parent state of \c H2.
+
+\b Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
+- \b RKH_EN_DEEP_HISTORY: \n
+	Enable (1) or disable (0) the deep history usage.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref6 Defining a junction pseudostate
+
+\n Prev: \ref qref "Quick reference"
+
+A conditional pseudostate (also called branch pseudostate) is defined with 
+the RKH_CREATE_JUNCTION_STATE() macro and declared with the 
+RKH_DCLR_JUNC_STATE() macro. Frequently, each state machine and its 
+states and pseudostates are encapsulated inside a dedicated source file 
+(.c file), from which the RKH_CREATE_JUNCTION_STATE() macro is used.
+We will develop one example of junction pseudostate definition to 
+illustrate the use of this macro. We will give our junction pseudostate 
+the name \c J1. As will demostrates the use of RKH_CREATE_JUNCTION_STATE() 
+macro and its arguments is very similar to RKH_CREATE_BASIC_STATE() macro.
+
+<b>Defining a junction pseudostate</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_JUNCTION_STATE( 	J1, 
+(3)								8, 
+(4)								dis_all_modules, 
+(6)								&S1 );
+\endcode
+
+<b>Declaring a junction pseudostate</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_JUNC_STATE( J1 );
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_JUNCTION_STATE() macro is used.
+\li (2)	\c J1 is the pseudostate name. Represents a junction pseudostate 
+		structure.
+\li (3)	\c 8 is the value of pseudostate ID.
+\li (4)	\c dis_all_modules segment action to be taken. This argument is 
+		optional, thus it could be declared as NULL.
+\li (5)	\c S1 is the target state.
+
+\b Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_SMA_EN_HCAL: \n
+	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
+	to one (1) some important features of RKH are not included: state 
+	composite state, history (shallow and deep) pseudostate, entry action, 
+	and exit action. \n\n
+- \b RKH_SMA_EN_STATE_ID: \n
+	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
+	ID number. This number allows to uniquely identify a state. \n\n
+- \b RKH_SMA_EN_PSEUDOSTATE: \n
+	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_MAX_TR_SEGS: \n
+	Determines the maximum number of linked transition segments. The smaller 
+	this number, the lower the static RAM consumption. Typically, the most 
+	of hierarchical state machines uses up to 4 transition segments. 
+	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
+- \b RKH_EN_JUNCTION: \n
+	Enable (1) or disable (0) the junction connector usage.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref14 Defining entry, exit, and transition actions
+
+\n Prev: \ref qref "Quick reference"
+
+This section summarize the functions and its prototypes used by RKH 
+framework. As mentioned before, the framework make use the callbacks, i.e. 
+pointer to functions, in most of its data structures by means of 
+RKH_SMA_CREATE(), RKH_CREATE_COMP_STATE(), 
+RKH_CREATE_BASIC_STATE(), RKH_TRINT(), RKH_TRREG(), RKH_BRANCH(), 
+RKH_CREATE_SHALLOW_HISTORY_STATE(), RKH_CREATE_DEEP_HISTORY_STATE(), and 
+RKH_CREATE_JUNCTION_STATE() macros.
+Obviously, the set of available functions and its configurations 
+is mandatory to known for properly using the framework. 
+
+<b>Initialization action</b>
+
+\copydetails RKHINIT_T
+
+As said above, the application must explicitly trigger initial transitions 
+in all state machines. The following listing shows the use of 
+rkh_sma_activate() function, when it's is called the initial action is 
+invoked and the state machine start. The rkh_sma_activate() is a 
+platform-dependent function. All RKH ports must be defined in the RKH port 
+file to a particular platform. However, only the 
+ports to the external OS/RTOS usually need some code to bolt the framework to 
+the external OS/RTOS.
+
+\code
+// start the manager state machine application
+rkh_sma_activate( 	manager, 		// state machine application (SMA)
+					qmgr, 			// event storage area for manager SMA
+					QMGR_SIZE, 		// size of the storage area
+					( void * )0, 	// not used
+					0 );			// not used
+\endcode
+
+The next listing shows an example of the initial action implementation.
+
+\code
+void 
+manager_init( const struct rkh_t *sma )
+{
+	dprint( "Init \"manager\" state machine\n" );
+	manager_turnon();	
+}
+\endcode
+
+<b>Exit action</b>
+
+\copydetails RKHEXT_T
+
+The next listing shows an example of the exit action implementation.
+
+\code
+void 
+idle_exit( const struct rkh_t *sma )
+{
+	dprint( "Exit from \"IDLE\" state\n" );
+	manager_restore();
+}
+\endcode
+
+<b>Entry action</b>
+
+\copydetails RKHENT_T
+
+The next listing shows an example of the entry action implementation.
+
+\code
+void 
+wait_process_entry( const struct rkh_t *sma )
+{
+	dprint( "Entry to \"WAIT_PROCESS\" state\n" );
+	manager_deactivate();
+}
+\endcode
+
+<b>Transition action</b>
+
+\copydetails RKHACT_T
+
+The next listing shows an example of the transition action implementation.
+
+\code
+void 
+set_config( const struct rkh_t *sma, RKHEVT_T *pe )
+{
+	MYEVT_T *e;
+
+	(void)sma;		/* argument not used */
+	(void)pe;		/* argument not used */
+
+	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
+	e->ts = ( rkhui16_t )rand();
+	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
+}
+\endcode
+
+<b>Event preprocessor</b>
+
+\copydetails RKHPPRO_T
+
+The next listing shows an example of the event preprocessor 
+action implementation.
+
+\code
+RKHE_T 
+preprocess_keys( const struct rkh_t *sma, RKHEVT_T *pe )
+{
+    if( pe->e >= 0 && pe->e <= 9 )
+        return DECIMAL;
+    if( pe->e == '.' )
+        return POINT;
+    else
+        return pe->e;
+}
+\endcode
+
+<b>Guard</b>
+
+\copydetails RKHGUARD_T
+
+The next listing shows an example of the guard function implementation.
+
+\code
+HUInt 
+is_zero( const struct rkh_t *sma, RKHEVT_T *pe )
+{
+	return get_water_level( CHANNEL( (( CHEVT_T* )pe)->ch ) ) == 0;
+}
+\endcode
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref12 Using events with parameters
+
+\n Prev: \ref qref "Quick reference"
+
+An event can have associated parameters, allowing the event 
+instance to convey not only the occurrence of some interesting 
+incident but also quantitative information regarding that occurrence.
+Implementing the single inheritance in C is very simply by literally
+embedding the base structure, RKHEVT_T in this case, as the first 
+member of the derived structure.
+For example, the structure MYEVT_T derived from the base structure 
+RKHEVT_T by embedding the RKHEVT_T instance as the first member of 
+MYEVT_T.
+See also, \ref qref7 section for more information.
+
+\code
+typedef struct
+{
+	RKHEVT_T evt;	// base structure
+	int x;			// parameter 'x'
+	int y;			// parameter 'y'
+} MYEVT_T;
+\endcode
+
+Such nesting of structures always aligns the data member 'evt' at the 
+beginning of every instance of the derived structure. In particular, this 
+alignment lets you treat a pointer to the derived MYEVT_T structure as a 
+pointer to the RKHEVT_T base structure. Consequently, you can always 
+safely pass a pointer to MYEVT_T to any C function that expects a pointer 
+to RKHEVT_T. (To be strictly correct in C, you should explicitly cast this 
+pointer. In OOP such casting is called upcasting and is always safe.) 
+Therefore, all functions designed for the RKHEVT_T structure are 
+automatically available to the MYEVT_T structure as well as other 
+structures derived from RKHEVT_T.
+
+The RKH takes the \a 'e' member of RKHEVT_T structure for triggering a 
+state transition.
+
+See also rkh_sma_put_fifo(), rkh_sma_put_lifo(), RKH_ALLOC_EVENT(), 
+RKH_SET_STATIC_EVENT(), and RKH_GC().
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref7 Using dynamic and static events
+
+\n Prev: \ref qref "Quick reference"
+
+In RKH as other frameworks, the actual event instances are either constant 
+events (or static events) statically allocated at compile time or dynamic events
+allocated at runtime from one of the event pools that the framework manages.
+
+This section includes:
+
+- \ref qref7_1
+- \ref qref7_2
+- \ref qref7_3
+- \ref qref7_4
+- \ref qref7_5
+
+\subsection qref7_1 Registering the event pool
+
+Before using dynamic events (or event with arguments) the application code 
+must register the proper event pools, which stores the events as a 
+fixed-sized memory block. 
+Each event pool must be registered with the RKH framework, by means of the 
+rkh_epool_register() function. This function initializes one event pool at a 
+time and must be called exactly once for each event pool before the pool can 
+be used.
+
+The application code might initialize the event pools by making calls 
+to the rkh_epool_register() function. However, for the simplicity of 
+the internal implementation, the application code initialize event pools 
+in the ascending order of the event size.
+
+\code
+#define SIZEOF_EP0STO				64
+#define SIZEOF_EP0_BLOCK			sizeof( TOUT_T )
+
+#define SIZEOF_EP1STO				32
+#define SIZEOF_EP1_BLOCK			sizeof( DIAL_T )
+
+#define SIZEOF_EP2STO				32
+#define SIZEOF_EP2_BLOCK			sizeof( SETUP_T )
+
+typedef struct
+{
+	RKHEVT_T evt;                   // base structure
+	int timerno;					// parameter 'timerno'
+} TOUT_T;
+
+typedef struct
+{
+	RKHEVT_T evt;                   // base structure
+	char dial[ MAX_SIZE_DIAL ];     // parameter 'dial'
+	int qty;                        // parameter 'qty'
+} DIAL_T;
+	
+typedef struct
+{
+	RKHEVT_T evt;                   // base structure
+	int volume;                     // parameter 'volume'
+	int baud_rate;                  // parameter 'baud_rate'
+	char name[ MAX_SIZE_NAME ];     // parameter 'name'
+	int iloop;                      // parameter 'iloop'
+} SETUP_T;
+
+// declares the storage memory of event pool
+static rkhui8_t	ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ],
+				ep2sto[ SIZEOF_EP2STO ];
+
+...
+rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+rkh_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
+...
+\endcode
+
+\subsection qref7_2 Allocating events
+
+\code
+(1)	typedef struct
+	{
+		RKHEVT_T evt;					// base structure
+		char dial[ MAX_SIZE_DIAL ];		// parameter 'dial'
+		int qty;						// parameter 'qty'
+	} DIAL_T;
+
+(2)	typedef struct
+	{
+		RKHEVT_T evt;					// base structure
+		int volume;						// parameter 'volume'
+		int baud_rate;					// parameter 'baud_rate'
+		char name[ MAX_SIZE_NAME ];		// parameter 'name'
+		int iloop;						// parameter 'iloop'
+	} SETUP_T;
+
+	typedef struct
+	{
+		RKHEVT_T evt;
+		int timerno;
+	} TOUT_T;
+
+(3) static RKH_DCLR_STATIC_EVENT( offh, OFFHOOK );
+(4) static TOUT_T tout;
+
+...
+
+(5) RKH_SET_STATIC_EVENT( &tout, TIMEOUT );
+(6)	DIAL_T *de = RKH_ALLOC_EVENT( DIAL_T, DIALED );
+(7)	SETUP_T *se = RKH_ALLOC_EVENT( SETUP_T, SET_CONFIG );
+(8)	se->volume = 0;
+	se->baud_rate = DEFAULT_BAUD_RATE;
+	se->iloop = 2;
+\endcode
+
+Explanation
+
+\li (1-2)	As mentioned before, implementing the single inheritance in C is 
+			very simply by literally embedding the base structure, RKHEVT_T 
+			in this case, as the first member of the derived structure, 
+			\c DIAL_T and \c SETUP_T.
+\li (3)		The \c OFFHOOK event never changes, so it can be statically 
+			allocated just once. This event is declared as const, which 
+			means that it can be placed in ROM. The initializer list for 
+			this event consists of the signal \c OFFHOOK followed by zero. 
+			This zero informs the RKH framework that this event is 
+			<em>static</em> and should never be recycled to an event pool.
+\li	(4)		The <c>TIMEOUT( timerno )</c> event is an example of an event with 
+			changing parameters. In general, such an event cannot be allocated 
+			in ROM like the \c OFFHOOK event because it can change. 
+\li (5)		This macro set the event <c>TIMEOUT( timerno )</c> with \c TIMEOUT 
+			signal and establishes it as one <em>static event</em>.
+\li (6-7) 	The RKH_ALLOC_EVENT() macro dynamically creates a new instances 
+			events of type \c DIAL_T and \c SETUP_T with \c DIALED and 
+			\c SET_CONFIG signals. These events are represented like this:
+			<c>DIALED( dial, qty )</c> and 
+			<c> SET_CONFIG( volume, baud_rate, name, iloop )</c>
+			This macro returns a pointer to the event already cast to the 
+			required event type.
+\li (8) 	The \c volume, \c baud_rate, and \c iloop parameters of the event 
+			are assigned.
+
+Just one another example that it could be used to easily debug an application 
+with static events.
+
+\code
+typedef struct
+{
+	RKHEVT_T evt;
+#if SYSEVT_DEBUG == 1
+	char *name;
+#endif
+} SYSEVT_T;
+
+#if SYSEVT_DEBUG == 1
+	#define mkse( e, n )		{ { (e), 0, 0 }, (n) }
+#else
+	#define mkse( e, n )		{ { (e), 0, 0 } }
+#endif
+
+static const SYSEVT_T sysevts[] =
+{
+	mkse( OFFHOOK,	"offhook" ),
+	mkse( ONHOOK, 	"onhook" ),
+	mkse( POLREV, 	"polarity reversal" ),
+	mkse( BTONE,	"billing tone" ),
+	...
+};
+\endcode
+
+\subsection qref7_3 Posting events
+
+The RKH framework supports one type of asynchronous event exchange: the 
+simple mechanism of direct event posting supported through the functions
+rkh_sma_post_fifo() and rkh_sma_post_lifo(), when the producer of an event 
+directly posts the event to the event queue of the consumer SMA 
+(active object).
+
+\code
+(1) static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+...
+
+(2)	rkh_sma_post_fifo( manager, &eterm );
+\endcode
+
+\li (1)	Declares and initializes the event \a eterm with \a TERM 
+		signal and establishes it as one static event.
+\li (2)	The \c eterm event is sent directly to the \c manager SMA.
+
+\code
+...
+(1) mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(2) mye->ts = ( rkhui16_t )rand();
+(3) rkh_sma_post_fifo( my, ( RKHEVT_T* )mye );
+\endcode
+
+\li (1)	Dynamically creates a new event \c mye of type \a MYEVT_T with 
+		the signal returned from the kbmap() function.
+\li (2) Use the extended members of the event \c mye.
+\li (3) The \c mye event is sent directly to the \c my SMA.
+
+\subsection qref7_4 Recycling dynamic events
+
+If the system make use of dynamic events facility after the processing, 
+you must not forget to call the RKH garbage collector, because now RKH is 
+no longer in charge of event processing and you are solely responsible for 
+not leaking the event.
+The garbage collector actually recycles the event only when it determines 
+that the event is no longer referenced.
+The following listing illustrates how and when to invoke RKH_GC() macro 
+to recycle "dynamic" events.
+
+\code
+	void 
+	rkh_enter( void )
+    {
+		rkhui8_t prio;
+		RKHSMA_T *sma;
+		RKHEVT_T *e;
+
+		rkh_hk_start();
+		RKH_TRCR_RKH_EN();
+
+		FOREVER
+		{
+			RKH_DIS_INTERRUPT();
+			if( rkh_rdy_isnot_empty( rkhrg ) )
+			{
+				rkh_rdy_findh( rkhrg, prio );
+				sma = rkh_sptbl[ prio ];
+				RKH_ENA_INTERRUPT();
+
+(1)				e = rkh_sma_get( sma );
+(2)				rkh_dispatch( sma, e );
+(3)				RKH_GC( e );
+			}
+			else 
+			//
+			// rkh_hk_idle() must be called with interrupts DISABLED because the 
+			// determination of the idle condition (no events in the queues) can 
+			// change at any time by an interrupt posting events to a queue. The 
+			// rkh_hk_idle() MUST enable interrups internally, perhaps at the 
+			// same time as putting the CPU into a power-saving mode.
+			//			
+				rkh_hk_idle();
+		}
+    }
+\endcode
+
+\li (1)	An event \c e is get from the SMA queue with the highest priority.
+\li (2)	The event \c e is dispatched to the current SMA.
+\li	(2) Thus, the event \c e is passed to the RKH garbage collector for 
+		recycling. As described above, the RKH_GC() macro actually recycles 
+		the wvent only when it determines that the event is no longer 
+		referenced.
+
+\subsection qref7_5 Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_EN_DYNAMIC_EVENT: \n \copydetails RKH_EN_DYNAMIC_EVENT
+- \b RKH_MAX_EPOOL: \n \copydetails RKH_MAX_EPOOL
+- \b RKH_SIZEOF_EVENT: \n \copydetails RKH_SIZEOF_EVENT
+- \b RKH_SIZEOF_ESIZE: \n \copydetails RKH_SIZEOF_ESIZE
+- \b RKH_EN_NATIVE_DYN_EVENT: \n \copydetails RKH_EN_NATIVE_DYN_EVENT
+- \b RKH_DYNE_TYPE: \n \copydetails RKH_DYNE_TYPE
+- \b RKH_DYNE_INIT: \n \copydetails RKH_DYNE_INIT
+- \b RKH_DYNE_GET_ESIZE: \n \copydetails RKH_DYNE_GET_ESIZE
+- \b RKH_DYNE_GET: \n \copydetails RKH_DYNE_GET
+- \b RKH_DYNE_PUT: \n \copydetails RKH_DYNE_PUT
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref13 Preprocessing events before of dispatch it
+
+\n Prev: \ref qref "Quick reference"
+
+\copydetails RKHPPRO_T
+
+The next listing shows an example of the event preprocessor 
+action implementation.
+
+\code
+RKHE_T 
+preprocess_keys( const struct rkh_t *sma, RKHEVT_T *pe )
+{
+	printf( "From state machine \"%s\"\n", rkh_get_sm_name( sma ) );
+    if( pe->e >= 0 && pe->e <= 9 )
+        return DECIMAL;
+    if( pe->e == '.' )
+        return POINT;
+    else
+        return pe->e;
+}
+\endcode
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref8 Deferring and recalling events
+
+\n Prev: \ref qref "Quick reference"
+
+Event deferral comes in very handy when an event arrives in a 
+particularly inconvenient moment but can be deferred for some later time, 
+when the system is in a much better position to handle the event. RKH 
+supports very efficient event deferring and recalling mechanisms.
+RKH provides a simple function call to defer an event to a given separate 
+event queue, rkh_defer(). Also, offers another simple function to recall 
+a deferred event, rkh_recall().
+
+An active object uses <c>rkh_defer( qd, evt )</c> to defer an event \a evt to 
+the event queue \a qd. RKH correctly accounts for another outstanding 
+reference to the event and will not recycle the event at the end of the 
+RTC step. 
+\note
+For memory efficiency and best performance the deferred event queue, 
+STORE ONLY POINTERS to events, not the whole event objects.
+An active object can use multiple event queues to defer events of
+different kinds.
+The assertion inside it guarantee that operation is valid, so is not 
+necessary to check the value returned from it.
+
+Later, the active object might recall one event at a time from the 
+event queue by means of <c>rkh_recall( qdd, qds )</c> function. Recalling an 
+event means that it is removed from the deferred event queue \a qds 
+and posted (LIFO) to the event queue of the active object \a qdd.
+\note
+For memory efficiency and best performance the destination event queue, 
+STORE ONLY POINTERS to events, not the whole event objects.
+The pointer to the recalled event to the caller, or NULL if no 
+event has been recalled.
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref9 Using assertions
+
+\n Prev: \ref qref "Quick reference"
+
+\copydetails rkhassert.h
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref10 Debugging an application based on RKH's state machines
+
+\n Prev: \ref qref "Quick reference"
+
+Please refer to \ref dbg section. 
+
+\n Prev: \ref qref "Quick reference"
+
+<HR>
+\section qref15 Initializing a state machine and dispatching events
+
+\n Prev: \ref qref "Quick reference"
+
+The following listing shows an very simple example of the main() function 
+implementation and demostrates how to use the RKH API.
+
+\note
+See \ref Usage "Representing a state machine: step by step" section 
+for more information about this.
+
+\code
+	...
+	typedef struct
+	{
+		RKHEVT_T event;
+		rkhuint16 ts;
+	} MYEVT_T;
+
+	static MYEVT_T mye;
+	...
+
+	int
+	main( int argc, char *argv[] )
 	{
 		int c;
 
-(1)		rkh_trace_open();
-(2)		rkh_init_hsm( &my );
-		srand( ( unsigned )time( NULL ) );
+(1)		rkh_trc_open();
+(2)		rkh_init();
 
-		forever
+		srand( ( unsigned )time( NULL ) );
+(3)  	rkh_init_hsm( my );
+
+(4)		FOREVER
 		{
-(3)			c = mygetch();
-		
+(5)			c = mygetch();
+			
 			if( c == 'p' )
-(4)				rkh_trace_flush();
+(6)				rkh_trc_flush();
 			else if ( c == ESC )
-(5)				break;
-			else if ( c == 'r' )
-				rkh_init_hsm( &my );
+			{
+(7)				rkh_dispatch( my, &term );
+				break;
+			}
 			else
 			{
-(6)				mye.event = kbmap( c );
-(7)				mye.ts = ( rkhuint16 )rand();
-(8)				rkh_engine( &my, ( RKHEVT_T *)&mye );
+(8)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(9)				mye->ts = ( rkhui16_t )rand();
+(10)			rkh_dispatch( my, ( RKHEVT_T* )mye );
 			}
 		}
 
-(9)		rkh_trace_close();
+(11)	rkh_trc_close();
+(12)	rkh_exit();
 	}
 \endcode
 
-\li (1) Initialize the RKH trace module.
-
-\li (2) Initialize the "my" state-machine. RKH invokes the my_init() function.
-
-\li (3) Gets key pressed from the standard input.
-
-\li (4) Flushs the trace stream to the desired host.
-
-\li (5) Terminates the program.
-
-\li (6) The	event generated by pressing a key on the keyboard is stored 
-		in the "event" member of MYEVT_T structure.
-
-\li (7)	The	event has associated parameters that convey a random number.
-
-\li (8)	Events with parameters, such as the MYEVT_T, require explicit 
-		casting from the generic base structure #RKHEVT_T to the specific 
-		derived structure MYEVT_T.
-
-\li (9)	Terminates the program and close debug session.
-
-
-\page dbg Debugging tool
-
-When a program needs to be traced, it has to generate some information 
-each time it reaches a "significant step" (certain instruction in the 
-program's source code). In the standard terminology, this step is called 
-a trace point, and the tracing information which is generated at that 
-point is called a trace event. A program containing one or more of this 
-trace points is named instrumented application.
-
-There is one class of trace events: RKH trace events, which are generated 
-by the RKH source code. The \c #RKHTREVT_T structure describes the RKH trace 
-event.
-
-The definition of events and the mapping between these and their 
-corresponding names is hard-coded in the RKH implementation. Therefore, 
-these events are common for all the state-machine applications and never 
-change (they are always traced). 
-The trace events are associated with a integer value and are explicity 
-listed and defined (enumerated) as shown below in this section.
-	
-The standard defines that the trace system has to store some information 
-or each trace event (also named arguments) being generated, including, 
-t least, the following:
-
-- the trace event identifier (\c #RKHTR_EVENTS enumerated list),
-- instrumented application (state-machine),
-- a timestamp (optional),
-- any extra data that the system wants to associate with the event 
-(optional).
-
-When the RKH reachs a trace point, all the information related to 
-it has to be stored somewhere before it can be retrieved, in order to 
-be analyzed. This place is named trace stream.
-
-Each trace points cannot be changed but RKH allows enable/disable it
-in compile-time by means of C/C++ preprocessor. The \ref cfg section
-shows how to make that.
-
-- \ref trusing
-- \ref trcfg
-- \ref trexample
+\li (1) Open the trace session.
+\li (2) Initialize the framework RKH.
+\li (3) Initialize the \c my state machine. 
+		RKH invokes the defined init action.
+\li (4) This is the event loop of the framework RKH.
+\li (5) Gets key pressed from the standard input.
+\li (6) Flush the trace stream.
+\li (7) Send the \c term event to \c my state machine to terminate. 
+		After that, terminates the program.
+\li (8) Allocates an event of \c MYEVT_T type (derived from RKHEVT_T) to 
+		store the key pressed.
+\li (9)	The	event has associated parameters that convey a random number.
+\li (10) The \c mye event is dispatched to \c my state machine. Events with 
+		parameters, such as the MYEVT_T, require explicit casting from the 
+		generic base structure #RKHEVT_T to the specific derived structure 
+		MYEVT_T.
+\li (11-12) Close the trace session and terminates the program.
 
 <HR>
-\section trusing Using tracing tool
+\section qref18 Using RKH software timers
 
-- The option \c RKH_TRACE must be set to one (1), it should be defined in 
-the specific application configuration file named \c rkhcfg.h. 
+\n Prev: \ref qref "Quick reference" \n
 
-- The trace events of interest must be defined in the \c rkhcfg.h file. See
-\c #RKHTR_EVENTS enumeration and \ref trcfg section.
+\copydetails rkhtim.h
 
-- The rkh_trace_open(), rkh_trace_close(), rkh_trace_flush(), and 
-rkh_trace_getts() are platform-dependent functions, therefore the user
-application must implement it. 
-This functions are invoked through the rkh_tropen(), rkh_trclose(), 
-rkh_trflush(), and rkh_trgetts() macros. 
+This section includes:
 
-- The RKH_EN_TIMESTAMP, RKH_SIZEOF_TIMESTAMP, RKH_MAX_NUM_TRACES, 
-RKH_EN_TRACE_STRING, and RKH_MAX_TRACE_STRING_SIZE preprocessor options 
-configures the \c #RKHTREVT_T trace event structure and should be defined 
-in the \c rkhcfg.h file.
+- \ref qref18_1
+- \ref qref18_2
+- \ref qref18_3
 
-- See \c rkhtrace.h header file for more information.
+\subsection qref18_1 Declaring, and initializing a timer
+
+\code
+...
+(1) static RKHT_T tlayer;
+
+	void
+(2)	tlayer_tout( void *t )
+	{
+		(void)t;
+		close_layer();
+	}
+
+(3)	rkh_tim_init( 	&tlayer, 
+(4)					TOUT, 
+(5)					tlayer_tout );
+...
+\endcode
+
+Explanation
+
+\li (1)	Declares and allocates the \c tlayer timer. 
+\li (2)	Defines \c tlayer_tout() hook function, which is calls at the 
+		\c tlayer expiration.
+\li (3)	Initializes the \c tlayer timer. 
+\li (4)	\c TOUT is the signal of the event to be directly posted (using the 
+		FIFO policy) into the event queue of the target agreed state machine 
+		application at the timer expiration.
+\li (5) Registers \c tlayer_tout() hook function.
+
+\subsection qref18_2 Start and stop timers
+
+\code
+(1)	#define TPWR_TICK			100
+(2)	#define TKEY_TICK			100
+...
+(3) static RKHT_T 	tpwr,
+(4) 				tkey;
+
+(5)	rkh_tim_init( &tpwr, TPWR, NULL );
+(6)	rkh_tim_init( &tkey, TKEY, NULL );
+...
+(7) rkh_tim_oneshot( &tpwr, pwr, TPWR_TICK );
+(8) rkh_tim_periodic( &tkey, pwr, TKEY_TICK, TKEY_TICK/4 );
+...
+(9) rkh_tim_stop( &tkey );
+...
+(10)rkh_tim_restart( &tpwr, TPWR_TICK * 2 );
+\endcode
+
+Explanation
+
+\li (1-2)	Defines the number of ticks for timer expiration. 
+\li (3-4)	Declares and allocates the \c tpwr, and \c tkey timers. 
+\li (5-6)	Initializes the \c tpwr, and \c tkey timers. 
+\li (7)	Starts \c tpwr timer as one-shot timer, which posts the signal 
+		\c TPWR to 	\c pwr state machine application after TPWR_TICK 
+		timer-ticks.
+\li (8)	Starts \c tkey timer as periodic timer, which posts the signal 
+		\c TKEY to \c pwr state machine application after TKEY_TICK 
+		timer-ticks initially and then after every TKEY_TICK/4 timer-ticks.
+\li (9) Stops \c tkey timer. 
+\li (10) Restarts \c tpwr timer with a new number of ticks. 
+
+\subsection qref18_3 Customization
+
+Each RKH application must have its own configuration file, called 
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+definitions and macros allowing to restrict the resources consumed by RKH.
+Adjusting this definitions allows to reduce the ROM and RAM consumption,
+and to enhance the system performance in a substantial manner. The 
+\b rkhcfg.h shows the general layout of the configuration file.
+Use the following macros to reduce the memory taken by state machine 
+structure. See \ref cfg section for more information. 
+
+- \b RKH_TIM_EN: \n \copydetails RKH_TIM_EN
+- \b RKH_TIM_SIZEOF_NTIMER: \n \copydetails RKH_TIM_SIZEOF_NTIMER
+- \b RKH_TIM_EN_HOOK: \n \copydetails RKH_TIM_EN_HOOK
+- \b RKH_TIM_EN_RESTART: \n \copydetails RKH_TIM_EN_RESTART
+- \b RKH_TIM_EN_GET_INFO: \n \copydetails RKH_TIM_EN_GET_INFO
+
+Prev: \ref main_page "Home"
+
+\page dbg Tracing tool
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref Download "Download"
+
+\copydetails rkhtrc.h
+
+\n This section includes:
+
+- \ref tre
+- \ref trcfg
+- \ref trfn
+- \ref trfil
+- \ref trtbl
+- \ref trtrazer
+
+<HR>
+\section tre Trace event structure
+\copydetails RKH_TRC_EVENTS
 
 <HR>
 \section trcfg Trace tool configuration
 
-The \ref cfg section shows the trace event configuration options. However,
-are listed again to be described in detail. 
+First of all, RKH has a set of configuration options related to trace tool 
+facility, which an user that require this feature must be properly configure 
+in the \b rkhcfg.h header file.
 
-- \b RKH_EN_EVENT
-\n \n Records the ocurred event in decimal format. See \c #RKHE_T typedef.
+\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li Define the macro \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
 
-- \b RKH_EN_TRN_SRC
-\n \n Records the identification number and string name of the transition 
-source state. 
-
-- \b RKH_EN_TRN_TGT
-\n \n Records the identification number and string name of the transition 
-target state.
-
-- \b RKH_EN_NXT_STATE
-\n \n Records the identification number and string name of the next state.
-
-- \b RKH_EN_INT_TRAN
-\n \n Records an internal transition.
-
-- \b RKH_EN_ENTRY
-\n \n Records the identification number and string name of the entered state.
-
-- \b RKH_EN_EXIT
-\n \n Records the identification number and string name of the exited state.
-
-- \b RKH_EN_INIT_HSM
-\n \n Records the initialization process of state-machine.
-
-- \b RKH_EN_SGT_TGT
-\n \n Records the identification number and string name of the transition segment
-target state.
-
-- \b RKH_EN_RTN_CODE
-\n \n Records the code returned by rkh_engine() functionm in decimal format.
-See \c #RKH_RCODE_T enumeration.
-
-- \b RKH_EN_NUM_ENEX
-\n \n Records the number of entered and exited states.
-
-- \b RKH_EN_NUM_ACTSGT
-\n \n Records the number of transition actions and transition segments.
+See \ref cfg section for more information about that.
 
 <HR>
-\section trexample Example use
+\section trfn Implementing the trace session support
 
-The following listing shows an implementation example of rkh_trace_open(), 
-rkh_trace_close(), rkh_trace_flush(), and rkh_trace_getts() functions:
+For using the native trace facility the user should implement several 
+functions which are platform and application specific. These function 
+prototypes are definied within \b rkh.h file and listed below:
 
+\li \b rkh_trc_open() \copydetails rkh_trc_open
+
+\li \b rkh_trc_close() \copydetails rkh_trc_close
+
+\li \b rkh_trc_flush() \copydetails rkh_trc_flush
+
+\li \b rkh_trc_getts() \copydetails rkh_trc_getts
+
+<HR>
+\section trfil Using runtime trace filters
+
+Also, the streams support runtime filtering. The application can define and 
+apply a filter to a trace stream. Basically, the filter establishes which 
+event types the stream is accepting (and hence storing) and which are not.
+Therefore, trace events corresponding to types which are filtered out 
+from the stream will not be stored in the stream. The stream in the 
+system can potentially be applied a different filters. This filter can be 
+applied, removed or changed at any time. A filter could be applied either 
+specific trace event or all events from a specific group.
+
+<EM>Emit or suppress all trace events from a specific group</EM>
+
+The stream is initially created with an empty filter (that is, without 
+filtering any event type). If this is not the required behavior, the 
+application can build a set of event types, include the appropriate event 
+types in it, and apply it as a filter to the stream. After that, the 
+stream will reject any event whose type is in the filter set.
+
+Gathering many events generates a lot of data, which requires memory and 
+processor time. It also makes the task of interpreting the data more 
+difficult. Because the amount of data that the instrumented framework 
+generates can be overwhelming, the RKH supports several types of filters 
+that can use it to reduce the amount of data to be processed. The available 
+groups are enumerated in #RKH_TRC_GROUPS.
+
+Please use RKH_FILTER_ON_GROUP(), or RKH_FILTER_OFF_GROUP() macros to do 
+that.
+
+Example:
+ 	
 \code
-void 
-rkh_trace_open( void )
-{
-	rkh_trinit();
-	rkh_trconfig( MY, RKH_TRLOG, RKH_TRPRINT );
-	rkh_trcontrol( MY, RKH_TRSTART );
-
-	if( ( fdbg = fopen( "../mylog.txt", "w+" ) ) == NULL )
-	{
-		perror( "Can't open file\n" );
-		exit( EXIT_FAILURE );
-	}
-
-	fprintf( fdbg, "---- RKH trace log session - "__DATE__" - "__TIME__" ----\n\n" );
-}
-
-
-void 
-rkh_trace_close( void )
-{
-	fclose( fdbg );
-}
-
-
-void 
-rkh_trace_flush( void )
-{
-	RKHTREVT_T te;
-	RKHTRCFG_T *pcfg;
-
-	while( rkh_trgetnext( &te ) != RKH_TREMPTY )
-	{
-		pcfg = rkh_trgetcfg( te.smix );
-
-		if( pcfg->log == RKH_TRLOG )
-			fprintf( fdbg, "%05d [ %-16s ] - %s : %s\n",
-													rkh_trgetts(),
-													tremap[ te.id ],
-													smmap[ te.smix ],
-													format_trevt_args( &te ) );
-		if( pcfg->print == RKH_TRPRINT )
-			printf( "%05d [ %-16s ] - %s : %s\n",
-													rkh_trgetts(),
-													tremap[ te.id ],
-													smmap[ te.smix ],
-													format_trevt_args( &te ) );
-	}
-}
-
-
-RKHTS_T 
-rkh_trace_getts( void )
-{
-	return ( RKHTS_T )clock();
-}
+...
+RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+...
 \endcode
 
-According to example shown above the following shows a fragment of 
-output generated:
+<EM>Emit or suppress a specific event</EM>
 
+The stream is initially created with an empty filter (that is, without 
+filtering any event type). If this is not the required behavior, the 
+application can build a set of event types, include the appropriate event 
+types in it, and apply it as a filter to the stream. After that, the 
+stream will reject any event whose type is in the filter set.
+
+Gathering many events generates a lot of data, which requires memory and 
+processor time. It also makes the task of interpreting the data more 
+difficult. Because the amount of data that the instrumented framework 
+generates can be overwhelming, the RKH supports several types of filters 
+that can use it to reduce the amount of data to be processed. The available 
+events are enumerated in #RKH_TRC_EVENTS.
+
+Please use RKH_FILTER_ON_EVENT(), or RKH_FILTER_OFF_EVENT() macros to do 
+that.
+
+Example:
+ 	
 \code
----- RKH trace log session - Jun 10 2010 - 11:00:42 ----
-
-00097 [ RKHTR_INIT_HSM   ] - MY : is = S1 [0]
-00097 [ RKHTR_ENTRY      ] - MY : S1 [0]
-00097 [ RKHTR_ENTRY      ] - MY : S11 [0]
-00097 [ RKHTR_ENTRY      ] - MY : S111 [0]
-00098 [ RKHTR_EVENT      ] - MY : 15
-00098 [ RKHTR_TRN_SRC    ] - MY : S111 [0]
-00098 [ RKHTR_INT_TRAN   ] - MY : 
-00098 [ RKHTR_NUM_ACTSGT ] - MY : 0 - 0
-00098 [ RKHTR_RTN_CODE   ] - MY : RKH_OK
-00099 [ RKHTR_EVENT      ] - MY : 5
-00099 [ RKHTR_TRN_SRC    ] - MY : S111 [0]
-00099 [ RKHTR_TRN_TGT    ] - MY : C11 [0]
-00100 [ RKHTR_SGT_TGT    ] - MY : C11 [0]
-00102 [ RKHTR_SGT_TGT    ] - MY : S21 [0]
-00102 [ RKHTR_NUM_ENEX   ] - MY : 2 - 3
-00104 [ RKHTR_EXIT       ] - MY : S111 [0]
-00104 [ RKHTR_EXIT       ] - MY : S11 [0]
-00104 [ RKHTR_EXIT       ] - MY : S1 [0]
-00104 [ RKHTR_NUM_ACTSGT ] - MY : 2 - 2
-00104 [ RKHTR_ENTRY      ] - MY : S2 [0]
-00104 [ RKHTR_ENTRY      ] - MY : S21 [0]
-00104 [ RKHTR_NXT_STATE  ] - MY : S21 [0]
-00105 [ RKHTR_RTN_CODE   ] - MY : RKH_OK
+...
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_MP, RKH_TRCE_MP_INIT );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_DCH );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_START );
+RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_TOUT );
+...
 \endcode
 
+<HR>
+\section trtbl Trace event table
+
+This section provides a table that lists all the trace events and summarizes 
+the data included for each. 
+
+<EM>Memory Pool (MP)</EM>
+
+\li \b RKH_TRCR_MP_INIT \copydetails RKH_TRCR_MP_INIT
+\li \b RKH_TRCR_MP_GET \copydetails RKH_TRCR_MP_GET
+\li \b RKH_TRCR_MP_PUT \copydetails RKH_TRCR_MP_PUT
+
+<EM>Queue (RQ)</EM>
+
+\li \b RKH_TRCR_RQ_INIT \copydetails RKH_TRCR_RQ_INIT
+\li \b RKH_TRCR_RQ_GET \copydetails RKH_TRCR_RQ_GET
+\li \b RKH_TRCR_RQ_FIFO \copydetails RKH_TRCR_RQ_FIFO
+\li \b RKH_TRCR_RQ_LIFO \copydetails RKH_TRCR_RQ_LIFO
+\li \b RKH_TRCR_RQ_FULL \copydetails RKH_TRCR_RQ_FULL
+\li \b RKH_TRCR_RQ_DEPLETE \copydetails RKH_TRCR_RQ_DEPLETE
+\li \b RKH_TRCR_RQ_GET_LAST \copydetails RKH_TRCR_RQ_GET_LAST
+
+<EM>State Machine Application (SMA)</EM>
+
+\li \b RKH_TRCR_SMA_ACT \copydetails RKH_TRCR_SMA_ACT
+\li \b RKH_TRCR_SMA_TERM \copydetails RKH_TRCR_SMA_TERM
+\li \b RKH_TRCR_SMA_GET \copydetails RKH_TRCR_SMA_GET
+\li \b RKH_TRCR_SMA_FIFO \copydetails RKH_TRCR_SMA_FIFO
+\li \b RKH_TRCR_SMA_LIFO \copydetails RKH_TRCR_SMA_LIFO
+\li \b RKH_TRCR_SMA_REG \copydetails RKH_TRCR_SMA_REG
+\li \b RKH_TRCR_SMA_UNREG \copydetails RKH_TRCR_SMA_UNREG
+
+<EM>State machine (SM)</EM>
+
+\li \b RKH_TRCR_SM_INIT \copydetails RKH_TRCR_SM_INIT
+\li \b RKH_TRCR_SM_DCH \copydetails RKH_TRCR_SM_DCH
+\li \b RKH_TRCR_SM_CLRH \copydetails RKH_TRCR_SM_CLRH
+\li \b RKH_TRCR_SM_TRN \copydetails RKH_TRCR_SM_TRN
+\li \b RKH_TRCR_SM_STATE \copydetails RKH_TRCR_SM_STATE
+\li \b RKH_TRCR_SM_ENSTATE \copydetails RKH_TRCR_SM_ENSTATE
+\li \b RKH_TRCR_SM_EXSTATE \copydetails RKH_TRCR_SM_EXSTATE
+\li \b RKH_TRCR_SM_NENEX \copydetails RKH_TRCR_SM_NENEX
+\li \b RKH_TRCR_SM_NTRNACT \copydetails RKH_TRCR_SM_NTRNACT
+\li \b RKH_TRCR_SM_CSTATE \copydetails RKH_TRCR_SM_CSTATE
+\li \b RKH_TRCR_SM_DCH_RC \copydetails RKH_TRCR_SM_DCH_RC
+
+<EM>Timer (TIM)</EM>
+
+\li \b RKH_TRCR_TIM_INIT \copydetails RKH_TRCR_TIM_INIT
+\li \b RKH_TRCR_TIM_START \copydetails RKH_TRCR_TIM_START
+\li \b RKH_TRCR_TIM_RESTART \copydetails RKH_TRCR_TIM_RESTART
+\li \b RKH_TRCR_TIM_STOP \copydetails RKH_TRCR_TIM_STOP
+\li \b RKH_TRCR_TIM_TOUT \copydetails RKH_TRCR_TIM_TOUT
+\li \b RKH_TRCR_TIM_REM \copydetails RKH_TRCR_TIM_REM
+\li \b RKH_TRCR_TIM_ATTEMPT_STOP \copydetails RKH_TRCR_TIM_ATTEMPT_STOP
+
+<EM>Framework (RKH)</EM>
+
+\li \b RKH_TRCR_RKH_EN \copydetails RKH_TRCR_RKH_EN
+\li \b RKH_TRCR_RKH_EX \copydetails RKH_TRCR_RKH_EX
+\li \b RKH_TRCR_RKH_EPREG \copydetails RKH_TRCR_RKH_EPREG
+\li \b RKH_TRCR_RKH_AE \copydetails RKH_TRCR_RKH_AE
+\li \b RKH_TRCR_RKH_GC \copydetails RKH_TRCR_RKH_GC
+\li \b RKH_TRCR_RKH_GCR \copydetails RKH_TRCR_RKH_GCR
+\li \b RKH_TRCR_RKH_DEFER \copydetails RKH_TRCR_RKH_DEFER
+\li \b RKH_TRCR_RKH_RCALL \copydetails RKH_TRCR_RKH_RCALL
+
+<EM>Symbol entry table for objects</EM>
+
+\li \b RKH_TRCR_RKH_OBJ \copydetails RKH_TRCR_RKH_OBJ
+
+<EM>Symbol entry table for event signals</EM>
+
+\li \b RKH_TRCR_RKH_SIG \copydetails RKH_TRCR_RKH_SIG
+
+<HR>
+\section trtrazer TRAZER - The fundamental RKH's tracing tool
+
+Trazer is a visualization tool that works in conjuntion with the RKH 
+framework built in trace facility. Trazer gives the possibility to display 
+selectively the recording of all events of your system, state machines, 
+queues, timers, etc.
+Trazer helps you to faster troubleshooting especially on complex problems 
+where a debugger is not sufficient, by providing a simple consolidated, 
+human-readable textual output.
+
+Given the RKH cross plataform portability, trace data may come from 8, 
+16, or 32-bits platforms. In order to that Trazer need to be configured 
+to support this diversity of plataform and the wide range of RKH framework 
+configurations. 
+
+Here is the \ref trazer
 
 \page cfg Configuration
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref Usage "Representing a state machine: step by step"
 
 Each RKH application must have its own configuration file, called 
-\c rkhcfg.h. This file adapts and configures RKH by means of compiler
+\b rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\ref rkhcfg_h shows the general layout of the \c rkhcfg.h header file.
+\b rkhcfg.h file shows the general layout of the configuration file.
+Here is an list of all options with their documentation:
 
-Available options:
+\n This section includes:
 
-- 	\b RKH_EN_HCAL
-	\n \n Enable (1) or disable (0) the state nesting.
-	When RKH_EN_HCAL is set to zero (0) some important features of RKH are
-	not included: state nesting, composite state, history (shallow and deep)
-	pseudostate, entry action, and exit action.
+- \ref cfg_fw
+- \ref cfg_sm
+- \ref cfg_tr
+- \ref cfg_q
+- \ref cfg_mp
+- \ref cfg_t
 
-- 	\b RKH_MAX_HCAL_DEPTH
-	\n \n Determines the maximum number of hierarchical levels. The smaller
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 levels.	Currently 
-	RKH_MAX_HCAL_DEPTH cannot exceed 8. 
+<HR>
+\section cfg_fw Configuration options related to framework
 
-- 	\b RKH_MAX_TR_SEGS
-	\n \n Determines the maximum number of linked transition segments. 
-	The smaller this number, the lower the static RAM consumption. 
-	Typically, the most of hierarchical state machines uses 
-	up to 4 transition segments. Currently RKH_MAX_TR_SEGS cannot 
-	exceed 8. 
+\li \b RKH_MAX_SMA \copydetails RKH_MAX_SMA
+\li \b RKH_EN_DYNAMIC_EVENT \copydetails RKH_EN_DYNAMIC_EVENT
+\li \b RKH_MAX_EPOOL \copydetails RKH_MAX_EPOOL
+\li \b RKH_SIZEOF_EVENT \copydetails RKH_SIZEOF_EVENT
+\li \b RKH_SIZEOF_ESIZE \copydetails RKH_SIZEOF_ESIZE
+\li \b RKH_EN_DEFERRED_EVENT \copydetails RKH_EN_DEFERRED_EVENT
+\li \b RKH_ASSERT_EN \copydetails RKH_ASSERT_EN
+\li \b RKH_HK_EN_DISPATCH \copydetails RKH_HK_EN_DISPATCH
+\li \b RKH_HK_EN_SIGNAL \copydetails RKH_HK_EN_SIGNAL
+\li \b RKH_HK_EN_TIMEOUT \copydetails RKH_HK_EN_TIMEOUT
+\li \b RKH_HK_EN_START \copydetails RKH_HK_EN_START
+\li \b RKH_HK_EN_EXIT \copydetails RKH_HK_EN_EXIT
+\li \b RKH_SMA_EN_IEVENT \copydetails RKH_SMA_EN_IEVENT
+\li \b RKH_EN_SMA_THREAD \copydetails RKH_EN_SMA_THREAD
+\li \b RKH_EN_SMA_THREAD_DATA \copydetails RKH_EN_SMA_THREAD_DATA
+\li \b RKH_EN_NATIVE_SCHEDULER \copydetails RKH_EN_NATIVE_SCHEDULER
+\li \b RKH_EN_NATIVE_EQUEUE \copydetails RKH_EN_NATIVE_EQUEUE
+\li \b RKH_EN_NATIVE_DYN_EVENT \copydetails RKH_EN_NATIVE_DYN_EVENT
+\li \b RKH_EN_REENTRANT \copydetails RKH_EN_REENTRANT
 
--	\b RKH_SIZEOF_EVENT
-	\n \n Determines the size [in bits] of the RKH event representation 
-	#RKHE_T. Valid values: 8, 16 or 32. Default 8.
+<HR>
+\section cfg_sm Configuration options related to state machine applications
 
--	\b RKH_EN_PSEUDOSTATE
-	\n \n Enable (1) or disable (0) the pseudostates usage.
+\li \b RKH_SMA_EN_ID \copydetails RKH_SMA_EN_ID
+\li \b RKH_SMA_EN_GET_INFO \copydetails RKH_SMA_EN_GET_INFO	
+\li \b RKH_SMA_EN_STATE_ID \copydetails RKH_SMA_EN_STATE_ID	
+\li \b RKH_SMA_EN_PPRO \copydetails RKH_SMA_EN_PPRO	
+\li \b RKH_SMA_EN_HCAL \copydetails RKH_SMA_EN_HCAL	
+\li \b RKH_SMA_MAX_HCAL_DEPTH \copydetails RKH_SMA_MAX_HCAL_DEPTH
+\li \b RKH_SMA_MAX_TRC_SEGS \copydetails RKH_SMA_MAX_TRC_SEGS
+\li \b RKH_SMA_EN_PSEUDOSTATE \copydetails RKH_SMA_EN_PSEUDOSTATE
+\li \b RKH_SMA_EN_DEEP_HISTORY \copydetails RKH_SMA_EN_DEEP_HISTORY	
+\li \b RKH_SMA_EN_SHALLOW_HISTORY \copydetails RKH_SMA_EN_SHALLOW_HISTORY
+\li \b RKH_SMA_EN_JUNCTION \copydetails RKH_SMA_EN_JUNCTION	
+\li \b RKH_SMA_EN_CONDITIONAL \copydetails RKH_SMA_EN_CONDITIONAL
+\li \b RKH_SMA_EN_INIT_ARG_SMA \copydetails RKH_SMA_EN_INIT_ARG_SMA
+\li \b RKH_SMA_EN_ENT_ARG_SMA \copydetails RKH_SMA_EN_ENT_ARG_SMA
+\li \b RKH_SMA_EN_EXT_ARG_SMA \copydetails RKH_SMA_EN_EXT_ARG_SMA
+\li \b RKH_SMA_EN_ACT_ARG_SMA \copydetails RKH_SMA_EN_ACT_ARG_SMA
+\li \b RKH_SMA_EN_ACT_ARG_EVT \copydetails RKH_SMA_EN_ACT_ARG_EVT
+\li \b RKH_SMA_EN_GRD_ARG_EVT \copydetails RKH_SMA_EN_GRD_ARG_EVT
+\li \b RKH_SMA_EN_GRD_ARG_SMA \copydetails RKH_SMA_EN_GRD_ARG_SMA
+\li \b RKH_SMA_EN_PPRO_ARG_SMA \copydetails RKH_SMA_EN_PPRO_ARG_SMA
 
--	\b RKH_EN_DEEP_HISTORY
-	\n \n Enable (1) or disable (0) the deep history usage.
+<HR>
+\section cfg_tr Configuration options related to trace facility
 
--	\b RKH_EN_SHALLOW_HISTORY
-	\n \n Enable (1) or disable (0) the shallow history usage.
+\li \b RKH_TRC_EN \copydetails RKH_TRC_EN
+\li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
+\li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
+\li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
+\li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
+\li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
+\li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
+\li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
+\li \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
+\li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
+\li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
+\li \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
+\li \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
+\li \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
+\li \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
+\li \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
+\li \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
+\li \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
+\li \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
+\li \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
+\li \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
+\li \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
+\li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
+\li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
 
--	\b RKH_EN_JUNCTION
-	\n \n Enable (1) or disable (0) the junction connector usage.
+<HR>
+\section cfg_q Configuration options related to queue (by reference) facility
 
--	\b RKH_EN_CONDITIONAL
-	\n \n Enable (1) or disable (0) the conditional connector usage.
+\li \b RKH_RQ_EN \copydetails RKH_RQ_EN
+\li \b RKH_RQ_SIZEOF_NELEM \copydetails RKH_RQ_SIZEOF_NELEM
+\li \b RKH_RQ_EN_GET_LWMARK \copydetails RKH_RQ_EN_GET_LWMARK
+\li \b RKH_RQ_EN_READ \copydetails RKH_RQ_EN_READ
+\li \b RKH_RQ_EN_DEPLETE \copydetails RKH_RQ_EN_DEPLETE
+\li \b RKH_RQ_EN_IS_FULL \copydetails RKH_RQ_EN_IS_FULL
+\li \b RKH_RQ_EN_GET_NELEMS \copydetails RKH_RQ_EN_GET_NELEMS
+\li \b RKH_RQ_EN_PUT_LIFO \copydetails RKH_RQ_EN_PUT_LIFO
+\li \b RKH_RQ_EN_GET_INFO \copydetails RKH_RQ_EN_GET_INFO
 
--	\b RKH_EN_INIT_HSM_ARG
-	\n \n Determines the initialization function prototype of the
-	state-machines. When RKH_EN_INIT_HSM_ARG is set to one (1) this
-	function adds as argument a pointer to state-machine structure 
-	RKH_T. See #RKHINIT_T structure definition.
+<HR>
+\section cfg_mp Configuration options related to fixed-sized memory block facility
 
--	\b RKH_EN_ENT_HSM_ARG
-	\n \n Determines the function prototype of the state entry. 
-	When RKH_EN_ENT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
-	#RKHENT_T structure definition.
+\li \b RKH_MP_EN \copydetails RKH_MP_EN
+\li \b RKH_MP_REDUCED \copydetails RKH_MP_REDUCED
+\li \b RKH_MP_SIZEOF_BSIZE \copydetails RKH_MP_SIZEOF_BSIZE
+\li \b RKH_MP_SIZEOF_NBLOCK \copydetails RKH_MP_SIZEOF_NBLOCK
+\li \b RKH_MP_EN_GET_BSIZE \copydetails RKH_MP_EN_GET_BSIZE
+\li \b RKH_MP_EN_GET_NFREE \copydetails RKH_MP_EN_GET_NFREE	
+\li \b RKH_MP_EN_GET_LWM \copydetails RKH_MP_EN_GET_LWM	
+\li \b RKH_MP_EN_GET_INFO \copydetails RKH_MP_EN_GET_INFO
 
--	\b RKH_EN_EXT_HSM_ARG
-	\n \n Determines the function prototype of the state exit. 
-	When RKH_EN_EXT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
-	#RKHEXT_T structure definition.
+<HR>
+\section cfg_t Configuration options related to software timer facility
 
--	\b RKH_EN_ACT_HSM_ARG
-	\n \n Determines the function prototype of the transition action. 
-	When RKH_EN_ACT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
-	#RKHACT_T structure definition.
+\li \b RKH_TIM_EN \copydetails RKH_TIM_EN	
+\li \b RKH_TIM_SIZEOF_NTIMER \copydetails RKH_TIM_SIZEOF_NTIMER
+\li \b RKH_TIM_EN_HOOK \copydetails RKH_TIM_EN_HOOK
+\li \b RKH_TIM_EN_RESTART \copydetails RKH_TIM_EN_RESTART
+\li \b RKH_TIM_EN_GET_INFO \copydetails RKH_TIM_EN_GET_INFO
 
--	\b RKH_EN_ACT_EVT_ARG
-	\n \n Determines the function prototype of the transition action. 
-	When RKH_EN_ACT_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to ocurred event. See #RKHACT_T 
-	structure definition.
+*/
 
--	\b RKH_EN_GRD_EVT_ARG
-	\n \n Determines the function prototype of the transition guard.
-	When RKH_EN_GRD_EVT_ARG is set to one (1) this function adds as 
-	argument a pointer to ocurred event. See #RKHGUARD_T structure 
-	definition.
 
--	\b RKH_EN_GRD_HSM_ARG
-	\n \n Determines the function prototype of the transition guard.
-	When RKH_EN_GRD_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
-	#RKHGUARD_T structure definition.
+/**
+\page Usage Representing a state machine: step by step
+\image html rkh_bunner.jpg
 
--	\b RKH_EN_PPRO_HSM_ARG
-	\n \n Determines the function prototype of the event preprocessor.
-	When RKH_EN_PPRO_HSM_ARG is set to one (1) this function adds as 
-	argument a pointer to state-machine structure RKH_T. See 
-	#RKHPPRO_T structure definition.
+Prev: \ref main_page "Home" \n
+Next: \ref dbg "Tracing tool"
 
--	\b RKH_EN_STATE_NAME
-	\n \n When RKH_EN_STATE_NAME is set to one (1) the state structure 
-	includes its own name as a null-terminated string. When a particular 
-	application requires runtime debugging, this option must be enabled. 
-	See #RKHBASE_T structure definition.
+\n The goal in this section is to explain how to represent a state machine 
+using the RKH framework. To do that is proposed a simple example, which is 
+shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
+rules and concepts for making the most out of RKH features.
 
--	\b RKH_EN_HSM_NAME	
-	\n \n When RKH_EN_HSM_NAME is set to one (1) the state-machine
-	structure RKH_T includes its own name as a null-terminated string. 
-	When a particular application requires runtime debugging, this option 
-	must be enabled.
+\n This section includes:
 
--	\b RKH_EN_HSM_DATA
-	\n \n When RKH_EN_HSM_DATA is set to one (1) the state-machine structure
-	 RKH_T allows to reference a data object, which maintains additional 
-	 information.
+- \subpage basics
+- \subpage preparing
+- \subpage identify_events
+- \subpage identify
+- \subpage representing
+- \subpage running
 
--	\b RKH_EN_PPRO	
-	\n \n When RKH_EN_PPRO is set to one (1) either basic or composite states
-	can use a function to preprocessing the ocurred events.
-
--	\b RKH_EN_GET_INFO	
-	\n \n When RKH_EN_GET_INFO is set to one (1) the state-machine structure
-	 RKH_T includes additional performance information by means of 
-	 RKH_INFO_T structure.
-
--	\b RKH_EN_REENTRANT
-	\n \n Not yet implemented.
-
--	\b RKH_TRACE
-	\n \n Enable (1) or disable (0) the trace mode. It's described in detail
-	in \ref dbg section.
-
--	\b RKH_TRACE_ALL
-	\n \n Enable (1) or disable (0) all trace points.
-
--	\b RKH_EN_EVENT
-	\n \n If it's enabled (1) records the triggering event.
-
--	\b RKH_EN_TRN_SRC
-	\n \n If it's enabled (1) records the source state of transition.
-
--	\b RKH_EN_TRN_TGT
-	\n \n If it's enabled (1) records the target state of transition.
-
--	\b RKH_EN_NXT_STATE
-	\n \n If it's enabled (1) records the next state of transition.
-
--	\b RKH_EN_INT_TRAN
-	\n \n If it's enabled (1) records the internal transition.
-
--	\b RKH_EN_ENTRY
-	\n \n If it's enabled (1) records the entered state.
-
--	\b RKH_EN_EXIT
-	\n \n If it's enabled (1) records the exited state.
-
--	\b RKH_EN_INIT_HSM
-	\n \n If it's enabled (1) records the initialization process of state-machine.
-
--	\b RKH_EN_SGT_TGT
-	\n \n If it's enabled (1) records the target state of transition segment.
-
--	\b RKH_EN_RTN_CODE
-	\n \n If it's enabled (1) records the code returned by rkh_engine() function.
-
--	\b RKH_EN_NUM_ENEX
-	\n \n If it's enabled (1) records the number of entered and exited states.
-
--	\b RKH_EN_NUM_ACTSGT
-	\n \n If it's enabled (1) records the number of transition actions and transition
-	segments.
-
--	\b RKH_EN_TIMESTAMP
-	\n \n When RKH_EN_TIMESTAMP is set to one (1) the trace event structure 
-	RKHTREVT_T allows include a timestamp.
-
-- 	\b RKH_SIZEOF_TIMESTAMP
-	\n \n Determines the size [in bits] of the trace timestamp representation. 
-	Valid values: 8, 16 or 32. Default 8.
-
-- 	\b RKH_MAX_NUM_TRACES
-	\n \n Determines the maximum number of trace events in the stream. The smaller
-	this number, the lower the static RAM consumption.
-
-- 	\b RKH_EN_TRACE_STRING
-	\n \n When RKH_EN_TRACE_STRING is set to one (1) the trace event
-	structure RKHTREVT_T adds as argument an array of chars to allocate a 
-	null-terminated string.
-
-- 	\b RKH_MAX_TRACE_STRING_SIZE
-	\n \n Determines the size [in bytes] of the trace string argument.
-
+\anchor fig1
+\image html my.png "Figure 1 - \"my\" state diagram"
 
 */
