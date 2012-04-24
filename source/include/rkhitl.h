@@ -421,10 +421,15 @@
 
 #define RKH_BASIC						RKH_TYPE( RKH_REGULAR, 	0	 )
 #define RKH_COMPOSITE					RKH_TYPE( RKH_REGULAR, 	0x01 )	
+#define RKH_SUBMACHINE					RKH_TYPE( RKH_REGULAR, 	0x02 )	
+#define RKH_MACHINE						RKH_TYPE( RKH_REGULAR, 	0x04 )	
+
 #define RKH_CONDITIONAL					RKH_TYPE( RKH_PSEUDO, 	0x02 )	
 #define RKH_JUNCTION					RKH_TYPE( RKH_PSEUDO, 	0x04 )	
 #define RKH_SHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x08 )	
 #define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
+#define RKH_ENPOINT						RKH_TYPE( RKH_PSEUDO, 	0x20 )	
+#define RKH_EXPOINT						RKH_TYPE( RKH_PSEUDO, 	0x40 )	
 
 
 #if RKH_SMA_EN_ID == 1
@@ -461,17 +466,21 @@
 	#if RKH_SMA_EN_PPRO == 1
 		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL,pp
 		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h,NULL
+		#define mksbm(en,ex,p,n,sbm)		en,ex,p,n##_exptbl,sbm
 	#else
 		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL
 		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h
+		#define mksbm(en,ex,p,n,sbm)		en,ex,p,n##_exptbl,sbm
 	#endif
 #else
 	#if RKH_SMA_EN_PPRO == 1
 		#define mkbasic(en,ex,p,n,pp)		n##_trtbl,pp
 		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl,NULL
+		#define mksbm(en,ex,p,n,sbm)		n##_exptbl,sbm
 	#else
 		#define mkbasic(en,ex,p,n,pp)		n##_trtbl
 		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl
+		#define mksbm(en,ex,p,n,sbm)		n##_exptbl,sbm
 	#endif
 #endif
 
@@ -1355,6 +1364,56 @@ typedef struct rkhtr_t
 
 
 /**
+ * 	\brief
+ * 	Describes the exit point connection. 
+ *
+ * 	...
+ */
+
+typedef struct rkhexpcn_t
+{
+	/** 	
+ 	 * 	\brief
+	 *  Points to transition action.
+	 */
+
+	RKHACT_T action;
+
+	/** 	
+ 	 * 	\brief
+	 *  Points to target state.
+	 */
+
+	RKHROM void *target;
+} RKHEXPCN_T;
+
+
+/**
+ * 	\brief
+ * 	Describes the entry point connection. 
+ *
+ * 	...
+ */
+
+typedef struct rkhenpcn_t
+{
+	/** 	
+ 	 * 	\brief
+	 *  Points to transition action.
+	 */
+
+	RKHACT_T action;
+
+	/** 	
+ 	 * 	\brief
+	 *  Points to target state.
+	 */
+
+	RKHROM void *target;
+} RKHENPCN_T;
+
+
+/**
  *	\brief
  * 	Describes a regular state.
  *
@@ -1457,6 +1516,158 @@ typedef struct rkhsreg_t
 
 	RKHPPRO_T prepro;
 } RKHSREG_T;
+
+
+/**
+ *	\brief
+ * 	Describes a submachine state.
+ */
+
+typedef struct rkhssbm_t
+{
+	/**	
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+#if RKH_SMA_EN_HCAL == 1
+	/**	
+ 	 * 	\brief
+	 *	Points to entry action.
+	 */
+
+	RKHENT_T enter;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to exit action.
+	 */
+
+	RKHEXT_T exit;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's parent.
+	 */
+
+	RKHROM struct rkhsreg_t *parent;
+#endif
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
+	RKHROM struct rkhexpcn_t *exptbl;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to submachine object.
+	 */
+
+	RKHROM struct rkhsbm_t *sbm;
+
+} RKHSSBM_T;
+
+
+/**
+ *	\brief
+ * 	Describes a submachine object.
+ */
+
+typedef struct rkhsbm_t
+{
+	/**	
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's default child.
+	 */
+
+	RKHROM void *defchild;
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to initializing action (optional). 
+	 *
+	 * 	The function prototype is defined as RKHINIT_T. This argument is 
+	 * 	optional, thus it could be declared as NULL.
+	 */
+
+	RKHINIT_T iaction;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to dynamic parent. 
+	 */
+
+	RKHROM struct rkhssbm_t *dyp;
+
+} RKHSBM_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the entry point pseudostate.
+ */
+
+typedef struct rkhsenp_t
+{
+	/**
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to entry point connection.
+	 */
+
+	RKHROM RKHENPCN_T *enpcn;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's parent (submachine state).
+	 */
+
+	RKHROM RKHSSBM_T *parent;
+
+
+} RKHSENP_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the exit point pseudostate.
+ */
+
+typedef struct rkhsexp_t
+{
+	/**
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's parent (submachine).
+	 */
+
+	RKHROM RKHSBM_T *parent;
+
+
+} RKHSEXP_T;
 
 
 /**

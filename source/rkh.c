@@ -48,6 +48,7 @@ RKH_MODULE_NAME( rkh )
 #define IS_VALID_GUARD(t)				((t)->guard != CG(0))
 #define IS_PSEUDO( s )					((CB(s)->type&RKH_REGULAR)==0)
 #define IS_COMPOSITE( s )				(CB(s)->type==RKH_COMPOSITE)
+#define IS_MACHINE( s )					(CB(s)->type==RKH_MACHINE)
 
 #if RKH_EN_NATIVE_SCHEDULER == 1
 	#define RKH_RAM		static

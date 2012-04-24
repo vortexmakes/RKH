@@ -402,6 +402,74 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
+ *	This macro creates a submachine.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHSBM_T structure definition for more information.
+ *
+ * 	\param name		submachine name. Represents a submachine structure.
+ * 	\param id		the value of submachine ID. This argument is optional, 
+ * 					thus it could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
+ * 	\param defchild	pointer to default child state or pseudostate.
+ * 	\param iact		pointer to initialization action (optional). The 
+ * 					function prototype is defined as RKHINIT_T. This 
+ * 					argument is optional, thus it could be declared as 
+ * 					NULL.
+ */
+
+#define RKH_CREATE_SUBMACHINE( name,id,defchild,iact )					\
+																		\
+								static RKHROM RKHSSBM_T *rdyp_##name;	\
+																		\
+								RKHROM RKHSBM_T name =					\
+								{										\
+									mkbase(RKH_MACHINE,id),				\
+									defchild, iact, &rdyp_##name		\
+								}
+
+
+/**
+ * 	\brief
+ *	This macro creates a submachine state.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHSSBM_T structure definition for more information.
+ *
+ * 	\param name		submachine state name. Represents a submachine state 
+ * 					structure.
+ * 	\param id		the value of submachine state ID. This argument is 
+ * 					optional, thus it could be eliminated in compile-time 
+ * 					with RKH_SMA_EN_STATE_ID = 0.	
+ * 	\param en		pointer to state entry action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
+ * 	\param ex		pointer to state exit action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
+ * 	\param parent	pointer to parent state.
+ * 	\param sbm		pointer to submachine object.
+ */
+
+#define RKH_CREATE_SUBMACHINE_STATE( name,id,en,ex,parent,sbm )			\
+																		\
+							extern RKHROM RKHEXPCN_T name##_exptbl[];	\
+																		\
+							RKHROM RKHSSBM_T name =						\
+							{											\
+								mkbase(RKH_SUBMACHINE,id),				\
+								mksbm(en,ex,parent,name,sbm)			\
+							}
+
+
+/**
+ * 	\brief
  *	This macro creates a state transition table. This table have the general 
  *	structure shown below:
  *	\code
