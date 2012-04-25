@@ -39,7 +39,7 @@
 RKH_MODULE_NAME( rkhtim )
 
 
-#define CPT( p )			(( RKHT_T* )(p))
+#define CPTIM( p )			(( RKHT_T* )(p))
 
 #if RKH_TIM_EN_HOOK == 1
 	#define RKH_EXEC_THOOK()							\
@@ -91,11 +91,11 @@ rkh_tim_tick( void )
 	RKHT_T *t;
 	RKH_SR_CRITICAL_;
 
-	if( thead == CPT( 0 ) )				/* is empty list? */
+	if( thead == CPTIM( 0 ) )				/* is empty list? */
 		return;
 
 	RKH_ENTER_CRITICAL_();
-	for( t = thead; t != CPT( 0 ); t = t->tnext )
+	for( t = thead; t != CPTIM( 0 ); t = t->tnext )
 		if( !--t->ntick )
 		{
 			if( t->period != 0 )

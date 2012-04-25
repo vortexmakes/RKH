@@ -175,7 +175,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a composite state.
  *
  *	\sa
- *	RKHSREG_T structure definition for more information.
+ *	RKHSCMP_T structure definition for more information.
  *
  * 	\param name		state name. Represents a composite state structure.
  * 	\param id		the value of state ID. This argument is optional, thus it 
@@ -199,11 +199,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSREG_T name =					\
+								RKHROM RKHSCMP_T name =					\
 								{										\
-									mkbase(RKH_COMPOSITE,id),			\
-									mkcomp(en,ex,parent,name,			\
-												defchild,history)		\
+									MKBASE(RKH_COMPOSITE,id),			\
+									MKST(en,ex,parent),					\
+									MKCOMP(name,defchild,history)		\
 								}
 
 
@@ -212,7 +212,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a basic state.
  *
  *	\sa
- *	RKHSREG_T structure definition for more information.
+ *	RKHSBSC_T structure definition for more information.
  *
  * 	\param name		state name. Represents a basic state structure.
  * 	\param id		the value of state ID. This argument is optional, thus it 
@@ -236,7 +236,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					Moreover, implementing the single inheritance in C 
  *					is very simply by literally embedding the base type, 
  *					RKHPPRO_T in this case, as the first member of the 
- *					derived structure. See \a prepro member of RKHSREG_T 
+ *					derived structure. See \a prepro member of RKHSBSC_T 
  *					structure for more information. Example:
  *  				\code
  *					static RKHE_T
@@ -265,10 +265,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSREG_T name =					\
+								RKHROM RKHSBSC_T name =					\
 								{										\
-									mkbase(RKH_BASIC,id),				\
-									mkbasic(en,ex,parent,name,prepro)	\
+									MKBASE(RKH_BASIC,id),				\
+									MKST(en,ex,parent),					\
+									MKBASIC(name,prepro)				\
 								}
 
 /**
@@ -306,7 +307,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSCOND_T name =				\
 								{										\
-									mkbase(RKH_CONDITIONAL,id),			\
+									MKBASE(RKH_CONDITIONAL,id),			\
 									name##_trtbl 						\
 								}
 
@@ -335,7 +336,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSJUNC_T name =				\
 								{										\
-									mkbase(RKH_JUNCTION,id),			\
+									MKBASE(RKH_JUNCTION,id),			\
 									action,	target 						\
 								}
 
@@ -361,13 +362,13 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )					\
 																		\
-								static RKHROM RKHSREG_T *ram##name;		\
+						static RKHROM RKHST_T *ram##name;				\
 																		\
-								RKHROM RKHSHIST_T name =				\
-								{										\
-									mkbase(RKH_DHISTORY,id),			\
-									parent,&ram##name 					\
-								}
+						RKHROM RKHSHIST_T name =						\
+						{												\
+							MKBASE(RKH_DHISTORY,id),					\
+							(RKHROM struct rkhst_t *)parent,&ram##name 	\
+						}
 
 
 /**
@@ -391,13 +392,13 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )				\
 																		\
-								static RKHROM RKHSREG_T *ram##name;		\
+						static RKHROM RKHST_T *ram##name;				\
 																		\
-								RKHROM RKHSHIST_T name =				\
-								{										\
-									mkbase(RKH_SHISTORY,id),			\
-									parent,&ram##name 					\
-								}
+						RKHROM RKHSHIST_T name =						\
+						{												\
+							MKBASE(RKH_SHISTORY,id),					\
+							(RKHROM struct rkhst_t *)parent,&ram##name 	\
+						}
 
 
 /**
@@ -426,8 +427,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSBM_T name =					\
 								{										\
-									mkbase(RKH_MACHINE,id),				\
-									defchild, iact, &rdyp_##name		\
+									MKBASE(RKH_MACHINE,id),				\
+									MKMCH(defchild,iact,name) 			\
 								}
 
 
@@ -463,8 +464,110 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 							RKHROM RKHSSBM_T name =						\
 							{											\
-								mkbase(RKH_SUBMACHINE,id),				\
-								mksbm(en,ex,parent,name,sbm)			\
+								MKBASE(RKH_SUBMACHINE,id),				\
+								MKST(en,ex,parent),						\
+								MKSBM(name,sbm)							\
+							}
+
+
+/**
+ * 	\brief
+ *	This macro creates a exit point connection table. This table have the 
+ *	general structure shown below:
+ *	\code
+ *	RKH_CREATE_EXPNT_TABLE( submachine state )	// exit point table begin
+ *		RKH_EXPNT_CNN( ... )					// exit point connection
+ *		RKH_EXPNT_CNN( ... )					// exit point connection
+ *		...
+ *	RKH_END_EXPNT_TABLE							// exit point table end
+ *	\endcode
+ *
+ * 	Each exit point table always begins with the macro 
+ * 	RKH_CREATE_EXPNT_TABLE() and ends with the macro RKH_END_EXPNT_TABLE().
+ *	As noted above, sandwiched between these macros are the exit point 
+ *	connection macros, RKH_EXPNT_CNN().
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ *
+ * 	\param name		submachine state name.
+ */
+
+#define RKH_CREATE_EXPNT_TABLE( name )									\
+								RKHROM RKHEXPCN_T name##_exptbl[]={
+
+
+/**
+ * 	\brief
+ *	This macro creates an exit point connection.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHEXPCN_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		exit point connection name.
+ * 	\param expnt	referenced exit point name.
+ * 	\param act		pointer to transition action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ts		pointer to target state.
+ */
+
+#define RKH_EXPNT_CNN( name, expnt, act, ts  )		\
+								{act, (RKHROM struct rkhst_t *)ts}
+
+
+/**
+ * 	\brief
+ *	This macro is used to terminate a exit point connection table.
+ *	This table have the general structure shown below:
+ *	\code
+ *	RKH_CREATE_EXPNT_TABLE( submachine state )	// exit point table begin
+ *		RKH_EXPNT_CNN( ... )					// exit point connection
+ *		RKH_EXPNT_CNN( ... )					// exit point connection
+ *		...
+ *	RKH_END_EXPNT_TABLE							// exit point table end
+ *	\endcode
+ *
+ * 	Each exit point table always begins with the macro 
+ * 	RKH_CREATE_EXPNT_TABLE() and ends with the macro RKH_END_EXPNT_TABLE().
+ *	As noted above, sandwiched between these macros are the exit point 
+ *	connection macros, RKH_EXPNT_CNN().
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ */
+
+#define RKH_END_EXPNT_TABLE		};
+
+
+/**
+ * 	\brief
+ *	This macro creates an entry point connection.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHEXPCN_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		entry point connection name.
+ * 	\param act		pointer to transition action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ts		pointer to target state.
+ * 	\param subm		submachine object name.
+ */
+
+#define RKH_CREATE_ENPNT_CNN( name, act, ts, subm )					\
+																	\
+							RKHROM RKHENPCN_T name =				\
+							{										\
+								act, (RKHROM struct rkhst_t *)ts	\
 							}
 
 
@@ -485,7 +588,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	As noted above, sandwiched between these macros are the transitions macros 
  *	that actually represent behavior of state.
  *
- *	\sa
+ *	\note
  *	This macro is not terminated with the semicolon.
  *
  * 	\param name		state name.
@@ -541,6 +644,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *				is_sync, 			// guard function
  *				store_data ) 		// action function
  *	\endcode
+ *
  *	\sa
  *	RKHTR_T structure definition for more information.
  *
@@ -550,14 +654,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_TRINT( e, g, a )	{ e, g, a, NULL }
-
-
-/*
- * 	This macro is internal to RKH and the user application should 
- * 	not call it.
- */
-
-#define RKH_ETRTBL				{ RKH_ANY, NULL, NULL, NULL }
 
 
 /**
@@ -577,11 +673,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	As noted above, sandwiched between these macros are the transitions macros 
  *	that actually represent behavior of state.
  *
- *	\sa
+ *	\note
  *	This macro is not terminated with the semicolon.
  */
 
-#define RKH_END_TRANS_TABLE		RKH_ETRTBL};
+#define RKH_END_TRANS_TABLE		{ RKH_ANY, NULL, NULL, NULL }};
 
 
 /**
@@ -726,8 +822,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	Generally, this macro is used in the state-machine's header file.
  */
 
-#define RKH_DCLR_COMP_STATE		extern RKHROM RKHSREG_T
-#define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSREG_T
+#define RKH_DCLR_COMP_STATE		extern RKHROM RKHSCMP_T
+#define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSBSC_T
 #define RKH_DCLR_COND_STATE		extern RKHROM RKHSCOND_T
 #define RKH_DCLR_JUNC_STATE		extern RKHROM RKHSJUNC_T
 #define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
@@ -752,7 +848,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	another example \endlink.
  *
  * 	\param sma_t		data type of SMA.
- * 	\param sm			name of previously created SMA.
+ 	\param sm			name of previously created SMA.
  * 	\param gob			name of global object.
  *
  * 	\note

@@ -125,6 +125,22 @@
 #define FOREVER						for(;;)
 
 
+	                                                  /* macros for casting */
+#define CB( p )						((RKHBASE_T*)(p))
+#define CST( p )					((RKHST_T*)(p))
+#define CCMP( p )					((RKHSCMP_T*)(p))
+#define CBSC( p )					((RKHSBSC_T*)(p))
+#define CCD( p )					((RKHSCOND_T*)(p))
+#define CJ( p )						((RKHSJUNC_T*)(p))
+#define CH( p )						((RKHSHIST_T*)(p))
+#define CM( p )						((RKHROM RKHSMA_T*)(p))
+#define CT( p )						((RKHROM RKHTR_T*)(p))
+#define CPT( p )					((RKHROM struct rkhscmp_t*)(p))
+#define CPP( p )					((RKHPPRO_T)(p))
+#define CG( p )						((RKHGUARD_T)(p))
+#define CA( p )						((RKHACT_T)(p))
+
+
 /* 	
  *  Verifies configurations from rkhcfg.h include file.
  */
@@ -435,53 +451,55 @@
 #if RKH_SMA_EN_ID == 1
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(id),(is),(ia),(ie)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(id),(is),(ia)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia)}
 	#endif
 #else
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(is),(ia),(ie)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(is),(ia)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia)}
 	#endif
 #endif
 
 
 #define MKSMA( rr, s )					\
-						{ (rr), (s) }
+						{ (rr), (RKHROM struct rkhst_t*)(s) }
 
 
 #if RKH_SMA_EN_STATE_ID == 1
-	#define mkbase(t,id)			{t,id}
+	#define MKBASE(t,id)			t,id
 #else
-	#define mkbase(t,id)			{t}
+	#define MKBASE(t,id)			t
 #endif
 
 
 #if RKH_SMA_EN_HCAL == 1
 	#if RKH_SMA_EN_PPRO == 1
-		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL,pp
-		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h,NULL
-		#define mksbm(en,ex,p,n,sbm)		en,ex,p,n##_exptbl,sbm
+		#define MKBASIC(n,pp)		n##_trtbl,pp
+		#define MKCOMP(n,d,h)		n##_trtbl,NULL,d,h
 	#else
-		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL
-		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h
-		#define mksbm(en,ex,p,n,sbm)		en,ex,p,n##_exptbl,sbm
+		#define MKBASIC(n,pp)		n##_trtbl
+		#define MKCOMP(n,d,h)		n##_trtbl,d,h
 	#endif
+	#define MKST(en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p
+	#define MKSBM(n,sbm)			n##_exptbl,sbm
+	#define MKMCH(d,i,n)			(RKHROM struct rkhst_t *)d,i,&rdyp_##n
 #else
 	#if RKH_SMA_EN_PPRO == 1
-		#define mkbasic(en,ex,p,n,pp)		n##_trtbl,pp
-		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl,NULL
-		#define mksbm(en,ex,p,n,sbm)		n##_exptbl,sbm
+		#define MKBASIC(n,pp)		n##_trtbl,pp
+		#define MKCOMP(n,d,h)		n##_trtbl,NULL
 	#else
-		#define mkbasic(en,ex,p,n,pp)		n##_trtbl
-		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl
-		#define mksbm(en,ex,p,n,sbm)		n##_exptbl,sbm
+		#define MKBASIC(n,pp)		n##_trtbl
+		#define MKCOMP(n,d,h)		n##_trtbl
 	#endif
+	#define MKST(en,ex,p)
+	#define MKSBM(n,sbm)			n##_exptbl,sbm
+	#define MKMCH(d,i,n)			(RKHROM struct rkhst_t *)d,i,&rdyp_##n
 #endif
 
 
@@ -935,7 +953,7 @@ typedef struct romrkh_t
 	 * 	(not pseudo-state).
 	 */
 
-	RKHROM struct rkhsreg_t *istate;
+	RKHROM struct rkhst_t *istate;
 
 	/** 
  	 * 	\brief
@@ -1011,10 +1029,10 @@ typedef struct rkhsma_t
 
 	/** 
  	 * 	\brief
-	 * 	Points to current state.
+	 * 	Points to current state (basic state).
 	 */
 
-	RKHROM struct rkhsreg_t *state;
+	RKHROM struct rkhst_t *state;
 
 	/**
 	 * 	\brief
@@ -1415,12 +1433,11 @@ typedef struct rkhenpcn_t
 
 /**
  *	\brief
- * 	Describes a regular state.
- *
- * 	It can either be a composite or basic state.
+ * 	Describes the common properties of regular states (basic, composite, 
+ * 	and submachine).
  */
 
-typedef struct rkhsreg_t
+typedef struct rkhst_t
 {
 	/**	
  	 * 	\brief
@@ -1449,8 +1466,20 @@ typedef struct rkhsreg_t
 	 *	Points to state's parent.
 	 */
 
-	RKHROM struct rkhsreg_t *parent;
+	RKHROM struct rkhst_t *parent;
 #endif
+
+} RKHST_T;
+
+
+/**
+ *	\brief
+ * 	Describes a basic state.
+ */
+
+typedef struct rkhsbsc_t
+{
+	RKHST_T st;
 
 	/**	
  	 * 	\brief
@@ -1458,22 +1487,6 @@ typedef struct rkhsreg_t
 	 */
 
 	RKHROM struct rkhtr_t *trtbl;
-
-#if RKH_SMA_EN_HCAL == 1
-	/**	
- 	 * 	\brief
-	 *	Points to state's default child.
-	 */
-
-	RKHROM void *defchild;
-
-	/**	
- 	 * 	\brief
-	 *	Points to state's history. 
-	 */
-
-	RKHROM struct rkhshist_t *history;
-#endif
 
 	/**	
  	 * 	\brief
@@ -1514,8 +1527,89 @@ typedef struct rkhsreg_t
 	 * \endcode
 	 */
 
+#if RKH_SMA_EN_PPRO == 1
 	RKHPPRO_T prepro;
-} RKHSREG_T;
+#endif
+
+} RKHSBSC_T;
+
+
+/**
+ *	\brief
+ * 	Describes a composite state.
+ */
+
+typedef struct rkhscmp_t
+{
+	RKHST_T st;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
+	RKHROM struct rkhtr_t *trtbl;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to event preprocessor.
+	 *
+	 *	Aditionally, by means of single inheritance in C it could be 
+	 *	used as state's abstract data.
+	 *	Aditionally, implementing the single inheritance in C is very 
+	 *	simply by literally embedding the base type, RKHPPRO_T in 
+	 *	this case, as the first member of the derived structure.
+	 *	
+	 *	This argument is optional, thus it could be declared as NULL.
+	 *
+	 *	Example:
+	 *  
+	 *  \code
+	 *	static
+	 *	RKHE_T
+	 *	preprocessor( RKHEVT_T *pe )
+	 *	{
+	 *		...
+	 *	}
+	 *  
+	 *	typedef struct
+	 *	{
+	 *		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 *		unsigned min:4;
+	 *		unsigned max:4;
+	 *		char *buff;
+	 *	} SDATA_T;
+	 *
+	 *	static const SDATA_T option = { preprocessor, 4, 8, token1 };
+	 *
+	 *	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+	 *					NULL, &S11, preprocessor ); 
+	 *	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+	 *					NULL, &S2, (RKHPPRO_T*)&option ); 
+	 * \endcode
+	 */
+
+#if RKH_SMA_EN_PPRO == 1
+	RKHPPRO_T prepro;
+#endif
+
+#if RKH_SMA_EN_HCAL == 1
+	/**	
+ 	 * 	\brief
+	 *	Points to state's default child.
+	 */
+
+	RKHROM void *defchild;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's history. 
+	 */
+
+	RKHROM struct rkhshist_t *history;
+#endif
+
+} RKHSCMP_T;
 
 
 /**
@@ -1552,7 +1646,7 @@ typedef struct rkhssbm_t
 	 *	Points to state's parent.
 	 */
 
-	RKHROM struct rkhsreg_t *parent;
+	RKHROM struct rkhst_t *parent;
 #endif
 
 	/**	
@@ -1605,10 +1699,11 @@ typedef struct rkhsbm_t
 
 	/**	
  	 * 	\brief
-	 *	Points to dynamic parent. 
+	 *	Points to RAM memory location which stores
+	 *	the dynamic parent.
 	 */
 
-	RKHROM struct rkhssbm_t *dyp;
+	RKHROM struct rkhssbm_t **dyp;
 
 } RKHSBM_T;
 
@@ -1744,7 +1839,7 @@ typedef struct rkhshist_t
 	 *	Points to state's parent.
 	 */
 
-	RKHROM RKHSREG_T *parent;
+	RKHROM RKHST_T *parent;
 
 	/**	
  	 * 	\brief
@@ -1752,7 +1847,7 @@ typedef struct rkhshist_t
 	 *	the state's history.
 	 */
 
-	RKHROM RKHSREG_T **target;
+	RKHROM RKHST_T **target;
 } RKHSHIST_T;
 
 
