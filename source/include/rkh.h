@@ -510,7 +510,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  * 	\param name		exit point connection name.
- * 	\param expnt	referenced exit point name.
+ * 	\param expnt	referenced exit point.
  * 	\param act		pointer to transition action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ts		pointer to target state.
@@ -568,6 +568,58 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 							RKHROM RKHENPCN_T name =				\
 							{										\
 								act, (RKHROM struct rkhst_t *)ts	\
+							}
+
+
+/**
+ * 	\brief
+ *	This macro creates an entry point pseudostate.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHSENP_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		entry point connection name.
+ * 	\param enpnt	referenced entry point connection.
+ * 	\param subm		submachine state name.
+ */
+
+#define RKH_CREATE_ENPNT_STATE( name, enp, subm )			\
+															\
+							RKHROM RKHSENP_T name =			\
+							{								\
+								MKBASE(RKH_ENPNT,id),		\
+								enp, subm					\
+							}
+
+
+/**
+ * 	\brief
+ *	This macro creates an exit point connection.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHSEXP_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		entry point connection name.
+ * 	\param ix		index of exit point connection table.
+ * 	\param subm		submachine object name.
+ */
+
+#define RKH_CREATE_EXPNT_STATE( name, ix, subm )		\
+														\
+							RKHROM RKHSEXP_T name =		\
+							{							\
+								MKBASE(), 				\
+								ix, subm 				\
 							}
 
 

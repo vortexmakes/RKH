@@ -462,7 +462,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 				/* For lowest level states that were entered, which are not */
 		         /* basic states, perform default transitions (recursively) */
 		                      /* until the statechart reaches basic states. */
-		                 /* Also, update 'stn' with the reached basic state */
+		                        /* Also, update 'stn' with the target state */
 		RKH_EXEC_ENTRY_ACTION( nn, sma, stn, snl, ix_n );
 		RKH_TRCR_SM_NENEX( 	sma,               /* this state machine object */ 
 							nn,                         /* # entered states */

@@ -1736,7 +1736,6 @@ typedef struct rkhsenp_t
 
 	RKHROM RKHSSBM_T *parent;
 
-
 } RKHSENP_T;
 
 
@@ -1753,6 +1752,13 @@ typedef struct rkhsexp_t
 	 */
 
 	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Index of exit point connection table.
+	 */
+
+	rkhui8_t ix;
 
 	/**	
  	 * 	\brief
