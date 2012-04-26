@@ -166,10 +166,11 @@ static RKHROM RKHTR_T tr_null = { RKH_ANY, CG(0), CA(0), (RKHROM void *)0 };
 			RKH_EXEC_ENTRY( *snl, CM( sma ) );							\
 			RKH_TRCR_SM_ENSTATE( sma, *snl );							\
 		}																\
-		stn = CST( *snl );												\
+		stn = *snl;														\
 		while( IS_COMPOSITE( stn ) )									\
 		{																\
-			RKH_EXEC_ENTRY( stn = CCMP(stn)->defchild, CM( sma ) );		\
+			stn = CCMP(stn)->defchild;									\
+			RKH_EXEC_ENTRY( stn, CM( sma ) );							\
 			RKH_TRCR_SM_ENSTATE( sma, stn );							\
 		}
 #else
