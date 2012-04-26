@@ -172,10 +172,11 @@ static RKHROM RKHTR_T tr_null = { RKH_ANY, CG(0), CA(0), (RKHROM void *)0 };
 			stn = CCMP(stn)->defchild;									\
 			RKH_EXEC_ENTRY( stn, CM( sma ) );							\
 			RKH_TRCR_SM_ENSTATE( sma, stn );							\
+			++nen;														\
 		}
 #else
 	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )			\
-					((void)0)
+						stn = ets
 #endif
 
 
@@ -258,7 +259,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKHROM RKHST_T *cs, *ts;
 	RKHROM void *ets;
 	RKHROM RKHTR_T *tr;
-	HUInt first_regular, inttr;
+	HUInt inttr;
 	RKHE_T in;
 #if RKH_TRC_EN == 1
 	rkhui8_t step;
@@ -320,7 +321,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	ts = CST( ets );
 
 	nn = 0;
-	first_regular = 1;		   /* set first regular state in the transition */
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
@@ -358,25 +358,10 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 								/* ... traverses the taken transition until */
    				   		  /* the segment target state (ets) == simple state */
-		while( IS_PSEUDO( ets ) || IS_COMPOSITE( ets ) )
+		while( IS_PSEUDO( ets ) )
 		{
 			switch( CB(ets)->type )
 			{
-#if RKH_SMA_EN_HCAL == 1
-				case RKH_COMPOSITE:
-										 /* found a composite (super) state */
-										      /* in the compound transition */
-			         /* take from that its default child and then it is set */
-													  /*as new target state */
-					if( first_regular )
-					{
-						ts = CST( ets );
-						first_regular = 0;
-					}
-
-					ets = CCMP( ets )->defchild;
-					break;
-#endif
 #if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CONDITIONAL == 1
 				case RKH_CONDITIONAL:
 					            /* found a conditional (choice) pseudostate */
@@ -444,8 +429,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	}
 
 	if( IS_NOT_INTERNAL_TRANSITION() )
-		if( first_regular )
-			ts = CST( ets );		  /* finally, set the main target state */
+		ts = CST( ets );		      /* finally, set the main target state */
 
 #if RKH_SMA_EN_HCAL == 1
 	if( IS_NOT_INTERNAL_TRANSITION() )
@@ -457,15 +441,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		 						      /* update histories of exited states, */
 			                     /* and, generate the set of entered states */
 		RKH_EXEC_EXIT_ACTION( cs, ts, sma, nn );
-															/* ---- Stage 5 */
-		                                             /* update deep history */
-		rkh_update_deep_hist( CST( ets ) );
-		RKH_TRCR_SM_NENEX( 	sma,               /* this state machine object */ 
-							ix_n,                       /* # entered states */
-							ix_x );                      /* # exited states */
 	}
 #endif
-													        /* ---- Stage 6 */
+													        /* ---- Stage 5 */
 	                  /* perform the actions on the transition sequentially */
 			         /* according to the order in which they are written on */
 				       /* the transition, from the action closest to source */
@@ -477,18 +455,26 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
-												 		    /* ---- Stage 7 */
+												 		    /* ---- Stage 6 */
 		                 /* perform the entry actions of the entered states */
 		                      /* according to the order states are entered, */
 		                                   /* from high state to low state. */
 				/* For lowest level states that were entered, which are not */
 		         /* basic states, perform default transitions (recursively) */
 		                      /* until the statechart reaches basic states. */
+		                 /* Also, update 'stn' with the reached basic state */
 		RKH_EXEC_ENTRY_ACTION( nn, sma, stn, snl, ix_n );
+		RKH_TRCR_SM_NENEX( 	sma,               /* this state machine object */ 
+							nn,                         /* # entered states */
+							ix_x );                      /* # exited states */
+
+															/* ---- Stage 7 */
+		                                             /* update deep history */
+		rkh_update_deep_hist( CST( stn ) );
 														    /* ---- Stage 8 */
-		sma->state = CST( ets );                /* update the current state */
+		sma->state = CST( stn );                /* update the current state */
 		RKH_TRCR_SM_STATE( 	sma, 			   /* this state machine object */	
-							sma->state );				   /* current state */
+							stn );				           /* current state */
 	}
 
 	RKH_TRCR_SM_DCH_RC( sma, RKH_OK );
