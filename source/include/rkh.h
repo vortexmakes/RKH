@@ -408,7 +408,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	...
  *
  *	\sa
- *	RKHSBM_T structure definition for more information.
+ *	RKHRSM_T structure definition for more information.
  *
  * 	\param name		submachine name. Represents a submachine structure.
  * 	\param id		the value of submachine ID. This argument is optional, 
@@ -425,7 +425,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								static RKHROM RKHSSBM_T *rdyp_##name;	\
 																		\
-								RKHROM RKHSBM_T name =					\
+								RKHROM RKHRSM_T name =					\
 								{										\
 									MKBASE(RKH_MACHINE,id),				\
 									MKMCH(defchild,iact,name) 			\

@@ -1615,6 +1615,26 @@ typedef struct rkhscmp_t
 /**
  *	\brief
  * 	Describes a submachine state.
+ *
+ * 	A submachine state is a kind of a state that actually refers to 
+ * 	another defined state machine.
+ * 	A submachine state is logically equivalent to the insertion of the 
+ * 	referenced state machine as a composite state in the place of 
+ * 	the submachine state. Consequently, every entrance to a submachine 
+ * 	state is equivalent to the corresponding entrance to the inserted 
+ * 	(referenced) composite state. In particular, it can be entered 
+ * 	thruough its initial pseudostate (as any other composite state), or 
+ * 	through one of its entry points. 
+ *
+ * 	Similary, every exit from a submachine state is equivalent to the 
+ * 	corresponding exit from the inserted composite state. It can be exited 
+ * 	through one of its exit points. When it is exited through its exit point 
+ * 	the effect of the transition targeting the exit point is executed first, 
+ * 	followed by the exit behavior of the composite state. 
+ *
+ * 	The purpose od defining submachine states is to decompose and localize 
+ * 	repetitive parts because the same state machine can be referenced from 
+ * 	more than one submachine state.
  */
 
 typedef struct rkhssbm_t
@@ -1661,17 +1681,17 @@ typedef struct rkhssbm_t
 	 *	Points to submachine object.
 	 */
 
-	RKHROM struct rkhsbm_t *sbm;
+	RKHROM struct rkhrsm_t *sbm;
 
 } RKHSSBM_T;
 
 
 /**
  *	\brief
- * 	Describes a submachine object.
+ * 	Describes a referenced state machine.
  */
 
-typedef struct rkhsbm_t
+typedef struct rkhrsm_t
 {
 	/**	
  	 * 	\brief
@@ -1705,7 +1725,7 @@ typedef struct rkhsbm_t
 
 	RKHROM struct rkhssbm_t **dyp;
 
-} RKHSBM_T;
+} RKHRSM_T;
 
 
 /**
@@ -1765,7 +1785,7 @@ typedef struct rkhsexp_t
 	 *	Points to state's parent (submachine).
 	 */
 
-	RKHROM RKHSBM_T *parent;
+	RKHROM RKHRSM_T *parent;
 
 
 } RKHSEXP_T;
