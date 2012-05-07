@@ -143,6 +143,8 @@
 #define CA( p )						((RKHACT_T)(p))
 #define CENP( p )					((RKHSENP_T*)(p))
 #define CEXP( p )					((RKHSEXP_T*)(p))
+#define CENPCN( p )					((RKHENPCN_T*)(p))
+#define CEXPCN( p )					((RKHEXPCN_T*)(p))
 
 
 /* 	
@@ -496,7 +498,7 @@
 	#endif
 	#define MKST(en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p
 	#define MKSBM(n,sbm)			n##_exptbl,sbm
-	#define MKMCH(d,i,n)			(RKHROM struct rkhst_t *)d,i,&rdyp_##n
+	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T**)&rdyp_##n
 #else
 	#if RKH_SMA_EN_PPRO == 1
 		#define MKBASIC(n,pp)		n##_trtbl,pp
@@ -507,7 +509,7 @@
 	#endif
 	#define MKST(en,ex,p)
 	#define MKSBM(n,sbm)			n##_exptbl,sbm
-	#define MKMCH(d,i,n)			(RKHROM struct rkhst_t *)d,i,&rdyp_##n
+	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T*)&rdyp_##n
 #endif
 
 

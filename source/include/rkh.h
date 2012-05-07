@@ -483,10 +483,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param act		pointer to transition action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ts		pointer to target state.
- * 	\param subm		submachine state name.
  */
 
-#define RKH_EXPNT( name, expnt, act, ts, subm  )		\
+#define RKH_EXPNT( name, expnt, act, ts )		\
 								{act, (RKHROM struct rkhst_t *)ts}
 
 
@@ -528,7 +527,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		entry point name.
  * 	\param enpnt	referenced entry point.
- * 	\param subm		submachine state name.
+ * 	\param subm		pointer to submachine state.
  */
 
 #define RKH_CREATE_ENPNT( name, enp, subm )				\
@@ -562,7 +561,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_REF_SUBMACHINE( name,id,defchild,iact )				\
 																		\
-								static RKHROM RKHSSBM_T *rdyp_##name;	\
+								static RKHROM RKHST_T *rdyp_##name;		\
 																		\
 								RKHROM RKHRSM_T name =					\
 								{										\
@@ -585,7 +584,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		entry point connection name.
  * 	\param ix		index of exit point table.
- * 	\param subm		referenced submachine name.
+ * 	\param subm		pointer to referenced submachine.
  */
 
 #define RKH_CREATE_REF_EXPNT( name, ix, subm )			\
@@ -613,10 +612,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param act		pointer to transition action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ts		pointer to target state.
- * 	\param subm		referenced submachine name.
+ * 	\param subm		pointer to referenced submachine.
  */
 
-#define RKH_REF_ENPNT( name, act, ts, subm  )							\
+#define RKH_CREATE_REF_ENPNT( name, act, ts, subm  )					\
 																		\
 								RKHROM RKHENPCN_T name = 				\
 								{										\
@@ -882,7 +881,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
 #define RKH_DCLR_SHIST_STATE	extern RKHROM RKHSHIST_T
 #define RKH_DCLR_SUBM_STATE		extern RKHROM RKHSSBM_T
-#define RKH_DCLR_REF_SUBM		extern RKHROM RKHSENP_T
+#define RKH_DCLR_REF_SUBM		extern RKHROM RKHRSM_T
 #define RKH_DCLR_ENPNT			extern RKHROM RKHSENP_T
 #define RKH_DCLR_REF_EXPNT		extern RKHROM RKHSEXP_T
 #define RKH_DCLR_REF_ENPNT		extern RKHROM RKHENPCN_T

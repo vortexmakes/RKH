@@ -68,12 +68,20 @@ RKH_MODULE_NAME( rkh )
 
 
 #if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
-	#define RKH_UPDATE_SHALLOW_HIST( s, h )								\
-				if(	CST((s))->parent != CST(0) && 						\
+	#if RKH_SMA_EN_SUBMACHINE == 1
+			#define RKH_UPDATE_SHALLOW_HIST( s, h )			\
+				if(	CST((s))->parent != CST(0) && 			\
+						IS_COMPOSITE( (s)->parent ) &&		\
 					((h) = CCMP(CST((s))->parent)->history) != CH(0)&&	\
 			 			CB((h))->type == RKH_SHISTORY )					\
 					*(h)->target = (s)
-
+	#else
+			#define RKH_UPDATE_SHALLOW_HIST( s, h )						\
+				if(	CST((s))->parent != CST(0) &&						\
+					((h) = CCMP(CST((s))->parent)->history) != CH(0)&&	\
+			 			CB((h))->type == RKH_SHISTORY )					\
+					*(h)->target = (s)
+	#endif
 #else
 	#define RKH_UPDATE_SHALLOW_HIST( s, h )			((void)0)
 #endif
@@ -121,13 +129,21 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-#if RKH_SMA_EN_SUBMACHINE == 1
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SUBMACHINE == 1
 	#define UPDATE_PARENT( s )										\
 				(s) = (s)->parent;									\
 				if( (s) != CST( 0 ) && IS_REF_SUBMACHINE( (s) ) )	\
 					(s) = *CRSM( (s) )->dyp
+	#define UPDATE_IN_PARENT( s )									\
+				(s) = (s)->parent;									\
+				if( (s) != CST( 0 ) && IS_REF_SUBMACHINE( (s) ) )	\
+					(s) = *CRSM( (s) )->dyp;						\
+				if( (s) != CST( 0 ) && IS_SUBMACHINE( (s) ) )		\
+					(s) = (s)->parent
 #else
 	#define UPDATE_PARENT( s )		\
+				(s) = (s)->parent
+	#define UPDATE_IN_PARENT( s )	\
 				(s) = (s)->parent
 #endif
 
@@ -219,9 +235,18 @@ rkh_add_tr_action( RKHACT_T *list, RKHACT_T act, rkhui8_t *num )
 
 		for( s = from->parent; 
 				s != (RKHROM RKHST_T *)0; s = s->parent )
+		{
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SUBMACHINE == 1
+			if( IS_REF_SUBMACHINE( s ) )
+			{
+				s = *CRSM( s )->dyp;
+				continue;
+			}
+#endif
 			if( ( h = CCMP(s)->history ) != (RKHROM RKHSHIST_T *)0 && 
 					CB(h)->type == RKH_DHISTORY )
 				*h->target = from;
+		}
 	}
 #else
 	#define rkh_update_deep_hist( f )		((void)0)
@@ -280,6 +305,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 #if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SHALLOW_HISTORY == 1
 	RKHROM RKHSHIST_T *h;
 #endif
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SUBMACHINE == 1
+	RKHROM RKHSSBM_T *dp;
+#endif
 	                      /* to deal with Statechart's transition sequence */
 	RKH_RAM RKHROM RKHST_T *stn, *stx, **snl;
 	RKH_RAM rkhui8_t ix_n, ix_x, islca, nn;
@@ -311,12 +339,13 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	                     /* stop traversing the states that are higher than */
 	                                        /* this state in the hierarchy. */
 #if RKH_SMA_EN_HCAL == 1
-	for( stn = cs, tr = CT(0); stn != CST(0); stn = stn->parent )
+	for( stn = cs, tr = CT(0); stn != CST(0); )
 	{
 		in = RKH_PROCESS_INPUT( stn, sma, pe );	
 		FIND_TRANS( tr, CBSC(stn)->trtbl, in );
 		if( IS_FOUND_TRANS( tr ) )
 			break;
+		UPDATE_IN_PARENT( stn );
 	}
 #else
 	stn = cs;
@@ -371,7 +400,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 								/* ... traverses the taken transition until */
    				   		  /* the segment target state (ets) == simple state */
-		while( IS_PSEUDO( ets ) )
+		while( IS_PSEUDO( ets ) || IS_SUBMACHINE( ets ) )
 		{
 			switch( CB(ets)->type )
 			{
@@ -441,8 +470,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					ets = CSBM( ets )->sbm->defchild;
 					break;
 				case RKH_ENPOINT:
-					!!FALTA
-	                                     /* found a entry point pseudostate */
+                                        /* found an entry point pseudostate */
 										      /* in the compound transition */
 					if( rkh_add_tr_action( pal, CENP( ets )->enpcn->action, 
 																	&nal ) )
@@ -451,12 +479,21 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						RKHERROR();
 						return RKH_EXCEED_TRC_SEGS;
 					}
+					*CENP( ets )->parent->sbm->dyp = ets;
 					ets = CENP( ets )->enpcn->target;
 					break;
 				case RKH_EXPOINT:
-	                                      /* found a exit point pseudostate */
+	                                     /* found an exit point pseudostate */
 										      /* in the compound transition */
-					!!FALTA
+					dp = CSBM( *CEXP( ets )->parent->dyp );
+					ets = CST( &(dp->exptbl[ CEXP( ets )->ix ]) );
+					if( rkh_add_tr_action( pal, CEXPCN( ets )->action, &nal ) )
+					{
+						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKHERROR();
+						return RKH_EXCEED_TRC_SEGS;
+					}
+					ets = CEXPCN( ets )->target;
 					break;
 #endif
 				default:

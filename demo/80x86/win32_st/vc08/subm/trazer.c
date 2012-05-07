@@ -379,7 +379,7 @@ make_symtbl( void )
 	MKO( &S1, 			"S1"		);
 	MKO( &S11, 			"S11"		);
 	MKO( &S12, 			"S12"		);
-	MKO( &S13, 			"S12"		);
+	MKO( &S13, 			"S13"		);
 	MKO( &S2, 			"S2"		);
 	MKO( &S3, 			"S3" 		);
 	MKO( &SB1, 			"SB1" 		);

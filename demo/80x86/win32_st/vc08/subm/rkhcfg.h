@@ -303,6 +303,13 @@
 
 #define RKH_SMA_EN_CONDITIONAL			1
 
+/**
+ *	If the #RKH_SMA_EN_SUBMACHINE and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
+ *	the RKH allows submachine state (and exit/entry points) usage.
+ */
+
+#define RKH_SMA_EN_SUBMACHINE			1
+
 
 /* --- Configuration options related to SMA action featues ---------------- */
 
