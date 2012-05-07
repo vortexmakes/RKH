@@ -48,7 +48,8 @@ RKH_MODULE_NAME( rkh )
 #define IS_VALID_GUARD(t)				((t)->guard != CG(0))
 #define IS_PSEUDO( s )					((CB((s))->type&RKH_REGULAR)==0)
 #define IS_COMPOSITE( s )				(CB((s))->type==RKH_COMPOSITE)
-#define IS_MACHINE( s )					(CB((s))->type==RKH_MACHINE)
+#define IS_SUBMACHINE( s )				(CB((s))->type==RKH_SUBMACHINE)
+#define IS_REF_SUBMACHINE( s )			(CB((s))->type==RKH_REF_SUBMACHINE)
 
 #if RKH_EN_NATIVE_SCHEDULER == 1
 	#define RKH_RAM		static
@@ -120,15 +121,24 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-static RKHROM RKHTR_T tr_null = { RKH_ANY, CG(0), CA(0), (RKHROM void *)0 };
+#if RKH_SMA_EN_SUBMACHINE == 1
+	#define UPDATE_PARENT( s )										\
+				(s) = (s)->parent;									\
+				if( (s) != CST( 0 ) && IS_REF_SUBMACHINE( (s) ) )	\
+					(s) = *CRSM( (s) )->dyp
+#else
+	#define UPDATE_PARENT( s )		\
+				(s) = (s)->parent
+#endif
 
 
 #define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
 	for( ix_n = 0, ix_x = islca = 0, stx = src; 						\
-			stx != CST( 0 ); stx = stx->parent, ++ix_x )				\
+			stx != CST( 0 ); ++ix_x )									\
 	{																	\
 		for( ix_n = 0, snl = sentry, stn = tgt; 						\
-				stn != CST( 0 ); stn = stn->parent, ++snl, ++ix_n )		\
+				stn != CST( 0 ); ++snl, ++ix_n )						\
+		{																\
 			if( stx == stn )											\
 			{															\
 				islca = 1;								/* found LCA */ \
@@ -142,6 +152,8 @@ static RKHROM RKHTR_T tr_null = { RKH_ANY, CG(0), CA(0), (RKHROM void *)0 };
 				RKHERROR();												\
 				return RKH_EXCEED_TRC_SEGS;								\
 			}															\
+			UPDATE_PARENT( stn );										\
+		}																\
 		if( islca == 0 )												\
 		{																\
 			        /* perform the exit actions of the exited states */ \
@@ -153,6 +165,7 @@ static RKHROM RKHTR_T tr_null = { RKH_ANY, CG(0), CA(0), (RKHROM void *)0 };
 		}																\
 		else															\
 			break;														\
+		UPDATE_PARENT( stx );											\
 	}																	\
 	                                 /* save the # of entered states */ \
 	nn = ix_n
@@ -401,7 +414,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 											  /* another transition segment */
 					RKH_INC_STEP();
 					ets = CJ(ets)->target;
-					tr = &tr_null;
 					break;
 #endif
 #if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && ( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
@@ -412,12 +424,41 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					if( IS_EMPTY_HIST( ets ) )
 						ets = CH(ets)->parent;
 					else
-					{
 						ets = *(CH(ets))->target;
-						tr = &tr_null;
-					}
-#endif
 					break;
+#endif
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_SUBMACHINE == 1
+				case RKH_SUBMACHINE:
+	                                            /* found a submachine state */
+					*CSBM( ets )->sbm->dyp = ets;
+					if( rkh_add_tr_action( pal, CSBM( ets )->sbm->iaction, 
+																	&nal ) )
+					{
+						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKHERROR();
+						return RKH_EXCEED_TRC_SEGS;
+					}
+					ets = CSBM( ets )->sbm->defchild;
+					break;
+				case RKH_ENPOINT:
+					!!FALTA
+	                                     /* found a entry point pseudostate */
+										      /* in the compound transition */
+					if( rkh_add_tr_action( pal, CENP( ets )->enpcn->action, 
+																	&nal ) )
+					{
+						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKHERROR();
+						return RKH_EXCEED_TRC_SEGS;
+					}
+					ets = CENP( ets )->enpcn->target;
+					break;
+				case RKH_EXPOINT:
+	                                      /* found a exit point pseudostate */
+										      /* in the compound transition */
+					!!FALTA
+					break;
+#endif
 				default:
 						                   /* fatal error: unknown state... */
 					RKH_TRCR_SM_DCH_RC( sma, RKH_UNKNOWN_STATE );

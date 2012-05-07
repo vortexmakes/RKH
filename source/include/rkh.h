@@ -403,37 +403,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a submachine.
- *
- * 	...
- *
- *	\sa
- *	RKHRSM_T structure definition for more information.
- *
- * 	\param name		submachine name. Represents a submachine structure.
- * 	\param id		the value of submachine ID. This argument is optional, 
- * 					thus it could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
- * 	\param defchild	pointer to default child state or pseudostate.
- * 	\param iact		pointer to initialization action (optional). The 
- * 					function prototype is defined as RKHINIT_T. This 
- * 					argument is optional, thus it could be declared as 
- * 					NULL.
- */
-
-#define RKH_CREATE_SUBMACHINE( name,id,defchild,iact )					\
-																		\
-								static RKHROM RKHSSBM_T *rdyp_##name;	\
-																		\
-								RKHROM RKHRSM_T name =					\
-								{										\
-									MKBASE(RKH_MACHINE,id),				\
-									MKMCH(defchild,iact,name) 			\
-								}
-
-
-/**
- * 	\brief
  *	This macro creates a submachine state.
  *
  * 	...
@@ -455,7 +424,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					The RKH implementation preserves the transition sequence 
  *					imposed by Harel's Statechart and UML. 
  * 	\param parent	pointer to parent state.
- * 	\param sbm		pointer to submachine object.
+ * 	\param sbm		pointer to referenced submachine.
  */
 
 #define RKH_CREATE_SUBMACHINE_STATE( name,id,en,ex,parent,sbm )			\
@@ -472,12 +441,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a exit point connection table. This table have the 
+ *	This macro creates a exit point table. This table have the 
  *	general structure shown below:
  *	\code
  *	RKH_CREATE_EXPNT_TABLE( submachine state )	// exit point table begin
- *		RKH_EXPNT_CNN( ... )					// exit point connection
- *		RKH_EXPNT_CNN( ... )					// exit point connection
+ *		RKH_EXPNT( ... )						// exit point
+ *		RKH_EXPNT( ... )						// exit point
  *		...
  *	RKH_END_EXPNT_TABLE							// exit point table end
  *	\endcode
@@ -485,7 +454,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	Each exit point table always begins with the macro 
  * 	RKH_CREATE_EXPNT_TABLE() and ends with the macro RKH_END_EXPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point 
- *	connection macros, RKH_EXPNT_CNN().
+ *	macros, RKH_EXPNT().
  *
  *	\note
  *	This macro is not terminated with the semicolon.
@@ -499,7 +468,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates an exit point connection.
+ *	This macro creates an exit point.
  *
  * 	...
  *
@@ -509,25 +478,26 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\code
  *	\endcode
  *
- * 	\param name		exit point connection name.
+ * 	\param name		exit point name.
  * 	\param expnt	referenced exit point.
  * 	\param act		pointer to transition action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ts		pointer to target state.
+ * 	\param subm		submachine state name.
  */
 
-#define RKH_EXPNT_CNN( name, expnt, act, ts  )		\
+#define RKH_EXPNT( name, expnt, act, ts, subm  )		\
 								{act, (RKHROM struct rkhst_t *)ts}
 
 
 /**
  * 	\brief
- *	This macro is used to terminate a exit point connection table.
+ *	This macro is used to terminate a exit point table.
  *	This table have the general structure shown below:
  *	\code
  *	RKH_CREATE_EXPNT_TABLE( submachine state )	// exit point table begin
- *		RKH_EXPNT_CNN( ... )					// exit point connection
- *		RKH_EXPNT_CNN( ... )					// exit point connection
+ *		RKH_EXPNT( ... )						// exit point
+ *		RKH_EXPNT( ... )						// exit point
  *		...
  *	RKH_END_EXPNT_TABLE							// exit point table end
  *	\endcode
@@ -535,7 +505,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	Each exit point table always begins with the macro 
  * 	RKH_CREATE_EXPNT_TABLE() and ends with the macro RKH_END_EXPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point 
- *	connection macros, RKH_EXPNT_CNN().
+ *	macros, RKH_EXPNT().
  *
  *	\note
  *	This macro is not terminated with the semicolon.
@@ -546,34 +516,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates an entry point connection.
- *
- * 	...
- *
- *	\sa
- *	RKHEXPCN_T structure definition for more information.
- *
- *	\code
- *	\endcode
- *
- * 	\param name		entry point connection name.
- * 	\param act		pointer to transition action function. This argument is 
- *					optional, thus it could be declared as NULL.
- * 	\param ts		pointer to target state.
- * 	\param subm		submachine object name.
- */
-
-#define RKH_CREATE_ENPNT_CNN( name, act, ts, subm )					\
-																	\
-							RKHROM RKHENPCN_T name =				\
-							{										\
-								act, (RKHROM struct rkhst_t *)ts	\
-							}
-
-
-/**
- * 	\brief
- *	This macro creates an entry point pseudostate.
+ *	This macro creates an entry point.
  *
  * 	...
  *
@@ -583,23 +526,54 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\code
  *	\endcode
  *
- * 	\param name		entry point connection name.
- * 	\param enpnt	referenced entry point connection.
+ * 	\param name		entry point name.
+ * 	\param enpnt	referenced entry point.
  * 	\param subm		submachine state name.
  */
 
-#define RKH_CREATE_ENPNT_STATE( name, enp, subm )			\
-															\
-							RKHROM RKHSENP_T name =			\
-							{								\
-								MKBASE(RKH_ENPNT,id),		\
-								enp, subm					\
+#define RKH_CREATE_ENPNT( name, enp, subm )				\
+														\
+							RKHROM RKHSENP_T name =		\
+							{							\
+								MKBASE(RKH_ENPOINT,id),	\
+								enp, subm				\
 							}
 
 
 /**
  * 	\brief
- *	This macro creates an exit point connection.
+ *	This macro creates a referenced submachine.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHRSM_T structure definition for more information.
+ *
+ * 	\param name		submachine name. Represents a submachine structure.
+ * 	\param id		the value of submachine ID. This argument is optional, 
+ * 					thus it could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
+ * 	\param defchild	pointer to default child state.
+ * 	\param iact		pointer to initialization action (optional). The 
+ * 					function prototype is defined as RKHINIT_T. This 
+ * 					argument is optional, thus it could be declared as 
+ * 					NULL.
+ */
+
+#define RKH_CREATE_REF_SUBMACHINE( name,id,defchild,iact )				\
+																		\
+								static RKHROM RKHSSBM_T *rdyp_##name;	\
+																		\
+								RKHROM RKHRSM_T name =					\
+								{										\
+									MKBASE(RKH_REF_SUBMACHINE,id),		\
+									MKMCH(defchild,iact,name) 			\
+								}
+
+
+/**
+ * 	\brief
+ *	This macro creates an referenced exit point.
  *
  * 	...
  *
@@ -610,17 +584,44 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  * 	\param name		entry point connection name.
- * 	\param ix		index of exit point connection table.
- * 	\param subm		submachine object name.
+ * 	\param ix		index of exit point table.
+ * 	\param subm		referenced submachine name.
  */
 
-#define RKH_CREATE_EXPNT_STATE( name, ix, subm )		\
+#define RKH_CREATE_REF_EXPNT( name, ix, subm )			\
 														\
 							RKHROM RKHSEXP_T name =		\
 							{							\
-								MKBASE(), 				\
+								MKBASE(RKH_EXPOINT,0),	\
 								ix, subm 				\
 							}
+
+
+/**
+ * 	\brief
+ *	This macro creates a referenced entry point.
+ *
+ * 	...
+ *
+ *	\sa
+ *	RKHENPCN_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		referenced entry point name.
+ * 	\param act		pointer to transition action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ts		pointer to target state.
+ * 	\param subm		referenced submachine name.
+ */
+
+#define RKH_REF_ENPNT( name, act, ts, subm  )							\
+																		\
+								RKHROM RKHENPCN_T name = 				\
+								{										\
+									act, (RKHROM struct rkhst_t *)ts	\
+								}
 
 
 /**
@@ -880,6 +881,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_DCLR_JUNC_STATE		extern RKHROM RKHSJUNC_T
 #define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
 #define RKH_DCLR_SHIST_STATE	extern RKHROM RKHSHIST_T
+#define RKH_DCLR_SUBM_STATE		extern RKHROM RKHSSBM_T
+#define RKH_DCLR_REF_SUBM		extern RKHROM RKHSENP_T
+#define RKH_DCLR_ENPNT			extern RKHROM RKHSENP_T
+#define RKH_DCLR_REF_EXPNT		extern RKHROM RKHSEXP_T
+#define RKH_DCLR_REF_ENPNT		extern RKHROM RKHENPCN_T
 
 /*@}*/
 

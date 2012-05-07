@@ -2610,6 +2610,7 @@ Here is an list of all options with their documentation:
 \li \b RKH_SMA_EN_SHALLOW_HISTORY \copydetails RKH_SMA_EN_SHALLOW_HISTORY
 \li \b RKH_SMA_EN_JUNCTION \copydetails RKH_SMA_EN_JUNCTION	
 \li \b RKH_SMA_EN_CONDITIONAL \copydetails RKH_SMA_EN_CONDITIONAL
+\li \b RKH_SMA_EN_SUBMACHINE \copydetails RKH_SMA_EN_SUBMACHINE
 \li \b RKH_SMA_EN_INIT_ARG_SMA \copydetails RKH_SMA_EN_INIT_ARG_SMA
 \li \b RKH_SMA_EN_ENT_ARG_SMA \copydetails RKH_SMA_EN_ENT_ARG_SMA
 \li \b RKH_SMA_EN_EXT_ARG_SMA \copydetails RKH_SMA_EN_EXT_ARG_SMA

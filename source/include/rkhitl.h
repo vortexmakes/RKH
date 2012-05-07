@@ -133,12 +133,16 @@
 #define CCD( p )					((RKHSCOND_T*)(p))
 #define CJ( p )						((RKHSJUNC_T*)(p))
 #define CH( p )						((RKHSHIST_T*)(p))
+#define CSBM( p )					((RKHSSBM_T*)(p))
+#define CRSM( p )					((RKHRSM_T*)(p))
 #define CM( p )						((RKHROM RKHSMA_T*)(p))
 #define CT( p )						((RKHROM RKHTR_T*)(p))
 #define CPT( p )					((RKHROM struct rkhscmp_t*)(p))
 #define CPP( p )					((RKHPPRO_T)(p))
 #define CG( p )						((RKHGUARD_T)(p))
 #define CA( p )						((RKHACT_T)(p))
+#define CENP( p )					((RKHSENP_T*)(p))
+#define CEXP( p )					((RKHSEXP_T*)(p))
 
 
 /* 	
@@ -353,6 +357,10 @@
 	#error "rkhcfg.h, Missing RKH_SMA_EN_CONDITIONAL: Include conditional. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
+#ifndef RKH_SMA_EN_SUBMACHINE	
+	#error "rkhcfg.h, Missing RKH_SMA_EN_SUBMACHINE: Include submachine state. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
+#endif
+
 #ifndef RKH_SMA_EN_INIT_ARG_SMA
 	#error "rkhcfg.h, Missing RKH_SMA_EN_INIT_ARG_SMA: Enable (1) or Disable (0) state machine arg from initialization action."
 #endif
@@ -438,7 +446,7 @@
 #define RKH_BASIC						RKH_TYPE( RKH_REGULAR, 	0	 )
 #define RKH_COMPOSITE					RKH_TYPE( RKH_REGULAR, 	0x01 )	
 #define RKH_SUBMACHINE					RKH_TYPE( RKH_REGULAR, 	0x02 )	
-#define RKH_MACHINE						RKH_TYPE( RKH_REGULAR, 	0x04 )	
+#define RKH_REF_SUBMACHINE				RKH_TYPE( RKH_REGULAR, 	0x04 )	
 
 #define RKH_CONDITIONAL					RKH_TYPE( RKH_PSEUDO, 	0x02 )	
 #define RKH_JUNCTION					RKH_TYPE( RKH_PSEUDO, 	0x04 )	
@@ -1639,35 +1647,7 @@ typedef struct rkhscmp_t
 
 typedef struct rkhssbm_t
 {
-	/**	
- 	 * 	\brief
-	 *	Maintains the basic information of state.
-	 */
-
-	struct rkhbase_t base;
-
-#if RKH_SMA_EN_HCAL == 1
-	/**	
- 	 * 	\brief
-	 *	Points to entry action.
-	 */
-
-	RKHENT_T enter;
-
-	/**	
- 	 * 	\brief
-	 *	Points to exit action.
-	 */
-
-	RKHEXT_T exit;
-
-	/**	
- 	 * 	\brief
-	 *	Points to state's parent.
-	 */
-
-	RKHROM struct rkhst_t *parent;
-#endif
+	RKHST_T st;
 
 	/**	
  	 * 	\brief
@@ -1688,7 +1668,7 @@ typedef struct rkhssbm_t
 
 /**
  *	\brief
- * 	Describes a referenced state machine.
+ * 	Describes a referenced submachine.
  */
 
 typedef struct rkhrsm_t
@@ -1711,11 +1691,11 @@ typedef struct rkhrsm_t
  	 * 	\brief
 	 * 	Points to initializing action (optional). 
 	 *
-	 * 	The function prototype is defined as RKHINIT_T. This argument is 
+	 * 	The function prototype is defined as RKHACT_T. This argument is 
 	 * 	optional, thus it could be declared as NULL.
 	 */
 
-	RKHINIT_T iaction;
+	RKHACT_T iaction;
 
 	/**	
  	 * 	\brief
@@ -1723,8 +1703,7 @@ typedef struct rkhrsm_t
 	 *	the dynamic parent.
 	 */
 
-	RKHROM struct rkhssbm_t **dyp;
-
+	RKHROM struct rkhst_t **dyp;
 } RKHRSM_T;
 
 
@@ -1775,19 +1754,17 @@ typedef struct rkhsexp_t
 
 	/**	
  	 * 	\brief
-	 *	Index of exit point connection table.
+	 *	Index of exit point table.
 	 */
 
 	rkhui8_t ix;
 
 	/**	
  	 * 	\brief
-	 *	Points to state's parent (submachine).
+	 *	Points to state's parent (referenced submachine).
 	 */
 
 	RKHROM RKHRSM_T *parent;
-
-
 } RKHSEXP_T;
 
 
