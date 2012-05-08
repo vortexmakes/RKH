@@ -1644,6 +1644,10 @@ typedef struct rkhscmp_t
  * 	the effect of the transition targeting the exit point is executed first, 
  * 	followed by the exit behavior of the composite state. 
  *
+ * 	The entry, exit, and behavior actions and internal transitions are 
+ * 	defined as part of the state. Submachine state is a decomposition 
+ * 	mechanism that allows factoring of common behaviors and their reuse.
+ *
  * 	The purpose od defining submachine states is to decompose and localize 
  * 	repetitive parts because the same state machine can be referenced from 
  * 	more than one submachine state.
@@ -1679,7 +1683,7 @@ typedef struct rkhssbm_t
 
 /**
  *	\brief
- * 	Describes a referenced submachine.
+ * 	Describes a (referenced) submachine state machine.
  */
 
 typedef struct rkhrsm_t
@@ -1721,6 +1725,13 @@ typedef struct rkhrsm_t
 /**
  * 	\brief 
  * 	Describes the entry point pseudostate.
+ *
+ * 	An entry pseudostate is used to join an external transition terminating 
+ * 	on that entry point to an internal transition emanating from that entry 
+ * 	point.
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
  */
 
 typedef struct rkhsenp_t
@@ -1752,6 +1763,12 @@ typedef struct rkhsenp_t
 /**
  * 	\brief 
  * 	Describes the exit point pseudostate.
+ *
+ * 	An exit pseudostate is used to join an internal transition terminating on 
+ * 	that exit point to an external transition emanating from that exit point. 
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
  */
 
 typedef struct rkhsexp_t

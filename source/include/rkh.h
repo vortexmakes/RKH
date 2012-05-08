@@ -405,7 +405,34 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\brief
  *	This macro creates a submachine state.
  *
- * 	...
+ * 	A submachine state is a kind of a state that actually refers to 
+ * 	another defined state machine.
+ * 	A submachine state is logically equivalent to the insertion of the 
+ * 	referenced state machine as a composite state in the place of 
+ * 	the submachine state. Consequently, every entrance to a submachine 
+ * 	state is equivalent to the corresponding entrance to the inserted 
+ * 	(referenced) composite state. In particular, it can be entered 
+ * 	thruough its initial pseudostate (as any other composite state), or 
+ * 	through one of its entry points. 
+ *
+ * 	Similary, every exit from a submachine state is equivalent to the 
+ * 	corresponding exit from the inserted composite state. It can be exited 
+ * 	through one of its exit points. When it is exited through its exit point 
+ * 	the effect of the transition targeting the exit point is executed first, 
+ * 	followed by the exit behavior of the composite state. 
+ *
+ * 	The purpose od defining submachine states is to decompose and localize 
+ * 	repetitive parts because the same state machine can be referenced from 
+ * 	more than one submachine state.
+ *
+ *	\code
+ *	RKH_CREATE_SUBMACHINE_STATE( 	adquire,		// state name
+ *									1, 				// ID
+ *									start_adquire, 	// entry action
+ *									stop_adquire, 	// exit action
+ *									&processing, 	// parent state
+ *									&herror );		// referenced submachine
+ *	\endcode
  *
  *	\sa
  *	RKHSSBM_T structure definition for more information.
@@ -424,7 +451,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					The RKH implementation preserves the transition sequence 
  *					imposed by Harel's Statechart and UML. 
  * 	\param parent	pointer to parent state.
- * 	\param sbm		pointer to referenced submachine.
+ * 	\param sbm		pointer to referenced submachine state machine.
  */
 
 #define RKH_CREATE_SUBMACHINE_STATE( name,id,en,ex,parent,sbm )			\
@@ -442,20 +469,20 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a exit point table. This table have the 
- *	general structure shown below:
+ *	This macro creates a exit point connection point reference table. 
+ *	This table have the general structure shown below:
  *	\code
- *	RKH_CREATE_EXPNT_TABLE( submachine state )	// exit point table begin
- *		RKH_EXPNT( ... )						// exit point
- *		RKH_EXPNT( ... )						// exit point
- *		...
- *	RKH_END_EXPNT_TABLE							// exit point table end
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
+ *		RKH_EX_CNNPNT( EX1S2, &EXPNT1, NULL, &S1 ),
+ *		RKH_EX_CNNPNT( EX2S2, &EXPNT2, NULL, &S3 ),
+ *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
  *
  * 	Each exit point table always begins with the macro 
- * 	RKH_CREATE_EXPNT_TABLE() and ends with the macro RKH_END_EXPNT_TABLE().
+ * 	RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro 
+ * 	RKH_END_EX_CNNPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point 
- *	macros, RKH_EXPNT().
+ *	macros, RKH_EX_CNNPNT().
  *
  *	\note
  *	This macro is not terminated with the semicolon.
@@ -463,15 +490,25 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param name		submachine state name.
  */
 
-#define RKH_CREATE_EXPNT_TABLE( name )									\
+#define RKH_CREATE_EX_CNNPNT_TABLE( name )								\
 								RKHROM RKHEXPCN_T name##_exptbl[]={
 
 
 /**
  * 	\brief
- *	This macro creates an exit point.
+ *	This macro creates an exit point connection point reference.
+ *	
+ *	Connection point references are sources/targets of transitions implying 
+ *	exits out of/entries into the submachine state machine referenced by a 
+ *	submachine state.
+ * 
+ *	An exit point connection point reference as the source of a transition 
+ *	implies that the source of the transition is the exit point pseudostate 
+ *	as defined in the submachine of the submachine state that has the exit 
+ *	point connection point defined.
  *
- * 	...
+ *	A connection point reference to an exit point has the same notation as 
+ *	an exit point pseudostate.
  *
  *	\sa
  *	RKHEXPCN_T structure definition for more information.
@@ -479,46 +516,55 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\code
  *	\endcode
  *
- * 	\param name		exit point name.
+ * 	\param name		exit point connection point reference name.
  * 	\param expnt	referenced exit point.
  * 	\param act		pointer to transition action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ts		pointer to target state.
  */
 
-#define RKH_EXPNT( name, expnt, act, ts )		\
+#define RKH_EX_CNNPNT( name, expnt, act, ts )		\
 								{act, (RKHROM struct rkhst_t *)ts}
 
 
 /**
  * 	\brief
- *	This macro is used to terminate a exit point table.
- *	This table have the general structure shown below:
+ *	This macro is used to terminate a exit point connection point reference 
+ *	table. This table have the general structure shown below:
  *	\code
- *	RKH_CREATE_EXPNT_TABLE( submachine state )	// exit point table begin
- *		RKH_EXPNT( ... )						// exit point
- *		RKH_EXPNT( ... )						// exit point
- *		...
- *	RKH_END_EXPNT_TABLE							// exit point table end
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
+ *		RKH_EX_CNNPNT( EX1S2, &EXPNT1, NULL, &S1 ),
+ *		RKH_EX_CNNPNT( EX2S2, &EXPNT2, NULL, &S3 ),
+ *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
  *
  * 	Each exit point table always begins with the macro 
- * 	RKH_CREATE_EXPNT_TABLE() and ends with the macro RKH_END_EXPNT_TABLE().
+ * 	RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro 
+ * 	RKH_END_EX_CNNPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point 
- *	macros, RKH_EXPNT().
+ *	macros, RKH_EX_CNNPNT().
  *
  *	\note
  *	This macro is not terminated with the semicolon.
  */
 
-#define RKH_END_EXPNT_TABLE		};
+#define RKH_END_EX_CNNPNT_TABLE		};
 
 
 /**
  * 	\brief
- *	This macro creates an entry point.
+ *	This macro creates an entry point connection point reference.
+ *	
+ *	Connection point references are sources/targets of transitions implying 
+ *	exits out of/entries into the submachine state machine referenced by a 
+ *	submachine state.
+ * 
+ *	An entry point connection point reference as the target of a transition 
+ *	implies that the target of the transition is the entry point pseudostate 
+ *	as defined in the submachine of the submachine state.
  *
- * 	...
+ *	A connection point reference to an entry point has the same notation as 
+ *	an entry point pseudostate.
  *
  *	\sa
  *	RKHSENP_T structure definition for more information.
@@ -526,12 +572,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\code
  *	\endcode
  *
- * 	\param name		entry point name.
+ * 	\param name		entry point connection point reference name.
  * 	\param enpnt	referenced entry point.
  * 	\param subm		pointer to submachine state.
  */
 
-#define RKH_CREATE_ENPNT( name, enp, subm )				\
+#define RKH_EN_CNNPNT( name, enp, subm )				\
 														\
 							RKHROM RKHSENP_T name =		\
 							{							\
@@ -542,9 +588,15 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a referenced submachine.
+ *	This macro creates a submachine state machine, which is to be 
+ *	inserted in place of the (submachine) state.
  *
- * 	...
+ * 	\code
+ * 	RKH_CREATE_REF_SUBMACHINE( 	adquire, 
+ * 								4, 
+ * 								&wait, 
+ * 								init_adquire );
+ * 	\endcode
  *
  *	\sa
  *	RKHRSM_T structure definition for more information.
@@ -573,9 +625,19 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates an referenced exit point.
+ *	This macro creates an exit point.
  *
- * 	...
+ * 	An exit pseudostate is used to join an internal transition terminating on 
+ * 	that exit point to an external transition emanating from that exit point. 
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
+ *
+ * 	\code
+ * 	RKH_CREATE_REF_EXPNT( 	handled, 
+ * 							0, 
+ * 							&handle_error );
+ * 	\endcode
  *
  *	\sa
  *	RKHSEXP_T structure definition for more information.
@@ -583,9 +645,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\code
  *	\endcode
  *
- * 	\param name		entry point connection name.
+ * 	\param name		entry point name.
  * 	\param ix		index of exit point table.
- * 	\param subm		pointer to referenced submachine.
+ * 	\param subm		pointer to submachine state machine.
  */
 
 #define RKH_CREATE_REF_EXPNT( name, ix, subm )			\
@@ -599,9 +661,20 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a referenced entry point.
+ *	This macro creates a entry point.
  *
- * 	...
+ * 	An entry pseudostate is used to join an external transition terminating 
+ * 	on that entry point to an internal transition emanating from that entry 
+ * 	point.
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
+ *
+ * 	\code
+ * 	RKH_CREATE_REF_ENPNT( 	show, 
+ * 							2, 
+ * 							&handle_error );
+ * 	\endcode
  *
  *	\sa
  *	RKHENPCN_T structure definition for more information.
@@ -609,11 +682,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\code
  *	\endcode
  *
- * 	\param name		referenced entry point name.
+ * 	\param name		entry point name.
  * 	\param act		pointer to transition action function. This argument is 
  *					optional, thus it could be declared as NULL.
  * 	\param ts		pointer to target state.
- * 	\param subm		pointer to referenced submachine.
+ * 	\param subm		pointer to submachine state machine.
  */
 
 #define RKH_CREATE_REF_ENPNT( name, act, ts, subm  )					\
