@@ -497,8 +497,9 @@
 		#define MKCOMP(n,d,h)		n##_trtbl,d,h
 	#endif
 	#define MKST(en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p
-	#define MKSBM(n,sbm)			n##_exptbl,sbm
+	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
 	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T**)&rdyp_##n
+	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #else
 	#if RKH_SMA_EN_PPRO == 1
 		#define MKBASIC(n,pp)		n##_trtbl,pp
@@ -508,8 +509,9 @@
 		#define MKCOMP(n,d,h)		n##_trtbl
 	#endif
 	#define MKST(en,ex,p)
-	#define MKSBM(n,sbm)			n##_exptbl,sbm
+	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
 	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T*)&rdyp_##n
+	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #endif
 
 
@@ -1656,6 +1658,13 @@ typedef struct rkhssbm_t
 	 *	Points to state transition table.
 	 */
 
+	RKHROM struct rkhtr_t *trtbl;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
 	RKHROM struct rkhexpcn_t *exptbl;
 
 	/**	
@@ -1735,7 +1744,7 @@ typedef struct rkhsenp_t
 	 *	Points to state's parent (submachine state).
 	 */
 
-	RKHROM RKHSSBM_T *parent;
+	RKHROM struct rkhst_t *parent;
 
 } RKHSENP_T;
 

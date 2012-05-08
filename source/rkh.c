@@ -137,9 +137,7 @@ RKH_MODULE_NAME( rkh )
 	#define UPDATE_IN_PARENT( s )									\
 				(s) = (s)->parent;									\
 				if( (s) != CST( 0 ) && IS_REF_SUBMACHINE( (s) ) )	\
-					(s) = *CRSM( (s) )->dyp;						\
-				if( (s) != CST( 0 ) && IS_SUBMACHINE( (s) ) )		\
-					(s) = (s)->parent
+					(s) = *CRSM( (s) )->dyp
 #else
 	#define UPDATE_PARENT( s )		\
 				(s) = (s)->parent
@@ -189,23 +187,33 @@ RKH_MODULE_NAME( rkh )
 
 #if RKH_SMA_EN_HCAL == 1
 	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )			\
-		for( ix_n = nen, snl = &sentry[ ix_n ]; ix_n != 0; --ix_n )		\
+		if( ix_n == ix_x && ix_x == 0 )									\
+		{}																\
+		else															\
 		{																\
-			--snl;														\
-			RKH_EXEC_ENTRY( *snl, CM( sma ) );							\
-			RKH_TRCR_SM_ENSTATE( sma, *snl );							\
-		}																\
-		stn = *snl;														\
-		while( IS_COMPOSITE( stn ) )									\
-		{																\
-			stn = CCMP(stn)->defchild;									\
-			RKH_EXEC_ENTRY( stn, CM( sma ) );							\
-			RKH_TRCR_SM_ENSTATE( sma, stn );							\
-			++nen;														\
+			for( ix_n = nen, snl = &sentry[ ix_n ]; ix_n != 0; --ix_n )	\
+			{															\
+				--snl;													\
+				RKH_EXEC_ENTRY( *snl, CM( sma ) );						\
+				RKH_TRCR_SM_ENSTATE( sma, *snl );						\
+			}															\
+			stn = *snl;													\
+			while( IS_COMPOSITE( stn ) )								\
+			{															\
+				stn = CCMP(stn)->defchild;								\
+				RKH_EXEC_ENTRY( stn, CM( sma ) );						\
+				RKH_TRCR_SM_ENSTATE( sma, stn );						\
+				++nen;													\
+			}															\
 		}
 #else
 	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )			\
-						stn = ets
+		if( ix_n == ix_x && ix_x == 0 )									\
+		{}																\
+		else															\
+		{																\
+			stn = ets;													\
+		}
 #endif
 
 
@@ -472,6 +480,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 				case RKH_ENPOINT:
                                         /* found an entry point pseudostate */
 										      /* in the compound transition */
+					*CSBM(CENP( ets )->parent)->sbm->dyp = CENP( ets )->parent;
 					if( rkh_add_tr_action( pal, CENP( ets )->enpcn->action, 
 																	&nal ) )
 					{
@@ -479,7 +488,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						RKHERROR();
 						return RKH_EXCEED_TRC_SEGS;
 					}
-					*CENP( ets )->parent->sbm->dyp = ets;
 					ets = CENP( ets )->enpcn->target;
 					break;
 				case RKH_EXPOINT:

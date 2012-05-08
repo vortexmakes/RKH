@@ -430,6 +430,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_CREATE_SUBMACHINE_STATE( name,id,en,ex,parent,sbm )			\
 																		\
 							extern RKHROM RKHEXPCN_T name##_exptbl[];	\
+							extern RKHROM RKHTR_T name##_trtbl[];		\
 																		\
 							RKHROM RKHSSBM_T name =						\
 							{											\
@@ -535,7 +536,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 							RKHROM RKHSENP_T name =		\
 							{							\
 								MKBASE(RKH_ENPOINT,id),	\
-								enp, subm				\
+								MKENP(enp,subm)			\
 							}
 
 
