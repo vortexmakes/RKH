@@ -612,7 +612,7 @@ in_keyb( RKHEVT_T *pe )
 }
 \endcode
 
-\li (7)	\copydetails RKHSREG_T::prepro
+\li (7)	\copydetails RKHSBSC_T::prepro
 
 \n
 The following figures, \ref is111_s112 "Figure 8", 

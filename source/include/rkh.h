@@ -478,7 +478,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
  *
- * 	Each exit point table always begins with the macro 
+ * 	Each exit point connection reference table always begins with the macro 
  * 	RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro 
  * 	RKH_END_EX_CNNPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point 
@@ -510,6 +510,22 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	A connection point reference to an exit point has the same notation as 
  *	an exit point pseudostate.
  *
+ * 	\code
+ *	// --- exit point pseudostates of SB submachine ---
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT1, 
+ *							0,		// index of exit point connection table
+ *							&SB );
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT2, 
+ *							1, 		// index of exit point connection table
+ *							&SB );
+ *							...
+ *	// --- exit point connection references of S12 submachine state ---
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S12 )
+ *		RKH_EX_CNNPNT( EX1S12, &EXPNT1, ... ), // table index = 0 (EXPNT1)
+ *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
+ *	RKH_END_EX_CNNPNT_TABLE
+ *	\endcode
+ *
  *	\sa
  *	RKHEXPCN_T structure definition for more information.
  *
@@ -529,7 +545,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro is used to terminate a exit point connection point reference 
+ *	This macro is used to terminate a exit point connection reference 
  *	table. This table have the general structure shown below:
  *	\code
  *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
@@ -577,12 +593,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param subm		pointer to submachine state.
  */
 
-#define RKH_EN_CNNPNT( name, enp, subm )				\
+#define RKH_EN_CNNPNT( name, enpnt, subm )				\
 														\
 							RKHROM RKHSENP_T name =		\
 							{							\
 								MKBASE(RKH_ENPOINT,id),	\
-								MKENP(enp,subm)			\
+								MKENP(enpnt,subm)		\
 							}
 
 
@@ -643,10 +659,25 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKHSEXP_T structure definition for more information.
  *
  *	\code
+ *	// --- exit point pseudostates of SB submachine ---
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT1, 
+ *							0,		// index of exit point connection table
+ *							&SB );
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT2, 
+ *							1, 		// index of exit point connection table
+ *							&SB );
+ *							...
+ *	// --- exit point connection references of S12 submachine state ---
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S12 )
+ *		RKH_EX_CNNPNT( EX1S12, &EXPNT1, ... ), // table index = 0 (EXPNT1)
+ *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
+ *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
  *
  * 	\param name		entry point name.
- * 	\param ix		index of exit point table.
+ * 	\param ix		index of exit point connection table. Note that each row 
+ * 					number matches with the index number of the exit point 
+ * 					pseudostate that it represent.
  * 	\param subm		pointer to submachine state machine.
  */
 
@@ -673,6 +704,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\code
  * 	RKH_CREATE_REF_ENPNT( 	show, 
  * 							2, 
+ * 							&S2,
  * 							&handle_error );
  * 	\endcode
  *
@@ -959,7 +991,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_DCLR_ENPNT			extern RKHROM RKHSENP_T
 #define RKH_DCLR_REF_EXPNT		extern RKHROM RKHSEXP_T
 #define RKH_DCLR_REF_ENPNT		extern RKHROM RKHENPCN_T
-
 /*@}*/
 
 
