@@ -952,13 +952,13 @@ structure. See \ref cfg section for more information.
 \n Prev: \ref qref "Quick reference"
 
 <HR>
-\section qref1 Defining a superstate
+\section qref1 Defining a composite state
 
 \n Prev: \ref qref "Quick reference"
 
 A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
-macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
-state machine and its states (superstates and substates) are encapsulated 
+macro and declared with the #RKH_DCLR_COMP_STATE macro. Frequently, each 
+state machine and its states (composite and basic) are encapsulated 
 inside a dedicated source file (.c file), from which the 
 RKH_CREATE_COMP_STATE() macro is used.
 We will develop one example of composite state definition to illustrate the 
@@ -1049,9 +1049,9 @@ structure. See \ref cfg section for more information.
 \n Prev: \ref qref "Quick reference"
 
 A basic state (also called substate) is defined with the 
-RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
-macro. Frequently, each state machine and its states (superstates and 
-substates) are encapsulated inside a dedicated source file (.c file), from 
+RKH_CREATE_BASIC_STATE() macro and declared with the #RKH_DCLR_BASIC_STATE 
+macro. Frequently, each state machine and its states (composite and 
+basic) are encapsulated inside a dedicated source file (.c file), from 
 which the RKH_CREATE_BASIC_STATE() macro is used.
 We will develop one example of basic state definition to illustrate the 
 use of this macro. We will give our basic state the name \c S11. 
@@ -1225,13 +1225,10 @@ This section includes:
 \subsection qrefsb_1 Defining a submachine state
 
 A submachine state is defined with the RKH_CREATE_SUBMACHINE_STATE()
-macro and declared with the RKH_DCLR_SUBM_STATE() macro. Frequently, each 
+macro and declared with the #RKH_DCLR_SUBM_STATE macro. Frequently, each 
 state machine and its states (composites, basic, and submachine states) are 
 encapsulated inside a dedicated source file (.c file), from which the 
 RKH_CREATE_SUBMACHINE_STATE() macro is used.
-On the other hand, in RKH every submachine state is associated with a 
-transition table, which is composed of a well-defined set of transitions. 
-See \ref qref16 for defining a state transition table.
 We will develop one example of submachine state definition to illustrate the 
 usage and its related macros. We will give our submachine state the name 
 \c S12.
@@ -1240,9 +1237,9 @@ usage and its related macros. We will give our submachine state the name
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_SUBMACHINE_STATE( 	S12, 
-(3)									4, 
-(4)									start, 
-(5)									stop, 
+(3)									7, 
+(4)									NULL, 
+(5)									NULL, 
 (6)									&S1, 
 (7)									&SB );
 \endcode
@@ -1253,14 +1250,9 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_SUBMACHINE_STATE() macro is used.
 \li (2)	\c S12 is the state name. Represents a submachine state structure.
-\li (3)	\c 4 is the value of state ID.
-\li (4)	\c start() defines the entry action to be executed unconditionally 
-		upon the entry to the \c S12 state. This argument is optional, 
-		thus it could be declared as NULL. The RKHENT_T defines the function 
-		prototype.
-\li (5)	\c stop() defines the exit action, which is executed upon exit 
-		from the \c S12 state. This argument is optional, thus it could be 
-		declared as NULL. The RKHEXT_T defines the function prototype.
+\li (3)	\c 7 is the value of state ID.
+\li (4)	the entry action is not used.
+\li (5)	the exit action is not used.
 \li (6)	\c S1 is the parent state of \c S12. If a state has no 
 		explicit superstate means that it is implicitly nested in 
 		the "top" state, and the parent state is defined by means of RKH_ROOT
@@ -1269,6 +1261,17 @@ Explanation
 		machine.
 \li (7)	\c SB is the defined submachine state machine, which is referenced by 
 		\c S12 submachine state.
+
+On the other hand, in RKH every submachine state is associated with a 
+transition table, which is composed of a well-defined set of transitions. 
+See \ref qref16 for defining a state transition table.
+
+\code
+RKH_CREATE_TRANS_TABLE( S12 )
+	RKH_TRINT( TERM, 	NULL, 	terminate ),
+	RKH_TRREG( THREE,	NULL, 	NULL, 	&S1 ),
+RKH_END_TRANS_TABLE
+\endcode
 
 \subsection qrefsb_2 Declaring a submachine state
 \code
@@ -1302,29 +1305,30 @@ RKH_CREATE_REF_EXPNT( 	EXPNT2,
 ...
 // --- exit point connection references of S12 submachine state ---
 (1) RKH_CREATE_EX_CNNPNT_TABLE( S12 )
-(2) 	RKH_EX_CNNPNT( EX1S12, &EXPNT1, exit_pnt, &S13 ), // table index = 0 (EXPNT1)
-(3) 	RKH_EX_CNNPNT( EX2S12, &EXPNT2, exit_pnt, &S3 ),  // table index = 1 (EXPNT2)
+(2) 	RKH_EX_CNNPNT( EX1S12, &EXPNT1, act1, &S13 ), // table index = 0 (EXPNT1)
+(3) 	RKH_EX_CNNPNT( EX2S12, &EXPNT2, act2, &S3 ),  // table index = 1 (EXPNT2)
 (4) RKH_END_EX_CNNPNT_TABLE
 \endcode
 
 Explanation
 
 \li (1)	The RKH_CREATE_EX_CNNPNT_TABLE() macro creates the \c S12's 
-exit point connection reference table. Each exit point connection reference 
-table always begins with the macro RKH_CREATE_EX_CNNPNT_TABLE() and ends with 
-the macro RKH_END_EX_CNNPNT_TABLE(). As noted above, sandwiched between these 
-macros are the exit point macros, RKH_EX_CNNPNT().
+		exit point connection reference table. Each exit point connection 
+		reference table always begins with the macro 
+		RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro 
+		#RKH_END_EX_CNNPNT_TABLE. As noted above, sandwiched between these 
+		macros are the exit point macros, RKH_EX_CNNPNT().
 
 \li (2)	The RKH_EX_CNNPNT() macro defines the exit point connection 
-\c EX1S12, where \c EXPNT1 is the referenced exit point pseudostate, 
-\c exit_pnt() is the transition action function to be taken, and \c S13 is 
-the transition target state. The place in the table matches with the 
-\c EXPNT1's index field.
+		\c EX1S12, where \c EXPNT1 is the referenced exit point pseudostate, 
+		\c act1() is the transition action function to be taken, and 
+		\c S13 is the transition target state. The place in the table matches 
+		with the \c EXPNT1's index field.
 
 \li (3)	Idem (2).
 
-\li (4)	The RKH_END_TRANS_TABLE() macro ends exit point connection 
-reference table.
+\li (4)	The #RKH_END_EX_CNNPNT_TABLE macro ends exit point connection 
+		reference table.
 
 \subsection qrefsb_4 Defining the entry connection references
 
@@ -1383,7 +1387,7 @@ usage and its related macros. We will give our submachine the name \c SB.
 (2)	RKH_CREATE_REF_SUBMACHINE( 	SB, 
 (3)								0, 
 (4)								&SB1, 
-(5)								sb_init );
+(5)								NULL );
 \endcode
 
 Explanation
@@ -1398,9 +1402,7 @@ Explanation
 		designates the active substate after the submachine is entered 
 		directly. Here the initial transition of state \c SB designates 
 		the state \c SB1 as the initial active substate. 
-\li (5) \c sb_init() function defines the topmost initial transition in 
-		the \c SB state machine. The function prototype is defined as RKHENT_T. 
-		This argument is (optional), thus it could be declared as NULL. 
+\li (5) the initialization action is not used. 
 
 \subsection qrefsb_7 Declaring a submachine
 
@@ -1419,14 +1421,17 @@ Frequently, each state machine and its states and pseudostates are
 encapsulated inside a dedicated source file (.c file), from which the 
 RKH_CREATE_REF_EXPNT() macro is used.
 We will develop one example of exit point definition to 
-illustrate the use of this macro. We will give our exit point the 
-name \c EXPNT1.
+illustrate the use of this macro. We will give our exit points the 
+name \c EXPNT1 and \c EXPNT2.
 
 \code
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_REF_EXPNT( 	EXPNT1, 
 							0, 
+							&SB );
+	RKH_CREATE_REF_EXPNT( 	EXPNT2, 
+							1, 
 							&SB );
 \endcode
 
@@ -1446,7 +1451,7 @@ Explanation
 //	my.h: state-machine's header file
 
 ...
-RKH_DCLR_REF_EXPNT EXPNT1;
+RKH_DCLR_REF_EXPNT EXPNT1, EXPNT2;
 \endcode
 
 \subsection qrefsb_10 Defining the entry point
@@ -1464,7 +1469,7 @@ name \c ENPNT.
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_REF_ENPNT( 	ENPNT, 
-							activate,
+							act8,
 							&SB1,
 							&SB );
 \endcode
@@ -1499,14 +1504,10 @@ and to enhance the system performance in a substantial manner. The
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state.
+- \b RKH_SMA_EN_HCAL: \n \copydetails RKH_SMA_EN_HCAL	
+- \b RKH_SMA_EN_PSEUDOSTATE: \n \copydetails RKH_SMA_EN_PSEUDOSTATE
+- \b RKH_SMA_EN_SUBMACHINE: \n \copydetails RKH_SMA_EN_SUBMACHINE
+- \b RKH_SMA_EN_STATE_ID: \n \copydetails RKH_SMA_EN_STATE_ID
 
 \n Prev: \ref qref "Quick reference"
 
@@ -1595,7 +1596,7 @@ is_sync( RKHEVT_T *pe )
 
 A conditional pseudostate (also called choice pseudostate) is defined with 
 the RKH_CREATE_COND_STATE() macro and declared with the 
-RKH_DCLR_COND_STATE() macro. Frequently, each state machine and its 
+#RKH_DCLR_COND_STATE macro. Frequently, each state machine and its 
 states and pseudostates are encapsulated inside a dedicated source file 
 (.c file), from which the RKH_CREATE_COND_STATE() macro is used.
 We will develop one example of choice pseudostate definition to 
@@ -1718,7 +1719,7 @@ functions.
 
 A shallow history pseudostate is defined with the 
 RKH_CREATE_SHALLOW_HISTORY_STATE() macro and declared with the 
-RKH_DCLR_SHIST_STATE() macro. Frequently, each state machine and its 
+#RKH_DCLR_SHIST_STATE macro. Frequently, each state machine and its 
 states and pseudostates are encapsulated inside a dedicated source file 
 (.c file), from which the RKH_CREATE_SHALLOW_HISTORY_STATE() macro is used.
 We will develop one example of shallow history pseudostate definition to 
@@ -1791,7 +1792,7 @@ structure. See \ref cfg section for more information.
 
 A deep history pseudostate is defined with the 
 RKH_CREATE_DEEP_HISTORY_STATE() macro and declared with the 
-RKH_DCLR_DHIST_STATE() macro. Frequently, each state machine and its 
+#RKH_DCLR_DHIST_STATE macro. Frequently, each state machine and its 
 states and pseudostates are encapsulated inside a dedicated source file 
 (.c file), from which the RKH_CREATE_DEEP_HISTORY_STATE() macro is used.
 We will develop one example of deep history pseudostate definition to 
@@ -1865,7 +1866,7 @@ structure. See \ref cfg section for more information.
 
 A conditional pseudostate (also called branch pseudostate) is defined with 
 the RKH_CREATE_JUNCTION_STATE() macro and declared with the 
-RKH_DCLR_JUNC_STATE() macro. Frequently, each state machine and its 
+#RKH_DCLR_JUNC_STATE macro. Frequently, each state machine and its 
 states and pseudostates are encapsulated inside a dedicated source file 
 (.c file), from which the RKH_CREATE_JUNCTION_STATE() macro is used.
 We will develop one example of junction pseudostate definition to 
@@ -3032,6 +3033,14 @@ Next: \ref dbg "Tracing tool"
 using the RKH framework. To do that is proposed a simple example, which is 
 shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
 rules and concepts for making the most out of RKH features.
+\note
+Although the diagram shown in the \ref fig1 "Figure 1" does not have a 
+submachine state, was considered appropriate to include in this section a 
+detailed explanation of how to deal with this very powerful concept using 
+the RKH framework.
+The purpose of defining submachine states is to decompose and localize 
+repetitive parts because the same state machine can be referenced from 
+more than one submachine state.
 
 \n This section includes:
 
@@ -3041,6 +3050,7 @@ rules and concepts for making the most out of RKH features.
 - \subpage identify
 - \subpage representing
 - \subpage running
+- \subpage submachine
 
 \anchor fig1
 \image html my.png "Figure 1 - \"my\" state diagram"

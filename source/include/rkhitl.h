@@ -77,7 +77,7 @@
  *	Date: xx/xx/2012
  */
 
-#define RKH_VERSION_CODE			0x2000U
+#define RKH_VERSION_CODE			0x2100U
 
 
 /**
@@ -1651,6 +1651,35 @@ typedef struct rkhscmp_t
  * 	The purpose od defining submachine states is to decompose and localize 
  * 	repetitive parts because the same state machine can be referenced from 
  * 	more than one submachine state.
+ *
+ *	The diagram in following figure shows a fragment from a state machine 
+ *	diagram in which a submachine state (the \c SB) is referenced.
+ *	
+ *	\anchor fig_sbm1
+ *	\image html sbm1.png "Submachine state"
+ *	
+ *	In the above example, the transition triggered by event \c TWO will 
+ *	terminate on entry point \c ENS12 of the \c SB state machine. 
+ *	The \c ONE transition implies taking of the default transition of the 
+ *	\c SB and executes the \c act5() action. The transition emanating from 
+ *	the \c EX1S12 exit point of the submachine will execute the \c act1() 
+ *	behavior in addition to what is executed within the \c SB state machine. 
+ *	Idem transition emanating from the \c EX2S12.
+ *	This transition must have been triggered within the \c SB state machine. 
+ *	Finally, the transition emanating from the edge of the submachine state 
+ *	is triggered by event \c THREE.
+ *	
+ *	The following figure is an example of a state machine \c SB defined with 
+ *	two exit points, \c EXPNT1 and \c EXPNT2, and one entry point \c ENPNT.
+ *	
+ *	\anchor fig_sbm2
+ *	\image html sbm2.png "State machine with two exit points and one entry point"
+ *	
+ *	In the following figure the state machine shown above is referenced twice in 
+ *	a submachine state \c S12 and \c S2.
+ *	
+ *	\anchor fig_sbm3
+ *	\image html sbm3.png "Submachine state with usage of exit and entry points"
  */
 
 typedef struct rkhssbm_t

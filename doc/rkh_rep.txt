@@ -1074,7 +1074,7 @@ Next: \ref representing "Representing the state machine"\n\n
 
 \n
 Prev: \ref representing "Representing the state machine"\n
-Next: \ref Usage "Representing a state machine: step by step"\n\n
+Next: \ref submachine "Using submachine states"\n\n
 
 \copydetails rkhs.h
 
@@ -1117,5 +1117,32 @@ main( int argc, char *argv[] )
 
 \n
 Prev: \ref representing "Representing the state machine"\n
+Next: \ref submachine "Using submachine states"\n\n
+*/
+
+
+/**
+\page submachine Using submachine states
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref running "Running"\n
+Next: \ref Usage "Representing a state machine: step by step"\n\n
+
+\copydetails RKHSSBM_T
+
+The following figure highlights the submachine states \c S12 and \c S2. 
+Also, shows its implementation using the RKH framework.
+
+\anchor sbm4
+\image html sbm4.jpg "Submachine states"
+
+The following figure highlights the submachine state machine \c SB. 
+Also, shows its implementation using the RKH framework.
+
+\anchor sbm5
+\image html sbm5.jpg "Referenced state machine"
+
+Prev: \ref running "Running"\n
 Next: \ref Usage "Representing a state machine: step by step"\n\n
 */
