@@ -30,6 +30,7 @@ operating system, or compiler.
 - Support multiple state machines.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
+- Support submachine state.
 - Support local transitions.
 - Support the entry and exit actions.
 - Implement the traditional transition sequence.
@@ -94,6 +95,11 @@ e-mail: francuccilea@gmail.com
 RKH changelog file.
 
 This file resumes the changes across project version releases.
+
+Changes between V2.0 and V2.1 released 05/09/2012
+
++	Added a submachine state and demo application "subm" to illustrate 
+	the submachine usage.
 
 Changes between V1.1.6 and V2.0 released 04/13/2012
 

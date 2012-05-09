@@ -68,6 +68,7 @@ behavior of a system in a substantial manner.
 - Support multiple state machines.
 - Support conditional, junction, and history pseudostates.
 - Support compound transitions with guards.
+- Support \link RKH_CREATE_SUBMACHINE_STATE submachine state\endlink.
 - Support local transitions.
 - Support the entry and exit actions.
 - Implement the traditional transition sequence.

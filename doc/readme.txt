@@ -1177,27 +1177,35 @@ structure. See \ref cfg section for more information.
 \n Prev: \ref qref "Quick reference"
 
 A submachine state is a kind of a state that actually refers to 
-another defined state machine.
-The diagram in Figure 15.36 shows a fragment from a state machine diagram 
-in which a submachine state (the \c SB) is referenced.
+another defined state machine. The diagram in following figure shows a 
+fragment from a state machine diagram in which a submachine state 
+(the \c SB) is referenced.
 
-<FIGURE>
+\anchor fig_sbm1
+\image html sbm1.png "Submachine state"
 
-Figure 15.37 is an example of a state machine defined with two exit points. 
 In the above example, the transition triggered by event \c TWO will 
 terminate on entry point \c ENS12 of the \c SB state machine. 
 The \c ONE transition implies taking of the default transition of the 
-\c SB. The transition emanating from the \c EX1S12 exit point 
-of the submachine will execute the \c act1 behavior in addition to what 
-is executed within the \c SB state machine. This transition must 
-have been triggered within the \c SB state machine. Finally, the 
-transition emanating from the edge of the submachine state is triggered by 
-event \c THREE.
+\c SB and executes the \c act5() action. The transition emanating from 
+the \c EX1S12 exit point of the submachine will execute the \c act1() 
+behavior in addition to what is executed within the \c SB state machine. 
+Idem transition emanating from the \c EX2S12.
+This transition must have been triggered within the \c SB state machine. 
+Finally, the transition emanating from the edge of the submachine state 
+is triggered by event \c THREE.
 
-In Figure 15.39 the state machine shown in Figure 15.37 is referenced in 
-a submachine state.
+The following figure is an example of a state machine \c SB defined with 
+two exit points, \c EXPNT1 and \c EXPNT2, and one entry point \c ENPNT.
 
-<FIGURE>
+\anchor fig_sbm2
+\image html sbm2.png "State machine with two exit points and one entry point"
+
+In the following figure the state machine shown above is referenced twice in 
+a submachine state \c S12 and \c S2.
+
+\anchor fig_sbm3
+\image html sbm3.png "Submachine state with usage of exit and entry points"
 
 This section includes:
 
