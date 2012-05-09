@@ -308,7 +308,7 @@
  *	the RKH allows submachine state (and exit/entry points) usage.
  */
 
-#define RKH_SMA_EN_SUBMACHINE			1
+#define RKH_SMA_EN_SUBMACHINE			0
 
 
 /* --- Configuration options related to SMA action featues ---------------- */
