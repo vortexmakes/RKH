@@ -175,7 +175,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a composite state.
  *
  *	\sa
- *	RKHSREG_T structure definition for more information.
+ *	RKHSCMP_T structure definition for more information.
  *
  * 	\param name		state name. Represents a composite state structure.
  * 	\param id		the value of state ID. This argument is optional, thus it 
@@ -199,11 +199,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSREG_T name =					\
+								RKHROM RKHSCMP_T name =					\
 								{										\
-									mkbase(RKH_COMPOSITE,id),			\
-									mkcomp(en,ex,parent,name,			\
-												defchild,history)		\
+									MKBASE(RKH_COMPOSITE,id),			\
+									MKST(en,ex,parent),					\
+									MKCOMP(name,defchild,history)		\
 								}
 
 
@@ -212,7 +212,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a basic state.
  *
  *	\sa
- *	RKHSREG_T structure definition for more information.
+ *	RKHSBSC_T structure definition for more information.
  *
  * 	\param name		state name. Represents a basic state structure.
  * 	\param id		the value of state ID. This argument is optional, thus it 
@@ -236,7 +236,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					Moreover, implementing the single inheritance in C 
  *					is very simply by literally embedding the base type, 
  *					RKHPPRO_T in this case, as the first member of the 
- *					derived structure. See \a prepro member of RKHSREG_T 
+ *					derived structure. See \a prepro member of RKHSBSC_T 
  *					structure for more information. Example:
  *  				\code
  *					static RKHE_T
@@ -265,10 +265,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSREG_T name =					\
+								RKHROM RKHSBSC_T name =					\
 								{										\
-									mkbase(RKH_BASIC,id),				\
-									mkbasic(en,ex,parent,name,prepro)	\
+									MKBASE(RKH_BASIC,id),				\
+									MKST(en,ex,parent),					\
+									MKBASIC(name,prepro)				\
 								}
 
 /**
@@ -306,7 +307,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSCOND_T name =				\
 								{										\
-									mkbase(RKH_CONDITIONAL,id),			\
+									MKBASE(RKH_CONDITIONAL,id),			\
 									name##_trtbl 						\
 								}
 
@@ -335,7 +336,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSJUNC_T name =				\
 								{										\
-									mkbase(RKH_JUNCTION,id),			\
+									MKBASE(RKH_JUNCTION,id),			\
 									action,	target 						\
 								}
 
@@ -361,13 +362,13 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )					\
 																		\
-								static RKHROM RKHSREG_T *ram##name;		\
+						static RKHROM RKHST_T *ram##name;				\
 																		\
-								RKHROM RKHSHIST_T name =				\
-								{										\
-									mkbase(RKH_DHISTORY,id),			\
-									parent,&ram##name 					\
-								}
+						RKHROM RKHSHIST_T name =						\
+						{												\
+							MKBASE(RKH_DHISTORY,id),					\
+							(RKHROM struct rkhst_t *)parent,&ram##name 	\
+						}
 
 
 /**
@@ -391,12 +392,340 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )				\
 																		\
-								static RKHROM RKHSREG_T *ram##name;		\
+						static RKHROM RKHST_T *ram##name;				\
 																		\
-								RKHROM RKHSHIST_T name =				\
+						RKHROM RKHSHIST_T name =						\
+						{												\
+							MKBASE(RKH_SHISTORY,id),					\
+							(RKHROM struct rkhst_t *)parent,&ram##name 	\
+						}
+
+
+/**
+ * 	\brief
+ *	This macro creates a submachine state.
+ *
+ * 	A submachine state is a kind of a state that actually refers to 
+ * 	another defined state machine.
+ * 	A submachine state is logically equivalent to the insertion of the 
+ * 	referenced state machine as a composite state in the place of 
+ * 	the submachine state. Consequently, every entrance to a submachine 
+ * 	state is equivalent to the corresponding entrance to the inserted 
+ * 	(referenced) composite state. In particular, it can be entered 
+ * 	thruough its initial pseudostate (as any other composite state), or 
+ * 	through one of its entry points. 
+ *
+ * 	Similary, every exit from a submachine state is equivalent to the 
+ * 	corresponding exit from the inserted composite state. It can be exited 
+ * 	through one of its exit points. When it is exited through its exit point 
+ * 	the effect of the transition targeting the exit point is executed first, 
+ * 	followed by the exit behavior of the composite state. 
+ *
+ * 	The purpose od defining submachine states is to decompose and localize 
+ * 	repetitive parts because the same state machine can be referenced from 
+ * 	more than one submachine state.
+ *
+ *	\code
+ *	RKH_CREATE_SUBMACHINE_STATE( 	adquire,		// state name
+ *									1, 				// ID
+ *									start_adquire, 	// entry action
+ *									stop_adquire, 	// exit action
+ *									&processing, 	// parent state
+ *									&herror );		// referenced submachine
+ *	\endcode
+ *
+ *	\sa
+ *	RKHSSBM_T structure definition for more information.
+ *
+ * 	\param name		submachine state name. Represents a submachine state 
+ * 					structure.
+ * 	\param id		the value of submachine state ID. This argument is 
+ * 					optional, thus it could be eliminated in compile-time 
+ * 					with RKH_SMA_EN_STATE_ID = 0.	
+ * 	\param en		pointer to state entry action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
+ * 	\param ex		pointer to state exit action. This argument is 
+ *					optional, thus it could be declared as NULL.
+ *					The RKH implementation preserves the transition sequence 
+ *					imposed by Harel's Statechart and UML. 
+ * 	\param parent	pointer to parent state.
+ * 	\param sbm		pointer to referenced submachine state machine.
+ */
+
+#define RKH_CREATE_SUBMACHINE_STATE( name,id,en,ex,parent,sbm )			\
+																		\
+							extern RKHROM RKHEXPCN_T name##_exptbl[];	\
+							extern RKHROM RKHTR_T name##_trtbl[];		\
+																		\
+							RKHROM RKHSSBM_T name =						\
+							{											\
+								MKBASE(RKH_SUBMACHINE,id),				\
+								MKST(en,ex,parent),						\
+								MKSBM(name,sbm)							\
+							}
+
+
+/**
+ * 	\brief
+ *	This macro creates a exit point connection point reference table. 
+ *	This table have the general structure shown below:
+ *	\code
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
+ *		RKH_EX_CNNPNT( EX1S2, &EXPNT1, NULL, &S1 ),
+ *		RKH_EX_CNNPNT( EX2S2, &EXPNT2, NULL, &S3 ),
+ *	RKH_END_EX_CNNPNT_TABLE
+ *	\endcode
+ *
+ * 	Each exit point connection reference table always begins with the macro 
+ * 	RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro 
+ * 	RKH_END_EX_CNNPNT_TABLE().
+ *	As noted above, sandwiched between these macros are the exit point 
+ *	macros, RKH_EX_CNNPNT().
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ *
+ * 	\param name		submachine state name.
+ */
+
+#define RKH_CREATE_EX_CNNPNT_TABLE( name )								\
+								RKHROM RKHEXPCN_T name##_exptbl[]={
+
+
+/**
+ * 	\brief
+ *	This macro creates an exit point connection point reference.
+ *	
+ *	Connection point references are sources/targets of transitions implying 
+ *	exits out of/entries into the submachine state machine referenced by a 
+ *	submachine state.
+ * 
+ *	An exit point connection point reference as the source of a transition 
+ *	implies that the source of the transition is the exit point pseudostate 
+ *	as defined in the submachine of the submachine state that has the exit 
+ *	point connection point defined.
+ *
+ *	A connection point reference to an exit point has the same notation as 
+ *	an exit point pseudostate.
+ *
+ * 	\code
+ *	// --- exit point pseudostates of SB submachine ---
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT1, 
+ *							0,		// index of exit point connection table
+ *							&SB );
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT2, 
+ *							1, 		// index of exit point connection table
+ *							&SB );
+ *							...
+ *	// --- exit point connection references of S12 submachine state ---
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S12 )
+ *		RKH_EX_CNNPNT( EX1S12, &EXPNT1, ... ), // table index = 0 (EXPNT1)
+ *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
+ *	RKH_END_EX_CNNPNT_TABLE
+ *	\endcode
+ *
+ *	\sa
+ *	RKHEXPCN_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		exit point connection point reference name.
+ * 	\param expnt	referenced exit point.
+ * 	\param act		pointer to transition action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ts		pointer to target state.
+ */
+
+#define RKH_EX_CNNPNT( name, expnt, act, ts )		\
+								{act, (RKHROM struct rkhst_t *)ts}
+
+
+/**
+ * 	\brief
+ *	This macro is used to terminate a exit point connection reference 
+ *	table. This table have the general structure shown below:
+ *	\code
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
+ *		RKH_EX_CNNPNT( EX1S2, &EXPNT1, NULL, &S1 ),
+ *		RKH_EX_CNNPNT( EX2S2, &EXPNT2, NULL, &S3 ),
+ *	RKH_END_EX_CNNPNT_TABLE
+ *	\endcode
+ *
+ * 	Each exit point table always begins with the macro 
+ * 	RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro 
+ * 	RKH_END_EX_CNNPNT_TABLE().
+ *	As noted above, sandwiched between these macros are the exit point 
+ *	macros, RKH_EX_CNNPNT().
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ */
+
+#define RKH_END_EX_CNNPNT_TABLE		};
+
+
+/**
+ * 	\brief
+ *	This macro creates an entry point connection point reference.
+ *	
+ *	Connection point references are sources/targets of transitions implying 
+ *	exits out of/entries into the submachine state machine referenced by a 
+ *	submachine state.
+ * 
+ *	An entry point connection point reference as the target of a transition 
+ *	implies that the target of the transition is the entry point pseudostate 
+ *	as defined in the submachine of the submachine state.
+ *
+ *	A connection point reference to an entry point has the same notation as 
+ *	an entry point pseudostate.
+ *
+ *	\sa
+ *	RKHSENP_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		entry point connection point reference name.
+ * 	\param enpnt	referenced entry point.
+ * 	\param subm		pointer to submachine state.
+ */
+
+#define RKH_EN_CNNPNT( name, enpnt, subm )				\
+														\
+							RKHROM RKHSENP_T name =		\
+							{							\
+								MKBASE(RKH_ENPOINT,id),	\
+								MKENP(enpnt,subm)		\
+							}
+
+
+/**
+ * 	\brief
+ *	This macro creates a submachine state machine, which is to be 
+ *	inserted in place of the (submachine) state.
+ *
+ * 	\code
+ * 	RKH_CREATE_REF_SUBMACHINE( 	adquire, 
+ * 								4, 
+ * 								&wait, 
+ * 								init_adquire );
+ * 	\endcode
+ *
+ *	\sa
+ *	RKHRSM_T structure definition for more information.
+ *
+ * 	\param name		submachine name. Represents a submachine structure.
+ * 	\param id		the value of submachine ID. This argument is optional, 
+ * 					thus it could be eliminated in compile-time with 
+ * 					RKH_SMA_EN_STATE_ID = 0.	
+ * 	\param defchild	pointer to default child state.
+ * 	\param iact		pointer to initialization action (optional). The 
+ * 					function prototype is defined as RKHINIT_T. This 
+ * 					argument is optional, thus it could be declared as 
+ * 					NULL.
+ */
+
+#define RKH_CREATE_REF_SUBMACHINE( name,id,defchild,iact )				\
+																		\
+								static RKHROM RKHST_T *rdyp_##name;		\
+																		\
+								RKHROM RKHRSM_T name =					\
 								{										\
-									mkbase(RKH_SHISTORY,id),			\
-									parent,&ram##name 					\
+									MKBASE(RKH_REF_SUBMACHINE,id),		\
+									MKMCH(defchild,iact,name) 			\
+								}
+
+
+/**
+ * 	\brief
+ *	This macro creates an exit point.
+ *
+ * 	An exit pseudostate is used to join an internal transition terminating on 
+ * 	that exit point to an external transition emanating from that exit point. 
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
+ *
+ * 	\code
+ * 	RKH_CREATE_REF_EXPNT( 	handled, 
+ * 							0, 
+ * 							&handle_error );
+ * 	\endcode
+ *
+ *	\sa
+ *	RKHSEXP_T structure definition for more information.
+ *
+ *	\code
+ *	// --- exit point pseudostates of SB submachine ---
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT1, 
+ *							0,		// index of exit point connection table
+ *							&SB );
+ *	RKH_CREATE_REF_EXPNT( 	EXPNT2, 
+ *							1, 		// index of exit point connection table
+ *							&SB );
+ *							...
+ *	// --- exit point connection references of S12 submachine state ---
+ *	RKH_CREATE_EX_CNNPNT_TABLE( S12 )
+ *		RKH_EX_CNNPNT( EX1S12, &EXPNT1, ... ), // table index = 0 (EXPNT1)
+ *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
+ *	RKH_END_EX_CNNPNT_TABLE
+ *	\endcode
+ *
+ * 	\param name		entry point name.
+ * 	\param ix		index of exit point connection table. Note that each row 
+ * 					number matches with the index number of the exit point 
+ * 					pseudostate that it represent.
+ * 	\param subm		pointer to submachine state machine.
+ */
+
+#define RKH_CREATE_REF_EXPNT( name, ix, subm )			\
+														\
+							RKHROM RKHSEXP_T name =		\
+							{							\
+								MKBASE(RKH_EXPOINT,0),	\
+								ix, subm 				\
+							}
+
+
+/**
+ * 	\brief
+ *	This macro creates a entry point.
+ *
+ * 	An entry pseudostate is used to join an external transition terminating 
+ * 	on that entry point to an internal transition emanating from that entry 
+ * 	point.
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
+ *
+ * 	\code
+ * 	RKH_CREATE_REF_ENPNT( 	show, 
+ * 							2, 
+ * 							&S2,
+ * 							&handle_error );
+ * 	\endcode
+ *
+ *	\sa
+ *	RKHENPCN_T structure definition for more information.
+ *
+ *	\code
+ *	\endcode
+ *
+ * 	\param name		entry point name.
+ * 	\param act		pointer to transition action function. This argument is 
+ *					optional, thus it could be declared as NULL.
+ * 	\param ts		pointer to target state.
+ * 	\param subm		pointer to submachine state machine.
+ */
+
+#define RKH_CREATE_REF_ENPNT( name, act, ts, subm  )					\
+																		\
+								RKHROM RKHENPCN_T name = 				\
+								{										\
+									act, (RKHROM struct rkhst_t *)ts	\
 								}
 
 
@@ -417,7 +746,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	As noted above, sandwiched between these macros are the transitions macros 
  *	that actually represent behavior of state.
  *
- *	\sa
+ *	\note
  *	This macro is not terminated with the semicolon.
  *
  * 	\param name		state name.
@@ -473,6 +802,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *				is_sync, 			// guard function
  *				store_data ) 		// action function
  *	\endcode
+ *
  *	\sa
  *	RKHTR_T structure definition for more information.
  *
@@ -482,14 +812,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_TRINT( e, g, a )	{ e, g, a, NULL }
-
-
-/*
- * 	This macro is internal to RKH and the user application should 
- * 	not call it.
- */
-
-#define RKH_ETRTBL				{ RKH_ANY, NULL, NULL, NULL }
 
 
 /**
@@ -509,11 +831,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	As noted above, sandwiched between these macros are the transitions macros 
  *	that actually represent behavior of state.
  *
- *	\sa
+ *	\note
  *	This macro is not terminated with the semicolon.
  */
 
-#define RKH_END_TRANS_TABLE		RKH_ETRTBL};
+#define RKH_END_TRANS_TABLE		{ RKH_ANY, NULL, NULL, NULL }};
 
 
 /**
@@ -658,13 +980,17 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	Generally, this macro is used in the state-machine's header file.
  */
 
-#define RKH_DCLR_COMP_STATE		extern RKHROM RKHSREG_T
-#define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSREG_T
+#define RKH_DCLR_COMP_STATE		extern RKHROM RKHSCMP_T
+#define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSBSC_T
 #define RKH_DCLR_COND_STATE		extern RKHROM RKHSCOND_T
 #define RKH_DCLR_JUNC_STATE		extern RKHROM RKHSJUNC_T
 #define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
 #define RKH_DCLR_SHIST_STATE	extern RKHROM RKHSHIST_T
-
+#define RKH_DCLR_SUBM_STATE		extern RKHROM RKHSSBM_T
+#define RKH_DCLR_REF_SUBM		extern RKHROM RKHRSM_T
+#define RKH_DCLR_ENPNT			extern RKHROM RKHSENP_T
+#define RKH_DCLR_REF_EXPNT		extern RKHROM RKHSEXP_T
+#define RKH_DCLR_REF_ENPNT		extern RKHROM RKHENPCN_T
 /*@}*/
 
 
@@ -684,7 +1010,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	another example \endlink.
  *
  * 	\param sma_t		data type of SMA.
- * 	\param sm			name of previously created SMA.
+ 	\param sm			name of previously created SMA.
  * 	\param gob			name of global object.
  *
  * 	\note

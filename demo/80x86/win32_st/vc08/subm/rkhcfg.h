@@ -102,16 +102,16 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_DISPATCH				1
+#define RKH_HK_EN_DISPATCH				0
 
 /**
  *	If the #RKH_HK_EN_SIGNAL is set to 1, RKH will invoke the signal 
- *	hook function rkh_hk_signal() when the producer of an event directly posts the event 
- *	to the event queue of the consumer SMA.
+ *	hook function rkh_hk_signal() when the producer of an event directly 
+ *	posts the event to the event queue of the consumer SMA.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_SIGNAL				1
+#define RKH_HK_EN_SIGNAL				0
 
 /**
  *	If the #RKH_HK_EN_TIMEOUT is set to 1, RKH will invoke the timeout 
@@ -121,7 +121,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_TIMEOUT				1
+#define RKH_HK_EN_TIMEOUT				0
 
 /**
  *	If the #RKH_HK_EN_START is set to 1, RKH will invoke the start 
@@ -148,7 +148,7 @@
  *	Also, the #RKH_SMA_EN_IEVENT changes the initial action prototype.
  */
 
-#define RKH_SMA_EN_IEVENT				1
+#define RKH_SMA_EN_IEVENT				0
 
 /**
  *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
@@ -173,7 +173,7 @@
  * 	and assume the native priority scheme.
  */
 
-#define RKH_EN_NATIVE_SCHEDULER			1
+#define RKH_EN_NATIVE_SCHEDULER			0
 
 /**
  * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
@@ -200,7 +200,7 @@
  *	application is based on a multi-thread architecture.
  */
 
-#define RKH_EN_REENTRANT				1
+#define RKH_EN_REENTRANT				0
 
 
 /* --- Configuration options related to state machine applications -------- */
@@ -211,7 +211,7 @@
  *	state machine application. 
  */
 
-#define RKH_SMA_EN_ID					1
+#define RKH_SMA_EN_ID					0
 
 
 /**
@@ -219,7 +219,7 @@
  *	rkh_clear_info() and rkh_get_info() functions.
  */
 
-#define RKH_SMA_EN_GET_INFO				1
+#define RKH_SMA_EN_GET_INFO				0
 
 /**
  *	If the #RKH_SMA_EN_STATE_ID is set to 1 then RKH allows to add a numerical 
@@ -227,7 +227,7 @@
  *	identify a state and/or pseudostate. 
  */
 
-#define RKH_SMA_EN_STATE_ID				1
+#define RKH_SMA_EN_STATE_ID				0
 
 /**
  *	If the #RKH_SMA_EN_PPRO is set to 1 then RKH allows to reference a event 
@@ -239,7 +239,7 @@
  *	structure for more information.
  */
 
-#define RKH_SMA_EN_PPRO					1
+#define RKH_SMA_EN_PPRO					0
 
 /**
  *	If the #RKH_SMA_EN_HCAL is set to 1, the RKH allows state nesting. 
@@ -419,42 +419,42 @@
  *	related to the native fixed-size memory blocks.
  */
 
-#define RKH_TRC_EN_MP					1
+#define RKH_TRC_EN_MP					0
 
 /**
  *	If the #RKH_TRC_EN_RQ is set to 1 then RKH will include all trace records 
  *	related to the native queues.
  */
 
-#define RKH_TRC_EN_RQ					1
+#define RKH_TRC_EN_RQ					0
 
 /**
  *	If the #RKH_TRC_EN_SMA is set to 1 then RKH will include all trace records 
  *	related to the state machine applications.
  */
 
-#define RKH_TRC_EN_SMA					1
+#define RKH_TRC_EN_SMA					0
 
 /**
  *	If the #RKH_TRC_EN_TIM is set to 1 then RKH will include all trace records 
  *	related to the native software timer.
  */
 
-#define RKH_TRC_EN_TIM					1
+#define RKH_TRC_EN_TIM					0
 
 /**
  *	If the #RKH_TRC_EN_SM is set to 1 then RKH will include all trace records 
  *	related to the state machine (hierarchical and "flat").
  */
 
-#define RKH_TRC_EN_SM					1
+#define RKH_TRC_EN_SM					0
 
 /**
  *	If the #RKH_TRC_EN_RKH is set to 1 then RKH will include all trace records 
  *	related to the nativenative  event framework.
  */
 
-#define RKH_TRC_EN_RKH					1
+#define RKH_TRC_EN_RKH					0
 
 /**
  *	If the #RKH_TRC_EN_SM_INIT and #RKH_TRC_EN_SM are set to 1 then RKH will 
@@ -465,14 +465,14 @@
 
 /**
  *	If the #RKH_TRC_EN_SM_DCH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "dispatch an event" trace record.
+ *	include the "start a state machine" trace record.
  */
 
 #define RKH_TRC_EN_SM_DCH				1
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "clear the history pseudostate" trace record.
+ *	include the "dispatch an event to state machine" trace record.
  */
 
 #define RKH_TRC_EN_SM_CLRH				1
@@ -507,14 +507,14 @@
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "number of entry and exit states in the transition" trace record.
+ *	include the "number of entry and exit states in transition" trace record.
  */
 
 #define RKH_TRC_EN_SM_NENEX				1
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
- *	include the "number of executed actions in the transition" trace record.
+ *	include the "number of executed actions in transition" trace record.
  */
 
 #define RKH_TRC_EN_SM_NTRNACT			1
@@ -571,7 +571,7 @@
 
 /**
  * 	Specify the size of void pointer. The valid values [in bits] are 
- * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+ * 	16 or 32. Default is 16. See RKH_TRC_SYM() macro.
  */
 
 #define RKH_TRC_SIZEOF_POINTER			32
@@ -609,7 +609,7 @@
  *	See rkh_rq_get_info() and rkh_rq_clear_info() functions.
  */
 
-#define RKH_RQ_EN_GET_INFO				1
+#define RKH_RQ_EN_GET_INFO				0
 
 /**
  *	If the #RKH_RQ_EN_READ is set to 1 then RKH will include the rkh_rq_read() 
@@ -718,7 +718,7 @@
  *	a particular memory pool. See rkh_mp_get_info() function.
  */
 
-#define RKH_MP_EN_GET_INFO				1
+#define RKH_MP_EN_GET_INFO				0
 
 
 /* --- Configuration options related to software timer facility ----------- */
@@ -760,7 +760,7 @@
  *	a particular software timer. See rkh_tim_get_info() function.
  */
 
-#define RKH_TIM_EN_GET_INFO				1
+#define RKH_TIM_EN_GET_INFO				0
 
 
 #endif

@@ -235,7 +235,7 @@
  *	inheritance in C it could be used as state's abstract data. 
  *	Moreover, implementing the single inheritance in C is very simply by 
  *	literally embedding the base type, #RKHPPRO_T in this case, as the first 
- *	member of the derived structure. See \a prepro member of #RKHSREG_T 
+ *	member of the derived structure. See \a prepro member of #RKHST_T 
  *	structure for more information.
  */
 
@@ -302,6 +302,13 @@
  */
 
 #define RKH_SMA_EN_CONDITIONAL			1
+
+/**
+ *	If the #RKH_SMA_EN_SUBMACHINE and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
+ *	the RKH allows submachine state (and exit/entry points) usage.
+ */
+
+#define RKH_SMA_EN_SUBMACHINE			0
 
 
 /* --- Configuration options related to SMA action featues ---------------- */

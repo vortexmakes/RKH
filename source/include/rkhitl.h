@@ -77,7 +77,7 @@
  *	Date: xx/xx/2012
  */
 
-#define RKH_VERSION_CODE			0x2000U
+#define RKH_VERSION_CODE			0x2100U
 
 
 /**
@@ -123,6 +123,28 @@
 
 
 #define FOREVER						for(;;)
+
+
+	                                                  /* macros for casting */
+#define CB( p )						((RKHBASE_T*)(p))
+#define CST( p )					((RKHST_T*)(p))
+#define CCMP( p )					((RKHSCMP_T*)(p))
+#define CBSC( p )					((RKHSBSC_T*)(p))
+#define CCD( p )					((RKHSCOND_T*)(p))
+#define CJ( p )						((RKHSJUNC_T*)(p))
+#define CH( p )						((RKHSHIST_T*)(p))
+#define CSBM( p )					((RKHSSBM_T*)(p))
+#define CRSM( p )					((RKHRSM_T*)(p))
+#define CM( p )						((RKHROM RKHSMA_T*)(p))
+#define CT( p )						((RKHROM RKHTR_T*)(p))
+#define CPT( p )					((RKHROM struct rkhscmp_t*)(p))
+#define CPP( p )					((RKHPPRO_T)(p))
+#define CG( p )						((RKHGUARD_T)(p))
+#define CA( p )						((RKHACT_T)(p))
+#define CENP( p )					((RKHSENP_T*)(p))
+#define CEXP( p )					((RKHSEXP_T*)(p))
+#define CENPCN( p )					((RKHENPCN_T*)(p))
+#define CEXPCN( p )					((RKHEXPCN_T*)(p))
 
 
 /* 	
@@ -337,6 +359,10 @@
 	#error "rkhcfg.h, Missing RKH_SMA_EN_CONDITIONAL: Include conditional. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
+#ifndef RKH_SMA_EN_SUBMACHINE	
+	#error "rkhcfg.h, Missing RKH_SMA_EN_SUBMACHINE: Include submachine state. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
+#endif
+
 #ifndef RKH_SMA_EN_INIT_ARG_SMA
 	#error "rkhcfg.h, Missing RKH_SMA_EN_INIT_ARG_SMA: Enable (1) or Disable (0) state machine arg from initialization action."
 #endif
@@ -421,58 +447,71 @@
 
 #define RKH_BASIC						RKH_TYPE( RKH_REGULAR, 	0	 )
 #define RKH_COMPOSITE					RKH_TYPE( RKH_REGULAR, 	0x01 )	
+#define RKH_SUBMACHINE					RKH_TYPE( RKH_REGULAR, 	0x02 )	
+#define RKH_REF_SUBMACHINE				RKH_TYPE( RKH_REGULAR, 	0x04 )	
+
 #define RKH_CONDITIONAL					RKH_TYPE( RKH_PSEUDO, 	0x02 )	
 #define RKH_JUNCTION					RKH_TYPE( RKH_PSEUDO, 	0x04 )	
 #define RKH_SHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x08 )	
 #define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
+#define RKH_ENPOINT						RKH_TYPE( RKH_PSEUDO, 	0x20 )	
+#define RKH_EXPOINT						RKH_TYPE( RKH_PSEUDO, 	0x40 )	
 
 
 #if RKH_SMA_EN_ID == 1
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(id),(is),(ia),(ie)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(id),(is),(ia)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia)}
 	#endif
 #else
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(is),(ia),(ie)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-						{(prio),(ppty),(is),(ia)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia)}
 	#endif
 #endif
 
 
 #define MKSMA( rr, s )					\
-						{ (rr), (s) }
+						{ (rr), (RKHROM struct rkhst_t*)(s) }
 
 
 #if RKH_SMA_EN_STATE_ID == 1
-	#define mkbase(t,id)			{t,id}
+	#define MKBASE(t,id)			t,id
 #else
-	#define mkbase(t,id)			{t}
+	#define MKBASE(t,id)			t
 #endif
 
 
 #if RKH_SMA_EN_HCAL == 1
 	#if RKH_SMA_EN_PPRO == 1
-		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL,pp
-		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h,NULL
+		#define MKBASIC(n,pp)		n##_trtbl,pp
+		#define MKCOMP(n,d,h)		n##_trtbl,NULL,d,h
 	#else
-		#define mkbasic(en,ex,p,n,pp)		en,ex,p,n##_trtbl,NULL,NULL
-		#define mkcomp(en,ex,p,n,d,h)		en,ex,p,n##_trtbl,d,h
+		#define MKBASIC(n,pp)		n##_trtbl
+		#define MKCOMP(n,d,h)		n##_trtbl,d,h
 	#endif
+	#define MKST(en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p
+	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
+	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T**)&rdyp_##n
+	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #else
 	#if RKH_SMA_EN_PPRO == 1
-		#define mkbasic(en,ex,p,n,pp)		n##_trtbl,pp
-		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl,NULL
+		#define MKBASIC(n,pp)		n##_trtbl,pp
+		#define MKCOMP(n,d,h)		n##_trtbl,NULL
 	#else
-		#define mkbasic(en,ex,p,n,pp)		n##_trtbl
-		#define mkcomp(en,ex,p,n,d,h)		n##_trtbl
+		#define MKBASIC(n,pp)		n##_trtbl
+		#define MKCOMP(n,d,h)		n##_trtbl
 	#endif
+	#define MKST(en,ex,p)
+	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
+	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T*)&rdyp_##n
+	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #endif
 
 
@@ -926,7 +965,7 @@ typedef struct romrkh_t
 	 * 	(not pseudo-state).
 	 */
 
-	RKHROM struct rkhsreg_t *istate;
+	RKHROM struct rkhst_t *istate;
 
 	/** 
  	 * 	\brief
@@ -1002,10 +1041,10 @@ typedef struct rkhsma_t
 
 	/** 
  	 * 	\brief
-	 * 	Points to current state.
+	 * 	Points to current state (basic state).
 	 */
 
-	RKHROM struct rkhsreg_t *state;
+	RKHROM struct rkhst_t *state;
 
 	/**
 	 * 	\brief
@@ -1355,13 +1394,62 @@ typedef struct rkhtr_t
 
 
 /**
- *	\brief
- * 	Describes a regular state.
+ * 	\brief
+ * 	Describes the exit point connection. 
  *
- * 	It can either be a composite or basic state.
+ * 	...
  */
 
-typedef struct rkhsreg_t
+typedef struct rkhexpcn_t
+{
+	/** 	
+ 	 * 	\brief
+	 *  Points to transition action.
+	 */
+
+	RKHACT_T action;
+
+	/** 	
+ 	 * 	\brief
+	 *  Points to target state.
+	 */
+
+	RKHROM void *target;
+} RKHEXPCN_T;
+
+
+/**
+ * 	\brief
+ * 	Describes the entry point connection. 
+ *
+ * 	...
+ */
+
+typedef struct rkhenpcn_t
+{
+	/** 	
+ 	 * 	\brief
+	 *  Points to transition action.
+	 */
+
+	RKHACT_T action;
+
+	/** 	
+ 	 * 	\brief
+	 *  Points to target state.
+	 */
+
+	RKHROM void *target;
+} RKHENPCN_T;
+
+
+/**
+ *	\brief
+ * 	Describes the common properties of regular states (basic, composite, 
+ * 	and submachine).
+ */
+
+typedef struct rkhst_t
 {
 	/**	
  	 * 	\brief
@@ -1390,8 +1478,20 @@ typedef struct rkhsreg_t
 	 *	Points to state's parent.
 	 */
 
-	RKHROM struct rkhsreg_t *parent;
+	RKHROM struct rkhst_t *parent;
 #endif
+
+} RKHST_T;
+
+
+/**
+ *	\brief
+ * 	Describes a basic state.
+ */
+
+typedef struct rkhsbsc_t
+{
+	RKHST_T st;
 
 	/**	
  	 * 	\brief
@@ -1399,22 +1499,6 @@ typedef struct rkhsreg_t
 	 */
 
 	RKHROM struct rkhtr_t *trtbl;
-
-#if RKH_SMA_EN_HCAL == 1
-	/**	
- 	 * 	\brief
-	 *	Points to state's default child.
-	 */
-
-	RKHROM void *defchild;
-
-	/**	
- 	 * 	\brief
-	 *	Points to state's history. 
-	 */
-
-	RKHROM struct rkhshist_t *history;
-#endif
 
 	/**	
  	 * 	\brief
@@ -1455,8 +1539,290 @@ typedef struct rkhsreg_t
 	 * \endcode
 	 */
 
+#if RKH_SMA_EN_PPRO == 1
 	RKHPPRO_T prepro;
-} RKHSREG_T;
+#endif
+
+} RKHSBSC_T;
+
+
+/**
+ *	\brief
+ * 	Describes a composite state.
+ */
+
+typedef struct rkhscmp_t
+{
+	RKHST_T st;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
+	RKHROM struct rkhtr_t *trtbl;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to event preprocessor.
+	 *
+	 *	Aditionally, by means of single inheritance in C it could be 
+	 *	used as state's abstract data.
+	 *	Aditionally, implementing the single inheritance in C is very 
+	 *	simply by literally embedding the base type, RKHPPRO_T in 
+	 *	this case, as the first member of the derived structure.
+	 *	
+	 *	This argument is optional, thus it could be declared as NULL.
+	 *
+	 *	Example:
+	 *  
+	 *  \code
+	 *	static
+	 *	RKHE_T
+	 *	preprocessor( RKHEVT_T *pe )
+	 *	{
+	 *		...
+	 *	}
+	 *  
+	 *	typedef struct
+	 *	{
+	 *		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 *		unsigned min:4;
+	 *		unsigned max:4;
+	 *		char *buff;
+	 *	} SDATA_T;
+	 *
+	 *	static const SDATA_T option = { preprocessor, 4, 8, token1 };
+	 *
+	 *	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+	 *					NULL, &S11, preprocessor ); 
+	 *	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+	 *					NULL, &S2, (RKHPPRO_T*)&option ); 
+	 * \endcode
+	 */
+
+#if RKH_SMA_EN_PPRO == 1
+	RKHPPRO_T prepro;
+#endif
+
+#if RKH_SMA_EN_HCAL == 1
+	/**	
+ 	 * 	\brief
+	 *	Points to state's default child.
+	 */
+
+	RKHROM void *defchild;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's history. 
+	 */
+
+	RKHROM struct rkhshist_t *history;
+#endif
+
+} RKHSCMP_T;
+
+
+/**
+ *	\brief
+ * 	Describes a submachine state.
+ *
+ * 	A submachine state is a kind of a state that actually refers to 
+ * 	another defined state machine.
+ * 	A submachine state is logically equivalent to the insertion of the 
+ * 	referenced state machine as a composite state in the place of 
+ * 	the submachine state. Consequently, every entrance to a submachine 
+ * 	state is equivalent to the corresponding entrance to the inserted 
+ * 	(referenced) composite state. In particular, it can be entered 
+ * 	thruough its initial pseudostate (as any other composite state), or 
+ * 	through one of its entry points. 
+ *
+ * 	Similary, every exit from a submachine state is equivalent to the 
+ * 	corresponding exit from the inserted composite state. It can be exited 
+ * 	through one of its exit points. When it is exited through its exit point 
+ * 	the effect of the transition targeting the exit point is executed first, 
+ * 	followed by the exit behavior of the composite state. 
+ *
+ * 	The entry, exit, and behavior actions and internal transitions are 
+ * 	defined as part of the state. Submachine state is a decomposition 
+ * 	mechanism that allows factoring of common behaviors and their reuse.
+ *
+ * 	The purpose od defining submachine states is to decompose and localize 
+ * 	repetitive parts because the same state machine can be referenced from 
+ * 	more than one submachine state.
+ *
+ *	The diagram in following figure shows a fragment from a state machine 
+ *	diagram in which a submachine state (the \c SB) is referenced.
+ *	
+ *	\anchor fig_sbm1
+ *	\image html sbm1.png "Submachine state"
+ *	
+ *	In the above example, the transition triggered by event \c TWO will 
+ *	terminate on entry point \c ENS12 of the \c SB state machine. 
+ *	The \c ONE transition implies taking of the default transition of the 
+ *	\c SB and executes the \c act5() action. The transition emanating from 
+ *	the \c EX1S12 exit point of the submachine will execute the \c act1() 
+ *	behavior in addition to what is executed within the \c SB state machine. 
+ *	Idem transition emanating from the \c EX2S12.
+ *	This transition must have been triggered within the \c SB state machine. 
+ *	Finally, the transition emanating from the edge of the submachine state 
+ *	is triggered by event \c THREE.
+ *	
+ *	The following figure is an example of a state machine \c SB defined with 
+ *	two exit points, \c EXPNT1 and \c EXPNT2, and one entry point \c ENPNT.
+ *	
+ *	\anchor fig_sbm2
+ *	\image html sbm2.png "State machine with two exit points and one entry point"
+ *	
+ *	In the following figure the state machine shown above is referenced twice in 
+ *	a submachine state \c S12 and \c S2.
+ *	
+ *	\anchor fig_sbm3
+ *	\image html sbm3.png "Submachine state with usage of exit and entry points"
+ */
+
+typedef struct rkhssbm_t
+{
+	RKHST_T st;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
+	RKHROM struct rkhtr_t *trtbl;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
+	RKHROM struct rkhexpcn_t *exptbl;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to submachine object.
+	 */
+
+	RKHROM struct rkhrsm_t *sbm;
+
+} RKHSSBM_T;
+
+
+/**
+ *	\brief
+ * 	Describes a (referenced) submachine state machine.
+ */
+
+typedef struct rkhrsm_t
+{
+	/**	
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's default child.
+	 */
+
+	RKHROM void *defchild;
+
+	/** 
+ 	 * 	\brief
+	 * 	Points to initializing action (optional). 
+	 *
+	 * 	The function prototype is defined as RKHACT_T. This argument is 
+	 * 	optional, thus it could be declared as NULL.
+	 */
+
+	RKHACT_T iaction;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to RAM memory location which stores
+	 *	the dynamic parent.
+	 */
+
+	RKHROM struct rkhst_t **dyp;
+} RKHRSM_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the entry point pseudostate.
+ *
+ * 	An entry pseudostate is used to join an external transition terminating 
+ * 	on that entry point to an internal transition emanating from that entry 
+ * 	point.
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
+ */
+
+typedef struct rkhsenp_t
+{
+	/**
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to entry point connection.
+	 */
+
+	RKHROM RKHENPCN_T *enpcn;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's parent (submachine state).
+	 */
+
+	RKHROM struct rkhst_t *parent;
+
+} RKHSENP_T;
+
+
+/**
+ * 	\brief 
+ * 	Describes the exit point pseudostate.
+ *
+ * 	An exit pseudostate is used to join an internal transition terminating on 
+ * 	that exit point to an external transition emanating from that exit point. 
+ * 	The main purpose of such entry and exit points is to execute the state 
+ * 	entry and exit actions respectively in between the actions that are 
+ * 	associated with the joined transitions.
+ */
+
+typedef struct rkhsexp_t
+{
+	/**
+ 	 * 	\brief
+	 *	Maintains the basic information of state.
+	 */
+
+	struct rkhbase_t base;
+
+	/**	
+ 	 * 	\brief
+	 *	Index of exit point table.
+	 */
+
+	rkhui8_t ix;
+
+	/**	
+ 	 * 	\brief
+	 *	Points to state's parent (referenced submachine).
+	 */
+
+	RKHROM RKHRSM_T *parent;
+} RKHSEXP_T;
 
 
 /**
@@ -1533,7 +1899,7 @@ typedef struct rkhshist_t
 	 *	Points to state's parent.
 	 */
 
-	RKHROM RKHSREG_T *parent;
+	RKHROM RKHST_T *parent;
 
 	/**	
  	 * 	\brief
@@ -1541,7 +1907,7 @@ typedef struct rkhshist_t
 	 *	the state's history.
 	 */
 
-	RKHROM RKHSREG_T **target;
+	RKHROM RKHST_T **target;
 } RKHSHIST_T;
 
 
