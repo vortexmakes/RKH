@@ -1125,9 +1125,9 @@ typedef struct rkhsma_t
  * 	Harel's Statechart and UML. Specifically, the implemented transition 
  * 	sequence is as follows:
  *
- * 	1. Execute exit actions of the source state.
- * 	2. Execute the transition actions.
- * 	3. Execute entry actions of the target state.
+ * 	- Execute exit actions of the source state.
+ * 	- Execute the transition actions.
+ * 	- Execute entry actions of the target state.
  * 
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
@@ -1169,9 +1169,9 @@ typedef struct rkhsma_t
  * 	Harel's Statechart and UML. Specifically, the implemented transition 
  * 	sequence is as follows:
  *
- * 	1. Execute exit actions of the source state.
- * 	2. Execute the transition actions.
- * 	3. Execute entry actions of the target state.
+ * 	- Execute exit actions of the source state.
+ * 	- Execute the transition actions.
+ * 	- Execute entry actions of the target state.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
@@ -1249,9 +1249,9 @@ typedef struct rkhsma_t
  * 	Harel's Statechart and UML. Specifically, the implemented transition 
  * 	sequence is as follows:
  *
- * 	1. Execute exit actions of the source state.
- * 	2. Execute the transition actions.
- * 	3. Execute entry actions of the target state.
+ * 	- Execute exit actions of the source state.
+ * 	- Execute the transition actions.
+ * 	- Execute entry actions of the target state.
  *
  * 	\note
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 

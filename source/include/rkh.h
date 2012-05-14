@@ -1205,6 +1205,24 @@ void rkh_init( void );
  *		DeleteCriticalSection( &csection );	
  *	}
  *	\endcode
+ *	
+ *	Here is the basic algorithm for interpreting the listing shown above. 
+ *	A pseudocode description of the procedure is:
+ *	\code
+ *	infinite loop
+ *	{
+ *		disable interrupts;
+ *		if( is_not_active_object_ready_to_run )
+ *		{
+ *			find the active object with highest priority;
+ *			enable interrupts;
+ *			e = get the event from the active object's queue;
+ *			dispatch the 'e' event to the active object's state machine;
+ *			}
+ *		else
+ *			execute the idle processing;
+ *	}
+ *	\endcode
  */
 
 void rkh_enter( void );
@@ -1973,8 +1991,42 @@ void rkh_init_hsm( RKHSMA_T *sma );
  *	which events are accepted and acted upon. Processing an event always 
  *	completes within a single model step, including exiting the source 
  *	state, executing any associated actions, and entering the target state.
- *	The RKH implementation preserves the transition sequence 
- *	imposed by Harel's Statechart and UML. 
+ * 	The RKH implementation preserves the transition sequence imposed by 
+ * 	Harel's Statechart and UML. Specifically, the implemented transition 
+ * 	sequence is as follows:
+ *
+ * 	- Execute exit actions of the source state.
+ * 	- Execute the transition actions.
+ * 	- Execute entry actions of the target state.
+ *
+ * 	Here now are the details of the main part of this algorithm 
+ * 	(rkh_dispatch()), in which an event is processed by the statechart. 
+ * 	
+ * 	\li	Determine the compound transition (CT) that will fire in response 
+ * 		to the event: traverse the states in the active configuration from 
+ * 		lowest states in the hierarchy upwards. A CT is enabled if its 
+ * 		trigger is the dispatched event, and the guard evaluates to true. 
+ * 		Once an enabled transition is found with a given source state stop 
+ * 		traversing the states that are higher than this state in the 
+ * 		hierarchy. 
+ *  \li	Perform the CT that we found should fire. 
+ * 		For each transition do:
+ * 		-	Update histories of exited states.
+ * 		- 	Perform the exit actions of the exited states according to the 
+ * 			order states are exited, from low state to high state.
+ * 		-	Perform the actions on the CT sequentially according to the 
+ * 			order in which they are written on the transition, from the 
+ * 			action closest to source state to the action closest to target 
+ * 			state.
+ * 		-	Perform the entry actions of the entered states according to 
+ * 			the order states are entered, from high state to low state.
+ * 		-	For lowest level states that were entered, which are not basic 
+ * 			states, perform default transitions (recursively) until the 
+ * 			statechart reaches basic states.
+ * 		-	Update the active configuration.
+ *  \li	Wrap up: once a stable configuration is reached, the reaction to the 
+ * 		event is completed, control returns to the dispatcher and new events 
+ * 		can be dispatched.
  *
  * 	\param sma		pointer to previously created state machine application.
  *	\param e		pointer to arrived event. It's used as state-machine's 
