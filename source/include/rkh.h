@@ -1596,6 +1596,16 @@ void rkh_sma_unregister( RKHSMA_T *sma );
  * 	Later, the SMA might recall one event at a time from the 
  * 	event queue by means of rkh_recall() function.
  *	
+ *	Example:
+ *	\code
+ *	void 
+ *	ring( const struct rkh_t *sma, RKHEVT_T *pe )
+ *	{
+ *		(void)sma;      		// argument not used
+ *		rkh_defer( &qurc, pe );	// defer event
+ *	}
+ *	\endcode
+ *
  *	\note
  *	For memory efficiency and best performance the deferred event queue, 
  *	STORE ONLY POINTERS to events, not the whole event objects.
@@ -1620,6 +1630,15 @@ void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e );
  * 	Recalling an event means that it is removed from the deferred event 
  * 	queue \a q and posted (LIFO) to the event queue of the \a sma state 
  * 	machine application.
+ *
+ *	Example:
+ *	\code
+ *	void 
+ *	exit_rx_manager( const struct rkh_t *sma )
+ *	{
+ *		rkh_defer( sma, &qurc );
+ *	}
+ *	\endcode
  *
  * 	\note
  *	For memory efficiency and best performance the destination event queue, 

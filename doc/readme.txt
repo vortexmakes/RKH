@@ -2429,31 +2429,50 @@ Event deferral comes in very handy when an event arrives in a
 particularly inconvenient moment but can be deferred for some later time, 
 when the system is in a much better position to handle the event. RKH 
 supports very efficient event deferring and recalling mechanisms.
-RKH provides a simple function call to defer an event to a given separate 
-event queue, rkh_defer(). Also, offers another simple function to recall 
-a deferred event, rkh_recall().
+This function is part of the event deferral mechanism. An SMA 
+uses this function to defer an event \a e to the event queue \a q. 
+RKH correctly accounts for another outstanding reference to the event 
+and will not recycle the event at the end of the RTC step. 
+Later, the SMA might recall one event at a time from the 
+event queue by means of rkh_recall(sma,q) function. 
+Recalling an event means that it is removed from the deferred event 
+queue \c q and posted (LIFO) to the event queue of the \c sma state 
+machine application.
 
-An active object uses <c>rkh_defer( qd, evt )</c> to defer an event \a evt to 
-the event queue \a qd. RKH correctly accounts for another outstanding 
-reference to the event and will not recycle the event at the end of the 
-RTC step. 
-\note
-For memory efficiency and best performance the deferred event queue, 
-STORE ONLY POINTERS to events, not the whole event objects.
-An active object can use multiple event queues to defer events of
-different kinds.
-The assertion inside it guarantee that operation is valid, so is not 
-necessary to check the value returned from it.
+This section includes:
 
-Later, the active object might recall one event at a time from the 
-event queue by means of <c>rkh_recall( qdd, qds )</c> function. Recalling an 
-event means that it is removed from the deferred event queue \a qds 
-and posted (LIFO) to the event queue of the active object \a qdd.
-\note
-For memory efficiency and best performance the destination event queue, 
-STORE ONLY POINTERS to events, not the whole event objects.
-The pointer to the recalled event to the caller, or NULL if no 
-event has been recalled.
+- \ref qref8_1
+- \ref qref8_2
+
+\subsection qref8_1 Deferring an event
+
+\code
+void 
+ring( const struct rkh_t *sma, RKHEVT_T *pe )
+{
+	(void)sma;      				// argument not used
+(1)	rkh_defer( &qurc, pe );
+}
+\endcode
+
+Explanation
+
+\li (1)	Defers the event \c pe to the event queue \c qurc. 
+
+\subsection qref8_2 Recalling an event
+
+\code
+void 
+exit_rx_manager( const struct rkh_t *sma )
+{
+(1)	rkh_defer( sma, &qurc );
+}
+\endcode
+
+Explanation
+
+\li (1)	Removes an event from the deferred event queue \c qurc and posts (LIFO) 
+		to the event queue of the \c sma state machine application.
 
 \n Prev: \ref qref "Quick reference"
 
