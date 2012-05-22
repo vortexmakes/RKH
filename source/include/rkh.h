@@ -1598,6 +1598,12 @@ void rkh_sma_unregister( RKHSMA_T *sma );
  *	
  *	Example:
  *	\code
+ *	static RKHRQ_T qurc;
+ *	static RKHEVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
+ *
+ *	rkh_rq_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
+ *	...
+ *
  *	void 
  *	ring( const struct rkh_t *sma, RKHEVT_T *pe )
  *	{
