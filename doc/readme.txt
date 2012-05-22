@@ -2447,17 +2447,24 @@ This section includes:
 \subsection qref8_1 Deferring an event
 
 \code
+static RKHRQ_T qurc;
+static RKHEVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
+
+(1) rkh_rq_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
+...
+
 void 
 ring( const struct rkh_t *sma, RKHEVT_T *pe )
 {
 	(void)sma;      				// argument not used
-(1)	rkh_defer( &qurc, pe );
+(2)	rkh_defer( &qurc, pe );
 }
 \endcode
 
 Explanation
 
-\li (1)	Defers the event \c pe to the event queue \c qurc. 
+\li (1)	Initialize the \c qurc queue to be used as deferred queue. 
+\li (1)	Defers the event \c pe to the previously created event queue \c qurc. 
 
 \subsection qref8_2 Recalling an event
 

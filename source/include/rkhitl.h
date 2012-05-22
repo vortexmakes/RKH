@@ -145,6 +145,7 @@
 #define CEXP( p )					((RKHSEXP_T*)(p))
 #define CENPCN( p )					((RKHENPCN_T*)(p))
 #define CEXPCN( p )					((RKHEXPCN_T*)(p))
+#define CE( p )						((RKHEVT_T*)(p))
 
 
 /* 	

@@ -220,7 +220,9 @@ typedef struct rkhrq_t
  * 					void pointers.
  * 	\param ssize	storage size [in the units of void pointers].
  * 	\param sma		pointer to associated SMA that receives the enqueued 
- * 					events. If \a sma is set to NULL they never block.
+ * 					events. If \a sma is set to NULL they never block. When 
+ * 					using a queue to store deferred events the \a sma 
+ * 					parameter must be set to NULL.
  */
 
 void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
