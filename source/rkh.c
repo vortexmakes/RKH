@@ -219,15 +219,16 @@ RKH_MODULE_NAME( rkh )
 
 static
 HUInt
-rkh_add_tr_action( RKHACT_T *list, RKHACT_T act, rkhui8_t *num )
+rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
 {
 	if( *num >= RKH_SMA_MAX_TRC_SEGS )
 		return 1;
 
 	if( act != CTA( 0 ) )
 	{
-		*list++ = act;
-		++(*num);
+		**list = act;                      /* store a new transition action */
+		++(*list);                    /* increment the pointer to next slot */
+		++(*num);           /* increment the counter of actions in the list */
 	}
 	return 0;
 }
@@ -389,7 +390,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		return RKH_GUARD_FALSE;
 	}
 					    /* add action of the transition segment in the list */
-	if( rkh_add_tr_action( pal, tr->action, &nal ) )
+	if( rkh_add_tr_action( &pal, tr->action, &nal ) )
 	{
 		RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 		RKHERROR();
@@ -425,7 +426,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 						return RKH_CONDITION_NOT_FOUND;
 					}
 
-					if( rkh_add_tr_action( pal, tr->action, &nal ) )
+					if( rkh_add_tr_action( &pal, tr->action, &nal ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 						RKHERROR();
@@ -442,7 +443,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 										      /* in the compound transition */
 					  /* Should be added: test transition guard and call it */
 																	 /* ... */
-					if( rkh_add_tr_action( pal, CJ(ets)->action, &nal ) )
+					if( rkh_add_tr_action( &pal, CJ(ets)->action, &nal ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 						RKHERROR();
@@ -468,7 +469,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 				case RKH_SUBMACHINE:
 	                                            /* found a submachine state */
 					*CSBM( ets )->sbm->dyp = ets;
-					if( rkh_add_tr_action( pal, CSBM( ets )->sbm->iaction, 
+					if( rkh_add_tr_action( &pal, CSBM( ets )->sbm->iaction, 
 																	&nal ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
@@ -481,7 +482,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
                                         /* found an entry point pseudostate */
 										      /* in the compound transition */
 					*CSBM(CENP( ets )->parent)->sbm->dyp = CENP( ets )->parent;
-					if( rkh_add_tr_action( pal, CENP( ets )->enpcn->action, 
+					if( rkh_add_tr_action( &pal, CENP( ets )->enpcn->action, 
 																	&nal ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
@@ -495,7 +496,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 										      /* in the compound transition */
 					dp = CSBM( *CEXP( ets )->parent->dyp );
 					ets = CST( &(dp->exptbl[ CEXP( ets )->ix ]) );
-					if( rkh_add_tr_action( pal, CEXPCN( ets )->action, &nal ) )
+					if( rkh_add_tr_action( &pal, CEXPCN( ets )->action, &nal ) )
 					{
 						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
 						RKHERROR();

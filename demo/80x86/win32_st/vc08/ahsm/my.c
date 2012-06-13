@@ -39,7 +39,7 @@ RKH_CREATE_TRANS_TABLE( S2 )
 	RKH_TRINT( TERM, 	NULL, 		terminate ),
 	RKH_TRREG( ONE, 	x_equal_1, 	dummy_act, 	&S1 ),
 	RKH_TRREG( TWO, 	NULL, 		NULL, 		&S2 ),
-	RKH_TRREG( THREE, 	NULL, 		NULL, 		&C2 ),
+	RKH_TRREG( THREE, 	NULL, 		dummy_act,	&C2 ),
 
 RKH_END_TRANS_TABLE
 
