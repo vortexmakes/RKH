@@ -161,6 +161,15 @@
 #endif
 
 
+#ifndef RKH_MAX_EPOOL
+	#error "rkhcfg.h, Missing RKH_MAX_EPOOL: Max. # of fixed-size memory block pools to be used by the application."
+#else
+	#if RKH_MAX_EPOOL == 0 || RKH_MAX_EPOOL > 255
+		#error  "rkhcfg.h, RKH_MAX_EPOOL must be > 0 and <= 255"
+	#endif
+#endif
+
+
 #ifndef RKH_EN_DYNAMIC_EVENT
 	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support"
 #else
@@ -333,10 +342,10 @@
 #endif
 
 #ifndef RKH_EN_DEFERRED_EVENT
-	#error "rkhcfg.h, Missing RKH_EN_DEFERRED_EVENT: Enable (1) or Disable (0) deferred event support. For using this feature the dynamic event support must be set to one."
+	#error "rkhcfg.h, Missing RKH_EN_DEFERRED_EVENT: Enable (1) or Disable (0) deferred event support. For using this feature the native event queue support must be enabled."
 #else
-	#if RKH_EN_DEFERRED_EVENT == 1 && RKH_EN_DYNAMIC_EVENT == 0
-		#error "rkhcfg.h, When enabling the defer and recall event features the dynamic event support must be enabled (1) too"
+	#if RKH_EN_DEFERRED_EVENT == 1 && RKH_EN_NATIVE_EQUEUE == 0
+		#error "rkhcfg.h, When enabling the defer and recall event features the native event queue support must be enabled."
 	#endif
 #endif
 
@@ -436,6 +445,9 @@
 	#endif
 #endif
 
+#ifndef RKH_SMA_EN_IEVENT
+	#error "rkhcfg.h, Missing RKH_SMA_EN_IEVENT: Enable (1) or Disable (0) the initial ."
+#endif
 
 /*
  * 	The following macros and constants are internal to RKH and 
@@ -516,8 +528,8 @@
 #endif
 
 
-#ifndef RKH_ASSERT
-	#define RKH_ASSERT		0
+#ifndef RKH_ASSERT_EN
+	#error "rkhcfg.h, Missing RKH_ASSERT_EN: Enable (1) or Disable (0) checking assertions."
 #endif
 
 
@@ -776,7 +788,8 @@
 		#define RKH_HK_DISPATCH( sma, e )		\
 							rkh_hk_dispatch( sma, (RKHEVT_T*)e )
 	#elif RKH_HK_EN_DISPATCH == 0
-		#define RKH_HK_DISPATCH( sma, e )
+		#define RKH_HK_DISPATCH( sma, e )		\
+							(void)0
 	#else
 		#define RKH_HK_DISPATCH( sma, e )
 		#error "rkhcfg.h, Wrong RKH_HK_EN_DISPATCH definition: expected 0 or 1"
@@ -788,9 +801,11 @@
 	#error "rkhcfg.h, Missing RKH_HK_EN_SIGNAL: Include (1) or remove (0) the signal hook function"
 #else
 	#if RKH_HK_EN_SIGNAL == 1
-		#define RKH_HK_SIGNAL( e )		rkh_hk_signal( (RKHEVT_T*)e )
+		#define RKH_HK_SIGNAL( e )		\
+							rkh_hk_signal( (RKHEVT_T*)e )
 	#elif RKH_HK_EN_SIGNAL == 0
-		#define RKH_HK_SIGNAL( e )
+		#define RKH_HK_SIGNAL( e )		\
+							(void)0
 	#else
 		#define RKH_HK_SIGNAL( e )
 		#error "rkhcfg.h, Wrong RKH_HK_EN_SIGNAL definition: expected 0 or 1"
@@ -802,9 +817,11 @@
 	#error "rkhcfg.h, Missing RKH_HK_EN_TIMEOUT: Include (1) or remove (0) the timeout hook function"
 #else
 	#if RKH_HK_EN_TIMEOUT == 1
-		#define RKH_HK_TIMEOUT( t )		rkh_hk_timeout( t )
+		#define RKH_HK_TIMEOUT( t )		\
+							rkh_hk_timeout( t )
 	#elif RKH_HK_EN_TIMEOUT == 0
-		#define RKH_HK_TIMEOUT( t )
+		#define RKH_HK_TIMEOUT( t )		\
+							(void)0
 	#else
 		#define RKH_HK_TIMEOUT( t )
 		#error "rkhcfg.h, Wrong RKH_HK_EN_TIMEOUT definition: expected 0 or 1"
@@ -816,9 +833,11 @@
 	#error "rkhcfg.h, Missing RKH_HK_EN_START: Include (1) or remove (0) the start hook function"
 #else
 	#if RKH_HK_EN_START == 1
-		#define RKH_HK_START()			rkh_hk_start()
+		#define RKH_HK_START()			\
+							rkh_hk_start()
 	#elif RKH_HK_EN_START == 0
-		#define RKH_HK_START()
+		#define RKH_HK_START()			\
+							(void)0
 	#else
 		#define RKH_HK_START()
 		#error "rkhcfg.h, Wrong RKH_HK_EN_START definition: expected 0 or 1"
@@ -830,9 +849,11 @@
 	#error "rkhcfg.h, Missing RKH_HK_EN_EXIT: Include (1) or remove (0) the exit hook function"
 #else
 	#if RKH_HK_EN_EXIT == 1
-		#define RKH_HK_EXIT()			rkh_hk_exit()
+		#define RKH_HK_EXIT()			\
+							rkh_hk_exit()
 	#elif RKH_HK_EN_EXIT == 0
-		#define RKH_HK_EXIT()
+		#define RKH_HK_EXIT()			\
+							(void)0
 	#else
 		#define RKH_HK_EXIT()
 		#error "rkhcfg.h, Wrong RKH_HK_EN_EXIT definition: expected 0 or 1"
