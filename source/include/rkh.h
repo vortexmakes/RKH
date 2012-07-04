@@ -1792,8 +1792,13 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	\param e		event signal.
  */
 
-#define RKH_ALLOC_EVENT( et, e )										\
-						(et*)rkh_ae((RKHES_T)sizeof(et),(RKHE_T)(e))
+#if RKH_EN_DYNAMIC_EVENT == 1
+		#define RKH_ALLOC_EVENT( et, e ) \
+					(et*)rkh_ae((RKHES_T)sizeof(et),(RKHE_T)(e))
+#else
+		#define RKH_ALLOC_EVENT( et, e ) \
+					(void)0
+#endif
 
 
 /**

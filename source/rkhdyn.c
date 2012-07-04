@@ -38,6 +38,18 @@ RKH_MODULE_NAME( rkhdyn )
 
 
 #if RKH_EN_DYNAMIC_EVENT == 1
+	#define RKH_INC_REF( evt ) \
+					RKH_ENTER_CRITICAL_(); \
+					if( RCE( evt )->pool != 0 ) \
+				        ++RCE( evt )->nref; \
+				    RKH_EXIT_CRITICAL_()
+#else
+	#define RKH_INC_REF( evt ) \
+					(void)0
+#endif
+
+
+#if RKH_EN_DYNAMIC_EVENT == 1
 
 RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
@@ -132,10 +144,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_SR_CRITICAL_;
 	
 	RKH_HK_SIGNAL( e );
-    RKH_ENTER_CRITICAL_();
-    if( RCE( e )->pool != 0 ) 
-        ++RCE( e )->nref;
-    RKH_EXIT_CRITICAL_();
+	RKH_INC_REF( e );
 
     rkh_rq_put_fifo( &sma->equeue, e );
 	RKH_TRCR_SMA_FIFO( sma, e );
@@ -150,10 +159,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_SR_CRITICAL_;
 
 	RKH_HK_SIGNAL( e );
-    RKH_ENTER_CRITICAL_();
-    if( RCE( e )->pool != 0 ) 
-        ++RCE( e )->nref;
-    RKH_EXIT_CRITICAL_();
+	RKH_INC_REF( e );
 
     rkh_rq_put_lifo( &sma->equeue, e );
 	RKH_TRCR_SMA_LIFO( sma, e );
@@ -183,6 +189,9 @@ rkh_sma_get( RKHSMA_T *sma )
 void 
 rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 { 
+	RKH_SR_CRITICAL_;
+
+	RKH_INC_REF( e );
     rkh_rq_put_fifo( q, e );
 	RKH_TRCR_RKH_DEFER( q, e );
 }
@@ -202,6 +211,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 		RKH_TRCR_RKH_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
 
+		#if RKH_EN_DYNAMIC_EVENT == 1
         if( e->nref != 0 )	/* is it a dynamic event? */
 		{
             /* 
@@ -218,6 +228,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
              */
             --e->nref;
         }
+		#endif
 		RKH_EXIT_CRITICAL_();
     }
     return e;
