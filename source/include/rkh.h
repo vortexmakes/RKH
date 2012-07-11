@@ -1838,6 +1838,25 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
 
 /**
  * 	\brief
+ * 	Reserve the dynamic event to be recycled.
+ *
+ * 	This is the complement to RKH_GC(). It increments the reference count of 
+ * 	a dynamic event so the event can be saved by an SMA (AO). Sometime later 
+ * 	the SMA should manually release the event with RKH_GC().
+ *
+ * 	\param e		pointer to event to be reserved.
+ */
+
+#if RKH_EN_DYNAMIC_EVENT == 1
+	#define RKH_RESERVE( e ) 		rkh_reserve( e )
+	void rkh_reserve( RKHEVT_T *e );
+#else
+	#define RKH_RESERVE( e )
+#endif
+
+	
+/**
+ * 	\brief
  *	This macro initialize an event \a e with \a es signal and establishes 
  *	it as one static event.
  *

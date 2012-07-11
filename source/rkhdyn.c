@@ -125,6 +125,15 @@ rkh_gc( RKHEVT_T *e )
 }
 
 
+void
+rkh_reserve( RKHEVT_T *e )
+{
+	RKH_SR_CRITICAL_;
+
+	RKH_INC_REF( e );
+}
+
+
 void 
 rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 {
