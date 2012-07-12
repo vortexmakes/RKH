@@ -154,7 +154,7 @@ rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
 {
 	RKH_SR_CRITICAL_;
 
-	RKHREQUIRE( t != ( RKHT_T* )0 && itick == 0 );
+	RKHREQUIRE( t != ( RKHT_T* )0 && itick != 0 );
 	RKH_ENTER_CRITICAL_();
 
 	t->ntick = itick;
