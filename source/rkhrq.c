@@ -149,7 +149,7 @@ rkh_rq_get( RKHRQ_T *q  )
 	{
 		RKH_SMA_BLOCK( q->sma );
 	}
-	else
+	else if( q->qty == 0 )
 	{
 		RKH_IUPDT_EMPTY( q );
 		RKH_EXIT_CRITICAL_();
@@ -202,7 +202,9 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 		q->pin = ( void ** )q->pstart;
 
 	if( q->sma != ( void * )0 )
+	{
 		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+	}
 
 #if RKH_RQ_EN_GET_LWMARK == 1
 	if( q->nmin > (RKH_RQNE_T)( q->nelems - q->qty ) )
@@ -241,7 +243,9 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 	RKH_IUPDT_PUT( q );
 
 	if( q->sma != ( void * )0 )
+	{
 		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+	}
 
 #if RKH_RQ_EN_GET_LWMARK == 1
 	if( q->nmin > (RKH_RQNE_T)( q->nelems - q->qty ) )
