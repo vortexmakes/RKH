@@ -47,10 +47,13 @@ RKH_MODULE_NAME( rkhtim )
 						(*t->timhk)( t )
 	#define RKH_SET_THOOK( t, hk )		\
 					(t)->timhk = (hk)
-					
 #else
-	#define RKH_EXEC_THOOK()	
+	#define RKH_EXEC_THOOK() \
+					(void)0
+	#define RKH_SET_THOOK( t, hk ) \
+					(void)0
 #endif
+
 
 static RKHT_T *thead;
 
