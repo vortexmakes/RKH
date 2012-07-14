@@ -1832,7 +1832,8 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
 	#define RKH_GC( e ) 			rkh_gc( e )
 	void rkh_gc( RKHEVT_T *e );
 #else
-	#define RKH_GC( e )
+	#define RKH_GC( e ) \
+					(void)0
 #endif
 
 
@@ -2148,7 +2149,14 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	\sa \b rkhtrc.h file.
  */
 
-void rkh_trc_open( void );
+#if RKH_TRC_EN == 1
+		#define RKH_TRC_OPEN() \
+					rkh_trc_open()
+		void rkh_trc_open( void );
+#else
+	#define RKH_TRC_OPEN() \
+					(void)0
+#endif
 
 
 /**
@@ -2175,7 +2183,14 @@ void rkh_trc_open( void );
  * 	\sa \b rkhtrc.h file.
  */
 
-void rkh_trc_close( void );
+#if RKH_TRC_EN == 1
+		#define RKH_TRC_CLOSE() \
+					rkh_trc_open()
+		void rkh_trc_open( void );
+#else
+	#define RKH_TRC_CLOSE() \
+					(void)0
+#endif
 
 
 /**
@@ -2207,7 +2222,14 @@ void rkh_trc_close( void );
  * 	\sa \b rkhtrc.h file.
  */
 
-void rkh_trc_flush( void );
+#if RKH_TRC_EN == 1
+		#define RKH_TRC_FLUSH() \
+					rkh_trc_flush()
+		void rkh_trc_flush( void );
+#else
+	#define RKH_TRC_FLUSH() \
+					(void)0
+#endif
 
 
 /**
