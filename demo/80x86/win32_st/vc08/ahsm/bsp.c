@@ -40,6 +40,11 @@
 #define ESC							0x1B
 #define kbmap( c )					( (c) - '0' )
 
+#define SIZEOF_EP0STO				64
+#define SIZEOF_EP0_BLOCK			4
+#define SIZEOF_EP1STO				32
+#define SIZEOF_EP1_BLOCK			8
+
 
 RKH_THIS_MODULE
 
@@ -52,6 +57,8 @@ static DWORD tick_msec;			/* clock tick in msec */
 rkhui8_t running;
 MYEVT_T *mye;
 static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ];
 
 static 
 DWORD WINAPI 
@@ -111,6 +118,9 @@ rkh_hk_start( void )
     hth_kbd = CreateThread( NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id );
     RKHASSERT( hth_kbd != (HANDLE)0 );
     SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
+	
+	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 

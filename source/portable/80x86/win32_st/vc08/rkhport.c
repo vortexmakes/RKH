@@ -47,8 +47,6 @@ HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
 
 extern rkhui8_t running;
-static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
-				ep1sto[ SIZEOF_EP1STO ];
 
 
 const 
@@ -72,9 +70,6 @@ rkh_init( void )
 {
     InitializeCriticalSection( &csection );
     sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
-	
-	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
