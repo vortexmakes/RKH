@@ -30,12 +30,12 @@ main( int argc, char *argv[] )
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_EXSTATE );
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_NTRNACT );
 
-	rkh_trc_open();
+	RKH_TRC_OPEN();
 	rkh_init();
 
-	rkh_sma_activate( my, qsto, QSTO_SIZE, ( void * )0, 0 );
+	rkh_sma_activate( my, qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
-	rkh_trc_close();
+	RKH_TRC_CLOSE();
 	return 0;
 }

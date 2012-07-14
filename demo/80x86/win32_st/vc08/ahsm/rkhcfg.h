@@ -745,7 +745,7 @@
  *	hook function. 
  */
 
-#define RKH_TIM_EN_HOOK					1
+#define RKH_TIM_EN_HOOK					0
 
 /** 
  *	If the #RKH_TIM_EN_RESTART is set to 1 then RKH will include the 

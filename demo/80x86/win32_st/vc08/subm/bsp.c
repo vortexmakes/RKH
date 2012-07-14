@@ -117,7 +117,7 @@ rkh_hk_start( void )
 void 
 rkh_hk_exit( void ) 
 {
-	rkh_trc_flush();
+	RKH_TRC_FLUSH();
     running = 0;
 }
 
@@ -126,7 +126,7 @@ void
 rkh_hk_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
-	rkh_trc_flush();
+	RKH_TRC_FLUSH();
     RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
 
@@ -161,6 +161,7 @@ print_banner( void )
 }
 
 
+#if RKH_TRC_EN == 1
 void 
 rkh_trc_open( void )
 {
@@ -221,6 +222,7 @@ rkh_trc_flush( void )
 		trazer_parse( *d );
 	}
 }
+#endif
 
 
 void 
