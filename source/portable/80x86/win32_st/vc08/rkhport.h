@@ -72,9 +72,9 @@ const char *rkh_get_port_desc( void );
 #define RKH_SMA_BLOCK( sma ) 									\
 				RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
 
-#define RKH_SMA_READY( rg, sma ) 							\
-			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
-			    (void)SetEvent( sma_is_rdy )
+#define RKH_SMA_READY( rg, sma ) 								\
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); \
+			    (void)SetEvent( sma_is_rdy ); \
 
 #define RKH_SMA_UNREADY( rg, sma ) 							\
 			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
