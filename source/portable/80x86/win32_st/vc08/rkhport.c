@@ -36,12 +36,6 @@ RKH_MODULE_VERSION( rkhport, 1.00 )
 RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" )
 
 
-#define SIZEOF_EP0STO				64
-#define SIZEOF_EP0_BLOCK			4
-#define SIZEOF_EP1STO				32
-#define SIZEOF_EP1_BLOCK			8
-
-
 CRITICAL_SECTION csection;		/* Win32 critical section */
 HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
