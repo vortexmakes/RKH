@@ -1518,7 +1518,7 @@ rkhui8_t *rkh_trc_get( void );
 void rkh_trc_put( rkhui8_t b );
 
 
-#if RKH_TRC_RUNTIME_FILTER == 1
+#if RKH_TRC_EN == 1 && RKH_TRC_RUNTIME_FILTER == 1
 	/**
 	 * 	\brief
 	 * 	Suppress all trace events from a specific group. 
@@ -1569,12 +1569,18 @@ void rkh_trc_put( rkhui8_t b );
 				rkh_trc_filter_group_( FILTER_OFF, (grp) );	\
 				rkh_trc_filter_event_( FILTER_OFF, (evt) )
 #else
-	#define RKH_FILTER_ON_GROUP( grp )
-	#define RKH_FILTER_OFF_GROUP( grp )
-	#define RKH_FILTER_ON_EVENT( evt )
-	#define RKH_FILTER_OFF_EVENT( evt )
-	#define RKH_FILTER_ON_GROUP_EVENT( grp, evt )
-	#define RKH_FILTER_OFF_GROUP_EVENT( grp, evt )
+	#define RKH_FILTER_ON_GROUP( grp ) \
+				(void)0
+	#define RKH_FILTER_OFF_GROUP( grp ) \
+				(void)0
+	#define RKH_FILTER_ON_EVENT( evt ) \
+				(void)0
+	#define RKH_FILTER_OFF_EVENT( evt ) \
+				(void)0
+	#define RKH_FILTER_ON_GROUP_EVENT( grp, evt ) \
+				(void)0
+	#define RKH_FILTER_OFF_GROUP_EVENT( grp, evt ) \
+				(void)0
 #endif
 
 
