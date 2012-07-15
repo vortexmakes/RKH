@@ -455,7 +455,7 @@
  *	related to the nativenative  event framework.
  */
 
-#define RKH_TRC_EN_RKH					0
+#define RKH_TRC_EN_RKH					1
 
 /**
  *	If the #RKH_TRC_EN_SM_INIT and #RKH_TRC_EN_SM are set to 1 then RKH will 
@@ -568,7 +568,7 @@
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_TRC_SIZEOF_STREAM			256
+#define RKH_TRC_SIZEOF_STREAM			512
 
 /**
  * 	Specify the size of void pointer. The valid values [in bits] are 

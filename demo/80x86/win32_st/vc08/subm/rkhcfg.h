@@ -567,7 +567,7 @@
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_TRC_SIZEOF_STREAM			256
+#define RKH_TRC_SIZEOF_STREAM			512
 
 /**
  * 	Specify the size of void pointer. The valid values [in bits] are 

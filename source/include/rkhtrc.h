@@ -1371,16 +1371,16 @@ typedef enum rkh_trc_events
 				} while(0)
 
 	#else
-		#define RKH_TRCR_RKH_EN()
-		#define RKH_TRCR_RKH_EX()
-		#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )
-		#define RKH_TRCR_RKH_AE( esize, ev )
-		#define RKH_TRCR_RKH_GC( ev )
-		#define RKH_TRCR_RKH_GCR( ev )
-		#define RKH_TRCR_RKH_DEFER( q, ev )
-		#define RKH_TRCR_RKH_RCALL( sma, ev )
-		#define RKH_TRCR_RKH_OBJ( __o )
-		#define RKH_TRCR_RKH_SIG( __s )
+		#define RKH_TRCR_RKH_EN()							(void)0
+		#define RKH_TRCR_RKH_EX()							(void)0
+		#define RKH_TRCR_RKH_EPREG( epix, ssize, esize )	(void)0
+		#define RKH_TRCR_RKH_AE( esize, ev )				(void)0
+		#define RKH_TRCR_RKH_GC( ev )						(void)0
+		#define RKH_TRCR_RKH_GCR( ev )						(void)0
+		#define RKH_TRCR_RKH_DEFER( q, ev )					(void)0
+		#define RKH_TRCR_RKH_RCALL( sma, ev )				(void)0
+		#define RKH_TRCR_RKH_OBJ( __o )						(void)0
+		#define RKH_TRCR_RKH_SIG( __s )						(void)0
 	#endif
 	
 #else
@@ -1569,18 +1569,12 @@ void rkh_trc_put( rkhui8_t b );
 				rkh_trc_filter_group_( FILTER_OFF, (grp) );	\
 				rkh_trc_filter_event_( FILTER_OFF, (evt) )
 #else
-	#define RKH_FILTER_ON_GROUP( grp ) \
-				(void)0
-	#define RKH_FILTER_OFF_GROUP( grp ) \
-				(void)0
-	#define RKH_FILTER_ON_EVENT( evt ) \
-				(void)0
-	#define RKH_FILTER_OFF_EVENT( evt ) \
-				(void)0
-	#define RKH_FILTER_ON_GROUP_EVENT( grp, evt ) \
-				(void)0
-	#define RKH_FILTER_OFF_GROUP_EVENT( grp, evt ) \
-				(void)0
+	#define RKH_FILTER_ON_GROUP( grp ) 				(void)0
+	#define RKH_FILTER_OFF_GROUP( grp )				(void)0
+	#define RKH_FILTER_ON_EVENT( evt )				(void)0
+	#define RKH_FILTER_OFF_EVENT( evt )				(void)0
+	#define RKH_FILTER_ON_GROUP_EVENT( grp, evt )	(void)0
+	#define RKH_FILTER_OFF_GROUP_EVENT( grp, evt )	(void)0
 #endif
 
 

@@ -28,7 +28,6 @@
 #include "my.h"
 #include "rkhdata.h"
 #include "rkh.h"
-#include "trazer.h"
 
 #include <conio.h>
 #include <stdlib.h>
@@ -36,22 +35,89 @@
 #include <time.h>
 
 
-#define BIN_TRACE					1
+#define BIN_TRACE					0
+#define SOCKET_TRACE				1
 #define ESC							0x1B
 #define kbmap( c )					( (c) - '0' )
+
+#define SIZEOF_EP0STO				64
+#define SIZEOF_EP0_BLOCK			4
+#define SIZEOF_EP1STO				32
+#define SIZEOF_EP1_BLOCK			8
 
 
 RKH_THIS_MODULE
 
-static char fmt[ 64 ];
-FILE *fdbg;
+static DWORD tick_msec;			/* clock tick in msec */
+rkhui8_t running;
+static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ];
+
+
+/* 
+ * 	For binary trace feature.
+ */
+
 #if BIN_TRACE == 1
 static FILE *ftbin;
 #endif
-static DWORD tick_msec;			/* clock tick in msec */
-rkhui8_t running;
-MYEVT_T *mye;
-static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+
+
+/*
+ * 	For socket trace feature.
+ */
+
+#if SOCKET_TRACE == 1
+
+	#include "tcptrc.h"
+
+	/* Trazer Tool IP Address */
+	#define TRC_IP_ADDR					"127.0.0.1"
+
+	/* Trazer Tool TCP Port Address */
+	#define TRC_TCP_PORT				6602
+
+	/* Trace Socket */
+	static SOCKET tsock;
+
+	#define TCP_TRACE_OPEN() \
+				if( tcp_trace_open( TRC_TCP_PORT, \
+							TRC_IP_ADDR, &tsock ) < 0 ) \
+				{ \
+					printf( "Can't open socket %s:%u\n", \
+								TRC_IP_ADDR, TRC_TCP_PORT ); \
+					exit( EXIT_FAILURE ); \
+				}
+	#define TCP_TRACE_CLOSE() \
+				tcp_trace_close( tsock )
+	#define TCP_TRACE_SEND( d ) \
+				tcp_trace_send( tsock, d )
+#else
+	#define TCP_TRACE_OPEN()		(void)0
+	#define TCP_TRACE_CLOSE()		(void)0
+	#define TCP_TRACE_SEND( d )		(void)0
+#endif
+
+
+#if BIN_TRACE == 1
+	#define FTBIN_FLUSH( d )				\
+				fwrite ( d, 1, 1, ftbin );	\
+				fflush( ftbin )
+	#define FTBIN_CLOSE() \
+				fclose( ftbin )
+	#define FTBIN_OPEN() \
+				if( ( ftbin = fopen( "../ftbin", "w+b" ) ) == NULL ) \
+				{ \
+					perror( "Can't open file\n" ); \
+					exit( EXIT_FAILURE ); \
+				}
+#else
+	#define FTBIN_FLUSH( d )		(void)0
+	#define FTBIN_CLOSE()			(void)0
+	#define FTBIN_OPEN()			(void)0
+#endif
+
 
 static 
 DWORD WINAPI 
@@ -69,7 +135,7 @@ isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
 
 static 
 DWORD WINAPI 
-isr_kbd_thread( LPVOID par )			/* Win32 thread to emulate keyboard ISR */
+isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 {
 	int c;
 	MYEVT_T *mye;
@@ -111,6 +177,9 @@ rkh_hk_start( void )
     hth_kbd = CreateThread( NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id );
     RKHASSERT( hth_kbd != (HANDLE)0 );
     SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
+	
+	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
@@ -162,46 +231,24 @@ print_banner( void )
 
 
 #if RKH_TRC_EN == 1
+
 void 
 rkh_trc_open( void )
 {
 	rkh_trc_init();
 	rkh_trc_control( RKH_TRC_START );
 
-	if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
-	{
-		perror( "Can't open file\n" );
-		exit( EXIT_FAILURE );
-	}
-
-#if BIN_TRACE == 1
-	if( ( ftbin = fopen( "../ftbin", "w+b" ) ) == NULL )
-	{
-		perror( "Can't open file\n" );
-		exit( EXIT_FAILURE );
-	}
-#endif
-	trazer_init();
+	FTBIN_OPEN();
+	TCP_TRACE_OPEN();
 }
 
 
 void 
 rkh_trc_close( void )
 {
-	fclose( fdbg );
-#if BIN_TRACE == 1
-	fclose( ftbin );
-#endif
+	FTBIN_CLOSE();
+	TCP_TRACE_CLOSE();
 }
-
-
-#if BIN_TRACE == 1
-	#define ftbin_flush( d )				\
-				fwrite ( d, 1, 1, ftbin );	\
-				fflush( ftbin )
-#else
-	#define ftbin_flush()
-#endif
 
 
 RKHTS_T 
@@ -218,8 +265,8 @@ rkh_trc_flush( void )
 
 	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
 	{
-		ftbin_flush( d );
-		trazer_parse( *d );
+		FTBIN_FLUSH( d );
+		TCP_TRACE_SEND( *d );		
 	}
 }
 #endif

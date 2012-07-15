@@ -61,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="&quot;ws2_32.lib&quot;"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -192,7 +193,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\trazer.c"
+				RelativePath="..\tcptrc.c"
 				>
 			</File>
 			<Filter
@@ -262,7 +263,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\trazer.h"
+				RelativePath="..\tcptrc.h"
 				>
 			</File>
 			<Filter
