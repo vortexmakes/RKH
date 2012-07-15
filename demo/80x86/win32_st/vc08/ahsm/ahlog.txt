@@ -1,0 +1,31 @@
+---- RKH trace log session ----
+date : Jul 15 201202:02:20
+Number of trace events = 45
+Number of trace groups = 6
+Configurations = 
+
+   TRAZER_SIZEOF_SIG     = 1
+   TRAZER_SIZEOF_TSTAMP  = 4
+   TRAZER_SIZEOF_POINTER = 4
+   TRAZER_SIZEOF_NTIMER  = 2
+   TRAZER_SIZEOF_NBLOCK  = 1
+   TRAZER_SIZEOF_NELEM   = 1
+   TRAZER_SIZEOF_ESIZE   = 2
+   TRAZER_EN_NSEQ        = 1
+   TRAZER_EN_CHK         = 1
+   TRAZER_EN_TSTAMP      = 1
+   RKH_TRC_ALL        	 = 1
+   RKH_TRC_EN_MP         = 0
+   RKH_TRC_EN_RQ         = 0
+   RKH_TRC_EN_SMA        = 0
+   RKH_TRC_EN_TIM        = 0
+   RKH_TRC_EN_SM         = 0
+   RKH_TRC_EN_RKH        = 0
+
+---- BEGIN TRACE SESSION ----
+
+        94 [  0] SM  | ENTRY_STATE     : sma=my, state=S1
+        94 [  1] SM  | ENTRY_STATE     : sma=my, state=S11
+        94 [  2] SM  | ENTRY_STATE     : sma=my, state=S111
+     18377 [  3] SM  | DISPATCH        : sma=my, sig=TERM
+     18377 [  4] SM  | NUM_TRN_ACT     : sma=my, ntra=1, ntrs=1
