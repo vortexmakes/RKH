@@ -2154,8 +2154,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
 					rkh_trc_open()
 		void rkh_trc_open( void );
 #else
-	#define RKH_TRC_OPEN() \
-					(void)0
+	#define RKH_TRC_OPEN()		(void)0
 #endif
 
 
@@ -2185,11 +2184,10 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
 
 #if RKH_TRC_EN == 1
 		#define RKH_TRC_CLOSE() \
-					rkh_trc_open()
-		void rkh_trc_open( void );
+					rkh_trc_close()
+		void rkh_trc_close( void );
 #else
-	#define RKH_TRC_CLOSE() \
-					(void)0
+	#define RKH_TRC_CLOSE()		(void)0
 #endif
 
 
