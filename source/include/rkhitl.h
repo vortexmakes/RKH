@@ -146,6 +146,7 @@
 #define CENPCN( p )					((RKHENPCN_T*)(p))
 #define CEXPCN( p )					((RKHEXPCN_T*)(p))
 #define CE( p )						((RKHEVT_T*)(p))
+#define CCE( p )					((const RKHEVT_T*)(p))
 #define CV( p )						((void*)(p))
 
 
