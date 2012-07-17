@@ -259,7 +259,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 
 #if RKH_RQ_EN_DEPLETE == 1
 void 
-queue_deplete( RKHRQ_T *q )
+rkh_rq_deplete( RKHRQ_T *q )
 {
 	RKH_SR_CRITICAL_;
 
