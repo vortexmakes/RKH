@@ -1849,10 +1849,10 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  */
 
 #if RKH_EN_DYNAMIC_EVENT == 1
-	#define RKH_RESERVE( e ) 		rkh_reserve( e )
+	#define RKH_RSV( e ) 			rkh_reserve( e )
 	void rkh_reserve( RKHEVT_T *e );
 #else
-	#define RKH_RESERVE( e )
+	#define RKH_RSV( e )			(void)0
 #endif
 
 	
