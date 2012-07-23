@@ -1327,6 +1327,7 @@ typedef enum rkh_trc_events
 						RKH_TRC_SYM( __o );								\
 						RKH_TRC_STR( __o_n );							\
 					RKH_TRC_END();										\
+					RKH_TRC_FLUSH();									\
 				} while(0)
 
 		/* --- Symbol entry table for event signals ---- */
@@ -1368,6 +1369,7 @@ typedef enum rkh_trc_events
 						RKH_TRC_SIG( __s );								\
 						RKH_TRC_STR( __s_n );							\
 					RKH_TRC_END();										\
+					RKH_TRC_FLUSH();									\
 				} while(0)
 
 	#else
