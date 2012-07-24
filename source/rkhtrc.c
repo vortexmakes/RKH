@@ -17,7 +17,12 @@ RKH_MODULE_NAME( rkhtrc )
 #if RKH_TRC_RUNTIME_FILTER == 1
 /* trace event filter table */
 rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
-rkhui8_t trcgfilter;	/* trace group filter table */
+
+/* trace group filter table */
+rkhui8_t trcgfilter;
+
+/* trace points associated with the SMA (AO */
+rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
 #endif
 
 static RKH_TRCE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
@@ -94,8 +99,8 @@ rkh_trc_get( void )
 HUInt
 rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e )
 {
-	return (( trcgfilter & rkh_maptbl[ grp ] ) == 0 ) &&
-				(( trceftbl[ e >> 3 ] & rkh_maptbl[ e & 0x07 ]) == 0 );
+	return 	(( trcgfilter & rkh_maptbl[ grp ] ) == 0 ) &&
+			(( trceftbl[ e >> 3 ] & rkh_maptbl[ e & 0x07 ]) == 0 );
 #if 0
 	return (( trcgfilter & (1<<grp) ) != 0 ) &&
 				(( trceftbl[ e >> 3 ] & (1 << ( e&0x07 )) ) != 0 );
@@ -138,6 +143,30 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 		trceftbl[ evt>>3 ] |= rkh_maptbl[ evt & 0x07 ];
 	else
 		trceftbl[ evt>>3 ] &= ~rkh_maptbl[ evt & 0x07 ];
+}
+
+
+HUInt
+rkh_trc_sma_isoff_( rkhui8_t prio )
+{
+	if( prio == RKH_MAX_SMA )
+		return 1;
+	return (( trcsmaftbl[ prio >> 3 ] & rkh_maptbl[ prio & 0x07 ]) == 0 );
+}
+
+
+void 
+rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio )
+{
+	rkhui8_t x, y;
+
+	y = prio >> 3;		/* index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table */
+	x = prio & 0x07;	/* bit position in trcsmaftbl[ Y's ] */
+
+	if( ctrl == FILTER_ON )
+		trcsmaftbl[ y ] |= rkh_maptbl[ x ];
+	else
+		trcsmaftbl[ y ] &= ~rkh_maptbl[ x ];
 }
 #endif
 

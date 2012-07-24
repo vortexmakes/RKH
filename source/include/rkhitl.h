@@ -148,6 +148,7 @@
 #define CE( p )						((RKHEVT_T*)(p))
 #define CCE( p )					((const RKHEVT_T*)(p))
 #define CV( p )						((void*)(p))
+#define CRR( p )					((RKHROM ROMRKH_T*)(p))
 
 
 /* 	
