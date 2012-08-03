@@ -1,7 +1,7 @@
 /*
- *	file: rkhport.h - Visual Studio 2008 port
+ *	file: rkht.h - Freescale ColdFire MCU's CodeWarrior port
  *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 27, 2012
+ *	Date of the last update:  Mar 26, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -24,44 +24,36 @@
  */
 
 /*
- * 	rkhport.h
+ * 	rkht.h
  */
 
 
-#ifndef __RKHPORT_H__
-#define __RKHPORT_H__
-
-#include "derivative.h"
-#include "critical.h"
-#include <hidef.h>
-
-#include "rkhtype.h"
-#include "rkhrq.h"
-#include "rkhmp.h"
-#include "rkhrdy.h"
-#include "rkhs.h"
-
-
-const char *rkh_get_port_version( void );
-const char *rkh_get_port_desc( void );
+#ifndef __RKHT_H__
+#define __RKHT_H__
 
 
 /*
- * 	Declaring an object RKHROM announces that its value will
- * 	not be changed and it will be stored in ROM.
+ * 	Portable data types.
+ *
+ * 	The RKH uses a set of integer quantities. That maybe 
+ * 	machine or compiler	dependent.
+ *
+ * 	\note
+ * 	The 'HUInt' and 'HInt' will normally be the natural size 
+ * 	for a particular machine. These types designates an integer 
+ * 	type that is usually fastest to operate with among all integer 
+ * 	types.
  */
 
-#define RKHROM			const	
+typedef signed char 	rkhi8_t;
+typedef signed short 	rkhi16_t;
+typedef signed long		rkhi32_t;
+typedef unsigned char 	rkhui8_t;
+typedef unsigned short 	rkhui16_t;
+typedef unsigned long	rkhui32_t;
 
-
-#define RKH_DIS_INTERRUPT()				DisableInterrupts
-#define RKH_ENA_INTERRUPT()				EnableInterrupts
-//#define RKH_CPUSR_TYPE
-
-#define RKH_ENTER_CRITICAL( dummy )		enter_critical()
-#define RKH_EXIT_CRITICAL( dummy )		exit_critical()
-
-#define RKH_EQ_TYPE              		RKHRQ_T
+typedef unsigned char	HUInt;
+typedef signed char		HInt;
 
 
 #endif

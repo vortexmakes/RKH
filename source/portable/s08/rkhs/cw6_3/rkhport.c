@@ -1,7 +1,7 @@
 /*
- *	file: rkhport.h - Visual Studio 2008 port
+ *	file: rkht.h - Freescale ColdFire V1 MCU's, CodeWarrior port
  *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 27, 2012
+ *	Date of the last update:  Mar 26, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -24,44 +24,29 @@
  */
 
 /*
- * 	rkhport.h
+ * 	rkhport.c
  */
 
 
-#ifndef __RKHPORT_H__
-#define __RKHPORT_H__
-
-#include "derivative.h"
-#include "critical.h"
-#include <hidef.h>
-
-#include "rkhtype.h"
-#include "rkhrq.h"
-#include "rkhmp.h"
-#include "rkhrdy.h"
-#include "rkhs.h"
+#include "rkh.h"
 
 
-const char *rkh_get_port_version( void );
-const char *rkh_get_port_desc( void );
+RKH_MODULE_NAME( rkhport )
+RKH_MODULE_VERSION( rkhport, 1.00 )
+RKH_MODULE_DESC( rkhport, "Freescale S08, CodeWarrior" )
 
 
-/*
- * 	Declaring an object RKHROM announces that its value will
- * 	not be changed and it will be stored in ROM.
- */
-
-#define RKHROM			const	
-
-
-#define RKH_DIS_INTERRUPT()				DisableInterrupts
-#define RKH_ENA_INTERRUPT()				EnableInterrupts
-//#define RKH_CPUSR_TYPE
-
-#define RKH_ENTER_CRITICAL( dummy )		enter_critical()
-#define RKH_EXIT_CRITICAL( dummy )		exit_critical()
-
-#define RKH_EQ_TYPE              		RKHRQ_T
+const 
+char *
+rkh_get_port_version( void )
+{
+	return RKH_MODULE_GET_VERSION();
+}
 
 
-#endif
+const 
+char *
+rkh_get_port_desc( void )
+{
+	return RKH_MODULE_GET_DESC();
+}

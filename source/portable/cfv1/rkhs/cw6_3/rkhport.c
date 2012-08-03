@@ -35,6 +35,7 @@ RKH_MODULE_NAME( rkhport )
 RKH_MODULE_VERSION( rkhport, 1.00 )
 RKH_MODULE_DESC( rkhport, "Freescale Coldfire V1, CodeWarrior" )
 
+
 const 
 char *
 rkh_get_port_version( void )
@@ -49,5 +50,3 @@ rkh_get_port_desc( void )
 {
 	return RKH_MODULE_GET_DESC();
 }
-
-
