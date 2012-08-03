@@ -688,11 +688,11 @@
 
 /**
  *	If the #RKH_MP_EN_GET_BSIZE is set to 1 then RKH will include the 
- *	rkh_mp_get_blksize() function that returns the size of memory block in 
- *	bytes. See rkh_mp_get_blksize() function.
+ *	rkh_mp_get_bsize() function that returns the size of memory block in 
+ *	bytes. See rkh_mp_get_bsize() function.
  */
 
-#define RKH_MP_EN_GET_BSIZE				1
+#define RKH_MP_EN_GET_BSIZE				0
 
 /**
  *	If the #RKH_MP_EN_GET_NFREE is set to 1 then RKH will include the 

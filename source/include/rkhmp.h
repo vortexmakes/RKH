@@ -330,7 +330,7 @@ void rkh_mp_put( RKHMP_T *mp, void *blk );
  * 	The size of memory block in bytes.
  */
 
-RKH_MPBS_T rkh_mp_get_blksize( RKHMP_T *mp );
+RKH_MPBS_T rkh_mp_get_bsize( RKHMP_T *mp );
 
 
 /**

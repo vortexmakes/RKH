@@ -210,17 +210,17 @@ rkh_mp_put( RKHMP_T *mp, void *blk )
 }
 
 
-#if RKH_MP_GET_BLKSIZE == 1
+#if RKH_MP_EN_GET_BSIZE == 1
 RKH_MPBS_T 
-rkh_mp_get_blksize( RKHMP_T *mp )
+rkh_mp_get_bsize( RKHMP_T *mp )
 {
-    RK_MPCTR_T bs;
+    RKH_MPBS_T bs;
 	RKH_SR_CRITICAL_;
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
-    bs = pmp->blk_size;
+    bs = mp->bsize;
 	RKH_EXIT_CRITICAL_();
 
     return bs;
@@ -260,24 +260,6 @@ rkh_mp_get_low_wmark( RKHMP_T *mp )
 	RKH_EXIT_CRITICAL_();
 
     return nmin;
-}
-#endif
-
-
-#if RKH_MP_QUERY == 1 && RKH_MP_REDUCED == 0
-void 
-rkh_mp_query( RKHMP_T *mp, RKH_MPDATA_T *data )
-{
-	RKH_SR_CRITICAL_;
-
-	RKHASSERT( mp != ( RKHMP_T* )0 && data != NULL );
-
-	RKH_ENTER_CRITICAL_();
-    data->blk_size = pmp->blk_size;
-    data->nblocks = pmp->ntot;
-    data->nfree = pmp->nfree;
-    data->nused = pmp->ntot - pmp->nfree;
-	RKH_EXIT_CRITICAL_();
 }
 #endif
 
