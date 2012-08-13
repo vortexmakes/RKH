@@ -1809,7 +1809,7 @@ HUInt rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e );
  * 	This function is internal to RKH and the user application should not call 
  * 	it.
  *
- * 	\param e		SMA priority.
+ * 	\param prio		SMA priority.
  *	
  *	\return
  * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
@@ -1842,7 +1842,7 @@ HUInt rkh_trc_sma_isoff_( rkhui8_t prio );
  * 
  * 	\param ctrl		filter option, the available options are FILTER_ON or 
  * 					FILTER_OFF.
- * 	\param evt		SMA priority.
+ * 	\param prio		SMA priority.
  */
 
 void rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio );

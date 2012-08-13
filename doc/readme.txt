@@ -685,13 +685,13 @@ the application-specific functions rkh_trc_open(), rkh_trc_close(),
 rkh_trc_flush(), and rkh_trc_getts() are application provided.
 
 \code void rkh_trc_open( void )\endcode
-\copydetails rkh_trc_open
+\copydetails RKH_TRC_OPEN
 
 \code void rkh_trc_close( void )\endcode
-\copydetails rkh_trc_close
+\copydetails RKH_TRC_CLOSE
 
 \code void rkh_trc_flush( void )\endcode
-\copydetails rkh_trc_flush
+\copydetails RKH_TRC_FLUSH
 
 \code void rkh_trc_getts( void )\endcode
 \copydetails rkh_trc_getts
@@ -2738,11 +2738,11 @@ For using the native trace facility the user should implement several
 functions which are platform and application specific. These function 
 prototypes are definied within \b rkh.h file and listed below:
 
-\li \b rkh_trc_open() \copydetails rkh_trc_open
+\li \b rkh_trc_open() \copydetails RKH_TRC_OPEN
 
-\li \b rkh_trc_close() \copydetails rkh_trc_close
+\li \b rkh_trc_close() \copydetails RKH_TRC_CLOSE
 
-\li \b rkh_trc_flush() \copydetails rkh_trc_flush
+\li \b rkh_trc_flush() \copydetails RKH_TRC_FLUSH
 
 \li \b rkh_trc_getts() \copydetails rkh_trc_getts
 

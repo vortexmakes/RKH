@@ -1212,7 +1212,7 @@ void rkh_init( void );
  *	infinite loop
  *	{
  *		disable interrupts;
- *		if( is_not_active_object_ready_to_run )
+ *		if( is_active_object_ready_to_run )
  *		{
  *			find the active object with highest priority;
  *			enable interrupts;
@@ -2121,6 +2121,10 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	At a minimum, the function must configure the trace stream by calling 
  *	rkh_trc_init() function.
  * 
+ * 	\note
+ * 	The function rkh_trc_open() is internal to RKH and the user application 
+ * 	should not call it. Please use #RKH_TRC_OPEN() macro.
+ *
  *	Example:
  *
  *	\code
@@ -2166,6 +2170,10 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	At a minimum, the function must configure the trace stream by calling 
  *	rkh_trc_init() function.
  *
+ * 	\note
+ * 	The function rkh_trc_close() is internal to RKH and the user application 
+ * 	should not call it. Please use #RKH_TRC_CLOSE() macro.
+ *
  *	Example:
  *
  *	\code
@@ -2200,6 +2208,10 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
  * 	This place is a trace stream. Frequently, events traced are stored in 
  * 	the stream until it is flushed.
+ *
+ * 	\note
+ * 	The function rkh_trc_flush() is internal to RKH and the user application 
+ * 	should not call it. Please use #RKH_TRC_FLUSH() macro.
  *
  *	Example:
  *
