@@ -33,7 +33,7 @@ main( int argc, char *argv[] )
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
 	RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
 	
-	RKH_FILTER_ON_SMA( my );
+	RKH_FILTER_OFF_SMA( my );
 
 	rkh_init();
 	RKH_TRC_OPEN();
