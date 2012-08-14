@@ -100,5 +100,9 @@
 	#include "..\portable\80x86\win32_st\vc08\rkht.h"
 #endif
 
+#ifdef __S08CW63__
+	#include "..\portable\s08\rkhs\cw6_3\rkht.h"
+#endif
+
 
 #endif

@@ -82,6 +82,11 @@
 	#include "..\portable\80x86\win32_st\vc08\rkhport.h"
 #endif
 
+#ifdef __S08CW63__
+	#include "..\portable\s08\rkhs\cw6_3\rkhport.h"
+#endif
+
+
 /**
  * 	\brief
  *	If RKHROM has not been defined then	\b rkhport.h has not yet been 
