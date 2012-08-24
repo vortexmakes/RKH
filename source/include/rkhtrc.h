@@ -261,6 +261,12 @@ typedef enum rkh_trc_groups
 	 */
 	RKH_TRCG_RKH,
 
+	/**
+	 * 	\brief
+	 * 	User group (USR)
+	 */
+	RKH_TRCG_USR,
+
 	RKH_TRCG_NGROUP
 } RKH_TRC_GROUPS;
 
