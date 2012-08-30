@@ -228,7 +228,7 @@ rkh_mp_get_bsize( RKHMP_T *mp )
 #endif
 
 
-#if RKH_MP_EN_GET_NFREE == 1 && RKH_MP_REDUCED == 0
+#if RKH_MP_EN_GET_NFREE == 1
 RKH_MPNB_T 
 rkh_mp_get_nfree( RKHMP_T *mp )
 {
