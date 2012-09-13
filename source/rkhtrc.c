@@ -160,8 +160,10 @@ rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio )
 {
 	rkhui8_t x, y;
 
-	y = prio >> 3;		/* index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table */
-	x = prio & 0x07;	/* bit position in trcsmaftbl[ Y's ] */
+	/* index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table */
+	y = (rkhui8_t)(prio >> 3);
+	/* bit position in trcsmaftbl[ Y's ] */
+	x = (rkhui8_t)(prio & 0x07);
 
 	if( ctrl == FILTER_ON )
 		trcsmaftbl[ y ] |= rkh_maptbl[ x ];
