@@ -59,7 +59,7 @@ main( int argc, char *argv[] )
 	RKH_TRCR_RKH_SIG( SIX	);
 	RKH_TRCR_RKH_SIG( TERM	);
 	
-	rkh_sma_activate( my, qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_sma_activate( my, (const RKHEVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
 	RKH_TRC_CLOSE();
