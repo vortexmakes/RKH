@@ -106,7 +106,6 @@ rkh_enter( void )
 void 
 rkh_exit( void )
 {
-	rkh_hk_exit();			/* Invoke the exit hook */
 	RKH_TRCR_RKH_EX();
 }
 

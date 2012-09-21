@@ -187,7 +187,6 @@ void
 rkh_hk_exit( void ) 
 {
 	RKH_TRC_FLUSH();
-    running = 0;
 }
 
 

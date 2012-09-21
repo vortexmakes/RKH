@@ -95,7 +95,7 @@ rkh_enter( void )
             rkh_hk_idle();
     }
 
-    rkh_hk_exit();
+    RKH_HK_EXIT();
     CloseHandle( sma_is_rdy );
     DeleteCriticalSection( &csection );	
 }
@@ -104,8 +104,8 @@ rkh_enter( void )
 void 
 rkh_exit( void )
 {
-	rkh_hk_exit();
 	RKH_TRCR_RKH_EX();
+	running = 0;
 }
 
 
