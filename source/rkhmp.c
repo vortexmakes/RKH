@@ -68,7 +68,6 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 												RKH_MPBS_T bsize )
 {
     RKH_FREE_BLK_T *fb;
-    rkhui8_t corr;
     RKH_MPNB_T nblocks;
 
     /* 
@@ -81,36 +80,14 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 				ssize >= sizeof( RKH_FREE_BLK_T ) &&
 				(RKH_MPBS_T)( bsize + sizeof( RKH_FREE_BLK_T ) ) > bsize );
 
-	/* 
-	 * If the alignment is a power of two, the following formulas 
-	 * provide the number of padding bytes required to align the 
-	 * start of a data structure:
-	 *
-	 * padding = align - (offset & (align - 1))
-	 * new offset = (offset + align - 1) & ~(align - 1)
-	 */
-
-    corr = (rkhui8_t)((rkhui32_t)sstart&(rkhui32_t)(sizeof(RKH_FREE_BLK_T)-1));
-
-    if( corr != 0 )	/* alignment needed? */ 
-	{
-		/* amount to align 'sstart' */
-        corr = (rkhui8_t)(sizeof( RKH_FREE_BLK_T ) - corr);
-        ssize -= ( rkhui16_t )corr;	/* reduce the available pool size */
-    }
+    mp->free = ( void* )(sstart);
 
     /* 
-	 * (1) Align the head of free list at the free block-size boundary.
+	 * (1) Round up the 'bsize' to fit an integer # free blocks, no division.
 	 */
 
-    mp->free = ( void* )( ( rkhui8_t* )sstart + corr );
-
-    /* 
-	 * (2) Round up the 'bsize' to fit an integer # free blocks, no division.
-	 */
-
-    mp->bsize = sizeof( RKH_FREE_BLK_T );         /* start with just one */
-    nblocks = 1;              /* # free blocks that fit in one memory block */
+    mp->bsize = sizeof( RKH_FREE_BLK_T );		      /* start with just one */
+    nblocks = 1;			   /* # free blocks that fit in one memory block */
 
     while( mp->bsize < bsize )
 	{
@@ -118,7 +95,7 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
         ++nblocks;
     }
 	
-    bsize = mp->bsize;      /* use the rounded-up value from now on */
+    bsize = mp->bsize;		         /* use the rounded-up value from now on */
 	
 	/* 
 	 * The pool buffer must fit at least one rounded-up block.
@@ -127,19 +104,19 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 	RKHASSERT( ssize >= ( rkhui16_t )bsize );
 
 	/* 
-	 * (3) Chain all blocks together in a free-list... 
+	 * (2) Chain all blocks together in a free-list... 
 	 */
 
-    ssize -= ( rkhui16_t )bsize;        /* don't count the last block */
-    mp->nblocks = 1;                    /* the last block already in the pool */
-    fb = ( RKH_FREE_BLK_T* )mp->free;  /*start at the head of the free list */
+    ssize -= ( rkhui16_t )bsize;	           /* don't count the last block */
+    mp->nblocks = 1;				   /* the last block already in the pool */
+    fb = ( RKH_FREE_BLK_T* )mp->free;	/*start at the head of the free list */
 
     while( ssize >= ( rkhui16_t )bsize ) 
 	{
-        fb->next = &fb[ nblocks ]; /* point the next link to the next block */
-        fb = fb->next;                         /* advance to the next block */
-        ssize -= (rkhui16_t)bsize;  /* reduce the available pool size */
-        ++mp->nblocks;               /* increment the number of blocks so far */
+        fb->next = &fb[ nblocks ];	/* point the next link to the next block */
+        fb = fb->next;				/* advance to the next block */
+        ssize -= (rkhui16_t)bsize;	/* reduce the available pool size */
+        ++mp->nblocks;				/* increment the number of blocks so far */
     }
 
     fb->next  = ( RKH_FREE_BLK_T* )0;        /* the last link points to NULL */
@@ -149,7 +126,7 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 #endif
 #if RKH_MP_REDUCED == 0
     mp->start = sstart;               /* the original start this pool buffer */
-    mp->end   = fb;                         /* the last block in this pool */
+    mp->end   = fb;                           /* the last block in this pool */
 #endif
 	RKH_TRCR_MP_INIT( mp, mp->nblocks );
 }
