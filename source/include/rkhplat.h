@@ -86,6 +86,10 @@
 	#include "..\portable\s08\rkhs\cw6_3\rkhport.h"
 #endif
 
+#ifdef __LNXGNU__
+	#include "../portable/80x86/linux_st/gnu/rkhport.h"
+#endif
+
 
 /**
  * 	\brief

@@ -104,5 +104,9 @@
 	#include "..\portable\s08\rkhs\cw6_3\rkht.h"
 #endif
 
+#ifdef __LNXGNU__
+	#include "../portable/80x86/linux_st/gnu/rkht.h"
+#endif
+
 
 #endif
