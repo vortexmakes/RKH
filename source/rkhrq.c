@@ -233,7 +233,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 		return;
 	}
 
-	if( q->pout == q->pstart )
+	if( q->pout == (void **)q->pstart )
 		q->pout = q->pend;
 
 	--q->pout;
