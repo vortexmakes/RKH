@@ -41,6 +41,7 @@
 #include "rkhitl.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
+#include "rkhtim.h"
 #include "rkhassert.h"
 
 
