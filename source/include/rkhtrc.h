@@ -435,6 +435,8 @@ typedef enum rkh_trc_events
 	RKH_TRCE_RKH_RCALL,			/**< \copydetails RKH_TRCR_RKH_RCALL */
 	RKH_TRCE_OBJ,				/**< \copydetails RKH_TRCR_RKH_OBJ */
 	RKH_TRCE_SIG,				/**< \copydetails RKH_TRCR_RKH_SIG */
+	RKH_TRCE_FUN,				/**< \copydetails RKH_TRCR_RKH_FUN */
+	RKH_TRCE_EXE_FUN,			/**< \copydetails RKH_TRCR_RKH_EXE_FUN */
 
 	RKH_TRCE_USER,
 
@@ -640,6 +642,23 @@ typedef enum rkh_trc_events
 				RKH_TRC_UI32( (rkhui32_t)sym )
 #else
 	#define RKH_TRC_SYM( sym )	\
+				RKH_TRC_UI32( (rkhui32_t)sym )
+#endif
+
+
+/**
+ * 	\brief
+ * 	Insert a function address as trace record argument.
+ */
+
+#if RKH_TRC_SIZEOF_FUN_POINTER == 16
+	#define RKH_TRC_FUN( sym )	\
+				RKH_TRC_UI16( (rkhui16_t)sym )
+#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
+	#define RKH_TRC_FUN( sym )	\
+				RKH_TRC_UI32( (rkhui32_t)sym )
+#else
+	#define RKH_TRC_FUN( sym )	\
 				RKH_TRC_UI32( (rkhui32_t)sym )
 #endif
 
@@ -1474,6 +1493,64 @@ typedef enum rkh_trc_events
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
+		/* --- Symbol entry table for functions ---- */
+
+		/**
+		 * 	Desc 	= entry symbol table for function\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_FUN\n
+		 * 	Args	= function address\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the function in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	// frequently, the macro RKH_TRCR_RKH_FUN() is used in the 
+		 * 	// \b main.c file.
+		 *
+		 * 	RKH_TRCR_RKH_FUN( my_init );
+		 * 	RKH_TRCR_RKH_FUN( set_x_1 );
+		 * 	RKH_TRCR_RKH_FUN( set_x_2 );
+		 * 	RKH_TRCR_RKH_FUN( set_x_3 );
+		 * 	RKH_TRCR_RKH_FUN( set_y_0 );
+		 * 	RKH_TRCR_RKH_FUN( dummy_exit );
+		 * 	...
+		 * 	\endcode
+		 */
+
+		#define RKH_TRCR_RKH_FUN( __f )									\
+				do{ 													\
+					static RKHROM char *const __f_n = #__f;				\
+					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_FUN, NVS )	\
+						RKH_TRC_FUN( __f );								\
+						RKH_TRC_STR( __f_n );							\
+					RKH_TRC_END();										\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
+		/**
+		 * 	Desc 	= the function was executed\n
+		 * 	Group 	= RKH_TRCG_RKH\n
+		 * 	Id 		= RKH_TRCE_RKH_FUN\n
+		 * 	Args	= function address\n
+		 *
+		 * 	Example:
+		 *
+		 * 	\code
+		 * 	void 
+		 * 	my_init( const void *sma )
+		 * 	{
+		 * 		CMY( sma )->x = CMY( sma )->y = 0;
+		 * 		RKH_TRCR_RKH_EXE_FUN( my_init );
+		 * 	}
+		 * 	\endcode
+		 */
+
+		#define RKH_TRCR_RKH_EXE_FUN( function )						\
+					RKH_TRC_BEGIN( RKH_TRCG_RKH, RKH_TRCE_EXE_FUN, NVS )\
+						RKH_TRC_FUN( function );						\
+					RKH_TRC_END()
 	#else
 		#define RKH_TRCR_RKH_EN()							(void)0
 		#define RKH_TRCR_RKH_EX()							(void)0
@@ -1485,6 +1562,8 @@ typedef enum rkh_trc_events
 		#define RKH_TRCR_RKH_RCALL( sma, ev )				(void)0
 		#define RKH_TRCR_RKH_OBJ( __o )						(void)0
 		#define RKH_TRCR_RKH_SIG( __s )						(void)0
+		#define RKH_TRCR_RKH_FUN( __s )						(void)0
+		#define RKH_TRCR_RKH_EXE_FUN( __f )					(void)0
 	#endif
 	
 #else
@@ -1544,6 +1623,8 @@ typedef enum rkh_trc_events
 	#define RKH_TRCR_RKH_RCALL( sma, ev )
 	#define RKH_TRCR_RKH_OBJ( __o )
 	#define RKH_TRCR_RKH_SIG( __s )
+	#define RKH_TRCR_RKH_FUN( __f )
+	#define RKH_TRCR_RKH_EXE_FUN( __f )
 #endif
 
 
