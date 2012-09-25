@@ -493,7 +493,8 @@
 
 
 #define MKSMA( rr, s )					\
-						{{ (rr), (RKHROM struct rkhst_t*)(s) }}
+						{{ (RKHROM ROMRKH_T*)(rr), \
+							 	(RKHROM struct rkhst_t*)(s) }}
 
 
 #if RKH_SMA_EN_STATE_ID == 1
