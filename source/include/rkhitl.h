@@ -869,6 +869,7 @@
  */
 
 struct rkh_t;
+struct rkhsma_t;
 
 
 #define CIA( s )	((RKHINIT_T)((s)->romrkh->iaction))
@@ -894,7 +895,7 @@ struct rkh_t;
 			(*CIA( h ))( (h), CIA(h)->romrkh->ievent );				\
 	}
 #elif RKH_SMA_EN_INIT_ARG_SMA == 1 && RKH_SMA_EN_IEVENT == 0
-	typedef void ( *RKHINIT_T )( const void *sma );
+	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
