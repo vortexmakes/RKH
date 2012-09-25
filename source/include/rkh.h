@@ -202,8 +202,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSCMP_T name =					\
 								{										\
-									MKBASE(RKH_COMPOSITE,id),			\
-									MKST(en,ex,parent),					\
+									{{MKBASE(RKH_COMPOSITE,id)},		\
+									MKST(en,ex,parent)},				\
 									MKCOMP(name,defchild,history)		\
 								}
 
@@ -268,8 +268,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSBSC_T name =					\
 								{										\
-									MKBASE(RKH_BASIC,id),				\
-									MKST(en,ex,parent),					\
+									{{MKBASE(RKH_BASIC,id)},			\
+									MKST(en,ex,parent)},				\
 									MKBASIC(name,prepro)				\
 								}
 
@@ -308,7 +308,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSCOND_T name =				\
 								{										\
-									MKBASE(RKH_CONDITIONAL,id),			\
+									{MKBASE(RKH_CONDITIONAL,id)},		\
 									name##_trtbl 						\
 								}
 
@@ -337,7 +337,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHSJUNC_T name =				\
 								{										\
-									MKBASE(RKH_JUNCTION,id),			\
+									{MKBASE(RKH_JUNCTION,id)},			\
 									action,	target 						\
 								}
 
@@ -367,7 +367,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 						RKHROM RKHSHIST_T name =						\
 						{												\
-							MKBASE(RKH_DHISTORY,id),					\
+							{MKBASE(RKH_DHISTORY,id)},					\
 							(RKHROM struct rkhst_t *)parent,&ram##name 	\
 						}
 
@@ -397,7 +397,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 						RKHROM RKHSHIST_T name =						\
 						{												\
-							MKBASE(RKH_SHISTORY,id),					\
+							{MKBASE(RKH_SHISTORY,id)},					\
 							(RKHROM struct rkhst_t *)parent,&ram##name 	\
 						}
 
@@ -462,8 +462,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 							RKHROM RKHSSBM_T name =						\
 							{											\
-								MKBASE(RKH_SUBMACHINE,id),				\
-								MKST(en,ex,parent),						\
+								{{MKBASE(RKH_SUBMACHINE,id)},			\
+								MKST(en,ex,parent)},					\
 								MKSBM(name,sbm)							\
 							}
 
@@ -594,12 +594,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param subm		pointer to submachine state.
  */
 
-#define RKH_EN_CNNPNT( name, enpnt, subm )				\
-														\
-							RKHROM RKHSENP_T name =		\
-							{							\
-								MKBASE(RKH_ENPOINT,id),	\
-								MKENP(enpnt,subm)		\
+#define RKH_EN_CNNPNT( name, enpnt, subm )					\
+															\
+							RKHROM RKHSENP_T name =			\
+							{								\
+								{MKBASE(RKH_ENPOINT,id)},	\
+								MKENP(enpnt,subm)			\
 							}
 
 
@@ -635,7 +635,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKHRSM_T name =					\
 								{										\
-									MKBASE(RKH_REF_SUBMACHINE,id),		\
+									{MKBASE(RKH_REF_SUBMACHINE,id)},	\
 									MKMCH(defchild,iact,name) 			\
 								}
 
@@ -686,7 +686,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 														\
 							RKHROM RKHSEXP_T name =		\
 							{							\
-								MKBASE(RKH_EXPOINT,0),	\
+								{MKBASE(RKH_EXPOINT,0)},\
 								ix, subm 				\
 							}
 
