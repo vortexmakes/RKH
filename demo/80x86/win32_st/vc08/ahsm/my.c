@@ -119,9 +119,9 @@ RKH_CREATE_JUNCTION_STATE( J, 11, NULL, &S3 );
 RKH_CREATE_COND_STATE( C1, 12 );
 RKH_CREATE_BRANCH_TABLE( C1 )
 
-	RKH_BRANCH( y1, 	NULL, 		&H ),
-	RKH_BRANCH( y2, 	dummy_act, 	&DH ),
-	RKH_BRANCH( y0, 	NULL, 		&S1 ),
+	RKH_BRANCH( y_1, 	NULL, 		&H ),
+	RKH_BRANCH( y_2, 	dummy_act, 	&DH ),
+	RKH_BRANCH( y_0, 	NULL, 		&S1 ),
 
 RKH_END_BRANCH_TABLE
 

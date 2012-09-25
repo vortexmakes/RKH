@@ -135,7 +135,7 @@ terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	printf("%s\n", __FUNCTION__);
@@ -144,7 +144,7 @@ y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	printf("%s\n", __FUNCTION__);
@@ -153,7 +153,7 @@ y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y2( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	printf("%s\n", __FUNCTION__);

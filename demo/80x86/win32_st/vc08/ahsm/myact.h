@@ -55,9 +55,9 @@ void terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
  *	Defines branch's guards
  */
 
-HUInt y0( const struct rkhsma_t *sma, RKHEVT_T *pe );
-HUInt y1( const struct rkhsma_t *sma, RKHEVT_T *pe );
-HUInt y2( const struct rkhsma_t *sma, RKHEVT_T *pe );
+HUInt y_0( const struct rkhsma_t *sma, RKHEVT_T *pe );
+HUInt y_1( const struct rkhsma_t *sma, RKHEVT_T *pe );
+HUInt y_2( const struct rkhsma_t *sma, RKHEVT_T *pe );
 HUInt x1( const struct rkhsma_t *sma, RKHEVT_T *pe );
 HUInt x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe );
 

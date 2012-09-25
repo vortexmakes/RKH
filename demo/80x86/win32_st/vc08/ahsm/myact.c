@@ -124,7 +124,7 @@ terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
@@ -132,7 +132,7 @@ y0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
@@ -140,7 +140,7 @@ y1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y2( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
