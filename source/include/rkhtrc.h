@@ -271,6 +271,15 @@ typedef enum rkh_trc_groups
 } RKH_TRC_GROUPS;
 
 
+#define RKH_MP_START		(rkhui8_t)(RKH_TG_MP << 5)
+#define RKH_RQ_START		(rkhui8_t)(RKH_TG_RQ << 5)
+#define RKH_SMA_START		(rkhui8_t)(RKH_TG_SMA << 5)
+#define RKH_SM_START		(rkhui8_t)(RKH_TG_SM << 5)
+#define RKH_TIM_START		(rkhui8_t)(RKH_TG_TIM << 5)
+#define RKH_FWK_START		(rkhui8_t)(RKH_TG_FWK << 5)
+#define RKH_USR_START		(rkhui8_t)(RKH_TG_USR << 5)
+
+
 /**
  * 	\brief
  * 	RKH trace events.
@@ -380,13 +389,11 @@ typedef enum rkh_trc_groups
 typedef enum rkh_trc_events
 {
 	/* --- Memory Pool events (MP group) ------------------ */
-	RKH_MP_START = 0x0,
 	RKH_TE_MP_INIT = RKH_MP_START,	/**< \copydetails RKH_TR_MP_INIT */
 	RKH_TE_MP_GET, 					/**< \copydetails RKH_TR_MP_GET */
 	RKH_TE_MP_PUT,					/**< \copydetails RKH_TR_MP_PUT */
 	
 	/* --- Queue events (RQ group) ------------------------ */
-	RKH_RQ_START = 0x20,
 	RKH_TE_RQ_INIT = RKH_RQ_START,	/**< \copydetails RKH_TR_RQ_INIT */
 	RKH_TE_RQ_GET,					/**< \copydetails RKH_TR_RQ_GET */
 	RKH_TE_RQ_FIFO,					/**< \copydetails RKH_TR_RQ_FIFO */
@@ -396,7 +403,6 @@ typedef enum rkh_trc_events
 	RKH_TE_RQ_GET_LAST,				/**< \copydetails RKH_TR_RQ_GET_LAST */
 
 	/* --- State Machine Application events (SMA group) --- */
-	RKH_SMA_START = 0x40,
 	RKH_TE_SMA_ACT = RKH_SMA_START,	/**< \copydetails RKH_TR_SMA_ACT */
 	RKH_TE_SMA_TERM,				/**< \copydetails RKH_TR_SMA_TERM */
 	RKH_TE_SMA_GET,					/**< \copydetails RKH_TR_SMA_GET */
@@ -406,7 +412,6 @@ typedef enum rkh_trc_events
 	RKH_TE_SMA_UNREG,				/**< \copydetails RKH_TR_SMA_UNREG */
 
 	/* --- State machine events (SM group) ---------------- */
-	RKH_SM_START = 0x60,
 	RKH_TE_SM_INIT = RKH_SM_START,	/**< \copydetails RKH_TR_SM_INIT */
 	RKH_TE_SM_CLRH,					/**< \copydetails RKH_TR_SM_CLRH */
 	RKH_TE_SM_DCH,					/**< \copydetails RKH_TR_SM_DCH */
@@ -426,7 +431,6 @@ typedef enum rkh_trc_events
 	RKH_TE_SM_EX_TSEG,				/**< \copydetails RKH_TR_SM_EX_TSEG */
 
 	/* --- Timer events (TIM group) ----------------------- */
-	RKH_TIM_START = 0x80,
 	RKH_TE_TIM_INIT = RKH_TIM_START,/**< \copydetails RKH_TR_TIM_INIT */
 	RKH_TE_TIM_START,				/**< \copydetails RKH_TR_TIM_START */
 	RKH_TE_TIM_RESTART,				/**< \copydetails RKH_TR_TIM_RESTART */
@@ -435,7 +439,6 @@ typedef enum rkh_trc_events
 	RKH_TE_TIM_REM,					/**< \copydetails RKH_TR_TIM_REM */
 
 	/* --- Framework events (RKH group) ------------------- */
-	RKH_FWK_START = 0xA0,
 	RKH_TE_FWK_EN = RKH_FWK_START,	/**< \copydetails RKH_TR_FWK_EN */
 	RKH_TE_FWK_EX,					/**< \copydetails RKH_TR_FWK_EX */
 	RKH_TE_FWK_EPREG,				/**< \copydetails RKH_TR_FWK_EPREG */
@@ -449,16 +452,18 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_FUN,					/**< \copydetails RKH_TR_FWK_FUN */
 	RKH_TE_FWK_EXE_FUN,				/**< \copydetails RKH_TR_FWK_EXE_FUN */
 
-	RKH_USER_START = 0xC0,
-	RKH_TE_USER = RKH_USER_START,
+	RKH_TE_USER = RKH_USR_START,
 
 	RKH_TE_NEVENT
 } RKH_TRC_EVENTS;
 
 
-#define RKH_XOR		0x20	/** x-ored byte for stuffing a single byte */
-#define RKH_FLG		0x7E	/** flag byte, used as a trace event delimiter */
-#define RKH_ESC		0x7D	/** escape byte stuffing a single byte */
+/** x-ored byte for stuffing a single byte */
+#define RKH_XOR		0x20
+/** flag byte, used as a trace event delimiter */
+#define RKH_FLG		0x7E
+/** escape byte stuffing a single byte */
+#define RKH_ESC		0x7D
 
 
 /**
@@ -1816,6 +1821,7 @@ void rkh_trc_put( rkhui8_t b );
 	/**
 	 * 	\brief
 	 * 	Suppress (disable) one trace event.
+	 * 	Use the RKH_TRC_ALL_EVENTS to disable all trace events.
 	 */
 
 	#define RKH_FILTER_ON_EVENT( evt )				\
@@ -1824,6 +1830,8 @@ void rkh_trc_put( rkhui8_t b );
 	/**
 	 * 	\brief
 	 * 	Emit (enable) one trace event. 
+	 * 	Use the RKH_TRC_ALL_EVENTS to enable all trace events.
+	 *
 	 * 	\note
 	 *	The container group is enabled, reglardless of its status.
 	 */

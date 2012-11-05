@@ -12,6 +12,10 @@
 RKH_MODULE_NAME( rkhtrc )
 
 
+#define GETGR( e )		(((e) & 0xE0) >> 5)
+#define GETEVT( e )		((e) & 0x1F)
+
+
 #if RKH_TRC_EN == 1
 
 #if RKH_TRC_RUNTIME_FILTER == 1
@@ -36,17 +40,18 @@ static rkhui8_t trcqty;
 static rkhui16_t trcqty;
 #endif
 
+
 /* From group to event table */
 static RKHROM rkhui8_t trcgmtbl[] =
 {
-	/* <offset> | <range> */
-	(RKH_MP_START 	| 1),
-	(RKH_RQ_START 	| 1),
-	(RKH_SMA_START 	| 1),
-	(RKH_SM_START 	| 3),
-	(RKH_TIM_START 	| 1),
-	(RKH_TIM_START 	| 2),
-	(RKH_USER_START | 1)
+	/*	<offset>	| <range> [in bytes] */
+	(	(0 << 4) 	| 1		),	/* RKH_MP_START */
+	(	(1 << 4) 	| 1		),	/* RKH_RQ_START */
+	(	(2 << 4) 	| 1		),	/* RKH_SMA_START */
+	(	(3 << 4) 	| 3		),	/* RKH_SM_START */
+	(	(6 << 4) 	| 1		),	/* RKH_TIM_START */
+	(	(7 << 4) 	| 2		),	/* RKH_FWK_START */
+	(	(9 << 4) 	| 1		)	/* RKH_USR_START */
 };
 
 
@@ -142,12 +147,12 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 {
 	rkhui8_t *p, ix, c;
 
-
 	if( evt == RKH_TRC_ALL_EVENTS )
 	{
-		for( p = trceftbl, ix = 0, c = (rkhui8_t)((ctrl == FILTER_ON) ? 
-											0xFF : 0); 
-					ix < RKH_TRC_MAX_EVENTS_PER_GROUP; ++ix, ++p )
+		for( 	p = trceftbl, 
+				ix = 0, 
+				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
+				ix < 10; ++ix, ++p )
 			*p = c;
 		return;
 	}
