@@ -36,6 +36,19 @@ static rkhui8_t trcqty;
 static rkhui16_t trcqty;
 #endif
 
+/* From group to event table */
+static RKHROM rkhui8_t trcgmtbl[] =
+{
+	/* <offset> | <range> */
+	(RKH_MP_START 	| 1),
+	(RKH_RQ_START 	| 1),
+	(RKH_SMA_START 	| 1),
+	(RKH_SM_START 	| 3),
+	(RKH_TIM_START 	| 1),
+	(RKH_TIM_START 	| 2),
+	(RKH_USER_START | 1)
+};
+
 
 void
 rkh_trc_init( void )

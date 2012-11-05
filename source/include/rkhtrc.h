@@ -380,70 +380,77 @@ typedef enum rkh_trc_groups
 typedef enum rkh_trc_events
 {
 	/* --- Memory Pool events (MP group) ------------------ */
-	RKH_TE_MP_INIT,			/**< \copydetails RKH_TR_MP_INIT */
-	RKH_TE_MP_GET, 			/**< \copydetails RKH_TR_MP_GET */
-	RKH_TE_MP_PUT,			/**< \copydetails RKH_TR_MP_PUT */
+	RKH_MP_START = 0x0,
+	RKH_TE_MP_INIT = RKH_MP_START,	/**< \copydetails RKH_TR_MP_INIT */
+	RKH_TE_MP_GET, 					/**< \copydetails RKH_TR_MP_GET */
+	RKH_TE_MP_PUT,					/**< \copydetails RKH_TR_MP_PUT */
 	
 	/* --- Queue events (RQ group) ------------------------ */
-	RKH_TE_RQ_INIT,			/**< \copydetails RKH_TR_RQ_INIT */
-	RKH_TE_RQ_GET,			/**< \copydetails RKH_TR_RQ_GET */
-	RKH_TE_RQ_FIFO,			/**< \copydetails RKH_TR_RQ_FIFO */
-	RKH_TE_RQ_LIFO,			/**< \copydetails RKH_TR_RQ_LIFO */
-	RKH_TE_RQ_FULL,			/**< \copydetails RKH_TR_RQ_FULL */
-	RKH_TE_RQ_DPT,			/**< \copydetails RKH_TR_RQ_DEPLETE */
-	RKH_TE_RQ_GET_LAST,		/**< \copydetails RKH_TR_RQ_GET_LAST */
+	RKH_RQ_START = 0x20,
+	RKH_TE_RQ_INIT = RKH_RQ_START,	/**< \copydetails RKH_TR_RQ_INIT */
+	RKH_TE_RQ_GET,					/**< \copydetails RKH_TR_RQ_GET */
+	RKH_TE_RQ_FIFO,					/**< \copydetails RKH_TR_RQ_FIFO */
+	RKH_TE_RQ_LIFO,					/**< \copydetails RKH_TR_RQ_LIFO */
+	RKH_TE_RQ_FULL,					/**< \copydetails RKH_TR_RQ_FULL */
+	RKH_TE_RQ_DPT,					/**< \copydetails RKH_TR_RQ_DEPLETE */
+	RKH_TE_RQ_GET_LAST,				/**< \copydetails RKH_TR_RQ_GET_LAST */
 
 	/* --- State Machine Application events (SMA group) --- */
-	RKH_TE_SMA_ACT,			/**< \copydetails RKH_TR_SMA_ACT */
-	RKH_TE_SMA_TERM,		/**< \copydetails RKH_TR_SMA_TERM */
-	RKH_TE_SMA_GET,			/**< \copydetails RKH_TR_SMA_GET */
-	RKH_TE_SMA_FIFO,		/**< \copydetails RKH_TR_SMA_FIFO */
-	RKH_TE_SMA_LIFO,		/**< \copydetails RKH_TR_SMA_LIFO */
-	RKH_TE_SMA_REG,			/**< \copydetails RKH_TR_SMA_REG */
-	RKH_TE_SMA_UNREG,		/**< \copydetails RKH_TR_SMA_UNREG */
+	RKH_SMA_START = 0x40,
+	RKH_TE_SMA_ACT = RKH_SMA_START,	/**< \copydetails RKH_TR_SMA_ACT */
+	RKH_TE_SMA_TERM,				/**< \copydetails RKH_TR_SMA_TERM */
+	RKH_TE_SMA_GET,					/**< \copydetails RKH_TR_SMA_GET */
+	RKH_TE_SMA_FIFO,				/**< \copydetails RKH_TR_SMA_FIFO */
+	RKH_TE_SMA_LIFO,				/**< \copydetails RKH_TR_SMA_LIFO */
+	RKH_TE_SMA_REG,					/**< \copydetails RKH_TR_SMA_REG */
+	RKH_TE_SMA_UNREG,				/**< \copydetails RKH_TR_SMA_UNREG */
 
 	/* --- State machine events (SM group) ---------------- */
-	RKH_TE_SM_INIT,			/**< \copydetails RKH_TR_SM_INIT */
-	RKH_TE_SM_CLRH,			/**< \copydetails RKH_TR_SM_CLRH */
-	RKH_TE_SM_DCH,			/**< \copydetails RKH_TR_SM_DCH */
-	RKH_TE_SM_TRN,			/**< \copydetails RKH_TR_SM_TRN */
-	RKH_TE_SM_STATE,		/**< \copydetails RKH_TR_SM_STATE */
-	RKH_TE_SM_ENSTATE,		/**< \copydetails RKH_TR_SM_ENSTATE */
-	RKH_TE_SM_EXSTATE,		/**< \copydetails RKH_TR_SM_EXSTATE */
-	RKH_TE_SM_NENEX,		/**< \copydetails RKH_TR_SM_NENEX */
-	RKH_TE_SM_NTRNACT,		/**< \copydetails RKH_TR_SM_NTRNACT */
-	RKH_TE_SM_CSTATE,		/**< \copydetails RKH_TR_SM_CSTATE */
-	RKH_TE_SM_EVT_PROC,		/**< \copydetails RKH_TR_SM_EVT_PROC */
-	RKH_TE_SM_EVT_NFOUND,	/**< \copydetails RKH_TR_SM_EVT_NFOUND */
-	RKH_TE_SM_GRD_FALSE,	/**< \copydetails RKH_TR_SM_GRD_FALSE */
-	RKH_TE_SM_CND_NFOUND,	/**< \copydetails RKH_TR_SM_CND_NFOUND */
-	RKH_TE_SM_UNKN_STATE,	/**< \copydetails RKH_TR_SM_UNKN_STATE */
-	RKH_TE_SM_EX_HLEVEL,	/**< \copydetails RKH_TR_SM_EX_HLEVEL */
-	RKH_TE_SM_EX_TSEG,		/**< \copydetails RKH_TR_SM_EX_TSEG */
+	RKH_SM_START = 0x60,
+	RKH_TE_SM_INIT = RKH_SM_START,	/**< \copydetails RKH_TR_SM_INIT */
+	RKH_TE_SM_CLRH,					/**< \copydetails RKH_TR_SM_CLRH */
+	RKH_TE_SM_DCH,					/**< \copydetails RKH_TR_SM_DCH */
+	RKH_TE_SM_TRN,					/**< \copydetails RKH_TR_SM_TRN */
+	RKH_TE_SM_STATE,				/**< \copydetails RKH_TR_SM_STATE */
+	RKH_TE_SM_ENSTATE,				/**< \copydetails RKH_TR_SM_ENSTATE */
+	RKH_TE_SM_EXSTATE,				/**< \copydetails RKH_TR_SM_EXSTATE */
+	RKH_TE_SM_NENEX,				/**< \copydetails RKH_TR_SM_NENEX */
+	RKH_TE_SM_NTRNACT,				/**< \copydetails RKH_TR_SM_NTRNACT */
+	RKH_TE_SM_CSTATE,				/**< \copydetails RKH_TR_SM_CSTATE */
+	RKH_TE_SM_EVT_PROC,				/**< \copydetails RKH_TR_SM_EVT_PROC */
+	RKH_TE_SM_EVT_NFOUND,			/**< \copydetails RKH_TR_SM_EVT_NFOUND */
+	RKH_TE_SM_GRD_FALSE,			/**< \copydetails RKH_TR_SM_GRD_FALSE */
+	RKH_TE_SM_CND_NFOUND,			/**< \copydetails RKH_TR_SM_CND_NFOUND */
+	RKH_TE_SM_UNKN_STATE,			/**< \copydetails RKH_TR_SM_UNKN_STATE */
+	RKH_TE_SM_EX_HLEVEL,			/**< \copydetails RKH_TR_SM_EX_HLEVEL */
+	RKH_TE_SM_EX_TSEG,				/**< \copydetails RKH_TR_SM_EX_TSEG */
 
 	/* --- Timer events (TIM group) ----------------------- */
-	RKH_TE_TIM_INIT,		/**< \copydetails RKH_TR_TIM_INIT */
-	RKH_TE_TIM_START,		/**< \copydetails RKH_TR_TIM_START */
-	RKH_TE_TIM_RESTART,		/**< \copydetails RKH_TR_TIM_RESTART */
-	RKH_TE_TIM_STOP,		/**< \copydetails RKH_TR_TIM_STOP */
-	RKH_TE_TIM_TOUT,		/**< \copydetails RKH_TR_TIM_TOUT */
-	RKH_TE_TIM_REM,			/**< \copydetails RKH_TR_TIM_REM */
+	RKH_TIM_START = 0x80,
+	RKH_TE_TIM_INIT = RKH_TIM_START,/**< \copydetails RKH_TR_TIM_INIT */
+	RKH_TE_TIM_START,				/**< \copydetails RKH_TR_TIM_START */
+	RKH_TE_TIM_RESTART,				/**< \copydetails RKH_TR_TIM_RESTART */
+	RKH_TE_TIM_STOP,				/**< \copydetails RKH_TR_TIM_STOP */
+	RKH_TE_TIM_TOUT,				/**< \copydetails RKH_TR_TIM_TOUT */
+	RKH_TE_TIM_REM,					/**< \copydetails RKH_TR_TIM_REM */
 
 	/* --- Framework events (RKH group) ------------------- */
-	RKH_TE_FWK_EN,			/**< \copydetails RKH_TR_FWK_EN */
-	RKH_TE_FWK_EX,			/**< \copydetails RKH_TR_FWK_EX */
-	RKH_TE_FWK_EPREG,		/**< \copydetails RKH_TR_FWK_EPREG */
-	RKH_TE_FWK_AE,			/**< \copydetails RKH_TR_FWK_AE */
-	RKH_TE_FWK_GC,			/**< \copydetails RKH_TR_FWK_GC */
-	RKH_TE_FWK_GCR,			/**< \copydetails RKH_TR_FWK_GCR */
-	RKH_TE_FWK_DEFER,		/**< \copydetails RKH_TR_FWK_DEFER */
-	RKH_TE_FWK_RCALL,		/**< \copydetails RKH_TR_FWK_RCALL */
-	RKH_TE_FWK_OBJ,			/**< \copydetails RKH_TR_FWK_OBJ */
-	RKH_TE_FWK_SIG,			/**< \copydetails RKH_TR_FWK_SIG */
-	RKH_TE_FWK_FUN,			/**< \copydetails RKH_TR_FWK_FUN */
-	RKH_TE_FWK_EXE_FUN,		/**< \copydetails RKH_TR_FWK_EXE_FUN */
+	RKH_FWK_START = 0xA0,
+	RKH_TE_FWK_EN = RKH_FWK_START,	/**< \copydetails RKH_TR_FWK_EN */
+	RKH_TE_FWK_EX,					/**< \copydetails RKH_TR_FWK_EX */
+	RKH_TE_FWK_EPREG,				/**< \copydetails RKH_TR_FWK_EPREG */
+	RKH_TE_FWK_AE,					/**< \copydetails RKH_TR_FWK_AE */
+	RKH_TE_FWK_GC,					/**< \copydetails RKH_TR_FWK_GC */
+	RKH_TE_FWK_GCR,					/**< \copydetails RKH_TR_FWK_GCR */
+	RKH_TE_FWK_DEFER,				/**< \copydetails RKH_TR_FWK_DEFER */
+	RKH_TE_FWK_RCALL,				/**< \copydetails RKH_TR_FWK_RCALL */
+	RKH_TE_FWK_OBJ,					/**< \copydetails RKH_TR_FWK_OBJ */
+	RKH_TE_FWK_SIG,					/**< \copydetails RKH_TR_FWK_SIG */
+	RKH_TE_FWK_FUN,					/**< \copydetails RKH_TR_FWK_FUN */
+	RKH_TE_FWK_EXE_FUN,				/**< \copydetails RKH_TR_FWK_EXE_FUN */
 
-	RKH_TE_USER,
+	RKH_USER_START = 0xC0,
+	RKH_TE_USER = RKH_USER_START,
 
 	RKH_TE_NEVENT
 } RKH_TRC_EVENTS;
