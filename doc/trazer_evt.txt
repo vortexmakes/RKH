@@ -20,19 +20,19 @@
 #
 # --- Memory Pool (MP) ------------------
 #
-Event: RKH_TRCE_MP_INIT
+Event: RKH_TE_MP_INIT
 Group: MP
 Name: INIT
 Args: mp=%s,nblock=%d
 Comment: Memory Pool Init
 
-Event: RKH_TRCE_MP_GET
+Event: RKH_TE_MP_GET
 Group: MP
 Name: GET
 Args: mp=%s,nfree=%d
 Comment: Memory Pool Get
 
-Event: RKH_TRCE_MP_PUT
+Event: RKH_TE_MP_PUT
 Group: MP
 Name: PUT
 Args: mp=%s,nfree=%d
@@ -40,37 +40,37 @@ Args: mp=%s,nfree=%d
 #
 # --- Queue (RQ) ------------------------
 #
-Event: RKH_TRCE_RQ_INIT
+Event: RKH_TE_RQ_INIT
 Group: RQ
 Name: INIT
 Args: rq=%s, sma=%s, nelem=%d
 
-Event: RKH_TRCE_RQ_GET
+Event: RKH_TE_RQ_GET
 Group: RQ
 Name: GET
 Args: rq=%s, nused=%d
 
-Event: RKH_TRCE_RQ_FIFO
+Event: RKH_TE_RQ_FIFO
 Group: RQ
 Name: POST_FIFO
 Args: rq=%s, nused=%d
 
-Event: RKH_TRCE_RQ_LIFO
+Event: RKH_TE_RQ_LIFO
 Group: RQ
 Name: POST_LIFO
 Args: rq=%s, nused=%d
 
-Event: RKH_TRCE_RQ_FULL
+Event: RKH_TE_RQ_FULL
 Group: RQ
 Name: FULL
 Args: rq=%s
 
-Event: RKH_TRCE_RQ_DPT
+Event: RKH_TE_RQ_DPT
 Group: RQ
 Name: DEPLETE
 Args: rq=%s
 
-Event: RKH_TRCE_RQ_GET_LAST
+Event: RKH_TE_RQ_GET_LAST
 Group: RQ
 Name: GET_LAST
 Args: rq=%s
@@ -78,37 +78,37 @@ Args: rq=%s
 #
 # --- State Machine Application (SMA) ---
 #
-Event: RKH_TRCE_SMA_ACT
+Event: RKH_TE_SMA_ACT
 Group: SMA
 Name: ACTIVATE
 Args: sma=%s
 
-Event: RKH_TRCE_SMA_TERM
+Event: RKH_TE_SMA_TERM
 Group: SMA
 Name: TERMINATE
 Args: sma=%s
 
-Event: RKH_TRCE_SMA_GET
+Event: RKH_TE_SMA_GET
 Group: SMA
 Name: GET_EVENT
 Args: sma=%s, sig=%s 
 
-Event: RKH_TRCE_SMA_FIFO
+Event: RKH_TE_SMA_FIFO
 Group: SMA
 Name: POST_FIFO
 Args: sma=%s, sig=%s
 
-Event: RKH_TRCE_SMA_LIFO
+Event: RKH_TE_SMA_LIFO
 Group: SMA
 Name: POST_LIFO
 Args: sma=%s, sig=%s
 
-Event: RKH_TRCE_SMA_REG
+Event: RKH_TE_SMA_REG
 Group: SMA
 Name: REGISTER
 Args: sma=%s, prio=%d
 
-Event: RKH_TRCE_SMA_UNREG
+Event: RKH_TE_SMA_UNREG
 Group: SMA
 Name: UNREGISTER
 Args: sma=%s, prio=%d
@@ -116,57 +116,57 @@ Args: sma=%s, prio=%d
 #
 # --- State machine (SM) ---------------- 
 # 
-Event: RKH_TRCE_SM_INIT
+Event: RKH_TE_SM_INIT
 Group: SM
 Name: INIT
 Args: sma=%s, istate=%s
 
-Event: RKH_TRCE_SM_CLRH
+Event: RKH_TE_SM_CLRH
 Group: SM
 Name: CLEAR_HIST
 Args: sma=%s, hist=%s
 
-Event: RKH_TRCE_SM_DCH
+Event: RKH_TE_SM_DCH
 Group: SM
 Name: DISPATCH
 Args: sma=%s, sig=%s
 
-Event: RKH_TRCE_SM_TRN
+Event: RKH_TE_SM_TRN
 Group: SM
 Name: TRANSITION
 Args: sma=%s, sstate=%s, tstate=%s
 
-Event: RKH_TRCE_SM_STATE
+Event: RKH_TE_SM_STATE
 Group: SM
 Name: CURRENT_STATE
 Args: sma=%s, state=%s
 
-Event: RKH_TRCE_SM_ENSTATE
+Event: RKH_TE_SM_ENSTATE
 Group: SM
 Name: ENTRY_STATE
 Args: sma=%s, state=%s
 
-Event: RKH_TRCE_SM_EXSTATE
+Event: RKH_TE_SM_EXSTATE
 Group: SM
 Name: EXIT_STATE
 Args: sma=%s, state=%s
 
-Event: RKH_TRCE_SM_NENEX
+Event: RKH_TE_SM_NENEX
 Group: SM
 Name: NUM_EN_EX
 Args: sma=%s, nentry=%d, nexit=%d
 
-Event: RKH_TRCE_SM_NTRNACT
+Event: RKH_TE_SM_NTRNACT
 Group: SM
 Name: NUM_TRN_ACT
 Args: sma=%s, ntra=%d, ntrs=%d
 
-Event: RKH_TRCE_SM_CSTATE
+Event: RKH_TE_SM_CSTATE
 Group: SM
 Name: COMP_STATE
 Args: sma=%s, state=%s
 
-Event: RKH_TRCE_SM_DCH_RC
+Event: RKH_TE_SM_DCH_RC
 Group: SM
 Name: DISPATCH_RCODE
 Args: sma=%s, retcode=%s
@@ -174,88 +174,83 @@ Args: sma=%s, retcode=%s
 #
 # --- Timer (TIM) -----------------------
 #
-Event: RKH_TRCE_TIM_INIT
+Event: RKH_TE_TIM_INIT
 Group: TIM
 Name: INIT
 Args: timer=%s, sig=%s
 
-Event: RKH_TRCE_TIM_START
+Event: RKH_TE_TIM_START
 Group: TIM
 Name: START
 Args: timer=%s, sma=%s, ntick=%d
 
-Event: RKH_TRCE_TIM_RESTART
+Event: RKH_TE_TIM_RESTART
 Group: TIM
 Name: RESTART
 Args: timer=%s, ntick=%5d
 
-Event: RKH_TRCE_TIM_STOP
+Event: RKH_TE_TIM_STOP
 Group: TIM
 Name: STOP
 Args: timer=%s
 
-Event: RKH_TRCE_TIM_TOUT
+Event: RKH_TE_TIM_TOUT
 Group: TIM
 Name: TIMEOUT
 Args: timer=%s
 
-Event: RKH_TRCE_TIM_REM
+Event: RKH_TE_TIM_REM
 Group: TIM
 Name: REMOVED
-Args: timer=%s
-
-Event: RKH_TRCE_TIM_ATTEMPT_STOP
-Group: TIM
-Name: ATTEMPT_STOP
 Args: timer=%s
 
 #
 # --- Framework (RKH) ------------------------
 #
-Event: RKH_TRCE_RKH_EN
+Event: RKH_TE_RKH_EN
 Group: RKH
 Name: ENTER
 
-Event: RKH_TRCE_RKH_EX
+Event: RKH_TE_RKH_EX
 Group: RKH
 Name: EXIT
 
-Event: RKH_TRCE_RKH_EPREG
+Event: RKH_TE_RKH_EPREG
 Group: RKH
 Name: EPOOL_REG
 Args: epix =%d, ssize=%d, esize=%d
 
-Event: RKH_TRCE_RKH_AE
+Event: RKH_TE_RKH_AE
 Group: RKH
 Name: ALLOC_EVENT
 Args: esize=%d, sig=%s
 
-Event: RKH_TRCE_RKH_GC
+Event: RKH_TE_RKH_GC
 Group: RKH
 Name: GC
 Args: sig=%s
 
-Event: RKH_TRCE_RKH_GCR
+Event: RKH_TE_RKH_GCR
 Group: RKH
 Name: GC_RECYCLE
 Args: sig=%s
 
-Event: RKH_TRCE_RKH_DEFER
+Event: RKH_TE_RKH_DEFER
 Group: RKH
 Name: DEFER
 Args: rq=%s, sig=%s
 
-Event: RKH_TRCE_RKH_RCALL
+Event: RKH_TE_RKH_RCALL
 Group: RKH
 Name: RECALL
 Args: sma=%s, sig=%s
 
-Event: RKH_TRCE_OBJ
+Event: RKH_TE_FWK_OBJ
 Group: RKH
 Name: SYM_OBJ
 Args: obj=0x%08X, sym=%s
 
-Event: RKH_TRCE_SIG
+Event: RKH_TE_FWK_SIG
 Group: RKH
 Name: SYM_SIG 
 Args: sig=%d, sym=%s

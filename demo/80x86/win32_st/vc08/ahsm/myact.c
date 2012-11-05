@@ -11,6 +11,10 @@
 #define CMY( s )		(( MYSM_T* )(s))
 
 
+static RKHT_T tx, ty, tz;
+static RKH_DCLR_STATIC_EVENT( te, ONE );
+
+
 /*
  *	Defines HSM init function
  */
@@ -19,6 +23,9 @@ void
 my_init( const void *sma )
 {
 	CMY( sma )->x = CMY( sma )->y = 0;
+	rkh_tim_init( &tx, &te, 0 );
+	rkh_tim_init( &ty, &te, 0 );
+	rkh_tim_init( &tz, &te, 0 );
 }
 
 
@@ -52,6 +59,10 @@ void
 set_y_0( const struct rkhsma_t *sma )
 {
 	CMY( sma )->y = 0;
+	rkh_tim_oneshot( &tx, sma, 2 );
+	rkh_tim_oneshot( &ty, sma, 3 );
+	rkh_tim_periodic( &tz, sma, 2, 1000 );
+	//rkh_tim_stop( &ty );
 }
 
 

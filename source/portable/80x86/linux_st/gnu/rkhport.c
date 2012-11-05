@@ -78,7 +78,7 @@ rkh_enter( void )
 	RKHEVT_T *e;
 
 	RKH_HK_START();
-	RKH_TRCR_RKH_EN();
+	RKH_TR_FWK_EN();
 	running = 1;
 
 	while( running )
@@ -109,7 +109,7 @@ void
 rkh_exit( void )
 {
 	rkh_hk_exit();
-	RKH_TRCR_RKH_EX();
+	RKH_TR_FWK_EX();
 }
 
 
@@ -123,7 +123,7 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
 	rkh_init_hsm( sma );
-	RKH_TRCR_SMA_ACT( sma );
+	RKH_TR_SMA_ACT( sma );
 }
 
 
@@ -131,5 +131,5 @@ void
 rkh_sma_terminate( RKHSMA_T *sma )
 {
 	rkh_sma_unregister( sma );
-	RKH_TRCR_SMA_TERM( sma );
+	RKH_TR_SMA_TERM( sma );
 }

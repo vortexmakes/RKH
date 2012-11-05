@@ -210,7 +210,7 @@ ALIGN="center" VALIGN="middle">
 
   <TR bgColor="#f0f0f0">
     <TD>Event</TD>
-    <TD>RKH_TRCE_MP_INIT</TD>
+    <TD>RKH_TE_MP_INIT</TD>
     <TD>Event ID, must be according to #RKH_TRC_EVENTS definition in rkhtrc.h</TD>
   </TR>
 
@@ -236,31 +236,31 @@ ALIGN="center" VALIGN="middle">
 Trazer user may can change \b Alias, \b Comment and \b Group fields to 
 customize the visualization output. In the instrumented application two 
 particular trace events could be used to better trace visualization, 
-#RKH_TRCE_OBJ and #RKH_TRCE_SIG.
+#RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG.
 
-#RKH_TRCE_OBJ:
+#RKH_TE_FWK_OBJ:
 \n\n Associates the address of the object, in memory with its symbolic name.
-Using the RKH_TRCR_RKH_OBJ() macro in application source code looks like:
+Using the RKH_TR_FWK_OBJ() macro in application source code looks like:
 
 \code
 ...
 	static int g_status; 
 	static RKHT_T tdll; 
 
-(1)	RKH_TRCR_RKH_OBJ( &g_status );
-(2)	RKH_TRCR_RKH_OBJ( &tdll );
+(1)	RKH_TR_FWK_OBJ( &g_status );
+(2)	RKH_TR_FWK_OBJ( &tdll );
 \endcode
 
 Explanation:
 
-\li (1-2) The RKH_TRCR_RKH_OBJ() macro associates the object memory address 
+\li (1-2) The RKH_TR_FWK_OBJ() macro associates the object memory address 
 		with its symbolic name. This macro also performs the trace event 
 		recording to local stream.
 
-#RKH_TRCE_SIG:
+#RKH_TE_FWK_SIG:
 \n\n Associates the numerical value of the event signal to the symbolic name of 
 the signal.
-Using the RKH_TRCR_RKH_OBJ() macro in application source code looks like:
+Using the RKH_TR_FWK_OBJ() macro in application source code looks like:
 
 \code
 	// in the dedicated application header file resides the signal enumeration
@@ -273,15 +273,15 @@ Using the RKH_TRCR_RKH_OBJ() macro in application source code looks like:
 		...
 	};
 
-	// frequently, the macro RKH_TRCR_RKH_SIG() is used in the \b main.c file.
+	// frequently, the macro RKH_TR_FWK_SIG() is used in the \b main.c file.
 
-(1) RKH_TRCR_RKH_SIG( PWR_FAIL );
-(2) RKH_TRCR_RKH_SIG( PRESS_ENTER );
+(1) RKH_TR_FWK_SIG( PWR_FAIL );
+(2) RKH_TR_FWK_SIG( PRESS_ENTER );
 \endcode
 
 Explanation:
 
-\li (1-2) The RKH_TRCR_RKH_SIG() macro associates the numerical value of the 
+\li (1-2) The RKH_TR_FWK_SIG() macro associates the numerical value of the 
 		event signal to the symbolic name of the signal. This macro also 
 		performs the trace event recording to local stream.
 
@@ -317,7 +317,7 @@ application-specific record. See the \subpage trazer_evt file and
 
 - Comment.
    
-Sequences 4, 5 and 6 are examples of #RKH_TRCE_OBJ and #RKH_TRCE_SIG events. 
+Sequences 4, 5 and 6 are examples of #RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG events. 
 After, sequences 16, 17, 32 and 33, show how Trazer identify object address 
 and signal number replacing them by its symbolic representation. 
 In case that no symbolic representation has been defined for a particular 

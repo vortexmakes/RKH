@@ -395,7 +395,7 @@
  *	See \c #trceftbl table.
  */
 
-#define RKH_TRC_MAX_EVENTS				8
+#define RKH_TRC_MAX_EVENTS				128
 
 /**
  *	If the #RKH_TRC_RUNTIME_FILTER is set to 1 then RKH will include the 
@@ -441,7 +441,7 @@
  *	related to the native software timer.
  */
 
-#define RKH_TRC_EN_TIM					0
+#define RKH_TRC_EN_TIM					1
 
 /**
  *	If the #RKH_TRC_EN_SM is set to 1 then RKH will include all trace records 
@@ -532,7 +532,7 @@
  *	include the "returned code from dispatch function" trace record.
  */
 
-#define RKH_TRC_EN_SM_DCH_RC			1
+#define RKH_TRC_EN_SM_PROCESS			1
 
 /**
  *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record an 

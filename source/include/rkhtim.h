@@ -119,22 +119,16 @@ typedef struct rkh_tim_info_t
 typedef struct rkht_t
 {
 	/**
-	 * 	Timer event.
+	 * 	Points to timer event.
 	 */
 
-	RKHEVT_T evt;
+	RKHEVT_T *evt;
 
 	/**
 	 * 	Points to next timer structure in the doubly linked list.
 	 */
 
 	struct rkht_t *tnext;
-
-	/**
-	 * 	Points to previous timer structure in the doubly linked list.
-	 */
-
-	struct rkht_t *tprev;
 
 	/**
 	 * 	State machine application (SMA) that receives the timer event.
@@ -155,6 +149,12 @@ typedef struct rkht_t
 	 */
 
 	RKH_TNT_T period;
+
+	/**
+	 * 	A non-zero value indicates that the timer is linked.
+	 */
+
+	rkhui8_t used;
 
 	/**
 	 *	Hook function to call when the timer expires. This member is optional, 
@@ -193,20 +193,20 @@ typedef struct rkht_t
  *	\param t		pointer to previously allocated timer structure. Any 
  *					software module intending to install a software timer must 
  *					first allocate a timer structure RKHT_T.
- *	\param sig		signal of the event to be directly posted (using the FIFO 
- *					policy) into the event queue of the target agreed state 
- *					machine application at the timer expiration.
+ *	\param e		event to be directly posted (using the FIFO policy) into the 
+ *					event queue of the target agreed state machine application at the 
+ *					timer expiration.
  *	\param thk 		hook function to be called at the timer expiration. This 
  *					argument is optional, thus it could be declared as NULL or 
  *					eliminated in compile-time with RKH_TIM_EN_HOOK.
  */
 
-#define rkh_tim_init( t, sig, thk )		rkh_mktimer( t, sig, thk )
+#define rkh_tim_init( t, e, thk )		rkh_mktimer( t, e, thk )
 
 #if RKH_TIM_EN_HOOK == 0
-	void rkh_tim_init_( RKHT_T *t, RKHE_T sig );
+	void rkh_tim_init_( RKHT_T *t, RKHEVT_T *e );
 #else
-	void rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk );
+	void rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk );
 #endif
 
 
@@ -290,21 +290,6 @@ typedef struct rkht_t
  */
 
 void rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick );
-
-
-/**
- * 	\brief
- * 	Restart a timer with a new number of ticks. 
- *
- * 	The timer begins running at the completion of this operation.
- * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_TIM_EN_RESTART.
- *
- *	\param t		pointer to previously created timer structure.
- * 	\param itick 	number of initial ticks for timer expiration.
- */
-
-void rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick );
 
 
 /**

@@ -531,7 +531,7 @@
  *	include the "returned code from dispatch function" trace record.
  */
 
-#define RKH_TRC_EN_SM_DCH_RC			1
+#define RKH_TRC_EN_SM_PROCESS			1
 
 /**
  *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record an 

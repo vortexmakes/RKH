@@ -78,7 +78,7 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 	q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 
 		q->rqi.nfull = 0;
 #endif
-	RKH_TRCR_RQ_INIT( q, ssize, sma );
+	RKH_TR_RQ_INIT( q, ssize, sma );
 }
 
 
@@ -168,11 +168,11 @@ rkh_rq_get( RKHRQ_T *q  )
 	{
 		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 		RKH_EXIT_CRITICAL_();
-		RKH_TRCR_RQ_GET_LAST( q );
+		RKH_TR_RQ_GET_LAST( q );
 	}
 	else
 	{
-		RKH_TRCR_RQ_GET( q, q->qty );
+		RKH_TR_RQ_GET( q, q->qty );
 		RKH_EXIT_CRITICAL_();
 	}
 	return e;
@@ -212,7 +212,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 #endif
 	RKH_IUPDT_PUT( q );
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_RQ_FIFO( q, q->qty );
+	RKH_TR_RQ_FIFO( q, q->qty );
 }
 
 
@@ -252,7 +252,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 		q->nmin = (RKH_RQNE_T)( q->nelems - q->qty );
 #endif
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_RQ_LIFO( q, q->qty );
+	RKH_TR_RQ_LIFO( q, q->qty );
 }
 #endif
 
@@ -271,7 +271,7 @@ rkh_rq_deplete( RKHRQ_T *q )
 		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T* )( q->sma ) );
 	RKH_EXIT_CRITICAL_();
 	
-	RKH_TRCR_RQ_DEPLETE( q );
+	RKH_TR_RQ_DEPLETE( q );
 }
 #endif
 

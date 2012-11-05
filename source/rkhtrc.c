@@ -25,8 +25,8 @@ rkhui8_t trcgfilter;
 rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
 #endif
 
-static RKH_TRCE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
-static RKH_TRCE_T *trcin, *trcout, *trcend;
+static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
+static RKH_TE_T *trcin, *trcout, *trcend;
 static HUInt trcctrl;
 static rkhui8_t chk;
 static rkhui8_t nseq;

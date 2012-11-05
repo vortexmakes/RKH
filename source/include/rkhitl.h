@@ -284,11 +284,11 @@
 
 
 #if RKH_TIM_EN_HOOK == 0
-	#define rkh_mktimer( t,s,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s) )
+	#define rkh_mktimer( t,e,th )										\
+				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e) )
 #else
-	#define rkh_mktimer( t,s,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
+	#define rkh_mktimer( t,e,th )										\
+				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e), (RKH_THK_T)(th) )
 #endif
 
 

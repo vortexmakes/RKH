@@ -45,7 +45,7 @@ RKH_THIS_MODULE
 							RKH_TRC_EN_SMA == 1 || RKH_TRC_EN_TIM == 1 || 	\
 							RKH_TRC_EN_SM == 1 || RKH_TRC_EN_RKH == 1 ))
 
-#define TRAZER_NTRE			RKH_TRCE_USER
+#define TRAZER_NTRE			RKH_TE_USER
 #define TRAZER_NTRG			RKH_TRCG_NGROUP
 #define CC(s)				((const char*)(s))
 
@@ -216,105 +216,103 @@ static char *h_none( const void *tre ),
 static const TRE_T traces[] =
 {
 	/* --- Memory Pool (MP) ------------------ */
-	MKTR(	RKH_TRCE_MP_INIT,	"MP", "INIT", 
+	MKTR(	RKH_TE_MP_INIT,	"MP", "INIT", 
 			"mp=%s, nblock=%d",				h_symnblk ),
-	MKTR(	 RKH_TRCE_MP_GET, 	"MP", "GET", 
+	MKTR(	 RKH_TE_MP_GET, 	"MP", "GET", 
 			"mp=%s, nfree=%d", 				h_symnblk ),
-	MKTR( 	RKH_TRCE_MP_PUT, 	"MP", "PUT", 
+	MKTR( 	RKH_TE_MP_PUT, 	"MP", "PUT", 
 			"mp=%s, nfree=%d", 				h_symnblk ),
 	
 	/* --- Queue (RQ) ------------------------ */
-	MKTR( 	RKH_TRCE_RQ_INIT,	"RQ", "INIT", 
+	MKTR( 	RKH_TE_RQ_INIT,	"RQ", "INIT", 
 			"rq=%s, sma=%s, nelem=%d",		h_2symnused ),
-	MKTR( 	RKH_TRCE_RQ_GET, 	"RQ", "GET", 
+	MKTR( 	RKH_TE_RQ_GET, 	"RQ", "GET", 
 			"rq=%s, nused=%d", 				h_symnused ),
-	MKTR( 	RKH_TRCE_RQ_FIFO,	"RQ", "POST_FIFO", 
+	MKTR( 	RKH_TE_RQ_FIFO,	"RQ", "POST_FIFO", 
 			"rq=%s, nused=%d", 				h_symnused ),
-	MKTR( 	RKH_TRCE_RQ_LIFO,	"RQ", "POST_LIFO", 
+	MKTR( 	RKH_TE_RQ_LIFO,	"RQ", "POST_LIFO", 
 			"rq=%s, nused=%d", 				h_symnused ),
-	MKTR( 	RKH_TRCE_RQ_FULL,	"RQ", "FULL", 
+	MKTR( 	RKH_TE_RQ_FULL,	"RQ", "FULL", 
 			"rq=%s", 						h_1sym ),
-	MKTR( 	RKH_TRCE_RQ_DPT,	"RQ", "DEPLETE", 
+	MKTR( 	RKH_TE_RQ_DPT,	"RQ", "DEPLETE", 
 			"rq=%s", 						h_1sym ),
-	MKTR( 	RKH_TRCE_RQ_GET_LAST,	"RQ", "GET_LAST", 
+	MKTR( 	RKH_TE_RQ_GET_LAST,	"RQ", "GET_LAST", 
 			"rq=%s", 						h_1sym ),
 
 	/* --- State Machine Application (SMA) --- */
-	MKTR( 	RKH_TRCE_SMA_ACT,	"SMA", "ACTIVATE", 
+	MKTR( 	RKH_TE_SMA_ACT,	"SMA", "ACTIVATE", 
 			"sma=%s", 						h_1sym ),
-	MKTR( 	RKH_TRCE_SMA_TERM,	"SMA", "TERMINATE", 
+	MKTR( 	RKH_TE_SMA_TERM,	"SMA", "TERMINATE", 
 			"sma=%s", 						h_1sym ),
-	MKTR( 	RKH_TRCE_SMA_GET,	"SMA", "GET_EVENT", 
+	MKTR( 	RKH_TE_SMA_GET,	"SMA", "GET_EVENT", 
 			"sma=%s, sig=%s", 				h_symevt ),
-	MKTR( 	RKH_TRCE_SMA_FIFO,	"SMA", "POST_FIFO", 
+	MKTR( 	RKH_TE_SMA_FIFO,	"SMA", "POST_FIFO", 
 			"sma=%s, sig=%s", 				h_symevt ),
-	MKTR( 	RKH_TRCE_SMA_LIFO,	"SMA", "POST_LIFO", 
+	MKTR( 	RKH_TE_SMA_LIFO,	"SMA", "POST_LIFO", 
 			"sma=%s, sig=%s", 				h_symevt ),
-	MKTR( 	RKH_TRCE_SMA_REG,	"SMA", "REGISTER", 
+	MKTR( 	RKH_TE_SMA_REG,	"SMA", "REGISTER", 
 			"sma=%s, prio=%d", 				h_symu8 ),
-	MKTR( 	RKH_TRCE_SMA_UNREG,	"SMA", "UNREGISTER", 
+	MKTR( 	RKH_TE_SMA_UNREG,	"SMA", "UNREGISTER", 
 			"sma=%s, prio=%d", 				h_symu8 ),
 
 	/* --- State machine (SM) ---------------- */
-	MKTR( 	RKH_TRCE_SM_INIT,	"SM", "INIT", 
+	MKTR( 	RKH_TE_SM_INIT,	"SM", "INIT", 
 			"sma=%s, istate=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_CLRH,	"SM", "CLEAR_HIST", 
+	MKTR( 	RKH_TE_SM_CLRH,	"SM", "CLEAR_HIST", 
 			"sma=%s, hist=%s", 				h_2sym ),
-	MKTR( 	RKH_TRCE_SM_DCH,	"SM", "DISPATCH", 
+	MKTR( 	RKH_TE_SM_DCH,	"SM", "DISPATCH", 
 			"sma=%s, sig=%s", 				h_symevt ),
-	MKTR( 	RKH_TRCE_SM_TRN,	"SM", "TRANSITION", 
+	MKTR( 	RKH_TE_SM_TRN,	"SM", "TRANSITION", 
 			"sma=%s, sstate=%s, tstate=%s", h_symtrn ),
-	MKTR( 	RKH_TRCE_SM_STATE,	"SM", "CURRENT_STATE", 
+	MKTR( 	RKH_TE_SM_STATE,	"SM", "CURRENT_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_ENSTATE,"SM", "ENTRY_STATE", 
+	MKTR( 	RKH_TE_SM_ENSTATE,"SM", "ENTRY_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_EXSTATE,"SM", "EXIT_STATE", 
+	MKTR( 	RKH_TE_SM_EXSTATE,"SM", "EXIT_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_NENEX,	"SM", "NUM_EN_EX", 
+	MKTR( 	RKH_TE_SM_NENEX,	"SM", "NUM_EN_EX", 
 			"sma=%s, nentry=%d, nexit=%d",	h_sym2u8 ),
-	MKTR( 	RKH_TRCE_SM_NTRNACT,"SM", "NUM_TRN_ACT", 
+	MKTR( 	RKH_TE_SM_NTRNACT,"SM", "NUM_TRN_ACT", 
 			"sma=%s, ntrnaction=%d", 		h_symu8 ),
-	MKTR( 	RKH_TRCE_SM_CSTATE,	"SM", "COMP_STATE", 
+	MKTR( 	RKH_TE_SM_CSTATE,	"SM", "COMP_STATE", 
 			"sma=%s, state=%s", 			h_2sym ),
-	MKTR( 	RKH_TRCE_SM_DCH_RC,	"SM", "DISPATCH_RCODE", 
+	MKTR( 	RKH_TE_SM_DCH_RC,	"SM", "DISPATCH_RCODE", 
 			"sma=%s, retcode=%s", 			h_symrc ),
 
 	/* --- Timer (TIM) ----------------------- */
-	MKTR( 	RKH_TRCE_TIM_INIT,	"TIM", "INIT", 
+	MKTR( 	RKH_TE_TIM_INIT,	"TIM", "INIT", 
 			"timer=%s, sig=%s", 			h_symevt ),
-	MKTR( 	RKH_TRCE_TIM_START,	"TIM", "START", 
+	MKTR( 	RKH_TE_TIM_START,	"TIM", "START", 
 			"timer=%s, sma=%s, ntick=%d", 	h_2symntick ),
-	MKTR( 	RKH_TRCE_TIM_RESTART,"TIM", "RESTART", 
+	MKTR( 	RKH_TE_TIM_RESTART,"TIM", "RESTART", 
 			"timer=%s, ntick=%5d", 			h_symntick ),
-	MKTR( 	RKH_TRCE_TIM_STOP,	"TIM", "STOP", 
+	MKTR( 	RKH_TE_TIM_STOP,	"TIM", "STOP", 
 			"timer=%s", 					h_1sym ),
-	MKTR( 	RKH_TRCE_TIM_TOUT,	"TIM", "TIMEOUT", 
+	MKTR( 	RKH_TE_TIM_TOUT,	"TIM", "TIMEOUT", 
 			"timer=%s", 					h_1sym ),
-	MKTR( 	RKH_TRCE_TIM_REM,	"TIM", "REMOVED", 
-			"timer=%s", 					h_1sym ),
-	MKTR( 	RKH_TRCE_TIM_ATTEMPT_STOP,	"TIM", "ATTEMPT_STOP", 
+	MKTR( 	RKH_TE_TIM_REM,	"TIM", "REMOVED", 
 			"timer=%s", 					h_1sym ),
 
 	/* --- Framework (RKH) ------------------- */
-	MKTR( 	RKH_TRCE_RKH_EN,	"RKH", "ENTER", 
+	MKTR( 	RKH_TE_RKH_EN,	"RKH", "ENTER", 
 			"", 							h_none ),
-	MKTR( 	RKH_TRCE_RKH_EX,	"RKH", "EXIT", 
+	MKTR( 	RKH_TE_RKH_EX,	"RKH", "EXIT", 
 			"", 							h_none ),
-	MKTR( 	RKH_TRCE_RKH_EPREG,	"RKH", "EPOOL_REG", 
+	MKTR( 	RKH_TE_RKH_EPREG,	"RKH", "EPOOL_REG", 
 			"epix =%d, ssize=%d, esize=%d",	h_epreg ),
-	MKTR( 	RKH_TRCE_RKH_AE,	"RKH", "ALLOC_EVENT", 
+	MKTR( 	RKH_TE_RKH_AE,	"RKH", "ALLOC_EVENT", 
 			"esize=%d, sig=%s", 			h_ae ),
-	MKTR( 	RKH_TRCE_RKH_GC,	"RKH", "GC", 
+	MKTR( 	RKH_TE_RKH_GC,	"RKH", "GC", 
 			"sig=%s", 						h_evt ),
-	MKTR( 	RKH_TRCE_RKH_GCR,	"RKH", "GC_RECYCLE", 
+	MKTR( 	RKH_TE_RKH_GCR,	"RKH", "GC_RECYCLE", 
 			"sig=%s", 						h_evt ),
-	MKTR( 	RKH_TRCE_RKH_DEFER,	"RKH", "DEFER", 
+	MKTR( 	RKH_TE_RKH_DEFER,	"RKH", "DEFER", 
 			"rq=%s, sig=%s", 				h_symevt ),
-	MKTR( 	RKH_TRCE_RKH_RCALL,	"RKH", "RECALL", 
+	MKTR( 	RKH_TE_RKH_RCALL,	"RKH", "RECALL", 
 			"sma=%s, sig=%s", 				h_symevt ),
-	MKTR( 	RKH_TRCE_OBJ,		"RKH", "SYM_OBJ", 
+	MKTR( 	RKH_TE_FWK_OBJ,		"RKH", "SYM_OBJ", 
 			"obj=0x%08X, sym=%s", 			h_symobj ),
-	MKTR( 	RKH_TRCE_SIG,		"RKH", "SYM_SIG", 
+	MKTR( 	RKH_TE_FWK_SIG,		"RKH", "SYM_SIG", 
 			"sig=%d, sym=%s", 				h_symsig )
 };
 
@@ -433,7 +431,7 @@ find_trevt( unsigned char id )
 {
 	const TRE_T *p;
 
-	for( p = traces; p < traces + RKH_TRCE_USER; ++p )
+	for( p = traces; p < traces + RKH_TE_USER; ++p )
 		if( p->id == id )
 			return p;
 

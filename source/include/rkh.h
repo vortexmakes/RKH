@@ -1031,50 +1031,49 @@ typedef enum
 {
 	/**
 	 * 	The arrived event was succesfully processed and HSM 
-	 * 	resides in a allowed state.
+	 * 	resides in an allowed state.
 	 */
 
-	RKH_OK,
+	RKH_EVT_PROC,
 
 	/**
 	 * 	The arrived event was't founded in the transition table. 
 	 */
 
-	RKH_INPUT_NOT_FOUND,
+	RKH_EVT_NFOUND,
 
 	/**
 	 * 	The branch function returned a value not founded 
 	 * 	in the branch table.
 	 */
 
-	RKH_CONDITION_NOT_FOUND,
+	RKH_CND_NFOUND,
 
 	/**
 	 * 	The transition was cancelled by guard function.
 	 */
 
-	RKH_GUARD_FALSE,
+	RKH_GRD_FALSE,
 
 	/**
 	 * 	Unknown state. 
 	 */
 
-	RKH_UNKNOWN_STATE,
+	RKH_UNKN_STATE,
 
 	/**
 	 * 	The transition exceeded the allowed hierarchical level.
 	 */
 
-	RKH_EXCEED_HCAL_LEVEL,
+	RKH_EX_HLEVEL,
 
 	/**
 	 * 	The transition exceeded the allowed number of segments 
 	 * 	within a compound transtion.
 	 */
 
-	RKH_EXCEED_TRC_SEGS,
+	RKH_EX_TSEG,
 
-	/** Number of returned codes */
 	RKH_NUM_CODES
 } RKH_RCODE_T;
 
@@ -1181,7 +1180,7 @@ void rkh_init( void );
  *		RKHEVT_T *e;
  *
  *		RKH_HK_START();
- *		RKH_TRCR_RKH_EN();
+ *		RKH_TR_FWK_EN();
  *		running = 1;
  *
  *		while( running )
@@ -1254,7 +1253,7 @@ void rkh_enter( void );
  *	rkh_exit( void )
  *	{
  *		rkh_hk_exit();
- *		RKH_TRCR_RKH_EX();
+ *		RKH_TR_FWK_EX();
  *	}
  *	\endcode
  */
@@ -1327,7 +1326,7 @@ void rkh_tim_tick( void );
  *		rkh_rq_init( &sma->equeue, qs, qsize, sma );
  *		rkh_sma_register( sma );
  *		rkh_init_hsm( sma );
- *		RKH_TRCR_SMA_ACT( sma );
+ *		RKH_TR_SMA_ACT( sma );
  *	}
  *	\endcode
  *
@@ -1438,7 +1437,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	rkh_sma_terminate( RKHSMA_T *sma )
  *	{
  *		rkh_sma_unregister( sma );
- *		RKH_TRCR_SMA_TERM( sma );
+ *		RKH_TR_SMA_TERM( sma );
  *	}
  *	\endcode
  *
