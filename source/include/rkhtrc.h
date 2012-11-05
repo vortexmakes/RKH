@@ -257,7 +257,7 @@ typedef enum rkh_trc_groups
 
 	/**
 	 * 	\brief
-	 * 	Framework RKH group (RKH)
+	 * 	Framework RKH group (FWK)
 	 */
 	RKH_TG_FWK,
 
