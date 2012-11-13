@@ -77,7 +77,7 @@
  *	Date: xx/xx/2012
  */
 
-#define RKH_VERSION_CODE			0x2200U
+#define RKH_VERSION_CODE			0x2300U
 
 
 /**

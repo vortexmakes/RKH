@@ -271,13 +271,22 @@ typedef enum rkh_trc_groups
 } RKH_TRC_GROUPS;
 
 
-#define RKH_MP_START		(rkhui8_t)(RKH_TG_MP << 5)
-#define RKH_RQ_START		(rkhui8_t)(RKH_TG_RQ << 5)
-#define RKH_SMA_START		(rkhui8_t)(RKH_TG_SMA << 5)
-#define RKH_SM_START		(rkhui8_t)(RKH_TG_SM << 5)
-#define RKH_TIM_START		(rkhui8_t)(RKH_TG_TIM << 5)
-#define RKH_FWK_START		(rkhui8_t)(RKH_TG_FWK << 5)
-#define RKH_USR_START		(rkhui8_t)(RKH_TG_USR << 5)
+#define RKH_NUM_TE_PER_GROUP		32
+#define GRPSH( grp )				(rkhui8_t)(((grp)&7) << NGSH)
+
+#if RKH_NUM_TE_PER_GROUP <= 32
+	#define NGSH					5
+#else
+	#define NGSH					5
+#endif
+
+#define RKH_MP_START				GRPSH( RKH_TG_MP	)
+#define RKH_RQ_START				GRPSH( RKH_TG_RQ 	)
+#define RKH_SMA_START				GRPSH( RKH_TG_SMA 	)
+#define RKH_SM_START				GRPSH( RKH_TG_SM 	)
+#define RKH_TIM_START				GRPSH( RKH_TG_TIM 	)
+#define RKH_FWK_START				GRPSH( RKH_TG_FWK 	)
+#define RKH_USR_START				GRPSH( RKH_TG_USR 	)
 
 
 /**

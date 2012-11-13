@@ -45,6 +45,7 @@ static rkhui16_t trcqty;
 static RKHROM rkhui8_t trcgmtbl[] =
 {
 	/*	<offset>	| <range> [in bytes] */
+	/*                1 byte -> 8 events */
 	(	(0 << 4) 	| 1		),	/* RKH_MP_START */
 	(	(1 << 4) 	| 1		),	/* RKH_RQ_START */
 	(	(2 << 4) 	| 1		),	/* RKH_SMA_START */
