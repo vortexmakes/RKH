@@ -1842,7 +1842,7 @@ void rkh_trc_put( rkhui8_t b );
 	 * 	Use the RKH_TRC_ALL_EVENTS to enable all trace events.
 	 *
 	 * 	\note
-	 *	The container group is enabled, reglardless of its status.
+	 *	The container group is enabled, reglardless of its previous status.
 	 */
 
 	#define RKH_FILTER_OFF_EVENT( evt )				\
@@ -1850,21 +1850,19 @@ void rkh_trc_put( rkhui8_t b );
 
 	/**
 	 * 	\brief
-	 * 	Suppress (disable) a specific event in a specific group. 
-	 * 	Use the RKH_TRC_ALL_EVENTS to disable all trace events of the group.
+	 * 	Suppress (disable) all events in a specific group. 
 	 */
 
-	#define RKH_FILTER_ON_GROUP_EVENT( grp, evt )			\
+	#define RKH_FILTER_ON_GROUP_ALL_EVENTS( grp )			\
 				rkh_trc_filter_group_( FILTER_ON, (grp) );	\
 				rkh_trc_filter_event_( FILTER_ON, (evt) )
 
 	/**
 	 * 	\brief
-	 * 	Emit (enable) a specific event in a specific group. 
-	 * 	Use the RKH_TRC_ALL_EVENTS to enable all trace events of the group.
+	 * 	Emit (enable) all events in a specific group. 
 	 */
 
-	#define RKH_FILTER_OFF_GROUP_EVENT( grp, evt )			\
+	#define RKH_FILTER_OFF_GROUP_ALL_EVENTS( grp )			\
 				rkh_trc_filter_group_( FILTER_OFF, (grp) );	\
 				rkh_trc_filter_event_( FILTER_OFF, (evt) )
 
