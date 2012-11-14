@@ -193,9 +193,9 @@ typedef struct rkht_t
  *	\param t		pointer to previously allocated timer structure. Any 
  *					software module intending to install a software timer must 
  *					first allocate a timer structure RKHT_T.
- *	\param e		event to be directly posted (using the FIFO policy) into the 
- *					event queue of the target agreed state machine application at the 
- *					timer expiration.
+ *	\param e		event to be directly posted (using the FIFO policy) into 
+ *					the event queue of the target agreed state machine 
+ *					application at the timer expiration.
  *	\param thk 		hook function to be called at the timer expiration. This 
  *					argument is optional, thus it could be declared as NULL or 
  *					eliminated in compile-time with RKH_TIM_EN_HOOK.
