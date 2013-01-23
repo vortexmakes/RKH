@@ -2,11 +2,11 @@ PROGNAME=rkh
 
 CC=gcc
 RKHSRCPATH=$(PWD)/../../../../source
-PORTPATH= $(RKHSRCPATH)/portable/80x86/linux_st/eclcyg
+PORTPATH= $(RKHSRCPATH)/portable/80x86/linux_st/gnu
 PORTFILE=rkhport
 
-DEFINE= -D__LNXECYG__
-CFLAGS = -g -Wall -I$(RKHSRCPATH)/include -I$(PWD) -I$(PORTPATH) 
+DEFINE= -D__LNXGNU__
+CFLAGS = -ansi -Wall -I$(RKHSRCPATH)/include -I$(PWD) -I$(PORTPATH) 
 LDFLAGS	= -lc -pthread 
 
 rkhobjects:=$(patsubst %.c,%.o,$(wildcard $(RKHSRCPATH)/*.c)) 

@@ -1,7 +1,7 @@
 /*
  *	file: bsp.c
- *	Last updated for version: 2.0
- *	Date of the last update:  Feb 28, 2012
+ *	Last updated for version: 2.3
+ *	Date of the last update:  Jan 23, 2013
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -29,11 +29,11 @@
 #include "rkhdata.h"
 #include "rkh.h"
 
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <termios.h>
-#include <unistd.h>
 #include <sys/time.h>
 
 
@@ -75,7 +75,7 @@ static FILE *ftbin;
 	#include "tcptrc.h"
 
 	/* Trazer Tool IP Address */
-	#define TRC_IP_ADDR					"192.168.1.52"
+	#define TRC_IP_ADDR					"127.0.0.1"
 
 	/* Trazer Tool TCP Port Address */
 	#define TRC_TCP_PORT				6602
@@ -182,24 +182,24 @@ isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 void 
 rkh_hk_start( void ) 
 {
-	pthread_t thtmr_id, thkbd_id;  // thread identifiers
+	pthread_t thtmr_id, thkbd_id;  /* thread identifiers */
  	pthread_attr_t threadAttr;
 
 	/* set the desired tick rate */
     tick_msec = 1000UL/BSP_TICKS_PER_SEC;
     running = (rkhui8_t)1;
 
-	// initialize the thread attribute
+	/* initialize the thread attribute */
 	pthread_attr_init(&threadAttr);
 
-	// Set the stack size of the thread
+	/* Set the stack size of the thread */
 	pthread_attr_setstacksize(&threadAttr, 1024);
 
-	// Create the threads
+	/* Create the threads */
 	pthread_create(&thtmr_id, &threadAttr, isr_tmr_thread, NULL);
 	pthread_create(&thkbd_id, &threadAttr, isr_kbd_thread, NULL);
 
-	// Destroy the thread attributes
+	/* Destroy the thread attributes */
 	pthread_attr_destroy(&threadAttr);
 	
 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
@@ -230,7 +230,7 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
 						"file\n", line, file );
-	//__debugbreak();
+	/*__debugbreak();*/
 	rkh_exit();
 }
 
@@ -279,7 +279,7 @@ rkh_trc_close( void )
 RKHTS_T 
 rkh_trc_getts( void )
 {
-	struct timeval tv;   // see gettimeofday(2)
+	struct timeval tv;   /* see gettimeofday(2) */
 	double t;
 
 	gettimeofday(&tv, NULL);

@@ -71,11 +71,11 @@ rkh_trc_init( void )
 void 
 rkh_trc_control( HUInt opt )
 {
-	//RKH_SR_CRITICAL_;
+	/* RKH_SR_CRITICAL_;*/
 
-	//RKH_ENTER_CRITICAL_();
+	/* RKH_ENTER_CRITICAL_(); */
 	trcctrl = opt;
-	//RKH_EXIT_CRITICAL_();
+	/* RKH_EXIT_CRITICAL_(); */
 }
 
 

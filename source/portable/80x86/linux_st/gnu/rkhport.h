@@ -1,7 +1,7 @@
 /*
  *	file: rkhport.h - Eclipse Cygwin port
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Sep 05, 2012
+ *	Last updated for version: 2.3
+ *	Date of the last update:  Jan 23, 2013
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -61,7 +61,7 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_DIS_INTERRUPT()
 #define RKH_ENA_INTERRUPT()
-//#define RKH_CPUSR_TYPE
+/*#define RKH_CPUSR_TYPE*/
 #define RKH_ENTER_CRITICAL( dummy )		pthread_mutex_trylock( &csection )
 #define RKH_EXIT_CRITICAL( dummy )		pthread_mutex_unlock( &csection )
 
