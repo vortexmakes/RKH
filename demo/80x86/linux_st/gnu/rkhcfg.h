@@ -395,7 +395,7 @@
  *	See \c #trceftbl table.
  */
 
-#define RKH_TRC_MAX_EVENTS				8
+#define RKH_TRC_MAX_EVENTS				128
 
 /**
  *	If the #RKH_TRC_RUNTIME_FILTER is set to 1 then RKH will include the 

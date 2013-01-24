@@ -19,7 +19,7 @@ RKH_MODULE_NAME( rkhtrc )
 
 #if RKH_TRC_RUNTIME_FILTER == 1
 /* trace event filter table */
-rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
+rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
 
 /* trace group filter table */
 rkhui8_t trcgfilter;
@@ -169,7 +169,7 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 		for( 	p = trceftbl, 
 				ix = 0, 
 				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
-				ix < RKH_TRC_MAX_EVENTS_PER_GROUP; ++ix, ++p )
+				ix < RKH_TRC_MAX_EVENTS_IN_BYTES; ++ix, ++p )
 			*p = c;
 		return;
 	}

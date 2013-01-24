@@ -85,11 +85,11 @@
  */
 
 #if RKH_TRC_MAX_EVENTS <= 64
-	#define RKH_TRC_MAX_EVENTS_PER_GROUP	8
+	#define RKH_TRC_MAX_EVENTS_IN_BYTES		8
 #elif RKH_TRC_MAX_EVENTS > 64 && RKH_TRC_MAX_EVENTS <= 128
-	#define RKH_TRC_MAX_EVENTS_PER_GROUP	16
+	#define RKH_TRC_MAX_EVENTS_IN_BYTES		16
 #else
-	#define RKH_TRC_MAX_EVENTS_PER_GROUP	8
+	#define RKH_TRC_MAX_EVENTS_IN_BYTES		16
 #endif
 
 
@@ -105,7 +105,7 @@
  *
  * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n
  *
- * 	Y's:	index into trceftbl[ #RKH_TRC_MAX_EVENTS_PER_GROUP ] table.\n
+ * 	Y's:	index into trceftbl[ #RKH_TRC_MAX_EVENTS_IN_BYTES ] table.\n
  * 	X's:	bit position in trceftbl[ Y's ].\n
  *
  * 	The lower 3 bits (X's) of the trace event number are used to determine 
@@ -113,7 +113,7 @@
  * 	(Y's) are used to determine the index into trceftbl[].
  */
 
-extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_PER_GROUP ];
+extern rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
 
 
 /**
@@ -271,11 +271,25 @@ typedef enum rkh_trc_groups
 } RKH_TRC_GROUPS;
 
 
-#define ECHANGE				0
-#define EUNCHANGE			1
+#define ECHANGE					0
+#define EUNCHANGE				1
 
 
-/*
+#define GRPSH( grp )				(rkhui8_t)(((grp)&7) << NGSH)
+#define RKH_NUM_TE_PER_GROUP		32 /* 2^5 = 32 */
+
+#if RKH_NUM_TE_PER_GROUP <= 32
+	#define NGSH					5
+#else
+	#define NGSH					5
+#endif
+
+
+/**@{
+ *
+ * 	\brief
+ * 	Trace event offset.
+ *
  * 	The trace event ID is arranged as:
  *
  * 	event number = | G | G | G | E | E | E | E | E |\n
@@ -286,18 +300,8 @@ typedef enum rkh_trc_groups
  * 	The lower 5 bits (E's) of the event ID are used to determine 
  * 	the trace event, while the next three most significant bits 
  * 	(G's) are used to determine the corresponding group.
- * 
  * 	Therefore, is able to define 3 groups and 32 events per group.
  */
-
-#define RKH_NUM_TE_PER_GROUP		32 /* 2^5 = 32 */
-#define GRPSH( grp )				(rkhui8_t)(((grp)&7) << NGSH)
-
-#if RKH_NUM_TE_PER_GROUP <= 32
-	#define NGSH					5
-#else
-	#define NGSH					5
-#endif
 
 #define RKH_MP_START				GRPSH( RKH_TG_MP	)
 #define RKH_RQ_START				GRPSH( RKH_TG_RQ 	)
@@ -306,6 +310,7 @@ typedef enum rkh_trc_groups
 #define RKH_TIM_START				GRPSH( RKH_TG_TIM 	)
 #define RKH_FWK_START				GRPSH( RKH_TG_FWK 	)
 #define RKH_USR_START				GRPSH( RKH_TG_USR 	)
+/*@}*/
 
 
 /**
@@ -571,7 +576,7 @@ typedef enum rkh_trc_events
 	 *	\param prio		priority of state machine application.
 	 */
 
-	#define RKH_TRC_BEGIN( eid, prio )			\
+	#define RKH_TRC_BEGIN( eid, prio )				\
 				RKH_SR_CRITICAL_;					\
 				if(	rkh_trc_isoff_( eid ) && 		\
 					rkh_trc_sma_isoff_( prio ) )	\
@@ -595,7 +600,7 @@ typedef enum rkh_trc_events
 					RKH_EXIT_CRITICAL_();		\
 				}
 #else
-	#define RKH_TRC_BEGIN( eid, prio )		\
+	#define RKH_TRC_BEGIN( eid, prio )			\
 				RKH_SR_CRITICAL_;				\
 				RKH_ENTER_CRITICAL_();			\
 				rkh_trc_begin( eid );
@@ -840,7 +845,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_MP_INIT( mp, nblock )							\
-					RKH_TRC_BEGIN( RKH_TE_MP_INIT, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_MP_INIT, NVS )				\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nblock ); 						\
 					RKH_TRC_END()
@@ -853,7 +858,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_MP_GET( mp, nfree )								\
-					RKH_TRC_BEGIN( RKH_TE_MP_GET, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_MP_GET, NVS )					\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nfree ); 							\
 					RKH_TRC_END()
@@ -866,14 +871,14 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_MP_PUT( mp, nfree )								\
-					RKH_TRC_BEGIN( RKH_TE_MP_PUT, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_MP_PUT, NVS )					\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nfree ); 							\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_MP_INIT( mp, nblock )
-		#define RKH_TR_MP_GET( mp, nfree )
-		#define RKH_TR_MP_PUT( mp, nfree )
+		#define RKH_TR_MP_INIT( mp, nblock )				(void)0
+		#define RKH_TR_MP_GET( mp, nfree )					(void)0
+		#define RKH_TR_MP_PUT( mp, nfree )					(void)0
 	#endif
 
 	/* --- Queue (RQ) ------------------------ */
@@ -887,7 +892,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_INIT( q, nelem, sma )							\
-					RKH_TRC_BEGIN( RKH_TE_RQ_INIT, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_RQ_INIT, NVS )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_NE( nelem ); 							\
@@ -901,7 +906,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_GET( q, qty )									\
-					RKH_TRC_BEGIN( RKH_TE_RQ_GET, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_RQ_GET, NVS )					\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_NE( qty ); 								\
 					RKH_TRC_END()
@@ -914,7 +919,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_FIFO( q, qty )								\
-					RKH_TRC_BEGIN( RKH_TE_RQ_FIFO, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_RQ_FIFO, NVS )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_NE( qty ); 								\
 					RKH_TRC_END()
@@ -927,7 +932,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_LIFO( q, qty )								\
-					RKH_TRC_BEGIN( RKH_TE_RQ_LIFO, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_RQ_LIFO, NVS )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_NE( qty ); 								\
 					RKH_TRC_END()
@@ -940,7 +945,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_FULL( q )										\
-					RKH_TRC_BEGIN( RKH_TE_RQ_FULL, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_RQ_FULL, NVS )				\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 
@@ -952,7 +957,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_DEPLETE( q )									\
-					RKH_TRC_BEGIN( RKH_TE_RQ_DPT, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_RQ_DPT, NVS )					\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 
@@ -964,17 +969,17 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_RQ_GET_LAST( q )									\
-					RKH_TRC_BEGIN( RKH_TE_RQ_GET_LAST, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_RQ_GET_LAST, NVS )			\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_RQ_INIT( q, nelem, sma )
-		#define RKH_TR_RQ_GET( q, qty )
-		#define RKH_TR_RQ_FIFO( q, qty )
-		#define RKH_TR_RQ_LIFO( q, qty )
-		#define RKH_TR_RQ_FULL( q )
-		#define RKH_TR_RQ_DEPLETE( q )
-		#define RKH_TR_RQ_GET_LAST( q )
+		#define RKH_TR_RQ_INIT( q, nelem, sma )				(void)0
+		#define RKH_TR_RQ_GET( q, qty )						(void)0
+		#define RKH_TR_RQ_FIFO( q, qty )					(void)0
+		#define RKH_TR_RQ_LIFO( q, qty )					(void)0
+		#define RKH_TR_RQ_FULL( q )							(void)0
+		#define RKH_TR_RQ_DEPLETE( q )						(void)0
+		#define RKH_TR_RQ_GET_LAST( q )						(void)0
 	#endif
 
 	/* --- State Machine Application (SMA) --- */
@@ -988,7 +993,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_ACT( sma )									\
-					RKH_TRC_BEGIN( 	RKH_TE_SMA_ACT, 		\
+					RKH_TRC_BEGIN( 	RKH_TE_SMA_ACT, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 					RKH_TRC_END()
@@ -1001,7 +1006,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_TERM( sma )									\
-					RKH_TRC_BEGIN( 	RKH_TE_SMA_TERM, 		\
+					RKH_TRC_BEGIN( 	RKH_TE_SMA_TERM, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 					RKH_TRC_END()
@@ -1014,7 +1019,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_GET( sma, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_SMA_GET, 			\
+					RKH_TRC_BEGIN( RKH_TE_SMA_GET, 						\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_SIG( ev->e ); 							\
@@ -1028,7 +1033,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_FIFO( sma, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 		\
+					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_SIG( ev->e ); 							\
@@ -1042,7 +1047,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_LIFO( sma, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 		\
+					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_SIG( ev->e ); 							\
@@ -1056,7 +1061,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_REG( sma, prio )								\
-					RKH_TRC_BEGIN( RKH_TE_SMA_REG, 			\
+					RKH_TRC_BEGIN( RKH_TE_SMA_REG, 						\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_UI8( prio ); 							\
@@ -1070,19 +1075,19 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_SMA_UNREG( sma, prio )							\
-					RKH_TRC_BEGIN( RKH_TE_SMA_UNREG, 		\
+					RKH_TRC_BEGIN( RKH_TE_SMA_UNREG, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_SMA_ACT( sma )
-		#define RKH_TR_SMA_TERM( sma )
-		#define RKH_TR_SMA_GET( sma, ev )
-		#define RKH_TR_SMA_FIFO( sma, ev )
-		#define RKH_TR_SMA_LIFO( sma, ev )
-		#define RKH_TR_SMA_REG( sma, prio )
-		#define RKH_TR_SMA_UNREG( sma, prio )
+		#define RKH_TR_SMA_ACT( sma )						(void)0
+		#define RKH_TR_SMA_TERM( sma )						(void)0
+		#define RKH_TR_SMA_GET( sma, ev )					(void)0
+		#define RKH_TR_SMA_FIFO( sma, ev )					(void)0
+		#define RKH_TR_SMA_LIFO( sma, ev )					(void)0
+		#define RKH_TR_SMA_REG( sma, prio )					(void)0
+		#define RKH_TR_SMA_UNREG( sma, prio )				(void)0
 	#endif
 
 	/* --- State machine (SM) ---------------- */
@@ -1097,7 +1102,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_INIT == 1
 			#define RKH_TR_SM_INIT( sma, is )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_INIT, 		\
+						RKH_TRC_BEGIN( RKH_TE_SM_INIT, 					\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( is ); 							\
@@ -1113,7 +1118,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_DCH == 1
 			#define RKH_TR_SM_DCH( sma, ev )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 		\
+						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SIG( ev->e ); 						\
@@ -1129,7 +1134,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_CLRH == 1
 			#define RKH_TR_SM_CLRH( sma, h )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 		\
+						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( h ); 							\
@@ -1145,7 +1150,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_TRN == 1 
 			#define RKH_TR_SM_TRN( sma, ss, ts )						\
-						RKH_TRC_BEGIN( RKH_TE_SM_TRN, 		\
+						RKH_TRC_BEGIN( RKH_TE_SM_TRN, 					\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( ss ); 							\
@@ -1162,7 +1167,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_STATE == 1
 			#define RKH_TR_SM_STATE( sma, s )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_STATE, 		\
+						RKH_TRC_BEGIN( RKH_TE_SM_STATE, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
@@ -1178,7 +1183,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_ENSTATE == 1
 			#define RKH_TR_SM_ENSTATE( sma, s )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_ENSTATE, 	\
+						RKH_TRC_BEGIN( RKH_TE_SM_ENSTATE, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
@@ -1194,7 +1199,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_EXSTATE == 1
 			#define RKH_TR_SM_EXSTATE( sma, s )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EXSTATE, 	\
+						RKH_TRC_BEGIN( RKH_TE_SM_EXSTATE, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
@@ -1210,7 +1215,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_NENEX == 1 
 			#define RKH_TR_SM_NENEX( sma, nen, nex )					\
-						RKH_TRC_BEGIN( RKH_TE_SM_NENEX, 		\
+						RKH_TRC_BEGIN( RKH_TE_SM_NENEX, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_UI8( nen ); 						\
@@ -1227,7 +1232,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_NTRNACT == 1
 			#define RKH_TR_SM_NTRNACT( sma, nta, nts )					\
-						RKH_TRC_BEGIN( RKH_TE_SM_NTRNACT, 	\
+						RKH_TRC_BEGIN( RKH_TE_SM_NTRNACT, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_UI8( nta ); 						\
@@ -1244,7 +1249,7 @@ typedef enum rkh_trc_events
 
 		#if RKH_TRC_EN_SM_CSTATE == 1
 			#define RKH_TR_SM_CSTATE( sma, s )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_CSTATE, 	\
+						RKH_TRC_BEGIN( RKH_TE_SM_CSTATE, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
@@ -1262,7 +1267,7 @@ typedef enum rkh_trc_events
 		 */
 
 			#define RKH_TR_SM_EVT_PROC( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EVT_PROC, 	\
+						RKH_TRC_BEGIN( RKH_TE_SM_EVT_PROC, 				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1276,7 +1281,7 @@ typedef enum rkh_trc_events
 		 */
 
 			#define RKH_TR_SM_EVT_NFOUND( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EVT_NFOUND,	\
+						RKH_TRC_BEGIN( RKH_TE_SM_EVT_NFOUND,			\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1290,7 +1295,7 @@ typedef enum rkh_trc_events
 		 */
 
 			#define RKH_TR_SM_CND_NFOUND( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,	\
+						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,			\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1303,7 +1308,7 @@ typedef enum rkh_trc_events
 		 */
 
 			#define RKH_TR_SM_GRD_FALSE( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,	\
+						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1316,7 +1321,7 @@ typedef enum rkh_trc_events
 		 */
 
 			#define RKH_TR_SM_UNKN_STATE( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_UNKN_STATE,	\
+						RKH_TRC_BEGIN( RKH_TE_SM_UNKN_STATE,			\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1329,7 +1334,7 @@ typedef enum rkh_trc_events
 		 * 	Args	= sma\n
 		 */
 			#define RKH_TR_SM_EX_HLEVEL( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EX_HLEVEL,	\
+						RKH_TRC_BEGIN( RKH_TE_SM_EX_HLEVEL,				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1342,7 +1347,7 @@ typedef enum rkh_trc_events
 		 * 	Args	= sma\n
 		 */
 			#define RKH_TR_SM_EX_TSEG( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EX_TSEG,	\
+						RKH_TRC_BEGIN( RKH_TE_SM_EX_TSEG,				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1378,7 +1383,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_TIM_INIT( t, sig )								\
-					RKH_TRC_BEGIN( RKH_TE_TIM_INIT, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_TIM_INIT, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SIG( sig ); 							\
 					RKH_TRC_END()
@@ -1391,7 +1396,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_TIM_START(	t, nt, sma )						\
-					RKH_TRC_BEGIN( RKH_TE_TIM_START, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_TIM_START, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_NTICK( nt ); 							\
@@ -1405,7 +1410,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_TIM_RESTART( t, nt )								\
-					RKH_TRC_BEGIN( RKH_TE_TIM_RESTART, NVS )\
+					RKH_TRC_BEGIN( RKH_TE_TIM_RESTART, NVS )			\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_NTICK( nt ); 							\
 					RKH_TRC_END()
@@ -1418,7 +1423,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_TIM_STOP( t )									\
-					RKH_TRC_BEGIN( RKH_TE_TIM_STOP, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_TIM_STOP, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
 
@@ -1430,7 +1435,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_TIM_TOUT( t )									\
-					RKH_TRC_BEGIN( RKH_TE_TIM_TOUT, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_TIM_TOUT, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
 
@@ -1442,16 +1447,16 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_TIM_REM( t )										\
-					RKH_TRC_BEGIN( RKH_TE_TIM_REM, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_TIM_REM, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_TIM_INIT( t, sig )
-		#define RKH_TR_TIM_START( t, nt, sma )
-		#define RKH_TR_TIM_RESTART( t, nt )
-		#define RKH_TR_TIM_STOP( t )
-		#define RKH_TR_TIM_TOUT( t )
-		#define RKH_TR_TIM_REM( t )
+		#define RKH_TR_TIM_INIT( t, sig )					(void)0
+		#define RKH_TR_TIM_START( t, nt, sma )				(void)0
+		#define RKH_TR_TIM_RESTART( t, nt )					(void)0
+		#define RKH_TR_TIM_STOP( t )						(void)0
+		#define RKH_TR_TIM_TOUT( t )						(void)0
+		#define RKH_TR_TIM_REM( t )							(void)0
 	#endif
 
 	/* --- Framework (RKH) ----------------------- */
@@ -1465,7 +1470,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_EN()										\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EN, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_FWK_EN, NVS )				\
 					RKH_TRC_END()
 
 		/**
@@ -1476,7 +1481,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_EX()											\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EX, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_FWK_EX, NVS )					\
 					RKH_TRC_END()
 
 		/**
@@ -1487,7 +1492,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_EPREG( epix, ssize, esize )					\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EPREG, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_FWK_EPREG, NVS )				\
 						RKH_TRC_UI8( epix );							\
 						RKH_TRC_UI32( ssize );							\
 						RKH_TRC_ES( esize );							\
@@ -1501,7 +1506,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_AE( esize, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_FWK_AE, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_FWK_AE, NVS )					\
 						RKH_TRC_ES( esize );							\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
@@ -1514,7 +1519,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_GC( ev )										\
-					RKH_TRC_BEGIN( RKH_TE_FWK_GC, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_FWK_GC, NVS )					\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
 
@@ -1526,7 +1531,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_GCR( ev )									\
-					RKH_TRC_BEGIN( RKH_TE_FWK_GCR, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_FWK_GCR, NVS )				\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
 
@@ -1538,7 +1543,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_DEFER( q, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_FWK_DEFER, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_FWK_DEFER, NVS )				\
 						RKH_TRC_SYM( q );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
@@ -1551,7 +1556,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_RCALL( sma, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_FWK_RCALL, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_FWK_RCALL, NVS )				\
 						RKH_TRC_SYM( sma );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
@@ -1623,7 +1628,7 @@ typedef enum rkh_trc_events
 		#define RKH_TR_FWK_SIG( __s )									\
 				do{ 													\
 					static RKHROM char *const __s_n = #__s;				\
-					RKH_TRC_BEGIN( RKH_TE_FWK_SIG, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_FWK_SIG, NVS )				\
 						RKH_TRC_SIG( __s );								\
 						RKH_TRC_STR( __s_n );							\
 					RKH_TRC_END();										\
@@ -1659,7 +1664,7 @@ typedef enum rkh_trc_events
 		#define RKH_TR_FWK_FUN( __f )									\
 				do{ 													\
 					static RKHROM char *const __f_n = #__f;				\
-					RKH_TRC_BEGIN( RKH_TE_FWK_FUN, NVS )		\
+					RKH_TRC_BEGIN( RKH_TE_FWK_FUN, NVS )				\
 						RKH_TRC_FUN( __f );								\
 						RKH_TRC_STR( __f_n );							\
 					RKH_TRC_END();										\
@@ -1685,7 +1690,7 @@ typedef enum rkh_trc_events
 		 */
 
 		#define RKH_TR_FWK_EXE_FUN( function )							\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EXE_FUN, NVS )	\
+					RKH_TRC_BEGIN( RKH_TE_FWK_EXE_FUN, NVS )			\
 						RKH_TRC_FUN( function );						\
 					RKH_TRC_END()
 	#else
