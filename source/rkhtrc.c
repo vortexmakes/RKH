@@ -12,11 +12,10 @@
 RKH_MODULE_NAME( rkhtrc )
 
 
-#define GETGR( e )		(((e) & 0xE0) >> 5)
-#define GETEVT( e )		((e) & 0x1F)
-
-
 #if RKH_TRC_EN == 1
+
+#define GETGRP( e )		(rkhui8_t)(((e) & 0xE0) >> 5)
+#define GETEVT( e )		(rkhui8_t)((e) & 0x1F)
 
 #if RKH_TRC_RUNTIME_FILTER == 1
 /* trace event filter table */
@@ -116,10 +115,14 @@ rkh_trc_get( void )
 
 #if RKH_TRC_RUNTIME_FILTER == 1
 HUInt
-rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e )
+rkh_trc_isoff_( rkhui8_t e )
 {
+	rkhui8_t evt, grp;
+
+	evt = GETEVT( e );
+	grp = GETGRP( e );
 	return 	(( trcgfilter & rkh_maptbl[ grp ] ) == 0 ) &&
-			(( trceftbl[ e >> 3 ] & rkh_maptbl[ e & 0x07 ]) == 0 );
+			(( trceftbl[ evt >> 3 ] & rkh_maptbl[ evt & 0x07 ]) == 0 );
 #if 0
 	return (( trcgfilter & (1<<grp) ) != 0 ) &&
 				(( trceftbl[ e >> 3 ] & (1 << ( e&0x07 )) ) != 0 );
@@ -128,8 +131,10 @@ rkh_trc_isoff_( rkhui8_t grp, rkhui8_t e )
 
 
 void 
-rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp )
+rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 {
+	rkhui8_t *p, ix, c, offset, range;
+
 	if( grp == RKH_TRC_ALL_GROUPS )
 	{
 		trcgfilter = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0);
@@ -140,6 +145,17 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp )
 		trcgfilter |= rkh_maptbl[ grp ];
 	else
 		trcgfilter &= ~rkh_maptbl[ grp ];
+
+	if( mode == ECHANGE )
+	{
+		offset = trcgmtbl[ grp ] >> 4;
+		range = trcgmtbl[ grp ] & 0x0F;
+		for( 	p = &trceftbl[ offset ], 
+				ix = 0, 
+				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
+				ix < range; ++ix, ++p )
+			*p = c;
+	}
 }
 
 
@@ -153,7 +169,7 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 		for( 	p = trceftbl, 
 				ix = 0, 
 				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
-				ix < 10; ++ix, ++p )
+				ix < RKH_TRC_MAX_EVENTS_PER_GROUP; ++ix, ++p )
 			*p = c;
 		return;
 	}
@@ -161,7 +177,10 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 	if( ctrl == FILTER_ON )
 		trceftbl[ evt>>3 ] |= rkh_maptbl[ evt & 0x07 ];
 	else
+	{
 		trceftbl[ evt>>3 ] &= ~rkh_maptbl[ evt & 0x07 ];
+		trcgfilter &= ~rkh_maptbl[ GETGRP( evt ) ];
+	}
 }
 
 

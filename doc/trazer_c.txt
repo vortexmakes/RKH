@@ -46,7 +46,7 @@ RKH_THIS_MODULE
 							RKH_TRC_EN_SM == 1 || RKH_TRC_EN_RKH == 1 ))
 
 #define TRAZER_NTRE			RKH_TE_USER
-#define TRAZER_NTRG			RKH_TRCG_NGROUP
+#define TRAZER_NTRG			RKH_TG_NGROUP
 #define CC(s)				((const char*)(s))
 
 
