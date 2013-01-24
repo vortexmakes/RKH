@@ -1860,6 +1860,9 @@ void rkh_trc_put( rkhui8_t b );
 	/**
 	 * 	\brief
 	 * 	Emit (enable) all events in a specific group. 
+	 *
+	 * 	\note
+	 *	The container group is enabled, reglardless of its previous status.
 	 */
 
 	#define RKH_FILTER_OFF_GROUP_ALL_EVENTS( grp )			\
