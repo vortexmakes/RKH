@@ -671,6 +671,152 @@ typedef enum rkh_trc_events
 #define RKH_TRC_STR( s )	\
 			rkh_trc_str( (s) )
 
+
+enum rkh_trc_fmt
+{
+	RKH_I8_T,		/**< signed 8-bit integer format */
+	RKH_UI8_T,		/**< unsigned 8-bit integer format */
+	RKH_I16_T,		/**< signed 16-bit integer format */
+	RKH_UI16_T,		/**< unsigned 16-bit integer format */
+	RKH_I32_T,		/**< signed 32-bit integer format */
+	RKH_UI16_T,		/**< unsigned 16-bit integer format */
+	RKH_X32_T,		/**< signed 16-bit integer in hex format */
+	RKH_STR_T,		/**< zero-terminated ASCII string format */
+	RKH_MEM_T,		/**< up to 255-bytes memory block format */
+	RKH_OBJ_T,		/**< object pointer format */
+	RKH_FUN_T,		/**< function pointer format */
+	RKH_SIG_T		/**< event signal format */
+};
+
+
+/** 
+ * 	Macros for use in the client code.
+ */
+	
+/**
+ * 	\brief 
+ * 	Output formatted rkhi8_t to the trace record.
+ */
+
+#define RKH_TUSR_I8( w_, d_ ) \
+			rkh_trc_ui8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I8_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted rkhui8_t to the trace record.
+ */
+
+#define RKH_TUSR_UI8( w_, d_ ) \
+			rkh_trc_ui8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI8_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted rkhi16_t to the trace record.
+ */
+
+#define RKH_TUSR_I16( w_, d_ ) \
+			rkh_trc_ui16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_U16_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted rkhui16_t to the trace record.
+ */
+
+#define RKH_TUSR_UI16( w_, d_ ) \
+			rkh_trc_ui16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI16_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted rkhi32_t to the trace record.
+ */
+
+#define RKH_TUSR_I32( w_, d_ ) \
+			rkh_trc_ui32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_U32_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted rkhui32_t to the trace record.
+ */
+
+#define RKH_TUSR_UI32( w_, d_ ) \
+			rkh_trc_ui32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI32_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted rkhui32_t to the trace record.
+ */
+
+#define RKH_TUSR_X32( d_ ) \
+			rkh_trc_ui32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_X32_T, (d_))
+
+/**
+ * 	\brief 
+ * 	Output formatted zero-terminated ASCII string to the trace record.
+ */
+
+#define RKH_TUSR_STR( s_ ) \
+			rkh_trc_usr_str((s_))
+
+/**
+ * 	\brief 
+ * 	Output formatted memory block of up to 255 bytes to the trace record.
+ */
+
+#define RKH_TUSR_MEM( mem_, size_ ) \
+			rkh_trc_usr_mem((mem_), (size_))
+
+/**
+ * 	\brief 
+ * 	Output formatted object pointer to the trace record.
+ */
+
+#if RKH_TRC_SIZEOF_POINTER == 16
+	#define RKH_TUSR_OBJ( obj_ )	\
+				RKH_TUSR_UI16((rkhui8_t)RKH_OBJ_T, (obj_))
+#elif RKH_TRC_SIZEOF_POINTER == 32
+	#define RKH_TUSR_OBJ( obj_ )	\
+				RKH_TUSR_UI32((rkhui8_t)RKH_OBJ_T, (obj_))
+#else
+	#define RKH_TUSR_OBJ( obj_ )	\
+				RKH_TUSR_UI32((rkhui8_t)RKH_OBJ_T, (obj_))
+#endif
+
+/**
+ * 	\brief 
+ * 	Output formatted function pointer to the QS record.
+ */
+
+#if RKH_TRC_SIZEOF_FUN_POINTER == 16
+	#define RKH_TUSR_FUN( fun_ )	\
+				RKH_TUSR_UI16((rkhui8_t)RKH_FUN_T, (fun_))
+#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
+	#define RKH_TUSR_FUN( sym )	\
+				RKH_TUSR_UI32((rkhui8_t)RKH_FUN_T, (fun_))
+#else
+	#define RKH_TUSR_FUN( sym )	\
+				RKH_TUSR_UI32((rkhui8_t)RKH_FUN_T, (fun_))
+#endif
+
+/**
+ * 	\brief 
+ * 	Output formatted event signal to the QS record.
+ */
+
+#if RKH_SIZEOF_EVENT == 8
+	#define RKH_TUSR_SIG( sig_ ) \
+				RKH_TUSR_UI8((rkhui8_t)RKH_SIG_T, (sig_))
+#elif RKH_SIZEOF_EVENT == 16
+	#define RKH_TUSR_SIG( sig_ ) \
+				RKH_TUSR_UI16((rkhui8_t)RKH_SIG_T, (sig_))
+#elif RKH_SIZEOF_EVENT == 32
+	#define RKH_TUSR_SIG( sig_ ) \
+				RKH_TUSR_UI32((rkhui8_t)RKH_SIG_T, (sig_))
+#else
+	#define RKH_TUSR_SIG( sig_ ) \
+				RKH_TUSR_UI8((rkhui8_t)RKH_SIG_T, (sig_))
+#endif
+
+
 /**
  * 	\brief
  * 	Insert the sequence number byte.
@@ -2162,7 +2308,8 @@ void rkh_trc_end( void );
 
 /**
  * 	\brief
- * 	Store a 8-bit data into the current trace event buffer.
+ * 	Store a 8-bit data into the current trace event buffer without format 
+ * 	information.
  *
  * 	\param d		data
  */
@@ -2172,7 +2319,8 @@ void rkh_trc_ui8( rkhui8_t d );
 
 /**
  * 	\brief
- * 	Store a 16-bit data into the current trace event buffer.
+ * 	Store a 16-bit data into the current trace event buffer without format 
+ * 	information.
  *
  * 	\param d		data
  */
@@ -2182,7 +2330,8 @@ void rkh_trc_ui16( rkhui16_t d );
 
 /**
  * 	\brief
- * 	Store a 32-bit data into the current trace event buffer.
+ * 	Store a 32-bit data into the current trace event buffer without format 
+ * 	information.
  *
  * 	\param d		data
  */
@@ -2192,12 +2341,35 @@ void rkh_trc_ui32( rkhui32_t d );
 
 /**
  * 	\brief
- * 	Store a string terminated in '\\0' into the current trace event buffer.
+ * 	Store a string terminated in '\\0' into the current trace event buffer 
+ * 	without format information.
  *
  * 	\param s		pointer to string treminated in '\\0'
  */
 
 void rkh_trc_str( const char *s );
+
+
+/**
+ * 	\brief
+ * 	Store a string terminated in '\\0' into the current trace event buffer 
+ * 	with format information.
+ *
+ * 	\param s		pointer to string terminated in '\\0'
+ */
+
+void rkh_trc_usr_str( const char *s );
+
+
+/**
+ * 	\brief
+ * 	Output memory block of up to 255-bytes with format information.
+ *
+ * 	\param blk		pointer to memory block.
+ * 	\param size		size of memory block.
+ */
+
+void rkh_trc_usr_mem( rkhui8_t const *blk, rkhui8_t size );
 
 
 #endif

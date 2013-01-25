@@ -269,4 +269,18 @@ rkh_trc_str( const char *s )
 		rkh_trc_ui8( (rkhui8_t)*s++ );
 	rkh_trc_ui8( '\0' );
 }
+
+
+void 
+rkh_trc_usr_str( const char *s )
+{
+}
+
+
+void 
+rkh_trc_usr_mem( rkhui8_t const *blk, rkhui8_t size )
+{
+}
+
+
 #endif

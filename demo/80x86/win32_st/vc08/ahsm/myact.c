@@ -11,7 +11,7 @@
 #define CMY( s )		(( MYSM_T* )(s))
 
 
-static RKHT_T tx, ty, tz;
+RKHT_T tx, ty, tz;
 static RKH_DCLR_STATIC_EVENT( te, ONE );
 
 
