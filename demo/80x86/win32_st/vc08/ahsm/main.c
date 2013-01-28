@@ -87,6 +87,7 @@ main( int argc, char *argv[] )
 		RKH_TUSR_UI32( 5, d3 );
 		RKH_TUSR_X32( 4, d3 );
 		RKH_TUSR_STR( str );
+		RKH_TUSR_MEM( (rkhui8_t*)&d3, sizeof(rkhui32_t) );
 		RKH_TUSR_OBJ( my );
 		RKH_TUSR_FUN( main );
 		RKH_TUSR_SIG( ZERO );
