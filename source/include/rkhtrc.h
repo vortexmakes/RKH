@@ -632,28 +632,6 @@ typedef enum rkh_trc_events
 
 
 /**
- * 	Idem RKH_TRC_BEGIN() macro but use it for user trace events.
- */
-
-#define RKH_TRC_USR_BEGIN( eid_ ) 					\
-				RKH_SR_CRITICAL_;					\
-				if(	rkh_trc_isoff_( eid_ ) )		\
-				{									\
-					RKH_ENTER_CRITICAL_();			\
-					rkh_trc_begin( eid_ );
-
-
-/**
- * 	Idem RKH_TRC_END() macro but use it for user trace events.
- */
-
-#define RKH_TRC_USR_END() 						\
-					rkh_trc_end();				\
-					RKH_EXIT_CRITICAL_();		\
-				}
-
-
-/**
  * 	\brief
  * 	Insert a 1-byte without escaping it.
  */
@@ -724,6 +702,28 @@ enum rkh_trc_fmt
  */
 	
 #if RKH_TRC_EN_USER_TRACE == 1
+
+
+	/**
+	 * 	Idem RKH_TRC_BEGIN() macro but use it for user trace events.
+	 */
+
+	#define RKH_TRC_USR_BEGIN( eid_ ) 				\
+					RKH_SR_CRITICAL_;				\
+					if(	rkh_trc_isoff_( eid_ ) )	\
+					{								\
+						RKH_ENTER_CRITICAL_();		\
+						rkh_trc_begin( eid_ );
+
+
+	/**
+	 * 	Idem RKH_TRC_END() macro but use it for user trace events.
+	 */
+
+	#define RKH_TRC_USR_END() 						\
+						rkh_trc_end();				\
+						RKH_EXIT_CRITICAL_();		\
+					}
 	/**
 	 * 	\brief 
 	 * 	Output formatted rkhi8_t to the trace record.
@@ -854,6 +854,8 @@ enum rkh_trc_fmt
 					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
 	#endif
 #else
+	#define RKH_TRC_USR_BEGIN( eid_ ) 	(void)0;
+	#define RKH_TRC_USR_END()			(void)0
 	#define RKH_TUSR_I8( w_, d_ )		(void)0
 	#define RKH_TUSR_UI8( w_, d_ )		(void)0
 	#define RKH_TUSR_I16( w_, d_ )		(void)0

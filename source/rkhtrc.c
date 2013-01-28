@@ -271,6 +271,7 @@ rkh_trc_str( const char *s )
 }
 
 
+#if RKH_TRC_EN_USER_TRACE == 1
 void 
 rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )
 {
@@ -315,6 +316,7 @@ rkh_trc_fmt_mem( const rkhui8_t *mem, rkhui8_t size )
         --size;
     }	
 }
+#endif
 
 
 #endif
