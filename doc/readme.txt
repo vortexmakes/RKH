@@ -652,6 +652,7 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
 \li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
 \li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
 \li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
 \li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
@@ -2703,6 +2704,7 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
 \li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
 \li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
 \li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
 \li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
@@ -2993,6 +2995,7 @@ Here is an list of all options with their documentation:
 \li \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
 \li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
 \li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
 \li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
 \li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ

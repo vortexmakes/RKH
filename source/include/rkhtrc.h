@@ -723,134 +723,149 @@ enum rkh_trc_fmt
  * 	Macros for use in the client code.
  */
 	
-/**
- * 	\brief 
- * 	Output formatted rkhi8_t to the trace record.
- */
+#if RKH_TRC_EN_USER_TRACE == 1
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhi8_t to the trace record.
+	 */
 
-#define RKH_TUSR_I8( w_, d_ ) \
+	#define RKH_TUSR_I8( w_, d_ ) \
 			rkh_trc_fmt_u8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I8_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted rkhui8_t to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhui8_t to the trace record.
+	 */
 
-#define RKH_TUSR_UI8( w_, d_ ) \
+	#define RKH_TUSR_UI8( w_, d_ ) \
 			rkh_trc_fmt_u8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI8_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted rkhi16_t to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhi16_t to the trace record.
+	 */
 
-#define RKH_TUSR_I16( w_, d_ ) \
+	#define RKH_TUSR_I16( w_, d_ ) \
 			rkh_trc_fmt_u16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I16_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted rkhui16_t to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhui16_t to the trace record.
+	 */
 
-#define RKH_TUSR_UI16( w_, d_ ) \
+	#define RKH_TUSR_UI16( w_, d_ ) \
 			rkh_trc_fmt_u16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI16_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted rkhi32_t to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhi32_t to the trace record.
+	 */
 
-#define RKH_TUSR_I32( w_, d_ ) \
+	#define RKH_TUSR_I32( w_, d_ ) \
 			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I32_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted rkhui32_t to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhui32_t to the trace record.
+	 */
 
-#define RKH_TUSR_UI32( w_, d_ ) \
+	#define RKH_TUSR_UI32( w_, d_ ) \
 			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI32_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted rkhui32_t to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted rkhui32_t to the trace record.
+	 */
 
-#define RKH_TUSR_X32( w_, d_ ) \
+	#define RKH_TUSR_X32( w_, d_ ) \
 			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_X32_T, \
 								(d_))
 
-/**
- * 	\brief 
- * 	Output formatted zero-terminated ASCII string to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted zero-terminated ASCII string to the trace record.
+	 */
 
-#define RKH_TUSR_STR( s_ ) \
-			rkh_trc_fmt_str((s_))
+	#define RKH_TUSR_STR( s_ ) \
+				rkh_trc_fmt_str((s_))
 
-/**
- * 	\brief 
- * 	Output formatted memory block of up to 255 bytes to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted memory block of up to 255 bytes to the trace record.
+	 */
 
-#define RKH_TUSR_MEM( mem_, size_ ) \
-			rkh_trc_fmt_mem((mem_), (size_))
+	#define RKH_TUSR_MEM( mem_, size_ ) \
+				rkh_trc_fmt_mem((mem_), (size_))
 
-/**
- * 	\brief 
- * 	Output formatted object pointer to the trace record.
- */
+	/**
+	 * 	\brief 
+	 * 	Output formatted object pointer to the trace record.
+	 */
 
-#if RKH_TRC_SIZEOF_POINTER == 16
-	#define RKH_TUSR_OBJ( obj_ )	\
-			rkh_trc_fmt_u16((rkhui8_t)RKH_OBJ_T, (rkhui16_t)(obj_))
-#elif RKH_TRC_SIZEOF_POINTER == 32
-	#define RKH_TUSR_OBJ( obj_ )	\
-			rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
+	#if RKH_TRC_SIZEOF_POINTER == 16
+		#define RKH_TUSR_OBJ( obj_ )	\
+				rkh_trc_fmt_u16((rkhui8_t)RKH_OBJ_T, (rkhui16_t)(obj_))
+	#elif RKH_TRC_SIZEOF_POINTER == 32
+		#define RKH_TUSR_OBJ( obj_ )	\
+				rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
+	#else
+		#define RKH_TUSR_OBJ( obj_ )	\
+				rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
+	#endif
+
+	/**
+	 * 	\brief 
+	 * 	Output formatted function pointer to the QS record.
+	 */
+
+	#if RKH_TRC_SIZEOF_FUN_POINTER == 16
+		#define RKH_TUSR_FUN( fun_ )	\
+				rkh_trc_fmt_u16((rkhui8_t)RKH_FUN_T, (rkhui16_t)(fun_))
+	#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
+		#define RKH_TUSR_FUN( fun_ )	\
+				rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
+	#else
+		#define RKH_TUSR_FUN( fun_ )	\
+				rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
+	#endif
+
+	/**
+	 * 	\brief 
+	 * 	Output formatted event signal to the QS record.
+	 */
+
+	#if RKH_SIZEOF_EVENT == 8
+		#define RKH_TUSR_SIG( sig_ ) \
+					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
+	#elif RKH_SIZEOF_EVENT == 16
+		#define RKH_TUSR_SIG( sig_ ) \
+					rkh_trc_fmt_u16((rkhui8_t)RKH_SIG_T, (rkhui16_t)(sig_))
+	#elif RKH_SIZEOF_EVENT == 32
+		#define RKH_TUSR_SIG( sig_ ) \
+					rkh_trc_fmt_u32((rkhui8_t)RKH_SIG_T, (rkhui32_t)(sig_))
+	#else
+		#define RKH_TUSR_SIG( sig_ ) \
+					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
+	#endif
 #else
-	#define RKH_TUSR_OBJ( obj_ )	\
-			rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
-#endif
-
-/**
- * 	\brief 
- * 	Output formatted function pointer to the QS record.
- */
-
-#if RKH_TRC_SIZEOF_FUN_POINTER == 16
-	#define RKH_TUSR_FUN( fun_ )	\
-			rkh_trc_fmt_u16((rkhui8_t)RKH_FUN_T, (rkhui16_t)(fun_))
-#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
-	#define RKH_TUSR_FUN( fun_ )	\
-			rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
-#else
-	#define RKH_TUSR_FUN( fun_ )	\
-			rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
-#endif
-
-/**
- * 	\brief 
- * 	Output formatted event signal to the QS record.
- */
-
-#if RKH_SIZEOF_EVENT == 8
-	#define RKH_TUSR_SIG( sig_ ) \
-				rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
-#elif RKH_SIZEOF_EVENT == 16
-	#define RKH_TUSR_SIG( sig_ ) \
-				rkh_trc_fmt_u16((rkhui8_t)RKH_SIG_T, (rkhui16_t)(sig_))
-#elif RKH_SIZEOF_EVENT == 32
-	#define RKH_TUSR_SIG( sig_ ) \
-				rkh_trc_fmt_u32((rkhui8_t)RKH_SIG_T, (rkhui32_t)(sig_))
-#else
-	#define RKH_TUSR_SIG( sig_ ) \
-				rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
+	#define RKH_TUSR_I8( w_, d_ )		(void)0
+	#define RKH_TUSR_UI8( w_, d_ )		(void)0
+	#define RKH_TUSR_I16( w_, d_ )		(void)0
+	#define RKH_TUSR_UI16( w_, d_ )		(void)0
+	#define RKH_TUSR_I32( w_, d_ )		(void)0
+	#define RKH_TUSR_UI32( w_, d_ )		(void)0
+	#define RKH_TUSR_X32( w_, d_ )		(void)0
+	#define RKH_TUSR_STR( s_ )			(void)0
+	#define RKH_TUSR_MEM( mem_, size_ )	(void)0
+	#define RKH_TUSR_OBJ( obj_ )		(void)0
+	#define RKH_TUSR_FUN( fun_ )		(void)0
+	#define RKH_TUSR_SIG( sig_ )		(void)0
 #endif
 
 

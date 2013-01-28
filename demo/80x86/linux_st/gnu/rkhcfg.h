@@ -411,6 +411,15 @@
 #define RKH_TRC_RUNTIME_FILTER			1
 
 /**
+ *	If the #RKH_TRC_EN_USER_TRACE is set to 1 then RKH will allow to build  
+ *	and generate tracing information from the application-level code. 
+ *	This trace records are application-specific.
+ *	
+ */
+
+#define RKH_TRC_EN_USER_TRACE			1
+
+/**
  *	If the #RKH_TRC_ALL is set to 1 then RKH will include all its own trace 
  *	records.
  */
