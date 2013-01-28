@@ -73,7 +73,8 @@ static FILE *ftbin;
 	#include "tcptrc.h"
 
 	/* Trazer Tool IP Address */
-	#define TRC_IP_ADDR					"192.168.1.143"
+	/*#define TRC_IP_ADDR					"192.168.1.143"*/
+	#define TRC_IP_ADDR					"127.0.0.1"
 
 	/* Trazer Tool TCP Port Address */
 	#define TRC_TCP_PORT				6602

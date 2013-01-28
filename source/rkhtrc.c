@@ -63,7 +63,7 @@ rkh_trc_init( void )
 	nseq = 0;
 	trcend = &trcstm[ RKH_TRC_SIZEOF_STREAM ];
 	trcctrl = RKH_TRC_START;
-	RKH_TRC_UI8_RAW( RKH_FLG );
+	RKH_TRC_U8_RAW( RKH_FLG );
 }
 
 
@@ -227,7 +227,7 @@ rkh_trc_end( void )
 
 
 void 
-rkh_trc_ui8( rkhui8_t d )
+rkh_trc_u8( rkhui8_t d )
 {
 	chk = (rkhui8_t)( chk + d );
 	if( d == RKH_FLG || d == RKH_ESC )
@@ -241,24 +241,24 @@ rkh_trc_ui8( rkhui8_t d )
 
 
 void 
-rkh_trc_ui16( rkhui16_t d )
+rkh_trc_u16( rkhui16_t d )
 {
-	rkh_trc_ui8( (rkhui8_t)d );
+	rkh_trc_u8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_ui8( (rkhui8_t)d );
+	rkh_trc_u8( (rkhui8_t)d );
 }
 
 
 void 
-rkh_trc_ui32( rkhui32_t d )
+rkh_trc_u32( rkhui32_t d )
 {
-	rkh_trc_ui8( (rkhui8_t)d );
+	rkh_trc_u8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_ui8( (rkhui8_t)d );
+	rkh_trc_u8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_ui8( (rkhui8_t)d );
+	rkh_trc_u8( (rkhui8_t)d );
 	d >>= 8;
-	rkh_trc_ui8( (rkhui8_t)d );
+	rkh_trc_u8( (rkhui8_t)d );
 }
 
 
@@ -266,20 +266,54 @@ void
 rkh_trc_str( const char *s )
 {
 	while( *s != '\0' )
-		rkh_trc_ui8( (rkhui8_t)*s++ );
-	rkh_trc_ui8( '\0' );
+		rkh_trc_u8( (rkhui8_t)*s++ );
+	rkh_trc_u8( '\0' );
 }
 
 
 void 
-rkh_trc_usr_str( const char *s )
+rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )
 {
+	rkh_trc_u8( fmt );
+	rkh_trc_u8( d );
 }
 
 
 void 
-rkh_trc_usr_mem( rkhui8_t const *blk, rkhui8_t size )
+rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d )
 {
+	rkh_trc_u8( fmt );
+	rkh_trc_u16( d );
+}
+
+
+void 
+rkh_trc_fmt_u32( rkhui8_t fmt, rkhui32_t d )
+{
+	rkh_trc_u8( fmt );
+	rkh_trc_u32( d );
+}
+
+
+void 
+rkh_trc_fmt_str( const char *s )
+{
+	rkh_trc_u8( (rkhui8_t)RKH_STR_T );
+	while( *s != '\0' )
+		RKH_TRC_U8_RAW( (rkhui8_t)*s++ );
+	rkh_trc_u8( '\0' );
+}
+
+
+void 
+rkh_trc_fmt_mem( const rkhui8_t *mem, rkhui8_t size )
+{
+	rkh_trc_u8( (rkhui8_t)RKH_MEM_T );
+    while( size != 0 )
+	{
+		rkh_trc_u8( (rkhui8_t)*mem++ );
+        --size;
+    }	
 }
 
 

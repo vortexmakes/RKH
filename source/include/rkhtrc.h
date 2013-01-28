@@ -507,7 +507,7 @@ typedef enum rkh_trc_events
 #if RKH_TRC_EN_CHK == 1
 	#define RKH_TRC_CHK()					\
 				chk = (rkhui8_t)(~chk + 1); \
-				rkh_trc_ui8( chk )
+				rkh_trc_u8( chk )
 #else
 	#define RKH_TRC_CHK()
 #endif
@@ -520,7 +520,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_FLG()						\
-				RKH_TRC_UI8_RAW( RKH_FLG )
+				RKH_TRC_U8_RAW( RKH_FLG )
 
 
 /** 
@@ -616,19 +616,41 @@ typedef enum rkh_trc_events
  * 	independent of any runtime filter.
  */
 
-#define RKH_TRC_BEGIN_WOFIL( eid, prio )		\
-			RKH_SR_CRITICAL_;					\
-			RKH_ENTER_CRITICAL_();				\
-			rkh_trc_begin( eid );
+#define RKH_TRC_BEGIN_WOFIL( eid )					\
+				RKH_SR_CRITICAL_;					\
+				RKH_ENTER_CRITICAL_();				\
+				rkh_trc_begin( eid );
 
 /**
  * 	Idem RKH_TRC_END() macro but use it for trace events that are 
  * 	independent of any runtime filter.
  */
 
-#define RKH_TRC_END_WOFIL()						\
-			rkh_trc_end();						\
-			RKH_EXIT_CRITICAL_();
+#define RKH_TRC_END_WOFIL()							\
+				rkh_trc_end();						\
+				RKH_EXIT_CRITICAL_();
+
+
+/**
+ * 	Idem RKH_TRC_BEGIN() macro but use it for user trace events.
+ */
+
+#define RKH_TRC_USR_BEGIN( eid_ ) 					\
+				RKH_SR_CRITICAL_;					\
+				if(	rkh_trc_isoff_( eid_ ) )		\
+				{									\
+					RKH_ENTER_CRITICAL_();			\
+					rkh_trc_begin( eid_ );
+
+
+/**
+ * 	Idem RKH_TRC_END() macro but use it for user trace events.
+ */
+
+#define RKH_TRC_USR_END() 						\
+					rkh_trc_end();				\
+					RKH_EXIT_CRITICAL_();		\
+				}
 
 
 /**
@@ -636,7 +658,7 @@ typedef enum rkh_trc_events
  * 	Insert a 1-byte without escaping it.
  */
 
-#define RKH_TRC_UI8_RAW( d )	\
+#define RKH_TRC_U8_RAW( d )	\
 			rkh_trc_put( (d) )
 
 /**
@@ -645,7 +667,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_UI8( d )	\
-			rkh_trc_ui8( (d) )
+			rkh_trc_u8( (d) )
 
 /**
  * 	\brief
@@ -653,7 +675,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_UI16( d )	\
-			rkh_trc_ui16( (d) )
+			rkh_trc_u16( (d) )
 
 /**
  * 	\brief
@@ -661,7 +683,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_UI32( d )	\
-			rkh_trc_ui32( (d) )
+			rkh_trc_u32( (d) )
 
 /**
  * 	\brief
@@ -672,6 +694,14 @@ typedef enum rkh_trc_events
 			rkh_trc_str( (s) )
 
 
+/** 
+ * 	\brief 
+ * 	Enumerates data formats recognized by Trazer.
+ *
+ * 	Trazer uses this enumeration is used only internally for the formatted 
+ * 	user data elements.
+ */
+
 enum rkh_trc_fmt
 {
 	RKH_I8_T,		/**< signed 8-bit integer format */
@@ -679,7 +709,7 @@ enum rkh_trc_fmt
 	RKH_I16_T,		/**< signed 16-bit integer format */
 	RKH_UI16_T,		/**< unsigned 16-bit integer format */
 	RKH_I32_T,		/**< signed 32-bit integer format */
-	RKH_UI16_T,		/**< unsigned 16-bit integer format */
+	RKH_UI32_T,		/**< unsigned 16-bit integer format */
 	RKH_X32_T,		/**< signed 16-bit integer in hex format */
 	RKH_STR_T,		/**< zero-terminated ASCII string format */
 	RKH_MEM_T,		/**< up to 255-bytes memory block format */
@@ -699,7 +729,8 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_I8( w_, d_ ) \
-			rkh_trc_ui8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I8_T, (d_))
+			rkh_trc_fmt_u8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I8_T, \
+								(d_))
 
 /**
  * 	\brief 
@@ -707,7 +738,8 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_UI8( w_, d_ ) \
-			rkh_trc_ui8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI8_T, (d_))
+			rkh_trc_fmt_u8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI8_T, \
+								(d_))
 
 /**
  * 	\brief 
@@ -715,7 +747,8 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_I16( w_, d_ ) \
-			rkh_trc_ui16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_U16_T, (d_))
+			rkh_trc_fmt_u16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I16_T, \
+								(d_))
 
 /**
  * 	\brief 
@@ -723,7 +756,8 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_UI16( w_, d_ ) \
-			rkh_trc_ui16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI16_T, (d_))
+			rkh_trc_fmt_u16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI16_T, \
+								(d_))
 
 /**
  * 	\brief 
@@ -731,7 +765,8 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_I32( w_, d_ ) \
-			rkh_trc_ui32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_U32_T, (d_))
+			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I32_T, \
+								(d_))
 
 /**
  * 	\brief 
@@ -739,15 +774,17 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_UI32( w_, d_ ) \
-			rkh_trc_ui32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI32_T, (d_))
+			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI32_T, \
+								(d_))
 
 /**
  * 	\brief 
  * 	Output formatted rkhui32_t to the trace record.
  */
 
-#define RKH_TUSR_X32( d_ ) \
-			rkh_trc_ui32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_X32_T, (d_))
+#define RKH_TUSR_X32( w_, d_ ) \
+			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_X32_T, \
+								(d_))
 
 /**
  * 	\brief 
@@ -755,7 +792,7 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_STR( s_ ) \
-			rkh_trc_usr_str((s_))
+			rkh_trc_fmt_str((s_))
 
 /**
  * 	\brief 
@@ -763,7 +800,7 @@ enum rkh_trc_fmt
  */
 
 #define RKH_TUSR_MEM( mem_, size_ ) \
-			rkh_trc_usr_mem((mem_), (size_))
+			rkh_trc_fmt_mem((mem_), (size_))
 
 /**
  * 	\brief 
@@ -772,13 +809,13 @@ enum rkh_trc_fmt
 
 #if RKH_TRC_SIZEOF_POINTER == 16
 	#define RKH_TUSR_OBJ( obj_ )	\
-				RKH_TUSR_UI16((rkhui8_t)RKH_OBJ_T, (obj_))
+			rkh_trc_fmt_u16((rkhui8_t)RKH_OBJ_T, (rkhui16_t)(obj_))
 #elif RKH_TRC_SIZEOF_POINTER == 32
 	#define RKH_TUSR_OBJ( obj_ )	\
-				RKH_TUSR_UI32((rkhui8_t)RKH_OBJ_T, (obj_))
+			rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
 #else
 	#define RKH_TUSR_OBJ( obj_ )	\
-				RKH_TUSR_UI32((rkhui8_t)RKH_OBJ_T, (obj_))
+			rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
 #endif
 
 /**
@@ -788,13 +825,13 @@ enum rkh_trc_fmt
 
 #if RKH_TRC_SIZEOF_FUN_POINTER == 16
 	#define RKH_TUSR_FUN( fun_ )	\
-				RKH_TUSR_UI16((rkhui8_t)RKH_FUN_T, (fun_))
+			rkh_trc_fmt_u16((rkhui8_t)RKH_FUN_T, (rkhui16_t)(fun_))
 #elif RKH_TRC_SIZEOF_FUN_POINTER == 32
-	#define RKH_TUSR_FUN( sym )	\
-				RKH_TUSR_UI32((rkhui8_t)RKH_FUN_T, (fun_))
+	#define RKH_TUSR_FUN( fun_ )	\
+			rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
 #else
-	#define RKH_TUSR_FUN( sym )	\
-				RKH_TUSR_UI32((rkhui8_t)RKH_FUN_T, (fun_))
+	#define RKH_TUSR_FUN( fun_ )	\
+			rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
 #endif
 
 /**
@@ -804,16 +841,16 @@ enum rkh_trc_fmt
 
 #if RKH_SIZEOF_EVENT == 8
 	#define RKH_TUSR_SIG( sig_ ) \
-				RKH_TUSR_UI8((rkhui8_t)RKH_SIG_T, (sig_))
+				rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
 #elif RKH_SIZEOF_EVENT == 16
 	#define RKH_TUSR_SIG( sig_ ) \
-				RKH_TUSR_UI16((rkhui8_t)RKH_SIG_T, (sig_))
+				rkh_trc_fmt_u16((rkhui8_t)RKH_SIG_T, (rkhui16_t)(sig_))
 #elif RKH_SIZEOF_EVENT == 32
 	#define RKH_TUSR_SIG( sig_ ) \
-				RKH_TUSR_UI32((rkhui8_t)RKH_SIG_T, (sig_))
+				rkh_trc_fmt_u32((rkhui8_t)RKH_SIG_T, (rkhui32_t)(sig_))
 #else
 	#define RKH_TUSR_SIG( sig_ ) \
-				RKH_TUSR_UI8((rkhui8_t)RKH_SIG_T, (sig_))
+				rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
 #endif
 
 
@@ -1732,10 +1769,10 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_OBJ( __o )									\
 				do{ 													\
 					static RKHROM char *const __o_n = #__o;				\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ, NVS )			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ )				\
 						RKH_TRC_SYM( __o );								\
 						RKH_TRC_STR( __o_n );							\
-					RKH_TRC_END_WOFIL();										\
+					RKH_TRC_END_WOFIL();								\
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
@@ -2314,7 +2351,7 @@ void rkh_trc_end( void );
  * 	\param d		data
  */
 
-void rkh_trc_ui8( rkhui8_t d );
+void rkh_trc_u8( rkhui8_t d );
 
 
 /**
@@ -2325,7 +2362,7 @@ void rkh_trc_ui8( rkhui8_t d );
  * 	\param d		data
  */
 
-void rkh_trc_ui16( rkhui16_t d );
+void rkh_trc_u16( rkhui16_t d );
 
 
 /**
@@ -2336,7 +2373,7 @@ void rkh_trc_ui16( rkhui16_t d );
  * 	\param d		data
  */
 
-void rkh_trc_ui32( rkhui32_t d );
+void rkh_trc_u32( rkhui32_t d );
 
 
 /**
@@ -2352,24 +2389,60 @@ void rkh_trc_str( const char *s );
 
 /**
  * 	\brief
+ * 	Store a 8-bit data into the current trace event buffer with format 
+ * 	information.
+ *
+ * 	\param fmt		format information
+ * 	\param d		data
+ */
+
+void rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d );
+
+
+/**
+ * 	\brief
+ * 	Store a 16-bit data into the current trace event buffer with format 
+ * 	information.
+ *
+ * 	\param fmt		format information
+ * 	\param d		data
+ */
+
+void rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d );
+
+
+/**
+ * 	\brief
+ * 	Store a 32-bit data into the current trace event buffer with format 
+ * 	information.
+ *
+ * 	\param fmt		format information
+ * 	\param d		data
+ */
+
+void rkh_trc_fmt_u32( rkhui8_t fmt, rkhui32_t d );
+
+
+/**
+ * 	\brief
  * 	Store a string terminated in '\\0' into the current trace event buffer 
  * 	with format information.
  *
  * 	\param s		pointer to string terminated in '\\0'
  */
 
-void rkh_trc_usr_str( const char *s );
+void rkh_trc_fmt_str( const char *s );
 
 
 /**
  * 	\brief
  * 	Output memory block of up to 255-bytes with format information.
  *
- * 	\param blk		pointer to memory block.
+ * 	\param mem		pointer to memory block.
  * 	\param size		size of memory block.
  */
 
-void rkh_trc_usr_mem( rkhui8_t const *blk, rkhui8_t size );
+void rkh_trc_fmt_mem( rkhui8_t const *mem, rkhui8_t size );
 
 
 #endif

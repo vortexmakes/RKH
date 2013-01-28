@@ -148,7 +148,7 @@ MYSM_T	.\demo\80x86\win32_st\vc08\ahsm\my.h	/^} MYSM_T;			\/* SMA derived from R
 MYSM_T	.\demo\80x86\win32_st\vc08\subm\my.h	/^} MYSM_T;			\/* SMA derived from RKHSMA_T structure *\/$/;"	t
 NGSH	.\source\include\rkhtrc.h	282;"	d
 NGSH	.\source\include\rkhtrc.h	284;"	d
-NVS	.\source\include\rkhtrc.h	833;"	d
+NVS	.\source\include\rkhtrc.h	1005;"	d
 ONE	.\demo\80x86\linux_st\gnu\my.h	/^	ONE,		\/* press the key '1' on the keyboard *\/$/;"	e
 ONE	.\demo\80x86\win32_st\vc08\ahsm\my.h	/^	ONE,		\/* press the key '1' on the keyboard *\/$/;"	e
 ONE	.\demo\80x86\win32_st\vc08\subm\my.h	/^	ONE,		\/* press the key '1' on the keyboard *\/$/;"	e
@@ -370,24 +370,25 @@ RKH_EXPOINT	.\source\include\rkhitl.h	473;"	d
 RKH_EX_CNNPNT	.\source\include\rkh.h	543;"	d
 RKH_EX_HLEVEL	.\source\include\rkh.h	/^	RKH_EX_HLEVEL,$/;"	e
 RKH_EX_TSEG	.\source\include\rkh.h	/^	RKH_EX_TSEG,$/;"	e
-RKH_FILTER_OFF_EVENT	.\source\include\rkhtrc.h	1890;"	d
-RKH_FILTER_OFF_EVENT	.\source\include\rkhtrc.h	1936;"	d
-RKH_FILTER_OFF_GROUP	.\source\include\rkhtrc.h	1869;"	d
-RKH_FILTER_OFF_GROUP	.\source\include\rkhtrc.h	1934;"	d
-RKH_FILTER_OFF_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	1910;"	d
-RKH_FILTER_OFF_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	1938;"	d
-RKH_FILTER_OFF_SMA	.\source\include\rkhtrc.h	1929;"	d
-RKH_FILTER_OFF_SMA	.\source\include\rkhtrc.h	1940;"	d
-RKH_FILTER_ON_EVENT	.\source\include\rkhtrc.h	1878;"	d
-RKH_FILTER_ON_EVENT	.\source\include\rkhtrc.h	1935;"	d
-RKH_FILTER_ON_GROUP	.\source\include\rkhtrc.h	1860;"	d
-RKH_FILTER_ON_GROUP	.\source\include\rkhtrc.h	1933;"	d
-RKH_FILTER_ON_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	1898;"	d
-RKH_FILTER_ON_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	1937;"	d
-RKH_FILTER_ON_SMA	.\source\include\rkhtrc.h	1920;"	d
-RKH_FILTER_ON_SMA	.\source\include\rkhtrc.h	1939;"	d
+RKH_FILTER_OFF_EVENT	.\source\include\rkhtrc.h	2062;"	d
+RKH_FILTER_OFF_EVENT	.\source\include\rkhtrc.h	2108;"	d
+RKH_FILTER_OFF_GROUP	.\source\include\rkhtrc.h	2041;"	d
+RKH_FILTER_OFF_GROUP	.\source\include\rkhtrc.h	2106;"	d
+RKH_FILTER_OFF_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	2082;"	d
+RKH_FILTER_OFF_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	2110;"	d
+RKH_FILTER_OFF_SMA	.\source\include\rkhtrc.h	2101;"	d
+RKH_FILTER_OFF_SMA	.\source\include\rkhtrc.h	2112;"	d
+RKH_FILTER_ON_EVENT	.\source\include\rkhtrc.h	2050;"	d
+RKH_FILTER_ON_EVENT	.\source\include\rkhtrc.h	2107;"	d
+RKH_FILTER_ON_GROUP	.\source\include\rkhtrc.h	2032;"	d
+RKH_FILTER_ON_GROUP	.\source\include\rkhtrc.h	2105;"	d
+RKH_FILTER_ON_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	2070;"	d
+RKH_FILTER_ON_GROUP_ALL_EVENTS	.\source\include\rkhtrc.h	2109;"	d
+RKH_FILTER_ON_SMA	.\source\include\rkhtrc.h	2092;"	d
+RKH_FILTER_ON_SMA	.\source\include\rkhtrc.h	2111;"	d
 RKH_FLG	.\source\include\rkhtrc.h	496;"	d
 RKH_FREE_BLK_T	.\source\rkhmp.c	/^} RKH_FREE_BLK_T;$/;"	t	file:
+RKH_FUN_T	.\source\include\rkhtrc.h	/^	RKH_FUN_T,		\/**< function pointer format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_FWK_START	.\source\include\rkhtrc.h	311;"	d
 RKH_GC	.\source\include\rkh.h	1832;"	d
 RKH_GC	.\source\include\rkh.h	1835;"	d
@@ -433,6 +434,9 @@ RKH_HK_TIMEOUT	.\source\include\rkhitl.h	823;"	d
 RKH_HK_TIMEOUT	.\source\include\rkhitl.h	826;"	d
 RKH_HK_TIMEOUT	.\source\include\rkhitl.h	829;"	d
 RKH_HPPTY_T	.\source\include\rkh.h	/^} RKH_HPPTY_T;$/;"	t
+RKH_I16_T	.\source\include\rkhtrc.h	/^	RKH_I16_T,		\/**< signed 16-bit integer format *\/$/;"	e	enum:rkh_trc_fmt
+RKH_I32_T	.\source\include\rkhtrc.h	/^	RKH_I32_T,		\/**< signed 32-bit integer format *\/$/;"	e	enum:rkh_trc_fmt
+RKH_I8_T	.\source\include\rkhtrc.h	/^	RKH_I8_T,		\/**< signed 8-bit integer format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_INC_REF	.\source\rkhdyn.c	41;"	d	file:
 RKH_INC_REF	.\source\rkhdyn.c	47;"	d	file:
 RKH_INC_STEP	.\source\rkh.c	114;"	d	file:
@@ -457,6 +461,7 @@ RKH_MAX_SMA	.\demo\80x86\linux_st\gnu\rkhcfg.h	43;"	d
 RKH_MAX_SMA	.\demo\80x86\win32_st\vc08\ahsm\rkhcfg.h	43;"	d
 RKH_MAX_SMA	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	43;"	d
 RKH_MAX_SMA	.\doc\rkhcfg.h	43;"	d
+RKH_MEM_T	.\source\include\rkhtrc.h	/^	RKH_MEM_T,		\/**< up to 255-bytes memory block format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_MODULE_DESC	.\source\include\rkh.h	79;"	d
 RKH_MODULE_GET_DESC	.\source\include\rkh.h	88;"	d
 RKH_MODULE_GET_VERSION	.\source\include\rkh.h	66;"	d
@@ -517,6 +522,7 @@ RKH_NUM_RDYGRP	.\source\include\rkhrdy.h	94;"	d
 RKH_NUM_RDYGRP	.\source\include\rkhrdy.h	96;"	d
 RKH_NUM_RDYGRP	.\source\include\rkhrdy.h	98;"	d
 RKH_NUM_TE_PER_GROUP	.\source\include\rkhtrc.h	279;"	d
+RKH_OBJ_T	.\source\include\rkhtrc.h	/^	RKH_OBJ_T,		\/**< object pointer format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_OSDATA_TYPE	.\source\include\rkhitl.h	596;"	d
 RKH_OSDATA_TYPE	.\source\portable\80x86\linux_st\gnu\rkhport.h	70;"	d
 RKH_OSDATA_TYPE	.\source\portable\80x86\win32_st\vc08\rkhport.h	68;"	d
@@ -581,6 +587,7 @@ RKH_SET_STATIC_EVENT	.\source\include\rkh.h	1880;"	d
 RKH_SET_THOOK	.\source\rkhtim.c	48;"	d	file:
 RKH_SET_THOOK	.\source\rkhtim.c	53;"	d	file:
 RKH_SHISTORY	.\source\include\rkhitl.h	470;"	d
+RKH_SIG_T	.\source\include\rkhtrc.h	/^	RKH_SIG_T		\/**< event signal format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_SIZEOF_ESIZE	.\demo\80x86\linux_st\gnu\rkhcfg.h	79;"	d
 RKH_SIZEOF_ESIZE	.\demo\80x86\win32_st\vc08\ahsm\rkhcfg.h	79;"	d
 RKH_SIZEOF_ESIZE	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	78;"	d
@@ -697,6 +704,7 @@ RKH_SM_START	.\source\include\rkhtrc.h	309;"	d
 RKH_SR_CRITICAL_	.\source\include\rkhitl.h	662;"	d
 RKH_SR_CRITICAL_	.\source\include\rkhitl.h	776;"	d
 RKH_SR_CRITICAL_	.\source\include\rkhitl.h	781;"	d
+RKH_STR_T	.\source\include\rkhtrc.h	/^	RKH_STR_T,		\/**< zero-terminated ASCII string format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_SUBMACHINE	.\source\include\rkhitl.h	465;"	d
 RKH_TE_FWK_AE	.\source\include\rkhtrc.h	/^	RKH_TE_FWK_AE,					\/**< \\copydetails RKH_TR_FWK_AE *\/$/;"	e	enum:rkh_trc_events
 RKH_TE_FWK_DEFER	.\source\include\rkhtrc.h	/^	RKH_TE_FWK_DEFER,				\/**< \\copydetails RKH_TR_FWK_DEFER *\/$/;"	e	enum:rkh_trc_events
@@ -892,20 +900,20 @@ RKH_TRC_EN_TSTAMP	.\demo\80x86\linux_st\gnu\rkhcfg.h	559;"	d
 RKH_TRC_EN_TSTAMP	.\demo\80x86\win32_st\vc08\ahsm\rkhcfg.h	559;"	d
 RKH_TRC_EN_TSTAMP	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	557;"	d
 RKH_TRC_EN_TSTAMP	.\doc\rkhcfg.h	558;"	d
-RKH_TRC_ES	.\source\include\rkhtrc.h	815;"	d
-RKH_TRC_ES	.\source\include\rkhtrc.h	818;"	d
-RKH_TRC_ES	.\source\include\rkhtrc.h	821;"	d
-RKH_TRC_ES	.\source\include\rkhtrc.h	824;"	d
+RKH_TRC_ES	.\source\include\rkhtrc.h	987;"	d
+RKH_TRC_ES	.\source\include\rkhtrc.h	990;"	d
+RKH_TRC_ES	.\source\include\rkhtrc.h	993;"	d
+RKH_TRC_ES	.\source\include\rkhtrc.h	996;"	d
 RKH_TRC_EVENTS	.\source\include\rkhtrc.h	/^} RKH_TRC_EVENTS;$/;"	t
 RKH_TRC_FLG	.\source\include\rkhtrc.h	522;"	d
 RKH_TRC_FLUSH	.\source\include\rkh.h	2236;"	d
 RKH_TRC_FLUSH	.\source\include\rkh.h	2240;"	d
 RKH_TRC_FOPT	.\source\include\rkhtrc.h	/^} RKH_TRC_FOPT;$/;"	t
-RKH_TRC_FUN	.\source\include\rkhtrc.h	723;"	d
-RKH_TRC_FUN	.\source\include\rkhtrc.h	726;"	d
-RKH_TRC_FUN	.\source\include\rkhtrc.h	729;"	d
+RKH_TRC_FUN	.\source\include\rkhtrc.h	895;"	d
+RKH_TRC_FUN	.\source\include\rkhtrc.h	898;"	d
+RKH_TRC_FUN	.\source\include\rkhtrc.h	901;"	d
 RKH_TRC_GROUPS	.\source\include\rkhtrc.h	/^} RKH_TRC_GROUPS;$/;"	t
-RKH_TRC_HDR	.\source\include\rkhtrc.h	693;"	d
+RKH_TRC_HDR	.\source\include\rkhtrc.h	865;"	d
 RKH_TRC_MAX_EVENTS	.\demo\80x86\linux_st\gnu\rkhcfg.h	398;"	d
 RKH_TRC_MAX_EVENTS	.\demo\80x86\win32_st\vc08\ahsm\rkhcfg.h	398;"	d
 RKH_TRC_MAX_EVENTS	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	397;"	d
@@ -921,30 +929,30 @@ RKH_TRC_MAX_SMA	.\source\include\rkhtrc.h	154;"	d
 RKH_TRC_MAX_SMA	.\source\include\rkhtrc.h	156;"	d
 RKH_TRC_MAX_SMA	.\source\include\rkhtrc.h	158;"	d
 RKH_TRC_MAX_SMA	.\source\include\rkhtrc.h	160;"	d
-RKH_TRC_NBLK	.\source\include\rkhtrc.h	758;"	d
-RKH_TRC_NBLK	.\source\include\rkhtrc.h	761;"	d
-RKH_TRC_NBLK	.\source\include\rkhtrc.h	764;"	d
-RKH_TRC_NBLK	.\source\include\rkhtrc.h	767;"	d
-RKH_TRC_NE	.\source\include\rkhtrc.h	777;"	d
-RKH_TRC_NE	.\source\include\rkhtrc.h	780;"	d
-RKH_TRC_NE	.\source\include\rkhtrc.h	783;"	d
-RKH_TRC_NE	.\source\include\rkhtrc.h	786;"	d
-RKH_TRC_NSEQ	.\source\include\rkhtrc.h	680;"	d
-RKH_TRC_NSEQ	.\source\include\rkhtrc.h	684;"	d
-RKH_TRC_NTICK	.\source\include\rkhtrc.h	739;"	d
-RKH_TRC_NTICK	.\source\include\rkhtrc.h	742;"	d
-RKH_TRC_NTICK	.\source\include\rkhtrc.h	745;"	d
-RKH_TRC_NTICK	.\source\include\rkhtrc.h	748;"	d
+RKH_TRC_NBLK	.\source\include\rkhtrc.h	930;"	d
+RKH_TRC_NBLK	.\source\include\rkhtrc.h	933;"	d
+RKH_TRC_NBLK	.\source\include\rkhtrc.h	936;"	d
+RKH_TRC_NBLK	.\source\include\rkhtrc.h	939;"	d
+RKH_TRC_NE	.\source\include\rkhtrc.h	949;"	d
+RKH_TRC_NE	.\source\include\rkhtrc.h	952;"	d
+RKH_TRC_NE	.\source\include\rkhtrc.h	955;"	d
+RKH_TRC_NE	.\source\include\rkhtrc.h	958;"	d
+RKH_TRC_NSEQ	.\source\include\rkhtrc.h	852;"	d
+RKH_TRC_NSEQ	.\source\include\rkhtrc.h	856;"	d
+RKH_TRC_NTICK	.\source\include\rkhtrc.h	911;"	d
+RKH_TRC_NTICK	.\source\include\rkhtrc.h	914;"	d
+RKH_TRC_NTICK	.\source\include\rkhtrc.h	917;"	d
+RKH_TRC_NTICK	.\source\include\rkhtrc.h	920;"	d
 RKH_TRC_OPEN	.\source\include\rkh.h	2157;"	d
 RKH_TRC_OPEN	.\source\include\rkh.h	2161;"	d
 RKH_TRC_RUNTIME_FILTER	.\demo\80x86\linux_st\gnu\rkhcfg.h	411;"	d
 RKH_TRC_RUNTIME_FILTER	.\demo\80x86\win32_st\vc08\ahsm\rkhcfg.h	411;"	d
 RKH_TRC_RUNTIME_FILTER	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	409;"	d
 RKH_TRC_RUNTIME_FILTER	.\doc\rkhcfg.h	410;"	d
-RKH_TRC_SIG	.\source\include\rkhtrc.h	796;"	d
-RKH_TRC_SIG	.\source\include\rkhtrc.h	799;"	d
-RKH_TRC_SIG	.\source\include\rkhtrc.h	802;"	d
-RKH_TRC_SIG	.\source\include\rkhtrc.h	805;"	d
+RKH_TRC_SIG	.\source\include\rkhtrc.h	968;"	d
+RKH_TRC_SIG	.\source\include\rkhtrc.h	971;"	d
+RKH_TRC_SIG	.\source\include\rkhtrc.h	974;"	d
+RKH_TRC_SIG	.\source\include\rkhtrc.h	977;"	d
 RKH_TRC_SIZEOF_POINTER	.\demo\80x86\linux_st\gnu\rkhcfg.h	580;"	d
 RKH_TRC_SIZEOF_POINTER	.\demo\80x86\win32_st\vc08\ahsm\rkhcfg.h	580;"	d
 RKH_TRC_SIZEOF_POINTER	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	578;"	d
@@ -959,19 +967,21 @@ RKH_TRC_SIZEOF_TSTAMP	.\demo\80x86\win32_st\vc08\subm\rkhcfg.h	564;"	d
 RKH_TRC_SIZEOF_TSTAMP	.\doc\rkhcfg.h	565;"	d
 RKH_TRC_START	.\source\include\rkhtrc.h	/^	RKH_TRC_STOP, RKH_TRC_START$/;"	e
 RKH_TRC_STOP	.\source\include\rkhtrc.h	/^	RKH_TRC_STOP, RKH_TRC_START$/;"	e
-RKH_TRC_STR	.\source\include\rkhtrc.h	671;"	d
-RKH_TRC_SYM	.\source\include\rkhtrc.h	706;"	d
-RKH_TRC_SYM	.\source\include\rkhtrc.h	709;"	d
-RKH_TRC_SYM	.\source\include\rkhtrc.h	712;"	d
+RKH_TRC_STR	.\source\include\rkhtrc.h	687;"	d
+RKH_TRC_SYM	.\source\include\rkhtrc.h	878;"	d
+RKH_TRC_SYM	.\source\include\rkhtrc.h	881;"	d
+RKH_TRC_SYM	.\source\include\rkhtrc.h	884;"	d
 RKH_TRC_TSTAMP	.\source\include\rkhtrc.h	537;"	d
 RKH_TRC_TSTAMP	.\source\include\rkhtrc.h	541;"	d
 RKH_TRC_TSTAMP	.\source\include\rkhtrc.h	545;"	d
 RKH_TRC_TSTAMP	.\source\include\rkhtrc.h	549;"	d
 RKH_TRC_TSTAMP	.\source\include\rkhtrc.h	554;"	d
-RKH_TRC_UI16	.\source\include\rkhtrc.h	655;"	d
-RKH_TRC_UI32	.\source\include\rkhtrc.h	663;"	d
-RKH_TRC_UI8	.\source\include\rkhtrc.h	647;"	d
-RKH_TRC_UI8_RAW	.\source\include\rkhtrc.h	639;"	d
+RKH_TRC_U8_RAW	.\source\include\rkhtrc.h	655;"	d
+RKH_TRC_UI16	.\source\include\rkhtrc.h	671;"	d
+RKH_TRC_UI32	.\source\include\rkhtrc.h	679;"	d
+RKH_TRC_UI8	.\source\include\rkhtrc.h	663;"	d
+RKH_TRC_USR_BEGIN	.\source\include\rkhtrc.h	638;"	d
+RKH_TRC_USR_END	.\source\include\rkhtrc.h	646;"	d
 RKH_TRINT	.\demo\80x86\linux_st\gnu\my.c	/^	RKH_TRINT( SIX, 	NULL, 		show_data ),$/;"	v
 RKH_TRINT	.\demo\80x86\win32_st\vc08\ahsm\my.c	/^	RKH_TRINT( SIX, 	NULL, 		show_data ),$/;"	v
 RKH_TRINT	.\demo\80x86\win32_st\vc08\subm\my.c	/^	RKH_TRINT( TERM, 	NULL, 	terminate ),$/;"	v
@@ -1001,163 +1011,184 @@ RKH_TRREG	.\demo\80x86\win32_st\vc08\subm\my.c	/^	RKH_TRREG( ONE, 	NULL, 	NULL, 
 RKH_TRREG	.\demo\80x86\win32_st\vc08\subm\my.c	/^	RKH_TRREG( ONE, 	NULL, 	act5, 	&S12 ),$/;"	v
 RKH_TRREG	.\demo\80x86\win32_st\vc08\subm\my.c	/^	RKH_TRREG( TWO, 	NULL, 	NULL,	&ENS12 ),$/;"	v
 RKH_TRREG	.\source\include\rkh.h	790;"	d
-RKH_TR_FWK_AE	.\source\include\rkhtrc.h	1508;"	d
-RKH_TR_FWK_AE	.\source\include\rkhtrc.h	1700;"	d
-RKH_TR_FWK_AE	.\source\include\rkhtrc.h	1766;"	d
-RKH_TR_FWK_DEFER	.\source\include\rkhtrc.h	1545;"	d
-RKH_TR_FWK_DEFER	.\source\include\rkhtrc.h	1703;"	d
-RKH_TR_FWK_DEFER	.\source\include\rkhtrc.h	1769;"	d
-RKH_TR_FWK_EN	.\source\include\rkhtrc.h	1472;"	d
-RKH_TR_FWK_EN	.\source\include\rkhtrc.h	1697;"	d
-RKH_TR_FWK_EN	.\source\include\rkhtrc.h	1763;"	d
-RKH_TR_FWK_EPREG	.\source\include\rkhtrc.h	1494;"	d
-RKH_TR_FWK_EPREG	.\source\include\rkhtrc.h	1699;"	d
-RKH_TR_FWK_EPREG	.\source\include\rkhtrc.h	1765;"	d
-RKH_TR_FWK_EX	.\source\include\rkhtrc.h	1483;"	d
-RKH_TR_FWK_EX	.\source\include\rkhtrc.h	1698;"	d
-RKH_TR_FWK_EX	.\source\include\rkhtrc.h	1764;"	d
-RKH_TR_FWK_EXE_FUN	.\source\include\rkhtrc.h	1692;"	d
-RKH_TR_FWK_EXE_FUN	.\source\include\rkhtrc.h	1708;"	d
-RKH_TR_FWK_EXE_FUN	.\source\include\rkhtrc.h	1774;"	d
-RKH_TR_FWK_FUN	.\source\include\rkhtrc.h	1664;"	d
-RKH_TR_FWK_FUN	.\source\include\rkhtrc.h	1707;"	d
-RKH_TR_FWK_FUN	.\source\include\rkhtrc.h	1773;"	d
-RKH_TR_FWK_GC	.\source\include\rkhtrc.h	1521;"	d
-RKH_TR_FWK_GC	.\source\include\rkhtrc.h	1701;"	d
-RKH_TR_FWK_GC	.\source\include\rkhtrc.h	1767;"	d
-RKH_TR_FWK_GCR	.\source\include\rkhtrc.h	1533;"	d
-RKH_TR_FWK_GCR	.\source\include\rkhtrc.h	1702;"	d
-RKH_TR_FWK_GCR	.\source\include\rkhtrc.h	1768;"	d
-RKH_TR_FWK_OBJ	.\source\include\rkhtrc.h	1586;"	d
-RKH_TR_FWK_OBJ	.\source\include\rkhtrc.h	1705;"	d
-RKH_TR_FWK_OBJ	.\source\include\rkhtrc.h	1771;"	d
-RKH_TR_FWK_RCALL	.\source\include\rkhtrc.h	1558;"	d
-RKH_TR_FWK_RCALL	.\source\include\rkhtrc.h	1704;"	d
-RKH_TR_FWK_RCALL	.\source\include\rkhtrc.h	1770;"	d
-RKH_TR_FWK_SIG	.\source\include\rkhtrc.h	1628;"	d
-RKH_TR_FWK_SIG	.\source\include\rkhtrc.h	1706;"	d
-RKH_TR_FWK_SIG	.\source\include\rkhtrc.h	1772;"	d
-RKH_TR_MP_GET	.\source\include\rkhtrc.h	1714;"	d
-RKH_TR_MP_GET	.\source\include\rkhtrc.h	860;"	d
-RKH_TR_MP_GET	.\source\include\rkhtrc.h	880;"	d
-RKH_TR_MP_INIT	.\source\include\rkhtrc.h	1713;"	d
-RKH_TR_MP_INIT	.\source\include\rkhtrc.h	847;"	d
-RKH_TR_MP_INIT	.\source\include\rkhtrc.h	879;"	d
-RKH_TR_MP_PUT	.\source\include\rkhtrc.h	1715;"	d
-RKH_TR_MP_PUT	.\source\include\rkhtrc.h	873;"	d
-RKH_TR_MP_PUT	.\source\include\rkhtrc.h	881;"	d
-RKH_TR_RQ_DEPLETE	.\source\include\rkhtrc.h	1723;"	d
-RKH_TR_RQ_DEPLETE	.\source\include\rkhtrc.h	959;"	d
-RKH_TR_RQ_DEPLETE	.\source\include\rkhtrc.h	981;"	d
-RKH_TR_RQ_FIFO	.\source\include\rkhtrc.h	1720;"	d
-RKH_TR_RQ_FIFO	.\source\include\rkhtrc.h	921;"	d
-RKH_TR_RQ_FIFO	.\source\include\rkhtrc.h	978;"	d
-RKH_TR_RQ_FULL	.\source\include\rkhtrc.h	1722;"	d
-RKH_TR_RQ_FULL	.\source\include\rkhtrc.h	947;"	d
-RKH_TR_RQ_FULL	.\source\include\rkhtrc.h	980;"	d
-RKH_TR_RQ_GET	.\source\include\rkhtrc.h	1719;"	d
-RKH_TR_RQ_GET	.\source\include\rkhtrc.h	908;"	d
-RKH_TR_RQ_GET	.\source\include\rkhtrc.h	977;"	d
-RKH_TR_RQ_GET_LAST	.\source\include\rkhtrc.h	1724;"	d
-RKH_TR_RQ_GET_LAST	.\source\include\rkhtrc.h	971;"	d
-RKH_TR_RQ_GET_LAST	.\source\include\rkhtrc.h	982;"	d
-RKH_TR_RQ_INIT	.\source\include\rkhtrc.h	1718;"	d
-RKH_TR_RQ_INIT	.\source\include\rkhtrc.h	894;"	d
-RKH_TR_RQ_INIT	.\source\include\rkhtrc.h	976;"	d
-RKH_TR_RQ_LIFO	.\source\include\rkhtrc.h	1721;"	d
-RKH_TR_RQ_LIFO	.\source\include\rkhtrc.h	934;"	d
-RKH_TR_RQ_LIFO	.\source\include\rkhtrc.h	979;"	d
-RKH_TR_SMA_ACT	.\source\include\rkhtrc.h	1084;"	d
-RKH_TR_SMA_ACT	.\source\include\rkhtrc.h	1727;"	d
-RKH_TR_SMA_ACT	.\source\include\rkhtrc.h	995;"	d
-RKH_TR_SMA_FIFO	.\source\include\rkhtrc.h	1035;"	d
-RKH_TR_SMA_FIFO	.\source\include\rkhtrc.h	1087;"	d
-RKH_TR_SMA_FIFO	.\source\include\rkhtrc.h	1730;"	d
-RKH_TR_SMA_GET	.\source\include\rkhtrc.h	1021;"	d
-RKH_TR_SMA_GET	.\source\include\rkhtrc.h	1086;"	d
-RKH_TR_SMA_GET	.\source\include\rkhtrc.h	1729;"	d
-RKH_TR_SMA_LIFO	.\source\include\rkhtrc.h	1049;"	d
-RKH_TR_SMA_LIFO	.\source\include\rkhtrc.h	1088;"	d
-RKH_TR_SMA_LIFO	.\source\include\rkhtrc.h	1731;"	d
-RKH_TR_SMA_REG	.\source\include\rkhtrc.h	1063;"	d
-RKH_TR_SMA_REG	.\source\include\rkhtrc.h	1089;"	d
-RKH_TR_SMA_REG	.\source\include\rkhtrc.h	1732;"	d
-RKH_TR_SMA_TERM	.\source\include\rkhtrc.h	1008;"	d
-RKH_TR_SMA_TERM	.\source\include\rkhtrc.h	1085;"	d
-RKH_TR_SMA_TERM	.\source\include\rkhtrc.h	1728;"	d
-RKH_TR_SMA_UNREG	.\source\include\rkhtrc.h	1077;"	d
-RKH_TR_SMA_UNREG	.\source\include\rkhtrc.h	1090;"	d
-RKH_TR_SMA_UNREG	.\source\include\rkhtrc.h	1733;"	d
-RKH_TR_SM_CLRH	.\source\include\rkhtrc.h	1136;"	d
-RKH_TR_SM_CLRH	.\source\include\rkhtrc.h	1357;"	d
-RKH_TR_SM_CLRH	.\source\include\rkhtrc.h	1737;"	d
-RKH_TR_SM_CND_NFOUND	.\source\include\rkhtrc.h	1297;"	d
-RKH_TR_SM_CND_NFOUND	.\source\include\rkhtrc.h	1369;"	d
-RKH_TR_SM_CND_NFOUND	.\source\include\rkhtrc.h	1749;"	d
-RKH_TR_SM_CSTATE	.\source\include\rkhtrc.h	1251;"	d
-RKH_TR_SM_CSTATE	.\source\include\rkhtrc.h	1365;"	d
-RKH_TR_SM_CSTATE	.\source\include\rkhtrc.h	1745;"	d
-RKH_TR_SM_DCH	.\source\include\rkhtrc.h	1120;"	d
-RKH_TR_SM_DCH	.\source\include\rkhtrc.h	1358;"	d
-RKH_TR_SM_DCH	.\source\include\rkhtrc.h	1738;"	d
-RKH_TR_SM_ENSTATE	.\source\include\rkhtrc.h	1185;"	d
-RKH_TR_SM_ENSTATE	.\source\include\rkhtrc.h	1361;"	d
-RKH_TR_SM_ENSTATE	.\source\include\rkhtrc.h	1741;"	d
-RKH_TR_SM_EVT_NFOUND	.\source\include\rkhtrc.h	1283;"	d
-RKH_TR_SM_EVT_NFOUND	.\source\include\rkhtrc.h	1367;"	d
-RKH_TR_SM_EVT_NFOUND	.\source\include\rkhtrc.h	1747;"	d
-RKH_TR_SM_EVT_PROC	.\source\include\rkhtrc.h	1269;"	d
-RKH_TR_SM_EVT_PROC	.\source\include\rkhtrc.h	1366;"	d
-RKH_TR_SM_EVT_PROC	.\source\include\rkhtrc.h	1746;"	d
-RKH_TR_SM_EXSTATE	.\source\include\rkhtrc.h	1201;"	d
-RKH_TR_SM_EXSTATE	.\source\include\rkhtrc.h	1362;"	d
-RKH_TR_SM_EXSTATE	.\source\include\rkhtrc.h	1742;"	d
-RKH_TR_SM_EX_HLEVEL	.\source\include\rkhtrc.h	1336;"	d
-RKH_TR_SM_EX_HLEVEL	.\source\include\rkhtrc.h	1371;"	d
-RKH_TR_SM_EX_HLEVEL	.\source\include\rkhtrc.h	1751;"	d
-RKH_TR_SM_EX_TSEG	.\source\include\rkhtrc.h	1349;"	d
-RKH_TR_SM_EX_TSEG	.\source\include\rkhtrc.h	1372;"	d
-RKH_TR_SM_EX_TSEG	.\source\include\rkhtrc.h	1752;"	d
-RKH_TR_SM_GRD_FALSE	.\source\include\rkhtrc.h	1310;"	d
-RKH_TR_SM_GRD_FALSE	.\source\include\rkhtrc.h	1368;"	d
-RKH_TR_SM_GRD_FALSE	.\source\include\rkhtrc.h	1748;"	d
-RKH_TR_SM_INIT	.\source\include\rkhtrc.h	1104;"	d
-RKH_TR_SM_INIT	.\source\include\rkhtrc.h	1356;"	d
-RKH_TR_SM_INIT	.\source\include\rkhtrc.h	1736;"	d
-RKH_TR_SM_NENEX	.\source\include\rkhtrc.h	1217;"	d
-RKH_TR_SM_NENEX	.\source\include\rkhtrc.h	1363;"	d
-RKH_TR_SM_NENEX	.\source\include\rkhtrc.h	1743;"	d
-RKH_TR_SM_NTRNACT	.\source\include\rkhtrc.h	1234;"	d
-RKH_TR_SM_NTRNACT	.\source\include\rkhtrc.h	1364;"	d
-RKH_TR_SM_NTRNACT	.\source\include\rkhtrc.h	1744;"	d
-RKH_TR_SM_STATE	.\source\include\rkhtrc.h	1169;"	d
-RKH_TR_SM_STATE	.\source\include\rkhtrc.h	1360;"	d
-RKH_TR_SM_STATE	.\source\include\rkhtrc.h	1740;"	d
-RKH_TR_SM_TRN	.\source\include\rkhtrc.h	1152;"	d
-RKH_TR_SM_TRN	.\source\include\rkhtrc.h	1359;"	d
-RKH_TR_SM_TRN	.\source\include\rkhtrc.h	1739;"	d
-RKH_TR_SM_UNKN_STATE	.\source\include\rkhtrc.h	1323;"	d
-RKH_TR_SM_UNKN_STATE	.\source\include\rkhtrc.h	1370;"	d
-RKH_TR_SM_UNKN_STATE	.\source\include\rkhtrc.h	1750;"	d
-RKH_TR_TIM_INIT	.\source\include\rkhtrc.h	1385;"	d
-RKH_TR_TIM_INIT	.\source\include\rkhtrc.h	1454;"	d
-RKH_TR_TIM_INIT	.\source\include\rkhtrc.h	1755;"	d
-RKH_TR_TIM_REM	.\source\include\rkhtrc.h	1449;"	d
-RKH_TR_TIM_REM	.\source\include\rkhtrc.h	1459;"	d
-RKH_TR_TIM_REM	.\source\include\rkhtrc.h	1760;"	d
-RKH_TR_TIM_RESTART	.\source\include\rkhtrc.h	1412;"	d
-RKH_TR_TIM_RESTART	.\source\include\rkhtrc.h	1456;"	d
-RKH_TR_TIM_RESTART	.\source\include\rkhtrc.h	1757;"	d
-RKH_TR_TIM_START	.\source\include\rkhtrc.h	1398;"	d
-RKH_TR_TIM_START	.\source\include\rkhtrc.h	1455;"	d
-RKH_TR_TIM_START	.\source\include\rkhtrc.h	1756;"	d
-RKH_TR_TIM_STOP	.\source\include\rkhtrc.h	1425;"	d
-RKH_TR_TIM_STOP	.\source\include\rkhtrc.h	1457;"	d
-RKH_TR_TIM_STOP	.\source\include\rkhtrc.h	1758;"	d
-RKH_TR_TIM_TOUT	.\source\include\rkhtrc.h	1437;"	d
-RKH_TR_TIM_TOUT	.\source\include\rkhtrc.h	1458;"	d
-RKH_TR_TIM_TOUT	.\source\include\rkhtrc.h	1759;"	d
+RKH_TR_FWK_AE	.\source\include\rkhtrc.h	1680;"	d
+RKH_TR_FWK_AE	.\source\include\rkhtrc.h	1872;"	d
+RKH_TR_FWK_AE	.\source\include\rkhtrc.h	1938;"	d
+RKH_TR_FWK_DEFER	.\source\include\rkhtrc.h	1717;"	d
+RKH_TR_FWK_DEFER	.\source\include\rkhtrc.h	1875;"	d
+RKH_TR_FWK_DEFER	.\source\include\rkhtrc.h	1941;"	d
+RKH_TR_FWK_EN	.\source\include\rkhtrc.h	1644;"	d
+RKH_TR_FWK_EN	.\source\include\rkhtrc.h	1869;"	d
+RKH_TR_FWK_EN	.\source\include\rkhtrc.h	1935;"	d
+RKH_TR_FWK_EPREG	.\source\include\rkhtrc.h	1666;"	d
+RKH_TR_FWK_EPREG	.\source\include\rkhtrc.h	1871;"	d
+RKH_TR_FWK_EPREG	.\source\include\rkhtrc.h	1937;"	d
+RKH_TR_FWK_EX	.\source\include\rkhtrc.h	1655;"	d
+RKH_TR_FWK_EX	.\source\include\rkhtrc.h	1870;"	d
+RKH_TR_FWK_EX	.\source\include\rkhtrc.h	1936;"	d
+RKH_TR_FWK_EXE_FUN	.\source\include\rkhtrc.h	1864;"	d
+RKH_TR_FWK_EXE_FUN	.\source\include\rkhtrc.h	1880;"	d
+RKH_TR_FWK_EXE_FUN	.\source\include\rkhtrc.h	1946;"	d
+RKH_TR_FWK_FUN	.\source\include\rkhtrc.h	1836;"	d
+RKH_TR_FWK_FUN	.\source\include\rkhtrc.h	1879;"	d
+RKH_TR_FWK_FUN	.\source\include\rkhtrc.h	1945;"	d
+RKH_TR_FWK_GC	.\source\include\rkhtrc.h	1693;"	d
+RKH_TR_FWK_GC	.\source\include\rkhtrc.h	1873;"	d
+RKH_TR_FWK_GC	.\source\include\rkhtrc.h	1939;"	d
+RKH_TR_FWK_GCR	.\source\include\rkhtrc.h	1705;"	d
+RKH_TR_FWK_GCR	.\source\include\rkhtrc.h	1874;"	d
+RKH_TR_FWK_GCR	.\source\include\rkhtrc.h	1940;"	d
+RKH_TR_FWK_OBJ	.\source\include\rkhtrc.h	1758;"	d
+RKH_TR_FWK_OBJ	.\source\include\rkhtrc.h	1877;"	d
+RKH_TR_FWK_OBJ	.\source\include\rkhtrc.h	1943;"	d
+RKH_TR_FWK_RCALL	.\source\include\rkhtrc.h	1730;"	d
+RKH_TR_FWK_RCALL	.\source\include\rkhtrc.h	1876;"	d
+RKH_TR_FWK_RCALL	.\source\include\rkhtrc.h	1942;"	d
+RKH_TR_FWK_SIG	.\source\include\rkhtrc.h	1800;"	d
+RKH_TR_FWK_SIG	.\source\include\rkhtrc.h	1878;"	d
+RKH_TR_FWK_SIG	.\source\include\rkhtrc.h	1944;"	d
+RKH_TR_MP_GET	.\source\include\rkhtrc.h	1032;"	d
+RKH_TR_MP_GET	.\source\include\rkhtrc.h	1052;"	d
+RKH_TR_MP_GET	.\source\include\rkhtrc.h	1886;"	d
+RKH_TR_MP_INIT	.\source\include\rkhtrc.h	1019;"	d
+RKH_TR_MP_INIT	.\source\include\rkhtrc.h	1051;"	d
+RKH_TR_MP_INIT	.\source\include\rkhtrc.h	1885;"	d
+RKH_TR_MP_PUT	.\source\include\rkhtrc.h	1045;"	d
+RKH_TR_MP_PUT	.\source\include\rkhtrc.h	1053;"	d
+RKH_TR_MP_PUT	.\source\include\rkhtrc.h	1887;"	d
+RKH_TR_RQ_DEPLETE	.\source\include\rkhtrc.h	1131;"	d
+RKH_TR_RQ_DEPLETE	.\source\include\rkhtrc.h	1153;"	d
+RKH_TR_RQ_DEPLETE	.\source\include\rkhtrc.h	1895;"	d
+RKH_TR_RQ_FIFO	.\source\include\rkhtrc.h	1093;"	d
+RKH_TR_RQ_FIFO	.\source\include\rkhtrc.h	1150;"	d
+RKH_TR_RQ_FIFO	.\source\include\rkhtrc.h	1892;"	d
+RKH_TR_RQ_FULL	.\source\include\rkhtrc.h	1119;"	d
+RKH_TR_RQ_FULL	.\source\include\rkhtrc.h	1152;"	d
+RKH_TR_RQ_FULL	.\source\include\rkhtrc.h	1894;"	d
+RKH_TR_RQ_GET	.\source\include\rkhtrc.h	1080;"	d
+RKH_TR_RQ_GET	.\source\include\rkhtrc.h	1149;"	d
+RKH_TR_RQ_GET	.\source\include\rkhtrc.h	1891;"	d
+RKH_TR_RQ_GET_LAST	.\source\include\rkhtrc.h	1143;"	d
+RKH_TR_RQ_GET_LAST	.\source\include\rkhtrc.h	1154;"	d
+RKH_TR_RQ_GET_LAST	.\source\include\rkhtrc.h	1896;"	d
+RKH_TR_RQ_INIT	.\source\include\rkhtrc.h	1066;"	d
+RKH_TR_RQ_INIT	.\source\include\rkhtrc.h	1148;"	d
+RKH_TR_RQ_INIT	.\source\include\rkhtrc.h	1890;"	d
+RKH_TR_RQ_LIFO	.\source\include\rkhtrc.h	1106;"	d
+RKH_TR_RQ_LIFO	.\source\include\rkhtrc.h	1151;"	d
+RKH_TR_RQ_LIFO	.\source\include\rkhtrc.h	1893;"	d
+RKH_TR_SMA_ACT	.\source\include\rkhtrc.h	1167;"	d
+RKH_TR_SMA_ACT	.\source\include\rkhtrc.h	1256;"	d
+RKH_TR_SMA_ACT	.\source\include\rkhtrc.h	1899;"	d
+RKH_TR_SMA_FIFO	.\source\include\rkhtrc.h	1207;"	d
+RKH_TR_SMA_FIFO	.\source\include\rkhtrc.h	1259;"	d
+RKH_TR_SMA_FIFO	.\source\include\rkhtrc.h	1902;"	d
+RKH_TR_SMA_GET	.\source\include\rkhtrc.h	1193;"	d
+RKH_TR_SMA_GET	.\source\include\rkhtrc.h	1258;"	d
+RKH_TR_SMA_GET	.\source\include\rkhtrc.h	1901;"	d
+RKH_TR_SMA_LIFO	.\source\include\rkhtrc.h	1221;"	d
+RKH_TR_SMA_LIFO	.\source\include\rkhtrc.h	1260;"	d
+RKH_TR_SMA_LIFO	.\source\include\rkhtrc.h	1903;"	d
+RKH_TR_SMA_REG	.\source\include\rkhtrc.h	1235;"	d
+RKH_TR_SMA_REG	.\source\include\rkhtrc.h	1261;"	d
+RKH_TR_SMA_REG	.\source\include\rkhtrc.h	1904;"	d
+RKH_TR_SMA_TERM	.\source\include\rkhtrc.h	1180;"	d
+RKH_TR_SMA_TERM	.\source\include\rkhtrc.h	1257;"	d
+RKH_TR_SMA_TERM	.\source\include\rkhtrc.h	1900;"	d
+RKH_TR_SMA_UNREG	.\source\include\rkhtrc.h	1249;"	d
+RKH_TR_SMA_UNREG	.\source\include\rkhtrc.h	1262;"	d
+RKH_TR_SMA_UNREG	.\source\include\rkhtrc.h	1905;"	d
+RKH_TR_SM_CLRH	.\source\include\rkhtrc.h	1308;"	d
+RKH_TR_SM_CLRH	.\source\include\rkhtrc.h	1529;"	d
+RKH_TR_SM_CLRH	.\source\include\rkhtrc.h	1909;"	d
+RKH_TR_SM_CND_NFOUND	.\source\include\rkhtrc.h	1469;"	d
+RKH_TR_SM_CND_NFOUND	.\source\include\rkhtrc.h	1541;"	d
+RKH_TR_SM_CND_NFOUND	.\source\include\rkhtrc.h	1921;"	d
+RKH_TR_SM_CSTATE	.\source\include\rkhtrc.h	1423;"	d
+RKH_TR_SM_CSTATE	.\source\include\rkhtrc.h	1537;"	d
+RKH_TR_SM_CSTATE	.\source\include\rkhtrc.h	1917;"	d
+RKH_TR_SM_DCH	.\source\include\rkhtrc.h	1292;"	d
+RKH_TR_SM_DCH	.\source\include\rkhtrc.h	1530;"	d
+RKH_TR_SM_DCH	.\source\include\rkhtrc.h	1910;"	d
+RKH_TR_SM_ENSTATE	.\source\include\rkhtrc.h	1357;"	d
+RKH_TR_SM_ENSTATE	.\source\include\rkhtrc.h	1533;"	d
+RKH_TR_SM_ENSTATE	.\source\include\rkhtrc.h	1913;"	d
+RKH_TR_SM_EVT_NFOUND	.\source\include\rkhtrc.h	1455;"	d
+RKH_TR_SM_EVT_NFOUND	.\source\include\rkhtrc.h	1539;"	d
+RKH_TR_SM_EVT_NFOUND	.\source\include\rkhtrc.h	1919;"	d
+RKH_TR_SM_EVT_PROC	.\source\include\rkhtrc.h	1441;"	d
+RKH_TR_SM_EVT_PROC	.\source\include\rkhtrc.h	1538;"	d
+RKH_TR_SM_EVT_PROC	.\source\include\rkhtrc.h	1918;"	d
+RKH_TR_SM_EXSTATE	.\source\include\rkhtrc.h	1373;"	d
+RKH_TR_SM_EXSTATE	.\source\include\rkhtrc.h	1534;"	d
+RKH_TR_SM_EXSTATE	.\source\include\rkhtrc.h	1914;"	d
+RKH_TR_SM_EX_HLEVEL	.\source\include\rkhtrc.h	1508;"	d
+RKH_TR_SM_EX_HLEVEL	.\source\include\rkhtrc.h	1543;"	d
+RKH_TR_SM_EX_HLEVEL	.\source\include\rkhtrc.h	1923;"	d
+RKH_TR_SM_EX_TSEG	.\source\include\rkhtrc.h	1521;"	d
+RKH_TR_SM_EX_TSEG	.\source\include\rkhtrc.h	1544;"	d
+RKH_TR_SM_EX_TSEG	.\source\include\rkhtrc.h	1924;"	d
+RKH_TR_SM_GRD_FALSE	.\source\include\rkhtrc.h	1482;"	d
+RKH_TR_SM_GRD_FALSE	.\source\include\rkhtrc.h	1540;"	d
+RKH_TR_SM_GRD_FALSE	.\source\include\rkhtrc.h	1920;"	d
+RKH_TR_SM_INIT	.\source\include\rkhtrc.h	1276;"	d
+RKH_TR_SM_INIT	.\source\include\rkhtrc.h	1528;"	d
+RKH_TR_SM_INIT	.\source\include\rkhtrc.h	1908;"	d
+RKH_TR_SM_NENEX	.\source\include\rkhtrc.h	1389;"	d
+RKH_TR_SM_NENEX	.\source\include\rkhtrc.h	1535;"	d
+RKH_TR_SM_NENEX	.\source\include\rkhtrc.h	1915;"	d
+RKH_TR_SM_NTRNACT	.\source\include\rkhtrc.h	1406;"	d
+RKH_TR_SM_NTRNACT	.\source\include\rkhtrc.h	1536;"	d
+RKH_TR_SM_NTRNACT	.\source\include\rkhtrc.h	1916;"	d
+RKH_TR_SM_STATE	.\source\include\rkhtrc.h	1341;"	d
+RKH_TR_SM_STATE	.\source\include\rkhtrc.h	1532;"	d
+RKH_TR_SM_STATE	.\source\include\rkhtrc.h	1912;"	d
+RKH_TR_SM_TRN	.\source\include\rkhtrc.h	1324;"	d
+RKH_TR_SM_TRN	.\source\include\rkhtrc.h	1531;"	d
+RKH_TR_SM_TRN	.\source\include\rkhtrc.h	1911;"	d
+RKH_TR_SM_UNKN_STATE	.\source\include\rkhtrc.h	1495;"	d
+RKH_TR_SM_UNKN_STATE	.\source\include\rkhtrc.h	1542;"	d
+RKH_TR_SM_UNKN_STATE	.\source\include\rkhtrc.h	1922;"	d
+RKH_TR_TIM_INIT	.\source\include\rkhtrc.h	1557;"	d
+RKH_TR_TIM_INIT	.\source\include\rkhtrc.h	1626;"	d
+RKH_TR_TIM_INIT	.\source\include\rkhtrc.h	1927;"	d
+RKH_TR_TIM_REM	.\source\include\rkhtrc.h	1621;"	d
+RKH_TR_TIM_REM	.\source\include\rkhtrc.h	1631;"	d
+RKH_TR_TIM_REM	.\source\include\rkhtrc.h	1932;"	d
+RKH_TR_TIM_RESTART	.\source\include\rkhtrc.h	1584;"	d
+RKH_TR_TIM_RESTART	.\source\include\rkhtrc.h	1628;"	d
+RKH_TR_TIM_RESTART	.\source\include\rkhtrc.h	1929;"	d
+RKH_TR_TIM_START	.\source\include\rkhtrc.h	1570;"	d
+RKH_TR_TIM_START	.\source\include\rkhtrc.h	1627;"	d
+RKH_TR_TIM_START	.\source\include\rkhtrc.h	1928;"	d
+RKH_TR_TIM_STOP	.\source\include\rkhtrc.h	1597;"	d
+RKH_TR_TIM_STOP	.\source\include\rkhtrc.h	1629;"	d
+RKH_TR_TIM_STOP	.\source\include\rkhtrc.h	1930;"	d
+RKH_TR_TIM_TOUT	.\source\include\rkhtrc.h	1609;"	d
+RKH_TR_TIM_TOUT	.\source\include\rkhtrc.h	1630;"	d
+RKH_TR_TIM_TOUT	.\source\include\rkhtrc.h	1931;"	d
+RKH_TUSR_FUN	.\source\include\rkhtrc.h	816;"	d
+RKH_TUSR_FUN	.\source\include\rkhtrc.h	819;"	d
+RKH_TUSR_FUN	.\source\include\rkhtrc.h	822;"	d
+RKH_TUSR_I16	.\source\include\rkhtrc.h	735;"	d
+RKH_TUSR_I32	.\source\include\rkhtrc.h	753;"	d
+RKH_TUSR_I8	.\source\include\rkhtrc.h	717;"	d
+RKH_TUSR_MEM	.\source\include\rkhtrc.h	788;"	d
+RKH_TUSR_OBJ	.\source\include\rkhtrc.h	797;"	d
+RKH_TUSR_OBJ	.\source\include\rkhtrc.h	801;"	d
+RKH_TUSR_OBJ	.\source\include\rkhtrc.h	805;"	d
+RKH_TUSR_SIG	.\source\include\rkhtrc.h	832;"	d
+RKH_TUSR_SIG	.\source\include\rkhtrc.h	835;"	d
+RKH_TUSR_SIG	.\source\include\rkhtrc.h	838;"	d
+RKH_TUSR_SIG	.\source\include\rkhtrc.h	841;"	d
+RKH_TUSR_STR	.\source\include\rkhtrc.h	780;"	d
+RKH_TUSR_UI16	.\source\include\rkhtrc.h	744;"	d
+RKH_TUSR_UI32	.\source\include\rkhtrc.h	762;"	d
+RKH_TUSR_UI8	.\source\include\rkhtrc.h	726;"	d
+RKH_TUSR_X32	.\source\include\rkhtrc.h	771;"	d
 RKH_TYPE	.\source\include\rkhitl.h	461;"	d
+RKH_UI16_T	.\source\include\rkhtrc.h	/^	RKH_UI16_T,		\/**< unsigned 16-bit integer format *\/$/;"	e	enum:rkh_trc_fmt
+RKH_UI8_T	.\source\include\rkhtrc.h	/^	RKH_UI8_T,		\/**< unsigned 8-bit integer format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_UNKN_STATE	.\source\include\rkh.h	/^	RKH_UNKN_STATE,$/;"	e
 RKH_UPDATE_SHALLOW_HIST	.\source\rkh.c	72;"	d	file:
 RKH_UPDATE_SHALLOW_HIST	.\source\rkh.c	79;"	d	file:
@@ -1167,6 +1198,7 @@ RKH_VERSION	.\source\include\rkhitl.h	105;"	d
 RKH_VERSION_CODE	.\source\include\rkhitl.h	80;"	d
 RKH_WAIT_FOR_EVENTS	.\source\portable\80x86\linux_st\gnu\rkhport.h	84;"	d
 RKH_WAIT_FOR_EVENTS	.\source\portable\80x86\win32_st\vc08\rkhport.h	82;"	d
+RKH_X32_T	.\source\include\rkhtrc.h	/^	RKH_X32_T,		\/**< signed 16-bit integer in hex format *\/$/;"	e	enum:rkh_trc_fmt
 RKH_XOR	.\source\include\rkhtrc.h	494;"	d
 ROMRKH_T	.\source\include\rkhitl.h	/^} ROMRKH_T;$/;"	t
 S1	.\demo\80x86\linux_st\gnu\my.h	/^RKH_DCLR_COMP_STATE		S1,S3,S11;$/;"	v
@@ -1541,6 +1573,12 @@ rkh_trc_filter_sma_	.\source\rkhtrc.c	/^rkh_trc_filter_sma_( rkhui8_t ctrl, rkhu
 rkh_trc_flush	.\demo\80x86\linux_st\gnu\bsp.c	/^rkh_trc_flush( void )$/;"	f
 rkh_trc_flush	.\demo\80x86\win32_st\vc08\ahsm\bsp.c	/^rkh_trc_flush( void )$/;"	f
 rkh_trc_flush	.\demo\80x86\win32_st\vc08\subm\bsp.c	/^rkh_trc_flush( void )$/;"	f
+rkh_trc_fmt	.\source\include\rkhtrc.h	/^enum rkh_trc_fmt$/;"	g
+rkh_trc_fmt_mem	.\source\rkhtrc.c	/^rkh_trc_fmt_mem( const rkhui8_t *mem, rkhui8_t size )$/;"	f
+rkh_trc_fmt_str	.\source\rkhtrc.c	/^rkh_trc_fmt_str( const char *s )$/;"	f
+rkh_trc_fmt_u16	.\source\rkhtrc.c	/^rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d )$/;"	f
+rkh_trc_fmt_u32	.\source\rkhtrc.c	/^rkh_trc_fmt_u32( rkhui8_t fmt, rkhui32_t d )$/;"	f
+rkh_trc_fmt_u8	.\source\rkhtrc.c	/^rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )$/;"	f
 rkh_trc_get	.\source\rkhtrc.c	/^rkh_trc_get( void )$/;"	f
 rkh_trc_getts	.\demo\80x86\linux_st\gnu\bsp.c	/^rkh_trc_getts( void )$/;"	f
 rkh_trc_getts	.\demo\80x86\win32_st\vc08\ahsm\bsp.c	/^rkh_trc_getts( void )$/;"	f
@@ -1554,9 +1592,9 @@ rkh_trc_open	.\demo\80x86\win32_st\vc08\subm\bsp.c	/^rkh_trc_open( void )$/;"	f
 rkh_trc_put	.\source\rkhtrc.c	/^rkh_trc_put( rkhui8_t b )$/;"	f
 rkh_trc_sma_isoff_	.\source\rkhtrc.c	/^rkh_trc_sma_isoff_( rkhui8_t prio )$/;"	f
 rkh_trc_str	.\source\rkhtrc.c	/^rkh_trc_str( const char *s )$/;"	f
-rkh_trc_ui16	.\source\rkhtrc.c	/^rkh_trc_ui16( rkhui16_t d )$/;"	f
-rkh_trc_ui32	.\source\rkhtrc.c	/^rkh_trc_ui32( rkhui32_t d )$/;"	f
-rkh_trc_ui8	.\source\rkhtrc.c	/^rkh_trc_ui8( rkhui8_t d )$/;"	f
+rkh_trc_u16	.\source\rkhtrc.c	/^rkh_trc_u16( rkhui16_t d )$/;"	f
+rkh_trc_u32	.\source\rkhtrc.c	/^rkh_trc_u32( rkhui32_t d )$/;"	f
+rkh_trc_u8	.\source\rkhtrc.c	/^rkh_trc_u8( rkhui8_t d )$/;"	f
 rkh_unmaptbl	.\source\rkhtbl.c	/^RKHROM rkhui8_t rkh_unmaptbl[] = $/;"	v
 rkh_update_deep_hist	.\source\rkh.c	/^	rkh_update_deep_hist( RKHROM RKHST_T *from )$/;"	f	file:
 rkh_update_deep_hist	.\source\rkh.c	261;"	d	file:
