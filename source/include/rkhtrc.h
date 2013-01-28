@@ -486,7 +486,7 @@ typedef enum rkh_trc_events
 
 	RKH_TE_USER = RKH_USR_START,
 
-	RKH_TE_NEVENT
+	RKH_TE_NEVENT = 255
 } RKH_TRC_EVENTS;
 
 
@@ -821,7 +821,7 @@ enum rkh_trc_fmt
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted function pointer to the QS record.
+	 * 	Output formatted function pointer to the trace record.
 	 */
 
 	#if RKH_TRC_SIZEOF_FUN_POINTER == 16
@@ -837,7 +837,7 @@ enum rkh_trc_fmt
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted event signal to the QS record.
+	 * 	Output formatted event signal to the trace record.
 	 */
 
 	#if RKH_SIZEOF_EVENT == 8

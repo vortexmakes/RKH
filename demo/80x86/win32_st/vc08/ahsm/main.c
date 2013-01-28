@@ -16,6 +16,11 @@
 static RKHEVT_T *qsto[ QSTO_SIZE ];
 extern RKHT_T tx, ty, tz;
 
+enum
+{
+	MY_TRACE = RKH_TE_USER
+};
+
 
 int
 main( int argc, char *argv[] )
@@ -41,7 +46,7 @@ main( int argc, char *argv[] )
 	*/
 
 	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_TIM );
-	RKH_FILTER_OFF_EVENT( RKH_TE_USER );
+	RKH_FILTER_OFF_EVENT( MY_TRACE );
 	RKH_FILTER_OFF_SMA( my );
 
 	rkh_init();
