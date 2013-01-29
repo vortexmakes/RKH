@@ -415,6 +415,72 @@ typedef enum rkh_trc_groups
  *	The transmitter computes the checksum over the sequence number, the 
  *	trace event ID, and all data bytes before performing any byte stuffing.
  *
+ * 	<EM>User trace events</EM>
+ *
+ * 	The user application could defined its own trace events to be placed 
+ * 	at anywhere in the application level. Allowing to generate tracing 
+ * 	information from the application-level code like a "printf" but with 
+ * 	much less overhead.
+ *
+ *	\code
+ *	(1) RKH_TRC_USR_BEGIN( MY_TRACE )	\
+ *	(2)		RKH_TRC_ARG0( arg0 ); 			\
+ *	(3)		RKH_TRC_ARG1( arg1 ); 			\
+ *	(4)		RKH_TRC_....( ... ); 			\	
+ *	(5)	RKH_TRC_USR_END();
+ *	\endcode
+ *
+ *	\li (1,5)	Each trace event always begins with the macro 
+ *				RKH_TRC_USR_BEGIN() and ends with the matching macro 
+ *				RKH_TRC_USR_END(). The record-begin macro RKH_TRC_USR_BEGIN() 
+ *				takes one argument, 'eid_' is the user trace event ID, from 
+ *				the RKH_TE_USER value. This pair of macros locks interrupts 
+ *				at the beginning and unlocks at the end of each record.
+ *	\li (2-4) 	Sandwiched between these two macros are the 
+ *				argument-generating macros that actually insert individual 
+ *				event argument elements into the trace stream.
+ *				To do that, use the following macros:
+ *				RKH_TUSR_I8() 	- signed 8-bit integer format
+ *				RKH_TUSR_UI8() 	- unsigned 8-bit integer format
+ *				RKH_TUSR_I16() 	- signed 16-bit integer format
+ *				RKH_TUSR_UI16() - unsigned 16-bit integer format
+ *				RKH_TUSR_I32() 	- signed 32-bit integer format
+ *				RKH_TUSR_UI32() - unsigned 16-bit integer format
+ *				RKH_TUSR_X32() 	- signed 16-bit integer in hex format
+ *				RKH_TUSR_STR() 	- zero-terminated ASCII string format
+ *				RKH_TUSR_MEM() 	- up to 255-bytes memory block format
+ *				RKH_TUSR_OBJ() 	- object pointer format
+ *				RKH_TUSR_FUN() 	- function pointer format
+ *				RKH_TUSR_SIG() 	- event signal format
+ *
+ * 	Example:
+ *	
+ *	\code
+ *	void
+ *	some_function( ... )
+ *	{
+ *		rkhui8_t d1 = 255;
+ *		rkhui16_t d2 = 65535;
+ *		rkhui32_t d3 = 65535;
+ *		char *str = "hello";
+ *
+ *		RKH_TRC_USR_BEGIN( RKH_TE_USER )
+ *			RKH_TUSR_I8( 3, d1 );
+ *			RKH_TUSR_UI8( 3, d1 );
+ *			RKH_TUSR_I16( 4, d2 );
+ *			RKH_TUSR_UI16( 4, d2 );
+ *			RKH_TUSR_I32( 5, d3 );
+ *			RKH_TUSR_UI32( 5, d3 );
+ *			RKH_TUSR_X32( 4, d3 );
+ *			RKH_TUSR_STR( str );
+ *			RKH_TUSR_MEM( (rkhui8_t*)&d3, sizeof(rkhui32_t) );
+ *			RKH_TUSR_OBJ( my );
+ *			RKH_TUSR_FUN( main );
+ *			RKH_TUSR_SIG( ZERO );
+ *		RKH_TRC_USR_END();
+ *	}
+ *	\endcode
+ *
  *	\sa RKH_TRC_HDR(), RKH_TRC_END(), RKH_TRC_CHK().
  */
 
