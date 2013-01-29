@@ -1551,6 +1551,14 @@ enum rkh_trc_fmt
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_EVT_PROC( sma )				(void)0
+			#define RKH_TR_SM_EVT_NFOUND( sma )				(void)0
+			#define RKH_TR_SM_CND_NFOUND( sma )				(void)0
+			#define RKH_TR_SM_GRD_FALSE( sma )				(void)0
+			#define RKH_TR_SM_UNKN_STATE( sma )				(void)0
+			#define RKH_TR_SM_EX_HLEVEL( sma )				(void)0
+			#define RKH_TR_SM_EX_TSEG( sma )				(void)0
 		#endif
 	#else
 		#define RKH_TR_SM_INIT( sma, is )				(void)0
