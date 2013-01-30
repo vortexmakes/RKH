@@ -415,7 +415,7 @@ typedef enum rkh_trc_groups
  *	The transmitter computes the checksum over the sequence number, the 
  *	trace event ID, and all data bytes before performing any byte stuffing.
  *
- * 	<EM>User trace events</EM>
+ * 	<em>User trace events</em>
  *
  * 	The user application could defined its own trace events to be placed 
  * 	at anywhere in the application level. Allowing to generate tracing 
@@ -439,23 +439,32 @@ typedef enum rkh_trc_groups
  *	\li (2-4) 	Sandwiched between these two macros are the 
  *				argument-generating macros that actually insert individual 
  *				event argument elements into the trace stream.
- *				To do that, use the following macros:
- *				RKH_TUSR_I8() 	- signed 8-bit integer format
- *				RKH_TUSR_UI8() 	- unsigned 8-bit integer format
- *				RKH_TUSR_I16() 	- signed 16-bit integer format
- *				RKH_TUSR_UI16() - unsigned 16-bit integer format
- *				RKH_TUSR_I32() 	- signed 32-bit integer format
- *				RKH_TUSR_UI32() - unsigned 16-bit integer format
- *				RKH_TUSR_X32() 	- signed 16-bit integer in hex format
- *				RKH_TUSR_STR() 	- zero-terminated ASCII string format
- *				RKH_TUSR_MEM() 	- up to 255-bytes memory block format
- *				RKH_TUSR_OBJ() 	- object pointer format
- *				RKH_TUSR_FUN() 	- function pointer format
- *				RKH_TUSR_SIG() 	- event signal format
+ *
+ *	Argument-generating macros for building user trace events:
+ *
+ *	\li RKH_TUSR_I8() 	\copydoc RKH_TUSR_I8
+ *	\li RKH_TUSR_UI8() 	\copydoc RKH_TUSR_UI8
+ *	\li RKH_TUSR_I16() 	\copydoc RKH_TUSR_I16
+ *	\li RKH_TUSR_UI16() \copydoc RKH_TUSR_UI16
+ *	\li RKH_TUSR_I32() 	\copydoc RKH_TUSR_I32
+ *	\li RKH_TUSR_UI32() \copydoc RKH_TUSR_UI32
+ *	\li RKH_TUSR_X32() 	\copydoc RKH_TUSR_X32
+ *	\li RKH_TUSR_STR() 	\copydoc RKH_TUSR_STR
+ *	\li RKH_TUSR_MEM() 	\copydoc RKH_TUSR_MEM
+ *	\li RKH_TUSR_OBJ() 	\copydoc RKH_TUSR_OBJ
+ *	\li RKH_TUSR_FUN() 	\copydoc RKH_TUSR_FUN
+ *	\li RKH_TUSR_SIG() 	\copydoc RKH_TUSR_SIG
  *
  * 	Example:
  *	
  *	\code
+ *	enum
+ *	{
+ *		LOWPWR_USR_TRACE = RKH_TE_USER,
+ *		DISCONNECTED_USR_TRACE
+ *		...
+ *	};
+*
  *	void
  *	some_function( ... )
  *	{
@@ -464,7 +473,7 @@ typedef enum rkh_trc_groups
  *		rkhui32_t d3 = 65535;
  *		char *str = "hello";
  *
- *		RKH_TRC_USR_BEGIN( RKH_TE_USER )
+ *		RKH_TRC_USR_BEGIN( MY_FIRST_TRACE )
  *			RKH_TUSR_I8( 3, d1 );
  *			RKH_TUSR_UI8( 3, d1 );
  *			RKH_TUSR_I16( 4, d2 );
@@ -536,7 +545,7 @@ typedef enum rkh_trc_events
 	RKH_TE_TIM_TOUT,				/**< \copydetails RKH_TR_TIM_TOUT */
 	RKH_TE_TIM_REM,					/**< \copydetails RKH_TR_TIM_REM */
 
-	/* --- Framework events (RKH group) ------------------- */
+	/* --- Framework and misc. events (FWK group) ------------------- */
 	RKH_TE_FWK_EN = RKH_FWK_START,	/**< \copydetails RKH_TR_FWK_EN */
 	RKH_TE_FWK_EX,					/**< \copydetails RKH_TR_FWK_EX */
 	RKH_TE_FWK_EPREG,				/**< \copydetails RKH_TR_FWK_EPREG */
@@ -549,6 +558,7 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_SIG,					/**< \copydetails RKH_TR_FWK_SIG */
 	RKH_TE_FWK_FUN,					/**< \copydetails RKH_TR_FWK_FUN */
 	RKH_TE_FWK_EXE_FUN,				/**< \copydetails RKH_TR_FWK_EXE_FUN */
+	RKH_TE_FWK_TUSR,				/**< \copydetails RKH_TR_FWK_TUSR */
 
 	RKH_TE_USER = RKH_USR_START,
 
@@ -768,7 +778,6 @@ enum rkh_trc_fmt
  */
 	
 #if RKH_TRC_EN_USER_TRACE == 1
-
 
 	/**
 	 * 	Idem RKH_TRC_BEGIN() macro but use it for user trace events.
@@ -1902,10 +1911,10 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_SIG( __s )									\
 				do{ 													\
 					static RKHROM char *const __s_n = #__s;				\
-					RKH_TRC_BEGIN( RKH_TE_FWK_SIG, NVS )				\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_SIG )				\
 						RKH_TRC_SIG( __s );								\
 						RKH_TRC_STR( __s_n );							\
-					RKH_TRC_END();										\
+					RKH_TRC_END_WOFIL();								\
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
@@ -1938,10 +1947,10 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_FUN( __f )									\
 				do{ 													\
 					static RKHROM char *const __f_n = #__f;				\
-					RKH_TRC_BEGIN( RKH_TE_FWK_FUN, NVS )				\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_FUN )			\
 						RKH_TRC_FUN( __f );								\
 						RKH_TRC_STR( __f_n );							\
-					RKH_TRC_END();										\
+					RKH_TRC_END_WOFIL();								\
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
@@ -1964,9 +1973,49 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_EXE_FUN( function )							\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EXE_FUN, NVS )			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EXE_FUN, NVS )		\
 						RKH_TRC_FUN( function );						\
-					RKH_TRC_END()
+					RKH_TRC_END_WOFIL();
+
+		/* --- Symbol entry table for user user-defined trace events --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for user-defined trace events\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_TUSR\n
+		 * 	Args	= user trace event number\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the numerical value of the user-defined trace event to 
+		 * 	the symbolic name of that.
+		 *
+		 * 	\code
+		 * 	...
+		 *	enum // define the user trace events
+		 *	{
+		 *		LOWPWR_USRT = RKH_TE_USER,
+		 *		DISCONNECTED_USRT,
+		 *		...
+		 *	};
+		 *
+		 * 	void
+		 * 	lowpwr_detect( void )
+		 * 	{
+		 * 		RKH_TR_FWK_TUSR( LOWPWR_USRT ); // record this situation
+		 * 		...
+		 * 	}
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_TUSR( __e )									\
+				do{ 													\
+					static RKHROM char *const __e_n = #__e;				\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TUSR )				\
+						RKH_TRC_UI8( __e );								\
+						RKH_TRC_STR( __e_n );							\
+					RKH_TRC_END_WOFIL();								\
+					RKH_TRC_FLUSH();									\
+				} while(0)
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
@@ -1980,6 +2029,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_SIG( __s )					(void)0
 		#define RKH_TR_FWK_FUN( __s )					(void)0
 		#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
+		#define RKH_TR_FWK_TUSR( __e )					(void)0
 	#endif
 	
 #else
@@ -2046,6 +2096,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_SIG( __s )						(void)0
 	#define RKH_TR_FWK_FUN( __f )						(void)0
 	#define RKH_TR_FWK_EXE_FUN( __f )					(void)0
+	#define RKH_TR_FWK_TUSR( __e )						(void)0
 #endif
 
 
