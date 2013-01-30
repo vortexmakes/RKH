@@ -40,7 +40,7 @@ static rkhui16_t trcqty;
 #endif
 
 
-/* From group to event table */
+/** From group to event table */
 static RKHROM rkhui8_t trcgmtbl[] =
 {
 	/*	<offset>	| <range> [in bytes] */
@@ -55,6 +55,22 @@ static RKHROM rkhui8_t trcgmtbl[] =
 };
 
 
+/** Trace configuration table */
+static RKHROM rkhui8_t trccfg[] =
+{
+	(rkhui8_t)RKH_SIZEOF_EVENT,
+	(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP,
+	(rkhui8_t)RKH_TRC_SIZEOF_POINTER,
+	(rkhui8_t)RKH_TIM_SIZEOF_NTIMER,
+	(rkhui8_t)RKH_MP_SIZEOF_NBLOCK,
+	(rkhui8_t)RKH_RQ_SIZEOF_NELEM,
+	(rkhui8_t)RKH_SIZEOF_ESIZE,
+	(rkhui8_t)RKH_TRC_EN_NSEQ,
+	(rkhui8_t)RKH_TRC_EN_CHK,
+	(rkhui8_t)RKH_TRC_EN_TSTAMP
+};
+
+
 void
 rkh_trc_init( void )
 {
@@ -64,6 +80,13 @@ rkh_trc_init( void )
 	trcend = &trcstm[ RKH_TRC_SIZEOF_STREAM ];
 	trcctrl = RKH_TRC_START;
 	RKH_TRC_U8_RAW( RKH_FLG );
+}
+
+
+void 
+rkh_trc_config( void )
+{
+	RKH_TR_FWK_TCFG();
 }
 
 

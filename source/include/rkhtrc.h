@@ -559,6 +559,7 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_FUN,					/**< \copydetails RKH_TR_FWK_FUN */
 	RKH_TE_FWK_EXE_FUN,				/**< \copydetails RKH_TR_FWK_EXE_FUN */
 	RKH_TE_FWK_TUSR,				/**< \copydetails RKH_TR_FWK_TUSR */
+	RKH_TE_FWK_TCFG,				/**< \copydetails RKH_TR_FWK_TCFG */
 
 	RKH_TE_USER = RKH_USR_START,
 
@@ -1872,7 +1873,7 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ )				\
 						RKH_TRC_SYM( __o );								\
 						RKH_TRC_STR( __o_n );							\
-					RKH_TRC_END_WOFIL();								\
+					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
@@ -1914,7 +1915,7 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_SIG )				\
 						RKH_TRC_SIG( __s );								\
 						RKH_TRC_STR( __s_n );							\
-					RKH_TRC_END_WOFIL();								\
+					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
@@ -1947,10 +1948,10 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_FUN( __f )									\
 				do{ 													\
 					static RKHROM char *const __f_n = #__f;				\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_FUN )			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_FUN )				\
 						RKH_TRC_FUN( __f );								\
 						RKH_TRC_STR( __f_n );							\
-					RKH_TRC_END_WOFIL();								\
+					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
@@ -1975,7 +1976,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_EXE_FUN( function )							\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EXE_FUN, NVS )		\
 						RKH_TRC_FUN( function );						\
-					RKH_TRC_END_WOFIL();
+					RKH_TRC_END_WOFIL()
 
 		/* --- Symbol entry table for user user-defined trace events --------- */
 
@@ -2017,9 +2018,41 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TUSR )				\
 						RKH_TRC_UI8( __e );								\
 						RKH_TRC_STR( __e_n );							\
-					RKH_TRC_END_WOFIL();								\
+					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH();									\
 				} while(0)
+
+		/* --- Trace configuration --------- */
+
+		/**
+		 * 	Desc 	= send trace configuration table\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_TCFG\n
+		 * 	Args	= configuration table\n
+		 *
+		 * 	\code
+		 * 	void 
+		 * 	rkh_trc_config( void )
+		 * 	{
+		 * 		RKH_TR_FWK_TCFG();
+		 * 	}
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_TCFG()											\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )					\
+						RKH_TRC_UI8( (rkhui8_t)RKH_SIZEOF_EVENT );			\
+						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_SIZEOF_TSTAMP );		\
+						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_SIZEOF_POINTER );	\
+						RKH_TRC_UI8( (rkhui8_t)RKH_TIM_SIZEOF_NTIMER );		\
+						RKH_TRC_UI8( (rkhui8_t)RKH_MP_SIZEOF_NBLOCK );		\
+						RKH_TRC_UI8( (rkhui8_t)RKH_RQ_SIZEOF_NELEM );		\
+						RKH_TRC_UI8( (rkhui8_t)RKH_SIZEOF_ESIZE );			\
+						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_EN_NSEQ );			\
+						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_EN_CHK );			\
+						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_EN_TSTAMP );			\
+					RKH_TRC_END_WOFIL()										\
+					RKH_TRC_FLUSH();
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
@@ -2034,8 +2067,8 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_FUN( __s )					(void)0
 		#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
+		#define RKH_TR_FWK_TCFG()						(void)0
 	#endif
-	
 #else
 	/* --- Memory Pool (MP) ------------------ */
 	#define RKH_TR_MP_INIT( mp, nblock )				(void)0
@@ -2101,6 +2134,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_FUN( __f )						(void)0
 	#define RKH_TR_FWK_EXE_FUN( __f )					(void)0
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
+	#define RKH_TR_FWK_TCFG()							(void)0
 #endif
 
 
@@ -2135,6 +2169,23 @@ typedef rkhui8_t RKH_TE_T;
  */
 
 void rkh_trc_init( void );
+
+
+/**
+ * 	\brief
+ * 	Send the trace facility configuration to host application software Trazer.
+ *
+ * 	Trazer is designed to work with all possible target CPU, which requires a 
+ * 	wide range of configurability. For example, for any given target CPU, 
+ * 	Trazer must "know" the size of object pointers, event size, timestamp 
+ * 	size and so on. This configurations could be provided through 
+ * 	"trazer.cfg" file in the host or invoking rkh_trc_config() function from 
+ * 	the application-specific rkh_trc_open() function.
+ *
+ * 	\sa trtrazer
+ */
+
+void rkh_trc_config( void );
 
 
 /**

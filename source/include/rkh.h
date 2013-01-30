@@ -2118,8 +2118,8 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	Open the tracing session.
  *
  *	This function is application-specific and the user needs to define it. 
- *	At a minimum, the function must configure the trace stream by calling 
- *	rkh_trc_init() function.
+ *	At a minimum, this function must initialize and/or configure the trace 
+ *	stream by calling rkh_trc_init() and rkh_trc_config() respectively.
  * 
  * 	\note
  * 	The function rkh_trc_open() is internal to RKH and the user application 
@@ -2132,6 +2132,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	rkh_trc_open( void )
  *	{
  *		rkh_trc_init();
+ *		rkh_trc_config();
  *		rkh_trc_control( RKH_TRC_START );
  *
  *		if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
@@ -2167,8 +2168,6 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	Close the tracing session.
  *
  *	This function is application-specific and the user needs to define it. 
- *	At a minimum, the function must configure the trace stream by calling 
- *	rkh_trc_init() function.
  *
  * 	\note
  * 	The function rkh_trc_close() is internal to RKH and the user application 
@@ -2247,8 +2246,6 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	Retrieves a timestamp to be placed in a trace event.
  * 
  *	This function is application-specific and the user needs to define it. 
- *	At a minimum, the function must configure the trace stream by calling 
- *	rkh_trc_init() function.
  *	The data returned is defined in compile-time by means of 
  *	RKH_SIZEOF_TSTAMP.
  *
