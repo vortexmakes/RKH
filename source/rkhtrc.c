@@ -310,6 +310,7 @@ void
 rkh_trc_fmt_mem( const rkhui8_t *mem, rkhui8_t size )
 {
 	rkh_trc_u8( (rkhui8_t)RKH_MEM_T );
+	rkh_trc_u8( size );
     while( size != 0 )
 	{
 		rkh_trc_u8( (rkhui8_t)*mem++ );
