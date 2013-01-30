@@ -275,7 +275,9 @@ typedef enum rkh_trc_groups
 #define EUNCHANGE				1
 
 
-#define GRPSH( grp )				(rkhui8_t)(((grp)&7) << NGSH)
+#define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
+#define GRPRSH( grp )				(rkhui8_t)(((grp) & 0xe0) >> NGSH)
+#define EXTE( te, grp )				(rkhui8_t)((te) - GRPRSH(grp))
 #define RKH_NUM_TE_PER_GROUP		32 /* 2^5 = 32 */
 
 #if RKH_NUM_TE_PER_GROUP <= 32
@@ -303,13 +305,13 @@ typedef enum rkh_trc_groups
  * 	Therefore, is able to define 3 groups and 32 events per group.
  */
 
-#define RKH_MP_START				GRPSH( RKH_TG_MP	)
-#define RKH_RQ_START				GRPSH( RKH_TG_RQ 	)
-#define RKH_SMA_START				GRPSH( RKH_TG_SMA 	)
-#define RKH_SM_START				GRPSH( RKH_TG_SM 	)
-#define RKH_TIM_START				GRPSH( RKH_TG_TIM 	)
-#define RKH_FWK_START				GRPSH( RKH_TG_FWK 	)
-#define RKH_USR_START				GRPSH( RKH_TG_USR 	)
+#define RKH_MP_START				GRPLSH( RKH_TG_MP	)
+#define RKH_RQ_START				GRPLSH( RKH_TG_RQ 	)
+#define RKH_SMA_START				GRPLSH( RKH_TG_SMA 	)
+#define RKH_SM_START				GRPLSH( RKH_TG_SM 	)
+#define RKH_TIM_START				GRPLSH( RKH_TG_TIM 	)
+#define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
+#define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
 /*@}*/
 
 
@@ -2016,7 +2018,7 @@ enum rkh_trc_fmt
 				do{ 													\
 					static RKHROM char *const __e_n = #__e;				\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TUSR )				\
-						RKH_TRC_UI8( __e );								\
+						RKH_TRC_UI8( EXTE( __e, RKH_TG_USR ) );			\
 						RKH_TRC_STR( __e_n );							\
 					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH();									\
@@ -2041,18 +2043,23 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_TCFG()											\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )					\
-						RKH_TRC_UI8( (rkhui8_t)RKH_SIZEOF_EVENT );			\
-						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_SIZEOF_TSTAMP );		\
-						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_SIZEOF_POINTER );	\
-						RKH_TRC_UI8( (rkhui8_t)RKH_TIM_SIZEOF_NTIMER );		\
-						RKH_TRC_UI8( (rkhui8_t)RKH_MP_SIZEOF_NBLOCK );		\
-						RKH_TRC_UI8( (rkhui8_t)RKH_RQ_SIZEOF_NELEM );		\
-						RKH_TRC_UI8( (rkhui8_t)RKH_SIZEOF_ESIZE );			\
-						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_EN_NSEQ );			\
-						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_EN_CHK );			\
-						RKH_TRC_UI8( (rkhui8_t)RKH_TRC_EN_TSTAMP );			\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_SIZEOF_EVENT << 4) | 			\
+							RKH_TRC_SIZEOF_TSTAMP));						\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER << 4) | 		\
+							RKH_TIM_SIZEOF_NTIMER));						\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK << 4) | 		\
+							RKH_RQ_SIZEOF_NELEM));							\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_SIZEOF_ESIZE << 4) |			\
+							RKH_TRC_EN_NSEQ));								\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |				\
+							RKH_TRC_EN_TSTAMP));							\
 					RKH_TRC_END_WOFIL()										\
-					RKH_TRC_FLUSH();
+					RKH_TRC_FLUSH()
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
