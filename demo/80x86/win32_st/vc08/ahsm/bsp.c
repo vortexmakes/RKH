@@ -236,6 +236,7 @@ void
 rkh_trc_open( void )
 {
 	rkh_trc_init();
+ 	rkh_trc_config();
 	rkh_trc_control( RKH_TRC_START );
 
 	FTBIN_OPEN();

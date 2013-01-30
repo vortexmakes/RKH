@@ -474,7 +474,7 @@ typedef enum rkh_trc_groups
  *		rkhui32_t d3 = 65535;
  *		char *str = "hello";
  *
- *		RKH_TRC_USR_BEGIN( MY_FIRST_TRACE )
+ *		RKH_TRC_USR_BEGIN( LOWPWR_USR_TRACE )
  *			RKH_TUSR_I8( 3, d1 );
  *			RKH_TUSR_UI8( 3, d1 );
  *			RKH_TUSR_I16( 4, d2 );
