@@ -1991,6 +1991,9 @@ enum rkh_trc_fmt
 		 *
 		 * 	\code
 		 * 	...
+		 * 	// frequently, the macro RKH_TR_FWK_TUSR() is used in the 
+		 * 	// \b main.c file.
+		 *
 		 *	enum // define the user trace events
 		 *	{
 		 *		LOWPWR_USRT = RKH_TE_USER,
@@ -1999,9 +2002,10 @@ enum rkh_trc_fmt
 		 *	};
 		 *
 		 * 	void
-		 * 	lowpwr_detect( void )
+		 * 	main( void )
 		 * 	{
-		 * 		RKH_TR_FWK_TUSR( LOWPWR_USRT ); // record this situation
+		 * 		RKH_TR_FWK_TUSR( LOWPWR_USRT );
+		 * 		RKH_TR_FWK_TUSR( DISCONNECTED_USRT );
 		 * 		...
 		 * 	}
 		 * 	\endcode
