@@ -2043,20 +2043,20 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_TCFG()										\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI8( 									\
-							(RKH_SIZEOF_EVENT << 4) | 					\
-							RKH_TRC_SIZEOF_TSTAMP);						\
+							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
+							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));			\
 						RKH_TRC_UI8( 									\
-							(RKH_TRC_SIZEOF_POINTER << 4) | 			\
-							RKH_TIM_SIZEOF_NTIMER);						\
+							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |\
+							RKH_TIM_SIZEOF_NTIMER/8));					\
 						RKH_TRC_UI8( 									\
-							(RKH_MP_SIZEOF_NBLOCK << 4) | 				\
-							RKH_RQ_SIZEOF_NELEM);						\
+							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK/8 << 4) | 	\
+							RKH_RQ_SIZEOF_NELEM/8));						\
 						RKH_TRC_UI8( 									\
-							(RKH_SIZEOF_ESIZE << 4) |					\
-							RKH_TRC_EN_NSEQ);							\
+							(rkhui8_t)((RKH_SIZEOF_ESIZE/8 << 4) |		\
+							RKH_TRC_EN_NSEQ));							\
 						RKH_TRC_UI8( 									\
-							(RKH_TRC_EN_CHK << 4) |						\
-							RKH_TRC_EN_TSTAMP);							\
+							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |			\
+							RKH_TRC_EN_TSTAMP));						\
 					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH()
 	#else
