@@ -2946,8 +2946,6 @@ Here is an list of all options with their documentation:
 <HR>
 \section cfg_fw Configuration options related to framework
 
-\copydetails RKH_MAX_SMA
-\copydetails RKH_MAX_SMA
 \li \b RKH_MAX_SMA \copydetails RKH_MAX_SMA
 \li \b RKH_EN_DYNAMIC_EVENT \copydetails RKH_EN_DYNAMIC_EVENT
 \li \b RKH_MAX_EPOOL \copydetails RKH_MAX_EPOOL
