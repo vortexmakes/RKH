@@ -301,7 +301,7 @@ rkh_trc_fmt_str( const char *s )
 {
 	rkh_trc_u8( (rkhui8_t)RKH_STR_T );
 	while( *s != '\0' )
-		RKH_TRC_U8_RAW( (rkhui8_t)*s++ );
+		rkh_trc_u8( (rkhui8_t)*s++ );
 	rkh_trc_u8( '\0' );
 }
 
