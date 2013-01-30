@@ -276,8 +276,7 @@ typedef enum rkh_trc_groups
 
 
 #define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
-#define GRPRSH( grp )				(rkhui8_t)(((grp) & 0xe0) >> NGSH)
-#define EXTE( te, grp )				(rkhui8_t)((te) - GRPRSH(grp))
+#define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
 #define RKH_NUM_TE_PER_GROUP		32 /* 2^5 = 32 */
 
 #if RKH_NUM_TE_PER_GROUP <= 32
@@ -724,7 +723,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_UI8( d )	\
-			rkh_trc_u8( (d) )
+			rkh_trc_u8( (rkhui8_t)(d) )
 
 /**
  * 	\brief
@@ -2041,24 +2040,24 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_TCFG()											\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )					\
-						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_SIZEOF_EVENT << 4) | 			\
-							RKH_TRC_SIZEOF_TSTAMP));						\
-						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER << 4) | 		\
-							RKH_TIM_SIZEOF_NTIMER));						\
-						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK << 4) | 		\
-							RKH_RQ_SIZEOF_NELEM));							\
-						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_SIZEOF_ESIZE << 4) |			\
-							RKH_TRC_EN_NSEQ));								\
-						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |				\
-							RKH_TRC_EN_TSTAMP));							\
-					RKH_TRC_END_WOFIL()										\
+		#define RKH_TR_FWK_TCFG()										\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
+						RKH_TRC_UI8( 									\
+							(RKH_SIZEOF_EVENT << 4) | 					\
+							RKH_TRC_SIZEOF_TSTAMP);						\
+						RKH_TRC_UI8( 									\
+							(RKH_TRC_SIZEOF_POINTER << 4) | 			\
+							RKH_TIM_SIZEOF_NTIMER);						\
+						RKH_TRC_UI8( 									\
+							(RKH_MP_SIZEOF_NBLOCK << 4) | 				\
+							RKH_RQ_SIZEOF_NELEM);						\
+						RKH_TRC_UI8( 									\
+							(RKH_SIZEOF_ESIZE << 4) |					\
+							RKH_TRC_EN_NSEQ);							\
+						RKH_TRC_UI8( 									\
+							(RKH_TRC_EN_CHK << 4) |						\
+							RKH_TRC_EN_TSTAMP);							\
+					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH()
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
