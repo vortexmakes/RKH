@@ -329,7 +329,7 @@ in a separate task or thread.
 
 \li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 0, 
 #RKH_EN_SMA_THREAD = 1, and #RKH_EN_SMA_THREAD_DATA, within the 
-\b rkhcfg.h file.
+\b rkhport.h file.
 \li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
 RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
 \li (3) Define the macros #RKH_OSDATA_TYPE, and #RKH_THREAD_TYPE in 
@@ -465,7 +465,7 @@ Nothing to do.
 the event queues with a message queue of the underlying OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhport.h
 \li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
@@ -521,7 +521,7 @@ rkh_sma_get( RKHSMA_T *sma )
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
-\b rkhcfg.h
+\b rkhport.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 \li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
@@ -531,13 +531,13 @@ the event queues with the native queues RKHRQ_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
-\b rkhcfg.h
+\b rkhport.h and \b rkhcfg.h respectively.
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 \li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
 		
 \b NO: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhport.h
 \li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
@@ -550,7 +550,7 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 
 \b NO: \n
 \li (1) Define the macros #RKH_EN_DYNAMIC_EVENT = 0 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h.
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhport.h.
 
 \b YES: \n
 
@@ -560,7 +560,7 @@ OS/RTOS?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
 RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \b rkhport.h 
 according to underlying OS/RTOS.
@@ -592,7 +592,7 @@ RKHMP_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h and \b rkhport.h respectively.
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
@@ -2959,12 +2959,6 @@ Here is an list of all options with their documentation:
 \li \b RKH_HK_EN_START \copydetails RKH_HK_EN_START
 \li \b RKH_HK_EN_EXIT \copydetails RKH_HK_EN_EXIT
 \li \b RKH_SMA_EN_IEVENT \copydetails RKH_SMA_EN_IEVENT
-\li \b RKH_EN_SMA_THREAD \copydetails RKH_EN_SMA_THREAD
-\li \b RKH_EN_SMA_THREAD_DATA \copydetails RKH_EN_SMA_THREAD_DATA
-\li \b RKH_EN_NATIVE_SCHEDULER \copydetails RKH_EN_NATIVE_SCHEDULER
-\li \b RKH_EN_NATIVE_EQUEUE \copydetails RKH_EN_NATIVE_EQUEUE
-\li \b RKH_EN_NATIVE_DYN_EVENT \copydetails RKH_EN_NATIVE_DYN_EVENT
-\li \b RKH_EN_REENTRANT \copydetails RKH_EN_REENTRANT
 
 <HR>
 \section cfg_sm Configuration options related to state machine applications
