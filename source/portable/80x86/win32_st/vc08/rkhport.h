@@ -54,7 +54,7 @@ const char *rkh_get_port_desc( void );
  *	thread of execution.
  */
 
-#define RKH_EN_SMA_THREAD 				1
+#define RKH_EN_SMA_THREAD 				0
 
 /**
  *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
@@ -62,7 +62,7 @@ const char *rkh_get_port_desc( void );
  *	data.
  */
 
-#define RKH_EN_SMA_THREAD_DATA			1
+#define RKH_EN_SMA_THREAD_DATA			0
 
 /**
  * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 

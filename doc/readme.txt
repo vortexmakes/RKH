@@ -2668,7 +2668,6 @@ structure. See \ref cfg section for more information.
 - \b RKH_TIM_EN: \n \copydetails RKH_TIM_EN
 - \b RKH_TIM_SIZEOF_NTIMER: \n \copydetails RKH_TIM_SIZEOF_NTIMER
 - \b RKH_TIM_EN_HOOK: \n \copydetails RKH_TIM_EN_HOOK
-- \b RKH_TIM_EN_RESTART: \n \copydetails RKH_TIM_EN_RESTART
 - \b RKH_TIM_EN_GET_INFO: \n \copydetails RKH_TIM_EN_GET_INFO
 
 Prev: \ref main_page "Home"
@@ -2874,7 +2873,6 @@ the data included for each.
 
 \li \b RKH_TR_TIM_INIT \copydetails RKH_TR_TIM_INIT
 \li \b RKH_TR_TIM_START \copydetails RKH_TR_TIM_START
-\li \b RKH_TR_TIM_RESTART \copydetails RKH_TR_TIM_RESTART
 \li \b RKH_TR_TIM_STOP \copydetails RKH_TR_TIM_STOP
 \li \b RKH_TR_TIM_TOUT \copydetails RKH_TR_TIM_TOUT
 \li \b RKH_TR_TIM_REM \copydetails RKH_TR_TIM_REM
@@ -3048,7 +3046,6 @@ Here is an list of all options with their documentation:
 \li \b RKH_TIM_EN \copydetails RKH_TIM_EN	
 \li \b RKH_TIM_SIZEOF_NTIMER \copydetails RKH_TIM_SIZEOF_NTIMER
 \li \b RKH_TIM_EN_HOOK \copydetails RKH_TIM_EN_HOOK
-\li \b RKH_TIM_EN_RESTART \copydetails RKH_TIM_EN_RESTART
 \li \b RKH_TIM_EN_GET_INFO \copydetails RKH_TIM_EN_GET_INFO
 
 */

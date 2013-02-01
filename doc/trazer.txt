@@ -32,8 +32,6 @@ Before using %Trazer you must provides the listed configurations:
 - \ref trazer_command to configure comunication link and general options.
 - \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, 
 such as pointer sizes, signal sizes, etc.
-- \ref trazer_evtbl trace event table (\subpage trazer_evt), to define 
-parseable trace events and custom information.
 
 
 <HR>
@@ -80,7 +78,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c0c0c0">
     <TD>-t</TD>
     <TD>-t 6602</TD>
-    <TD>TCP/IP server and port number. Not compatible with -c, -f (Not implemented)</TD>
+    <TD>TCP/IP server and port number. Not compatible with -c, -f</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
@@ -95,9 +93,15 @@ ALIGN="center" VALIGN="middle">
 <HR>
 \section trazer_config Configuration file
 
-%Traze is designed to work with all possible target CPU, which requires a wide range of configurability. 
+%Trazer is designed to work with all possible target CPU, which requires a wide range of configurability. 
 For example, for any given target CPU, Trazer must "know" the size of object pointers, event size, timestamp size and so on. 
-You must to provide this information through \subpage trazer_cfg_, wich content is summarized in the following table:
+You can provide this information by two ways: 
+  - include \subpage trazer_cfg_ configuration file in the same trazer.exe directory.
+  - setup the target aplication to call to \subpage RKH_TR_FWK_TCFG and perform the streaming the RKH configuration at startup.
+
+If \subpage trazer_cfg_ is not found, assuming default settings, any configuration streaming received overwrite settings.
+
+the following table summarizes the \subpage trazer_cfg_ content.
 
 <TABLE SUMMARY="Trazer config" cellSpacing=4 cellPadding=1 border=0
 ALIGN="center" VALIGN="middle">
@@ -193,50 +197,9 @@ ALIGN="center" VALIGN="middle">
 </TABLE>
 
 <HR>
-\section trazer_evtbl Trace event table 
 
-In order to support future events definitions from new RKH releases, and 
-potential user defined traces, each event must be defined into 
-\subpage trazer_evt file to be recognized by Trazer.
-Each particular event is defined as shown in the table below: 
-
-<TABLE SUMMARY="Trazer config" cellSpacing=4 cellPadding=1 border=0
-ALIGN="center" VALIGN="middle">
-  <TR bgColor="#c8cedc">
-    <TD><B>&nbsp;Field</B></TD>
-    <TD><B>&nbsp;Example</B></TD>
-    <TD><B>&nbsp;Description</B></TD>
-  </TR>
-
-  <TR bgColor="#f0f0f0">
-    <TD>Event</TD>
-    <TD>RKH_TE_MP_INIT</TD>
-    <TD>Event ID, must be according to #RKH_TRC_EVENTS definition in rkhtrc.h</TD>
-  </TR>
-
-  <TR bgColor="#c0c0c0">
-    <TD>Group</TD>
-    <TD>MP</TD>
-    <TD>RKH service that generate the event.</TD>
-  </TR>
-
-  <TR bgColor="#f0f0f0">
-    <TD>Name</TD>
-    <TD>INIT</TD>
-    <TD>Custom Alias for the event</TD>
-  </TR>
-
-  <TR bgColor="#c0c0c0">
-    <TD>Comment</TD>
-    <TD>Memory Pool Init</TD>
-    <TD>Optional descriptive comment.</TD>
-  </TR>
-</TABLE>
-
-Trazer user may can change \b Alias, \b Comment and \b Group fields to 
-customize the visualization output. In the instrumented application two 
-particular trace events could be used to better trace visualization, 
-#RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG.
+In the instrumented application two particular trace events could be used to better 
+trace visualization, #RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG.
 
 #RKH_TE_FWK_OBJ:
 \n\n Associates the address of the object, in memory with its symbolic name.
@@ -310,13 +273,10 @@ tool to detect any data discontinuities. See the \b TRAZER_EN_NSEQ option.
 - <b>System service group name</b>.
 
 - <b>Trace event alias</b>, which is one of the predefined RKH records or an 
-application-specific record. See the \subpage trazer_evt file and 
-#RKH_TRC_EVENTS.
+application-specific record.
 
 - \b Args, data asociated with the event.
 
-- Comment.
-   
 Sequences 4, 5 and 6 are examples of #RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG events. 
 After, sequences 16, 17, 32 and 33, show how Trazer identify object address 
 and signal number replacing them by its symbolic representation. 
@@ -325,8 +285,8 @@ object, (null) will be shown, and in same manner the numeric value for signals.
 
 \verbatim
 
-TRAZER Visualization Tool V1.0 compatible with RKH V2.0
-Date = Apr  7 2012 01:46:48
+TRAZER Visualization Tool V2.0 compatible with RKH V2.3
+Date = Jan  30 2013 13:46:48
 
 Trace Setup
 
@@ -352,9 +312,9 @@ Trace Setup
 
 -------- Parsing trace stream from file trace.bin --------
 
-        84 [  0] MP  | INIT            : mp=(null), nblock=16  : Memory Pool Init
+        84 [  0] MP  | INIT            : mp=(null), nblock=16
         84 [  1] RKH | EPOOL_REG       : epix =1, ssize=64, esize=4
-        84 [  2] MP  | INIT            : mp=(null), nblock=4  : Memory Pool Init
+        84 [  2] MP  | INIT            : mp=(null), nblock=4
         84 [  3] RKH | EPOOL_REG       : epix =2, ssize=32, esize=8
         84 [  4] RKH | SYM_OBJ         : obj=0x01091780, sym=&rkheplist[0]
         84 [  5] RKH | SYM_OBJ         : obj=0x01091794, sym=&rkheplist[1]
@@ -368,7 +328,7 @@ Trace Setup
         84 [ 13] SM  | ENTRY_STATE     : sma=(null), state=(null)
         84 [ 14] SMA | ACTIVATE        : sma=(null)
         86 [ 15] RKH | ENTER           :
-      1509 [ 16] MP  | GET             : mp=&rkheplist[1], nfree=3  : Memory Pool Get
+      1509 [ 16] MP  | GET             : mp=&rkheplist[1], nfree=3
       1509 [ 17] RKH | ALLOC_EVENT     : esize=6, sig=ONE
       1509 [ 18] RQ  | POST_FIFO       : rq=(null), nused=1
       1509 [ 19] SMA | POST_FIFO       : sma=(null), sig=ONE
@@ -385,7 +345,7 @@ Trace Setup
       1509 [ 30] SM  | DISPATCH_RCODE  : sma=(null), retcode=RKH_OK
       1509 [ 31] RKH | GC_RECYCLE      : sig=ONE
       1509 [ 32] MP  | PUT             : mp=&rkheplist[1], nfree=4
-      1905 [ 33] MP  | GET             : mp=&rkheplist[1], nfree=3  : Memory Pool Get
+      1905 [ 33] MP  | GET             : mp=&rkheplist[1], nfree=3
       1905 [ 34] RKH | ALLOC_EVENT     : esize=6, sig=(null)
       1905 [ 35] RQ  | POST_FIFO       : rq=(null), nused=1
 

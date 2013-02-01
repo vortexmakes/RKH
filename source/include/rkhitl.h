@@ -297,11 +297,6 @@
 #endif
 
 
-#ifndef RKH_TIM_EN_RESTART
-	#error "rkhcfg.h, Missing RKH_TIM_EN_RESTART: Include (1) restart timer function"
-#endif
-
-
 #if RKH_TRC_EN == 1 && RKH_TRC_EN_SM == 1
 	#if RKH_SMA_EN_STATE_ID != 1
 		#error  "rkhcfg.h, When enabling RKH_TRC_EN and RKH_TRC_EN_SM must be set to one (1) RKH_SMA_EN_STATE_ID"
@@ -563,7 +558,7 @@
 	 *	thread of execution.
 	 */
 
-	#define RKH_EN_SMA_THREAD 
+	#define RKH_EN_SMA_THREAD 			1
 
 	/**
 	 *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
@@ -571,7 +566,7 @@
 	 *	data.
 	 */
 
-	#define RKH_EN_SMA_THREAD_DATA
+	#define RKH_EN_SMA_THREAD_DATA		1
 
 	/**
 	 * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
@@ -581,7 +576,7 @@
 	 * 	and assume the native priority scheme.
 	 */
 
-	#define RKH_EN_NATIVE_SCHEDULER
+	#define RKH_EN_NATIVE_SCHEDULER		1
 
 	/**
 	 * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
@@ -589,7 +584,7 @@
 	 *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
 	 */
 
-	#define RKH_EN_NATIVE_EQUEUE
+	#define RKH_EN_NATIVE_EQUEUE		1
 
 	/**
 	 * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
@@ -600,7 +595,7 @@
 	 * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
 	 */
 
-	#define RKH_EN_NATIVE_DYN_EVENT
+	#define RKH_EN_NATIVE_DYN_EVENT		1
 
 	/**
 	 *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
@@ -608,7 +603,7 @@
 	 *	application is based on a multi-thread architecture.
 	 */
 
-	#define RKH_EN_REENTRANT
+	#define RKH_EN_REENTRANT			1
 
 	/**
 	 * 	Defines the data type of the event queue for active objects. 

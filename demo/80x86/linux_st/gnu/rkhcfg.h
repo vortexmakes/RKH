@@ -707,14 +707,6 @@
 #define RKH_TIM_EN_HOOK					0
 
 /** 
- *	If the #RKH_TIM_EN_RESTART is set to 1 then RKH will include the 
- *	rkh_tim_restart() function that restarts a timer with a new number of 
- *	ticks. See rkh_tim_restart() function.
- */
-
-#define RKH_TIM_EN_RESTART				1
-
-/** 
  *	If the #RKH_TIM_EN_GET_INFO is set to 1 then RKH will include the 
  *	rkh_tim_get_info() function that retrieves performance information for 
  *	a particular software timer. See rkh_tim_get_info() function.
