@@ -14,7 +14,6 @@
 #define QSTO_SIZE			4
 
 static RKHEVT_T *qsto[ QSTO_SIZE ];
-extern RKHT_T tx, ty, tz;
 
 enum
 {
@@ -51,10 +50,6 @@ main( int argc, char *argv[] )
 
 	rkh_init();
 	RKH_TRC_OPEN();
-
-	RKH_TR_FWK_OBJ( &tx );
-	RKH_TR_FWK_OBJ( &ty );
-	RKH_TR_FWK_OBJ( &tz );
 
 	RKH_TR_FWK_OBJ( &S1 );
 	RKH_TR_FWK_OBJ( my );
