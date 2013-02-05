@@ -296,12 +296,13 @@ typedef enum rkh_trc_groups
  * 	event number = | G | G | G | E | E | E | E | E |\n
  *
  * 	G's:	group number.\n
- * 	X's:	event's group.\n
+ * 	E's:	event's group.\n
  *
  * 	The lower 5 bits (E's) of the event ID are used to determine 
  * 	the trace event, while the next three most significant bits 
  * 	(G's) are used to determine the corresponding group.
- * 	Therefore, is able to define 3 groups and 32 events per group.
+ * 	Therefore, is able to define 7 groups and 32 events per group.
+ *  
  */
 
 #define RKH_MP_START				GRPLSH( RKH_TG_MP	)
@@ -312,6 +313,29 @@ typedef enum rkh_trc_groups
 #define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
 #define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
 /*@}*/
+
+
+/**@{
+ * 	Max. number of used trace events in a particular group in octets, thus 
+ * 	the desired value must be divided by 8 (1 -> 8 events).
+ */
+
+#define RKH_MP_TTBL_RANGE			1
+#define RKH_RQ_TTBL_RANGE			1
+#define RKH_SMA_TTBL_RANGE			1
+#define RKH_SM_TTBL_RANGE			3
+#define RKH_TIM_TTBL_RANGE			1
+#define RKH_FWK_TTBL_RANGE			3
+#define RKH_USR_TTBL_RANGE			1
+/*@}*/
+
+#define RKH_MP_TTBL_OFFSET			0
+#define RKH_RQ_TTBL_OFFSET			(RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
+#define RKH_SMA_TTBL_OFFSET			(RKH_RQ_TTBL_OFFSET + RKH_RQ_TTBL_RANGE)
+#define RKH_SM_TTBL_OFFSET			(RKH_SMA_TTBL_OFFSET + RKH_SMA_TTBL_RANGE)
+#define RKH_TIM_TTBL_OFFSET			(RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
+#define RKH_FWK_TTBL_OFFSET			(RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
+#define RKH_USR_TTBL_OFFSET			(RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
 
 
 /**

@@ -40,18 +40,18 @@ static rkhui16_t trcqty;
 #endif
 
 
-/** From group to event table */
+/** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
 {
 	/*	<offset>	| <range> [in bytes] */
 	/*                1 byte -> 8 events */
-	(	(0 << 4) 	| 1		),	/* RKH_MP_START */
-	(	(1 << 4) 	| 1		),	/* RKH_RQ_START */
-	(	(2 << 4) 	| 1		),	/* RKH_SMA_START */
-	(	(3 << 4) 	| 3		),	/* RKH_SM_START */
-	(	(6 << 4) 	| 1		),	/* RKH_TIM_START */
-	(	(7 << 4) 	| 2		),	/* RKH_FWK_START */
-	(	(9 << 4) 	| 1		)	/* RKH_USR_START */
+	((RKH_MP_TTBL_OFFSET << 4) 	| RKH_MP_TTBL_RANGE	),
+	((RKH_RQ_TTBL_OFFSET << 4) 	| RKH_RQ_TTBL_RANGE	),
+	((RKH_SMA_TTBL_OFFSET << 4) | RKH_SMA_TTBL_RANGE	),
+	((RKH_SM_TTBL_OFFSET << 4) 	| RKH_SM_TTBL_RANGE	),
+	((RKH_TIM_TTBL_OFFSET << 4) | RKH_TIM_TTBL_RANGE	),
+	((RKH_FWK_TTBL_OFFSET << 4) | RKH_FWK_TTBL_RANGE	),
+	((RKH_USR_TTBL_OFFSET << 4) | RKH_USR_TTBL_RANGE	)
 };
 
 
@@ -144,12 +144,10 @@ rkh_trc_isoff_( rkhui8_t e )
 
 	evt = GETEVT( e );
 	grp = GETGRP( e );
+
 	return 	(( trcgfilter & rkh_maptbl[ grp ] ) == 0 ) &&
-			(( trceftbl[ evt >> 3 ] & rkh_maptbl[ evt & 0x07 ]) == 0 );
-#if 0
-	return (( trcgfilter & (1<<grp) ) != 0 ) &&
-				(( trceftbl[ e >> 3 ] & (1 << ( e&0x07 )) ) != 0 );
-#endif
+			(( trceftbl[(rkhui8_t)((trcgmtbl[ grp ] >> 4) + (evt >> 3))] & 
+			   rkh_maptbl[evt & 0x7]) == 0 );
 }
 
 
@@ -185,7 +183,7 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 void 
 rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 {
-	rkhui8_t *p, ix, c;
+	rkhui8_t *p, ix, c, grp, e, offset;
 
 	if( evt == RKH_TRC_ALL_EVENTS )
 	{
@@ -194,15 +192,20 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
 				ix < RKH_TRC_MAX_EVENTS_IN_BYTES; ++ix, ++p )
 			*p = c;
+		trcgfilter = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0);
 		return;
 	}
 
+	e = GETEVT( evt );
+	grp = GETGRP( evt );
+	offset = (trcgmtbl[ grp ] >> 4) + (e >> 3);
+
 	if( ctrl == FILTER_ON )
-		trceftbl[ evt>>3 ] |= rkh_maptbl[ evt & 0x07 ];
+		trceftbl[offset] |= rkh_maptbl[e & 0x7];
 	else
 	{
-		trceftbl[ evt>>3 ] &= ~rkh_maptbl[ evt & 0x07 ];
-		trcgfilter &= ~rkh_maptbl[ GETGRP( evt ) ];
+		trceftbl[offset] &= ~rkh_maptbl[e & 0x7];
+		trcgfilter &= ~rkh_maptbl[ grp ];
 	}
 }
 
