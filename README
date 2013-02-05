@@ -96,7 +96,7 @@ RKH changelog file.
 
 This file resumes the changes across project version releases.
 
-Changes between V2.1 and V2.2 released 08/13/2012
+Changes between V2.2 and V2.3 released 02/05/2013
 
 +	Change the runtime trace filter.
 +	Change the software timer module.
