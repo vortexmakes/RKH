@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -74,7 +74,7 @@
  *	denoted the minor revision, and the number C (2-digit) indicated the 
  *	release number. For example, the code for 2.2.04 is 0x2204.
  *	
- *	Date: xx/xx/2012
+ *	Date: 05/02/2013
  */
 
 #define RKH_VERSION_CODE			0x2300U
