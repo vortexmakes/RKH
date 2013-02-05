@@ -20,7 +20,7 @@ Configurations =
    RKH_TRC_EN_SMA        = 0
    RKH_TRC_EN_TIM        = 0
    RKH_TRC_EN_SM         = 0
-   RKH_TRC_EN_RKH        = 0
+   RKH_TRC_EN_FWK        = 0
 
 ---- BEGIN TRACE SESSION ----
 

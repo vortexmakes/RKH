@@ -51,7 +51,7 @@ RKH_MODULE_NAME( rkh )
 #define IS_SUBMACHINE( s )				(CB((s))->type==RKH_SUBMACHINE)
 #define IS_REF_SUBMACHINE( s )			(CB((s))->type==RKH_REF_SUBMACHINE)
 
-#if RKH_EN_NATIVE_SCHEDULER == 1
+#if RKH_EN_NATIVE_SCHEDULER == 1 || RKH_EN_REENTRANT == 0
 	#define RKH_RAM		static
 #else
 			          /* allocate the automatic variables of rkh_dispatch() */

@@ -561,6 +561,7 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_EXE_FUN,				/**< \copydetails RKH_TR_FWK_EXE_FUN */
 	RKH_TE_FWK_TUSR,				/**< \copydetails RKH_TR_FWK_TUSR */
 	RKH_TE_FWK_TCFG,				/**< \copydetails RKH_TR_FWK_TCFG */
+	RKH_TE_FWK_ASSERT,				/**< \copydetails RKH_TR_FWK_ASSERT */
 
 	RKH_TE_USER = RKH_USR_START,
 
@@ -1745,7 +1746,7 @@ enum rkh_trc_fmt
 	#endif
 
 	/* --- Framework (RKH) ----------------------- */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RKH == 1
+	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_FWK == 1
 
 		/**
 		 * 	Desc 	= initialize the RKH\n
@@ -2029,7 +2030,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= send trace configuration table\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TCFG\n
-		 * 	Args	= configuration table\n
+		 * 	Args	= configuration parameters\n
 		 *
 		 * 	\code
 		 * 	void 
@@ -2044,13 +2045,13 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
-							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));			\
+							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |\
 							RKH_TIM_SIZEOF_NTIMER/8));					\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK/8 << 4) | 	\
-							RKH_RQ_SIZEOF_NELEM/8));						\
+							RKH_RQ_SIZEOF_NELEM/8));					\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_ESIZE/8 << 4) |		\
 							RKH_TRC_EN_NSEQ));							\
@@ -2058,6 +2059,22 @@ enum rkh_trc_fmt
 							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |			\
 							RKH_TRC_EN_TSTAMP));						\
 					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH()
+
+		/* --- Assertion --------- */
+
+		/**
+		 * 	Desc 	= assertion expression was evaluated to false.\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_ASSERT\n
+		 * 	Args	= module name, and line number\n
+		 */
+
+		#define RKH_TR_FWK_ASSERT( mod_, ln_ )							\
+					RKH_TRC_BEGIN( RKH_TE_FWK_ASSERT, NVS )				\
+						RKH_TRC_STR( (RKHROM char *)mod_ );				\
+						RKH_TRC_UI16( (rkhui16_t)ln_ );					\
+					RKH_TRC_END()										\
 					RKH_TRC_FLUSH()
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
@@ -2074,6 +2091,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
 		#define RKH_TR_FWK_TCFG()						(void)0
+		#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
 	#endif
 #else
 	/* --- Memory Pool (MP) ------------------ */
@@ -2141,6 +2159,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_EXE_FUN( __f )					(void)0
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
 	#define RKH_TR_FWK_TCFG()							(void)0
+	#define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0
 #endif
 
 

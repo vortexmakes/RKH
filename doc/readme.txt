@@ -659,7 +659,8 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
 \li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
 \li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
+\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
 \li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
 \li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
 \li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
@@ -2710,7 +2711,8 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
 \li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
 \li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
+\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
 \li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
 \li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
 \li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
@@ -2996,7 +2998,8 @@ Here is an list of all options with their documentation:
 \li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
 \li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
 \li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
+\li \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
 \li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
 \li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
 \li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH

@@ -410,11 +410,18 @@
 #define RKH_TRC_EN_SM					0
 
 /**
- *	If the #RKH_TRC_EN_RKH is set to 1 then RKH will include all trace records 
+ *	If the #RKH_TRC_EN_FWK is set to 1 then RKH will include all trace records 
  *	related to the nativenative  event framework.
  */
 
-#define RKH_TRC_EN_RKH					1
+#define RKH_TRC_EN_FWK					1
+
+/**
+ *	If the #RKH_TRC_EN_ASSERT and #RKH_TRC_EN_FWK are set to 1 then RKH will 
+ *	include the "assertion" trace record.
+ */
+
+#define RKH_TRC_EN_ASSERT				1
 
 /**
  *	If the #RKH_TRC_EN_SM_INIT and #RKH_TRC_EN_SM are set to 1 then RKH will 

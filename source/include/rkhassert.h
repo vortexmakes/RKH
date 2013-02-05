@@ -201,6 +201,7 @@
 		{}										\
 		else									\
 		{										\
+			RKH_TR_FWK_ASSERT( (RKHROM char *)m_name, __LINE__ );	\
 			rkh_assert( m_name, __LINE__ );		\
 		}
 
