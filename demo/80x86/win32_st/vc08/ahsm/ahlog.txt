@@ -14,13 +14,6 @@ Configurations =
    TRAZER_EN_NSEQ        = 1
    TRAZER_EN_CHK         = 1
    TRAZER_EN_TSTAMP      = 1
-   RKH_TRC_ALL        	 = 1
-   RKH_TRC_EN_MP         = 0
-   RKH_TRC_EN_RQ         = 0
-   RKH_TRC_EN_SMA        = 0
-   RKH_TRC_EN_TIM        = 0
-   RKH_TRC_EN_SM         = 0
-   RKH_TRC_EN_FWK        = 0
 
 ---- BEGIN TRACE SESSION ----
 

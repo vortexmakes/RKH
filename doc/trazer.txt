@@ -10,12 +10,10 @@ selectively the recording of all events of your system, state machines,
 queues, timers, etc.
 Trazer helps you to faster troubleshooting especially on complex problems 
 where a debugger is not sufficient, by providing a simple consolidated, 
-human-readable textual output.
-
-Given the RKH cross plataform portability, trace data may come from 8, 
-16, or 32-bits platforms. In order to that Trazer need to be configured 
-to support this diversity of plataform and the wide range of RKH framework 
-configurations. 
+human-readable textual output. Given the RKH cross plataform portability, 
+trace data may come from 8, 16, or 32-bits platforms. In order to that Trazer 
+need to be configured to support this diversity of plataform and the wide 
+range of RKH framework configurations. 
 
 This manual includes:
 
@@ -23,7 +21,6 @@ This manual includes:
 - \ref trazer_human_format
 - \ref rev_page_trazer
 
-\n
 <HR>
 \section trazer_cfg Configuration
 
@@ -32,7 +29,6 @@ Before using %Trazer you must provides the listed configurations:
 - \ref trazer_command to configure comunication link and general options.
 - \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, 
 such as pointer sizes, signal sizes, etc.
-
 
 <HR>
 \section trazer_command Command-line parameters
@@ -99,9 +95,7 @@ You can provide this information by two ways:
   - include \subpage trazer_cfg_ configuration file in the same trazer.exe directory.
   - setup the target aplication to call to \subpage RKH_TR_FWK_TCFG and perform the streaming the RKH configuration at startup.
 
-If \subpage trazer_cfg_ is not found, assuming default settings, any configuration streaming received overwrite settings.
-
-the following table summarizes the \subpage trazer_cfg_ content.
+If \subpage trazer_cfg_ is not found, assuming default settings, any configuration streaming received overwrite settings. The following table summarizes the \subpage trazer_cfg_ content.
 
 <TABLE SUMMARY="Trazer config" cellSpacing=4 cellPadding=1 border=0
 ALIGN="center" VALIGN="middle">
@@ -202,7 +196,7 @@ In the instrumented application two particular trace events could be used to bet
 trace visualization, #RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG.
 
 #RKH_TE_FWK_OBJ:
-\n\n Associates the address of the object, in memory with its symbolic name.
+\n Associates the address of the object, in memory with its symbolic name.
 Using the RKH_TR_FWK_OBJ() macro in application source code looks like:
 
 \code
@@ -221,7 +215,7 @@ Explanation:
 		recording to local stream.
 
 #RKH_TE_FWK_SIG:
-\n\n Associates the numerical value of the event signal to the symbolic name of 
+\n Associates the numerical value of the event signal to the symbolic name of 
 the signal.
 Using the RKH_TR_FWK_OBJ() macro in application source code looks like:
 
@@ -252,15 +246,11 @@ RKH user must generate this particulars trace events as described in RKHTRACE
 and Trazer will take care of reemplacing the numeric values by the user 
 definition.
 
-
 <HR>
 \section trazer_human_format Human readable output
 
-Trazer is a console program that converts the trace stream data in a human-readable format.
-Following is shown how its output looks like.\n
-Trazer start showing version and compatibility with RKH framework, below are displayed the current Trazer configuration.
-For this example the trace.bin is used as trace data source.\n
-Each identified trace show:\n
+Trazer is a console program that converts the trace stream data in a human-readable format. Following is shown how its output looks like.\n
+Trazer start showing version and compatibility with RKH framework, below are displayed the current Trazer configuration. For this example the trace.bin is used as trace data source.\n Each identified trace show:\n
 
 - \b Timestamp, in CPU ticks. The number of bytes used by the timestamp is 
 configurable by the macro TRAZER_SIZEOF_TSTAMP. See the 
@@ -301,14 +291,6 @@ Trace Setup
    TRAZER_EN_NSEQ        = 1
    TRAZER_EN_CHK         = 1
    TRAZER_EN_TSTAMP      = 1
-   RKH_TRC_ALL           = 1
-   RKH_TRC_EN_MP         = 0
-   RKH_TRC_EN_RQ         = 0
-   RKH_TRC_EN_SMA        = 0
-   RKH_TRC_EN_TIM        = 0
-   RKH_TRC_EN_SM         = 0
-   RKH_TRC_EN_FWK        = 0
-
 
 -------- Parsing trace stream from file trace.bin --------
 
