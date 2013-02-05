@@ -541,7 +541,6 @@ typedef enum rkh_trc_events
 	/* --- Timer events (TIM group) ----------------------- */
 	RKH_TE_TIM_INIT = RKH_TIM_START,/**< \copydetails RKH_TR_TIM_INIT */
 	RKH_TE_TIM_START,				/**< \copydetails RKH_TR_TIM_START */
-	RKH_TE_TIM_RESTART,				/**< \copydetails RKH_TR_TIM_RESTART */
 	RKH_TE_TIM_STOP,				/**< \copydetails RKH_TR_TIM_STOP */
 	RKH_TE_TIM_TOUT,				/**< \copydetails RKH_TR_TIM_TOUT */
 	RKH_TE_TIM_REM,					/**< \copydetails RKH_TR_TIM_REM */
@@ -1689,19 +1688,6 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 	
 		/**
-		 * 	Desc 	= restart a timer\n
-		 * 	Group 	= RKH_TG_TIM\n
-		 * 	Id 		= RKH_TE_TIM_RESTART\n
-		 * 	Args	= timer, nticks\n
-		 */
-
-		#define RKH_TR_TIM_RESTART( t, nt )								\
-					RKH_TRC_BEGIN( RKH_TE_TIM_RESTART, NVS )			\
-						RKH_TRC_SYM( t ); 								\
-						RKH_TRC_NTICK( nt ); 							\
-					RKH_TRC_END()
-
-		/**
 		 * 	Desc 	= stop a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_STOP\n
@@ -1739,7 +1725,6 @@ enum rkh_trc_fmt
 	#else
 		#define RKH_TR_TIM_INIT( t, sig )					(void)0
 		#define RKH_TR_TIM_START( t, nt, sma )				(void)0
-		#define RKH_TR_TIM_RESTART( t, nt )					(void)0
 		#define RKH_TR_TIM_STOP( t )						(void)0
 		#define RKH_TR_TIM_TOUT( t )						(void)0
 		#define RKH_TR_TIM_REM( t )							(void)0
@@ -2139,7 +2124,6 @@ enum rkh_trc_fmt
 	/* --- Timer (TIM) ----------------------- */
 	#define RKH_TR_TIM_INIT( t, sig )					(void)0
 	#define RKH_TR_TIM_START( t, nt, sma )				(void)0
-	#define RKH_TR_TIM_RESTART( t, nt )					(void)0
 	#define RKH_TR_TIM_STOP( t )						(void)0
 	#define RKH_TR_TIM_TOUT( t )						(void)0
 	#define RKH_TR_TIM_REM( t )							(void)0

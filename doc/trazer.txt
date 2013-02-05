@@ -13,7 +13,10 @@ where a debugger is not sufficient, by providing a simple consolidated,
 human-readable textual output. Given the RKH cross plataform portability, 
 trace data may come from 8, 16, or 32-bits platforms. In order to that Trazer 
 need to be configured to support this diversity of plataform and the wide 
-range of RKH framework configurations. 
+range of RKH framework configurations. The following figure shows the 
+relationship between framework RKH and host-application Trazer.
+
+\image html rkh_trazer.jpg
 
 This manual includes:
 

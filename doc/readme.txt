@@ -2893,14 +2893,9 @@ the data included for each.
 \li \b RKH_TE_FWK_SIG \copydetails RKH_TE_FWK_SIG
 \li \b RKH_TE_FWK_FUN \copydetails RKH_TE_FWK_FUN
 \li \b RKH_TE_FWK_EXE_FUN \copydetails RKH_TE_FWK_EXE_FUN
-
-<EM>Symbol entry table for objects</EM>
-
-\li \b RKH_TR_FWK_OBJ \copydetails RKH_TR_FWK_OBJ
-
-<EM>Symbol entry table for event signals</EM>
-
-\li \b RKH_TR_FWK_SIG \copydetails RKH_TR_FWK_SIG
+\li \b RKH_TR_FWK_TUSR \copydetails RKH_TR_FWK_TUSR
+\li \b RKH_TR_FWK_TCFG \copydetails RKH_TR_FWK_TCFG
+\li \b RKH_TR_FWK_ASSERT \copydetails RKH_TR_FWK_ASSERT
 
 <HR>
 \section trtrazer TRAZER - The fundamental RKH's tracing tool
@@ -2908,15 +2903,12 @@ the data included for each.
 Trazer is a visualization tool that works in conjuntion with the RKH 
 framework built in trace facility. Trazer gives the possibility to display 
 selectively the recording of all events of your system, state machines, 
-queues, timers, etc.
-Trazer helps you to faster troubleshooting especially on complex problems 
-where a debugger is not sufficient, by providing a simple consolidated, 
-human-readable textual output.
-
-Given the RKH cross plataform portability, trace data may come from 8, 
-16, or 32-bits platforms. In order to that Trazer need to be configured 
-to support this diversity of plataform and the wide range of RKH framework 
-configurations. 
+queues, timers, etc. Trazer helps you to faster troubleshooting especially on 
+complex problems where a debugger is not sufficient, by providing a simple 
+consolidated, human-readable textual output. Given the RKH cross plataform 
+portability, trace data may come from 8, 16, or 32-bits platforms. In order 
+to that Trazer need to be configured to support this diversity of plataform 
+and the wide range of RKH framework configurations. 
 
 Here is the \ref trazer
 

@@ -76,7 +76,9 @@
  *
  *	Run-to-completion may be implemented in various ways. The most common way 
  *	to do that is by an event-loop running in its own thread, and that reads 
- *	event occurrences from a pool.
+ *	event occurrences from a pool as sketched in the following figure.
+ *
+ *	\image html rkh_rtc.png "Run-to-completion model"
  *	
  *	In case of active objects or SMA <EM>(State Machine Application)</EM>, 
  *	where each object has its own thread of execution, 
