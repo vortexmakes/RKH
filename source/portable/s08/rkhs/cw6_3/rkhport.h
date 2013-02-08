@@ -39,7 +39,6 @@
 #include "rkhrq.h"
 #include "rkhmp.h"
 #include "rkhrdy.h"
-#include "rkhs.h"
 
 
 const char *rkh_get_port_version( void );
@@ -97,6 +96,14 @@ const char *rkh_get_port_desc( void );
  */
 
 #define RKH_EN_REENTRANT				0
+
+
+/* 
+ * This port use the native, simple, cooperative, and nonpreemptive 
+ * scheduler RKHS.
+ */
+
+#include "rkhs.h"
 
 
 /*
