@@ -471,25 +471,25 @@
 #if RKH_SMA_EN_ID == 1
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)is,(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)is,(ia)}
 	#endif
 #else
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)is,(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)is,(ia)}
 	#endif
 #endif
 
 
 #define MKSMA( rr, s )					\
-						{ (RKHROM ROMRKH_T*)(rr), \
-							 	(RKHROM struct rkhst_t*)(s) }
+						{ {(RKHROM ROMRKH_T*)(rr), \
+							 	(RKHROM struct rkhst_t*)(s)} }
 
 
 #if RKH_SMA_EN_STATE_ID == 1
