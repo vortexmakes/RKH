@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -51,7 +51,7 @@ RKH_MODULE_NAME( rkh )
 #define IS_SUBMACHINE( s )				(CB((s))->type==RKH_SUBMACHINE)
 #define IS_REF_SUBMACHINE( s )			(CB((s))->type==RKH_REF_SUBMACHINE)
 
-#if RKH_EN_NATIVE_SCHEDULER == 1
+#if RKH_EN_NATIVE_SCHEDULER == 1 || RKH_EN_REENTRANT == 0
 	#define RKH_RAM		static
 #else
 			          /* allocate the automatic variables of rkh_dispatch() */
@@ -162,9 +162,9 @@ RKH_MODULE_NAME( rkh )
 				*snl = stn;		    /* add state in entry state list */ \
 			else														\
 			{															\
-				RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_HCAL_LEVEL );		\
+				RKH_TR_SM_EX_HLEVEL( sma );								\
 				RKHERROR();												\
-				return RKH_EXCEED_TRC_SEGS;								\
+				return RKH_EX_TSEG;									\
 			}															\
 			UPDATE_PARENT( stn );										\
 		}																\
@@ -174,7 +174,7 @@ RKH_MODULE_NAME( rkh )
 			RKH_EXEC_EXIT( stx, CM( sma ) );							\
 			 			        /* update histories of exited states */ \
 			RKH_UPDATE_SHALLOW_HIST( stx, h );							\
-			RKH_TRCR_SM_EXSTATE( sma,   /* this state machine object */ \
+			RKH_TR_SM_EXSTATE( sma,   /* this state machine object */ 	\
 								 stx );              /* exited state */ \
 		}																\
 		else															\
@@ -195,14 +195,14 @@ RKH_MODULE_NAME( rkh )
 			{															\
 				--snl;													\
 				RKH_EXEC_ENTRY( *snl, CM( sma ) );						\
-				RKH_TRCR_SM_ENSTATE( sma, *snl );						\
+				RKH_TR_SM_ENSTATE( sma, *snl );						\
 			}															\
 			stn = *snl;													\
 			while( IS_COMPOSITE( stn ) )								\
 			{															\
 				stn = CCMP(stn)->defchild;								\
 				RKH_EXEC_ENTRY( stn, CM( sma ) );						\
-				RKH_TRCR_SM_ENSTATE( sma, stn );						\
+				RKH_TR_SM_ENSTATE( sma, stn );						\
 				++nen;													\
 			}															\
 		}
@@ -271,14 +271,14 @@ rkh_init_hsm( RKHSMA_T *sma )
 
     RKHASSERT( 	sma != (RKHSMA_T *)0 && 
 				sma->romrkh->istate != (RKHROM RKHST_T *)0 );
-	RKH_TRCR_SM_INIT( sma, sma->romrkh->istate );
+	RKH_TR_SM_INIT( sma, sma->romrkh->istate );
 	RKH_EXEC_INIT( sma );
 
 #if RKH_SMA_EN_HCAL == 1
 	for( s = CST( sma->romrkh->istate );; )
 	{
 		RKH_EXEC_ENTRY( s, CM( sma ) );
-		RKH_TRCR_SM_ENSTATE( sma, s );
+		RKH_TR_SM_ENSTATE( sma, s );
 
 		if( IS_COMPOSITE( s ) )
 			s = CST( CCMP( s )->defchild );
@@ -364,8 +364,8 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 	if( IS_NOT_FOUND_TRANS( tr ) )					   /* transition taken? */
 	{
-		RKH_TRCR_SM_DCH_RC( sma, RKH_INPUT_NOT_FOUND );	   /* ignored event */
-		return RKH_INPUT_NOT_FOUND;
+		RKH_TR_SM_EVT_NFOUND( sma );	   				   /* ignored event */
+		return RKH_EVT_NFOUND;
 	}
 
 	ets = tr->target;	   /* temporarily save the target of the transition */
@@ -375,9 +375,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
-	RKH_TRCR_SM_DCH(	sma, 				   /* this state machine object */
+	RKH_TR_SM_DCH(	sma, 				   /* this state machine object */
 						pe );									   /* event */
-	RKH_TRCR_SM_TRN( 	sma, 				   /* this state machine object */
+	RKH_TR_SM_TRN( 	sma, 				   /* this state machine object */
 						stn, 					 /* transition source state */
 						ts );					 /* transition target state */
 
@@ -386,15 +386,15 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	                             /* event, and the guard evaluates to true. */
 	if( IS_VALID_GUARD( tr ) && rkh_call_guard( tr, sma, pe ) == RKH_GFALSE )
 	{
-		RKH_TRCR_SM_DCH_RC( sma, RKH_GUARD_FALSE );
-		return RKH_GUARD_FALSE;
+		RKH_TR_SM_GRD_FALSE( sma );
+		return RKH_GRD_FALSE;
 	}
 					    /* add action of the transition segment in the list */
 	if( rkh_add_tr_action( &pal, tr->action, &nal ) )
 	{
-		RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+		RKH_TR_SM_EX_TSEG( sma );
 		RKHERROR();
-		return RKH_EXCEED_TRC_SEGS;
+		return RKH_EX_TSEG;
 	}
 
 	RKH_INC_STEP();			  /* increment the number of transition segment */
@@ -403,7 +403,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
 															/* ---- Stage 3 */
-		RKH_TRCR_SM_CSTATE( 	sma, 		   /* this state machine object */
+		RKH_TR_SM_CSTATE( 	sma, 		   /* this state machine object */
 			   					  /* target state of the transition segment */
 								ets );
 
@@ -422,15 +422,15 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 					if( IS_NOT_FOUND_TRANS( tr ) )
 					{
-						RKH_TRCR_SM_DCH_RC( sma, RKH_CONDITION_NOT_FOUND );
-						return RKH_CONDITION_NOT_FOUND;
+						RKH_TR_SM_CND_NFOUND( sma );
+						return RKH_CND_NFOUND;
 					}
 
 					if( rkh_add_tr_action( &pal, tr->action, &nal ) )
 					{
-						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKH_TR_SM_EX_TSEG( sma );
 						RKHERROR();
-						return RKH_EXCEED_TRC_SEGS;
+						return RKH_EX_TSEG;
 					}
 											  /* another transition segment */
 					RKH_INC_STEP();
@@ -445,9 +445,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 																	 /* ... */
 					if( rkh_add_tr_action( &pal, CJ(ets)->action, &nal ) )
 					{
-						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKH_TR_SM_EX_TSEG( sma );
 						RKHERROR();
-						return RKH_EXCEED_TRC_SEGS;
+						return RKH_EX_TSEG;
 					}
 											  /* another transition segment */
 					RKH_INC_STEP();
@@ -472,9 +472,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					if( rkh_add_tr_action( &pal, CSBM( ets )->sbm->iaction, 
 																	&nal ) )
 					{
-						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKH_TR_SM_EX_TSEG( sma );
 						RKHERROR();
-						return RKH_EXCEED_TRC_SEGS;
+						return RKH_EX_TSEG;
 					}
 					ets = CSBM( ets )->sbm->defchild;
 					break;
@@ -485,9 +485,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					if( rkh_add_tr_action( &pal, CENP( ets )->enpcn->action, 
 																	&nal ) )
 					{
-						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKH_TR_SM_EX_TSEG( sma );
 						RKHERROR();
-						return RKH_EXCEED_TRC_SEGS;
+						return RKH_EX_TSEG;
 					}
 					ets = CENP( ets )->enpcn->target;
 					break;
@@ -498,20 +498,20 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					ets = CST( &(dp->exptbl[ CEXP( ets )->ix ]) );
 					if( rkh_add_tr_action( &pal, CEXPCN( ets )->action, &nal ) )
 					{
-						RKH_TRCR_SM_DCH_RC( sma, RKH_EXCEED_TRC_SEGS );
+						RKH_TR_SM_EX_TSEG( sma );
 						RKHERROR();
-						return RKH_EXCEED_TRC_SEGS;
+						return RKH_EX_TSEG;
 					}
 					ets = CEXPCN( ets )->target;
 					break;
 #endif
 				default:
 						                   /* fatal error: unknown state... */
-					RKH_TRCR_SM_DCH_RC( sma, RKH_UNKNOWN_STATE );
+					RKH_TR_SM_UNKN_STATE( sma );
 					RKHERROR();
-					return RKH_UNKNOWN_STATE;
+					return RKH_UNKN_STATE;
 			}
-			RKH_TRCR_SM_CSTATE( sma, ets );
+			RKH_TR_SM_CSTATE( sma, ets );
 		}
 	}
 
@@ -535,7 +535,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			         /* according to the order in which they are written on */
 				       /* the transition, from the action closest to source */
                             /* state to the action closest to target state. */
-	RKH_TRCR_SM_NTRNACT( 	sma,               /* this state machine object */ 
+	RKH_TR_SM_NTRNACT( 	sma,               /* this state machine object */ 
 							nal,                      /* # executed actions */
 							RKH_GET_STEP() );      /* # transition segments */
 	RKH_EXEC_TRANSITION( sma, pe );
@@ -551,7 +551,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		                      /* until the statechart reaches basic states. */
 		                        /* Also, update 'stn' with the target state */
 		RKH_EXEC_ENTRY_ACTION( nn, sma, stn, snl, ix_n );
-		RKH_TRCR_SM_NENEX( 	sma,               /* this state machine object */ 
+		RKH_TR_SM_NENEX( 	sma,               /* this state machine object */ 
 							nn,                         /* # entered states */
 							ix_x );                      /* # exited states */
 
@@ -560,13 +560,13 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		rkh_update_deep_hist( CST( stn ) );
 														    /* ---- Stage 8 */
 		sma->state = CST( stn );                /* update the current state */
-		RKH_TRCR_SM_STATE( 	sma, 			   /* this state machine object */	
+		RKH_TR_SM_STATE( 	sma, 			   /* this state machine object */	
 							stn );				           /* current state */
 	}
 
-	RKH_TRCR_SM_DCH_RC( sma, RKH_OK );
+	RKH_TR_SM_EVT_PROC( sma );
 	INFO_EXEC_TRS( sma );
-	return RKH_OK;
+	return RKH_EVT_PROC;
 }
 
 

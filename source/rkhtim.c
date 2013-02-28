@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -54,62 +54,62 @@ RKH_MODULE_NAME( rkhtim )
 					(void)0
 #endif
 
+#define add_to_list( t ) \
+			(t)->tnext = thead; \
+			thead = (t); \
+			(t)->used = 1
+
 
 static RKHT_T *thead;
 
 
 static
 void
-rem_from_list( RKHT_T *t )
+rem_from_list( RKHT_T *t, RKHT_T *tprev )
 {
-	if( thead == t )					/* is first timer in the list? */
+	if( thead == t )			/* is first timer in the list? */
 		thead = t->tnext;
 	else
-	{
-		t->tprev->tnext = t->tnext;
-		if( t->tnext != ( RKHT_T* )0 )	/* is last timer in the list? */
-			t->tnext->tprev = t->tprev;
-	}
-	t->tprev = ( RKHT_T* )0;
-	RKH_TRCR_TIM_REM( t );
-}
-
-
-static
-void
-add_to_list( RKHT_T *t )
-{
-	if( thead != ( RKHT_T* )0 )			/* is empty list? */
-		thead->tprev = t;
-
-	t->tnext = thead;
-	thead = t;
-	t->tprev = t;
+		tprev->tnext = t->tnext;
+	t->used = 0;
+	RKH_TR_TIM_REM( t );
 }
 
 
 void 
 rkh_tim_tick( void )
 {
-	RKHT_T *t;
+	RKHT_T *t, *tprev;
 	RKH_SR_CRITICAL_;
 
-	if( thead == CPTIM( 0 ) )				/* is empty list? */
-		return;
-
 	RKH_ENTER_CRITICAL_();
-	for( t = thead; t != CPTIM( 0 ); t = t->tnext )
-		if( !--t->ntick )
+	if( thead == CPTIM(0) )		/* is empty list? */
+	{
+		RKH_EXIT_CRITICAL_();
+		return;
+	}
+	
+	for( tprev = CPTIM(0), t = thead; t != CPTIM(0); t = t->tnext )
+		if( t->ntick == 0 )
+			rem_from_list( t, tprev );
+		else
 		{
-			if( t->period != 0 )
-				t->ntick = t->period;
+			if( !--t->ntick )
+			{
+				RKH_TR_TIM_TOUT( t );
+				if( t->period == 0 )
+					rem_from_list( t, tprev );
+				else
+				{
+					t->ntick = t->period;
+					tprev = t;
+				}
+				RKH_HK_TIMEOUT( t );
+				RKH_EXEC_THOOK();
+				rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, t->evt );
+			}
 			else
-				rem_from_list( t );
-			RKH_HK_TIMEOUT( t );
-			RKH_EXEC_THOOK();
-			if( t->sma != ( RKHSMA_T* )0 )
-	 			rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, &t->evt );
-			RKH_TRCR_TIM_TOUT( t );
+				tprev = t;
 		}
 	RKH_EXIT_CRITICAL_();
 }
@@ -117,17 +117,22 @@ rkh_tim_tick( void )
 
 void 
 #if RKH_TIM_EN_HOOK == 0
-rkh_tim_init_( RKHT_T *t, RKHE_T sig )
+rkh_tim_init_( RKHT_T *t, RKHEVT_T *e )
 #else
-rkh_tim_init_( RKHT_T *t, RKHE_T sig, RKH_THK_T thk )
+rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk )
 #endif
 {
-	t->ntick = 0;
-	t->tprev = ( RKHT_T* )0;
-	RKH_SET_STATIC_EVENT( &t->evt, sig );
-	RKH_SET_THOOK( t, thk );
+	RKH_SR_CRITICAL_;
+	RKHREQUIRE( t != CPTIM(0) && e != CE(0) );
 
-	RKH_TRCR_TIM_INIT( t, sig );
+	RKH_ENTER_CRITICAL_();
+	t->ntick = 0;
+	t->used = 0;
+	t->evt = e;
+	RKH_EXIT_CRITICAL_();
+
+	RKH_SET_THOOK( t, thk );
+	RKH_TR_TIM_INIT( t, t->evt->e );
 }
 
 
@@ -135,37 +140,16 @@ void
 rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 {
 	RKH_SR_CRITICAL_;
-	
-	RKHREQUIRE( t != ( RKHT_T* )0 && itick != 0 );
+	RKHREQUIRE( t != CPTIM(0) && sma != (const RKHSMA_T *)0 && itick != 0 );
 
-	if( t->tprev == ( RKHT_T* )0 )
-	{
-		t->sma = sma;
-		t->ntick = itick;
-
-		RKH_ENTER_CRITICAL_();
-		add_to_list( t );
-		RKH_EXIT_CRITICAL_();
-	}
-
-	RKH_TRCR_TIM_START( t, itick, sma );
-}
-
-
-void 
-rkh_tim_restart( RKHT_T *t, RKH_TNT_T itick )
-{
-	RKH_SR_CRITICAL_;
-
-	RKHREQUIRE( t != ( RKHT_T* )0 && itick != 0 );
 	RKH_ENTER_CRITICAL_();
-
+	t->sma = sma;
 	t->ntick = itick;
-	if( t->tprev == ( RKHT_T* )0 )
+	if( t->used == 0 )
 		add_to_list( t );
-
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_TIM_RESTART( t, itick );
+
+	RKH_TR_TIM_START( t, itick, sma );
 }
 
 
@@ -173,22 +157,13 @@ void
 rkh_tim_stop( RKHT_T *t )
 {
 	RKH_SR_CRITICAL_;
+	RKHREQUIRE( t != CPTIM(0) );
 
-	RKHREQUIRE( t != ( RKHT_T* )0 );
 	RKH_ENTER_CRITICAL_();
-
-	if( t->tprev == ( RKHT_T* )0 )
-	{
-		RKH_TRCR_TIM_ATTEMPT_STOP( t );
-		RKH_EXIT_CRITICAL_();
-		return;
-	}
-
 	t->ntick = 0;
-	rem_from_list( t );
-
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_TIM_STOP( t );
+
+	RKH_TR_TIM_STOP( t );
 }
 
 

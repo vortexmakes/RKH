@@ -17,7 +17,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -149,58 +149,6 @@
  */
 
 #define RKH_SMA_EN_IEVENT				1
-
-/**
- *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
- *	thread of execution.
- */
-
-#define RKH_EN_SMA_THREAD 				1
-
-/**
- *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
- *	SMA (active object) has its own thread of execution and its own object 
- *	data.
- */
-
-#define RKH_EN_SMA_THREAD_DATA			1
-
-/**
- * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
- * 	simple, cooperative, and nonpreemptive scheduler RKHS.
- * 	When #RKH_EN_NATIVE_SCHEDULER is enabled RKH also will automatically 
- * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
- * 	and assume the native priority scheme.
- */
-
-#define RKH_EN_NATIVE_SCHEDULER			1
-
-/**
- * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
- *	enabled (see #RKH_RQ_EN) then RKH will include its own implementation of 
- *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
- */
-
-#define RKH_EN_NATIVE_EQUEUE			1
-
-/**
- * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
- * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
- * 	its own implementation of dynamic memory management.
- * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
- * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
- * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
- */
-
-#define RKH_EN_NATIVE_DYN_EVENT			1
-
-/**
- *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
- *	invoked from several threads of executions. Enable this only if the 
- *	application is based on a multi-thread architecture.
- */
-
-#define RKH_EN_REENTRANT				1
 
 
 /* --- Configuration options related to state machine applications -------- */
@@ -394,7 +342,7 @@
  *	See \c #trceftbl table.
  */
 
-#define RKH_TRC_MAX_EVENTS				8
+#define RKH_TRC_MAX_EVENTS				128
 
 /**
  *	If the #RKH_TRC_RUNTIME_FILTER is set to 1 then RKH will include the 
@@ -402,10 +350,21 @@
  * 	When #RKH_TRC_RUNTIME_FILTER is enabled RKH also will automatically 
  * 	define RKH_FILTER_ON_GROUP(), RKH_FILTER_OFF_GROUP(), 
  * 	RKH_FILTER_ON_EVENT(), RKH_FILTER_OFF_EVENT(), 
- * 	RKH_FILTER_ON_GROUP_EVENT(), and RKH_FILTER_OFF_GROUP_EVENT() macros.
+ * 	RKH_FILTER_ON_GROUP_ALL_EVENTS(), RKH_FILTER_OFF_GROUP_ALL_EVENTS(), 
+ *	RKH_FILTER_ON_SMA(), and RKH_FILTER_OFF_SMA().
+ * 	macros.
  */
 
 #define RKH_TRC_RUNTIME_FILTER			1
+
+/**
+ *	If the #RKH_TRC_EN_USER_TRACE is set to 1 then RKH will allow to build  
+ *	and generate tracing information from the application-level code. 
+ *	This trace records are application-specific.
+ *	
+ */
+
+#define RKH_TRC_EN_USER_TRACE			1
 
 /**
  *	If the #RKH_TRC_ALL is set to 1 then RKH will include all its own trace 
@@ -450,11 +409,18 @@
 #define RKH_TRC_EN_SM					1
 
 /**
- *	If the #RKH_TRC_EN_RKH is set to 1 then RKH will include all trace records 
+ *	If the #RKH_TRC_EN_FWK is set to 1 then RKH will include all trace records 
  *	related to the nativenative  event framework.
  */
 
-#define RKH_TRC_EN_RKH					1
+#define RKH_TRC_EN_FWK					1
+
+/**
+ *	If the #RKH_TRC_EN_ASSERT and #RKH_TRC_EN_FWK are set to 1 then RKH will 
+ *	include the "assertion" trace record.
+ */
+
+#define RKH_TRC_EN_ASSERT				1
 
 /**
  *	If the #RKH_TRC_EN_SM_INIT and #RKH_TRC_EN_SM are set to 1 then RKH will 
@@ -531,7 +497,7 @@
  *	include the "returned code from dispatch function" trace record.
  */
 
-#define RKH_TRC_EN_SM_DCH_RC			1
+#define RKH_TRC_EN_SM_PROCESS			1
 
 /**
  *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record an 
@@ -745,14 +711,6 @@
  */
 
 #define RKH_TIM_EN_HOOK					1
-
-/** 
- *	If the #RKH_TIM_EN_RESTART is set to 1 then RKH will include the 
- *	rkh_tim_restart() function that restarts a timer with a new number of 
- *	ticks. See rkh_tim_restart() function.
- */
-
-#define RKH_TIM_EN_RESTART				1
 
 /** 
  *	If the #RKH_TIM_EN_GET_INFO is set to 1 then RKH will include the 

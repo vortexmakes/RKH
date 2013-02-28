@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -239,6 +239,7 @@ rkh_trc_open( void )
 
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();
+ 	rkh_trc_config();
 }
 
 

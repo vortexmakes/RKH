@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -128,7 +128,7 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
     mp->start = sstart;               /* the original start this pool buffer */
     mp->end   = fb;                           /* the last block in this pool */
 #endif
-	RKH_TRCR_MP_INIT( mp, mp->nblocks );
+	RKH_TR_MP_INIT( mp, mp->nblocks );
 }
 
 
@@ -154,7 +154,7 @@ rkh_mp_get( RKHMP_T *mp )
     }
 
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_MP_GET( mp, mp->nfree );
+	RKH_TR_MP_GET( mp, mp->nfree );
     return fb;            /* return the block or NULL pointer to the caller */
 }
 
@@ -183,7 +183,7 @@ rkh_mp_put( RKHMP_T *mp, void *blk )
     ++mp->nfree;                       /* one more free block in this pool */
 	
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_MP_PUT( mp, mp->nfree );
+	RKH_TR_MP_PUT( mp, mp->nfree );
 }
 
 

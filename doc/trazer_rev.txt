@@ -6,4 +6,14 @@
 This is the intial release of the Trazer visualization tool.
 This version is compatible to use with RKH V2.0
 
+\section trazer_2_0 Version 2.0 Release date: Feb 01, 2013
+
+-Linux port.
+-Compatibility with RKH V2.3
+-Eliminate event format definition file. From this version
+ Event Trace format is wired to RKH implementation.
+-Set default RKH configuration when no config file found.
+-Accept configuration transmited by the target aplication.
+-Support of user trace events.
+
 */

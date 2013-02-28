@@ -329,7 +329,7 @@ in a separate task or thread.
 
 \li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 0, 
 #RKH_EN_SMA_THREAD = 1, and #RKH_EN_SMA_THREAD_DATA, within the 
-\b rkhcfg.h file.
+\b rkhport.h file.
 \li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
 RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
 \li (3) Define the macros #RKH_OSDATA_TYPE, and #RKH_THREAD_TYPE in 
@@ -374,7 +374,7 @@ rkh_enter( void )
 	RKHEVT_T *e;
 
     RKH_HK_START();
-	RKH_TRCR_RKH_EN();
+	RKH_TR_FWK_EN();
     running = 1;
 
     while( running )
@@ -403,7 +403,7 @@ void
 rkh_exit( void )
 {
 	rkh_hk_exit();
-	RKH_TRCR_RKH_EX();
+	RKH_TR_FWK_EX();
 }
 
 void 
@@ -416,14 +416,14 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 	rkh_rq_init( &sma->equeue, qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_init_hsm( sma );
-	RKH_TRCR_SMA_ACT( sma );
+	RKH_TR_SMA_ACT( sma );
 }
 
 void 
 rkh_sma_terminate( RKHSMA_T *sma )
 {
 	rkh_sma_unregister( sma );
-	RKH_TRCR_SMA_TERM( sma );
+	RKH_TR_SMA_TERM( sma );
 }
 \endcode
 
@@ -465,7 +465,7 @@ Nothing to do.
 the event queues with a message queue of the underlying OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhport.h
 \li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
@@ -485,7 +485,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
     RKH_EXIT_CRITICAL_();
 
     os_post_fifo_message( &sma->equeue, e );
-	RKH_TRCR_SMA_FIFO( sma, e );
+	RKH_TR_SMA_FIFO( sma, e );
 }
 
 void 
@@ -500,7 +500,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
     RKH_EXIT_CRITICAL_();
 
     os_post_lifo_message( &sma->equeue, e );
-	RKH_TRCR_SMA_LIFO( sma, e );
+	RKH_TR_SMA_LIFO( sma, e );
 }
 
 RKHEVT_T *
@@ -514,14 +514,14 @@ rkh_sma_get( RKHSMA_T *sma )
 	RKHASSERT( e != ( RKHEVT_T * )0 );
     RKH_EXIT_CRITICAL_();
 
-	RKH_TRCR_SMA_GET( sma, e );
+	RKH_TR_SMA_GET( sma, e );
 	return e;
 }
 \endcode
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
-\b rkhcfg.h
+\b rkhport.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 \li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
@@ -531,13 +531,13 @@ the event queues with the native queues RKHRQ_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
-\b rkhcfg.h
+\b rkhport.h and \b rkhcfg.h respectively.
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 \li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
 		
 \b NO: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhcfg.h
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhport.h
 \li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
@@ -550,7 +550,7 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 
 \b NO: \n
 \li (1) Define the macros #RKH_EN_DYNAMIC_EVENT = 0 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h.
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhport.h.
 
 \b YES: \n
 
@@ -560,7 +560,7 @@ OS/RTOS?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
 RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \b rkhport.h 
 according to underlying OS/RTOS.
@@ -592,7 +592,7 @@ RKHMP_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h and \b rkhport.h respectively.
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
@@ -652,13 +652,15 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
 \li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
 \li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
 \li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
 \li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
 \li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
 \li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
 \li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
+\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
 \li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
 \li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
 \li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
@@ -669,7 +671,6 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
 \li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
 \li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li Define the macro \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
 \li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
 \li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
 \li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
@@ -2335,7 +2336,7 @@ to recycle "dynamic" events.
 		RKHEVT_T *e;
 
 		rkh_hk_start();
-		RKH_TRCR_RKH_EN();
+		RKH_TR_FWK_EN();
 
 		FOREVER
 		{
@@ -2668,7 +2669,6 @@ structure. See \ref cfg section for more information.
 - \b RKH_TIM_EN: \n \copydetails RKH_TIM_EN
 - \b RKH_TIM_SIZEOF_NTIMER: \n \copydetails RKH_TIM_SIZEOF_NTIMER
 - \b RKH_TIM_EN_HOOK: \n \copydetails RKH_TIM_EN_HOOK
-- \b RKH_TIM_EN_RESTART: \n \copydetails RKH_TIM_EN_RESTART
 - \b RKH_TIM_EN_GET_INFO: \n \copydetails RKH_TIM_EN_GET_INFO
 
 Prev: \ref main_page "Home"
@@ -2704,13 +2704,15 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
 \li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
 \li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
 \li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
 \li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
 \li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
 \li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
 \li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
+\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
 \li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
 \li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
 \li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
@@ -2721,7 +2723,6 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
 \li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
 \li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li Define the macro \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
 \li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
 \li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
 \li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
@@ -2806,14 +2807,16 @@ that.
 Example:
  	
 \code
-...
-RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_MP, RKH_TRCE_MP_INIT );
-RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_SM, RKH_TRCE_SM_DCH );
-RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_OBJ );
-RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_RKH, RKH_TRCE_SIG );
-RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_START );
-RKH_FILTER_OFF_GROUP_EVENT( RKH_TRCG_TIM, RKH_TRCE_TIM_TOUT );
-...
+void
+some_function( ... )
+{
+	RKH_FILTER_OFF_EVENT( RKH_TG_MP, RKH_TE_MP_INIT );
+	RKH_FILTER_OFF_EVENT( RKH_TG_SM, RKH_TE_SM_DCH );
+	RKH_FILTER_OFF_EVENT( RKH_TG_FWK, RKH_TE_FWK_OBJ );
+	RKH_FILTER_OFF_EVENT( RKH_TG_FWK, RKH_TE_FWK_SIG );
+	RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_START );
+	RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_TOUT );
+}
 \endcode
 
 <HR>
@@ -2824,72 +2827,75 @@ the data included for each.
 
 <EM>Memory Pool (MP)</EM>
 
-\li \b RKH_TRCR_MP_INIT \copydetails RKH_TRCR_MP_INIT
-\li \b RKH_TRCR_MP_GET \copydetails RKH_TRCR_MP_GET
-\li \b RKH_TRCR_MP_PUT \copydetails RKH_TRCR_MP_PUT
+\li \b RKH_TR_MP_INIT \copydetails RKH_TR_MP_INIT
+\li \b RKH_TR_MP_GET \copydetails RKH_TR_MP_GET
+\li \b RKH_TR_MP_PUT \copydetails RKH_TR_MP_PUT
 
 <EM>Queue (RQ)</EM>
 
-\li \b RKH_TRCR_RQ_INIT \copydetails RKH_TRCR_RQ_INIT
-\li \b RKH_TRCR_RQ_GET \copydetails RKH_TRCR_RQ_GET
-\li \b RKH_TRCR_RQ_FIFO \copydetails RKH_TRCR_RQ_FIFO
-\li \b RKH_TRCR_RQ_LIFO \copydetails RKH_TRCR_RQ_LIFO
-\li \b RKH_TRCR_RQ_FULL \copydetails RKH_TRCR_RQ_FULL
-\li \b RKH_TRCR_RQ_DEPLETE \copydetails RKH_TRCR_RQ_DEPLETE
-\li \b RKH_TRCR_RQ_GET_LAST \copydetails RKH_TRCR_RQ_GET_LAST
+\li \b RKH_TR_RQ_INIT \copydetails RKH_TR_RQ_INIT
+\li \b RKH_TR_RQ_GET \copydetails RKH_TR_RQ_GET
+\li \b RKH_TR_RQ_FIFO \copydetails RKH_TR_RQ_FIFO
+\li \b RKH_TR_RQ_LIFO \copydetails RKH_TR_RQ_LIFO
+\li \b RKH_TR_RQ_FULL \copydetails RKH_TR_RQ_FULL
+\li \b RKH_TR_RQ_DEPLETE \copydetails RKH_TR_RQ_DEPLETE
+\li \b RKH_TR_RQ_GET_LAST \copydetails RKH_TR_RQ_GET_LAST
 
 <EM>State Machine Application (SMA)</EM>
 
-\li \b RKH_TRCR_SMA_ACT \copydetails RKH_TRCR_SMA_ACT
-\li \b RKH_TRCR_SMA_TERM \copydetails RKH_TRCR_SMA_TERM
-\li \b RKH_TRCR_SMA_GET \copydetails RKH_TRCR_SMA_GET
-\li \b RKH_TRCR_SMA_FIFO \copydetails RKH_TRCR_SMA_FIFO
-\li \b RKH_TRCR_SMA_LIFO \copydetails RKH_TRCR_SMA_LIFO
-\li \b RKH_TRCR_SMA_REG \copydetails RKH_TRCR_SMA_REG
-\li \b RKH_TRCR_SMA_UNREG \copydetails RKH_TRCR_SMA_UNREG
+\li \b RKH_TR_SMA_ACT \copydetails RKH_TR_SMA_ACT
+\li \b RKH_TR_SMA_TERM \copydetails RKH_TR_SMA_TERM
+\li \b RKH_TR_SMA_GET \copydetails RKH_TR_SMA_GET
+\li \b RKH_TR_SMA_FIFO \copydetails RKH_TR_SMA_FIFO
+\li \b RKH_TR_SMA_LIFO \copydetails RKH_TR_SMA_LIFO
+\li \b RKH_TR_SMA_REG \copydetails RKH_TR_SMA_REG
+\li \b RKH_TR_SMA_UNREG \copydetails RKH_TR_SMA_UNREG
 
 <EM>State machine (SM)</EM>
 
-\li \b RKH_TRCR_SM_INIT \copydetails RKH_TRCR_SM_INIT
-\li \b RKH_TRCR_SM_DCH \copydetails RKH_TRCR_SM_DCH
-\li \b RKH_TRCR_SM_CLRH \copydetails RKH_TRCR_SM_CLRH
-\li \b RKH_TRCR_SM_TRN \copydetails RKH_TRCR_SM_TRN
-\li \b RKH_TRCR_SM_STATE \copydetails RKH_TRCR_SM_STATE
-\li \b RKH_TRCR_SM_ENSTATE \copydetails RKH_TRCR_SM_ENSTATE
-\li \b RKH_TRCR_SM_EXSTATE \copydetails RKH_TRCR_SM_EXSTATE
-\li \b RKH_TRCR_SM_NENEX \copydetails RKH_TRCR_SM_NENEX
-\li \b RKH_TRCR_SM_NTRNACT \copydetails RKH_TRCR_SM_NTRNACT
-\li \b RKH_TRCR_SM_CSTATE \copydetails RKH_TRCR_SM_CSTATE
-\li \b RKH_TRCR_SM_DCH_RC \copydetails RKH_TRCR_SM_DCH_RC
+\li \b RKH_TR_SM_INIT \copydetails RKH_TR_SM_INIT
+\li \b RKH_TR_SM_DCH \copydetails RKH_TR_SM_DCH
+\li \b RKH_TR_SM_CLRH \copydetails RKH_TR_SM_CLRH
+\li \b RKH_TR_SM_TRN \copydetails RKH_TR_SM_TRN
+\li \b RKH_TR_SM_STATE \copydetails RKH_TR_SM_STATE
+\li \b RKH_TR_SM_ENSTATE \copydetails RKH_TR_SM_ENSTATE
+\li \b RKH_TR_SM_EXSTATE \copydetails RKH_TR_SM_EXSTATE
+\li \b RKH_TR_SM_NENEX \copydetails RKH_TR_SM_NENEX
+\li \b RKH_TR_SM_NTRNACT \copydetails RKH_TR_SM_NTRNACT
+\li \b RKH_TR_SM_CSTATE \copydetails RKH_TR_SM_CSTATE
+\li \b RKH_TR_SM_EVT_PROC \copydetails RKH_TR_SM_EVT_PROC
+\li \b RKH_TR_SM_EVT_NFOUND \copydetails RKH_TR_SM_EVT_NFOUND 
+\li \b RKH_TR_SM_GRD_FALSE \copydetails RKH_TR_SM_GRD_FALSE 
+\li \b RKH_TR_SM_CND_NFOUND \copydetails RKH_TR_SM_CND_NFOUND 
+\li \b RKH_TR_SM_UNKN_STATE \copydetails RKH_TR_SM_UNKN_STATE 
+\li \b RKH_TR_SM_EX_HLEVEL \copydetails RKH_TR_SM_EX_HLEVEL 
+\li \b RKH_TR_SM_EX_TSEG \copydetails RKH_TR_SM_EX_TSEG 
 
 <EM>Timer (TIM)</EM>
 
-\li \b RKH_TRCR_TIM_INIT \copydetails RKH_TRCR_TIM_INIT
-\li \b RKH_TRCR_TIM_START \copydetails RKH_TRCR_TIM_START
-\li \b RKH_TRCR_TIM_RESTART \copydetails RKH_TRCR_TIM_RESTART
-\li \b RKH_TRCR_TIM_STOP \copydetails RKH_TRCR_TIM_STOP
-\li \b RKH_TRCR_TIM_TOUT \copydetails RKH_TRCR_TIM_TOUT
-\li \b RKH_TRCR_TIM_REM \copydetails RKH_TRCR_TIM_REM
-\li \b RKH_TRCR_TIM_ATTEMPT_STOP \copydetails RKH_TRCR_TIM_ATTEMPT_STOP
+\li \b RKH_TR_TIM_INIT \copydetails RKH_TR_TIM_INIT
+\li \b RKH_TR_TIM_START \copydetails RKH_TR_TIM_START
+\li \b RKH_TR_TIM_STOP \copydetails RKH_TR_TIM_STOP
+\li \b RKH_TR_TIM_TOUT \copydetails RKH_TR_TIM_TOUT
+\li \b RKH_TR_TIM_REM \copydetails RKH_TR_TIM_REM
 
 <EM>Framework (RKH)</EM>
 
-\li \b RKH_TRCR_RKH_EN \copydetails RKH_TRCR_RKH_EN
-\li \b RKH_TRCR_RKH_EX \copydetails RKH_TRCR_RKH_EX
-\li \b RKH_TRCR_RKH_EPREG \copydetails RKH_TRCR_RKH_EPREG
-\li \b RKH_TRCR_RKH_AE \copydetails RKH_TRCR_RKH_AE
-\li \b RKH_TRCR_RKH_GC \copydetails RKH_TRCR_RKH_GC
-\li \b RKH_TRCR_RKH_GCR \copydetails RKH_TRCR_RKH_GCR
-\li \b RKH_TRCR_RKH_DEFER \copydetails RKH_TRCR_RKH_DEFER
-\li \b RKH_TRCR_RKH_RCALL \copydetails RKH_TRCR_RKH_RCALL
-
-<EM>Symbol entry table for objects</EM>
-
-\li \b RKH_TRCR_RKH_OBJ \copydetails RKH_TRCR_RKH_OBJ
-
-<EM>Symbol entry table for event signals</EM>
-
-\li \b RKH_TRCR_RKH_SIG \copydetails RKH_TRCR_RKH_SIG
+\li \b RKH_TR_FWK_EN \copydetails RKH_TR_FWK_EN
+\li \b RKH_TR_FWK_EX \copydetails RKH_TR_FWK_EX
+\li \b RKH_TR_FWK_EPREG \copydetails RKH_TR_FWK_EPREG
+\li \b RKH_TR_FWK_AE \copydetails RKH_TR_FWK_AE
+\li \b RKH_TR_FWK_GC \copydetails RKH_TR_FWK_GC
+\li \b RKH_TR_FWK_GCR \copydetails RKH_TR_FWK_GCR
+\li \b RKH_TR_FWK_DEFER \copydetails RKH_TR_FWK_DEFER
+\li \b RKH_TR_FWK_RCALL \copydetails RKH_TR_FWK_RCALL
+\li \b RKH_TE_FWK_OBJ \copydetails RKH_TE_FWK_OBJ
+\li \b RKH_TE_FWK_SIG \copydetails RKH_TE_FWK_SIG
+\li \b RKH_TE_FWK_FUN \copydetails RKH_TE_FWK_FUN
+\li \b RKH_TE_FWK_EXE_FUN \copydetails RKH_TE_FWK_EXE_FUN
+\li \b RKH_TR_FWK_TUSR \copydetails RKH_TR_FWK_TUSR
+\li \b RKH_TR_FWK_TCFG \copydetails RKH_TR_FWK_TCFG
+\li \b RKH_TR_FWK_ASSERT \copydetails RKH_TR_FWK_ASSERT
 
 <HR>
 \section trtrazer TRAZER - The fundamental RKH's tracing tool
@@ -2897,15 +2903,12 @@ the data included for each.
 Trazer is a visualization tool that works in conjuntion with the RKH 
 framework built in trace facility. Trazer gives the possibility to display 
 selectively the recording of all events of your system, state machines, 
-queues, timers, etc.
-Trazer helps you to faster troubleshooting especially on complex problems 
-where a debugger is not sufficient, by providing a simple consolidated, 
-human-readable textual output.
-
-Given the RKH cross plataform portability, trace data may come from 8, 
-16, or 32-bits platforms. In order to that Trazer need to be configured 
-to support this diversity of plataform and the wide range of RKH framework 
-configurations. 
+queues, timers, etc. Trazer helps you to faster troubleshooting especially on 
+complex problems where a debugger is not sufficient, by providing a simple 
+consolidated, human-readable textual output. Given the RKH cross plataform 
+portability, trace data may come from 8, 16, or 32-bits platforms. In order 
+to that Trazer need to be configured to support this diversity of plataform 
+and the wide range of RKH framework configurations. 
 
 Here is the \ref trazer
 
@@ -2948,12 +2951,6 @@ Here is an list of all options with their documentation:
 \li \b RKH_HK_EN_START \copydetails RKH_HK_EN_START
 \li \b RKH_HK_EN_EXIT \copydetails RKH_HK_EN_EXIT
 \li \b RKH_SMA_EN_IEVENT \copydetails RKH_SMA_EN_IEVENT
-\li \b RKH_EN_SMA_THREAD \copydetails RKH_EN_SMA_THREAD
-\li \b RKH_EN_SMA_THREAD_DATA \copydetails RKH_EN_SMA_THREAD_DATA
-\li \b RKH_EN_NATIVE_SCHEDULER \copydetails RKH_EN_NATIVE_SCHEDULER
-\li \b RKH_EN_NATIVE_EQUEUE \copydetails RKH_EN_NATIVE_EQUEUE
-\li \b RKH_EN_NATIVE_DYN_EVENT \copydetails RKH_EN_NATIVE_DYN_EVENT
-\li \b RKH_EN_REENTRANT \copydetails RKH_EN_REENTRANT
 
 <HR>
 \section cfg_sm Configuration options related to state machine applications
@@ -2986,13 +2983,15 @@ Here is an list of all options with their documentation:
 \li \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
 \li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
+\li \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
 \li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
 \li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
 \li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
 \li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
 \li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
 \li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li \b RKH_TRC_EN_RKH \copydetails RKH_TRC_EN_RKH
+\li \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
+\li \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
 \li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
 \li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
 \li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
@@ -3003,7 +3002,7 @@ Here is an list of all options with their documentation:
 \li \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
 \li \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
 \li \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li \b RKH_TRC_EN_SM_DCH_RC \copydetails RKH_TRC_EN_SM_DCH_RC
+\li \b RKH_TRC_EN_SM_PROCESS \copydetails RKH_TRC_EN_SM_PROCESS
 \li \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
 \li \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
 \li \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
@@ -3042,7 +3041,6 @@ Here is an list of all options with their documentation:
 \li \b RKH_TIM_EN \copydetails RKH_TIM_EN	
 \li \b RKH_TIM_SIZEOF_NTIMER \copydetails RKH_TIM_SIZEOF_NTIMER
 \li \b RKH_TIM_EN_HOOK \copydetails RKH_TIM_EN_HOOK
-\li \b RKH_TIM_EN_RESTART \copydetails RKH_TIM_EN_RESTART
 \li \b RKH_TIM_EN_GET_INFO \copydetails RKH_TIM_EN_GET_INFO
 
 */

@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -74,10 +74,10 @@
  *	denoted the minor revision, and the number C (2-digit) indicated the 
  *	release number. For example, the code for 2.2.04 is 0x2204.
  *	
- *	Date: xx/xx/2012
+ *	Date: 05/02/2013
  */
 
-#define RKH_VERSION_CODE			0x2200U
+#define RKH_VERSION_CODE			0x2300U
 
 
 /**
@@ -284,21 +284,16 @@
 
 
 #if RKH_TIM_EN_HOOK == 0
-	#define rkh_mktimer( t,s,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s) )
+	#define rkh_mktimer( t,e,th )										\
+				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e) )
 #else
-	#define rkh_mktimer( t,s,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHE_T)(s), (RKH_THK_T)(th) )
+	#define rkh_mktimer( t,e,th )										\
+				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e), (RKH_THK_T)(th) )
 #endif
 
 
 #ifndef RKH_TIM_EN_GET_INFO
 	#error "rkhcfg.h, Missing RKH_TIM_EN_GET_INFO: Include (1) get timer information function"
-#endif
-
-
-#ifndef RKH_TIM_EN_RESTART
-	#error "rkhcfg.h, Missing RKH_TIM_EN_RESTART: Include (1) restart timer function"
 #endif
 
 
@@ -476,25 +471,25 @@
 #if RKH_SMA_EN_ID == 1
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)is,(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)(is),(ia)}
+				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)is,(ia)}
 	#endif
 #else
 	#if RKH_SMA_EN_IEVENT == 1
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia),(ie)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)is,(ia),(ie)}
 	#else
 		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(RKHROM struct rkhst_t*)(is),(ia)}
+				{(prio),(ppty),(RKHROM struct rkhst_t*)is,(ia)}
 	#endif
 #endif
 
 
 #define MKSMA( rr, s )					\
-						{ (RKHROM ROMRKH_T*)(rr), \
-							 	(RKHROM struct rkhst_t*)(s) }
+						{ {(RKHROM ROMRKH_T*)(rr), \
+							 	(RKHROM struct rkhst_t*)(s)} }
 
 
 #if RKH_SMA_EN_STATE_ID == 1
@@ -557,6 +552,58 @@
 
 
 #if RKH_EN_DOXYGEN == 1
+
+	/**
+	 *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
+	 *	thread of execution.
+	 */
+
+	#define RKH_EN_SMA_THREAD 			1
+
+	/**
+	 *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
+	 *	SMA (active object) has its own thread of execution and its own object 
+	 *	data.
+	 */
+
+	#define RKH_EN_SMA_THREAD_DATA		1
+
+	/**
+	 * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
+	 * 	simple, cooperative, and nonpreemptive scheduler RKHS.
+	 * 	When #RKH_EN_NATIVE_SCHEDULER is enabled RKH also will automatically 
+	 * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
+	 * 	and assume the native priority scheme.
+	 */
+
+	#define RKH_EN_NATIVE_SCHEDULER		1
+
+	/**
+	 * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
+	 *	enabled (see #RKH_RQ_EN) then RKH will include its own implementation of 
+	 *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
+	 */
+
+	#define RKH_EN_NATIVE_EQUEUE		1
+
+	/**
+	 * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
+	 * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
+	 * 	its own implementation of dynamic memory management.
+	 * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
+	 * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
+	 * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+	 */
+
+	#define RKH_EN_NATIVE_DYN_EVENT		1
+
+	/**
+	 *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
+	 *	invoked from several threads of executions. Enable this only if the 
+	 *	application is based on a multi-thread architecture.
+	 */
+
+	#define RKH_EN_REENTRANT			1
 
 	/**
 	 * 	Defines the data type of the event queue for active objects. 

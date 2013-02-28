@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -201,6 +201,7 @@
 		{}										\
 		else									\
 		{										\
+			RKH_TR_FWK_ASSERT( (RKHROM char *)m_name, __LINE__ );	\
 			rkh_assert( m_name, __LINE__ );		\
 		}
 

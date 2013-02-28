@@ -96,6 +96,26 @@ RKH changelog file.
 
 This file resumes the changes across project version releases.
 
+Changes between V2.2 and V2.3 released 02/05/2013
+
++	Enhance the runtime trace filter.
++	Enhance the software timer module.
++	Fix the linux port.
++	Add arbitrary trace records to be used in the application space.
++	Add the configuration option RKH_TRC_EN_USER_TRACE for enabling/disabling 
+	the user trace records.
++	Add the macro RKH_TR_FWK_TUSR() for sending to Trazer a symbolic name of 
+	the user-defined trace event.
++ 	Move the configurations RKH_EN_SMA_THREAD, RKH_EN_SMA_THREAD_DATA, 
+	RKH_EN_NATIVE_SCHEDULER, RKH_EN_NATIVE_EQUEUE, RKH_EN_NATIVE_DYN_EVENT, 
+	and RKH_EN_REENTRANT from rkhcfg.h to rkhport.h file to achieve the 
+	platform independence in rkhcfg.h file.
++	Add macro RKH_TR_FWK_TCFG() to send the trace configuration parameters to 
+	Trazer.
++	Add RKH_TRC_EN_ASSERT configuration to rkhcfg.h file, RKH_TE_FWK_ASSERT 
+	trace record and RKH_TR_FWK_ASSERT() macro to RKHASSERT() macro.
++	Eliminated RKH_TIM_EN_RESTART from rkhcfg.h.
+
 Changes between V2.1 and V2.2 released 08/13/2012
 
 +	Elimate RKH_MP_QUERY definition and change RKH_MP_GET_BLKSIZE to 

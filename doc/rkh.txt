@@ -22,7 +22,9 @@ reacts by performing actions. The events causing the reaction are called
 triggers."
 
 David Harel</EM>
-\n\n This manual includes:
+
+\image html rkh_framework_1.png
+\n This manual includes:
 
 - \ref Overview
 - \ref Purpose
@@ -46,7 +48,10 @@ RKH is a generic, flexible, modular, highly portable, ANSI-C compliant,
 and open-source development tool for implementing hierarchical 
 state machines based on modern state machine concepts. This modern 
 techniques are used to give an abstract description of the dynamic 
-behavior of a system in a substantial manner.
+behavior of a system in a substantial manner. RKH is built based on 
+platform-independent modules which is shown in the following figure.
+
+\image html rkh_framework_2.png
 
 <STRONG> The key features of the RKH framework: </STRONG>
 

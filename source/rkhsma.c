@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -67,7 +67,7 @@ rkh_sma_register( RKHSMA_T *sma )
 	RKH_ENTER_CRITICAL_();
     rkh_sptbl[ prio ] = sma;
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_SMA_REG( sma, prio );
+	RKH_TR_SMA_REG( sma, prio );
 }
 
 
@@ -83,5 +83,5 @@ rkh_sma_unregister( RKHSMA_T *sma )
 	RKH_ENTER_CRITICAL_();
     rkh_sptbl[ prio ] = ( RKHSMA_T * )0;
 	RKH_EXIT_CRITICAL_();
-	RKH_TRCR_SMA_UNREG( sma, prio );
+	RKH_TR_SMA_UNREG( sma, prio );
 }

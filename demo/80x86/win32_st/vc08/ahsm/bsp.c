@@ -19,7 +19,7 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * e-mail:			francuccilea@gmail.com
  */
 
@@ -73,6 +73,7 @@ static FILE *ftbin;
 	#include "tcptrc.h"
 
 	/* Trazer Tool IP Address */
+	/*#define TRC_IP_ADDR					"192.168.1.143"*/
 	#define TRC_IP_ADDR					"127.0.0.1"
 
 	/* Trazer Tool TCP Port Address */
@@ -239,6 +240,7 @@ rkh_trc_open( void )
 
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();
+ 	rkh_trc_config();
 }
 
 
