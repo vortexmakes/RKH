@@ -2596,30 +2596,33 @@ This section includes:
 \code
 ...
 (1) static RKHT_T tlayer;
+(2)	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
 
 	void
-(2)	tlayer_tout( void *t )
+(3)	tlayer_tout( void *t )
 	{
 		(void)t;
 		close_layer();
 	}
 
-(3)	rkh_tim_init( 	&tlayer, 
-(4)					TOUT, 
-(5)					tlayer_tout );
+(4)	rkh_tim_init( 	&tlayer, 
+(5)					&e_timer, 
+(6)					tlayer_tout );
 ...
 \endcode
 
 Explanation
 
 \li (1)	Declares and allocates the \c tlayer timer. 
-\li (2)	Defines \c tlayer_tout() hook function, which is calls at the 
+\li (1)	Declares and allocates the static event \c e_timer timer with the 
+		signal \c TOUT. 
+\li (3)	Defines \c tlayer_tout() hook function, which is calls at the 
 		\c tlayer expiration.
-\li (3)	Initializes the \c tlayer timer. 
-\li (4)	\c TOUT is the signal of the event to be directly posted (using the 
-		FIFO policy) into the event queue of the target agreed state machine 
-		application at the timer expiration.
-\li (5) Registers \c tlayer_tout() hook function.
+\li (4)	Initializes the \c tlayer timer. 
+\li (5)	Event to be directly posted (using the FIFO policy) into the event 
+		queue of the target agreed state machine application at the timer 
+		expiration.
+\li (6) Registers \c tlayer_tout() hook function.
 
 \subsection qref18_2 Start and stop timers
 
@@ -2630,30 +2633,35 @@ Explanation
 (3) static RKHT_T 	tpwr,
 (4) 				tkey;
 
-(5)	rkh_tim_init( &tpwr, TPWR, NULL );
-(6)	rkh_tim_init( &tkey, TKEY, NULL );
+(5)	static RKH_DCLR_STATIC_EVENT( e_tpwr, TPWR );
+(6)	static RKH_DCLR_STATIC_EVENT( e_tkey, TKEY );
+
+(7)	rkh_tim_init( &tpwr, e_tpwr, NULL );
+(8)	rkh_tim_init( &tkey, e_tkey, NULL );
 ...
-(7) rkh_tim_oneshot( &tpwr, pwr, TPWR_TICK );
-(8) rkh_tim_periodic( &tkey, pwr, TKEY_TICK, TKEY_TICK/4 );
+(9) rkh_tim_oneshot( &tpwr, pwr, TPWR_TICK );
+(10)rkh_tim_periodic( &tkey, pwr, TKEY_TICK, TKEY_TICK/4 );
 ...
-(9) rkh_tim_stop( &tkey );
+(11)rkh_tim_stop( &tkey );
 ...
-(10)rkh_tim_restart( &tpwr, TPWR_TICK * 2 );
+(12)rkh_tim_restart( &tpwr, TPWR_TICK * 2 );
 \endcode
 
 Explanation
 
 \li (1-2)	Defines the number of ticks for timer expiration. 
 \li (3-4)	Declares and allocates the \c tpwr, and \c tkey timers. 
-\li (5-6)	Initializes the \c tpwr, and \c tkey timers. 
-\li (7)	Starts \c tpwr timer as one-shot timer, which posts the signal 
+\li (5-6)	Declares and allocates the static events \c e_tpwr, and 
+			\c e_tkey. 
+\li (7-8)	Initializes the \c tpwr, and \c tkey timers. 
+\li (9)	Starts \c tpwr timer as one-shot timer, which posts the signal 
 		\c TPWR to 	\c pwr state machine application after TPWR_TICK 
 		timer-ticks.
-\li (8)	Starts \c tkey timer as periodic timer, which posts the signal 
+\li (10)Starts \c tkey timer as periodic timer, which posts the signal 
 		\c TKEY to \c pwr state machine application after TKEY_TICK 
 		timer-ticks initially and then after every TKEY_TICK/4 timer-ticks.
-\li (9) Stops \c tkey timer. 
-\li (10) Restarts \c tpwr timer with a new number of ticks. 
+\li (11) Stops \c tkey timer. 
+\li (12) Restarts \c tpwr timer with a new number of ticks. 
 
 \subsection qref18_3 Customization
 

@@ -186,6 +186,20 @@ typedef struct rkht_t
  *	The timer is initialized in a non-active state (stopped). In this case, a 
  *	subsequent start service call is necessary to get the timer actually 
  *	started.
+ * 	The following listing creates an application timer that executes 
+ * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100 
+ * 	timer-ticks.
+ *
+ * 	\code
+ *	#define MY_TICK				100
+ *
+ *	static RKHT_T my_timer;
+ *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
+ *
+ *  ...
+ * 	rkh_tim_init( &my_timer, &e_timer, my_timer_hook );
+ * 	rkh_tim_oneshot( &my_timer, pwr, MY_TICK );
+ * 	\endcode
  *
  *	\note 
  *	See RKHT_T structure for more information.
@@ -218,15 +232,17 @@ typedef struct rkht_t
  * 	facility. The timer begins running at the completion of this operation. 
  * 	The timer won't be re-started automatically.
  * 	The following listing creates an application timer that executes 
- * 	"my_timer_hook" and send the signal "TOUT" to "pwr" SMA after 100 
+ * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100 
  * 	timer-ticks.
  *
  * 	\code
  *	#define MY_TICK				100
  *
- *	RKHT_T my_timer;
+ *	static RKHT_T my_timer;
+ *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
  *
- * 	rkh_tim_init( &my_timer, TOUT, my_timer_hook );
+ *  ...
+ * 	rkh_tim_init( &my_timer, e_timer, my_timer_hook );
  * 	rkh_tim_oneshot( &my_timer, pwr, MY_TICK );
  * 	\endcode
  *
@@ -250,15 +266,17 @@ typedef struct rkht_t
  * 	Once the timeout will expire the timer will be re-started (re-triggered) 
  * 	again automatically.
  * 	The following listing creates an application timer that executes 
- * 	"my_timer_hook" and send the signal "TOUT" to "pwr" SMA after 100 
+ * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100 
  * 	timer-ticks initially and then after every 25 timer-ticks.
  *
  * 	\code
  *	#define MY_TICK			100
  *
- *	RKHT_T my_timer;
+ *	static RKHT_T my_timer;
+ *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
  *
- * 	rkh_tim_init( &my_timer, TOUT, my_timer_hook );
+ *  ...
+ * 	rkh_tim_init( &my_timer, &e_timer, my_timer_hook );
  * 	rkh_tim_periodic( &my_timer, pwr, MY_TICK, MY_TICK/4 );
  * 	\endcode
  *
