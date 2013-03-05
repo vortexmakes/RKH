@@ -8,7 +8,6 @@
 #include "bsp.h"
 #include "my.h"
 #include "myact.h"
-#include "rkhdata.h"
 
 
 #define QSTO_SIZE			4

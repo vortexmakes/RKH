@@ -26,7 +26,6 @@
 
 #include "bsp.h"
 #include "my.h"
-#include "rkhdata.h"
 #include "rkh.h"
 
 #include <conio.h>
