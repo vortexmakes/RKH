@@ -2309,8 +2309,7 @@ void rkh_trc_put( rkhui8_t b );
 	 */
 
 	#define RKH_FILTER_ON_GROUP_ALL_EVENTS( grp )			\
-				rkh_trc_filter_group_( FILTER_ON, (grp), ECHANGE );	\
-				rkh_trc_filter_event_( FILTER_ON, RKH_TRC_ALL_EVENTS )
+				rkh_trc_filter_group_( FILTER_ON, (grp), ECHANGE )
 
 	/**
 	 * 	\brief
@@ -2321,8 +2320,7 @@ void rkh_trc_put( rkhui8_t b );
 	 */
 
 	#define RKH_FILTER_OFF_GROUP_ALL_EVENTS( grp )			\
-				rkh_trc_filter_group_( FILTER_OFF, (grp), ECHANGE );	\
-				rkh_trc_filter_event_( FILTER_OFF, RKH_TRC_ALL_EVENTS )
+				rkh_trc_filter_group_( FILTER_OFF, (grp), ECHANGE )
 
 	/**
 	 * 	\brief
