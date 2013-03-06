@@ -104,6 +104,14 @@ const char *rkh_get_port_desc( void );
 #define RKH_EN_REENTRANT				0
 
 
+/**
+ * 	It can be used to convert ticks to milliseconds.
+ * 	This format is more convenient and natural than ticks.
+ */
+
+#define RKH_TICK_RATE_MS				((RKH_TNT_T)(1000/RKH_TICK_RATE_HZ))
+
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.

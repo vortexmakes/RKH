@@ -28,6 +28,9 @@
 #define __BSP_H__
 
 
+#include "rkh.h"
+
+
 #define BSP_TICKS_PER_SEC   		100
 
 

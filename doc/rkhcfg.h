@@ -150,6 +150,14 @@
 
 #define RKH_SMA_EN_IEVENT				1
 
+/**
+ * 	Specify the frequency of the framework tick interrupt (number of ticks 
+ * 	in one second). It's the rate at which the rkh_tim_tick() function is 
+ * 	invoked.
+ */
+
+#define RKH_TICK_RATE_HZ				100U
+
 
 /* --- Configuration options related to state machine applications -------- */
 

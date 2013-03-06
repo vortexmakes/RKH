@@ -2959,6 +2959,7 @@ Here is an list of all options with their documentation:
 \li \b RKH_HK_EN_START \copydetails RKH_HK_EN_START
 \li \b RKH_HK_EN_EXIT \copydetails RKH_HK_EN_EXIT
 \li \b RKH_SMA_EN_IEVENT \copydetails RKH_SMA_EN_IEVENT
+\li \b RKH_TICK_RATE_HZ \copydetails RKH_TICK_RATE_HZ
 
 <HR>
 \section cfg_sm Configuration options related to state machine applications
