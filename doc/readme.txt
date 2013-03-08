@@ -1,4 +1,5 @@
-/** \page Installation Installation
+/** 
+\page Installation Installation
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -2627,8 +2628,8 @@ Explanation
 \subsection qref18_2 Start and stop timers
 
 \code
-(1)	#define TPWR_TICK			100
-(2)	#define TKEY_TICK			100
+(1)	#define TPWR_TIME			RKH_TIME_MS( 100 )
+(2)	#define TKEY_TIME			RKH_TIME_MS( 100 )
 ...
 (3) static RKHT_T 	tpwr,
 (4) 				tkey;
@@ -2639,17 +2640,18 @@ Explanation
 (7)	rkh_tim_init( &tpwr, e_tpwr, NULL );
 (8)	rkh_tim_init( &tkey, e_tkey, NULL );
 ...
-(9) rkh_tim_oneshot( &tpwr, pwr, TPWR_TICK );
-(10)rkh_tim_periodic( &tkey, pwr, TKEY_TICK, TKEY_TICK/4 );
+(9) rkh_tim_oneshot( &tpwr, pwr, TPWR_TIME );
+(10)rkh_tim_periodic( &tkey, pwr, TKEY_TIME, TKEY_TIME/4 );
 ...
 (11)rkh_tim_stop( &tkey );
 ...
-(12)rkh_tim_restart( &tpwr, TPWR_TICK * 2 );
+(12)rkh_tim_restart( &tpwr, TPWR_TIME * 2 );
 \endcode
 
 Explanation
 
-\li (1-2)	Defines the number of ticks for timer expiration. 
+\li (1-2)	Defines the number of millisencods for timer expiration using 
+			the macro RKH_TIME_MS() that converts the ticks to time. 
 \li (3-4)	Declares and allocates the \c tpwr, and \c tkey timers. 
 \li (5-6)	Declares and allocates the static events \c e_tpwr, and 
 			\c e_tkey. 
@@ -2685,7 +2687,7 @@ Prev: \ref main_page "Home"
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
-Next: \ref Download "Download"
+Next: \ref examples "Examples"
 
 \copydetails rkhtrc.h
 
@@ -2919,6 +2921,55 @@ to that Trazer need to be configured to support this diversity of plataform
 and the wide range of RKH framework configurations. 
 
 Here is the \ref trazer
+
+Prev: \ref main_page "Home" \n
+Next: \ref examples "Examples"
+
+\page examples Examples
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref Download "Download"
+
+This section provides several examples on how to use RKH, designed to 
+experiment with RKH immediately. The simplicity of the code and state 
+diagrams means it also serves as a good starter project for people who are 
+not yet familiar with RKH. 
+Also, this examples are demostration projects considered cross-platform, 
+because of they are able to function on more than one computer architecture 
+or operating system. 
+
+<HR>
+<EM>Cross-platform demo applications</EM>
+
+The \\demo\\cross directory contains the platform-independent application 
+examples that are included in the standard RKH distribution.
+
+\n This section includes the following examples:
+
+- blinky
+
+<HR>
+\section blinky Blinky
+
+The goal of "blinky" demo application is to explain how to represent a "flat" 
+state machine and how to use the timer services using the RKH framework. To 
+do that is proposed a very simple demo that use one state machine and one 
+timer, which is shown and itself explained in the 
+\ref ex_fig1 "Figure - Blink a LED". This is the 'hello world' of RKH 
+programming. 
+
+\anchor ex_fig1
+\image html blinky.png "Figure - Blink a LED state diagram"
+
+The code for "blinky" is found in the \\demo\\cross\\blinky directory of the 
+RKH package. The bky.c, bky.h, bkyact.c, bkyact.h, and main.c are 
+platform-independent files. The rkhcfg.h file adapts and configures RKH by 
+means of compiler definitions and macros allowing to restrict the resources 
+consumed by RKH.
+
+Prev: \ref main_page "Home" \n
+Next: \ref Download "Download"
 
 \page cfg Configuration
 \image html rkh_bunner.jpg

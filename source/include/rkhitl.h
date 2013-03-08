@@ -275,7 +275,43 @@
 
 #ifndef RKH_TIM_EN
 	#error "rkhcfg.h, Missing RKH_TIM_EN: Enable (1) or Disable (0) native timer facility"
+#else
+	#ifdef RKH_TICK_RATE_HZ
+		#if RKH_TIM_EN == 1 && RKH_TICK_RATE_HZ != 0
+			/**
+			 * 	It can be used to convert ticks to milliseconds.
+			 * 	This format is more convenient and natural than ticks.
+			 * 	This configuration constant is not used by RKH, it is just 
+			 * 	a value to allow an application to deal with time when 
+			 * 	using timer services. 
+			 * 	You can use the global constant RKH_TICK_RATE_HZ (see 
+			 * 	rkhcfg.h) to convert time to ticks using the macros like 
+			 * 	RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
+			 */
+			#define RKH_TICK_RATE_MS 	((RKH_TNT_T)(1000/RKH_TICK_RATE_HZ))
+		#else
+			#define RKH_TICK_RATE_MS 	((RKH_TNT_T)0U)
+		#endif
+	#else
+		#define RKH_TICK_RATE_MS 	((RKH_TNT_T)0U)
+	#endif
 #endif
+
+
+/** @{
+ * 	\brief
+ * 	It can be used to convert ticks to time. 
+ *
+ * 	This format is more convenient and natural than ticks. You can use 
+ * 	the global constant RKH_TICK_RATE_HZ (see rkhcfg.h) to convert time to 
+ * 	ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(), and 
+ * 	RKH_TIME_MIN().
+ */
+
+#define RKH_TIME_MS( ms_ )		((ms_)/RKH_TICK_RATE_MS)
+#define RKH_TIME_SEC( s_ )		((s_)*1000U/RKH_TICK_RATE_MS)
+#define RKH_TIME_MIN( m_ )		((m_)*60*1000U/RKH_TICK_RATE_MS)
+/*@}*/
 
 
 #ifndef RKH_TIM_SIZEOF_NTIMER

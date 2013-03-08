@@ -10,8 +10,8 @@
 #include "rkh.h"
 
 
-#define LED_OFF_TIME			200
-#define LED_ON_TIME				200
+#define LED_OFF_TIME			RKH_TIME_SEC( 2 )
+#define LED_ON_TIME				RKH_TIME_SEC( 2 )
 
 
 /*
@@ -21,6 +21,7 @@
 enum
 {
 	TIMEOUT,		/* 'blktim' timeout */
+	TERMINATE,		/* press the key escape on the keyboard */
 	BKY_NUM_EVENTS
 };
 

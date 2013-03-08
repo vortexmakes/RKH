@@ -37,20 +37,13 @@
 #define BIN_TRACE					0
 #define SOCKET_TRACE				1
 #define ESC							0x1B
-#define kbmap( c )					( (c) - '0' )
-
-#define SIZEOF_EP0STO				64
-#define SIZEOF_EP0_BLOCK			4
-#define SIZEOF_EP1STO				32
-#define SIZEOF_EP1_BLOCK			8
 
 
 RKH_THIS_MODULE
 
 static DWORD tick_msec;			/* clock tick in msec */
 rkhui8_t running;
-static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
-				ep1sto[ SIZEOF_EP1STO ];
+static RKH_DCLR_STATIC_EVENT( ev_term, TERMINATE );
 
 
 /* 
@@ -142,9 +135,11 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
     while( running ) 
 	{
 		c = _getch();
-		
 		if( c == ESC )
+		{
+			rkh_sma_post_fifo( blinky, &ev_term );
 			running = 0;
+		}
     }
     return 0;
 }
@@ -157,7 +152,7 @@ rkh_hk_start( void )
     HANDLE hth_tmr, hth_kbd;
 
 	/* set the desired tick rate */
-    tick_msec = 1000UL/BSP_TICKS_PER_SEC;
+    tick_msec = RKH_TICK_RATE_MS;
     running = (rkhui8_t)1;
 	
 	/* create the ISR timer thread */
@@ -169,9 +164,6 @@ rkh_hk_start( void )
     hth_kbd = CreateThread( NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id );
     RKHASSERT( hth_kbd != (HANDLE)0 );
     SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
-	
-	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
@@ -205,19 +197,20 @@ static
 void
 print_banner( void )
 {
-	printf(	"Abstract Hierarchical State Machine (AHSM) example\n\n" );
+	printf(	"Blinky: a very simple state machine example.\n\n" );
 	printf(	"RKH version      = %s\n", RKH_RELEASE );
 	printf(	"Port version     = %s\n", rkh_get_port_version() );
 	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
 	printf(	"Description: \n\n"
 			"The goal of this demo application is to explain how to \n"
-			"represent a state machine using the RKH framework. To do \n"
-			"that is proposed a simple and abstract example, which is \n"
-			"shown in the documentation file Figure 1 section \n"
-			"\"Representing a State Machine\". \n\n\n" );
+			"represent a \"flat\" state machine and how to use the timer \n"
+			"services using the RKH framework. To do that is proposed a \n"
+			"very simple demo that use one state machine and one timer, \n"
+			"which is shown and explained in the reference manual section \n"
+			"\"Examples\". "
+			"This is the 'hello world' of RKH programming!.\n\n\n" );
 
-	printf( "1.- Press <numbers> to send events to state machine. \n" );
-	printf( "2.- Press ESC to quit \n\n\n" );
+	printf( "1.- Press ESC to quit \n\n\n" );
 }
 
 
@@ -278,10 +271,12 @@ bsp_init( int argc, char *argv[] )
 void 
 bsp_led_on( void )
 {
+	printf( "LED ON\n" );
 }
 
 
 void 
 bsp_led_off( void )
 {
+	printf( "LED OFF\n" );
 }

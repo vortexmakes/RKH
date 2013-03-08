@@ -22,10 +22,12 @@ static RKH_DCLR_STATIC_EVENT( e_tout, TIMEOUT );
 
 
 /*
- * 	Declare and allocate the 'blktim' timer.
+ * 	Declare and allocate the 'blktim' timer, which is responsible for 
+ * 	toggling the LED posting the TIMEOUT signal event to active object 
+ * 	'blinky'.
  */
 
-static RKHT_T bkytim;
+RKHT_T bkytim;
 
 
 /*

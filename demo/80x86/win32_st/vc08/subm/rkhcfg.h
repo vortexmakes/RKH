@@ -153,7 +153,9 @@
 /**
  * 	Specify the frequency of the framework tick interrupt (number of ticks 
  * 	in one second). It's the rate at which the rkh_tim_tick() function is 
- * 	invoked.
+ * 	invoked. This configuration constant is not used by RKH, it is just a 
+ * 	value to allow an application to deal with time when using timer 
+ * 	services, converting ticks to time. See RKH_TICK_RATE_MS constant.
  */
 
 #define RKH_TICK_RATE_HZ				100U

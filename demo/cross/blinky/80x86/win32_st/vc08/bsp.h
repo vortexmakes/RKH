@@ -31,9 +31,6 @@
 #include "rkh.h"
 
 
-#define BSP_TICKS_PER_SEC   		100
-
-
 void bsp_init( int argc, char *argv[] );
 void bsp_led_on( void );
 void bsp_led_off( void );
