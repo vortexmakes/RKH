@@ -2512,7 +2512,7 @@ The following listing shows an very simple example of the main() function
 implementation and demostrates how to use the RKH API.
 
 \note
-See \ref Usage "Representing a state machine: step by step" section 
+See \ref Usage "Getting started with RKH" section 
 for more information about this.
 
 \code
@@ -2971,7 +2971,7 @@ Next: \ref Download "Download"
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
-Next: \ref Usage "Representing a state machine: step by step"
+Next: \ref Usage "Getting started with RKH"
 
 Each RKH application must have its own configuration file, called 
 \b rkhcfg.h. This file adapts and configures RKH by means of compiler
@@ -3103,7 +3103,7 @@ Here is an list of all options with their documentation:
 
 
 /**
-\page Usage REPRESENTING A STATE MACHINE: STEP BY STEP
+\page Usage GETTING STARTED WITH RKH
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n

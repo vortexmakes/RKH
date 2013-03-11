@@ -208,7 +208,7 @@ Next: \ref identify "Identifying and classifying states and pseudostates"\n
 
 \n
 Prev: \ref identify_events "Identifying, generating and sending events"\n
-Next: \ref representing "Representing the state machine"\n\n
+Next: \ref representing "Getting started with RKH"\n\n
 
 The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
 presented above, sorted by state nesting level.
@@ -219,12 +219,12 @@ presented above, sorted by state nesting level.
 
 \n
 Prev: \ref identify_events "Identifying, generating and sending events"\n
-Next: \ref representing "Representing the state machine"\n\n
+Next: \ref representing "Getting started with RKH"\n\n
 */
 
 
 /**
-\page representing Representing the state machine
+\page representing Getting started with RKH
 \image html rkh_bunner.jpg
 
 \n
@@ -309,7 +309,7 @@ Next: \ref preparing "Preparing the application files"
 \image html rkh_bunner.jpg
 
 \n
-Prev: \ref representing "Representing the state machine"\n
+Prev: \ref representing "Getting started with RKH"\n
 Next: \ref rep_cs "Instantiating the composite states"\n\n
 
 A state machine application (SMA) a.k.a active object, is defined with the 
@@ -414,7 +414,7 @@ Explanation
 \li (11)Declares a opaque pointer to \c my SMA to be used as a global object.
 
 \n
-Prev: \ref representing "Representing the state machine"\n
+Prev: \ref representing "Getting started with RKH"\n
 Next: \ref rep_cs "Instantiating the composite states"\n\n
 */
 
@@ -1021,7 +1021,7 @@ Next: \ref rep_inc "Include files"\n\n
 
 \n
 Prev: \ref rep_act "Declaring the actions"\n
-Next: \ref representing "Representing the state machine"\n\n
+Next: \ref representing "Getting started with RKH"\n\n
 
 The application C-file \subpage my_c that uses RKH must include a few 
 header files. 
@@ -1058,7 +1058,7 @@ header files.
 
 \n
 Prev: \ref rep_act "Declaring the actions"\n
-Next: \ref representing "Representing the state machine"\n\n
+Next: \ref representing "Getting started with RKH"\n\n
 */
 
 
@@ -1067,7 +1067,7 @@ Next: \ref representing "Representing the state machine"\n\n
 \image html rkh_bunner.jpg
 
 \n
-Prev: \ref representing "Representing the state machine"\n
+Prev: \ref representing "Getting started with RKH"\n
 Next: \ref submachine "Using submachine states"\n\n
 
 \copydetails rkhs.h
@@ -1146,7 +1146,7 @@ main( int argc, char *argv[] )
 \endcode
 
 \n
-Prev: \ref representing "Representing the state machine"\n
+Prev: \ref representing "Getting started with RKH"\n
 Next: \ref submachine "Using submachine states"\n\n
 */
 
@@ -1157,7 +1157,7 @@ Next: \ref submachine "Using submachine states"\n\n
 
 \n
 Prev: \ref running "Running"\n
-Next: \ref Usage "Representing a state machine: step by step"\n\n
+Next: \ref Usage "Getting started with RKH"\n\n
 
 \copydetails RKHSSBM_T
 
@@ -1174,5 +1174,5 @@ Also, shows its implementation using the RKH framework.
 \image html sbm5.jpg "Referenced state machine"
 
 Prev: \ref running "Running"\n
-Next: \ref Usage "Representing a state machine: step by step"\n\n
+Next: \ref Usage "Getting started with RKH"\n\n
 */
