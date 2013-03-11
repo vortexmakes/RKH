@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\..\source\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\..\..\source\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC08__"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -173,58 +173,58 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\..\bky.c"
+				RelativePath="..\..\..\..\..\bky.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\bkyact.c"
+				RelativePath="..\..\..\..\..\bkyact.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\main.c"
+				RelativePath="..\..\..\..\..\main.c"
 				>
 			</File>
 			<Filter
 				Name="rkh"
 				>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkh.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkh.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhdyn.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhdyn.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhmp.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhmp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhrq.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhrq.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhs.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhs.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhsma.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhsma.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhtbl.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhtbl.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhtim.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhtim.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\source\rkhtrc.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhtrc.c"
 					>
 				</File>
 			</Filter>
