@@ -28,13 +28,13 @@ David Harel</EM>
 
 - \ref Overview
 - \ref Purpose
+- \ref Usage
+- \ref cross
 - \ref qref
 - \ref Installation
 - \ref Porting
 - \ref cfg
-- \ref Usage
 - \ref dbg
-- \ref examples
 - \ref Download
 - \ref Others
 - \ref Resources
@@ -43,7 +43,7 @@ David Harel</EM>
 - \ref ack
 
 <HR>
-\section Overview Overview
+\section Overview OVERVIEW
 
 RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
 and open-source development tool for implementing hierarchical 
@@ -86,7 +86,7 @@ platform-independent modules which is shown in the following figure.
 
 
 <HR>
-\section Purpose Purpose and inspiration
+\section Purpose PURPOSE AND INSPIRATION
 
 For many years, I had been used the traditional state machine concepts
 based on state table strategy for modeling the dynamic behavior of several 
@@ -104,12 +104,12 @@ easily adapted to 16 or 32-bits platforms.
 
 
 <HR>
-\section Download Download
+\section Download DOWNLOAD
 
 RKH download: http://sourceforge.net/projects/rkh-reactivesys/ 
 
 <HR>
-\section Others Other implementations
+\section Others OTHER IMPLEMENTATIONS
 
 Open-source frameworks that support Statecharts.
 
@@ -117,7 +117,7 @@ Open-source frameworks that support Statecharts.
 - Intelliwizard	- http://www.intelliwizard.com/
 
 <HR>
-\section Resources Resources
+\section Resources RESOURCES
 
 - M. Samek - "Practical UML Statecharts in C/C++, Second Edition: Event-Driven Programming for Embedded Systems", http://www.state-machine.com/psicc2/
 - M. Samek and P. Montgomery - "State-Oriented Programming", http://www.embedded.com/2000/0008/0008feat1.htm
@@ -128,7 +128,7 @@ Open-source frameworks that support Statecharts.
 - D. Harel and H. Kugler - "The Rhapsody Semantics of Statecharts", Lecture Notes in Computer Science, Vol. 3147, Springer-Verlag, 2004, pp. 325-354
 
 <HR>
-\section Licensing Licensing
+\section Licensing LICENSING
 
 Copyright (C) 2010 Leandro Francucci. All rights reserved.
 
@@ -152,13 +152,13 @@ under the GNU GPLv3 license (closed source code), please, contact contact me.
 See \ref contact section.</em>
 
 <HR>
-\section contact Contact information
+\section contact CONTACT INFORMATION
 
 RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
 \n e-mail:		francuccilea@gmail.com
 
 <HR>
-\section ack Acknowlegments
+\section ack ACKNOWLEGMENTS
 
 I would like to thank to Eduardo Martinez for introducing me to the reactive
 systems problems and Dario Balina for they suggestions, they time, and 

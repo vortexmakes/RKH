@@ -1,5 +1,5 @@
 /** 
-\page Installation Installation
+\page Installation INSTALLATION
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -260,7 +260,7 @@ its own configuration file, rkhcfg.h.
 Prev: \ref main_page "Home" \n
 Next: \ref Porting "Porting"
 
-\page Porting Porting
+\page Porting PORTING
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -800,7 +800,7 @@ typedef signed int		HInt;
 \endcode
 
 
-\page qref Quick reference
+\page qref QUICK REFERENCE
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -2683,11 +2683,11 @@ structure. See \ref cfg section for more information.
 
 Prev: \ref main_page "Home"
 
-\page dbg Tracing tool
+\page dbg TRACING TOOL
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
-Next: \ref examples "Examples"
+Next: \ref cross "Examples"
 
 \copydetails rkhtrc.h
 
@@ -2923,9 +2923,9 @@ and the wide range of RKH framework configurations.
 Here is the \ref trazer
 
 Prev: \ref main_page "Home" \n
-Next: \ref examples "Examples"
+Next: \ref cross "Examples"
 
-\page examples Examples
+\page cross CROSS-PLATFORM DEMOS
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -2934,44 +2934,40 @@ Next: \ref Download "Download"
 This section provides several examples on how to use RKH, designed to 
 experiment with RKH immediately. The simplicity of the code and state 
 diagrams means it also serves as a good starter project for people who are 
-not yet familiar with RKH. 
-Also, this examples are demostration projects considered cross-platform, 
-because of they are able to function on more than one computer architecture 
-or operating system. 
+not yet familiar with RKH. Also, this examples are demostration projects 
+considered cross-platform, because of they are able to function on more 
+than one computer architecture or operating system. 
+The code of demos are located in the \c \<rkh\>\\demo\\cross\\ directory, 
+where \c \<rkh\> stands for the installation directory chosed to install 
+the accompanying software. Each example contains the platform-independent 
+source code and a \c platform\\ directory. The structure of the 
+platform\\ branch closely mirrors the structure of the 
+\c source\\portable\\ directory, which contains platform-specific header 
+files and libraries to be used by RKH applications.
 
-<HR>
-<EM>Cross-platform demo applications</EM>
 
-The \\demo\\cross directory contains the platform-independent application 
-examples that are included in the standard RKH distribution.
+\image html rkh_cross.png "RKH cross-platform architecture"
 
-\n This section includes the following examples:
+- (1)	Reactive applications. The user code, which defines the active 
+		object, state machines, events, and the RKH configurations.
+- (2)	RKH framework. Platform-neutral code.
+- (3)	Platform abstraction layer, which encapsulates all the 
+		platform-specific code (processor, compiler, and operating system) 
+		and cleanly separates it from the platform-neutral code, (1) and (2) 
+		layers.
+- (4)	Board support package (BSP). Platform-dependent files, which 
+		implements RKH support on each platform defined by the (3) layer.
+- (5)	RKH port. Implements all the platform-specific code.
+- (6)	Defined by processor, hardware, compiler, and operating system in use.
 
-- blinky
+\n RKH cross-platform examples:
 
-<HR>
-\section blinky Blinky
-
-The goal of "blinky" demo application is to explain how to represent a "flat" 
-state machine and how to use the timer services using the RKH framework. To 
-do that is proposed a very simple demo that use one state machine and one 
-timer, which is shown and itself explained in the 
-\ref ex_fig1 "Figure - Blink a LED". This is the 'hello world' of RKH 
-programming. 
-
-\anchor ex_fig1
-\image html blinky.png "Figure - Blink a LED state diagram"
-
-The code for "blinky" is found in the \\demo\\cross\\blinky directory of the 
-RKH package. The bky.c, bky.h, bkyact.c, bkyact.h, and main.c are 
-platform-independent files. The rkhcfg.h file adapts and configures RKH by 
-means of compiler definitions and macros allowing to restrict the resources 
-consumed by RKH.
+- \subpage cross_blinky
 
 Prev: \ref main_page "Home" \n
 Next: \ref Download "Download"
 
-\page cfg Configuration
+\page cfg CONFIGURATION
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -3107,7 +3103,7 @@ Here is an list of all options with their documentation:
 
 
 /**
-\page Usage Representing a state machine: step by step
+\page Usage REPRESENTING A STATE MACHINE: STEP BY STEP
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
