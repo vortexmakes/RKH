@@ -545,13 +545,6 @@
 
 #define RKH_TRC_SIZEOF_STREAM			256
 
-/**
- * 	Specify the size of void pointer. The valid values [in bits] are 
- * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
- */
-
-#define RKH_TRC_SIZEOF_POINTER			32
-
 
 /* --- Configuration options related to queue (by reference) facility ----- */
 
