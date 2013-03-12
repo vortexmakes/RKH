@@ -32,6 +32,7 @@
 #include "rkhrq.h"
 #include "rkhassert.h"
 #include "rkh.h"
+#include "rkhtrc.h"
 
 
 RKH_MODULE_NAME( rkhdyn )

@@ -40,6 +40,7 @@
 #include "rkhrq.h"
 #include "rkhrdy.h"
 #include "rkh.h"
+#include "rkhtrc.h"
 
 
 #if RKH_RQ_EN == 1

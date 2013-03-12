@@ -50,6 +50,7 @@
 
 #include "rkhassert.h"
 #include "rkh.h"
+#include "rkhtrc.h"
 
 
 RKH_MODULE_NAME( rkhs )

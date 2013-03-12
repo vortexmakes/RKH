@@ -52,12 +52,6 @@
 #include "rkhtype.h"
 
 
-/** 
- * 	Trace facility.
- */
-
-#include "rkhtrc.h"
-
 /**
  * 	Event data type and related macros.
  */

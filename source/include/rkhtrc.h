@@ -75,7 +75,7 @@
 
 
 #include "rkhtype.h"
-#include "rkhitl.h"
+#include "rkhcfg.h"
 #include <string.h>
 
 

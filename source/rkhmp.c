@@ -46,6 +46,7 @@
 #include "rkhassert.h"
 #include "rkhmp.h"
 #include "rkh.h"
+#include "rkhtrc.h"
 
 
 RKH_MODULE_NAME( rkhmp )
