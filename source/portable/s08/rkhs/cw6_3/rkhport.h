@@ -131,8 +131,12 @@ const char *rkh_get_port_desc( void );
 #define RKH_ENA_INTERRUPT()				EnableInterrupts
 //#define RKH_CPUSR_TYPE
 
-#define RKH_ENTER_CRITICAL( dummy )		enter_critical()
-#define RKH_EXIT_CRITICAL( dummy )		exit_critical()
+void rkh_enter_critical( void );
+void rkh_exit_critical( void );
+
+
+#define RKH_ENTER_CRITICAL( dummy )		rkh_enter_critical()
+#define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
 
 #define RKH_EQ_TYPE              		RKHRQ_T
 
