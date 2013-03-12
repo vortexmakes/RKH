@@ -169,8 +169,8 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 
 	if( mode == ECHANGE )
 	{
-		offset = trcgmtbl[ grp ] >> 4;
-		range = trcgmtbl[ grp ] & 0x0F;
+		offset = (rkhui8_t)(trcgmtbl[ grp ] >> 4);
+		range = (rkhui8_t)(trcgmtbl[ grp ] & 0x0F);
 		for( 	p = &trceftbl[ offset ], 
 				ix = 0, 
 				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
@@ -198,7 +198,7 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 
 	e = GETEVT( evt );
 	grp = GETGRP( evt );
-	offset = (trcgmtbl[ grp ] >> 4) + (e >> 3);
+	offset = (rkhui8_t)((trcgmtbl[ grp ] >> 4) + (e >> 3));
 
 	if( ctrl == FILTER_ON )
 		trceftbl[offset] |= rkh_maptbl[e & 0x7];

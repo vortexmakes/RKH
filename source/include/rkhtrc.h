@@ -214,7 +214,7 @@ typedef enum
 
 typedef enum
 {
-	FILTER_ON, FILTER_OFF,
+	FILTER_ON, FILTER_OFF
 } RKH_TRC_FOPT;
 
 
