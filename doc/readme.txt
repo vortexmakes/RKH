@@ -3110,8 +3110,8 @@ Prev: \ref main_page "Home" \n
 Next: \ref dbg "Tracing tool"
 
 \n The goal in this section is to explain how to represent a state machine 
-using the RKH framework. To do that is proposed a simple example, which is 
-shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
+using the RKH framework. To do that is proposed a simple example, which 
+is shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
 rules and concepts for making the most out of RKH features.
 \note
 Although the diagram shown in the \ref fig1 "Figure 1" does not have a 
