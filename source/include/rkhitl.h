@@ -642,6 +642,20 @@
 	#define RKH_EN_REENTRANT			1
 
 	/**
+	 * 	Specify the size of void pointer. The valid values [in bits] are 
+	 * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+	 */
+
+	#define RKH_TRC_SIZEOF_POINTER		32
+
+	/**
+	 * 	Specify the size of function pointer. The valid values [in bits] are 
+	 * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+	 */
+
+	#define RKH_TRC_SIZEOF_FUN_POINTER	32
+
+	/**
 	 * 	Defines the data type of the event queue for active objects. 
 	 * 	The event queue can be implemented with a message queue of 
 	 * 	the RTOS/OS. But it is also possible to use the native RKH 

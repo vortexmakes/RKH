@@ -101,6 +101,20 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_EN_REENTRANT				0
 
+/**
+ * 	Specify the size of void pointer. The valid values [in bits] are 
+ * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+ */
+
+#define RKH_TRC_SIZEOF_POINTER			32
+
+/**
+ * 	Specify the size of function pointer. The valid values [in bits] are 
+ * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+ */
+
+#define RKH_TRC_SIZEOF_FUN_POINTER		32
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.
