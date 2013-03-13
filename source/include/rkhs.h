@@ -277,7 +277,7 @@
 
 
 #include "rkhcfg.h"
-#include "rkh.h"
+#include "rkhrdy.h"
 #include "rkhevt.h"
 
 
