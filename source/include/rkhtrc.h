@@ -1409,6 +1409,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( is ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_INIT( sma, is )				(void)0
 		#endif
 
 		/**
@@ -1425,6 +1427,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_DCH( sma, ev )				(void)0
 		#endif
 
 		/**
@@ -1441,6 +1445,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( h ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_CLRH( sma, h )				(void)0
 		#endif
 
 		/**
@@ -1458,6 +1464,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( ss ); 							\
 							RKH_TRC_SYM( ts ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_TRN( sma, ss, ts )			(void)0
 		#endif
 
 		/**
@@ -1474,6 +1482,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_STATE( sma, s )				(void)0
 		#endif
 
 		/**
@@ -1490,6 +1500,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_ENSTATE( sma, s )				(void)0
 		#endif
 
 		/**
@@ -1506,6 +1518,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_EXSTATE( sma, s )				(void)0	
 		#endif
 
 		/**
@@ -1523,6 +1537,8 @@ enum rkh_trc_fmt
 							RKH_TRC_UI8( nen ); 						\
 							RKH_TRC_UI8( nex ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_NENEX( sma, nen, nex )		(void)0	
 		#endif
 
 		/**
@@ -1540,6 +1556,8 @@ enum rkh_trc_fmt
 							RKH_TRC_UI8( nta ); 						\
 							RKH_TRC_UI8( nts ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_NTRNACT( sma, nta, nts )		(void)0	
 		#endif
 
 		/**
@@ -1556,6 +1574,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_CSTATE( sma, s )				(void)0	
 		#endif
 
 		#if RKH_TRC_EN_SM_PROCESS == 1

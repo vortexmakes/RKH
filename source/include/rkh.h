@@ -91,20 +91,25 @@
 
 #if RKH_EN_NATIVE_DYN_EVENT == 1 && RKH_EN_DOXYGEN == 0
 
-	#define RKH_DYNE_TYPE			RKHMP_T
+		#define RKH_DYNE_TYPE			RKHMP_T
 
-	#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
+		#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
     			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
 
-	#define RKH_DYNE_GET_ESIZE( mp )					\
+		#define RKH_DYNE_GET_ESIZE( mp )					\
 				( (mp)->bsize )
 
-	#define RKH_DYNE_GET( mp, e )						\
+		#define RKH_DYNE_GET( mp, e )						\
 				( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
 
-	#define RKH_DYNE_PUT( mp, e )						\
+		#define RKH_DYNE_PUT( mp, e )						\
 				( rkh_mp_put( (mp), e ) )
-
+#else
+	#define RKH_DYNE_TYPE								rkhui8_t
+	#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	(void)0
+	#define RKH_DYNE_GET_ESIZE( mp )					(void)0
+	#define RKH_DYNE_GET( mp, e )						(void)0
+	#define RKH_DYNE_PUT( mp, e )						(void)0
 #endif
 
 
@@ -152,7 +157,9 @@ extern RKHROM char rkh_version[];
  * 	Event pool list.
  */
 
+#if RKH_EN_DYNAMIC_EVENT == 1
 extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
+#endif
 
 
 /**

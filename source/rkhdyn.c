@@ -161,7 +161,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == 1
+#if RKH_EN_NATIVE_EQUEUE == 1 && RKH_RQ_EN_PUT_LIFO == 1
 void 
 rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
