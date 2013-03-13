@@ -74,8 +74,9 @@
 #define __RKHTRC_H__
 
 
+#include "rkhcfg.h"
 #include "rkhtype.h"
-#include "rkhitl.h"
+#include "rkhplat.h"
 #include <string.h>
 
 
