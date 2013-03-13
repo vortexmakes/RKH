@@ -90,6 +90,10 @@
 	#include "../portable/80x86/linux_st/gnu/rkhport.h"
 #endif
 
+#ifdef __ARM_CM3CRED__
+	#include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.h"
+#endif
+
 
 /**
  * 	\brief
