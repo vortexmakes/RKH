@@ -358,8 +358,8 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	}
 #else
 	stn = cs;
-	in = rkh_process_input( stn, sma, pe );	
-	FIND_TRANS( tr, stn->trtbl, in );
+	in = RKH_PROCESS_INPUT( stn, sma, pe );	
+	FIND_TRANS( tr, CBSC(stn)->trtbl, in );
 #endif
 
 	if( IS_NOT_FOUND_TRANS( tr ) )					   /* transition taken? */

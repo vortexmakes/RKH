@@ -216,7 +216,7 @@
  * 	exceed 8.
  */
 
-#define RKH_SMA_MAX_HCAL_DEPTH			4
+#define RKH_SMA_MAX_HCAL_DEPTH			2
 
 /**
  *	Specify the maximum number of linked transition segments. The smaller 
@@ -225,7 +225,7 @@
  *	Currently #RKH_SMA_MAX_TRC_SEGS cannot exceed 8.
  */
 
-#define RKH_SMA_MAX_TRC_SEGS			4
+#define RKH_SMA_MAX_TRC_SEGS			2
 
 /**
  *	If the #RKH_SMA_EN_PSEUDOSTATE is set to 1, the RKH allows pseudostates 
