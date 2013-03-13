@@ -28,8 +28,6 @@
 #define __BSP_H__
 
 
-#define BSP_TICKS_PER_SEC   		1000
-
 #define BSP_MAX_NESTING_CSECT 	8
 
 
