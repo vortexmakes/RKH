@@ -43,7 +43,6 @@
 #include "rkhmp.h"
 #include "rkhtim.h"
 #include "rkhassert.h"
-#include "rkhtrc.h"
 
 
 /**

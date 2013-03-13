@@ -35,7 +35,6 @@
 
 #include "rkh.h"
 #include "rkhassert.h"
-#include "rkhtrc.h"
 
 
 RKH_MODULE_NAME( rkh )
