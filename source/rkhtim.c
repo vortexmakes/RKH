@@ -50,10 +50,8 @@ RKH_MODULE_NAME( rkhtim )
 	#define RKH_SET_THOOK( t, hk )		\
 					(t)->timhk = (hk)
 #else
-	#define RKH_EXEC_THOOK() \
-					(void)0
-	#define RKH_SET_THOOK( t, hk ) \
-					(void)0
+	#define RKH_EXEC_THOOK()			(void)0
+	#define RKH_SET_THOOK( t, hk )		(void)0
 #endif
 
 #define add_to_list( t ) \
