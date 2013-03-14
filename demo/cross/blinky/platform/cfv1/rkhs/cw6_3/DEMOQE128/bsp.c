@@ -82,7 +82,6 @@ rkh_hk_idle( void )				/* called within critical section */
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	(void)file;
 	(void)line;
 
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );

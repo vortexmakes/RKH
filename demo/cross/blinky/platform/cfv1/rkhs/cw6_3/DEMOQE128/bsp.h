@@ -28,10 +28,8 @@
 #define __BSP_H__
 
 
-#define BSP_TICKS_PER_SEC   		1000
-
-
 void bsp_init( int argc, char *argv[] );
-
+void bsp_led_on( void );
+void bsp_led_off( void );
 
 #endif
