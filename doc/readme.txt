@@ -678,6 +678,7 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
 \li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
 \li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
+\li Define the macro \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
 
 See \ref cfg section for more information about that.
 
@@ -2739,6 +2740,7 @@ in the \b rkhcfg.h header file.
 \li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
 \li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
 \li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
+\li Define the macro \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
 
 See \ref cfg section for more information about that.
 
@@ -3065,6 +3067,7 @@ Here is an list of all options with their documentation:
 \li \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
 \li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
 \li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
+\li \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
 
 <HR>
 \section cfg_q Configuration options related to queue (by reference) facility

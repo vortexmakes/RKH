@@ -78,13 +78,16 @@
  * 	line number of assertion, and other information. A number is easier 
  * 	to fill in on a report form and easier to store in NVRAM.
  *
- *	The following listing shows a illustrative example for VC8 IDE:
+ *	The following listing shows a illustrative example for Visual Studio 
+ *	C++ 2008 IDE:
  *
  *	\code
  *	void 
  *	rkh_assert( RKHROM char * const file, int line )
  *	{
  *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
+ *
+ *		RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
  *		__debugbreak();
  *	}
  *	\endcode
@@ -201,7 +204,6 @@
 		{}										\
 		else									\
 		{										\
-			RKH_TR_FWK_ASSERT( (RKHROM char *)m_name, __LINE__ );	\
 			rkh_assert( m_name, __LINE__ );		\
 		}
 

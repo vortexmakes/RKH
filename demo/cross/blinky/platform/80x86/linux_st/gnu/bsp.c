@@ -217,6 +217,7 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
 						"file\n", line, file );
+	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	rkh_exit();
 }
 
@@ -248,7 +249,6 @@ void
 rkh_trc_open( void )
 {
 	rkh_trc_init();
-	rkh_trc_control( RKH_TRC_START );
 
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();

@@ -36,6 +36,8 @@
 #include "rkh.h"
 
 
+#if RKH_TIM_EN == 1
+
 RKH_MODULE_NAME( rkhtim )
 
 
@@ -191,4 +193,6 @@ rkh_tim_clear_info( RKHT_T *t )
 	pi->nexp = pi->nstart = pi->nstop = 0;
 	RKH_EXIT_CRITICAL_();
 }
+#endif
+
 #endif

@@ -207,7 +207,7 @@
  *	pseudostate, entry action, and exit action.
  */
 
-#define RKH_SMA_EN_HCAL					1
+#define RKH_SMA_EN_HCAL					0
 
 /**
  * 	Specify the maximum number of hierarchical levels. The smaller this 
@@ -366,7 +366,7 @@
  * 	macros.
  */
 
-#define RKH_TRC_RUNTIME_FILTER			1
+#define RKH_TRC_RUNTIME_FILTER			0
 
 /**
  *	If the #RKH_TRC_EN_USER_TRACE is set to 1 then RKH will allow to build  
@@ -544,7 +544,7 @@
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_TRC_SIZEOF_STREAM			256
+#define RKH_TRC_SIZEOF_STREAM			128
 
 
 /* --- Configuration options related to queue (by reference) facility ----- */

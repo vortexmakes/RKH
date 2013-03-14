@@ -2139,7 +2139,6 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	rkh_trc_open( void )
  *	{
  *		rkh_trc_init();
- *		rkh_trc_control( RKH_TRC_START );
  *
  *		if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
  *		{

@@ -9,10 +9,9 @@
 #include "rkhrdy.h"
 
 
-RKH_MODULE_NAME( rkhtrc )
-
-
 #if RKH_TRC_EN == 1
+
+RKH_MODULE_NAME( rkhtrc )
 
 #define GETGRP( e )		(rkhui8_t)(((e) & 0xE0) >> 5)
 #define GETEVT( e )		(rkhui8_t)((e) & 0x1F)
@@ -30,7 +29,6 @@ rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
 
 static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
 static RKH_TE_T *trcin, *trcout, *trcend;
-static HUInt trcctrl;
 static rkhui8_t chk;
 static rkhui8_t nseq;
 #if RKH_TRC_SIZEOF_STREAM < 255
@@ -38,7 +36,6 @@ static rkhui8_t trcqty;
 #else
 static rkhui16_t trcqty;
 #endif
-
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
@@ -78,7 +75,6 @@ rkh_trc_init( void )
 	trcqty = 0;
 	nseq = 0;
 	trcend = &trcstm[ RKH_TRC_SIZEOF_STREAM ];
-	trcctrl = RKH_TRC_START;
 	RKH_TRC_U8_RAW( RKH_FLG );
 }
 
@@ -87,17 +83,6 @@ void
 rkh_trc_config( void )
 {
 	RKH_TR_FWK_TCFG();
-}
-
-
-void 
-rkh_trc_control( HUInt opt )
-{
-	/* RKH_SR_CRITICAL_;*/
-
-	/* RKH_ENTER_CRITICAL_(); */
-	trcctrl = opt;
-	/* RKH_EXIT_CRITICAL_(); */
 }
 
 

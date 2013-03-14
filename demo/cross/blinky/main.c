@@ -21,7 +21,7 @@ main( int argc, char *argv[] )
 {
 	bsp_init( argc, argv );
 
-	/* set trace filters */
+	/* set trace run-time filters */
 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 	RKH_FILTER_OFF_EVENT( RKH_TE_TIM_TOUT );
