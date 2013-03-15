@@ -15,13 +15,14 @@ structure in more detail.
 
 \anchor top_dir
 \code
-<RKH-root>				- RKH-root directory
-+---demo				- RKH demo applications
-+---doc					- RKH documentation
-+---source				- RKH source files
-|   copying.txt			- licence file
-|   README				- change log file
-\	rkh.chm				- reference manual
+<RKH-root>					- RKH-root directory
+  |
+  +-demo					- RKH demo applications
+  +-doc						- RKH documentation
+  \-source					- RKH source files
+  | copying.txt				- licence file
+  | README					- change log file
+  | rkh.chm					- reference manual
 \endcode
 <STRONG> Figure 1 Top level directories </STRONG>
 
@@ -38,69 +39,42 @@ The following figure shows the \c \\source directory.
 
 \anchor source_dir_fig
 \code
-(1)  <RKH-root>
-(2)  +---demo				- Demo applications
-(3)  +---doc				- Documentation
-(4)  \---source				- RKH source files
-(5)  |   \---include		- Platform-independent header files
-(6)  |   |       rkh.h
-(7)  |   |       rkhassert.h
-(8)  |	 |		 rkhevt.h
-(9)  |   |       rkhitl.h
-(10) |	 |		 rkhmp.h
-(11) |   |       rkhplat.h
-(12) |   |       rkhrdy.h
-(13) |   |       rkhrq.h
-(14) |   |       rkhs.h	
-(15) |   |       rkhtim.h
-(16) |   |       rkhtrc.h
-(17) |   \       rkhtype.h
-(18) |   +---portable		- Platform-dependent files
-(19) |   |   rkh.c
-(20) |   |   rkhdyn.c
-(21) |   |   rkhmp.c
-(22) |   |   rkhrq.c
-(23) |   |   rkhs.c
-(24) |   |   rkhsma.c
-(25) |   |   rkhtbl.c
-(26) |   |   rkhtim.c
-(27) |   \   rkhtrc.c
-(28) |   copying.txt		- licence file
-(29) |   README				- change log file
-(30) \	 rkh.chm			- reference manual
+<RKH-root> 					- RKH-root directory
+  |   
+  +-demo					- Demo applications
+  +-doc						- Documentation
+  \-source					- RKH source code files
+  | +-include				- Contains platform-independent header files
+  | |   rkh.h				- Framework interface 
+  | |   rkhassert.h			- Assert definitions
+  | |   rkhevt.h			- Event data type and other related macros 
+  | |   rkhitl.h			- Internal use only 
+  | |   rkhmp.h				- Fixed-size memory block services interface 
+  | |   rkhplat.h			- Supported and portable platforms 
+  | |   rkhrdy.h			- Native priority management 
+  | |   rkhrq.h				- Queue services interface 
+  | |   rkhs.h				- Simple and cooperative scheduler interface 
+  | |   rkhtim.h			- Timer services interface 
+  | |   rkhtrc.h			- Trace facility 
+  | |   rkhtype.h			- Defines the data types that uses RKH 
+  | |       
+  | \-portable				- Contains platform-dependent files
+  | |
+  | | rkh.c					- State machine engine 
+  | | rkhdyn.c				- Dynamic event management, and event framework services 
+  | | rkhmp.c				- Fixed-size memory block 
+  | | rkhrq.c				- Queue (copy by reference)
+  | | rkhs.c				- Simple and cooperative scheduler
+  | | rkhsma.c				- State machine application (SMA) registration.
+  | | rkhtbl.c				- Binary map tables.
+  | | rkhtim.c				- Software timer.
+  | | rkhtrc.c				- Platform-independent source code of runtime tracing.
+  |
+  | copying.txt				- Licence file
+  | README					- Change log file
+  | rkh.chm					- Reference manual
 \endcode
 <STRONG> Figure 2 RKH source directory </STRONG>
-
-\li (1)	RKH-root directory
-\li (2)	Demo applications
-\li (3)	Documentation
-\li (4)	RKH source code files
-\li (5)	Contains platform-independent header files
-\li (6)	Framework interface
-\li (7)	Assert definitions
-\li (8)	Event data type and other related macros
-\li (9)	Internal use only
-\li (10) Fixed-size memory block services interface
-\li (11) Supported and portable platforms
-\li (12) Native priority management
-\li (13) Queue services interface
-\li (14) Simple and cooperative scheduler interface
-\li (15) Timer services interface
-\li (16) Trace facility
-\li (17) Defines the data types that uses RKH
-\li (18) Contains platform-dependent files.
-\li (19) State machine engine
-\li (20) Dynamic event management, and event framework services
-\li (21) Fixed-size memory block
-\li (22) Queue (copy by reference)
-\li (23) Simple and cooperative scheduler
-\li (24) State machine application (SMA) registration.
-\li (25) Binary map tables.
-\li (26) Software timer.
-\li (27) Platform-independent source code of runtime tracing.
-\li (28) Licence file
-\li (29) Change log file
-\li (30) Reference manual
 
 <HR>
 \section portable_dir RKH portable directory
@@ -113,39 +87,66 @@ The following figure shows the \c \\portable directory.
 \anchor portable_dir_fig
 \code
 	 <RKH-root>	
-	 +---demo
-	 +---doc
-	 \---source
-( 1) |   \---portable					- RKH ports
-( 2) |   |   \---80x86					- Intel x86
-( 3) |   |   | 	\---win32_st			- Win32 Single-thread
-( 4) |   |   |  | 	\---vc08			- Microsoft Visual 2008
-( 5) |   |   |  | 		|	rkhport.h
-( 6) |   |   |  |		|	rkht.h
-( 7) |   |   \  \		\ 	rkhport.c
-( 8) |   |   \---cfv1					- Freescale Coldfire V1
-( 9) |   |   | 	\---rkhs				- Use the native scheduler
-(10) |   |   |	|	\---cw6_3			- Codewarrior v6.3
-(11) |   |   |  | 	|		rkhport.h
-(12) |   |   |  |	|		rkht.h
-(13) |   |   \ 	\	\		rkhport.c
-	 |   \ 	 +---...					- Others
-	 |   |   rkh.c
-	 |   |   rkhdyn.c
-	 |   |   rkhmp.c
-     |   |   rkhrq.c
-     |   |   rkhs.c
- 	 |   |   rkhsma.c
- 	 |   |   rkhtbl.c
-	 |   |   rkhtim.c
-	 |   \   rkhtrc.c
-	 |   copying.txt
-	 |   README	
-	 \	 rkh.chm	
+	   |
+	   +-demo
+	   +-doc
+	   \-source
+       | +-include				- RKH platform-independent header files
+( 1)   | \-portable				- Platform-specific RKH ports
+( 2)   | | +-80x86				- Ports to the 80x86 processor
+       | | | | +-linux_st		- Ports to Linux with scheduler emulation
+       | | | | | \-gnu			- Ports with the GNU compiler
+       | | | | |     rkhport.c	- RKH port to Linux source file
+       | | | | |     rkhport.h	- RKH platform-dependent include file
+       | | | | |     rkht.h		- RKH platform-dependent include file
+       | | | | |           
+( 3)   | | | | \-win32_st		- Ports to Win32 with scheduler emulation
+( 4)   | | | |   \-vc08 		- Ports with the Visual Studio C++ compiler
+( 5)   | | | |       rkhport.c
+( 6)   | | | |       rkhport.h
+( 7)   | | | |       rkht.h
+       | | | |             
+       | | +-arm-cortex			- Ports to the ARM Cortex processor
+       | | | \-rkhs				- Ports to the native cooperative scheduler
+       | | |   +-arm_cm3		- Ports to the ARM Cortex-M3 processor
+       | | |   | \-codered		- Ports with the code_red compiler
+       | | |   |     rkhport.c
+       | | |   |     rkhport.h
+       | | |   |     rkht.h
+       | | |   |           
+       | | |   \-arm_cm4f		- Ports to the ARM Cortex-M3 processor 
+       | | |     \-cw_v10		- Ports with the Codewarrior v10 compiler
+       | | |         rkhport.c
+       | | |         rkhport.h
+       | | |         rkht.h
+       | | |                   
+( 8)   | | +-cfv1				- Ports to the Coldfire V1 processor 
+( 9)   | | | \-rkhs				- Ports to the native cooperative scheduler
+(10)   | | |   \-cw6_3			- Ports with the Codewarrior v6.3 compiler
+(11)   | | |       rkhport.c
+(12)   | | |       rkhport.h
+(13)   | | |       rkht.h
+       | | |               
+       | | \-s08				- Ports to the S08 processor 
+       | | |  \-rkhs			- Ports to the native cooperative scheduler
+       | | |    \-cw6_3			- Ports with the Codewarrior v6.3 compiler
+       | | |        rkhport.c
+       | | |        rkhport.h
+       | | |        rkht.h
+	   | | +...					- Ports to other CPUs
+	   | |						- RKH platform-independent source code
+	   | | rkh.c
+	   | | rkhdyn.c
+	   | | ...
+	   |
+	   | copying.txt
+	   | README	
+	   | rkh.chm	
 \endcode
 <STRONG> Figure 3 RKH portable directory </STRONG>
 
-\li ( 1) RKH ports. The directory \\portable contains platform-dependent 
+\li ( 1) Platform-specific RKH ports. The directory \\portable contains 
+platform-dependent 
 files to be used by RKH applications. This directory structure is the most 
 complicated because of the large number of choices available, such as 
 CPU architectures, compilers, operating systems, and compiler options. 
@@ -155,30 +156,31 @@ space of options can be extended independently from the others. Also, the
 directory branch for each port is individually customizable, so each branch 
 can represent only choices relevant for a given CPU, operating system, 
 compiler, etc.
-\li ( 2) Intel x86. The CPU architecture is placed as the first level of 
-nesting within the \\portable directory. Examples of CPU architectures could 
-be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, etc. Please note that a 
-separate directory is needed whenever the CPU architecture is significantly 
-different.
-\li ( 3) Win32 Single-thread. The second level of nesting, under the CPU 
-architecture, is the operating system used.
-\li ( 4) Microsoft Visual 2008. The next level of nesting, under each 
-operating system directory, is the directory for the compiler used.
-\li ( 5) RKH platform-dependent include file. Frequently, defines the 
+\li ( 2) Ports to the 80x86 processor. The CPU architecture is placed as the 
+first level of nesting within the \\portable directory. Examples of CPU 
+architectures could be: 80x86, Coldfire, S08, ARM Cortex, ARM Thumb, 
+MSP430, etc. 
+Please note that a separate directory is needed whenever the CPU architecture 
+is significantly different.
+\li ( 3) Ports to Win32 with scheduler emulation. The second level of 
+nesting, under the CPU architecture, is the operating system used.
+\li ( 4) Ports with the Visual Studio C++ compiler. The next level of 
+nesting, under each operating system directory, is the directory for the 
+compiler used.
+\li ( 5) RKH platform-dependent source file. The platform-specific source 
+file is optional and many ports don't require it.
+\li ( 6) RKH platform-dependent include file. Frequently, defines the 
 interrupt locking method, the critical section management, among other things.
 The key point of the design is that all platform-independent RKH source 
 files include the same \b rkhplat.h header file as the application source 
 files.
-\li ( 6) RKH platform-dependent include file. In this file is defined the 
-data types that uses RKH.
-The key point of the design is that all platform-independent RKH source 
-files include the same \b rkhtype.h header file as the application source 
-files.
-\li ( 7) RKH platform-dependent source file. The platform-specific source 
-file is optional and many ports don’t require it.
-\li ( 8) Freescale Coldfire V1
-\li ( 9) Use the native scheduler
-\li (10) Codewarrior v6.3
+\li ( 7) RKH platform-dependent include file. In this file is defined the 
+data types that uses RKH. The key point of the design is that all 
+platform-independent RKH source files include the same \b rkhtype.h header 
+file as the application source files.
+\li ( 8) Ports to the Coldfire V1 processor
+\li ( 9) using the native simple cooperative scheduler
+\li (10) with the Codewarrior v6.3 compiler
 \li (11-13) Idem (5-7)
 
 <HR>
@@ -203,59 +205,105 @@ performance in a substantial manner.
 \anchor demo_dir_fig
 \code
 	 <RKH-root>	
-( 1) \---demo									- RKH demo applications
-( 2) |   |   \---80x86							- Intel x86
-( 3) |   |   | 	\---win32_st					- Win32 Single-thread
-( 4) |   |   |  | 	\---vc08					- Microsoft Visual 2008
-( 5) |   |   |  | 		\---ahsm				- State machine example
-( 6) |   |   |  | 			+---prj				- Project files
-( 7) |   |   |  |			|		rkhcfg.h	- App source and header files
-     |   |   |  |			|		main.c
-	 |   |   \  \			\ 		...
-	 |   \ 	 +---...							- Others
-	 |   |   rkh.c
-	 |   |   rkhdyn.c
-	 |   |   rkhmp.c
-     |   |   rkhrq.c
-     |   |   rkhs.c
- 	 |   |   rkhsma.c
- 	 |   |   rkhtbl.c
-	 |   |   rkhtim.c
-	 |   \   rkhtrc.c
-	 +---doc
-	 +---source
-	 |   copying.txt
-	 |   README	
-	 \	 rkh.chm	
+	   |
+( 1)   +-demo					- RKH demo applications
+( 2)   | +-80x86				- Demos for the x86 processor
+       | | +-linux_st			- Demos for Linux with scheduler emulation
+       | | |
+( 3)   | | +-win32_st			- Demos for Windows with scheduler emulation
+( 4)   | | | \-vc08				- Demos for Visual Studio C++
+( 5)   | | |   +-ahsm			- Abstract State Machine example for Windows
+( 6)   | | |   \-subm			- Submachine example for Windows
+( 7)   | | |     \-prj			- IDE-dependent files
+       | | |               
+       | +-common				- Common files
+       | \-cross				- Cross-platform examples
+       |   \-blinky				- Blinky example
+       |     |  bky.c			- the Blinky active object
+       |     |  bky.h			- the Blinky header file
+       |     |  bkyact.c		- the Blinky actions
+       |     |  bkyact.h		- the Blinky actions header file
+       |     |  main.c			- the \c main() function
+( 8)   |     |  rkhcfg.h		- RKH configuration file for Blinky demo
+       |     |   
+       |     \-platform			- Platform-specific RKH BSP
+       |       +-80x86			- Examples for the x86 processor
+       |       | +-linux_st		- Examples for Linux with scheduler emulation
+       |       | | \-gnu
+       |       | |     bsp.c	- BSP for the Blinky application
+       |       | |     bsp.h	- BSP header file
+       |       | |     Makefile - external Makefile for GNU Tool
+       |       | |     tcptrc.c - BSP source code for Trazer
+       |       | |     tcptrc.h - BSP include file for Trazer
+       |       | +-win32_st		- Examples for Win32 with scheduler emulation
+       |       |   \-vc08
+       |       |     |  bsp.c
+       |       |     |  bsp.h
+       |       |     |  tcptrc.c
+       |       |     |  tcptrc.h
+       |       |     |   
+       |       |     \-prj
+       |       |       |  blinky.ncb
+       |       |       |  blinky.sln
+       |       |       |  blinky.vcproj
+       |       |       |   
+       |       |       \---Debug
+       |       +-arm-cortex		- Examples for the ARM Cortex processor
+       |       |   \-rkhs		- Examples for the native scheduler
+       |       |     +-arm_cm3
+       |       |     | \-lpcx
+       |       |     |     \-codered
+       |       |     \-arm_cm4f
+       |       |         \-freedom
+       |       |           \-cw_v10
+       |       +-...
+	   +-doc
+	   \-source
+	   | copying.txt
+	   | README	
+	   | rkh.chm	
 \endcode
 <STRONG> Figure 4 Demo application directories </STRONG>
 
-\li ( 1) RKH demo applications. The \\demo directory contains the application 
-examples that are included in the standard RKH distribution. The structure of 
-the \\demo is the most complicated because of the large number of choices 
-available, such as CPU architectures, compilers, operating systems, and 
-compiler options. Each of those choices is represented as a separate level 
-of nesting in a hierarchical directory tree, so that each dimension in the 
-multi-dimensional space of options can be extended independently from the 
-others. Also, the directory branch for each RKH port is individually 
-customizable, so each branch can represent only choices relevant for a 
-given CPU, operating system, compiler, etc.
-\li ( 2) Intel x86. The CPU architecture is placed as the first level of 
-nesting within the \\demo directory. Examples of CPU architectures could 
-be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, etc. Please note that a 
-separate directory is needed whenever the CPU architecture is significantly 
-different.
-\li ( 3) Win32 Single-thread. The second level of nesting, under the CPU 
-architecture, is the operating system used.
-\li ( 4) Microsoft Visual 2008. The next level of nesting, under each 
+\li ( 1) RKH demo applications. The \c demo\\ directory contains the 
+application examples that are included in the standard RKH distribution. 
+The structure of the \c demo\\ is the most complicated because of the large 
+number of choices available, such as CPU architectures, compilers, operating 
+systems, and compiler options. Each of those choices is represented as a 
+separate level of nesting in a hierarchical directory tree, so that each 
+dimension in the multi-dimensional space of options can be extended 
+independently from the others. Also, the directory branch for each RKH port 
+is individually customizable, so each branch can represent only choices 
+relevant for a given CPU, operating system, compiler, etc.
+\li ( 2) Demos for the x86 processor. The CPU architecture is placed as the 
+first level of nesting within the \c demo\\ directory. Examples of CPU 
+architectures could be: 80x86, Coldfire, S08, ARM Cortex, ARM, MSP430, 
+etc. Please note that a separate directory is needed whenever the CPU 
+architecture is significantly different.
+\li ( 3) Demos for Windows with scheduler emulation. The second level of 
+nesting, under the CPU architecture, is the operating system used.
+\li ( 4) Demos for Visual Studio C++. The next level of nesting, under each 
 operating system directory, is the directory for the compiler used.
-\li ( 5) Finally, the example application is located in its own directory. 
+\li ( 5-6) Finally, the example application is located in its own directory. 
 In this case, abstract hierarchical state machine example. This application 
 is very useful to learn and explore the Statechart and UML features.
-\li ( 6) The \\ahsm\\prj\ subdirectory contains the IDE-dependent files, 
+\li ( 7) The \c ahsm\\prj\\ subdirectory contains the IDE-dependent files, 
 like object files, executable, and among others.
-\li ( 7) As mentioned above, each of application that use RKH must be defined 
+\li ( 8) As mentioned above, each of application that use RKH must be defined 
 its own configuration file, rkhcfg.h.
+\li ( 9) This directory provides several examples on how to use RKH, 
+designed to experiment with RKH immediately. The simplicity of the code and 
+state diagrams means it also serves as a good starter project for people who 
+are not yet familiar with RKH. Also, this examples are demostration projects 
+considered cross-platform, because of they are able to function on more than 
+one computer architecture or operating system. The code of demos are located 
+in the \c \<rkh\>\\demo\\cross\\ directory, where \c \<rkh\> stands for the 
+installation directory chosed to install the accompanying software. Each 
+example contains the platform-independent source code and a  
+.. \c \\platform\\ directory. The structure of the .. \c \\platform\\ branch 
+closely mirrors the structure of the \c source\\portable\\ directory, which 
+contains platform-specific header files and libraries to be used by RKH 
+applications.
 
 Prev: \ref main_page "Home" \n
 Next: \ref Porting "Porting"
@@ -339,7 +387,7 @@ RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
 rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
 are placed in \b rkhport.c.
 
-<EM>Example for x86, VC2008, and win32 single thread</EM>
+<EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
 \code
 #define RKH_EQ_TYPE              		RKHRQ_T
 #define RKH_OSDATA_TYPE          		HANDLE
@@ -644,68 +692,75 @@ Please, see \ref Installation section about RKH port directory and files.
 \n <HR>
 \section trc Trace facility
 
-\copydetails rkhtrc.h
+When using the trace facility must be defined in \c rkhport.h the following 
+configurations:
 
-RKH has a set of configuration options related to trace tool 
-facility, which an user that require this feature must be properly configure 
-in the \b rkhcfg.h header file.
+\li #RKH_TRC_SIZEOF_POINTER \copydetails #RKH_TRC_SIZEOF_POINTER 
+\li #RKH_TRC_SIZEOF_POINTER \copydetails #RKH_TRC_SIZEOF_FUN_POINTER 
 
-\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
-\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
-\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
-\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
-\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
-\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
-\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
-\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
-\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
-\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
-\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
-\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
-\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
-\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
-\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
-\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
-\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
-\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
-\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
-\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
-\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
-\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
-\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
-\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
-\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
-\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
-\li Define the macro \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
+Example:
 
-See \ref cfg section for more information about that.
+\code 
+#define RKH_TRC_SIZEOF_POINTER			32
+#define RKH_TRC_SIZEOF_FUN_POINTER		32
+\endcode
 
-A RKH port cannot and should not define all the functions 
-that it calls, because this would render the port too inflexible. Therefore, 
-the application-specific functions rkh_trc_open(), rkh_trc_close(), 
-rkh_trc_flush(), and rkh_trc_getts() are application provided.
+A RKH port cannot and should not define all the functions that it calls, 
+because this would render the port too inflexible. Therefore, the 
+application-specific functions \c rkh_trc_open(), \c rkh_trc_close(), 
+\c rkh_trc_flush(), and \c rkh_trc_getts() are application provided typically 
+in the board support package (bsp.c).
 
+\n
 \code void rkh_trc_open( void )\endcode
-\copydetails RKH_TRC_OPEN
+\copydetails RKH_TRC_OPEN \n
 
 \code void rkh_trc_close( void )\endcode
-\copydetails RKH_TRC_CLOSE
+\copydetails RKH_TRC_CLOSE \n
 
 \code void rkh_trc_flush( void )\endcode
-\copydetails RKH_TRC_FLUSH
+\copydetails RKH_TRC_FLUSH \n
 
 \code void rkh_trc_getts( void )\endcode
-\copydetails rkh_trc_getts
+\copydetails rkh_trc_getts \n
 
 <HR>
 \section rkhp A port file example.
 
-<EM>\b "rkhport.h" for x86, VC2008, and win32 single thread</EM>
+<EM>\b "rkhport.h" for x86, VC08, and win32 with scheduler emulation</EM>
 <EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
+/*
+ *	file: rkhport.h - Visual Studio 2008 port
+ *	Last updated for version: 1.0.00
+ *	Date of the last update:  Feb 27, 2012
+ *
+ * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *
+ * 	RKH is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ *  RKH is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with RKH, see copying.txt file.
+ *
+ * Contact information:
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * e-mail:			lf@vxtsolutions.com.ar
+ */
+
+/*
+ * 	rkhport.h
+ */
+
+
 #ifndef __RKHPORT_H__
 #define __RKHPORT_H__
 
@@ -726,6 +781,72 @@ extern RKHRG_T rkhrg;
 const char *rkh_get_port_version( void );
 const char *rkh_get_port_desc( void );
 
+
+/**
+ *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
+ *	thread of execution.
+ */
+
+#define RKH_EN_SMA_THREAD 				0
+
+/**
+ *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
+ *	SMA (active object) has its own thread of execution and its own object 
+ *	data.
+ */
+
+#define RKH_EN_SMA_THREAD_DATA			0
+
+/**
+ * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
+ * 	simple, cooperative, and nonpreemptive scheduler RKHS.
+ * 	When #RKH_EN_NATIVE_SCHEDULER is enabled RKH also will automatically 
+ * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
+ * 	and assume the native priority scheme.
+ */
+
+#define RKH_EN_NATIVE_SCHEDULER			0
+
+/**
+ * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
+ *	enabled (see #RKH_RQ_EN) then RKH will include its own implementation of 
+ *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
+ */
+
+#define RKH_EN_NATIVE_EQUEUE			1
+
+/**
+ * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
+ * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
+ * 	its own implementation of dynamic memory management.
+ * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
+ * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
+ * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+ */
+
+#define RKH_EN_NATIVE_DYN_EVENT			1
+
+/**
+ *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
+ *	invoked from several threads of executions. Enable this only if the 
+ *	application is based on a multi-thread architecture.
+ */
+
+#define RKH_EN_REENTRANT				0
+
+/**
+ * 	Specify the size of void pointer. The valid values [in bits] are 
+ * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+ */
+
+#define RKH_TRC_SIZEOF_POINTER			32
+
+/**
+ * 	Specify the size of function pointer. The valid values [in bits] are 
+ * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+ */
+
+#define RKH_TRC_SIZEOF_FUN_POINTER		32
 
 /*
  * 	Declaring an object RKHROM announces that its value will
@@ -751,20 +872,20 @@ const char *rkh_get_port_desc( void );
 				RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 								\
-			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); 	\
-			    (void)SetEvent( sma_is_rdy )
+			    rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio ); \
+			    (void)SetEvent( sma_is_rdy ); \
 
-#define RKH_SMA_UNREADY( rg, sma ) 								\
+#define RKH_SMA_UNREADY( rg, sma ) 							\
 			    rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
 
-#define RKH_WAIT_FOR_EVENTS() 									\
+#define RKH_WAIT_FOR_EVENTS() 								\
 			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 
 
 #endif
 \endcode
 
-<EM>\b "rkht.h" for x86, VC2008, and win32 single thread</EM>
+<EM>\b "rkht.h" for x86, VC08, and win32 scheduler emulation</EM>
 <EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
@@ -800,6 +921,142 @@ typedef signed int		HInt;
 #endif
 \endcode
 
+<EM>\b "rkhport.c" for x86, VC08, and win32 with scheduler emulation</EM>
+<EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
+
+\code
+/*
+ *	file: rkhport.c - Visual Studio 2008 port
+ *	Last updated for version: 1.0.00
+ *	Date of the last update:  Feb 22, 2012
+ *
+ * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *
+ * 	RKH is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ *  RKH is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with RKH, see copying.txt file.
+ *
+ * Contact information:
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * e-mail:			lf@vxtsolutions.com.ar
+ */
+
+/*
+ * 	rkhport.c
+ */
+
+
+#include "rkh.h"
+
+
+RKH_MODULE_NAME( rkhport )
+RKH_MODULE_VERSION( rkhport, 1.00 )
+RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" )
+
+
+CRITICAL_SECTION csection;		/* Win32 critical section */
+HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
+RKHRG_T rkhrg;					/* ready group of SMAs */
+
+extern rkhui8_t running;
+
+
+const 
+char *
+rkh_get_port_version( void )
+{
+	return RKH_MODULE_GET_VERSION();
+}
+
+
+const 
+char *
+rkh_get_port_desc( void )
+{
+	return RKH_MODULE_GET_DESC();
+}
+
+
+void 
+rkh_init( void )
+{
+    InitializeCriticalSection( &csection );
+    sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
+}
+
+
+void 
+rkh_enter( void )
+{
+	rkhui8_t prio;
+	RKHSMA_T *sma;
+	RKHEVT_T *e;
+
+    RKH_HK_START();
+	RKH_TR_FWK_EN();
+    running = 1;
+
+    while( running )
+	{
+        RKH_ENTER_CRITICAL( dummy );
+        if( rkh_rdy_isnot_empty( rkhrg ) ) 
+		{
+			rkh_rdy_findh( rkhrg, prio );
+            RKH_EXIT_CRITICAL( dummy );
+
+            sma = rkh_sptbl[ prio ];
+            e = rkh_sma_get( sma );
+            rkh_dispatch( sma, e );
+            RKH_GC( e );
+        }
+        else
+            rkh_hk_idle();
+    }
+
+    RKH_HK_EXIT();
+    CloseHandle( sma_is_rdy );
+    DeleteCriticalSection( &csection );	
+}
+
+
+void 
+rkh_exit( void )
+{
+	RKH_TR_FWK_EX();
+	running = 0;
+}
+
+
+void 
+rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+						void *stks, rkhui32_t stksize )
+{
+    ( void )stks;
+    ( void )stksize;
+
+	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
+	rkh_sma_register( sma );
+    rkh_init_hsm( sma );
+	RKH_TR_SMA_ACT( sma );
+}
+
+
+void 
+rkh_sma_terminate( RKHSMA_T *sma )
+{
+	rkh_sma_unregister( sma );
+	RKH_TR_SMA_TERM( sma );
+}
+\endcode
 
 \page qref QUICK REFERENCE
 \image html rkh_bunner.jpg

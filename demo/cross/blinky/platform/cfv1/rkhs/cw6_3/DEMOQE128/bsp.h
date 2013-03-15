@@ -19,8 +19,8 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
- * e-mail:			francuccilea@gmail.com
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 
