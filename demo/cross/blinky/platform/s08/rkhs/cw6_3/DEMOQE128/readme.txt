@@ -1,6 +1,6 @@
 *******************************************************************************
 *                            Running Blinky RKH demo                          *
-*             on Freescale MCF51QE128 demostration board DEMOQE128            *
+*             on Freescale S08QE128 demostration board DEMOQE128              *
 *******************************************************************************
 
 This is a guide to how to setup and use the demo board to evaluate 
