@@ -336,6 +336,5 @@ Also, for using the native trace facility (\ref trtrazer) the user should
 implement several functions which are platform and application specific, as 
 are described in the \ref dbg section "Implementing the trace session support".
 
-
 Prev: \ref cross "Cross-platform examples"\n
 */
