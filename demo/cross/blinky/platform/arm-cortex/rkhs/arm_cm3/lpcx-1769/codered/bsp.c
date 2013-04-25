@@ -95,8 +95,6 @@ void
 rkh_trc_open( void )
 {
 	rkh_trc_init();
-	rkh_trc_control( RKH_TRC_START );
-
 	SERIAL_TRACE_OPEN();
 }
 
