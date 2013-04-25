@@ -146,48 +146,54 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
-	for( ix_n = 0, ix_x = islca = 0, stx = src; 						\
-			stx != CST( 0 ); ++ix_x )									\
-	{																	\
-		for( ix_n = 0, snl = sentry, stn = tgt; 						\
-				stn != CST( 0 ); ++snl, ++ix_n )						\
-		{																\
-			if( stx == stn )											\
-			{															\
-				islca = 1;								/* found LCA */ \
-				break;													\
-			}															\
-			else if( ix_n < RKH_SMA_MAX_HCAL_DEPTH )					\
-				*snl = stn;		    /* add state in entry state list */ \
-			else														\
-			{															\
-				RKH_TR_SM_EX_HLEVEL( sma );								\
-				RKHERROR();												\
-				return RKH_EX_TSEG;									\
-			}															\
-			UPDATE_PARENT( stn );										\
-		}																\
-		if( islca == 0 )												\
-		{																\
-			        /* perform the exit actions of the exited states */ \
-			RKH_EXEC_EXIT( stx, CM( sma ) );							\
-			 			        /* update histories of exited states */ \
-			RKH_UPDATE_SHALLOW_HIST( stx, h );							\
-			RKH_TR_SM_EXSTATE( sma,   /* this state machine object */ 	\
-								 stx );              /* exited state */ \
-		}																\
-		else															\
-			break;														\
-		UPDATE_PARENT( stx );											\
-	}																	\
-	                                 /* save the # of entered states */ \
-	nn = ix_n
+#if RKH_SMA_EN_HCAL == 1
+	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
+		for( ix_n = 0, ix_x = islca = 0, stx = src; 						\
+				stx != CST( 0 ); ++ix_x )									\
+		{																	\
+			for( ix_n = 0, snl = sentry, stn = tgt; 						\
+					stn != CST( 0 ); ++snl, ++ix_n )						\
+			{																\
+				if( stx == stn )											\
+				{															\
+					islca = 1;								/* found LCA */ \
+					break;													\
+				}															\
+				else if( ix_n < RKH_SMA_MAX_HCAL_DEPTH )					\
+					*snl = stn;		    /* add state in entry state list */ \
+				else														\
+				{															\
+					RKH_TR_SM_EX_HLEVEL( sma );								\
+					RKHERROR();												\
+					return RKH_EX_TSEG;										\
+				}															\
+				UPDATE_PARENT( stn );										\
+			}																\
+			if( islca == 0 )												\
+			{																\
+						/* perform the exit actions of the exited states */ \
+				RKH_EXEC_EXIT( stx, CM( sma ) );							\
+									/* update histories of exited states */ \
+				RKH_UPDATE_SHALLOW_HIST( stx, h );							\
+				RKH_TR_SM_EXSTATE( sma,   /* this state machine object */ 	\
+									 stx );              /* exited state */ \
+			}																\
+			else															\
+				break;														\
+			UPDATE_PARENT( stx );											\
+		}																	\
+										 /* save the # of entered states */ \
+		nn = ix_n
+#else
+	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
+		stx = src;															\
+		nn = ix_n = ix_x = (rkhui8_t)(stx != tgt)
+#endif
 
 
 #if RKH_SMA_EN_HCAL == 1
 	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )			\
-		if( ix_n == ix_x && ix_x == 0 )									\
+		if( ix_n == ix_x && ix_x == 0 )          /* local transition */ \
 		{}																\
 		else															\
 		{																\
@@ -518,7 +524,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	if( IS_NOT_INTERNAL_TRANSITION() )
 		ts = CST( ets );		      /* finally, set the main target state */
 
-#if RKH_SMA_EN_HCAL == 1
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
 															/* ---- Stage 4 */
@@ -529,7 +534,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			                     /* and, generate the set of entered states */
 		RKH_EXEC_EXIT_ACTION( cs, ts, sma, nn );
 	}
-#endif
 													        /* ---- Stage 5 */
 	                  /* perform the actions on the transition sequentially */
 			         /* according to the order in which they are written on */
