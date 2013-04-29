@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /*
@@ -50,3 +50,53 @@ rkh_get_port_desc( void )
 {
 	return RKH_MODULE_GET_DESC();
 }
+
+
+#define CFV1_INTERRUPT_MASK	0x2700
+
+
+static unsigned short crit_cnt = 0;
+static unsigned short sr_mem;
+
+
+void 
+rkh_enter_critical( void )
+{
+	asm
+	{
+		move.w	crit_cnt,d0
+		addq.l	#1,d0
+		move.w	d0,crit_cnt
+		cmpi.w	#1,d0
+		bhi.s	end
+
+		save:
+		move.w	sr,d0
+		move.w	d0,sr_mem
+		move.w	#CFV1_INTERRUPT_MASK,d0
+		move.w	d0,sr
+		end:
+	}
+}
+
+
+void 
+rkh_exit_critical( void )
+{
+	asm
+	{
+		tst.w	crit_cnt
+		beq.s	restore
+		move.w	crit_cnt,d0
+		subq.l	#1,d0
+		move.w	d0,crit_cnt
+		bne.s	end
+
+		restore: 
+		move.w	sr_mem,d0
+		move.w	d0,sr
+		end:
+	}
+}
+
+

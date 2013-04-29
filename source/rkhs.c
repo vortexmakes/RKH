@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -52,12 +52,10 @@
 #include "rkh.h"
 
 
-RKH_MODULE_NAME( rkhs )
-
-
 #if RKH_EN_NATIVE_SCHEDULER == 1
 
 
+RKH_MODULE_NAME( rkhs )
 RKHRG_T rkhrg;				/* ready group of SMAs */
 
 

@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /*
@@ -29,6 +29,7 @@
 
 
 #include "rkh.h"
+#include "bsp.h"
 
 
 RKH_MODULE_NAME( rkhport )
@@ -49,4 +50,31 @@ char *
 rkh_get_port_desc( void )
 {
 	return RKH_MODULE_GET_DESC();
+}
+
+static unsigned char ccr_sp_mem[ BSP_MAX_NESTING_CSECT ];
+static unsigned int ccr_sp = (unsigned int)ccr_sp_mem;
+
+
+void 
+rkh_enter_critical( void )
+{
+	asm tpa;			/* transfer CCR to A */
+	asm sei;			/* disable interrupts */
+	asm ldhx ccr_sp;
+	asm sta  ,x;		/* save old interrupt status */
+	asm	aix	 #1;
+	asm	sthx ccr_sp;
+
+}
+
+
+void 
+rkh_exit_critical( void )
+{
+	asm ldhx ccr_sp;
+	asm	aix	 #-1;
+	asm	sthx ccr_sp;
+	asm lda  ,x;		/* get old interrupt status */
+	asm tap;			/* transfer A to CCR */
 }

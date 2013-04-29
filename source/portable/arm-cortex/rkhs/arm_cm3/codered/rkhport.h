@@ -1,7 +1,7 @@
 /*
- *	file: rkhport.h - Visual Studio 2008 port
+ *	file: rkhport.h - ARM Cortex-M MCU's, LPCXpresso port
  *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 27, 2012
+ *	Date of the last update:  Feb 03, 2013
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /*
@@ -30,10 +30,6 @@
 
 #ifndef __RKHPORT_H__
 #define __RKHPORT_H__
-
-#include "derivative.h"
-#include "critical.h"
-#include <hidef.h>
 
 #include "rkhtype.h"
 #include "rkhrq.h"
@@ -97,6 +93,21 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_EN_REENTRANT				0
 
+
+/**
+ * 	Specify the size of void pointer. The valid values [in bits] are 
+ * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+ */
+
+#define RKH_TRC_SIZEOF_POINTER			32
+
+/**
+ * 	Specify the size of function pointer. The valid values [in bits] are 
+ * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+ */
+
+#define RKH_TRC_SIZEOF_FUN_POINTER		32
+
 /* 
  * This port use the native, simple, cooperative, and nonpreemptive 
  * scheduler RKHS.
@@ -113,12 +124,15 @@ const char *rkh_get_port_desc( void );
 #define RKHROM			const	
 
 
-#define RKH_DIS_INTERRUPT()				DisableInterrupts
-#define RKH_ENA_INTERRUPT()				EnableInterrupts
+#define RKH_DIS_INTERRUPT()				__asm volatile ("cpsid i")
+#define RKH_ENA_INTERRUPT()				__asm volatile ("cpsie i")
 //#define RKH_CPUSR_TYPE
 
-#define RKH_ENTER_CRITICAL( dummy )		enter_critical()
-#define RKH_EXIT_CRITICAL( dummy )		exit_critical()
+void rkh_enter_critical( void );
+void rkh_exit_critical( void );
+
+#define RKH_ENTER_CRITICAL( dummy )		rkh_enter_critical()
+#define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
 
 #define RKH_EQ_TYPE              		RKHRQ_T
 

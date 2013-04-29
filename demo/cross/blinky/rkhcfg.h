@@ -18,7 +18,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -40,7 +40,7 @@
  *	by the application (can be a number in the range [1..64]).
  */
 
-#define RKH_MAX_SMA						8
+#define RKH_MAX_SMA						2
 
 /**
  *	If the dynamic event support (see #RKH_EN_DYNAMIC_EVENT) is set to 1, RKH 
@@ -48,7 +48,7 @@
  *	and recycling dynamic events, among other features.
  */
 
-#define RKH_EN_DYNAMIC_EVENT			1
+#define RKH_EN_DYNAMIC_EVENT			0
 
 /**
  *	If the dynamic event support is enabled (see #RKH_EN_DYNAMIC_EVENT) then 
@@ -58,7 +58,7 @@
  *	Note that a value of 0 will completely suppress the memory pool services.
  */
 
-#define RKH_MAX_EPOOL					4
+#define RKH_MAX_EPOOL					0
 
 /**
  * 	Specify the size of the event signal. The valid values [in bits] are 
@@ -84,7 +84,7 @@
  *	event features.
  */
 
-#define RKH_EN_DEFERRED_EVENT			1
+#define RKH_EN_DEFERRED_EVENT			0
 
 /**
  *	If the #RKH_ASSERT_EN is set to 0 the checking assertions are disabled.
@@ -207,7 +207,7 @@
  *	pseudostate, entry action, and exit action.
  */
 
-#define RKH_SMA_EN_HCAL					1
+#define RKH_SMA_EN_HCAL					0
 
 /**
  * 	Specify the maximum number of hierarchical levels. The smaller this 
@@ -216,7 +216,7 @@
  * 	exceed 8.
  */
 
-#define RKH_SMA_MAX_HCAL_DEPTH			4
+#define RKH_SMA_MAX_HCAL_DEPTH			2
 
 /**
  *	Specify the maximum number of linked transition segments. The smaller 
@@ -225,42 +225,42 @@
  *	Currently #RKH_SMA_MAX_TRC_SEGS cannot exceed 8.
  */
 
-#define RKH_SMA_MAX_TRC_SEGS			4
+#define RKH_SMA_MAX_TRC_SEGS			2
 
 /**
  *	If the #RKH_SMA_EN_PSEUDOSTATE is set to 1, the RKH allows pseudostates 
  *	usage.
  */
 
-#define RKH_SMA_EN_PSEUDOSTATE			1
+#define RKH_SMA_EN_PSEUDOSTATE			0
 
 /**
  *	If the #RKH_SMA_EN_DEEP_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
  *	the RKH allows deep history pseudostate usage.
  */
 
-#define RKH_SMA_EN_DEEP_HISTORY			1
+#define RKH_SMA_EN_DEEP_HISTORY			0
 
 /**
  *	If the #RKH_SMA_EN_SHALLOW_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
  *	the RKH allows shallow history pseudostate usage.
  */
 
-#define RKH_SMA_EN_SHALLOW_HISTORY		1
+#define RKH_SMA_EN_SHALLOW_HISTORY		0
 
 /**
  *	If the #RKH_SMA_EN_JUNCTION and #RKH_SMA_EN_PSEUDOSTATE are set to 1, the 
  *	RKH allows junction pseudostate usage.
  */
 
-#define RKH_SMA_EN_JUNCTION				1
+#define RKH_SMA_EN_JUNCTION				0
 
 /**
  *	If the #RKH_SMA_EN_CONDITIONAL and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
  *	the RKH allows branch (or conditional) pseudostate usage.
  */
 
-#define RKH_SMA_EN_CONDITIONAL			1
+#define RKH_SMA_EN_CONDITIONAL			0
 
 /**
  *	If the #RKH_SMA_EN_SUBMACHINE and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
@@ -366,7 +366,7 @@
  * 	macros.
  */
 
-#define RKH_TRC_RUNTIME_FILTER			1
+#define RKH_TRC_RUNTIME_FILTER			0
 
 /**
  *	If the #RKH_TRC_EN_USER_TRACE is set to 1 then RKH will allow to build  
@@ -375,14 +375,14 @@
  *	
  */
 
-#define RKH_TRC_EN_USER_TRACE			1
+#define RKH_TRC_EN_USER_TRACE			0
 
 /**
  *	If the #RKH_TRC_ALL is set to 1 then RKH will include all its own trace 
  *	records.
  */
 
-#define RKH_TRC_ALL						1
+#define RKH_TRC_ALL						0
 
 /**
  *	If the #RKH_TRC_EN_MP is set to 1 then RKH will include all trace records 
@@ -417,7 +417,7 @@
  *	related to the state machine (hierarchical and "flat").
  */
 
-#define RKH_TRC_EN_SM					0
+#define RKH_TRC_EN_SM					1
 
 /**
  *	If the #RKH_TRC_EN_FWK is set to 1 then RKH will include all trace records 
@@ -438,28 +438,28 @@
  *	include the "init state machine" trace record.
  */
 
-#define RKH_TRC_EN_SM_INIT				1
+#define RKH_TRC_EN_SM_INIT				0
 
 /**
  *	If the #RKH_TRC_EN_SM_DCH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "start a state machine" trace record.
  */
 
-#define RKH_TRC_EN_SM_DCH				1
+#define RKH_TRC_EN_SM_DCH				0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "dispatch an event to state machine" trace record.
  */
 
-#define RKH_TRC_EN_SM_CLRH				1
+#define RKH_TRC_EN_SM_CLRH				0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "clear the history pseudostate" trace record.
  */
 
-#define RKH_TRC_EN_SM_TRN				1
+#define RKH_TRC_EN_SM_TRN				0
 
 /**
  *	If the #RKH_TRC_EN_SM_STATE and #RKH_TRC_EN_SM are set to 1 then RKH will 
@@ -473,42 +473,42 @@
  *	include the "entry state" trace record.
  */
 
-#define RKH_TRC_EN_SM_ENSTATE			1
+#define RKH_TRC_EN_SM_ENSTATE			0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "exit state" trace record.
  */
 
-#define RKH_TRC_EN_SM_EXSTATE			1
+#define RKH_TRC_EN_SM_EXSTATE			0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "number of entry and exit states in transition" trace record.
  */
 
-#define RKH_TRC_EN_SM_NENEX				1
+#define RKH_TRC_EN_SM_NENEX				0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "number of executed actions in transition" trace record.
  */
 
-#define RKH_TRC_EN_SM_NTRNACT			1
+#define RKH_TRC_EN_SM_NTRNACT			0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "state or pseudostate in a compound transition" trace record.
  */
 
-#define RKH_TRC_EN_SM_CSTATE			1
+#define RKH_TRC_EN_SM_CSTATE			0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 
  *	include the "returned code from dispatch function" trace record.
  */
 
-#define RKH_TRC_EN_SM_PROCESS			1
+#define RKH_TRC_EN_SM_PROCESS			0
 
 /**
  *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record an 
@@ -544,14 +544,7 @@
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_TRC_SIZEOF_STREAM			256
-
-/**
- * 	Specify the size of void pointer. The valid values [in bits] are 
- * 	16 or 32. Default is 16. See RKH_TRC_SYM() macro.
- */
-
-#define RKH_TRC_SIZEOF_POINTER			32
+#define RKH_TRC_SIZEOF_STREAM			128
 
 
 /* --- Configuration options related to queue (by reference) facility ----- */
@@ -578,7 +571,7 @@
  * 	See rkh_rq_get_lwm() function.
  */
 
-#define RKH_RQ_EN_GET_LWMARK			1
+#define RKH_RQ_EN_GET_LWMARK			0
 
 /**
  *	If the #RKH_RQ_EN_GET_INFO is set to 1 then RKH allows to collect and 
@@ -594,7 +587,7 @@
  *	See rkh_rq_read() function.
  */
 
-#define	RKH_RQ_EN_READ					1
+#define	RKH_RQ_EN_READ					0
 
 /**
  *	If the #RKH_RQ_EN_DEPLETE is set to 1 then RKH will include the 
@@ -603,7 +596,7 @@
  *	See rkh_rq_deplete() function.
  */
 
-#define	RKH_RQ_EN_DEPLETE				1
+#define	RKH_RQ_EN_DEPLETE				0
 
 /**
  *	If the #RKH_RQ_EN_IS_FULL is set to 1 then RKH will include the 
@@ -611,7 +604,7 @@
  *	See rkh_rq_is_full() function.
  */
 
-#define	RKH_RQ_EN_IS_FULL				1
+#define	RKH_RQ_EN_IS_FULL				0
 
 /**
  *	If the #RKH_RQ_EN_GET_NELEMS is set to 1 then RKH will include the 
@@ -620,7 +613,7 @@
  *	See rkh_rq_get_num() function.
  */
 
-#define	RKH_RQ_EN_GET_NELEMS			1
+#define	RKH_RQ_EN_GET_NELEMS			0
 
 /**
  *	If the #RKH_RQ_EN_PUT_LIFO is set to 1 then RKH will include the 
@@ -629,7 +622,7 @@
  *	See rkh_rq_put_lifo() function.
  */
 
-#define	RKH_RQ_EN_PUT_LIFO				1
+#define	RKH_RQ_EN_PUT_LIFO				0
 
 
 /* --- Configuration options related to fixed-sized memory block facility - */
@@ -639,7 +632,7 @@
  *	fixed-size memory block management.
  */
 
-#define RKH_MP_EN						1
+#define RKH_MP_EN						0
 
 /**
  *	If the #RKH_MP_EN is set to 1 then RKH will include the native 
@@ -677,7 +670,7 @@
  *	See rkh_mp_get_nfree() function.
  */
 
-#define RKH_MP_EN_GET_NFREE				1
+#define RKH_MP_EN_GET_NFREE				0
 
 /**
  *	If the #RKH_MP_EN_GET_LWM is set to 1 then RKH will include the 
@@ -687,7 +680,7 @@
  *	See rkh_mp_get_low_wmark() function.
  */
 
-#define RKH_MP_EN_GET_LWM				1
+#define RKH_MP_EN_GET_LWM				0
 
 /**
  *	If the #RKH_MP_EN_GET_INFO is set to 1 then RKH will include the 

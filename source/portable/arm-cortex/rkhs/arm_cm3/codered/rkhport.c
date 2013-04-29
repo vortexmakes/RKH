@@ -1,7 +1,7 @@
 /*
- *	file: rkht.h - Freescale ColdFire V1 MCU's, CodeWarrior port
+ *	file: rkht.h - ARM Cortex-M MCU's, LPCXpresso port
  *	Last updated for version: 1.0.00
- *	Date of the last update:  Mar 26, 2012
+ *	Date of the last update:  Feb 06, 2013
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /*
@@ -29,11 +29,33 @@
 
 
 #include "rkh.h"
+#include "lpc17xx.h"
+#include "bsp.h"
 
 
 RKH_MODULE_NAME( rkhport )
 RKH_MODULE_VERSION( rkhport, 1.00 )
-RKH_MODULE_DESC( rkhport, "ARM Cortex M3" )
+RKH_MODULE_DESC( rkhport, "ARM Cortex-M, LPCXpresso" )
+
+
+#define lpc17xx_enter_critical()	\
+			__asm volatile			\
+			(						\
+				"	mov r0, %0								\n"	\
+				"	msr basepri, r0							\n"	\
+				::"i"(((BSP_HIGHEST_IRQ_PRI<<(8 - __NVIC_PRIO_BITS))&0xFF)):"r0" \
+			)
+
+#define lpc17xx_exit_critical()		\
+			__asm volatile			\
+			(						\
+				"	mov r0, #0					\n"	\
+				"	msr basepri, r0				\n"	\
+				:::"r0"								\
+			)
+
+
+static HUInt critical_nesting;
 
 
 const 
@@ -49,4 +71,25 @@ char *
 rkh_get_port_desc( void )
 {
 	return RKH_MODULE_GET_DESC();
+}
+
+
+void
+rkh_enter_critical( void )
+{
+	lpc17xx_enter_critical();
+
+	critical_nesting++;
+}
+
+
+void
+rkh_exit_critical( void )
+{
+	critical_nesting--;
+
+	if( critical_nesting != 0 )
+		return;
+
+	lpc17xx_exit_critical();
 }

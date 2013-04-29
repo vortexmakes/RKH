@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 
@@ -188,6 +188,7 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
 						"file\n", line, file );
+	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	__debugbreak();
 	rkh_exit();
 }
@@ -220,8 +221,6 @@ void
 rkh_trc_open( void )
 {
 	rkh_trc_init();
-	rkh_trc_control( RKH_TRC_START );
-
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();
  	rkh_trc_config();

@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -74,8 +74,9 @@
 #define __RKHTRC_H__
 
 
-#include "rkhtype.h"
 #include "rkhcfg.h"
+#include "rkhtype.h"
+#include "rkhplat.h"
 #include <string.h>
 
 
@@ -186,18 +187,6 @@ extern rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
 
 /**
  * 	\brief
- * 	Enable or disable the trace facility for a instrumented state machine.
- * 	It's used as argument of rkh_trc_control() function.
- */
-
-typedef enum
-{
-	RKH_TRC_STOP, RKH_TRC_START
-} RKHTR_CTRL;
-
-
-/**
- * 	\brief
  * 	Emit or suppress tracing for all groups and events.
  */
 
@@ -214,7 +203,7 @@ typedef enum
 
 typedef enum
 {
-	FILTER_ON, FILTER_OFF,
+	FILTER_ON, FILTER_OFF
 } RKH_TRC_FOPT;
 
 
@@ -1408,6 +1397,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( is ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_INIT( sma, is )				(void)0
 		#endif
 
 		/**
@@ -1424,6 +1415,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_DCH( sma, ev )				(void)0
 		#endif
 
 		/**
@@ -1440,6 +1433,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( h ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_CLRH( sma, h )				(void)0
 		#endif
 
 		/**
@@ -1457,6 +1452,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( ss ); 							\
 							RKH_TRC_SYM( ts ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_TRN( sma, ss, ts )			(void)0
 		#endif
 
 		/**
@@ -1473,6 +1470,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_STATE( sma, s )				(void)0
 		#endif
 
 		/**
@@ -1489,6 +1488,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_ENSTATE( sma, s )				(void)0
 		#endif
 
 		/**
@@ -1505,6 +1506,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_EXSTATE( sma, s )				(void)0	
 		#endif
 
 		/**
@@ -1522,6 +1525,8 @@ enum rkh_trc_fmt
 							RKH_TRC_UI8( nen ); 						\
 							RKH_TRC_UI8( nex ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_NENEX( sma, nen, nex )		(void)0	
 		#endif
 
 		/**
@@ -1539,6 +1544,8 @@ enum rkh_trc_fmt
 							RKH_TRC_UI8( nta ); 						\
 							RKH_TRC_UI8( nts ); 						\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_NTRNACT( sma, nta, nts )		(void)0	
 		#endif
 
 		/**
@@ -1555,6 +1562,8 @@ enum rkh_trc_fmt
 							RKH_TRC_SYM( sma ); 						\
 							RKH_TRC_SYM( s ); 							\
 						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_CSTATE( sma, s )				(void)0	
 		#endif
 
 		#if RKH_TRC_EN_SM_PROCESS == 1
@@ -2079,12 +2088,16 @@ enum rkh_trc_fmt
 		 * 	Args	= module name, and line number\n
 		 */
 
-		#define RKH_TR_FWK_ASSERT( mod_, ln_ )							\
-					RKH_TRC_BEGIN( RKH_TE_FWK_ASSERT, NVS )				\
-						RKH_TRC_STR( (RKHROM char *)mod_ );				\
-						RKH_TRC_UI16( (rkhui16_t)ln_ );					\
-					RKH_TRC_END()										\
-					RKH_TRC_FLUSH()
+		#if RKH_TRC_EN_ASSERT == 1
+			#define RKH_TR_FWK_ASSERT( mod_, ln_ )						\
+						RKH_TRC_BEGIN( RKH_TE_FWK_ASSERT, NVS )			\
+							RKH_TRC_STR( (RKHROM char *)mod_ );			\
+							RKH_TRC_UI16( (rkhui16_t)ln_ );				\
+						RKH_TRC_END()									\
+						RKH_TRC_FLUSH()
+		#else
+			#define RKH_TR_FWK_ASSERT( mod_, ln_ )		(void)0
+		#endif
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
@@ -2219,20 +2232,6 @@ void rkh_trc_init( void );
  */
 
 void rkh_trc_config( void );
-
-
-/**
- * 	\brief
- * 	Starts or stops the tracing session. 
- *
- * 	The stream can be in two different states: running (RKH_TRC_START) or 
- * 	suspended (RKH_TRC_STOP). These two states determine whether or not the 
- * 	stream is accepting events to be stored.
- *
- * 	\param opt		control option.
- */
-
-void rkh_trc_control( HUInt opt );
 
 
 /**

@@ -155,7 +155,7 @@ See \ref contact section.</em>
 \section contact CONTACT INFORMATION
 
 RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
-\n e-mail:		francuccilea@gmail.com
+\n e-mail:		lf@vxtsolutions.com.ar
 
 <HR>
 \section ack ACKNOWLEGMENTS

@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -36,6 +36,8 @@
 #include "rkh.h"
 
 
+#if RKH_TIM_EN == 1
+
 RKH_MODULE_NAME( rkhtim )
 
 
@@ -48,10 +50,8 @@ RKH_MODULE_NAME( rkhtim )
 	#define RKH_SET_THOOK( t, hk )		\
 					(t)->timhk = (hk)
 #else
-	#define RKH_EXEC_THOOK() \
-					(void)0
-	#define RKH_SET_THOOK( t, hk ) \
-					(void)0
+	#define RKH_EXEC_THOOK()			(void)0
+	#define RKH_SET_THOOK( t, hk )		(void)0
 #endif
 
 #define add_to_list( t ) \
@@ -191,4 +191,6 @@ rkh_tim_clear_info( RKHT_T *t )
 	pi->nexp = pi->nstart = pi->nstop = 0;
 	RKH_EXIT_CRITICAL_();
 }
+#endif
+
 #endif

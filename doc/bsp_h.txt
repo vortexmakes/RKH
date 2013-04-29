@@ -24,8 +24,8 @@
  *  along with RKH, see copying.txt file.
  *
  * Contact information:
- * RKH web site:	http://
- * e-mail:			francuccilea@gmail.com
+ * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 
@@ -33,10 +33,12 @@
 #define __BSP_H__
 
 
-#define BSP_TICKS_PER_SEC   		100
+#include "rkh.h"
 
 
 void bsp_init( int argc, char *argv[] );
+void bsp_led_on( void );
+void bsp_led_off( void );
 
 
 #endif

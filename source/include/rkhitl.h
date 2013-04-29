@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -166,8 +166,10 @@
 #ifndef RKH_MAX_EPOOL
 	#error "rkhcfg.h, Missing RKH_MAX_EPOOL: Max. # of fixed-size memory block pools to be used by the application."
 #else
-	#if RKH_MAX_EPOOL == 0 || RKH_MAX_EPOOL > 255
-		#error  "rkhcfg.h, RKH_MAX_EPOOL must be > 0 and <= 255"
+	#if RKH_EN_DYNAMIC_EVENT == 1
+		#if RKH_MAX_EPOOL == 0 || RKH_MAX_EPOOL > 255
+			#error  "rkhcfg.h, RKH_MAX_EPOOL must be > 0 and <= 255"
+		#endif
 	#endif
 #endif
 
@@ -175,8 +177,11 @@
 #ifndef RKH_EN_DYNAMIC_EVENT
 	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support"
 #else
-	#if RKH_EN_DYNAMIC_EVENT == 0 && RKH_EN_NATIVE_DYN_EVENT != 0
-		#error "rkhcfg.h, When disabling the dynamic event support must be disabled (0) the RKH_EN_NATIVE_DYN_EVENT."
+	#if RKH_EN_DYNAMIC_EVENT == 0
+		#undef RKH_EN_NATIVE_DYN_EVENT
+		#define RKH_EN_NATIVE_DYN_EVENT		0
+		#undef RKH_MP_EN
+		#define RKH_MP_EN					0
 	#endif
 	#if RKH_EN_DYNAMIC_EVENT == 1 && RKH_MAX_EPOOL == 0
 		#error "rkhcfg.h, When enabling the dynamic event support the RKH_MAX_EPOOL must be != 0"
@@ -187,7 +192,7 @@
 #ifndef RKH_EN_NATIVE_DYN_EVENT
 	#error "rkhcfg.h, Missing RKH_EN_NATIVE_DYN_EVENT: Enable (1) or Disable (0) native dynamic event support."
 #else
-	#if RKH_EN_NATIVE_DYN_EVENT == 1 && RKH_MP_EN != 1
+	#if RKH_EN_DYNAMIC_EVENT == 1 && RKH_EN_NATIVE_DYN_EVENT == 1 && RKH_MP_EN != 1
 		#error "rkhcfg.h, When using the native dynamic memory management must be enabled (1) the RKH_MP_EN to include the memory pool module."
 	#endif
 #endif
@@ -330,13 +335,6 @@
 
 #ifndef RKH_TIM_EN_GET_INFO
 	#error "rkhcfg.h, Missing RKH_TIM_EN_GET_INFO: Include (1) get timer information function"
-#endif
-
-
-#if RKH_TRC_EN == 1 && RKH_TRC_EN_SM == 1
-	#if RKH_SMA_EN_STATE_ID != 1
-		#error  "rkhcfg.h, When enabling RKH_TRC_EN and RKH_TRC_EN_SM must be set to one (1) RKH_SMA_EN_STATE_ID"
-	#endif
 #endif
 
 #if RKH_TRC_EN == 1 && RKH_TRC_EN_SMA == 1
@@ -640,6 +638,20 @@
 	 */
 
 	#define RKH_EN_REENTRANT			1
+
+	/**
+	 * 	Specify the size of void pointer. The valid values [in bits] are 
+	 * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+	 */
+
+	#define RKH_TRC_SIZEOF_POINTER		32
+
+	/**
+	 * 	Specify the size of function pointer. The valid values [in bits] are 
+	 * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+	 */
+
+	#define RKH_TRC_SIZEOF_FUN_POINTER	32
 
 	/**
 	 * 	Defines the data type of the event queue for active objects. 

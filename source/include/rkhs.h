@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -277,7 +277,7 @@
 
 
 #include "rkhcfg.h"
-#include "rkh.h"
+#include "rkhrdy.h"
 #include "rkhevt.h"
 
 

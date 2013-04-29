@@ -20,7 +20,7 @@
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
+ * e-mail:			lf@vxtsolutions.com.ar
  */
 
 /**
@@ -106,6 +106,10 @@
 
 #ifdef __LNXGNU__
 	#include "../portable/80x86/linux_st/gnu/rkht.h"
+#endif
+
+#ifdef __ARM_CM3CRED__
+	#include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
 #endif
 
 
