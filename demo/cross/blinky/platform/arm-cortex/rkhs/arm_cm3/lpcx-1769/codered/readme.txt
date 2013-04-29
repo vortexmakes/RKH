@@ -1,16 +1,15 @@
 /**
-\page cross_lpcx1769 "LPCXPresso for ARM Cortex M-3 LPC1769 processor"
+\page cross_lpcx1769 LPCXPresso for ARM Cortex M-3 LPC1769 processor
+\image html rkh_bunner.jpg
 
 Running Blinky RKH demo on NXP Cortex M3 demostration board LPCXPresso LPC1769.
-
 This is a guide to how to setup and use the demo board to evaluate the RKH 
 framework. It assumes a prior knowledge on board features and development 
 environment.
 
-<STRONG>Project organization<\STRONG>
+<STRONG>Project organization</STRONG>
 
 \code
-
 \---codered
     |   
     \---prj						- Blinky LPCXpresso Workspace.
@@ -21,29 +20,27 @@ environment.
     |       +---.settings		- Workspace internal directory.
     |       \---src				- Blinky project CPU dependent files.
     |           \---bsp			
-    |               +---lpc17xx	- Peripherals inicialization, ISR´s and time stamp.
+    |               +---lpc17xx	- Peripherals inicialization, ISR's and time stamp.
     |
     |   bsp.c					- Board support package source file.
     |   bsp.h					- Board support package header file.
-    |   gpio.h					- Routines to handle GPIO´s.
+    |   gpio.h					- Routines to handle GPIO's.
     |   readme.txt				- This guide file.
     |   uart.c					- Routines to handle serial port.
     |   uart.h					- Serial driver prototipes.
-
 \endcode
 
-
-<STRONG>Blinky demo BSP<\STRONG>
+<STRONG>Blinky demo BSP</STRONG>
 
 - Blink state is shown through target board LED2 on P0[22].
 - Tracing info through UART0_TXD assigned to P0[2] on J6.21 connector at 38400 8N1.
   To interface the demo board with Trazer PC software, you may use the simple
   circuit shown below to convert UART0_TXD signal to RS232 levels.
 
- 
-     LPCXpresso
-     Expansion
-     Connector                +3.3V
+<B>LPCXpresso expansion Connector</B>
+
+\code
+                                +3.3V
                                 |
     J6.28 [VIO]  o--------------x
                                 |
@@ -61,4 +58,5 @@ environment.
      J6.1 [GND]  o--------------x---------------o [GND] Pin-5
                                 |
                                GND       
+\endcode
 */
