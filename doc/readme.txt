@@ -172,11 +172,11 @@ file is optional and many ports don't require it.
 \li ( 6) RKH platform-dependent include file. Frequently, defines the 
 interrupt locking method, the critical section management, among other things.
 The key point of the design is that all platform-independent RKH source 
-files include the same \b rkhplat.h header file as the application source 
+files include the same \c rkhplat.h header file as the application source 
 files.
 \li ( 7) RKH platform-dependent include file. In this file is defined the 
 data types that uses RKH. The key point of the design is that all 
-platform-independent RKH source files include the same \b rkhtype.h header 
+platform-independent RKH source files include the same \c rkhtype.h header 
 file as the application source files.
 \li ( 8) Ports to the Coldfire V1 processor
 \li ( 9) using the native simple cooperative scheduler
@@ -186,8 +186,8 @@ file as the application source files.
 <HR>
 \section demo_dir RKH demo applications
 
-The \\demo directory contains the application examples that are included in the 
-standard RKH distribution. The structure of the \\demo is the most complicated 
+The \c \\demo directory contains the application examples that are included in the 
+standard RKH distribution. The structure of the \c \\demo is the most complicated 
 because of the large number of choices available, such as CPU architectures, 
 compilers, operating systems, and compiler options. Each of those choices is 
 represented as a separate level of nesting in a hierarchical directory tree, 
@@ -196,7 +196,7 @@ extended independently from the others. Also, the directory branch for each
 RKH port is individually customizable, so each branch can represent only 
 choices relevant for a given CPU, operating system, compiler, etc.
 
-Each RKH application must have its own configuration file, called rkhcfg.h. 
+Each RKH application must have its own configuration file, called \c rkhcfg.h. 
 This file adapts and configures RKH by means of compiler definitions and macros 
 allowing to restrict the resources consumed by RKH. Adjusting this definitions 
 allows to reduce the ROM and RAM consumption, and to enhance the system 
@@ -290,7 +290,7 @@ is very useful to learn and explore the Statechart and UML features.
 \li ( 7) The \c ahsm\\prj\\ subdirectory contains the IDE-dependent files, 
 like object files, executable, and among others.
 \li ( 8) As mentioned above, each of application that use RKH must be defined 
-its own configuration file, rkhcfg.h.
+its own configuration file, \c rkhcfg.h.
 \li ( 9) This directory provides several examples on how to use RKH, 
 designed to experiment with RKH immediately. The simplicity of the code and 
 state diagrams means it also serves as a good starter project for people who 
@@ -321,7 +321,7 @@ layer, which encapsulates all the platform-specific code and cleanly
 separates it from platform-neutral code.
 
 Porting RKH implies to create the a few platform-dependent files, 
-\b rhhport.h, \b rkhport.c, which frequently defines the interrupt 
+\c rhhport.h, \c rkhport.c, which frequently defines the interrupt 
 locking method, the critical section management, among other things.
 The RKH directories and files are described in detail in 
 \ref Installation section. The next sections listed below describes 
@@ -357,7 +357,7 @@ Please, see \ref portable_dir section.
 \section rom ROM allocator
 
 For declaring an object that its value will not be changed and that
-will be stored in ROM, must be defined in \b rkhport.h the RKHROM macro.
+will be stored in ROM, must be defined in \c rkhport.h the RKHROM macro.
 
 Example:
 
@@ -378,14 +378,14 @@ in a separate task or thread.
 
 \li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 0, 
 #RKH_EN_SMA_THREAD = 1, and #RKH_EN_SMA_THREAD_DATA, within the 
-\b rkhport.h file.
+\c rkhport.h file.
 \li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
-RKH_SMA_UNREADY() in \b rkhport.h according to underlying OS or RTOS.
+RKH_SMA_UNREADY() in \c rkhport.h according to underlying OS or RTOS.
 \li (3) Define the macros #RKH_OSDATA_TYPE, and #RKH_THREAD_TYPE in 
-\b rkhport.h according to underlying OS or RTOS. 
+\c rkhport.h according to underlying OS or RTOS. 
 \li (4) Then, implement the platform-specific functions rkh_init(), rkh_enter(), 
 rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
-are placed in \b rkhport.c.
+are placed in \c rkhport.c.
 
 <EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
 \code
@@ -479,16 +479,16 @@ rkh_sma_terminate( RKHSMA_T *sma )
 \b NO: \n
 \li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 1, 
 #RKH_EN_SMA_THREAD = 0, and #RKH_EN_SMA_THREAD_DATA = 0, within the 
-\b rkhcfg.h file.
+\c rkhcfg.h file.
 \li (2) Define the macros #RKH_EQ_TYPE = RKHRQ_T, RKH_SMA_BLOCK(), 
-RKH_SMA_READY(), RKH_SMA_UNREADY() in \b rkhport.h. 
+RKH_SMA_READY(), RKH_SMA_UNREADY() in \c rkhport.h. 
 \li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
 functions rkh_init(), rkh_enter(), rkh_exit(), rkh_sma_activate(), and 
 rkh_sma_terminate(). 
 \li (4) Also, the macros RKH_EQ_TYPE, RKH_SMA_BLOCK(), 
 \li (5) RKH_SMA_READY(), RKH_SMA_UNREADY() are RKH provided. 
 In this mode of operation, RKH assumes the use of native priority scheme. 
-See \b rkhs.h, \b rkhs.c, and \b rkhrdy.h files for more information.
+See \c rkhs.h, \c rkhs.c, and \c rkhrdy.h files for more information.
 
 \n <HR>
 \section prio Priority mechanism
@@ -498,11 +498,11 @@ priority mechanism?</EM>
 
 \b YES: \n
 \li (1) Declare an RKHRG_T variable.
-\li (2) Include the \b rkhrdy.h in rkhport.h.
+\li (2) Include the \c rkhrdy.h in \c rkhport.h.
 \li (3) Then, the RKH port could be use the macros rkh_rdy_is_empty(), 
 rkh_rdy_isnot_empty(), rkh_rdy_ins(), rkh_rdy_rem(), and rkh_rdy_findh(). 
 Frequently, the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
-RKH_SMA_UNREADY() use the macros provided by \b rkhrdy.h.
+RKH_SMA_UNREADY() use the macros provided by \c rkhrdy.h.
 
 \b NO: \n
 Nothing to do.
@@ -514,11 +514,11 @@ Nothing to do.
 the event queues with a message queue of the underlying OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhport.h
-\li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \c rkhport.h
+\li (2) Define the macro #RKH_EQ_TYPE = 0 in \c rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
-\b rkhport.c file.
+\c rkhport.c file.
 
 <EM>Generic example</EM>
 \code
@@ -570,27 +570,27 @@ rkh_sma_get( RKHSMA_T *sma )
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
-\b rkhport.h
+\c rkhport.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \c rkhport.h.
 		
 <EM>If the application code uses the RKH native scheduler, are implemented 
 the event queues with the native queues RKHRQ_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_RQ_EN = 1 in 
-\b rkhport.h and \b rkhcfg.h respectively.
+\c rkhport.h and \c rkhcfg.h respectively.
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \b rkhport.h.
+\li (3) Define #RKH_EQ_TYPE = RKHRQ_T in \c rkhport.h.
 		
 \b NO: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \b rkhport.h
-\li (2) Define the macro #RKH_EQ_TYPE = 0 in \b rkhport.h according to OS/RTOS.
+\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \c rkhport.h
+\li (2) Define the macro #RKH_EQ_TYPE = 0 in \c rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
-\b rkhport.c file.
+\c rkhport.c file.
 
 \n <HR>
 \section dyn Dynamic event support
@@ -599,7 +599,7 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 
 \b NO: \n
 \li (1) Define the macros #RKH_EN_DYNAMIC_EVENT = 0 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhport.h.
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \c rkhport.h.
 
 \b YES: \n
 
@@ -609,9 +609,9 @@ OS/RTOS?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhport.h
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \c rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
-RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \b rkhport.h 
+RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \c rkhport.h 
 according to underlying OS/RTOS.
 
 <EM>Generic example</EM>
@@ -633,7 +633,7 @@ according to underlying OS/RTOS.
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
-#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
+#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \c rkhcfg.h
 
 <EM>If the application code uses the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
@@ -641,11 +641,11 @@ RKHMP_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \b rkhcfg.h and \b rkhport.h respectively.
+#RKH_EN_NATIVE_DYN_EVENT = 0 in \c rkhcfg.h and \c rkhport.h respectively.
 
 \b NO: \n
 \li (1) Define the macro #RKH_EN_DYNAMIC_EVENT = 1,  
-#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \b rkhcfg.h
+#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_MP_EN = 1 in \c rkhcfg.h
 
 \n <HR>
 \section hk Hook functions
@@ -658,7 +658,7 @@ functions. All these functions in RKH are easily indentifiable by the
 rkh_hk_signal(), rkh_hk_timeout(), rkh_hk_start(), rkh_hk_exit(), 
 and rkh_hk_idle(). 
 Please, see RKH_HK_EN_DISPATCH, RKH_HK_EN_SIGNAL, RKH_HK_EN_TIMEOUT, 
-RKH_HK_EN_START, and RKH_HK_EN_EXIT options from the \b rkhcfg.h.\n
+RKH_HK_EN_START, and RKH_HK_EN_EXIT options from the \c rkhcfg.h.\n
 
 \code void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e )\endcode
 \copydetails RKH_HK_EN_DISPATCH
@@ -709,7 +709,7 @@ A RKH port cannot and should not define all the functions that it calls,
 because this would render the port too inflexible. Therefore, the 
 application-specific functions \c rkh_trc_open(), \c rkh_trc_close(), 
 \c rkh_trc_flush(), and \c rkh_trc_getts() are application provided typically 
-in the board support package (bsp.c).
+in the board support package (\c bsp.c).
 
 \n
 \code void rkh_trc_open( void )\endcode
@@ -727,7 +727,7 @@ in the board support package (bsp.c).
 <HR>
 \section rkhp A port file example.
 
-<EM>\b "rkhport.h" for x86, VC08, and win32 with scheduler emulation</EM>
+<EM>\c "rkhport.h" for x86, VC08, and win32 with scheduler emulation</EM>
 <EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
@@ -885,7 +885,7 @@ const char *rkh_get_port_desc( void );
 #endif
 \endcode
 
-<EM>\b "rkht.h" for x86, VC08, and win32 scheduler emulation</EM>
+<EM>\c "rkht.h" for x86, VC08, and win32 scheduler emulation</EM>
 <EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
@@ -921,7 +921,7 @@ typedef signed int		HInt;
 #endif
 \endcode
 
-<EM>\b "rkhport.c" for x86, VC08, and win32 with scheduler emulation</EM>
+<EM>\c "rkhport.c" for x86, VC08, and win32 with scheduler emulation</EM>
 <EM> (\\source\\portable\\80x86\\win32_st\\vc08)</EM>
 
 \code
@@ -1173,7 +1173,7 @@ Explanation
 \li (7)	\c 2 is the state machine application priority.
 \li (8)	the \c my state machine is defined as a hierarchical state machine. 
 		The available property options are enumerated in RKH_HPPTY_T 
-		enumeration in the \b rkh.h file.
+		enumeration in the \c rkh.h file.
 \li (9)	\c S1 is the initial state.
 \li (10) \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
@@ -1190,11 +1190,11 @@ Explanation
 \subsection qref0_3 Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -1283,11 +1283,11 @@ Explanation
 \subsection qref1_3 Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -1407,11 +1407,11 @@ RKH_CREATE_BASIC_STATE( S12, 5, NULL, NULL, &S1, (RKHPPRO_T*)&option );
 \b Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -1755,11 +1755,11 @@ RKH_DCLR_REF_ENPNT ENPNT;
 \subsection qrefsb_c Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -1892,11 +1892,11 @@ Explanation
 \b Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -2017,11 +2017,11 @@ Explanation
 \b Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
@@ -2091,11 +2091,11 @@ Explanation
 \b Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
@@ -2167,11 +2167,11 @@ Explanation
 \b Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
@@ -2633,11 +2633,11 @@ to recycle "dynamic" events.
 \subsection qref7_5 Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
@@ -2926,11 +2926,11 @@ Explanation
 \subsection qref18_3 Customization
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h shows the general layout of the configuration file.
+\c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure. See \ref cfg section for more information. 
 
@@ -2967,7 +2967,7 @@ Next: \ref cross "Examples"
 
 First of all, RKH has a set of configuration options related to trace tool 
 facility, which an user that require this feature must be properly configure 
-in the \b rkhcfg.h header file.
+in the \c rkhcfg.h header file.
 
 \li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
 \li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
@@ -3006,7 +3006,7 @@ See \ref cfg section for more information about that.
 
 For using the native trace facility the user should implement several 
 functions which are platform and application specific. These function 
-prototypes are definied within \b rkh.h file and listed below:
+prototypes are definied within \c rkh.h file and listed below:
 
 \li \b rkh_trc_open() \copydetails RKH_TRC_OPEN
 
@@ -3216,8 +3216,9 @@ files and libraries to be used by RKH applications.
 		layers.
 - (4)	Board support package (BSP). Platform-dependent files, which 
 		implements RKH support on each platform defined by the (3) layer.
-- (5)	RKH port. Implements all the platform-specific code.
-- (6)	Defined by processor, hardware, compiler, and operating system in use.
+- (5)	RKH port. Implements all the platform-specific code, which is defined 
+		by processor, hardware, compiler, and operating system in use.
+- (6)	Target hardware.
 
 \n RKH cross-platform examples:
 
@@ -3233,11 +3234,11 @@ Prev: \ref main_page "Home" \n
 Next: \ref Usage "Getting started with RKH"
 
 Each RKH application must have its own configuration file, called 
-\b rkhcfg.h. This file adapts and configures RKH by means of compiler
+\c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
-\b rkhcfg.h file shows the general layout of the configuration file.
+\c rkhcfg.h file shows the general layout of the configuration file.
 Here is an list of all options with their documentation:
 
 \n This section includes:
@@ -3373,6 +3374,9 @@ Next: \ref dbg "Tracing tool"
 using the RKH framework. To do that is proposed a simple example, which is 
 shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
 rules and concepts for making the most out of RKH features.
+
+\image html rkh_framework_3.png "RKH Software Architecture"
+
 \note
 Although the diagram shown in the \ref fig1 "Figure 1" does not have a 
 submachine state, was considered appropriate to include in this section a 
