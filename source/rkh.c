@@ -201,14 +201,14 @@ RKH_MODULE_NAME( rkh )
 			{															\
 				--snl;													\
 				RKH_EXEC_ENTRY( *snl, CM( sma ) );						\
-				RKH_TR_SM_ENSTATE( sma, *snl );						\
+				RKH_TR_SM_ENSTATE( sma, *snl );						    \
 			}															\
 			stn = *snl;													\
 			while( IS_COMPOSITE( stn ) )								\
 			{															\
 				stn = CCMP(stn)->defchild;								\
 				RKH_EXEC_ENTRY( stn, CM( sma ) );						\
-				RKH_TR_SM_ENSTATE( sma, stn );						\
+				RKH_TR_SM_ENSTATE( sma, stn );						    \
 				++nen;													\
 			}															\
 		}
@@ -381,11 +381,11 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
-	RKH_TR_SM_DCH(	sma, 				   /* this state machine object */
-						pe );									   /* event */
-	RKH_TR_SM_TRN( 	sma, 				   /* this state machine object */
-						stn, 					 /* transition source state */
-						ts );					 /* transition target state */
+	RKH_TR_SM_DCH(	sma, 				       /* this state machine object */
+					pe );					     				   /* event */
+	RKH_TR_SM_TRN( 	sma, 				       /* this state machine object */
+					stn, 					     /* transition source state */
+					ts );					     /* transition target state */
 
 	                                                 /* enabled transition? */
 	                    /* A CT is enabled if its trigger is the dispatched */
@@ -409,7 +409,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
 															/* ---- Stage 3 */
-		RKH_TR_SM_CSTATE( 	sma, 		   /* this state machine object */
+		RKH_TR_SM_CSTATE( 	sma, 		       /* this state machine object */
 			   					  /* target state of the transition segment */
 								ets );
 
