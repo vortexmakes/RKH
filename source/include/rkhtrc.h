@@ -1402,24 +1402,6 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
-		 * 	Desc 	= dispatch an event to a state machine\n
-		 * 	Group 	= RKH_TG_SM\n
-		 * 	Id 		= RKH_TE_SM_DCH\n
-		 * 	Args	= sma, signal\n
-		 */
-
-		#if RKH_TRC_EN_SM_DCH == 1
-			#define RKH_TR_SM_DCH( sma, ev )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SIG( ev->e ); 						\
-						RKH_TRC_END()
-		#else
-			#define RKH_TR_SM_DCH( sma, ev )				(void)0
-		#endif
-
-		/**
 		 * 	Desc 	= clear history pseudostate\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CLRH\n
@@ -1435,6 +1417,24 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 		#else
 			#define RKH_TR_SM_CLRH( sma, h )				(void)0
+		#endif
+
+		/**
+		 * 	Desc 	= dispatch an event to a state machine\n
+		 * 	Group 	= RKH_TG_SM\n
+		 * 	Id 		= RKH_TE_SM_DCH\n
+		 * 	Args	= sma, signal\n
+		 */
+
+		#if RKH_TRC_EN_SM_DCH == 1
+			#define RKH_TR_SM_DCH( sma, ev )							\
+						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
+									sma->romrkh->prio )					\
+							RKH_TRC_SYM( sma ); 						\
+							RKH_TRC_SIG( ev->e ); 						\
+						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_DCH( sma, ev )				(void)0
 		#endif
 
 		/**
@@ -1514,7 +1514,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= number of entry and exit states in transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_NENEX\n
-		 * 	Args	= sma, nenex\n
+		 * 	Args	= sma, nen, nex\n
 		 */
 
 		#if RKH_TRC_EN_SM_NENEX == 1 
@@ -1552,7 +1552,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= state or pseudostate in a compound transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CSTATE\n
-		 * 	Args	= sma, state/pseudosstate\n
+		 * 	Args	= sma, state/pseudostate\n
 		 */
 
 		#if RKH_TRC_EN_SM_CSTATE == 1
@@ -1597,6 +1597,19 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	Desc 	= The transition was cancelled by guard function.\n
+		 * 	Group 	= RKH_TG_SM\n
+		 * 	Id 		= RKH_TE_SM_GRD_FALSE\n
+		 * 	Args	= sma\n
+		 */
+
+			#define RKH_TR_SM_GRD_FALSE( sma )							\
+						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
+									sma->romrkh->prio )					\
+							RKH_TRC_SYM( sma ); 						\
+						RKH_TRC_END()
+
+		/**
 		 * 	Desc 	= the branch function returned a value not founded 
 		 * 			  in the branch table.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1606,19 +1619,6 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_CND_NFOUND( sma )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,			\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-						RKH_TRC_END()
-
-		/**
-		 * 	Desc 	= The transition was cancelled by guard function.\n
-		 * 	Group 	= RKH_TG_SM\n
-		 * 	Id 		= RKH_TE_SM_GRD_FALSE\n
-		 * 	Args	= sma\n
-		 */
-
-			#define RKH_TR_SM_GRD_FALSE( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1843,7 +1843,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= defer an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_DEFER\n
-		 * 	Args	= signal\n
+		 * 	Args	= event queue, signal\n
 		 */
 
 		#define RKH_TR_FWK_DEFER( q, ev )								\
@@ -1871,7 +1871,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
-		 * 	Args	= object address\n
+		 * 	Args	= object address, symbol\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the address of the object, in memory 
@@ -1903,7 +1903,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for signal\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_SIG\n
-		 * 	Args	= signal number\n
+		 * 	Args	= signal number, symbol\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the numerical value of the event signal to the 
@@ -1945,7 +1945,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for function\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_FUN\n
-		 * 	Args	= function address\n
+		 * 	Args	= function address, symbol\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the address of the function in memory 
