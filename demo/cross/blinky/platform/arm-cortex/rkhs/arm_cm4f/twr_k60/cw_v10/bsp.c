@@ -47,7 +47,7 @@ RKH_THIS_MODULE
 	/* Trazer Tool COM Port */
 	#define TRC_COM_PORT		COM1	
 
-	#define SERIAL_TRACE_OPEN()		uart_init( UART3_BASE_PTR, mcu_busclk_hz/1000, 115200 )
+	#define SERIAL_TRACE_OPEN()		uart_init( UART3_BASE_PTR, (int)(mcu_busclk_hz/1000), 115200 )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
 	#define SERIAL_TRACE_SEND( d ) 	uart_putchar (UART3_BASE_PTR, d);
 #else
@@ -120,7 +120,7 @@ rkh_trc_flush( void )
 
 	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
 	{
-		SERIAL_TRACE_SEND( *d );		
+		SERIAL_TRACE_SEND( (char)*d );		
 	}
 }
 #endif

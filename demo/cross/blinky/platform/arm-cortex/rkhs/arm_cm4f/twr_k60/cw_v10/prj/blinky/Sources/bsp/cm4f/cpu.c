@@ -26,7 +26,9 @@ fll_mfactor( void )
 		case 2:
 			return MCG_C4_DMX32 ? 2197 : 1920;
 		case 3:
+		default:			
 			return MCG_C4_DMX32 ? 2929 : 2560;
+					
 	}
 }
 
@@ -75,7 +77,8 @@ cpu_reset( void )
 	temp_AIRCR = SCB_AIRCR & SCB_AIRCR_VECTKEY_MASK;
 	temp_AIRCR |= SCB_AIRCR_VECTKEY(0xFA05);
 	SCB_AIRCR = temp_AIRCR;
-  	while(1);
+  	while(1)
+  		;
 }
 
 #define  DEM_CR_TRCENA        (1 << 24)

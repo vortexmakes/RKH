@@ -33,7 +33,7 @@
 #include "cpu.h"
 
 
-#define BSP_KERNEL_IRQ_PRIO		0
+#define BSP_KERNEL_IRQ_PRIO		6
 #define BSP_HIGHEST_IRQ_PRI		5
 
 void bsp_init( int argc, char *argv[] );

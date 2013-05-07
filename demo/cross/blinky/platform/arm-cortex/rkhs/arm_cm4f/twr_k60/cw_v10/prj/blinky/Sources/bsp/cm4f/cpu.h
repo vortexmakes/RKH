@@ -28,6 +28,9 @@ void cpu_init( void );
 void systick_init( uint32_t tick_hz );
 void isr_systick( void );
 
+void cpu_tstmr_init ( void );
+uint32_t cpu_tstmr_read( void );
+
 void cpu_reset( void );
 
 #endif

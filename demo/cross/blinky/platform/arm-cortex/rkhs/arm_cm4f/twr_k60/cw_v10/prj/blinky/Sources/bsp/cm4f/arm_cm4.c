@@ -61,7 +61,7 @@ void wait (void)
 void write_vtor (int vtor)
 {
         /* Write the VTOR with the new value */
-        SCB_VTOR = vtor;	
+        SCB_VTOR = (uint32)vtor;	
 }
 /***********************************************************************/
 /*
@@ -78,12 +78,6 @@ void write_vtor (int vtor)
 void enable_irq (int irq)
 {
     int div;
-    
-    /* Make sure that the IRQ is an allowable number. Right now up to 91 is 
-     * used.
-     */
-    if (irq > 91)
-        printf("\nERR! Invalid IRQ value passed to enable irq function!\n");
     
     /* Determine which of the NVICISERs corresponds to the irq */
     div = irq/32;
@@ -119,13 +113,7 @@ void enable_irq (int irq)
 void disable_irq (int irq)
 {
     int div;
-    
-    /* Make sure that the IRQ is an allowable number. Right now up to 91 is 
-     * used.
-     */
-    if (irq > 91)
-        printf("\nERR! Invalid IRQ value passed to disable irq function!\n");
-    
+
     /* Determine which of the NVICICERs corresponds to the irq */
     div = irq/32;
     
@@ -160,19 +148,10 @@ void set_irq_priority (int irq, int prio)
     /*irq priority pointer*/
     uint8 *prio_reg;
     
-    /* Make sure that the IRQ is an allowable number. Right now up to 91 is 
-     * used.
-     */
-    if (irq > 91)
-        printf("\nERR! Invalid IRQ value passed to priority irq function!\n");
-
-    if (prio > 15)
-        printf("\nERR! Invalid priority value passed to priority irq function!\n");
-    
     /* Determine which of the NVICIPx corresponds to the irq */
     prio_reg = (uint8 *)(((uint32)&NVICIP0) + irq);
     /* Assign priority to IRQ */
-    *prio_reg = ( (prio&0xF) << (8 - ARM_INTERRUPT_LEVEL_BITS) );             
+    *prio_reg = (uint8)( (prio&0xF) << (8 - ARM_INTERRUPT_LEVEL_BITS) );             
 }
 /***********************************************************************/
 

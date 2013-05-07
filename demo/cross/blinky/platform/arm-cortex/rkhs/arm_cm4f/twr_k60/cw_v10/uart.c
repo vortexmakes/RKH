@@ -66,7 +66,7 @@ void uart_init (UART_MemMapPtr uartch, int sysclk, int baud)
     UART_BDL_REG(uartch) = (uint8)(sbr & UART_BDL_SBR_MASK);
     
     /* Determine if a fractional divider is needed to get closer to the baud rate */
-    brfa = (((sysclk*32000)/(baud * 16)) - (sbr * 32));
+    brfa = (uint16)(((sysclk*32000)/(baud * 16)) - (sbr * 32));
     
     /* Save off the current value of the UARTx_C4 register except for the BRFA field */
     temp = UART_C4_REG(uartch) & ~(UART_C4_BRFA(0x1F));
@@ -90,10 +90,11 @@ void uart_init (UART_MemMapPtr uartch, int sysclk, int baud)
 char uart_getchar (UART_MemMapPtr channel)
 {
     /* Wait until character has been received */
-    while (!(UART_S1_REG(channel) & UART_S1_RDRF_MASK));
+    while (!(UART_S1_REG(channel) & UART_S1_RDRF_MASK))
+    	;
     
     /* Return the 8-bit data from the receiver */
-    return UART_D_REG(channel);
+    return (char)UART_D_REG(channel);
 }
 /********************************************************************/
 /*
@@ -106,7 +107,8 @@ char uart_getchar (UART_MemMapPtr channel)
 void uart_putchar (UART_MemMapPtr channel, char ch)
 {
 	/* Wait until space is available in the FIFO */
-    while(!(UART_S1_REG(channel) & UART_S1_TDRE_MASK));
+    while(!(UART_S1_REG(channel) & UART_S1_TDRE_MASK))
+    	;
     
     /* Send the character */
     UART_D_REG(channel) = (uint8)ch;
@@ -124,7 +126,7 @@ void uart_putchar (UART_MemMapPtr channel, char ch)
  */
 int uart_getchar_present (UART_MemMapPtr channel)
 {
-    return (UART_S1_REG(channel) & UART_S1_RDRF_MASK);
+    return (int)(UART_S1_REG(channel) & UART_S1_RDRF_MASK);
 }
 /********************************************************************/
     
