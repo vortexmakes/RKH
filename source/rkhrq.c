@@ -65,6 +65,8 @@ RKH_MODULE_NAME( rkhrq )
 void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
 					void *sma )
 {
+	RKH_SR_ALLOC();
+
 	q->pstart = sstart;
 	q->pin = q->pout = ( void ** )sstart;
 	q->nelems = ssize;
@@ -87,7 +89,7 @@ HUInt
 rkh_rq_is_full( RKHRQ_T *q )
 {
 	RKH_RQNE_T qty;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 	
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	
@@ -105,7 +107,7 @@ RKH_RQNE_T
 rkh_rq_get_num( RKHRQ_T *q )
 {
 	RKH_RQNE_T qty;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 	
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	
@@ -123,7 +125,7 @@ RKH_RQNE_T
 rkh_rq_get_lwm( RKHRQ_T *q )
 {
 	RKH_RQNE_T nmin;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 	
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	
@@ -140,7 +142,7 @@ void *
 rkh_rq_get( RKHRQ_T *q  )
 {
 	void *e = CV(0);
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	RKH_ENTER_CRITICAL_();
@@ -172,8 +174,8 @@ rkh_rq_get( RKHRQ_T *q  )
 	}
 	else
 	{
-		RKH_TR_RQ_GET( q, q->qty );
 		RKH_EXIT_CRITICAL_();
+		RKH_TR_RQ_GET( q, q->qty );
 	}
 	return e;
 }
@@ -182,7 +184,7 @@ rkh_rq_get( RKHRQ_T *q  )
 void 
 rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
@@ -220,7 +222,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 void 
 rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
@@ -261,7 +263,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 void 
 rkh_rq_deplete( RKHRQ_T *q )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( q != ( RKHRQ_T* )0 );
 	RKH_ENTER_CRITICAL_();
@@ -270,7 +272,6 @@ rkh_rq_deplete( RKHRQ_T *q )
 	if( q->sma != CV(0) )
 		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T* )( q->sma ) );
 	RKH_EXIT_CRITICAL_();
-	
 	RKH_TR_RQ_DEPLETE( q );
 }
 #endif
@@ -280,7 +281,7 @@ rkh_rq_deplete( RKHRQ_T *q )
 HUInt 
 rkh_rq_read( RKHRQ_T *q, void *pe )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
@@ -305,7 +306,7 @@ rkh_rq_read( RKHRQ_T *q, void *pe )
 void 
 rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKH_ENTER_CRITICAL_();
 	*pqi = q->rqi;
@@ -317,7 +318,7 @@ void
 rkh_rq_clear_info( RKHRQ_T *q )
 {
 	RKH_RQI_T *prqi;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	prqi = &q->rqi;
 

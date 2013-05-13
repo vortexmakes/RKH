@@ -748,13 +748,14 @@
 	 * 	<EM>Example for x86, VC2008, and win32 single thread:</EM>
 	 * 	\code
 	 * 	//#define RKH_CPUSR_TYPE
-	 * 	#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
-	 * 	#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
+	 * 	#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
+	 * 	#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
 	 * 	\endcode
 	 */
 
 	#define RKH_CPUSR_TYPE
-	#define RKH_SR_CRITICAL_					RKH_CPUSR_TYPE sr
+	#define RKH_SR_ALLOC()						RKH_CPUSR_TYPE sr = \
+														(RKH_CPUSR_TYPE)0
 	#define RKH_ENTER_CRITICAL( dummy )
 	#define RKH_EXIT_CRITICAL( dummy )
 	/*@}*/
@@ -868,14 +869,15 @@
 
 #ifdef RKH_CPUSR_TYPE
 	#if RKH_EN_DOXYGEN == 0
-		#define RKH_SR_CRITICAL_			RKH_CPUSR_TYPE sr
+		#define RKH_SR_ALLOC()				RKH_CPUSR_TYPE sr = \
+														(RKH_CPUSR_TYPE)0
 		#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( sr )
 		#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
 	#endif
 #else
-	#define RKH_SR_CRITICAL_
-	#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( dummy )
-	#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( dummy )
+	#define RKH_SR_ALLOC()
+	#define RKH_ENTER_CRITICAL_()			RKH_ENTER_CRITICAL( dummy )
+	#define RKH_EXIT_CRITICAL_()			RKH_EXIT_CRITICAL( dummy )
 #endif
 
 

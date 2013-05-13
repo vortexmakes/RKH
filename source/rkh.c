@@ -274,6 +274,7 @@ rkh_init_hsm( RKHSMA_T *sma )
 #if RKH_SMA_EN_HCAL == 1
 	RKHROM RKHST_T *s;
 #endif
+	RKH_SR_ALLOC();
 
     RKHASSERT( 	sma != (RKHSMA_T *)0 && 
 				sma->romrkh->istate != (RKHROM RKHST_T *)0 );
@@ -334,7 +335,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKH_RAM RKHACT_T *pal;
                                         /* # of executed transition actions */
 	RKH_RAM rkhui8_t nal;
-
+	RKH_SR_ALLOC();
 
     RKHASSERT( sma != (RKHSMA_T *)0 && pe != (RKHEVT_T *)0 );
 
@@ -579,7 +580,7 @@ void
 rkh_sma_clear_info( RKHSMA_T *sma )
 {
 	RKH_SMAI_T *psi;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	psi = &sma->sinfo;
 
@@ -592,7 +593,7 @@ rkh_sma_clear_info( RKHSMA_T *sma )
 void 
 rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKH_ENTER_CRITICAL_();
 	*psi = sma->sinfo;

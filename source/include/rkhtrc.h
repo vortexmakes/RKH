@@ -668,7 +668,6 @@ typedef enum rkh_trc_events
 	 */
 
 	#define RKH_TRC_BEGIN( eid, prio )				\
-				RKH_SR_CRITICAL_;					\
 				if(	rkh_trc_isoff_( eid ) && 		\
 					rkh_trc_sma_isoff_( prio ) )	\
 				{									\
@@ -690,15 +689,42 @@ typedef enum rkh_trc_events
 					rkh_trc_end();				\
 					RKH_EXIT_CRITICAL_();		\
 				}
+
+	/**
+	 * 	Idem RKH_TRC_BEGIN() macro but without entering critical section.
+	 *
+	 *	\param eid		is the trace event ID (RKH_TRC_EVENTS).
+	 *	\param prio		priority of state machine application.
+	 */
+
+	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )	\
+				if(	rkh_trc_isoff_(eid) && 		\
+					rkh_trc_sma_isoff_(prio) )	\
+				{								\
+					rkh_trc_begin( eid );
+
+	/**
+	 * 	Idem RKH_TRC_EXIT() macro but without exiting critical section.
+	 */
+
+	#define RKH_TRC_END_NOCRIT()				\
+					rkh_trc_end();				\
+				}
 #else
 	#define RKH_TRC_BEGIN( eid, prio )			\
-				RKH_SR_CRITICAL_;				\
+				RKH_SR_ALLOC();					\
 				RKH_ENTER_CRITICAL_();			\
 				rkh_trc_begin( eid );
 
 	#define RKH_TRC_END()						\
 				rkh_trc_end();					\
 				RKH_EXIT_CRITICAL_();
+
+	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )	\
+				rkh_trc_begin( eid );
+
+	#define RKH_TRC_END_NOCRIT()				\
+				rkh_trc_end();
 #endif
 
 
@@ -708,7 +734,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_BEGIN_WOFIL( eid )					\
-				RKH_SR_CRITICAL_;					\
+				RKH_SR_ALLOC();						\
 				RKH_ENTER_CRITICAL_();				\
 				rkh_trc_begin( eid );
 
@@ -799,7 +825,7 @@ enum rkh_trc_fmt
 	 */
 
 	#define RKH_TRC_USR_BEGIN( eid_ ) 				\
-					RKH_SR_CRITICAL_;				\
+					RKH_SR_ALLOC();					\
 					if(	rkh_trc_isoff_( eid_ ) )	\
 					{								\
 						RKH_ENTER_CRITICAL_();		\
@@ -814,6 +840,25 @@ enum rkh_trc_fmt
 						rkh_trc_end();				\
 						RKH_EXIT_CRITICAL_();		\
 					}
+
+	/**
+	 * 	Idem RKH_TRC_USR_BEGIN() macro but without entering critical section.
+	 */
+
+	#define RKH_TRC_USR_BEGIN_NOCRIT( eid_ ) 		\
+					if(	rkh_trc_isoff_( eid_ ) )	\
+					{								\
+						rkh_trc_begin( eid_ );
+
+
+	/**
+	 * 	Idem RKH_TRC_USR_END() macro but without exiting critical section.
+	 */
+
+	#define RKH_TRC_USR_END_NOCRIT() 				\
+						rkh_trc_end();				\
+					}
+
 	/**
 	 * 	\brief 
 	 * 	Output formatted rkhi8_t to the trace record.
@@ -944,20 +989,22 @@ enum rkh_trc_fmt
 					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
 	#endif
 #else
-	#define RKH_TRC_USR_BEGIN( eid_ ) 	(void)0;
-	#define RKH_TRC_USR_END()			(void)0
-	#define RKH_TUSR_I8( w_, d_ )		(void)0
-	#define RKH_TUSR_UI8( w_, d_ )		(void)0
-	#define RKH_TUSR_I16( w_, d_ )		(void)0
-	#define RKH_TUSR_UI16( w_, d_ )		(void)0
-	#define RKH_TUSR_I32( w_, d_ )		(void)0
-	#define RKH_TUSR_UI32( w_, d_ )		(void)0
-	#define RKH_TUSR_X32( w_, d_ )		(void)0
-	#define RKH_TUSR_STR( s_ )			(void)0
-	#define RKH_TUSR_MEM( mem_, size_ )	(void)0
-	#define RKH_TUSR_OBJ( obj_ )		(void)0
-	#define RKH_TUSR_FUN( fun_ )		(void)0
-	#define RKH_TUSR_SIG( sig_ )		(void)0
+	#define RKH_TRC_USR_BEGIN( eid_ ) 			(void)0;
+	#define RKH_TRC_USR_END()					(void)0
+	#define RKH_TRC_USR_BEGIN_NOCRIT( eid_ ) 	(void)0
+	#define RKH_TRC_USR_END_NOCRIT()			(void)0
+	#define RKH_TUSR_I8( w_, d_ )				(void)0
+	#define RKH_TUSR_UI8( w_, d_ )				(void)0
+	#define RKH_TUSR_I16( w_, d_ )				(void)0
+	#define RKH_TUSR_UI16( w_, d_ )				(void)0
+	#define RKH_TUSR_I32( w_, d_ )				(void)0
+	#define RKH_TUSR_UI32( w_, d_ )				(void)0
+	#define RKH_TUSR_X32( w_, d_ )				(void)0
+	#define RKH_TUSR_STR( s_ )					(void)0
+	#define RKH_TUSR_MEM( mem_, size_ )			(void)0
+	#define RKH_TUSR_OBJ( obj_ )				(void)0
+	#define RKH_TUSR_FUN( fun_ )				(void)0
+	#define RKH_TUSR_SIG( sig_ )				(void)0
 #endif
 
 
@@ -2090,10 +2137,10 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_ASSERT == 1
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )						\
-						RKH_TRC_BEGIN( RKH_TE_FWK_ASSERT, NVS )			\
+						RKH_TRC_BEGIN_NOCRIT( RKH_TE_FWK_ASSERT, NVS )	\
 							RKH_TRC_STR( (RKHROM char *)mod_ );			\
 							RKH_TRC_UI16( (rkhui16_t)ln_ );				\
-						RKH_TRC_END()									\
+						RKH_TRC_END_NOCRIT()							\
 						RKH_TRC_FLUSH()
 		#else
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )		(void)0

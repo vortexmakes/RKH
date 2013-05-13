@@ -71,6 +71,7 @@ rkh_enter( void )
 	rkhui8_t prio;
 	RKHSMA_T *sma;
 	RKHEVT_T *e;
+	RKH_SR_ALLOC();
 
 	RKH_HK_START();
 	RKH_TR_FWK_EN();
@@ -114,6 +115,7 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 {
     ( void )stks;
     ( void )stksize;
+	RKH_SR_ALLOC();
 
 	rkh_rq_init( &sma->equeue, (const void** )qs, qsize, sma );
 	rkh_sma_register( sma );
@@ -125,6 +127,8 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 void 
 rkh_sma_terminate( RKHSMA_T *sma )
 {
+	RKH_SR_ALLOC();
+
 	rkh_sma_unregister( sma );
 	RKH_TR_SMA_TERM( sma );
 }
