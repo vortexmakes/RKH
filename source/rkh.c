@@ -106,7 +106,8 @@ RKH_MODULE_NAME( rkh )
 
 #define RKH_EXEC_TRANSITION( sma, e )							\
 				for( pal = al; nal != 0; ++pal, --nal )			\
-					RKH_CALL_ACTION( *pal, (sma), (e) )
+					RKH_CALL_ACTION( *pal, (sma), (e) );		\
+				pal = al
 
 
 #if RKH_TRC_EN == 1
@@ -175,8 +176,8 @@ RKH_MODULE_NAME( rkh )
 				RKH_EXEC_EXIT( stx, CM( sma ) );							\
 									/* update histories of exited states */ \
 				RKH_UPDATE_SHALLOW_HIST( stx, h );							\
-				RKH_TR_SM_EXSTATE( sma,   /* this state machine object */ 	\
-									 stx );              /* exited state */ \
+				RKH_TR_SM_EXSTATE( 	sma,    /* this state machine object */ \
+									stx );               /* exited state */ \
 			}																\
 			else															\
 				break;														\
@@ -412,7 +413,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 															/* ---- Stage 3 */
 		RKH_TR_SM_CSTATE( 	sma, 		       /* this state machine object */
 			   					  /* target state of the transition segment */
-								ets );
+							ets );
 
 								/* ... traverses the taken transition until */
    				   		  /* the segment target state (ets) == simple state */
@@ -420,10 +421,20 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 		{
 			switch( CB(ets)->type )
 			{
-#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CONDITIONAL == 1
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_CHOICE == 1
+				case RKH_CHOICE:
+	                  /* perform the actions on the transition sequentially */
+			         /* according to the order in which they are written on */
+				       /* the transition, from the action closest to source */
+                            /* state to the action closest to target state. */
+					RKH_TR_SM_NTRNACT( 	sma,   /* this state machine object */ 
+										nal,          /* # executed actions */
+                 								   /* # transition segments */
+										RKH_GET_STEP() );
+					RKH_EXEC_TRANSITION( sma, pe );
+#endif
+#if RKH_SMA_EN_PSEUDOSTATE == 1 && (RKH_SMA_EN_CONDITIONAL == 1 || RKH_SMA_EN_CHOICE == 1)
 				case RKH_CONDITIONAL:
-					            /* found a conditional (choice) pseudostate */
-										      /* in the compound transition */
 						/* evaluates the guards of its outgoing transitions */
 					FIND_BRANCH( CCD( ets )->trtbl, tr, sma, pe );
 
@@ -442,23 +453,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 											  /* another transition segment */
 					RKH_INC_STEP();
 					ets = tr->target;
-					break;
-#endif
-#if RKH_SMA_EN_PSEUDOSTATE == 1 && RKH_SMA_EN_JUNCTION == 1
-				case RKH_JUNCTION:
-					                        /* found a junction pseudostate */
-										      /* in the compound transition */
-					  /* Should be added: test transition guard and call it */
-																	 /* ... */
-					if( rkh_add_tr_action( &pal, CJ(ets)->action, &nal ) )
-					{
-						RKH_TR_SM_EX_TSEG( sma );
-						RKHERROR();
-						return RKH_EX_TSEG;
-					}
-											  /* another transition segment */
-					RKH_INC_STEP();
-					ets = CJ(ets)->target;
 					break;
 #endif
 #if RKH_SMA_EN_HCAL == 1 && RKH_SMA_EN_PSEUDOSTATE == 1 && ( RKH_SMA_EN_SHALLOW_HISTORY == 1 || RKH_SMA_EN_DEEP_HISTORY == 1 )
@@ -540,9 +534,9 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 			         /* according to the order in which they are written on */
 				       /* the transition, from the action closest to source */
                             /* state to the action closest to target state. */
-	RKH_TR_SM_NTRNACT( 	sma,               /* this state machine object */ 
-							nal,                      /* # executed actions */
-							RKH_GET_STEP() );      /* # transition segments */
+	RKH_TR_SM_NTRNACT( 	sma,                   /* this state machine object */ 
+						nal,                          /* # executed actions */
+						RKH_GET_STEP() );          /* # transition segments */
 	RKH_EXEC_TRANSITION( sma, pe );
 
 	if( IS_NOT_INTERNAL_TRANSITION() )

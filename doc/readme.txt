@@ -1854,17 +1854,18 @@ is_sync( RKHEVT_T *pe )
 
 \n Prev: \ref qref "Quick reference"
 
-A conditional pseudostate (also called choice pseudostate) is defined with 
+A conditional pseudostate (also called juncton pseudostate) is defined with 
 the RKH_CREATE_COND_STATE() macro and declared with the 
 #RKH_DCLR_COND_STATE macro. Frequently, each state machine and its 
 states and pseudostates are encapsulated inside a dedicated source file 
 (.c file), from which the RKH_CREATE_COND_STATE() macro is used.
-We will develop one example of choice pseudostate definition to 
-illustrate the use of this macro. We will give our choice pseudostate 
-the name \c C1. As will demostrates the use of RKH_CREATE_COND_STATE() 
-macro and its arguments is very similar to RKH_CREATE_BASIC_STATE() macro.
+We will develop one example of conditional pseudostate 
+(aka junction pseudostate) definition to illustrate the use of this macro. We 
+will give our junction pseudostate the name \c C1. As will demostrates the 
+use of RKH_CREATE_COND_STATE() macro and its arguments is very similar to 
+RKH_CREATE_BASIC_STATE() macro.
 
-<b>Defining a choice pseudostate</b>
+<b>Defining a conditional pseudostate</b>
 \code
 (1)	//	my.c: state-machine's module
 
@@ -1872,7 +1873,7 @@ macro and its arguments is very similar to RKH_CREATE_BASIC_STATE() macro.
 (3)							0 );
 \endcode
 
-<b>Declaring a choice pseudostate</b>
+<b>Declaring a conditional pseudostate</b>
 \code
 //	my.h: state-machine's header file
 
@@ -1884,8 +1885,8 @@ Explanation
 
 \li (1)	Frequently, each state machine and its states are encapsulated 
 		inside a dedicated source file (.c file), from which the 
-		RKH_CREATE_BASIC_STATE() macro is used.
-\li (2)	\c C1 is the pseudostate name. Represents a choice pseudostate 
+		RKH_CREATE_COND_STATE() macro is used.
+\li (2)	\c C1 is the pseudostate name. Represents a conditional pseudostate 
 		structure.
 \li (3)	\c 0 is the value of pseudostate ID.
 
@@ -2120,49 +2121,43 @@ structure. See \ref cfg section for more information.
 \n Prev: \ref qref "Quick reference"
 
 <HR>
-\section qref6 Defining a junction pseudostate
+\section qref6 Defining a choice pseudostate
 
 \n Prev: \ref qref "Quick reference"
 
-A conditional pseudostate (also called branch pseudostate) is defined with 
-the RKH_CREATE_JUNCTION_STATE() macro and declared with the 
-#RKH_DCLR_JUNC_STATE macro. Frequently, each state machine and its 
-states and pseudostates are encapsulated inside a dedicated source file 
-(.c file), from which the RKH_CREATE_JUNCTION_STATE() macro is used.
-We will develop one example of junction pseudostate definition to 
-illustrate the use of this macro. We will give our junction pseudostate 
-the name \c J1. As will demostrates the use of RKH_CREATE_JUNCTION_STATE() 
-macro and its arguments is very similar to RKH_CREATE_BASIC_STATE() macro.
+A choice pseudostate is defined with the RKH_CREATE_CHOICE_STATE() macro and 
+declared with the #RKH_DCLR_CHOICE_STATE macro. Frequently, each state 
+machine and its states and pseudostates are encapsulated inside a dedicated 
+source file (.c file), from which the RKH_CREATE_CHOICE_STATE() macro is used.
+We will develop one example of choice pseudostate definition to 
+illustrate the use of this macro. We will give our choice pseudostate 
+the name \c CH. As will demostrates the use of RKH_CREATE_CHOICE_STATE() 
+macro and its arguments is very similar to RKH_CREATE_COND_STATE() macro.
 
-<b>Defining a junction pseudostate</b> \n
+<b>Defining a choice pseudostate</b> \n
 \code
 (1)	//	my.c: state-machine's module
 
-(2)	RKH_CREATE_JUNCTION_STATE( 	J1, 
-(3)								8, 
-(4)								dis_all_modules, 
-(6)								&S1 );
+(2)	RKH_CREATE_CHOICE_STATE( 	CH, 
+(3)								8 );
 \endcode
 
-<b>Declaring a junction pseudostate</b>
+<b>Declaring a choice pseudostate</b>
 \code
 //	my.h: state-machine's header file
 
 ...
-RKH_DCLR_JUNC_STATE J1;
+RKH_DCLR_CHOICE_STATE	CH;
 \endcode
 
 Explanation
 
 \li (1)	Frequently, each state machine and its states are encapsulated 
 		inside a dedicated source file (.c file), from which the 
-		RKH_CREATE_JUNCTION_STATE() macro is used.
-\li (2)	\c J1 is the pseudostate name. Represents a junction pseudostate 
+		RKH_CREATE_CHOICE_STATE() macro is used.
+\li (2)	\c CH is the pseudostate name. Represents a choice pseudostate 
 		structure.
-\li (3)	\c 8 is the value of pseudostate ID.
-\li (4)	\c dis_all_modules segment action to be taken. This argument is 
-		optional, thus it could be declared as NULL.
-\li (5)	\c S1 is the target state.
+\li (3)	\c 0 is the value of pseudostate ID.
 
 \b Customization
 
@@ -2186,13 +2181,13 @@ structure. See \ref cfg section for more information.
 	ID number. This number allows to uniquely identify a state. \n\n
 - \b RKH_SMA_EN_PSEUDOSTATE: \n
 	Enable (1) or disable (0) the pseudostates usage. \n\n
+- \b RKH_SMA_EN_CHOICE: \n
+	Enable (1) or disable (0) the choice connector usage.
 - \b RKH_SMA_MAX_TR_SEGS: \n
 	Determines the maximum number of linked transition segments. The smaller 
 	this number, the lower the static RAM consumption. Typically, the most 
 	of hierarchical state machines uses up to 4 transition segments. 
 	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-- \b RKH_EN_JUNCTION: \n
-	Enable (1) or disable (0) the junction connector usage.
 
 \n Prev: \ref qref "Quick reference"
 
@@ -2207,7 +2202,7 @@ pointer to functions, in most of its data structures by means of
 RKH_SMA_CREATE(), RKH_CREATE_COMP_STATE(), 
 RKH_CREATE_BASIC_STATE(), RKH_TRINT(), RKH_TRREG(), RKH_BRANCH(), 
 RKH_CREATE_SHALLOW_HISTORY_STATE(), RKH_CREATE_DEEP_HISTORY_STATE(), and 
-RKH_CREATE_JUNCTION_STATE() macros.
+RKH_CREATE_CHOICE_STATE() macros.
 Obviously, the set of available functions and its configurations 
 is mandatory to known for properly using the framework. 
 
@@ -3281,7 +3276,7 @@ Here is an list of all options with their documentation:
 \li \b RKH_SMA_EN_PSEUDOSTATE \copydetails RKH_SMA_EN_PSEUDOSTATE
 \li \b RKH_SMA_EN_DEEP_HISTORY \copydetails RKH_SMA_EN_DEEP_HISTORY	
 \li \b RKH_SMA_EN_SHALLOW_HISTORY \copydetails RKH_SMA_EN_SHALLOW_HISTORY
-\li \b RKH_SMA_EN_JUNCTION \copydetails RKH_SMA_EN_JUNCTION	
+\li \b RKH_SMA_EN_CHOICE \copydetails RKH_SMA_EN_CHOICE
 \li \b RKH_SMA_EN_CONDITIONAL \copydetails RKH_SMA_EN_CONDITIONAL
 \li \b RKH_SMA_EN_SUBMACHINE \copydetails RKH_SMA_EN_SUBMACHINE
 \li \b RKH_SMA_EN_INIT_ARG_SMA \copydetails RKH_SMA_EN_INIT_ARG_SMA

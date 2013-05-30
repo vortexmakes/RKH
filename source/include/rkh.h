@@ -282,22 +282,21 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a conditional pseudostate. 
+ *	This macro creates a conditional pseudostate (a.k.a. junction). 
  *
- * 	Choice pseudostate (a.k.a conditional) which, when reached, result in 
- * 	the dynamic evaluation of the guards of its outgoing 
- * 	transitions. This realizes a dynamic conditional branch. It allows 
- * 	splitting of transitions into multiple outgoing paths such that the 
- * 	decision on which path to take may be a function of the results of 
- * 	prior actions performed in the same run-to-completion step. If more 
- * 	than one of the guards evaluates to true, an arbitrary one is selected. 
- * 	If none of the guards evaluates to true, then the model is considered 
- * 	ill-formed. To avoid this, it is recommended to define one outgoing 
- * 	transition with the predefined “else” guard for every choice 
- * 	pseudostate.
- *	Also, branches cannot contain triggers, but in addition to a guard they 
- *	may contain actions. A branch can enter another condition connector, 
- *	thus providing for the nesting of branches.
+ * 	The conditional pseudostates are semantic-free vertices that are used to 
+ * 	chain together multiple transitions. They are used to construct compound 
+ * 	transition paths between states. For example, a junction can be used to 
+ * 	converge multiple incoming transitions into a single outgoing transition 
+ * 	representing a shared transition path (this is known as a merge).
+ * 	Conversely, they can be used to split an incoming transition into multiple 
+ * 	outgoing transition segments with different guard conditions. This 
+ * 	realizes a static conditional branch. (In the latter case, outgoing 
+ * 	transitions whose guard conditions evaluate to false are disabled. A 
+ * 	predefined guard denoted "ELSE" may be defined for at most one outgoing 
+ * 	transition. This transition is enabled if all the guards labeling the 
+ * 	other transitions are false.) Static conditional branches are distinct 
+ * 	from dynamic conditional branches that are realized by choice vertices.
  *	
  *	\sa
  *	RKHSCOND_T structure definition for more information.
@@ -322,30 +321,40 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- *	This macro creates a junction pseudostate.
+ *	This macro creates a choice pseudostate. 
  *
- *	Transitions arrows can be joined using junction pseudostate. 
- *	Multiple entrances and exits may be attached to a junction.
- *
+ * 	Choice pseudostate which, when reached, result in the dynamic evaluation 
+ * 	of the guards of its outgoing transitions. This realizes a dynamic 
+ * 	conditional branch. It allows splitting of transitions into multiple 
+ * 	outgoing paths such that the decision on which path to take may be a 
+ * 	function of the results of prior actions performed in the same 
+ * 	run-to-completion step. If more than one of the guards evaluates to true, 
+ * 	an arbitrary one is selected. If none of the guards evaluates to true, 
+ * 	then the model is considered ill-formed. To avoid this, it is recommended 
+ * 	to define one outgoing transition with the predefined "ELSE" guard for 
+ * 	every choice pseudostate.
+ *	Also, branches cannot contain triggers, but in addition to a guard they 
+ *	may contain actions. A branch can enter another choice connector, thus 
+ *	providing for the nesting of branches.
+ *	
  *	\sa
- *	RKHSJUNC_T structure definition for more information.
+ *	RKHSCHOICE_T structure definition for more information.
  *
- * 	\param name		pseudostate name. Represents a junction pseudostate 
+ * 	\param name		pseudostate name. Represents a choice pseudostate 
  * 					structure.
  * 	\param id		the value of state ID. This argument is optional, thus it 
  * 					could be eliminated in compile-time with 
  * 					RKH_SMA_EN_STATE_ID = 0.	
- * 	\param action	pointer to transition action. This argument is optional, 
- * 					thus it could be declared as NULL.
- * 	\param target	pointer to target state.
  */
 
-#define RKH_CREATE_JUNCTION_STATE( name,id,action,target )				\
+#define RKH_CREATE_CHOICE_STATE( name,id )								\
 																		\
-								RKHROM RKHSJUNC_T name =				\
+								extern RKHROM RKHTR_T name##_trtbl[];	\
+																		\
+								RKHROM RKHSCHOICE_T name =				\
 								{										\
-									{MKBASE(RKH_JUNCTION,id)},			\
-									action,	target 						\
+									{MKBASE(RKH_CHOICE,id)},			\
+									name##_trtbl 						\
 								}
 
 
@@ -991,7 +1000,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_DCLR_COMP_STATE		extern RKHROM RKHSCMP_T
 #define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSBSC_T
 #define RKH_DCLR_COND_STATE		extern RKHROM RKHSCOND_T
-#define RKH_DCLR_JUNC_STATE		extern RKHROM RKHSJUNC_T
+#define RKH_DCLR_CHOICE_STATE	extern RKHROM RKHSCHOICE_T
 #define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
 #define RKH_DCLR_SHIST_STATE	extern RKHROM RKHSHIST_T
 #define RKH_DCLR_SUBM_STATE		extern RKHROM RKHSSBM_T

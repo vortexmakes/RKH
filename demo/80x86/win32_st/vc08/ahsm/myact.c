@@ -78,6 +78,14 @@ dummy_exit( const struct rkhsma_t *sma )
 
 
 void
+set_x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	(void)pe;
+	CMY( sma )->x = 1;
+}
+
+
+void
 set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
@@ -160,17 +168,4 @@ x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;
-}
-
-
-/*
- *	Defines guard functions
- */
-
-
-HUInt
-x_equal_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
-{
-	(void)pe;
-	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }

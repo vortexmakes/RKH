@@ -249,11 +249,11 @@
 #define RKH_SMA_EN_SHALLOW_HISTORY		1
 
 /**
- *	If the #RKH_SMA_EN_JUNCTION and #RKH_SMA_EN_PSEUDOSTATE are set to 1, the 
- *	RKH allows junction pseudostate usage.
+ *	If the #RKH_SMA_EN_CHOICE and #RKH_SMA_EN_PSEUDOSTATE are set to 1, the 
+ *	RKH allows choice pseudostate usage.
  */
 
-#define RKH_SMA_EN_JUNCTION				1
+#define RKH_SMA_EN_CHOICE				1
 
 /**
  *	If the #RKH_SMA_EN_CONDITIONAL and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
@@ -410,7 +410,7 @@
  *	related to the native software timer.
  */
 
-#define RKH_TRC_EN_TIM					1
+#define RKH_TRC_EN_TIM					0
 
 /**
  *	If the #RKH_TRC_EN_SM is set to 1 then RKH will include all trace records 

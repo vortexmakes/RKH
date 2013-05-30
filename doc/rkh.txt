@@ -72,7 +72,7 @@ platform-independent modules which is shown in the following figure.
 - Include a native \ref dbg.
 - Support hierarchically nested states, and flat state machine.
 - Support multiple state machines.
-- Support conditional, junction, and history pseudostates.
+- Support conditional, choice, and history pseudostates.
 - Support compound transitions with guards.
 - Support \link RKHSSBM_T submachine state\endlink.
 - Support local transitions.
