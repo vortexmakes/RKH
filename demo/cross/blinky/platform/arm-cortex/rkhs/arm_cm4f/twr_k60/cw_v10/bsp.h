@@ -34,13 +34,14 @@
 
 
 #define BSP_KERNEL_IRQ_PRIO		6
+#define BSP_UART_IRQ_PRIO		7
 #define BSP_HIGHEST_IRQ_PRI		5
 
 void bsp_init( int argc, char *argv[] );
 void bsp_led_on( void );
 void bsp_led_off( void );
 
-#ifdef DEBUG
+#ifdef RKH_DEBUG
 #define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )
 #else					
 #define reset_now()		cpu_reset()

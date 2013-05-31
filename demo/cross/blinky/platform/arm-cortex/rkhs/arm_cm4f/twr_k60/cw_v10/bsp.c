@@ -29,7 +29,7 @@
 #include "rkh.h"
 
 #include "cpu.h"
-#include "uart.h"
+#include "kuart.h"
 #include "gpio.h"
 
 
@@ -44,12 +44,17 @@ RKH_THIS_MODULE
 
 #if SERIAL_TRACE == 1
 
+	static const KUARTPP_ST trz_uart = 
+	{
+		115200, 0, 1, KUART_HFC_DISABLE, NULL
+	};
+
 	/* Trazer Tool COM Port */
 	#define TRC_COM_PORT		COM1	
 
-	#define SERIAL_TRACE_OPEN()		uart_init( UART3_BASE_PTR, (int)(mcu_busclk_hz/1000), 115200 )
+	#define SERIAL_TRACE_OPEN()		kuart_init( UART3_BASE_PTR, &trz_uart )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	uart_putchar (UART3_BASE_PTR, d);
+	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
 #else
 	#define SERIAL_TRACE_OPEN()		(void)0
 	#define SERIAL_TRACE_CLOSE()	(void)0

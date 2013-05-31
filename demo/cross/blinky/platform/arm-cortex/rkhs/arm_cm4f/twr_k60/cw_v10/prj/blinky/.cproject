@@ -62,31 +62,31 @@
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.hidden.adjusted.1705768995.adjusted.1543224123" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.hidden.adjusted.1705768995" value="com.freescale.arm.cdt.toolchain.enableWarnings.custom.hidden" valueType="enumerated"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1020598815.adjusted.912588204" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1020598815" value="false" valueType="boolean"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.hidden.adjusted.2141329398.adjusted.1153357220" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.hidden.adjusted.2141329398" value="com.freescale.arm.cdt.toolchain.enableWarnings.all.hidden" valueType="enumerated"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.1711696841" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings" value="com.freescale.arm.cdt.toolchain.enableWarnings.all" valueType="enumerated"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnIllPragma.adjusted.1495674607" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnIllPragma" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnPossibleErr.adjusted.393335215" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnPossibleErr" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnExtendedErrChecks.adjusted.816908476" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnExtendedErrChecks" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnHideVirtual.adjusted.226144410" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnHideVirtual" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitConv.adjusted.979991817" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitConv" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitSignUnsign.adjusted.677276812" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitSignUnsign" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitFloatToInt.adjusted.343871561" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitFloatToInt" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitInt2Float.adjusted.1896068484" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitInt2Float" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.ptrToInt.adjusted.619994073" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.ptrToInt" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.relax_i2i_conv.adjusted.124229291" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.relax_i2i_conv" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedArgs.adjusted.96661074" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedArgs" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedVar.adjusted.570188959" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedVar" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.notused.adjusted.572960860" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.notused" value="false" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.missingReturn.adjusted.1368101320" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.missingReturn" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.noSideEffect.adjusted.1293922020" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.noSideEffect" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.extraCommas.adjusted.767860301" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.extraCommas" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.emptyDecl.adjusted.12122347" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.emptyDecl" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.classStruct.adjusted.1918928150" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.classStruct" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.includeCapitalization.adjusted.474023575" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.includeCapitalization" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.sysIncludeCap.adjusted.1283993564" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.sysIncludeCap" value="true" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.padBytesAdded.adjusted.1911079614" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.padBytesAdded" value="false" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.undefMacroIf.adjusted.1175658120" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.undefMacroIf" value="false" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.nonInlinedFunction.adjusted.917292372" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.nonInlinedFunction" value="false" valueType="boolean"/>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.tokenpasting.adjusted.235354946" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.tokenpasting" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.1711696841" name="Enable Warnings" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings" value="com.freescale.arm.cdt.toolchain.enableWarnings.all" valueType="enumerated"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnIllPragma.adjusted.1495674607" name="Illegal #pragmas (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnIllPragma" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnPossibleErr.adjusted.393335215" name="Possible Unwanted Effects (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnPossibleErr" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnExtendedErrChecks.adjusted.816908476" name="Extended Error Checks (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnExtendedErrChecks" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warnHideVirtual.adjusted.226144410" name="Hidden Virtual Functions (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warnHideVirtual" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitConv.adjusted.979991817" name="Implicit Arithmetic Conversions (all)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitConv" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitSignUnsign.adjusted.677276812" name="Implicit Signed/Unsigned Conversions (all)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitSignUnsign" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitFloatToInt.adjusted.343871561" name="Implicit Float to Integer Conversions (all)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitFloatToInt" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitInt2Float.adjusted.1896068484" name="Implicit Integer to Float Conversions (all)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.implicitInt2Float" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.ptrToInt.adjusted.619994073" name="Pointer/Integer Conversions (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.ptrToInt" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.relax_i2i_conv.adjusted.124229291" name="Relax Implicit Integer to Integer Arithmetic Conversions" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.relax_i2i_conv" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedArgs.adjusted.96661074" name="Unused Arguments (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedArgs" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedVar.adjusted.570188959" name="Unused Variables (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.unusedVar" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.notused.adjusted.572960860" name="Unused Result from Non-Void-Returning Function (full)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.notused" value="false" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.missingReturn.adjusted.1368101320" name="Missing 'return' Value in Non-Void-Returning Function (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.missingReturn" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.noSideEffect.adjusted.1293922020" name="Expression has no Side Effect (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.noSideEffect" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.extraCommas.adjusted.767860301" name="Extra Commas (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.extraCommas" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.emptyDecl.adjusted.12122347" name="Empty Declarations (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.emptyDecl" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.classStruct.adjusted.1918928150" name="Inconsistent 'class'/'struct' Usage (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.classStruct" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.includeCapitalization.adjusted.474023575" name="Incorrect Capitalization in #include (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.includeCapitalization" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.sysIncludeCap.adjusted.1283993564" name="Incorrect Capitalization in System #include (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.sysIncludeCap" value="true" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.padBytesAdded.adjusted.1911079614" name="Pad Bytes Added (full)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.padBytesAdded" value="false" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.undefMacroIf.adjusted.1175658120" name="Undefined Macro in #if/#elif (full)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.undefMacroIf" value="false" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.nonInlinedFunction.adjusted.917292372" name="Non-Inlined Functions (full)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.nonInlinedFunction" value="false" valueType="boolean"/>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.tokenpasting.adjusted.235354946" name="Token not Formed by ## Operator (most)" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.tokenpasting" value="true" valueType="boolean"/>
 								<inputType id="com.freescale.arm.cdt.toolchain.armCpp.cSource.180218820" name="ARM C/C++ Compiler" superClass="com.freescale.arm.cdt.toolchain.armCpp.cSource"/>
 							</tool>
 							<tool id="com.freescale.arm.cdt.toolchain.assembler.48125763" name="ARM Assembler" superClass="com.freescale.arm.cdt.toolchain.assembler">
@@ -183,6 +183,20 @@
 							</inputType>
 						</tool>
 					</fileInfo>
+					<folderInfo id="com.freescale.arm.cdt.toolchain.config.arm.release.1330581831.193656285" name="/" resourcePath="Sources/bsp">
+						<toolChain id="com.freescale.arm.cdt.toolchain.arm.release.164345193" name="ARM Toolchain" superClass="com.freescale.arm.cdt.toolchain.arm.release" unusedChildren="">
+							<targetPlatform id="com.freescale.arm.cdt.toolchain.targetplatform" isAbstract="false" name="ARM Target Platform" superClass="com.freescale.arm.cdt.toolchain.targetplatform"/>
+							<tool id="com.freescale.arm.cdt.toolchain.linker.81230082" name="ARM Linker" superClass="com.freescale.arm.cdt.toolchain.linker.34879031"/>
+							<tool id="com.freescale.arm.cdt.toolchain.compiler.1833224712" name="ARM Compiler" superClass="com.freescale.arm.cdt.toolchain.compiler.95694495">
+								<inputType id="com.freescale.arm.cdt.toolchain.armCpp.cSource.124836409" name="ARM C/C++ Compiler" superClass="com.freescale.arm.cdt.toolchain.armCpp.cSource"/>
+							</tool>
+							<tool id="com.freescale.arm.cdt.toolchain.assembler.1534672362" name="ARM Assembler" superClass="com.freescale.arm.cdt.toolchain.assembler.1028650267">
+								<inputType id="com.freescale.arm.cdt.toolchain.armAsm.input.798118732" name="ARM Assembler Input" superClass="com.freescale.arm.cdt.toolchain.armAsm.input"/>
+							</tool>
+							<tool id="com.freescale.arm.cdt.toolchain.preproc.184351950" name="ARM Preprocessor" superClass="com.freescale.arm.cdt.toolchain.preproc.2082575753"/>
+							<tool id="com.freescale.arm.cdt.toolchain.disassembler.401163482" name="ARM Disassembler" superClass="com.freescale.arm.cdt.toolchain.disassembler.169875020"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry excluding="Project_Settings/Linker_Files/MK60DN512_ram.lcf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
