@@ -67,6 +67,8 @@ static
 void
 rem_from_list( RKHT_T *t, RKHT_T *tprev )
 {
+	RKH_SR_ALLOC();
+
 	if( thead == t )			/* is first timer in the list? */
 		thead = t->tnext;
 	else
@@ -80,7 +82,7 @@ void
 rkh_tim_tick( void )
 {
 	RKHT_T *t, *tprev;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKH_ENTER_CRITICAL_();
 	if( thead == CPTIM(0) )		/* is empty list? */
@@ -122,7 +124,7 @@ rkh_tim_init_( RKHT_T *t, RKHEVT_T *e )
 rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk )
 #endif
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 	RKHREQUIRE( t != CPTIM(0) && e != CE(0) );
 
 	RKH_ENTER_CRITICAL_();
@@ -139,16 +141,17 @@ rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk )
 void 
 rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 {
-	RKH_SR_CRITICAL_;
-	RKHREQUIRE( t != CPTIM(0) && sma != (const RKHSMA_T *)0 && itick != 0 );
+	RKH_SR_ALLOC();
 
+	RKHREQUIRE( t != CPTIM(0) && sma != (const RKHSMA_T *)0 && itick != 0 );
 	RKH_ENTER_CRITICAL_();
+
 	t->sma = sma;
 	t->ntick = itick;
 	if( t->used == 0 )
 		add_to_list( t );
-	RKH_EXIT_CRITICAL_();
 
+	RKH_EXIT_CRITICAL_();
 	RKH_TR_TIM_START( t, itick, sma );
 }
 
@@ -156,9 +159,9 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 void 
 rkh_tim_stop( RKHT_T *t )
 {
-	RKH_SR_CRITICAL_;
-	RKHREQUIRE( t != CPTIM(0) );
+	RKH_SR_ALLOC();
 
+	RKHREQUIRE( t != CPTIM(0) );
 	RKH_ENTER_CRITICAL_();
 	t->ntick = 0;
 	RKH_EXIT_CRITICAL_();
@@ -171,7 +174,7 @@ rkh_tim_stop( RKHT_T *t )
 void 
 rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKH_ENTER_CRITICAL_();
 	*info = t->info;
@@ -183,7 +186,7 @@ void
 rkh_tim_clear_info( RKHT_T *t )
 {
 	RKH_TINFO_T *pi;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	pi = &t->info;
 
