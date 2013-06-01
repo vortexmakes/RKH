@@ -59,7 +59,7 @@ void
 rkh_sma_register( RKHSMA_T *sma )
 {
     rkhui8_t prio = sma->romrkh->prio;
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 
     RKHREQUIRE( ( prio >= 0 ) && ( prio < (rkhui8_t)RKH_MAX_SMA )
               && rkh_sptbl[ prio ] == ( RKHSMA_T * )0 );
@@ -75,7 +75,7 @@ void
 rkh_sma_unregister( RKHSMA_T *sma )
 {
     rkhui8_t prio = sma->romrkh->prio;
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 
     RKHREQUIRE( ( prio >= 0 ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )
               && ( rkh_sptbl[ prio ] == sma ) );

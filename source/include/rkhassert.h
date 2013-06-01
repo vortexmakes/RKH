@@ -87,7 +87,6 @@
  *	{
  *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
  *
- *		RKH_DIS_INTERRUPT();
  *		RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
  *		__debugbreak();
  *	}

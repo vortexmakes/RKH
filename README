@@ -96,15 +96,6 @@ RKH changelog file.
 
 This file resumes the changes across project version releases.
 
-Changes between V2.3 and V2.4 released 05/03/2013
-
-+	Add the cross-platform demo 'blinky' for arm-cortex, s08 and coldfire v1.
-+	Add the arm-cortex port.
-+	Add RKH_TICK_RATE_HZ and RKH_TICK_RATE_MS constants.
-+	Fix RKH_FILTER_OFF_GROUP_ALL_EVENTS() and RKH_FILTER_ON_GROUP_ALL_EVENTS()
-	macros.
-+	Eliminated the rkhdata.h file from demos.
-
 Changes between V2.2 and V2.3 released 02/05/2013
 
 +	Enhance the runtime trace filter.
