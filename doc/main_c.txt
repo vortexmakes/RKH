@@ -58,7 +58,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_OBJ( &S32 );
 	RKH_TR_FWK_OBJ( &C1 );
 	RKH_TR_FWK_OBJ( &C2 );
-	RKH_TR_FWK_OBJ( &J );
+	RKH_TR_FWK_OBJ( &CH );
 	RKH_TR_FWK_OBJ( &DH );
 	RKH_TR_FWK_OBJ( &H );
 

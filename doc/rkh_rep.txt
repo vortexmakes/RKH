@@ -647,8 +647,8 @@ macros respectively, which are defined in \b rkh.h file. Also, these macros
 are broadly explained in the \ref qref section. 
 
 The following figures, \ref ic1 "Figure 11", \ref ic2 "Figure 12", 
-\ref ij "Figure 13", and \ref ih "Figure 14" highlights the 
-pseudostates "C1", "C2", "J", "H", and "DH" respectively. 
+\ref ich "Figure 13", and \ref ih "Figure 14" highlights the 
+pseudostates "C1", "C2", "CH", "H", and "DH" respectively. 
 Also, shows its implementation using the RKH framework.
 
 \n
@@ -705,8 +705,8 @@ As said above, the actions and guards in RKH framework are represented by
 functions.
 
 \n
-\anchor ij
-\image html ij.png "Figure 13 - choice pseudostate \"CH\""
+\anchor ich
+\image html ich.png "Figure 13 - choice pseudostate \"CH\""
 
 \n
 \anchor ih
@@ -1124,7 +1124,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_OBJ( &S32 );
 	RKH_TR_FWK_OBJ( &C1 );
 	RKH_TR_FWK_OBJ( &C2 );
-	RKH_TR_FWK_OBJ( &J );
+	RKH_TR_FWK_OBJ( &CH );
 	RKH_TR_FWK_OBJ( &DH );
 	RKH_TR_FWK_OBJ( &H );
 

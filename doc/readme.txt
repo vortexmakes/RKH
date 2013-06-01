@@ -1,5 +1,5 @@
 /** 
-\page Installation INSTALLATION
+\page Installation Installation
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -308,7 +308,7 @@ applications.
 Prev: \ref main_page "Home" \n
 Next: \ref Porting "Porting"
 
-\page Porting PORTING
+\page Porting Porting
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -1058,7 +1058,7 @@ rkh_sma_terminate( RKHSMA_T *sma )
 }
 \endcode
 
-\page qref QUICK REFERENCE
+\page qref Quick reference
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -2936,7 +2936,7 @@ structure. See \ref cfg section for more information.
 
 Prev: \ref main_page "Home"
 
-\page dbg TRACING TOOL
+\page dbg Tracing tool
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -3179,7 +3179,7 @@ Here is the \ref trazer
 Prev: \ref main_page "Home" \n
 Next: \ref cross "Examples"
 
-\page cross CROSS-PLATFORM DEMOS
+\page cross Cross-platform demos
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -3222,7 +3222,7 @@ files and libraries to be used by RKH applications.
 Prev: \ref main_page "Home" \n
 Next: \ref Download "Download"
 
-\page cfg CONFIGURATION
+\page cfg Configuration
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
@@ -3359,7 +3359,7 @@ Here is an list of all options with their documentation:
 
 
 /**
-\page Usage GETTING STARTED WITH RKH
+\page Usage Getting started with RKH
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n

@@ -43,7 +43,7 @@ David Harel</EM>
 - \ref ack
 
 <HR>
-\section Overview OVERVIEW
+\section Overview Overview
 
 RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
 and open-source development tool for implementing hierarchical 
@@ -86,7 +86,7 @@ platform-independent modules which is shown in the following figure.
 
 
 <HR>
-\section Purpose PURPOSE AND INSPIRATION
+\section Purpose Purpose and inspiration
 
 For many years, I had been used the traditional state machine concepts
 based on state table strategy for modeling the dynamic behavior of several 
@@ -104,12 +104,12 @@ easily adapted to 16 or 32-bits platforms.
 
 
 <HR>
-\section Download DOWNLOAD
+\section Download Download
 
 RKH download: http://sourceforge.net/projects/rkh-reactivesys/ 
 
 <HR>
-\section Others OTHER IMPLEMENTATIONS
+\section Others Other implementations
 
 Open-source frameworks that support Statecharts.
 
@@ -117,7 +117,7 @@ Open-source frameworks that support Statecharts.
 - Intelliwizard	- http://www.intelliwizard.com/
 
 <HR>
-\section Resources RESOURCES
+\section Resources Resources
 
 - M. Samek - "Practical UML Statecharts in C/C++, Second Edition: Event-Driven Programming for Embedded Systems", http://www.state-machine.com/psicc2/
 - M. Samek and P. Montgomery - "State-Oriented Programming", http://www.embedded.com/2000/0008/0008feat1.htm
@@ -128,7 +128,7 @@ Open-source frameworks that support Statecharts.
 - D. Harel and H. Kugler - "The Rhapsody Semantics of Statecharts", Lecture Notes in Computer Science, Vol. 3147, Springer-Verlag, 2004, pp. 325-354
 
 <HR>
-\section Licensing LICENSING
+\section Licensing Licensing
 
 Copyright (C) 2010 Leandro Francucci. All rights reserved.
 
@@ -152,13 +152,13 @@ under the GNU GPLv3 license (closed source code), please, contact contact me.
 See \ref contact section.</em>
 
 <HR>
-\section contact CONTACT INFORMATION
+\section contact Contact information
 
 RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
 \n e-mail:		lf@vxtsolutions.com.ar
 
 <HR>
-\section ack ACKNOWLEGMENTS
+\section ack Acknowlegments
 
 I would like to thank to Eduardo Martinez for introducing me to the reactive
 systems problems and Dario Balina for they suggestions, they time, and 

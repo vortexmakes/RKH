@@ -1,7 +1,11 @@
 /**
-\page cross_demoqe128_cfv1 DemoQE128 for Coldfire V1 processor
+\page cross_demoqe128_cfv1 DEMOQE128 for Coldfire V1 processor
+\image html rkh_bunner.jpg
 
-Running Blinky RKH demo on Freescale MCF51QE128 demostration board DEMOQE128.
+Running Blinky RKH demo on Freescale <A HREF="http://www.freescale.com/
+webapp/sps/site/prod_summary.jsp?code=MCF51QE">MCF51QE128</A> demostration 
+board <A HREF="http://www.freescale.com/webapp/sps/site/
+prod_summary.jsp?code=DEMOQE128">DEMOQE128</A>.
 This is a guide to how to setup and use the demo board to evaluate the RKH 
 framework. It assumes a prior knowledge on board features and development 
 environment.
