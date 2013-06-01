@@ -84,7 +84,6 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	(void)line;
 
-	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	rkh_exit();
 	reset_now();

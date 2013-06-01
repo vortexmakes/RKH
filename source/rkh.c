@@ -201,14 +201,14 @@ RKH_MODULE_NAME( rkh )
 			{															\
 				--snl;													\
 				RKH_EXEC_ENTRY( *snl, CM( sma ) );						\
-				RKH_TR_SM_ENSTATE( sma, *snl );						    \
+				RKH_TR_SM_ENSTATE( sma, *snl );						\
 			}															\
 			stn = *snl;													\
 			while( IS_COMPOSITE( stn ) )								\
 			{															\
 				stn = CCMP(stn)->defchild;								\
 				RKH_EXEC_ENTRY( stn, CM( sma ) );						\
-				RKH_TR_SM_ENSTATE( sma, stn );						    \
+				RKH_TR_SM_ENSTATE( sma, stn );						\
 				++nen;													\
 			}															\
 		}
@@ -274,7 +274,6 @@ rkh_init_hsm( RKHSMA_T *sma )
 #if RKH_SMA_EN_HCAL == 1
 	RKHROM RKHST_T *s;
 #endif
-	RKH_SR_ALLOC();
 
     RKHASSERT( 	sma != (RKHSMA_T *)0 && 
 				sma->romrkh->istate != (RKHROM RKHST_T *)0 );
@@ -335,7 +334,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKH_RAM RKHACT_T *pal;
                                         /* # of executed transition actions */
 	RKH_RAM rkhui8_t nal;
-	RKH_SR_ALLOC();
+
 
     RKHASSERT( sma != (RKHSMA_T *)0 && pe != (RKHEVT_T *)0 );
 
@@ -382,11 +381,11 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
-	RKH_TR_SM_DCH(	sma, 				       /* this state machine object */
-					pe );					     				   /* event */
-	RKH_TR_SM_TRN( 	sma, 				       /* this state machine object */
-					stn, 					     /* transition source state */
-					ts );					     /* transition target state */
+	RKH_TR_SM_DCH(	sma, 				   /* this state machine object */
+						pe );									   /* event */
+	RKH_TR_SM_TRN( 	sma, 				   /* this state machine object */
+						stn, 					 /* transition source state */
+						ts );					 /* transition target state */
 
 	                                                 /* enabled transition? */
 	                    /* A CT is enabled if its trigger is the dispatched */
@@ -410,7 +409,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
 															/* ---- Stage 3 */
-		RKH_TR_SM_CSTATE( 	sma, 		       /* this state machine object */
+		RKH_TR_SM_CSTATE( 	sma, 		   /* this state machine object */
 			   					  /* target state of the transition segment */
 								ets );
 
@@ -580,7 +579,7 @@ void
 rkh_sma_clear_info( RKHSMA_T *sma )
 {
 	RKH_SMAI_T *psi;
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 
 	psi = &sma->sinfo;
 
@@ -593,7 +592,7 @@ rkh_sma_clear_info( RKHSMA_T *sma )
 void 
 rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi )
 {
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 
 	RKH_ENTER_CRITICAL_();
 	*psi = sma->sinfo;

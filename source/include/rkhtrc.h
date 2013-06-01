@@ -668,6 +668,7 @@ typedef enum rkh_trc_events
 	 */
 
 	#define RKH_TRC_BEGIN( eid, prio )				\
+				RKH_SR_CRITICAL_;					\
 				if(	rkh_trc_isoff_( eid ) && 		\
 					rkh_trc_sma_isoff_( prio ) )	\
 				{									\
@@ -689,42 +690,15 @@ typedef enum rkh_trc_events
 					rkh_trc_end();				\
 					RKH_EXIT_CRITICAL_();		\
 				}
-
-	/**
-	 * 	Idem RKH_TRC_BEGIN() macro but without entering critical section.
-	 *
-	 *	\param eid		is the trace event ID (RKH_TRC_EVENTS).
-	 *	\param prio		priority of state machine application.
-	 */
-
-	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )	\
-				if(	rkh_trc_isoff_(eid) && 		\
-					rkh_trc_sma_isoff_(prio) )	\
-				{								\
-					rkh_trc_begin( eid );
-
-	/**
-	 * 	Idem RKH_TRC_EXIT() macro but without exiting critical section.
-	 */
-
-	#define RKH_TRC_END_NOCRIT()				\
-					rkh_trc_end();				\
-				}
 #else
 	#define RKH_TRC_BEGIN( eid, prio )			\
-				RKH_SR_ALLOC();					\
+				RKH_SR_CRITICAL_;				\
 				RKH_ENTER_CRITICAL_();			\
 				rkh_trc_begin( eid );
 
 	#define RKH_TRC_END()						\
 				rkh_trc_end();					\
 				RKH_EXIT_CRITICAL_();
-
-	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )	\
-				rkh_trc_begin( eid );
-
-	#define RKH_TRC_END_NOCRIT()				\
-				rkh_trc_end();
 #endif
 
 
@@ -734,7 +708,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_BEGIN_WOFIL( eid )					\
-				RKH_SR_ALLOC();						\
+				RKH_SR_CRITICAL_;					\
 				RKH_ENTER_CRITICAL_();				\
 				rkh_trc_begin( eid );
 
@@ -825,7 +799,7 @@ enum rkh_trc_fmt
 	 */
 
 	#define RKH_TRC_USR_BEGIN( eid_ ) 				\
-					RKH_SR_ALLOC();					\
+					RKH_SR_CRITICAL_;				\
 					if(	rkh_trc_isoff_( eid_ ) )	\
 					{								\
 						RKH_ENTER_CRITICAL_();		\
@@ -840,25 +814,6 @@ enum rkh_trc_fmt
 						rkh_trc_end();				\
 						RKH_EXIT_CRITICAL_();		\
 					}
-
-	/**
-	 * 	Idem RKH_TRC_USR_BEGIN() macro but without entering critical section.
-	 */
-
-	#define RKH_TRC_USR_BEGIN_NOCRIT( eid_ ) 		\
-					if(	rkh_trc_isoff_( eid_ ) )	\
-					{								\
-						rkh_trc_begin( eid_ );
-
-
-	/**
-	 * 	Idem RKH_TRC_USR_END() macro but without exiting critical section.
-	 */
-
-	#define RKH_TRC_USR_END_NOCRIT() 				\
-						rkh_trc_end();				\
-					}
-
 	/**
 	 * 	\brief 
 	 * 	Output formatted rkhi8_t to the trace record.
@@ -989,22 +944,20 @@ enum rkh_trc_fmt
 					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
 	#endif
 #else
-	#define RKH_TRC_USR_BEGIN( eid_ ) 			(void)0;
-	#define RKH_TRC_USR_END()					(void)0
-	#define RKH_TRC_USR_BEGIN_NOCRIT( eid_ ) 	(void)0
-	#define RKH_TRC_USR_END_NOCRIT()			(void)0
-	#define RKH_TUSR_I8( w_, d_ )				(void)0
-	#define RKH_TUSR_UI8( w_, d_ )				(void)0
-	#define RKH_TUSR_I16( w_, d_ )				(void)0
-	#define RKH_TUSR_UI16( w_, d_ )				(void)0
-	#define RKH_TUSR_I32( w_, d_ )				(void)0
-	#define RKH_TUSR_UI32( w_, d_ )				(void)0
-	#define RKH_TUSR_X32( w_, d_ )				(void)0
-	#define RKH_TUSR_STR( s_ )					(void)0
-	#define RKH_TUSR_MEM( mem_, size_ )			(void)0
-	#define RKH_TUSR_OBJ( obj_ )				(void)0
-	#define RKH_TUSR_FUN( fun_ )				(void)0
-	#define RKH_TUSR_SIG( sig_ )				(void)0
+	#define RKH_TRC_USR_BEGIN( eid_ ) 	(void)0;
+	#define RKH_TRC_USR_END()			(void)0
+	#define RKH_TUSR_I8( w_, d_ )		(void)0
+	#define RKH_TUSR_UI8( w_, d_ )		(void)0
+	#define RKH_TUSR_I16( w_, d_ )		(void)0
+	#define RKH_TUSR_UI16( w_, d_ )		(void)0
+	#define RKH_TUSR_I32( w_, d_ )		(void)0
+	#define RKH_TUSR_UI32( w_, d_ )		(void)0
+	#define RKH_TUSR_X32( w_, d_ )		(void)0
+	#define RKH_TUSR_STR( s_ )			(void)0
+	#define RKH_TUSR_MEM( mem_, size_ )	(void)0
+	#define RKH_TUSR_OBJ( obj_ )		(void)0
+	#define RKH_TUSR_FUN( fun_ )		(void)0
+	#define RKH_TUSR_SIG( sig_ )		(void)0
 #endif
 
 
@@ -1449,24 +1402,6 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
-		 * 	Desc 	= clear history pseudostate\n
-		 * 	Group 	= RKH_TG_SM\n
-		 * 	Id 		= RKH_TE_SM_CLRH\n
-		 * 	Args	= sma, history pseudostate\n
-		 */
-
-		#if RKH_TRC_EN_SM_CLRH == 1
-			#define RKH_TR_SM_CLRH( sma, h )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( h ); 							\
-						RKH_TRC_END()
-		#else
-			#define RKH_TR_SM_CLRH( sma, h )				(void)0
-		#endif
-
-		/**
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_DCH\n
@@ -1482,6 +1417,24 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 		#else
 			#define RKH_TR_SM_DCH( sma, ev )				(void)0
+		#endif
+
+		/**
+		 * 	Desc 	= clear history pseudostate\n
+		 * 	Group 	= RKH_TG_SM\n
+		 * 	Id 		= RKH_TE_SM_CLRH\n
+		 * 	Args	= sma, history pseudostate\n
+		 */
+
+		#if RKH_TRC_EN_SM_CLRH == 1
+			#define RKH_TR_SM_CLRH( sma, h )							\
+						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
+									sma->romrkh->prio )					\
+							RKH_TRC_SYM( sma ); 						\
+							RKH_TRC_SYM( h ); 							\
+						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_CLRH( sma, h )				(void)0
 		#endif
 
 		/**
@@ -1561,7 +1514,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= number of entry and exit states in transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_NENEX\n
-		 * 	Args	= sma, nen, nex\n
+		 * 	Args	= sma, nenex\n
 		 */
 
 		#if RKH_TRC_EN_SM_NENEX == 1 
@@ -1599,7 +1552,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= state or pseudostate in a compound transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CSTATE\n
-		 * 	Args	= sma, state/pseudostate\n
+		 * 	Args	= sma, state/pseudosstate\n
 		 */
 
 		#if RKH_TRC_EN_SM_CSTATE == 1
@@ -1644,19 +1597,6 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
-		 * 	Desc 	= The transition was cancelled by guard function.\n
-		 * 	Group 	= RKH_TG_SM\n
-		 * 	Id 		= RKH_TE_SM_GRD_FALSE\n
-		 * 	Args	= sma\n
-		 */
-
-			#define RKH_TR_SM_GRD_FALSE( sma )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-						RKH_TRC_END()
-
-		/**
 		 * 	Desc 	= the branch function returned a value not founded 
 		 * 			  in the branch table.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1666,6 +1606,19 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_CND_NFOUND( sma )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,			\
+									sma->romrkh->prio )					\
+							RKH_TRC_SYM( sma ); 						\
+						RKH_TRC_END()
+
+		/**
+		 * 	Desc 	= The transition was cancelled by guard function.\n
+		 * 	Group 	= RKH_TG_SM\n
+		 * 	Id 		= RKH_TE_SM_GRD_FALSE\n
+		 * 	Args	= sma\n
+		 */
+
+			#define RKH_TR_SM_GRD_FALSE( sma )							\
+						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
 									sma->romrkh->prio )					\
 							RKH_TRC_SYM( sma ); 						\
 						RKH_TRC_END()
@@ -1890,7 +1843,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= defer an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_DEFER\n
-		 * 	Args	= event queue, signal\n
+		 * 	Args	= signal\n
 		 */
 
 		#define RKH_TR_FWK_DEFER( q, ev )								\
@@ -1918,7 +1871,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
-		 * 	Args	= object address, symbol\n
+		 * 	Args	= object address\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the address of the object, in memory 
@@ -1950,7 +1903,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for signal\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_SIG\n
-		 * 	Args	= signal number, symbol\n
+		 * 	Args	= signal number\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the numerical value of the event signal to the 
@@ -1992,7 +1945,7 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for function\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_FUN\n
-		 * 	Args	= function address, symbol\n
+		 * 	Args	= function address\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the address of the function in memory 
@@ -2137,10 +2090,10 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_ASSERT == 1
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )						\
-						RKH_TRC_BEGIN_NOCRIT( RKH_TE_FWK_ASSERT, NVS )	\
+						RKH_TRC_BEGIN( RKH_TE_FWK_ASSERT, NVS )			\
 							RKH_TRC_STR( (RKHROM char *)mod_ );			\
 							RKH_TRC_UI16( (rkhui16_t)ln_ );				\
-						RKH_TRC_END_NOCRIT()							\
+						RKH_TRC_END()									\
 						RKH_TRC_FLUSH()
 		#else
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )		(void)0

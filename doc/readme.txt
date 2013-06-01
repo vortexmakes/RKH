@@ -525,7 +525,7 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 void 
 rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 	
 	RKH_HK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
@@ -540,7 +540,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 void 
 rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 {
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 
 	RKH_HK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
@@ -556,7 +556,7 @@ RKHEVT_T *
 rkh_sma_get( RKHSMA_T *sma )
 {
 	RKHEVT_T *e;
-	RKH_SR_ALLOC();
+	RKH_SR_CRITICAL_;
 
     RKH_ENTER_CRITICAL_();
 	e = os_get_message( &sma->equeue );
@@ -687,7 +687,7 @@ Please, see \ref Installation section about RKH port directory and files.
 \n <HR>
 \section crt Critical section
 
-\copydetails RKH_SR_ALLOC()
+\copydetails RKH_SR_CRITICAL_
 
 \n <HR>
 \section trc Trace facility
