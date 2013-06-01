@@ -112,8 +112,5 @@
 	#include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
 #endif
 
-#ifdef __ARM_CM4FCW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkht.h"
-#endif
 
 #endif

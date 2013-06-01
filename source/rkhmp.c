@@ -69,6 +69,7 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 {
     RKH_FREE_BLK_T *fb;
     RKH_MPNB_T nblocks;
+	RKH_SR_ALLOC();
 
     /* 
 	 * The memory block must be valid and the pool size (\a ssize) must fit 
@@ -136,7 +137,7 @@ void *
 rkh_mp_get( RKHMP_T *mp )
 {
     RKH_FREE_BLK_T *fb;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 && mp->bsize != 0 );
 
@@ -162,7 +163,7 @@ rkh_mp_get( RKHMP_T *mp )
 void 
 rkh_mp_put( RKHMP_T *mp, void *blk )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 	RKHASSERT( mp->bsize != 0 );
@@ -192,7 +193,7 @@ RKH_MPBS_T
 rkh_mp_get_bsize( RKHMP_T *mp )
 {
     RKH_MPBS_T bs;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 
@@ -210,7 +211,7 @@ RKH_MPNB_T
 rkh_mp_get_nfree( RKHMP_T *mp )
 {
     RKH_MPNB_T nfree;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 
@@ -228,7 +229,7 @@ RKH_MPNB_T
 rkh_mp_get_low_wmark( RKHMP_T *mp )
 {
     RKH_MPNB_T nmin;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 
@@ -245,7 +246,7 @@ rkh_mp_get_low_wmark( RKHMP_T *mp )
 void 
 rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
 {
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 && mpi != ( RKH_MPI_T* )0 );
 
@@ -259,7 +260,7 @@ void
 rkh_mp_clear_info( RKHMP_T *mp )
 {
 	RKH_MPI_T *pmpi;
-	RKH_SR_CRITICAL_;
+	RKH_SR_ALLOC();
 
 	RKHASSERT( mp != ( RKHMP_T* )0 );
 	pmpi = &mp->mpi;
