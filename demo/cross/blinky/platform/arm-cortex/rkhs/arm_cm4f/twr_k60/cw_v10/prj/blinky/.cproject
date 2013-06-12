@@ -43,10 +43,11 @@
 							<tool id="com.freescale.arm.cdt.toolchain.compiler.1106940751" name="ARM Compiler" superClass="com.freescale.arm.cdt.toolchain.compiler">
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.409360233" name="Include User Search Paths (-i)" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/ARM_EABI_Support/ewl/EWL_C/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\..\..\..\..\..\..\..\..\source\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\..\..\..\..\..\..\blinky&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm4f\cw_v10&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\cw_v10&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../cw_v10&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../cw_v10/cm4f&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm4f\cw_v10&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\..\demo\cross\blinky&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\..\source\include&quot;"/>
 								</option>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.language.cpp.exceptions.1742267596" name="Enable Exceptions" superClass="com.freescale.arm.cdt.toolchain.armCpp.language.cpp.exceptions" value="false" valueType="boolean"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1019320709.adjusted.1454771365" name="(hidden) warnings flag" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1019320709" value="false" valueType="boolean"/>
@@ -55,9 +56,7 @@
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.define.1808636920" name="Defined Macros" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.define" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__ARM_CM4FCW10__=1"/>
 								</option>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive.1050111227" name="Include User Recursive Search Paths (-ir)" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/blinky/Sources/bsp/cm4f}&quot;"/>
-								</option>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive.1050111227" name="Include User Recursive Search Paths (-ir)" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive" valueType="includePath"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1044745732.adjusted.24163391" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1044745732" value="false" valueType="boolean"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.hidden.adjusted.1705768995.adjusted.1543224123" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.enableWarnings.hidden.adjusted.1705768995" value="com.freescale.arm.cdt.toolchain.enableWarnings.custom.hidden" valueType="enumerated"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1020598815.adjusted.912588204" superClass="com.freescale.arm.cdt.toolchain.armCpp.warn.warningsFlag.hidden.adjusted.1020598815" value="false" valueType="boolean"/>
@@ -133,7 +132,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="afx" artifactName="blinky" buildProperties="" cleanCommand="&quot;${system:ECLIPSE_HOME}/../gnu/bin/rm&quot; -f" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;com.freescale.core.ide.cdt.errorParsers.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser;com.freescale.core.ide.cdt.errorParsers.LnkErrorParser;com.freescale.core.ide.cdt.errorParsers.AsmErrorParser;com.freescale.core.ide.cdt.errorParsers.CobjErrorParser;com.freescale.core.ide.cdt.errorParsers.IcodeErrorParser;com.freescale.core.ide.cdt.errorParsers.LltErrorParser;com.freescale.core.ide.cdt.errorParsers.MwfeErrorParser;com.freescale.core.ide.cdt.errorParsers.MwErrorParser;com.freescale.core.ide.cdt.errorParsers.MPWErrorParser" id="com.freescale.arm.cdt.toolchain.config.arm.release.1330581831" isPrebuildInvalidatingBuild="false" name="FLASH" parent="com.freescale.arm.cdt.toolchain.config.arm.release">
+				<configuration artifactExtension="afx" artifactName="blinky" buildProperties="" buildReferences="true" buildReferencingConfigurations="false" cleanCommand="&quot;${system:ECLIPSE_HOME}/../gnu/bin/rm&quot; -f" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;com.freescale.core.ide.cdt.errorParsers.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser;com.freescale.core.ide.cdt.errorParsers.LnkErrorParser;com.freescale.core.ide.cdt.errorParsers.AsmErrorParser;com.freescale.core.ide.cdt.errorParsers.CobjErrorParser;com.freescale.core.ide.cdt.errorParsers.IcodeErrorParser;com.freescale.core.ide.cdt.errorParsers.LltErrorParser;com.freescale.core.ide.cdt.errorParsers.MwfeErrorParser;com.freescale.core.ide.cdt.errorParsers.MwErrorParser;com.freescale.core.ide.cdt.errorParsers.MPWErrorParser" id="com.freescale.arm.cdt.toolchain.config.arm.release.1330581831" isPrebuildInvalidatingBuild="false" name="FLASH" parent="com.freescale.arm.cdt.toolchain.config.arm.release" produceBuildErrorsWithMissingReferences="true">
 					<folderInfo id="com.freescale.arm.cdt.toolchain.config.arm.release.1330581831." name="/" resourcePath="">
 						<toolChain id="com.freescale.arm.cdt.toolchain.arm.release.558144594" name="ARM Toolchain" superClass="com.freescale.arm.cdt.toolchain.arm.release">
 							<targetPlatform id="com.freescale.arm.cdt.toolchain.targetplatform.1316677538" isAbstract="false" name="ARM Target Platform" superClass="com.freescale.arm.cdt.toolchain.targetplatform"/>
@@ -152,19 +151,18 @@
 							<tool id="com.freescale.arm.cdt.toolchain.compiler.95694495" name="ARM Compiler" superClass="com.freescale.arm.cdt.toolchain.compiler">
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.720874358" name="Include User Search Paths (-i)" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/ARM_EABI_Support/ewl/EWL_C/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\..\..\..\..\..\..\..\..\source\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\..\..\..\..\..\..\blinky&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm4f\cw_v10&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}\..\..\cw_v10&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../cw_v10&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../cw_v10/cm4f&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm4f\cw_v10&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\..\demo\cross\blinky&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\..\source\include&quot;"/>
 								</option>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.language.cpp.exceptions.1222254929" name="Enable Exceptions" superClass="com.freescale.arm.cdt.toolchain.armCpp.language.cpp.exceptions" value="false" valueType="boolean"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.optimization.mode.1047977197" name="Speed vs. Size" superClass="com.freescale.arm.cdt.toolchain.armCpp.optimization.mode" value="com.freescale.arm.cdt.toolchain.armCpp.optimization.mode.space" valueType="enumerated"/>
 								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.define.1117090239" name="Defined Macros" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.define" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__ARM_CM4FCW10__=1"/>
 								</option>
-								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive.1510667098" name="Include User Recursive Search Paths (-ir)" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/blinky/Sources/bsp/cm4f}&quot;"/>
-								</option>
+								<option id="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive.1510667098" name="Include User Recursive Search Paths (-ir)" superClass="com.freescale.arm.cdt.toolchain.armCpp.input.userIncludes.recursive" valueType="includePath"/>
 								<inputType id="com.freescale.arm.cdt.toolchain.armCpp.cSource.1187416147" name="ARM C/C++ Compiler" superClass="com.freescale.arm.cdt.toolchain.armCpp.cSource"/>
 							</tool>
 							<tool id="com.freescale.arm.cdt.toolchain.assembler.1028650267" name="ARM Assembler" superClass="com.freescale.arm.cdt.toolchain.assembler">
@@ -183,20 +181,6 @@
 							</inputType>
 						</tool>
 					</fileInfo>
-					<folderInfo id="com.freescale.arm.cdt.toolchain.config.arm.release.1330581831.193656285" name="/" resourcePath="Sources/bsp">
-						<toolChain id="com.freescale.arm.cdt.toolchain.arm.release.164345193" name="ARM Toolchain" superClass="com.freescale.arm.cdt.toolchain.arm.release" unusedChildren="">
-							<targetPlatform id="com.freescale.arm.cdt.toolchain.targetplatform" isAbstract="false" name="ARM Target Platform" superClass="com.freescale.arm.cdt.toolchain.targetplatform"/>
-							<tool id="com.freescale.arm.cdt.toolchain.linker.81230082" name="ARM Linker" superClass="com.freescale.arm.cdt.toolchain.linker.34879031"/>
-							<tool id="com.freescale.arm.cdt.toolchain.compiler.1833224712" name="ARM Compiler" superClass="com.freescale.arm.cdt.toolchain.compiler.95694495">
-								<inputType id="com.freescale.arm.cdt.toolchain.armCpp.cSource.124836409" name="ARM C/C++ Compiler" superClass="com.freescale.arm.cdt.toolchain.armCpp.cSource"/>
-							</tool>
-							<tool id="com.freescale.arm.cdt.toolchain.assembler.1534672362" name="ARM Assembler" superClass="com.freescale.arm.cdt.toolchain.assembler.1028650267">
-								<inputType id="com.freescale.arm.cdt.toolchain.armAsm.input.798118732" name="ARM Assembler Input" superClass="com.freescale.arm.cdt.toolchain.armAsm.input"/>
-							</tool>
-							<tool id="com.freescale.arm.cdt.toolchain.preproc.184351950" name="ARM Preprocessor" superClass="com.freescale.arm.cdt.toolchain.preproc.2082575753"/>
-							<tool id="com.freescale.arm.cdt.toolchain.disassembler.401163482" name="ARM Disassembler" superClass="com.freescale.arm.cdt.toolchain.disassembler.169875020"/>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry excluding="Project_Settings/Linker_Files/MK60DN512_ram.lcf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
