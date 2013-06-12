@@ -364,20 +364,22 @@ simple cooperative scheduler is located in
 		taxonomy.jsp?code=K60_ETHERNET_CRYPTO_MCU&
 		tid=mKOvp">Kinetis K60</A> </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
-		prod_summary.jsp?code=TWR-K60N512&tid=vanRED">TWR-K60N512</A> </TD>
+		prod_summary.jsp?code=TWR-K60D100M">TWR-K60D100M</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD>  </TD>
+		<TD> \ref cross_twr_K60 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD> Freescale </TD>
-		<TD> <A HREF="http://www.freescale.com/webapp/sps/
-		site/prod_summary.jsp?code=KL2">Kinetis KL</A> </TD>
-		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/prod_summary.jsp?code=FRDM-KL25Z">Freedom</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=
+		K40_100&nodeId=01624698C9DE2DDDAB">Kinetis K40</A> </TD>
+		<TD> <A HREF="https://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=KWIKSTIK-K40">KWIKSTIK-K40</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD>  </TD>
+		<TD> \ref cross_kwi_K40 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#99ff99" align="center" valign="middle" >
