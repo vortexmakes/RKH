@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="ahsm"
-	ProjectGUID="{B1BDBB29-0A42-4A01-894F-3365996380A4}"
-	RootNamespace="ahsm"
+	Name="shared"
+	ProjectGUID="{9C498F1F-016A-4C61-94DB-FDB91B7D2DEB}"
+	RootNamespace="shared"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -43,7 +43,6 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\source\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC08__"
-				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -300,6 +299,10 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\..\..\source\include\rkhrdy.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\..\source\include\rkhrq.h"
 					>
 				</File>
 				<File
