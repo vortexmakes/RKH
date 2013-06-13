@@ -44,6 +44,7 @@ void dummy_exit( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
+void set_x1( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe );
 void dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe );
@@ -65,8 +66,6 @@ HUInt x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe );
 /*
  *	Defines guard functions
  */
-
-HUInt x_equal_1( const struct rkhsma_t *sma, RKHEVT_T *pe );
 
 
 #endif

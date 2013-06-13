@@ -1,5 +1,5 @@
 /**
-\page cross_blinky BLINKY
+\page cross_blinky Blinky
 \image html rkh_bunner.jpg
 
 \n
@@ -338,6 +338,7 @@ simple cooperative scheduler is located in
 
 	<TR bgColor="#c8cedc">
 		<TH><B>&nbsp; CPU Architecture </B></TH>
+		<TH><B>&nbsp; Manufacturer </B></TH>
 		<TH><B>&nbsp; MCU </B></TH>
 		<TH><B>&nbsp; Evaluation Board </B></TH> 
 		<TH><B>&nbsp; Toolchain </B></TH> 
@@ -345,53 +346,81 @@ simple cooperative scheduler is located in
 		<TH><B>&nbsp; Notes </B></TH> 
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD rowspan="2"> ARM - Cortex </TD>
-		<TD> NXP LPC-1769 </TD>
-		<TD> LPCXpresso </TD>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD rowspan="3"> ARM - Cortex </TD>
+		<TD> NXP </TD>
+		<TD> <A HREF="http://www.nxp.com/products/microcontrollers/cortex_m3/
+		LPC1769FBD100.html">LPC1769</A> </TD>
+		<TD> <A HREF="http://www.embeddedartists.com/products/lpcxpresso/
+		lpc1769_xpr.php">LPCXpresso</A> </TD>
 		<TD> Codered </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \ref cross_lpcx1769 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD> Freescale Kinetis KL </TD>
-		<TD> Freedom </TD>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		taxonomy.jsp?code=K60_ETHERNET_CRYPTO_MCU&
+		tid=mKOvp">Kinetis K60</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=TWR-K60D100M">TWR-K60D100M</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD>  </TD>
+		<TD> \ref cross_twr_K60 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=
+		K40_100&nodeId=01624698C9DE2DDDAB">Kinetis K40</A> </TD>
+		<TD> <A HREF="https://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=KWIKSTIK-K40">KWIKSTIK-K40</A> </TD>
+		<TD> Codewarrior v10.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \ref cross_kwi_K40 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#99ff99" align="center" valign="middle" >
+		<TD> Freescale </TD>
 		<TD> Coldfire V1 </TD>
-		<TD> Freescale MCF51QE128 </TD>
-		<TD> DEMOQE128 </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=MCF51QE">MCF51QE128</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
 		<TD> Codewarrior v6.x </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \ref cross_demoqe128_cfv1 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD> Freescale </TD>
 		<TD> S08 </TD>
-		<TD> Freescale S08QE128 </TD>
-		<TD> DEMOQE128 </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/
+		site/prod_summary.jsp?code=S08QE">S08QE128</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
 		<TD> Codewarrior v6.x </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \ref cross_demoqe128_s08 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+	<TR bgColor="#99ff99" align="center" valign="middle" >
 		<TD rowspan="2"> 80x86 </TD>
-		<TD> </TD>
-		<TD> </TD>
-		<TD> Visual Studio C++ 2008 </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> <A HREF="http://www.microsoft.com/en-us/download/
+		details.aspx?id=5555">Visual Studio C++ 2010 </A> </TD>
 		<TD> Win32 cooperative scheduler simulation </TD>
 		<TD>  </TD>
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle">
-		<TD> </TD>
-		<TD> </TD>
+	<TR bgColor="#99ff99" align="center" valign="middle">
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
 		<TD> GNU </TD>
 		<TD> Linux cooperative scheduler simulation </TD>
 		<TD>  </TD>

@@ -280,7 +280,7 @@ behavior of a system in a substantial manner.
 - Include a native \ref dbg.
 - Support hierarchically nested states, and flat state machine.
 - Support multiple state machines.
-- Support conditional, junction, and history pseudostates.
+- Support conditional, choice, and history pseudostates.
 - Support compound transitions with guards.
 - Support local transitions.
 - Support the entry and exit actions.
@@ -640,15 +640,15 @@ Next: \ref rep_cjh "Declaring the pseudostates"\n\n
 Prev: \ref rep_bs "Declaring the basic states"\n
 Next: \ref rep_def "Defining the state machine's objects"\n\n
 
-The conditional, junction, shallow history, and deep history pseudostates 
-are created using RKH_CREATE_COND_STATE(), RKH_CREATE_JUNCTION_STATE(), 
+The conditional, choice, shallow history, and deep history pseudostates 
+are created using RKH_CREATE_COND_STATE(), RKH_CREATE_CHOICE_STATE(), 
 RKH_CREATE_SHALLOW_HISTORY_STATE(), and RKH_CREATE_DEEP_HISTORY_STATE() 
 macros respectively, which are defined in \b rkh.h file. Also, these macros
 are broadly explained in the \ref qref section. 
 
 The following figures, \ref ic1 "Figure 11", \ref ic2 "Figure 12", 
-\ref ij "Figure 13", and \ref ih "Figure 14" highlights the 
-pseudostates "C1", "C2", "J", "H", and "DH" respectively. 
+\ref ich "Figure 13", and \ref ih "Figure 14" highlights the 
+pseudostates "C1", "C2", "CH", "H", and "DH" respectively. 
 Also, shows its implementation using the RKH framework.
 
 \n
@@ -705,8 +705,8 @@ As said above, the actions and guards in RKH framework are represented by
 functions.
 
 \n
-\anchor ij
-\image html ij.png "Figure 13 - junction pseudostate \"J\""
+\anchor ich
+\image html ich.png "Figure 13 - choice pseudostate \"CH\""
 
 \n
 \anchor ih
@@ -832,7 +832,7 @@ it is convenient to declare them in the separate header file \subpage my_h.
 		- #RKH_DCLR_COMP_STATE: 	composite state.
 		- #RKH_DCLR_BASIC_STATE: 	basic state.
 		- #RKH_DCLR_COND_STATE: 	conditional pseudostate.
-		- #RKH_DCLR_JUNC_STATE: 	junction pseudostate.
+		- #RKH_DCLR_CHOICE_STATE: 	choice pseudostate.
 		- #RKH_DCLR_DHIST_STATE: 	deep history pseudostate.
 		- #RKH_DCLR_SHIST_STATE: 	shallow history pseudostate.
 
@@ -1124,7 +1124,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_OBJ( &S32 );
 	RKH_TR_FWK_OBJ( &C1 );
 	RKH_TR_FWK_OBJ( &C2 );
-	RKH_TR_FWK_OBJ( &J );
+	RKH_TR_FWK_OBJ( &CH );
 	RKH_TR_FWK_OBJ( &DH );
 	RKH_TR_FWK_OBJ( &H );
 

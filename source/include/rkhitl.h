@@ -131,7 +131,7 @@
 #define CCMP( p )					((RKHSCMP_T*)(p))
 #define CBSC( p )					((RKHSBSC_T*)(p))
 #define CCD( p )					((RKHSCOND_T*)(p))
-#define CJ( p )						((RKHSJUNC_T*)(p))
+#define CCH( p )					((RKHSCHOICE_T*)(p))
 #define CH( p )						((RKHSHIST_T*)(p))
 #define CSBM( p )					((RKHSSBM_T*)(p))
 #define CRSM( p )					((RKHRSM_T*)(p))
@@ -392,8 +392,8 @@
 	#error "rkhcfg.h, Missing RKH_SMA_EN_SHALLOW_HISTORY: Include shallow history. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
-#ifndef RKH_SMA_EN_JUNCTION
-	#error "rkhcfg.h, Missing RKH_SMA_EN_JUNCTION: Include junction. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
+#ifndef RKH_SMA_EN_CHOICE
+	#error "rkhcfg.h, Missing RKH_SMA_EN_CHOICE: Include choice pseudostate. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
 #ifndef RKH_SMA_EN_CONDITIONAL	
@@ -495,7 +495,7 @@
 #define RKH_REF_SUBMACHINE				RKH_TYPE( RKH_REGULAR, 	0x04 )	
 
 #define RKH_CONDITIONAL					RKH_TYPE( RKH_PSEUDO, 	0x02 )	
-#define RKH_JUNCTION					RKH_TYPE( RKH_PSEUDO, 	0x04 )	
+#define RKH_CHOICE						RKH_TYPE( RKH_PSEUDO, 	0x04 )	
 #define RKH_SHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x08 )	
 #define RKH_DHISTORY					RKH_TYPE( RKH_PSEUDO, 	0x10 )	
 #define RKH_ENPOINT						RKH_TYPE( RKH_PSEUDO, 	0x20 )	
@@ -1454,7 +1454,7 @@ typedef struct rkhbase_t
 	 *
 	 *	- \b RKH_COMPOSITE: 	composite state.
 	 *	- \b RKH_BASIC: 		basic state.
-	 *	- \b RKH_JUNCTION: 		junction pseudostate.
+	 *	- \b RKH_CHOICE: 		choice pseudostate.
 	 *	- \b RKH_CONDITIONAL: 	conditional pseudostate.
 	 *	- \b RKH_SHISTORY: 		shadow history pseudostate.
 	 *	- \b RKH_DHISTORY: 		deep history pseudostate.
@@ -1973,12 +1973,12 @@ typedef struct rkhscond_t
 
 /**
  * 	\brief 
- * 	Describes the junction pseudostate.
+ * 	Describes the choice pseudostate.
  */
 
-typedef struct rkhsjunct_t
+typedef struct rkhschoice_t
 {
-	/**	
+	/**
  	 * 	\brief
 	 *	Maintains the basic information of state.
 	 */
@@ -1987,18 +1987,11 @@ typedef struct rkhsjunct_t
 
 	/**	
  	 * 	\brief
-	 *	Points to action function.
+	 *	Points to branch table.
 	 */
 
-	RKHACT_T action;
-
-	/**	
- 	 * 	\brief
-	 *	Points to target state or pseudostate.
-	 */
-
-	RKHROM void *target;
-} RKHSJUNC_T;
+	RKHROM struct rkhtr_t *trtbl;
+} RKHSCHOICE_T;
 
 
 /**

@@ -1,8 +1,12 @@
 /**
-\page cross_lpcx1769 LPCXPresso for ARM Cortex M-3 LPC1769 processor
+\page cross_lpcx1769 LPCXPresso for ARM Cortex-M3 LPC1769 processor
 \image html rkh_bunner.jpg
 
-Running Blinky RKH demo on NXP Cortex M3 demostration board LPCXPresso LPC1769.
+Running Blinky RKH demo on NXP ARM Cortex-M3 demostration board 
+<A HREF="http://www.embeddedartists.com/products/lpcxpresso/
+lpc1769_xpr.php">LPCXpresso</A> 
+<A HREF="http://www.nxp.com/products/microcontrollers/cortex_m3/
+LPC1769FBD100.html">LPC1769</A>.
 This is a guide to how to setup and use the demo board to evaluate the RKH 
 framework. It assumes a prior knowledge on board features and development 
 environment.

@@ -18,7 +18,6 @@
 void 
 my_init( const void *sma )
 {
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->x = CMY( sma )->y = 0;
 }
 
@@ -31,7 +30,6 @@ my_init( const void *sma )
 void
 set_x_1( const struct rkhsma_t *sma )
 {
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->x = 1;
 }
 
@@ -39,7 +37,6 @@ set_x_1( const struct rkhsma_t *sma )
 void
 set_x_2( const struct rkhsma_t *sma )
 {
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->x = 2;
 }
 
@@ -47,7 +44,6 @@ set_x_2( const struct rkhsma_t *sma )
 void
 set_x_3( const struct rkhsma_t *sma )
 {
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->x = 3;
 }
 
@@ -55,7 +51,6 @@ set_x_3( const struct rkhsma_t *sma )
 void
 set_y_0( const struct rkhsma_t *sma )
 {
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->y = 0;
 }
 
@@ -68,7 +63,6 @@ void
 dummy_exit( const struct rkhsma_t *sma )
 {
 	(void)sma;
-	printf("%s\n", __FUNCTION__);
 }
 
 
@@ -84,10 +78,17 @@ dummy_exit( const struct rkhsma_t *sma )
 
 
 void
+set_x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+{
+	(void)pe;
+	CMY( sma )->x = 1;
+}
+
+
+void
 set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->y = 2;
 }
 
@@ -96,7 +97,6 @@ void
 set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	CMY( sma )->y = 1;
 }
 
@@ -106,7 +106,6 @@ dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 }
 
 
@@ -115,7 +114,6 @@ show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 }
 
 
@@ -124,7 +122,6 @@ terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	rkh_exit();
 }
 
@@ -138,7 +135,6 @@ HUInt
 y_0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -147,7 +143,6 @@ HUInt
 y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -156,7 +151,6 @@ HUInt
 y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -165,7 +159,6 @@ HUInt
 x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
@@ -174,20 +167,5 @@ HUInt
 x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	(void)pe;
-	printf("%s\n", __FUNCTION__);
 	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;
-}
-
-
-/*
- *	Defines guard functions
- */
-
-
-HUInt
-x_equal_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
-{
-	(void)pe;
-	printf("%s\n", __FUNCTION__);
-	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }

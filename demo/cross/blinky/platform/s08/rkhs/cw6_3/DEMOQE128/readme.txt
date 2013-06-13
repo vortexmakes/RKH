@@ -1,8 +1,11 @@
 /**
-\page cross_demoqe128_s08 DemoQE128 for S08 processor
+\page cross_demoqe128_s08 DEMOQE128 for S08 processor
 \image html rkh_bunner.jpg
 
-Running Blinky RKH demo on Freescale S08QE128 demostration board DEMOQE128.
+Running Blinky RKH demo on Freescale <A HREF="http://www.freescale.com/
+webapp/sps/site/prod_summary.jsp?code=S08QE">S08QE128</A> demostration 
+board <A HREF="http://www.freescale.com/webapp/sps/site/
+prod_summary.jsp?code=DEMOQE128">DEMOQE128</A>.
 This is a guide to how to setup and use the demo board to evaluate the RKH 
 framework. It assumes a prior knowledge on board features and development 
 environment.
