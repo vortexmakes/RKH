@@ -1197,19 +1197,10 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: #RKH_SMA_EN_IEVENT, #RKH_SMA_EN_ID. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_IEVENT: \n
-	When RKH_SMA_EN_IEVENT is set to one (1) the RKHSMA_T structure allows to 
-	reference a event, which will be passed to state machine application when 
-	it starts. Could be used to pass arguments to the state machine like an 
-	argc/argv. \n\n
-- \b RKH_SMA_EN_ID: \n
-	When RKH_SMA_EN_ID is set to one (1) the RKHSMA_T structure includes a 
-	ID number that could be used to uniquely identify a state machine 
-	application.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref1 Defining a composite state
@@ -1290,18 +1281,10 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: #RKH_SMA_EN_HCAL, #RKH_SMA_EN_STATE_ID. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref2 Defining a basic state
@@ -1414,22 +1397,10 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PPRO.
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PPRO: \n
-	When RKH_SMA_EN_PPRO is set to one (1) the state structure includes an 
-	reference to preprocessor function. This function could be called "Moore" 
-	action. This argument is optional, thus it could be declared as NULL. 
-	Aditionally, by means of single inheritance in C it could be used as 
-	state's abstract data. Aditionally, implementing the single inheritance 
-	in C is very simply by literally embedding the base type, RKHPPRO_T in 
-	this case, as the first member of the derived structure. See \a prepro 
-	member of RKHSREG_T structure for more information.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qrefsb Defining a submachine state
@@ -1762,14 +1733,11 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_EN_SUBMACHINE, 
+RKH_SMA_EN_STATE_ID.
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n \copydetails RKH_SMA_EN_HCAL	
-- \b RKH_SMA_EN_PSEUDOSTATE: \n \copydetails RKH_SMA_EN_PSEUDOSTATE
-- \b RKH_SMA_EN_SUBMACHINE: \n \copydetails RKH_SMA_EN_SUBMACHINE
-- \b RKH_SMA_EN_STATE_ID: \n \copydetails RKH_SMA_EN_STATE_ID
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref16 Defining a state transition table
@@ -1900,27 +1868,11 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_EN_CONDITIONAL, RKH_SMA_MAX_TR_SEGS. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage.\n\n 
-- \b RKH_SMA_EN_CONDITIONAL: \n
-	Enable (1) or disable (0) the conditional connector usage. \n\n
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref17 Defining a branch table
@@ -2024,27 +1976,11 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_MAX_TR_SEGS, RKH_EN_SHALLOW_HISTORY. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage. \n\n
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-- \b RKH_EN_SHALLOW_HISTORY: \n
-	Enable (1) or disable (0) the shallow history usage.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref5 Defining a deep history pseudostate
@@ -2098,27 +2034,11 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_MAX_TR_SEGS, RKH_EN_DEEP_HISTORY. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage. \n\n
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-- \b RKH_EN_DEEP_HISTORY: \n
-	Enable (1) or disable (0) the deep history usage.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref6 Defining a choice pseudostate
@@ -2169,27 +2089,11 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_EN_CHOICE, RKH_SMA_MAX_TR_SEGS. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage. \n\n
-- \b RKH_SMA_EN_CHOICE: \n
-	Enable (1) or disable (0) the choice connector usage.
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref14 Defining entry, exit, and transition actions
@@ -2634,20 +2538,12 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_EN_DYNAMIC_EVENT, RKH_MAX_EPOOL, RKH_SIZEOF_EVENT, 
+RKH_SIZEOF_ESIZE, RKH_EN_NATIVE_DYN_EVENT, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
+RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT. 
+See \ref cfg section for more information. 
 
-- \b RKH_EN_DYNAMIC_EVENT: \n \copydetails RKH_EN_DYNAMIC_EVENT
-- \b RKH_MAX_EPOOL: \n \copydetails RKH_MAX_EPOOL
-- \b RKH_SIZEOF_EVENT: \n \copydetails RKH_SIZEOF_EVENT
-- \b RKH_SIZEOF_ESIZE: \n \copydetails RKH_SIZEOF_ESIZE
-- \b RKH_EN_NATIVE_DYN_EVENT: \n \copydetails RKH_EN_NATIVE_DYN_EVENT
-- \b RKH_DYNE_TYPE: \n \copydetails RKH_DYNE_TYPE
-- \b RKH_DYNE_INIT: \n \copydetails RKH_DYNE_INIT
-- \b RKH_DYNE_GET_ESIZE: \n \copydetails RKH_DYNE_GET_ESIZE
-- \b RKH_DYNE_GET: \n \copydetails RKH_DYNE_GET
-- \b RKH_DYNE_PUT: \n \copydetails RKH_DYNE_PUT
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref13 Preprocessing events before of dispatch it
@@ -2927,12 +2823,9 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
-
-- \b RKH_TIM_EN: \n \copydetails RKH_TIM_EN
-- \b RKH_TIM_SIZEOF_NTIMER: \n \copydetails RKH_TIM_SIZEOF_NTIMER
-- \b RKH_TIM_EN_HOOK: \n \copydetails RKH_TIM_EN_HOOK
-- \b RKH_TIM_EN_GET_INFO: \n \copydetails RKH_TIM_EN_GET_INFO
+structure: RKH_TIM_EN, RKH_TIM_SIZEOF_NTIMER, RKH_TIM_EN_HOOK, 
+RKH_TIM_EN_GET_INFO.
+See \ref cfg section for more information. 
 
 Prev: \ref main_page "Home"
 
@@ -2964,35 +2857,229 @@ First of all, RKH has a set of configuration options related to trace tool
 facility, which an user that require this feature must be properly configure 
 in the \c rkhcfg.h header file.
 
-\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
-\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
-\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
-\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
-\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
-\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
-\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
-\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
-\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
-\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
-\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
-\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
-\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
-\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
-\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
-\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
-\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
-\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
-\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
-\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
-\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
-\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
-\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
-\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
-\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
-\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
-\li Define the macro \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c8cedc">
+		<TH colspan=5 align="left"><B> Related with Trace </B></TH>
+	</TR>
+	<TR bgColor="#c8cedc">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_MAX_EVENTS </TD>
+		<TD> integer </TD>
+		<TD></TD>
+		<TD> 128 </TD>
+		<TD align="left"> \copydetails RKH_TRC_MAX_EVENTS </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_RUNTIME_FILTER </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_USER_TRACE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_USER_TRACE </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_ALL </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_ALL </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_MP </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_MP </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_RQ </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_RQ </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SMA </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_TIM </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_TIM </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_FWK </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_FWK </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_ASSERT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_ASSERT </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_INIT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_INIT </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_DCH </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_DCH </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_CLRH </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_CLRH </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_TRN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_TRN </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_STATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_STATE </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_ENSTATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_ENSTATE </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_EXSTATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_EXSTATE </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_NENEX </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_NENEX </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_NTRNACT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_NTRNACT </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_CSTATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_CSTATE </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_PROCESS </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_PROCESS </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_NSEQ </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD></TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_NSEQ </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_CHK </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_CHK </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_TSTAMP </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_TSTAMP </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 16 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_STREAM </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 128 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_STREAM </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 32 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
+	</TR>
+	<TR bgColor="#bbffff" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 32 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
+	</TR>
+</TABLE>
 
 See \ref cfg section for more information about that.
 
@@ -3254,11 +3341,11 @@ Here is an list of all options with their documentation:
 		<TH colspan=5 align="left"><B> Related with Framework </B></TH>
 	</TR>
 	<TR bgColor="#c8cedc">
-		<TH><B> Option </B></TH>
-		<TH><B> Type </B></TH>
-		<TH><B> Range </B></TH> 
-		<TH><B> Default </B></TH> 
-		<TH><B> Description </B></TH> 
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MAX_SMA </TD>
@@ -3372,11 +3459,11 @@ Back: \ref cfg "Configuring framework RKH"
 				(Active Object)</B></TH>
 	</TR>
 	<TR bgColor="#c8cedc">
-		<TH><B> Option </B></TH>
-		<TH><B> Type </B></TH>
-		<TH><B> Range </B></TH> 
-		<TH><B> Default </B></TH> 
-		<TH><B> Description </B></TH> 
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ID </TD>
@@ -3545,11 +3632,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH colspan=5 align="left"><B> Related with Trace </B></TH>
 	</TR>
 	<TR bgColor="#c8cedc">
-		<TH><B> Option </B></TH>
-		<TH><B> Type </B></TH>
-		<TH><B> Range </B></TH> 
-		<TH><B> Default </B></TH> 
-		<TH><B> Description </B></TH> 
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN </TD>
@@ -3774,11 +3861,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
 	</TR>
 	<TR bgColor="#c8cedc">
-		<TH><B> Option </B></TH>
-		<TH><B> Type </B></TH>
-		<TH><B> Range </B></TH> 
-		<TH><B> Default </B></TH> 
-		<TH><B> Description </B></TH> 
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN </TD>
@@ -3856,11 +3943,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
 	</TR>
 	<TR bgColor="#c8cedc">
-		<TH><B> Option </B></TH>
-		<TH><B> Type </B></TH>
-		<TH><B> Range </B></TH> 
-		<TH><B> Default </B></TH> 
-		<TH><B> Description </B></TH> 
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN </TD>
@@ -3931,11 +4018,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
 	</TR>
 	<TR bgColor="#c8cedc">
-		<TH><B> Option </B></TH>
-		<TH><B> Type </B></TH>
-		<TH><B> Range </B></TH> 
-		<TH><B> Default </B></TH> 
-		<TH><B> Description </B></TH> 
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TIM_EN </TD>
