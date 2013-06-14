@@ -53,6 +53,11 @@ static RKH_DCLR_STATIC_EVENT( eterm, TERM );
 static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
 
+#if defined( RKH_USE_TRC_SENDER )
+static rkhui8_t l_isr_kbd;
+static rkhui8_t l_isr_tick;
+#endif
+
 
 /* 
  * 	For binary trace feature.
@@ -126,7 +131,7 @@ isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
     ( void )par;
     while( running ) 
 	{
-		rkh_tim_tick();
+		RKH_TIM_TICK( &l_isr_tick );
         Sleep( tick_msec );
     }
     return 0;
@@ -146,12 +151,12 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == ESC )
-			rkh_sma_post_fifo( my, &eterm );
+			RKH_SMA_POST_FIFO( my, &eterm, &l_isr_kbd );
 		else
 		{
 			mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
 			mye->ts = ( rkhui16_t )rand();
-			rkh_sma_post_fifo( my, ( RKHEVT_T* )mye );
+			RKH_SMA_POST_FIFO( my, ( RKHEVT_T* )mye, &l_isr_kbd );
 		}
     }
     return 0;
@@ -292,4 +297,10 @@ bsp_init( int argc, char *argv[] )
 
 	srand( ( unsigned )time( NULL ) );
 	print_banner();
+	rkh_init();
+
+#if defined( RKH_USE_TRC_SENDER )
+	RKH_TR_FWK_OBJ( &l_isr_kbd );
+	RKH_TR_FWK_OBJ( &l_isr_tick );
+#endif
 }

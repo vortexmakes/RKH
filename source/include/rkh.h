@@ -1277,22 +1277,50 @@ void rkh_enter( void );
 void rkh_exit( void );
 
 
-/**
- * 	\brief
- * 	Keep tracks and updates the started timers. 
- *
- *	Time intervals are measured by periodic timer interrupts. Each timer 
- *	interrupt is called a timer-tick. The actual time between timer-ticks is 
- *	specified by the application. 
- * 	This function must be placed where will be incrementing the system tick. 
- * 	Normally this function is placed in a timer ISR routine.
- * 	If one or more timers expires the assigned event is directly posted into 
- * 	the state machine application (SMA) queue and associated hook function is 
- * 	executed (if it's used). The expiration events of timers that expire at 
- * 	the same time are executed in the order they were started.
- */
+#if defined( RKH_USE_TRC_SENDER )
 
-void rkh_tim_tick( void );
+	/**
+	 * 	\brief
+	 * 	Keep tracks and updates the started timers. 
+	 *
+	 *	Time intervals are measured by periodic timer interrupts. Each timer 
+	 *	interrupt is called a timer-tick. The actual time between timer-ticks 
+	 *	is specified by the application. 
+	 * 	This function must be placed where will be incrementing the system 
+	 * 	tick. Normally this function is placed in a timer ISR routine.
+	 * 	If one or more timers expires the assigned event is directly posted 
+	 * 	into the state machine application (SMA) queue and associated hook 
+	 * 	function is executed (if it's used). The expiration events of timers 
+	 * 	that expire at the same time are executed in the order they were 
+	 * 	started.
+	 */
+
+	void rkh_tim_tick( const void *const sender );
+
+	/**
+	 * 	\brief
+	 * 	Invoke the system clock tick processing rkh_tim_tick().
+	 * 	This macro is the recommended way of invoke the clock tick processing, 
+	 * 	because it provides the vital information for software tracing and 
+	 * 	avoids any overhead when the tracing is disabled.
+	 *
+	 * 	\param sender_		pointer to the sender object. Typically 
+	 * 						RKH_TIM_TICK() will be called from an interrupt, 
+	 * 						in which case it would create a unique object 
+	 * 						just to unambiguously identify the ISR as the 
+	 * 						sender of the time events.
+	 *	\sa
+	 *	rkh_tim_tick().
+	 */
+
+	#define RKH_TIM_TICK( sender_ )		rkh_tim_tick( sender_ )
+
+#else
+
+	void rkh_tim_tick( void );
+	#define RKH_TIM_TICK( dummy_ )		rkh_tim_tick()
+
+#endif
 
 
 /**
@@ -1464,52 +1492,115 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 void rkh_sma_terminate( RKHSMA_T *sma );
 
 
-/**
- * 	\brief
- * 	Send an event to a state machine application through a queue using the 
- * 	FIFO policy. A message is a pointer size variable and its use is 
- * 	application specific. 
- *
- * 	\note 
- *	For memory efficiency and best performance the SMA's event queue, 
- *	STORE ONLY POINTERS to events, not the whole event objects.
- *	The assertion inside it guarantee that the pointer is valid, so is not 
- *	necessary to check the pointer returned from rkh_sma_post_fifo().
- *	\note 
- *	Platform-dependent function. All RKH ports must be defined in the RKH 
- *	port file to a particular platform. However, only the ports to the 
- *	external OS/RTOS usually need some code to bolt the framework to the 
- *	external OS/RTOS.
- *
- * 	\param sma		pointer to previously created state machine application.
- * 	\param e		actual event sent to the state machine application.
- */
+#if defined( RKH_USE_TRC_SENDER )
 
-void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
+	/**
+	 * 	\brief
+	 * 	Send an event to a state machine application through a queue using 
+	 * 	the FIFO policy. A message is a pointer size variable and its use is 
+	 * 	application specific. 
+	 *
+	 * 	\note 
+	 *	For memory efficiency and best performance the SMA's event queue, 
+	 *	STORE ONLY POINTERS to events, not the whole event objects.
+	 *	The assertion inside it guarantee that the pointer is valid, so is not 
+	 *	necessary to check the pointer returned from rkh_sma_post_fifo().
+	 *	\note 
+	 *	Platform-dependent function. All RKH ports must be defined in the RKH 
+	 *	port file to a particular platform. However, only the ports to the 
+	 *	external OS/RTOS usually need some code to bolt the framework to the 
+	 *	external OS/RTOS.
+	 *
+	 * 	\param sma		pointer to previously created state machine 
+	 * 					application.
+	 * 	\param e		actual event sent to the state machine application.
+	 */
+
+	void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+												const void *const sender );
+
+	/**
+	 * 	\brief 
+	 * 	Invoke the direct event posting facility rkh_sma_post_fifo().
+	 * 	This macro is the recommended way of posting events, because it 
+	 * 	provides the vital information for software tracing and avoids any 
+	 * 	overhead when the tracing is disabled.
+	 *
+	 * 	\param sender_		pointer to the sender object. It is not 
+	 * 						necessarily a pointer to an active object. In 
+	 * 						fact, if RKH_SMA_POST_FIFO() is called from an 
+	 * 						interrupt or other context, it can create a 
+	 * 						unique object just to unambiguously identify the 
+	 * 						publisher of the event.
+	 *	\sa
+	 *	rkh_sma_post_fifo().
+	 */
+
+	#define RKH_SMA_POST_FIFO( _sma, _e, _sender ) \
+				rkh_sma_post_fifo( (_sma), (_e), (_sender) )
+
+#else
+
+	void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
+	#define RKH_SMA_POST_FIFO( _sma, _e, _dummy ) \
+				rkh_sma_post_fifo( (_sma), (_e) )
+
+#endif
 
 
-/**
- * 	\brief
- * 	Send an event to a state machine application through a queue using the 
- * 	LIFO policy. A message is a pointer size variable and its use is 
- * 	application specific. 
- *
- * 	\note
- *	For memory efficiency and best performance the SMA's event queue, 
- *	STORE ONLY POINTERS to events, not the whole event objects.
- *	The assertion inside it guarantee that the pointer is valid, so is not 
- *	necessary to check the pointer returned from rkh_sma_post_lifo().
- *	\note 
- *	Platform-dependent function. All RKH ports must be defined in the RKH 
- *	port file to a particular platform. However, only the ports to the 
- *	external OS/RTOS usually need some code to bolt the framework to the 
- *	external OS/RTOS.
- *
- * 	\param sma		pointer to previously created state machine application.
- * 	\param e		actual event sent to the state machine application.
- */
+#if defined( RKH_USE_TRC_SENDER )
 
-void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
+	/**
+	 * 	\brief
+	 * 	Send an event to a state machine application through a queue using the 
+	 * 	LIFO policy. A message is a pointer size variable and its use is 
+	 * 	application specific. 
+	 *
+	 * 	\note
+	 *	For memory efficiency and best performance the SMA's event queue, 
+	 *	STORE ONLY POINTERS to events, not the whole event objects.
+	 *	The assertion inside it guarantee that the pointer is valid, so is not 
+	 *	necessary to check the pointer returned from rkh_sma_post_lifo().
+	 *	\note 
+	 *	Platform-dependent function. All RKH ports must be defined in the RKH 
+	 *	port file to a particular platform. However, only the ports to the 
+	 *	external OS/RTOS usually need some code to bolt the framework to the 
+	 *	external OS/RTOS.
+	 *
+	 * 	\param sma		pointer to previously created state machine application.
+	 * 	\param e		actual event sent to the state machine application.
+	 */
+
+	void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+												const void *const sender );
+
+	/**
+	 * 	\brief 
+	 * 	Invoke the direct event posting facility rkh_sma_post_lifo().
+	 * 	This macro is the recommended way of posting events, because it 
+	 * 	provides the vital information for software tracing and avoids any 
+	 * 	overhead when the tracing is disabled.
+	 *
+	 * 	\param sender_		pointer to the sender object. It is not 
+	 * 						necessarily a pointer to an active object. In 
+	 * 						fact, if RKH_SMA_POST_LIFO() is called from an 
+	 * 						interrupt or other context, it can create a 
+	 * 						unique object just to unambiguously identify the 
+	 * 						publisher of the event.
+	 *	\sa
+	 *	rkh_sma_post_lifo().
+	 */
+
+	#define RKH_SMA_POST_LIFO( _sma, _e, _sender ) \
+				rkh_sma_post_lifo( (_sma), (_e), (_sender) )
+
+#else
+
+	void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
+	#define RKH_SMA_POST_LIFO( _sma, _e, _dummy ) \
+				rkh_sma_post_lifo( (_sma), (_e) )
+
+#endif
 
 
 /**

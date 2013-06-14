@@ -275,6 +275,25 @@ typedef enum rkh_trc_groups
 #endif
 
 
+/**
+ * 	\brief
+ * 	This macro is used to verify the sender object usage on post an event.
+ *
+ * 	The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() 
+ * 	takes an additional argument \a sender, which is a pointer to the sender 
+ * 	object. This argument is actually only used when software tracing is 
+ * 	enabled (macro #RKH_USE_TRC_SENDER is defined). When software tracing is 
+ * 	disabled, the macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and 
+ * 	RKH_SMA_POST_LIFO() calls rkh_tim_tick(), rkh_sma_post_fifo(), and 
+ * 	rkh_sma_post_lifo() respectively without any arguments, so the overhead 
+ * 	of passing this extra argument is entirely avoided.
+ */
+
+#if RKH_TRC_EN == 1 && RKH_SMA_EN_TRC_SENDER == 1
+	#define RKH_USE_TRC_SENDER
+#endif
+
+
 /**@{
  *
  * 	\brief
@@ -1053,6 +1072,19 @@ enum rkh_trc_fmt
 
 /**
  * 	\brief
+ * 	Insert a sender object address as trace record argument.
+ */
+
+#if defined( RKH_USE_TRC_SENDER )
+	#define RKH_TRC_SENDER( sym ) \
+				RKH_TRC_SYM( sym )
+#else
+	#define RKH_TRC_SENDER( sym )
+#endif
+
+
+/**
+ * 	\brief
  * 	Insert a function address as trace record argument.
  */
 
@@ -1366,28 +1398,30 @@ enum rkh_trc_fmt
 		 * 	Desc 	= send a event to SMA's queue in a FIFO manner\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_FIFO\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= sma, signal, sender\n
 		 */
 
-		#define RKH_TR_SMA_FIFO( sma, ev )								\
+		#define RKH_TR_SMA_FIFO( sma, ev, _sender )						\
 					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_SIG( ev->e ); 							\
+						RKH_TRC_SENDER( _sender ); 						\
 					RKH_TRC_END()
 
 		/**
 		 * 	Desc 	= send a event to SMA's queue in a LIFO manner\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_LIFO\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= sma, signal, sender\n
 		 */
 
-		#define RKH_TR_SMA_LIFO( sma, ev )								\
+		#define RKH_TR_SMA_LIFO( sma, ev, _sender )						\
 					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
 									sma->romrkh->prio )					\
 						RKH_TRC_SYM( sma ); 							\
 						RKH_TRC_SIG( ev->e ); 							\
+						RKH_TRC_SENDER( _sender ); 						\
 					RKH_TRC_END()
 
 		/**

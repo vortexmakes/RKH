@@ -79,7 +79,11 @@ rem_from_list( RKHT_T *t, RKHT_T *tprev )
 
 
 void 
+#if defined( RKH_USE_TRC_SENDER )
+rkh_tim_tick( const void *const sender )
+#else
 rkh_tim_tick( void )
+#endif
 {
 	RKHT_T *t, *tprev;
 	RKH_SR_ALLOC();
@@ -108,7 +112,7 @@ rkh_tim_tick( void )
 				}
 				RKH_HK_TIMEOUT( t );
 				RKH_EXEC_THOOK();
-				rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, t->evt );
+				RKH_SMA_POST_FIFO( ( RKHSMA_T* )t->sma, t->evt, sender );
 			}
 			else
 				tprev = t;

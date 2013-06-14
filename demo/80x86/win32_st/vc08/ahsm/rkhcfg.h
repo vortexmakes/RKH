@@ -269,6 +269,13 @@
 
 #define RKH_SMA_EN_SUBMACHINE			0
 
+/**
+ *	If the #RKH_SMA_EN_TRC_SENDER and #RKH_TRC_EN are set to 1, 
+ *	when posting an event the RKH inserts a pointer to the sender object.
+ */
+
+#define RKH_SMA_EN_TRC_SENDER			0
+
 
 /* --- Configuration options related to SMA action featues ---------------- */
 

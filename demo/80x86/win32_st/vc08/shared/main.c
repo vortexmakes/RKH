@@ -28,6 +28,7 @@ main( int argc, char *argv[] )
 	rkhui32_t d3 = 65535;
 	char *str = "hello";
 
+	/* invoke the rkh_init() function */
 	bsp_init( argc, argv );
 
 	/* set trace filters */
@@ -37,7 +38,6 @@ main( int argc, char *argv[] )
 	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
 	RKH_FILTER_OFF_SMA( my );
 
-	rkh_init();
 	RKH_TRC_OPEN();
 
 	RKH_TR_FWK_OBJ( &S1 );

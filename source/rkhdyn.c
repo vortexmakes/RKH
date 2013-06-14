@@ -150,7 +150,12 @@ rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 
 #if RKH_EN_NATIVE_EQUEUE == 1
 void 
+#if defined( RKH_USE_TRC_SENDER )
+rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+									const void *const sender )
+#else
 rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
+#endif
 {
 	RKH_SR_ALLOC();
 	
@@ -160,15 +165,20 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_INC_REF( e );
 	RKH_EXIT_CRITICAL_();
 
-    rkh_rq_put_fifo( &sma->equeue, e );
-	RKH_TR_SMA_FIFO( sma, e );
+	rkh_rq_put_fifo( &sma->equeue, e );
+	RKH_TR_SMA_FIFO( sma, e, sender );
 }
 #endif
 
 
 #if RKH_EN_NATIVE_EQUEUE == 1 && RKH_RQ_EN_PUT_LIFO == 1
 void 
+#if defined( RKH_USE_TRC_SENDER )
+rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+									const void *const sender )
+#else
 rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
+#endif
 {
 	RKH_SR_ALLOC();
 
@@ -179,7 +189,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_lifo( &sma->equeue, e );
-	RKH_TR_SMA_LIFO( sma, e );
+	RKH_TR_SMA_LIFO( sma, e, sender );
 }
 #endif
 
@@ -227,7 +237,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
     if( e != ( RKHEVT_T* )0 )	/* event available? */
 	{
 		/* post it to the front of the SMA's queue */
-		rkh_sma_post_lifo( sma, e );
+		RKH_SMA_POST_LIFO( sma, e, sma );
 		RKH_TR_FWK_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
 
