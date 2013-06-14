@@ -275,22 +275,25 @@ typedef enum rkh_trc_groups
 #endif
 
 
-/**
- * 	\brief
- * 	This macro is used to verify the sender object usage on post an event.
- *
- * 	The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() 
- * 	takes an additional argument \a sender, which is a pointer to the sender 
- * 	object. This argument is actually only used when software tracing is 
- * 	enabled (macro #RKH_USE_TRC_SENDER is defined). When software tracing is 
- * 	disabled, the macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and 
- * 	RKH_SMA_POST_LIFO() calls rkh_tim_tick(), rkh_sma_post_fifo(), and 
- * 	rkh_sma_post_lifo() respectively without any arguments, so the overhead 
- * 	of passing this extra argument is entirely avoided.
- */
+#if RKH_TRC_EN == 1 && RKH_SMA_EN_TRC_SENDER == 1 || RKH_EN_DOXYGEN == 1
 
-#if RKH_TRC_EN == 1 && RKH_SMA_EN_TRC_SENDER == 1
+	/**
+	 * 	\brief
+	 * 	This macro is used to verify the sender object usage on post an event.
+	 *
+	 * 	The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and 
+	 * 	RKH_SMA_POST_LIFO() takes an additional argument \a sender, which is a 
+	 * 	pointer to the sender object. This argument is actually only used when 
+	 * 	software tracing is enabled (macro #RKH_USE_TRC_SENDER is defined). 
+	 * 	When software tracing is disabled, the macros RKH_TIM_TICK(), 
+	 * 	RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() calls rkh_tim_tick(), 
+	 * 	rkh_sma_post_fifo(), and rkh_sma_post_lifo() respectively without any 
+	 * 	arguments, so the overhead of passing this extra argument is entirely 
+	 * 	avoided.
+	 */
+
 	#define RKH_USE_TRC_SENDER
+
 #endif
 
 
@@ -2157,6 +2160,9 @@ enum rkh_trc_fmt
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |			\
 							RKH_TRC_EN_TSTAMP));						\
+						RKH_TRC_UI8( 									\
+							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |			\
+							RKH_TRC_EN_TSTAMP));						\
 					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH()
 
@@ -2179,6 +2185,173 @@ enum rkh_trc_fmt
 		#else
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )		(void)0
 		#endif
+
+		/* --- Symbol entry table for active objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for active object\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= active object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the active object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	typedef struct
+		 * 	{
+		 * 		RKHSMA_T ao;
+		 * 		rkhui8_t x;
+		 * 		rkhui8_t y;
+		 * 	} AO_T;
+		 * 	
+		 * 	RKH_SMA_CREATE( AO_T, 0, ao, 0, HCAL, &S1, ao_init, NULL );
+		 * 	RKH_TR_FWK_OBJ( &ao );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_AO( __o )			\
+						RKH_TR_FWK_OBJ( __o )
+
+		/* --- Symbol entry table for state objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for state objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= state object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the state object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	RKH_CREATE_COMP_STATE( S1, 0, en, ex, RKH_ROOT, &S11, NULL );
+		 * 	RKH_CREATE_TRANS_TABLE( S1 )
+		 * 		RKH_TRINT( SIX, 	NULL, 		show_data ),
+		 * 		RKH_TRREG( TWO, 	NULL, 		set_y_2,	&S2 ),
+		 * 	RKH_END_TRANS_TABLE
+		 * 	
+		 * 	...
+		 * 	RKH_TR_FWK_STATE( &S1 );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_STATE( __o )			\
+						RKH_TR_FWK_OBJ( __o )
+
+		/* --- Symbol entry table for pseudostate objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for pseudostate objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= pseudostate object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the pseudostate object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	RKH_CREATE_COND_STATE( C1, 12 );
+		 * 	RKH_CREATE_BRANCH_TABLE( C1 )
+		 * 		RKH_BRANCH( y_1, 	NULL, 			&H ),
+		 * 		RKH_BRANCH( y_2, 	dummy_act, 		&DH ),
+		 * 		RKH_BRANCH( y_0, 	NULL, 			&S1 ),
+		 * 	RKH_END_BRANCH_TABLE
+		 * 	
+		 * 	...
+		 * 	RKH_TR_FWK_PSTATE( &C1 );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_PSTATE( __o )			\
+						RKH_TR_FWK_OBJ( __o )
+
+		/* --- Symbol entry table for timer objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for timer objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= timer object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the timer object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	static RKHT_T bky_tmr;
+		 *
+		 * 	RKH_TR_FWK_TIMER( &bky_tmr );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_TIMER( __o )			\
+						RKH_TR_FWK_OBJ( __o )
+
+		/* --- Symbol entry table for event pool objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for event pool objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= event pool object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the event pool object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	static rkhui8_t ep0_sto[ SIZEOF_EP0STO ],
+		 * 					ep1_sto[ SIZEOF_EP1STO ];
+		 *	
+		 *	...
+		 * 	RKH_TR_FWK_EPOOL( &ep0_sto );
+		 * 	RKH_TR_FWK_EPOOL( &ep1_sto );
+		 *
+		 *	rkh_epool_register( ep0_sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+		 *	rkh_epool_register( ep1_sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+		 *	...
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_EPOOL( __o )			\
+						RKH_TR_FWK_OBJ( __o )
+
+		/* --- Symbol entry table for queue objects --------- */
+
+		/**
+		 * 	Desc 	= entry symbol table for queue objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= queue object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the queue object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	#define QSTO_SIZE			4
+		 * 	static RKHEVT_T *qsto[ QSTO_SIZE ];
+		 *
+		 * 	...
+		 * 	RKH_TR_FWK_QUEUE( &blinky->equeue );
+		 * 	rkh_sma_activate( blinky, (const RKHEVT_T **)qsto, 
+		 * 											QSTO_SIZE, CV(0), 0 );
+		 *	...
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_QUEUE( __o )			\
+						RKH_TR_FWK_OBJ( __o )
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
@@ -2195,6 +2368,12 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
 		#define RKH_TR_FWK_TCFG()						(void)0
 		#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
+		#define RKH_TR_FWK_AO( __o )					(void)0
+		#define RKH_TR_FWK_STATE( __o )					(void)0
+		#define RKH_TR_FWK_PSTATE( __o )				(void)0
+		#define RKH_TR_FWK_TIMER( __o )					(void)0
+		#define RKH_TR_FWK_EPOOL( __o )					(void)0
+		#define RKH_TR_FWK_QUEUE( __o )					(void)0
 	#endif
 #else
 	/* --- Memory Pool (MP) ------------------ */
@@ -2262,6 +2441,12 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
 	#define RKH_TR_FWK_TCFG()							(void)0
 	#define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0
+	#define RKH_TR_FWK_AO( __o )						(void)0
+	#define RKH_TR_FWK_STATE( __o )						(void)0
+	#define RKH_TR_FWK_PSTATE( __o )					(void)0
+	#define RKH_TR_FWK_TIMER( __o )						(void)0
+	#define RKH_TR_FWK_EPOOL( __o )						(void)0
+	#define RKH_TR_FWK_QUEUE( __o )						(void)0
 #endif
 
 

@@ -1110,32 +1110,34 @@ main( int argc, char *argv[] )
 	rkh_init();
 	RKH_TRC_OPEN();
 
-	RKH_TR_FWK_OBJ( &S1 );
-	RKH_TR_FWK_OBJ( my );
-	RKH_TR_FWK_OBJ( &my->equeue );
-	RKH_TR_FWK_OBJ( &S1 );
-	RKH_TR_FWK_OBJ( &S11 );
-	RKH_TR_FWK_OBJ( &S111 );
-	RKH_TR_FWK_OBJ( &S112 );
-	RKH_TR_FWK_OBJ( &S12 );
-	RKH_TR_FWK_OBJ( &S2 );
-	RKH_TR_FWK_OBJ( &S3 );
-	RKH_TR_FWK_OBJ( &S31 );
-	RKH_TR_FWK_OBJ( &S32 );
-	RKH_TR_FWK_OBJ( &C1 );
-	RKH_TR_FWK_OBJ( &C2 );
-	RKH_TR_FWK_OBJ( &CH );
-	RKH_TR_FWK_OBJ( &DH );
-	RKH_TR_FWK_OBJ( &H );
+	/* send objects to trazer */
+	RKH_TR_FWK_AO( my );
+	RKH_TR_FWK_QUEUE( &my->equeue );
+	RKH_TR_FWK_STATE( &S1 );
+	RKH_TR_FWK_STATE( &S1 );
+	RKH_TR_FWK_STATE( &S11 );
+	RKH_TR_FWK_STATE( &S111 );
+	RKH_TR_FWK_STATE( &S112 );
+	RKH_TR_FWK_STATE( &S12 );
+	RKH_TR_FWK_STATE( &S2 );
+	RKH_TR_FWK_STATE( &S3 );
+	RKH_TR_FWK_STATE( &S31 );
+	RKH_TR_FWK_STATE( &S32 );
+	RKH_TR_FWK_PSTATE( &C1 );
+	RKH_TR_FWK_PSTATE( &C2 );
+	RKH_TR_FWK_PSTATE( &CH );
+	RKH_TR_FWK_PSTATE( &DH );
+	RKH_TR_FWK_PSTATE( &H );
 
+	/* send signals to trazer */
 	RKH_TR_FWK_SIG( ZERO );
 	RKH_TR_FWK_SIG( ONE	);
 	RKH_TR_FWK_SIG( TWO	);
-	RKH_TR_FWK_SIG( THREE	);
-	RKH_TR_FWK_SIG( FOUR	);
-	RKH_TR_FWK_SIG( FIVE	);
+	RKH_TR_FWK_SIG( THREE );
+	RKH_TR_FWK_SIG( FOUR );
+	RKH_TR_FWK_SIG( FIVE );
 	RKH_TR_FWK_SIG( SIX	);
-	RKH_TR_FWK_SIG( TERM	);
+	RKH_TR_FWK_SIG( TERM );
 
 	rkh_sma_activate( my, qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();

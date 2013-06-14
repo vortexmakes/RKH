@@ -1304,7 +1304,7 @@ void rkh_exit( void );
 	 * 	because it provides the vital information for software tracing and 
 	 * 	avoids any overhead when the tracing is disabled.
 	 *
-	 * 	\param sender_		pointer to the sender object. Typically 
+	 * 	\param _sender		pointer to the sender object. Typically 
 	 * 						RKH_TIM_TICK() will be called from an interrupt, 
 	 * 						in which case it would create a unique object 
 	 * 						just to unambiguously identify the ISR as the 
@@ -1313,7 +1313,7 @@ void rkh_exit( void );
 	 *	rkh_tim_tick().
 	 */
 
-	#define RKH_TIM_TICK( sender_ )		rkh_tim_tick( sender_ )
+	#define RKH_TIM_TICK( _sender )		rkh_tim_tick( _sender )
 
 #else
 
@@ -1514,6 +1514,12 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 	 * 	\param sma		pointer to previously created state machine 
 	 * 					application.
 	 * 	\param e		actual event sent to the state machine application.
+	 * 	\param sender	pointer to the sender object. It is not 
+	 * 					necessarily a pointer to an active object. In 
+	 * 					fact, if RKH_SMA_POST_FIFO() is called from an 
+	 * 					interrupt or other context, it can create a 
+	 * 					unique object just to unambiguously identify the 
+	 * 					publisher of the event.
 	 */
 
 	void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e, 
@@ -1526,7 +1532,10 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 	 * 	provides the vital information for software tracing and avoids any 
 	 * 	overhead when the tracing is disabled.
 	 *
-	 * 	\param sender_		pointer to the sender object. It is not 
+	 * 	\param _sma			pointer to previously created state machine 
+	 * 						application.
+	 * 	\param _e			actual event sent to the state machine application.
+	 * 	\param _sender		pointer to the sender object. It is not 
 	 * 						necessarily a pointer to an active object. In 
 	 * 						fact, if RKH_SMA_POST_FIFO() is called from an 
 	 * 						interrupt or other context, it can create a 
@@ -1569,6 +1578,12 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 	 *
 	 * 	\param sma		pointer to previously created state machine application.
 	 * 	\param e		actual event sent to the state machine application.
+	 * 	\param sender	pointer to the sender object. It is not 
+	 * 					necessarily a pointer to an active object. In 
+	 * 					fact, if RKH_SMA_POST_FIFO() is called from an 
+	 * 					interrupt or other context, it can create a 
+	 * 					unique object just to unambiguously identify the 
+	 * 					publisher of the event.
 	 */
 
 	void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e, 
@@ -1581,7 +1596,10 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 	 * 	provides the vital information for software tracing and avoids any 
 	 * 	overhead when the tracing is disabled.
 	 *
-	 * 	\param sender_		pointer to the sender object. It is not 
+	 * 	\param _sma			pointer to previously created state machine 
+	 * 						application.
+	 * 	\param _e			actual event sent to the state machine application.
+	 * 	\param _sender		pointer to the sender object. It is not 
 	 * 						necessarily a pointer to an active object. In 
 	 * 						fact, if RKH_SMA_POST_LIFO() is called from an 
 	 * 						interrupt or other context, it can create a 
