@@ -2877,13 +2877,6 @@ in the \c rkhcfg.h header file.
 		<TD align="left"> \copydetails RKH_TRC_EN </TD>
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_MAX_EVENTS </TD>
-		<TD> integer </TD>
-		<TD></TD>
-		<TD> 128 </TD>
-		<TD align="left"> \copydetails RKH_TRC_MAX_EVENTS </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>
 		<TD> boolean </TD>
 		<TD></TD>
@@ -3644,13 +3637,6 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_MAX_EVENTS </TD>
-		<TD> integer </TD>
-		<TD></TD>
-		<TD> 128 </TD>
-		<TD align="left"> \copydetails RKH_TRC_MAX_EVENTS </TD>
 	</TR>
 	<TR bgColor="#bbffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>

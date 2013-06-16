@@ -40,31 +40,15 @@ static rkhui16_t trcqty;
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
 {
-	/*	<offset>	| <range> [in bytes] */
-	/*                1 byte -> 8 events */
-	((RKH_MP_TTBL_OFFSET << 4) 	| RKH_MP_TTBL_RANGE	),
-	((RKH_RQ_TTBL_OFFSET << 4) 	| RKH_RQ_TTBL_RANGE	),
-	((RKH_SMA_TTBL_OFFSET << 4) | RKH_SMA_TTBL_RANGE	),
-	((RKH_SM_TTBL_OFFSET << 4) 	| RKH_SM_TTBL_RANGE	),
-	((RKH_TIM_TTBL_OFFSET << 4) | RKH_TIM_TTBL_RANGE	),
-	((RKH_FWK_TTBL_OFFSET << 4) | RKH_FWK_TTBL_RANGE	),
-	((RKH_USR_TTBL_OFFSET << 4) | RKH_USR_TTBL_RANGE	)
-};
-
-
-/** Trace configuration table */
-static RKHROM rkhui8_t trccfg[] =
-{
-	(rkhui8_t)RKH_SIZEOF_EVENT,
-	(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP,
-	(rkhui8_t)RKH_TRC_SIZEOF_POINTER,
-	(rkhui8_t)RKH_TIM_SIZEOF_NTIMER,
-	(rkhui8_t)RKH_MP_SIZEOF_NBLOCK,
-	(rkhui8_t)RKH_RQ_SIZEOF_NELEM,
-	(rkhui8_t)RKH_SIZEOF_ESIZE,
-	(rkhui8_t)RKH_TRC_EN_NSEQ,
-	(rkhui8_t)RKH_TRC_EN_CHK,
-	(rkhui8_t)RKH_TRC_EN_TSTAMP
+	/*	<offset>					| <range> [in bytes] */
+	/*              				  1 byte -> 8 events */
+	((RKH_MP_TTBL_OFFSET 	<< 4) 	| RKH_MP_TTBL_RANGE		),
+	((RKH_RQ_TTBL_OFFSET 	<< 4) 	| RKH_RQ_TTBL_RANGE		),
+	((RKH_SMA_TTBL_OFFSET 	<< 4) 	| RKH_SMA_TTBL_RANGE	),
+	((RKH_SM_TTBL_OFFSET 	<< 4)	| RKH_SM_TTBL_RANGE		),
+	((RKH_TIM_TTBL_OFFSET 	<< 4) 	| RKH_TIM_TTBL_RANGE	),
+	((RKH_FWK_TTBL_OFFSET 	<< 4) 	| RKH_FWK_TTBL_RANGE	),
+	((RKH_USR_TTBL_OFFSET 	<< 4) 	| RKH_USR_TTBL_RANGE	)
 };
 
 

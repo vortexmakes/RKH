@@ -354,15 +354,6 @@
 #define RKH_TRC_EN						1
 
 /**
- *	Specify the maximum number of trace events, this number is direclty 
- *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number, 
- *	the lower the RAM consumption.
- *	See \c #trceftbl table.
- */
-
-#define RKH_TRC_MAX_EVENTS				128
-
-/**
  *	If the #RKH_TRC_RUNTIME_FILTER is set to 1 then RKH will include the 
  *	runtime trace filter facility.
  * 	When #RKH_TRC_RUNTIME_FILTER is enabled RKH also will automatically 

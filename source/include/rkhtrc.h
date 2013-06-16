@@ -80,18 +80,174 @@
 #include <string.h>
 
 
+#define RKH_TRC_MAX_GROUPS			7
+#define RKH_MAX_NUM_TE_PER_GROUP	32 /* 2^5 = 32 */
+
 /**
- * 	\brief
- * 	The size of trceftbl table depends on #RKH_TRC_MAX_EVENTS (see rkhcfg.h).
+ *	Specify the maximum number of trace events, this number is direclty 
+ *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number, 
+ *	the lower the RAM consumption.
+ *	See \c #trceftbl table.
  */
 
-#if RKH_TRC_MAX_EVENTS <= 64
-	#define RKH_TRC_MAX_EVENTS_IN_BYTES		8
-#elif RKH_TRC_MAX_EVENTS > 64 && RKH_TRC_MAX_EVENTS <= 128
-	#define RKH_TRC_MAX_EVENTS_IN_BYTES		16
+#define RKH_TRC_MAX_EVENTS			RKH_MAX_NUM_TE_PER_GROUP*RKH_TRC_MAX_GROUPS
+
+
+/**@{
+ *
+ * 	\brief
+ * 	Trace event offset.
+ *
+ * 	The trace event ID is arranged as:
+ *
+ * 	event number = | G | G | G | E | E | E | E | E |\n
+ *
+ * 	G's:	group number.\n
+ * 	E's:	event's group.\n
+ *
+ * 	The lower 5 bits (E's) of the event ID are used to determine 
+ * 	the trace event, while the next three most significant bits 
+ * 	(G's) are used to determine the corresponding group.
+ * 	Therefore, is able to define 8 groups and 32 events per group.
+ */
+
+#define RKH_MP_START				GRPLSH( RKH_TG_MP	)
+#define RKH_RQ_START				GRPLSH( RKH_TG_RQ 	)
+#define RKH_SMA_START				GRPLSH( RKH_TG_SMA 	)
+#define RKH_SM_START				GRPLSH( RKH_TG_SM 	)
+#define RKH_TIM_START				GRPLSH( RKH_TG_TIM 	)
+#define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
+#define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
+/*@}*/
+
+
+/**@{
+ * 	Max. number of used trace events in a particular group in octets, thus 
+ * 	the desired value must be divided by 8 (1 -> 8 events).
+ * 	\note 
+ * 	Must be less than or equal to RKH_MAX_NUM_TE_PER_GROUP/8.
+ */
+
+#define RKH_MP_TTBL_RANGE			1
+#define RKH_RQ_TTBL_RANGE			1
+#define RKH_SMA_TTBL_RANGE			1
+#define RKH_SM_TTBL_RANGE			3
+#define RKH_TIM_TTBL_RANGE			1
+#define RKH_FWK_TTBL_RANGE			3
+#define RKH_USR_TTBL_RANGE			4
+/*@}*/
+
+
+/**
+ * 	Defines the total number of trace events.
+ */
+
+#define RKH_TOT_NUM_TRC_EVTS		(	RKH_MP_TTBL_RANGE 	+ \
+										RKH_RQ_TTBL_RANGE 	+ \
+										RKH_SMA_TTBL_RANGE 	+ \
+										RKH_SM_TTBL_RANGE 	+ \
+										RKH_TIM_TTBL_RANGE 	+ \
+										RKH_FWK_TTBL_RANGE 	+ \
+										RKH_USR_TTBL_RANGE )
+
+/**
+ * 	\brief
+ * 	Defines the size of trace filter table according to RKH_TOT_NUM_TRC_EVTS 
+ * 	and RKH_TRC_MAX_EVENTS.
+ */
+
+#if (RKH_TOT_NUM_TRC_EVTS <= RKH_TOT_NUM_TRC_EVTS)
+	#define RKH_TRC_MAX_EVENTS_IN_BYTES		RKH_TOT_NUM_TRC_EVTS
 #else
-	#define RKH_TRC_MAX_EVENTS_IN_BYTES		16
+	#error  "rkhtrc.h, the total number of trace events represented"
+	#error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
 #endif
+
+
+#define RKH_MP_TTBL_OFFSET			0
+#define RKH_RQ_TTBL_OFFSET			(RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
+#define RKH_SMA_TTBL_OFFSET			(RKH_RQ_TTBL_OFFSET + RKH_RQ_TTBL_RANGE)
+#define RKH_SM_TTBL_OFFSET			(RKH_SMA_TTBL_OFFSET + RKH_SMA_TTBL_RANGE)
+#define RKH_TIM_TTBL_OFFSET			(RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
+#define RKH_FWK_TTBL_OFFSET			(RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
+#define RKH_USR_TTBL_OFFSET			(RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
+
+
+#if RKH_MAX_NUM_TE_PER_GROUP <= 32
+	#define NGSH					5
+#else
+	#define NGSH					5
+#endif
+
+#define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
+#define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
+
+
+/**
+ * 	\brief
+ * 	The size of trcsmaftbl (trace SMA filter table) depends on #RKH_MAX_SMA 
+ * 	(see rkhcfg.h).
+ */
+
+#if RKH_MAX_SMA <= 8
+	#define RKH_TRC_MAX_SMA		1
+#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
+	#define RKH_TRC_MAX_SMA		2
+#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
+	#define RKH_TRC_MAX_SMA		3
+#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
+	#define RKH_TRC_MAX_SMA		4
+#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
+	#define RKH_TRC_MAX_SMA		5
+#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
+	#define RKH_TRC_MAX_SMA		6
+#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
+	#define RKH_TRC_MAX_SMA		7
+#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
+	#define RKH_TRC_MAX_SMA		8
+#endif
+
+
+#define ECHANGE						0
+#define EUNCHANGE					1
+
+
+#if RKH_TRC_EN == 1 && RKH_SMA_EN_TRC_SENDER == 1 || RKH_EN_DOXYGEN == 1
+
+	/**
+	 * 	\brief
+	 * 	This macro is used to verify the sender object usage on post an event.
+	 *
+	 * 	The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and 
+	 * 	RKH_SMA_POST_LIFO() takes an additional argument \a sender, which is a 
+	 * 	pointer to the sender object. This argument is actually only used when 
+	 * 	software tracing is enabled (macro #RKH_USE_TRC_SENDER is defined). 
+	 * 	When software tracing is disabled, the macros RKH_TIM_TICK(), 
+	 * 	RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() calls rkh_tim_tick(), 
+	 * 	rkh_sma_post_fifo(), and rkh_sma_post_lifo() respectively without any 
+	 * 	arguments, so the overhead of passing this extra argument is entirely 
+	 * 	avoided.
+	 */
+
+	#define RKH_USE_TRC_SENDER
+
+#endif
+
+
+/**
+ * 	\brief
+ * 	Emit or suppress tracing for all groups and events.
+ */
+
+#define RKH_TRC_ALL_GROUPS		RKH_TG_NGROUP
+
+
+/**
+ * 	\brief
+ * 	Emit or suppress all trace events.
+ */
+
+#define RKH_TRC_ALL_EVENTS		RKH_TE_NEVENT
 
 
 /**
@@ -102,7 +258,7 @@
  * 	In this case, each trace event is assigned a unique number 
  * 	(#RKH_TRC_EVENTS). When a event is ready to record a trace its 
  * 	corresponding bit in the filter table must be clear. The size of 
- * 	#trceftbl[] depends on #RKH_TRC_MAX_EVENTS (see rkhcfg.h).
+ * 	#trceftbl[] depends on #RKH_TOT_NUM_TRC_EVTS.
  *
  * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n
  *
@@ -139,31 +295,6 @@ extern rkhui8_t trcgfilter;
 
 /**
  * 	\brief
- * 	The size of trcsmaftbl (trace SMA filter table) depends on #RKH_MAX_SMA 
- * 	(see rkhcfg.h).
- */
-
-#if RKH_MAX_SMA <= 8
-	#define RKH_TRC_MAX_SMA		1
-#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
-	#define RKH_TRC_MAX_SMA		2
-#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
-	#define RKH_TRC_MAX_SMA		3
-#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
-	#define RKH_TRC_MAX_SMA		4
-#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
-	#define RKH_TRC_MAX_SMA		5
-#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
-	#define RKH_TRC_MAX_SMA		6
-#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
-	#define RKH_TRC_MAX_SMA		7
-#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
-	#define RKH_TRC_MAX_SMA		8
-#endif
-
-
-/**
- * 	\brief
  * 	Filter table of trace points associated with the SMA (AO).
  *
  * 	The trace filter management is similar to the native priority scheme.
@@ -183,22 +314,6 @@ extern rkhui8_t trcgfilter;
  */
 
 extern rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
-
-
-/**
- * 	\brief
- * 	Emit or suppress tracing for all groups and events.
- */
-
-#define RKH_TRC_ALL_GROUPS		RKH_TG_NGROUP
-
-
-/**
- * 	\brief
- * 	Emit or suppress all trace events.
- */
-
-#define RKH_TRC_ALL_EVENTS		RKH_TE_NEVENT
 
 
 typedef enum
@@ -258,95 +373,6 @@ typedef enum rkh_trc_groups
 
 	RKH_TG_NGROUP
 } RKH_TRC_GROUPS;
-
-
-#define ECHANGE					0
-#define EUNCHANGE				1
-
-
-#define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
-#define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
-#define RKH_NUM_TE_PER_GROUP		32 /* 2^5 = 32 */
-
-#if RKH_NUM_TE_PER_GROUP <= 32
-	#define NGSH					5
-#else
-	#define NGSH					5
-#endif
-
-
-#if RKH_TRC_EN == 1 && RKH_SMA_EN_TRC_SENDER == 1 || RKH_EN_DOXYGEN == 1
-
-	/**
-	 * 	\brief
-	 * 	This macro is used to verify the sender object usage on post an event.
-	 *
-	 * 	The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and 
-	 * 	RKH_SMA_POST_LIFO() takes an additional argument \a sender, which is a 
-	 * 	pointer to the sender object. This argument is actually only used when 
-	 * 	software tracing is enabled (macro #RKH_USE_TRC_SENDER is defined). 
-	 * 	When software tracing is disabled, the macros RKH_TIM_TICK(), 
-	 * 	RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() calls rkh_tim_tick(), 
-	 * 	rkh_sma_post_fifo(), and rkh_sma_post_lifo() respectively without any 
-	 * 	arguments, so the overhead of passing this extra argument is entirely 
-	 * 	avoided.
-	 */
-
-	#define RKH_USE_TRC_SENDER
-
-#endif
-
-
-/**@{
- *
- * 	\brief
- * 	Trace event offset.
- *
- * 	The trace event ID is arranged as:
- *
- * 	event number = | G | G | G | E | E | E | E | E |\n
- *
- * 	G's:	group number.\n
- * 	E's:	event's group.\n
- *
- * 	The lower 5 bits (E's) of the event ID are used to determine 
- * 	the trace event, while the next three most significant bits 
- * 	(G's) are used to determine the corresponding group.
- * 	Therefore, is able to define 7 groups and 32 events per group.
- *  
- */
-
-#define RKH_MP_START				GRPLSH( RKH_TG_MP	)
-#define RKH_RQ_START				GRPLSH( RKH_TG_RQ 	)
-#define RKH_SMA_START				GRPLSH( RKH_TG_SMA 	)
-#define RKH_SM_START				GRPLSH( RKH_TG_SM 	)
-#define RKH_TIM_START				GRPLSH( RKH_TG_TIM 	)
-#define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
-#define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
-/*@}*/
-
-
-/**@{
- * 	Max. number of used trace events in a particular group in octets, thus 
- * 	the desired value must be divided by 8 (1 -> 8 events).
- */
-
-#define RKH_MP_TTBL_RANGE			1
-#define RKH_RQ_TTBL_RANGE			1
-#define RKH_SMA_TTBL_RANGE			1
-#define RKH_SM_TTBL_RANGE			3
-#define RKH_TIM_TTBL_RANGE			1
-#define RKH_FWK_TTBL_RANGE			3
-#define RKH_USR_TTBL_RANGE			1
-/*@}*/
-
-#define RKH_MP_TTBL_OFFSET			0
-#define RKH_RQ_TTBL_OFFSET			(RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
-#define RKH_SMA_TTBL_OFFSET			(RKH_RQ_TTBL_OFFSET + RKH_RQ_TTBL_RANGE)
-#define RKH_SM_TTBL_OFFSET			(RKH_SMA_TTBL_OFFSET + RKH_SMA_TTBL_RANGE)
-#define RKH_TIM_TTBL_OFFSET			(RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
-#define RKH_FWK_TTBL_OFFSET			(RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
-#define RKH_USR_TTBL_OFFSET			(RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
 
 
 /**
