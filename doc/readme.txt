@@ -2951,77 +2951,95 @@ some_function( ... )
 This section provides a table that lists all the trace events and summarizes 
 the data included for each. 
 
-<EM>Memory Pool (MP)</EM>
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=1>
+	<TR bgColor="#bdbdbd">
+		<TH colspan=6 align="left"><B> Related with event pool </B></TH>
+	</TR>
+	<TR bgColor="#bdbdbd">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=6 align="center"> #RKH_TG_MP </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_MP_INIT ( SYM ep, NBLK nblock ) </TD>
+		<TD rowspan=2> Initializes an memory block pool </TD>
+		<TD><I> ep </I></TD>
+		<TD><I> event pool </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nblock </I></TD>
+		<TD><I> number of used memory blocks </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 1 </TD>
+		<TD rowspan=2> #RKH_TR_MP_GET ( SYM ep, NBLK nfree ) </TD>
+		<TD rowspan=2> Gets an block from an pool </TD>
+		<TD><I> ep </I></TD>
+		<TD><I> event pool </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nfree </I></TD>
+		<TD><I> number of free memory blocks </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TR_MP_PUT ( SYM ep, NBLK nfree ) </TD>
+		<TD rowspan=2> Puts an block to an pool </TD>
+		<TD><I> ep </I></TD>
+		<TD><I> event pool </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nfree </I></TD>
+		<TD><I> number of free memory blocks </I></TD>
+	</TR>
 
-\li \b RKH_TR_MP_INIT \copydetails RKH_TR_MP_INIT
-\li \b RKH_TR_MP_GET \copydetails RKH_TR_MP_GET
-\li \b RKH_TR_MP_PUT \copydetails RKH_TR_MP_PUT
-
-<EM>Queue (RQ)</EM>
-
-\li \b RKH_TR_RQ_INIT \copydetails RKH_TR_RQ_INIT
-\li \b RKH_TR_RQ_GET \copydetails RKH_TR_RQ_GET
-\li \b RKH_TR_RQ_FIFO \copydetails RKH_TR_RQ_FIFO
-\li \b RKH_TR_RQ_LIFO \copydetails RKH_TR_RQ_LIFO
-\li \b RKH_TR_RQ_FULL \copydetails RKH_TR_RQ_FULL
-\li \b RKH_TR_RQ_DEPLETE \copydetails RKH_TR_RQ_DEPLETE
-\li \b RKH_TR_RQ_GET_LAST \copydetails RKH_TR_RQ_GET_LAST
-
-<EM>State Machine Application (SMA)</EM>
-
-\li \b RKH_TR_SMA_ACT \copydetails RKH_TR_SMA_ACT
-\li \b RKH_TR_SMA_TERM \copydetails RKH_TR_SMA_TERM
-\li \b RKH_TR_SMA_GET \copydetails RKH_TR_SMA_GET
-\li \b RKH_TR_SMA_FIFO \copydetails RKH_TR_SMA_FIFO
-\li \b RKH_TR_SMA_LIFO \copydetails RKH_TR_SMA_LIFO
-\li \b RKH_TR_SMA_REG \copydetails RKH_TR_SMA_REG
-\li \b RKH_TR_SMA_UNREG \copydetails RKH_TR_SMA_UNREG
-
-<EM>State machine (SM)</EM>
-
-\li \b RKH_TR_SM_INIT \copydetails RKH_TR_SM_INIT
-\li \b RKH_TR_SM_DCH \copydetails RKH_TR_SM_DCH
-\li \b RKH_TR_SM_CLRH \copydetails RKH_TR_SM_CLRH
-\li \b RKH_TR_SM_TRN \copydetails RKH_TR_SM_TRN
-\li \b RKH_TR_SM_STATE \copydetails RKH_TR_SM_STATE
-\li \b RKH_TR_SM_ENSTATE \copydetails RKH_TR_SM_ENSTATE
-\li \b RKH_TR_SM_EXSTATE \copydetails RKH_TR_SM_EXSTATE
-\li \b RKH_TR_SM_NENEX \copydetails RKH_TR_SM_NENEX
-\li \b RKH_TR_SM_NTRNACT \copydetails RKH_TR_SM_NTRNACT
-\li \b RKH_TR_SM_CSTATE \copydetails RKH_TR_SM_CSTATE
-\li \b RKH_TR_SM_EVT_PROC \copydetails RKH_TR_SM_EVT_PROC
-\li \b RKH_TR_SM_EVT_NFOUND \copydetails RKH_TR_SM_EVT_NFOUND 
-\li \b RKH_TR_SM_GRD_FALSE \copydetails RKH_TR_SM_GRD_FALSE 
-\li \b RKH_TR_SM_CND_NFOUND \copydetails RKH_TR_SM_CND_NFOUND 
-\li \b RKH_TR_SM_UNKN_STATE \copydetails RKH_TR_SM_UNKN_STATE 
-\li \b RKH_TR_SM_EX_HLEVEL \copydetails RKH_TR_SM_EX_HLEVEL 
-\li \b RKH_TR_SM_EX_TSEG \copydetails RKH_TR_SM_EX_TSEG 
-
-<EM>Timer (TIM)</EM>
-
-\li \b RKH_TR_TIM_INIT \copydetails RKH_TR_TIM_INIT
-\li \b RKH_TR_TIM_START \copydetails RKH_TR_TIM_START
-\li \b RKH_TR_TIM_STOP \copydetails RKH_TR_TIM_STOP
-\li \b RKH_TR_TIM_TOUT \copydetails RKH_TR_TIM_TOUT
-\li \b RKH_TR_TIM_REM \copydetails RKH_TR_TIM_REM
-
-<EM>Framework (RKH)</EM>
-
-\li \b RKH_TR_FWK_EN \copydetails RKH_TR_FWK_EN
-\li \b RKH_TR_FWK_EX \copydetails RKH_TR_FWK_EX
-\li \b RKH_TR_FWK_EPREG \copydetails RKH_TR_FWK_EPREG
-\li \b RKH_TR_FWK_AE \copydetails RKH_TR_FWK_AE
-\li \b RKH_TR_FWK_GC \copydetails RKH_TR_FWK_GC
-\li \b RKH_TR_FWK_GCR \copydetails RKH_TR_FWK_GCR
-\li \b RKH_TR_FWK_DEFER \copydetails RKH_TR_FWK_DEFER
-\li \b RKH_TR_FWK_RCALL \copydetails RKH_TR_FWK_RCALL
-\li \b RKH_TE_FWK_OBJ \copydetails RKH_TE_FWK_OBJ
-\li \b RKH_TE_FWK_SIG \copydetails RKH_TE_FWK_SIG
-\li \b RKH_TE_FWK_FUN \copydetails RKH_TE_FWK_FUN
-\li \b RKH_TE_FWK_EXE_FUN \copydetails RKH_TE_FWK_EXE_FUN
-\li \b RKH_TR_FWK_TUSR \copydetails RKH_TR_FWK_TUSR
-\li \b RKH_TR_FWK_TCFG \copydetails RKH_TR_FWK_TCFG
-\li \b RKH_TR_FWK_ASSERT \copydetails RKH_TR_FWK_ASSERT
+	<TR bgColor="#bdbdbd">
+		<TH colspan=6 align="left"><B> Related with queue </B></TH>
+	</TR>
+	<TR bgColor="#bdbdbd">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=6 align="center"> #RKH_TG_RQ </TD>
+		<TD rowspan=3 align="center"> 0 </TD>
+		<TD rowspan=3> #RKH_TR_RQ_INIT ( SYM queue, SYM ao, NE nelem ) </TD>
+		<TD rowspan=3> Initializes an memory block pool </TD>
+		<TD><I> queue </I></TD>
+		<TD><I> queue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> active object owner of queue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> number of elements </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 1 </TD>
+		<TD rowspan=4> #RKH_TR_RQ_GET ( SYM queue, SYM ao, NE nelem ) </TD>
+		<TD rowspan=4> Gets and removes an element from a queue </TD>
+		<TD><I> queue </I></TD>
+		<TD><I> queue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> active object owner of queue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> number of used elements </I></TD>
+	</TR>
+</TABLE>
 
 <HR>
 \section trtrazer TRAZER - The fundamental RKH's tracing tool

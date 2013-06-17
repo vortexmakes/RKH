@@ -77,7 +77,7 @@
  *	Date: 05/03/2013
  */
 
-#define RKH_VERSION_CODE			0x2400U
+#define RKH_VERSION_CODE			0x2403U
 
 
 /**

@@ -32,21 +32,21 @@ main( int argc, char *argv[] )
 	/* send objects to trazer */
 	RKH_TR_FWK_AO( my );
 	RKH_TR_FWK_QUEUE( &my->equeue );
-	RKH_TR_FWK_STATE( &S1 );
-	RKH_TR_FWK_STATE( &S1 );
-	RKH_TR_FWK_STATE( &S11 );
-	RKH_TR_FWK_STATE( &S111 );
-	RKH_TR_FWK_STATE( &S112 );
-	RKH_TR_FWK_STATE( &S12 );
-	RKH_TR_FWK_STATE( &S2 );
-	RKH_TR_FWK_STATE( &S3 );
-	RKH_TR_FWK_STATE( &S31 );
-	RKH_TR_FWK_STATE( &S32 );
-	RKH_TR_FWK_PSTATE( &C1 );
-	RKH_TR_FWK_PSTATE( &C2 );
-	RKH_TR_FWK_PSTATE( &CH );
-	RKH_TR_FWK_PSTATE( &DH );
-	RKH_TR_FWK_PSTATE( &H );
+	RKH_TR_FWK_STATE( my, &S1 );
+	RKH_TR_FWK_STATE( my, &S1 );
+	RKH_TR_FWK_STATE( my, &S11 );
+	RKH_TR_FWK_STATE( my, &S111 );
+	RKH_TR_FWK_STATE( my, &S112 );
+	RKH_TR_FWK_STATE( my, &S12 );
+	RKH_TR_FWK_STATE( my, &S2 );
+	RKH_TR_FWK_STATE( my, &S3 );
+	RKH_TR_FWK_STATE( my, &S31 );
+	RKH_TR_FWK_STATE( my, &S32 );
+	RKH_TR_FWK_PSTATE( my, &C1 );
+	RKH_TR_FWK_PSTATE( my, &C2 );
+	RKH_TR_FWK_PSTATE( my, &CH );
+	RKH_TR_FWK_PSTATE( my, &DH );
+	RKH_TR_FWK_PSTATE( my, &H );
 
 	/* send signals to trazer */
 	RKH_TR_FWK_SIG( ZERO );

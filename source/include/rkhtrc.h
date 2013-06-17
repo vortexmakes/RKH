@@ -622,6 +622,12 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_TUSR,				/**< \copydetails RKH_TR_FWK_TUSR */
 	RKH_TE_FWK_TCFG,				/**< \copydetails RKH_TR_FWK_TCFG */
 	RKH_TE_FWK_ASSERT,				/**< \copydetails RKH_TR_FWK_ASSERT */
+	RKH_TE_FWK_AO,					/**< \copydetails RKH_TR_FWK_AO */
+	RKH_TE_FWK_STATE,				/**< \copydetails RKH_TR_FWK_STATE */
+	RKH_TE_FWK_PSTATE,				/**< \copydetails RKH_TR_FWK_PSTATE */
+	RKH_TE_FWK_TIMER,				/**< \copydetails RKH_TR_FWK_TIMER */
+	RKH_TE_FWK_EPOOL,				/**< \copydetails RKH_TR_FWK_EPOOL */
+	RKH_TE_FWK_QUEUE,				/**< \copydetails RKH_TR_FWK_QUEUE */
 
 	RKH_TE_USER = RKH_USR_START,
 
@@ -2171,6 +2177,18 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_TCFG()										\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
+						RKH_TRC_UI16( 									\
+							(rkhui16_t)(								\
+								(RKH_TRC_RUNTIME_FILTER		) |			\
+								(RKH_TRC_EN_USER_TRACE	<< 1) |			\
+								(RKH_TRC_ALL			<< 2) |			\
+								(RKH_TRC_EN_MP			<< 3) |			\
+								(RKH_TRC_EN_RQ			<< 4) |			\
+								(RKH_TRC_EN_SMA			<< 5) |			\
+								(RKH_TRC_EN_TIM			<< 6) |			\
+								(RKH_TRC_EN_SM			<< 7) |			\
+								(RKH_TRC_EN_FWK			<< 8) |			\
+								(RKH_TRC_EN_ASSERT		<< 9)));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
 							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));		\
@@ -2238,8 +2256,15 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_AO( __o )			\
-						RKH_TR_FWK_OBJ( __o )
+		#define RKH_TR_FWK_AO( __ao )									\
+				do{ 													\
+					static RKHROM char *const __ao_n = #__ao;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_AO )				\
+						RKH_TRC_SYM( __ao );							\
+						RKH_TRC_STR( __ao_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
 
 		/* --- Symbol entry table for state objects --------- */
 
@@ -2262,12 +2287,20 @@ enum rkh_trc_fmt
 		 * 	RKH_END_TRANS_TABLE
 		 * 	
 		 * 	...
-		 * 	RKH_TR_FWK_STATE( &S1 );
+		 * 	RKH_TR_FWK_STATE( my, &S1 );
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_STATE( __o )			\
-						RKH_TR_FWK_OBJ( __o )
+		#define RKH_TR_FWK_STATE( __ao, __so )							\
+				do{ 													\
+					static RKHROM char *const __so_n = #__so;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )				\
+						RKH_TRC_SYM( __ao );							\
+						RKH_TRC_SYM( __so );							\
+						RKH_TRC_STR( __so_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
 
 		/* --- Symbol entry table for pseudostate objects --------- */
 
@@ -2291,12 +2324,20 @@ enum rkh_trc_fmt
 		 * 	RKH_END_BRANCH_TABLE
 		 * 	
 		 * 	...
-		 * 	RKH_TR_FWK_PSTATE( &C1 );
+		 * 	RKH_TR_FWK_PSTATE( my, &C1 );
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_PSTATE( __o )			\
-						RKH_TR_FWK_OBJ( __o )
+		#define RKH_TR_FWK_PSTATE( __ao, __pso )						\
+				do{ 													\
+					static RKHROM char *const __pso_n = #__pso;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_PSTATE )			\
+						RKH_TRC_SYM( __ao );							\
+						RKH_TRC_SYM( __pso );							\
+						RKH_TRC_STR( __pso_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
 
 		/* --- Symbol entry table for timer objects --------- */
 
@@ -2318,8 +2359,15 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_TIMER( __o )			\
-						RKH_TR_FWK_OBJ( __o )
+		#define RKH_TR_FWK_TIMER( __to )								\
+				do{ 													\
+					static RKHROM char *const __to_n = #__to;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TIMER )				\
+						RKH_TRC_SYM( __to );							\
+						RKH_TRC_STR( __to_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
 
 		/* --- Symbol entry table for event pool objects --------- */
 
@@ -2348,8 +2396,15 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_EPOOL( __o )			\
-						RKH_TR_FWK_OBJ( __o )
+		#define RKH_TR_FWK_EPOOL( __epo )								\
+				do{ 													\
+					static RKHROM char *const __epo_n = #__epo;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EPOOL )				\
+						RKH_TRC_SYM( __epo );							\
+						RKH_TRC_STR( __to_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
 
 		/* --- Symbol entry table for queue objects --------- */
 
@@ -2376,8 +2431,16 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_QUEUE( __o )			\
-						RKH_TR_FWK_OBJ( __o )
+		#define RKH_TR_FWK_QUEUE( __qo )								\
+				do{ 													\
+					static RKHROM char *const __qo_n = #__qo;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_QUEUE )				\
+						RKH_TRC_SYM( __qo );							\
+						RKH_TRC_STR( __qo_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
@@ -2394,12 +2457,12 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
 		#define RKH_TR_FWK_TCFG()						(void)0
 		#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
-		#define RKH_TR_FWK_AO( __o )					(void)0
-		#define RKH_TR_FWK_STATE( __o )					(void)0
-		#define RKH_TR_FWK_PSTATE( __o )				(void)0
-		#define RKH_TR_FWK_TIMER( __o )					(void)0
-		#define RKH_TR_FWK_EPOOL( __o )					(void)0
-		#define RKH_TR_FWK_QUEUE( __o )					(void)0
+		#define RKH_TR_FWK_AO( __ao )					(void)0
+		#define RKH_TR_FWK_STATE( __ao, __so )			(void)0
+		#define RKH_TR_FWK_PSTATE( __ao, __pso )		(void)0
+		#define RKH_TR_FWK_TIMER( __to )				(void)0
+		#define RKH_TR_FWK_EPOOL( __epo )				(void)0
+		#define RKH_TR_FWK_QUEUE( __qo )				(void)0
 	#endif
 #else
 	/* --- Memory Pool (MP) ------------------ */
@@ -2467,12 +2530,12 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
 	#define RKH_TR_FWK_TCFG()							(void)0
 	#define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0
-	#define RKH_TR_FWK_AO( __o )						(void)0
-	#define RKH_TR_FWK_STATE( __o )						(void)0
-	#define RKH_TR_FWK_PSTATE( __o )					(void)0
-	#define RKH_TR_FWK_TIMER( __o )						(void)0
-	#define RKH_TR_FWK_EPOOL( __o )						(void)0
-	#define RKH_TR_FWK_QUEUE( __o )						(void)0
+	#define RKH_TR_FWK_AO( __ao )						(void)0
+	#define RKH_TR_FWK_STATE( __ao, __so )				(void)0
+	#define RKH_TR_FWK_PSTATE( __ao, __pso )			(void)0
+	#define RKH_TR_FWK_TIMER( __to )					(void)0
+	#define RKH_TR_FWK_EPOOL( __epo )					(void)0
+	#define RKH_TR_FWK_QUEUE( __qo )					(void)0
 #endif
 
 
