@@ -2855,226 +2855,8 @@ Next: \ref cross "Examples"
 
 First of all, RKH has a set of configuration options related to trace tool 
 facility, which an user that require this feature must be properly configure 
-in the \c rkhcfg.h header file.
-
-<TABLE	align="center" valign="middle" width=80% cellspacing=2 
-		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
-		<TH colspan=5 align="left"><B> Related with Trace </B></TH>
-	</TR>
-	<TR bgColor="#c8cedc">
-		<TH><B><I> Option </I></B></TH>
-		<TH><B><I> Type </I></B></TH>
-		<TH><B><I> Range </I></B></TH> 
-		<TH><B><I> Default </I></B></TH> 
-		<TH><B><I> Description </I></B></TH> 
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_RUNTIME_FILTER </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_USER_TRACE </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_USER_TRACE </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_ALL </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_ALL </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_MP </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_MP </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_RQ </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_RQ </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SMA </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SMA </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_TIM </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_TIM </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_FWK </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_FWK </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_ASSERT </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_ASSERT </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_INIT </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_INIT </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_DCH </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_DCH </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_CLRH </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_CLRH </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_TRN </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_TRN </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_STATE </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_STATE </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_ENSTATE </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_ENSTATE </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_EXSTATE </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_EXSTATE </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_NENEX </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_NENEX </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_NTRNACT </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_NTRNACT </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_CSTATE </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_CSTATE </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_PROCESS </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_PROCESS </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_NSEQ </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD></TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_NSEQ </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_CHK </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_CHK </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_TSTAMP </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_TSTAMP </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 16 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_STREAM </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 128 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_STREAM </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 32 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
-	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 32 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
-	</TR>
-</TABLE>
-
-See \ref cfg section for more information about that.
+in the \c rkhcfg.h header file. See \ref cfg section for more information 
+about that.
 
 <HR>
 \section trfn Implementing the trace session support
@@ -3330,108 +3112,108 @@ Here is an list of all options with their documentation:
 
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with Framework </B></TH>
 	</TR>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
 		<TH><B><I> Type </I></B></TH>
 		<TH><B><I> Range </I></B></TH> 
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MAX_SMA </TD>
 		<TD> integer </TD>
 		<TD> [1..64] </TD>
 		<TD> 4 </TD>
 		<TD align="left"> \copydetails RKH_MAX_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_DYNAMIC_EVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_EN_DYNAMIC_EVENT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MAX_EPOOL </TD>
 		<TD> integer </TD>
 		<TD> [0..255] </TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_MAX_EPOOL </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SIZEOF_EVENT </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
 		<TD align="left"> \copydetails RKH_SIZEOF_EVENT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SIZEOF_ESIZE </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
 		<TD align="left"> \copydetails RKH_SIZEOF_ESIZE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_DEFERRED_EVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_EN_DEFERRED_EVENT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_ASSERT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_ASSERT_EN </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_EN_DISPATCH </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_HK_EN_DISPATCH </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_EN_SIGNAL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_HK_EN_SIGNAL </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_EN_TIMEOUT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_HK_EN_TIMEOUT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_EN_START </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_HK_EN_START </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_EN_EXIT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_HK_EN_EXIT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_IEVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_IEVENT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TICK_RATE_HZ </TD>
 		<TD> integer </TD>
 		<TD> [1..1000] </TD>
@@ -3447,165 +3229,165 @@ Back: \ref cfg "Configuring framework RKH"
 
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with State Machine Application
 				(Active Object)</B></TH>
 	</TR>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
 		<TH><B><I> Type </I></B></TH>
 		<TH><B><I> Range </I></B></TH> 
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ID </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ID </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GET_INFO </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_STATE_ID </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_STATE_ID </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_PPRO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_PPRO </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_HCAL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_HCAL </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_MAX_HCAL_DEPTH </TD>
 		<TD> integer </TD>
 		<TD> [1..8] </TD>
 		<TD> 4 </TD>
 		<TD align="left"> \copydetails RKH_SMA_MAX_HCAL_DEPTH </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_MAX_TRC_SEGS </TD>
 		<TD> integer </TD>
 		<TD> [1..4] </TD>
 		<TD> 4 </TD>
 		<TD align="left"> \copydetails RKH_SMA_MAX_TRC_SEGS </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_PSEUDOSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_PSEUDOSTATE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_DEEP_HISTORY </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_DEEP_HISTORY </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_SHALLOW_HISTORY </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_SHALLOW_HISTORY </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_CHOICE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_CHOICE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_CONDITIONAL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_CONDITIONAL </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_SUBMACHINE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_SUBMACHINE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_TRC_SENDER </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD></TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_TRC_SENDER </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_INIT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_INIT_ARG_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ENT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ENT_ARG_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_EXT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_EXT_ARG_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ACT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ACT_ARG_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ACT_ARG_EVT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ACT_ARG_EVT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GRD_ARG_EVT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GRD_ARG_EVT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GRD_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GRD_ARG_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_PPRO_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
@@ -3621,213 +3403,213 @@ Back: \ref cfg "Configuring framework RKH"
 
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with Trace </B></TH>
 	</TR>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
 		<TH><B><I> Type </I></B></TH>
 		<TH><B><I> Range </I></B></TH> 
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_RUNTIME_FILTER </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_USER_TRACE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_USER_TRACE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_ALL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_ALL </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_MP </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_MP </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_RQ </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_RQ </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SMA </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_TIM </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_TIM </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_FWK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_FWK </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_ASSERT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_ASSERT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_INIT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_INIT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_DCH </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_DCH </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_CLRH </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_CLRH </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_TRN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_TRN </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_STATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_STATE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_ENSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_ENSTATE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_EXSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_EXSTATE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_NENEX </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_NENEX </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_NTRNACT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_NTRNACT </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_CSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_CSTATE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_PROCESS </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_PROCESS </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_NSEQ </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD></TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_NSEQ </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_CHK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_CHK </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_TSTAMP </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_TSTAMP </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 16 </TD>
 		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_SIZEOF_STREAM </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 128 </TD>
 		<TD align="left"> \copydetails RKH_TRC_SIZEOF_STREAM </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 32 </TD>
 		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
@@ -3843,73 +3625,73 @@ Back: \ref cfg "Configuring framework RKH"
 
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
 	</TR>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
 		<TH><B><I> Type </I></B></TH>
 		<TH><B><I> Range </I></B></TH> 
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_SIZEOF_NELEM </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
 		<TD align="left"> \copydetails RKH_RQ_SIZEOF_NELEM </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_GET_LWMARK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_GET_LWMARK </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_READ </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_READ </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_DEPLETE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_DEPLETE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_IS_FULL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_IS_FULL </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_GET_NELEMS </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_GET_NELEMS </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_PUT_LIFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_PUT_LIFO </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
@@ -3925,66 +3707,66 @@ Back: \ref cfg "Configuring framework RKH"
 
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
 	</TR>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
 		<TH><B><I> Type </I></B></TH>
 		<TH><B><I> Range </I></B></TH> 
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_MP_EN </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_REDUCED </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_MP_REDUCED </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_SIZEOF_BSIZE </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
 		<TD align="left"> \copydetails RKH_MP_SIZEOF_BSIZE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_SIZEOF_NBLOCK </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
 		<TD align="left"> \copydetails RKH_MP_SIZEOF_NBLOCK </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_BSIZE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_BSIZE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_NFREE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_NFREE </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_LWM </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_LWM </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
@@ -4000,38 +3782,38 @@ Back: \ref cfg "Configuring framework RKH"
 
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
 	</TR>
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
 		<TH><B><I> Type </I></B></TH>
 		<TH><B><I> Range </I></B></TH> 
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TIM_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TIM_EN </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TIM_SIZEOF_NTIMER </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
 		<TD align="left"> \copydetails RKH_TIM_SIZEOF_NTIMER </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#ffffff" align="center" valign="middle" >
 		<TD align="left"> #RKH_TIM_EN_HOOK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
 		<TD align="left"> \copydetails RKH_TIM_EN_HOOK </TD>
 	</TR>
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TIM_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>

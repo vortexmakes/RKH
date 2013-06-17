@@ -333,17 +333,17 @@ BSP for the Blinky application on Windows 32 (Visual Studio 2008) with a
 simple cooperative scheduler is located in 
 \c \<rkh\>\\demo\\cross\\blinky\\platform\\80x86\\win32_st\\vc08\\. 
 
-<TABLE	align="center" valign="middle" height=60% width=70% cellSpacing=4 
+<TABLE	align="center" valign="middle" width=70% cellSpacing=2 
 		cellPadding=4 border=0>
 
 	<TR bgColor="#c8cedc">
-		<TH><B>&nbsp; CPU Architecture </B></TH>
-		<TH><B>&nbsp; Manufacturer </B></TH>
-		<TH><B>&nbsp; MCU </B></TH>
-		<TH><B>&nbsp; Evaluation Board </B></TH> 
-		<TH><B>&nbsp; Toolchain </B></TH> 
-		<TH><B>&nbsp; Comments </B></TH> 
-		<TH><B>&nbsp; Notes </B></TH> 
+		<TH><B> CPU Architecture </B></TH>
+		<TH><B> Manufacturer </B></TH>
+		<TH><B> MCU </B></TH>
+		<TH><B> Evaluation Board </B></TH> 
+		<TH><B> Toolchain </B></TH> 
+		<TH><B> Comments </B></TH> 
+		<TH><B> Notes </B></TH> 
 	</TR>
 
 	<TR bgColor="#bbffff" align="center" valign="middle" >
