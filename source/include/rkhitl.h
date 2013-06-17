@@ -1048,7 +1048,7 @@ typedef struct romrkh_t
 {
 	/**
 	 * 	\brief
-	 * 	SMA priority. 
+	 * 	SMA (a.k.a Active Object) priority. 
 	 *
 	 * 	A unique priority number must be assigned to each SMA from 0 to 
 	 * 	RKH_LOWEST_PRIO. The lower the number, the higher the priority. 
@@ -1205,7 +1205,7 @@ typedef struct rkhsma_t
 
 	/**
 	 * 	\brief
-	 * 	Event queue of the SMA.
+	 * 	Event queue of the SMA (a.k.a Active Object).
 	 */
 
 	RKH_EQ_TYPE equeue;

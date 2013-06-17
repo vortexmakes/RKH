@@ -2959,14 +2959,14 @@ the data included for each.
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
 		<TH><B><I> ID </I></B></TH>
-		<TH><B><I> Trace Event </I></B></TH> 
-		<TH><B><I> Description </I></B></TH> 
+		<TH width=31%><B><I> Trace Event </I></B></TH> 
+		<TH width=30%><B><I> Description </I></B></TH> 
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=6 align="center"> #RKH_TG_MP </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
-		<TD width=35% rowspan=2> #RKH_TE_MP_INIT ( SYM ep, NBLK nblock ) </TD>
+		<TD rowspan=2> #RKH_TE_MP_INIT ( SYM ep, NBLK nblock ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_MP_INIT </TD>
 		<TD><I> ep </I></TD>
 		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
@@ -3009,7 +3009,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=9 align="center"> #RKH_TG_RQ </TD>
+		<TD rowspan=12 align="center"> #RKH_TG_RQ </TD>
 		<TD rowspan=3 align="center"> 0 </TD>
 		<TD rowspan=3> #RKH_TE_RQ_INIT ( SYM q, SYM ao, NE nelem ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_RQ_INIT </TD>
@@ -3037,7 +3037,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 2 </TD>
-		<TD rowspan=2> #RKH_TR_RQ_FIFO ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> #RKH_TE_RQ_FIFO ( SYM q, NE nelem ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_RQ_FIFO </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
@@ -3048,7 +3048,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 3 </TD>
-		<TD rowspan=2> #RKH_TR_RQ_LIFO ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> #RKH_TE_RQ_LIFO ( SYM q, NE nelem ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_RQ_LIFO </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
@@ -3056,6 +3056,117 @@ the data included for each.
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
 		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 4 </TD>
+		<TD rowspan=1> #RKH_TE_RQ_FULL ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_FULL </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 5 </TD>
+		<TD rowspan=1> #RKH_TE_RQ_DPT ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_DEPLETE </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 6 </TD>
+		<TD rowspan=1> #RKH_TE_RQ_GET_LAST ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_GET_LAST </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+
+	<TR bgColor="#bdbdbd">
+		<TH colspan=6 align="left"><B> Related with State Machine Application 
+								(a.k.a Active Object) </B></TH>
+	</TR>
+	<TR bgColor="#bdbdbd">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=14 align="center"> #RKH_TG_SMA </TD>
+		<TD rowspan=1 align="center"> 0 </TD>
+		<TD rowspan=1> #RKH_TE_SMA_ACT ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SMA_ACT </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 1 </TD>
+		<TD rowspan=1> #RKH_TE_SMA_TERM ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SMA_TERM </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_GET ( SYM sma, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_GET </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_SMA_FIFO ( SYM ao, SIG sig, SYM snr ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SMA_FIFO </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> snr </I></TD>
+		<TD><I> Sender object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_SMA_LIFO ( SYM ao, SIG sig, SYM snr ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SMA_LIFO </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> snr </I></TD>
+		<TD><I> Sender object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_REG ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_REG </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> prio </I></TD>
+		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_UNREG ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_UNREG </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> prio </I></TD>
+		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
 	</TR>
 </TABLE>
 

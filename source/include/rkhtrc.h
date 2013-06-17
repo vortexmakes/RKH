@@ -1364,7 +1364,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	The queue is full.
+		 * 	Queue is full.
 		 *
 		 * 	Desc 	= query the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
@@ -1378,6 +1378,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END_NOCRIT()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_deplete
+		 *
 		 * 	Desc 	= deplete the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_DPT\n
@@ -1390,6 +1393,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Get the last element from the queue
+		 *
 		 * 	Desc 	= get the last element from the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_GET_LAST\n
@@ -1414,6 +1420,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SMA == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_activate
+		 *
 		 * 	Desc 	= activate a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_ACT\n
@@ -1427,6 +1436,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_terminate
+		 *
 		 * 	Desc 	= terminate a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_ACT\n
@@ -1440,6 +1452,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Get a event from the SMA's queue.
+		 *
 		 * 	Desc 	= get a event from the SMA's queue\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_ACT\n
@@ -1454,6 +1469,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_post_fifo
+		 *
 		 * 	Desc 	= send a event to SMA's queue in a FIFO manner\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_FIFO\n
@@ -1469,6 +1487,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_post_lifo
+		 *
 		 * 	Desc 	= send a event to SMA's queue in a LIFO manner\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_LIFO\n
@@ -1484,6 +1505,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_register
+		 *
 		 * 	Desc 	= register a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_REG\n
@@ -1498,6 +1522,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_unregister
+		 *
 		 * 	Desc 	= unregister a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_UNREG\n
