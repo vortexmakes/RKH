@@ -2966,36 +2966,36 @@ the data included for each.
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=6 align="center"> #RKH_TG_MP </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
-		<TD rowspan=2> #RKH_TE_MP_INIT ( SYM ep, NBLK nblock ) </TD>
-		<TD rowspan=2> Initializes an memory block pool </TD>
+		<TD width=35% rowspan=2> #RKH_TE_MP_INIT ( SYM ep, NBLK nblock ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_MP_INIT </TD>
 		<TD><I> ep </I></TD>
-		<TD><I> event pool </I></TD>
+		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> nblock </I></TD>
-		<TD><I> number of used memory blocks </I></TD>
+		<TD><I> \copybrief RKHMP_T::nblocks </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
-		<TD rowspan=2> #RKH_TR_MP_GET ( SYM ep, NBLK nfree ) </TD>
-		<TD rowspan=2> Gets an block from an pool </TD>
+		<TD rowspan=2> #RKH_TE_MP_GET ( SYM ep, NBLK nfree ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_MP_GET </TD>
 		<TD><I> ep </I></TD>
-		<TD><I> event pool </I></TD>
+		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> nfree </I></TD>
-		<TD><I> number of free memory blocks </I></TD>
+		<TD><I> \copybrief RKHMP_T::nfree </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 2 </TD>
-		<TD rowspan=2> #RKH_TR_MP_PUT ( SYM ep, NBLK nfree ) </TD>
-		<TD rowspan=2> Puts an block to an pool </TD>
+		<TD rowspan=2> #RKH_TE_MP_PUT ( SYM ep, NBLK nfree ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_MP_PUT </TD>
 		<TD><I> ep </I></TD>
-		<TD><I> event pool </I></TD>
+		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> nfree </I></TD>
-		<TD><I> number of free memory blocks </I></TD>
+		<TD><I> \copybrief RKHMP_T::nfree </I></TD>
 	</TR>
 
 	<TR bgColor="#bdbdbd">
@@ -3009,35 +3009,53 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=6 align="center"> #RKH_TG_RQ </TD>
+		<TD rowspan=9 align="center"> #RKH_TG_RQ </TD>
 		<TD rowspan=3 align="center"> 0 </TD>
-		<TD rowspan=3> #RKH_TR_RQ_INIT ( SYM queue, SYM ao, NE nelem ) </TD>
-		<TD rowspan=3> Initializes an memory block pool </TD>
-		<TD><I> queue </I></TD>
-		<TD><I> queue </I></TD>
+		<TD rowspan=3> #RKH_TE_RQ_INIT ( SYM q, SYM ao, NE nelem ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_RQ_INIT </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> ao </I></TD>
-		<TD><I> active object owner of queue </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
-		<TD><I> number of elements </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=3 align="center"> 1 </TD>
-		<TD rowspan=4> #RKH_TR_RQ_GET ( SYM queue, SYM ao, NE nelem ) </TD>
-		<TD rowspan=4> Gets and removes an element from a queue </TD>
-		<TD><I> queue </I></TD>
-		<TD><I> queue </I></TD>
-	</TR>
-	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD><I> ao </I></TD>
-		<TD><I> active object owner of queue </I></TD>
+		<TD rowspan=2 align="center"> 1 </TD>
+		<TD rowspan=2> #RKH_TR_RQ_GET ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_RQ_GET </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
-		<TD><I> number of used elements </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TR_RQ_FIFO ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_RQ_FIFO </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 3 </TD>
+		<TD rowspan=2> #RKH_TR_RQ_LIFO ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_RQ_LIFO </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
 	</TR>
 </TABLE>
 

@@ -193,6 +193,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );
+		RKH_TR_RQ_FULL( q );
 		RKH_EXIT_CRITICAL_();
 		return;
 	}
@@ -231,6 +232,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 	if( q->qty >= q->nelems )
 	{
 		RKH_IUPDT_FULL( q );
+		RKH_TR_RQ_FULL( q );
 		RKH_EXIT_CRITICAL_();
 		return;
 	}

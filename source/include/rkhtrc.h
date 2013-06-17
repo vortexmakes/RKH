@@ -1242,6 +1242,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_MP == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_mp_init
+		 *
 		 * 	Desc	= initialize a memory block pool\n
 		 * 	Group 	= RKH_TG_MP\n
 		 * 	Id 		= RKH_TE_MP_INIT\n
@@ -1255,6 +1258,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_mp_get
+		 *
 		 * 	Desc 	= get a block from the pool\n
 		 * 	Group 	= RKH_TG_MP\n
 		 * 	Id 		= RKH_TE_MP_GET\n
@@ -1268,6 +1274,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 	
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_mp_put
+		 *
 		 * 	Desc 	= put the block to the pool\n
 		 * 	Group 	= RKH_TG_MP\n
 		 * 	id 		= RKH_TE_MP_PUT\n
@@ -1289,6 +1298,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RQ == 1
 
 		/**
+		 * 	\brief
+		 *	\copybrief rkh_rq_init
+		 *
 		 * 	Desc 	= initialize a queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_INIT\n
@@ -1303,6 +1315,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_get
+		 *
 		 * 	Desc 	= get a element from the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_GET\n
@@ -1316,6 +1331,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 	
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_put_fifo
+		 *
 		 * 	Desc 	= put a element to the queue in a FIFO manner\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_FIFO\n
@@ -1329,6 +1347,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_put_lifo
+		 *
 		 * 	Desc 	= put a element to the queue in a LIFO manner\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_LIFO\n
@@ -1342,6 +1363,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	The queue is full.
+		 *
 		 * 	Desc 	= query the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_FULL\n
@@ -1349,9 +1373,9 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_FULL( q )										\
-					RKH_TRC_BEGIN( RKH_TE_RQ_FULL, NVS )				\
+					RKH_TRC_BEGIN_NOCRIT( RKH_TE_RQ_FULL, NVS )			\
 						RKH_TRC_SYM( q ); 								\
-					RKH_TRC_END()
+					RKH_TRC_END_NOCRIT()
 
 		/**
 		 * 	Desc 	= deplete the queue\n

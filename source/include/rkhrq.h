@@ -170,7 +170,10 @@ typedef struct rkhrq_t
 
 	/**
 	 * 	\brief
-	 * 	Points to the associated SMA that receives the enqueued events.
+	 * 	Points to the associated SMA (a.k.a Active Object) that receives the 
+	 * 	enqueued events. 
+	 *
+	 * 	\note
 	 * 	If \a sma is set to NULL they never block.
 	 */
 
