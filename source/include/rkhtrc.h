@@ -568,7 +568,7 @@ typedef enum rkh_trc_events
 	RKH_TE_RQ_FIFO,					/**< \copydetails RKH_TR_RQ_FIFO */
 	RKH_TE_RQ_LIFO,					/**< \copydetails RKH_TR_RQ_LIFO */
 	RKH_TE_RQ_FULL,					/**< \copydetails RKH_TR_RQ_FULL */
-	RKH_TE_RQ_DPT,					/**< \copydetails RKH_TR_RQ_DEPLETE */
+	RKH_TE_RQ_DPT,					/**< \copydetails RKH_TR_RQ_DPT */
 	RKH_TE_RQ_GET_LAST,				/**< \copydetails RKH_TR_RQ_GET_LAST */
 
 	/* --- State Machine Application events (SMA group) --- */
@@ -1387,7 +1387,7 @@ enum rkh_trc_fmt
 		 * 	Args	= queue\n
 		 */
 
-		#define RKH_TR_RQ_DEPLETE( q )									\
+		#define RKH_TR_RQ_DPT( q )										\
 					RKH_TRC_BEGIN( RKH_TE_RQ_DPT, NVS )					\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
@@ -1412,7 +1412,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_RQ_FIFO( q, qty )					(void)0
 		#define RKH_TR_RQ_LIFO( q, qty )					(void)0
 		#define RKH_TR_RQ_FULL( q )							(void)0
-		#define RKH_TR_RQ_DEPLETE( q )						(void)0
+		#define RKH_TR_RQ_DPT( q )							(void)0
 		#define RKH_TR_RQ_GET_LAST( q )						(void)0
 	#endif
 
@@ -2660,7 +2660,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_RQ_FIFO( q, qty )					(void)0
 	#define RKH_TR_RQ_LIFO( q, qty )					(void)0
 	#define RKH_TR_RQ_FULL( q )							(void)0
-	#define RKH_TR_RQ_DEPLETE( q )						(void)0
+	#define RKH_TR_RQ_DPT( q )							(void)0
 	#define RKH_TR_RQ_GET_LAST( q )						(void)0
 
 	/* --- State Machine Application (SMA) --- */
