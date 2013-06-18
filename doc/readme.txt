@@ -2951,7 +2951,7 @@ some_function( ... )
 This section provides a table that lists all the trace events and summarizes 
 the data included for each. 
 
-<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+<TABLE	align="center" valign="middle" width=80% cellspacing=1 
 		cellpadding=4 border=1>
 	<TR bgColor="#bdbdbd">
 		<TH colspan=6 align="left"><B> Related with event pool </B></TH>
@@ -2959,7 +2959,7 @@ the data included for each.
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
 		<TH><B><I> ID </I></B></TH>
-		<TH width=31%><B><I> Trace Event </I></B></TH> 
+		<TH width=33%><B><I> Trace Event </I></B></TH> 
 		<TH width=30%><B><I> Description </I></B></TH> 
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
@@ -3117,7 +3117,7 @@ the data included for each.
 		<TD><I> \copybrief RKHEVT_T::e </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3 align="center"> 3 </TD>
 		<TD rowspan=3> #RKH_TE_SMA_FIFO ( SYM ao, SIG sig, SYM snr ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SMA_FIFO </TD>
 		<TD><I> ao </I></TD>
@@ -3132,7 +3132,7 @@ the data included for each.
 		<TD><I> Sender object </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3 align="center"> 4 </TD>
 		<TD rowspan=3> #RKH_TE_SMA_LIFO ( SYM ao, SIG sig, SYM snr ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SMA_LIFO </TD>
 		<TD><I> ao </I></TD>
@@ -3147,7 +3147,7 @@ the data included for each.
 		<TD><I> Sender object </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2 align="center"> 5 </TD>
 		<TD rowspan=2> #RKH_TE_SMA_REG ( SYM ao, UI8 prio ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_REG </TD>
 		<TD><I> ao </I></TD>
@@ -3158,7 +3158,7 @@ the data included for each.
 		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2 align="center"> 6 </TD>
 		<TD rowspan=2> #RKH_TE_SMA_UNREG ( SYM ao, UI8 prio ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_UNREG </TD>
 		<TD><I> ao </I></TD>
@@ -3168,7 +3168,467 @@ the data included for each.
 		<TD><I> prio </I></TD>
 		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
 	</TR>
+
+	<TR bgColor="#bdbdbd">
+		<TH colspan=6 align="left"><B> Related with State Machine </B></TH>
+	</TR>
+	<TR bgColor="#bdbdbd">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=27 align="center"> #RKH_TG_SM </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_SM_INIT ( SYM ao, SYM ist ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_INIT </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ist </I></TD>
+		<TD><I> \copybrief ROMRKH_T::istate </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 1 </TD>
+		<TD rowspan=2> #RKH_TE_SM_CLRH ( SYM ao, SYM h ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_CLRH </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> h </I></TD>
+		<TD><I> \copybrief RKHSCMP_T::history </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SM_DCH ( SYM ao, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_DCH </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 3 </TD>
+		<TD rowspan=3> #RKH_TE_SM_TRN ( SYM ao, SYM sst, SYM tst ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SM_TRN </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sst </I></TD>
+		<TD><I> Source state of transition </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> tst </I></TD>
+		<TD><I> Target state of transition </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 4 </TD>
+		<TD rowspan=2> #RKH_TE_SM_STATE ( SYM ao, SYM nxtst ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nxtst </I></TD>
+		<TD><I> Next state of transition </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 5 </TD>
+		<TD rowspan=2> #RKH_TE_SM_ENSTATE ( SYM ao, SYM enst ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_ENSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> enst </I></TD>
+		<TD><I> Entry state </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 6 </TD>
+		<TD rowspan=2> #RKH_TE_SM_EXSTATE ( SYM ao, SYM enst ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_EXSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> enst </I></TD>
+		<TD><I> Exited state </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 7 </TD>
+		<TD rowspan=3> #RKH_TE_SM_NENEX ( SYM ao, UI8 nen, UI8 nex ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SM_NENEX </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> enst </I></TD>
+		<TD><I> Number of entry states </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> exst </I></TD>
+		<TD><I> Number of exited states </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 8 </TD>
+		<TD rowspan=2> #RKH_TE_SM_CSTATE ( SYM ao, SYM nxtst ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_CSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nxtst </I></TD>
+		<TD><I> Next state or pseudostate in transition </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 9 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EVT_PROC ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EVT_PROC </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 10 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EVT_NFOUND ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EVT_NFOUND </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 11 </TD>
+		<TD rowspan=1> #RKH_TE_SM_CND_NFOUND ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_CND_NFOUND </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 12 </TD>
+		<TD rowspan=1> #RKH_TE_SM_GRD_FALSE ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_GRD_FALSE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 13 </TD>
+		<TD rowspan=1> #RKH_TE_SM_UNKN_STATE ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_UNKN_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 14 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EX_HLEVEL ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EX_HLEVEL </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 15 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EX_TSEG ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EX_TSEG </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+
+	<TR bgColor="#bdbdbd">
+		<TH colspan=6 align="left"><B> Related with Timers </B></TH>
+	</TR>
+	<TR bgColor="#bdbdbd">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=8 align="center"> #RKH_TG_TIM </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_TIM_INIT ( SYM t, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_TIM_INIT </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 1 </TD>
+		<TD rowspan=3> #RKH_TE_TIM_START ( SYM t, SYM ao, NTICK ntick ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_TIM_START </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHT_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ntick </I></TD>
+		<TD><I> \copybrief RKHT_T::ntick </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 2 </TD>
+		<TD rowspan=1> #RKH_TE_TIM_STOP ( SYM t ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_TIM_STOP </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 3 </TD>
+		<TD rowspan=1> #RKH_TE_TIM_TOUT ( SYM t ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_TIM_TOUT </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 4 </TD>
+		<TD rowspan=1> #RKH_TR_TIM_REM ( SYM t ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_TIM_REM </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+
+	<TR bgColor="#bdbdbd">
+		<TH colspan=6 align="left"><B> Miscellanueos and related with 
+										Framework </B></TH>
+	</TR>
+	<TR bgColor="#bdbdbd">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=39 align="center"> #RKH_TG_FWK </TD>
+		<TD rowspan=1 align="center"> 0 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EN () </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_EN </TD>
+		<TD><I></I></TD>
+		<TD><I></I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 1 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EX () </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_EX </TD>
+		<TD><I></I></TD>
+		<TD><I></I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_EPREG ( UI8 ep, UI32 ss, ES es ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_EPREG </TD>
+		<TD><I> ep </I></TD>
+		<TD><I> Event pool index in the list </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ss </I></TD>
+		<TD><I> Storage size in bytes </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> es </I></TD>
+		<TD><I> Event size </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 3 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_AE ( ES es, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_AE </TD>
+		<TD><I> es </I></TD>
+		<TD><I> Event size </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 4 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_GC ( SIG sig ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_GC </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 5 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_GCR ( SIG sig ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_GCR </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 6 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_DEFER ( SYM q, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_DEFER </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 7 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_RCALL ( SYM q, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_RCALL </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 8 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_OBJ ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_OBJ </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Object memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 9 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_SIG ( SIG sig, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_SIG </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of event signal </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 10 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_FUN ( SYM func, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_FUN </TD>
+		<TD><I> func </I></TD>
+		<TD><I> Function memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 11 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EXE_FUN ( SYM func ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_EXE_FUN </TD>
+		<TD><I> func </I></TD>
+		<TD><I> Function memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 12 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_TUSR ( UI8 usrtrc, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_TUSR </TD>
+		<TD><I> usrtrc </I></TD>
+		<TD><I> User-defined trace event </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of user-defined event </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 13 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_TCFG ( CFG cfg ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_TCFG </TD>
+		<TD><I> cfg </I></TD>
+		<TD><I> Configuration parameters of trace facility </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 14 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_ASSERT ( SRT mod, UI16 ln ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_ASSERT </TD>
+		<TD><I> mod </I></TD>
+		<TD><I> C/C++ module (.c file) </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> ln </I></TD>
+		<TD><I> Line number of assertion </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 15 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_AO ( SYM ao, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_AO </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Active object memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 16 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_STATE ( SYM ao, SYM st, STR nm ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> Active object memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> st </I></TD>
+		<TD><I> State object memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 17 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_PSTATE ( SYM ao, SYM pst, STR nm ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_PSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> Active object memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> pst </I></TD>
+		<TD><I> Pseudostate object memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 18 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_TIMER ( SYM t, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_TIMER </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Timer memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 19 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM ep, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_EPOOL </TD>
+		<TD><I> ep </I></TD>
+		<TD><I> Event pool memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 20 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_QUEUE ( SYM q, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_QUEUE </TD>
+		<TD><I> q </I></TD>
+		<TD><I> Queue memory address </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
 </TABLE>
+\n
 
 <HR>
 \section trtrazer TRAZER - The fundamental RKH's tracing tool

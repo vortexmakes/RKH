@@ -1551,6 +1551,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SM == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_init_hsm
+		 *
 		 * 	Desc 	= start (initialize) a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_INIT\n
@@ -1569,6 +1572,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 *	\copybrief rkh_clear_history
+		 *
 		 * 	Desc 	= clear history pseudostate\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CLRH\n
@@ -1587,6 +1593,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_dispatch
+		 *
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_DCH\n
@@ -1605,6 +1614,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Source and target state of transition
+		 *
 		 * 	Desc 	= source and target state of transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_TRN\n
@@ -1624,6 +1636,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Final state of transition
+		 *
 		 * 	Desc 	= final state of transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_STATE\n
@@ -1642,6 +1657,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 * 	Entry state.
+		 *
 		 * 	Desc 	= entry state\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_ENSTATE\n
@@ -1660,6 +1678,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 * 	Exited state.
+		 *
 		 * 	Desc 	= exit state\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EXSTATE\n
@@ -1678,6 +1699,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Number of entry and exit states in transition.
+		 *
 		 * 	Desc 	= number of entry and exit states in transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_NENEX\n
@@ -1697,6 +1721,9 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Number of executed actions and segments in transition.
+		 *
 		 * 	Desc 	= number of executed actions in transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_NTRNACT\n
@@ -1716,7 +1743,10 @@ enum rkh_trc_fmt
 		#endif
 
 		/**
-		 * 	Desc 	= state or pseudostate in a compound transition\n
+		 * 	\brief
+		 *	Next state or pseudostate in a compound transition.
+		 *
+		 * 	Desc 	= next state or pseudostate in a compound transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CSTATE\n
 		 * 	Args	= sma, state/pseudostate\n
@@ -1736,6 +1766,10 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_PROCESS == 1
 
 		/**
+		 * 	\brief
+		 *	The arrived event was succesfully processed and HSM resides in an 
+		 *	allowed state
+		 *
 		 * 	Desc 	= the arrived event was succesfully processed and HSM 
 		 * 			  resides in an allowed state.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1750,6 +1784,9 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The arrived event was't founded in the transition table.
+		 *
 		 * 	Desc 	= the arrived event was't founded in the transition 
 		 * 			  table.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1764,6 +1801,9 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The transition was cancelled by guard function.
+		 *
 		 * 	Desc 	= The transition was cancelled by guard function.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_GRD_FALSE\n
@@ -1777,6 +1817,10 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The branch function returned a value not founded in the branch 
+		 *	table.
+		 *
 		 * 	Desc 	= the branch function returned a value not founded 
 		 * 			  in the branch table.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1791,6 +1835,9 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	Unknown state.
+		 *
 		 * 	Desc 	= unknown state.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_UNKN_STATE\n
@@ -1804,6 +1851,9 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The transition exceeded the allowed hierarchical level.
+		 *
 		 * 	Desc 	= the transition exceeded the allowed hierarchical 
 		 * 			  level.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1817,6 +1867,10 @@ enum rkh_trc_fmt
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The transition exceeded the allowed number of segments within a 
+		 *	compound transtion.
+		 *
 		 * 	Desc 	= the transition exceeded the allowed number of 
 		 * 			  segments within a compound transtion.\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1861,6 +1915,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_tim_init
+		 *
 		 * 	Desc 	= initialize a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_INIT\n
@@ -1874,13 +1931,16 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_tim_start
+		 *
 		 * 	Desc 	= start a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_START\n
 		 * 	Args	= timer, sma, nticks\n
 		 */
 
-		#define RKH_TR_TIM_START(	t, nt, sma )						\
+		#define RKH_TR_TIM_START( t, nt, sma )							\
 					RKH_TRC_BEGIN( RKH_TE_TIM_START, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SYM( sma ); 							\
@@ -1888,6 +1948,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 	
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_tim_stop
+		 *
 		 * 	Desc 	= stop a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_STOP\n
@@ -1900,6 +1963,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Timer expired.
+		 *
 		 * 	Desc 	= timer expired\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_TOUT\n
@@ -1912,6 +1978,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	Removes timer from the active timer list.
+		 *
 		 * 	Desc 	= remove timer from the active timer list\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_REM\n
@@ -1934,6 +2003,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_FWK == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_init
+		 *
 		 * 	Desc 	= initialize the RKH\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_EN\n
@@ -1945,6 +2017,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_exit
+		 *
 		 * 	Desc 	= exit the RKH\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_EX\n
@@ -1956,6 +2031,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_epool_register
+		 *
 		 * 	Desc 	= event pool register\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_EPREG\n
@@ -1970,6 +2048,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_ae
+		 *
 		 * 	Desc 	= allocate an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_AE\n
@@ -1983,6 +2064,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Attempt to recycle an event.
+		 *
 		 * 	Desc 	= attempt to recycle an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_GC\n
@@ -1995,6 +2079,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	effective recycling event.
+		 *
 		 * 	Desc 	= effective recycling event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_GCR\n
@@ -2007,6 +2094,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_defer
+		 *
 		 * 	Desc 	= defer an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_DEFER\n
@@ -2020,6 +2110,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_recall
+		 *
 		 * 	Desc 	= recall an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_RCALL\n
@@ -2035,6 +2128,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for objects --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for memory object.
+		 *
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -2067,6 +2163,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for event signals ---- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for event signal.
+		 *
 		 * 	Desc 	= entry symbol table for signal\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_SIG\n
@@ -2109,6 +2208,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for functions ---- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for function object.
+		 *
 		 * 	Desc 	= entry symbol table for function\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_FUN\n
@@ -2143,6 +2245,9 @@ enum rkh_trc_fmt
 				} while(0)
 
 		/**
+		 * 	\brief
+		 * 	The function was executed.
+		 *
 		 * 	Desc 	= the function was executed\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_FUN\n
@@ -2168,6 +2273,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for user user-defined trace events --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for user-defined trace events.
+		 *
 		 * 	Desc 	= entry symbol table for user-defined trace events\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TUSR\n
@@ -2212,7 +2320,10 @@ enum rkh_trc_fmt
 		/* --- Trace configuration --------- */
 
 		/**
-		 * 	Desc 	= send trace configuration table\n
+		 * 	\brief
+		 *	Send trace configuration table to Trazer.
+		 *
+		 * 	Desc 	= send trace configuration table to Trazer\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TCFG\n
 		 * 	Args	= configuration parameters\n
@@ -2230,16 +2341,17 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI16( 									\
 							(rkhui16_t)(								\
-								(RKH_TRC_RUNTIME_FILTER		) |			\
-								(RKH_TRC_EN_USER_TRACE	<< 1) |			\
-								(RKH_TRC_ALL			<< 2) |			\
-								(RKH_TRC_EN_MP			<< 3) |			\
-								(RKH_TRC_EN_RQ			<< 4) |			\
-								(RKH_TRC_EN_SMA			<< 5) |			\
-								(RKH_TRC_EN_TIM			<< 6) |			\
-								(RKH_TRC_EN_SM			<< 7) |			\
-								(RKH_TRC_EN_FWK			<< 8) |			\
-								(RKH_TRC_EN_ASSERT		<< 9)));		\
+								(RKH_SMA_EN_TRC_SENDER		 ) |		\
+								(RKH_TRC_RUNTIME_FILTER	<< 1 ) |		\
+								(RKH_TRC_EN_USER_TRACE	<< 2 ) |		\
+								(RKH_TRC_ALL			<< 3 ) |		\
+								(RKH_TRC_EN_MP			<< 4 ) |		\
+								(RKH_TRC_EN_RQ			<< 5 ) |		\
+								(RKH_TRC_EN_SMA			<< 6 ) |		\
+								(RKH_TRC_EN_TIM			<< 7 ) |		\
+								(RKH_TRC_EN_SM			<< 8 ) |		\
+								(RKH_TRC_EN_FWK			<< 9 ) |		\
+								(RKH_TRC_EN_ASSERT		<< 10)));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
 							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));		\
@@ -2264,6 +2376,9 @@ enum rkh_trc_fmt
 		/* --- Assertion --------- */
 
 		/**
+		 * 	\brief
+		 *	Assertion expression was evaluated to false.
+		 *
 		 * 	Desc 	= assertion expression was evaluated to false.\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_ASSERT\n
@@ -2284,6 +2399,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for active objects --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for active object.
+		 *
 		 * 	Desc 	= entry symbol table for active object\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -2320,6 +2438,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for state objects --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for state object.
+		 *
 		 * 	Desc 	= entry symbol table for state objects\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -2356,6 +2477,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for pseudostate objects --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for pseudostate object.
+		 *
 		 * 	Desc 	= entry symbol table for pseudostate objects\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -2393,6 +2517,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for timer objects --------- */
 
 		/**
+		 * 	\brief
+		 *	entry symbol table for timer object.
+		 *
 		 * 	Desc 	= entry symbol table for timer objects\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -2423,6 +2550,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for event pool objects --------- */
 
 		/**
+		 * 	\brief
+		 *	entry symbol table for event pool object.
+		 *
 		 * 	Desc 	= entry symbol table for event pool objects\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -2460,6 +2590,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for queue objects --------- */
 
 		/**
+		 * 	\brief
+		 *	entry symbol table for queue object.
+		 *
 		 * 	Desc 	= entry symbol table for queue objects\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n

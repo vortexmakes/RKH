@@ -131,12 +131,15 @@ typedef struct rkht_t
 	struct rkht_t *tnext;
 
 	/**
-	 * 	State machine application (SMA) that receives the timer event.
+	 * 	\brief
+	 * 	State machine application (a.k.a Active Object) that receives the 
+	 * 	timer event.
 	 */
 
 	const RKHSMA_T *sma;
 
 	/**
+	 * 	\brief
 	 * 	Tick down-counter.
 	 */
 

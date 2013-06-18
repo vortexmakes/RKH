@@ -54,7 +54,7 @@ RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /**
  * 	\brief
- * 	# of initialized event pools.
+ * 	Number of initialized event pools.
  */
 
 static rkhui8_t rkhnpool;
