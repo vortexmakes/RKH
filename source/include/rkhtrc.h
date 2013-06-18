@@ -2339,6 +2339,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_TCFG()										\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
+						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
 						RKH_TRC_UI16( 									\
 							(rkhui16_t)(								\
 								(RKH_SMA_EN_TRC_SENDER		 ) |		\
