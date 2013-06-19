@@ -336,7 +336,7 @@ simple cooperative scheduler is located in
 <TABLE	align="center" valign="middle" width=70% cellSpacing=2 
 		cellPadding=4 border=0>
 
-	<TR bgColor="#c8cedc">
+	<TR bgColor="#c0c0c0">
 		<TH><B> CPU Architecture </B></TH>
 		<TH><B> Manufacturer </B></TH>
 		<TH><B> MCU </B></TH>
@@ -346,7 +346,7 @@ simple cooperative scheduler is located in
 		<TH><B> Notes </B></TH> 
 	</TR>
 
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD rowspan="3"> ARM - Cortex </TD>
 		<TD> NXP </TD>
 		<TD> <A HREF="http://www.nxp.com/products/microcontrollers/cortex_m3/
@@ -358,7 +358,7 @@ simple cooperative scheduler is located in
 		<TD> \ref cross_lpcx1769 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD> Freescale </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
 		taxonomy.jsp?code=K60_ETHERNET_CRYPTO_MCU&
@@ -370,7 +370,7 @@ simple cooperative scheduler is located in
 		<TD> \ref cross_twr_K60 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD> Freescale </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
 		prod_summary.jsp?code=
@@ -382,7 +382,7 @@ simple cooperative scheduler is located in
 		<TD> \ref cross_kwi_K40 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#99ff99" align="center" valign="middle" >
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD> Freescale </TD>
 		<TD> Coldfire V1 </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
@@ -394,7 +394,7 @@ simple cooperative scheduler is located in
 		<TD> \ref cross_demoqe128_cfv1 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#bbffff" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD> Freescale </TD>
 		<TD> S08 </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/
@@ -406,7 +406,7 @@ simple cooperative scheduler is located in
 		<TD> \ref cross_demoqe128_s08 "readme" </TD>
 	</TR>
 
-	<TR bgColor="#99ff99" align="center" valign="middle" >
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD rowspan="2"> 80x86 </TD>
 		<TD> --- </TD>
 		<TD> --- </TD>
@@ -417,7 +417,7 @@ simple cooperative scheduler is located in
 		<TD>  </TD>
 	</TR>
 
-	<TR bgColor="#99ff99" align="center" valign="middle">
+	<TR bgColor="#c8cedc" align="center" valign="middle">
 		<TD> --- </TD>
 		<TD> --- </TD>
 		<TD> --- </TD>
