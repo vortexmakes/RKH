@@ -41,7 +41,7 @@ RKH_MODULE_DESC( rkhport, "Linux 32-bits (single thread)" )
 
 pthread_mutex_t csection = PTHREAD_MUTEX_INITIALIZER;
 
-sem_t sma_is_rdy;          			/* Semaphore to signal when SMAs are ready */
+sem_t sma_is_rdy;          		/* Semaphore to signal when SMAs are ready */
 RKHRG_T rkhrg;					/* ready group of SMAs */
 
 extern rkhui8_t running;

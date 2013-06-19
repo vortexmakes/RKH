@@ -6,13 +6,15 @@
 #include "rkh.h"
 #include "rkhtrc.h"
 #include "bsp.h"
-#include "my.h"
-#include "myact.h"
+#include "svr.h"
+#include "svract.h"
+#include "cli.h"
+#include "cliact.h"
 
 
 #define QSTO_SIZE			4
 
-static RKHEVT_T *qsto[ QSTO_SIZE ];
+static RKHEVT_T *svr_qsto[ QSTO_SIZE ], *cli_qsto[ QSTO_SIZE ];
 
 
 int
@@ -21,44 +23,29 @@ main( int argc, char *argv[] )
 	/* invoke the rkh_init() function */
 	bsp_init( argc, argv );
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
-	RKH_FILTER_OFF_SMA( my );
-
-	RKH_TRC_OPEN();
-
 	/* send objects to trazer */
-	RKH_TR_FWK_AO( my );
-	RKH_TR_FWK_QUEUE( &my->equeue );
-	RKH_TR_FWK_STATE( my, &S1 );
-	RKH_TR_FWK_STATE( my, &S1 );
-	RKH_TR_FWK_STATE( my, &S11 );
-	RKH_TR_FWK_STATE( my, &S111 );
-	RKH_TR_FWK_STATE( my, &S112 );
-	RKH_TR_FWK_STATE( my, &S12 );
-	RKH_TR_FWK_STATE( my, &S2 );
-	RKH_TR_FWK_STATE( my, &S3 );
-	RKH_TR_FWK_STATE( my, &S31 );
-	RKH_TR_FWK_STATE( my, &S32 );
-	RKH_TR_FWK_PSTATE( my, &C1 );
-	RKH_TR_FWK_PSTATE( my, &C2 );
-	RKH_TR_FWK_PSTATE( my, &CH );
-	RKH_TR_FWK_PSTATE( my, &DH );
-	RKH_TR_FWK_PSTATE( my, &H );
+	RKH_TR_FWK_AO( svr );
+	RKH_TR_FWK_AO( cli );
+	RKH_TR_FWK_QUEUE( &svr->equeue );
+	RKH_TR_FWK_QUEUE( &cli->equeue );
+	RKH_TR_FWK_STATE( svr, &svr_idle );
+	RKH_TR_FWK_STATE( svr, &svr_busy );
+	RKH_TR_FWK_STATE( svr, &svr_paused );
+	RKH_TR_FWK_STATE( cli, &cli_idle );
+	RKH_TR_FWK_STATE( cli, &cli_waiting );
+	RKH_TR_FWK_STATE( cli, &cli_using );
+	RKH_TR_FWK_STATE( cli, &cli_paused );
 
 	/* send signals to trazer */
-	RKH_TR_FWK_SIG( ZERO );
-	RKH_TR_FWK_SIG( ONE	);
-	RKH_TR_FWK_SIG( TWO	);
-	RKH_TR_FWK_SIG( THREE );
-	RKH_TR_FWK_SIG( FOUR );
-	RKH_TR_FWK_SIG( FIVE );
-	RKH_TR_FWK_SIG( SIX	);
+	RKH_TR_FWK_SIG( REQ );
+	RKH_TR_FWK_SIG( START );
+	RKH_TR_FWK_SIG( DONE );
+	RKH_TR_FWK_SIG( TOUT );
+	RKH_TR_FWK_SIG( PAUSE );
 	RKH_TR_FWK_SIG( TERM );
 
-	rkh_sma_activate( my, (const RKHEVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_sma_activate( svr, (const RKHEVT_T **)svr_qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_sma_activate( cli, (const RKHEVT_T **)cli_qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
 	RKH_TRC_CLOSE();

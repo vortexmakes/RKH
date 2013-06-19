@@ -28,10 +28,15 @@
 #define __BSP_H__
 
 
+#include "rkh.h"
+
+
 #define BSP_TICKS_PER_SEC   		100
 
 
 void bsp_init( int argc, char *argv[] );
+rkhui32_t bsp_rand( void );
+void bsp_srand( rkhui32_t seed );
 
 
 #endif

@@ -177,19 +177,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\cli.c"
+				>
+			</File>
+			<File
+				RelativePath="..\cliact.c"
+				>
+			</File>
+			<File
 				RelativePath="..\main.c"
 				>
 			</File>
 			<File
-				RelativePath="..\my.c"
-				>
-			</File>
-			<File
-				RelativePath="..\myact.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
+				>
+			</File>
+			<File
+				RelativePath="..\svr.c"
+				>
+			</File>
+			<File
+				RelativePath="..\svract.c"
 				>
 			</File>
 			<File
@@ -247,11 +255,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\my.h"
+				RelativePath="..\cli.h"
 				>
 			</File>
 			<File
-				RelativePath="..\myact.h"
+				RelativePath="..\cliact.h"
 				>
 			</File>
 			<File
@@ -264,6 +272,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h"
+				>
+			</File>
+			<File
+				RelativePath="..\scevt.h"
+				>
+			</File>
+			<File
+				RelativePath="..\svr.h"
 				>
 			</File>
 			<File

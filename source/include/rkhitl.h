@@ -337,12 +337,6 @@
 	#error "rkhcfg.h, Missing RKH_TIM_EN_GET_INFO: Include (1) get timer information function"
 #endif
 
-#if RKH_TRC_EN == 1 && RKH_TRC_EN_SMA == 1
-	#if RKH_SMA_EN_ID != 1
-		#error  "rkhcfg.h, When enabling RKH_TRC_EN and RKH_TRC_EN_SMA must be set to one (1) RKH_SMA_EN_ID"
-	#endif
-#endif
-
 
 #ifndef RKH_SMA_EN_HCAL
 	#error "rkhcfg.h, Missing RKH_SMA_EN_HCAL: Enable (1) or Disable (0) state nesting"

@@ -25,8 +25,10 @@
 
 
 #include "bsp.h"
-#include "my.h"
 #include "rkh.h"
+#include "scevt.h"
+#include "svr.h"
+#include "cli.h"
 
 #include <conio.h>
 #include <stdlib.h>
@@ -47,9 +49,13 @@
 
 RKH_THIS_MODULE
 
+static rkhui32_t l_rnd;			/* random seed */
 static DWORD tick_msec;			/* clock tick in msec */
 rkhui8_t running;
-static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+
+static RKH_DCLR_STATIC_EVENT( e_term, TERM );
+static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
+
 static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
 
@@ -143,7 +149,6 @@ DWORD WINAPI
 isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 {
 	int c;
-	MYEVT_T *mye;
 
     ( void )par;
     while( running ) 
@@ -151,12 +156,11 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == ESC )
-			RKH_SMA_POST_FIFO( my, &eterm, &l_isr_kbd );
-		else
+			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
+		else if( tolower(c) == 'p' )
 		{
-			mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
-			mye->ts = ( rkhui16_t )rand();
-			RKH_SMA_POST_FIFO( my, ( RKHEVT_T* )mye, &l_isr_kbd );
+			RKH_SMA_POST_FIFO( svr, &e_pause, &l_isr_kbd );
+			RKH_SMA_POST_FIFO( svr, &e_pause, &l_isr_kbd );
 		}
     }
     return 0;
@@ -289,15 +293,44 @@ rkh_trc_flush( void )
 #endif
 
 
+rkhui32_t 
+bsp_rand( void )
+{  
+	/* 
+	 * A very cheap pseudo-random-number generator.
+	 * "Super-Duper" Linear Congruential Generator (LCG)
+	 * LCG(2^32, 3*7*11*13*23, 0, seed) [MS]
+	 */
+    l_rnd = l_rnd * (3*7*11*13*23);
+    return l_rnd >> 8;
+}
+
+
+void 
+bsp_srand( rkhui32_t seed )
+{
+    l_rnd = seed;
+}
+
+
 void 
 bsp_init( int argc, char *argv[] )
 {
 	(void)argc;
 	(void)argv;
 
-	srand( ( unsigned )time( NULL ) );
+    bsp_srand( 1234U );
 	print_banner();
 	rkh_init();
+
+	/* set trace filters */
+	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
+	RKH_FILTER_OFF_SMA( svr );
+	RKH_FILTER_OFF_SMA( cli );
+
+	RKH_TRC_OPEN();
 
 #if defined( RKH_USE_TRC_SENDER )
 	RKH_TR_FWK_OBJ( &l_isr_kbd );
