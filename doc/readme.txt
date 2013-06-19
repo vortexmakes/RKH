@@ -3253,13 +3253,13 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 6 </TD>
-		<TD rowspan=2> #RKH_TE_SM_EXSTATE ( SYM ao, SYM enst ) </TD>
+		<TD rowspan=2> #RKH_TE_SM_EXSTATE ( SYM ao, SYM st ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_EXSTATE </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> enst </I></TD>
+		<TD><I> st </I></TD>
 		<TD><I> Exited state </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
@@ -3270,11 +3270,11 @@ the data included for each.
 		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> enst </I></TD>
+		<TD><I> nen </I></TD>
 		<TD><I> Number of entry states </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> exst </I></TD>
+		<TD><I> nex </I></TD>
 		<TD><I> Number of exited states </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
@@ -3414,7 +3414,7 @@ the data included for each.
 
 	<TR bgColor="#c0c0c0">
 		<TH colspan=6 align="left"><B> Miscellanueos and related with 
-										Framework </B></TH>
+										Framework (FWK)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Group </I></B></TH>
@@ -3491,10 +3491,10 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 7 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_RCALL ( SYM q, SIG sig ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_RCALL ( SYM ao, SIG sig ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_RCALL </TD>
-		<TD><I> q </I></TD>
-		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3582,13 +3582,13 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 16 </TD>
-		<TD rowspan=3> #RKH_TE_FWK_STATE ( SYM ao, SYM st, STR nm ) </TD>
+		<TD rowspan=3> #RKH_TE_FWK_STATE ( SYM ao, SYM obj, STR nm ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_FWK_STATE </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> Active object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> st </I></TD>
+		<TD><I> obj </I></TD>
 		<TD><I> State object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
@@ -3597,13 +3597,13 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 17 </TD>
-		<TD rowspan=3> #RKH_TE_FWK_PSTATE ( SYM ao, SYM pst, STR nm ) </TD>
+		<TD rowspan=3> #RKH_TE_FWK_PSTATE ( SYM ao, SYM obj, STR nm ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_FWK_PSTATE </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> Active object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> pst </I></TD>
+		<TD><I> obj </I></TD>
 		<TD><I> Pseudostate object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
@@ -3612,9 +3612,9 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 18 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_TIMER ( SYM t, STR nm ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_TIMER ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_TIMER </TD>
-		<TD><I> t </I></TD>
+		<TD><I> obj </I></TD>
 		<TD><I> Timer memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
@@ -3623,9 +3623,9 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 19 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM ep, STR nm ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_EPOOL </TD>
-		<TD><I> ep </I></TD>
+		<TD><I> obj </I></TD>
 		<TD><I> Event pool memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
@@ -3634,9 +3634,9 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 20 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_QUEUE ( SYM q, STR nm ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_QUEUE ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_QUEUE </TD>
-		<TD><I> q </I></TD>
+		<TD><I> obj </I></TD>
 		<TD><I> Queue memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
