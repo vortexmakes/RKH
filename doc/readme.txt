@@ -2954,7 +2954,8 @@ the data included for each.
 <TABLE	align="center" valign="middle" width=80% cellspacing=1 
 		cellpadding=4 border=1>
 	<TR bgColor="#bdbdbd">
-		<TH colspan=6 align="left"><B> Related with event pool </B></TH>
+		<TH colspan=6 align="left"><B> Related with memory pool 
+											module (MP)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
@@ -2966,9 +2967,9 @@ the data included for each.
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=6 align="center"> #RKH_TG_MP </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
-		<TD rowspan=2> #RKH_TE_MP_INIT ( SYM ep, NBLK nblock ) </TD>
+		<TD rowspan=2> #RKH_TE_MP_INIT ( SYM mp, NBLK nblock ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_MP_INIT </TD>
-		<TD><I> ep </I></TD>
+		<TD><I> mp </I></TD>
 		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
@@ -2977,9 +2978,9 @@ the data included for each.
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
-		<TD rowspan=2> #RKH_TE_MP_GET ( SYM ep, NBLK nfree ) </TD>
+		<TD rowspan=2> #RKH_TE_MP_GET ( SYM mp, NBLK nfree ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_MP_GET </TD>
-		<TD><I> ep </I></TD>
+		<TD><I> mp </I></TD>
 		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
@@ -2988,9 +2989,9 @@ the data included for each.
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 2 </TD>
-		<TD rowspan=2> #RKH_TE_MP_PUT ( SYM ep, NBLK nfree ) </TD>
+		<TD rowspan=2> #RKH_TE_MP_PUT ( SYM mp, NBLK nfree ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_MP_PUT </TD>
-		<TD><I> ep </I></TD>
+		<TD><I> mp </I></TD>
 		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
@@ -2999,7 +3000,7 @@ the data included for each.
 	</TR>
 
 	<TR bgColor="#bdbdbd">
-		<TH colspan=6 align="left"><B> Related with queue </B></TH>
+		<TH colspan=6 align="left"><B> Related with queue module (RQ)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
@@ -3067,7 +3068,7 @@ the data included for each.
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 5 </TD>
 		<TD rowspan=1> #RKH_TE_RQ_DPT ( SYM q ) </TD>
-		<TD rowspan=1> \copybrief RKH_TR_RQ_DEPLETE </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_DPT </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
 	</TR>
@@ -3081,7 +3082,7 @@ the data included for each.
 
 	<TR bgColor="#bdbdbd">
 		<TH colspan=6 align="left"><B> Related with State Machine Application 
-								(a.k.a Active Object) </B></TH>
+											(SMA) or Active Object </B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
@@ -3170,7 +3171,7 @@ the data included for each.
 	</TR>
 
 	<TR bgColor="#bdbdbd">
-		<TH colspan=6 align="left"><B> Related with State Machine </B></TH>
+		<TH colspan=6 align="left"><B> Related with State Machines (SM)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
@@ -3180,7 +3181,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=27 align="center"> #RKH_TG_SM </TD>
+		<TD rowspan=30 align="center"> #RKH_TG_SM </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
 		<TD rowspan=2> #RKH_TE_SM_INIT ( SYM ao, SYM ist ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_INIT </TD>
@@ -3230,7 +3231,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 4 </TD>
-		<TD rowspan=2> #RKH_TE_SM_STATE ( SYM ao, SYM nxtst ) </TD>
+		<TD rowspan=2> #RKH_TE_SM_STATE ( SYM ao, SYM st ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_STATE </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
@@ -3241,13 +3242,13 @@ the data included for each.
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 5 </TD>
-		<TD rowspan=2> #RKH_TE_SM_ENSTATE ( SYM ao, SYM enst ) </TD>
+		<TD rowspan=2> #RKH_TE_SM_ENSTATE ( SYM ao, SYM st ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_ENSTATE </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD><I> enst </I></TD>
+		<TD><I> st </I></TD>
 		<TD><I> Entry state </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
@@ -3277,14 +3278,29 @@ the data included for each.
 		<TD><I> Number of exited states </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 8 </TD>
-		<TD rowspan=2> #RKH_TE_SM_CSTATE ( SYM ao, SYM nxtst ) </TD>
-		<TD rowspan=2> \copybrief RKH_TR_SM_CSTATE </TD>
+		<TD rowspan=3 align="center"> 7 </TD>
+		<TD rowspan=3> #RKH_TE_SM_NTRNACT ( SYM ao, UI8 nta, UI8 nts ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SM_NTRNACT </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
-		<TD><I> nxtst </I></TD>
+		<TD><I> nta </I></TD>
+		<TD><I> Number of executed actions </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> nts </I></TD>
+		<TD><I> Number of transition segments </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 8 </TD>
+		<TD rowspan=2> #RKH_TE_SM_TS_STATE ( SYM ao, SYM st ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_TS_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#ffffff" align="left" valign="middle" >
+		<TD><I> st </I></TD>
 		<TD><I> Next state or pseudostate in transition </I></TD>
 	</TR>
 	<TR bgColor="#ffffff" align="left" valign="middle" >
@@ -3338,7 +3354,7 @@ the data included for each.
 	</TR>
 
 	<TR bgColor="#bdbdbd">
-		<TH colspan=6 align="left"><B> Related with Timers </B></TH>
+		<TH colspan=6 align="left"><B> Related with timer module (TIM)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Group </I></B></TH>
@@ -3720,7 +3736,7 @@ Here is an list of all options with their documentation:
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#bdbdbd">
-		<TH colspan=5 align="left"><B> Related with Framework </B></TH>
+		<TH colspan=5 align="left"><B> Related with Framework (FWK)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
@@ -3838,7 +3854,7 @@ Back: \ref cfg "Configuring framework RKH"
 		cellpadding=4 border=0>
 	<TR bgColor="#bdbdbd">
 		<TH colspan=5 align="left"><B> Related with State Machine Application
-				(Active Object)</B></TH>
+				SMA or Active Object</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
@@ -4011,7 +4027,7 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#bdbdbd">
-		<TH colspan=5 align="left"><B> Related with Trace </B></TH>
+		<TH colspan=5 align="left"><B> Related with trace facility (TRC)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
@@ -4161,11 +4177,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_NTRNACT </TD>
 	</TR>
 	<TR bgColor="#ffffff" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_EN_SM_CSTATE </TD>
+		<TD align="left"> #RKH_TRC_EN_SM_TS_STATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_TRC_EN_SM_CSTATE </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_TS_STATE </TD>
 	</TR>
 	<TR bgColor="#d8d8d8" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_PROCESS </TD>
@@ -4233,7 +4249,7 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#bdbdbd">
-		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
+		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
@@ -4315,7 +4331,7 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#bdbdbd">
-		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
+		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>
@@ -4390,7 +4406,7 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#bdbdbd">
-		<TH colspan=5 align="left"><B> Related with Queue </B></TH>
+		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
 	</TR>
 	<TR bgColor="#bdbdbd">
 		<TH><B><I> Option </I></B></TH>

@@ -1325,7 +1325,8 @@ void rkh_exit( void );
 
 /**
  * 	\brief
- * 	Initializes and activates a previously created state machine application.
+ * 	Initializes and activates a previously created state machine application 
+ * 	(SMA) as known as active object.
  *
  * 	A state machine application (SMA) is declared with the RKHSMA_T data type 
  * 	and is defined with the rkh_sma_activate() service.
@@ -1463,7 +1464,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 
 /**
  * 	\brief
- * 	Terminate a state machine application. 
+ * 	Terminate a state machine application (SMA) as known as active object.
  *
  * 	A state machine application may call this service to terminate itself. Once 
  * 	terminated, the state machine application must be re-created in order for 
@@ -1496,9 +1497,9 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 
 	/**
 	 * 	\brief
-	 * 	Send an event to a state machine application through a queue using 
-	 * 	the FIFO policy. A message is a pointer size variable and its use is 
-	 * 	application specific. 
+	 * 	Send an event to a state machine application (SMA) as known as active 
+	 * 	object through a queue using the FIFO policy. A message is a pointer 
+	 * 	size variable and its use is application specific. 
 	 *
 	 * 	\note 
 	 *	For memory efficiency and best performance the SMA's event queue, 
@@ -1561,9 +1562,9 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 
 	/**
 	 * 	\brief
-	 * 	Send an event to a state machine application through a queue using the 
-	 * 	LIFO policy. A message is a pointer size variable and its use is 
-	 * 	application specific. 
+	 * 	Send an event to a state machine application (SMA) as known as active 
+	 * 	object through a queue using the LIFO policy. A message is a pointer 
+	 * 	size variable and its use is application specific. 
 	 *
 	 * 	\note
 	 *	For memory efficiency and best performance the SMA's event queue, 
@@ -1623,7 +1624,8 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 
 /**
  * 	\brief
- * 	Get an event from the event queue of an state machine application. 
+ * 	Get an event from the event queue of an state machine application (SMA) 
+ * 	as known as active object. 
  * 	The events received are pointer size variables and their use is 
  * 	application specific.
  *
@@ -1647,7 +1649,7 @@ RKHEVT_T *rkh_sma_get( RKHSMA_T *sma );
 /**
  * 	\brief
  * 	Retrieves performance information for a particular state machine 
- * 	application. 
+ * 	application (SMA) as known as active object. 
  *
  *	The user application must allocate an RKH_SMAI_T data structure used to 
  *	receive data. The performance information is available during run-time 
@@ -1672,7 +1674,8 @@ void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
 
 /**
  * 	\brief
- * 	Clear performance information for a particular state machine application.
+ * 	Clear performance information for a particular state machine application 
+ * 	(SMA) as known as active object.
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
@@ -1686,8 +1689,9 @@ void rkh_sma_clear_info( RKHSMA_T *sma );
 
 /**
  * 	\brief
- * 	Registers a state machine application into the framework, which implies 
- * 	to store a pointer to the SMA in the priority table.
+ * 	Registers a state machine application (SMA) as known as active object into 
+ * 	the framework, which implies to store a pointer to the SMA in the priority 
+ * 	table.
  *
  * 	\param sma		pointer to previously created state machine application.
  */
@@ -1697,8 +1701,9 @@ void rkh_sma_register( RKHSMA_T *sma );
 
 /**
  * 	\brief
- *	Removes the SMA from the priority table, and thus from the framework, 
- *	by simply replacing the link to the SMA being deleted with a NULL pointer.
+ *	Removes the SMA as known as active object from the priority table, and 
+ *	thus from the framework, by simply replacing the link to the SMA being 
+ *	deleted with a NULL pointer.
  * 	
  * 	\param sma		pointer to previously created state machine application.
  */
@@ -1875,7 +1880,7 @@ void rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize );
 
 /**
  * 	\brief
- * 	Internal RKH implementation of the dynamic event allocator. 
+ * 	Allocates an event from the previously created event pool. 
  *
  * 	\note
  * 	This function is internal to RKH and the user application should 
@@ -2157,7 +2162,7 @@ void rkh_init_hsm( RKHSMA_T *sma );
 
 /**
  * 	\brief
- *	Executes a state machine in a non-preemtive model. 
+ *	Executes a state machine in a run-to-completation (RTC) model. 
  *
  *	In this model, before the system handles a new event it can store it 
  *	until the previous event has completed processing. This model is 

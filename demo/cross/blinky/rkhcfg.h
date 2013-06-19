@@ -499,7 +499,7 @@
  *	include the "state or pseudostate in a compound transition" trace record.
  */
 
-#define RKH_TRC_EN_SM_CSTATE			0
+#define RKH_TRC_EN_SM_TS_STATE			0
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 

@@ -80,7 +80,7 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 	q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 
 		q->rqi.nfull = 0;
 #endif
-	RKH_TR_RQ_INIT( q, ssize, sma );
+	RKH_TR_RQ_INIT( q, sma, ssize );
 }
 
 

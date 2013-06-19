@@ -411,7 +411,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	if( IS_NOT_INTERNAL_TRANSITION() )
 	{
 															/* ---- Stage 3 */
-		RKH_TR_SM_CSTATE( 	sma, 		       /* this state machine object */
+		RKH_TR_SM_TS_STATE( sma, 		       /* this state machine object */
 			   					  /* target state of the transition segment */
 							ets );
 
@@ -512,7 +512,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 					RKHERROR();
 					return RKH_UNKN_STATE;
 			}
-			RKH_TR_SM_CSTATE( sma, ets );
+			RKH_TR_SM_TS_STATE( sma, ets );
 		}
 	}
 

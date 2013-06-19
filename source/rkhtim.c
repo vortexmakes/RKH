@@ -156,7 +156,7 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 		add_to_list( t );
 
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_TIM_START( t, itick, sma );
+	RKH_TR_TIM_START( t, sma, itick );
 }
 
 
