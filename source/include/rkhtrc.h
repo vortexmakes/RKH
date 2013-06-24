@@ -2520,7 +2520,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 *	entry symbol table for timer object.
+		 *	Entry symbol table for timer object.
 		 *
 		 * 	Desc 	= entry symbol table for timer objects\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2553,7 +2553,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 *	entry symbol table for event pool object.
+		 *	Entry symbol table for event pool object.
 		 *
 		 * 	Desc 	= entry symbol table for event pool objects\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2593,7 +2593,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 *	entry symbol table for queue object.
+		 *	Entry symbol table for queue object.
 		 *
 		 * 	Desc 	= entry symbol table for queue objects\n
 		 * 	Group 	= RKH_TG_FWK\n
