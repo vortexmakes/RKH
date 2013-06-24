@@ -1022,6 +1022,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_ARRAY_SMA_CREATE( _arr, _num )			\
 						RKHSMA_T *const *_arr[ _num ] =
 
+/*
+ */
+#define RKH_ARRAY( _clino )			*clis[_clino]
+
 
 /**
  * 	\brief
