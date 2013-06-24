@@ -105,6 +105,7 @@ rkh_enter( void )
 void 
 rkh_exit( void )
 {
+	RKH_HK_EXIT();
 	RKH_TR_FWK_EX();
 	running = 0;
 }
