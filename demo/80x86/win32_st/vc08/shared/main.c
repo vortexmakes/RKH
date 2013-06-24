@@ -29,6 +29,8 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_AO( svr );
 	RKH_TR_FWK_AO( CLI0 );
 	RKH_TR_FWK_AO( CLI1 );
+	RKH_TR_FWK_AO( CLI2 );
+	RKH_TR_FWK_AO( CLI3 );
 	RKH_TR_FWK_STATE( svr, &svr_idle );
 	RKH_TR_FWK_STATE( svr, &svr_busy );
 	RKH_TR_FWK_STATE( svr, &svr_paused );

@@ -41,10 +41,10 @@
 #define ESC							0x1B
 #define kbmap( c )					( (c) - '0' )
 
-#define SIZEOF_EP0STO				64
-#define SIZEOF_EP0_BLOCK			4
-#define SIZEOF_EP1STO				32
-#define SIZEOF_EP1_BLOCK			8
+#define SIZEOF_EP0STO				32
+#define SIZEOF_EP0_BLOCK			sizeof( RKHEVT_T )
+#define SIZEOF_EP1STO				16
+#define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
 #define CLI_ID( _cp )				((_cp) - RKH_GET_PRIO(CLI(0)))
 
 
@@ -399,6 +399,8 @@ bsp_init( int argc, char *argv[] )
 	RKH_FILTER_OFF_SMA( svr );
 	RKH_FILTER_OFF_SMA( CLI(0) );
 	RKH_FILTER_OFF_SMA( CLI(1) );
+	RKH_FILTER_OFF_SMA( CLI(2) );
+	RKH_FILTER_OFF_SMA( CLI(3) );
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_INIT );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_DCH );
