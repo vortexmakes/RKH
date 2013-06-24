@@ -45,6 +45,7 @@
 #define SIZEOF_EP0_BLOCK			4
 #define SIZEOF_EP1STO				32
 #define SIZEOF_EP1_BLOCK			8
+#define CLI_ID( _cp )				((_cp) - RKH_GET_PRIO(CLI(0)))
 
 
 RKH_THIS_MODULE
@@ -130,6 +131,19 @@ static FILE *ftbin;
 #endif
 
 
+static
+void
+bsp_publish( const RKHEVT_T *e )
+{
+	int cn;
+
+	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
+		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
+}
+
+
 static 
 DWORD WINAPI 
 isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
@@ -158,9 +172,7 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		if( c == ESC )
 			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
 		else if( tolower(c) == 'p' )
-		{
-			RKH_SMA_POST_FIFO( svr, &e_pause, &l_isr_kbd );
-		}
+			bsp_publish( &e_pause );
     }
     return 0;
 }
@@ -245,8 +257,8 @@ print_banner( void )
 	printf(	"Aditionally, the SHD could be used to verify a new RKH port. \n" );
 	printf(	"\n\n\n" );
 
-	printf( "1.- Press <numbers> to send events to state machine. \n" );
-	printf( "2.- Press ESC to quit \n\n\n" );
+	printf( "1.- Press 'P'/'p' to pause.\n" );
+	printf( "2.- Press 'escape' to quit.\n\n\n" );
 }
 
 
@@ -313,6 +325,64 @@ bsp_srand( rkhui32_t seed )
 
 
 void 
+bsp_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
+{
+	printf( "Client[%02d] - Waiting for request the server (%d seg)\n", 
+							CLI_ID(clino), req_time );
+}
+
+
+void 
+bsp_req( rkhui8_t clino )
+{
+	printf( "Client[%02d] - Requesting to server...\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_using( rkhui8_t clino, RKH_TNT_T using_time )
+{
+	printf( "Client[%02d] - Using server for %d [seg]\n", 
+							CLI_ID(clino), using_time );
+}
+
+
+void 
+bsp_cli_paused( rkhui8_t clino )
+{
+	printf( "Client[%02d] - Paused\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_svr_paused( void )
+{
+	printf( "Server     - Paused\n" );
+}
+
+
+void 
+bsp_cli_resumed( rkhui8_t clino )
+{
+	printf( "Client[%02d] - Resumed\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_cli_done( rkhui8_t clino )
+{
+	printf( "Client[%02d] - Done\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_req_recalled( rkhui8_t clino )
+{
+	printf( "Server     - Recalled request client[%02d]\n", CLI_ID(clino) );
+}
+
+
+void 
 bsp_init( int argc, char *argv[] )
 {
 	(void)argc;
@@ -327,12 +397,13 @@ bsp_init( int argc, char *argv[] )
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 	//RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
 	RKH_FILTER_OFF_SMA( svr );
-	RKH_FILTER_OFF_SMA( cli );
+	RKH_FILTER_OFF_SMA( CLI(0) );
+	RKH_FILTER_OFF_SMA( CLI(1) );
 
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_INIT );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_DCH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_TRN );
 #if 0
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_INIT );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_CLRH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_TRN );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );

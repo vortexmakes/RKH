@@ -31,12 +31,20 @@
 #include "rkh.h"
 
 
-#define BSP_TICKS_PER_SEC   		100
+#define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
 
 
 void bsp_init( int argc, char *argv[] );
 rkhui32_t bsp_rand( void );
 void bsp_srand( rkhui32_t seed );
+void bsp_wait_req( rkhui8_t clino, RKH_TNT_T req_time );
+void bsp_req( rkhui8_t clino );
+void bsp_using( rkhui8_t clino, RKH_TNT_T using_time );
+void bsp_cli_paused( rkhui8_t clino );
+void bsp_svr_paused( void );
+void bsp_cli_resumed( rkhui8_t clino );
+void bsp_cli_done( rkhui8_t clino );
+void bsp_req_recalled( rkhui8_t clino );
 
 
 #endif
