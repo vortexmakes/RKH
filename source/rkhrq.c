@@ -188,6 +188,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
+	RKHASSERT( q->qty < q->nelems );
 
 	if( q->qty >= q->nelems )
 	{
@@ -226,6 +227,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 
 	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
+	RKHASSERT( q->qty < q->nelems );
 
 	if( q->qty >= q->nelems )
 	{
