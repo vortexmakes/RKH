@@ -160,7 +160,6 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		else if( tolower(c) == 'p' )
 		{
 			RKH_SMA_POST_FIFO( svr, &e_pause, &l_isr_kbd );
-			RKH_SMA_POST_FIFO( svr, &e_pause, &l_isr_kbd );
 		}
     }
     return 0;

@@ -2951,7 +2951,7 @@ some_function( ... )
 This section provides a table that lists all the trace events and summarizes 
 the data included for each. 
 
-<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+<TABLE	align="center" valign="middle" width=85% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#c0c0c0">
 		<TH colspan=6 align="left"><B> Related with memory pool 
@@ -2960,7 +2960,7 @@ the data included for each.
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Group </I></B></TH>
 		<TH><B><I> ID </I></B></TH>
-		<TH width=33%><B><I> Trace Event </I></B></TH> 
+		<TH width=35%><B><I> Trace Event </I></B></TH> 
 		<TH width=30%><B><I> Description </I></B></TH> 
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
@@ -3571,7 +3571,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 15 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_AO ( SYM ao, STR nm ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_AO ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_AO </TD>
 		<TD><I> obj </I></TD>
 		<TD><I> Active object memory address </I></TD>
@@ -3615,7 +3615,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_FWK_TIMER ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_TIMER </TD>
 		<TD><I> obj </I></TD>
-		<TD><I> Timer memory address </I></TD>
+		<TD><I> Timer object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nm </I></TD>
@@ -3626,7 +3626,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_EPOOL </TD>
 		<TD><I> obj </I></TD>
-		<TD><I> Event pool memory address </I></TD>
+		<TD><I> Event pool object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nm </I></TD>
@@ -3637,7 +3637,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_FWK_QUEUE ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_QUEUE </TD>
 		<TD><I> obj </I></TD>
-		<TD><I> Queue memory address </I></TD>
+		<TD><I> Queue object memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nm </I></TD>
