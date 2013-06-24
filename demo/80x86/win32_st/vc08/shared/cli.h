@@ -11,7 +11,7 @@
 #include "scevt.h"
 
 
-#define NUM_CLIENTS				2
+#define NUM_CLIENTS				4
 #define CLI( _clino )			*clis[_clino]
 
 #define CLI0					CLI(0)

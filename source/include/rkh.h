@@ -1024,7 +1024,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /*
  */
-#define RKH_ARRAY( _clino )			*clis[_clino]
+#define RKH_ARRAY_SMA( _arr, _ix )		*_arr[_ix]
 
 
 /**

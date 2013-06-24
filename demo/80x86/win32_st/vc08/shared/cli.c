@@ -26,10 +26,12 @@
 
 RKH_SMA_CREATE( CLI_T, 1, cli0, 1, HCAL, &cli_idle, cli_init, NULL );
 RKH_SMA_CREATE( CLI_T, 2, cli1, 2, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_CREATE( CLI_T, 3, cli2, 3, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_CREATE( CLI_T, 4, cli3, 4, HCAL, &cli_idle, cli_init, NULL );
 
 RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS ) 
 {
-	&cli0, &cli1
+	&cli0, &cli1, &cli2, &cli3
 };
 
 
