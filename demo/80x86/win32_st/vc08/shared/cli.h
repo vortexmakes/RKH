@@ -12,11 +12,6 @@
 
 
 #define NUM_CLIENTS				2
-#define RKH_ARRAY_SMA_DCLR( _arr, _num )	\
-						extern RKHSMA_T *const * _arr[ _num ]
-#define RKH_ARRAY_SMA_CREATE( _arr, _num )			\
-						RKHSMA_T *const *_arr[ _num ] =
-
 #define CLI( _clino )			*clis[_clino]
 
 #define CLI0					CLI(0)

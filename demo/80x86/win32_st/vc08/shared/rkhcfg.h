@@ -274,7 +274,7 @@
  *	when posting an event the RKH inserts a pointer to the sender object.
  */
 
-#define RKH_SMA_EN_TRC_SENDER			0
+#define RKH_SMA_EN_TRC_SENDER			1
 
 
 /* --- Configuration options related to SMA action featues ---------------- */

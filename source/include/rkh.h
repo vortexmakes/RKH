@@ -1011,6 +1011,18 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 /*@}*/
 
 
+/*
+ */
+#define RKH_ARRAY_SMA_DCLR( _arr, _num )	\
+						extern RKHSMA_T *const *_arr[ _num ]
+
+
+/*
+ */
+#define RKH_ARRAY_SMA_CREATE( _arr, _num )			\
+						RKHSMA_T *const *_arr[ _num ] =
+
+
 /**
  * 	\brief
  * 	Declares a previously created SMA to be used as a global object.  
