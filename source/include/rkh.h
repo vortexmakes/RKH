@@ -1772,7 +1772,7 @@ void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e );
  *	void 
  *	exit_rx_manager( const struct rkh_t *sma )
  *	{
- *		rkh_defer( sma, &qurc );
+ *		rkh_recall( sma, &qurc );
  *	}
  *	\endcode
  *
@@ -2231,6 +2231,31 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
 
 #define rkh_get_cstate_id( sma )									\
 								((RKHBASE_T*)((sma)->state))->id	
+
+
+/**
+ * 	\brief
+ * 	Retrieves the address of an registered active object (SMA) according to 
+ * 	its priority.
+ *
+ * 	\param _prio	registered active object (SMA) priority.
+ * 	\return			pointer to previously registered active object (SMA).
+ */
+
+#define RKH_GET_SMA( _prio )			\
+								rkh_sptbl[(rkhui8_t)(_prio)]
+
+
+/**
+ * 	\brief
+ * 	Retrieves the priority number of an registered active object (SMA).
+ *
+ * 	\param _ao			pointer to previously registered active object (SMA).
+ * 	\param _prio		registered active object (SMA) priority.
+ */
+
+#define RKH_GET_PRIO( _ao )			\
+								(_ao)->romrkh->prio
 
 
 /**
