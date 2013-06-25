@@ -146,11 +146,12 @@ rkh_mp_get( RKHMP_T *mp )
     fb = ( RKH_FREE_BLK_T* )mp->free;           /* get a free block or NULL */
     if( fb != NULL )							   /* free block available? */
 	{
-        mp->free = fb->next;    /* adjust list head to the next free block */
-        --mp->nfree;                                /* one less free block */
+        mp->free = fb->next;     /* adjust list head to the next free block */
+        RKHASSERT(mp->nfree > (RKH_MPNB_T)0);    /* at least one free block */
+        --mp->nfree;                                 /* one less free block */
 #if RKH_MP_EN_GET_LWM == 1 && RKH_MP_REDUCED == 0
         if( mp->nmin > mp->nfree )
-            mp->nmin = mp->nfree;          /* remember the minimum so far */
+            mp->nmin = mp->nfree;            /* remember the minimum so far */
 #endif
     }
 
@@ -171,9 +172,9 @@ rkh_mp_put( RKHMP_T *mp, void *blk )
 #if RKH_MP_REDUCED == 0
     RKHASSERT(	mp->start <= blk && 				    /* must be in range */
 				blk <= mp->end && 
-				mp->nfree <= mp->nblocks  ); /* # free blocks must be < total */
+				mp->nfree < mp->nblocks  ); /* # free blocks must be < total */
 #else
-    RKHASSERT(	mp->nfree <= mp->nblocks ); /* # free blocks must be < total */
+    RKHASSERT(	mp->nfree < mp->nblocks ); /* # free blocks must be < total */
 #endif
 
 	RKH_ENTER_CRITICAL_();
