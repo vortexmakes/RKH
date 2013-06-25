@@ -9,8 +9,6 @@
 #include "bsp.h"
 
 
-#define RKH_EVT_CAST( _e )			((RKHEVT_T*)(_e))
-#define RKH_CAST( _et, _e )			((_et*)(_e))
 #define MAX_SIZEOF_QREQ				2*NUM_CLIENTS
 
 
@@ -65,9 +63,8 @@ svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
 	START_EVT_T *e_start;
 
-	(void)pe;
 	e_start = RKH_ALLOC_EVENT( START_EVT_T, START );
-	e_start->clino = sma->romrkh->prio;
+	e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
 	RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ), 
 												RKH_EVT_CAST(e_start), sma );
 }

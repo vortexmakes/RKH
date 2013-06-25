@@ -12,7 +12,7 @@
 
 
 #define NUM_CLIENTS				4
-#define CLI( _clino )			*clis[_clino]
+#define CLI( _clino )			RKH_ARRAY_SMA( clis, _clino )
 
 #define CLI0					CLI(0)
 #define CLI1					CLI(1)

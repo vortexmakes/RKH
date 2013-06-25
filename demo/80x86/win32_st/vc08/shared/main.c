@@ -14,7 +14,8 @@
 
 #define QSTO_SIZE			4
 
-static RKHEVT_T *svr_qsto[ QSTO_SIZE ], *cli_qsto[ QSTO_SIZE ];
+static RKHEVT_T *svr_qsto[ QSTO_SIZE ];
+static RKHEVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
 
 
 int
@@ -51,7 +52,7 @@ main( int argc, char *argv[] )
 	rkh_sma_activate( svr, (const RKHEVT_T **)svr_qsto, QSTO_SIZE, 
 																CV(0), 0 );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		rkh_sma_activate( CLI(cn), (const RKHEVT_T **)cli_qsto, 
+		rkh_sma_activate( CLI(cn), (const RKHEVT_T **)cli_qsto[cn], 
 												QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 

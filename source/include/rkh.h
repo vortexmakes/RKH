@@ -1011,19 +1011,97 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 /*@}*/
 
 
-/*
+/**
+ * 	\brief
+ * 	Declares a opaque pointer to previously created array of state machine 
+ * 	applications SMA (a.k.a Active Object) to be used as a global object. 
+ *
+ *	\note
+ * 	Generally, this macro is used in the SMA's header file.
+ *
+ * 	Example:
+ * 	\code
+ * 	//	cli.h: state-machine application's header file
+ * 	#define NUM_CLIENTS			4
+ * 	
+ * 	typedef struct
+ * 	{
+ * 		RKHSMA_T sma;		// base structure
+ * 		RKHT_T cli_utmr; 	// usage time
+ * 		RKHT_T cli_rtmr;	// waiting request time
+ * 	} CLI_T;				// Active Object derived from RKHSMA_T structure
+ *
+ * 	RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
+ * 	\endcode
+ * 	
+ * 	\sa
+ * 	RKH_SMA_CREATE().
+ * 	
+ * 	\param _arr		pointer to previously created array of state machine 
+ * 					applications. To do that is recommended to use the macro 
+ * 					RKH_ARRAY_SMA_CREATE().
+ * 	\param _num		size of array [in active objects].
  */
+
 #define RKH_ARRAY_SMA_DCLR( _arr, _num )	\
 						extern RKHSMA_T *const *_arr[ _num ]
 
 
-/*
+/**
+ * 	\brief
+ * 	Declare and allocate an array of SMAs (a.k.a active objects) derived from 
+ * 	RKHSMA_T.
+ *
+ * 	Example:
+ * 	\code
+ *	// Defines SMAs (a.k.a Active Objects)
+ *
+ *	RKH_SMA_CREATE( CLI_T, 1, cli0, 1, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, 2, cli1, 2, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, 3, cli2, 3, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, 4, cli3, 4, HCAL, &cli_idle, cli_init, NULL );
+ *
+ *	RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS ) 
+ *	{
+ *		&cli0, &cli1, &cli2, &cli3
+ *	};
+ * 	\endcode
+ *
+ * 	\param _arr		name of SMA's array.
+ * 	\param _num		size of array [in active objects].
  */
-#define RKH_ARRAY_SMA_CREATE( _arr, _num )			\
+
+#define RKH_ARRAY_SMA_CREATE( _arr, _num )	\
 						RKHSMA_T *const *_arr[ _num ] =
 
-/*
+/**
+ * 	\brief
+ * 	Retrieves the pointer to active object from a SMA's array.
+ *
+ * 	Example:
+ * 	\code
+ * 	#define NUM_CLIENTS				4
+ * 	#define CLI( _clino )			RKH_ARRAY_SMA( clis, _clino )
+ * 	
+ * 	#define CLI0					CLI(0)
+ * 	#define CLI1					CLI(1)
+ * 	#define CLI2					CLI(2)
+ * 	#define CLI3					CLI(3)
+ *
+ * 	typedef struct
+ * 	{
+ * 		RKHSMA_T sma;		// base structure
+ * 		RKHT_T cli_utmr; 	// usage time
+ * 		RKHT_T cli_rtmr;	// waiting request time
+ * 	} CLI_T;				// Active Object derived from RKHSMA_T structure
+ *
+ * 	RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
+ * 	\endcode
+ *
+ * 	\param _arr		name of SMA's array.
+ * 	\param _ix		index (position in the array).
  */
+
 #define RKH_ARRAY_SMA( _arr, _ix )		*_arr[_ix]
 
 
@@ -2245,7 +2323,7 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  * 	Id of current state.
  */
 
-#define rkh_get_cstate_id( sma )									\
+#define RKH_GET_CSTATE_ID( sma )									\
 								((RKHBASE_T*)((sma)->state))->id	
 
 
@@ -2267,11 +2345,45 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  * 	Retrieves the priority number of an registered active object (SMA).
  *
  * 	\param _ao			pointer to previously registered active object (SMA).
- * 	\param _prio		registered active object (SMA) priority.
  */
 
 #define RKH_GET_PRIO( _ao )			\
 								(_ao)->romrkh->prio
+
+
+/**
+ * 	\brief
+ * 	Perform cast to pointer to RKH event structure (RKHEVT_T*).
+ */
+
+#define RKH_EVT_CAST( _e )		((RKHEVT_T*)(_e))
+
+
+/**
+ * 	\brief
+ * 	Perform downcast of a reference of a base class to one of its derived 
+ * 	classes.
+ *
+ * 	Example:
+ * 	\code
+ * 	void 
+ * 	svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
+ * 	{
+ * 		START_EVT_T *e_start;
+ * 		
+ * 		e_start = RKH_ALLOC_EVENT( START_EVT_T, START );
+ * 		e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
+ * 		RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ), 
+ *												RKH_EVT_CAST(e_start), sma );
+ * 	}
+ * 	\endcode
+ *
+ *	\sa
+ *	\link RKHEVT_T single inheritance in C \endlink, and 
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ */
+
+#define RKH_CAST( _type, _obj )		((_type*)(_obj))
 
 
 /**
