@@ -123,6 +123,8 @@
 
 
 #define FOREVER						for(;;)
+#define RKH_DEF_ENABLED				1u
+#define RKH_DEF_DISABLED			0u
 
 
 	                                                  /* macros for casting */
@@ -150,51 +152,246 @@
 #define CV( p )						((void*)(p))
 
 
-/* 	
- *  Verifies configurations from rkhcfg.h include file.
+/*
+ * 	LOOK FOR MISSING #define CONSTANTS ----------------------------------------
+ * 
+ * 	This section is used to generate ERROR messages at compile time if certain 
+ * 	#define constants are MISSING in rkhcfg.h.  This allows you to quickly 
+ * 	determine the source of the error.
+ * 
+ * 	You SHOULD NOT change this section UNLESS you would like to add more 
+ * 	comments as to the source of the compile time error.
  */
 
-#ifndef RKH_EN_NATIVE_EQUEUE
-	#error "rkhcfg.h, Missing RKH_EN_NATIVE_EQUEUE: Enable (1) or Disable (0) native queue"
-#else
-	#if RKH_EN_NATIVE_EQUEUE == 1 && RKH_RQ_EN != 1
-		#error "rkhcfg.h, When using the native event queue for SMAs must be enabled (1) the RKH_RQ_EN to include the (r) queue module"
-	#endif
+/*  PORT          ---------------------------------------------------------- */
+
+#ifndef	RKH_EN_SMA_THREAD
+	#error "RKH_EN_SMA_THREAD                     not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_EN_SMA_THREAD != RKH_DEF_ENABLED) && \
+        	(RKH_EN_SMA_THREAD != RKH_DEF_DISABLED))
+	#error "RKH_EN_SMA_THREAD               illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_MAX_EPOOL
-	#error "rkhcfg.h, Missing RKH_MAX_EPOOL: Max. # of fixed-size memory block pools to be used by the application."
-#else
-	#if RKH_EN_DYNAMIC_EVENT == 1
-		#if RKH_MAX_EPOOL == 0 || RKH_MAX_EPOOL > 255
-			#error  "rkhcfg.h, RKH_MAX_EPOOL must be > 0 and <= 255"
-		#endif
-	#endif
+#ifndef	RKH_EN_SMA_THREAD_DATA
+	#error "RKH_EN_SMA_THREAD_DATA                not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_EN_SMA_THREAD_DATA != RKH_DEF_ENABLED) && \
+        	(RKH_EN_SMA_THREAD_DATA != RKH_DEF_DISABLED))
+	#error "RKH_EN_SMA_THREAD_DATA          illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_EN_DYNAMIC_EVENT
-	#error "rkhcfg.h, Missing RKH_EN_DYNAMIC_EVENT: Enable (1) or Disable (0) dynamic event support"
-#else
-	#if RKH_EN_DYNAMIC_EVENT == 0
-		#undef RKH_EN_NATIVE_DYN_EVENT
-		#define RKH_EN_NATIVE_DYN_EVENT		0
-		#undef RKH_MP_EN
-		#define RKH_MP_EN					0
-	#endif
-	#if RKH_EN_DYNAMIC_EVENT == 1 && RKH_MAX_EPOOL == 0
-		#error "rkhcfg.h, When enabling the dynamic event support the RKH_MAX_EPOOL must be != 0"
-	#endif
+#ifndef	RKH_EN_NATIVE_SCHEDULER
+	#error "RKH_EN_NATIVE_SCHEDULER               not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_EN_NATIVE_SCHEDULER != RKH_DEF_ENABLED) && \
+        	(RKH_EN_NATIVE_SCHEDULER != RKH_DEF_DISABLED))
+	#error "RKH_EN_NATIVE_SCHEDULER         illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#endif
+
+
+#ifndef	RKH_EN_NATIVE_EQUEUE
+	#error "RKH_EN_NATIVE_EQUEUE                  not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_EN_NATIVE_EQUEUE != RKH_DEF_ENABLED) && \
+        	(RKH_EN_NATIVE_EQUEUE != RKH_DEF_DISABLED))
+	#error "RKH_EN_NATIVE_EQUEUE            illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#elif	((RKH_EN_NATIVE_EQUEUE == RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN != RKH_DEF_ENABLED))
+	#error "RKH_RQ_EN                        illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
 #endif
 
 
 #ifndef RKH_EN_NATIVE_DYN_EVENT
-	#error "rkhcfg.h, Missing RKH_EN_NATIVE_DYN_EVENT: Enable (1) or Disable (0) native dynamic event support."
-#else
-	#if RKH_EN_DYNAMIC_EVENT == 1 && RKH_EN_NATIVE_DYN_EVENT == 1 && RKH_MP_EN != 1
-		#error "rkhcfg.h, When using the native dynamic memory management must be enabled (1) the RKH_MP_EN to include the memory pool module."
+	#error "RKH_EN_NATIVE_DYN_EVENT               not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif	(RKH_EN_NATIVE_DYN_EVENT == RKH_DEF_ENABLED)
+	#if ((RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED) && \
+			(RKH_MP_EN == RKH_DEF_DISABLED))
+	#error "RKH_MP_EN                        illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
 	#endif
+
+#endif
+
+
+#ifndef	RKH_EN_REENTRANT
+	#error "RKH_EN_REENTRANT                      not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_EN_REENTRANT != RKH_DEF_ENABLED) && \
+        	(RKH_EN_REENTRANT != RKH_DEF_DISABLED))
+	#error "RKH_EN_REENTRANT                illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#endif
+
+
+#ifndef	RKH_TRC_SIZEOF_POINTER
+	#error "RKH_TRC_SIZEOF_POINTER                not #define'd in 'rkhport.h'"
+	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
+	#error  "                               [     || 16  (16-bit pointer)]    "
+	#error  "                               [     || 32  (32-bit pointer)]    "
+
+#elif  ((RKH_TRC_SIZEOF_POINTER != 8) && \
+        (RKH_TRC_SIZEOF_POINTER != 16) && \
+        (RKH_TRC_SIZEOF_POINTER != 32))
+	#error  "RKH_TRC_SIZEOF_POINTER         illegally #define'd in 'rkhport.h'"
+	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
+	#error  "                               [     || 16  (16-bit pointer)]    "
+	#error  "                               [     || 32  (32-bit pointer)]    "
+
+#endif
+
+
+#ifndef	RKH_TRC_SIZEOF_FUN_POINTER
+	#error "RKH_TRC_SIZEOF_FUN_POINTER            not #define'd in 'rkhport.h'"
+	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
+	#error  "                               [     || 16  (16-bit pointer)]    "
+	#error  "                               [     || 32  (32-bit pointer)]    "
+
+#elif  ((RKH_TRC_SIZEOF_FUN_POINTER != 8) && \
+        (RKH_TRC_SIZEOF_FUN_POINTER != 16) && \
+        (RKH_TRC_SIZEOF_FUN_POINTER != 32))
+	#error  "RKH_TRC_SIZEOF_FUN_POINTER     illegally #define'd in 'rkhport.h'"
+	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
+	#error  "                               [     || 16  (16-bit pointer)]    "
+	#error  "                               [     || 32  (32-bit pointer)]    "
+
+#endif
+
+
+/*  FRAMEWORK     ---------------------------------------------------------- */
+
+#ifndef	RKH_MAX_SMA
+	#error "RKH_MAX_SMA                            not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be >=  1]                   "
+	#error  "                               [     && <= 64]                   "
+
+#elif ((RKH_MAX_SMA == 0) || (RKH_MAX_SMA > 64))
+	#error "RKH_MAX_SMA                      illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be >=  1]                   "
+	#error  "                               [     && <= 64]                   "
+
+#endif
+
+
+#ifndef	RKH_EN_DYNAMIC_EVENT
+	#error "RKH_EN_DYNAMIC_EVENT                   not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	(RKH_EN_DYNAMIC_EVENT == RKH_DEF_DISABLED)
+	#undef RKH_EN_NATIVE_DYN_EVENT
+	#define RKH_EN_NATIVE_DYN_EVENT			RKH_DEF_DISABLED
+	#undef RKH_MP_EN
+	#define RKH_MP_EN						RKH_DEF_DISABLED
+
+#endif
+
+
+#ifndef	RKH_MAX_EPOOL
+	#error "RKH_MAX_EPOOL                          not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be >=   1]                  "
+	#error  "                               [     && <= 255]                  "
+
+#elif 	(RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED)
+	#if ((RKH_MAX_EPOOL == 0) || (RKH_MAX_EPOOL > 255))
+	#error "RKH_MAX_EPOOL                    illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be >=   1]                  "
+	#error  "                               [     && <= 255]                  "
+	#endif
+
+#endif
+
+
+#ifndef	RKH_SIZEOF_EVENT
+	#error "RKH_SIZEOF_EVENT                       not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+#elif  ((RKH_SIZEOF_EVENT != 8) && \
+        (RKH_SIZEOF_EVENT != 16) && \
+        (RKH_SIZEOF_EVENT != 32))
+	#error  "RKH_SIZEOF_EVENT                illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+#endif
+
+
+#ifndef	RKH_SIZEOF_ESIZE
+	#error "RKH_SIZEOF_ESIZE                       not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+#elif  ((RKH_SIZEOF_ESIZE != 8) && \
+        (RKH_SIZEOF_ESIZE != 16) && \
+        (RKH_SIZEOF_ESIZE != 32))
+	#error  "RKH_SIZEOF_ESIZE                illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+#endif
+
+
+#ifndef RKH_EN_DEFERRED_EVENT
+	#error "RKH_EN_DEFERRED_EVENT                  not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_EN_DEFERRED_EVENT == RKH_DEF_ENABLED) && \
+			(RKH_EN_NATIVE_EQUEUE == RKH_DEF_DISABLED))
+	#error  "RKH_EN_NATIVE_EQUEUE            illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+
+#endif
+
+
+#ifndef	RKH_ASSERT_EN
+	#error "RKH_ASSERT_EN                         not #define'd in 'rkhport.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_ASSERT_EN != RKH_DEF_ENABLED) && \
+        	(RKH_ASSERT_EN != RKH_DEF_DISABLED))
+	#error "RKH_ASSERT_EN                   illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
@@ -334,12 +531,10 @@
 
 
 #ifndef RKH_TIM_EN_GET_INFO
-	#error "rkhcfg.h, Missing RKH_TIM_EN_GET_INFO: Include (1) get timer information function"
 #endif
 
 
 #ifndef RKH_SMA_EN_HCAL
-	#error "rkhcfg.h, Missing RKH_SMA_EN_HCAL: Enable (1) or Disable (0) state nesting"
 #endif
 
 #ifndef RKH_SMA_MAX_HCAL_DEPTH
@@ -358,108 +553,67 @@
 	#endif
 #endif
 
-#ifndef RKH_MAX_SMA
-#error "rkhcfg.h, Missing RKH_MAX_SMA: Max. # of state machines applications"
-#else
-	#if RKH_MAX_SMA == 0 || RKH_MAX_SMA > 64
-	#error  "rkhcfg.h, RKH_MAX_SMA must be > 0 and <= 64"
-	#endif
-#endif
-
-#ifndef RKH_EN_DEFERRED_EVENT
-	#error "rkhcfg.h, Missing RKH_EN_DEFERRED_EVENT: Enable (1) or Disable (0) deferred event support. For using this feature the native event queue support must be enabled."
-#else
-	#if RKH_EN_DEFERRED_EVENT == 1 && RKH_EN_NATIVE_EQUEUE == 0
-		#error "rkhcfg.h, When enabling the defer and recall event features the native event queue support must be enabled."
-	#endif
-#endif
-
 #ifndef RKH_SMA_EN_PSEUDOSTATE
-	#error "rkhcfg.h, Missing RKH_SMA_EN_PSEUDOSTATE: Enable (1) or Disable (0) pseudostates."
 #endif
 
 #ifndef RKH_SMA_EN_DEEP_HISTORY
-	#error "rkhcfg.h, Missing RKH_SMA_EN_DEEP_HISTORY: Include deep history. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
 #ifndef RKH_SMA_EN_SHALLOW_HISTORY
-	#error "rkhcfg.h, Missing RKH_SMA_EN_SHALLOW_HISTORY: Include shallow history. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
 #ifndef RKH_SMA_EN_CHOICE
-	#error "rkhcfg.h, Missing RKH_SMA_EN_CHOICE: Include choice pseudostate. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
 #ifndef RKH_SMA_EN_CONDITIONAL	
-	#error "rkhcfg.h, Missing RKH_SMA_EN_CONDITIONAL: Include conditional. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
 #ifndef RKH_SMA_EN_SUBMACHINE	
-	#error "rkhcfg.h, Missing RKH_SMA_EN_SUBMACHINE: Include submachine state. Must be set to one RKH_SMA_EN_PSEUDOSTATE."
 #endif
 
 #ifndef RKH_SMA_EN_INIT_ARG_SMA
-	#error "rkhcfg.h, Missing RKH_SMA_EN_INIT_ARG_SMA: Enable (1) or Disable (0) state machine arg from initialization action."
 #endif
 
 #ifndef RKH_SMA_EN_ENT_ARG_SMA
-	#error "rkhcfg.h, Missing RKH_SMA_EN_ENT_ARG_SMA: Enable (1) or Disable (0) state machine arg from entry action."
 #endif
 
 #ifndef RKH_SMA_EN_EXT_ARG_SMA
-	#error "rkhcfg.h, Missing RKH_SMA_EN_EXT_ARG_SMA: Enable (1) or Disable (0) state machine arg from exit action."
 #endif
 
 #ifndef RKH_SMA_EN_ACT_ARG_SMA
-	#error "rkhcfg.h, Missing RKH_SMA_EN_ACT_ARG_SMA: Enable (1) or Disable (0) state machine arg from transition action."
 #endif
 
 #ifndef RKH_SMA_EN_ACT_ARG_EVT
-	#error "rkhcfg.h, Missing RKH_SMA_EN_ACT_ARG_EVT: Enable (1) or Disable (0) event arg from guard function."
 #endif
 
 #ifndef RKH_SMA_EN_GRD_ARG_EVT
-	#error "rkhcfg.h, Missing RKH_SMA_EN_GRD_ARG_EVT: Enable (1) or Disable (0) event arg from guard function."
 #endif
 
 #ifndef RKH_SMA_EN_GRD_ARG_SMA
-	#error "rkhcfg.h, Missing RKH_SMA_EN_GRD_ARG_EVT: Enable (1) or Disable (0) state machine arg from guard function."
 #endif
 
 #ifndef RKH_SMA_EN_PPRO_ARG_SMA
-	#error "rkhcfg.h, Missing RKH_SMA_EN_PPRO_ARG_SMA: Enable (1) or Disable (0) state machine arg from event preprocessor function."
 #endif
 
 #ifndef RKH_SMA_EN_STATE_ID
-	#error "rkhcfg.h, Missing RKH_SMA_EN_STATE_ID: Include an ID number (also called descriptor) within state structure."
 #endif
 
 #ifndef RKH_SMA_EN_PPRO	
-	#error "rkhcfg.h, Missing RKH_SMA_EN_PPRO: Include input preprocessor function within basic state object."
 #endif
 
 #ifndef RKH_SMA_EN_GET_INFO
-	#error "rkhcfg.h, Missing RKH_SMA_EN_GET_INFO: Include get information function."
-#endif
-
-#ifndef RKH_EN_REENTRANT
-	#error "rkhcfg.h, Missing RKH_EN_REENTRANT: Enable (1) or Disable (0) state machine re-entrancy."
 #endif
 
 #ifndef RKH_TRC_EN
-	#error "rkhcfg.h, Missing RKH_TRC_EN: Enable (1) or Disable (0) trace mode."
 #endif
 
 #ifndef RKH_TRC_ALL
-	#error "rkhcfg.h, Missing RKH_TRC_ALL: Include all trace points."
 #endif
 
 #ifndef RKH_TRC_EN_TSTAMP
-	#error "rkhcfg.h, Missing RKH_TRC_EN_TSTAMP: Enable (1) or Disable (0) trace timestamp."
 #endif
 
 #ifndef RKH_TRC_SIZEOF_TSTAMP
-	#error "rkhcfg.h, Missing RKH_TRC_SIZEOF_TSTAMP: Defines the size of timestamp [in bits]: 8, 16 or 32."
 #endif
 
 #ifndef RKH_TRC_SIZEOF_STREAM
@@ -471,7 +625,6 @@
 #endif
 
 #ifndef RKH_SMA_EN_IEVENT
-	#error "rkhcfg.h, Missing RKH_SMA_EN_IEVENT: Enable (1) or Disable (0) the initial ."
 #endif
 
 /*
@@ -551,11 +704,6 @@
 	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
 	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T*)&rdyp_##n
 	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
-#endif
-
-
-#ifndef RKH_ASSERT_EN
-	#error "rkhcfg.h, Missing RKH_ASSERT_EN: Enable (1) or Disable (0) checking assertions."
 #endif
 
 

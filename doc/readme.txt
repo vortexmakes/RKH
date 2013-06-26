@@ -3815,18 +3815,96 @@ Each RKH application must have its own configuration file, called
 \c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
-and to enhance the system performance in a substantial manner. The 
-\c rkhcfg.h file shows the general layout of the configuration file.
-Here is an list of all options with their documentation:
+and to enhance the system performance in a substantial manner. 
+
+Also, each RKH port must have its own configuration options, that must be 
+explicitely defined in the proper \a rkhport.h file. Here is an list of all 
+options with their documentation:
 
 \n This section includes:
 
+- \ref cfg_port
 - \ref cfg_fw
 - \ref cfg_sm
 - \ref cfg_tr
 - \ref cfg_q
 - \ref cfg_mp
 - \ref cfg_t
+
+<HR>
+\section cfg_port Configuration options related to RKH port
+
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with RKH port </B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_SMA_THREAD </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_SMA_THREAD </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_SMA_THREAD_DATA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_SMA_THREAD_DATA </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_NATIVE_SCHEDULER </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_EN_NATIVE_SCHEDULER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_NATIVE_EQUEUE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_EN_NATIVE_EQUEUE </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_NATIVE_DYN_EVENT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_EN_NATIVE_DYN_EVENT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_REENTRANT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_REENTRANT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 32 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 32 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
 
 <HR>
 \section cfg_fw Configuration options related to framework
@@ -4322,20 +4400,6 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> [8,16,32] </TD>
 		<TD> 128 </TD>
 		<TD align="left"> \copydetails RKH_TRC_SIZEOF_STREAM </TD>
-	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 32 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 32 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
 	</TR>
 </TABLE>
 
