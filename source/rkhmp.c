@@ -98,16 +98,10 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 	
     bsize = mp->bsize;		         /* use the rounded-up value from now on */
 	
-	/* 
-	 * The pool buffer must fit at least one rounded-up block.
-	 */
-
+	              /* The pool buffer must fit at least one rounded-up block. */
 	RKHASSERT( ssize >= ( rkhui16_t )bsize );
 
-	/* 
-	 * (2) Chain all blocks together in a free-list... 
-	 */
-
+	                           /* Chain all blocks together in a free-list...*/
     ssize -= ( rkhui16_t )bsize;	           /* don't count the last block */
     mp->nblocks = 1;				   /* the last block already in the pool */
     fb = ( RKH_FREE_BLK_T* )mp->free;	/*start at the head of the free list */
@@ -170,19 +164,19 @@ rkh_mp_put( RKHMP_T *mp, void *blk )
 	RKHASSERT( mp->bsize != 0 );
 
 #if RKH_MP_REDUCED == 0
-    RKHASSERT(	mp->start <= blk && 				    /* must be in range */
+    RKHASSERT(	mp->start <= blk && 				     /* must be in range */
 				blk <= mp->end && 
 				mp->nfree < mp->nblocks  ); /* # free blocks must be < total */
 #else
-    RKHASSERT(	mp->nfree < mp->nblocks ); /* # free blocks must be < total */
+    RKHASSERT(	mp->nfree < mp->nblocks );  /* # free blocks must be < total */
 #endif
 
 	RKH_ENTER_CRITICAL_();
 	
 	/* link into free list */
     ( ( RKH_FREE_BLK_T* )blk )->next = ( RKH_FREE_BLK_T* )mp->free;
-    mp->free = blk;                    /* set as new head of the free list */
-    ++mp->nfree;                       /* one more free block in this pool */
+    mp->free = blk;                      /* set as new head of the free list */
+    ++mp->nfree;                         /* one more free block in this pool */
 	
 	RKH_EXIT_CRITICAL_();
 	RKH_TR_MP_PUT( mp, mp->nfree );
