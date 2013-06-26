@@ -146,6 +146,7 @@ typedef struct rkht_t
 	RKH_TNT_T ntick;
 
 	/**
+	 * 	\brief
 	 * 	Number of ticks for all timer expirations after the first (expiration 
 	 * 	period). A zero for this parameter makes the timer a one-shot timer, 
 	 * 	otherwise, for periodic timers, any value in range.
