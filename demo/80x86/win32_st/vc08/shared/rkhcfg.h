@@ -668,7 +668,7 @@
  *	See rkh_mp_get_nfree() function.
  */
 
-#define RKH_MP_EN_GET_NFREE				1
+#define RKH_MP_EN_GET_NFREE				0
 
 /**
  *	If the #RKH_MP_EN_GET_LWM is set to 1 then RKH will include the 
@@ -678,7 +678,7 @@
  *	See rkh_mp_get_low_wmark() function.
  */
 
-#define RKH_MP_EN_GET_LWM				1
+#define RKH_MP_EN_GET_LWM				0
 
 /**
  *	If the #RKH_MP_EN_GET_INFO is set to 1 then RKH will include the 

@@ -45,7 +45,8 @@
 #define SIZEOF_EP0_BLOCK			sizeof( RKHEVT_T )
 #define SIZEOF_EP1STO				16
 #define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
-#define CLI_ID( _cp )				((_cp) - RKH_GET_PRIO(CLI(0)))
+#define SVR_NAME					"Server    -"
+#define CLI_NAME					"Client"
 
 
 RKH_THIS_MODULE
@@ -135,7 +136,7 @@ static
 void
 bsp_publish( const RKHEVT_T *e )
 {
-	int cn;
+	HInt cn;
 
 	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
 
@@ -325,60 +326,71 @@ bsp_srand( rkhui32_t seed )
 
 
 void 
-bsp_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
+bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 {
-	printf( "Client[%02d] - Waiting for request the server (%d seg)\n", 
-							CLI_ID(clino), req_time );
+	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
+									CLI_ID(clino), req_time );
 }
 
 
 void 
-bsp_req( rkhui8_t clino )
+bsp_cli_req( rkhui8_t clino )
 {
-	printf( "Client[%02d] - Requesting to server...\n", CLI_ID(clino) );
+	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
 
 void 
-bsp_using( rkhui8_t clino, RKH_TNT_T using_time )
+bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 {
-	printf( "Client[%02d] - Using server for %d [seg]\n", 
-							CLI_ID(clino), using_time );
+	printf( "Client[%d] - Using server for %d [seg]\n", 
+									CLI_ID(clino), using_time );
 }
 
 
 void 
 bsp_cli_paused( rkhui8_t clino )
 {
-	printf( "Client[%02d] - Paused\n", CLI_ID(clino) );
-}
-
-
-void 
-bsp_svr_paused( void )
-{
-	printf( "Server     - Paused\n" );
+	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_cli_resumed( rkhui8_t clino )
 {
-	printf( "Client[%02d] - Resumed\n", CLI_ID(clino) );
+	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_cli_done( rkhui8_t clino )
 {
-	printf( "Client[%02d] - Done\n", CLI_ID(clino) );
+	printf( "Client[%d] - Done\n", CLI_ID(clino) );
 }
 
 
 void 
-bsp_req_recalled( rkhui8_t clino )
+bsp_svr_recall( rkhui8_t clino )
 {
-	printf( "Server     - Recalled request client[%02d]\n", CLI_ID(clino) );
+	printf( "%s Recall a deferred request from client[%d]\n", 
+									SVR_NAME, CLI_ID(clino) );
+}
+
+
+void 
+bsp_svr_paused( const RKHSMA_T *sma )
+{
+	HInt cn;
+	SVR_T *ao;
+
+	ao = RKH_CAST(SVR_T, sma);
+	printf( "%s Paused | ", SVR_NAME );
+	printf( "ntot = %d |", ao->ntot );
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
+		printf( " cli%d=%d |", cn, ao->ncr[ cn ] );
+
+	putchar('\n');
 }
 
 

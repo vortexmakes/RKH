@@ -9,13 +9,20 @@
 
 #include "rkh.h"
 #include "scevt.h"
+#include "cli.h"
+
+
+/* Helper macro */
+#define CLI_ID( _cp )			((_cp) - RKH_GET_PRIO(CLI(0)))
 
 
 typedef struct
 {
-	RKHSMA_T sma;	/* base structure */
-	rkhui8_t x;		/* private member */
-} SVR_T;			/* Active Object derived from RKHSMA_T structure */
+	RKHSMA_T sma;		                                   /* base structure */
+	rkhui32_t ntot;		                /* total number of attended requests */
+							  /* number of attended requests of every client */
+	rkhui32_t ncr[ NUM_CLIENTS ];
+} SVR_T;			        /* Active Object derived from RKHSMA_T structure */
 
 
 /*

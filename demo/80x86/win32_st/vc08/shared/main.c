@@ -21,7 +21,7 @@ static RKHEVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
 int
 main( int argc, char *argv[] )
 {
-	int cn;
+	HInt cn;
 
 	/* invoke the rkh_init() function */
 	bsp_init( argc, argv );
