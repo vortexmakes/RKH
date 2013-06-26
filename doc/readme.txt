@@ -3416,25 +3416,16 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=15 align="center"> #RKH_TG_TIM </TD>
-		<TD rowspan=4 align="center"> 0 </TD>
-		<TD rowspan=4> #RKH_TE_TIM_INIT ( SYM t, SIG sig, NTICK ntick, 
-															NTICK per ) </TD>
-		<TD rowspan=4> \copybrief RKH_TR_TIM_INIT </TD>
+		<TD rowspan=13 align="center"> #RKH_TG_TIM </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_TIM_INIT ( SYM t, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_TIM_INIT </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
 		<TD><I> \copybrief RKHEVT_T::e </I></TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> ntick </I></TD>
-		<TD><I> \copybrief RKHT_T::ntick </I></TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> per </I></TD>
-		<TD><I> \copybrief RKHT_T::period </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=4 align="center"> 1 </TD>
