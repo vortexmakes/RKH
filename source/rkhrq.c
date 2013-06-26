@@ -215,7 +215,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 #endif
 	RKH_IUPDT_PUT( q );
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_RQ_FIFO( q, q->qty );
+	RKH_TR_RQ_FIFO( q, q->qty, q->nmin );
 }
 
 
@@ -256,7 +256,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 		q->nmin = (RKH_RQNE_T)( q->nelems - q->qty );
 #endif
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_RQ_LIFO( q, q->qty );
+	RKH_TR_RQ_LIFO( q, q->qty, q->nmin );
 }
 #endif
 

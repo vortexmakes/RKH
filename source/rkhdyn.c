@@ -79,7 +79,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 
     RKH_DYNE_GET( ep, evt );	/* get e -- platform-dependent */
 							    /* pool must not run out of events */
-    RKHASSERT( evt != ( RKHEVT_T* )0 );
+    RKHASSERT( evt != RKH_EVT_CAST(0) );
     evt->e = e;                 /* set signal for this event */
 
 	/* 
@@ -89,7 +89,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
     evt->nref = 0;
     evt->pool = (rkhui8_t)( idx + (rkhui8_t)1 );
 
-	RKH_TR_FWK_AE( esize, evt );
+	RKH_TR_FWK_AE( esize, evt, evt->pool, evt->nref );
     return evt;	
 }
 
@@ -107,7 +107,7 @@ rkh_gc( RKHEVT_T *e )
 		{
             --e->nref;		/* decrement the reference counter */
             RKH_EXIT_CRITICAL_();
-			RKH_TR_FWK_GC( e );
+			RKH_TR_FWK_GC( e, e->pool, e->nref );
         }
         else	/* this is the last reference to this event, recycle it */
 		{
@@ -116,7 +116,7 @@ rkh_gc( RKHEVT_T *e )
             RKH_EXIT_CRITICAL_();
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
-			RKH_TR_FWK_GCR( e );
+			RKH_TR_FWK_GCR( e, e->pool, e->nref );
             RKH_DYNE_PUT( &rkheplist[ idx ], e );
         }
     }
@@ -166,7 +166,7 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_EXIT_CRITICAL_();
 
 	rkh_rq_put_fifo( &sma->equeue, e );
-	RKH_TR_SMA_FIFO( sma, e, sender );
+	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
 }
 #endif
 
@@ -189,7 +189,7 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_lifo( &sma->equeue, e );
-	RKH_TR_SMA_LIFO( sma, e, sender );
+	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
 }
 #endif
 
@@ -206,7 +206,7 @@ rkh_sma_get( RKHSMA_T *sma )
     RKH_EXIT_CRITICAL_();
 
 	RKHASSERT( e != ( RKHEVT_T * )0 );
-	RKH_TR_SMA_GET( sma, e );
+	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
 	return e;
 }
 #endif
@@ -234,7 +234,7 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 	RKH_SR_ALLOC();
 	
 	e = rkh_rq_get( q );		/* get an event from deferred queue */
-    if( e != ( RKHEVT_T* )0 )	/* event available? */
+    if( e != RKH_EVT_CAST(0) )	/* event available? */
 	{
 		/* post it to the front of the SMA's queue */
 		RKH_SMA_POST_LIFO( sma, e, sma );

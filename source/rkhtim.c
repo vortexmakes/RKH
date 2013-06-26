@@ -102,7 +102,7 @@ rkh_tim_tick( void )
 		{
 			if( !--t->ntick )
 			{
-				RKH_TR_TIM_TOUT( t );
+				RKH_TR_TIM_TOUT( t, t->evt->e, t->sma );
 				if( t->period == 0 )
 					rem_from_list( t, tprev );
 				else
@@ -156,7 +156,7 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 		add_to_list( t );
 
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_TIM_START( t, sma, itick );
+	RKH_TR_TIM_START( t, sma, itick, t->period );
 }
 
 
@@ -166,11 +166,12 @@ rkh_tim_stop( RKHT_T *t )
 	RKH_SR_ALLOC();
 
 	RKHREQUIRE( t != CPTIM(0) );
+	RKH_TR_TIM_STOP( t, t->ntick, t->period );
+
 	RKH_ENTER_CRITICAL_();
 	t->ntick = 0;
 	RKH_EXIT_CRITICAL_();
 
-	RKH_TR_TIM_STOP( t );
 }
 
 

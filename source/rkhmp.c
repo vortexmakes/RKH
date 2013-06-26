@@ -123,7 +123,7 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
     mp->start = sstart;               /* the original start this pool buffer */
     mp->end   = fb;                           /* the last block in this pool */
 #endif
-	RKH_TR_MP_INIT( mp, mp->nblocks );
+	RKH_TR_MP_INIT( mp, mp->nblocks, mp->bsize );
 }
 
 
@@ -150,7 +150,7 @@ rkh_mp_get( RKHMP_T *mp )
     }
 
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_MP_GET( mp, mp->nfree );
+	RKH_TR_MP_GET( mp, mp->nfree, mp->nmin );
     return fb;            /* return the block or NULL pointer to the caller */
 }
 

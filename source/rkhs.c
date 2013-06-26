@@ -120,7 +120,7 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 	rkh_rq_init( &sma->equeue, (const void** )qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_init_hsm( sma );
-	RKH_TR_SMA_ACT( sma );
+	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
 }
 
 
@@ -130,7 +130,7 @@ rkh_sma_terminate( RKHSMA_T *sma )
 	RKH_SR_ALLOC();
 
 	rkh_sma_unregister( sma );
-	RKH_TR_SMA_TERM( sma );
+	RKH_TR_SMA_TERM( sma, RKH_GET_PRIO(sma) );
 }
 
 #endif

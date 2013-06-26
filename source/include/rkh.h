@@ -2348,7 +2348,7 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  */
 
 #define RKH_GET_PRIO( _ao )			\
-								(_ao)->romrkh->prio
+								(rkhui8_t)((_ao)->romrkh->prio)
 
 
 /**
