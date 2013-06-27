@@ -52,7 +52,7 @@
 #include "rkh.h"
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1
+#if RKH_EN_NATIVE_SCHEDULER == RKH_DEF_ENABLED
 
 
 RKH_MODULE_NAME( rkhs )

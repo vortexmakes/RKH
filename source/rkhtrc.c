@@ -9,14 +9,14 @@
 #include "rkhrdy.h"
 
 
-#if RKH_TRC_EN == 1
+#if RKH_TRC_EN == RKH_DEF_ENABLED
 
 RKH_MODULE_NAME( rkhtrc )
 
 #define GETGRP( e )		(rkhui8_t)(((e) & 0xE0) >> 5)
 #define GETEVT( e )		(rkhui8_t)((e) & 0x1F)
 
-#if RKH_TRC_RUNTIME_FILTER == 1
+#if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
 /* trace event filter table */
 rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
 
@@ -105,7 +105,7 @@ rkh_trc_get( void )
 }
 
 
-#if RKH_TRC_RUNTIME_FILTER == 1
+#if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
 HUInt
 rkh_trc_isoff_( rkhui8_t e )
 {
@@ -266,7 +266,7 @@ rkh_trc_str( const char *s )
 }
 
 
-#if RKH_TRC_EN_USER_TRACE == 1
+#if RKH_TRC_EN_USER_TRACE == RKH_DEF_ENABLED
 void 
 rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )
 {

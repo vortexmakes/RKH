@@ -42,12 +42,12 @@
 #include "rkh.h"
 
 
-#if RKH_RQ_EN == 1
+#if RKH_RQ_EN == RKH_DEF_ENABLED
 
 RKH_MODULE_NAME( rkhrq )
 
 
-#if RKH_RQ_EN_GET_INFO == 1
+#if RKH_RQ_EN_GET_INFO == RKH_DEF_ENABLED
 	#define RKH_IUPDT_PUT( q )			++q->rqi.nputs
 	#define RKH_IUPDT_GET( q )			++q->rqi.ngets
 	#define RKH_IUPDT_EMPTY( q )		++q->rqi.nempty
@@ -73,10 +73,10 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 	q->qty = 0;
 	q->pend = ( void ** )&sstart[ ssize ];
 	q->sma = sma;	
-#if RKH_RQ_EN_GET_LWMARK == 1
+#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 	q->nmin = 0;
 #endif
-#if RKH_RQ_EN_GET_INFO == 1
+#if RKH_RQ_EN_GET_INFO == RKH_DEF_ENABLED
 	q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 
 		q->rqi.nfull = 0;
 #endif
@@ -84,7 +84,7 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 }
 
 
-#if RKH_RQ_EN_IS_FULL == 1
+#if RKH_RQ_EN_IS_FULL == RKH_DEF_ENABLED
 HUInt 
 rkh_rq_is_full( RKHRQ_T *q )
 {
@@ -102,7 +102,7 @@ rkh_rq_is_full( RKHRQ_T *q )
 #endif
 
 
-#if RKH_RQ_EN_GET_NELEMS == 1
+#if RKH_RQ_EN_GET_NELEMS == RKH_DEF_ENABLED
 RKH_RQNE_T 
 rkh_rq_get_num( RKHRQ_T *q )
 {
@@ -120,7 +120,7 @@ rkh_rq_get_num( RKHRQ_T *q )
 #endif
 
 
-#if RKH_RQ_EN_GET_LWMARK == 1
+#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 RKH_RQNE_T 
 rkh_rq_get_lwm( RKHRQ_T *q )
 {
@@ -209,7 +209,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 	}
 
-#if RKH_RQ_EN_GET_LWMARK == 1
+#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 	if( q->nmin > (RKH_RQNE_T)( q->nelems - q->qty ) )
 		q->nmin = (RKH_RQNE_T)( q->nelems - q->qty );
 #endif
@@ -219,7 +219,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 }
 
 
-#if RKH_RQ_EN_PUT_LIFO == 1
+#if RKH_RQ_EN_PUT_LIFO == RKH_DEF_ENABLED
 void 
 rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 {
@@ -251,7 +251,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
 	}
 
-#if RKH_RQ_EN_GET_LWMARK == 1
+#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 	if( q->nmin > (RKH_RQNE_T)( q->nelems - q->qty ) )
 		q->nmin = (RKH_RQNE_T)( q->nelems - q->qty );
 #endif
@@ -261,7 +261,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 #endif
 
 
-#if RKH_RQ_EN_DEPLETE == 1
+#if RKH_RQ_EN_DEPLETE == RKH_DEF_ENABLED
 void 
 rkh_rq_deplete( RKHRQ_T *q )
 {
@@ -279,7 +279,7 @@ rkh_rq_deplete( RKHRQ_T *q )
 #endif
 
 
-#if RKH_RQ_EN_READ == 1
+#if RKH_RQ_EN_READ == RKH_DEF_ENABLED
 HUInt 
 rkh_rq_read( RKHRQ_T *q, void *pe )
 {
@@ -304,7 +304,7 @@ rkh_rq_read( RKHRQ_T *q, void *pe )
 #endif
 
 
-#if RKH_RQ_EN_GET_INFO == 1
+#if RKH_RQ_EN_GET_INFO == RKH_DEF_ENABLED
 void 
 rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 {

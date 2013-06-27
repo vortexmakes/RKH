@@ -232,35 +232,35 @@
  *	usage.
  */
 
-#define RKH_SMA_EN_PSEUDOSTATE			1
+#define RKH_SMA_EN_PSEUDOSTATE			0
 
 /**
  *	If the #RKH_SMA_EN_DEEP_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
  *	the RKH allows deep history pseudostate usage.
  */
 
-#define RKH_SMA_EN_DEEP_HISTORY			1
+#define RKH_SMA_EN_DEEP_HISTORY			0
 
 /**
  *	If the #RKH_SMA_EN_SHALLOW_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
  *	the RKH allows shallow history pseudostate usage.
  */
 
-#define RKH_SMA_EN_SHALLOW_HISTORY		1
+#define RKH_SMA_EN_SHALLOW_HISTORY		0
 
 /**
  *	If the #RKH_SMA_EN_CHOICE and #RKH_SMA_EN_PSEUDOSTATE are set to 1, the 
  *	RKH allows choice pseudostate usage.
  */
 
-#define RKH_SMA_EN_CHOICE				1
+#define RKH_SMA_EN_CHOICE				0
 
 /**
  *	If the #RKH_SMA_EN_CONDITIONAL and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
  *	the RKH allows branch (or conditional) pseudostate usage.
  */
 
-#define RKH_SMA_EN_CONDITIONAL			1
+#define RKH_SMA_EN_CONDITIONAL			0
 
 /**
  *	If the #RKH_SMA_EN_SUBMACHINE and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
@@ -373,7 +373,7 @@
  *	
  */
 
-#define RKH_TRC_EN_USER_TRACE			1
+#define RKH_TRC_EN_USER_TRACE			0
 
 /**
  *	If the #RKH_TRC_ALL is set to 1 then RKH will include all its own trace 
@@ -569,7 +569,7 @@
  * 	See rkh_rq_get_lwm() function.
  */
 
-#define RKH_RQ_EN_GET_LWMARK			1
+#define RKH_RQ_EN_GET_LWMARK			0
 
 /**
  *	If the #RKH_RQ_EN_GET_INFO is set to 1 then RKH allows to collect and 
@@ -585,7 +585,7 @@
  *	See rkh_rq_read() function.
  */
 
-#define	RKH_RQ_EN_READ					1
+#define	RKH_RQ_EN_READ					0
 
 /**
  *	If the #RKH_RQ_EN_DEPLETE is set to 1 then RKH will include the 
@@ -594,7 +594,7 @@
  *	See rkh_rq_deplete() function.
  */
 
-#define	RKH_RQ_EN_DEPLETE				1
+#define	RKH_RQ_EN_DEPLETE				0
 
 /**
  *	If the #RKH_RQ_EN_IS_FULL is set to 1 then RKH will include the 
@@ -602,7 +602,7 @@
  *	See rkh_rq_is_full() function.
  */
 
-#define	RKH_RQ_EN_IS_FULL				1
+#define	RKH_RQ_EN_IS_FULL				0
 
 /**
  *	If the #RKH_RQ_EN_GET_NELEMS is set to 1 then RKH will include the 
@@ -611,7 +611,7 @@
  *	See rkh_rq_get_num() function.
  */
 
-#define	RKH_RQ_EN_GET_NELEMS			1
+#define	RKH_RQ_EN_GET_NELEMS			0
 
 /**
  *	If the #RKH_RQ_EN_PUT_LIFO is set to 1 then RKH will include the 

@@ -212,7 +212,9 @@
 #define EUNCHANGE					1
 
 
-#if RKH_TRC_EN == 1 && RKH_SMA_EN_TRC_SENDER == 1 || RKH_EN_DOXYGEN == 1
+#if ((	(RKH_TRC_EN == 1) && \
+		(RKH_SMA_EN_TRC_SENDER == 1)) || \
+		(RKH_EN_DOXYGEN == 1))
 
 	/**
 	 * 	\brief
