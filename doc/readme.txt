@@ -4493,7 +4493,8 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#c0c0c0">
-		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
+		<TH colspan=5 align="left"><B> Related with fixed-sized memory block 
+										facility (MP)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Option </I></B></TH>
@@ -4568,7 +4569,8 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#c0c0c0">
-		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
+		<TH colspan=5 align="left"><B> Related with software timer facility 
+																(TIM)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Option </I></B></TH>

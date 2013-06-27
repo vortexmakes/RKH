@@ -395,6 +395,110 @@
 #endif
 
 
+#ifndef RKH_HK_EN_DISPATCH
+	#error "RKH_HK_EN_DISPATCH                     not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_HK_EN_DISPATCH != RKH_DEF_ENABLED) && \
+        	(RKH_HK_EN_DISPATCH != RKH_DEF_DISABLED))
+	#error "RKH_HK_EN_DISPATCH               illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#elif 	(RKH_HK_EN_DISPATCH == RKH_DEF_ENABLED)
+	#define RKH_HK_DISPATCH( sma, e )	\
+							rkh_hk_dispatch( (sma), (RKHEVT_T*)(e) )
+
+#else
+	#define RKH_HK_DISPATCH( sma, e )	\
+							(void)0
+
+#endif
+
+
+#ifndef RKH_HK_EN_SIGNAL
+	#error "RKH_HK_EN_SIGNAL                       not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_HK_EN_SIGNAL != RKH_DEF_ENABLED) && \
+        	(RKH_HK_EN_SIGNAL != RKH_DEF_DISABLED))
+	#error "RKH_HK_EN_SIGNAL                 illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#elif	(RKH_HK_EN_SIGNAL == RKH_DEF_ENABLED)
+	#define RKH_HK_SIGNAL( e )	\
+							rkh_hk_signal( (RKHEVT_T*)(e) )
+#else
+	#define RKH_HK_SIGNAL( e )	\
+							(void)0
+#endif
+
+
+#ifndef RKH_HK_EN_TIMEOUT
+	#error "RKH_HK_EN_TIMEOUT                      not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_HK_EN_TIMEOUT != RKH_DEF_ENABLED) && \
+        	(RKH_HK_EN_TIMEOUT != RKH_DEF_DISABLED))
+	#error "RKH_HK_EN_TIMEOUT                illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#elif 	(RKH_HK_EN_TIMEOUT == RKH_DEF_ENABLED)
+	#define RKH_HK_TIMEOUT( t )	\
+							rkh_hk_timeout( (t) )
+#else
+	#define RKH_HK_TIMEOUT( t )	\
+							(void)0
+#endif
+
+
+#ifndef RKH_HK_EN_START
+	#error "RKH_HK_EN_START                        not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	(RKH_HK_EN_START == RKH_DEF_ENABLED)
+	#define RKH_HK_START()	\
+					rkh_hk_start()
+#else
+	#define RKH_HK_START()	\
+					(void)0
+#endif
+
+
+#ifndef RKH_HK_EN_EXIT
+	#error "RKH_HK_EN_EXIT                         not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	(RKH_HK_EN_EXIT == RKH_DEF_ENABLED)
+	#define RKH_HK_EXIT()	\
+					rkh_hk_exit()
+#else
+	#define RKH_HK_EXIT()	\
+					(void)0
+#endif
+
+
+#ifndef	RKH_SMA_EN_IEVENT
+	#error "RKH_SMA_EN_IEVENT                      not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_SMA_EN_IEVENT != RKH_DEF_ENABLED) && \
+        	(RKH_SMA_EN_IEVENT != RKH_DEF_DISABLED))
+	#error "RKH_SMA_EN_IEVENT                illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#endif
+
+
 #ifndef RKH_RQ_SIZEOF_NELEM
 	#error "rkhcfg.h, Missing RKH_RQ_SIZEOF_NELEM, expected 8, 16 or 32"
 #endif
@@ -405,132 +509,339 @@
 #endif
 
 
-#ifndef RKH_MP_SIZEOF_BSIZE
-	#error "rkhcfg.h, Missing RKH_MP_SIZEOF_BSIZE: expected 8, 16 or 32"
+#ifndef	RKH_MP_EN
+	#error "RKH_MP_EN                              not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_MP_EN != RKH_DEF_ENABLED) && \
+        	(RKH_MP_EN != RKH_DEF_DISABLED))
+	#error "RKH_MP_EN                        illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#elif 	(RKH_MP_EN == RKH_DEF_ENABLED)
+
+	#ifndef	RKH_MP_REDUCED
+	#error "RKH_MP_REDUCED                         not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_MP_REDUCED != RKH_DEF_ENABLED) && \
+    	    	(RKH_MP_REDUCED != RKH_DEF_DISABLED))
+	#error "RKH_MP_REDUCED                   illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+	
+	#ifndef	RKH_MP_SIZEOF_BSIZE
+	#error "RKH_MP_SIZEOF_BSIZE                    not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+	#elif  ((RKH_MP_SIZEOF_BSIZE != 8) && \
+    	    (RKH_MP_SIZEOF_BSIZE != 16) && \
+        	(RKH_MP_SIZEOF_BSIZE != 32))
+	#error  "RKH_MP_SIZEOF_BSIZE             illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+	#endif
+
+	#ifndef	RKH_MP_SIZEOF_NBLOCK
+	#error "RKH_MP_SIZEOF_NBLOCK                   not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+	#elif  ((RKH_MP_SIZEOF_NBLOCK != 8) && \
+	        (RKH_MP_SIZEOF_NBLOCK != 16) && \
+  	      (RKH_MP_SIZEOF_NBLOCK != 32))
+	#error  "RKH_MP_SIZEOF_NBLOCK            illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+	#endif
+
+	#ifndef	RKH_MP_EN_GET_BSIZE
+	#error "RKH_MP_EN_GET_BSIZE                    not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_MP_EN_GET_BSIZE != RKH_DEF_ENABLED) && \
+    	    	(RKH_MP_EN_GET_BSIZE != RKH_DEF_DISABLED))
+	#error "RKH_MP_EN_GET_BSIZE              illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+
+	#ifndef	RKH_MP_EN_GET_NFREE
+	#error "RKH_MP_EN_GET_NFREE                    not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_MP_EN_GET_NFREE != RKH_DEF_ENABLED) && \
+    	    	(RKH_MP_EN_GET_NFREE != RKH_DEF_DISABLED))
+	#error "RKH_MP_EN_GET_NFREE              illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+
+	#ifndef	RKH_MP_EN_GET_LWM
+	#error "RKH_MP_EN_GET_LWM                      not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_MP_EN_GET_LWM != RKH_DEF_ENABLED) && \
+    	    	(RKH_MP_EN_GET_LWM != RKH_DEF_DISABLED))
+	#error "RKH_MP_EN_GET_LWM                illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+
+	#ifndef	RKH_MP_EN_GET_INFO
+	#error "RKH_MP_EN_GET_INFO                     not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_MP_EN_GET_INFO != RKH_DEF_ENABLED) && \
+    	    	(RKH_MP_EN_GET_INFO != RKH_DEF_DISABLED))
+	#error "RKH_MP_EN_GET_INFO               illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+
 #endif
 
 
-#ifndef RKH_MP_SIZEOF_NBLOCK
-	#error "rkhcfg.h, Missing RKH_MP_SIZEOF_NBLOCK: expected 8, 16 or 32"
+
+
+#ifndef	RKH_RQ_EN
+	#error "RKH_RQ_EN                              not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN                        illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_MP_EN
-	#error "rkhcfg.h, Missing RKH_MP_EN: Enable (1) or Disable (0) native memory pool"
+#ifndef	RKH_RQ_SIZEOF_NELEM
+	#error "RKH_RQ_SIZEOF_NELEM                    not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+#elif  ((RKH_RQ_SIZEOF_NELEM != 8) && \
+        (RKH_RQ_SIZEOF_NELEM != 16) && \
+        (RKH_RQ_SIZEOF_NELEM != 32))
+	#error  "RKH_RQ_SIZEOF_NELEM             illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
 #endif
 
 
-#ifndef RKH_MP_EN_GET_INFO
-	#error "rkhcfg.h, Missing RKH_MP_EN_GET_INFO: Include (1) get information function"
+#ifndef	RKH_RQ_EN_GET_LWMARK
+	#error "RKH_RQ_EN_GET_LWMARK                   not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN_GET_LWMARK != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_GET_LWMARK != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_GET_LWMARK             illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_MP_EN_GET_BSIZE
-	#error "rkhcfg.h, Missing RKH_MP_EN_GET_BSIZE: Include (1) get block size function"
+#ifndef	RKH_RQ_EN_READ
+	#error "RKH_RQ_EN_READ                         not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN_READ != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_READ != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_READ                   illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_MP_EN_GET_NFREE
-	#error "rkhcfg.h, Missing RKH_MP_EN_GET_NFREE: Include (1) get # of free blocks function"
+#ifndef	RKH_RQ_EN_DEPLETE
+	#error "RKH_RQ_EN_DEPLETE                      not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN_DEPLETE != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_DEPLETE != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_DEPLETE                illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_MP_EN_GET_LWM
-	#error "rkhcfg.h, Missing RKH_MP_EN_GET_LWM: Include (1) get lowest # of free blocks function"
+#ifndef	RKH_RQ_EN_IS_FULL
+	#error "RKH_RQ_EN_IS_FULL                      not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN_IS_FULL != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_IS_FULL != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_IS_FULL                illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_MP_REDUCED
-	#error "rkhcfg.h, Missing RKH_MP_REDUCED: Include (0) all memory pool facilities"
+#ifndef	RKH_RQ_EN_GET_NELEMS
+	#error "RKH_RQ_EN_GET_NELEMS                   not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN_GET_NELEMS != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_GET_NELEMS != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_GET_NELEMS             illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_RQ_EN
-	#error "rkhcfg.h, Missing RKH_RQ_EN: Enable (1) or Disable (0) native queue"
+#ifndef	RKH_RQ_EN_PUT_LIFO
+	#error "RKH_RQ_EN_PUT_LIFO                     not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_RQ_EN_PUT_LIFO != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_PUT_LIFO != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_PUT_LIFO               illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
-#ifndef RKH_RQ_SIZEOF_NELEM
-	#error "rkhcfg.h, Missing RKH_RQ_SIZEOF_NELEM: expected o, 16 or 32"
-#endif
+#ifndef	RKH_RQ_EN_GET_INFO
+	#error "RKH_RQ_EN_GET_INFO                     not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
 
+#elif 	((RKH_RQ_EN_GET_INFO != RKH_DEF_ENABLED) && \
+        	(RKH_RQ_EN_GET_INFO != RKH_DEF_DISABLED))
+	#error "RKH_RQ_EN_GET_INFO               illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
 
-#ifndef RKH_RQ_EN_GET_LWMARK
-	#error "rkhcfg.h, Missing RKH_RQ_EN_GET_LWMARK: Include (1) get queue low watermark function"
-#endif
-
-
-#ifndef RKH_RQ_EN_GET_INFO
-	#error "rkhcfg.h, Missing RKH_RQ_EN_GET_INFO: Include (1) get queue information function"
-#endif
-
-
-#ifndef RKH_RQ_EN_READ
-	#error "rkhcfg.h, Missing RKH_RQ_EN_READ: Include (1) queue read function"
-#endif
-
-
-#ifndef RKH_RQ_EN_DEPLETE
-	#error "rkhcfg.h, Missing RKH_RQ_EN_DEPLETE: Include (1) queue deplete function"
 #endif
 
 
 #ifndef RKH_TIM_EN
-	#error "rkhcfg.h, Missing RKH_TIM_EN: Enable (1) or Disable (0) native timer facility"
-#else
-	#ifdef RKH_TICK_RATE_HZ
-		#if RKH_TIM_EN == 1 && RKH_TICK_RATE_HZ != 0
-			/**
-			 * 	It can be used to convert ticks to milliseconds.
-			 * 	This format is more convenient and natural than ticks.
-			 * 	This configuration constant is not used by RKH, it is just 
-			 * 	a value to allow an application to deal with time when 
-			 * 	using timer services. 
-			 * 	You can use the global constant RKH_TICK_RATE_HZ (see 
-			 * 	rkhcfg.h) to convert time to ticks using the macros like 
-			 * 	RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
-			 */
-			#define RKH_TICK_RATE_MS 	((RKH_TNT_T)(1000/RKH_TICK_RATE_HZ))
-		#else
-			#define RKH_TICK_RATE_MS 	((RKH_TNT_T)0U)
-		#endif
+	#error "RKH_TIM_EN                             not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+#elif 	((RKH_TIM_EN != RKH_DEF_ENABLED) && \
+        	(RKH_TIM_EN != RKH_DEF_DISABLED))
+	#error "RKH_TIM_EN                       illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
+#elif 	(RKH_TIM_EN == RKH_DEF_ENABLED)
+	#ifndef RKH_TICK_RATE_HZ
+	#error "RKH_TICK_RATE_HZ                       not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+	#elif (RKH_TICK_RATE_HZ > 0u)
+	/**
+	 * 	It can be used to convert ticks to milliseconds.
+	 * 	This format is more convenient and natural than ticks.
+	 * 	This configuration constant is not used by RKH, it is just 
+	 * 	a value to allow an application to deal with time when 
+	 * 	using timer services. 
+	 * 	You can use the global constant RKH_TICK_RATE_HZ (see 
+	 * 	rkhcfg.h) to convert time to ticks using the macros like 
+	 * 	RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
+	 */
+	#define RKH_TICK_RATE_MS	\
+					((RKH_TNT_T)(1000/RKH_TICK_RATE_HZ))
+
+	/** @{
+	 * 	\brief
+	 * 	It can be used to convert ticks to time. 
+	 *
+	 * 	This format is more convenient and natural than ticks. You can use 
+	 * 	the global constant RKH_TICK_RATE_HZ (see rkhcfg.h) to convert time to 
+	 * 	ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(), and 
+	 * 	RKH_TIME_MIN().
+	 */
+	#define RKH_TIME_MS( ms_ )		((ms_)/RKH_TICK_RATE_MS)
+	#define RKH_TIME_SEC( s_ )		((s_)*1000u/RKH_TICK_RATE_MS)
+	#define RKH_TIME_MIN( m_ )		((m_)*60*1000u/RKH_TICK_RATE_MS)
+	/*@}*/
+
 	#else
-		#define RKH_TICK_RATE_MS 	((RKH_TNT_T)0U)
+	#error "RKH_TICK_RATE_HZ                 illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be > 0]                     "
 	#endif
-#endif
 
+	#ifndef	RKH_TIM_SIZEOF_NTIMER
+	#error "RKH_TIM_SIZEOF_NTIMER                  not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
 
-/** @{
- * 	\brief
- * 	It can be used to convert ticks to time. 
- *
- * 	This format is more convenient and natural than ticks. You can use 
- * 	the global constant RKH_TICK_RATE_HZ (see rkhcfg.h) to convert time to 
- * 	ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(), and 
- * 	RKH_TIME_MIN().
- */
+	#elif  ((RKH_TIM_SIZEOF_NTIMER != 8) && \
+    	    (RKH_TIM_SIZEOF_NTIMER != 16) && \
+        	(RKH_TIM_SIZEOF_NTIMER != 32))
+	#error  "RKH_TIM_SIZEOF_NTIMER           illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+	#endif
 
-#define RKH_TIME_MS( ms_ )		((ms_)/RKH_TICK_RATE_MS)
-#define RKH_TIME_SEC( s_ )		((s_)*1000U/RKH_TICK_RATE_MS)
-#define RKH_TIME_MIN( m_ )		((m_)*60*1000U/RKH_TICK_RATE_MS)
-/*@}*/
+	#ifndef RKH_TIM_EN_HOOK
+	#error "RKH_TIM_EN_HOOK                        not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
 
+	#elif 	((RKH_TIM_EN_HOOK != RKH_DEF_ENABLED) && \
+    	    	(RKH_TIM_EN_HOOK != RKH_DEF_DISABLED))
+	#error "RKH_TIM_EN_HOOK                  illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
 
-#ifndef RKH_TIM_SIZEOF_NTIMER
-	#error "rkhcfg.h, Missing RKH_TIM_SIZEOF_NTIMER: expected 8, 16 or 32"
-#endif
-
-
-#if RKH_TIM_EN_HOOK == 0
-	#define rkh_mktimer( t,e,th )										\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e) )
-#else
-	#define rkh_mktimer( t,e,th )										\
+	#elif 	(RKH_TIM_EN_HOOK == RKH_DEF_ENABLED)
+	#define rkh_mktimer( t, e, th )	\
 				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e), (RKH_THK_T)(th) )
-#endif
 
+	#else
+	#define rkh_mktimer( t, e, th )	\
+				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e) )
+	#endif
 
-#ifndef RKH_TIM_EN_GET_INFO
+	#ifndef	RKH_TIM_EN_GET_INFO
+	#error "RKH_TIM_EN_GET_INFO                    not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_TIM_EN_GET_INFO != RKH_DEF_ENABLED) && \
+    	    	(RKH_TIM_EN_GET_INFO != RKH_DEF_DISABLED))
+	#error "RKH_TIM_EN_GET_INFO              illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+
 #endif
 
 
@@ -622,9 +933,6 @@
 	#if RKH_TRC_SIZEOF_STREAM == 0 || RKH_TRC_SIZEOF_STREAM > 1024
 	#error  "rkhcfg.h, RKH_TRC_SIZEOF_STREAM must be > 0 and <= 1024"
 	#endif
-#endif
-
-#ifndef RKH_SMA_EN_IEVENT
 #endif
 
 /*
@@ -1020,86 +1328,6 @@
 	#define RKH_SR_ALLOC()
 	#define RKH_ENTER_CRITICAL_()			RKH_ENTER_CRITICAL( dummy )
 	#define RKH_EXIT_CRITICAL_()			RKH_EXIT_CRITICAL( dummy )
-#endif
-
-
-#ifndef RKH_HK_EN_DISPATCH
-	#error "rkhcfg.h, Missing RKH_HK_EN_DISPATCH: Include (1) or remove (0) the dispatch hook function"
-#else
-	#if RKH_HK_EN_DISPATCH == 1
-		#define RKH_HK_DISPATCH( sma, e )		\
-							rkh_hk_dispatch( sma, (RKHEVT_T*)e )
-	#elif RKH_HK_EN_DISPATCH == 0
-		#define RKH_HK_DISPATCH( sma, e )		\
-							(void)0
-	#else
-		#define RKH_HK_DISPATCH( sma, e )
-		#error "rkhcfg.h, Wrong RKH_HK_EN_DISPATCH definition: expected 0 or 1"
-	#endif
-#endif
-
-
-#ifndef RKH_HK_EN_SIGNAL
-	#error "rkhcfg.h, Missing RKH_HK_EN_SIGNAL: Include (1) or remove (0) the signal hook function"
-#else
-	#if RKH_HK_EN_SIGNAL == 1
-		#define RKH_HK_SIGNAL( e )		\
-							rkh_hk_signal( (RKHEVT_T*)e )
-	#elif RKH_HK_EN_SIGNAL == 0
-		#define RKH_HK_SIGNAL( e )		\
-							(void)0
-	#else
-		#define RKH_HK_SIGNAL( e )
-		#error "rkhcfg.h, Wrong RKH_HK_EN_SIGNAL definition: expected 0 or 1"
-	#endif
-#endif
-
-
-#ifndef RKH_HK_EN_TIMEOUT
-	#error "rkhcfg.h, Missing RKH_HK_EN_TIMEOUT: Include (1) or remove (0) the timeout hook function"
-#else
-	#if RKH_HK_EN_TIMEOUT == 1
-		#define RKH_HK_TIMEOUT( t )		\
-							rkh_hk_timeout( t )
-	#elif RKH_HK_EN_TIMEOUT == 0
-		#define RKH_HK_TIMEOUT( t )		\
-							(void)0
-	#else
-		#define RKH_HK_TIMEOUT( t )
-		#error "rkhcfg.h, Wrong RKH_HK_EN_TIMEOUT definition: expected 0 or 1"
-	#endif
-#endif
-
-
-#ifndef RKH_HK_EN_START
-	#error "rkhcfg.h, Missing RKH_HK_EN_START: Include (1) or remove (0) the start hook function"
-#else
-	#if RKH_HK_EN_START == 1
-		#define RKH_HK_START()			\
-							rkh_hk_start()
-	#elif RKH_HK_EN_START == 0
-		#define RKH_HK_START()			\
-							(void)0
-	#else
-		#define RKH_HK_START()
-		#error "rkhcfg.h, Wrong RKH_HK_EN_START definition: expected 0 or 1"
-	#endif
-#endif
-
-
-#ifndef RKH_HK_EN_EXIT
-	#error "rkhcfg.h, Missing RKH_HK_EN_EXIT: Include (1) or remove (0) the exit hook function"
-#else
-	#if RKH_HK_EN_EXIT == 1
-		#define RKH_HK_EXIT()			\
-							rkh_hk_exit()
-	#elif RKH_HK_EN_EXIT == 0
-		#define RKH_HK_EXIT()			\
-							(void)0
-	#else
-		#define RKH_HK_EXIT()
-		#error "rkhcfg.h, Wrong RKH_HK_EN_EXIT definition: expected 0 or 1"
-	#endif
 #endif
 
 
