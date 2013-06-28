@@ -89,7 +89,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
     evt->nref = 0;
     evt->pool = (rkhui8_t)( idx + (rkhui8_t)1 );
 
-	RKH_TR_FWK_AE( esize, evt, evt->pool, evt->nref );
+	RKH_TR_FWK_AE( esize, evt, evt->pool - 1, evt->nref );
     return evt;	
 }
 

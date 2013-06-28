@@ -417,13 +417,13 @@ typedef enum rkh_trc_groups
  *					RKH_TRC_NE( nelem ); 				\
  *				RKH_TRC_END()
  *	
- *	#define RKH_TR_SMA_FIFO( ao, ev, pid, refc )		\
+ *	#define RKH_TR_SMA_FIFO( ao, ev, pid, rc )			\
  *				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 		\
  *								ao->romrkh->prio )		\
  *					RKH_TRC_SYM( ao ); 					\
  *					RKH_TRC_SIG( ev->e ); 				\
  *					RKH_TRC_UI8( pid ); 				\
- *					RKH_TRC_UI8( refc ); 				\
+ *					RKH_TRC_UI8( rc ); 					\
  *				RKH_TRC_END()
  *	\endcode
  *
@@ -1322,11 +1322,11 @@ enum rkh_trc_fmt
 		 * 	Args	= memory pool, nblock, block size\n
 		 */
 
-		#define RKH_TR_MP_INIT( mp, nblock, bsize )						\
+		#define RKH_TR_MP_INIT( mp, nb, bs )							\
 					RKH_TRC_BEGIN( RKH_TE_MP_INIT, NVS )				\
 						RKH_TRC_SYM( mp ); 								\
-						RKH_TRC_NBLK( nblock ); 						\
-				/*NEW*/ RKH_TRC_BSIZE( bsize );							\
+						RKH_TRC_NBLK( nb ); 							\
+				/*NEW*/ RKH_TRC_BSIZE( bs );							\
 					RKH_TRC_END()
 
 		/**
@@ -1362,7 +1362,7 @@ enum rkh_trc_fmt
 						RKH_TRC_NBLK( nfree ); 							\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_MP_INIT( mp, nblock, bsize )			(void)0
+		#define RKH_TR_MP_INIT( mp, nb, bs )				(void)0
 		#define RKH_TR_MP_GET( mp, nfree, nmin )			(void)0
 		#define RKH_TR_MP_PUT( mp, nfree )					(void)0
 	#endif
@@ -1538,13 +1538,13 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_GET( ao, ev, pid, refc )						\
+		#define RKH_TR_SMA_GET( ao, ev, pid, rc )						\
 					RKH_TRC_BEGIN( RKH_TE_SMA_GET, 						\
 									ao->romrkh->prio )					\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( refc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );							\
 					RKH_TRC_END()
 
 		/**
@@ -1557,14 +1557,14 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, signal, sender, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_FIFO( ao, ev, _sender, pid, refc )			\
+		#define RKH_TR_SMA_FIFO( ao, ev, _sender, pid, rc )			\
 					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
 									ao->romrkh->prio )					\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 						RKH_TRC_SENDER( _sender ); 						\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( refc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );							\
 					RKH_TRC_END()
 
 		/**
@@ -1577,14 +1577,14 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, signal, sender, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_LIFO( ao, ev, _sender, pid, refc )			\
+		#define RKH_TR_SMA_LIFO( ao, ev, _sender, pid, rc )			\
 					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
 									ao->romrkh->prio )					\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 						RKH_TRC_SENDER( _sender ); 						\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( refc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );							\
 					RKH_TRC_END()
 
 		/**
@@ -1623,9 +1623,9 @@ enum rkh_trc_fmt
 	#else
 		#define RKH_TR_SMA_ACT( ao, p )						(void)0
 		#define RKH_TR_SMA_TERM( ao, p )					(void)0
-		#define RKH_TR_SMA_GET( ao, ev, pid, refc )			(void)0
-		#define RKH_TR_SMA_FIFO( ao, ev, pid, refc )		(void)0
-		#define RKH_TR_SMA_LIFO( ao, ev, pid, refc )		(void)0
+		#define RKH_TR_SMA_GET( ao, ev, pid, rc )			(void)0
+		#define RKH_TR_SMA_FIFO( ao, ev, pid, rc )			(void)0
+		#define RKH_TR_SMA_LIFO( ao, ev, pid, rc )			(void)0
 		#define RKH_TR_SMA_REG( ao, prio )					(void)0
 		#define RKH_TR_SMA_UNREG( ao, prio )				(void)0
 	#endif
@@ -2024,11 +2024,11 @@ enum rkh_trc_fmt
 		 * 	Args	= timer, ao, nticks, period\n
 		 */
 
-		#define RKH_TR_TIM_START( t, ao, ntick, per )					\
+		#define RKH_TR_TIM_START( t, ao, nt, per )						\
 					RKH_TRC_BEGIN( RKH_TE_TIM_START, NVS )				\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SYM( ao ); 								\
-						RKH_TRC_NTICK( ntick ); 						\
+						RKH_TRC_NTICK( nt ); 							\
 				/*NEW*/ RKH_TRC_NTICK( per );							\
 					RKH_TRC_END()
 	
@@ -2042,10 +2042,10 @@ enum rkh_trc_fmt
 		 * 	Args	= timer, ntick, period\n
 		 */
 
-		#define RKH_TR_TIM_STOP( t, ntick, per )						\
+		#define RKH_TR_TIM_STOP( t, nt, per )							\
 					RKH_TRC_BEGIN( RKH_TE_TIM_STOP, NVS )				\
 						RKH_TRC_SYM( t ); 								\
-				/*NEW*/ RKH_TRC_NTICK( ntick );							\
+				/*NEW*/ RKH_TRC_NTICK( nt );							\
 				/*NEW*/ RKH_TRC_NTICK( per );							\
 					RKH_TRC_END()
 
@@ -2082,8 +2082,8 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 	#else
 		#define RKH_TR_TIM_INIT( t, sig )					(void)0
-		#define RKH_TR_TIM_START( t, ao, ntick, per )		(void)0
-		#define RKH_TR_TIM_STOP( t, ntick, per )			(void)0
+		#define RKH_TR_TIM_START( t, ao, nt, per )			(void)0
+		#define RKH_TR_TIM_STOP( t, nt, per )				(void)0
 		#define RKH_TR_TIM_TOUT( t, sig, ao )				(void)0
 		#define RKH_TR_TIM_REM( t )							(void)0
 	#endif
@@ -2146,12 +2146,12 @@ enum rkh_trc_fmt
 		 * 	Args	= event size, signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_FWK_AE( es, ev, pid, refc )						\
+		#define RKH_TR_FWK_AE( es, ev, pid, rc )						\
 					RKH_TRC_BEGIN( RKH_TE_FWK_AE, NVS )					\
 						RKH_TRC_ES( es );								\
 						RKH_TRC_SIG( ev->e );							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( refc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -2164,11 +2164,11 @@ enum rkh_trc_fmt
 		 * 	Args	= signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_FWK_GC( ev, pid, refc )							\
+		#define RKH_TR_FWK_GC( ev, pid, rc )							\
 					RKH_TRC_BEGIN( RKH_TE_FWK_GC, NVS )					\
 						RKH_TRC_SIG( ev->e );							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( refc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -2181,11 +2181,11 @@ enum rkh_trc_fmt
 		 * 	Args	= signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_FWK_GCR( ev, pid, refc )							\
+		#define RKH_TR_FWK_GCR( ev, pid, rc )							\
 					RKH_TRC_BEGIN( RKH_TE_FWK_GCR, NVS )				\
 						RKH_TRC_SIG( ev->e );							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( refc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -2360,9 +2360,9 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_EXE_FUN( func )								\
+		#define RKH_TR_FWK_EXE_FUN( fn )								\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EXE_FUN, NVS )		\
-						RKH_TRC_FUN( func );							\
+						RKH_TRC_FUN( fn );								\
 					RKH_TRC_END_WOFIL()
 
 		/* --- Symbol entry table for user user-defined trace events --------- */
@@ -2727,9 +2727,9 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
 		#define RKH_TR_FWK_EPREG( ep, ss, es )			(void)0
-		#define RKH_TR_FWK_AE( es, ev, pid, refc )		(void)0
-		#define RKH_TR_FWK_GC( ev, pid, refc )			(void)0
-		#define RKH_TR_FWK_GCR( ev, pid, refc )			(void)0
+		#define RKH_TR_FWK_AE( es, ev, pid, rc )		(void)0
+		#define RKH_TR_FWK_GC( ev, pid, rc )			(void)0
+		#define RKH_TR_FWK_GCR( ev, pid, rc )			(void)0
 		#define RKH_TR_FWK_DEFER( q, ev )				(void)0
 		#define RKH_TR_FWK_RCALL( ao, ev )				(void)0
 		#define RKH_TR_FWK_OBJ( __o )					(void)0
@@ -2748,7 +2748,7 @@ enum rkh_trc_fmt
 	#endif
 #else
 	/* --- Memory Pool (MP) ------------------ */
-	#define RKH_TR_MP_INIT( mp, nblock, bsize )			(void)0
+	#define RKH_TR_MP_INIT( mp, nb, bs )				(void)0
 	#define RKH_TR_MP_GET( mp, nfree, nmin )			(void)0
 	#define RKH_TR_MP_PUT( mp, nfree )					(void)0
 
@@ -2764,9 +2764,9 @@ enum rkh_trc_fmt
 	/* --- State Machine Application (SMA) --- */
 	#define RKH_TR_SMA_ACT( ao, p )						(void)0
 	#define RKH_TR_SMA_TERM( ao, p )					(void)0
-	#define RKH_TR_SMA_GET( ao, ev, pid, refc )			(void)0
-	#define RKH_TR_SMA_FIFO( ao, ev, pid, refc )		(void)0
-	#define RKH_TR_SMA_LIFO( ao, ev, pid, refc )		(void)0
+	#define RKH_TR_SMA_GET( ao, ev, pid, rc )			(void)0
+	#define RKH_TR_SMA_FIFO( ao, ev, pid, rc )			(void)0
+	#define RKH_TR_SMA_LIFO( ao, ev, pid, rc )			(void)0
 	#define RKH_TR_SMA_REG( ao, prio )					(void)0
 	#define RKH_TR_SMA_UNREG( ao, prio )				(void)0
 
@@ -2791,8 +2791,8 @@ enum rkh_trc_fmt
 
 	/* --- Timer (TIM) ----------------------- */
 	#define RKH_TR_TIM_INIT( t, sig )					(void)0
-	#define RKH_TR_TIM_START( t, ao, ntick, per )		(void)0
-	#define RKH_TR_TIM_STOP( t, ntick, per )			(void)0
+	#define RKH_TR_TIM_START( t, ao, nt, per )			(void)0
+	#define RKH_TR_TIM_STOP( t, nt, per )				(void)0
 	#define RKH_TR_TIM_TOUT( t, sig, ao )				(void)0
 	#define RKH_TR_TIM_REM( t )							(void)0
 
@@ -2800,9 +2800,9 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_EN()								(void)0
 	#define RKH_TR_FWK_EX()								(void)0
 	#define RKH_TR_FWK_EPREG( ep, ss, es )				(void)0
-	#define RKH_TR_FWK_AE( es, ev, pid, refc )			(void)0
-	#define RKH_TR_FWK_GC( ev, pid, refc )				(void)0
-	#define RKH_TR_FWK_GCR( ev, pid, refc )				(void)0
+	#define RKH_TR_FWK_AE( es, ev, pid, rc )			(void)0
+	#define RKH_TR_FWK_GC( ev, pid, rc )				(void)0
+	#define RKH_TR_FWK_GCR( ev, pid, rc )				(void)0
 	#define RKH_TR_FWK_DEFER( q, ev )					(void)0
 	#define RKH_TR_FWK_RCALL( ao, ev )					(void)0
 	#define RKH_TR_FWK_OBJ( __o )						(void)0

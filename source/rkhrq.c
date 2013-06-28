@@ -74,7 +74,7 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 	q->pend = ( void ** )&sstart[ ssize ];
 	q->sma = sma;	
 #if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
-	q->nmin = 0;
+	q->nmin = q->nelems;
 #endif
 #if RKH_RQ_EN_GET_INFO == RKH_DEF_ENABLED
 	q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 

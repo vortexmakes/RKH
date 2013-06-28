@@ -152,7 +152,7 @@ rkh_mp_get( RKHMP_T *mp )
     }
 
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_MP_GET( mp, mp->nfree, mp->nmin );
+		RKH_TR_MP_GET( mp, mp->nfree, mp->nmin );
     return fb;            /* return the block or NULL pointer to the caller */
 }
 
