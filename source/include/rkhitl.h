@@ -127,6 +127,7 @@
 
 /**
  * 	Standard defines.
+ * 	It could be defined in "rkhdef.h" file.
  */
 
 #define RKH_DEF_ENABLED				1u
@@ -1174,10 +1175,13 @@
 	#error "                                [     || RKH_DEF_DISABLED]        "
 
 #elif 	(RKH_EN_DYNAMIC_EVENT == RKH_DEF_DISABLED)
+	/*
+	 *	If the dynamic event support is disabled, RKH not allows to use events 
+	 *	with parameters, defer/recall mechanism, allocating and recycling 
+	 *	dynamic events, among other features.
+	 */
 	#undef RKH_EN_NATIVE_DYN_EVENT
 	#define RKH_EN_NATIVE_DYN_EVENT			RKH_DEF_DISABLED
-	#undef RKH_MP_EN
-	#define RKH_MP_EN						RKH_DEF_DISABLED
 
 #endif
 
@@ -1269,14 +1273,6 @@
 	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
 	#error "                                [     ||  RKH_DEF_DISABLED]       "
 
-#elif 	(RKH_HK_EN_DISPATCH == RKH_DEF_ENABLED)
-	#define RKH_HK_DISPATCH( sma, e )	\
-							rkh_hk_dispatch( (sma), (RKHEVT_T*)(e) )
-
-#else
-	#define RKH_HK_DISPATCH( sma, e )	\
-							(void)0
-
 #endif
 
 
@@ -1291,12 +1287,6 @@
 	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
 	#error "                                [     ||  RKH_DEF_DISABLED]       "
 
-#elif	(RKH_HK_EN_SIGNAL == RKH_DEF_ENABLED)
-	#define RKH_HK_SIGNAL( e )	\
-							rkh_hk_signal( (RKHEVT_T*)(e) )
-#else
-	#define RKH_HK_SIGNAL( e )	\
-							(void)0
 #endif
 
 
@@ -1311,12 +1301,6 @@
 	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
 	#error "                                [     ||  RKH_DEF_DISABLED]       "
 
-#elif 	(RKH_HK_EN_TIMEOUT == RKH_DEF_ENABLED)
-	#define RKH_HK_TIMEOUT( t )	\
-							rkh_hk_timeout( (t) )
-#else
-	#define RKH_HK_TIMEOUT( t )	\
-							(void)0
 #endif
 
 
@@ -1325,12 +1309,12 @@
 	#error "                                [MUST be RKH_DEF_ENABLED ]        "
 	#error "                                [     || RKH_DEF_DISABLED]        "
 
-#elif 	(RKH_HK_EN_START == RKH_DEF_ENABLED)
-	#define RKH_HK_START()	\
-					rkh_hk_start()
-#else
-	#define RKH_HK_START()	\
-					(void)0
+#elif 	((RKH_HK_EN_START != RKH_DEF_ENABLED) && \
+        	(RKH_HK_EN_START != RKH_DEF_DISABLED))
+	#error "RKH_HK_EN_START                  illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
@@ -1339,12 +1323,12 @@
 	#error "                                [MUST be RKH_DEF_ENABLED ]        "
 	#error "                                [     || RKH_DEF_DISABLED]        "
 
-#elif 	(RKH_HK_EN_EXIT == RKH_DEF_ENABLED)
-	#define RKH_HK_EXIT()	\
-					rkh_hk_exit()
-#else
-	#define RKH_HK_EXIT()	\
-					(void)0
+#elif 	((RKH_HK_EN_EXIT != RKH_DEF_ENABLED) && \
+        	(RKH_HK_EN_EXIT != RKH_DEF_DISABLED))
+	#error "RKH_HK_EN_EXIT                   illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #endif
 
 
@@ -1430,9 +1414,17 @@
 	#error "                                [MUST be RKH_DEF_ENABLED ]        "
 	#error "                                [     || RKH_DEF_DISABLED]        "
 
+#elif 	((RKH_EN_NATIVE_DYN_EVENT != RKH_DEF_ENABLED) && \
+        	(RKH_EN_NATIVE_DYN_EVENT != RKH_DEF_DISABLED))
+	#error "RKH_EN_NATIVE_DYN_EVENT         illegally #define'd in 'rkhport.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+
 #elif	(RKH_EN_NATIVE_DYN_EVENT == RKH_DEF_ENABLED)
 	#if ((RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED) && \
 			(RKH_MP_EN == RKH_DEF_DISABLED))
+	#error "RKH_EN_DYNAMIC_EVENT             illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
 	#error "RKH_MP_EN                        illegally #define'd in 'rkhcfg.h'"
 	#error "                                [MUST be RKH_DEF_ENABLED ]        "
 	#endif
@@ -1555,6 +1547,52 @@
 	#define RKH_CHOICE_OR_CONDITIONAL_ENABLED
 #endif
 	
+
+#if RKH_HK_EN_DISPATCH == RKH_DEF_ENABLED
+	#define RKH_HK_DISPATCH( sma, e )	\
+							rkh_hk_dispatch( (sma), (RKHEVT_T*)(e) )
+
+#else
+	#define RKH_HK_DISPATCH( sma, e )	\
+							(void)0
+#endif
+
+
+#if	(RKH_HK_EN_TIMEOUT == RKH_DEF_ENABLED)
+	#define RKH_HK_TIMEOUT( t )	\
+							rkh_hk_timeout( (t) )
+#else
+	#define RKH_HK_TIMEOUT( t )	\
+							(void)0
+#endif
+
+
+#if	(RKH_HK_EN_SIGNAL == RKH_DEF_ENABLED)
+	#define RKH_HK_SIGNAL( e )	\
+							rkh_hk_signal( (RKHEVT_T*)(e) )
+#else
+	#define RKH_HK_SIGNAL( e )	\
+							(void)0
+#endif
+
+
+#if	(RKH_HK_EN_START == RKH_DEF_ENABLED)
+	#define RKH_HK_START()	\
+							rkh_hk_start()
+#else
+	#define RKH_HK_START()	\
+							(void)0
+#endif
+
+
+#if	(RKH_HK_EN_EXIT == RKH_DEF_ENABLED)
+	#define RKH_HK_EXIT()	\
+							rkh_hk_exit()
+#else
+	#define RKH_HK_EXIT()	\
+							(void)0
+#endif
+
 
 #if (RKH_SMA_EN_ID == RKH_DEF_ENABLED)
 	#if (RKH_SMA_EN_IEVENT == RKH_DEF_ENABLED)
