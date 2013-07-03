@@ -260,10 +260,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\rkhdata.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h"
 				>
 			</File>

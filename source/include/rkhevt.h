@@ -123,12 +123,14 @@
 typedef struct
 {
 	/**
+	 * 	\brief
 	 *	Signal of the event instance.
 	 */
 
 	RKHE_T e;
 
 	/**
+	 * 	\brief
 	 * 	Attributes of dynamic event (0 for static event).
 	 */
 

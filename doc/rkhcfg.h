@@ -268,6 +268,13 @@
 
 #define RKH_SMA_EN_SUBMACHINE			1
 
+/**
+ *	If the #RKH_SMA_EN_TRC_SENDER and #RKH_TRC_EN are set to 1, 
+ *	when posting an event the RKH inserts a pointer to the sender object.
+ */
+
+#define RKH_SMA_EN_TRC_SENDER			0
+
 
 /* --- Configuration options related to SMA action featues ---------------- */
 
@@ -344,15 +351,6 @@
  */
 
 #define RKH_TRC_EN						1
-
-/**
- *	Specify the maximum number of trace events, this number is direclty 
- *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number, 
- *	the lower the RAM consumption.
- *	See \c #trceftbl table.
- */
-
-#define RKH_TRC_MAX_EVENTS				128
 
 /**
  *	If the #RKH_TRC_RUNTIME_FILTER is set to 1 then RKH will include the 
@@ -500,7 +498,7 @@
  *	include the "state or pseudostate in a compound transition" trace record.
  */
 
-#define RKH_TRC_EN_SM_CSTATE			1
+#define RKH_TRC_EN_SM_TS_STATE			1
 
 /**
  *	If the #RKH_TRC_EN_SM_CLRH and #RKH_TRC_EN_SM are set to 1 then RKH will 

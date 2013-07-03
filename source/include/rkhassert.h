@@ -102,7 +102,7 @@
 #include "rkhcfg.h"
 
 
-#if RKH_ASSERT_EN == 1
+#if RKH_ASSERT_EN == RKH_DEF_ENABLED
 
     /** 
 	 *	\brief

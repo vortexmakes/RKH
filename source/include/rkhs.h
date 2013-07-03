@@ -137,7 +137,8 @@
 * 	\ref fig15 "Figure 15". \n \n
 *
 * 	\anchor fig16
-* 	\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed priority preemptive scheduling"
+* 	\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed 
+* 	priority preemptive scheduling"
 *
 *	\n The following explanation section illuminates the interesting 
 *	points:\n
@@ -221,7 +222,8 @@
 * 	system despicted in \ref fig15 "Figure 15". \n \n
 *
 * 	\anchor fig17
-* 	\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed priority cooperative scheduling"
+* 	\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed 
+* 	priority cooperative scheduling"
 *
 *	\n The following explanation section illuminates the interesting 
 *	points:\n
@@ -281,7 +283,8 @@
 #include "rkhevt.h"
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 && RKH_EN_DOXYGEN == 0
+#if RKH_EN_NATIVE_SCHEDULER == 1 && \
+	RKH_EN_DOXYGEN == 0
 
 	#define RKH_EQ_TYPE				RKHRQ_T
 
