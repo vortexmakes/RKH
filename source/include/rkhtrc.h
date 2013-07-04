@@ -417,11 +417,12 @@ typedef enum rkh_trc_groups
  *					RKH_TRC_NE( nelem ); 				\
  *				RKH_TRC_END()
  *	
- *	#define RKH_TR_SMA_FIFO( ao, ev, pid, rc )			\
+ *	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		\
  *				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 		\
  *								ao->romrkh->prio )		\
  *					RKH_TRC_SYM( ao ); 					\
  *					RKH_TRC_SIG( ev->e ); 				\
+ *					RKH_TRC_SENDER( snr ); 				\
  *					RKH_TRC_UI8( pid ); 				\
  *					RKH_TRC_UI8( rc ); 					\
  *				RKH_TRC_END()
@@ -1557,14 +1558,14 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, signal, sender, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_FIFO( ao, ev, _sender, pid, rc )			\
+		#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )					\
 					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
 									ao->romrkh->prio )					\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
-						RKH_TRC_SENDER( _sender ); 						\
+						RKH_TRC_SENDER( snr ); 							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -1577,14 +1578,14 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, signal, sender, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_LIFO( ao, ev, _sender, pid, rc )			\
+		#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )					\
 					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
 									ao->romrkh->prio )					\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
-						RKH_TRC_SENDER( _sender ); 						\
+						RKH_TRC_SENDER( snr ); 							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -1624,8 +1625,8 @@ enum rkh_trc_fmt
 		#define RKH_TR_SMA_ACT( ao, p )						(void)0
 		#define RKH_TR_SMA_TERM( ao, p )					(void)0
 		#define RKH_TR_SMA_GET( ao, ev, pid, rc )			(void)0
-		#define RKH_TR_SMA_FIFO( ao, ev, pid, rc )			(void)0
-		#define RKH_TR_SMA_LIFO( ao, ev, pid, rc )			(void)0
+		#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		(void)0
+		#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )		(void)0
 		#define RKH_TR_SMA_REG( ao, prio )					(void)0
 		#define RKH_TR_SMA_UNREG( ao, prio )				(void)0
 	#endif
@@ -2765,8 +2766,8 @@ enum rkh_trc_fmt
 	#define RKH_TR_SMA_ACT( ao, p )						(void)0
 	#define RKH_TR_SMA_TERM( ao, p )					(void)0
 	#define RKH_TR_SMA_GET( ao, ev, pid, rc )			(void)0
-	#define RKH_TR_SMA_FIFO( ao, ev, pid, rc )			(void)0
-	#define RKH_TR_SMA_LIFO( ao, ev, pid, rc )			(void)0
+	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		(void)0
+	#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )		(void)0
 	#define RKH_TR_SMA_REG( ao, prio )					(void)0
 	#define RKH_TR_SMA_UNREG( ao, prio )				(void)0
 
