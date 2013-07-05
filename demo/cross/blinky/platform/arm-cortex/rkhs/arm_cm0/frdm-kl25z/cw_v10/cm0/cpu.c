@@ -92,6 +92,7 @@ void init_clocks(void)
 	/* System clock initialization */
 	/* SIM_SCGC5: PORTD=1,PORTB=1,PORTA=1 */
 	SIM_SCGC5 |= (uint32_t)0x1600UL;     /* Enable clock gate for ports to enable pin routing */
+	SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;   /* Enable clock gate for ports to enable pin routing */
 	/* SIM_CLKDIV1: OUTDIV1=0,OUTDIV4=1 */
 	SIM_CLKDIV1 = (uint32_t)0x00010000UL; /* Update system prescalers */
 	/* SIM_SOPT2: PLLFLLSEL=0 */
@@ -158,11 +159,13 @@ void init_peripherals(void)
 	PORTD_PCR1 = (uint32_t)((PORTD_PCR1 & (uint32_t)~0x01000600UL) | (uint32_t)0x0100UL);
 	/* PORTA_PCR20: ISF=0,MUX=7 */
 	PORTA_PCR20 = (uint32_t)((PORTA_PCR20 & (uint32_t)~0x01000000UL) | (uint32_t)0x0700UL);
+
+	/* PORTC_PCR3: ISF=0,MUX=3 */ /* U1_RX */
+	PORTC_PCR3 = (uint32_t)((PORTC_PCR3 & (uint32_t)~0x01000400UL) | (uint32_t)0x0300UL);
+	/* PORTC_PCR3: ISF=0,MUX=3 */ /* U1_TX */
+	PORTC_PCR4 = (uint32_t)((PORTC_PCR3 & (uint32_t)~0x01000400UL) | (uint32_t)0x0300UL);
 	/* NVIC_IPR1: PRI_6=0 */
 	NVIC_IPR1 &= (uint32_t)~0x00FF0000UL;                      
-	/*lint -save  -e950 Disable MISRA rule (1.1) checking. */\
-	asm("CPSIE i");\
-	/*lint -restore Enable MISRA rule (1.1) checking. */\
 }
 
 
@@ -181,19 +184,19 @@ cpu_init( void )
 void
 systick_init( uint32_t tick_hz )
 {
-  /* SYST_CSR: COUNTFLAG=0,CLKSOURCE=0,TICKINT=0,ENABLE=0 */
-  SYST_CSR = (uint32_t)0x00UL;                  
-  /* SYST_RVR: RELOAD=0x000176E8 */
-  SYST_RVR = mcu_coreclk_hz / tick_hz; //(uint32_t)0x000EA510UL;                  
-  /* SYST_CVR: CURRENT=0 */
-  SYST_CVR = (uint32_t)0x00UL;                  
-  /* SYST_CSR: COUNTFLAG=0,CLKSOURCE=1,TICKINT=1,ENABLE=1 */
-  SYST_CSR = (uint32_t)0x07UL;                  
+	/* SYST_CSR: COUNTFLAG=0,CLKSOURCE=0,TICKINT=0,ENABLE=0 */
+	SYST_CSR = (uint32_t)0x00UL;                  
+	/* SYST_RVR: RELOAD=0x000176E8 */
+	SYST_RVR = mcu_coreclk_hz / tick_hz; //(uint32_t)0x000EA510UL;                  
+	/* SYST_CVR: CURRENT=0 */
+	SYST_CVR = (uint32_t)0x00UL;                  
+	/* SYST_CSR: COUNTFLAG=0,CLKSOURCE=1,TICKINT=1,ENABLE=1 */
+	SYST_CSR = (uint32_t)0x07UL;                  
 
-  /* SCB_SHPR3: PRI_15=0x30 */
-//  SCB_SHPR3 |= ( ( BSP_KERNEL_IRQ_PRIO << 4 ) << 24 );
-  
-//  Cpu_SetBASEPRI(BSP_KERNEL_IRQ_PRIO);
+	/* SCB_SHPR3: PRI_15=0x30 */
+	SCB_SHPR3 |= ( ( BSP_KERNEL_IRQ_PRIO << 4 ) << 24 );
+
+	Cpu_SetBASEPRI(BSP_KERNEL_IRQ_PRIO);
 }
 
 

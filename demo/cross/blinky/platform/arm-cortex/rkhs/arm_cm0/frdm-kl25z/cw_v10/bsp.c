@@ -29,9 +29,10 @@
 #include "rkh.h"
 #include "cpu.h"
 #include "gpio.h"
+#include "kuart.h"
 
 
-#define SERIAL_TRACE			0
+#define SERIAL_TRACE			1
 
 
 RKH_THIS_MODULE
@@ -48,11 +49,11 @@ RKH_THIS_MODULE
 	};
 
 	/* Trazer Tool COM Port */
-	#define TRC_COM_PORT		COM1	
+	#define TRC_COM_PORT			COM1	
 
-	#define SERIAL_TRACE_OPEN()		kuart_init( UART3_BASE_PTR, &trz_uart )
+	#define SERIAL_TRACE_OPEN()		kuart_init( UART1_BASE_PTR, &trz_uart )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART1_BASE_PTR, d )
 #else
 	#define SERIAL_TRACE_OPEN()		(void)0
 	#define SERIAL_TRACE_CLOSE()	(void)0

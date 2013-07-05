@@ -180,7 +180,7 @@ void set_irq_priority (int irq, int prio)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_SetBASEPRI (component MK40N512LQ100)
+**     Method      :  Cpu_SetBASEPRI
 **
 **     Description :
 **         This method sets the BASEPRI core register.
@@ -191,10 +191,12 @@ void set_irq_priority (int irq, int prio)
 void 
 Cpu_SetBASEPRI(register uint32_t Level)
 {
-//	__asm volatile
-//	(
-//		MSR BASEPRI,R0;
-//		MOV PC,LR
-//	)
+	__asm__ __volatile__
+	(
+		"\tmsr basepri, %0\n"
+		:
+		: "r" (Level)
+		: "memory"
+	);
 }
 

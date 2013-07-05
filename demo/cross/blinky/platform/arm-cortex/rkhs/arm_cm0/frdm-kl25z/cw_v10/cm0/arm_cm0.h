@@ -19,7 +19,7 @@ void write_vtor (int);
 void enable_irq (int);
 void disable_irq (int);
 void set_irq_priority (int, int);
-//void Cpu_SetBASEPRI(register uint32_t Level);
+void Cpu_SetBASEPRI(register uint32_t Level);
 
 /***********************************************************************/
   /*!< Macro to enable all interrupts. */
