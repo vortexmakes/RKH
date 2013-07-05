@@ -29,7 +29,7 @@
 
 
 #include "rkh.h"
-#include "arm_cm0.h"
+#include "cpu.h"
 
 
 #define BSP_KERNEL_IRQ_PRIO		6

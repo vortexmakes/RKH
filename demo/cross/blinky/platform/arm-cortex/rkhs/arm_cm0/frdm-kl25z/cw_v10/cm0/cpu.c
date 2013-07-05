@@ -6,9 +6,20 @@
 #include "cpu.h"
 #include "rkh.h"
 
+
+#if __cplusplus
+extern "C" {
+#endif
+extern uint32_t __vector_table[];
+extern unsigned long _estack;
+extern void __thumb_startup(void);
+#if __cplusplus
+}
+#endif
+
+
 uint32_t mcu_coreclk_hz;
 uint32_t mcu_busclk_hz;
-uint32_t mcu_fbusclk_hz;
 uint32_t mcu_flshclk_hz;
 
 static
@@ -30,7 +41,6 @@ fll_mfactor( void )
 	}
 }
 
-volatile static uint32_t f, d;
 
 int
 fee_dfactor( void )
@@ -59,16 +69,112 @@ fee_dfactor( void )
 
 }
 
+
+/*
+ *	__init_hardware:
+ *			Reset handler
+ */
+void __init_hardware()
+{
+	SCB_VTOR = (uint32_t)__vector_table; /* Set the interrupt vector table position */
+	
+	// Disable the Watchdog because it may reset the core before entering main().
+	SIM_COPC = 0;
+}
+
+
+/*
+ *     init_clocks:
+ *         Initialization code for clock source.
+ */
+void init_clocks(void)
+{
+	/* System clock initialization */
+	/* SIM_SCGC5: PORTD=1,PORTB=1,PORTA=1 */
+	SIM_SCGC5 |= (uint32_t)0x1600UL;     /* Enable clock gate for ports to enable pin routing */
+	/* SIM_CLKDIV1: OUTDIV1=0,OUTDIV4=1 */
+	SIM_CLKDIV1 = (uint32_t)0x00010000UL; /* Update system prescalers */
+	/* SIM_SOPT2: PLLFLLSEL=0 */
+	SIM_SOPT2 &= (uint32_t)~0x00010000UL; /* Select FLL as a clock source for various peripherals */
+	/* SIM_SOPT1: OSC32KSEL=3 */
+	SIM_SOPT1 |= (uint32_t)0x000C0000UL; /* LPO 1kHz oscillator drives 32 kHz clock for various peripherals */
+	/* SIM_SOPT2: TPMSRC=1 */
+	SIM_SOPT2 = (uint32_t)((SIM_SOPT2 & (uint32_t)~0x02000000UL) | (uint32_t)0x01000000UL); /* Set the TPM clock */
+	/* PORTA_PCR18: ISF=0,MUX=0 */
+	PORTA_PCR18 &= (uint32_t)~0x01000700UL;                      
+	/* PORTA_PCR19: ISF=0,MUX=0 */
+	PORTA_PCR19 &= (uint32_t)~0x01000700UL;                      
+	/* Switch to FEE Mode */
+	/* MCG_C2: LOCRE0=0,RANGE0=2,HGO0=0,EREFS0=1,LP=0,IRCS=0 */
+	MCG_C2 = (uint8_t)0x24U;                          
+	/* OSC0_CR: ERCLKEN=0,EREFSTEN=0,SC2P=0,SC4P=0,SC8P=0,SC16P=0 */
+	OSC0_CR = (uint8_t)0x00U;                          
+	/* MCG_C1: CLKS=0,FRDIV=3,IREFS=0,IRCLKEN=1,IREFSTEN=0 */
+	MCG_C1 = (uint8_t)0x1AU;                          
+	/* MCG_C4: DMX32=0,DRST_DRS=1 */
+	MCG_C4 = (uint8_t)((MCG_C4 & (uint8_t)~(uint8_t)0xC0U) | (uint8_t)0x20U);
+	/* MCG_C5: PLLCLKEN0=0,PLLSTEN0=0,PRDIV0=0 */
+	MCG_C5 = (uint8_t)0x00U;                          
+	/* MCG_C6: LOLIE0=0,PLLS=0,CME0=0,VDIV0=0 */
+	MCG_C6 = (uint8_t)0x00U;                          
+	while((MCG_S & MCG_S_IREFST_MASK) != 0x00U) { /* Check that the source of the FLL reference clock is the external reference clock. */
+	}
+	while((MCG_S & 0x0CU) != 0x00U) {    /* Wait until output of the FLL is selected */
+	}
+}
+
+
+/*
+ *     init_peripherals 
+ *         Device initialization code for selected peripherals.
+ */
+void init_peripherals(void)
+{
+	/* Initialization of the SIM module */
+	/* PORTA_PCR4: ISF=0,MUX=7 */
+	PORTA_PCR4 = (uint32_t)((PORTA_PCR4 & (uint32_t)~0x01000000UL) | (uint32_t)0x0700UL);
+	/* Initialization of the RCM module */
+	/* RCM_RPFW: RSTFLTSEL=0 */
+	RCM_RPFW &= (uint8_t)~(uint8_t)0x1FU;                           
+	/* RCM_RPFC: RSTFLTSS=0,RSTFLTSRW=0 */
+	RCM_RPFC &= (uint8_t)~(uint8_t)0x07U;                           
+	/* Initialization of the PMC module */
+	/* PMC_LVDSC1: LVDACK=1,LVDIE=0,LVDRE=1,LVDV=0 */
+	PMC_LVDSC1 = (uint8_t)((PMC_LVDSC1 & (uint8_t)~(uint8_t)0x23U) | (uint8_t)0x50U);
+	/* PMC_LVDSC2: LVWACK=1,LVWIE=0,LVWV=0 */
+	PMC_LVDSC2 = (uint8_t)((PMC_LVDSC2 & (uint8_t)~(uint8_t)0x23U) | (uint8_t)0x40U);
+	/* PMC_REGSC: BGEN=0,ACKISO=0,BGBE=0 */
+	PMC_REGSC &= (uint8_t)~(uint8_t)0x19U;                           
+	/* SMC_PMPROT: AVLP=0,ALLS=0,AVLLS=0 */
+	SMC_PMPROT = (uint8_t)0x00U;         /* Setup Power mode protection register */
+	/* Common initialization of the CPU registers */
+	/* SCB_SHPR3: PRI_15=0 */
+	SCB_SHPR3 &= (uint32_t)~0xFF000000UL;                      
+	/* PORTB_PCR18: ISF=0,MUX=1 */
+	PORTB_PCR18 = (uint32_t)((PORTB_PCR18 & (uint32_t)~0x01000600UL) | (uint32_t)0x0100UL);
+	/* PORTB_PCR19: ISF=0,MUX=1 */
+	PORTB_PCR19 = (uint32_t)((PORTB_PCR19 & (uint32_t)~0x01000600UL) | (uint32_t)0x0100UL);
+	/* PORTD_PCR1: ISF=0,MUX=1 */
+	PORTD_PCR1 = (uint32_t)((PORTD_PCR1 & (uint32_t)~0x01000600UL) | (uint32_t)0x0100UL);
+	/* PORTA_PCR20: ISF=0,MUX=7 */
+	PORTA_PCR20 = (uint32_t)((PORTA_PCR20 & (uint32_t)~0x01000000UL) | (uint32_t)0x0700UL);
+	/* NVIC_IPR1: PRI_6=0 */
+	NVIC_IPR1 &= (uint32_t)~0x00FF0000UL;                      
+	/*lint -save  -e950 Disable MISRA rule (1.1) checking. */\
+	asm("CPSIE i");\
+	/*lint -restore Enable MISRA rule (1.1) checking. */\
+}
+
+
+
 void
 cpu_init( void )
 {
-	MCU_init();
-	f = fll_mfactor();
-	d = fee_dfactor();
-	mcu_coreclk_hz = ( EXTAL / d ) * f;
-/*	mcu_busclk_hz = mcu_coreclk_hz / MCU_BUSCLK_DIV;
-	mcu_fbusclk_hz = mcu_coreclk_hz / MCU_FBUSCLK_DIV;
-	mcu_flshclk_hz = mcu_coreclk_hz / MCU_FLSHCLK_DIV;*/
+	init_clocks();
+	mcu_coreclk_hz = ( EXTAL / fee_dfactor() ) * fll_mfactor();
+	mcu_busclk_hz = mcu_coreclk_hz / MCU_BUSCLK_DIV;
+	mcu_flshclk_hz = mcu_coreclk_hz / MCU_FLSHCLK_DIV;
+	init_peripherals();	
 }
 
 
@@ -130,4 +236,110 @@ cpu_tstmr_read( void )
 //    return DWT_CYCCNT;
 	return 0;
 }
+
+
+
+/*
+ *	Default_Handler
+ *		Default interrupt handler
+ */
+void Default_Handler( void )
+{
+	__asm("bkpt");
+}
+
+
+/* Weak definitions of handlers point to Default_Handler if not implemented */
+void NMI_Handler() __attribute__ ((weak, alias("Default_Handler")));
+void HardFault_Handler() __attribute__ ((weak, alias("Default_Handler")));
+void SVC_Handler() __attribute__ ((weak, alias("Default_Handler")));
+void PendSV_Handler() __attribute__ ((weak, alias("Default_Handler")));
+//void SysTick_Handler() __attribute__ ((weak, alias("Default_Handler")));
+void DMA0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void DMA1_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void DMA2_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void DMA3_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void MCM_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void FTFL_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void PMC_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void LLW_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void I2C0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void I2C1_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void SPI0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void SPI1_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void UART0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void UART1_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void UART2_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void ADC0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void CMP0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void FTM0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void FTM1_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void FTM2_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void RTC_Alarm_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void RTC_Seconds_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void PIT_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void USBOTG_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void DAC0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void TSI0_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void MCG_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void LPTimer_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void PORTA_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+void PORTD_IRQHandler() __attribute__ ((weak, alias("Default_Handler")));
+
+
+/* The Interrupt Vector Table */
+void (* const InterruptVector[])() __attribute__ ((section(".vectortable"))) = {
+    /* Processor exceptions */
+    (void(*)(void)) &_estack,
+    __thumb_startup,
+    NMI_Handler,
+    HardFault_Handler,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    SVC_Handler,
+    0,
+    0,
+    PendSV_Handler,
+    isr_systick,
+
+    /* Interrupts */
+    DMA0_IRQHandler, /* DMA Channel 0 Transfer Complete and Error */
+    DMA1_IRQHandler, /* DMA Channel 1 Transfer Complete and Error */
+    DMA2_IRQHandler, /* DMA Channel 2 Transfer Complete and Error */
+    DMA3_IRQHandler, /* DMA Channel 3 Transfer Complete and Error */
+    MCM_IRQHandler, /* Normal Interrupt */
+    FTFL_IRQHandler, /* FTFL Interrupt */
+    PMC_IRQHandler, /* PMC Interrupt */
+    LLW_IRQHandler, /* Low Leakage Wake-up */
+    I2C0_IRQHandler, /* I2C0 interrupt */
+    I2C1_IRQHandler, /* I2C1 interrupt */
+    SPI0_IRQHandler, /* SPI0 Interrupt */
+    SPI1_IRQHandler, /* SPI1 Interrupt */
+    UART0_IRQHandler, /* UART0 Status and Error interrupt */
+    UART1_IRQHandler, /* UART1 Status and Error interrupt */
+    UART2_IRQHandler, /* UART2 Status and Error interrupt */
+    ADC0_IRQHandler, /* ADC0 interrupt */
+    CMP0_IRQHandler, /* CMP0 interrupt */
+    FTM0_IRQHandler, /* FTM0 fault, overflow and channels interrupt */
+    FTM1_IRQHandler, /* FTM1 fault, overflow and channels interrupt */
+    FTM2_IRQHandler, /* FTM2 fault, overflow and channels interrupt */
+    RTC_Alarm_IRQHandler, /* RTC Alarm interrupt */
+    RTC_Seconds_IRQHandler, /* RTC Seconds interrupt */
+    PIT_IRQHandler, /* PIT timer all channels interrupt */
+    Default_Handler, /* Reserved interrupt 39/23 */
+    USBOTG_IRQHandler, /* USB interrupt */
+    DAC0_IRQHandler, /* DAC0 interrupt */
+    TSI0_IRQHandler, /* TSI0 Interrupt */
+    MCG_IRQHandler, /* MCG Interrupt */
+    LPTimer_IRQHandler, /* LPTimer interrupt */
+    Default_Handler, /* Reserved interrupt 45/29 */
+    PORTA_IRQHandler, /* Port A interrupt */
+    PORTD_IRQHandler /* Port D interrupt */
+};
+
 
