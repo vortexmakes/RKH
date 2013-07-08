@@ -21,6 +21,8 @@ extern void __thumb_startup(void);
 uint32_t mcu_coreclk_hz;
 uint32_t mcu_busclk_hz;
 uint32_t mcu_flshclk_hz;
+uint32_t fll_clock_hz;
+uint32_t uart0_clk_hz;
 
 static
 int
@@ -92,7 +94,6 @@ void init_clocks(void)
 	/* System clock initialization */
 	/* SIM_SCGC5: PORTD=1,PORTB=1,PORTA=1 */
 	SIM_SCGC5 |= (uint32_t)0x1600UL;     /* Enable clock gate for ports to enable pin routing */
-	SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;   /* Enable clock gate for ports to enable pin routing */
 	/* SIM_CLKDIV1: OUTDIV1=0,OUTDIV4=1 */
 	SIM_CLKDIV1 = (uint32_t)0x00010000UL; /* Update system prescalers */
 	/* SIM_SOPT2: PLLFLLSEL=0 */
@@ -101,6 +102,8 @@ void init_clocks(void)
 	SIM_SOPT1 |= (uint32_t)0x000C0000UL; /* LPO 1kHz oscillator drives 32 kHz clock for various peripherals */
 	/* SIM_SOPT2: TPMSRC=1 */
 	SIM_SOPT2 = (uint32_t)((SIM_SOPT2 & (uint32_t)~0x02000000UL) | (uint32_t)0x01000000UL); /* Set the TPM clock */
+	/* SIM_SOPT2: UART0SRC = 1 PLL/FLL clock source */
+	SIM_SOPT2 |= SIM_SOPT2_UART0SRC(1);
 	/* PORTA_PCR18: ISF=0,MUX=0 */
 	PORTA_PCR18 &= (uint32_t)~0x01000700UL;                      
 	/* PORTA_PCR19: ISF=0,MUX=0 */
@@ -160,10 +163,10 @@ void init_peripherals(void)
 	/* PORTA_PCR20: ISF=0,MUX=7 */
 	PORTA_PCR20 = (uint32_t)((PORTA_PCR20 & (uint32_t)~0x01000000UL) | (uint32_t)0x0700UL);
 
-	/* PORTC_PCR3: ISF=0,MUX=3 */ /* U1_RX */
-	PORTC_PCR3 = (uint32_t)((PORTC_PCR3 & (uint32_t)~0x01000400UL) | (uint32_t)0x0300UL);
-	/* PORTC_PCR3: ISF=0,MUX=3 */ /* U1_TX */
-	PORTC_PCR4 = (uint32_t)((PORTC_PCR3 & (uint32_t)~0x01000400UL) | (uint32_t)0x0300UL);
+	/* PORTA_PCR1: ISF=0,MUX=2 */ /* U0_RX */
+	PORTA_PCR1 = (uint32_t)((PORTA_PCR1 & (uint32_t)~0x01000400UL) | (uint32_t)0x0200UL);
+	/* PORTC_PCR1: ISF=0,MUX=2 */ /* U0_TX */
+	PORTA_PCR2 = (uint32_t)((PORTA_PCR2 & (uint32_t)~0x01000400UL) | (uint32_t)0x0200UL);
 	/* NVIC_IPR1: PRI_6=0 */
 	NVIC_IPR1 &= (uint32_t)~0x00FF0000UL;                      
 }
@@ -177,6 +180,8 @@ cpu_init( void )
 	mcu_coreclk_hz = ( EXTAL / fee_dfactor() ) * fll_mfactor();
 	mcu_busclk_hz = mcu_coreclk_hz / MCU_BUSCLK_DIV;
 	mcu_flshclk_hz = mcu_coreclk_hz / MCU_FLSHCLK_DIV;
+	fll_clock_hz = mcu_coreclk_hz;
+	uart0_clk_hz = fll_clock_hz;
 	init_peripherals();	
 }
 
@@ -219,27 +224,35 @@ cpu_reset( void )
   		;
 }
 
-#define  DEM_CR_TRCENA        (1 << 24)
-#define  DWT_CR_CYCCNTENA     (1 <<  0)
 
+#define LPTMR_USE_IRCLK 0 
+#define LPTMR_USE_LPOCLK 1
+#define LPTMR_USE_ERCLK32 2
+#define LPTMR_USE_OSCERCLK 3
 
 void
 cpu_tstmr_init ( void )
 {
-	/*
-	DEMCR		|= DEM_CR_TRCENA;
-	DWT_CYCCNT	= 0u;
-	DWT_CTRL	|= DWT_CR_CYCCNTENA;*/
+    SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;
+
+	LPTMR0_CSR = 0;
+
+    LPTMR0_PSR = ( LPTMR_PSR_PRESCALE(0) 
+                 | LPTMR_PSR_PBYP_MASK
+                 | LPTMR_PSR_PCS(LPTMR_USE_LPOCLK)); 
+            
+    LPTMR0_CMR = LPTMR_CMR_COMPARE(0xFFFF);  //Set compare value
+
+    LPTMR0_CSR |= LPTMR_CSR_TEN_MASK;   //Turn on LPT and start counting
 }
 
 
 uint32_t
 cpu_tstmr_read( void )
 {
-//    return DWT_CYCCNT;
-	return 0;
+	LPTMR0_CNR = 0xFF;
+    return LPTMR0_CNR;
 }
-
 
 
 /*

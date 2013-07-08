@@ -25,6 +25,7 @@
 extern uint32_t mcu_coreclk_hz;
 extern uint32_t mcu_busclk_hz;
 extern uint32_t mcu_flshclk_hz;
+extern uint32_t uart0_clk_hz;
 
 void cpu_init( void );
 

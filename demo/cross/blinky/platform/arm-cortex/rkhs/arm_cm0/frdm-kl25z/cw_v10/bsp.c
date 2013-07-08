@@ -29,7 +29,7 @@
 #include "rkh.h"
 #include "cpu.h"
 #include "gpio.h"
-#include "kuart.h"
+#include "uart.h"
 
 
 #define SERIAL_TRACE			1
@@ -43,17 +43,10 @@ RKH_THIS_MODULE
 
 #if SERIAL_TRACE == 1
 
-	static const KUARTPP_ST trz_uart = 
-	{
-		115200, 0, 1, KUART_HFC_DISABLE, NULL
-	};
-
 	/* Trazer Tool COM Port */
-	#define TRC_COM_PORT			COM1	
-
-	#define SERIAL_TRACE_OPEN()		kuart_init( UART1_BASE_PTR, &trz_uart )
+	#define SERIAL_TRACE_OPEN()		uart0_init( UART0_BASE_PTR, uart0_clk_hz/1000, 115200 )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART1_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND( d ) 	uart0_putchar( UART0_BASE_PTR, d )
 #else
 	#define SERIAL_TRACE_OPEN()		(void)0
 	#define SERIAL_TRACE_CLOSE()	(void)0
@@ -114,8 +107,7 @@ rkh_trc_close( void )
 RKHTS_T 
 rkh_trc_getts( void )
 {
-//	return ( RKHTS_T )get_ts();
-	return 0;
+	return ( RKHTS_T )get_ts();
 }
 
 
@@ -129,6 +121,7 @@ rkh_trc_flush( void )
 		SERIAL_TRACE_SEND( (char)*d );		
 	}
 }
+
 #endif
 
 
@@ -142,25 +135,36 @@ bsp_init( int argc, char *argv[]  )
 
 	systick_init( RKH_TICK_RATE_HZ );
 	
-//	cpu_tstmr_init();
+	cpu_tstmr_init();
 
-	init_led( LED1 );
+	init_led( LED_R );
+	init_led( LED_G );
+	init_led( LED_B );
 
 	RKH_ENA_INTERRUPT();
 }
 
+static rkhui8_t led_cnt = 0;
 
 void 
 bsp_led_on( void )
 {
-	set_led( LED1 );
+	++led_cnt;
+
+	if(((led_cnt >> 0) & 0x01) != 0) set_led( LED_R ); else clr_led( LED_R );
+	if(((led_cnt >> 1) & 0x01) != 0) set_led( LED_G ); else clr_led( LED_G );
+	if(((led_cnt >> 2) & 0x01) != 0) set_led( LED_B ); else clr_led( LED_B );
 }
 
 
 void 
 bsp_led_off( void )
 {
-	clr_led( LED1 );
+	++led_cnt;
+
+	if(((led_cnt >> 0) & 0x01) != 0) set_led( LED_R ); else clr_led( LED_R );
+	if(((led_cnt >> 1) & 0x01) != 0) set_led( LED_G ); else clr_led( LED_G );
+	if(((led_cnt >> 2) & 0x01) != 0) set_led( LED_B ); else clr_led( LED_B );
 }
 
 

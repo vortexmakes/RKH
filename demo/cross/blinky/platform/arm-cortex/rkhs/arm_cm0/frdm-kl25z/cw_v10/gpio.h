@@ -38,9 +38,9 @@
  *   	(name)			port, bit, dir
  */
 
-#define LED1			GPIOB, 0x00040000, 1
-#define LED2			GPIOB, 0x00080000, 1
-#define LED3			GPIOD, 0x00000002, 1
+#define LED_R			GPIOB, 0x00040000, 1
+#define LED_G			GPIOB, 0x00080000, 1
+#define LED_B			GPIOD, 0x00000002, 1
 
 
 /* 
