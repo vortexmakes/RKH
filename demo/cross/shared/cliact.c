@@ -8,7 +8,6 @@
 #include "svr.h"
 #include "bsp.h"
 
-#include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>

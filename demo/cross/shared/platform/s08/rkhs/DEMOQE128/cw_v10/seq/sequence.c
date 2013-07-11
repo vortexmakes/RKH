@@ -12,7 +12,6 @@
 #include "seqlog.h"
 #include "seqtbl.h"
 #include "seqdefs.h"
-#include "drverr.h"
 
 
 
@@ -372,16 +371,10 @@ set_sequence( MUInt major, unsigned minor, MUInt code )
   const MAJOR_T *pmajor;
   MUInt minors_num, minors_max, seqs_max;
 
-  if( major >= NUM_MAJOR )
-    fatal_driver( BAD_MAJOR );
   pmajor		= &majors_t[ major ];
   minors_max	= pmajor->minors_num;
   minors_num	= count_minors( minor );
   seqs_max	= pmajor->seqs_num;
-  if( minors_num == 0 || minors_num > minors_max  )
-    fatal_driver( BAD_MINORS );
-  if( code >= seqs_max )
-    fatal_driver( BAD_CODE );
   wait_for_semaphore();
   install_new( major, minor, code );
 }

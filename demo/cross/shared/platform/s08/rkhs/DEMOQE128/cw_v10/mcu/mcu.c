@@ -27,6 +27,7 @@
 
 
 #include "rkh.h"
+#include "rkhtim.h"
 #include "derivative.h"
 #include "gpio.h"
 
@@ -103,13 +104,13 @@ mcu_init( unsigned char tick_ms )
 
 void
 interrupt VectorNumber_Vrtc 
-rti_handler( void )
+l_isr_tick( void )
 {
 	RTCSC_RTIF = 1;
 
 	toggle_iopin( LED2 );
 
-	rkh_tim_tick();
+	RKH_TIM_TICK( &l_isr_tick );
 }
 
 

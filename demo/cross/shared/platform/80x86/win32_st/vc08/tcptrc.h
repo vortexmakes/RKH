@@ -1,7 +1,7 @@
 /*
- *	file: bsp.h
- *	Last updated for version: 2.0
- *	Date of the last update:  Feb 28, 2012
+ *	file: tcptrc.h
+ *	Last updated for version: 1.0.00
+ *	Date of the last update:  May 28, 2010
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
@@ -23,30 +23,61 @@
  * e-mail:			lf@vxtsolutions.com.ar
  */
 
-
-#ifndef __BSP_H__
-#define __BSP_H__
-
-
-#include "rkh.h"
-
-
-#define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
-#define BSP_MAX_NESTING_CSECT 		8
+/**
+ * 	\file tcptrc.h
+ *
+ *	\brief
+ *  TCP/IP Trace support for Win32
+ */
 
 
-void bsp_init( int argc, char *argv[] );
-rkhui32_t bsp_rand( void );
-void bsp_srand( rkhui32_t seed );
+#ifndef __TCPTRC_H__
+#define __TCPTRC_H__
 
-void bsp_cli_req( rkhui8_t clino );
-void bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time );
-void bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time );
-void bsp_cli_paused( rkhui8_t clino );
-void bsp_cli_resumed( rkhui8_t clino );
-void bsp_cli_done( rkhui8_t clino );
-void bsp_svr_recall( rkhui8_t clino );
-void bsp_svr_paused( const RKHSMA_T *sma );
+
+#include <winsock.h>
+	
+
+/**
+ * 	\brief
+ *	---.
+ * 
+ *	---.
+ *
+ * 	\param port 		---.
+ * 	\param srvip 		---.
+ * 	\param ps 			---.
+ *
+ * 	\returns
+ * 	---.
+ */
+
+int tcp_trace_open( unsigned short port, char *srvip, SOCKET *ps );
+
+
+/**
+ * 	\brief
+ *	---.
+ * 
+ *	---.
+ *
+ * 	\param s 			---.
+ * 	\param c 			---.
+ */
+
+void tcp_trace_send( SOCKET s, char c );
+
+
+/**
+ * 	\brief
+ *	---.
+ * 
+ *	---.
+ *
+ * 	\param s	 		---.
+ */
+
+void tcp_trace_close( SOCKET s );
 
 
 #endif
