@@ -211,7 +211,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 								RKHROM RKHSCMP_T name =					\
 								{										\
 									{{MKBASE(RKH_COMPOSITE,id)},		\
-									MKST(en,ex,parent)},				\
+									MKST(name,en,ex,parent)},			\
 									MKCOMP(name,defchild,history)		\
 								}
 
@@ -277,7 +277,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 								RKHROM RKHSBSC_T name =					\
 								{										\
 									{{MKBASE(RKH_BASIC,id)},			\
-									MKST(en,ex,parent)},				\
+									MKST(name,en,ex,parent)},			\
 									MKBASIC(name,prepro)				\
 								}
 
@@ -480,7 +480,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 							RKHROM RKHSSBM_T name =						\
 							{											\
 								{{MKBASE(RKH_SUBMACHINE,id)},			\
-								MKST(en,ex,parent)},					\
+								MKST(name,en,ex,parent)},				\
 								MKSBM(name,sbm)							\
 							}
 

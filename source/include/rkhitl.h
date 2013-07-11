@@ -1627,26 +1627,26 @@
 
 #if (RKH_SMA_EN_HCAL == RKH_DEF_ENABLED)
 	#if (RKH_SMA_EN_PPRO == RKH_DEF_ENABLED)
-		#define MKBASIC(n,pp)		n##_trtbl,pp
-		#define MKCOMP(n,d,h)		n##_trtbl,NULL,d,h
+		#define MKBASIC(n,pp)		pp
+		#define MKCOMP(n,d,h)		NULL,d,h
 	#else
-		#define MKBASIC(n,pp)		n##_trtbl
-		#define MKCOMP(n,d,h)		n##_trtbl,d,h
+		#define MKBASIC(n,pp)		
+		#define MKCOMP(n,d,h)		d,h
 	#endif
-	#define MKST(en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p
-	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
+	#define MKST(n,en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p,n##_trtbl,
+	#define MKSBM(n,sbm)			n##_exptbl,sbm
 	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T**)&rdyp_##n
 	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #else
 	#if (RKH_SMA_EN_PPRO == RKH_DEF_ENABLED)
-		#define MKBASIC(n,pp)		n##_trtbl,pp
-		#define MKCOMP(n,d,h)		n##_trtbl,NULL
+		#define MKBASIC(n,pp)		pp
+		#define MKCOMP(n,d,h)		NULL
 	#else
-		#define MKBASIC(n,pp)		n##_trtbl
-		#define MKCOMP(n,d,h)		n##_trtbl
+		#define MKBASIC(n,pp)		
+		#define MKCOMP(n,d,h)		
 	#endif
-	#define MKST(en,ex,p)
-	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
+	#define MKST(n,en,ex,p)			n##_trtbl
+	#define MKSBM(n,sbm)			n##_exptbl,sbm
 	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T*)&rdyp_##n
 	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #endif
@@ -2621,6 +2621,13 @@ typedef struct rkhst_t
 	RKHROM struct rkhst_t *parent;
 #endif
 
+	/**	
+ 	 * 	\brief
+	 *	Points to state transition table.
+	 */
+
+	RKHROM struct rkhtr_t *trtbl;
+
 } RKHST_T;
 
 
@@ -2632,13 +2639,6 @@ typedef struct rkhst_t
 typedef struct rkhsbsc_t
 {
 	RKHST_T st;
-
-	/**	
- 	 * 	\brief
-	 *	Points to state transition table.
-	 */
-
-	RKHROM struct rkhtr_t *trtbl;
 
 	/**	
  	 * 	\brief
@@ -2694,13 +2694,6 @@ typedef struct rkhsbsc_t
 typedef struct rkhscmp_t
 {
 	RKHST_T st;
-
-	/**	
- 	 * 	\brief
-	 *	Points to state transition table.
-	 */
-
-	RKHROM struct rkhtr_t *trtbl;
 
 	/**	
  	 * 	\brief
@@ -2825,13 +2818,6 @@ typedef struct rkhscmp_t
 typedef struct rkhssbm_t
 {
 	RKHST_T st;
-
-	/**	
- 	 * 	\brief
-	 *	Points to state transition table.
-	 */
-
-	RKHROM struct rkhtr_t *trtbl;
 
 	/**	
  	 * 	\brief
