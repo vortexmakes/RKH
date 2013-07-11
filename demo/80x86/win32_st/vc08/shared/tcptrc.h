@@ -28,10 +28,6 @@
  *
  *	\brief
  *  TCP/IP Trace support for Win32
- *
- * 	\warning
- * 	To use the windows socket must be added the "ws2_32.lib" library in 
- * 	Linker->Input->Additional Dependencies configuration.
  */
 
 

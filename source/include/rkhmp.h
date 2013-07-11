@@ -291,8 +291,7 @@ void rkh_mp_init( 	RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 
 /**
  * 	\brief
- * 	This function is used to get a memory block from one of the created
- * 	memory pool.
+ * 	Get a memory block from one of the previously allocated memory pool.
  * 	
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -318,7 +317,7 @@ void rkh_mp_put( RKHMP_T *mp, void *blk );
 
 /**
  * 	\brief
- * 	This function returns the size of memory block in bytes.
+ * 	Retrieves the size of memory block in bytes.
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
@@ -335,8 +334,7 @@ RKH_MPBS_T rkh_mp_get_bsize( RKHMP_T *mp );
 
 /**
  * 	\brief
- * 	This function returns the current number of free memory blocks in the 
- * 	pool.
+ * 	Retrieves the current number of free memory blocks in the pool.
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
@@ -353,9 +351,9 @@ RKH_MPNB_T rkh_mp_get_nfree( RKHMP_T *mp );
 
 /**
  * 	\brief
- * 	This function returns the lowest number of free blocks ever present in 
- * 	the pool. This number provides valuable empirical data for proper sizing 
- *	of the memory pool.
+ * 	Retrieves the lowest number of free blocks ever present in the pool. 
+ * 	This number provides valuable empirical data for proper sizing of the 
+ * 	memory pool.
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 

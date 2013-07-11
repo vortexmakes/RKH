@@ -1,8 +1,3 @@
-/**
-
-\page my_h "my.h"
-
-\code
 /*
  *	my.h
  */
@@ -34,8 +29,8 @@ enum
 
 typedef struct
 {
-	RKHEVT_T event;	/* base structure */
-	rkhui16_t ts;	/* event parameter. Private member */
+	RKHEVT_T event;
+	rkhui16_t ts;
 } MYEVT_T;
 
 
@@ -67,5 +62,3 @@ RKH_DCLR_SHIST_STATE	H;
 
 
 #endif
-\endcode
-*/

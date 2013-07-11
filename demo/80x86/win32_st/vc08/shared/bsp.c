@@ -25,9 +25,10 @@
 
 
 #include "bsp.h"
-#include "my.h"
-#include "rkhdata.h"
 #include "rkh.h"
+#include "scevt.h"
+#include "svr.h"
+#include "cli.h"
 
 #include <conio.h>
 #include <stdlib.h>
@@ -40,19 +41,30 @@
 #define ESC							0x1B
 #define kbmap( c )					( (c) - '0' )
 
-#define SIZEOF_EP0STO				64
-#define SIZEOF_EP0_BLOCK			4
-#define SIZEOF_EP1STO				32
-#define SIZEOF_EP1_BLOCK			8
+#define SIZEOF_EP0STO				32
+#define SIZEOF_EP0_BLOCK			sizeof( RKHEVT_T )
+#define SIZEOF_EP1STO				16
+#define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
+#define SVR_NAME					"Server    -"
+#define CLI_NAME					"Client"
 
 
 RKH_THIS_MODULE
 
+static rkhui32_t l_rnd;			/* random seed */
 static DWORD tick_msec;			/* clock tick in msec */
 rkhui8_t running;
-static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+
+static RKH_DCLR_STATIC_EVENT( e_term, TERM );
+static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
+
 static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
+
+#if defined( RKH_USE_TRC_SENDER )
+static rkhui8_t l_isr_kbd;
+static rkhui8_t l_isr_tick;
+#endif
 
 
 /* 
@@ -73,6 +85,7 @@ static FILE *ftbin;
 	#include "tcptrc.h"
 
 	/* Trazer Tool IP Address */
+	/*#define TRC_IP_ADDR					"192.168.1.143"*/
 	#define TRC_IP_ADDR					"127.0.0.1"
 
 	/* Trazer Tool TCP Port Address */
@@ -119,6 +132,19 @@ static FILE *ftbin;
 #endif
 
 
+static
+void
+bsp_publish( const RKHEVT_T *e )
+{
+	HInt cn;
+
+	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
+		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
+}
+
+
 static 
 DWORD WINAPI 
 isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
@@ -126,7 +152,7 @@ isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
     ( void )par;
     while( running ) 
 	{
-		rkh_tim_tick();
+		RKH_TIM_TICK( &l_isr_tick );
         Sleep( tick_msec );
     }
     return 0;
@@ -138,7 +164,6 @@ DWORD WINAPI
 isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 {
 	int c;
-	MYEVT_T *mye;
 
     ( void )par;
     while( running ) 
@@ -146,13 +171,9 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == ESC )
-			rkh_sma_post_fifo( my, &eterm );
-		else
-		{
-			mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
-			mye->ts = ( rkhui16_t )rand();
-			rkh_sma_post_fifo( my, RKH_EVT_CAST(mye) );
-		}
+			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
+		else if( tolower(c) == 'p' )
+			bsp_publish( &e_pause );
     }
     return 0;
 }
@@ -204,6 +225,7 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
 						"file\n", line, file );
+	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	__debugbreak();
@@ -215,19 +237,30 @@ static
 void
 print_banner( void )
 {
-	printf(	"Abstract Hierarchical State Machine (AHSM) example\n\n" );
+	printf(	"\"Shared\" example\n\n" );
 	printf(	"RKH version      = %s\n", RKH_RELEASE );
 	printf(	"Port version     = %s\n", rkh_get_port_version() );
 	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
-	printf(	"Description: \n\n"
-			"The goal of this demo application is to explain how to \n"
-			"represent a state machine using the RKH framework. To do \n"
-			"that is proposed a simple and abstract example, which is \n"
-			"shown in the documentation file Figure 1 section \n"
-			"\"Representing a State Machine\". \n\n\n" );
+	printf(	"Description: \n\n" );
+	printf(	"This application deals with the shared resource problem \n" );
+	printf(	"in active object systems. Showing one of the biggest \n" );
+	printf(	"benefit of using active objects: resource encapsulation. \n" );
+	printf(	"The encapsulation naturally designates the owner of the \n" );
+	printf(	"resource as the ultimate arbiter in resolving any contention \n" );
+	printf(	"and potential conflicts for the resource. \n" );
+	printf(	"The SHD application is relatively simple and can be tested \n" );
+	printf(	"only with a couple of LEDs on your target board. \n" );
+	printf(	"Still, SHD contains five (5) concurrent active objects \n" );
+	printf(	"that exchange events via direct event posting mechanism. \n" );
+	printf(	"The application uses four timers, as well as dynamic  \n" );
+	printf(	"and static events. \n" );
+	printf(	"On the other hand, this application could be used in either \n" );
+	printf(	"preemptive or cooperative enviroment. \n" );
+	printf(	"Aditionally, the SHD could be used to verify a new RKH port. \n" );
+	printf(	"\n\n\n" );
 
-	printf( "1.- Press <numbers> to send events to state machine. \n" );
-	printf( "2.- Press ESC to quit \n\n\n" );
+	printf( "1.- Press 'P'/'p' to pause.\n" );
+	printf( "2.- Press 'escape' to quit.\n\n\n" );
 }
 
 
@@ -273,12 +306,122 @@ rkh_trc_flush( void )
 #endif
 
 
+rkhui32_t 
+bsp_rand( void )
+{  
+	/* 
+	 * A very cheap pseudo-random-number generator.
+	 * "Super-Duper" Linear Congruential Generator (LCG)
+	 * LCG(2^32, 3*7*11*13*23, 0, seed) [MS]
+	 */
+    l_rnd = l_rnd * (3*7*11*13*23);
+    return l_rnd >> 8;
+}
+
+
+void 
+bsp_srand( rkhui32_t seed )
+{
+    l_rnd = seed;
+}
+
+
+void 
+bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
+{
+	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
+									CLI_ID(clino), req_time );
+}
+
+
+void 
+bsp_cli_req( rkhui8_t clino )
+{
+	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
+{
+	printf( "Client[%d] - Using server for %d [seg]\n", 
+									CLI_ID(clino), using_time );
+}
+
+
+void 
+bsp_cli_paused( rkhui8_t clino )
+{
+	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_cli_resumed( rkhui8_t clino )
+{
+	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_cli_done( rkhui8_t clino )
+{
+	printf( "Client[%d] - Done\n", CLI_ID(clino) );
+}
+
+
+void 
+bsp_svr_recall( rkhui8_t clino )
+{
+	printf( "%s Recall a deferred request from client[%d]\n", 
+									SVR_NAME, CLI_ID(clino) );
+}
+
+
+void 
+bsp_svr_paused( const RKHSMA_T *sma )
+{
+	HInt cn;
+	SVR_T *ao;
+
+	ao = RKH_CAST(SVR_T, sma);
+	printf( "%s Paused | ", SVR_NAME );
+	printf( "ntot = %d |", ao->ntot );
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
+		printf( " cli%d=%d |", cn, ao->ncr[ cn ] );
+
+	putchar('\n');
+}
+
+
 void 
 bsp_init( int argc, char *argv[] )
 {
+	HInt cn;
+
 	(void)argc;
 	(void)argv;
 
-	srand( ( unsigned )time( NULL ) );
+    bsp_srand( 1234U );
 	print_banner();
+	rkh_init();
+
+	/* set trace filters */
+	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+
+	RKH_FILTER_OFF_SMA( svr );
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
+		RKH_FILTER_OFF_SMA( CLI(cn) );
+
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+
+	RKH_TRC_OPEN();
+
+#if defined( RKH_USE_TRC_SENDER )
+	RKH_TR_FWK_OBJ( &l_isr_kbd );
+	RKH_TR_FWK_OBJ( &l_isr_tick );
+#endif
 }

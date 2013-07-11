@@ -131,18 +131,22 @@ typedef struct rkht_t
 	struct rkht_t *tnext;
 
 	/**
-	 * 	State machine application (SMA) that receives the timer event.
+	 * 	\brief
+	 * 	State machine application (a.k.a Active Object) that receives the 
+	 * 	timer event.
 	 */
 
 	const RKHSMA_T *sma;
 
 	/**
+	 * 	\brief
 	 * 	Tick down-counter.
 	 */
 
 	RKH_TNT_T ntick;
 
 	/**
+	 * 	\brief
 	 * 	Number of ticks for all timer expirations after the first (expiration 
 	 * 	period). A zero for this parameter makes the timer a one-shot timer, 
 	 * 	otherwise, for periodic timers, any value in range.

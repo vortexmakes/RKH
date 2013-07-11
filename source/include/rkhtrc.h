@@ -80,18 +80,176 @@
 #include <string.h>
 
 
+#define RKH_TRC_MAX_GROUPS			7
+#define RKH_MAX_NUM_TE_PER_GROUP	32 /* 2^5 = 32 */
+
 /**
- * 	\brief
- * 	The size of trceftbl table depends on #RKH_TRC_MAX_EVENTS (see rkhcfg.h).
+ *	Specify the maximum number of trace events, this number is direclty 
+ *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number, 
+ *	the lower the RAM consumption.
+ *	See \c #trceftbl table.
  */
 
-#if RKH_TRC_MAX_EVENTS <= 64
-	#define RKH_TRC_MAX_EVENTS_IN_BYTES		8
-#elif RKH_TRC_MAX_EVENTS > 64 && RKH_TRC_MAX_EVENTS <= 128
-	#define RKH_TRC_MAX_EVENTS_IN_BYTES		16
+#define RKH_TRC_MAX_EVENTS			RKH_MAX_NUM_TE_PER_GROUP*RKH_TRC_MAX_GROUPS
+
+
+/**@{
+ *
+ * 	\brief
+ * 	Trace event offset.
+ *
+ * 	The trace event ID is arranged as:
+ *
+ * 	event number = | G | G | G | E | E | E | E | E |\n
+ *
+ * 	G's:	group number.\n
+ * 	E's:	event's group.\n
+ *
+ * 	The lower 5 bits (E's) of the event ID are used to determine 
+ * 	the trace event, while the next three most significant bits 
+ * 	(G's) are used to determine the corresponding group.
+ * 	Therefore, is able to define 8 groups and 32 events per group.
+ */
+
+#define RKH_MP_START				GRPLSH( RKH_TG_MP	)
+#define RKH_RQ_START				GRPLSH( RKH_TG_RQ 	)
+#define RKH_SMA_START				GRPLSH( RKH_TG_SMA 	)
+#define RKH_SM_START				GRPLSH( RKH_TG_SM 	)
+#define RKH_TIM_START				GRPLSH( RKH_TG_TIM 	)
+#define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
+#define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
+/*@}*/
+
+
+/**@{
+ * 	Max. number of used trace events in a particular group in octets, thus 
+ * 	the desired value must be divided by 8 (1 -> 8 events).
+ * 	\note 
+ * 	Must be less than or equal to RKH_MAX_NUM_TE_PER_GROUP/8.
+ */
+
+#define RKH_MP_TTBL_RANGE			1
+#define RKH_RQ_TTBL_RANGE			1
+#define RKH_SMA_TTBL_RANGE			1
+#define RKH_SM_TTBL_RANGE			3
+#define RKH_TIM_TTBL_RANGE			1
+#define RKH_FWK_TTBL_RANGE			3
+#define RKH_USR_TTBL_RANGE			4
+/*@}*/
+
+
+/**
+ * 	Defines the total number of trace events.
+ */
+
+#define RKH_TOT_NUM_TRC_EVTS		(	RKH_MP_TTBL_RANGE 	+ \
+										RKH_RQ_TTBL_RANGE 	+ \
+										RKH_SMA_TTBL_RANGE 	+ \
+										RKH_SM_TTBL_RANGE 	+ \
+										RKH_TIM_TTBL_RANGE 	+ \
+										RKH_FWK_TTBL_RANGE 	+ \
+										RKH_USR_TTBL_RANGE )
+
+/**
+ * 	\brief
+ * 	Defines the size of trace filter table according to RKH_TOT_NUM_TRC_EVTS 
+ * 	and RKH_TRC_MAX_EVENTS.
+ */
+
+#if (RKH_TOT_NUM_TRC_EVTS <= RKH_TOT_NUM_TRC_EVTS)
+	#define RKH_TRC_MAX_EVENTS_IN_BYTES		RKH_TOT_NUM_TRC_EVTS
 #else
-	#define RKH_TRC_MAX_EVENTS_IN_BYTES		16
+	#error  "rkhtrc.h, the total number of trace events represented"
+	#error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
 #endif
+
+
+#define RKH_MP_TTBL_OFFSET			0
+#define RKH_RQ_TTBL_OFFSET			(RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
+#define RKH_SMA_TTBL_OFFSET			(RKH_RQ_TTBL_OFFSET + RKH_RQ_TTBL_RANGE)
+#define RKH_SM_TTBL_OFFSET			(RKH_SMA_TTBL_OFFSET + RKH_SMA_TTBL_RANGE)
+#define RKH_TIM_TTBL_OFFSET			(RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
+#define RKH_FWK_TTBL_OFFSET			(RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
+#define RKH_USR_TTBL_OFFSET			(RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
+
+
+#if RKH_MAX_NUM_TE_PER_GROUP <= 32
+	#define NGSH					5
+#else
+	#define NGSH					5
+#endif
+
+#define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
+#define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
+
+
+/**
+ * 	\brief
+ * 	The size of trcsmaftbl (trace SMA filter table) depends on #RKH_MAX_SMA 
+ * 	(see rkhcfg.h).
+ */
+
+#if RKH_MAX_SMA <= 8
+	#define RKH_TRC_MAX_SMA		1
+#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
+	#define RKH_TRC_MAX_SMA		2
+#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
+	#define RKH_TRC_MAX_SMA		3
+#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
+	#define RKH_TRC_MAX_SMA		4
+#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
+	#define RKH_TRC_MAX_SMA		5
+#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
+	#define RKH_TRC_MAX_SMA		6
+#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
+	#define RKH_TRC_MAX_SMA		7
+#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
+	#define RKH_TRC_MAX_SMA		8
+#endif
+
+
+#define ECHANGE						0
+#define EUNCHANGE					1
+
+
+#if ((	(RKH_TRC_EN == 1) && \
+		(RKH_SMA_EN_TRC_SENDER == 1)) || \
+		(RKH_EN_DOXYGEN == 1))
+
+	/**
+	 * 	\brief
+	 * 	This macro is used to verify the sender object usage on post an event.
+	 *
+	 * 	The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and 
+	 * 	RKH_SMA_POST_LIFO() takes an additional argument \a sender, which is a 
+	 * 	pointer to the sender object. This argument is actually only used when 
+	 * 	software tracing is enabled (macro #RKH_USE_TRC_SENDER is defined). 
+	 * 	When software tracing is disabled, the macros RKH_TIM_TICK(), 
+	 * 	RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() calls rkh_tim_tick(), 
+	 * 	rkh_sma_post_fifo(), and rkh_sma_post_lifo() respectively without any 
+	 * 	arguments, so the overhead of passing this extra argument is entirely 
+	 * 	avoided.
+	 */
+
+	#define RKH_USE_TRC_SENDER
+
+#endif
+
+
+/**
+ * 	\brief
+ * 	Emit or suppress tracing for all groups and events.
+ */
+
+#define RKH_TRC_ALL_GROUPS		RKH_TG_NGROUP
+
+
+/**
+ * 	\brief
+ * 	Emit or suppress all trace events.
+ */
+
+#define RKH_TRC_ALL_EVENTS		RKH_TE_NEVENT
 
 
 /**
@@ -102,7 +260,7 @@
  * 	In this case, each trace event is assigned a unique number 
  * 	(#RKH_TRC_EVENTS). When a event is ready to record a trace its 
  * 	corresponding bit in the filter table must be clear. The size of 
- * 	#trceftbl[] depends on #RKH_TRC_MAX_EVENTS (see rkhcfg.h).
+ * 	#trceftbl[] depends on #RKH_TOT_NUM_TRC_EVTS.
  *
  * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n
  *
@@ -139,31 +297,6 @@ extern rkhui8_t trcgfilter;
 
 /**
  * 	\brief
- * 	The size of trcsmaftbl (trace SMA filter table) depends on #RKH_MAX_SMA 
- * 	(see rkhcfg.h).
- */
-
-#if RKH_MAX_SMA <= 8
-	#define RKH_TRC_MAX_SMA		1
-#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
-	#define RKH_TRC_MAX_SMA		2
-#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
-	#define RKH_TRC_MAX_SMA		3
-#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
-	#define RKH_TRC_MAX_SMA		4
-#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
-	#define RKH_TRC_MAX_SMA		5
-#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
-	#define RKH_TRC_MAX_SMA		6
-#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
-	#define RKH_TRC_MAX_SMA		7
-#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
-	#define RKH_TRC_MAX_SMA		8
-#endif
-
-
-/**
- * 	\brief
  * 	Filter table of trace points associated with the SMA (AO).
  *
  * 	The trace filter management is similar to the native priority scheme.
@@ -183,22 +316,6 @@ extern rkhui8_t trcgfilter;
  */
 
 extern rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
-
-
-/**
- * 	\brief
- * 	Emit or suppress tracing for all groups and events.
- */
-
-#define RKH_TRC_ALL_GROUPS		RKH_TG_NGROUP
-
-
-/**
- * 	\brief
- * 	Emit or suppress all trace events.
- */
-
-#define RKH_TRC_ALL_EVENTS		RKH_TE_NEVENT
 
 
 typedef enum
@@ -260,73 +377,6 @@ typedef enum rkh_trc_groups
 } RKH_TRC_GROUPS;
 
 
-#define ECHANGE					0
-#define EUNCHANGE				1
-
-
-#define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
-#define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
-#define RKH_NUM_TE_PER_GROUP		32 /* 2^5 = 32 */
-
-#if RKH_NUM_TE_PER_GROUP <= 32
-	#define NGSH					5
-#else
-	#define NGSH					5
-#endif
-
-
-/**@{
- *
- * 	\brief
- * 	Trace event offset.
- *
- * 	The trace event ID is arranged as:
- *
- * 	event number = | G | G | G | E | E | E | E | E |\n
- *
- * 	G's:	group number.\n
- * 	E's:	event's group.\n
- *
- * 	The lower 5 bits (E's) of the event ID are used to determine 
- * 	the trace event, while the next three most significant bits 
- * 	(G's) are used to determine the corresponding group.
- * 	Therefore, is able to define 7 groups and 32 events per group.
- *  
- */
-
-#define RKH_MP_START				GRPLSH( RKH_TG_MP	)
-#define RKH_RQ_START				GRPLSH( RKH_TG_RQ 	)
-#define RKH_SMA_START				GRPLSH( RKH_TG_SMA 	)
-#define RKH_SM_START				GRPLSH( RKH_TG_SM 	)
-#define RKH_TIM_START				GRPLSH( RKH_TG_TIM 	)
-#define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
-#define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
-/*@}*/
-
-
-/**@{
- * 	Max. number of used trace events in a particular group in octets, thus 
- * 	the desired value must be divided by 8 (1 -> 8 events).
- */
-
-#define RKH_MP_TTBL_RANGE			1
-#define RKH_RQ_TTBL_RANGE			1
-#define RKH_SMA_TTBL_RANGE			1
-#define RKH_SM_TTBL_RANGE			3
-#define RKH_TIM_TTBL_RANGE			1
-#define RKH_FWK_TTBL_RANGE			3
-#define RKH_USR_TTBL_RANGE			1
-/*@}*/
-
-#define RKH_MP_TTBL_OFFSET			0
-#define RKH_RQ_TTBL_OFFSET			(RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
-#define RKH_SMA_TTBL_OFFSET			(RKH_RQ_TTBL_OFFSET + RKH_RQ_TTBL_RANGE)
-#define RKH_SM_TTBL_OFFSET			(RKH_SMA_TTBL_OFFSET + RKH_SMA_TTBL_RANGE)
-#define RKH_TIM_TTBL_OFFSET			(RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
-#define RKH_FWK_TTBL_OFFSET			(RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
-#define RKH_USR_TTBL_OFFSET			(RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
-
-
 /**
  * 	\brief
  * 	RKH trace events.
@@ -334,10 +384,10 @@ typedef enum rkh_trc_groups
  * 	<EM>RKH trace event structure</EM>
  *
  *	\code
- *	(1) RKH_TRC_BEGIN( event, sma )	\
- *	(2)		RKH_TRC_ARG0( arg0 ); 			\
- *	(3)		RKH_TRC_ARG1( arg1 ); 			\
- *	(4)		RKH_TRC_....( ... ); 			\	
+ *	(1) RKH_TRC_BEGIN( event, ao )	\
+ *	(2)		RKH_TRC_ARG0( arg0 ); 	\
+ *	(3)		RKH_TRC_ARG1( arg1 ); 	\
+ *	(4)		RKH_TRC_....( ... ); 	\	
  *	(5)	RKH_TRC_END()
  *	\endcode
  *
@@ -346,7 +396,7 @@ typedef enum rkh_trc_groups
  *			 	These macros are not terminated with the semicolon.
  *			 	The record-begin macro RKH_TRC_BEGIN() takes three arguments. 
  *			 	The first argument 'event' is the trace event ID, and the 
- *			 	second argument 'sma' is the state machine application 
+ *			 	second argument 'ao' is the state machine application 
  *			 	(active object). These arguments are used in the on/off 
  *			 	filters. 
  *			 	The runtime filter is optional and could be enabled or 
@@ -360,18 +410,21 @@ typedef enum rkh_trc_groups
  * 	Example:
  *	
  *	\code
- *	#define RKH_TR_RQ_INIT( q, nelem, sma )						\
+ *	#define RKH_TR_RQ_INIT( q, ao, nelem  )				\
  *				RKH_TRC_BEGIN( RKH_TE_RQ_INIT, NVS )	\
- *					RKH_TRC_SYM( q ); 							\
- *					RKH_TRC_SYM( sma ); 						\
- *					RKH_TRC_NE( nelem ); 						\
+ *					RKH_TRC_SYM( q ); 					\
+ *					RKH_TRC_SYM( ao ); 					\
+ *					RKH_TRC_NE( nelem ); 				\
  *				RKH_TRC_END()
  *	
- *	#define RKH_TR_SMA_FIFO( sma, ev )							\
- *				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 	\
- *								sma->romrkh->prio )				\
- *					RKH_TRC_SYM( sma ); 						\
- *					RKH_TRC_SIG( ev->e ); 						\
+ *	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		\
+ *				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 		\
+ *								ao->romrkh->prio )		\
+ *					RKH_TRC_SYM( ao ); 					\
+ *					RKH_TRC_SIG( ev->e ); 				\
+ *					RKH_TRC_SENDER( snr ); 				\
+ *					RKH_TRC_UI8( pid ); 				\
+ *					RKH_TRC_UI8( rc ); 					\
  *				RKH_TRC_END()
  *	\endcode
  *
@@ -438,9 +491,9 @@ typedef enum rkh_trc_groups
  *
  *	\code
  *	(1) RKH_TRC_USR_BEGIN( MY_TRACE )	\
- *	(2)		RKH_TRC_ARG0( arg0 ); 			\
- *	(3)		RKH_TRC_ARG1( arg1 ); 			\
- *	(4)		RKH_TRC_....( ... ); 			\	
+ *	(2)		RKH_TRC_ARG0( arg0 ); 		\
+ *	(3)		RKH_TRC_ARG1( arg1 ); 		\
+ *	(4)		RKH_TRC_....( ... ); 		\	
  *	(5)	RKH_TRC_USR_END();
  *	\endcode
  *
@@ -520,7 +573,7 @@ typedef enum rkh_trc_events
 	RKH_TE_RQ_FIFO,					/**< \copydetails RKH_TR_RQ_FIFO */
 	RKH_TE_RQ_LIFO,					/**< \copydetails RKH_TR_RQ_LIFO */
 	RKH_TE_RQ_FULL,					/**< \copydetails RKH_TR_RQ_FULL */
-	RKH_TE_RQ_DPT,					/**< \copydetails RKH_TR_RQ_DEPLETE */
+	RKH_TE_RQ_DPT,					/**< \copydetails RKH_TR_RQ_DPT */
 	RKH_TE_RQ_GET_LAST,				/**< \copydetails RKH_TR_RQ_GET_LAST */
 
 	/* --- State Machine Application events (SMA group) --- */
@@ -542,7 +595,7 @@ typedef enum rkh_trc_events
 	RKH_TE_SM_EXSTATE,				/**< \copydetails RKH_TR_SM_EXSTATE */
 	RKH_TE_SM_NENEX,				/**< \copydetails RKH_TR_SM_NENEX */
 	RKH_TE_SM_NTRNACT,				/**< \copydetails RKH_TR_SM_NTRNACT */
-	RKH_TE_SM_CSTATE,				/**< \copydetails RKH_TR_SM_CSTATE */
+	RKH_TE_SM_TS_STATE,				/**< \copydetails RKH_TR_SM_TS_STATE */
 	RKH_TE_SM_EVT_PROC,				/**< \copydetails RKH_TR_SM_EVT_PROC */
 	RKH_TE_SM_EVT_NFOUND,			/**< \copydetails RKH_TR_SM_EVT_NFOUND */
 	RKH_TE_SM_GRD_FALSE,			/**< \copydetails RKH_TR_SM_GRD_FALSE */
@@ -574,6 +627,12 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_TUSR,				/**< \copydetails RKH_TR_FWK_TUSR */
 	RKH_TE_FWK_TCFG,				/**< \copydetails RKH_TR_FWK_TCFG */
 	RKH_TE_FWK_ASSERT,				/**< \copydetails RKH_TR_FWK_ASSERT */
+	RKH_TE_FWK_AO,					/**< \copydetails RKH_TR_FWK_AO */
+	RKH_TE_FWK_STATE,				/**< \copydetails RKH_TR_FWK_STATE */
+	RKH_TE_FWK_PSTATE,				/**< \copydetails RKH_TR_FWK_PSTATE */
+	RKH_TE_FWK_TIMER,				/**< \copydetails RKH_TR_FWK_TIMER */
+	RKH_TE_FWK_EPOOL,				/**< \copydetails RKH_TR_FWK_EPOOL */
+	RKH_TE_FWK_QUEUE,				/**< \copydetails RKH_TR_FWK_QUEUE */
 
 	RKH_TE_USER = RKH_USR_START,
 
@@ -1053,6 +1112,19 @@ enum rkh_trc_fmt
 
 /**
  * 	\brief
+ * 	Insert a sender object address as trace record argument.
+ */
+
+#if defined( RKH_USE_TRC_SENDER )
+	#define RKH_TRC_SENDER( sym ) \
+				RKH_TRC_SYM( sym )
+#else
+	#define RKH_TRC_SENDER( sym )
+#endif
+
+
+/**
+ * 	\brief
  * 	Insert a function address as trace record argument.
  */
 
@@ -1094,15 +1166,58 @@ enum rkh_trc_fmt
 #if RKH_MP_SIZEOF_NBLOCK == 8
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI8( nb )
+	#if RKH_MP_EN_GET_LWM == 1
+		#define RKH_TRC_MP_NMIN( nm )	\
+					RKH_TRC_UI8( nm )
+	#else
+		#define RKH_TRC_MP_NMIN( nm )
+	#endif
 #elif RKH_MP_SIZEOF_NBLOCK == 16
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI16( nb )
+	#if RKH_MP_EN_GET_LWM == 1
+		#define RKH_TRC_MP_NMIN( nm )	\
+					RKH_TRC_UI16( nm )
+	#else
+		#define RKH_TRC_MP_NMIN( nm )
+	#endif
 #elif RKH_MP_SIZEOF_NBLOCK == 32
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI32( nb )
+	#if RKH_MP_EN_GET_LWM == 1
+		#define RKH_TRC_MP_NMIN( nm )	\
+					RKH_TRC_UI32( nm )
+	#else
+		#define RKH_TRC_MP_NMIN( nm )
+	#endif
 #else
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI8( nb )
+	#if RKH_MP_EN_GET_LWM == 1
+		#define RKH_TRC_MP_NMIN( nm )	\
+					RKH_TRC_UI8( nm )
+	#else
+		#define RKH_TRC_MP_NMIN( nm )
+	#endif
+#endif
+
+
+/**
+ * 	Insert the block size value as trace record argument.
+ */
+
+#if RKH_MP_SIZEOF_BSIZE == 8
+	#define RKH_TRC_BSIZE( bs )	\
+				RKH_TRC_UI8( bs )
+#elif RKH_MP_SIZEOF_BSIZE == 16
+	#define RKH_TRC_BSIZE( bs )	\
+				RKH_TRC_UI16( bs )
+#elif RKH_MP_SIZEOF_BSIZE == 32
+	#define RKH_TRC_BSIZE( bs )	\
+				RKH_TRC_UI32( bs )
+#else
+	#define RKH_TRC_BSIZE( bs )	\
+				RKH_TRC_UI8( bs )
 #endif
 
 
@@ -1113,15 +1228,39 @@ enum rkh_trc_fmt
 #if RKH_RQ_SIZEOF_NELEM == 8
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI8( ne )
-#elif RKH_MP_SIZEOF_NELEM == 16
+	#if RKH_RQ_EN_GET_LWMARK == 1
+		#define RKH_TRC_RQ_NMIN( nm )	\
+						RKH_TRC_UI8( nm )
+	#else
+		#define RKH_TRC_RQ_NMIN( nm )
+	#endif
+#elif RKH_RQ_SIZEOF_NELEM == 16
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI16( ne )
-#elif RKH_MP_SIZEOF_NELEM == 32
+	#if RKH_RQ_EN_GET_LWMARK == 1
+		#define RKH_TRC_RQ_NMIN( nm )	\
+						RKH_TRC_UI16( nm )
+	#else
+		#define RKH_TRC_RQ_NMIN( nm )
+	#endif
+#elif RKH_RQ_SIZEOF_NELEM == 32
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI32( ne )
+	#if RKH_RQ_EN_GET_LWMARK == 1
+		#define RKH_TRC_RQ_NMIN( nm )	\
+						RKH_TRC_UI32( nm )
+	#else
+		#define RKH_TRC_RQ_NMIN( nm )
+	#endif
 #else
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI8( ne )
+	#if RKH_RQ_EN_GET_LWMARK == 1
+		#define RKH_TRC_RQ_NMIN( nm )	\
+						RKH_TRC_UI8( nm )
+	#else
+		#define RKH_TRC_RQ_NMIN( nm )
+	#endif
 #endif
 
 
@@ -1175,32 +1314,43 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_MP == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_mp_init
+		 *
 		 * 	Desc	= initialize a memory block pool\n
 		 * 	Group 	= RKH_TG_MP\n
 		 * 	Id 		= RKH_TE_MP_INIT\n
-		 * 	Args	= memory pool, nblock\n
+		 * 	Args	= memory pool, nblock, block size\n
 		 */
 
-		#define RKH_TR_MP_INIT( mp, nblock )							\
+		#define RKH_TR_MP_INIT( mp, nb, bs )							\
 					RKH_TRC_BEGIN( RKH_TE_MP_INIT, NVS )				\
 						RKH_TRC_SYM( mp ); 								\
-						RKH_TRC_NBLK( nblock ); 						\
+						RKH_TRC_NBLK( nb ); 							\
+				/*NEW*/ RKH_TRC_BSIZE( bs );							\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_mp_get
+		 *
 		 * 	Desc 	= get a block from the pool\n
 		 * 	Group 	= RKH_TG_MP\n
 		 * 	Id 		= RKH_TE_MP_GET\n
-		 * 	Args	= memory pool, nfree\n
+		 * 	Args	= memory pool, nfree, nmin\n
 		 */
 
-		#define RKH_TR_MP_GET( mp, nfree )								\
+		#define RKH_TR_MP_GET( mp, nfree, nmin )						\
 					RKH_TRC_BEGIN( RKH_TE_MP_GET, NVS )					\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nfree ); 							\
+				/*NEW*/ RKH_TRC_MP_NMIN( nmin );						\
 					RKH_TRC_END()
 	
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_mp_put
+		 *
 		 * 	Desc 	= put the block to the pool\n
 		 * 	Group 	= RKH_TG_MP\n
 		 * 	id 		= RKH_TE_MP_PUT\n
@@ -1213,8 +1363,8 @@ enum rkh_trc_fmt
 						RKH_TRC_NBLK( nfree ); 							\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_MP_INIT( mp, nblock )				(void)0
-		#define RKH_TR_MP_GET( mp, nfree )					(void)0
+		#define RKH_TR_MP_INIT( mp, nb, bs )				(void)0
+		#define RKH_TR_MP_GET( mp, nfree, nmin )			(void)0
 		#define RKH_TR_MP_PUT( mp, nfree )					(void)0
 	#endif
 
@@ -1222,59 +1372,76 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RQ == 1
 
 		/**
+		 * 	\brief
+		 *	\copybrief rkh_rq_init
+		 *
 		 * 	Desc 	= initialize a queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_INIT\n
-		 * 	Args	= queue, sma, nelem\n
+		 * 	Args	= queue, ao, nelem\n
 		 */
 
-		#define RKH_TR_RQ_INIT( q, nelem, sma )							\
+		#define RKH_TR_RQ_INIT( q, ao, nelem )							\
 					RKH_TRC_BEGIN( RKH_TE_RQ_INIT, NVS )				\
 						RKH_TRC_SYM( q ); 								\
-						RKH_TRC_SYM( sma ); 							\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_NE( nelem ); 							\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_get
+		 *
 		 * 	Desc 	= get a element from the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_GET\n
-		 * 	Args	= queue, qty\n
+		 * 	Args	= queue, nelem\n
 		 */
 
-		#define RKH_TR_RQ_GET( q, qty )									\
+		#define RKH_TR_RQ_GET( q, nelem )								\
 					RKH_TRC_BEGIN( RKH_TE_RQ_GET, NVS )					\
 						RKH_TRC_SYM( q ); 								\
-						RKH_TRC_NE( qty ); 								\
+						RKH_TRC_NE( nelem );							\
 					RKH_TRC_END()
 	
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_put_fifo
+		 *
 		 * 	Desc 	= put a element to the queue in a FIFO manner\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_FIFO\n
-		 * 	Args	= queue, qty\n
+		 * 	Args	= queue, nelem, nmin\n
 		 */
 
-		#define RKH_TR_RQ_FIFO( q, qty )								\
+		#define RKH_TR_RQ_FIFO( q, nelem, nmin )						\
 					RKH_TRC_BEGIN( RKH_TE_RQ_FIFO, NVS )				\
 						RKH_TRC_SYM( q ); 								\
-						RKH_TRC_NE( qty ); 								\
+						RKH_TRC_NE( nelem ); 							\
+				/*NEW*/ RKH_TRC_RQ_NMIN( nmin );						\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_put_lifo
+		 *
 		 * 	Desc 	= put a element to the queue in a LIFO manner\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_LIFO\n
-		 * 	Args	= queue, qty\n
+		 * 	Args	= queue, nelem, nmin\n
 		 */
 
-		#define RKH_TR_RQ_LIFO( q, qty )								\
+		#define RKH_TR_RQ_LIFO( q, nelem, nmin )						\
 					RKH_TRC_BEGIN( RKH_TE_RQ_LIFO, NVS )				\
 						RKH_TRC_SYM( q ); 								\
-						RKH_TRC_NE( qty ); 								\
+						RKH_TRC_NE( nelem ); 							\
+				/*NEW*/ RKH_TRC_RQ_NMIN( nmin );						\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Queue is full.
+		 *
 		 * 	Desc 	= query the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_FULL\n
@@ -1282,23 +1449,29 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_FULL( q )										\
-					RKH_TRC_BEGIN( RKH_TE_RQ_FULL, NVS )				\
+					RKH_TRC_BEGIN_NOCRIT( RKH_TE_RQ_FULL, NVS )			\
 						RKH_TRC_SYM( q ); 								\
-					RKH_TRC_END()
+					RKH_TRC_END_NOCRIT()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_rq_deplete
+		 *
 		 * 	Desc 	= deplete the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_DPT\n
 		 * 	Args	= queue\n
 		 */
 
-		#define RKH_TR_RQ_DEPLETE( q )									\
+		#define RKH_TR_RQ_DPT( q )										\
 					RKH_TRC_BEGIN( RKH_TE_RQ_DPT, NVS )					\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Get the last element from the queue
+		 *
 		 * 	Desc 	= get the last element from the queue\n
 		 * 	Group 	= RKH_TG_RQ\n
 		 * 	Id 		= RKH_TE_RQ_GET_LAST\n
@@ -1310,12 +1483,12 @@ enum rkh_trc_fmt
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_RQ_INIT( q, nelem, sma )				(void)0
-		#define RKH_TR_RQ_GET( q, qty )						(void)0
-		#define RKH_TR_RQ_FIFO( q, qty )					(void)0
-		#define RKH_TR_RQ_LIFO( q, qty )					(void)0
+		#define RKH_TR_RQ_INIT( q, ao, nelem )				(void)0
+		#define RKH_TR_RQ_GET( q, nelem )					(void)0
+		#define RKH_TR_RQ_FIFO( q, nelem, nmin )			(void)0
+		#define RKH_TR_RQ_LIFO( q, nelem, nmin )			(void)0
 		#define RKH_TR_RQ_FULL( q )							(void)0
-		#define RKH_TR_RQ_DEPLETE( q )						(void)0
+		#define RKH_TR_RQ_DPT( q )							(void)0
 		#define RKH_TR_RQ_GET_LAST( q )						(void)0
 	#endif
 
@@ -1323,424 +1496,513 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SMA == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_activate
+		 *
 		 * 	Desc 	= activate a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_ACT\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao, active object priority\n
 		 */
 
-		#define RKH_TR_SMA_ACT( sma )									\
+		#define RKH_TR_SMA_ACT( ao, p )									\
 					RKH_TRC_BEGIN( 	RKH_TE_SMA_ACT, 					\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
+				/*NEW*/ RKH_TRC_UI8( p );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_terminate
+		 *
 		 * 	Desc 	= terminate a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_ACT\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao, active object priority\n
 		 */
 
-		#define RKH_TR_SMA_TERM( sma )									\
+		#define RKH_TR_SMA_TERM( ao, p )								\
 					RKH_TRC_BEGIN( 	RKH_TE_SMA_TERM, 					\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
+				/*NEW*/ RKH_TRC_UI8( p );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Get an event from the active object's queue.
+		 *
 		 * 	Desc 	= get a event from the SMA's queue\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_ACT\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= ao, signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_GET( sma, ev )								\
+		#define RKH_TR_SMA_GET( ao, ev, pid, rc )						\
 					RKH_TRC_BEGIN( RKH_TE_SMA_GET, 						\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
+				/*NEW*/ RKH_TRC_UI8( pid );								\
+				/*NEW*/ RKH_TRC_UI8( rc );							\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_post_fifo
+		 *
 		 * 	Desc 	= send a event to SMA's queue in a FIFO manner\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_FIFO\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= ao, signal, sender, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_FIFO( sma, ev )								\
+		#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )					\
 					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
+						RKH_TRC_SENDER( snr ); 							\
+				/*NEW*/ RKH_TRC_UI8( pid );								\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_post_lifo
+		 *
 		 * 	Desc 	= send a event to SMA's queue in a LIFO manner\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_LIFO\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= ao, signal, sender, pool id, reference count\n
 		 */
 
-		#define RKH_TR_SMA_LIFO( sma, ev )								\
+		#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )					\
 					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
+						RKH_TRC_SENDER( snr ); 							\
+				/*NEW*/ RKH_TRC_UI8( pid );								\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_register
+		 *
 		 * 	Desc 	= register a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_REG\n
-		 * 	Args	= sma, prio\n
+		 * 	Args	= ao, active object priority\n
 		 */
 
-		#define RKH_TR_SMA_REG( sma, prio )								\
+		#define RKH_TR_SMA_REG( ao, prio )								\
 					RKH_TRC_BEGIN( RKH_TE_SMA_REG, 						\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_sma_unregister
+		 *
 		 * 	Desc 	= unregister a SMA\n
 		 * 	Group 	= RKH_TG_SMA\n
 		 * 	Id 		= RKH_TE_SMA_UNREG\n
-		 * 	Args	= sma, prio\n
+		 * 	Args	= ao, active object priority\n
 		 */
 
-		#define RKH_TR_SMA_UNREG( sma, prio )							\
+		#define RKH_TR_SMA_UNREG( ao, prio )							\
 					RKH_TRC_BEGIN( RKH_TE_SMA_UNREG, 					\
-									sma->romrkh->prio )					\
-						RKH_TRC_SYM( sma ); 							\
+									ao->romrkh->prio )					\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
 	#else
-		#define RKH_TR_SMA_ACT( sma )						(void)0
-		#define RKH_TR_SMA_TERM( sma )						(void)0
-		#define RKH_TR_SMA_GET( sma, ev )					(void)0
-		#define RKH_TR_SMA_FIFO( sma, ev )					(void)0
-		#define RKH_TR_SMA_LIFO( sma, ev )					(void)0
-		#define RKH_TR_SMA_REG( sma, prio )					(void)0
-		#define RKH_TR_SMA_UNREG( sma, prio )				(void)0
+		#define RKH_TR_SMA_ACT( ao, p )						(void)0
+		#define RKH_TR_SMA_TERM( ao, p )					(void)0
+		#define RKH_TR_SMA_GET( ao, ev, pid, rc )			(void)0
+		#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		(void)0
+		#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )		(void)0
+		#define RKH_TR_SMA_REG( ao, prio )					(void)0
+		#define RKH_TR_SMA_UNREG( ao, prio )				(void)0
 	#endif
 
 	/* --- State machine (SM) ---------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SM == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_init_hsm
+		 *
 		 * 	Desc 	= start (initialize) a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_INIT\n
-		 * 	Args	= sma, initial state\n
+		 * 	Args	= ao, initial state\n
 		 */
 
 		#if RKH_TRC_EN_SM_INIT == 1
-			#define RKH_TR_SM_INIT( sma, is )							\
+			#define RKH_TR_SM_INIT( ao, ist )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_INIT, 					\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( is ); 							\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( ist ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_INIT( sma, is )				(void)0
+			#define RKH_TR_SM_INIT( ao, ist )				(void)0
 		#endif
 
 		/**
+		 * 	\brief
+		 *	\copybrief rkh_clear_history
+		 *
 		 * 	Desc 	= clear history pseudostate\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CLRH\n
-		 * 	Args	= sma, history pseudostate\n
+		 * 	Args	= ao, history pseudostate\n
 		 */
 
 		#if RKH_TRC_EN_SM_CLRH == 1
-			#define RKH_TR_SM_CLRH( sma, h )							\
+			#define RKH_TR_SM_CLRH( ao, h )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( h ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_CLRH( sma, h )				(void)0
+			#define RKH_TR_SM_CLRH( ao, h )				(void)0
 		#endif
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_dispatch
+		 *
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_DCH\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= ao, signal\n
 		 */
 
 		#if RKH_TRC_EN_SM_DCH == 1
-			#define RKH_TR_SM_DCH( sma, ev )							\
+			#define RKH_TR_SM_DCH( ao, ev )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_DCH( sma, ev )				(void)0
+			#define RKH_TR_SM_DCH( ao, ev )				(void)0
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Source and target state of the transition. The target could be 
+		 *	either basic state, composite state or pseudostate.
+		 *
 		 * 	Desc 	= source and target state of transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_TRN\n
-		 * 	Args	= sma, source state, target state\n
+		 * 	Args	= ao, source state, target state\n
 		 */
 
 		#if RKH_TRC_EN_SM_TRN == 1 
-			#define RKH_TR_SM_TRN( sma, ss, ts )						\
+			#define RKH_TR_SM_TRN( ao, sst, tst )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_TRN, 					\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( ss ); 							\
-							RKH_TRC_SYM( ts ); 							\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( sst ); 						\
+							RKH_TRC_SYM( tst ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_TRN( sma, ss, ts )			(void)0
+			#define RKH_TR_SM_TRN( ao, sst, tst )			(void)0
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Legal, stable and final state of the transition.
+		 *
 		 * 	Desc 	= final state of transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_STATE\n
-		 * 	Args	= sma, final state\n
+		 * 	Args	= ao, final state\n
 		 */
 
 		#if RKH_TRC_EN_SM_STATE == 1
-			#define RKH_TR_SM_STATE( sma, s )							\
+			#define RKH_TR_SM_STATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_STATE, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( s ); 							\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_STATE( sma, s )				(void)0
+			#define RKH_TR_SM_STATE( ao, st )				(void)0
 		#endif
 
 		/**
-		 * 	Desc 	= entry state\n
+		 * 	\brief
+		 * 	Entered state.
+		 *
+		 * 	Desc 	= entered state\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_ENSTATE\n
-		 * 	Args	= sma, entry state\n
+		 * 	Args	= ao, entry state\n
 		 */
 
 		#if RKH_TRC_EN_SM_ENSTATE == 1
-			#define RKH_TR_SM_ENSTATE( sma, s )							\
+			#define RKH_TR_SM_ENSTATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_ENSTATE, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( s ); 							\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_ENSTATE( sma, s )				(void)0
+			#define RKH_TR_SM_ENSTATE( ao, st )			(void)0
 		#endif
 
 		/**
-		 * 	Desc 	= exit state\n
+		 * 	\brief
+		 * 	Exited state.
+		 *
+		 * 	Desc 	= exited state\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EXSTATE\n
-		 * 	Args	= sma, exit state\n
+		 * 	Args	= ao, exit state\n
 		 */
 
 		#if RKH_TRC_EN_SM_EXSTATE == 1
-			#define RKH_TR_SM_EXSTATE( sma, s )							\
+			#define RKH_TR_SM_EXSTATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EXSTATE, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( s ); 							\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_EXSTATE( sma, s )				(void)0	
+			#define RKH_TR_SM_EXSTATE( ao, st )			(void)0	
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Number of entry and exit states in transition.
+		 *
 		 * 	Desc 	= number of entry and exit states in transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_NENEX\n
-		 * 	Args	= sma, nen, nex\n
+		 * 	Args	= ao, nen, nex\n
 		 */
 
 		#if RKH_TRC_EN_SM_NENEX == 1 
-			#define RKH_TR_SM_NENEX( sma, nen, nex )					\
+			#define RKH_TR_SM_NENEX( ao, nen, nex )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_NENEX, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_UI8( nen ); 						\
 							RKH_TRC_UI8( nex ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_NENEX( sma, nen, nex )		(void)0	
+			#define RKH_TR_SM_NENEX( ao, nen, nex )		(void)0	
 		#endif
 
 		/**
+		 * 	\brief
+		 *	Number of executed actions and segments of the transition.
+		 *
 		 * 	Desc 	= number of executed actions in transition\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_NTRNACT\n
-		 * 	Args	= sma, nta, nts\n
+		 * 	Args	= ao, nta, nts\n
 		 */
 
 		#if RKH_TRC_EN_SM_NTRNACT == 1
-			#define RKH_TR_SM_NTRNACT( sma, nta, nts )					\
+			#define RKH_TR_SM_NTRNACT( ao, nta, nts )					\
 						RKH_TRC_BEGIN( RKH_TE_SM_NTRNACT, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_UI8( nta ); 						\
 							RKH_TRC_UI8( nts ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_NTRNACT( sma, nta, nts )		(void)0	
+			#define RKH_TR_SM_NTRNACT( ao, nta, nts )		(void)0	
 		#endif
 
 		/**
-		 * 	Desc 	= state or pseudostate in a compound transition\n
+		 * 	\brief
+		 *	Destination state or pseudostate of a transition segment.
+		 *
+		 * 	Desc 	= next state or pseudostate in a compound transition\n
 		 * 	Group 	= RKH_TG_SM\n
-		 * 	Id 		= RKH_TE_SM_CSTATE\n
-		 * 	Args	= sma, state/pseudostate\n
+		 * 	Id 		= RKH_TE_SM_TS_STATE\n
+		 * 	Args	= ao, state/pseudostate\n
 		 */
 
-		#if RKH_TRC_EN_SM_CSTATE == 1
-			#define RKH_TR_SM_CSTATE( sma, s )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_CSTATE, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
-							RKH_TRC_SYM( s ); 							\
+		#if RKH_TRC_EN_SM_TS_STATE == 1
+			#define RKH_TR_SM_TS_STATE( ao, st )						\
+						RKH_TRC_BEGIN( RKH_TE_SM_TS_STATE, 				\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_CSTATE( sma, s )				(void)0	
+			#define RKH_TR_SM_TS_STATE( ao, st )				(void)0	
 		#endif
 
 		#if RKH_TRC_EN_SM_PROCESS == 1
 
 		/**
+		 * 	\brief
+		 *	The arrived event was succesfully processed and HSM resides in an 
+		 *	allowed state
+		 *
 		 * 	Desc 	= the arrived event was succesfully processed and HSM 
 		 * 			  resides in an allowed state.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EVT_PROC\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
 
-			#define RKH_TR_SM_EVT_PROC( sma )							\
+			#define RKH_TR_SM_EVT_PROC( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EVT_PROC, 				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The arrived event was't founded in the transition table.
+		 *
 		 * 	Desc 	= the arrived event was't founded in the transition 
 		 * 			  table.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EVT_NFOUND\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
 
-			#define RKH_TR_SM_EVT_NFOUND( sma )							\
+			#define RKH_TR_SM_EVT_NFOUND( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EVT_NFOUND,			\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The transition was cancelled by guard function.
+		 *
 		 * 	Desc 	= The transition was cancelled by guard function.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_GRD_FALSE\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
 
-			#define RKH_TR_SM_GRD_FALSE( sma )							\
+			#define RKH_TR_SM_GRD_FALSE( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The branch function returned a value not founded in the branch 
+		 *	table.
+		 *
 		 * 	Desc 	= the branch function returned a value not founded 
 		 * 			  in the branch table.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_CND_NFOUND\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
 
-			#define RKH_TR_SM_CND_NFOUND( sma )							\
+			#define RKH_TR_SM_CND_NFOUND( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,			\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	Unknown state.
+		 *
 		 * 	Desc 	= unknown state.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_UNKN_STATE\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
 
-			#define RKH_TR_SM_UNKN_STATE( sma )							\
+			#define RKH_TR_SM_UNKN_STATE( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_UNKN_STATE,			\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The transition exceeded the allowed hierarchical level.
+		 *
 		 * 	Desc 	= the transition exceeded the allowed hierarchical 
 		 * 			  level.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EX_HLEVEL\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
-			#define RKH_TR_SM_EX_HLEVEL( sma )							\
+			#define RKH_TR_SM_EX_HLEVEL( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EX_HLEVEL,				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	The transition exceeded the allowed number of segments within a 
+		 *	compound transtion.
+		 *
 		 * 	Desc 	= the transition exceeded the allowed number of 
 		 * 			  segments within a compound transtion.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EX_TSEG\n
-		 * 	Args	= sma\n
+		 * 	Args	= ao\n
 		 */
-			#define RKH_TR_SM_EX_TSEG( sma )							\
+			#define RKH_TR_SM_EX_TSEG( ao )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_EX_TSEG,				\
-									sma->romrkh->prio )					\
-							RKH_TRC_SYM( sma ); 						\
+									ao->romrkh->prio )					\
+							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_EVT_PROC( sma )				(void)0
-			#define RKH_TR_SM_EVT_NFOUND( sma )				(void)0
-			#define RKH_TR_SM_CND_NFOUND( sma )				(void)0
-			#define RKH_TR_SM_GRD_FALSE( sma )				(void)0
-			#define RKH_TR_SM_UNKN_STATE( sma )				(void)0
-			#define RKH_TR_SM_EX_HLEVEL( sma )				(void)0
-			#define RKH_TR_SM_EX_TSEG( sma )				(void)0
+			#define RKH_TR_SM_EVT_PROC( ao )				(void)0
+			#define RKH_TR_SM_EVT_NFOUND( ao )				(void)0
+			#define RKH_TR_SM_CND_NFOUND( ao )				(void)0
+			#define RKH_TR_SM_GRD_FALSE( ao )				(void)0
+			#define RKH_TR_SM_UNKN_STATE( ao )				(void)0
+			#define RKH_TR_SM_EX_HLEVEL( ao )				(void)0
+			#define RKH_TR_SM_EX_TSEG( ao )					(void)0
 		#endif
 	#else
-		#define RKH_TR_SM_INIT( sma, is )				(void)0
-		#define RKH_TR_SM_CLRH( sma, h )				(void)0
-		#define RKH_TR_SM_DCH( sma, ev )				(void)0
-		#define RKH_TR_SM_TRN( sma, ss, ts )			(void)0
-		#define RKH_TR_SM_STATE( sma, s )				(void)0
-		#define RKH_TR_SM_ENSTATE( sma, s )				(void)0
-		#define RKH_TR_SM_EXSTATE( sma, s )				(void)0
-		#define RKH_TR_SM_NENEX( sma, nen, nex )		(void)0
-		#define RKH_TR_SM_NTRNACT( sma, nta, nts )		(void)0
-		#define RKH_TR_SM_CSTATE( sma, s )				(void)0
-		#define RKH_TR_SM_EVT_PROC( sma )				(void)0
-		#define RKH_TR_SM_EVT_NFOUND( sma )				(void)0
-		#define RKH_TR_SM_GRD_FALSE( sma )				(void)0
-		#define RKH_TR_SM_CND_NFOUND( sma )				(void)0
-		#define RKH_TR_SM_UNKN_STATE( sma )				(void)0
-		#define RKH_TR_SM_EX_HLEVEL( sma )				(void)0
-		#define RKH_TR_SM_EX_TSEG( sma )				(void)0
+		#define RKH_TR_SM_INIT( ao, ist )				(void)0
+		#define RKH_TR_SM_CLRH( ao, h )					(void)0
+		#define RKH_TR_SM_DCH( ao, ev )					(void)0
+		#define RKH_TR_SM_TRN( ao, sst, tst )			(void)0
+		#define RKH_TR_SM_STATE( ao, st )				(void)0
+		#define RKH_TR_SM_ENSTATE( ao, st )				(void)0
+		#define RKH_TR_SM_EXSTATE( ao, st )				(void)0
+		#define RKH_TR_SM_NENEX( ao, nen, nex )			(void)0
+		#define RKH_TR_SM_NTRNACT( ao, nta, nts )		(void)0
+		#define RKH_TR_SM_TS_STATE( aaost )				(void)0
+		#define RKH_TR_SM_EVT_PROC( ao )				(void)0
+		#define RKH_TR_SM_EVT_NFOUND( ao )				(void)0
+		#define RKH_TR_SM_GRD_FALSE( ao )				(void)0
+		#define RKH_TR_SM_CND_NFOUND( ao )				(void)0
+		#define RKH_TR_SM_UNKN_STATE( ao )				(void)0
+		#define RKH_TR_SM_EX_HLEVEL( ao )				(void)0
+		#define RKH_TR_SM_EX_TSEG( ao )					(void)0
 	#endif
 
 	/* --- Timer (TIM) ----------------------- */
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_tim_init
+		 *
 		 * 	Desc 	= initialize a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_INIT\n
@@ -1754,44 +2016,61 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_tim_start
+		 *
 		 * 	Desc 	= start a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_START\n
-		 * 	Args	= timer, sma, nticks\n
+		 * 	Args	= timer, ao, nticks, period\n
 		 */
 
-		#define RKH_TR_TIM_START(	t, nt, sma )						\
+		#define RKH_TR_TIM_START( t, ao, nt, per )						\
 					RKH_TRC_BEGIN( RKH_TE_TIM_START, NVS )				\
 						RKH_TRC_SYM( t ); 								\
-						RKH_TRC_SYM( sma ); 							\
+						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_NTICK( nt ); 							\
+				/*NEW*/ RKH_TRC_NTICK( per );							\
 					RKH_TRC_END()
 	
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_tim_stop
+		 *
 		 * 	Desc 	= stop a timer\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_STOP\n
-		 * 	Args	= timer\n
+		 * 	Args	= timer, ntick, period\n
 		 */
 
-		#define RKH_TR_TIM_STOP( t )									\
+		#define RKH_TR_TIM_STOP( t, nt, per )							\
 					RKH_TRC_BEGIN( RKH_TE_TIM_STOP, NVS )				\
 						RKH_TRC_SYM( t ); 								\
+				/*NEW*/ RKH_TRC_NTICK( nt );							\
+				/*NEW*/ RKH_TRC_NTICK( per );							\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Timer expired.
+		 *
 		 * 	Desc 	= timer expired\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_TOUT\n
-		 * 	Args	= timer\n
+		 * 	Args	= timer, signal, active object\n
 		 */
 
-		#define RKH_TR_TIM_TOUT( t )									\
+		#define RKH_TR_TIM_TOUT( t, sig, ao )							\
 					RKH_TRC_BEGIN( RKH_TE_TIM_TOUT, NVS )				\
 						RKH_TRC_SYM( t ); 								\
+				/*NEW*/ RKH_TRC_SIG( sig );								\
+				/*NEW*/ RKH_TRC_SYM( ao );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 *	Removes timer from the active timer list.
+		 *
 		 * 	Desc 	= remove timer from the active timer list\n
 		 * 	Group 	= RKH_TG_TIM\n
 		 * 	Id 		= RKH_TE_TIM_REM\n
@@ -1804,9 +2083,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 	#else
 		#define RKH_TR_TIM_INIT( t, sig )					(void)0
-		#define RKH_TR_TIM_START( t, nt, sma )				(void)0
-		#define RKH_TR_TIM_STOP( t )						(void)0
-		#define RKH_TR_TIM_TOUT( t )						(void)0
+		#define RKH_TR_TIM_START( t, ao, nt, per )			(void)0
+		#define RKH_TR_TIM_STOP( t, nt, per )				(void)0
+		#define RKH_TR_TIM_TOUT( t, sig, ao )				(void)0
 		#define RKH_TR_TIM_REM( t )							(void)0
 	#endif
 
@@ -1814,6 +2093,9 @@ enum rkh_trc_fmt
 	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_FWK == 1
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_init
+		 *
 		 * 	Desc 	= initialize the RKH\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_EN\n
@@ -1825,6 +2107,9 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_exit
+		 *
 		 * 	Desc 	= exit the RKH\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_EX\n
@@ -1836,57 +2121,78 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_epool_register
+		 *
 		 * 	Desc 	= event pool register\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_EPREG\n
 		 * 	Args	= event pool index, storage size, event size\n
 		 */
 
-		#define RKH_TR_FWK_EPREG( epix, ssize, esize )					\
+		#define RKH_TR_FWK_EPREG( ep, ss, es )							\
 					RKH_TRC_BEGIN( RKH_TE_FWK_EPREG, NVS )				\
-						RKH_TRC_UI8( epix );							\
-						RKH_TRC_UI32( ssize );							\
-						RKH_TRC_ES( esize );							\
+						RKH_TRC_UI8( ep );								\
+						RKH_TRC_UI32( ss );								\
+						RKH_TRC_ES( es );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_ae
+		 *
 		 * 	Desc 	= allocate an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_AE\n
-		 * 	Args	= event size, signal\n
+		 * 	Args	= event size, signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_FWK_AE( esize, ev )								\
+		#define RKH_TR_FWK_AE( es, ev, pid, rc )						\
 					RKH_TRC_BEGIN( RKH_TE_FWK_AE, NVS )					\
-						RKH_TRC_ES( esize );							\
+						RKH_TRC_ES( es );								\
 						RKH_TRC_SIG( ev->e );							\
+				/*NEW*/ RKH_TRC_UI8( pid );								\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Attempt to recycle an event.
+		 *
 		 * 	Desc 	= attempt to recycle an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_GC\n
-		 * 	Args	= signal\n
+		 * 	Args	= signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_FWK_GC( ev )										\
+		#define RKH_TR_FWK_GC( ev, pid, rc )							\
 					RKH_TRC_BEGIN( RKH_TE_FWK_GC, NVS )					\
 						RKH_TRC_SIG( ev->e );							\
+				/*NEW*/ RKH_TRC_UI8( pid );								\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	Effective recycling event.
+		 *
 		 * 	Desc 	= effective recycling event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_GCR\n
-		 * 	Args	= signal\n
+		 * 	Args	= signal, pool id, reference count\n
 		 */
 
-		#define RKH_TR_FWK_GCR( ev )									\
+		#define RKH_TR_FWK_GCR( ev, pid, rc )							\
 					RKH_TRC_BEGIN( RKH_TE_FWK_GCR, NVS )				\
 						RKH_TRC_SIG( ev->e );							\
+				/*NEW*/ RKH_TRC_UI8( pid );								\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_defer
+		 *
 		 * 	Desc 	= defer an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_DEFER\n
@@ -1900,21 +2206,27 @@ enum rkh_trc_fmt
 					RKH_TRC_END()
 
 		/**
+		 * 	\brief
+		 * 	\copybrief rkh_recall
+		 *
 		 * 	Desc 	= recall an event\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_RCALL\n
-		 * 	Args	= sma, signal\n
+		 * 	Args	= ao, signal\n
 		 */
 
-		#define RKH_TR_FWK_RCALL( sma, ev )								\
+		#define RKH_TR_FWK_RCALL( ao, ev )								\
 					RKH_TRC_BEGIN( RKH_TE_FWK_RCALL, NVS )				\
-						RKH_TRC_SYM( sma );								\
+						RKH_TRC_SYM( ao );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
 
 		/* --- Symbol entry table for objects --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for memory object.
+		 *
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
@@ -1947,6 +2259,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for event signals ---- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for event signal.
+		 *
 		 * 	Desc 	= entry symbol table for signal\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_SIG\n
@@ -1989,6 +2304,9 @@ enum rkh_trc_fmt
 		/* --- Symbol entry table for functions ---- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for function object.
+		 *
 		 * 	Desc 	= entry symbol table for function\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_FUN\n
@@ -2023,6 +2341,9 @@ enum rkh_trc_fmt
 				} while(0)
 
 		/**
+		 * 	\brief
+		 * 	The function was executed.
+		 *
 		 * 	Desc 	= the function was executed\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_FUN\n
@@ -2040,14 +2361,17 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_EXE_FUN( function )							\
+		#define RKH_TR_FWK_EXE_FUN( fn )								\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EXE_FUN, NVS )		\
-						RKH_TRC_FUN( function );						\
+						RKH_TRC_FUN( fn );								\
 					RKH_TRC_END_WOFIL()
 
 		/* --- Symbol entry table for user user-defined trace events --------- */
 
 		/**
+		 * 	\brief
+		 *	Entry symbol table for user-defined trace events.
+		 *
 		 * 	Desc 	= entry symbol table for user-defined trace events\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TUSR\n
@@ -2092,7 +2416,10 @@ enum rkh_trc_fmt
 		/* --- Trace configuration --------- */
 
 		/**
-		 * 	Desc 	= send trace configuration table\n
+		 * 	\brief
+		 *	Send trace configuration table to Trazer.
+		 *
+		 * 	Desc 	= send trace configuration table to Trazer\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TCFG\n
 		 * 	Args	= configuration parameters\n
@@ -2108,6 +2435,22 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_TCFG()										\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
+						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
+						RKH_TRC_UI16( 									\
+							(rkhui16_t)(								\
+								(RKH_SMA_EN_TRC_SENDER		 ) |		\
+								(RKH_TRC_RUNTIME_FILTER	<< 1 ) |		\
+								(RKH_TRC_EN_USER_TRACE	<< 2 ) |		\
+								(RKH_TRC_ALL			<< 3 ) |		\
+								(RKH_TRC_EN_MP			<< 4 ) |		\
+								(RKH_TRC_EN_RQ			<< 5 ) |		\
+								(RKH_TRC_EN_SMA			<< 6 ) |		\
+								(RKH_TRC_EN_TIM			<< 7 ) |		\
+								(RKH_TRC_EN_SM			<< 8 ) |		\
+								(RKH_TRC_EN_FWK			<< 9 ) |		\
+								(RKH_TRC_EN_ASSERT		<< 10) |		\
+						/*NEW*/	(RKH_RQ_EN_GET_LWMARK	<< 11) |		\
+						/*NEW*/	(RKH_MP_EN_GET_LWM		<< 12)));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
 							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));		\
@@ -2123,12 +2466,18 @@ enum rkh_trc_fmt
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |			\
 							RKH_TRC_EN_TSTAMP));						\
+				/*NEW*/	RKH_TRC_UI8( 									\
+							(rkhui8_t)((RKH_MP_SIZEOF_BSIZE/8 << 4) |	\
+							RKH_MAX_EPOOL));							\
 					RKH_TRC_END_WOFIL()									\
 					RKH_TRC_FLUSH()
 
 		/* --- Assertion --------- */
 
 		/**
+		 * 	\brief
+		 *	Assertion expression was evaluated to false.
+		 *
 		 * 	Desc 	= assertion expression was evaluated to false.\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_ASSERT\n
@@ -2145,15 +2494,245 @@ enum rkh_trc_fmt
 		#else
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )		(void)0
 		#endif
+
+		/* --- Symbol entry table for active objects --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for active object.
+		 *
+		 * 	Desc 	= entry symbol table for active object\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= active object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the active object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	typedef struct
+		 * 	{
+		 * 		RKHSMA_T ao;
+		 * 		rkhui8_t x;
+		 * 		rkhui8_t y;
+		 * 	} AO_T;
+		 * 	
+		 * 	RKH_SMA_CREATE( AO_T, 0, ao, 0, HCAL, &S1, ao_init, NULL );
+		 * 	RKH_TR_FWK_OBJ( &ao );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_AO( __ao )									\
+				do{ 													\
+					static RKHROM char *const __ao_n = #__ao;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_AO )				\
+						RKH_TRC_SYM( __ao );							\
+						RKH_TRC_STR( __ao_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
+		/* --- Symbol entry table for state objects --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for state object.
+		 *
+		 * 	Desc 	= entry symbol table for state objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= state object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the state object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	RKH_CREATE_COMP_STATE( S1, 0, en, ex, RKH_ROOT, &S11, NULL );
+		 * 	RKH_CREATE_TRANS_TABLE( S1 )
+		 * 		RKH_TRINT( SIX, 	NULL, 		show_data ),
+		 * 		RKH_TRREG( TWO, 	NULL, 		set_y_2,	&S2 ),
+		 * 	RKH_END_TRANS_TABLE
+		 * 	
+		 * 	...
+		 * 	RKH_TR_FWK_STATE( my, &S1 );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_STATE( __ao, __so )							\
+				do{ 													\
+					static RKHROM char *const __so_n = #__so;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )				\
+						RKH_TRC_SYM( __ao );							\
+						RKH_TRC_SYM( __so );							\
+						RKH_TRC_STR( __so_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
+		/* --- Symbol entry table for pseudostate objects --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for pseudostate object.
+		 *
+		 * 	Desc 	= entry symbol table for pseudostate objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= pseudostate object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the pseudostate object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	RKH_CREATE_COND_STATE( C1, 12 );
+		 * 	RKH_CREATE_BRANCH_TABLE( C1 )
+		 * 		RKH_BRANCH( y_1, 	NULL, 			&H ),
+		 * 		RKH_BRANCH( y_2, 	dummy_act, 		&DH ),
+		 * 		RKH_BRANCH( y_0, 	NULL, 			&S1 ),
+		 * 	RKH_END_BRANCH_TABLE
+		 * 	
+		 * 	...
+		 * 	RKH_TR_FWK_PSTATE( my, &C1 );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_PSTATE( __ao, __pso )						\
+				do{ 													\
+					static RKHROM char *const __pso_n = #__pso;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_PSTATE )			\
+						RKH_TRC_SYM( __ao );							\
+						RKH_TRC_SYM( __pso );							\
+						RKH_TRC_STR( __pso_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
+		/* --- Symbol entry table for timer objects --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for timer object.
+		 *
+		 * 	Desc 	= entry symbol table for timer objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= timer object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the timer object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	static RKHT_T bky_tmr;
+		 *
+		 * 	RKH_TR_FWK_TIMER( &bky_tmr );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_TIMER( __to )								\
+				do{ 													\
+					static RKHROM char *const __to_n = #__to;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TIMER )				\
+						RKH_TRC_SYM( __to );							\
+						RKH_TRC_STR( __to_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
+		/* --- Symbol entry table for event pool objects --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for event pool object.
+		 *
+		 * 	Desc 	= entry symbol table for event pool objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= event pool object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the event pool object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	static rkhui8_t ep0_sto[ SIZEOF_EP0STO ],
+		 * 					ep1_sto[ SIZEOF_EP1STO ];
+		 *	
+		 *	...
+		 * 	RKH_TR_FWK_EPOOL( &ep0_sto );
+		 * 	RKH_TR_FWK_EPOOL( &ep1_sto );
+		 *
+		 *	rkh_epool_register( ep0_sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+		 *	rkh_epool_register( ep1_sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+		 *	...
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_EPOOL( __epo )								\
+				do{ 													\
+					static RKHROM char *const __epo_n = #__epo;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EPOOL )				\
+						RKH_TRC_SYM( __epo );							\
+						RKH_TRC_STR( __to_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
+		/* --- Symbol entry table for queue objects --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for queue object.
+		 *
+		 * 	Desc 	= entry symbol table for queue objects\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= queue object address, symbol\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the queue object, in memory 
+		 * 	with its symbolic name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	#define QSTO_SIZE			4
+		 * 	static RKHEVT_T *qsto[ QSTO_SIZE ];
+		 *
+		 * 	...
+		 * 	RKH_TR_FWK_QUEUE( &blinky->equeue );
+		 * 	rkh_sma_activate( blinky, (const RKHEVT_T **)qsto, 
+		 * 											QSTO_SIZE, CV(0), 0 );
+		 *	...
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_QUEUE( __qo )								\
+				do{ 													\
+					static RKHROM char *const __qo_n = #__qo;			\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_QUEUE )				\
+						RKH_TRC_SYM( __qo );							\
+						RKH_TRC_STR( __qo_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
 	#else
 		#define RKH_TR_FWK_EN()							(void)0
 		#define RKH_TR_FWK_EX()							(void)0
-		#define RKH_TR_FWK_EPREG( epix, ssize, esize )	(void)0
-		#define RKH_TR_FWK_AE( esize, ev )				(void)0
-		#define RKH_TR_FWK_GC( ev )						(void)0
-		#define RKH_TR_FWK_GCR( ev )					(void)0
+		#define RKH_TR_FWK_EPREG( ep, ss, es )			(void)0
+		#define RKH_TR_FWK_AE( es, ev, pid, rc )		(void)0
+		#define RKH_TR_FWK_GC( ev, pid, rc )			(void)0
+		#define RKH_TR_FWK_GCR( ev, pid, rc )			(void)0
 		#define RKH_TR_FWK_DEFER( q, ev )				(void)0
-		#define RKH_TR_FWK_RCALL( sma, ev )				(void)0
+		#define RKH_TR_FWK_RCALL( ao, ev )				(void)0
 		#define RKH_TR_FWK_OBJ( __o )					(void)0
 		#define RKH_TR_FWK_SIG( __s )					(void)0
 		#define RKH_TR_FWK_FUN( __s )					(void)0
@@ -2161,66 +2740,72 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
 		#define RKH_TR_FWK_TCFG()						(void)0
 		#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
+		#define RKH_TR_FWK_AO( __ao )					(void)0
+		#define RKH_TR_FWK_STATE( __ao, __so )			(void)0
+		#define RKH_TR_FWK_PSTATE( __ao, __pso )		(void)0
+		#define RKH_TR_FWK_TIMER( __to )				(void)0
+		#define RKH_TR_FWK_EPOOL( __epo )				(void)0
+		#define RKH_TR_FWK_QUEUE( __qo )				(void)0
 	#endif
 #else
 	/* --- Memory Pool (MP) ------------------ */
-	#define RKH_TR_MP_INIT( mp, nblock )				(void)0
-	#define RKH_TR_MP_GET( mp, nfree )					(void)0
+	#define RKH_TR_MP_INIT( mp, nb, bs )				(void)0
+	#define RKH_TR_MP_GET( mp, nfree, nmin )			(void)0
 	#define RKH_TR_MP_PUT( mp, nfree )					(void)0
 
 	/* --- Queue (RQ) ------------------------ */
-	#define RKH_TR_RQ_INIT( q, nelem, sma )				(void)0
-	#define RKH_TR_RQ_GET( q, qty )						(void)0
-	#define RKH_TR_RQ_FIFO( q, qty )					(void)0
-	#define RKH_TR_RQ_LIFO( q, qty )					(void)0
+	#define RKH_TR_RQ_INIT( q, ao, nelem )				(void)0
+	#define RKH_TR_RQ_GET( q, nelem )					(void)0
+	#define RKH_TR_RQ_FIFO( q, nelem, nmin )			(void)0
+	#define RKH_TR_RQ_LIFO( q, nelem, nmin )			(void)0
 	#define RKH_TR_RQ_FULL( q )							(void)0
-	#define RKH_TR_RQ_DEPLETE( q )						(void)0
+	#define RKH_TR_RQ_DPT( q )							(void)0
 	#define RKH_TR_RQ_GET_LAST( q )						(void)0
 
 	/* --- State Machine Application (SMA) --- */
-	#define RKH_TR_SMA_ACT( sma )						(void)0
-	#define RKH_TR_SMA_TERM( sma )						(void)0
-	#define RKH_TR_SMA_GET( sma, ev )					(void)0
-	#define RKH_TR_SMA_FIFO( sma, ev )					(void)0
-	#define RKH_TR_SMA_LIFO( sma, ev )					(void)0
-	#define RKH_TR_SMA_REG( sma, prio )					(void)0
-	#define RKH_TR_SMA_UNREG( sma, prio )				(void)0
+	#define RKH_TR_SMA_ACT( ao, p )						(void)0
+	#define RKH_TR_SMA_TERM( ao, p )					(void)0
+	#define RKH_TR_SMA_GET( ao, ev, pid, rc )			(void)0
+	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		(void)0
+	#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )		(void)0
+	#define RKH_TR_SMA_REG( ao, prio )					(void)0
+	#define RKH_TR_SMA_UNREG( ao, prio )				(void)0
 
 	/* --- State machine (SM) ---------------- */
-	#define RKH_TR_SM_INIT( sma, is )					(void)0
-	#define RKH_TR_SM_CLRH( sma, h )					(void)0
-	#define RKH_TR_SM_DCH( sma, ev )					(void)0
-	#define RKH_TR_SM_TRN( sma, ss, ts )				(void)0
-	#define RKH_TR_SM_STATE( sma, s )					(void)0
-	#define RKH_TR_SM_ENSTATE( sma, s )					(void)0
-	#define RKH_TR_SM_EXSTATE( sma, s )					(void)0
-	#define RKH_TR_SM_NENEX( sma, nen, nex )			(void)0
-	#define RKH_TR_SM_NTRNACT( sma, nta, nts )			(void)0
-	#define RKH_TR_SM_CSTATE( sma, s )					(void)0
-	#define RKH_TR_SM_EVT_PROC( sma )					(void)0
-	#define RKH_TR_SM_EVT_NFOUND( sma )					(void)0
-	#define RKH_TR_SM_GRD_FALSE( sma )					(void)0
-	#define RKH_TR_SM_CND_NFOUND( sma )					(void)0
-	#define RKH_TR_SM_UNKN_STATE( sma )					(void)0
-	#define RKH_TR_SM_EX_HLEVEL( sma )					(void)0
-	#define RKH_TR_SM_EX_TSEG( sma )					(void)0
+	#define RKH_TR_SM_INIT( ao, ist )					(void)0
+	#define RKH_TR_SM_CLRH( ao, h )						(void)0
+	#define RKH_TR_SM_DCH( ao, ev )						(void)0
+	#define RKH_TR_SM_TRN( ao, sst, tst )				(void)0
+	#define RKH_TR_SM_STATE( ao, st )					(void)0
+	#define RKH_TR_SM_ENSTATE( ao, st )					(void)0
+	#define RKH_TR_SM_EXSTATE( ao, st )					(void)0
+	#define RKH_TR_SM_NENEX( ao, nen, nex )				(void)0
+	#define RKH_TR_SM_NTRNACT( ao, nta, nts )			(void)0
+	#define RKH_TR_SM_TS_STATE( ao, st )				(void)0
+	#define RKH_TR_SM_EVT_PROC( ao )					(void)0
+	#define RKH_TR_SM_EVT_NFOUND( ao )					(void)0
+	#define RKH_TR_SM_GRD_FALSE( ao )					(void)0
+	#define RKH_TR_SM_CND_NFOUND( ao )					(void)0
+	#define RKH_TR_SM_UNKN_STATE( ao )					(void)0
+	#define RKH_TR_SM_EX_HLEVEL( ao )					(void)0
+	#define RKH_TR_SM_EX_TSEG( ao )						(void)0
 
 	/* --- Timer (TIM) ----------------------- */
 	#define RKH_TR_TIM_INIT( t, sig )					(void)0
-	#define RKH_TR_TIM_START( t, nt, sma )				(void)0
-	#define RKH_TR_TIM_STOP( t )						(void)0
-	#define RKH_TR_TIM_TOUT( t )						(void)0
+	#define RKH_TR_TIM_START( t, ao, nt, per )			(void)0
+	#define RKH_TR_TIM_STOP( t, nt, per )				(void)0
+	#define RKH_TR_TIM_TOUT( t, sig, ao )				(void)0
 	#define RKH_TR_TIM_REM( t )							(void)0
 
 	/* --- Framework (RKH) ----------------------- */
 	#define RKH_TR_FWK_EN()								(void)0
 	#define RKH_TR_FWK_EX()								(void)0
-	#define RKH_TR_FWK_EPREG( epix, ssize, esize )		(void)0
-	#define RKH_TR_FWK_AE( esize, ev )					(void)0
-	#define RKH_TR_FWK_GC( ev )							(void)0
-	#define RKH_TR_FWK_GCR( ev )						(void)0
+	#define RKH_TR_FWK_EPREG( ep, ss, es )				(void)0
+	#define RKH_TR_FWK_AE( es, ev, pid, rc )			(void)0
+	#define RKH_TR_FWK_GC( ev, pid, rc )				(void)0
+	#define RKH_TR_FWK_GCR( ev, pid, rc )				(void)0
 	#define RKH_TR_FWK_DEFER( q, ev )					(void)0
-	#define RKH_TR_FWK_RCALL( sma, ev )					(void)0
+	#define RKH_TR_FWK_RCALL( ao, ev )					(void)0
 	#define RKH_TR_FWK_OBJ( __o )						(void)0
 	#define RKH_TR_FWK_SIG( __s )						(void)0
 	#define RKH_TR_FWK_FUN( __f )						(void)0
@@ -2228,6 +2813,12 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
 	#define RKH_TR_FWK_TCFG()							(void)0
 	#define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0
+	#define RKH_TR_FWK_AO( __ao )						(void)0
+	#define RKH_TR_FWK_STATE( __ao, __so )				(void)0
+	#define RKH_TR_FWK_PSTATE( __ao, __pso )			(void)0
+	#define RKH_TR_FWK_TIMER( __to )					(void)0
+	#define RKH_TR_FWK_EPOOL( __epo )					(void)0
+	#define RKH_TR_FWK_QUEUE( __qo )					(void)0
 #endif
 
 

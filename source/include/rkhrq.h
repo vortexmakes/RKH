@@ -170,7 +170,10 @@ typedef struct rkhrq_t
 
 	/**
 	 * 	\brief
-	 * 	Points to the associated SMA that receives the enqueued events.
+	 * 	Points to the associated SMA (a.k.a Active Object) that receives the 
+	 * 	enqueued events. 
+	 *
+	 * 	\note
 	 * 	If \a sma is set to NULL they never block.
 	 */
 
@@ -202,7 +205,7 @@ typedef struct rkhrq_t
 
 /**
  * \brief
- *	Initializes the previously allocated queue data strcuture RKHRQ_T.
+ *	Initializes the previously allocated queue data structure RKHRQ_T.
  *
  * 	A queue is declared with the RKHRQ_T data type and is defined with the 
  * 	rkh_rq_init() service. The total number of messages is calculated from 

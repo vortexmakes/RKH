@@ -37,7 +37,7 @@
 RKH_MODULE_NAME( rkhdyn )
 
 
-#if RKH_EN_DYNAMIC_EVENT == 1
+#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
 	#define RKH_INC_REF( evt ) \
 					if( RCE( evt )->pool != 0 ) \
 				        ++RCE( evt )->nref
@@ -47,14 +47,14 @@ RKH_MODULE_NAME( rkhdyn )
 #endif
 
 
-#if RKH_EN_DYNAMIC_EVENT == 1
+#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
 
 RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 
 /**
  * 	\brief
- * 	# of initialized event pools.
+ * 	Number of initialized event pools.
  */
 
 static rkhui8_t rkhnpool;
@@ -79,7 +79,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 
     RKH_DYNE_GET( ep, evt );	/* get e -- platform-dependent */
 							    /* pool must not run out of events */
-    RKHASSERT( evt != ( RKHEVT_T* )0 );
+    RKHASSERT( evt != RKH_EVT_CAST(0) );
     evt->e = e;                 /* set signal for this event */
 
 	/* 
@@ -89,7 +89,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
     evt->nref = 0;
     evt->pool = (rkhui8_t)( idx + (rkhui8_t)1 );
 
-	RKH_TR_FWK_AE( esize, evt );
+	RKH_TR_FWK_AE( esize, evt, evt->pool - 1, evt->nref );
     return evt;	
 }
 
@@ -107,7 +107,7 @@ rkh_gc( RKHEVT_T *e )
 		{
             --e->nref;		/* decrement the reference counter */
             RKH_EXIT_CRITICAL_();
-			RKH_TR_FWK_GC( e );
+			RKH_TR_FWK_GC( e, e->pool, e->nref );
         }
         else	/* this is the last reference to this event, recycle it */
 		{
@@ -116,7 +116,7 @@ rkh_gc( RKHEVT_T *e )
             RKH_EXIT_CRITICAL_();
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
-			RKH_TR_FWK_GCR( e );
+			RKH_TR_FWK_GCR( e, e->pool, e->nref );
             RKH_DYNE_PUT( &rkheplist[ idx ], e );
         }
     }
@@ -148,9 +148,14 @@ rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == 1
+#if RKH_EN_NATIVE_EQUEUE == RKH_DEF_ENABLED
 void 
+#if defined( RKH_USE_TRC_SENDER )
+rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+									const void *const sender )
+#else
 rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
+#endif
 {
 	RKH_SR_ALLOC();
 	
@@ -160,15 +165,21 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_INC_REF( e );
 	RKH_EXIT_CRITICAL_();
 
-    rkh_rq_put_fifo( &sma->equeue, e );
-	RKH_TR_SMA_FIFO( sma, e );
+	rkh_rq_put_fifo( &sma->equeue, e );
+	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
 }
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == 1 && RKH_RQ_EN_PUT_LIFO == 1
+#if RKH_EN_NATIVE_EQUEUE == RKH_DEF_ENABLED && \
+	RKH_RQ_EN_PUT_LIFO == RKH_DEF_ENABLED
 void 
+#if defined( RKH_USE_TRC_SENDER )
+rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+									const void *const sender )
+#else
 rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
+#endif
 {
 	RKH_SR_ALLOC();
 
@@ -179,12 +190,12 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_lifo( &sma->equeue, e );
-	RKH_TR_SMA_LIFO( sma, e );
+	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
 }
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == 1
+#if RKH_EN_NATIVE_EQUEUE == RKH_DEF_ENABLED
 RKHEVT_T *
 rkh_sma_get( RKHSMA_T *sma )
 {
@@ -196,13 +207,13 @@ rkh_sma_get( RKHSMA_T *sma )
     RKH_EXIT_CRITICAL_();
 
 	RKHASSERT( e != ( RKHEVT_T * )0 );
-	RKH_TR_SMA_GET( sma, e );
+	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
 	return e;
 }
 #endif
 
 
-#if RKH_EN_DEFERRED_EVENT == 1
+#if RKH_EN_DEFERRED_EVENT == RKH_DEF_ENABLED
 void 
 rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 { 
@@ -224,14 +235,14 @@ rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
 	RKH_SR_ALLOC();
 	
 	e = rkh_rq_get( q );		/* get an event from deferred queue */
-    if( e != ( RKHEVT_T* )0 )	/* event available? */
+    if( e != RKH_EVT_CAST(0) )	/* event available? */
 	{
 		/* post it to the front of the SMA's queue */
-		rkh_sma_post_lifo( sma, e );
+		RKH_SMA_POST_LIFO( sma, e, sma );
 		RKH_TR_FWK_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
 
-		#if RKH_EN_DYNAMIC_EVENT == 1
+		#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
         if( e->nref != 0 )	/* is it a dynamic event? */
 		{
             /* 

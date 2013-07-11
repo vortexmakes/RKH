@@ -58,7 +58,7 @@ RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
 void 
 rkh_sma_register( RKHSMA_T *sma )
 {
-    rkhui8_t prio = sma->romrkh->prio;
+    rkhui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
     RKHREQUIRE( ( prio >= 0 ) && ( prio < (rkhui8_t)RKH_MAX_SMA )
@@ -74,7 +74,7 @@ rkh_sma_register( RKHSMA_T *sma )
 void 
 rkh_sma_unregister( RKHSMA_T *sma )
 {
-    rkhui8_t prio = sma->romrkh->prio;
+    rkhui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
     RKHREQUIRE( ( prio >= 0 ) && ( prio <= (rkhui8_t)RKH_MAX_SMA )

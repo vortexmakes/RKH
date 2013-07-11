@@ -1197,19 +1197,10 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: #RKH_SMA_EN_IEVENT, #RKH_SMA_EN_ID. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_IEVENT: \n
-	When RKH_SMA_EN_IEVENT is set to one (1) the RKHSMA_T structure allows to 
-	reference a event, which will be passed to state machine application when 
-	it starts. Could be used to pass arguments to the state machine like an 
-	argc/argv. \n\n
-- \b RKH_SMA_EN_ID: \n
-	When RKH_SMA_EN_ID is set to one (1) the RKHSMA_T structure includes a 
-	ID number that could be used to uniquely identify a state machine 
-	application.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref1 Defining a composite state
@@ -1290,18 +1281,10 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: #RKH_SMA_EN_HCAL, #RKH_SMA_EN_STATE_ID. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref2 Defining a basic state
@@ -1414,22 +1397,10 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PPRO.
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PPRO: \n
-	When RKH_SMA_EN_PPRO is set to one (1) the state structure includes an 
-	reference to preprocessor function. This function could be called "Moore" 
-	action. This argument is optional, thus it could be declared as NULL. 
-	Aditionally, by means of single inheritance in C it could be used as 
-	state's abstract data. Aditionally, implementing the single inheritance 
-	in C is very simply by literally embedding the base type, RKHPPRO_T in 
-	this case, as the first member of the derived structure. See \a prepro 
-	member of RKHSREG_T structure for more information.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qrefsb Defining a submachine state
@@ -1762,14 +1733,11 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_EN_SUBMACHINE, 
+RKH_SMA_EN_STATE_ID.
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n \copydetails RKH_SMA_EN_HCAL	
-- \b RKH_SMA_EN_PSEUDOSTATE: \n \copydetails RKH_SMA_EN_PSEUDOSTATE
-- \b RKH_SMA_EN_SUBMACHINE: \n \copydetails RKH_SMA_EN_SUBMACHINE
-- \b RKH_SMA_EN_STATE_ID: \n \copydetails RKH_SMA_EN_STATE_ID
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref16 Defining a state transition table
@@ -1900,27 +1868,11 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_EN_CONDITIONAL, RKH_SMA_MAX_TR_SEGS. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage.\n\n 
-- \b RKH_SMA_EN_CONDITIONAL: \n
-	Enable (1) or disable (0) the conditional connector usage. \n\n
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref17 Defining a branch table
@@ -2024,27 +1976,11 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_MAX_TR_SEGS, RKH_EN_SHALLOW_HISTORY. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage. \n\n
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-- \b RKH_EN_SHALLOW_HISTORY: \n
-	Enable (1) or disable (0) the shallow history usage.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref5 Defining a deep history pseudostate
@@ -2098,27 +2034,11 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_MAX_TR_SEGS, RKH_EN_DEEP_HISTORY. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage. \n\n
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-- \b RKH_EN_DEEP_HISTORY: \n
-	Enable (1) or disable (0) the deep history usage.
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref6 Defining a choice pseudostate
@@ -2169,27 +2089,11 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
+RKH_SMA_EN_CHOICE, RKH_SMA_MAX_TR_SEGS. 
+See \ref cfg section for more information. 
 
-- \b RKH_SMA_EN_HCAL: \n
-	Enable (1) or disable (0) the state nesting. When RKH_SMA_EN_HCAL is set 
-	to one (1) some important features of RKH are not included: state 
-	composite state, history (shallow and deep) pseudostate, entry action, 
-	and exit action. \n\n
-- \b RKH_SMA_EN_STATE_ID: \n
-	When RKH_SMA_EN_STATE_ID is set to one (1) the state structure includes an 
-	ID number. This number allows to uniquely identify a state. \n\n
-- \b RKH_SMA_EN_PSEUDOSTATE: \n
-	Enable (1) or disable (0) the pseudostates usage. \n\n
-- \b RKH_SMA_EN_CHOICE: \n
-	Enable (1) or disable (0) the choice connector usage.
-- \b RKH_SMA_MAX_TR_SEGS: \n
-	Determines the maximum number of linked transition segments. The smaller 
-	this number, the lower the static RAM consumption. Typically, the most 
-	of hierarchical state machines uses up to 4 transition segments. 
-	Currently RKH_SMA_MAX_TR_SEGS cannot exceed 8. \n\n
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref14 Defining entry, exit, and transition actions
@@ -2634,20 +2538,12 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
+structure: RKH_EN_DYNAMIC_EVENT, RKH_MAX_EPOOL, RKH_SIZEOF_EVENT, 
+RKH_SIZEOF_ESIZE, RKH_EN_NATIVE_DYN_EVENT, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
+RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT. 
+See \ref cfg section for more information. 
 
-- \b RKH_EN_DYNAMIC_EVENT: \n \copydetails RKH_EN_DYNAMIC_EVENT
-- \b RKH_MAX_EPOOL: \n \copydetails RKH_MAX_EPOOL
-- \b RKH_SIZEOF_EVENT: \n \copydetails RKH_SIZEOF_EVENT
-- \b RKH_SIZEOF_ESIZE: \n \copydetails RKH_SIZEOF_ESIZE
-- \b RKH_EN_NATIVE_DYN_EVENT: \n \copydetails RKH_EN_NATIVE_DYN_EVENT
-- \b RKH_DYNE_TYPE: \n \copydetails RKH_DYNE_TYPE
-- \b RKH_DYNE_INIT: \n \copydetails RKH_DYNE_INIT
-- \b RKH_DYNE_GET_ESIZE: \n \copydetails RKH_DYNE_GET_ESIZE
-- \b RKH_DYNE_GET: \n \copydetails RKH_DYNE_GET
-- \b RKH_DYNE_PUT: \n \copydetails RKH_DYNE_PUT
-
-\n Prev: \ref qref "Quick reference"
+Prev: \ref qref "Quick reference"
 
 <HR>
 \section qref13 Preprocessing events before of dispatch it
@@ -2927,12 +2823,9 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure. See \ref cfg section for more information. 
-
-- \b RKH_TIM_EN: \n \copydetails RKH_TIM_EN
-- \b RKH_TIM_SIZEOF_NTIMER: \n \copydetails RKH_TIM_SIZEOF_NTIMER
-- \b RKH_TIM_EN_HOOK: \n \copydetails RKH_TIM_EN_HOOK
-- \b RKH_TIM_EN_GET_INFO: \n \copydetails RKH_TIM_EN_GET_INFO
+structure: RKH_TIM_EN, RKH_TIM_SIZEOF_NTIMER, RKH_TIM_EN_HOOK, 
+RKH_TIM_EN_GET_INFO.
+See \ref cfg section for more information. 
 
 Prev: \ref main_page "Home"
 
@@ -2962,39 +2855,8 @@ Next: \ref cross "Examples"
 
 First of all, RKH has a set of configuration options related to trace tool 
 facility, which an user that require this feature must be properly configure 
-in the \c rkhcfg.h header file.
-
-\li Define the macro \b RKH_TRC_EN \copydetails RKH_TRC_EN
-\li Define the macro \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
-\li Define the macro \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
-\li Define the macro \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
-\li Define the macro \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
-\li Define the macro \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
-\li Define the macro \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
-\li Define the macro \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
-\li Define the macro \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
-\li Define the macro \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li Define the macro \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
-\li Define the macro \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
-\li Define the macro \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
-\li Define the macro \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
-\li Define the macro \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
-\li Define the macro \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
-\li Define the macro \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
-\li Define the macro \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
-\li Define the macro \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
-\li Define the macro \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
-\li Define the macro \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
-\li Define the macro \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li Define the macro \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
-\li Define the macro \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
-\li Define the macro \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
-\li Define the macro \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
-\li Define the macro \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
-\li Define the macro \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
-\li Define the macro \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
-
-See \ref cfg section for more information about that.
+in the \c rkhcfg.h header file. See \ref cfg section for more information 
+about that.
 
 <HR>
 \section trfn Implementing the trace session support
@@ -3089,77 +2951,798 @@ some_function( ... )
 This section provides a table that lists all the trace events and summarizes 
 the data included for each. 
 
-<EM>Memory Pool (MP)</EM>
+<TABLE	align="center" valign="middle" width=95% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=6 align="left"><B> Related with memory pool 
+											module (MP)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH width=35%><B><I> Trace Event </I></B></TH> 
+		<TH width=26%><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=8 align="center"> #RKH_TG_MP </TD>
+		<TD rowspan=3 align="center"> 0 </TD>
+		<TD rowspan=3> #RKH_TE_MP_INIT ( SYM mp, NBLK nblock, 
+														BSIZE bsize ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_MP_INIT </TD>
+		<TD><I> mp </I></TD>
+		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nblock </I></TD>
+		<TD><I> \copybrief RKHMP_T::nblocks </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> bsize </I></TD>
+		<TD><I> \copybrief RKHMP_T::bsize </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 1 </TD>
+		<TD rowspan=3> #RKH_TE_MP_GET ( SYM mp, NBLK nfree, NBLK nmin ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_MP_GET </TD>
+		<TD><I> mp </I></TD>
+		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nfree </I></TD>
+		<TD><I> \copybrief RKHMP_T::nfree </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nmin </I></TD>
+		<TD><I> \copybrief RKHMP_T::nmin </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_MP_PUT ( SYM mp, NBLK nfree ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_MP_PUT </TD>
+		<TD><I> mp </I></TD>
+		<TD><I> Pointer to previously allocated memory pool structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nfree </I></TD>
+		<TD><I> \copybrief RKHMP_T::nfree </I></TD>
+	</TR>
 
-\li \b RKH_TR_MP_INIT \copydetails RKH_TR_MP_INIT
-\li \b RKH_TR_MP_GET \copydetails RKH_TR_MP_GET
-\li \b RKH_TR_MP_PUT \copydetails RKH_TR_MP_PUT
+	<TR bgColor="#c0c0c0">
+		<TH colspan=6 align="left"><B> Related with queue module (RQ)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=14 align="center"> #RKH_TG_RQ </TD>
+		<TD rowspan=3 align="center"> 0 </TD>
+		<TD rowspan=3> #RKH_TE_RQ_INIT ( SYM q, SYM ao, NE nelem ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_RQ_INIT </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 1 </TD>
+		<TD rowspan=2> #RKH_TR_RQ_GET ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_RQ_GET </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_RQ_FIFO ( SYM q, NE nelem, NE nmin ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_RQ_FIFO </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nmin </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nmin </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 3 </TD>
+		<TD rowspan=3> #RKH_TE_RQ_LIFO ( SYM q, NE nelem, NE nmin ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_RQ_LIFO </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nelem </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nelems </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nmin </I></TD>
+		<TD><I> \copybrief RKHRQ_T::nmin </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 4 </TD>
+		<TD rowspan=1> #RKH_TE_RQ_FULL ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_FULL </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 5 </TD>
+		<TD rowspan=1> #RKH_TE_RQ_DPT ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_DPT </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 6 </TD>
+		<TD rowspan=1> #RKH_TE_RQ_GET_LAST ( SYM q ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_RQ_GET_LAST </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
 
-<EM>Queue (RQ)</EM>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=6 align="left"><B> Related with State Machine Application 
+											(SMA) or Active Object </B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=22 align="center"> #RKH_TG_SMA </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_ACT ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_ACT </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> prio </I></TD>
+		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 1 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_TERM ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_TERM </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> prio </I></TD>
+		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=4 align="center"> 2 </TD>
+		<TD rowspan=4> #RKH_TE_SMA_GET ( SYM ao, SIG sig, UI8 pid, 
+															UI8 refc ) </TD>
+		<TD rowspan=4> \copybrief RKH_TR_SMA_GET </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=5 align="center"> 3 </TD>
+		<TD rowspan=5> #RKH_TE_SMA_FIFO ( SYM ao, SIG sig, SYM snr,
+													UI8 pid, UI8 refc ) </TD>
+		<TD rowspan=5> \copybrief RKH_TR_SMA_FIFO </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> snr </I></TD>
+		<TD><I> Sender object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=5 align="center"> 4 </TD>
+		<TD rowspan=5> #RKH_TE_SMA_LIFO ( SYM ao, SIG sig, SYM snr, 
+													UI8 pid, UI8 refc ) </TD>
+		<TD rowspan=5> \copybrief RKH_TR_SMA_LIFO </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> snr </I></TD>
+		<TD><I> Sender object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 5 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_REG ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_REG </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> prio </I></TD>
+		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 6 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_UNREG ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_UNREG </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> prio </I></TD>
+		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+	</TR>
 
-\li \b RKH_TR_RQ_INIT \copydetails RKH_TR_RQ_INIT
-\li \b RKH_TR_RQ_GET \copydetails RKH_TR_RQ_GET
-\li \b RKH_TR_RQ_FIFO \copydetails RKH_TR_RQ_FIFO
-\li \b RKH_TR_RQ_LIFO \copydetails RKH_TR_RQ_LIFO
-\li \b RKH_TR_RQ_FULL \copydetails RKH_TR_RQ_FULL
-\li \b RKH_TR_RQ_DEPLETE \copydetails RKH_TR_RQ_DEPLETE
-\li \b RKH_TR_RQ_GET_LAST \copydetails RKH_TR_RQ_GET_LAST
+	<TR bgColor="#c0c0c0">
+		<TH colspan=6 align="left"><B> Related with State Machines (SM)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=30 align="center"> #RKH_TG_SM </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_SM_INIT ( SYM ao, SYM ist ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_INIT </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ist </I></TD>
+		<TD><I> \copybrief ROMRKH_T::istate </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 1 </TD>
+		<TD rowspan=2> #RKH_TE_SM_CLRH ( SYM ao, SYM h ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_CLRH </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> h </I></TD>
+		<TD><I> \copybrief RKHSCMP_T::history </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SM_DCH ( SYM ao, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_DCH </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 3 </TD>
+		<TD rowspan=3> #RKH_TE_SM_TRN ( SYM ao, SYM sst, SYM tst ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SM_TRN </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sst </I></TD>
+		<TD><I> Source state of transition </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> tst </I></TD>
+		<TD><I> Target state of transition </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 4 </TD>
+		<TD rowspan=2> #RKH_TE_SM_STATE ( SYM ao, SYM st ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nxtst </I></TD>
+		<TD><I> Next state of transition </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 5 </TD>
+		<TD rowspan=2> #RKH_TE_SM_ENSTATE ( SYM ao, SYM st ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_ENSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> st </I></TD>
+		<TD><I> Entry state </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 6 </TD>
+		<TD rowspan=2> #RKH_TE_SM_EXSTATE ( SYM ao, SYM st ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_EXSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> st </I></TD>
+		<TD><I> Exited state </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 7 </TD>
+		<TD rowspan=3> #RKH_TE_SM_NENEX ( SYM ao, UI8 nen, UI8 nex ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SM_NENEX </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nen </I></TD>
+		<TD><I> Number of entry states </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nex </I></TD>
+		<TD><I> Number of exited states </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 8 </TD>
+		<TD rowspan=3> #RKH_TE_SM_NTRNACT ( SYM ao, UI8 nta, UI8 nts ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SM_NTRNACT </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nta </I></TD>
+		<TD><I> Number of executed actions </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nts </I></TD>
+		<TD><I> Number of transition segments </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 9 </TD>
+		<TD rowspan=2> #RKH_TE_SM_TS_STATE ( SYM ao, SYM st ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_TS_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> st </I></TD>
+		<TD><I> Next state or pseudostate in transition </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 10 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EVT_PROC ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EVT_PROC </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 11 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EVT_NFOUND ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EVT_NFOUND </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 12 </TD>
+		<TD rowspan=1> #RKH_TE_SM_CND_NFOUND ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_CND_NFOUND </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 13 </TD>
+		<TD rowspan=1> #RKH_TE_SM_GRD_FALSE ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_GRD_FALSE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 14 </TD>
+		<TD rowspan=1> #RKH_TE_SM_UNKN_STATE ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_UNKN_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 15 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EX_HLEVEL ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EX_HLEVEL </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 16 </TD>
+		<TD rowspan=1> #RKH_TE_SM_EX_TSEG ( SYM ao ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_SM_EX_TSEG </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
 
-<EM>State Machine Application (SMA)</EM>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=6 align="left"><B> Related with timer module (TIM)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=13 align="center"> #RKH_TG_TIM </TD>
+		<TD rowspan=2 align="center"> 0 </TD>
+		<TD rowspan=2> #RKH_TE_TIM_INIT ( SYM t, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_TIM_INIT </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=4 align="center"> 1 </TD>
+		<TD rowspan=4> #RKH_TE_TIM_START ( SYM t, SYM ao, NTICK ntick, 
+															NTICK per ) </TD>
+		<TD rowspan=4> \copybrief RKH_TR_TIM_START </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHT_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ntick </I></TD>
+		<TD><I> \copybrief RKHT_T::ntick </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> per </I></TD>
+		<TD><I> \copybrief RKHT_T::period </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_TIM_STOP ( SYM t, NTICK ntick, NTICK per ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_TIM_STOP </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ntick </I></TD>
+		<TD><I> \copybrief RKHT_T::ntick </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> per </I></TD>
+		<TD><I> \copybrief RKHT_T::period </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 3 </TD>
+		<TD rowspan=3> #RKH_TE_TIM_TOUT ( SYM t, SIG sig, SYM ao ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_TIM_TOUT </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHT_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 4 </TD>
+		<TD rowspan=1> #RKH_TR_TIM_REM ( SYM t ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_TIM_REM </TD>
+		<TD><I> t </I></TD>
+		<TD><I> Pointer to previously allocated timer structure </I></TD>
+	</TR>
 
-\li \b RKH_TR_SMA_ACT \copydetails RKH_TR_SMA_ACT
-\li \b RKH_TR_SMA_TERM \copydetails RKH_TR_SMA_TERM
-\li \b RKH_TR_SMA_GET \copydetails RKH_TR_SMA_GET
-\li \b RKH_TR_SMA_FIFO \copydetails RKH_TR_SMA_FIFO
-\li \b RKH_TR_SMA_LIFO \copydetails RKH_TR_SMA_LIFO
-\li \b RKH_TR_SMA_REG \copydetails RKH_TR_SMA_REG
-\li \b RKH_TR_SMA_UNREG \copydetails RKH_TR_SMA_UNREG
-
-<EM>State machine (SM)</EM>
-
-\li \b RKH_TR_SM_INIT \copydetails RKH_TR_SM_INIT
-\li \b RKH_TR_SM_DCH \copydetails RKH_TR_SM_DCH
-\li \b RKH_TR_SM_CLRH \copydetails RKH_TR_SM_CLRH
-\li \b RKH_TR_SM_TRN \copydetails RKH_TR_SM_TRN
-\li \b RKH_TR_SM_STATE \copydetails RKH_TR_SM_STATE
-\li \b RKH_TR_SM_ENSTATE \copydetails RKH_TR_SM_ENSTATE
-\li \b RKH_TR_SM_EXSTATE \copydetails RKH_TR_SM_EXSTATE
-\li \b RKH_TR_SM_NENEX \copydetails RKH_TR_SM_NENEX
-\li \b RKH_TR_SM_NTRNACT \copydetails RKH_TR_SM_NTRNACT
-\li \b RKH_TR_SM_CSTATE \copydetails RKH_TR_SM_CSTATE
-\li \b RKH_TR_SM_EVT_PROC \copydetails RKH_TR_SM_EVT_PROC
-\li \b RKH_TR_SM_EVT_NFOUND \copydetails RKH_TR_SM_EVT_NFOUND 
-\li \b RKH_TR_SM_GRD_FALSE \copydetails RKH_TR_SM_GRD_FALSE 
-\li \b RKH_TR_SM_CND_NFOUND \copydetails RKH_TR_SM_CND_NFOUND 
-\li \b RKH_TR_SM_UNKN_STATE \copydetails RKH_TR_SM_UNKN_STATE 
-\li \b RKH_TR_SM_EX_HLEVEL \copydetails RKH_TR_SM_EX_HLEVEL 
-\li \b RKH_TR_SM_EX_TSEG \copydetails RKH_TR_SM_EX_TSEG 
-
-<EM>Timer (TIM)</EM>
-
-\li \b RKH_TR_TIM_INIT \copydetails RKH_TR_TIM_INIT
-\li \b RKH_TR_TIM_START \copydetails RKH_TR_TIM_START
-\li \b RKH_TR_TIM_STOP \copydetails RKH_TR_TIM_STOP
-\li \b RKH_TR_TIM_TOUT \copydetails RKH_TR_TIM_TOUT
-\li \b RKH_TR_TIM_REM \copydetails RKH_TR_TIM_REM
-
-<EM>Framework (RKH)</EM>
-
-\li \b RKH_TR_FWK_EN \copydetails RKH_TR_FWK_EN
-\li \b RKH_TR_FWK_EX \copydetails RKH_TR_FWK_EX
-\li \b RKH_TR_FWK_EPREG \copydetails RKH_TR_FWK_EPREG
-\li \b RKH_TR_FWK_AE \copydetails RKH_TR_FWK_AE
-\li \b RKH_TR_FWK_GC \copydetails RKH_TR_FWK_GC
-\li \b RKH_TR_FWK_GCR \copydetails RKH_TR_FWK_GCR
-\li \b RKH_TR_FWK_DEFER \copydetails RKH_TR_FWK_DEFER
-\li \b RKH_TR_FWK_RCALL \copydetails RKH_TR_FWK_RCALL
-\li \b RKH_TE_FWK_OBJ \copydetails RKH_TE_FWK_OBJ
-\li \b RKH_TE_FWK_SIG \copydetails RKH_TE_FWK_SIG
-\li \b RKH_TE_FWK_FUN \copydetails RKH_TE_FWK_FUN
-\li \b RKH_TE_FWK_EXE_FUN \copydetails RKH_TE_FWK_EXE_FUN
-\li \b RKH_TR_FWK_TUSR \copydetails RKH_TR_FWK_TUSR
-\li \b RKH_TR_FWK_TCFG \copydetails RKH_TR_FWK_TCFG
-\li \b RKH_TR_FWK_ASSERT \copydetails RKH_TR_FWK_ASSERT
+	<TR bgColor="#c0c0c0">
+		<TH colspan=6 align="left"><B> Miscellanueos and related with 
+										Framework (FWK)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Group </I></B></TH>
+		<TH><B><I> ID </I></B></TH>
+		<TH><B><I> Trace Event </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+		<TH colspan=2><B><I> Parameters </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=45 align="center"> #RKH_TG_FWK </TD>
+		<TD rowspan=1 align="center"> 0 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EN () </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_EN </TD>
+		<TD><I></I></TD>
+		<TD><I></I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 1 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EX () </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_EX </TD>
+		<TD><I></I></TD>
+		<TD><I></I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_EPREG ( UI8 ep, UI32 ss, ES es ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_EPREG </TD>
+		<TD><I> ep </I></TD>
+		<TD><I> Event pool index in the list </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ss </I></TD>
+		<TD><I> Storage size in bytes </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> es </I></TD>
+		<TD><I> Event size </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=4 align="center"> 3 </TD>
+		<TD rowspan=4> #RKH_TE_FWK_AE ( ES es, SIG sig, UI8 pid, 
+															UI8 refc ) </TD>
+		<TD rowspan=4> \copybrief RKH_TR_FWK_AE </TD>
+		<TD><I> es </I></TD>
+		<TD><I> Event size </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 4 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_GC ( SIG sig, UI8 pid, UI8 refc ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_GC </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 5 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_GCR ( SIG sig, UI8 pid, UI8 refc ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_GCR </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKHEVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 6 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_DEFER ( SYM q, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_DEFER </TD>
+		<TD><I> q </I></TD>
+		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 7 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_RCALL ( SYM ao, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_RCALL </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKHRQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 8 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_OBJ ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_OBJ </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 9 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_SIG ( SIG sig, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_SIG </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKHEVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of event signal </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 10 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_FUN ( SYM func, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_FUN </TD>
+		<TD><I> func </I></TD>
+		<TD><I> Function memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 11 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EXE_FUN ( SYM func ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_EXE_FUN </TD>
+		<TD><I> func </I></TD>
+		<TD><I> Function memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 12 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_TUSR ( UI8 usrtrc, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_TUSR </TD>
+		<TD><I> usrtrc </I></TD>
+		<TD><I> User-defined trace event </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of user-defined event </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=1 align="center"> 13 </TD>
+		<TD rowspan=1> #RKH_TE_FWK_TCFG ( CFG cfg ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_FWK_TCFG </TD>
+		<TD><I> cfg </I></TD>
+		<TD><I> Configuration parameters of trace facility </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 14 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_ASSERT ( SRT mod, UI16 ln ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_ASSERT </TD>
+		<TD><I> mod </I></TD>
+		<TD><I> C/C++ module (.c file) </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ln </I></TD>
+		<TD><I> Line number of assertion </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 15 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_AO ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_AO </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Active object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 16 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_STATE ( SYM ao, SYM obj, STR nm ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_STATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> Active object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> obj </I></TD>
+		<TD><I> State object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 17 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_PSTATE ( SYM ao, SYM obj, STR nm ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_PSTATE </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> Active object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> obj </I></TD>
+		<TD><I> Pseudostate object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 18 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_TIMER ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_TIMER </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Timer object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 19 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_EPOOL </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Event pool object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 20 </TD>
+		<TD rowspan=2> #RKH_TE_FWK_QUEUE ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_FWK_QUEUE </TD>
+		<TD><I> obj </I></TD>
+		<TD><I> Queue object memory address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nm </I></TD>
+		<TD><I> Name of object </I></TD>
+	</TR>
+</TABLE>
+\n
 
 <HR>
 \section trtrazer TRAZER - The fundamental RKH's tracing tool
@@ -3232,12 +3815,15 @@ Each RKH application must have its own configuration file, called
 \c rkhcfg.h. This file adapts and configures RKH by means of compiler
 definitions and macros allowing to restrict the resources consumed by RKH.
 Adjusting this definitions allows to reduce the ROM and RAM consumption,
-and to enhance the system performance in a substantial manner. The 
-\c rkhcfg.h file shows the general layout of the configuration file.
-Here is an list of all options with their documentation:
+and to enhance the system performance in a substantial manner. 
+
+Also, each RKH port must have its own configuration options, that must be 
+explicitely defined in the proper \a rkhport.h file. Here is an list of all 
+options with their documentation:
 
 \n This section includes:
 
+- \ref cfg_port
 - \ref cfg_fw
 - \ref cfg_sm
 - \ref cfg_tr
@@ -3246,115 +3832,785 @@ Here is an list of all options with their documentation:
 - \ref cfg_t
 
 <HR>
-\section cfg_fw Configuration options related to framework
+\section cfg_port Configuration options related to RKH port
 
-\li \b RKH_MAX_SMA \copydetails RKH_MAX_SMA
-\li \b RKH_EN_DYNAMIC_EVENT \copydetails RKH_EN_DYNAMIC_EVENT
-\li \b RKH_MAX_EPOOL \copydetails RKH_MAX_EPOOL
-\li \b RKH_SIZEOF_EVENT \copydetails RKH_SIZEOF_EVENT
-\li \b RKH_SIZEOF_ESIZE \copydetails RKH_SIZEOF_ESIZE
-\li \b RKH_EN_DEFERRED_EVENT \copydetails RKH_EN_DEFERRED_EVENT
-\li \b RKH_ASSERT_EN \copydetails RKH_ASSERT_EN
-\li \b RKH_HK_EN_DISPATCH \copydetails RKH_HK_EN_DISPATCH
-\li \b RKH_HK_EN_SIGNAL \copydetails RKH_HK_EN_SIGNAL
-\li \b RKH_HK_EN_TIMEOUT \copydetails RKH_HK_EN_TIMEOUT
-\li \b RKH_HK_EN_START \copydetails RKH_HK_EN_START
-\li \b RKH_HK_EN_EXIT \copydetails RKH_HK_EN_EXIT
-\li \b RKH_SMA_EN_IEVENT \copydetails RKH_SMA_EN_IEVENT
-\li \b RKH_TICK_RATE_HZ \copydetails RKH_TICK_RATE_HZ
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with RKH port </B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_SMA_THREAD </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_SMA_THREAD </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_SMA_THREAD_DATA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_SMA_THREAD_DATA </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_NATIVE_SCHEDULER </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_EN_NATIVE_SCHEDULER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_NATIVE_EQUEUE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_EN_NATIVE_EQUEUE </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_NATIVE_DYN_EVENT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_EN_NATIVE_DYN_EVENT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_REENTRANT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_REENTRANT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 32 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 32 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
 
 <HR>
-\section cfg_sm Configuration options related to state machine applications
+\section cfg_fw Configuration options related to framework
 
-\li \b RKH_SMA_EN_ID \copydetails RKH_SMA_EN_ID
-\li \b RKH_SMA_EN_GET_INFO \copydetails RKH_SMA_EN_GET_INFO	
-\li \b RKH_SMA_EN_STATE_ID \copydetails RKH_SMA_EN_STATE_ID	
-\li \b RKH_SMA_EN_PPRO \copydetails RKH_SMA_EN_PPRO	
-\li \b RKH_SMA_EN_HCAL \copydetails RKH_SMA_EN_HCAL	
-\li \b RKH_SMA_MAX_HCAL_DEPTH \copydetails RKH_SMA_MAX_HCAL_DEPTH
-\li \b RKH_SMA_MAX_TRC_SEGS \copydetails RKH_SMA_MAX_TRC_SEGS
-\li \b RKH_SMA_EN_PSEUDOSTATE \copydetails RKH_SMA_EN_PSEUDOSTATE
-\li \b RKH_SMA_EN_DEEP_HISTORY \copydetails RKH_SMA_EN_DEEP_HISTORY	
-\li \b RKH_SMA_EN_SHALLOW_HISTORY \copydetails RKH_SMA_EN_SHALLOW_HISTORY
-\li \b RKH_SMA_EN_CHOICE \copydetails RKH_SMA_EN_CHOICE
-\li \b RKH_SMA_EN_CONDITIONAL \copydetails RKH_SMA_EN_CONDITIONAL
-\li \b RKH_SMA_EN_SUBMACHINE \copydetails RKH_SMA_EN_SUBMACHINE
-\li \b RKH_SMA_EN_INIT_ARG_SMA \copydetails RKH_SMA_EN_INIT_ARG_SMA
-\li \b RKH_SMA_EN_ENT_ARG_SMA \copydetails RKH_SMA_EN_ENT_ARG_SMA
-\li \b RKH_SMA_EN_EXT_ARG_SMA \copydetails RKH_SMA_EN_EXT_ARG_SMA
-\li \b RKH_SMA_EN_ACT_ARG_SMA \copydetails RKH_SMA_EN_ACT_ARG_SMA
-\li \b RKH_SMA_EN_ACT_ARG_EVT \copydetails RKH_SMA_EN_ACT_ARG_EVT
-\li \b RKH_SMA_EN_GRD_ARG_EVT \copydetails RKH_SMA_EN_GRD_ARG_EVT
-\li \b RKH_SMA_EN_GRD_ARG_SMA \copydetails RKH_SMA_EN_GRD_ARG_SMA
-\li \b RKH_SMA_EN_PPRO_ARG_SMA \copydetails RKH_SMA_EN_PPRO_ARG_SMA
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with Framework (FWK)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_MAX_SMA </TD>
+		<TD> integer </TD>
+		<TD> [1..64] </TD>
+		<TD> 4 </TD>
+		<TD align="left"> \copydetails RKH_MAX_SMA </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_DYNAMIC_EVENT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_DYNAMIC_EVENT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_MAX_EPOOL </TD>
+		<TD> integer </TD>
+		<TD> [0..255] </TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MAX_EPOOL </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SIZEOF_EVENT </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 8 </TD>
+		<TD align="left"> \copydetails RKH_SIZEOF_EVENT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SIZEOF_ESIZE </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 8 </TD>
+		<TD align="left"> \copydetails RKH_SIZEOF_ESIZE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_EN_DEFERRED_EVENT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_EN_DEFERRED_EVENT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_ASSERT_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_ASSERT_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_HK_EN_DISPATCH </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_HK_EN_DISPATCH </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_HK_EN_SIGNAL </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_HK_EN_SIGNAL </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_HK_EN_TIMEOUT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_HK_EN_TIMEOUT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_HK_EN_START </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_HK_EN_START </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_HK_EN_EXIT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_HK_EN_EXIT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_IEVENT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_IEVENT </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TICK_RATE_HZ </TD>
+		<TD> integer </TD>
+		<TD> [1..1000] </TD>
+		<TD> 100 </TD>
+		<TD align="left"> \copydetails RKH_TICK_RATE_HZ </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
+
+<HR>
+\section cfg_sm Configuration options related to state machine applications 
+
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with State Machine Application
+				SMA or Active Object</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_ID </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_ID </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_GET_INFO </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_GET_INFO </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_STATE_ID </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_STATE_ID </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_PPRO </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_PPRO </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_HCAL </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_HCAL </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_MAX_HCAL_DEPTH </TD>
+		<TD> integer </TD>
+		<TD> [1..8] </TD>
+		<TD> 4 </TD>
+		<TD align="left"> \copydetails RKH_SMA_MAX_HCAL_DEPTH </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_MAX_TRC_SEGS </TD>
+		<TD> integer </TD>
+		<TD> [1..4] </TD>
+		<TD> 4 </TD>
+		<TD align="left"> \copydetails RKH_SMA_MAX_TRC_SEGS </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_PSEUDOSTATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_PSEUDOSTATE </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_DEEP_HISTORY </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_DEEP_HISTORY </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_SHALLOW_HISTORY </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_SHALLOW_HISTORY </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_CHOICE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_CHOICE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_CONDITIONAL </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_CONDITIONAL </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_SUBMACHINE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_SUBMACHINE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_TRC_SENDER </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD></TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_TRC_SENDER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_INIT_ARG_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_INIT_ARG_SMA </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_ENT_ARG_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_ENT_ARG_SMA </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_EXT_ARG_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_EXT_ARG_SMA </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_ACT_ARG_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_ACT_ARG_SMA </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_ACT_ARG_EVT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_ACT_ARG_EVT </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_GRD_ARG_EVT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_GRD_ARG_EVT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_GRD_ARG_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_GRD_ARG_SMA </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_PPRO_ARG_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_PPRO_ARG_SMA </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
 
 <HR>
 \section cfg_tr Configuration options related to trace facility
 
-\li \b RKH_TRC_EN \copydetails RKH_TRC_EN
-\li \b RKH_TRC_MAX_EVENTS \copydetails RKH_TRC_MAX_EVENTS
-\li \b RKH_TRC_RUNTIME_FILTER \copydetails RKH_TRC_RUNTIME_FILTER
-\li \b RKH_TRC_EN_USER_TRACE \copydetails RKH_TRC_EN_USER_TRACE
-\li \b RKH_TRC_ALL \copydetails RKH_TRC_ALL
-\li \b RKH_TRC_EN_MP \copydetails RKH_TRC_EN_MP
-\li \b RKH_TRC_EN_RQ \copydetails RKH_TRC_EN_RQ
-\li \b RKH_TRC_EN_SMA \copydetails RKH_TRC_EN_SMA
-\li \b RKH_TRC_EN_TIM \copydetails RKH_TRC_EN_TIM
-\li \b RKH_TRC_EN_SM \copydetails RKH_TRC_EN_SM
-\li \b RKH_TRC_EN_FWK \copydetails RKH_TRC_EN_FWK
-\li \b RKH_TRC_EN_ASSERT \copydetails RKH_TRC_EN_ASSERT
-\li \b RKH_TRC_EN_SM_INIT \copydetails RKH_TRC_EN_SM_INIT
-\li \b RKH_TRC_EN_SM_DCH \copydetails RKH_TRC_EN_SM_DCH
-\li \b RKH_TRC_EN_SM_CLRH \copydetails RKH_TRC_EN_SM_CLRH
-\li \b RKH_TRC_EN_SM_TRN \copydetails RKH_TRC_EN_SM_TRN
-\li \b RKH_TRC_EN_SM_STATE \copydetails RKH_TRC_EN_SM_STATE
-\li \b RKH_TRC_EN_SM_ENSTATE \copydetails RKH_TRC_EN_SM_ENSTATE
-\li \b RKH_TRC_EN_SM_EXSTATE \copydetails RKH_TRC_EN_SM_EXSTATE
-\li \b RKH_TRC_EN_SM_NENEX \copydetails RKH_TRC_EN_SM_NENEX
-\li \b RKH_TRC_EN_SM_NTRNACT \copydetails RKH_TRC_EN_SM_NTRNACT
-\li \b RKH_TRC_EN_SM_CSTATE \copydetails RKH_TRC_EN_SM_CSTATE
-\li \b RKH_TRC_EN_SM_PROCESS \copydetails RKH_TRC_EN_SM_PROCESS
-\li \b RKH_TRC_EN_NSEQ \copydetails RKH_TRC_EN_NSEQ
-\li \b RKH_TRC_EN_CHK \copydetails RKH_TRC_EN_CHK
-\li \b RKH_TRC_EN_TSTAMP \copydetails RKH_TRC_EN_TSTAMP
-\li \b RKH_TRC_SIZEOF_TSTAMP \copydetails RKH_TRC_SIZEOF_TSTAMP
-\li \b RKH_TRC_SIZEOF_STREAM \copydetails RKH_TRC_SIZEOF_STREAM
-\li \b RKH_TRC_SIZEOF_POINTER \copydetails RKH_TRC_SIZEOF_POINTER
-\li \b RKH_TRC_SIZEOF_FUN_POINTER \copydetails RKH_TRC_SIZEOF_FUN_POINTER
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with trace facility (TRC)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_RUNTIME_FILTER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_USER_TRACE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_USER_TRACE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_ALL </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_ALL </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_MP </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_MP </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_RQ </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_RQ </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SMA </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SMA </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_TIM </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_TIM </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_FWK </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_FWK </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_ASSERT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_ASSERT </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_INIT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_INIT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_DCH </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_DCH </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_CLRH </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_CLRH </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_TRN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_TRN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_STATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_STATE </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_ENSTATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_ENSTATE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_EXSTATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_EXSTATE </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_NENEX </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_NENEX </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_NTRNACT </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_NTRNACT </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_TS_STATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_TS_STATE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_SM_PROCESS </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_SM_PROCESS </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_NSEQ </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD></TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_NSEQ </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_CHK </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_CHK </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_EN_TSTAMP </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TRC_EN_TSTAMP </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 16 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_STREAM </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 128 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_STREAM </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
 
 <HR>
-\section cfg_q Configuration options related to queue (by reference) facility
+\section cfg_q Configuration options related to queue facility
 
-\li \b RKH_RQ_EN \copydetails RKH_RQ_EN
-\li \b RKH_RQ_SIZEOF_NELEM \copydetails RKH_RQ_SIZEOF_NELEM
-\li \b RKH_RQ_EN_GET_LWMARK \copydetails RKH_RQ_EN_GET_LWMARK
-\li \b RKH_RQ_EN_READ \copydetails RKH_RQ_EN_READ
-\li \b RKH_RQ_EN_DEPLETE \copydetails RKH_RQ_EN_DEPLETE
-\li \b RKH_RQ_EN_IS_FULL \copydetails RKH_RQ_EN_IS_FULL
-\li \b RKH_RQ_EN_GET_NELEMS \copydetails RKH_RQ_EN_GET_NELEMS
-\li \b RKH_RQ_EN_PUT_LIFO \copydetails RKH_RQ_EN_PUT_LIFO
-\li \b RKH_RQ_EN_GET_INFO \copydetails RKH_RQ_EN_GET_INFO
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_SIZEOF_NELEM </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 8 </TD>
+		<TD align="left"> \copydetails RKH_RQ_SIZEOF_NELEM </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_GET_LWMARK </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_GET_LWMARK </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_READ </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_READ </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_DEPLETE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_DEPLETE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_IS_FULL </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_IS_FULL </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_GET_NELEMS </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_GET_NELEMS </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_PUT_LIFO </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_PUT_LIFO </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_RQ_EN_GET_INFO </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_RQ_EN_GET_INFO </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
 
 <HR>
 \section cfg_mp Configuration options related to fixed-sized memory block facility
 
-\li \b RKH_MP_EN \copydetails RKH_MP_EN
-\li \b RKH_MP_REDUCED \copydetails RKH_MP_REDUCED
-\li \b RKH_MP_SIZEOF_BSIZE \copydetails RKH_MP_SIZEOF_BSIZE
-\li \b RKH_MP_SIZEOF_NBLOCK \copydetails RKH_MP_SIZEOF_NBLOCK
-\li \b RKH_MP_EN_GET_BSIZE \copydetails RKH_MP_EN_GET_BSIZE
-\li \b RKH_MP_EN_GET_NFREE \copydetails RKH_MP_EN_GET_NFREE	
-\li \b RKH_MP_EN_GET_LWM \copydetails RKH_MP_EN_GET_LWM	
-\li \b RKH_MP_EN_GET_INFO \copydetails RKH_MP_EN_GET_INFO
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with fixed-sized memory block 
+										facility (MP)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MP_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_REDUCED </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MP_REDUCED </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_SIZEOF_BSIZE </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 8 </TD>
+		<TD align="left"> \copydetails RKH_MP_SIZEOF_BSIZE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_SIZEOF_NBLOCK </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 8 </TD>
+		<TD align="left"> \copydetails RKH_MP_SIZEOF_NBLOCK </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_EN_GET_BSIZE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MP_EN_GET_BSIZE </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_EN_GET_NFREE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MP_EN_GET_NFREE </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_EN_GET_LWM </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MP_EN_GET_LWM </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_MP_EN_GET_INFO </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_MP_EN_GET_INFO </TD>
+	</TR>
+</TABLE>
+
+Back: \ref cfg "Configuring framework RKH"
 
 <HR>
 \section cfg_t Configuration options related to software timer facility
 
-\li \b RKH_TIM_EN \copydetails RKH_TIM_EN	
-\li \b RKH_TIM_SIZEOF_NTIMER \copydetails RKH_TIM_SIZEOF_NTIMER
-\li \b RKH_TIM_EN_HOOK \copydetails RKH_TIM_EN_HOOK
-\li \b RKH_TIM_EN_GET_INFO \copydetails RKH_TIM_EN_GET_INFO
+<TABLE	align="center" valign="middle" width=80% cellspacing=2 
+		cellpadding=4 border=0>
+	<TR bgColor="#c0c0c0">
+		<TH colspan=5 align="left"><B> Related with software timer facility 
+																(TIM)</B></TH>
+	</TR>
+	<TR bgColor="#c0c0c0">
+		<TH><B><I> Option </I></B></TH>
+		<TH><B><I> Type </I></B></TH>
+		<TH><B><I> Range </I></B></TH> 
+		<TH><B><I> Default </I></B></TH> 
+		<TH><B><I> Description </I></B></TH> 
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TIM_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 1 </TD>
+		<TD align="left"> \copydetails RKH_TIM_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TIM_SIZEOF_NTIMER </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 8 </TD>
+		<TD align="left"> \copydetails RKH_TIM_SIZEOF_NTIMER </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TIM_EN_HOOK </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TIM_EN_HOOK </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TIM_EN_GET_INFO </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copydetails RKH_TIM_EN_GET_INFO </TD>
+	</TR>
+</TABLE>
 
+Prev: \ref main_page "Home" \n
+Next: \ref Usage "Getting started with RKH"
 */
 
 

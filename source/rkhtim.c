@@ -36,14 +36,14 @@
 #include "rkh.h"
 
 
-#if RKH_TIM_EN == 1
+#if RKH_TIM_EN == RKH_DEF_ENABLED
 
 RKH_MODULE_NAME( rkhtim )
 
 
 #define CPTIM( p )			(( RKHT_T* )(p))
 
-#if RKH_TIM_EN_HOOK == 1
+#if RKH_TIM_EN_HOOK == RKH_DEF_ENABLED
 	#define RKH_EXEC_THOOK()							\
 					if( t->timhk != ( RKH_THK_T )0 )	\
 						(*t->timhk)( t )
@@ -79,7 +79,11 @@ rem_from_list( RKHT_T *t, RKHT_T *tprev )
 
 
 void 
+#if defined( RKH_USE_TRC_SENDER )
+rkh_tim_tick( const void *const sender )
+#else
 rkh_tim_tick( void )
+#endif
 {
 	RKHT_T *t, *tprev;
 	RKH_SR_ALLOC();
@@ -98,7 +102,7 @@ rkh_tim_tick( void )
 		{
 			if( !--t->ntick )
 			{
-				RKH_TR_TIM_TOUT( t );
+				RKH_TR_TIM_TOUT( t, t->evt->e, t->sma );
 				if( t->period == 0 )
 					rem_from_list( t, tprev );
 				else
@@ -108,7 +112,7 @@ rkh_tim_tick( void )
 				}
 				RKH_HK_TIMEOUT( t );
 				RKH_EXEC_THOOK();
-				rkh_sma_post_fifo( ( RKHSMA_T* )t->sma, t->evt );
+				RKH_SMA_POST_FIFO( ( RKHSMA_T* )t->sma, t->evt, sender );
 			}
 			else
 				tprev = t;
@@ -118,7 +122,7 @@ rkh_tim_tick( void )
 
 
 void 
-#if RKH_TIM_EN_HOOK == 0
+#if RKH_TIM_EN_HOOK == RKH_DEF_DISABLED
 rkh_tim_init_( RKHT_T *t, RKHEVT_T *e )
 #else
 rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk )
@@ -152,7 +156,7 @@ rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick )
 		add_to_list( t );
 
 	RKH_EXIT_CRITICAL_();
-	RKH_TR_TIM_START( t, itick, sma );
+	RKH_TR_TIM_START( t, sma, itick, t->period );
 }
 
 
@@ -162,15 +166,16 @@ rkh_tim_stop( RKHT_T *t )
 	RKH_SR_ALLOC();
 
 	RKHREQUIRE( t != CPTIM(0) );
+	RKH_TR_TIM_STOP( t, t->ntick, t->period );
+
 	RKH_ENTER_CRITICAL_();
 	t->ntick = 0;
 	RKH_EXIT_CRITICAL_();
 
-	RKH_TR_TIM_STOP( t );
 }
 
 
-#if RKH_TIM_EN_GET_INFO	== 1
+#if RKH_TIM_EN_GET_INFO	== RKH_DEF_ENABLED
 void 
 rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info )
 {
