@@ -25,7 +25,8 @@ main( int argc, char *argv[] )
 
 	/* invoke the rkh_init() function */
 	bsp_init( argc, argv );
-
+//	for(;;);
+#if 1
 	/* send objects to trazer */
 	RKH_TR_FWK_AO( svr );
 	RKH_TR_FWK_AO( CLI0 );
@@ -57,5 +58,6 @@ main( int argc, char *argv[] )
 	rkh_enter();
 
 	RKH_TRC_CLOSE();
+#endif
 	return 0;
 }

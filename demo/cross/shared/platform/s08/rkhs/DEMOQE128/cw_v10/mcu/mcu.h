@@ -35,10 +35,10 @@
 
 #define MCU_BUSCLK			(MCU_FLL_OUT/2)
 
-#define RTI_TICK			1				/* Real Time Interrupt [ms] */
-#define RTI_MS(x)		(x/RTI_TICK)		/* Tick Base to ms */
+//#define RTI_TICK			1					/* Real Time Interrupt [ms] */
+//#define RTI_MS(x)			(x/RTI_TICK)		/* Tick Base to ms */
 
-#define reset_now()	asm( bgnd; )
+#define reset_now()			asm( bgnd; )
 
 void mcu_init( unsigned char tick_ms );
 

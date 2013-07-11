@@ -110,6 +110,15 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_TRC_SIZEOF_FUN_POINTER		32
 
+
+/* 
+ * This port use the native, simple, cooperative, and nonpreemptive 
+ * scheduler RKHS.
+ */
+
+#include "rkhs.h"
+
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.
@@ -131,12 +140,6 @@ void rkh_exit_critical( void );
 
 #define RKH_EQ_TYPE              		RKHRQ_T
 
-/* 
- * This port use the native, simple, cooperative, and nonpreemptive 
- * scheduler RKHS.
- */
-
-#include "rkhs.h"
 
 
 #endif

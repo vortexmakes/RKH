@@ -29,7 +29,7 @@
 #include "rkh.h"
 #include "rkhtim.h"
 #include "derivative.h"
-#include "gpio.h"
+#include "seqchbak.h"
 
 void 
 mcu_init( unsigned char tick_ms )
@@ -102,15 +102,18 @@ mcu_init( unsigned char tick_ms )
  * System Tick
  */
 
-void
+
+#include "seqlog.h"
+
 interrupt VectorNumber_Vrtc 
-l_isr_tick( void )
+void l_isr_tick( void )
 {
 	RTCSC_RTIF = 1;
 
-	toggle_iopin( LED2 );
-
 	RKH_TIM_TICK( &l_isr_tick );
+
+	sem = 0;
+	sequence_interrupt();
 }
 
 
@@ -120,9 +123,9 @@ l_isr_tick( void )
 
 unsigned long time_stamp;
 
-void
+
 interrupt VectorNumber_Vtpm1ovf
-isrVtpm1ovf( void )
+void isrVtpm1ovf( void )
 {
 	TPM1SC &= ~0x80;
 

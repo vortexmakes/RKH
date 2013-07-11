@@ -104,26 +104,6 @@
 			<locationURI>PARENT-7-PROJECT_LOC/main.c</locationURI>
 		</link>
 		<link>
-			<name>Sources/my.c</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/my.c</locationURI>
-		</link>
-		<link>
-			<name>Sources/my.h</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/my.h</locationURI>
-		</link>
-		<link>
-			<name>Sources/myact.c</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/myact.c</locationURI>
-		</link>
-		<link>
-			<name>Sources/myact.h</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/myact.h</locationURI>
-		</link>
-		<link>
 			<name>Sources/rkhcfg.h</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/rkhcfg.h</locationURI>

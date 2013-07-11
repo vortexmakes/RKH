@@ -380,7 +380,7 @@ set_sequence( MUInt major, unsigned minor, MUInt code )
 }
 
 
-#define BASE_INTER	2000
+#define BASE_INTER	10000
 #define HUNDRED_MS	(unsigned int)(100000L/BASE_INTER)
 
 static MUInt waiting_100ms( unsigned short counter );

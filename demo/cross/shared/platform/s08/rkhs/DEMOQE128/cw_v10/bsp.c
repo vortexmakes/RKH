@@ -33,6 +33,8 @@
 #include "mcu.h"
 #include "gpio.h"
 #include "serial.h"
+#include "sequence.h"
+#include "genled.h"
 
 
 #define SERIAL_TRACE				1
@@ -201,7 +203,7 @@ rkh_trc_flush( void )
 }
 #endif
 
-
+#if 0
 rkhui32_t 
 bsp_rand( void )
 {  
@@ -213,7 +215,7 @@ bsp_rand( void )
     l_rnd = l_rnd * (3*7*11*13*23);
     return l_rnd >> 8;
 }
-
+#endif
 
 void 
 bsp_srand( rkhui32_t seed )
@@ -233,6 +235,7 @@ bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 void 
 bsp_cli_req( rkhui8_t clino )
 {
+	set_sled( 1 << clino, CLI_WAITING );
 //	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
@@ -240,6 +243,7 @@ bsp_cli_req( rkhui8_t clino )
 void 
 bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 {
+	set_sled( 1 << clino, CLI_WORKING );
 //	printf( "Client[%d] - Using server for %d [seg]\n", 
 //									CLI_ID(clino), using_time );
 }
@@ -262,6 +266,7 @@ bsp_cli_resumed( rkhui8_t clino )
 void 
 bsp_cli_done( rkhui8_t clino )
 {
+	set_sled( 1 << clino, CLI_IDLE );
 //	printf( "Client[%d] - Done\n", CLI_ID(clino) );
 }
 
@@ -301,7 +306,11 @@ bsp_init( int argc, char *argv[] )
 
 	mcu_init( RKH_TICK_RATE_MS );
 	gpio_init();
+	init_seqs();
     bsp_srand( 1234U );
+    
+	RKH_ENA_INTERRUPT();
+	
 	rkh_init();
 
 	/* set trace filters */
@@ -321,4 +330,5 @@ bsp_init( int argc, char *argv[] )
 	RKH_TR_FWK_OBJ( &l_isr_kbd );
 	RKH_TR_FWK_OBJ( &l_isr_tick );
 #endif
+
 }

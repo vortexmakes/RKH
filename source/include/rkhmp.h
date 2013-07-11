@@ -207,7 +207,7 @@ typedef struct rkhmp_t
 
 	RKH_MPBS_T bsize;
 
-#if RKH_MP_REDUCED == RKH_DEF_DISABLED
+#if RKH_MP_REDUCED == 0
 
 	/** 
 	 * 	\brief

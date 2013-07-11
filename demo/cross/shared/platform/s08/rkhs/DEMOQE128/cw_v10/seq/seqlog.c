@@ -8,25 +8,25 @@
 #include "mytypes.h"
 #include "seqlog.h"
 #include "ledsctrl.h"
+#include "genled.h"
+#include "gpio.h"
 
 volatile MUInt sem;
 
-void
-set_hard_tone( unsigned short minor, MUInt arga, MUInt argb )
-{
-	set_slic_tone( arga, argb );
-}
-
-void
-set_hard_ring( unsigned short minor, MUInt arga, MUInt argb )
-{
-	set_slic_ring( arga, argb );
-}
 
 void
 set_hard_leds( unsigned short minor, MUInt arga, MUInt argb )
 {
-	set_led_mask( minor, arga );
+	switch( minor )
+	{
+		case CLI0_LED:
+			set_iopin( LED1, (arga == LED_ON) ? 0 : 1 );
+			break;
+		case CLI1_LED:
+			set_iopin( LED2, (arga == LED_ON) ? 0 : 1 );
+		default:
+			break;
+	}
 }
 
 

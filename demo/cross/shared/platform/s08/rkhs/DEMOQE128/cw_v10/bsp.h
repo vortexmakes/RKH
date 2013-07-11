@@ -32,7 +32,7 @@
 
 
 #define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
-#define BSP_MAX_NESTING_CSECT 		8
+#define BSP_MAX_NESTING_CSECT 		16
 
 
 void bsp_init( int argc, char *argv[] );

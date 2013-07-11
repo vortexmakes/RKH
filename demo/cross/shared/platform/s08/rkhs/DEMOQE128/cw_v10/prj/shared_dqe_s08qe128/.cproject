@@ -28,7 +28,7 @@
 						<toolChain id="hcs08.project.toolchain.1011252962" name="HCS08 Toolchain" superClass="hcs08.project.toolchain">
 							<option id="hc08.toolchain.sharedoption.mmu.495724721" name="Enable Memory Management Unit (MMU) Support (-MMU)" superClass="hc08.toolchain.sharedoption.mmu" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="hc08.toolchain.platform.1524626085" name="HC08 Targetplatform" superClass="hc08.toolchain.platform"/>
-							<builder buildPath="${ProjDirPath}/FLASH" id="hc08.toolchain.builder.1549671802" keepEnvironmentInBuildfile="false" name="GNU Make Builder" parallelizationNumber="-1" superClass="hc08.toolchain.builder"/>
+							<builder buildPath="${ProjDirPath}/FLASH" id="hc08.toolchain.builder.1549671802" keepEnvironmentInBuildfile="false" name="GNU Make Builder" parallelBuildWorkspaceOn="true" parallelizationNumber="-1" superClass="hc08.toolchain.builder"/>
 							<tool id="s08.toolchain.decoder.1454656625" name="S08 Disassembler" superClass="s08.toolchain.decoder"/>
 							<tool id="hc08.toolchain.linker.1289136864" name="S08 Linker" superClass="hc08.toolchain.linker">
 								<option id="hc08.toolchain.linker.base.general.paramFile.911337590" name="Parameter File" superClass="hc08.toolchain.linker.base.general.paramFile" value="${ProjDirPath}/Project_Settings/Linker_Files/Project.prm" valueType="string"/>
@@ -50,9 +50,14 @@
 								</option>
 								<option id="hsc08.toolchain.compiler.base.input.i.1090220607" name="Include File Path (-I)" superClass="hsc08.toolchain.compiler.base.input.i" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Project_Headers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\source\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\source\portable\s08\rkhs\cw6_3&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\source\portable\s08\rkhs\cw6_3&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\..\..\..\..\..\..\..\..\source\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\gpio&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\mcu&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\seq&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\serial&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/lib/hc08c/device/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/lib/hc08c/lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/lib/hc08c/src&quot;"/>
@@ -60,9 +65,7 @@
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/lib/hc08c/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MCUToolsBaseDir}/lib/hc08c/device/asm_include&quot;"/>
 								</option>
-								<option id="hc08.toolchain.compiler.base.input.ir.464585395" name="Recursive Include File Path (-Ir)" superClass="hc08.toolchain.compiler.base.input.ir" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..&quot;"/>
-								</option>
+								<option id="hc08.toolchain.compiler.base.input.ir.464585395" name="Recursive Include File Path (-Ir)" superClass="hc08.toolchain.compiler.base.input.ir"/>
 								<inputType id="hcs08.toolchain.compiler.base.input.c.997071850" name="HCS08 Compiler C Input" superClass="hcs08.toolchain.compiler.base.input.c"/>
 								<inputType id="hcs08.toolchain.compiler.base.input.cpp.1177927988" name="HCS08 Compiler CPP Input" superClass="hcs08.toolchain.compiler.base.input.cpp"/>
 							</tool>
