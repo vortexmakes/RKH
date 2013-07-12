@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\source\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\shared&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\..\..\source\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC08__"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -177,27 +177,27 @@
 				>
 			</File>
 			<File
-				RelativePath="..\cli.c"
+				RelativePath="..\..\..\..\..\cli.c"
 				>
 			</File>
 			<File
-				RelativePath="..\cliact.c"
+				RelativePath="..\..\..\..\..\cliact.c"
 				>
 			</File>
 			<File
-				RelativePath="..\main.c"
+				RelativePath="..\..\..\..\..\main.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
+				RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
 				>
 			</File>
 			<File
-				RelativePath="..\svr.c"
+				RelativePath="..\..\..\..\..\svr.c"
 				>
 			</File>
 			<File
-				RelativePath="..\svract.c"
+				RelativePath="..\..\..\..\..\svract.c"
 				>
 			</File>
 			<File
@@ -208,39 +208,39 @@
 				Name="rkh"
 				>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkh.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkh.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhdyn.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhdyn.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhmp.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhmp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhrq.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhrq.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhs.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhs.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhsma.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhsma.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhtbl.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhtbl.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhtim.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhtim.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\rkhtrc.c"
+					RelativePath="..\..\..\..\..\..\..\..\source\rkhtrc.c"
 					>
 				</File>
 			</Filter>
@@ -255,31 +255,35 @@
 				>
 			</File>
 			<File
-				RelativePath="..\cli.h"
+				RelativePath="..\..\..\..\..\cli.h"
 				>
 			</File>
 			<File
-				RelativePath="..\cliact.h"
+				RelativePath="..\..\..\..\..\cliact.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rkhcfg.h"
+				RelativePath="..\..\..\..\..\rkhcfg.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h"
+				RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h"
+				RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h"
 				>
 			</File>
 			<File
-				RelativePath="..\scevt.h"
+				RelativePath="..\..\..\..\..\scevt.h"
 				>
 			</File>
 			<File
-				RelativePath="..\svr.h"
+				RelativePath="..\..\..\..\..\svr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\svract.h"
 				>
 			</File>
 			<File
@@ -290,51 +294,51 @@
 				Name="rkh"
 				>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkh.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkh.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhassert.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhassert.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhevt.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhevt.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhitl.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhitl.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhmp.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhmp.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhplat.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhplat.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhrdy.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhrdy.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhrq.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhrq.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhs.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhs.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhtim.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhtim.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhtrc.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhtrc.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\source\include\rkhtype.h"
+					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhtype.h"
 					>
 				</File>
 			</Filter>
