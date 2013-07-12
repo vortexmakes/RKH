@@ -32,7 +32,7 @@
 
 
 #define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
-#define BSP_MAX_NESTING_CSECT 		16
+#define BSP_MAX_NESTING_CSECT 		10
 
 
 void bsp_init( int argc, char *argv[] );
@@ -48,5 +48,6 @@ void bsp_cli_done( rkhui8_t clino );
 void bsp_svr_recall( rkhui8_t clino );
 void bsp_svr_paused( const RKHSMA_T *sma );
 
+void bsp_switch_evt( rkhui8_t s, rkhui8_t st );
 
 #endif

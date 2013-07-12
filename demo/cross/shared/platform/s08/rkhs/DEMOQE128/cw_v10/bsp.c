@@ -35,6 +35,7 @@
 #include "serial.h"
 #include "sequence.h"
 #include "genled.h"
+#include "switch.h"
 
 
 #define SERIAL_TRACE				1
@@ -60,9 +61,8 @@ static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 
 #if defined( RKH_USE_TRC_SENDER )
 static rkhui8_t l_isr_kbd;
-static rkhui8_t l_isr_tick;
+interrupt VectorNumber_Vrtc void l_isr_tick( void );
 #endif
-
 
 /*
  * 	For serial trace feature.
@@ -149,7 +149,8 @@ rkh_hk_exit( void )
 void 
 rkh_hk_idle( void )				/* called within critical section */
 {
-    RKH_EXIT_CRITICAL( dummy );
+//    RKH_EXIT_CRITICAL( dummy );
+	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
 }
 
@@ -159,7 +160,7 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();
-	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
+	RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
 	rkh_exit();
 	reset_now();
 }
@@ -203,7 +204,18 @@ rkh_trc_flush( void )
 }
 #endif
 
-#if 0
+
+void
+bsp_switch_evt( rkhui8_t s, rkhui8_t st )
+{
+	if( st == SW_RELEASED )
+		return;
+
+	if(s == SW1_SWITCH )
+		bsp_publish( &e_pause );
+}
+
+
 rkhui32_t 
 bsp_rand( void )
 {  
@@ -212,10 +224,10 @@ bsp_rand( void )
 	 * "Super-Duper" Linear Congruential Generator (LCG)
 	 * LCG(2^32, 3*7*11*13*23, 0, seed) [MS]
 	 */
-    l_rnd = l_rnd * (3*7*11*13*23);
+    l_rnd = (rkhui32_t)(l_rnd * (3*7*11*13*23));
     return l_rnd >> 8;
 }
-#endif
+
 
 void 
 bsp_srand( rkhui32_t seed )
@@ -227,72 +239,59 @@ bsp_srand( rkhui32_t seed )
 void 
 bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 {
-//	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
-//									CLI_ID(clino), req_time );
+	(void)clino;
+	(void)req_time;
 }
 
 
 void 
 bsp_cli_req( rkhui8_t clino )
 {
-	set_sled( 1 << clino, CLI_WAITING );
-//	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_WAITING );
 }
 
 
 void 
 bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 {
-	set_sled( 1 << clino, CLI_WORKING );
-//	printf( "Client[%d] - Using server for %d [seg]\n", 
-//									CLI_ID(clino), using_time );
+	(void)using_time;
+	
+	set_cli_sled( clino, CLI_WORKING );
 }
 
 
 void 
 bsp_cli_paused( rkhui8_t clino )
 {
-//	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_PAUSED );
 }
 
 
 void 
 bsp_cli_resumed( rkhui8_t clino )
 {
-//	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_IDLE );
 }
 
 
 void 
 bsp_cli_done( rkhui8_t clino )
 {
-	set_sled( 1 << clino, CLI_IDLE );
-//	printf( "Client[%d] - Done\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_IDLE );
 }
 
 
 void 
 bsp_svr_recall( rkhui8_t clino )
 {
-//	printf( "%s Recall a deferred request from client[%d]\n", 
-//									SVR_NAME, CLI_ID(clino) );
+	(void)clino;
 }
 
 
 void 
 bsp_svr_paused( const RKHSMA_T *sma )
 {
-	HInt cn;
-	SVR_T *ao;
-
-//	ao = RKH_CAST(SVR_T, sma);
-//	printf( "%s Paused | ", SVR_NAME );
-//	printf( "ntot = %d |", ao->ntot );
-
-//	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-//		printf( " cli%d=%d |", cn, ao->ncr[ cn ] );
-
-//	putchar('\n');
+	(void)sma;
 }
 
 
@@ -326,9 +325,9 @@ bsp_init( int argc, char *argv[] )
 
 	RKH_TRC_OPEN();
 
-#if defined( RKH_USE_TRC_SENDER )
+//#if defined( RKH_USE_TRC_SENDER )
 	RKH_TR_FWK_OBJ( &l_isr_kbd );
 	RKH_TR_FWK_OBJ( &l_isr_tick );
-#endif
+//#endif
 
 }

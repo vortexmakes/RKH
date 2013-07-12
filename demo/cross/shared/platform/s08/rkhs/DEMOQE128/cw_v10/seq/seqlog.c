@@ -7,25 +7,28 @@
 
 #include "mytypes.h"
 #include "seqlog.h"
-#include "ledsctrl.h"
 #include "genled.h"
 #include "gpio.h"
 
 volatile MUInt sem;
 
+#define LEDS_ON_PORTC_MASK (CLI0_LED|CLI1_LED|CLI2_LED|CLI3_LED|CLI4_LED)
+#define LEDS_ON_PORTE_MASK (SRV_LED)
 
 void
 set_hard_leds( unsigned short minor, MUInt arga, MUInt argb )
 {
-	switch( minor )
+	(void)argb;
+	
+	if( arga == LED_ON )
 	{
-		case CLI0_LED:
-			set_iopin( LED1, (arga == LED_ON) ? 0 : 1 );
-			break;
-		case CLI1_LED:
-			set_iopin( LED2, (arga == LED_ON) ? 0 : 1 );
-		default:
-			break;
+		PTCD &= ~(minor & LEDS_ON_PORTC_MASK);
+		PTED &= ~(minor & LEDS_ON_PORTE_MASK);
+	}
+	else
+	{
+		PTCD |= (minor & LEDS_ON_PORTC_MASK);
+		PTED |= (minor & LEDS_ON_PORTE_MASK);
 	}
 }
 

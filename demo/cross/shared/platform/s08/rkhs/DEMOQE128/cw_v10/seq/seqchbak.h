@@ -14,6 +14,6 @@
  */
 
 
-MUInt sequence_interrupt( void );
+void sequence_interrupt( void );
 
 #endif

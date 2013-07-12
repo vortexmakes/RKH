@@ -14,9 +14,9 @@
 
 
 #define CLI_REQ_TIME		\
-			RKH_TIME_SEC( 2 )//(bsp_rand() % 5) + 2 )
+			(RKH_TNT_T)RKH_TIME_SEC( (bsp_rand() % 5) + 2 )
 #define CLI_USING_TIME		\
-			RKH_TIME_SEC( 1 )//(bsp_rand() % 5) + 1 )
+			(RKH_TNT_T)RKH_TIME_SEC( (bsp_rand() % 5) + 1 )
 
 
 static RKH_DCLR_STATIC_EVENT( e_touse, TOUT_USING );

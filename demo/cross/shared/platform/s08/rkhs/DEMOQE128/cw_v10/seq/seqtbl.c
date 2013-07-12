@@ -18,6 +18,8 @@ static const SEQ_T leds_t[] =
   { LED_ON,  		NO_ARG, 1,  0, 1,  1,	CLI_WORKING  },  
   /* CLI_WAITING */
   { LED_ON,			NO_ARG, 2,  2, 1,  4,	CLI_WAITING },
+  /* CLI_PAUSED */
+  { LED_ON,			NO_ARG, 6,  4, 3,  40,	CLI_PAUSED }
 };
 
 const MAJOR_T majors_t[ NUM_MAJOR ] =

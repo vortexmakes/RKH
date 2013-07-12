@@ -30,10 +30,13 @@
 #include "rkhtim.h"
 #include "derivative.h"
 #include "seqchbak.h"
+#include "seqlog.h"
+#include "switch.h"
 
 void 
 mcu_init( unsigned char tick_ms )
 {
+	short i;
 	/* ### MC9S08QE128_80 "Cpu" init code ... */
 	/*  PE initialization code after reset */
 	/* Common initialization of the write once registers */
@@ -95,6 +98,8 @@ mcu_init( unsigned char tick_ms )
 	(void)(TPM1SC == 0);	/* Overflow int. flag clearing (first part) */
 
 	TPM1SC = 0x0f;			/* clock source: bus frequency */
+	
+	for(i=0x1000;i;--i);
 }
 
 
@@ -102,8 +107,6 @@ mcu_init( unsigned char tick_ms )
  * System Tick
  */
 
-
-#include "seqlog.h"
 
 interrupt VectorNumber_Vrtc 
 void l_isr_tick( void )
@@ -114,6 +117,7 @@ void l_isr_tick( void )
 
 	sem = 0;
 	sequence_interrupt();
+	switch_tick();
 }
 
 

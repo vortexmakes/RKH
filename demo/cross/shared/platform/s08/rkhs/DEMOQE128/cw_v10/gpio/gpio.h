@@ -76,7 +76,8 @@ enum
 #define LED3			PTC, 2, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
 #define LED4			PTC, 3, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
 #define LED5			PTC, 4, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
-#define LED6			PTC, 5, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
+/* LED6 On PTC5 reserved for COM_ENABLE */
+//#define LED6			PTC, 5, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
 #define LED7			PTE, 6, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
 #define LED8			PTE, 7, PIN_DIR_OUT, PIN_PE_DIS, PIN_HIGH
 
@@ -100,7 +101,6 @@ enum
 				init_iopin( LED3 );	\
 				init_iopin( LED4 );	\
 				init_iopin( LED5 );	\
-				init_iopin( LED6 );	\
 				init_iopin( LED7 );	\
 				init_iopin( LED8 );	\
 			}

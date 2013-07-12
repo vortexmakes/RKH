@@ -430,7 +430,7 @@ waiting_100ms( unsigned short counter )
  * 		In each interrupt, and begining in the
  * 		100 msec. slot, sweeps only one channel
  */
-MUInt
+void
 sequence_interrupt( void )
 {
 	MUInt status;
@@ -439,8 +439,6 @@ sequence_interrupt( void )
 	status = (*pfinter)( interrupt_counter );
 	if( ++interrupt_counter >= HUNDRED_MS )
 		interrupt_counter = 0;
-
-	return status;
 }
 
 
