@@ -10,6 +10,72 @@
 #
 
 # 
+# - TRAZER_EN_SENDER:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_SENDER=0
+
+# 
+# - TRAZER_RUNTIME_FILTER:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_RUNTIME_FILTER=1
+
+# 
+# - TRAZER_EN_USER_TRACE:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_USER_TRACE=1
+
+# 
+# - TRAZER_ALL:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_ALL=1
+
+# 
+# - TRAZER_EN_MP:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_MP=0
+
+# 
+# - TRAZER_EN_RQ:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_RQ=0
+
+# 
+# - TRAZER_EN_SMA:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_SMA=0
+
+# 
+# - TRAZER_EN_TIM:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_TIM=0
+
+# 
+# - TRAZER_EN_SM:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_SM=0
+
+# 
+# - TRAZER_EN_FWK:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_FWK=1
+
+# 
+# - TRAZER_EN_ASSERT:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_ASSERT=1
+
+# 
 # - TRAZER_SIZEOF_SIG:
 #		Specify the size of the event signal.
 #		Valid values: 1, 2, 4. Default is 1.

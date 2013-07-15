@@ -16,4 +16,12 @@ This version is compatible to use with RKH V2.0
 -Accept configuration transmited by the target aplication.
 -Support of user trace events.
 
+\section trazer_2_1 Version 2.1 Release date: Mar 18, 2013
+-Removes '&' prefix from symbols objects visualization
+
+\section trazer_2_2 Version 2.2 Release date: Jul 02, 2013
+-Compatibility with RKH V2.4.03
+-If enabled, show sender information on post fifo/lifo
+ trace events.
+-seqdiag file generation.
 */

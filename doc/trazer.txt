@@ -4,17 +4,18 @@
 \image html trazer.png
 
 \n
-Trazer is a visualization tool that works in conjuntion with the RKH 
-framework built in trace facility. Trazer gives the possibility to display 
-selectively the recording of all events of your system, state machines, 
+Trazer is a visualization tool that works in conjuntion with the RKH
+framework built in trace facility. Trazer gives the possibility to display
+selectively the recording of all events of your system, state machines,
 queues, timers, etc.
-Trazer helps you to faster troubleshooting especially on complex problems 
-where a debugger is not sufficient, by providing a simple consolidated, 
-human-readable textual output. Given the RKH cross plataform portability, 
-trace data may come from 8, 16, or 32-bits platforms. In order to that Trazer 
-need to be configured to support this diversity of plataform and the wide 
-range of RKH framework configurations. The following figure shows the 
-relationship between framework RKH and host-application Trazer.
+Trazer helps you to faster troubleshooting especially on complex problems
+where a debugger is not sufficient, by providing a simple consolidated,
+human-readable textual output. Given the RKH cross plataform portability,
+trace data may come from 8, 16, or 32-bits platforms.
+In order to that Trazer need to be configured to support this diversity of
+plataform and the wide range of RKH framework configurations.
+The following figure shows the relationship between framework RKH
+and host-application Trazer.
 
 \image html rkh_trazer.jpg
 
@@ -22,6 +23,7 @@ This manual includes:
 
 - \ref trazer_cfg
 - \ref trazer_human_format
+- \ref seq_diag
 - \ref rev_page_trazer
 
 <HR>
@@ -30,8 +32,8 @@ This manual includes:
 Before using %Trazer you must provides the listed configurations:
 
 - \ref trazer_command to configure comunication link and general options.
-- \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, 
-such as pointer sizes, signal sizes, etc.
+- \ref trazer_config (\subpage trazer_cfg_) to setup all target 
+dependencies, such as pointer sizes, signal sizes, etc.
 
 <HR>
 \section trazer_command Command-line parameters
@@ -41,7 +43,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c8cedc">
     <TD><B>&nbsp;Option</B></TD>
     <TD><B>&nbsp;Example</B></TD>
-    <TD><B>&nbsp;Comments</B></TD>
+    <TD><B>&nbsp;Description</B></TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
@@ -92,13 +94,18 @@ ALIGN="center" VALIGN="middle">
 <HR>
 \section trazer_config Configuration file
 
-%Trazer is designed to work with all possible target CPU, which requires a wide range of configurability. 
-For example, for any given target CPU, Trazer must "know" the size of object pointers, event size, timestamp size and so on. 
-You can provide this information by two ways: 
-  - include \subpage trazer_cfg_ configuration file in the same trazer.exe directory.
-  - setup the target aplication to call to \subpage RKH_TR_FWK_TCFG and perform the streaming the RKH configuration at startup.
+%Trazer is designed to work with all possible target CPU, which requires a
+wide range of configurability. For example, for any given target CPU, 
+Trazer must "know" the size of object pointers, event size, timestamp size 
+and so on. You can provide this information by two ways: 
+  - include \subpage trazer_cfg_ configuration file in 
+the same trazer.exe directory.
+  - setup the target aplication to call to \subpage RKH_TR_FWK_TCFG
+and perform the streaming the RKH configuration at startup.
 
-If \subpage trazer_cfg_ is not found, assuming default settings, any configuration streaming received overwrite settings. The following table summarizes the \subpage trazer_cfg_ content.
+If \subpage trazer_cfg_ is not found, assuming default settings, 
+any configuration streaming received overwrite settings. 
+The following table summarizes the \subpage trazer_cfg_ content.
 
 <TABLE SUMMARY="Trazer config" cellSpacing=4 cellPadding=1 border=0
 ALIGN="center" VALIGN="middle">
@@ -106,7 +113,84 @@ ALIGN="center" VALIGN="middle">
     <TD><B>&nbsp;Parameter</B></TD>
     <TD><B>&nbsp;Valid Values</B></TD>
     <TD><B>&nbsp;Must match RKH config (rkhcfg.h)</B></TD>
-    <TD><B>&nbsp;Comments</B></TD>
+    <TD><B>&nbsp;Description</B></TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_SENDER</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_SMA_EN_TRC_SENDER</TD>
+    <TD>Enable/Disable pointer to sender object insertion when posting event.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_RUNTIME_FILTER</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_RUNTIME_FILTER</TD>
+    <TD>Enable/Disable runtime filter facility.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_USER_TRACE</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_USER_TRACE</TD>
+    <TD>Enable/Disable user trace facility.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_ALL</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_ALL</TD>
+    <TD>If 1 enables all RKH trace records.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_MP</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_MP</TD>
+    <TD>If 1 enables RKH trace records related to native fixed-size memory block.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_RQ</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_RQ</TD>
+    <TD>If 1 enables RKH trace records related to native native queues.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_SMA</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_SMA</TD>
+    <TD>If 1 enables RKH trace records related to the state machine applications.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_TIM</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_TIM</TD>
+    <TD>If 1 enables RKH trace records related to the native software timer.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_SM</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_SM</TD>
+    <TD>If 1 enables RKH trace records related to the state machine (hierarchical and "flat").</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_FWK</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_FWK</TD>
+    <TD>If 1 enables RKH trace records related to the nativenative  event framework.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_ASSERT</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_TRC_EN_ASSERT</TD>
+    <TD>If 1 enables RKH "assertion" trace record.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
@@ -181,8 +265,9 @@ ALIGN="center" VALIGN="middle">
 
 </TABLE>
 
-Your must ensure that Trazer configuration, match exactly with the target system under test,
-otherwise will be unable to parse the trace stream, and these errors would be shown:
+Your must ensure that Trazer configuration, match exactly with the target
+system under test, otherwise will be unable to parse the trace stream, 
+and these errors would be shown:
 <TABLE SUMMARY="Trazer errors" cellSpacing=4 cellPadding=1 border=0
 ALIGN="center" VALIGN="middle">
   <TR bgColor="#f0f0f0">
@@ -195,65 +280,20 @@ ALIGN="center" VALIGN="middle">
 
 <HR>
 
-In the instrumented application two particular trace events could be used to better 
-trace visualization, #RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG.
-
-#RKH_TE_FWK_OBJ:
-\n Associates the address of the object, in memory with its symbolic name.
-Using the RKH_TR_FWK_OBJ() macro in application source code looks like:
-
-\code
-...
-	static int g_status; 
-	static RKHT_T tdll; 
-
-(1)	RKH_TR_FWK_OBJ( &g_status );
-(2)	RKH_TR_FWK_OBJ( &tdll );
-\endcode
-
-Explanation:
-
-\li (1-2) The RKH_TR_FWK_OBJ() macro associates the object memory address 
-		with its symbolic name. This macro also performs the trace event 
-		recording to local stream.
-
-#RKH_TE_FWK_SIG:
-\n Associates the numerical value of the event signal to the symbolic name of 
-the signal.
-Using the RKH_TR_FWK_OBJ() macro in application source code looks like:
-
-\code
-	// in the dedicated application header file resides the signal enumeration
-
-	enum
-	{
-		...
-		PWR_FAIL,
-		PRESS_ENTER,
-		...
-	};
-
-	// frequently, the macro RKH_TR_FWK_SIG() is used in the \b main.c file.
-
-(1) RKH_TR_FWK_SIG( PWR_FAIL );
-(2) RKH_TR_FWK_SIG( PRESS_ENTER );
-\endcode
-
-Explanation:
-
-\li (1-2) The RKH_TR_FWK_SIG() macro associates the numerical value of the 
-		event signal to the symbolic name of the signal. This macro also 
-		performs the trace event recording to local stream.
-
-RKH user must generate this particulars trace events as described in RKHTRACE 
-and Trazer will take care of reemplacing the numeric values by the user 
-definition.
+In the instrumented application a set of particular trace events 
+could be used to better trace visualization, 
+#RKH_TE_FWK_OBJ, #RKH_TE_FWK_AO, #RKH_TE_FWK_STATE, #RKH_TE_FWK_PSTATE,
+#RKH_TE_FWK_TIMER, #RKH_TE_FWK_EPOOL, #RKH_TE_FWK_QUEUE and #RKH_TE_FWK_SIG.
 
 <HR>
 \section trazer_human_format Human readable output
 
-Trazer is a console program that converts the trace stream data in a human-readable format. Following is shown how its output looks like.\n
-Trazer start showing version and compatibility with RKH framework, below are displayed the current Trazer configuration. For this example the trace.bin is used as trace data source.\n Each identified trace show:\n
+Trazer is a console program that converts the trace stream data in a
+human-readable format. Following is shown how its output looks like.\n
+Trazer start showing version and compatibility with RKH framework, 
+below are displayed the current Trazer configuration. 
+For this example the trace.bin is used as trace data source.\n 
+Each identified trace show:\n
 
 - \b Timestamp, in CPU ticks. The number of bytes used by the timestamp is 
 configurable by the macro TRAZER_SIZEOF_TSTAMP. See the 
@@ -270,70 +310,158 @@ application-specific record.
 
 - \b Args, data asociated with the event.
 
-Sequences 4, 5 and 6 are examples of #RKH_TE_FWK_OBJ and #RKH_TE_FWK_SIG events. 
-After, sequences 16, 17, 32 and 33, show how Trazer identify object address 
+At startup, RKH configuration is loaded from trazer.cfg file and dumped 
+to screen.\n
+As shown in sequence 0, if target is configurated to sent 
+RKH configuration, when RKH_TE_FWK_TCFG trace event is received,
+Trazer parameters are updated.\n
+Sequences 1 to 21 are examples of symbolic memory address association events. 
+After, sequences 24, 30, 30 and 32, show how Trazer identify object address 
 and signal number replacing them by its symbolic representation. 
 In case that no symbolic representation has been defined for a particular 
-object, (null) will be shown, and in same manner the numeric value for signals.
+object, the memory address of  will be shown, and in same manner 
+the numeric value for signals.
+Sequcence 23 is and example of RKH_TE_USER.
 
 \verbatim
 
-TRAZER Visualization Tool V2.0 compatible with RKH V2.3
-Date = Jan  30 2013 13:46:48
+--- TRAZER V2.2 --- RKH trace event interpreter ---
 
-Trace Setup
+          build date:   Jul  2 2013
+          tested with:  RKH V2.4.03
 
-   Trace events quantity = 45
-   TRAZER_SIZEOF_SIG     = 1
-   TRAZER_SIZEOF_TSTAMP  = 4
-   TRAZER_SIZEOF_POINTER = 4
-   TRAZER_SIZEOF_NTIMER  = 2
-   TRAZER_SIZEOF_NBLOCK  = 1
-   TRAZER_SIZEOF_NELEM   = 1
-   TRAZER_SIZEOF_ESIZE   = 2
-   TRAZER_EN_NSEQ        = 1
-   TRAZER_EN_CHK         = 1
-   TRAZER_EN_TSTAMP      = 1
+Using local RKH configuration
 
--------- Parsing trace stream from file trace.bin --------
+   RKH_SMA_EN_TRC_SENDER  = 0
+   RKH_TRC_RUNTIME_FILTER = 1
+   RKH_TRC_EN_USER_TRACE  = 1
+   RKH_TRC_ALL            = 1
+   RKH_TRC_EN_MP          = 0
+   RKH_TRC_EN_RQ          = 0
+   RKH_TRC_EN_SMA         = 0
+   RKH_TRC_EN_TIM         = 0
+   RKH_TRC_EN_SM          = 0
+   RKH_TRC_EN_FWK         = 1
+   RKH_TRC_EN_ASSERT      = 1
+   RKH_RQ_EN_GET_LWMARK   = 0
+   RKH_MP_EN_GET_LWM      = 0
+   RKH_SIZEOF_EVENT       = 8
+   RKH_TRC_SIZEOF_TSTAMP  = 32
+   RKH_TRC_SIZEOF_POINTER = 32
+   RKH_TIM_SIZEOF_NTIMER  = 16
+   RKH_MP_SIZEOF_NBLOCK   = 8
+   RKH_RQ_SIZEOF_NELEM    = 8
+   RKH_SIZEOF_ESIZE       = 16
+   RKH_TRC_EN_NSEQ        = 1
+   RKH_TRC_EN_CHK         = 1
+   RKH_TRC_EN_TSTAMP      = 1
+   RKH_MP_SIZEOF_BSIZE    = 1
+   RKH_MAX_EPOOL          = 4
 
-        84 [  0] MP  | INIT            : mp=(null), nblock=16
-        84 [  1] RKH | EPOOL_REG       : epix =1, ssize=64, esize=4
-        84 [  2] MP  | INIT            : mp=(null), nblock=4
-        84 [  3] RKH | EPOOL_REG       : epix =2, ssize=32, esize=8
-        84 [  4] RKH | SYM_OBJ         : obj=0x01091780, sym=&rkheplist[0]
-        84 [  5] RKH | SYM_OBJ         : obj=0x01091794, sym=&rkheplist[1]
-        84 [  6] RKH | SYM_SIG         : sig=1, sym=ONE
-        84 [  7] RQ  | INIT            : rq=(null), sma=(null), nelem=4
-        84 [  8] SMA | REGISTER        : sma=(null), prio=0
-        84 [  9] SM  | INIT            : sma=(null), istate=(null)
-        84 [ 10] TIM | INIT            : timer=(null), sig=(null)
-        84 [ 11] SM  | ENTRY_STATE     : sma=(null), state=(null)
-        84 [ 12] SM  | ENTRY_STATE     : sma=(null), state=(null)
-        84 [ 13] SM  | ENTRY_STATE     : sma=(null), state=(null)
-        84 [ 14] SMA | ACTIVATE        : sma=(null)
-        86 [ 15] RKH | ENTER           :
-      1509 [ 16] MP  | GET             : mp=&rkheplist[1], nfree=3
-      1509 [ 17] RKH | ALLOC_EVENT     : esize=6, sig=ONE
-      1509 [ 18] RQ  | POST_FIFO       : rq=(null), nused=1
-      1509 [ 19] SMA | POST_FIFO       : sma=(null), sig=ONE
-      1509 [ 20] RQ  | GET_LAST        : rq=(null)
-      1509 [ 21] SMA | GET_EVENT       : sma=(null), sig=ONE
-      1509 [ 22] SM  | DISPATCH        : sma=(null), sig=ONE
-      1509 [ 23] SM  | TRANSITION      : sma=(null), sstate=(null), tstate=(null)
-      1509 [ 24] SM  | COMP_STATE      : sma=(null), state=(null)
-      1509 [ 25] SM  | NUM_EN_EX       : sma=(null), nentry=1, nexit=1
-      1509 [ 26] SM  | EXIT_STATE      : sma=(null), state=(null)
-      1509 [ 27] SM  | NUM_TRN_ACT     : sma=(null), ntrnaction=1
-      1509 [ 28] SM  | ENTRY_STATE     : sma=(null), state=(null)
-      1509 [ 29] SM  | CURRENT_STATE   : sma=(null), state=(null)
-      1509 [ 30] SM  | DISPATCH_RCODE  : sma=(null), retcode=RKH_OK
-      1509 [ 31] RKH | GC_RECYCLE      : sig=ONE
-      1509 [ 32] MP  | PUT             : mp=&rkheplist[1], nfree=4
-      1905 [ 33] MP  | GET             : mp=&rkheplist[1], nfree=3
-      1905 [ 34] RKH | ALLOC_EVENT     : esize=6, sig=(null)
-      1905 [ 35] RQ  | POST_FIFO       : rq=(null), nused=1
+
+-------- Parsing trace stream from TCP Port 6602 --------
+
+Accepted connection from 127.0.0.1, port 61574
+       121 [  0] FWK | TCFG       : Update RKH Configuration from client
+                                  | RKH_VERSION            = 2.4.03
+                                  | RKH_SMA_EN_TRC_SENDER  = 1
+                                  | RKH_TRC_RUNTIME_FILTER = 1
+                                  | RKH_TRC_EN_USER_TRACE  = 1
+                                  | RKH_TRC_ALL            = 1
+                                  | RKH_TRC_EN_MP          = 0
+                                  | RKH_TRC_EN_RQ          = 0
+                                  | RKH_TRC_EN_SMA         = 0
+                                  | RKH_TRC_EN_TIM         = 0
+                                  | RKH_TRC_EN_SM          = 0
+                                  | RKH_TRC_EN_FWK         = 1
+                                  | RKH_TRC_EN_ASSERT      = 1
+                                  | RKH_RQ_EN_GET_LWMARK   = 1
+                                  | RKH_MP_EN_GET_LWM      = 1
+                                  | RKH_SIZEOF_EVENT       = 8
+                                  | RKH_TRC_SIZEOF_TSTAMP  = 32
+                                  | RKH_TRC_SIZEOF_POINTER = 32
+                                  | RKH_TIM_SIZEOF_NTIMER  = 16
+                                  | RKH_MP_SIZEOF_NBLOCK   = 8
+                                  | RKH_RQ_SIZEOF_NELEM    = 8
+                                  | RKH_SIZEOF_ESIZE       = 16
+                                  | RKH_TRC_EN_NSEQ        = 1
+                                  | RKH_TRC_EN_CHK         = 1
+                                  | RKH_TRC_EN_TSTAMP      = 1
+                                  | RKH_MP_SIZEOF_BSIZE    = 1
+                                  | RKH_MAX_EPOOL          = 4
+
+
+       123 [  1] FWK | OBJ        : obj=0x00180B01, nm=l_isr_kbd
+       126 [  2] FWK | OBJ        : obj=0x00180B00, nm=l_isr_tick
+       129 [  3] FWK | AO         : obj=0x0018019C, nm=svr
+       131 [  4] FWK | AO         : obj=0x00180008, nm=CLI0
+       134 [  5] FWK | AO         : obj=0x00180058, nm=CLI1
+       136 [  6] FWK | AO         : obj=0x001800A8, nm=CLI2
+       138 [  7] FWK | AO         : obj=0x001800F8, nm=CLI3
+       140 [  8] FWK | STATE      : ao=svr, obj=0x0017E238, nm=svr_idle
+       143 [  9] FWK | STATE      : ao=svr, obj=0x0017E194, nm=svr_busy
+       146 [ 10] FWK | STATE      : ao=svr, obj=0x0017E180, nm=svr_paused
+       149 [ 11] FWK | STATE      : ao=CLI0, obj=0x0017DF18, nm=cli_idle
+       152 [ 12] FWK | STATE      : ao=CLI0, obj=0x0017DED4, nm=cli_waiting
+       155 [ 13] FWK | STATE      : ao=CLI0, obj=0x0017DEA0, nm=cli_using
+       158 [ 14] FWK | STATE      : ao=CLI0, obj=0x0017DE5C, nm=cli_paused
+       161 [ 15] FWK | SIG        : sig=0, nm=REQ
+       162 [ 16] FWK | SIG        : sig=1, nm=START
+       164 [ 17] FWK | SIG        : sig=2, nm=DONE
+       166 [ 18] FWK | SIG        : sig=4, nm=TOUT_USING
+       168 [ 19] FWK | SIG        : sig=3, nm=TOUT_REQ
+       169 [ 20] FWK | SIG        : sig=5, nm=PAUSE
+       171 [ 21] FWK | SIG        : sig=6, nm=TERM
+       172 [ 22] FWK | TUSR       : ut=0, nm=MY_TRACE
+       174 [ 23] USR | MY_TRACE   : User trace information
+                                  | -01
+                                  | 255
+                                  | -001
+                                  | 65535
+                                  | 65535
+                                  | 65535
+                                  | 0xFFFF
+                                  | hello
+                                  | [ FF FF 00 00 ]
+                                  | obj=CLI0
+                                  | func=0X1712DA
+                                  | event=REQ
+      4167 [ 24] SMA | FIFO       : ao=CLI2, sig=TOUT_REQ, snr=l_isr_tick, pid=0, rc=0
+      4167 [ 25] RQ  | FIFO       : q=0X180060, nelem=1, nmin=0
+      4167 [ 26] SMA | FIFO       : ao=CLI1, sig=TOUT_REQ, snr=l_isr_tick, pid=0, rc=0
+      4167 [ 27] RQ  | FIFO       : q=0X1801A4, nelem=1, nmin=0
+      4167 [ 28] SMA | FIFO       : ao=svr, sig=REQ, snr=CLI1, pid=1, rc=1
+      4167 [ 29] RQ  | FIFO       : q=0X180060, nelem=1, nmin=0
+      4167 [ 30] SMA | FIFO       : ao=CLI1, sig=START, snr=svr, pid=1, rc=1
+      4167 [ 31] MP  | PUT        : mp=0X180B80, nfree=7
+      4167 [ 32] TIM | START      : t=0X180080, ao=CLI1, nt=200, per=0
+      4168 [ 33] MP  | PUT        : mp=0X180B80, nfree=8
+      4168 [ 34] RQ  | FIFO       : q=0X1801A4, nelem=1, nmin=0
+      4168 [ 35] SMA | FIFO       : ao=svr, sig=REQ, snr=CLI2, pid=1, rc=1
+      4169 [ 36] RQ  | FIFO       : q=0X180470, nelem=1, nmin=0
+
 
 \endverbatim
+
+\section seq_diag Sequence Diagram Generator 
+
+In order to enhancing the capacity of the system behavior analysis, 
+Trazer can recreate a sequence diagram that shown chronologically the 
+interaction between active objects.\n
+To enable this capability, RKH configuration must enable to send the pointer
+to the sender object when posting an event (RKH_SMA_EN_TRC_SENDER = 1). 
+If so, for each RKH_TE_SMA_FIFO / RKH_TE_SMA_LIFO trace event received,
+Trazer catch the arguments ao (destination), sig (event), snr (sender) 
+to add to the diagram.
+Trazer generates two files types as output:
+ - <B>"YYMMDDHHMMSS.diag"</B>: require post process with seqdiag 
+Python Package that generates sequence-diagram image file from .diag file.\n
+Consult <http://blockdiag.com/en/seqdiag/> for detailed information.\n
+ - <B>"sdYYMMDDHHMMSS.html"</B>: require SVG seqdiag.js and parser.js 
+scripts located at /seqdiag directory. Web browser supported are 
+IE and Chrome, not yet working on Firefox.
+
+\image html seqdiag.png
+
 */
 
