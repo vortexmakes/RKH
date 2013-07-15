@@ -91,10 +91,47 @@ RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
 e-mail: francuccilea@gmail.com
 
 ------------------------------------------------------------------------------
-	
-RKH changelog file.
+
+RKH changelog file
 
 This file resumes the changes across project version releases.
+
+Changes between V2.4 and V2.4.3 released 07/15/2013 
+
++ 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 
++	Adds ARM Cortex-M0+ on Freedom KL25Z board.
++	Adds sender object (and macro RKH_SMA_EN_TRC_SENDER to rkhcfg.h) to 
+	rkh_tim_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(). 
++	Adds macros RKH_TIM_TICK, RKH_SMA_POST_FIFO/_LIFO to invoke functions 
+	rkh_tim_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo().
++	Removes RKH_TRC_MAX_EVENTS from rkhcfg.h file.
++ 	Adds the RKH_TR_RQ_FULL macro from rkh_rq_put_fifo() and 
+	rkh_rq_put_lifo() functions.
++	Add RKH_VERSION_CODE to RKH_TR_FWK_TCFG.
++	Update comments.
++	Changes RKH_TRC_EN_SM_CSTATE by RKH_TRC_EN_SM_TS_STATE.
++	Changes RKH_TE_SM_CSTATE by RKH_TE_SM_TS_STATE.
++	Adds choice pseudostate.
++	Adds macros RKH_GET_PRIO() and RKH_GET_SMA().
++	Adds macros RKH_ARRAY_SMA_CREATE() and RKH_ARRAY_SMA_DCLR().
++	Adds assert in rkh_rq_put_fifo()/lifo() when queue is full.
++	Adds a little code in favor of defensive programming (rkhmp.c).
++	Adds new arguments to trace event macros. See "trace event table".
++	Adds macros RKH_EVT_CAST() and RKH_CAST().
++	Updating the configuration table and preprocessor checking in rkhitl.h.
++	Adds to rkhst_t structure (base structure for basic, composite and 
+	submachine states) the "trtbl" member (pointer to transition table), as 
+	new basic attribute.
++	
+
+Changes between V2.3 and V2.4 released 05/03/2013 
+
++ 	Add the cross-platform demo 'blinky' for arm-cortex, s08 and coldfire v1. 
++ 	Add the arm-cortex port. 
++ 	Add RKH_TICK_RATE_HZ and RKH_TICK_RATE_MS constants. 
++ 	Fix RKH_FILTER_OFF_GROUP_ALL_EVENTS() and 
+	RKH_FILTER_ON_GROUP_ALL_EVENTS() macros. 
++ 	Eliminated the rkhdata.h file from demos. 
 
 Changes between V2.2 and V2.3 released 02/05/2013
 

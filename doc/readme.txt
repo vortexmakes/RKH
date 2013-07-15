@@ -3801,6 +3801,7 @@ files and libraries to be used by RKH applications.
 \n RKH cross-platform examples:
 
 - \subpage cross_blinky
+- \subpage cross_shared
 
 Prev: \ref main_page "Home" \n
 Next: \ref Download "Download"

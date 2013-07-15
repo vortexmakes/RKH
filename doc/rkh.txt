@@ -36,6 +36,7 @@ David Harel</EM>
 - \ref cfg
 - \ref dbg
 - \ref Download
+- \ref changelog
 - \ref Others
 - \ref Resources
 - \ref Licensing
