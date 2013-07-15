@@ -360,7 +360,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	for( stn = cs, tr = CT(0); stn != CST(0); )
 	{
 		in = RKH_PROCESS_INPUT( stn, sma, pe );	
-		FIND_TRANS( tr, stn->trtbl, in );
+		FIND_TRANS( tr, CBSC(stn)->trtbl, in );
 		if( IS_FOUND_TRANS( tr ) )
 			break;
 		UPDATE_IN_PARENT( stn );
@@ -368,7 +368,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 #else
 	stn = cs;
 	in = RKH_PROCESS_INPUT( stn, sma, pe );	
-	FIND_TRANS( tr, stn->trtbl, in );
+	FIND_TRANS( tr, CBSC(stn)->trtbl, in );
 #endif
 
 	if( IS_NOT_FOUND_TRANS( tr ) )					   /* transition taken? */
