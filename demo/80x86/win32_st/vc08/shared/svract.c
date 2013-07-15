@@ -29,7 +29,7 @@ svr_init( const struct rkhsma_t *sma )
 	rkh_rq_init( &qreq, qreq_sto, MAX_SIZEOF_QREQ, NULL );
 
 	RKH_CAST(SVR_T, sma)->ntot = 0;
-	for( cn = NUM_CLIENTS; cn; --cn )
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_CAST(SVR_T, sma)->ncr[ cn ] = 0;
 }
 
