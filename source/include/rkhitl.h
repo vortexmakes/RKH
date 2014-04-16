@@ -37,6 +37,13 @@
 #define __RKHITL_H__
 
 
+/**
+ * 	Defines standard constants and macros.
+ */
+
+#include "rkhdef.h"
+
+
 /**	
  *  Application specific configuration options.
  */
@@ -121,22 +128,7 @@
 	See Porting chapter in readme file for more information"
 #endif
 
-
 #define FOREVER						for(;;)
-
-
-/**
- * 	Standard defines.
- * 	It could be defined in "rkhdef.h" file.
- */
-
-#define RKH_DEF_ENABLED				1u
-#define RKH_DEF_DISABLED			0u
-
-#define RKH_WORD_SIZE_08			8u 	/*  8-bit word size (in bits) */
-#define RKH_WORD_SIZE_16			16u /* 16-bit word size (in bits) */
-#define RKH_WORD_SIZE_32			32u /* 32-bit word size (in bits) */
-#define RKH_WORD_SIZE_64			64u /* 64-bit word size (in bits) */
 
 
 /* 

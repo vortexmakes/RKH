@@ -31,8 +31,6 @@
  */
 
 
-#include <stdlib.h>
-
 #include "rkh.h"
 #include "rkhassert.h"
 

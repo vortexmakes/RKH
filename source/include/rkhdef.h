@@ -26,8 +26,12 @@
 /**
  * 	\file rkhdef.h
  *	\brief
- *	Assert definitions.
- *	
+ *	This platform-independent file contains many standard constants and 
+ *	macros.
+ *
+ *	All constants and macros are prefixed with RKH_DEF_ to provide a 
+ *	consistent naming convention and to avoid namespace conflicts with other 
+ *	constants and macros in your application.
  */
 
 
@@ -37,7 +41,14 @@
 
 #define  RKH_DEF_NULL               ((void *)0)
 
-/* ----------------- BOOLEAN DEFINES ------------------ */
+
+/**@{
+ * 	\brief
+ * 	Boolean defines.
+ *
+ * 	These constants should be used to configure, assign, and test boolean 
+ * 	values or variables.
+ */
 
 #define  RKH_DEF_FALSE				0u
 #define  RKH_DEF_TRUE               1u
@@ -62,6 +73,6 @@
 
 #define  RKH_DEF_FAIL               0u
 #define  RKH_DEF_OK                 1u
-
+/*@}*/
 
 #endif
