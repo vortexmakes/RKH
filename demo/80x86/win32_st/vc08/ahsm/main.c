@@ -4,7 +4,6 @@
 
 
 #include "rkh.h"
-#include "rkhtrc.h"
 #include "bsp.h"
 #include "my.h"
 #include "myact.h"

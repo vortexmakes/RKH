@@ -47,7 +47,7 @@
  *	by the application (can be a number in the range [1..64]).
  */
 
-#define RKH_MAX_SMA						8
+#define RKH_MAX_SMA						8u
 
 /**
  *	If the dynamic event support (see #RKH_EN_DYNAMIC_EVENT) is set to 1, RKH 
@@ -65,7 +65,7 @@
  *	Note that a value of 0 will completely suppress the memory pool services.
  */
 
-#define RKH_MAX_EPOOL					4
+#define RKH_MAX_EPOOL					4u
 
 /**
  * 	Specify the size of the event signal. The valid values [in bits] are 
@@ -74,7 +74,7 @@
  * 	See #RKHE_T data type.
  */
 
-#define RKH_SIZEOF_EVENT				8
+#define RKH_SIZEOF_EVENT				8u
 
 /**
  * 	Specify the data type of event size. The valid values [in bits] are 
@@ -83,7 +83,7 @@
  *	256 bytes.
  */
 
-#define RKH_SIZEOF_ESIZE				16
+#define RKH_SIZEOF_ESIZE				16u
 
 /**
  *	If the #RKH_EN_DEFERRED_EVENT is set to 1 and the dynamic event support is 
@@ -166,7 +166,7 @@
  * 	services, converting ticks to time. See RKH_TICK_RATE_MS constant.
  */
 
-#define RKH_TICK_RATE_HZ				100U
+#define RKH_TICK_RATE_HZ				100u
 
 
 /* --- Configuration options related to state machine applications -------- */
@@ -219,11 +219,11 @@
 /**
  * 	Specify the maximum number of hierarchical levels. The smaller this 
  * 	number, the lower the RAM consumption. Typically, the most of hierarchical 
- * 	state machines uses up to 4 levels. Currently #RKH_SMA_MAX_HCAL_DEPTH cannot 
- * 	exceed 8.
+ * 	state machines uses up to 4 levels. Currently #RKH_SMA_MAX_HCAL_DEPTH 
+ * 	cannot exceed 8.
  */
 
-#define RKH_SMA_MAX_HCAL_DEPTH			4
+#define RKH_SMA_MAX_HCAL_DEPTH			4u
 
 /**
  *	Specify the maximum number of linked transition segments. The smaller 
@@ -232,7 +232,7 @@
  *	Currently #RKH_SMA_MAX_TRC_SEGS cannot exceed 8.
  */
 
-#define RKH_SMA_MAX_TRC_SEGS			4
+#define RKH_SMA_MAX_TRC_SEGS			4u
 
 /**
  *	If the #RKH_SMA_EN_PSEUDOSTATE is set to 1, the RKH allows pseudostates 
@@ -249,8 +249,8 @@
 #define RKH_SMA_EN_DEEP_HISTORY			RKH_DEF_ENABLED
 
 /**
- *	If the #RKH_SMA_EN_SHALLOW_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
- *	the RKH allows shallow history pseudostate usage.
+ *	If the #RKH_SMA_EN_SHALLOW_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 
+ *	1, the RKH allows shallow history pseudostate usage.
  */
 
 #define RKH_SMA_EN_SHALLOW_HISTORY		RKH_DEF_ENABLED
@@ -287,9 +287,9 @@
 /* --- Configuration options related to SMA action featues ---------------- */
 
 /**
- *	If the #RKH_SMA_EN_INIT_ARG_SMA is set to 1 then the initial action prototype 
- *	will add as argument a pointer to state machine structure #RKHSMA_T. See 
- *	#RKHINIT_T definition.
+ *	If the #RKH_SMA_EN_INIT_ARG_SMA is set to 1 then the initial action 
+ *	prototype will add as argument a pointer to state machine structure 
+ *	#RKHSMA_T. See #RKHINIT_T definition.
  */
 
 #define RKH_SMA_EN_INIT_ARG_SMA			RKH_DEF_ENABLED
@@ -516,8 +516,8 @@
 #define RKH_TRC_EN_SM_PROCESS			RKH_DEF_ENABLED
 
 /**
- *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record an 
- *	incremental number (1-byte), used like a sequence number.
+ *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record 
+ *	an incremental number (1-byte), used like a sequence number.
  *	See RKH_TRC_NSEQ() and RKH_TRC_HDR() macros.
  */
 
@@ -542,14 +542,14 @@
  * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
  */
 
-#define RKH_TRC_SIZEOF_TSTAMP			32
+#define RKH_TRC_SIZEOF_TSTAMP			32u
 
 /**
  *	Specify the maximum number of trace events in the stream. The smaller 
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_TRC_SIZEOF_STREAM			256
+#define RKH_TRC_SIZEOF_STREAM			256u
 
 
 /* --- Configuration options related to queue (by reference) facility ----- */
@@ -567,7 +567,7 @@
  *	See #RKH_RQNE_T type.
  */
 
-#define RKH_RQ_SIZEOF_NELEM				8
+#define RKH_RQ_SIZEOF_NELEM				8u
 
 /**
  *	If the #RKH_RQ_EN_GET_LWMARK is set to 1 then RKH allows to known the 
@@ -651,14 +651,14 @@
  * 	8, 16 or 32. Default is 8. See #RKH_MPBS_T type.
  */
 
-#define RKH_MP_SIZEOF_BSIZE				8
+#define RKH_MP_SIZEOF_BSIZE				8u
 
 /**
  * 	Specify size of number of memory block size. The valid values [in bits] 
  * 	are 8, 16 or 32. Default is 8. See #RKH_MPNB_T type.
  */
 
-#define RKH_MP_SIZEOF_NBLOCK			8
+#define RKH_MP_SIZEOF_NBLOCK			8u
 
 /**
  *	If the #RKH_MP_EN_GET_BSIZE is set to 1 then RKH will include the 
@@ -711,7 +711,7 @@
  * 	Default is 8.
  */
 
-#define RKH_TIM_SIZEOF_NTIMER			16
+#define RKH_TIM_SIZEOF_NTIMER			16u
 
 /**
  *	If the #RKH_TIM_EN_HOOK is set to 1 then RKH will invoke a hook function 
