@@ -45,7 +45,6 @@
 #define __RKHTIM_H__
 
 
-#include "rkh.h"
 #include "rkhevt.h"
 
 
@@ -116,7 +115,8 @@ typedef struct rkh_tim_info_t
  * 	\endcode
  */
 
-typedef struct rkht_t
+typedef struct RKHT_T RKHT_T;
+struct RKHT_T
 {
 	/**
 	 * 	Points to timer event.
@@ -128,7 +128,7 @@ typedef struct rkht_t
 	 * 	Points to next timer structure in the doubly linked list.
 	 */
 
-	struct rkht_t *tnext;
+	RKHT_T *tnext;
 
 	/**
 	 * 	\brief
@@ -136,7 +136,7 @@ typedef struct rkht_t
 	 * 	timer event.
 	 */
 
-	const RKHSMA_T *sma;
+	const struct RKHSMA_T *sma;
 
 	/**
 	 * 	\brief
@@ -166,7 +166,7 @@ typedef struct rkht_t
 	 *	RKH_TIM_EN_HOOK.
 	 */
 
-#if RKH_TIM_EN_HOOK == 1
+#if RKH_TIM_EN_HOOK == RKH_DEF_ENABLED
 	RKH_THK_T timhk;
 #endif
 
@@ -175,10 +175,10 @@ typedef struct rkht_t
 	 * 	eliminated in compile-time with RKH_TIM_EN_GET_INFO.
 	 */
 
-#if RKH_TIM_EN_GET_INFO == 1
+#if RKH_TIM_EN_GET_INFO == RKH_DEF_ENABLED
 	RKH_TINFO_T info;
 #endif
-} RKHT_T;
+};
 
 
 /**
@@ -221,7 +221,7 @@ typedef struct rkht_t
 
 #define rkh_tim_init( t, e, thk )		rkh_mktimer( t, e, thk )
 
-#if RKH_TIM_EN_HOOK == 0
+#if RKH_TIM_EN_HOOK == RKH_DEF_DISABLED
 	void rkh_tim_init_( RKHT_T *t, RKHEVT_T *e );
 #else
 	void rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk );
@@ -311,7 +311,7 @@ typedef struct rkht_t
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_tim_start( RKHT_T *t, const RKHSMA_T *sma, RKH_TNT_T itick );
+void rkh_tim_start( RKHT_T *t, const struct RKHSMA_T *sma, RKH_TNT_T itick );
 
 
 /**

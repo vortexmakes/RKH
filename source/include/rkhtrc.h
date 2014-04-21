@@ -77,7 +77,6 @@
 #include "rkhcfg.h"
 #include "rkhtype.h"
 #include "rkhplat.h"
-#include <string.h>
 
 
 #define RKH_TRC_MAX_GROUPS			7
@@ -654,7 +653,7 @@ typedef enum rkh_trc_events
  * 	checksum = 0 - sum mod-256 -> ~(sum mod-256) + 1.
  */
 
-#if RKH_TRC_EN_CHK == 1
+#if RKH_TRC_EN_CHK == RKH_DEF_ENABLED
 	#define RKH_TRC_CHK()					\
 				chk = (rkhui8_t)(~chk + 1); \
 				rkh_trc_u8( chk )
@@ -681,7 +680,7 @@ typedef enum rkh_trc_events
  * 	configurable via the RKH_TRC_SIZEOF_TSTAMP preprocessor option.
  */
 
-#if RKH_TRC_EN_TSTAMP == 1
+#if RKH_TRC_EN_TSTAMP == RKH_DEF_ENABLED
 	#if RKH_TRC_SIZEOF_TSTAMP == 8
 		typedef rkhui8_t RKHTS_T;
 		#define RKH_TRC_TSTAMP()					\
@@ -705,7 +704,7 @@ typedef enum rkh_trc_events
 #endif
 
 
-#if RKH_TRC_RUNTIME_FILTER == 1
+#if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
 
 	/**
 	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
@@ -877,7 +876,7 @@ enum rkh_trc_fmt
  * 	Macros for use in the client code.
  */
 	
-#if RKH_TRC_EN_USER_TRACE == 1
+#if RKH_TRC_EN_USER_TRACE == RKH_DEF_ENABLED
 
 	/**
 	 * 	Idem RKH_TRC_BEGIN() macro but use it for user trace events.
@@ -1072,7 +1071,7 @@ enum rkh_trc_fmt
  * 	Insert the sequence number byte.
  */
 
-#if RKH_TRC_EN_NSEQ == 1
+#if RKH_TRC_EN_NSEQ == RKH_DEF_ENABLED
 	#define RKH_TRC_NSEQ()				\
 				RKH_TRC_UI8( nseq );	\
 				++nseq
@@ -1166,7 +1165,7 @@ enum rkh_trc_fmt
 #if RKH_MP_SIZEOF_NBLOCK == 8
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI8( nb )
-	#if RKH_MP_EN_GET_LWM == 1
+	#if RKH_MP_EN_GET_LWM == RKH_DEF_ENABLED
 		#define RKH_TRC_MP_NMIN( nm )	\
 					RKH_TRC_UI8( nm )
 	#else
@@ -1175,7 +1174,7 @@ enum rkh_trc_fmt
 #elif RKH_MP_SIZEOF_NBLOCK == 16
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI16( nb )
-	#if RKH_MP_EN_GET_LWM == 1
+	#if RKH_MP_EN_GET_LWM == RKH_DEF_ENABLED
 		#define RKH_TRC_MP_NMIN( nm )	\
 					RKH_TRC_UI16( nm )
 	#else
@@ -1184,7 +1183,7 @@ enum rkh_trc_fmt
 #elif RKH_MP_SIZEOF_NBLOCK == 32
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI32( nb )
-	#if RKH_MP_EN_GET_LWM == 1
+	#if RKH_MP_EN_GET_LWM == RKH_DEF_ENABLED
 		#define RKH_TRC_MP_NMIN( nm )	\
 					RKH_TRC_UI32( nm )
 	#else
@@ -1193,7 +1192,7 @@ enum rkh_trc_fmt
 #else
 	#define RKH_TRC_NBLK( nb )	\
 				RKH_TRC_UI8( nb )
-	#if RKH_MP_EN_GET_LWM == 1
+	#if RKH_MP_EN_GET_LWM == RKH_DEF_ENABLED
 		#define RKH_TRC_MP_NMIN( nm )	\
 					RKH_TRC_UI8( nm )
 	#else
@@ -1228,7 +1227,7 @@ enum rkh_trc_fmt
 #if RKH_RQ_SIZEOF_NELEM == 8
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI8( ne )
-	#if RKH_RQ_EN_GET_LWMARK == 1
+	#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 		#define RKH_TRC_RQ_NMIN( nm )	\
 						RKH_TRC_UI8( nm )
 	#else
@@ -1237,7 +1236,7 @@ enum rkh_trc_fmt
 #elif RKH_RQ_SIZEOF_NELEM == 16
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI16( ne )
-	#if RKH_RQ_EN_GET_LWMARK == 1
+	#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 		#define RKH_TRC_RQ_NMIN( nm )	\
 						RKH_TRC_UI16( nm )
 	#else
@@ -1246,7 +1245,7 @@ enum rkh_trc_fmt
 #elif RKH_RQ_SIZEOF_NELEM == 32
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI32( ne )
-	#if RKH_RQ_EN_GET_LWMARK == 1
+	#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 		#define RKH_TRC_RQ_NMIN( nm )	\
 						RKH_TRC_UI32( nm )
 	#else
@@ -1255,7 +1254,7 @@ enum rkh_trc_fmt
 #else
 	#define RKH_TRC_NE( ne )	\
 				RKH_TRC_UI8( ne )
-	#if RKH_RQ_EN_GET_LWMARK == 1
+	#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 		#define RKH_TRC_RQ_NMIN( nm )	\
 						RKH_TRC_UI8( nm )
 	#else
@@ -1309,9 +1308,9 @@ enum rkh_trc_fmt
 #define NVS			RKH_MAX_SMA
 
 
-#if RKH_TRC_EN == 1
+#if RKH_TRC_EN == RKH_DEF_ENABLED
 	/* --- Memory Pool (MP) ------------------ */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_MP == 1
+	#if RKH_TRC_ALL == RKH_DEF_ENABLED || RKH_TRC_EN_MP == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -1369,7 +1368,7 @@ enum rkh_trc_fmt
 	#endif
 
 	/* --- Queue (RQ) ------------------------ */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_RQ == 1
+	#if RKH_TRC_ALL == RKH_DEF_ENABLED || RKH_TRC_EN_RQ == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -1493,7 +1492,7 @@ enum rkh_trc_fmt
 	#endif
 
 	/* --- State Machine Application (SMA) --- */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SMA == 1
+	#if RKH_TRC_ALL == RKH_DEF_ENABLED || RKH_TRC_EN_SMA == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -1632,7 +1631,7 @@ enum rkh_trc_fmt
 	#endif
 
 	/* --- State machine (SM) ---------------- */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_SM == 1
+	#if RKH_TRC_ALL == RKH_DEF_ENABLED || RKH_TRC_EN_SM == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -1644,7 +1643,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, initial state\n
 		 */
 
-		#if RKH_TRC_EN_SM_INIT == 1
+		#if RKH_TRC_EN_SM_INIT == RKH_DEF_ENABLED
 			#define RKH_TR_SM_INIT( ao, ist )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_INIT, 					\
 									ao->romrkh->prio )					\
@@ -1665,7 +1664,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, history pseudostate\n
 		 */
 
-		#if RKH_TRC_EN_SM_CLRH == 1
+		#if RKH_TRC_EN_SM_CLRH == RKH_DEF_ENABLED
 			#define RKH_TR_SM_CLRH( ao, h )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
 									ao->romrkh->prio )					\
@@ -1686,7 +1685,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, signal\n
 		 */
 
-		#if RKH_TRC_EN_SM_DCH == 1
+		#if RKH_TRC_EN_SM_DCH == RKH_DEF_ENABLED
 			#define RKH_TR_SM_DCH( ao, ev )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
 									ao->romrkh->prio )					\
@@ -1708,7 +1707,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, source state, target state\n
 		 */
 
-		#if RKH_TRC_EN_SM_TRN == 1 
+		#if RKH_TRC_EN_SM_TRN == RKH_DEF_ENABLED
 			#define RKH_TR_SM_TRN( ao, sst, tst )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_TRN, 					\
 									ao->romrkh->prio )					\
@@ -1730,7 +1729,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, final state\n
 		 */
 
-		#if RKH_TRC_EN_SM_STATE == 1
+		#if RKH_TRC_EN_SM_STATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_STATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_STATE, 				\
 									ao->romrkh->prio )					\
@@ -1751,7 +1750,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, entry state\n
 		 */
 
-		#if RKH_TRC_EN_SM_ENSTATE == 1
+		#if RKH_TRC_EN_SM_ENSTATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_ENSTATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_ENSTATE, 				\
 									ao->romrkh->prio )					\
@@ -1772,7 +1771,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, exit state\n
 		 */
 
-		#if RKH_TRC_EN_SM_EXSTATE == 1
+		#if RKH_TRC_EN_SM_EXSTATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_EXSTATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EXSTATE, 				\
 									ao->romrkh->prio )					\
@@ -1793,7 +1792,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, nen, nex\n
 		 */
 
-		#if RKH_TRC_EN_SM_NENEX == 1 
+		#if RKH_TRC_EN_SM_NENEX == RKH_DEF_ENABLED
 			#define RKH_TR_SM_NENEX( ao, nen, nex )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_NENEX, 				\
 									ao->romrkh->prio )					\
@@ -1815,7 +1814,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, nta, nts\n
 		 */
 
-		#if RKH_TRC_EN_SM_NTRNACT == 1
+		#if RKH_TRC_EN_SM_NTRNACT == RKH_DEF_ENABLED
 			#define RKH_TR_SM_NTRNACT( ao, nta, nts )					\
 						RKH_TRC_BEGIN( RKH_TE_SM_NTRNACT, 				\
 									ao->romrkh->prio )					\
@@ -1837,7 +1836,7 @@ enum rkh_trc_fmt
 		 * 	Args	= ao, state/pseudostate\n
 		 */
 
-		#if RKH_TRC_EN_SM_TS_STATE == 1
+		#if RKH_TRC_EN_SM_TS_STATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_TS_STATE( ao, st )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_TS_STATE, 				\
 									ao->romrkh->prio )					\
@@ -1848,7 +1847,7 @@ enum rkh_trc_fmt
 			#define RKH_TR_SM_TS_STATE( ao, st )				(void)0	
 		#endif
 
-		#if RKH_TRC_EN_SM_PROCESS == 1
+		#if RKH_TRC_EN_SM_PROCESS == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -1997,7 +1996,7 @@ enum rkh_trc_fmt
 	#endif
 
 	/* --- Timer (TIM) ----------------------- */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_TIM == 1
+	#if RKH_TRC_ALL == RKH_DEF_ENABLED || RKH_TRC_EN_TIM == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -2090,7 +2089,7 @@ enum rkh_trc_fmt
 	#endif
 
 	/* --- Framework (RKH) ----------------------- */
-	#if RKH_TRC_ALL == 1 || RKH_TRC_EN_FWK == 1
+	#if RKH_TRC_ALL == RKH_DEF_ENABLED || RKH_TRC_EN_FWK == RKH_DEF_ENABLED
 
 		/**
 		 * 	\brief
@@ -2484,7 +2483,7 @@ enum rkh_trc_fmt
 		 * 	Args	= module name, and line number\n
 		 */
 
-		#if RKH_TRC_EN_ASSERT == 1
+		#if RKH_TRC_EN_ASSERT == RKH_DEF_ENABLED
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )						\
 						RKH_TRC_BEGIN_NOCRIT( RKH_TE_FWK_ASSERT, NVS )	\
 							RKH_TRC_STR( (RKHROM char *)mod_ );			\
@@ -2900,7 +2899,7 @@ rkhui8_t *rkh_trc_get( void );
 void rkh_trc_put( rkhui8_t b );
 
 
-#if RKH_TRC_EN == 1 && RKH_TRC_RUNTIME_FILTER == 1
+#if RKH_TRC_EN == RKH_DEF_ENABLED && RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
 	/**
 	 * 	\brief
 	 * 	Suppress the enabled trace events from a specific group. 

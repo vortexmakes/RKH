@@ -1664,7 +1664,7 @@
 #endif
 
 
-#if RKH_EN_DOXYGEN == 1
+#if RKH_EN_DOXYGEN == RKH_DEF_ENABLED
 
 	/**
 	 *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
@@ -1947,7 +1947,7 @@
 
 
 #ifdef RKH_CPUSR_TYPE
-	#if RKH_EN_DOXYGEN == 0
+	#if RKH_EN_DOXYGEN == RKH_DEF_DISABLED
 		#define RKH_SR_ALLOC()				RKH_CPUSR_TYPE sr = \
 														(RKH_CPUSR_TYPE)0
 		#define RKH_ENTER_CRITICAL_()		RKH_ENTER_CRITICAL( sr )

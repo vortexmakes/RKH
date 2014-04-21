@@ -50,7 +50,8 @@ RKH_MODULE_NAME( rkh )
 #define IS_REF_SUBMACHINE( s )			(CB((s))->type==RKH_REF_SUBMACHINE)
 
 
-#if RKH_EN_NATIVE_SCHEDULER == 1 || RKH_EN_REENTRANT == 0
+#if RKH_EN_NATIVE_SCHEDULER == RKH_DEF_ENABLED || \
+						RKH_EN_REENTRANT == RKH_DEF_DISABLED
 	#define RKH_RAM		static
 #else
 			          /* allocate the automatic variables of rkh_dispatch() */
@@ -271,7 +272,7 @@ rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
 void 
 rkh_init_hsm( RKHSMA_T *sma )
 {
-#if RKH_SMA_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
 	RKHROM RKHST_T *s;
 #endif
 	RKH_SR_ALLOC();
@@ -281,7 +282,7 @@ rkh_init_hsm( RKHSMA_T *sma )
 	RKH_TR_SM_INIT( sma, sma->romrkh->istate );
 	RKH_EXEC_INIT( sma );
 
-#if RKH_SMA_EN_HCAL == 1
+#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
 	for( s = CST( sma->romrkh->istate );; )
 	{
 		RKH_EXEC_ENTRY( s, CM( sma ) );
