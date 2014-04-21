@@ -131,8 +131,8 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_EQ_TYPE              		RKHRQ_T
-#define RKH_OSDATA_TYPE          		HANDLE
-#define RKH_THREAD_TYPE             	HANDLE
+#define RKH_OSSIGNAL_TYPE
+#define RKH_THREAD_TYPE
 
 
 #define RKH_SMA_BLOCK( sma ) 									\

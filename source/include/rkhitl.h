@@ -1741,33 +1741,58 @@
 	 *
 	 * 	<EM>Example for using the native queue</EM>
 	 * 	\code
+	 *	// RKH's native queue
 	 * 	#define RKH_EQ_TYPE			RKHRQ_T
+	 *	// Message queue of ucos/II
+	 * 	#define RKH_EQ_TYPE			OS_EVENT
+	 *	// Message queue of FreeRTOS
+	 * 	#define RKH_EQ_TYPE			xQueueHandle
 	 * 	\endcode
 	 */
 
 	#define RKH_EQ_TYPE
 
 	/**
-	 * 	The data type RKH_THREAD_TYPE holds the thread handle 
-	 * 	associated with the active object.
+	 * 	Frequently, the active object has its own task processing loop that 
+	 * 	waits for the signal to be posted, and when it is, loops to remove 
+	 * 	and process all events that are currently queued.
+	 * 	The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS 
+	 * 	that an event has arrived. In this case, \c os_signal holds the OS 
+	 * 	object used to signal that an event has been queued.
+	 * 	The data type RKH_THREAD_TYPE holds the thread handle associated 
+	 * 	with the active object.
 	 *
-	 * 	<EM>Example for using the native scheduler</EM>
+	 * 	<EM>Example for using the uCOS/II, FreeRTOS, Linux (Posix) and 
+	 * 	Win32</EM>
 	 * 	\code
-	 * 	#define RKH_THREAD_TYPE		RKHSMA_T
+	 *	// For uCOS/II
+	 * 	#define RKH_THREAD_TYPE		INT8U
+	 *	// For FreeRTOS
+	 * 	#define RKH_THREAD_TYPE		xTaskHandle
+	 *	// For Linux (Posix)
+	 * 	#define RKH_THREAD_TYPE		pthread_t
+	 *	// For Win32
+	 * 	#define RKH_THREAD_TYPE		void*
 	 * 	\endcode
 	 */
 
 	#define RKH_THREAD_TYPE
 
 	/**
-	 * 	The RKH_OSDATA_TYPE data member is necessary when the underlying 
+	 * 	The RKH_OSSIGNAL_TYPE data member is necessary when the underlying 
 	 * 	OS does not provide an adequate queue facility, so the native RKH 
-	 * 	queue RKHRQ_T must be used. In this case the RKH_OSDATA_TYPE data 
+	 * 	queue RKHRQ_T must be used. In this case the RKH_OSSIGNAL_TYPE data 
 	 * 	member holds an operating system specific primitive to efficiently 
 	 * 	block the native RKH event queue when the queue is empty.
+	 * 	Frequently, the active object has its own task processing loop that 
+	 * 	waits for the signal to be posted, and when it is, loops to remove 
+	 * 	and process all events that are currently queued.
+	 * 	The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS 
+	 * 	that an event has arrived. In this case, \c os_signal holds the OS 
+	 * 	object used to signal that an event has been queued.
 	 */
 
-	#define RKH_OSDATA_TYPE
+	#define RKH_OSSIGNAL_TYPE
 
 	/**@{
 	 * 	RKH need to disable interrupts in order to access critical sections 
@@ -2175,6 +2200,12 @@ typedef struct rkhsma_t
 	 * 	\brief
 	 * 	OS-dependent thread of control of the SMA.
 	 *
+	 * 	Frequently, the active object has its own task processing loop that 
+	 * 	waits for the signal to be posted, and when it is, loops to remove 
+	 * 	and process all events that are currently queued.
+	 * 	The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS 
+	 * 	that an event has arrived. In this case, \c os_signal holds the OS 
+	 * 	object used to signal that an event has been queued.
      *	This data might be used in various ways, depending on the RKH port.
      * 	In some ports it's used to store the thread handler.
 	 *
@@ -2191,6 +2222,12 @@ typedef struct rkhsma_t
 	 * 	\brief
 	 *	OS-dependent thread data.
 	 *
+	 * 	Frequently, the active object has its own task processing loop that 
+	 * 	waits for the signal to be posted, and when it is, loops to remove 
+	 * 	and process all events that are currently queued.
+	 * 	The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS 
+	 * 	that an event has arrived. In this case, \c os_signal holds the OS 
+	 * 	object used to signal that an event has been queued.
 	 * 	This data might be used in various ways, depending on the RKH port.
 	 * 	In some ports it's used to block the calling thread when the native 
 	 * 	RKH queue is empty. In other RKH ports the OS-dependent	data object 
@@ -2203,7 +2240,7 @@ typedef struct rkhsma_t
 
 #if (RKH_EN_SMA_THREAD == RKH_DEF_ENABLED && \
 		RKH_EN_SMA_THREAD_DATA == RKH_DEF_ENABLED)
-	RKH_OSDATA_TYPE osdata;
+	RKH_OSSIGNAL_TYPE os_signal;
 #endif
 
 	/**
