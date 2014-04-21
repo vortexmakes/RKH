@@ -381,7 +381,7 @@ in a separate task or thread.
 \c rkhport.h file.
 \li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
 RKH_SMA_UNREADY() in \c rkhport.h according to underlying OS or RTOS.
-\li (3) Define the macros #RKH_OSDATA_TYPE, and #RKH_THREAD_TYPE in 
+\li (3) Define the macros #RKH_OSSIGNAL_TYPE, and #RKH_THREAD_TYPE in 
 \c rkhport.h according to underlying OS or RTOS. 
 \li (4) Then, implement the platform-specific functions rkh_init(), rkh_enter(), 
 rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
@@ -390,7 +390,7 @@ are placed in \c rkhport.c.
 <EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
 \code
 #define RKH_EQ_TYPE              		RKHRQ_T
-#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_OSSIGNAL_TYPE          		HANDLE
 #define RKH_THREAD_TYPE             	HANDLE
 
 
@@ -864,7 +864,7 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_EQ_TYPE              		RKHRQ_T
-#define RKH_OSDATA_TYPE          		HANDLE
+#define RKH_OSSIGNAL_TYPE          		HANDLE
 #define RKH_THREAD_TYPE             	HANDLE
 
 
