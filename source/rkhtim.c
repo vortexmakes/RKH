@@ -147,7 +147,7 @@ rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick )
 {
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( t != CPTIM(0) && sma != (const struct RKHSMA_T *)0 && itick != 0 );
+	RKHREQUIRE( t != CPTIM(0) && sma != (const struct rkhsma_t *)0 && itick != 0 );
 	RKH_ENTER_CRITICAL_();
 
 	t->sma = sma;
