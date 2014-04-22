@@ -33,6 +33,13 @@
 #define __RKHCFG_H__
 
 
+/**
+ * 	Defines standard constants and macros.
+ */
+
+#include "rkhdef.h"
+
+
 /* --- Configuration options related to framework ------------------------- */
 
 /**
@@ -380,7 +387,7 @@
  *	records.
  */
 
-#define RKH_TRC_ALL						0
+#define RKH_TRC_ALL						1
 
 /**
  *	If the #RKH_TRC_EN_MP is set to 1 then RKH will include all trace records 

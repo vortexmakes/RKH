@@ -33,6 +33,13 @@
 #define __RKHCFG_H__
 
 
+/**
+ * 	Defines standard constants and macros.
+ */
+
+#include "rkhdef.h"
+
+
 /* --- Configuration options related to framework ------------------------- */
 
 /**
