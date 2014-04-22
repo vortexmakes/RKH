@@ -136,7 +136,7 @@ struct RKHT_T
 	 * 	timer event.
 	 */
 
-	const struct RKHSMA_T *sma;
+	const struct rkhsma_t *sma;
 
 	/**
 	 * 	\brief
@@ -311,7 +311,7 @@ struct RKHT_T
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_tim_start( RKHT_T *t, const struct RKHSMA_T *sma, RKH_TNT_T itick );
+void rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick );
 
 
 /**

@@ -1779,10 +1779,10 @@
 	#define RKH_THREAD_TYPE
 
 	/**
-	 * 	The RKH_OSSIGNAL_TYPE data member is necessary when the underlying 
+	 * 	The \c os_signal member of RKHSMA_T is necessary when the underlying 
 	 * 	OS does not provide an adequate queue facility, so the native RKH 
-	 * 	queue RKHRQ_T must be used. In this case the RKH_OSSIGNAL_TYPE data 
-	 * 	member holds an operating system specific primitive to efficiently 
+	 * 	queue RKHRQ_T must be used. In this case the RKH_OSSIGNAL_TYPE 
+	 * 	indicates an operating system specific primitive to efficiently 
 	 * 	block the native RKH event queue when the queue is empty.
 	 * 	Frequently, the active object has its own task processing loop that 
 	 * 	waits for the signal to be posted, and when it is, loops to remove 
@@ -1790,6 +1790,14 @@
 	 * 	The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS 
 	 * 	that an event has arrived. In this case, \c os_signal holds the OS 
 	 * 	object used to signal that an event has been queued.
+	 *
+	 * 	<EM>Example for using the Linux (Posix) and Win32</EM>
+	 * 	\code
+	 *	// For Linux (Posix)
+	 * 	#define RKH_OSSIGNAL_TYPE	pthread_cond_t
+	 *	// For Win32
+	 * 	#define RKH_OSSIGNAL_TYPE	void*
+	 * 	\endcode
 	 */
 
 	#define RKH_OSSIGNAL_TYPE
@@ -2198,7 +2206,7 @@ typedef struct rkhsma_t
 
 	/**
 	 * 	\brief
-	 * 	OS-dependent thread of control of the SMA.
+	 * 	OS-dependent thread of control of the active object.
 	 *
 	 * 	Frequently, the active object has its own task processing loop that 
 	 * 	waits for the signal to be posted, and when it is, loops to remove 
@@ -2220,7 +2228,7 @@ typedef struct rkhsma_t
 
 	/**
 	 * 	\brief
-	 *	OS-dependent thread data.
+	 *	OS-dependent object used to signal that an event has been queued.
 	 *
 	 * 	Frequently, the active object has its own task processing loop that 
 	 * 	waits for the signal to be posted, and when it is, loops to remove 

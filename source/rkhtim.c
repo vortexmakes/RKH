@@ -143,7 +143,7 @@ rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk )
 
 
 void 
-rkh_tim_start( RKHT_T *t, const struct RKHSMA_T *sma, RKH_TNT_T itick )
+rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick )
 {
 	RKH_SR_ALLOC();
 
