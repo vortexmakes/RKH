@@ -33,7 +33,8 @@
 
 
 #include <windows.h>
-#include "rkh.h"
+#include "rkhrq.h"
+#include "rkhmp.h"
 
 
 void rkh_enter_critical( void );
@@ -129,21 +130,18 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_SMA_BLOCK( sma ) 			\
-				while( rkh_rq_is_empty( (sma)->equeue ) ) \
+				while( rkh_rq_is_empty(((RKHSMA_T*)(sma))->equeue.qty != 0) ) \
 				{ \
 					RKH_ENTER_CRITICAL_(); \
-					(void)WaitForSingleObject( (sma)->os_signal, \
+					(void)WaitForSingleObject( ((RKHSMA_T*)(sma))->os_signal, \
 														(DWORD)INFINITE ); \
 					RKH_EXIT_CRITICAL_(); \
 				}
 
 #define RKH_SMA_READY( rg, sma ) 		\
-			    (void)SetEvent( (sma)->os_signal )
+			    (void)SetEvent( ((RKHSMA_T*)(sma))->os_signal )
 
 #define RKH_SMA_UNREADY( rg, sma )		(void)0
-
-#define RKH_WAIT_FOR_EVENTS() 								\
-			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 
 #define WIN32_LEAN_AND_MEAN
 

@@ -120,4 +120,9 @@
 	#include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
 #endif
 
+#ifdef __W32MTVC08__
+	#include "..\portable\80x86\win32_mt\vc08\rkht.h"
+#endif
+
+
 #endif

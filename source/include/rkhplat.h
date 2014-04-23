@@ -102,6 +102,10 @@
 	#include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkhport.h"
 #endif
 
+#ifdef __W32MTVC08__
+	#include "..\portable\80x86\win32_mt\vc08\rkhport.h"
+#endif
+
 /**
  * 	\brief
  *	If RKHROM has not been defined then	\b rkhport.h has not yet been 

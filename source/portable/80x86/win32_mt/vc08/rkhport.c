@@ -36,7 +36,8 @@ RKH_MODULE_VERSION( rkhport, 1.00 )
 RKH_MODULE_DESC( rkhport, "Windows 32-bits (multi-thread)" )
 
 
-static CRITICAL_SECTION csection;		/* Win32 critical section */
+static CRITICAL_SECTION csection;		/* Win32 critical section object */
+static DWORD tick = 10;					/* clock tick in [msec] */
 static rkhui8_t running;
 
 static DWORD WINAPI thread_function( LPVOID arg );
@@ -76,65 +77,60 @@ void
 rkh_init( void )
 {
     InitializeCriticalSection( &csection );
-    sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
 }
 
 
 void 
 rkh_enter( void )
 {
-	rkhui8_t prio;
-	RKHSMA_T *sma;
-	RKHEVT_T *e;
-	RKH_SR_ALLOC();
-
-    RKH_HK_START();
+    RKH_HK_START();						/* start-up callback */
 	RKH_TR_FWK_EN();
-    running = 1;
+
+	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_HIGHEST );
+    running = (rkhui8_t)1;
 
     while( running )
 	{
-        RKH_ENTER_CRITICAL( dummy );
-        if( rkh_rdy_isnot_empty( rkhrg ) ) 
-		{
-			rkh_rdy_findh( rkhrg, prio );
-            RKH_EXIT_CRITICAL( dummy );
-
-            sma = rkh_sptbl[ prio ];
-            e = rkh_sma_get( sma );
-            rkh_dispatch( sma, e );
-            RKH_GC( e );
-        }
-        else
-            rkh_hk_idle();
+		Sleep( tick );					/* wait for the tick interval */
+		RKH_HOOK_TIMETICK();			/* call tick callback */
     }
-
-    RKH_HK_EXIT();
-    CloseHandle( sma_is_rdy );
-    DeleteCriticalSection( &csection );	
+    RKH_HK_EXIT();						/* cleanup callback */
+	RKH_TRC_CLOSE();					/* cleanup the trace session */
+    DeleteCriticalSection( &csection );
 }
 
 
 void 
 rkh_exit( void )
 {
-	RKH_HK_EXIT();
 	RKH_TR_FWK_EX();
-	running = 0;
+	RKH_HK_EXIT();
+	running = (rkhui8_t)0;
 }
 
 
 void 
-rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
     ( void )stks;
     ( void )stksize;
+	int priority;
 	RKH_SR_ALLOC();
+
+	RKHREQUIRE( (qs != (const RKHEVT_T *)0) && ( stks == (void *)0) );
 
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_init_hsm( sma );
+	sma->thread = CreateThread( NULL, stksize, thread_function, 
+														sma, 0, NULL );
+	RKHASSERT( sma->thread != (HANDLE)0 );
+
+	/* map priorities RKH -> win32 */
+	/* ... */
+
+	SetThreadPriority( sma->thread, priority );
 	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
 }
 
