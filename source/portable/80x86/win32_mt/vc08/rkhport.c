@@ -1,6 +1,6 @@
 /*
  *	file: rkhport.c - Visual Studio 2008 port
- *	Last updated for version: 1.0.00
+ *	Last updated for version: 2.3.04
  *	Date of the last update:  Feb 22, 2012
  *
  * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
