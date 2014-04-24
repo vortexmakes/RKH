@@ -418,7 +418,7 @@ typedef enum rkh_trc_groups
  *	
  *	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		\
  *				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 		\
- *								ao->romrkh->prio )		\
+ *								(ao)->romrkh->prio )	\
  *					RKH_TRC_SYM( ao ); 					\
  *					RKH_TRC_SIG( ev->e ); 				\
  *					RKH_TRC_SENDER( snr ); 				\
@@ -1506,7 +1506,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_ACT( ao, p )									\
 					RKH_TRC_BEGIN( 	RKH_TE_SMA_ACT, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 				/*NEW*/ RKH_TRC_UI8( p );								\
 					RKH_TRC_END()
@@ -1523,7 +1523,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_TERM( ao, p )								\
 					RKH_TRC_BEGIN( 	RKH_TE_SMA_TERM, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 				/*NEW*/ RKH_TRC_UI8( p );								\
 					RKH_TRC_END()
@@ -1540,11 +1540,11 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_GET( ao, ev, pid, rc )						\
 					RKH_TRC_BEGIN( RKH_TE_SMA_GET, 						\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );							\
+				/*NEW*/ RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -1559,7 +1559,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )					\
 					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 						RKH_TRC_SENDER( snr ); 							\
@@ -1579,7 +1579,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )					\
 					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 						RKH_TRC_SENDER( snr ); 							\
@@ -1599,7 +1599,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_REG( ao, prio )								\
 					RKH_TRC_BEGIN( RKH_TE_SMA_REG, 						\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
@@ -1616,7 +1616,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_SMA_UNREG( ao, prio )							\
 					RKH_TRC_BEGIN( RKH_TE_SMA_UNREG, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
@@ -1646,7 +1646,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_INIT == RKH_DEF_ENABLED
 			#define RKH_TR_SM_INIT( ao, ist )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_INIT, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( ist ); 						\
 						RKH_TRC_END()
@@ -1667,7 +1667,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_CLRH == RKH_DEF_ENABLED
 			#define RKH_TR_SM_CLRH( ao, h )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( h ); 							\
 						RKH_TRC_END()
@@ -1688,7 +1688,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_DCH == RKH_DEF_ENABLED
 			#define RKH_TR_SM_DCH( ao, ev )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
@@ -1710,7 +1710,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_TRN == RKH_DEF_ENABLED
 			#define RKH_TR_SM_TRN( ao, sst, tst )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_TRN, 					\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( sst ); 						\
 							RKH_TRC_SYM( tst ); 						\
@@ -1732,7 +1732,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_STATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_STATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_STATE, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1753,7 +1753,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_ENSTATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_ENSTATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_ENSTATE, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1774,7 +1774,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_EXSTATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_EXSTATE( ao, st )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EXSTATE, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1795,7 +1795,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_NENEX == RKH_DEF_ENABLED
 			#define RKH_TR_SM_NENEX( ao, nen, nex )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_NENEX, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_UI8( nen ); 						\
 							RKH_TRC_UI8( nex ); 						\
@@ -1817,7 +1817,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_NTRNACT == RKH_DEF_ENABLED
 			#define RKH_TR_SM_NTRNACT( ao, nta, nts )					\
 						RKH_TRC_BEGIN( RKH_TE_SM_NTRNACT, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_UI8( nta ); 						\
 							RKH_TRC_UI8( nts ); 						\
@@ -1839,7 +1839,7 @@ enum rkh_trc_fmt
 		#if RKH_TRC_EN_SM_TS_STATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_TS_STATE( ao, st )						\
 						RKH_TRC_BEGIN( RKH_TE_SM_TS_STATE, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1863,7 +1863,7 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_EVT_PROC( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EVT_PROC, 				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1880,7 +1880,7 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_EVT_NFOUND( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EVT_NFOUND,			\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1896,7 +1896,7 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_GRD_FALSE( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1914,7 +1914,7 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_CND_NFOUND( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,			\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1930,7 +1930,7 @@ enum rkh_trc_fmt
 
 			#define RKH_TR_SM_UNKN_STATE( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_UNKN_STATE,			\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1946,7 +1946,7 @@ enum rkh_trc_fmt
 		 */
 			#define RKH_TR_SM_EX_HLEVEL( ao )							\
 						RKH_TRC_BEGIN( RKH_TE_SM_EX_HLEVEL,				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1963,7 +1963,7 @@ enum rkh_trc_fmt
 		 */
 			#define RKH_TR_SM_EX_TSEG( ao )								\
 						RKH_TRC_BEGIN( RKH_TE_SM_EX_TSEG,				\
-									ao->romrkh->prio )					\
+									(ao)->romrkh->prio )				\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 		#else

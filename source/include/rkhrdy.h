@@ -77,9 +77,6 @@
 #include "rkhtype.h"
 
 
-#define RKH_LOWEST_PRIO			RKH_MAX_SMA	
-
-
 #if RKH_MAX_SMA <= 8
 	#define RKH_NUM_RDYGRP		1
 #elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16

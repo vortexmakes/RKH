@@ -170,7 +170,7 @@
 				((val) = (rkhui8_t)(((rkhui8_t)(val)) & ((rkhui8_t)~(mask))))
 #define RKH_DEF_BIT_CLR_16(val, mask) \
 				((val) = (rkhui16_t)(((rkhui16_t)(val)) & ((rkhui16_t)~(mask))))
-#define RKH_DEF_BIT_CLR_08(val, mask) \
+#define RKH_DEF_BIT_CLR_32(val, mask) \
 				((val) = (rkhui32_t)(((rkhui32_t)(val)) & ((rkhui32_t)~(mask))))
 /*@}*/
 

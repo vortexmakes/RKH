@@ -88,6 +88,8 @@ rkh_tim_tick( void )
 	RKHT_T *t, *tprev;
 	RKH_SR_ALLOC();
 
+	RKH_HK_TIMETICK();			/* call user definable hook */
+
 	RKH_ENTER_CRITICAL_();
 	if( thead == CPTIM(0) )		/* is empty list? */
 	{

@@ -37,8 +37,11 @@ RKH_MODULE_DESC( rkhport, "Windows 32-bits (multi-thread)" )
 
 
 static CRITICAL_SECTION csection;		/* Win32 critical section object */
-static DWORD tick = 10;					/* clock tick in [msec] */
+static DWORD tick_msec = 10u;			/* clock tick in [msec] */
 static rkhui8_t running;
+#if defined( RKH_USE_TRC_SENDER )
+static rkhui8_t l_isr_tick;
+#endif
 
 static DWORD WINAPI thread_function( LPVOID arg );
 
@@ -54,6 +57,13 @@ void
 rkh_exit_critical( void )
 {
 	LeaveCriticalSection( &csection );
+}
+
+
+void 
+rkh_set_tickrate( rkhui32_t tick_rate_hz )
+{
+	tick_msec = 1000UL/tick_rate_hz;
 }
 
 
@@ -91,8 +101,8 @@ rkh_enter( void )
 
     while( running )
 	{
-		Sleep( tick );					/* wait for the tick interval */
-		RKH_HOOK_TIMETICK();			/* call tick callback */
+		Sleep( tick_msec );				/* wait for the tick interval */
+		RKH_TIM_TICK( &l_isr_tick );	/* tick handler */
     }
     RKH_HK_EXIT();						/* cleanup callback */
 	RKH_TRC_CLOSE();					/* cleanup the trace session */
@@ -113,21 +123,44 @@ void
 rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
+	int priority;
+
     ( void )stks;
     ( void )stksize;
-	int priority;
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( (qs != (const RKHEVT_T *)0) && ( stks == (void *)0) );
+	RKHREQUIRE( (qs != (const RKHEVT_T **)0) && ( stks == (void *)0) );
 
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
+	sma->os_signal = CreateEvent( NULL, FALSE, FALSE, NULL );
     rkh_init_hsm( sma );
 	sma->thread = CreateThread( NULL, stksize, thread_function, 
 														sma, 0, NULL );
 	RKHASSERT( sma->thread != (HANDLE)0 );
 
 	/* map RKH priority to win32 priority */
+	switch( RKH_GET_PRIO( sma ) )
+	{
+		case 0:
+			priority = THREAD_PRIORITY_HIGHEST;
+			break;
+		case 1:
+			priority = THREAD_PRIORITY_ABOVE_NORMAL;
+			break;
+		case RKH_LOWEST_PRIO:
+			priority = THREAD_PRIORITY_IDLE;
+			break;
+		case RKH_LOWEST_PRIO - 1:
+			priority = THREAD_PRIORITY_LOWEST;
+			break;
+		case RKH_LOWEST_PRIO - 2:
+			priority = THREAD_PRIORITY_BELOW_NORMAL;
+			break;
+		default:
+			priority = THREAD_PRIORITY_NORMAL;
+			break;
+	}
 
 	SetThreadPriority( sma->thread, priority );
 	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
@@ -137,8 +170,28 @@ rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 void 
 rkh_sma_terminate( RKHSMA_T *sma )
 {
+	sma->thread = (HANDLE)0;
+}
+
+
+static
+DWORD
+WINAPI 
+thread_function( LPVOID arg )
+{
 	RKH_SR_ALLOC();
 
-	rkh_sma_unregister( sma );
-	RKH_TR_SMA_TERM( sma, RKH_GET_PRIO(sma) );
+	do
+	{
+		RKHEVT_T *e = rkh_sma_get( (RKHSMA_T *)arg );
+        rkh_dispatch( (RKHSMA_T *)arg, e );
+        RKH_GC( e );
+	}
+	while( ((RKHSMA_T *)arg)->thread != (HANDLE)0 );
+
+	rkh_sma_unregister( (RKHSMA_T *)arg );
+	RKH_TR_SMA_TERM( (RKHSMA_T *)arg, 
+			RKH_GET_PRIO( (RKHSMA_T *)arg ));
+	CloseHandle( ((RKHSMA_T *)arg)->os_signal );
+	return 0;
 }

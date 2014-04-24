@@ -2248,6 +2248,27 @@ void rkh_hk_idle( void );
 
 /**
  * 	\brief
+ * 	This function is called by rkh_tim_tick(), which is assumed to be called 
+ * 	from an ISR. rkh_hk_timetick() is called at the very beginning of 
+ * 	rkh_tim_tick(), to give priority to user or port-specific code when the 
+ * 	tick interrupt occurs. 
+ *	Usually, this hook allows to the application to extend the functionality 
+ *	of RKH, giving the port developer the opportunity to add code that will 
+ *	be called by rkh_tim_tick(). Frequently, the rkh_hk_timetick() is called 
+ *	from the tick ISR and must not make any blocking calls and must execute 
+ *	as quickly as possible.
+ *
+ *	\note
+ *	The time tick hook will only get called if RKH_HK_EN_TIMETICK is set to 1 
+ *	within rkhcfg.h file. When this is set the application must provide the 
+ *	hook function. 
+ */
+
+void rkh_hk_timetick( void );
+
+
+/**
+ * 	\brief
  * 	Inits a previously created state machine calling its initializing action.
  *
  * 	\param sma		pointer to previously created state machine application.

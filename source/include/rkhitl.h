@@ -119,6 +119,16 @@
 #define RKH_ANY						((RKHE_T)(-1))
 
 
+/**
+ * 	RKH allows up to RKH_MAX_SMA different priority levels (see rkhcfg.h).
+ * 	In RKH, a low-priority number corresponds to a high-priority level.
+ * 	Priority level zero (0) is thus the highest priority level. Priority 
+ *	RKH_LOWEST_PRIO (RKH_MAX_SMA - 1) is the lowest priority level.
+ */
+
+#define RKH_LOWEST_PRIO				(RKH_MAX_SMA - 1)
+
+
 /* 	
  *  Verifies port file from rkhport.h included in rkhplat.h.
  */
@@ -1582,6 +1592,15 @@
 							rkh_hk_exit()
 #else
 	#define RKH_HK_EXIT()	\
+							(void)0
+#endif
+
+
+#if	(RKH_HK_EN_TIMETICK == RKH_DEF_ENABLED)
+	#define RKH_HK_TIMETICK()	\
+							rkh_hk_timetick()
+#else
+	#define RKH_HK_TIMETICK()	\
 							(void)0
 #endif
 

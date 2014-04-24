@@ -39,6 +39,7 @@
 
 void rkh_enter_critical( void );
 void rkh_exit_critical( void );
+void rkh_set_tickrate( rkhui32_t tick_rate_hz );
 const char *rkh_get_port_version( void );
 const char *rkh_get_port_desc( void );
 
@@ -130,7 +131,7 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_SMA_BLOCK( sma ) 			\
-				while( rkh_rq_is_empty(((RKHSMA_T*)(sma))->equeue.qty != 0) ) \
+				while( ((RKHSMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
 				{ \
 					RKH_ENTER_CRITICAL_(); \
 					(void)WaitForSingleObject( ((RKHSMA_T*)(sma))->os_signal, \

@@ -52,18 +52,12 @@
 RKH_THIS_MODULE
 
 static rkhui32_t l_rnd;			/* random seed */
-static DWORD tick_msec;			/* clock tick in msec */
-rkhui8_t running;
-
 static RKH_DCLR_STATIC_EVENT( e_term, TERM );
 static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
-
 static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
-
 #if defined( RKH_USE_TRC_SENDER )
 static rkhui8_t l_isr_kbd;
-static rkhui8_t l_isr_tick;
 #endif
 
 
@@ -145,60 +139,25 @@ bsp_publish( const RKHEVT_T *e )
 }
 
 
-static 
-DWORD WINAPI 
-isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
+void
+rkh_hk_timetick( void )
 {
-    ( void )par;
-    while( running ) 
+	if( _kbhit() )
 	{
-		RKH_TIM_TICK( &l_isr_tick );
-        Sleep( tick_msec );
-    }
-    return 0;
-}
-
-
-static 
-DWORD WINAPI 
-isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
-{
-	int c;
-
-    ( void )par;
-    while( running ) 
-	{
-		c = _getch();
+		int c = _getch();
 		
 		if( c == ESC )
 			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
 		else if( tolower(c) == 'p' )
 			bsp_publish( &e_pause );
-    }
-    return 0;
+	}
 }
 
 
 void 
 rkh_hk_start( void ) 
 {
-    DWORD thtmr_id, thkbd_id;
-    HANDLE hth_tmr, hth_kbd;
-
-	/* set the desired tick rate */
-    tick_msec = 1000UL/BSP_TICKS_PER_SEC;
-    running = (rkhui8_t)1;
-	
-	/* create the ISR timer thread */
-    hth_tmr = CreateThread( NULL, 1024, &isr_tmr_thread, 0, 0, &thtmr_id );
-    RKHASSERT( hth_tmr != (HANDLE)0 );
-    SetThreadPriority( hth_tmr, THREAD_PRIORITY_TIME_CRITICAL );
-
-	/* create the ISR keyboard thread */
-    hth_kbd = CreateThread( NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id );
-    RKHASSERT( hth_kbd != (HANDLE)0 );
-    SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
-	
+	rkh_set_tickrate( BSP_TICKS_PER_SEC );
 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
@@ -212,11 +171,8 @@ rkh_hk_exit( void )
 
 
 void 
-rkh_hk_idle( void )				/* called within critical section */
+rkh_hk_idle( void )
 {
-    RKH_EXIT_CRITICAL( dummy );
-	RKH_TRC_FLUSH();
-    RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
 
 
@@ -419,9 +375,4 @@ bsp_init( int argc, char *argv[] )
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
 
 	RKH_TRC_OPEN();
-
-#if defined( RKH_USE_TRC_SENDER )
-	RKH_TR_FWK_OBJ( &l_isr_kbd );
-	RKH_TR_FWK_OBJ( &l_isr_tick );
-#endif
 }
