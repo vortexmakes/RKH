@@ -127,8 +127,7 @@ rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 														sma, 0, NULL );
 	RKHASSERT( sma->thread != (HANDLE)0 );
 
-	/* map priorities RKH -> win32 */
-	/* ... */
+	/* map RKH priority to win32 priority */
 
 	SetThreadPriority( sma->thread, priority );
 	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
