@@ -177,7 +177,7 @@ typedef struct rkhrq_t
 	 * 	If \a sma is set to NULL they never block.
 	 */
 
-	void *sma;
+	struct rkhsma_t *sma;
 
 	/** 
 	 * 	\brief
@@ -229,7 +229,7 @@ typedef struct rkhrq_t
  */
 
 void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
-					void *sma );
+					struct rkhsma_t *sma );
 
 
 /**

@@ -167,6 +167,8 @@
 #define CE( p )						((RKHEVT_T*)(p))
 #define CCE( p )					((const RKHEVT_T*)(p))
 #define CV( p )						((void*)(p))
+#define CSMA( p )					((struct rkhsma_t*)(p))
+#define CQ( p )						((RKHRQ_T*)(p))
 
 
 /*

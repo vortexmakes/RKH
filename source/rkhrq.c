@@ -63,15 +63,15 @@ RKH_MODULE_NAME( rkhrq )
 
 
 void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
-					void *sma )
+					struct rkhsma_t *sma )
 {
 	RKH_SR_ALLOC();
 
 	q->pstart = sstart;
-	q->pin = q->pout = ( void ** )sstart;
+	q->pin = q->pout = (void **)sstart;
 	q->nelems = ssize;
 	q->qty = 0;
-	q->pend = ( void ** )&sstart[ ssize ];
+	q->pend = (void **)&sstart[ ssize ];
 	q->sma = sma;	
 #if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
 	q->nmin = q->nelems;
@@ -91,7 +91,7 @@ rkh_rq_is_full( RKHRQ_T *q )
 	RKH_RQNE_T qty;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != ( RKHRQ_T* )0 );
+	RKHASSERT( q != (RKHRQ_T *)0 );
 	
 	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
@@ -109,7 +109,7 @@ rkh_rq_get_num( RKHRQ_T *q )
 	RKH_RQNE_T qty;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != ( RKHRQ_T* )0 );
+	RKHASSERT( q != CQ(0) );
 	
 	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
@@ -127,7 +127,7 @@ rkh_rq_get_lwm( RKHRQ_T *q )
 	RKH_RQNE_T nmin;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != ( RKHRQ_T* )0 );
+	RKHASSERT( q != CQ(0) );
 	
 	RKH_ENTER_CRITICAL_();
 	nmin = q->nmin;
@@ -144,10 +144,10 @@ rkh_rq_get( RKHRQ_T *q  )
 	void *e = CV(0);
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != ( RKHRQ_T* )0 );
+	RKHASSERT( q != CQ(0) );
 	RKH_ENTER_CRITICAL_();
 
-	if( q->sma != CV(0) )
+	if( q->sma != CSMA(0) )
 	{
 		RKH_SMA_BLOCK( q->sma );
 	}
@@ -166,9 +166,9 @@ rkh_rq_get( RKHRQ_T *q  )
 
 	RKH_IUPDT_GET( q );
 
-	if( q->sma != CV(0) && q->qty == 0 )
+	if( q->sma != CSMA(0) && q->qty == 0 )
 	{
-		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+		RKH_SMA_UNREADY( rkhrg, (RKHSMA_T *)( q->sma ) );
 		RKH_EXIT_CRITICAL_();
 		RKH_TR_RQ_GET_LAST( q );
 	}
@@ -186,7 +186,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
+	RKHASSERT( q != CQ(0) && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
 	RKHASSERT( q->qty < q->nelems );
 
@@ -204,9 +204,9 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 	if( q->pin == q->pend )
 		q->pin = ( void ** )q->pstart;
 
-	if( q->sma != CV(0) )
+	if( q->sma != CSMA(0) )
 	{
-		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+		RKH_SMA_READY( rkhrg, (RKHSMA_T *)( q->sma ) );
 	}
 
 #if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
@@ -225,7 +225,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
+	RKHASSERT( q != CQ(0) && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
 	RKHASSERT( q->qty < q->nelems );
 
@@ -246,9 +246,9 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 
 	RKH_IUPDT_PUT( q );
 
-	if( q->sma != CV(0) )
+	if( q->sma != CSMA(0) )
 	{
-		RKH_SMA_READY( rkhrg, ( RKHSMA_T * )( q->sma ) );
+		RKH_SMA_READY( rkhrg, (RKHSMA_T *)( q->sma ) );
 	}
 
 #if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
@@ -267,12 +267,12 @@ rkh_rq_deplete( RKHRQ_T *q )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != ( RKHRQ_T* )0 );
+	RKHASSERT( q != CQ(0) );
 	RKH_ENTER_CRITICAL_();
 	q->qty = 0;
 	q->pin = q->pout = ( void ** )q->pstart;
-	if( q->sma != CV(0) )
-		RKH_SMA_UNREADY( rkhrg, ( RKHSMA_T* )( q->sma ) );
+	if( q->sma != CSMA(0) )
+		RKH_SMA_UNREADY( rkhrg, (RKHSMA_T *)( q->sma ) );
 	RKH_EXIT_CRITICAL_();
 	RKH_TR_RQ_DPT( q );
 }
@@ -285,7 +285,7 @@ rkh_rq_read( RKHRQ_T *q, void *pe )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != ( RKHRQ_T* )0 && pe != ( const void* )0 );
+	RKHASSERT( q != CQ(0) && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
 
 	if( q->qty == 0 )
