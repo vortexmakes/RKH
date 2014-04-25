@@ -133,10 +133,10 @@ const char *rkh_get_port_desc( void );
 #define RKH_SMA_BLOCK( sma ) 			\
 				while( ((RKHSMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
 				{ \
-					RKH_ENTER_CRITICAL_(); \
+					RKH_EXIT_CRITICAL_(); \
 					(void)WaitForSingleObject( ((RKHSMA_T*)(sma))->os_signal, \
 														(DWORD)INFINITE ); \
-					RKH_EXIT_CRITICAL_(); \
+					RKH_ENTER_CRITICAL_(); \
 				}
 
 #define RKH_SMA_READY( rg, sma ) 		\

@@ -202,9 +202,9 @@ rkh_sma_get( RKHSMA_T *sma )
 	RKHEVT_T *e;
 	RKH_SR_ALLOC();
 
-    RKH_ENTER_CRITICAL_();
+    /*RKH_ENTER_CRITICAL_();*/
 	e = rkh_rq_get( &sma->equeue );
-    RKH_EXIT_CRITICAL_();
+    /*RKH_EXIT_CRITICAL_();*/
 
 	RKHASSERT( e != ( RKHEVT_T * )0 );
 	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );

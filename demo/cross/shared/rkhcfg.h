@@ -162,7 +162,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_TIMETICK				RKH_DEF_DISABLED
+#define RKH_HK_EN_TIMETICK				RKH_DEF_ENABLED
 
 /**
  *	If the #RKH_SMA_EN_IEVENT is set to 1 then an initial event could be 
