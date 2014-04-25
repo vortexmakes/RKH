@@ -2141,7 +2141,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	executed.
  *
  *	\note
- *	The dispatch hook will only get called if RKH_HK_EN_DISPATCH is set to 1 
+ *	The dispatch hook will only get called if RKH_HK_DISPATCH_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  *
@@ -2158,7 +2158,7 @@ void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  * 	of the consumer SMA the rkh_hk_signal() will optionally called.
  * 	
  *	\note
- *	The signal hook will only get called if RKH_HK_EN_SIGNAL is set to 1 
+ *	The signal hook will only get called if RKH_HK_SIGNAL_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  *
@@ -2175,7 +2175,7 @@ void rkh_hk_signal( RKHEVT_T *e );
  * 	queue. 
  * 	
  *	\note
- *	The timeout hook will only get called if RKH_HK_EN_TIMEOUT is set to 1 
+ *	The timeout hook will only get called if RKH_HK_TIMEOUT_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  *
@@ -2193,7 +2193,7 @@ void rkh_hk_timeout( const void *t );
  * 	the application.
  *
  *	\note
- *	The start hook will only get called if RKH_HK_EN_START is set to 1 
+ *	The start hook will only get called if RKH_HK_START_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
@@ -2208,7 +2208,7 @@ void rkh_hk_start( void );
  * 	clean-up code upon SMA terminate or framework exit.
  *
  *	\note
- *	The exit hook will only get called if RKH_HK_EN_EXIT is set to 1 
+ *	The exit hook will only get called if RKH_HK_EXIT_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
@@ -2259,7 +2259,7 @@ void rkh_hk_idle( void );
  *	as quickly as possible.
  *
  *	\note
- *	The time tick hook will only get called if RKH_HK_EN_TIMETICK is set to 1 
+ *	The time tick hook will only get called if RKH_HK_TIMETICK_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */

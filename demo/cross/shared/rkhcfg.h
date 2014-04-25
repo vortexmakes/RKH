@@ -105,53 +105,53 @@
 #define RKH_ASSERT_EN					RKH_DEF_ENABLED
 
 /**
- *	If the #RKH_HK_EN_DISPATCH is set to 1, RKH will invoke the dispatch 
+ *	If the #RKH_HK_DISPATCH_EN is set to 1, RKH will invoke the dispatch 
  *	hook function rkh_hk_dispatch() when dispatching an event to a SMA.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_DISPATCH				RKH_DEF_DISABLED
+#define RKH_HK_DISPATCH_EN				RKH_DEF_DISABLED
 
 /**
- *	If the #RKH_HK_EN_SIGNAL is set to 1, RKH will invoke the signal 
+ *	If the #RKH_HK_SIGNAL_EN is set to 1, RKH will invoke the signal 
  *	hook function rkh_hk_signal() when the producer of an event directly 
  *	posts the event to the event queue of the consumer SMA.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_SIGNAL				RKH_DEF_DISABLED
+#define RKH_HK_SIGNAL_EN				RKH_DEF_DISABLED
 
 /**
- *	If the #RKH_HK_EN_TIMEOUT is set to 1, RKH will invoke the timeout 
+ *	If the #RKH_HK_TIMEOUT_EN is set to 1, RKH will invoke the timeout 
  *	hook function rkh_hk_timeout() when a timer expires just before the 
  *	assigned event is directly posted into the state machine application 
  *	queue.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_TIMEOUT				RKH_DEF_DISABLED
+#define RKH_HK_TIMEOUT_EN				RKH_DEF_DISABLED
 
 /**
- *	If the #RKH_HK_EN_START is set to 1, RKH will invoke the start 
+ *	If the #RKH_HK_START_EN is set to 1, RKH will invoke the start 
  *	hook function rkh_hk_start() just before the RKH takes over control of 
  * 	the application.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_START					RKH_DEF_ENABLED
+#define RKH_HK_START_EN					RKH_DEF_ENABLED
 
 /**
- *	If the #RKH_HK_EN_EXIT is set to 1, RKH will invoke the exit 
+ *	If the #RKH_HK_EXIT_EN is set to 1, RKH will invoke the exit 
  *	hook function just before it returns to the underlying OS/RTOS. Usually, 
  *	the rkh_hk_exit() is useful when executing clean-up code upon SMA 
  *	terminate or framework exit.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_EXIT					RKH_DEF_ENABLED
+#define RKH_HK_EXIT_EN					RKH_DEF_ENABLED
 
 /**
- *	If the #RKH_HK_EN_TIMETICK is set to 1, RKH will invoke the time tick 
+ *	If the #RKH_HK_TIMETICK_EN is set to 1, RKH will invoke the time tick 
  *	hook function from rkh_tim_tick(), at the very beginning of that, to give 
  *	priority to user or port-specific code when the tick interrupt occurs. 
  *	Usually, the rkh_hk_timetick() allows to the application to extend the 
@@ -162,7 +162,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EN_TIMETICK				RKH_DEF_ENABLED
+#define RKH_HK_TIMETICK_EN				RKH_DEF_ENABLED
 
 /**
  *	If the #RKH_SMA_EN_IEVENT is set to 1 then an initial event could be 

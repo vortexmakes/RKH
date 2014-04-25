@@ -657,23 +657,23 @@ functions. All these functions in RKH are easily indentifiable by the
 \b "_hk_" key word used in the function name, rkh_hk_dispatch(), 
 rkh_hk_signal(), rkh_hk_timeout(), rkh_hk_start(), rkh_hk_exit(), 
 and rkh_hk_idle(). 
-Please, see RKH_HK_EN_DISPATCH, RKH_HK_EN_SIGNAL, RKH_HK_EN_TIMEOUT, 
-RKH_HK_EN_START, and RKH_HK_EN_EXIT options from the \c rkhcfg.h.\n
+Please, see RKH_HK_DISPATCH_EN, RKH_HK_SIGNAL_EN, RKH_HK_TIMEOUT_EN, 
+RKH_HK_START_EN, and RKH_HK_EXIT_EN options from the \c rkhcfg.h.\n
 
 \code void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e )\endcode
-\copydetails RKH_HK_EN_DISPATCH
+\copydetails RKH_HK_DISPATCH_EN
 
 \code void rkh_hk_signal( RKHEVT_T *e )\endcode
-\copydetails RKH_HK_EN_SIGNAL
+\copydetails RKH_HK_SIGNAL_EN
 
 \code void rkh_hk_timeout( const void *t )\endcode
-\copydetails RKH_HK_EN_TIMEOUT
+\copydetails RKH_HK_TIMEOUT_EN
 
 \code void rkh_hk_start( void )\endcode
-\copydetails RKH_HK_EN_START
+\copydetails RKH_HK_START_EN
 
 \code void rkh_hk_exit( void )\endcode
-\copydetails RKH_HK_EN_EXIT
+\copydetails RKH_HK_EXIT_EN
 
 \code void rkh_hk_idle( void )\endcode
 \copydetails rkh_hk_idle
@@ -3972,39 +3972,39 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_ASSERT_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_EN_DISPATCH </TD>
+		<TD align="left"> #RKH_HK_DISPATCH_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_HK_EN_DISPATCH </TD>
+		<TD align="left"> \copydetails RKH_HK_DISPATCH_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_EN_SIGNAL </TD>
+		<TD align="left"> #RKH_HK_SIGNAL_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_HK_EN_SIGNAL </TD>
+		<TD align="left"> \copydetails RKH_HK_SIGNAL_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_EN_TIMEOUT </TD>
+		<TD align="left"> #RKH_HK_TIMEOUT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 0 </TD>
-		<TD align="left"> \copydetails RKH_HK_EN_TIMEOUT </TD>
+		<TD align="left"> \copydetails RKH_HK_TIMEOUT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_EN_START </TD>
+		<TD align="left"> #RKH_HK_START_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_HK_EN_START </TD>
+		<TD align="left"> \copydetails RKH_HK_START_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_EN_EXIT </TD>
+		<TD align="left"> #RKH_HK_EXIT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> 1 </TD>
-		<TD align="left"> \copydetails RKH_HK_EN_EXIT </TD>
+		<TD align="left"> \copydetails RKH_HK_EXIT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_IEVENT </TD>
