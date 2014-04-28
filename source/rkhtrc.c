@@ -25,17 +25,6 @@ rkhui8_t trcgfilter;
 
 /* trace points associated with the SMA (AO */
 rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
-#endif
-
-static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
-static RKH_TE_T *trcin, *trcout, *trcend;
-static rkhui8_t chk;
-static rkhui8_t nseq;
-#if RKH_TRC_SIZEOF_STREAM < 255
-static rkhui8_t trcqty;
-#else
-static rkhui16_t trcqty;
-#endif
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
@@ -50,6 +39,17 @@ static RKHROM rkhui8_t trcgmtbl[] =
 	((RKH_FWK_TTBL_OFFSET 	<< 4) 	| RKH_FWK_TTBL_RANGE	),
 	((RKH_USR_TTBL_OFFSET 	<< 4) 	| RKH_USR_TTBL_RANGE	)
 };
+#endif
+
+static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
+static RKH_TE_T *trcin, *trcout, *trcend;
+static rkhui8_t chk;
+static rkhui8_t nseq;
+#if RKH_TRC_SIZEOF_STREAM < 255
+static rkhui8_t trcqty;
+#else
+static rkhui16_t trcqty;
+#endif
 
 
 void
