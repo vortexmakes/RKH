@@ -495,14 +495,6 @@
 	#error "RKH_TIM_EN_HOOK                  illegally #define'd in 'rkhcfg.h'"
 	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
 	#error "                                [     ||  RKH_DEF_DISABLED]       "
-
-	#elif 	(RKH_TIM_EN_HOOK == RKH_DEF_ENABLED)
-	#define rkh_mktimer( t, e, th )	\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e), (RKH_THK_T)(th) )
-
-	#else
-	#define rkh_mktimer( t, e, th )	\
-				rkh_tim_init_( (RKHT_T*)(t), (RKHEVT_T*)(e) )
 	#endif
 
 	#ifndef	RKH_TIM_EN_GET_INFO

@@ -125,18 +125,18 @@ rkh_tim_tick( void )
 
 void 
 #if RKH_TIM_EN_HOOK == RKH_DEF_DISABLED
-rkh_tim_init_( RKHT_T *t, RKHEVT_T *e )
+rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e )
 #else
-rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk )
+rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e, RKH_THK_T thk )
 #endif
 {
 	RKH_SR_ALLOC();
-	RKHREQUIRE( t != CPTIM(0) && e != CE(0) );
+	RKHREQUIRE( t != CPTIM(0) && e != CCE(0) );
 
 	RKH_ENTER_CRITICAL_();
 	t->ntick = 0;
 	t->used = 0;
-	t->evt = e;
+	t->evt = CE(e);
 	RKH_EXIT_CRITICAL_();
 
 	RKH_SET_THOOK( t, thk );

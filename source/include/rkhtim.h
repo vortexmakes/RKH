@@ -219,12 +219,14 @@ struct RKHT_T
  *					eliminated in compile-time with RKH_TIM_EN_HOOK.
  */
 
-#define rkh_tim_init( t, e, thk )		rkh_mktimer( t, e, thk )
-
-#if RKH_TIM_EN_HOOK == RKH_DEF_DISABLED
-	void rkh_tim_init_( RKHT_T *t, RKHEVT_T *e );
+#if RKH_TIM_EN_HOOK == RKH_DEF_ENABLED
+	#define rkh_tim_init( t_, e_, th_ )	\
+				rkh_tim_init_( (t_), (e_), (th_) )
+	void rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e, RKH_THK_T thk );
 #else
-	void rkh_tim_init_( RKHT_T *t, RKHEVT_T *e, RKH_THK_T thk );
+	#define rkh_tim_init( t_, e_, th_ )	\
+				rkh_tim_init_( (t_), (e_) )
+	void rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e );
 #endif
 
 

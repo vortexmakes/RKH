@@ -2432,7 +2432,7 @@ enum rkh_trc_fmt
 		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_TCFG()										\
+		#define RKH_TR_FWK_TCFG()  										\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
 						RKH_TRC_UI16( 									\
