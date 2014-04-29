@@ -1214,6 +1214,20 @@
 #endif
 
 
+#ifndef	RKH_MAX_SIGNALS
+	#error "RKH_MAX_SIGNALS                        not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be >  0]                    "
+	#error  "                               [MUST be <  2^RKH_SIZEOF_EVENT    "
+
+#elif ((RKH_MAX_SIGNALS == 0u) || \
+	   (RKH_MAX_SIGNALS >= RKH_DEF_BIT(RKH_SIZEOF_EVENT)))
+	#error "RKH_MAX_SIGNALS                  illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be >  0]                    "
+	#error  "                               [MUST be <  2^RKH_SIZEOF_EVENT    "
+
+#endif
+
+
 #ifndef	RKH_SIZEOF_ESIZE
 	#error "RKH_SIZEOF_ESIZE                       not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "

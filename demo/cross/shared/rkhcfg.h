@@ -77,6 +77,13 @@
 #define RKH_SIZEOF_EVENT				8u
 
 /**
+ *	Specify the maximum number of event signals to be used by the 
+ *	application.
+ */
+
+#define RKH_MAX_SIGNALS					16u
+
+/**
  * 	Specify the data type of event size. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. See #RKHES_T, rkh_epool_register(), and 
  *	RKH_ALLOC_EVENT(). Use a 8 value if the bigger event size is minor to 
