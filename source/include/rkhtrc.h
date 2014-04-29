@@ -182,33 +182,48 @@
 #define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
 
 
-/**
- * 	\brief
- * 	The size of trcsmaftbl (trace SMA filter table) depends on #RKH_MAX_SMA 
- * 	(see rkhcfg.h).
- */
-
-#if RKH_MAX_SMA <= 8
-	#define RKH_TRC_MAX_SMA		1
-#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
-	#define RKH_TRC_MAX_SMA		2
-#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
-	#define RKH_TRC_MAX_SMA		3
-#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
-	#define RKH_TRC_MAX_SMA		4
-#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
-	#define RKH_TRC_MAX_SMA		5
-#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
-	#define RKH_TRC_MAX_SMA		6
-#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
-	#define RKH_TRC_MAX_SMA		7
-#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
-	#define RKH_TRC_MAX_SMA		8
-#endif
-
-
 #define ECHANGE						0
 #define EUNCHANGE					1
+
+
+/**
+ * 	\brief
+ * 	Filter table of trace points associated with the SMA (AO).
+ *
+ * 	The trace filter management is similar to the native priority scheme.
+ * 	In this case, each SMA is assigned a unique priority number. When a SMA 
+ * 	is ready to record a trace its corresponding bit in the filter table 
+ * 	must be clear. The size of #trcsmaftbl[] depends on 
+ * 	#RKH_MAX_SMA (see rkhcfg.h).
+ *
+ * 	SMA priority number = | Y | Y | Y | Y | Y | X | X | X |\n
+ *
+ * 	Y's:	index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table.\n
+ * 	X's:	bit position in trcsmaftbl[ Y's ].\n
+ *
+ * 	The lower 3 bits (X's) of the SMA priority number are used to determine 
+ * 	the bit position in trcsmaftbl[], while the next five most significant bits 
+ * 	(Y's) are used to determine the index into trcsmaftbl[].
+ */
+
+extern rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
+
+/**
+ * 	\brief
+ * 	Filter table of trace points associated with the event signals.
+ *	Similar to trcsmaftbl[].
+ *
+ * 	Signal number = | Y | ... | Y | Y | Y | X | X | X |\n
+ *
+ * 	Y's:	index into trcsigftbl[ #RKH_TRC_MAX_SIGNALS ] table.\n
+ * 	X's:	bit position in trcsigftbl[ Y's ].\n
+ *
+ * 	The lower 3 bits (X's) of the event signal are used to determine the bit 
+ * 	position in trcsigftbl[], while the next most significant bits (Y's) are 
+ * 	used to determine the index into trcsigftbl[].
+ */
+
+extern rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
 
 
 #if ((	(RKH_TRC_EN == 1) && \
@@ -659,11 +674,11 @@ typedef enum rkh_trc_events
 	 *	\param prio		priority of state machine application.
 	 */
 
-	#define RKH_TRC_BEGIN( eid, prio )				\
-				if(	rkh_trc_isoff_( eid ) && 		\
-					rkh_trc_sma_isoff_( prio ) )	\
-				{									\
-					RKH_ENTER_CRITICAL_();			\
+	#define RKH_TRC_BEGIN( eid, ctrl )					\
+				if(	rkh_trc_isoff_( eid ) && 			\
+					rkh_trc_sma_isoff( tbl, ctrl ) )	\
+				{										\
+					RKH_ENTER_CRITICAL_();				\
 					rkh_trc_begin( eid );
 
 	/**
@@ -689,10 +704,10 @@ typedef enum rkh_trc_events
 	 *	\param prio		priority of state machine application.
 	 */
 
-	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )	\
-				if(	rkh_trc_isoff_(eid) && 		\
-					rkh_trc_sma_isoff_(prio) )	\
-				{								\
+	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )		\
+				if(	rkh_trc_isoff_(eid) && 			\
+					rkh_trc_sma_isoff( tbl, prio) )	\
+				{									\
 					rkh_trc_begin( eid );
 
 	/**
@@ -1239,7 +1254,8 @@ enum rkh_trc_fmt
  * 	Used to invalidate the SMA filter in the RKH_TRC_BEGIN() macro.
  */
 
-#define NVS			RKH_MAX_SMA
+#define AOINV		RKH_MAX_SMA	
+#define SIGINV		RKH_DEF_DISABLE		
 
 
 #if RKH_TRC_EN == RKH_DEF_ENABLED
@@ -3038,7 +3054,7 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  * 	Test the state machine application (SMA) filter condition.
  *
  *	\note
- * 	This function is internal to RKH and the user application should not call 
+ * 	This macro is internal to RKH and the user application should not call 
  * 	it.
  *
  * 	\param prio		SMA priority.
@@ -3047,7 +3063,8 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
  */
 
-HUInt rkh_trc_sma_isoff_( rkhui8_t prio );
+#define rkh_trc_sma_isoff( tbl_, prio_ ) \
+				rkh_trc_simfil_isoff( tbl_, (rkhui8_t)(prio_) )
 
 
 /**
@@ -3080,7 +3097,9 @@ HUInt rkh_trc_sma_isoff_( rkhui8_t prio );
  * 	\param prio		SMA priority.
  */
 
-void rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio );
+/*void rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio );*/
+#define rkh_trc_filter_sma_( ctrl_, prio_ ) \
+				rkh_trc_simfil( trcsmaftbl, ctrl_, prio_ )
 
 
 /**

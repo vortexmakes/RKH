@@ -19,28 +19,27 @@ RKH_MODULE_NAME( rkhtrc )
 
 /**
  * 	\brief
+ * 	The size of trcsmaftbl[] (trace SMA filter table) depends on #RKH_MAX_SMA 
+ * 	(see rkhcfg.h).
+ */
+
+#if ((RKH_MAX_SMA & (8-1)) == 0)
+	#define RKH_TRC_MAX_SMA		(RKH_MAX_SMA/8)
+#else
+	#define RKH_TRC_MAX_SMA		(RKH_MAX_SMA/8 + 1)
+#endif
+
+/**
+ * 	\brief
  * 	The size of trcsigftbl[] (trace signal filter table) depends on 
  * 	#RKH_MAX_SIGNALS and #RKH_SIZEOF_EVENT (see rkhcfg.h).
  */
 
-#if RKH_MAX_SIGNALS <= 8
-	#define RKH_TRC_MAX_SIGNALS	1
-#elif RKH_MAX_SIGNALS > 8 && RKH_MAX_SIGNALS <= 16
-	#define RKH_TRC_MAX_SIGNALS	2
-#elif RKH_MAX_SIGNALS > 16 && RKH_MAX_SIGNALS <= 24
-	#define RKH_TRC_MAX_SIGNALS	3
-#elif RKH_MAX_SIGNALS > 24 && RKH_MAX_SIGNALS <= 32
-	#define RKH_TRC_MAX_SIGNALS	4
-#elif RKH_MAX_SIGNALS > 32 && RKH_MAX_SIGNALS <= 40
-	#define RKH_TRC_MAX_SIGNALS	5
-#elif RKH_MAX_SIGNALS > 40 && RKH_MAX_SIGNALS <= 48
-	#define RKH_TRC_MAX_SIGNALS	6
-#elif RKH_MAX_SIGNALS > 48 && RKH_MAX_SIGNALS <= 56
-	#define RKH_TRC_MAX_SIGNALS	7
-#elif RKH_MAX_SIGNALS > 56 && RKH_MAX_SIGNALS <= 64
-	#define RKH_TRC_MAX_SIGNALS	8
+#if ((RKH_MAX_SIGNALS & (8-1)) == 0)
+	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8)
+#else
+	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8 + 1)
 #endif
-
 
 #if RKH_TRC_SIZEOF_STREAM < 255u
 	typedef rkhui8_t TRCQTY_T;
@@ -91,27 +90,11 @@ static rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
 
 static rkhui8_t trcgfilter;
 
-/**
- * 	\brief
- * 	Filter table of trace points associated with the SMA (AO).
- *
- * 	The trace filter management is similar to the native priority scheme.
- * 	In this case, each SMA is assigned a unique priority number. When a SMA 
- * 	is ready to record a trace its corresponding bit in the filter table 
- * 	must be clear. The size of #trcsmaftbl[] depends on 
- * 	#RKH_MAX_SMA (see rkhcfg.h).
- *
- * 	SMA priority number = | Y | Y | Y | Y | Y | X | X | X |\n
- *
- * 	Y's:	index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table.\n
- * 	X's:	bit position in trcsmaftbl[ Y's ].\n
- *
- * 	The lower 3 bits (X's) of the SMA priority number are used to determine 
- * 	the bit position in trcsmaftbl[], while the next five most significant bits 
- * 	(Y's) are used to determine the index into trcsmaftbl[].
- */
+/* Filter table of trace points associated with the SMA (AO) */
+rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
 
-static rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
+/* Filter table of trace points associated with the event signals */
+rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
@@ -263,16 +246,25 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 
 
 HUInt
-rkh_trc_sma_isoff_( rkhui8_t prio )
+rkh_trc_sma_isoff( rkhui8_t prio )
 {
-	if( prio == RKH_MAX_SMA )
+	if( prio == NVS )
 		return 1;
-	return (( trcsmaftbl[ prio >> 3 ] & rkh_maptbl[ prio & 0x07 ]) == 0 );
+	return (filtbl[num >> 3] & rkh_maptbl[num & 0x07]) == 0;
+}
+
+
+HUInt
+rkh_trc_simfil_isoff( rkhui8_t *filtbl, rkhui8_t num )
+{
+	if( num == RKH_MAX_SMA )
+		return 1;
+	return (filtbl[num >> 3] & rkh_maptbl[num & 0x07]) == 0;
 }
 
 
 void 
-rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio )
+rkh_trc_simfil( rkhui8_t *filtbl, rkhui8_t ctrl, rkhui8_t prio )
 {
 	rkhui8_t x, y;
 
