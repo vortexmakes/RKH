@@ -17,35 +17,12 @@ RKH_MODULE_NAME( rkhtrc )
 #define GETEVT( e )				(rkhui8_t)((e) & 0x1F)
 
 
-/**
- * 	\brief
- * 	The size of trcsmaftbl[] (trace SMA filter table) depends on #RKH_MAX_SMA 
- * 	(see rkhcfg.h).
- */
-
-#if ((RKH_MAX_SMA & (8-1)) == 0)
-	#define RKH_TRC_MAX_SMA		(RKH_MAX_SMA/8)
-#else
-	#define RKH_TRC_MAX_SMA		(RKH_MAX_SMA/8 + 1)
-#endif
-
-/**
- * 	\brief
- * 	The size of trcsigftbl[] (trace signal filter table) depends on 
- * 	#RKH_MAX_SIGNALS and #RKH_SIZEOF_EVENT (see rkhcfg.h).
- */
-
-#if ((RKH_MAX_SIGNALS & (8-1)) == 0)
-	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8)
-#else
-	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8 + 1)
-#endif
-
 #if RKH_TRC_SIZEOF_STREAM < 255u
 	typedef rkhui8_t TRCQTY_T;
 #else
 	typedef rkhui16_t TRCQTY_T;
 #endif
+
 
 #if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
 
@@ -246,37 +223,29 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 
 
 HUInt
-rkh_trc_sma_isoff( rkhui8_t prio )
+rkh_trc_simfil_isoff( rkhui8_t *filtbl, TRCFS_T slot )
 {
-	if( prio == NVS )
-		return 1;
-	return (filtbl[num >> 3] & rkh_maptbl[num & 0x07]) == 0;
-}
+	rkhui8_t x, y;
 
+	y = (rkhui8_t)(slot >> 3);
+	x = (rkhui8_t)(slot & 0x07);
 
-HUInt
-rkh_trc_simfil_isoff( rkhui8_t *filtbl, rkhui8_t num )
-{
-	if( num == RKH_MAX_SMA )
-		return 1;
-	return (filtbl[num >> 3] & rkh_maptbl[num & 0x07]) == 0;
+	return (*(filtblx + y) & rkh_maptbl[y]) == 0;
 }
 
 
 void 
-rkh_trc_simfil( rkhui8_t *filtbl, rkhui8_t ctrl, rkhui8_t prio )
+rkh_trc_simfil( rkhui8_t *filtbl, TRCFS_T slot, rkhui8_t mode )
 {
 	rkhui8_t x, y;
 
-	/* index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table */
-	y = (rkhui8_t)(prio >> 3);
-	/* bit position in trcsmaftbl[ Y's ] */
-	x = (rkhui8_t)(prio & 0x07);
+	y = (rkhui8_t)(slot >> 3);
+	x = (rkhui8_t)(slot & 0x07);
 
-	if( ctrl == FILTER_ON )
-		trcsmaftbl[ y ] |= rkh_maptbl[ x ];
+	if( mode == FILTER_ON )
+		*(filtblx + y) |= rkh_maptbl[ x ];
 	else
-		trcsmaftbl[ y ] &= ~rkh_maptbl[ x ];
+		*(filtblx + y) &= ~rkh_maptbl[ x ];
 }
 #endif
 

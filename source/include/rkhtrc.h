@@ -92,6 +92,59 @@
 #define RKH_TRC_MAX_EVENTS			RKH_MAX_NUM_TE_PER_GROUP*RKH_TRC_MAX_GROUPS
 
 
+/**
+ * 	\brief
+ * 	The size of trcsmaftbl[] (trace SMA filter table) depends on #RKH_MAX_SMA 
+ * 	(see rkhcfg.h).
+ */
+
+#if ((RKH_MAX_SMA & (8-1)) == 0)
+	#define RKH_TRC_MAX_SMA		(RKH_MAX_SMA/8)
+#else
+	#define RKH_TRC_MAX_SMA		(RKH_MAX_SMA/8 + 1)
+#endif
+
+/**
+ * 	\brief
+ * 	The size of trcsigftbl[] (trace signal filter table) depends on 
+ * 	#RKH_MAX_SIGNALS and #RKH_SIZEOF_EVENT (see rkhcfg.h).
+ */
+
+#if ((RKH_MAX_SIGNALS & (8-1)) == 0)
+	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8)
+#else
+	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8 + 1)
+#endif
+
+
+/** 
+ * 	\brief
+ * 	This data type defines the size of filter table for AO and signals.
+ */
+
+#if RKH_TRC_MAX_SMA > RKH_TRC_MAX_SIGNALS
+	#if (RKH_TRC_MAX_SMA * 8) <= RKH_DEF_BIT(8)
+		typedef rkhui8_t TRCFS_T;
+	#elif (RKH_TRC_MAX_SMA * 8) <= RKH_DEF_BIT(16)
+		typedef rkhui16_t TRCFS_T;
+	#elif (RKH_TRC_MAX_SMA * 8) <= RKH_DEF_BIT(32)
+		typedef rkhui32_t TRCFS_T;
+	#else
+		typedef rkhui8_t TRCFS_T;
+	#endif
+#else
+	#if (RKH_TRC_MAX_SIGNALS * 8) <= RKH_DEF_BIT(8)
+		typedef rkhui8_t TRCFS_T;
+	#elif (RKH_TRC_MAX_SIGNALS * 8) <= RKH_DEF_BIT(16)
+		typedef rkhui16_t TRCFS_T;
+	#elif (RKH_TRC_MAX_SIGNALS * 8) <= RKH_DEF_BIT(32)
+		typedef rkhui32_t TRCFS_T;
+	#else
+		typedef rkhui8_t TRCFS_T;
+	#endif
+#endif
+
+
 /**@{
  *
  * 	\brief
@@ -670,16 +723,32 @@ typedef enum rkh_trc_events
 	 * 	\note
 	 * 	This macro always invokes the rkh_trc_begin() function.
 	 *
-	 *	\param eid		is the trace event ID (RKH_TRC_EVENTS).
-	 *	\param prio		priority of state machine application.
+	 *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
+	 *	\param prio_	priority of active object.
+	 *	\param sig_		signal.
 	 */
 
-	#define RKH_TRC_BEGIN( eid, ctrl )					\
-				if(	rkh_trc_isoff_( eid ) && 			\
-					rkh_trc_sma_isoff( tbl, ctrl ) )	\
-				{										\
-					RKH_ENTER_CRITICAL_();				\
-					rkh_trc_begin( eid );
+	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )	\
+				if(	rkh_trc_isoff_( eid_ ) &&   \
+					RKH_TRC_AO_ISOFF( prio_ ) &&\
+					RKH_TRC_SIG_ISOFF( sig_ ) )	\
+				{								\
+					RKH_ENTER_CRITICAL_();		\
+					rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_BEGIN_WOAO( eid_, sig_ )	\
+				if(	rkh_trc_isoff_( eid_ ) &&   \
+					RKH_TRC_SIG_ISOFF( sig_ ) )	\
+				{								\
+					RKH_ENTER_CRITICAL_();		\
+					rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_BEGIN_WOSIG( eid_, prio_ )	\
+				if(	rkh_trc_isoff_( eid_ ) &&   \
+					RKH_TRC_AO_ISOFF( prio_ ) ) \
+				{								\
+					RKH_ENTER_CRITICAL_();		\
+					rkh_trc_begin( eid_ );
 
 	/**
 	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
@@ -700,15 +769,17 @@ typedef enum rkh_trc_events
 	/**
 	 * 	Idem RKH_TRC_BEGIN() macro but without entering critical section.
 	 *
-	 *	\param eid		is the trace event ID (RKH_TRC_EVENTS).
-	 *	\param prio		priority of state machine application.
+	 *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
+	 *	\param prio_	priority of active object.
+	 *	\param sig_		signal.
 	 */
 
-	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )		\
-				if(	rkh_trc_isoff_(eid) && 			\
-					rkh_trc_sma_isoff( tbl, prio) )	\
-				{									\
-					rkh_trc_begin( eid );
+	#define RKH_TRC_BEGIN_NOCRIT( eid_, prio_ )	\
+				if(	rkh_trc_isoff_( eid_ ) && 	\
+					RKH_TRC_AO_ISOFF( prio_ ) &&\
+					RKH_TRC_SIG_ISOFF( sig_ ) )	\
+				{								\
+					rkh_trc_begin( eid_ );
 
 	/**
 	 * 	Idem RKH_TRC_EXIT() macro but without exiting critical section.
@@ -718,17 +789,17 @@ typedef enum rkh_trc_events
 					rkh_trc_end();				\
 				}
 #else
-	#define RKH_TRC_BEGIN( eid, prio )			\
+	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )	\
 				RKH_SR_ALLOC();					\
 				RKH_ENTER_CRITICAL_();			\
-				rkh_trc_begin( eid );
+				rkh_trc_begin( eid_ );
 
 	#define RKH_TRC_END()						\
 				rkh_trc_end();					\
 				RKH_EXIT_CRITICAL_();
 
-	#define RKH_TRC_BEGIN_NOCRIT( eid, prio )	\
-				rkh_trc_begin( eid );
+	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )	\
+				rkh_trc_begin( eid_ );
 
 	#define RKH_TRC_END_NOCRIT()				\
 				rkh_trc_end();
@@ -740,10 +811,10 @@ typedef enum rkh_trc_events
  * 	independent of any runtime filter.
  */
 
-#define RKH_TRC_BEGIN_WOFIL( eid )					\
+#define RKH_TRC_BEGIN_WOFIL( eid_ )					\
 				RKH_SR_ALLOC();						\
 				RKH_ENTER_CRITICAL_();				\
-				rkh_trc_begin( eid );
+				rkh_trc_begin( eid_ );
 
 /**
  * 	Idem RKH_TRC_END() macro but use it for trace events that are 
@@ -751,6 +822,25 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_END_WOFIL()							\
+				rkh_trc_end();						\
+				RKH_EXIT_CRITICAL_();
+
+/**
+ * 	Idem RKH_TRC_BEGIN() macro but use it for trace events that are 
+ * 	independent of any runtime filter.
+ */
+
+#define RKH_TRC_BEGIN_WOFIL_NOCRIT( eid_ )			\
+				RKH_SR_ALLOC();						\
+				RKH_ENTER_CRITICAL_();				\
+				rkh_trc_begin( eid_ );
+
+/**
+ * 	Idem RKH_TRC_END() macro but use it for trace events that are 
+ * 	independent of any runtime filter.
+ */
+
+#define RKH_TRC_END_WOFIL_NOCRIT()					\
 				rkh_trc_end();						\
 				RKH_EXIT_CRITICAL_();
 
@@ -3063,8 +3153,26 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
  */
 
-#define rkh_trc_sma_isoff( tbl_, prio_ ) \
-				rkh_trc_simfil_isoff( tbl_, (rkhui8_t)(prio_) )
+#define RKH_TRC_AO_ISOFF( prio_ ) \
+				rkh_trc_simfil_isoff( trcsmaftbl, (TRCFS_T)(prio_) )
+
+
+/**
+ * 	\brief
+ * 	Test the state machine application (SMA) filter condition.
+ *
+ *	\note
+ * 	This macro is internal to RKH and the user application should not call 
+ * 	it.
+ *
+ * 	\param prio		SMA priority.
+ *	
+ *	\return
+ * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
+ */
+
+#define RKH_TRC_SIG_ISOFF( sig_ ) \
+				rkh_trc_simfil_isoff( trcsigftbl, (TRCFS_T)(sig_) )
 
 
 /**
@@ -3075,31 +3183,78 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  * 	The stream is initially created with an empty filter (that is, without 
  * 	filtering any state machine application). 
  *
- * 	Example:
- * 	
- * 	\code
- * 	void 
- * 	some_function( ... )
- * 	{
- * 		RKH_FILTER_ON_SMA( lnmgr );
- * 		RKH_FILTER_OFF_SMA( ledmgr );
- * 		...
- * 	}
- * 	\endcode
+ *	\note
+ * 	This function is internal to RKH and the user application should not call 
+ * 	it. Please use RKH_FILTER_ON_SMA(), or RKH_FILTER_OFF_SMA() macros 
+ * 	instead.
+ * 
+ * 	\param mode_	filter option, the available options are FILTER_ON or 
+ * 					FILTER_OFF.
+ * 	\param prio_	SMA priority.
+ */
+
+#define RKH_TRC_FILTER_AO( mode_, prio_ ) \
+				rkh_trc_simfil( trcsmaftbl, mode_, (TRCFS_T)prio_ )
+
+
+/**
+ * 	\brief
+ * 	Emmit or suppresse all events from a specified state machine 
+ * 	application, SMA (AO). 
+ *
+ * 	The stream is initially created with an empty filter (that is, without 
+ * 	filtering any state machine application). 
  *
  *	\note
  * 	This function is internal to RKH and the user application should not call 
  * 	it. Please use RKH_FILTER_ON_SMA(), or RKH_FILTER_OFF_SMA() macros 
  * 	instead.
  * 
- * 	\param ctrl		filter option, the available options are FILTER_ON or 
+ * 	\param mode_	filter option, the available options are FILTER_ON or 
  * 					FILTER_OFF.
- * 	\param prio		SMA priority.
+ * 	\param sig_		SMA priority.
  */
 
-/*void rkh_trc_filter_sma_( rkhui8_t ctrl, rkhui8_t prio );*/
-#define rkh_trc_filter_sma_( ctrl_, prio_ ) \
-				rkh_trc_simfil( trcsmaftbl, ctrl_, prio_ )
+#define RKH_TRC_FILTER_SIG( mode_, sig_ ) \
+				rkh_trc_simfil( trcsigftbl, mode_, (TRCFS_T)sig_ )
+
+
+/**
+ * 	\brief
+ * 	Test the filter condition on a desired filter table.
+ *
+ *	\note
+ * 	This function is internal to RKH and the user application should not call 
+ * 	it.
+ *
+ * 	\param filtbl	filter table.
+ * 	\param slot		table slot.
+ *	
+ *	\return
+ * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
+ */
+
+HUInt rkh_trc_simfil_isoff( rkhui8_t *filtbl, TRCFS_T slot );
+
+
+/**
+ * 	\brief
+ * 	Test the filter condition on a desired filter table.
+ *
+ *	\note
+ * 	This function is internal to RKH and the user application should not call 
+ * 	it.
+ *
+ * 	\param filtbl	filter table.
+ * 	\param slot		table slot.
+ * 	\param mode		filter option, the available options are FILTER_ON or 
+ * 					FILTER_OFF.
+ *	
+ *	\return
+ * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
+ */
+
+void rkh_trc_simfil( rkhui8_t *filtbl, TRCFS_T slot, rkhui8_t mode );
 
 
 /**
