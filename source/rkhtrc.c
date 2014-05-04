@@ -67,11 +67,52 @@ static rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
 
 static rkhui8_t trcgfilter;
 
-/* Filter table of trace points associated with the SMA (AO) */
-rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
+/**
+ * 	\brief
+ * 	Filter table of trace points associated with the SMA (AO).
+ *
+ * 	The trace filter management is similar to the native priority scheme.
+ * 	In this case, each SMA is assigned a unique priority number. When a SMA 
+ * 	is ready to record a trace its corresponding bit in the filter table 
+ * 	must be clear. The size of #trcsmaftbl[] depends on 
+ * 	#RKH_MAX_SMA (see rkhcfg.h).
+ *
+ * 	SMA priority number = | Y | Y | Y | Y | Y | X | X | X |\n
+ *
+ * 	Y's:	index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table.\n
+ * 	X's:	bit position in trcsmaftbl[ Y's ].\n
+ *
+ * 	The lower 3 bits (X's) of the SMA priority number are used to determine 
+ * 	the bit position in trcsmaftbl[], while the next five most significant bits 
+ * 	(Y's) are used to determine the index into trcsmaftbl[].
+ */
 
-/* Filter table of trace points associated with the event signals */
-rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
+static rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
+
+/**
+ * 	\brief
+ * 	Filter table of trace points associated with the event signals.
+ *	Similar to trcsmaftbl[].
+ *
+ * 	Signal number = | Y | ... | Y | Y | Y | X | X | X |\n
+ *
+ * 	Y's:	index into trcsigftbl[ #RKH_TRC_MAX_SIGNALS ] table.\n
+ * 	X's:	bit position in trcsigftbl[ Y's ].\n
+ *
+ * 	The lower 3 bits (X's) of the event signal are used to determine the bit 
+ * 	position in trcsigftbl[], while the next most significant bits (Y's) are 
+ * 	used to determine the index into trcsigftbl[].
+ */
+
+static rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
+
+/**
+ * 	\brief
+ * 	The tables to filter trace events related to signal and active object.
+ */
+
+const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, (rkhui8_t *const)&trcsigftbl };
+const FIL_T fsma = { RKH_TRC_MAX_SMA, (rkhui8_t *const)&trcsmaftbl };
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
@@ -157,9 +198,9 @@ rkh_trc_isoff_( rkhui8_t e )
 	evt = GETEVT( e );
 	grp = GETGRP( e );
 
-	return 	(( trcgfilter & rkh_maptbl[ grp ] ) == 0 ) &&
+	return 	(( trcgfilter & rkh_maptbl[ grp ] ) != 0 ) &&
 			(( trceftbl[(rkhui8_t)((trcgmtbl[ grp ] >> 4) + (evt >> 3))] & 
-			   rkh_maptbl[evt & 0x7]) == 0 );
+			   rkh_maptbl[evt & 0x7]) != 0 );
 }
 
 
@@ -170,11 +211,11 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 
 	if( grp == RKH_TRC_ALL_GROUPS )
 	{
-		trcgfilter = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0);
+		trcgfilter = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
 		return;
 	}
 
-	if( ctrl == FILTER_ON )
+	if( ctrl == FILTER_OFF )
 		trcgfilter |= rkh_maptbl[ grp ];
 	else
 		trcgfilter &= ~rkh_maptbl[ grp ];
@@ -185,7 +226,7 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 		range = (rkhui8_t)(trcgmtbl[ grp ] & 0x0F);
 		for( 	p = &trceftbl[ offset ], 
 				ix = 0, 
-				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
+				c = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0); 
 				ix < range; ++ix, ++p )
 			*p = c;
 	}
@@ -201,10 +242,10 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 	{
 		for( 	p = trceftbl, 
 				ix = 0, 
-				c = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0); 
+				c = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0); 
 				ix < RKH_TRC_MAX_EVENTS_IN_BYTES; ++ix, ++p )
 			*p = c;
-		trcgfilter = (rkhui8_t)((ctrl == FILTER_ON) ? 0xFF : 0);
+		trcgfilter = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
 		return;
 	}
 
@@ -212,40 +253,52 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 	grp = GETGRP( evt );
 	offset = (rkhui8_t)((trcgmtbl[ grp ] >> 4) + (e >> 3));
 
-	if( ctrl == FILTER_ON )
-		trceftbl[offset] |= rkh_maptbl[e & 0x7];
-	else
+	if( ctrl == FILTER_OFF )
 	{
-		trceftbl[offset] &= ~rkh_maptbl[e & 0x7];
-		trcgfilter &= ~rkh_maptbl[ grp ];
+		trceftbl[offset] |= rkh_maptbl[e & 0x7];
+		trcgfilter |= rkh_maptbl[ grp ];
 	}
+	else
+		trceftbl[offset] &= ~rkh_maptbl[e & 0x7];
 }
 
 
 HUInt
-rkh_trc_simfil_isoff( rkhui8_t *filtbl, TRCFS_T slot )
+rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot )
 {
 	rkhui8_t x, y;
 
 	y = (rkhui8_t)(slot >> 3);
 	x = (rkhui8_t)(slot & 0x07);
 
-	return (*(filtblx + y) & rkh_maptbl[y]) == 0;
+	return (*(filter->tbl + y) & rkh_maptbl[x]) != 0;
 }
 
 
 void 
-rkh_trc_simfil( rkhui8_t *filtbl, TRCFS_T slot, rkhui8_t mode )
+rkh_trc_simfil( const FIL_T *filter, TRCFS_T slot, rkhui8_t mode )
 {
-	rkhui8_t x, y;
+	rkhui8_t x, y, onoff, *ft, c;
+	TRCFS_T ix;
+
+	onoff = mode & RKH_FILTER_MODE_MASK;
+	if( mode & RKH_TRC_ALL_FILTERS )
+	{
+		for( 	ft = (rkhui8_t *)(filter->tbl), 
+				ix = (TRCFS_T)0, 
+				c = (rkhui8_t)((onoff == FILTER_OFF) ? 0xFF : 0);
+				ix < filter->size; ++ix, ++ft )
+			*ft = c;
+		return;
+	}
 
 	y = (rkhui8_t)(slot >> 3);
 	x = (rkhui8_t)(slot & 0x07);
 
-	if( mode == FILTER_ON )
-		*(filtblx + y) |= rkh_maptbl[ x ];
+	if( onoff == FILTER_OFF )
+		*(filter->tbl + y) |= rkh_maptbl[ x ];
 	else
-		*(filtblx + y) &= ~rkh_maptbl[ x ];
+		*(filter->tbl + y) &= ~rkh_maptbl[ x ];
 }
 #endif
 

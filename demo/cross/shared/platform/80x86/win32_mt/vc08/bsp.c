@@ -363,9 +363,8 @@ bsp_init( int argc, char *argv[] )
 	print_banner();
 	rkh_init();
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+	RKH_FILTER_ON_ALL_SIGNALS();
+	RKH_FILTER_ON_ALL_SMA();
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
@@ -373,6 +372,7 @@ bsp_init( int argc, char *argv[] )
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_SIGNAL( TOUT_REQ );
 
 	RKH_TRC_OPEN();
 }

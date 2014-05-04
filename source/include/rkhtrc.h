@@ -77,6 +77,7 @@
 #include "rkhcfg.h"
 #include "rkhtype.h"
 #include "rkhplat.h"
+#include "rkhevt.h"
 
 
 #define RKH_TRC_MAX_GROUPS			7
@@ -143,6 +144,17 @@
 		typedef rkhui8_t TRCFS_T;
 	#endif
 #endif
+
+
+typedef struct FIL_T
+{
+	TRCFS_T size;
+	rkhui8_t * const tbl;
+} FIL_T;
+
+
+extern const FIL_T fsig;
+extern const FIL_T fsma;
 
 
 /**@{
@@ -239,46 +251,6 @@
 #define EUNCHANGE					1
 
 
-/**
- * 	\brief
- * 	Filter table of trace points associated with the SMA (AO).
- *
- * 	The trace filter management is similar to the native priority scheme.
- * 	In this case, each SMA is assigned a unique priority number. When a SMA 
- * 	is ready to record a trace its corresponding bit in the filter table 
- * 	must be clear. The size of #trcsmaftbl[] depends on 
- * 	#RKH_MAX_SMA (see rkhcfg.h).
- *
- * 	SMA priority number = | Y | Y | Y | Y | Y | X | X | X |\n
- *
- * 	Y's:	index into trcsmaftbl[ #RKH_TRC_MAX_SMA ] table.\n
- * 	X's:	bit position in trcsmaftbl[ Y's ].\n
- *
- * 	The lower 3 bits (X's) of the SMA priority number are used to determine 
- * 	the bit position in trcsmaftbl[], while the next five most significant bits 
- * 	(Y's) are used to determine the index into trcsmaftbl[].
- */
-
-extern rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
-
-/**
- * 	\brief
- * 	Filter table of trace points associated with the event signals.
- *	Similar to trcsmaftbl[].
- *
- * 	Signal number = | Y | ... | Y | Y | Y | X | X | X |\n
- *
- * 	Y's:	index into trcsigftbl[ #RKH_TRC_MAX_SIGNALS ] table.\n
- * 	X's:	bit position in trcsigftbl[ Y's ].\n
- *
- * 	The lower 3 bits (X's) of the event signal are used to determine the bit 
- * 	position in trcsigftbl[], while the next most significant bits (Y's) are 
- * 	used to determine the index into trcsigftbl[].
- */
-
-extern rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
-
-
 #if ((	(RKH_TRC_EN == 1) && \
 		(RKH_SMA_EN_TRC_SENDER == 1)) || \
 		(RKH_EN_DOXYGEN == 1))
@@ -318,11 +290,27 @@ extern rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
 
 #define RKH_TRC_ALL_EVENTS		RKH_TE_NEVENT
 
+/**
+ * 	\brief
+ * 	Emit or supress tracing for all signal/active objects.
+ */
+
+#define RKH_TRC_ALL_FILTERS		0x80
+#define RKH_TRC_SET_ALL( mode_ ) \
+				((mode_)|RKH_TRC_ALL_FILTERS)
+#define RKH_FILTER_MODE_MASK	~RKH_TRC_ALL_FILTERS
+
 
 typedef enum
 {
 	FILTER_ON, FILTER_OFF
 } RKH_TRC_FOPT;
+
+
+typedef enum RKH_FIL_T
+{
+	RKH_FIL_TRCE, RKH_FIL_SIG, RKH_FIL_SMA
+} RKH_FIL_T;
 
 
 /**
@@ -385,10 +373,10 @@ typedef enum rkh_trc_groups
  * 	<EM>RKH trace event structure</EM>
  *
  *	\code
- *	(1) RKH_TRC_BEGIN( event, ao )	\
- *	(2)		RKH_TRC_ARG0( arg0 ); 	\
- *	(3)		RKH_TRC_ARG1( arg1 ); 	\
- *	(4)		RKH_TRC_....( ... ); 	\	
+ *	(1) RKH_TRC_BEGIN( trc_evt, ao_prio, signal )	\
+ *	(2)		RKH_TRC_ARG0( arg0 ); 					\
+ *	(3)		RKH_TRC_ARG1( arg1 ); 					\
+ *	(4)		RKH_TRC_....( ... ); 					\
  *	(5)	RKH_TRC_END()
  *	\endcode
  *
@@ -396,10 +384,10 @@ typedef enum rkh_trc_groups
  *				and ends with the matching macro RKH_TRC_END().
  *			 	These macros are not terminated with the semicolon.
  *			 	The record-begin macro RKH_TRC_BEGIN() takes three arguments. 
- *			 	The first argument 'event' is the trace event ID, and the 
- *			 	second argument 'ao' is the state machine application 
- *			 	(active object). These arguments are used in the on/off 
- *			 	filters. 
+ *			 	The first argument 'trc_evt' is the trace event ID, the second 
+ *			 	argument 'ao_prio' is the active object priority, and the 
+ *			 	third argument 'signal' is the event signal number. These 
+ *			 	arguments are used in the on/off filters. 
  *			 	The runtime filter is optional and could be enabled or 
  *			 	disabled with the #RKH_TRC_RUNTIME_FILTER in the \b rkhcfg.h 
  *			 	file. This pair of macros locks interrupts at the beginning 
@@ -412,7 +400,7 @@ typedef enum rkh_trc_groups
  *	
  *	\code
  *	#define RKH_TR_RQ_INIT( q, ao, nelem  )				\
- *				RKH_TRC_BEGIN( RKH_TE_RQ_INIT, NVS )	\
+ *				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_INITS )\
  *					RKH_TRC_SYM( q ); 					\
  *					RKH_TRC_SYM( ao ); 					\
  *					RKH_TRC_NE( nelem ); 				\
@@ -420,7 +408,8 @@ typedef enum rkh_trc_groups
  *	
  *	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )		\
  *				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 		\
- *								(ao)->romrkh->prio )	\
+ *								(ao)->romrkh->prio,		\
+ *								ev->e )					\
  *					RKH_TRC_SYM( ao ); 					\
  *					RKH_TRC_SIG( ev->e ); 				\
  *					RKH_TRC_SENDER( snr ); 				\
@@ -750,6 +739,12 @@ typedef enum rkh_trc_events
 					RKH_ENTER_CRITICAL_();		\
 					rkh_trc_begin( eid_ );
 
+	#define RKH_TRC_BEGIN_WOAOSIG( eid_ )		\
+				if(	rkh_trc_isoff_( eid_ ) )	\
+				{								\
+					RKH_ENTER_CRITICAL_();		\
+					rkh_trc_begin( eid_ );
+
 	/**
 	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
 	 *	and ends with the matching macro RKH_TRC_END(). These macros are 
@@ -774,34 +769,95 @@ typedef enum rkh_trc_events
 	 *	\param sig_		signal.
 	 */
 
-	#define RKH_TRC_BEGIN_NOCRIT( eid_, prio_ )	\
-				if(	rkh_trc_isoff_( eid_ ) && 	\
-					RKH_TRC_AO_ISOFF( prio_ ) &&\
-					RKH_TRC_SIG_ISOFF( sig_ ) )	\
-				{								\
+	#define RKH_TRC_BEGIN_NOCRIT( eid_, prio_, sig_ )	\
+				if(	rkh_trc_isoff_( eid_ ) && 			\
+					RKH_TRC_AO_ISOFF( prio_ ) &&		\
+					RKH_TRC_SIG_ISOFF( sig_ ) )			\
+				{										\
+					rkh_trc_begin( eid_ );
+
+	/**
+	 * 	Idem RKH_TRC_BEGIN_WOAO() macro but without entering critical 
+	 * 	section.
+	 *
+	 *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
+	 *	\param sig_		signal.
+	 */
+
+	#define RKH_TRC_BEGIN_WOAO_NOCRIT( eid_, sig_ )		\
+				if(	rkh_trc_isoff_( eid_ ) &&   		\
+					RKH_TRC_SIG_ISOFF( sig_ ) )			\
+				{										\
+					rkh_trc_begin( eid_ );
+
+	/**
+	 * 	Idem RKH_TRC_BEGIN_WOSIG() macro but without entering critical 
+	 * 	section.
+	 *
+	 *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
+	 *	\param prio_	priority of active object.
+	 */
+
+	#define RKH_TRC_BEGIN_WOSIG_NOCRIT( eid_, prio_ )	\
+				if(	rkh_trc_isoff_( eid_ ) &&   		\
+					RKH_TRC_AO_ISOFF( prio_ ) ) 		\
+				{										\
+					rkh_trc_begin( eid_ );
+
+	/**
+	 * 	Idem RKH_TRC_BEGIN_WOAOSIG() macro but without entering critical 
+	 * 	section.
+	 *
+	 *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
+	 *	\param prio_	priority of active object.
+	 */
+
+	#define RKH_TRC_BEGIN_WOAOSIG_NOCRIT( eid_ )		\
+				if(	rkh_trc_isoff_( eid_ ) )   			\
+				{										\
 					rkh_trc_begin( eid_ );
 
 	/**
 	 * 	Idem RKH_TRC_EXIT() macro but without exiting critical section.
 	 */
 
-	#define RKH_TRC_END_NOCRIT()				\
-					rkh_trc_end();				\
+	#define RKH_TRC_END_NOCRIT()						\
+					rkh_trc_end();						\
 				}
 #else
-	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )	\
-				RKH_SR_ALLOC();					\
-				RKH_ENTER_CRITICAL_();			\
+	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )			\
+				RKH_ENTER_CRITICAL_();					\
 				rkh_trc_begin( eid_ );
 
-	#define RKH_TRC_END()						\
-				rkh_trc_end();					\
+	#define RKH_TRC_BEGIN_WOAO( eid_, sig_ )			\
+				RKH_ENTER_CRITICAL_();					\
+				rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_BEGIN_WOSIG( eid_, prio_ )			\
+				RKH_ENTER_CRITICAL_();					\
+				rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_BEGIN_WOAOSIG( eid_ )				\
+				RKH_ENTER_CRITICAL_();					\
+				rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_END()								\
+				rkh_trc_end();							\
 				RKH_EXIT_CRITICAL_();
 
-	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )	\
+	#define RKH_TRC_BEGIN_NOCRIT( eid_, prio_, sig_ )	\
 				rkh_trc_begin( eid_ );
 
-	#define RKH_TRC_END_NOCRIT()				\
+	#define RKH_TRC_BEGIN_WOAO_NOCRIT( eid_, sig_ )		\
+				rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_BEGIN_WOSIG_NOCRIT( eid_, prio_ )	\
+				rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_BEGIN_WOAOSIG_NOCRIT( eid_ )		\
+				rkh_trc_begin( eid_ );
+
+	#define RKH_TRC_END_NOCRIT()						\
 				rkh_trc_end();
 #endif
 
@@ -826,23 +882,19 @@ typedef enum rkh_trc_events
 				RKH_EXIT_CRITICAL_();
 
 /**
- * 	Idem RKH_TRC_BEGIN() macro but use it for trace events that are 
- * 	independent of any runtime filter.
+ * 	Idem RKH_TRC_BEGIN_WOFIL() macro but without entering critical section.
  */
 
 #define RKH_TRC_BEGIN_WOFIL_NOCRIT( eid_ )			\
-				RKH_SR_ALLOC();						\
-				RKH_ENTER_CRITICAL_();				\
 				rkh_trc_begin( eid_ );
 
 /**
- * 	Idem RKH_TRC_END() macro but use it for trace events that are 
- * 	independent of any runtime filter.
+ * 	Idem RKH_TRC_END_WOFIL_NOCRIT() macro but without entering critical 
+ * 	section.
  */
 
 #define RKH_TRC_END_WOFIL_NOCRIT()					\
 				rkh_trc_end();						\
-				RKH_EXIT_CRITICAL_();
 
 
 /**
@@ -1363,10 +1415,10 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_MP_INIT( mp, nb, bs )							\
-					RKH_TRC_BEGIN( RKH_TE_MP_INIT, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_MP_INIT  )			\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nb ); 							\
-				/*NEW*/ RKH_TRC_BSIZE( bs );							\
+						RKH_TRC_BSIZE( bs );							\
 					RKH_TRC_END()
 
 		/**
@@ -1380,7 +1432,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_MP_GET( mp, nfree, nmin )						\
-					RKH_TRC_BEGIN( RKH_TE_MP_GET, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_MP_GET )				\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nfree ); 							\
 				/*NEW*/ RKH_TRC_MP_NMIN( nmin );						\
@@ -1397,7 +1449,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_MP_PUT( mp, nfree )								\
-					RKH_TRC_BEGIN( RKH_TE_MP_PUT, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_MP_PUT )				\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nfree ); 							\
 					RKH_TRC_END()
@@ -1421,7 +1473,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_INIT( q, ao, nelem )							\
-					RKH_TRC_BEGIN( RKH_TE_RQ_INIT, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_INIT )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_NE( nelem ); 							\
@@ -1438,7 +1490,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_GET( q, nelem )								\
-					RKH_TRC_BEGIN( RKH_TE_RQ_GET, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_GET )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_NE( nelem );							\
 					RKH_TRC_END()
@@ -1454,10 +1506,10 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_FIFO( q, nelem, nmin )						\
-					RKH_TRC_BEGIN( RKH_TE_RQ_FIFO, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_FIFO )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_NE( nelem ); 							\
-				/*NEW*/ RKH_TRC_RQ_NMIN( nmin );						\
+						RKH_TRC_RQ_NMIN( nmin );						\
 					RKH_TRC_END()
 
 		/**
@@ -1471,10 +1523,10 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_LIFO( q, nelem, nmin )						\
-					RKH_TRC_BEGIN( RKH_TE_RQ_LIFO, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_LIFO )				\
 						RKH_TRC_SYM( q ); 								\
 						RKH_TRC_NE( nelem ); 							\
-				/*NEW*/ RKH_TRC_RQ_NMIN( nmin );						\
+						RKH_TRC_RQ_NMIN( nmin );						\
 					RKH_TRC_END()
 
 		/**
@@ -1488,7 +1540,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_FULL( q )										\
-					RKH_TRC_BEGIN_NOCRIT( RKH_TE_RQ_FULL, NVS )			\
+					RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_RQ_FULL )		\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END_NOCRIT()
 
@@ -1503,7 +1555,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_DPT( q )										\
-					RKH_TRC_BEGIN( RKH_TE_RQ_DPT, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_DPT )				\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 
@@ -1518,7 +1570,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_RQ_GET_LAST( q )									\
-					RKH_TRC_BEGIN( RKH_TE_RQ_GET_LAST, NVS )			\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_GET_LAST )			\
 						RKH_TRC_SYM( q ); 								\
 					RKH_TRC_END()
 	#else
@@ -1545,10 +1597,10 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_ACT( ao, p )									\
-					RKH_TRC_BEGIN( 	RKH_TE_SMA_ACT, 					\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN_WOSIG(	RKH_TE_SMA_ACT, 			\
+											(ao)->romrkh->prio )		\
 						RKH_TRC_SYM( ao ); 								\
-				/*NEW*/ RKH_TRC_UI8( p );								\
+						RKH_TRC_UI8( p );								\
 					RKH_TRC_END()
 
 		/**
@@ -1562,10 +1614,10 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_TERM( ao, p )								\
-					RKH_TRC_BEGIN( 	RKH_TE_SMA_TERM, 					\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SMA_TERM, 			\
+											(ao)->romrkh->prio )		\
 						RKH_TRC_SYM( ao ); 								\
-				/*NEW*/ RKH_TRC_UI8( p );								\
+						RKH_TRC_UI8( p );								\
 					RKH_TRC_END()
 
 		/**
@@ -1579,12 +1631,13 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_GET( ao, ev, pid, rc )						\
-					RKH_TRC_BEGIN( RKH_TE_SMA_GET, 						\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN( 	RKH_TE_SMA_GET, 					\
+									(ao)->romrkh->prio,					\
+									ev->e )								\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
-				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );								\
+						RKH_TRC_UI8( pid );								\
+						RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -1598,13 +1651,14 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )					\
-					RKH_TRC_BEGIN( RKH_TE_SMA_FIFO, 					\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 					\
+									(ao)->romrkh->prio,					\
+									ev->e )								\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 						RKH_TRC_SENDER( snr ); 							\
-				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );								\
+						RKH_TRC_UI8( pid );								\
+						RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -1618,13 +1672,14 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )					\
-					RKH_TRC_BEGIN( RKH_TE_SMA_LIFO, 					\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN(	 RKH_TE_SMA_LIFO, 					\
+									(ao)->romrkh->prio,					\
+									ev->e )								\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_SIG( ev->e ); 							\
 						RKH_TRC_SENDER( snr ); 							\
-				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );								\
+						RKH_TRC_UI8( pid );								\
+						RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -1638,8 +1693,8 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_REG( ao, prio )								\
-					RKH_TRC_BEGIN( RKH_TE_SMA_REG, 						\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SMA_REG, 			\
+											(ao)->romrkh->prio )		\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
@@ -1655,8 +1710,8 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_SMA_UNREG( ao, prio )							\
-					RKH_TRC_BEGIN( RKH_TE_SMA_UNREG, 					\
-									(ao)->romrkh->prio )				\
+					RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SMA_UNREG, 			\
+											(ao)->romrkh->prio )		\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_UI8( prio ); 							\
 					RKH_TRC_END()
@@ -1685,8 +1740,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_INIT == RKH_DEF_ENABLED
 			#define RKH_TR_SM_INIT( ao, ist )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_INIT, 					\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_INIT, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( ist ); 						\
 						RKH_TRC_END()
@@ -1706,8 +1761,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_CLRH == RKH_DEF_ENABLED
 			#define RKH_TR_SM_CLRH( ao, h )								\
-						RKH_TRC_BEGIN( RKH_TE_SM_CLRH, 					\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG(	RKH_TE_SM_CLRH, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( h ); 							\
 						RKH_TRC_END()
@@ -1727,8 +1782,9 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_DCH == RKH_DEF_ENABLED
 			#define RKH_TR_SM_DCH( ao, ev )								\
-						RKH_TRC_BEGIN( RKH_TE_SM_DCH, 					\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN( 	RKH_TE_SM_DCH, 					\
+										(ao)->romrkh->prio,				\
+										ev->e )							\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
@@ -1749,8 +1805,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_TRN == RKH_DEF_ENABLED
 			#define RKH_TR_SM_TRN( ao, sst, tst )						\
-						RKH_TRC_BEGIN( RKH_TE_SM_TRN, 					\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG(	RKH_TE_SM_TRN, 			\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( sst ); 						\
 							RKH_TRC_SYM( tst ); 						\
@@ -1771,8 +1827,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_STATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_STATE( ao, st )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_STATE, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_STATE, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1792,8 +1848,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_ENSTATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_ENSTATE( ao, st )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_ENSTATE, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_ENSTATE, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1813,8 +1869,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_EXSTATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_EXSTATE( ao, st )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EXSTATE, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EXSTATE, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1834,8 +1890,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_NENEX == RKH_DEF_ENABLED
 			#define RKH_TR_SM_NENEX( ao, nen, nex )						\
-						RKH_TRC_BEGIN( RKH_TE_SM_NENEX, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_NENEX, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_UI8( nen ); 						\
 							RKH_TRC_UI8( nex ); 						\
@@ -1856,8 +1912,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_NTRNACT == RKH_DEF_ENABLED
 			#define RKH_TR_SM_NTRNACT( ao, nta, nts )					\
-						RKH_TRC_BEGIN( RKH_TE_SM_NTRNACT, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_NTRNACT, 		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_UI8( nta ); 						\
 							RKH_TRC_UI8( nts ); 						\
@@ -1878,8 +1934,8 @@ enum rkh_trc_fmt
 
 		#if RKH_TRC_EN_SM_TS_STATE == RKH_DEF_ENABLED
 			#define RKH_TR_SM_TS_STATE( ao, st )						\
-						RKH_TRC_BEGIN( RKH_TE_SM_TS_STATE, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_TS_STATE, 	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
@@ -1902,8 +1958,8 @@ enum rkh_trc_fmt
 		 */
 
 			#define RKH_TR_SM_EVT_PROC( ao )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EVT_PROC, 				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EVT_PROC, 	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1919,8 +1975,8 @@ enum rkh_trc_fmt
 		 */
 
 			#define RKH_TR_SM_EVT_NFOUND( ao )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EVT_NFOUND,			\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EVT_NFOUND,	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1935,8 +1991,8 @@ enum rkh_trc_fmt
 		 */
 
 			#define RKH_TR_SM_GRD_FALSE( ao )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_GRD_FALSE,				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_GRD_FALSE,	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1953,8 +2009,8 @@ enum rkh_trc_fmt
 		 */
 
 			#define RKH_TR_SM_CND_NFOUND( ao )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_CND_NFOUND,			\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_CND_NFOUND,	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1969,8 +2025,8 @@ enum rkh_trc_fmt
 		 */
 
 			#define RKH_TR_SM_UNKN_STATE( ao )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_UNKN_STATE,			\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_UNKN_STATE,	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -1985,8 +2041,8 @@ enum rkh_trc_fmt
 		 * 	Args	= ao\n
 		 */
 			#define RKH_TR_SM_EX_HLEVEL( ao )							\
-						RKH_TRC_BEGIN( RKH_TE_SM_EX_HLEVEL,				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EX_HLEVEL,	\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 
@@ -2002,8 +2058,8 @@ enum rkh_trc_fmt
 		 * 	Args	= ao\n
 		 */
 			#define RKH_TR_SM_EX_TSEG( ao )								\
-						RKH_TRC_BEGIN( RKH_TE_SM_EX_TSEG,				\
-									(ao)->romrkh->prio )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EX_TSEG,		\
+												(ao)->romrkh->prio )	\
 							RKH_TRC_SYM( ao ); 							\
 						RKH_TRC_END()
 		#else
@@ -2049,7 +2105,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_TIM_INIT( t, sig )								\
-					RKH_TRC_BEGIN( RKH_TE_TIM_INIT, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_INIT )			\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SIG( sig ); 							\
 					RKH_TRC_END()
@@ -2065,11 +2121,11 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_TIM_START( t, ao, nt, per )						\
-					RKH_TRC_BEGIN( RKH_TE_TIM_START, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_START )			\
 						RKH_TRC_SYM( t ); 								\
 						RKH_TRC_SYM( ao ); 								\
 						RKH_TRC_NTICK( nt ); 							\
-				/*NEW*/ RKH_TRC_NTICK( per );							\
+						RKH_TRC_NTICK( per );							\
 					RKH_TRC_END()
 	
 		/**
@@ -2083,7 +2139,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_TIM_STOP( t, nt, per )							\
-					RKH_TRC_BEGIN( RKH_TE_TIM_STOP, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_STOP )			\
 						RKH_TRC_SYM( t ); 								\
 				/*NEW*/ RKH_TRC_NTICK( nt );							\
 				/*NEW*/ RKH_TRC_NTICK( per );							\
@@ -2100,7 +2156,9 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_TIM_TOUT( t, sig, ao )							\
-					RKH_TRC_BEGIN( RKH_TE_TIM_TOUT, NVS )				\
+					RKH_TRC_BEGIN( 	RKH_TE_TIM_TOUT, 					\
+									(ao)->romrkh->prio,					\
+									sig )								\
 						RKH_TRC_SYM( t ); 								\
 				/*NEW*/ RKH_TRC_SIG( sig );								\
 				/*NEW*/ RKH_TRC_SYM( ao );								\
@@ -2117,7 +2175,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_TIM_REM( t )										\
-					RKH_TRC_BEGIN( RKH_TE_TIM_REM, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_REM )				\
 						RKH_TRC_SYM( t ); 								\
 					RKH_TRC_END()
 	#else
@@ -2142,7 +2200,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_EN()										\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EN, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_EN )			\
 					RKH_TRC_END()
 
 		/**
@@ -2156,7 +2214,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_EX()											\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EX, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_EX )				\
 					RKH_TRC_END()
 
 		/**
@@ -2170,7 +2228,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_EPREG( ep, ss, es )							\
-					RKH_TRC_BEGIN( RKH_TE_FWK_EPREG, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_EPREG )			\
 						RKH_TRC_UI8( ep );								\
 						RKH_TRC_UI32( ss );								\
 						RKH_TRC_ES( es );								\
@@ -2187,7 +2245,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_AE( es, ev, pid, rc )						\
-					RKH_TRC_BEGIN( RKH_TE_FWK_AE, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_AE )				\
 						RKH_TRC_ES( es );								\
 						RKH_TRC_SIG( ev->e );							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
@@ -2205,7 +2263,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_GC( ev, pid, rc )							\
-					RKH_TRC_BEGIN( RKH_TE_FWK_GC, NVS )					\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_GC )				\
 						RKH_TRC_SIG( ev->e );							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
 				/*NEW*/ RKH_TRC_UI8( rc );								\
@@ -2222,7 +2280,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_GCR( ev, pid, rc )							\
-					RKH_TRC_BEGIN( RKH_TE_FWK_GCR, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_GCR )				\
 						RKH_TRC_SIG( ev->e );							\
 				/*NEW*/ RKH_TRC_UI8( pid );								\
 				/*NEW*/ RKH_TRC_UI8( rc );								\
@@ -2239,7 +2297,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_DEFER( q, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_FWK_DEFER, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_DEFER )			\
 						RKH_TRC_SYM( q );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
@@ -2255,7 +2313,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_RCALL( ao, ev )								\
-					RKH_TRC_BEGIN( RKH_TE_FWK_RCALL, NVS )				\
+					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_RCALL )			\
 						RKH_TRC_SYM( ao );								\
 						RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_END()
@@ -2401,7 +2459,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_EXE_FUN( fn )								\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EXE_FUN, NVS )		\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EXE_FUN )			\
 						RKH_TRC_FUN( fn );								\
 					RKH_TRC_END_WOFIL()
 
@@ -2524,11 +2582,11 @@ enum rkh_trc_fmt
 		 */
 
 		#if RKH_TRC_EN_ASSERT == RKH_DEF_ENABLED
-			#define RKH_TR_FWK_ASSERT( mod_, ln_ )						\
-						RKH_TRC_BEGIN_NOCRIT( RKH_TE_FWK_ASSERT, NVS )	\
-							RKH_TRC_STR( (RKHROM char *)mod_ );			\
-							RKH_TRC_UI16( (rkhui16_t)ln_ );				\
-						RKH_TRC_END_NOCRIT()							\
+			#define RKH_TR_FWK_ASSERT( mod_, ln_ )							\
+						RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_FWK_ASSERT )	\
+							RKH_TRC_STR( (RKHROM char *)mod_ );				\
+							RKH_TRC_UI16( (rkhui16_t)ln_ );					\
+						RKH_TRC_END_NOCRIT()								\
 						RKH_TRC_FLUSH()
 		#else
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )		(void)0
@@ -3000,21 +3058,68 @@ void rkh_trc_put( rkhui8_t b );
 
 	/**
 	 * 	\brief
-	 * 	Suppresse the enable trace events from a specified state machine 
-	 * 	application, SMA (or active object). 
+	 * 	Suppress the enable trace events related to a specified active object.
 	 */
 
-	#define RKH_FILTER_ON_SMA( sma )						\
-				rkh_trc_filter_sma_( FILTER_ON, (sma)->romrkh->prio )
+	#define RKH_FILTER_ON_SMA( sma ) \
+				rkh_trc_simfil( &fsma, (sma)->romrkh->prio, FILTER_ON )
 
 	/**
 	 * 	\brief
-	 * 	Emmit the enabled trace events from a specified state machine 
-	 * 	application, SMA (or active object). 
+	 * 	Suppress all enabled trace events related to specified active object.
 	 */
 
-	#define RKH_FILTER_OFF_SMA( sma )						\
-				rkh_trc_filter_sma_( FILTER_OFF, (sma)->romrkh->prio )
+	#define RKH_FILTER_ON_ALL_SMA() \
+				rkh_trc_simfil( &fsma, 0, RKH_TRC_SET_ALL(FILTER_ON) )
+
+	/**
+	 * 	\brief
+	 * 	Emmit the enabled trace events related to a specified active object.
+	 */
+
+	#define RKH_FILTER_OFF_SMA( sma ) \
+				rkh_trc_simfil( &fsma, (sma)->romrkh->prio, FILTER_OFF )
+
+	/**
+	 * 	\brief
+	 * 	Emmit all enabled trace events related to specified active object.
+	 */
+
+	#define RKH_FILTER_OFF_ALL_SMA() \
+				rkh_trc_simfil( &fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF) )
+
+
+	/**
+	 * 	\brief
+	 * 	Suppress the enabled trace events related to a specified event signal.
+	 */
+
+	#define RKH_FILTER_ON_SIGNAL( sig ) \
+				rkh_trc_simfil( &fsig, (sig), FILTER_ON )
+
+	/**
+	 * 	\brief
+	 * 	Suppress all enabled trace events related to specified event signal.
+	 */
+
+	#define RKH_FILTER_ON_ALL_SIGNALS() \
+				rkh_trc_simfil( &fsig, 0, RKH_TRC_SET_ALL(FILTER_ON) )
+
+	/**
+	 * 	\brief
+	 * 	Emmit the enabled trace events related to a specified event signal.
+	 */
+
+	#define RKH_FILTER_OFF_SIGNAL( sig ) \
+				rkh_trc_simfil( &fsig, (sig), FILTER_OFF )
+
+	/**
+	 * 	\brief
+	 * 	Emmit all enabled trace events related to specified event signal.
+	 */
+
+	#define RKH_FILTER_OFF_ALL_SIGNALS() \
+				rkh_trc_simfil( &fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF) )
 
 #else
 	#define RKH_FILTER_ON_GROUP( grp ) 				(void)0
@@ -3024,7 +3129,13 @@ void rkh_trc_put( rkhui8_t b );
 	#define RKH_FILTER_ON_GROUP_ALL_EVENTS( grp )	(void)0
 	#define RKH_FILTER_OFF_GROUP_ALL_EVENTS( grp )	(void)0
 	#define RKH_FILTER_ON_SMA( sma )				(void)0
+	#define RKH_FILTER_ON_ALL_SMA()					(void)0
 	#define RKH_FILTER_OFF_SMA( sma )				(void)0
+	#define RKH_FILTER_OFF_ALL_SMA()				(void)0
+	#define RKH_FILTER_ON_SIGNAL( sig )				(void)0
+	#define RKH_FILTER_ON_ALL_SIGNALS()				(void)0
+	#define RKH_FILTER_OFF_SIGNAL( sig )			(void)0
+	#define RKH_FILTER_OFF_ALL_SIGNALS()			(void)0
 #endif
 
 
@@ -3141,120 +3252,75 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
 
 /**
  * 	\brief
- * 	Test the state machine application (SMA) filter condition.
- *
- *	\note
- * 	This macro is internal to RKH and the user application should not call 
- * 	it.
- *
- * 	\param prio		SMA priority.
- *	
- *	\return
- * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
- */
-
-#define RKH_TRC_AO_ISOFF( prio_ ) \
-				rkh_trc_simfil_isoff( trcsmaftbl, (TRCFS_T)(prio_) )
-
-
-/**
- * 	\brief
- * 	Test the state machine application (SMA) filter condition.
- *
- *	\note
- * 	This macro is internal to RKH and the user application should not call 
- * 	it.
- *
- * 	\param prio		SMA priority.
- *	
- *	\return
- * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
- */
-
-#define RKH_TRC_SIG_ISOFF( sig_ ) \
-				rkh_trc_simfil_isoff( trcsigftbl, (TRCFS_T)(sig_) )
-
-
-/**
- * 	\brief
- * 	Emmit or suppresse all events from a specified state machine 
- * 	application, SMA (AO). 
- *
- * 	The stream is initially created with an empty filter (that is, without 
- * 	filtering any state machine application). 
+ * 	Emmit or suppresse trace events related to a particular active 
+ * 	object or event signal.
  *
  *	\note
  * 	This function is internal to RKH and the user application should not call 
- * 	it. Please use RKH_FILTER_ON_SMA(), or RKH_FILTER_OFF_SMA() macros 
- * 	instead.
- * 
- * 	\param mode_	filter option, the available options are FILTER_ON or 
- * 					FILTER_OFF.
- * 	\param prio_	SMA priority.
- */
-
-#define RKH_TRC_FILTER_AO( mode_, prio_ ) \
-				rkh_trc_simfil( trcsmaftbl, mode_, (TRCFS_T)prio_ )
-
-
-/**
- * 	\brief
- * 	Emmit or suppresse all events from a specified state machine 
- * 	application, SMA (AO). 
- *
- * 	The stream is initially created with an empty filter (that is, without 
- * 	filtering any state machine application). 
- *
- *	\note
- * 	This function is internal to RKH and the user application should not call 
- * 	it. Please use RKH_FILTER_ON_SMA(), or RKH_FILTER_OFF_SMA() macros 
- * 	instead.
- * 
- * 	\param mode_	filter option, the available options are FILTER_ON or 
- * 					FILTER_OFF.
- * 	\param sig_		SMA priority.
- */
-
-#define RKH_TRC_FILTER_SIG( mode_, sig_ ) \
-				rkh_trc_simfil( trcsigftbl, mode_, (TRCFS_T)sig_ )
-
-
-/**
- * 	\brief
- * 	Test the filter condition on a desired filter table.
- *
- *	\note
- * 	This function is internal to RKH and the user application should not call 
- * 	it.
- *
- * 	\param filtbl	filter table.
- * 	\param slot		table slot.
- *	
- *	\return
- * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
- */
-
-HUInt rkh_trc_simfil_isoff( rkhui8_t *filtbl, TRCFS_T slot );
-
-
-/**
- * 	\brief
- * 	Test the filter condition on a desired filter table.
- *
- *	\note
- * 	This function is internal to RKH and the user application should not call 
- * 	it.
- *
- * 	\param filtbl	filter table.
- * 	\param slot		table slot.
+ * 	it. Please use RKH_FILTER_ON_SMA()/RKH_FILTER_ON_SIGNAL(), or 
+ * 	RKH_FILTER_OFF_SMA()/RKH_FILTER_OFF_SIGNAL macros instead.
+ * 	
+ * 	\param filter	filter type.
+ * 	\param slot		indicates the filter slot to be applied.
  * 	\param mode		filter option, the available options are FILTER_ON or 
- * 					FILTER_OFF.
+ * 					FILTER_OFF. 
+ */
+
+void rkh_trc_simfil( const FIL_T *filter, TRCFS_T slot, rkhui8_t mode );
+
+
+/**
+ * 	\brief
+ * 	Test the active objecto or signal filter condition.
+ *
+ *	\note
+ * 	This function is internal to RKH and the user application should not call 
+ * 	it.
+ *
+ * 	\param filter	filter type.
+ * 	\param slot		indicates the filter slot to be applied.
  *	
  *	\return
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
  */
 
-void rkh_trc_simfil( rkhui8_t *filtbl, TRCFS_T slot, rkhui8_t mode );
+HUInt rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot );
+
+
+/**
+ * 	\brief
+ * 	Test the state machine application (SMA) filter condition.
+ *
+ *	\note
+ * 	This macro is internal to RKH and the user application should not call 
+ * 	it.
+ *
+ * 	\param prio		SMA priority.
+ *	
+ *	\return
+ * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
+ */
+
+#define RKH_TRC_AO_ISOFF( prio ) \
+				rkh_trc_simfil_isoff( &fsma, (TRCFS_T)(prio) )
+
+
+/**
+ * 	\brief
+ * 	Test the event signal filter condition.
+ *
+ *	\note
+ * 	This macro is internal to RKH and the user application should not call 
+ * 	it.
+ *
+ * 	\param sig		event signal.
+ *	
+ *	\return
+ * 	'1' (TRUE) if the signal is not filtered, otherwise '0' (FALSE).
+ */
+
+#define RKH_TRC_SIG_ISOFF( sig ) \
+				rkh_trc_simfil_isoff( &fsig, (TRCFS_T)(sig) )
 
 
 /**
