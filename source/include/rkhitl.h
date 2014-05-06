@@ -845,6 +845,30 @@
 	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
 	#error "                                [     ||  RKH_DEF_DISABLED]       "
 	#endif
+
+	#ifndef	RKH_TRC_RTFIL_SMA_EN
+	#error "RKH_TRC_RTFIL_SMA_EN                   not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_TRC_RTFIL_SMA_EN != RKH_DEF_ENABLED) && \
+    	    	(RKH_TRC_RTFIL_SMA_EN != RKH_DEF_DISABLED))
+	#error "RKH_TRC_RTFIL_SMA_EN             illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
+
+	#ifndef	RKH_TRC_RTFIL_SIGNAL_EN
+	#error "RKH_TRC_RTFIL_SIGNAL_EN                not #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be RKH_DEF_ENABLED ]        "
+	#error "                                [     || RKH_DEF_DISABLED]        "
+
+	#elif 	((RKH_TRC_RTFIL_SIGNAL_EN != RKH_DEF_ENABLED) && \
+    	    	(RKH_TRC_RTFIL_SIGNAL_EN != RKH_DEF_DISABLED))
+	#error "RKH_TRC_RTFIL_SIGNAL_EN          illegally #define'd in 'rkhcfg.h'"
+	#error "                                [MUST be  RKH_DEF_ENABLED ]       "
+	#error "                                [     ||  RKH_DEF_DISABLED]       "
+	#endif
 	
 	#ifndef	RKH_TRC_EN_USER_TRACE
 	#error "RKH_TRC_EN_USER_TRACE                  not #define'd in 'rkhcfg.h'"

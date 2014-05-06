@@ -33,7 +33,6 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 
 
 #define BIN_TRACE					0
@@ -58,6 +57,10 @@ static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
 #if defined( RKH_USE_TRC_SENDER )
 static rkhui8_t l_isr_kbd;
+#endif
+
+#if RKH_TRC_EN == RKH_DEF_ENABLED
+static HUInt running;
 #endif
 
 
@@ -167,6 +170,9 @@ void
 rkh_hk_exit( void ) 
 {
 	RKH_TRC_FLUSH();
+#if RKH_TRC_EN == RKH_DEF_ENABLED
+	running = (rkhui8_t)0;
+#endif
 }
 
 
@@ -220,7 +226,30 @@ print_banner( void )
 }
 
 
-#if RKH_TRC_EN == 1
+#if RKH_TRC_EN == RKH_DEF_ENABLED
+
+#include <time.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>                        /* Win32 API for multithreading */
+
+
+static 
+DWORD WINAPI 
+idle_thread( LPVOID par )
+{
+    (void)par;
+
+    SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_IDLE );
+    running = (rkhui8_t)1;
+
+    while( running )
+	{
+		RKH_TRC_FLUSH();
+        Sleep(10);                                      /* wait for a while */
+    }
+    return 0;                                             /* return success */
+}
+
 
 void 
 rkh_trc_open( void )
@@ -230,6 +259,13 @@ rkh_trc_open( void )
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();
  	rkh_trc_config();
+
+	/*
+	if( CreateThread( NULL, 1024, &idle_thread, (void *)0, 0, NULL )
+             == (HANDLE)0 )
+		fprintf( stderr, "Cannot to create idle thread: [%d] line from %s "
+						"file\n", __LINE__, __FILE__ );
+						*/
 }
 
 
@@ -252,11 +288,21 @@ void
 rkh_trc_flush( void )
 {
 	rkhui8_t *d;
+	RKH_SR_ALLOC();
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	FOREVER
 	{
-		FTBIN_FLUSH( d );
-		TCP_TRACE_SEND( *d );		
+		RKH_ENTER_CRITICAL_();
+		d = rkh_trc_get();
+		RKH_EXIT_CRITICAL_();
+
+		if((d != (rkhui8_t *)0))
+		{
+			FTBIN_FLUSH( d );
+			TCP_TRACE_SEND( *d );		
+		}
+		else
+			break;
 	}
 }
 #endif

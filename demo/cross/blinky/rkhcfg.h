@@ -388,6 +388,21 @@
 #define RKH_TRC_RUNTIME_FILTER			0
 
 /**
+ *	If the #RKH_TRC_RUNTIME_FILTER and #RKH_TRC_RTFIL_SMA_EN are set to 1, 
+ *	the RKH allows the usage of runtime trace filter for state machine 
+ *	applications (active objects).
+ */
+
+#define RKH_TRC_RTFIL_SMA_EN			RKH_DEF_ENABLED
+
+/**
+ *	If the #RKH_TRC_RUNTIME_FILTER and #RKH_TRC_RTFIL_SIGNAL_EN are set to 1, 
+ *	the RKH allows the usage of runtime trace filter for signals (events).
+ */
+
+#define RKH_TRC_RTFIL_SIGNAL_EN			RKH_DEF_ENABLED
+
+/**
  *	If the #RKH_TRC_EN_USER_TRACE is set to 1 then RKH will allow to build  
  *	and generate tracing information from the application-level code. 
  *	This trace records are application-specific.

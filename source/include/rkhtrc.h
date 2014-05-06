@@ -722,22 +722,22 @@ typedef enum rkh_trc_events
 	 */
 
 	#define RKH_TRC_BEGIN( eid_, prio_, sig_ )	\
-				if(	rkh_trc_isoff_( eid_ ) &&   \
-					RKH_TRC_AO_ISOFF( prio_ ) &&\
+				if(	rkh_trc_isoff_( eid_ ) 		\
+					RKH_TRC_AO_ISOFF( prio_ )   \
 					RKH_TRC_SIG_ISOFF( sig_ ) )	\
 				{								\
 					RKH_ENTER_CRITICAL_();		\
 					rkh_trc_begin( eid_ );
 
 	#define RKH_TRC_BEGIN_WOAO( eid_, sig_ )	\
-				if(	rkh_trc_isoff_( eid_ ) &&   \
+				if(	rkh_trc_isoff_( eid_ )      \
 					RKH_TRC_SIG_ISOFF( sig_ ) )	\
 				{								\
 					RKH_ENTER_CRITICAL_();		\
 					rkh_trc_begin( eid_ );
 
 	#define RKH_TRC_BEGIN_WOSIG( eid_, prio_ )	\
-				if(	rkh_trc_isoff_( eid_ ) &&   \
+				if(	rkh_trc_isoff_( eid_ )      \
 					RKH_TRC_AO_ISOFF( prio_ ) ) \
 				{								\
 					RKH_ENTER_CRITICAL_();		\
@@ -774,8 +774,8 @@ typedef enum rkh_trc_events
 	 */
 
 	#define RKH_TRC_BEGIN_NOCRIT( eid_, prio_, sig_ )	\
-				if(	rkh_trc_isoff_( eid_ ) && 			\
-					RKH_TRC_AO_ISOFF( prio_ ) &&		\
+				if(	rkh_trc_isoff_( eid_ )    			\
+					RKH_TRC_AO_ISOFF( prio_ )   		\
 					RKH_TRC_SIG_ISOFF( sig_ ) )			\
 				{										\
 					rkh_trc_begin( eid_ );
@@ -789,7 +789,7 @@ typedef enum rkh_trc_events
 	 */
 
 	#define RKH_TRC_BEGIN_WOAO_NOCRIT( eid_, sig_ )		\
-				if(	rkh_trc_isoff_( eid_ ) &&   		\
+				if(	rkh_trc_isoff_( eid_ )      		\
 					RKH_TRC_SIG_ISOFF( sig_ ) )			\
 				{										\
 					rkh_trc_begin( eid_ );
@@ -803,7 +803,7 @@ typedef enum rkh_trc_events
 	 */
 
 	#define RKH_TRC_BEGIN_WOSIG_NOCRIT( eid_, prio_ )	\
-				if(	rkh_trc_isoff_( eid_ ) &&   		\
+				if(	rkh_trc_isoff_( eid_ )      		\
 					RKH_TRC_AO_ISOFF( prio_ ) ) 		\
 				{										\
 					rkh_trc_begin( eid_ );
@@ -3060,70 +3060,92 @@ void rkh_trc_put( rkhui8_t b );
 	#define RKH_FILTER_OFF_GROUP_ALL_EVENTS( grp )			\
 				rkh_trc_filter_group_( FILTER_OFF, (grp), ECHANGE )
 
-	/**
-	 * 	\brief
-	 * 	Suppress the enable trace events related to a specified active object.
-	 */
+	#if RKH_TRC_RTFIL_SMA_EN == RKH_DEF_ENABLED
 
-	#define RKH_FILTER_ON_SMA( sma ) \
-				rkh_trc_simfil( &fsma, (sma)->romrkh->prio, FILTER_ON )
+		/**
+		 * 	\brief
+		 * 	Suppress the enable trace events related to a specified active 
+		 * 	object.
+		 */
 
-	/**
-	 * 	\brief
-	 * 	Suppress all enabled trace events related to specified active object.
-	 */
+		#define RKH_FILTER_ON_SMA( sma ) \
+					rkh_trc_simfil( &fsma, (sma)->romrkh->prio, FILTER_ON )
 
-	#define RKH_FILTER_ON_ALL_SMA() \
-				rkh_trc_simfil( &fsma, 0, RKH_TRC_SET_ALL(FILTER_ON) )
+		/**
+		 * 	\brief
+		 * 	Suppress all enabled trace events related to specified active 
+		 * 	object.
+		 */
 
-	/**
-	 * 	\brief
-	 * 	Emmit the enabled trace events related to a specified active object.
-	 */
+		#define RKH_FILTER_ON_ALL_SMA() \
+					rkh_trc_simfil( &fsma, 0, RKH_TRC_SET_ALL(FILTER_ON) )
+	
+		/**
+		 * 	\brief
+		 * 	Emmit the enabled trace events related to a specified active 
+		 * 	object.
+		 */
 
-	#define RKH_FILTER_OFF_SMA( sma ) \
-				rkh_trc_simfil( &fsma, (sma)->romrkh->prio, FILTER_OFF )
+		#define RKH_FILTER_OFF_SMA( sma ) \
+					rkh_trc_simfil( &fsma, (sma)->romrkh->prio, FILTER_OFF )
 
-	/**
-	 * 	\brief
-	 * 	Emmit all enabled trace events related to specified active object.
-	 */
+		/**
+		 * 	\brief
+		 * 	Emmit all enabled trace events related to specified active object.
+		 */
 
-	#define RKH_FILTER_OFF_ALL_SMA() \
-				rkh_trc_simfil( &fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF) )
+		#define RKH_FILTER_OFF_ALL_SMA() \
+					rkh_trc_simfil( &fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF) )
 
+	#else
+		#define RKH_FILTER_ON_SMA( sma )				(void)0
+		#define RKH_FILTER_ON_ALL_SMA()					(void)0
+		#define RKH_FILTER_OFF_SMA( sma )				(void)0
+		#define RKH_FILTER_OFF_ALL_SMA()				(void)0
+	#endif
 
-	/**
-	 * 	\brief
-	 * 	Suppress the enabled trace events related to a specified event signal.
-	 */
+	#if RKH_TRC_RTFIL_SIGNAL_EN == RKH_DEF_ENABLED
 
-	#define RKH_FILTER_ON_SIGNAL( sig ) \
-				rkh_trc_simfil( &fsig, (sig), FILTER_ON )
+		/**
+		 * 	\brief
+		 * 	Suppress the enabled trace events related to a specified event 
+		 * 	signal.
+		 */
 
-	/**
-	 * 	\brief
-	 * 	Suppress all enabled trace events related to specified event signal.
-	 */
+		#define RKH_FILTER_ON_SIGNAL( sig ) \
+					rkh_trc_simfil( &fsig, (sig), FILTER_ON )
 
-	#define RKH_FILTER_ON_ALL_SIGNALS() \
-				rkh_trc_simfil( &fsig, 0, RKH_TRC_SET_ALL(FILTER_ON) )
+		/**
+		 * 	\brief
+		 * 	Suppress all enabled trace events related to specified event 
+		 * 	signal.
+		 */
 
-	/**
-	 * 	\brief
-	 * 	Emmit the enabled trace events related to a specified event signal.
-	 */
+		#define RKH_FILTER_ON_ALL_SIGNALS() \
+					rkh_trc_simfil( &fsig, 0, RKH_TRC_SET_ALL(FILTER_ON) )
 
-	#define RKH_FILTER_OFF_SIGNAL( sig ) \
-				rkh_trc_simfil( &fsig, (sig), FILTER_OFF )
+		/**
+		 * 	\brief
+		 * 	Emmit the enabled trace events related to a specified event 
+		 * 	signal.
+		 */
 
-	/**
-	 * 	\brief
-	 * 	Emmit all enabled trace events related to specified event signal.
-	 */
+		#define RKH_FILTER_OFF_SIGNAL( sig ) \
+					rkh_trc_simfil( &fsig, (sig), FILTER_OFF )
 
-	#define RKH_FILTER_OFF_ALL_SIGNALS() \
-				rkh_trc_simfil( &fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF) )
+		/**
+		 * 	\brief
+		 * 	Emmit all enabled trace events related to specified event signal.
+		 */
+
+		#define RKH_FILTER_OFF_ALL_SIGNALS() \
+					rkh_trc_simfil( &fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF) )
+	#else
+		#define RKH_FILTER_ON_SIGNAL( sig )			(void)0
+		#define RKH_FILTER_ON_ALL_SIGNALS()			(void)0
+		#define RKH_FILTER_OFF_SIGNAL( sig )		(void)0
+		#define RKH_FILTER_OFF_ALL_SIGNALS()		(void)0
+	#endif
 
 #else
 	#define RKH_FILTER_ON_GROUP( grp ) 				(void)0
@@ -3305,8 +3327,12 @@ HUInt rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot );
  * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
  */
 
-#define RKH_TRC_AO_ISOFF( prio ) \
-				rkh_trc_simfil_isoff( &fsma, (TRCFS_T)(prio) )
+#if RKH_TRC_RTFIL_SMA_EN == RKH_DEF_ENABLED
+		#define RKH_TRC_AO_ISOFF( prio ) \
+					&& rkh_trc_simfil_isoff( &fsma, (TRCFS_T)(prio) )
+#else
+		#define RKH_TRC_AO_ISOFF( prio )
+#endif
 
 
 /**
@@ -3323,8 +3349,12 @@ HUInt rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot );
  * 	'1' (TRUE) if the signal is not filtered, otherwise '0' (FALSE).
  */
 
-#define RKH_TRC_SIG_ISOFF( sig ) \
-				rkh_trc_simfil_isoff( &fsig, (TRCFS_T)(sig) )
+#if RKH_TRC_RTFIL_SIGNAL_EN == RKH_DEF_ENABLED
+		#define RKH_TRC_SIG_ISOFF( sig ) \
+					&& rkh_trc_simfil_isoff( &fsig, (TRCFS_T)(sig) )
+#else
+		#define RKH_TRC_SIG_ISOFF( sig )
+#endif
 
 
 /**
