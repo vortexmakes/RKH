@@ -146,10 +146,15 @@
 #endif
 
 
+/**
+ * 	\brief
+ *	Represents the filter of signal and active object.
+ */
+
 typedef struct FIL_T
 {
-	TRCFS_T size;
-	rkhui8_t * const tbl;
+	TRCFS_T size;			/** Size of filter table in bytes */
+	rkhui8_t *const tbl;	/** Points to filter table in RAM */
 } FIL_T;
 
 
@@ -295,9 +300,9 @@ extern const FIL_T fsma;
  * 	Emit or supress tracing for all signal/active objects.
  */
 
-#define RKH_TRC_ALL_FILTERS		0x80
 #define RKH_TRC_SET_ALL( mode_ ) \
 				((mode_)|RKH_TRC_ALL_FILTERS)
+#define RKH_TRC_ALL_FILTERS		0x80
 #define RKH_FILTER_MODE_MASK	~RKH_TRC_ALL_FILTERS
 
 
@@ -696,7 +701,6 @@ typedef enum rkh_trc_events
 
 
 #if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
-
 	/**
 	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
 	 *	and ends with the matching macro RKH_TRC_END(). These macros are 

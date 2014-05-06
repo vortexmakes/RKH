@@ -108,7 +108,7 @@ static rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
 
 /**
  * 	\brief
- * 	The tables to filter trace events related to signal and active object.
+ * 	The tables to filter trace events related to signal and active objects.
  */
 
 const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, (rkhui8_t *const)&trcsigftbl };
