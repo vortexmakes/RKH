@@ -98,6 +98,7 @@ rkh_enter( void )
 
 	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_HIGHEST );
     running = (rkhui8_t)1;
+	RKH_TR_FWK_OBJ( &l_isr_tick );
 
     while( running )
 	{
