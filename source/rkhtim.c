@@ -60,6 +60,16 @@ RKH_MODULE_NAME( rkhtim )
 			(t)->used = 1
 
 
+#if defined( RKH_USE_TRC_SENDER )
+	#define RKH_TICK_POST( t_, sender_ ) \
+				RKH_SMA_POST_FIFO((RKHSMA_T *)t_->sma, t_->evt, \
+						sender_ != (const void *const)0 ? sender_ : t_)
+#else
+	#define RKH_TICK_POST( t_, sender_ ) \
+					RKH_SMA_POST_FIFO((RKHSMA_T *)t_->sma, t_->evt, sender_ )
+#endif
+
+
 static RKHT_T *thead;
 
 
@@ -76,7 +86,7 @@ rem_from_list( RKHT_T *t, RKHT_T *tprev )
 	t->used = 0;
 	RKH_TR_TIM_REM( t );
 }
-
+				
 
 void 
 #if defined( RKH_USE_TRC_SENDER )
@@ -114,7 +124,7 @@ rkh_tim_tick( void )
 				}
 				RKH_HK_TIMEOUT( t );
 				RKH_EXEC_THOOK();
-				RKH_SMA_POST_FIFO( ( RKHSMA_T* )t->sma, t->evt, sender );
+				RKH_TICK_POST( t, sender );
 			}
 			else
 				tprev = t;
