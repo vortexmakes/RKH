@@ -2364,6 +2364,41 @@ enum rkh_trc_fmt
 					RKH_TRC_FLUSH();									\
 				} while(0)
 
+		/* --- Symbol entry table for objects with name --------- */
+
+		/**
+		 * 	\brief
+		 *	Entry symbol table for memory object. Very similar to 
+		 *	RKH_TR_FWK_OBJ() but the name of object must be explicitely 
+		 *	defined.
+		 *
+		 *	\note
+		 *	This macro uses the same trace event that RKH_TR_FWK_OBJ().
+		 *
+		 * 	Desc 	= entry symbol table for memory object\n
+		 * 	Group 	= RKH_TG_FWK\n
+		 * 	Id 		= RKH_TE_FWK_OBJ\n
+		 * 	Args	= object address, name\n
+		 *
+		 * 	e.g.\n
+		 * 	Associates the address of the object, in memory with a name.
+		 *
+		 * 	\code
+		 * 	...
+		 * 	RKH_TR_FWK_OBJ_NAME( &RKH_CAST(CLI_T, sma)->cli_utmr, cli_utmr );
+		 * 	\endcode
+		 */
+
+		#define RKH_TR_FWK_OBJ_NAME( __o, __n )							\
+				do{ 													\
+					static RKHROM char *const __o_n = #__n;				\
+					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ )				\
+						RKH_TRC_SYM( __o );								\
+						RKH_TRC_STR( __o_n );							\
+					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_FLUSH();									\
+				} while(0)
+
 		/* --- Symbol entry table for event signals ---- */
 
 		/**
@@ -2842,6 +2877,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_DEFER( q, ev )				(void)0
 		#define RKH_TR_FWK_RCALL( ao, ev )				(void)0
 		#define RKH_TR_FWK_OBJ( __o )					(void)0
+		#define RKH_TR_FWK_OBJ_NAME( __o, __n )			(void)0
 		#define RKH_TR_FWK_SIG( __s )					(void)0
 		#define RKH_TR_FWK_FUN( __s )					(void)0
 		#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
@@ -2915,6 +2951,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_DEFER( q, ev )					(void)0
 	#define RKH_TR_FWK_RCALL( ao, ev )					(void)0
 	#define RKH_TR_FWK_OBJ( __o )						(void)0
+	#define RKH_TR_FWK_OBJ_NAME( __o, __n )				(void)0
 	#define RKH_TR_FWK_SIG( __s )						(void)0
 	#define RKH_TR_FWK_FUN( __f )						(void)0
 	#define RKH_TR_FWK_EXE_FUN( __f )					(void)0
