@@ -162,6 +162,13 @@ extern const FIL_T fsig;
 extern const FIL_T fsma;
 
 
+#if RKH_TRC_SIZEOF_STREAM < 255u
+	typedef rkhui8_t TRCQTY_T;
+#else
+	typedef rkhui16_t TRCQTY_T;
+#endif
+
+
 /**@{
  *
  * 	\brief
@@ -2988,6 +2995,13 @@ void rkh_trc_config( void );
  */
 
 rkhui8_t *rkh_trc_get( void );
+
+
+/**
+ * 	\brief
+ */
+
+rkhui8_t *rkh_trc_get_block( TRCQTY_T *nget );
 
 
 /**

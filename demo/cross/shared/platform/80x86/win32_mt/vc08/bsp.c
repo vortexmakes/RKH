@@ -104,10 +104,13 @@ static FILE *ftbin;
 				tcp_trace_close( tsock )
 	#define TCP_TRACE_SEND( d ) \
 				tcp_trace_send( tsock, d )
+	#define TCP_TRACE_SEND_BLOCK( blk_, nbytes_ ) \
+				tcp_trace_send( tsock, *blk )
 #else
-	#define TCP_TRACE_OPEN()		(void)0
-	#define TCP_TRACE_CLOSE()		(void)0
-	#define TCP_TRACE_SEND( d )		(void)0
+	#define TCP_TRACE_OPEN()				(void)0
+	#define TCP_TRACE_CLOSE()				(void)0
+	#define TCP_TRACE_SEND( d )				(void)0
+	#define TCP_TRACE_SEND_BLOCK( d )		(void)0
 #endif
 
 
@@ -290,19 +293,21 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rkhui8_t *blk;
 	RKH_SR_ALLOC();
 
 	FOREVER
 	{
+		TRCQTY_T nbytes = (TRCQTY_T)128; /*!!!!*/
+
 		RKH_ENTER_CRITICAL_();
-		d = rkh_trc_get();
+		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
 
-		if((d != (rkhui8_t *)0))
+		if((blk != (rkhui8_t *)0))
 		{
-			FTBIN_FLUSH( d );
-			TCP_TRACE_SEND( *d );		
+			FTBIN_FLUSH( *blk );
+			TCP_TRACE_SEND_BLOCK( blk, nbytes );
 		}
 		else
 			break;

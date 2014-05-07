@@ -17,13 +17,6 @@ RKH_MODULE_NAME( rkhtrc )
 #define GETEVT( e )				(rkhui8_t)((e) & 0x1F)
 
 
-#if RKH_TRC_SIZEOF_STREAM < 255u
-	typedef rkhui8_t TRCQTY_T;
-#else
-	typedef rkhui16_t TRCQTY_T;
-#endif
-
-
 #if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
 
 /**
@@ -181,6 +174,38 @@ rkh_trc_get( void )
 
 	tre = trcout++;
 	--trcqty;
+
+	if( trcout >= trcend )
+		trcout = trcstm;
+
+	return tre;
+}
+
+
+rkhui8_t *
+rkh_trc_get_block( TRCQTY_T *nget )
+{
+	rkhui8_t *tre = (rkhui8_t *)0;
+	TRCQTY_T n;
+
+	if( trcqty == (TRCQTY_T)0 )
+	{
+		*nget = (TRCQTY_T)0;
+		return tre;
+	}
+
+	tre = trcout;
+
+	/* Calculates the number of bytes to be retrieved */
+	n = (TRCQTY_T)(trcend - trcout);	/* bytes until the end */
+	if( n > trcqty )
+		n = trcqty;
+	if( n > *nget )
+		n = *nget;
+
+	*nget = n;
+	trcout += n;
+	trcqty -= n;
 
 	if( trcout >= trcend )
 		trcout = trcstm;
