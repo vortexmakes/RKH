@@ -61,6 +61,7 @@ static rkhui8_t l_isr_kbd;
 
 #if RKH_TRC_EN == RKH_DEF_ENABLED
 static HUInt running;
+static HANDLE idle_thread;
 #endif
 
 
@@ -163,6 +164,16 @@ rkh_hk_start( void )
 	rkh_set_tickrate( BSP_TICKS_PER_SEC );
 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+
+	/* 
+	 * 	For avoiding to have multiple threads (idle and main) sending data on 
+	 * 	the same socket, i.e. using the send() function, the idle thread is 
+	 * 	created to be run only after the initial process has finished.
+	 * 	Without this trick, the streams are interleaving and the trace stream 
+	 * 	is corrupted.
+	 */
+
+	ResumeThread( idle_thread );
 }
 
 
@@ -173,12 +184,6 @@ rkh_hk_exit( void )
 #if RKH_TRC_EN == RKH_DEF_ENABLED
 	running = (rkhui8_t)0;
 #endif
-}
-
-
-void 
-rkh_hk_idle( void )
-{
 }
 
 
@@ -235,7 +240,7 @@ print_banner( void )
 
 static 
 DWORD WINAPI 
-idle_thread( LPVOID par )
+idle_thread_function( LPVOID par )
 {
     (void)par;
 
@@ -260,12 +265,10 @@ rkh_trc_open( void )
 	TCP_TRACE_OPEN();
  	rkh_trc_config();
 
-	/*
-	if( CreateThread( NULL, 1024, &idle_thread, (void *)0, 0, NULL )
-             == (HANDLE)0 )
-		fprintf( stderr, "Cannot to create idle thread: [%d] line from %s "
+	if(( idle_thread = CreateThread( NULL, 1024, &idle_thread_function, (void *)0, 
+				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
+		fprintf( stderr, "Cannot create the idle thread: [%d] line from %s "
 						"file\n", __LINE__, __FILE__ );
-						*/
 }
 
 
