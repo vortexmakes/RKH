@@ -2523,12 +2523,25 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	void 
  * 	rkh_trc_flush( void )
  * 	{
- * 		rkhui8_t *d;
- * 		
- * 		while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+ * 		rkhui8_t *blk;
+ * 		TRCQTY_T nbytes;
+ * 		RKH_SR_ALLOC();
+ *
+ * 		FOREVER
  * 		{
- * 			ftbin_flush( d );
- * 			trazer_parse( *d );
+ * 			nbytes = (TRCQTY_T)1024;
+ * 			
+ * 			RKH_ENTER_CRITICAL_();
+ * 			blk = rkh_trc_get_block( &nbytes );
+ * 			RKH_EXIT_CRITICAL_();
+ *
+ * 			if((blk != (rkhui8_t *)0))
+ * 			{
+ * 				FTBIN_FLUSH( blk, nbytes );
+ * 				TCP_TRACE_SEND_BLOCK( blk, nbytes );
+ * 			}
+ * 			else
+ * 				break;
  * 		}
  * 	}
  *	\endcode

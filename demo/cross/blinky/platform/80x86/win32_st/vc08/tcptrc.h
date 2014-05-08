@@ -28,10 +28,6 @@
  *
  *	\brief
  *  TCP/IP Trace support for Win32
- *
- * 	\warning
- * 	To use the windows socket must be added the "ws2_32.lib" library in 
- * 	Linker->Input->Additional Dependencies configuration.
  */
 
 
@@ -39,7 +35,7 @@
 #define __TCPTRC_H__
 
 
-#include <WinSock.h>
+#include <winsock.h>
 	
 
 /**
@@ -67,9 +63,10 @@ int tcp_trace_open( unsigned short port, char *srvip, SOCKET *ps );
  *
  * 	\param s 			---.
  * 	\param c 			---.
+ * 	\param len 			---.
  */
 
-void tcp_trace_send( SOCKET s, char c );
+void tcp_trace_send( SOCKET s, const char *buf, int len );
 
 
 /**

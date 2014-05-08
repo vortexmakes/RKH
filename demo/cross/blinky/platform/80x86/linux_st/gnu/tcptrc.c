@@ -81,9 +81,9 @@ tcp_trace_open( unsigned short port, char *srv_ip, int *ps )
 
 
 void
-tcp_trace_send( int s, char c )
+tcp_trace_send( int s, const char *buf, int len )
 {
-    write( s, &c, 1 );
+    write( s, buf, len );
 }
 
 

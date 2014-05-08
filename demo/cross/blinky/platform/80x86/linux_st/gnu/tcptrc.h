@@ -62,7 +62,7 @@ int tcp_trace_open( unsigned short port, char *srvip, int *ps );
  * 	\param c 			---.
  */
 
-void tcp_trace_send( int s, char c );
+void tcp_trace_send( int s, const char *buf, int len );
 
 
 /**

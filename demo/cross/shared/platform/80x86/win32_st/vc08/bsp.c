@@ -105,17 +105,20 @@ static FILE *ftbin;
 	#define TCP_TRACE_CLOSE() \
 				tcp_trace_close( tsock )
 	#define TCP_TRACE_SEND( d ) \
-				tcp_trace_send( tsock, d )
+				tcp_trace_send( tsock, d, (int)1 )
+	#define TCP_TRACE_SEND_BLOCK( buf_, len_ ) \
+				tcp_trace_send( tsock, (const char *)(buf_), (int)(len_) )
 #else
-	#define TCP_TRACE_OPEN()		(void)0
-	#define TCP_TRACE_CLOSE()		(void)0
-	#define TCP_TRACE_SEND( d )		(void)0
+	#define TCP_TRACE_OPEN()					(void)0
+	#define TCP_TRACE_CLOSE()					(void)0
+	#define TCP_TRACE_SEND( d )					(void)0
+	#define TCP_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
 
 #if BIN_TRACE == 1
-	#define FTBIN_FLUSH( d )				\
-				fwrite ( d, 1, 1, ftbin );	\
+	#define FTBIN_FLUSH( buf_, len_ ) \
+				fwrite ( (buf_), 1, (len_), ftbin ); \
 				fflush( ftbin )
 	#define FTBIN_CLOSE() \
 				fclose( ftbin )
@@ -126,9 +129,9 @@ static FILE *ftbin;
 					exit( EXIT_FAILURE ); \
 				}
 #else
-	#define FTBIN_FLUSH( d )		(void)0
-	#define FTBIN_CLOSE()			(void)0
-	#define FTBIN_OPEN()			(void)0
+	#define FTBIN_FLUSH( buf_, len_ )		(void)0
+	#define FTBIN_CLOSE()					(void)0
+	#define FTBIN_OPEN()					(void)0
 #endif
 
 
@@ -176,6 +179,12 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 			bsp_publish( &e_pause );
     }
     return 0;
+}
+
+
+void
+rkh_hk_timetick( void )
+{
 }
 
 
@@ -295,12 +304,25 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rkhui8_t *blk;
+	TRCQTY_T nbytes;
+	RKH_SR_ALLOC();
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	FOREVER
 	{
-		FTBIN_FLUSH( d );
-		TCP_TRACE_SEND( *d );		
+		nbytes = (TRCQTY_T)1024;
+
+		RKH_ENTER_CRITICAL_();
+		blk = rkh_trc_get_block( &nbytes );
+		RKH_EXIT_CRITICAL_();
+
+		if((blk != (rkhui8_t *)0))
+		{
+			FTBIN_FLUSH( blk, nbytes );
+			TCP_TRACE_SEND_BLOCK( blk, nbytes );
+		}
+		else
+			break;
 	}
 }
 #endif
@@ -407,16 +429,13 @@ bsp_init( int argc, char *argv[] )
 	print_banner();
 	rkh_init();
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_ALL_SIGNALS();
 
 	RKH_TRC_OPEN();
 

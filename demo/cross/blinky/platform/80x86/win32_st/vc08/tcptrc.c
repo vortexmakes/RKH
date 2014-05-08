@@ -31,13 +31,6 @@
 
 #if RKH_TRC_EN == 1
 
-/* 
- * \warning
- * To use the windows socket must be added the "ws2_32.lib" library in 
- * Linker->Input->Additional Dependencies configuration.
- */
-
-
 int
 tcp_trace_open( unsigned short port, char *srv_ip, SOCKET *ps )
 {
@@ -89,9 +82,9 @@ tcp_trace_open( unsigned short port, char *srv_ip, SOCKET *ps )
 
 
 void
-tcp_trace_send( SOCKET s, char c )
+tcp_trace_send( SOCKET s, const char *buf, int len )
 {
-	send( s, &c, 1, 0 ); 
+	send( s, buf, len, 0 ); 
 }
 
 

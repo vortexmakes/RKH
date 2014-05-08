@@ -27,6 +27,7 @@ main( int argc, char *argv[] )
 	RKH_FILTER_OFF_EVENT( RKH_TE_TIM_TOUT );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
 	RKH_FILTER_OFF_SMA( blinky );
+	RKH_FILTER_OFF_ALL_SIGNALS();
 
 	rkh_init();
 	RKH_TRC_OPEN();

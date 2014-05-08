@@ -33,6 +33,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 
 #define BIN_TRACE					0
@@ -103,7 +104,7 @@ static FILE *ftbin;
 	#define TCP_TRACE_CLOSE() \
 				tcp_trace_close( tsock )
 	#define TCP_TRACE_SEND( d ) \
-				tcp_trace_send( tsock, d, 1 )
+				tcp_trace_send( tsock, d, (int)1 )
 	#define TCP_TRACE_SEND_BLOCK( buf_, len_ ) \
 				tcp_trace_send( tsock, (const char *)(buf_), (int)(len_) )
 #else
@@ -418,16 +419,15 @@ bsp_init( int argc, char *argv[] )
 	print_banner();
 	rkh_init();
 
-	RKH_FILTER_ON_ALL_SIGNALS();
-	RKH_FILTER_ON_ALL_SMA();
-
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
-	RKH_FILTER_OFF_SIGNAL( TOUT_REQ );
+	/*RKH_FILTER_OFF_ALL_SIGNALS();*/
+	RKH_FILTER_OFF_SIGNAL( REQ );
+	RKH_FILTER_OFF_SIGNAL( START );
 
 	RKH_TRC_OPEN();
 }

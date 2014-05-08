@@ -2378,20 +2378,20 @@ enum rkh_trc_fmt
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_OBJ\n
-		 * 	Args	= object address, name\n
+		 * 	Args	= object address, name of object\n
 		 *
 		 * 	e.g.\n
 		 * 	Associates the address of the object, in memory with a name.
 		 *
 		 * 	\code
 		 * 	...
-		 * 	RKH_TR_FWK_OBJ_NAME( &RKH_CAST(CLI_T, sma)->cli_utmr, cli_utmr );
+		 * 	RKH_TR_FWK_OBJ_NAME( &RKH_CAST(CLI_T, sma)->cli_utmr, "cli_utmr" );
 		 * 	\endcode
 		 */
 
 		#define RKH_TR_FWK_OBJ_NAME( __o, __n )							\
 				do{ 													\
-					static RKHROM char *const __o_n = #__n;				\
+					static RKHROM char *const __o_n = __n;				\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ )				\
 						RKH_TRC_SYM( __o );								\
 						RKH_TRC_STR( __o_n );							\
@@ -2995,6 +2995,9 @@ typedef rkhui8_t RKH_TE_T;
 /**
  * 	\brief
  * 	Initializes the RKH's trace record service.
+ *
+ * 	\note
+ *  rkh_trc_init() is NOT protected with a critical section.
  */
 
 void rkh_trc_init( void );
@@ -3022,9 +3025,10 @@ void rkh_trc_config( void );
  *	Retrieves a pointer to oldest stored byte in the trace stream. 
  *	Frequently, this function is used by the called trace analyzer.
  *
- * \note
+ * 	\note
  * 	The data is stored in a single ring buffer, called trace stream. In this 
  *	manner the recorder always holds the most recent history.
+ *  rkh_trc_get() is NOT protected with a critical section.
  *
  * 	\returns
  * 	A pointer to the oldest stored byte if trace stream was not empty, 
@@ -3036,6 +3040,30 @@ rkhui8_t *rkh_trc_get( void );
 
 /**
  * 	\brief
+ * 	Retrieves a pointer to a contiguous block of data from the trace stream.
+ *
+ * 	The function returns the pointer to the beginning of the block, and writes
+ * 	the number of bytes in the block to the location pointed to by \a nget.
+ * 	The argument \a nget is also used as input to provide the maximum size 
+ * 	of the data block that the caller can accept.
+ *	Frequently, this function is used by the called trace analyzer.
+ *
+ * 	\note
+ * 	The data is stored in a single ring buffer, called trace stream. In this 
+ *	manner the recorder always holds the most recent history.
+ *  rkh_trc_get_block() is NOT protected with a critical section.
+ *
+ * 	\param nget		when this function is invoked \a nget is used as an input 
+ * 					to provide the maximum size of the data block to be 
+ * 					retrieved. Also, it is used as an output retrieving the 
+ * 					size of block.
+ *
+ * 	\returns
+ * 	The pointer to the beginning of the block, and writes the number of bytes 
+ * 	in the block to the location pointed to by \a nget. If this number differs 
+ * 	from the \a nget parameter, the end-of-stream was reached. If the trace 
+ * 	stream is empty, the function returns NULL and the content pointed by 
+ * 	\a nget is set to zero.
  */
 
 rkhui8_t *rkh_trc_get_block( TRCQTY_T *nget );
@@ -3045,8 +3073,12 @@ rkhui8_t *rkh_trc_get_block( TRCQTY_T *nget );
  * 	\brief
  * 	Put a data byte into the trace stream. 
  *
+ * 	\param b		data to be written in the trace stream.
+ *
+ * 	\note
  * 	The data is stored in a single ring buffer, called trace stream. In this 
  *	manner the recorder always holds the most recent history.
+ *  rkh_trc_put() is NOT protected with a critical section.
  */
 
 void rkh_trc_put( rkhui8_t b );
