@@ -282,7 +282,7 @@ rkh_trc_open( void )
 
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();
- 	rkh_trc_config();
+	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
 
 

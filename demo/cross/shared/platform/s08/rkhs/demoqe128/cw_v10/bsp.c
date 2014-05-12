@@ -174,7 +174,7 @@ rkh_trc_open( void )
 	rkh_trc_init();
 
 	SERIAL_TRACE_OPEN();
- 	rkh_trc_config();
+	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
 
 

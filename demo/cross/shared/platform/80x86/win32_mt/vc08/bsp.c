@@ -267,7 +267,7 @@ rkh_trc_open( void )
 
 	FTBIN_OPEN();
 	TCP_TRACE_OPEN();
-	RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
+	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 
 	if(( idle_thread = CreateThread( NULL, 1024, &idle_thread_function, (void *)0, 
 				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )

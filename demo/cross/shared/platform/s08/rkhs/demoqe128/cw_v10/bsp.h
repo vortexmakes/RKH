@@ -32,6 +32,15 @@
 
 
 #define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
+
+/**
+ * 	\brief
+ * 	This macro represents the number of timestamp clock ticks per second. 
+ * 	Dividing a count of timestamp ticks by this macro yields the number 
+ * 	of seconds.
+ */
+
+#define BSP_TS_RATE_HZ		   		100u
 #define BSP_MAX_NESTING_CSECT 		10
 
 

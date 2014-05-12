@@ -2568,7 +2568,7 @@ enum rkh_trc_fmt
 		 * 	Args	= configuration parameters\n
 		 */
 
-		#define RKH_TR_FWK_TCFG( ts_size, ts_hz )  						\
+		#define RKH_TR_FWK_TCFG( ts_hz )  								\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
 						RKH_TRC_UI16( 									\
@@ -2588,7 +2588,7 @@ enum rkh_trc_fmt
 						/*NEW*/	(RKH_MP_EN_GET_LWM		<< 12)));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
-							(rkhui8_t)(ts_size)/8));					\
+							(rkhui8_t)(RKH_TRC_SIZEOF_TSTAMP)/8));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |\
 							RKH_TIM_SIZEOF_NTIMER/8));					\
@@ -2874,7 +2874,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_FUN( __s )					(void)0
 		#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
-		#define RKH_TR_FWK_TCFG( ts_size, ts_hz )		(void)0
+		#define RKH_TR_FWK_TCFG( ts_hz )				(void)0
 		#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
 		#define RKH_TR_FWK_AO( __ao )					(void)0
 		#define RKH_TR_FWK_STATE( __ao, __so )			(void)0
@@ -2948,7 +2948,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_FUN( __f )						(void)0
 	#define RKH_TR_FWK_EXE_FUN( __f )					(void)0
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
-	#define RKH_TR_FWK_TCFG( ts_size, ts_hz )			(void)0
+	#define RKH_TR_FWK_TCFG( ts_hz )					(void)0
 	#define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0
 	#define RKH_TR_FWK_AO( __ao )						(void)0
 	#define RKH_TR_FWK_STATE( __ao, __so )				(void)0

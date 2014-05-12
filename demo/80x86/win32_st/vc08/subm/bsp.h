@@ -30,6 +30,15 @@
 
 #define BSP_TICKS_PER_SEC   		100
 
+/**
+ * 	\brief
+ * 	This macro represents the number of timestamp clock ticks per second. 
+ * 	Dividing a count of timestamp ticks by this macro yields the number 
+ * 	of seconds.
+ */
+
+#define BSP_TS_RATE_HZ		   		CLOCKS_PER_SEC
+
 
 void bsp_init( int argc, char *argv[] );
 

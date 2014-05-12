@@ -2600,17 +2600,16 @@ RKHTS_T rkh_trc_getts( void );
  *	is provided by user application program, more specifically the board 
  *	support package (BSP).
  *
- * 	\param ts_size
- * 	\param ts_hz
+ * 	\param ts_hz		clocks per second of trace timestamp.
  *
  * 	\sa RKH_TRC_OPEN() macro.
  */
 
 #if RKH_TRC_EN == RKH_DEF_ENABLED
-		#define RKH_TRC_SEND_CFG( ts_size, ts_hz ) \
-					RKH_TR_FWK_TCFG( ts_size, ts_hz )
+		#define RKH_TRC_SEND_CFG( ts_hz ) \
+					RKH_TR_FWK_TCFG( ts_hz )
 #else
-		#define RKH_TRC_SEND_CFG( ts_size, ts_hz ) \
+		#define RKH_TRC_SEND_CFG( ts_hz ) \
 					(void)0
 #endif
 
