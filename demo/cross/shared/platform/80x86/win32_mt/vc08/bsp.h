@@ -33,6 +33,23 @@
 
 #define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
 
+/**
+ * 	\brief
+ * 	This macro represents the number of timestamp clock ticks per second. 
+ * 	Dividing a count of timestamp ticks by this macro yields the number 
+ * 	of seconds.
+ */
+
+#define BSP_TS_RATE_HZ		   		CLOCKS_PER_SEC
+
+/** 
+ * 	\brief
+ * 	Specify the number of bytes (size) used by the trace record timestamp. 
+ * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
+ */
+
+#define BSP_SIZEOF_TS				RKH_TRC_SIZEOF_TSTAMP
+
 
 void bsp_init( int argc, char *argv[] );
 rkhui32_t bsp_rand( void );

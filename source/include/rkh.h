@@ -2425,7 +2425,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *
  *	This function is application-specific and the user needs to define it. 
  *	At a minimum, this function must initialize and/or configure the trace 
- *	stream by calling rkh_trc_init() and rkh_trc_config() respectively.
+ *	stream by calling rkh_trc_init() and RKH_TRC_SEND_CFG() respectively.
  * 
  * 	\note
  * 	The function rkh_trc_open() is internal to RKH and the user application 
@@ -2434,25 +2434,23 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	Example:
  *
  *	\code
+ *	#define BSP_SIZEOF_TS		32u
+ *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
+ *
  *	void 
  *	rkh_trc_open( void )
  *	{
  *		rkh_trc_init();
  *
- *		if( ( fdbg = fopen( "../ahlog.txt", "w+" ) ) == NULL )
- *		{
- *			perror( "Can't open file\n" );
- *			exit( EXIT_FAILURE );
- *		}
- *	#if BIN_TRACE == 1
- *		if( ( ftbin = fopen( "../ftbin", "w+b" ) ) == NULL )
- *		{
- *			perror( "Can't open file\n" );
- *			exit( EXIT_FAILURE );
- *		}
- *	#endif
- *		trazer_init();
- *		rkh_trc_config();
+ *		FTBIN_OPEN();
+ *		TCP_TRACE_OPEN();
+ *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
+ *
+ *		if(( idle_thread = CreateThread( NULL, 1024, 
+ *				&idle_thread_function, (void *)0, 
+ *					CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
+ *			fprintf( stderr, "Cannot create the thread: [%d] line from %s "
+ *				"file\n", __LINE__, __FILE__ );
  *	}
  *	\endcode
  *
@@ -2584,6 +2582,37 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  */
 
 RKHTS_T rkh_trc_getts( void );
+
+
+/**
+ * 	\brief 
+ * 	Send the trace facility configuration to host application software Trazer.
+ *
+ * 	Trazer is designed to work with all possible target CPU, which requires a 
+ * 	wide range of configurability. For example, for any given target CPU, 
+ * 	Trazer must "know" the size of object pointers, event size, timestamp 
+ * 	size and so on. This configurations could be provided through 
+ * 	"trazer.cfg" file in the host or invoking RKH_TRC_SEND_CFG() macro from 
+ * 	the application-specific rkh_trc_open() function.
+ *
+ * 	\note
+ *	Frequently, this macro is called from the rkh_trc_open() function, which 
+ *	is provided by user application program, more specifically the board 
+ *	support package (BSP).
+ *
+ * 	\param ts_size
+ * 	\param ts_hz
+ *
+ * 	\sa RKH_TRC_OPEN() macro.
+ */
+
+#if RKH_TRC_EN == RKH_DEF_ENABLED
+		#define RKH_TRC_SEND_CFG( ts_size, ts_hz ) \
+					RKH_TR_FWK_TCFG( ts_size, ts_hz )
+#else
+		#define RKH_TRC_SEND_CFG( ts_size, ts_hz ) \
+					(void)0
+#endif
 
 
 #endif

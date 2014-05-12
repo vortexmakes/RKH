@@ -117,6 +117,13 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_TRC_SIZEOF_FUN_POINTER		32
 
+/** 
+ * 	Specify the number of bytes (size) used by the trace record timestamp. 
+ * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
+ */
+
+#define RKH_TRC_SIZEOF_TSTAMP			32u
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.

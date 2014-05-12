@@ -697,12 +697,14 @@ configurations:
 
 \li #RKH_TRC_SIZEOF_POINTER \copydetails #RKH_TRC_SIZEOF_POINTER 
 \li #RKH_TRC_SIZEOF_POINTER \copydetails #RKH_TRC_SIZEOF_FUN_POINTER 
+\li #RKH_TRC_SIZEOF_TSTAMP \copydetails #RKH_TRC_SIZEOF_TSTAMP 
 
 Example:
 
 \code 
-#define RKH_TRC_SIZEOF_POINTER			32
-#define RKH_TRC_SIZEOF_FUN_POINTER		32
+#define RKH_TRC_SIZEOF_POINTER			32u
+#define RKH_TRC_SIZEOF_FUN_POINTER		32u
+#define RKH_TRC_SIZEOF_TSTAMP			32u
 \endcode
 
 A RKH port cannot and should not define all the functions that it calls, 
@@ -847,6 +849,13 @@ const char *rkh_get_port_desc( void );
  */
 
 #define RKH_TRC_SIZEOF_FUN_POINTER		32
+
+/** 
+ * 	Specify the number of bytes (size) used by the trace record timestamp. 
+ * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
+ */
+
+#define RKH_TRC_SIZEOF_TSTAMP			32u
 
 /*
  * 	Declaring an object RKHROM announces that its value will
@@ -3903,6 +3912,13 @@ options with their documentation:
 		<TD> 32 </TD>
 		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
 	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
+		<TD> integer </TD>
+		<TD> [8,16,32] </TD>
+		<TD> 16 </TD>
+		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
+	</TR>
 </TABLE>
 
 Back: \ref cfg "Configuring framework RKH"
@@ -4387,13 +4403,6 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD></TD>
 		<TD> 1 </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_TSTAMP </TD>
-	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
-		<TD> integer </TD>
-		<TD> [8,16,32] </TD>
-		<TD> 16 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_SIZEOF_STREAM </TD>

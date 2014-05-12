@@ -2560,23 +2560,15 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 *	Send trace configuration table to Trazer.
+		 *	Send trace configuration to Trazer.
 		 *
 		 * 	Desc 	= send trace configuration table to Trazer\n
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TCFG\n
 		 * 	Args	= configuration parameters\n
-		 *
-		 * 	\code
-		 * 	void 
-		 * 	rkh_trc_config( void )
-		 * 	{
-		 * 		RKH_TR_FWK_TCFG();
-		 * 	}
-		 * 	\endcode
 		 */
 
-		#define RKH_TR_FWK_TCFG()  										\
+		#define RKH_TR_FWK_TCFG( ts_size, ts_hz )  						\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
 						RKH_TRC_UI16( 									\
@@ -2596,7 +2588,7 @@ enum rkh_trc_fmt
 						/*NEW*/	(RKH_MP_EN_GET_LWM		<< 12)));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
-							(rkhui8_t)RKH_TRC_SIZEOF_TSTAMP/8));		\
+							(rkhui8_t)(ts_size)/8));					\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |\
 							RKH_TIM_SIZEOF_NTIMER/8));					\
@@ -2882,7 +2874,7 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_FUN( __s )					(void)0
 		#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
 		#define RKH_TR_FWK_TUSR( __e )					(void)0
-		#define RKH_TR_FWK_TCFG()						(void)0
+		#define RKH_TR_FWK_TCFG( ts_size, ts_hz )		(void)0
 		#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
 		#define RKH_TR_FWK_AO( __ao )					(void)0
 		#define RKH_TR_FWK_STATE( __ao, __so )			(void)0
@@ -2956,7 +2948,7 @@ enum rkh_trc_fmt
 	#define RKH_TR_FWK_FUN( __f )						(void)0
 	#define RKH_TR_FWK_EXE_FUN( __f )					(void)0
 	#define RKH_TR_FWK_TUSR( __e )						(void)0
-	#define RKH_TR_FWK_TCFG()							(void)0
+	#define RKH_TR_FWK_TCFG( ts_size, ts_hz )			(void)0
 	#define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0
 	#define RKH_TR_FWK_AO( __ao )						(void)0
 	#define RKH_TR_FWK_STATE( __ao, __so )				(void)0
@@ -3001,23 +2993,6 @@ typedef rkhui8_t RKH_TE_T;
  */
 
 void rkh_trc_init( void );
-
-
-/**
- * 	\brief
- * 	Send the trace facility configuration to host application software Trazer.
- *
- * 	Trazer is designed to work with all possible target CPU, which requires a 
- * 	wide range of configurability. For example, for any given target CPU, 
- * 	Trazer must "know" the size of object pointers, event size, timestamp 
- * 	size and so on. This configurations could be provided through 
- * 	"trazer.cfg" file in the host or invoking rkh_trc_config() function from 
- * 	the application-specific rkh_trc_open() function.
- *
- * 	\sa trtrazer
- */
-
-void rkh_trc_config( void );
 
 
 /**

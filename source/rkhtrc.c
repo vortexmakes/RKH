@@ -140,13 +140,6 @@ rkh_trc_init( void )
 }
 
 
-void 
-rkh_trc_config( void )
-{
-	RKH_TR_FWK_TCFG();
-}
-
-
 void
 rkh_trc_put( rkhui8_t b )
 {

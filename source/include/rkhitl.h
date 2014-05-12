@@ -1797,6 +1797,13 @@
 
 	#define RKH_TRC_SIZEOF_FUN_POINTER	32
 
+	/** 
+	 * 	Specify the number of bytes (size) used by the trace record timestamp. 
+	 * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
+	 */
+
+	#define RKH_TRC_SIZEOF_TSTAMP		32u
+
 	/**
 	 * 	Defines the data type of the event queue for active objects. 
 	 * 	The event queue can be implemented with a message queue of 
