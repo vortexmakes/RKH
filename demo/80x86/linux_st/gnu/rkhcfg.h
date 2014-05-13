@@ -162,7 +162,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_TIMETICK_EN				RKH_DEF_ENABLED
+#define RKH_HK_TIMETICK_EN				RKH_ENABLED
 
 /**
  *	If the #RKH_SMA_EN_IEVENT is set to 1 then an initial event could be 
@@ -393,14 +393,14 @@
  *	applications (active objects).
  */
 
-#define RKH_TRC_RTFIL_SMA_EN			RKH_DEF_ENABLED
+#define RKH_TRC_RTFIL_SMA_EN			RKH_ENABLED
 
 /**
  *	If the #RKH_TRC_RUNTIME_FILTER and #RKH_TRC_RTFIL_SIGNAL_EN are set to 1, 
  *	the RKH allows the usage of runtime trace filter for signals (events).
  */
 
-#define RKH_TRC_RTFIL_SIGNAL_EN			RKH_DEF_ENABLED
+#define RKH_TRC_RTFIL_SIGNAL_EN			RKH_ENABLED
 
 /**
  *	If the #RKH_TRC_EN_USER_TRACE is set to 1 then RKH will allow to build  

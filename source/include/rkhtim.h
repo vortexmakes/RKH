@@ -166,7 +166,7 @@ struct RKHT_T
 	 *	RKH_TIM_EN_HOOK.
 	 */
 
-#if RKH_TIM_EN_HOOK == RKH_DEF_ENABLED
+#if RKH_TIM_EN_HOOK == RKH_ENABLED
 	RKH_THK_T timhk;
 #endif
 
@@ -175,7 +175,7 @@ struct RKHT_T
 	 * 	eliminated in compile-time with RKH_TIM_EN_GET_INFO.
 	 */
 
-#if RKH_TIM_EN_GET_INFO == RKH_DEF_ENABLED
+#if RKH_TIM_EN_GET_INFO == RKH_ENABLED
 	RKH_TINFO_T info;
 #endif
 };
@@ -208,18 +208,18 @@ struct RKHT_T
  *	\note 
  *	See RKHT_T structure for more information.
  *		
- *	\param t		pointer to previously allocated timer structure. Any 
+ *	\param t_		pointer to previously allocated timer structure. Any 
  *					software module intending to install a software timer must 
  *					first allocate a timer structure RKHT_T.
- *	\param e		event to be directly posted (using the FIFO policy) into 
+ *	\param e_		event to be directly posted (using the FIFO policy) into 
  *					the event queue of the target agreed state machine 
  *					application at the timer expiration.
- *	\param thk 		hook function to be called at the timer expiration. This 
+ *	\param th_ 		hook function to be called at the timer expiration. This 
  *					argument is optional, thus it could be declared as NULL or 
  *					eliminated in compile-time with RKH_TIM_EN_HOOK.
  */
 
-#if RKH_TIM_EN_HOOK == RKH_DEF_ENABLED
+#if RKH_TIM_EN_HOOK == RKH_ENABLED
 	#define rkh_tim_init( t_, e_, th_ )	\
 				rkh_tim_init_( (t_), (e_), (th_) )
 	void rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e, RKH_THK_T thk );

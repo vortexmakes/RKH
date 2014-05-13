@@ -50,8 +50,8 @@ RKH_MODULE_NAME( rkh )
 #define IS_REF_SUBMACHINE( s )			(CB((s))->type==RKH_REF_SUBMACHINE)
 
 
-#if RKH_EN_NATIVE_SCHEDULER == RKH_DEF_ENABLED || \
-						RKH_EN_REENTRANT == RKH_DEF_DISABLED
+#if RKH_EN_NATIVE_SCHEDULER == RKH_ENABLED || \
+						RKH_EN_REENTRANT == RKH_DISABLED
 	#define RKH_RAM		static
 #else
 			          /* allocate the automatic variables of rkh_dispatch() */
@@ -68,7 +68,7 @@ RKH_MODULE_NAME( rkh )
 
 
 #if defined( RKH_SHALLOW_ENABLED )
-	#if RKH_SMA_EN_SUBMACHINE == RKH_DEF_ENABLED
+	#if RKH_SMA_EN_SUBMACHINE == RKH_ENABLED
 			#define RKH_UPDATE_SHALLOW_HIST( s, h )			\
 				if(	CST((s))->parent != CST(0) && 			\
 						IS_COMPOSITE( (s)->parent ) &&		\
@@ -87,7 +87,7 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-#if RKH_SMA_EN_PPRO == RKH_DEF_ENABLED
+#if RKH_SMA_EN_PPRO == RKH_ENABLED
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
 				(RKHE_T)( ((s)->prepro != CPP(0)) ?					\
 						rkh_call_prepro((s),(h),(pe)) : (pe)->e )
@@ -110,7 +110,7 @@ RKH_MODULE_NAME( rkh )
 				pal = al
 
 
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 	#define RKH_CLR_STEP()			(step = 0)
 	#define RKH_INC_STEP()			++step
 	#define RKH_GET_STEP()			step
@@ -121,7 +121,7 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-#if RKH_SMA_EN_GET_INFO == RKH_DEF_ENABLED
+#if RKH_SMA_EN_GET_INFO == RKH_ENABLED
 	#define INFO_RCV_EVENTS( p )	++(p)->hinfo.rcvevt
 	#define INFO_EXEC_TRS( p )		++(p)->hinfo.exectr
 #else
@@ -147,7 +147,7 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
 	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
 		for( ix_n = 0, ix_x = islca = 0, stx = src; 						\
 				stx != CST( 0 ); ++ix_x )									\
@@ -192,7 +192,7 @@ RKH_MODULE_NAME( rkh )
 #endif
 
 
-#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
 	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )			\
 		if( ix_n == ix_x && ix_x == 0 )          /* local transition */ \
 		{}																\
@@ -272,7 +272,7 @@ rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
 void 
 rkh_init_hsm( RKHSMA_T *sma )
 {
-#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
 	RKHROM RKHST_T *s;
 #endif
 	RKH_SR_ALLOC();
@@ -282,7 +282,7 @@ rkh_init_hsm( RKHSMA_T *sma )
 	RKH_TR_SM_INIT( sma, sma->romrkh->istate );
 	RKH_EXEC_INIT( sma );
 
-#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
 	for( s = CST( sma->romrkh->istate );; )
 	{
 		RKH_EXEC_ENTRY( s, CM( sma ) );
@@ -316,7 +316,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKHROM RKHTR_T *tr;
 	HUInt inttr;
 	RKHE_T in;
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 	rkhui8_t step;
 #endif
 #if defined( RKH_SHALLOW_ENABLED )
@@ -355,7 +355,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	       /* Once an enabled transition is found with a given source state */
 	                     /* stop traversing the states that are higher than */
 	                                        /* this state in the hierarchy. */
-#if RKH_SMA_EN_HCAL == RKH_DEF_ENABLED
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
 	for( stn = cs, tr = CT(0); stn != CST(0); )
 	{
 		in = RKH_PROCESS_INPUT( stn, sma, pe );	
@@ -417,7 +417,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 								/* ... traverses the taken transition until */
    				   		  /* the segment target state (ets) == simple state */
-#if RKH_DEF_PSEUDOSTATE == RKH_DEF_ENABLED
+#if RKH_PSEUDOSTATE == RKH_ENABLED
 		while( IS_PSEUDO( ets ) || IS_SUBMACHINE( ets ) )
 		{
 			switch( CB(ets)->type )
@@ -571,7 +571,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 }
 
 
-#if RKH_SMA_EN_GET_INFO == RKH_DEF_ENABLED
+#if RKH_SMA_EN_GET_INFO == RKH_ENABLED
 void 
 rkh_sma_clear_info( RKHSMA_T *sma )
 {
@@ -598,8 +598,8 @@ rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi )
 #endif
 
 
-#if		((RKH_SMA_EN_GRD_ARG_EVT == RKH_DEF_ENABLED) && \
-		(RKH_SMA_EN_GRD_ARG_SMA == RKH_DEF_ENABLED))
+#if		((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
+		(RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED))
 HUInt
 rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
 {
@@ -607,16 +607,16 @@ rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
 	(void)pe;
 	return RKH_GTRUE;
 }
-#elif 	((RKH_SMA_EN_GRD_ARG_EVT == RKH_DEF_ENABLED) && \
-		(RKH_SMA_EN_GRD_ARG_SMA == RKH_DEF_DISABLED))
+#elif 	((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
+		(RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED))
 HUInt 
 rkh_else( RKHEVT_T *pe )
 {
 	(void)pe;
 	return RKH_GTRUE;
 }
-#elif 	RKH_SMA_EN_GRD_ARG_EVT == RKH_DEF_DISABLED && \
-		RKH_SMA_EN_GRD_ARG_SMA == RKH_DEF_ENABLED
+#elif 	RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
+		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED
 HUInt 
 rkh_else( const struct rkhsma_t *sma )
 {

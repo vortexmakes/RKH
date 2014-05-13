@@ -9,7 +9,7 @@
 #include "rkhrdy.h"
 
 
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 
 RKH_MODULE_NAME( rkhtrc )
 
@@ -17,7 +17,7 @@ RKH_MODULE_NAME( rkhtrc )
 #define GETEVT( e )				(rkhui8_t)((e) & 0x1F)
 
 
-#if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
+#if RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
 
 /**
  * 	\brief
@@ -27,7 +27,7 @@ RKH_MODULE_NAME( rkhtrc )
  * 	In this case, each trace event is assigned a unique number 
  * 	(#RKH_TRC_EVENTS). When a event is ready to record a trace its 
  * 	corresponding bit in the filter table must be clear. The size of 
- * 	#trceftbl[] depends on #RKH_TOT_NUM_TRC_EVTS.
+ * 	trceftbl[] depends on #RKH_TOT_NUM_TRC_EVTS.
  *
  * 	Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n
  *
@@ -207,7 +207,7 @@ rkh_trc_get_block( TRCQTY_T *nget )
 }
 
 
-#if RKH_TRC_RUNTIME_FILTER == RKH_DEF_ENABLED
+#if RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
 HUInt
 rkh_trc_isoff_( rkhui8_t e )
 {
@@ -381,7 +381,7 @@ rkh_trc_str( const char *s )
 }
 
 
-#if RKH_TRC_EN_USER_TRACE == RKH_DEF_ENABLED
+#if RKH_TRC_EN_USER_TRACE == RKH_ENABLED
 void 
 rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )
 {

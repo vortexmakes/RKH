@@ -1273,6 +1273,16 @@ simple cooperative scheduler is located in
 		<TD>  </TD>
 	</TR>
 
+	<TR bgColor="#c8cedc" align="center" valign="middle">
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD>  <A HREF="http://www.microsoft.com/en-us/download/
+		details.aspx?id=5555">Visual Studio C++ 2010 </A> </TD>
+		<TD> Win32 multithread </TD>
+		<TD>  </TD>
+	</TR>
+
 </TABLE>
 
 Prev: \ref cross "Cross-platform examples"\n

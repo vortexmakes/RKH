@@ -90,8 +90,8 @@
 						((const char*)m_desc)
 
 
-#if RKH_EN_NATIVE_DYN_EVENT == RKH_DEF_ENABLED && \
-	RKH_EN_DOXYGEN == RKH_DEF_DISABLED
+#if RKH_EN_NATIVE_DYN_EVENT == RKH_ENABLED && \
+	RKH_EN_DOXYGEN == RKH_DISABLED
 
 		#define RKH_DYNE_TYPE			RKHMP_T
 
@@ -159,7 +159,7 @@ extern RKHROM char rkh_version[];
  * 	Event pool list.
  */
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
+#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #endif
 
@@ -2018,7 +2018,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	\param e		event signal.
  */
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
+#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 		#define RKH_ALLOC_EVENT( et, e ) \
 					(et*)rkh_ae((RKHES_T)sizeof(et),(RKHE_T)(e))
 #else
@@ -2054,7 +2054,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	\param e		pointer to event to be potentially recycled.
  */
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
+#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 	#define RKH_GC( e ) 			rkh_gc( e )
 	void rkh_gc( RKHEVT_T *e );
 #else
@@ -2074,7 +2074,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  * 	\param e		pointer to event to be reserved.
  */
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_DEF_ENABLED
+#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 	#define RKH_RSV( e ) 			rkh_reserve( e )
 	void rkh_reserve( RKHEVT_T *e );
 #else
@@ -2457,7 +2457,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	\sa \b rkhtrc.h file.
  */
 
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 		#define RKH_TRC_OPEN() \
 					rkh_trc_open()
 		void rkh_trc_open( void );
@@ -2492,7 +2492,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	\sa \b rkhtrc.h file.
  */
 
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 		#define RKH_TRC_CLOSE() \
 					rkh_trc_close()
 		void rkh_trc_close( void );
@@ -2547,7 +2547,7 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  * 	\sa \b rkhtrc.h file.
  */
 
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 		#define RKH_TRC_FLUSH() \
 					rkh_trc_flush()
 		void rkh_trc_flush( void );
@@ -2605,7 +2605,7 @@ RKHTS_T rkh_trc_getts( void );
  * 	\sa RKH_TRC_OPEN() macro.
  */
 
-#if RKH_TRC_EN == RKH_DEF_ENABLED
+#if RKH_TRC_EN == RKH_ENABLED
 		#define RKH_TRC_SEND_CFG( ts_hz ) \
 					RKH_TR_FWK_TCFG( ts_hz )
 #else

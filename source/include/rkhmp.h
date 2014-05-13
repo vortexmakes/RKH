@@ -207,7 +207,7 @@ typedef struct rkhmp_t
 
 	RKH_MPBS_T bsize;
 
-#if RKH_MP_REDUCED == RKH_DEF_DISABLED
+#if RKH_MP_REDUCED == RKH_DISABLED
 
 	/** 
 	 * 	\brief
@@ -235,7 +235,7 @@ typedef struct rkhmp_t
 	 *	proper sizing of the memory pool.
 	 */
 
-#if RKH_MP_EN_GET_LWM == RKH_DEF_ENABLED
+#if RKH_MP_EN_GET_LWM == RKH_ENABLED
 	RKH_MPNB_T nmin;
 #endif
 
@@ -246,7 +246,7 @@ typedef struct rkhmp_t
 	 * 	eliminated in compile-time with RKH_MP_EN_GET_INFO.
 	 */
 
-#if RKH_MP_EN_GET_INFO == RKH_DEF_ENABLED
+#if RKH_MP_EN_GET_INFO == RKH_ENABLED
 	RKH_MPI_T mpi;
 #endif
 } RKHMP_T;

@@ -2894,7 +2894,14 @@ system can potentially be applied a different filters. This filter can be
 applied, removed or changed at any time. A filter could be applied either 
 specific trace event or all events from a specific group.
 
-<EM>Emit or suppress all trace events from a specific group</EM>
+This section includes:
+
+- \ref trfil_group
+- \ref trfil_event
+- \ref trfil_sma
+- \ref trfil_sig
+
+\subsection trfil_group Emit or suppress all trace events from a specific group
 
 The stream is initially created with an empty filter (that is, without 
 filtering any event type). If this is not the required behavior, the 
@@ -2909,19 +2916,20 @@ generates can be overwhelming, the RKH supports several types of filters
 that can use it to reduce the amount of data to be processed. The available 
 groups are enumerated in #RKH_TRC_GROUPS.
 
-Please use RKH_FILTER_ON_GROUP(), or RKH_FILTER_OFF_GROUP() macros to do 
+Please use RKH_FILTER_ON_GROUP(), RKH_FILTER_ON_GROUP_ALL_EVENTS(), 
+RKH_FILTER_OFF_GROUP_ALL_EVENTS(), or RKH_FILTER_OFF_GROUP() macros to do 
 that.
 
 Example:
  	
 \code
-...
 RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-...
+RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_FWK );
+RKH_FILTER_ON_GROUP_ALL_EVENTS( RKH_TG_SM );
 \endcode
 
-<EM>Emit or suppress a specific event</EM>
+\subsection trfil_event Emit or suppress a specific event
 
 The stream is initially created with an empty filter (that is, without 
 filtering any event type). If this is not the required behavior, the 
@@ -2942,16 +2950,32 @@ that.
 Example:
  	
 \code
-void
-some_function( ... )
-{
-	RKH_FILTER_OFF_EVENT( RKH_TG_MP, RKH_TE_MP_INIT );
-	RKH_FILTER_OFF_EVENT( RKH_TG_SM, RKH_TE_SM_DCH );
-	RKH_FILTER_OFF_EVENT( RKH_TG_FWK, RKH_TE_FWK_OBJ );
-	RKH_FILTER_OFF_EVENT( RKH_TG_FWK, RKH_TE_FWK_SIG );
-	RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_START );
-	RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_TOUT );
-}
+RKH_FILTER_OFF_EVENT( RKH_TG_MP, RKH_TE_MP_INIT );
+RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_START );
+RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_TOUT );
+\endcode
+
+\subsection trfil_sma 	Emit or suppress the trace events related to a specific SMA (active object)
+
+Please use RKH_FILTER_ON_SMA(), RKH_FILTER_OFF_SMA(), 
+RKH_FILTER_ON_ALL_SMA()/RKH_FILTER_OFF_ALL_SMA to do that.
+
+Example:
+	
+\code
+RKH_FILTER_OFF_SMA( blinky );
+\endcode
+
+\subsection trfil_sig 	Emit or suppress the trace events related to a specific signal (user event).
+
+Please use RKH_FILTER_ON_SIGNAL(), RKH_FILTER_OFF_SIGNAL(), 
+RKH_FILTER_ON_ALL_SIGNALS()/RKH_FILTER_OFF_ALL_SIGNALS() to do that.
+
+Example:
+	
+\code
+RKH_FILTER_OFF_SIGNAL( REQ );
+RKH_FILTER_OFF_SIGNAL( START );
 \endcode
 
 <HR>
@@ -3860,42 +3884,42 @@ options with their documentation:
 		<TD align="left"> #RKH_EN_SMA_THREAD </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_SMA_THREAD </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_SMA_THREAD_DATA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_SMA_THREAD_DATA </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_NATIVE_SCHEDULER </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_NATIVE_SCHEDULER </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_NATIVE_EQUEUE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_NATIVE_EQUEUE </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_NATIVE_DYN_EVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_NATIVE_DYN_EVENT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_EN_REENTRANT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_REENTRANT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -3949,14 +3973,14 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_EN_DYNAMIC_EVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_DYNAMIC_EVENT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_MAX_EPOOL </TD>
 		<TD> integer </TD>
 		<TD> [0..255] </TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MAX_EPOOL </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -3977,56 +4001,56 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_EN_DEFERRED_EVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_EN_DEFERRED_EVENT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_ASSERT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_ASSERT_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_DISPATCH_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_HK_DISPATCH_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_SIGNAL_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_HK_SIGNAL_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_TIMEOUT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_HK_TIMEOUT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_START_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_HK_START_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_HK_EXIT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_HK_EXIT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_IEVENT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_IEVENT </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -4060,35 +4084,35 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_SMA_EN_ID </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ID </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GET_INFO </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_STATE_ID </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_STATE_ID </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_PPRO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_PPRO </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_HCAL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_HCAL </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -4109,42 +4133,42 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_SMA_EN_PSEUDOSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_PSEUDOSTATE </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_DEEP_HISTORY </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_DEEP_HISTORY </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_SHALLOW_HISTORY </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_SHALLOW_HISTORY </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_CHOICE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_CHOICE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_CONDITIONAL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_CONDITIONAL </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_SUBMACHINE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_SUBMACHINE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -4158,56 +4182,56 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_SMA_EN_INIT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_INIT_ARG_SMA </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ENT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ENT_ARG_SMA </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_EXT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_EXT_ARG_SMA </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ACT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ACT_ARG_SMA </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ACT_ARG_EVT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ACT_ARG_EVT </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GRD_ARG_EVT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GRD_ARG_EVT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GRD_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GRD_ARG_SMA </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_PPRO_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_PPRO_ARG_SMA </TD>
 	</TR>
 </TABLE>
@@ -4233,154 +4257,168 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_TRC_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_RUNTIME_FILTER </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_RUNTIME_FILTER </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_RTFIL_SMA_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_TRC_RTFIL_SMA_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_TRC_RTFIL_SIGNAL_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_TRC_RTFIL_SIGNAL_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_USER_TRACE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_USER_TRACE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_ALL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_ALL </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_MP </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_MP </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_RQ </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_RQ </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SMA </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_TIM </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_TIM </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_FWK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_FWK </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_ASSERT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_ASSERT </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_INIT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_INIT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_DCH </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_DCH </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_CLRH </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_CLRH </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_TRN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_TRN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_STATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_STATE </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_ENSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_ENSTATE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_EXSTATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_EXSTATE </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_NENEX </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_NENEX </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_NTRNACT </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_NTRNACT </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_TS_STATE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_TS_STATE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_SM_PROCESS </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_SM_PROCESS </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -4394,14 +4432,14 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_TRC_EN_CHK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_CHK </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_TRC_EN_TSTAMP </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TRC_EN_TSTAMP </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -4434,7 +4472,7 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_RQ_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -4448,49 +4486,49 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_RQ_EN_GET_LWMARK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_GET_LWMARK </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_READ </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_READ </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_DEPLETE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_DEPLETE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_IS_FULL </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_IS_FULL </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_GET_NELEMS </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_GET_NELEMS </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_PUT_LIFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_PUT_LIFO </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_RQ_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_RQ_EN_GET_INFO </TD>
 	</TR>
 </TABLE>
@@ -4517,14 +4555,14 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_MP_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MP_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_REDUCED </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MP_REDUCED </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -4545,28 +4583,28 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_MP_EN_GET_BSIZE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_BSIZE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_NFREE </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_NFREE </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_LWM </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_LWM </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_MP_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_MP_EN_GET_INFO </TD>
 	</TR>
 </TABLE>
@@ -4593,7 +4631,7 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_TIM_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 1 </TD>
+		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_TIM_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -4607,14 +4645,14 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_TIM_EN_HOOK </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TIM_EN_HOOK </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_TIM_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD> 0 </TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_TIM_EN_GET_INFO </TD>
 	</TR>
 </TABLE>

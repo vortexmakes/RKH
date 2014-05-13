@@ -186,7 +186,7 @@ typedef struct rkhrq_t
 	 *	proper sizing of the queue.
 	 */
 
-#if RKH_RQ_EN_GET_LWMARK == RKH_DEF_ENABLED
+#if RKH_RQ_EN_GET_LWMARK == RKH_ENABLED
 	RKH_RQNE_T nmin;	
 #endif
 
@@ -196,7 +196,7 @@ typedef struct rkhrq_t
 	 * 	eliminated in compile-time with RKH_RQ_EN_GET_INFO.
 	 */
 
-#if RKH_RQ_EN_GET_INFO == RKH_DEF_ENABLED
+#if RKH_RQ_EN_GET_INFO == RKH_ENABLED
 	RKH_RQI_T rqi;
 #endif
 
