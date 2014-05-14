@@ -35,8 +35,6 @@ main( int argc, char *argv[] )
 	bsp_init( argc, argv );
 
 	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 	RKH_FILTER_OFF_EVENT( MY_TRACE );
 	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
 	RKH_FILTER_OFF_SMA( my );

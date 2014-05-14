@@ -65,7 +65,7 @@ The \ref bky_c "bky.c" file implements the state machine of Blinky active
 object, which illustrates some aspects of implementing state machines with 
 RKH framework. Please correlate this implementation with the state diagram 
 shown above. On the other hand, the header file \ref bky_h "bky.h" contains 
-the definitions of object structures related to the state machine. \n
+the definitions of object structures related to the state machine. \n \n
 
 \anchor bky_c 
 <STRONG> \"bky.c\" - State machine representation </STRONG>
@@ -114,7 +114,7 @@ RKH_END_TRANS_TABLE
 \n The related actions (entry, exit, guard, and state transition) to be 
 executed by the state machine are implemented and declared in the 
 \ref bkyact_c "bkyact.c" and \ref bkyact_h "bkyact.h" file, respectively. 
-Note that the \c rkhcfg.h file defines the prototypes of them. \n
+Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
 
 \anchor bkyact_c 
 <STRONG> \"bkyact.c\" - Actions </STRONG>
@@ -218,7 +218,7 @@ void blinky_led_off( const struct rkhsma_t *sma, RKHEVT_T *pe );
 \n In RKH, signals are typically enumerated constants and events with 
 parameters are structures derived from the RKHEVT_T base structure. The next 
 listing shows signals and events used in the Blinky application 
-(\ref bky_h "bky.h"). \n
+(\ref bky_h "bky.h"). \n \n
 
 \anchor bky_h 
 <STRONG> \"bky.h\" - Signals, events, and active objects </STRONG>
@@ -344,7 +344,7 @@ As said before, the only platform-dependent file is the board support package
 \c bsp.h files, which are contained in the proper directory, for example, the 
 BSP for the Blinky application on Windows 32 (Visual Studio 2008) with a 
 simple cooperative scheduler is located in 
-\c \<rkh\>\\demo\\cross\\blinky\\platform\\80x86\\win32_st\\vc08\\. 
+\c \<rkh\>\\demo\\cross\\blinky\\platform\\80x86\\win32_st\\vc08\\
 
 <TABLE	align="center" valign="middle" width=70% cellSpacing=2 
 		cellPadding=4 border=0>
@@ -550,6 +550,7 @@ See the following sections:
 - \ref cliact_c "Client actions - \"cliact.c\""
 - \ref cliact_h "Client action declarations - \"cliact.h\""
 
+\n \n
 \anchor cli_c 
 <STRONG> \"cli.c\" - Client state machine representation </STRONG> \n
 \code
@@ -631,7 +632,7 @@ Prev: \ref shared_sm_cli \n
 The related actions (entry, exit, guard, and state transition) to be 
 executed by the state machine are implemented and declared in the 
 \ref cliact_c "cliact.c" and \ref cliact_h "cliact.h" file, respectively. 
-Note that the \c rkhcfg.h file defines the prototypes of them. \n
+Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
 
 \anchor cliact_c
 <STRONG> \"cliact.c\" - Client actions </STRONG>
@@ -743,7 +744,7 @@ cli_end( const struct rkhsma_t *sma, RKHEVT_T *pe )
 }
 \endcode
 
-Prev: \ref shared_sm_cli \n
+Prev: \ref shared_sm_cli \n \n
 
 \anchor cliact_h
 \n <STRONG> \"cliact.h\" - Client action declarations </STRONG>
@@ -803,7 +804,7 @@ See following sections:
 - \ref svr_c "Server state machine representation - \"svr.c\""
 - \ref svract_c "Server actions - \"svract.c\""
 - \ref svract_h "Server action declarations - \"svract.h\""
-
+ \n \n
 \anchor svr_c 
 <STRONG> \"svr.c\" - Server state machine representation </STRONG> \n
 \code
@@ -873,7 +874,7 @@ Prev: \ref shared_sm_svr \n
 The related actions (entry, exit, guard, and state transition) to be 
 executed by the state machine are implemented and declared in the 
 \ref svract_c "svract.c" and \ref svract_h "svract.h" file, respectively. 
-Note that the \c rkhcfg.h file defines the prototypes of them. \n
+Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
 
 \anchor svract_c 
 <STRONG> \"svract.c\" - Server actions </STRONG>
@@ -1036,7 +1037,7 @@ Prev: \ref shared_sm_svr \n
 In RKH, signals are typically enumerated constants and events with 
 parameters are structures derived from the RKHEVT_T base structure. The next 
 listing shows signals and events used in the Shared application 
-(\ref scevt_h "scevt.h"). \n
+(\ref scevt_h "scevt.h"). \n \n
 
 \anchor scevt_h 
 <STRONG> \"scevt.h\" - Signals and events</STRONG>
@@ -1178,12 +1179,11 @@ RKH_DCLR_BASIC_STATE	cli_idle, cli_waiting, cli_using, cli_paused;
 \section shared_init Initializing and starting the application
 
 Most of the system initialization and application startup can be written 
-in a platform-independent way. \n
+in a platform-independent way. \n \n
 
-\anchor main_c 
+\anchor shared_main_c 
 <STRONG> \"main.c\" - main() function </STRONG>
 \code
-main.c
 #include "rkh.h"
 #include "rkhtrc.h"
 #include "bsp.h"
@@ -1235,7 +1235,7 @@ As said before, the only platform-dependent file is the board support package
 \c bsp.h files, which are contained in the proper directory, for example, the 
 BSP for the Shared application on Windows 32 (Visual Studio 2008) with a 
 simple cooperative scheduler is located in 
-\c \<rkh\>\\demo\\cross\\shared\\platform\\80x86\\win32_st\\vc08\\. 
+\c \<rkh\>\\demo\\cross\\shared\\platform\\80x86\\win32_st\\vc08\\ 
 
 <TABLE	align="center" valign="middle" width=70% cellSpacing=2 
 		cellPadding=4 border=0>

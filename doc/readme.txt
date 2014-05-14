@@ -1421,7 +1421,7 @@ another defined state machine. The diagram in following figure shows a
 fragment from a state machine diagram in which a submachine state 
 (the \c SB) is referenced.
 
-\anchor fig_sbm1
+\anchor qr_fig_sbm1
 \image html sbm1.png "Submachine state"
 
 In the above example, the transition triggered by event \c TWO will 
@@ -1438,13 +1438,13 @@ is triggered by event \c THREE.
 The following figure is an example of a state machine \c SB defined with 
 two exit points, \c EXPNT1 and \c EXPNT2, and one entry point \c ENPNT.
 
-\anchor fig_sbm2
+\anchor qr_fig_sbm2
 \image html sbm2.png "State machine with two exit points and one entry point"
 
 In the following figure the state machine shown above is referenced twice in 
 a submachine state \c S12 and \c S2.
 
-\anchor fig_sbm3
+\anchor qr_fig_sbm3
 \image html sbm3.png "Submachine state with usage of exit and entry points"
 
 This section includes:
@@ -3069,7 +3069,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
-		<TD rowspan=2> #RKH_TR_RQ_GET ( SYM q, NE nelem ) </TD>
+		<TD rowspan=2> #RKH_TE_RQ_GET ( SYM q, NE nelem ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_RQ_GET </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKHSMA_T::equeue </I></TD>
@@ -3512,7 +3512,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 4 </TD>
-		<TD rowspan=1> #RKH_TR_TIM_REM ( SYM t ) </TD>
+		<TD rowspan=1> #RKH_TE_TIM_REM ( SYM t ) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_TIM_REM </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>

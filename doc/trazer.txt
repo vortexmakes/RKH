@@ -100,8 +100,8 @@ Trazer must "know" the size of object pointers, event size, timestamp size
 and so on. You can provide this information by two ways: 
   - include \subpage trazer_cfg_ configuration file in 
 the same trazer.exe directory.
-  - setup the target aplication to call to \subpage RKH_TR_FWK_TCFG
-and perform the streaming the RKH configuration at startup.
+  - setup the target aplication to call to RKH_TR_FWK_TCFG and perform the 
+  streaming the RKH configuration at startup.
 
 If \subpage trazer_cfg_ is not found, assuming default settings, 
 any configuration streaming received overwrite settings. 
