@@ -2583,12 +2583,13 @@ enum rkh_trc_fmt
 		 * 	[ 2, 9: 1] - RKH_TRC_EN_FWK
 		 * 	[ 2,10: 1] - RKH_TRC_EN_ASSERT
 		 * 	[ 2,11: 1] - RKH_RQ_EN_GET_LWMARK
-		 * 	[ 2,12: 1] - RKH_TRC_RTFIL_SMA_EN
-		 * 	[ 2,13: 1] - RKH_TRC_RTFIL_SIGNAL_EN
-		 * 	[ 2,14: 1] - RKH_TRC_EN_NSEQ
-		 * 	[ 2,15: 1] - RKH_TRC_EN_TSTAMP
-		 * 	[ 2,16: 1] - RKH_TRC_EN_CHK
-		 * 	[ 2,17:15] - 0 (Reserved)
+		 * 	[ 2,13: 1] - RKH_MP_EN_GET_LWM
+		 * 	[ 2,13: 1] - RKH_TRC_RTFIL_SMA_EN
+		 * 	[ 2,14: 1] - RKH_TRC_RTFIL_SIGNAL_EN
+		 * 	[ 2,15: 1] - RKH_TRC_EN_NSEQ
+		 * 	[ 2,16: 1] - RKH_TRC_EN_TSTAMP
+		 * 	[ 2,17: 1] - RKH_TRC_EN_CHK
+		 * 	[ 2,18:14] - 0 (Reserved)
 		 * 	[ 6, 0: 4] - RKH_SIZEOF_EVENT
 		 * 	[ 6, 4: 4] - RKH_TRC_SIZEOF_TSTAMP
 		 * 	[ 7, 0: 4] - RKH_TRC_SIZEOF_POINTER
