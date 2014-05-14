@@ -2565,29 +2565,69 @@ enum rkh_trc_fmt
 		 * 	Group 	= RKH_TG_FWK\n
 		 * 	Id 		= RKH_TE_FWK_TCFG\n
 		 * 	Args	= configuration parameters\n
+		 * 	
+		 * 	The following table shows the format of RKH_TE_FWK_TCFG arguments.
+		 * 	The first column means [<byte index>, <bit index>:<# of bits>] in 
+		 * 	the data stream.
+		 *
+		 * 	[ 0, 0:16] - RKH_VERSION_CODE
+		 * 	[ 2, 0: 1] - RKH_SMA_EN_TRC_SENDER
+		 * 	[ 2, 1: 1] - RKH_TRC_RUNTIME_FILTER
+		 * 	[ 2, 2: 1] - RKH_TRC_EN_USER_TRACE
+		 * 	[ 2, 3: 1] - RKH_TRC_ALL
+		 * 	[ 2, 4: 1] - RKH_TRC_EN_MP
+		 * 	[ 2, 5: 1] - RKH_TRC_EN_RQ
+		 * 	[ 2, 6: 1] - RKH_TRC_EN_SMA
+		 * 	[ 2, 7: 1] - RKH_TRC_EN_TIM
+		 * 	[ 2, 8: 1] - RKH_TRC_EN_SM
+		 * 	[ 2, 9: 1] - RKH_TRC_EN_FWK
+		 * 	[ 2,10: 1] - RKH_TRC_EN_ASSERT
+		 * 	[ 2,11: 1] - RKH_RQ_EN_GET_LWMARK
+		 * 	[ 2,12: 1] - RKH_TRC_RTFIL_SMA_EN
+		 * 	[ 2,13: 1] - RKH_TRC_RTFIL_SIGNAL_EN
+		 * 	[ 2,14: 1] - RKH_TRC_EN_NSEQ
+		 * 	[ 2,15: 1] - RKH_TRC_EN_TSTAMP
+		 * 	[ 2,16: 1] - RKH_TRC_EN_CHK
+		 * 	[ 2,17:15] - 0 (Reserved)
+		 * 	[ 6, 0: 4] - RKH_SIZEOF_EVENT
+		 * 	[ 6, 4: 4] - RKH_TRC_SIZEOF_TSTAMP
+		 * 	[ 7, 0: 4] - RKH_TRC_SIZEOF_POINTER
+		 * 	[ 7, 4: 4] - RKH_TIM_SIZEOF_NTIMER
+		 * 	[ 8, 0: 4] - RKH_MP_SIZEOF_NBLOCK
+		 * 	[ 8, 4: 4] - RKH_RQ_SIZEOF_NELEM
+		 * 	[ 9, 0: 4] - RKH_SIZEOF_ESIZE
+		 * 	[ 9, 4: 4] - 0 (Reserved)
+		 * 	[10, 0:16] - Timestamp HZ (ticks per second)
+		 * 	[12, 0: 4] - RKH_MP_SIZEOF_BSIZE
+		 * 	[12, 4: 4] - RKH_MAX_EPOOL
 		 */
 
 		#define RKH_TR_FWK_TCFG( ts_hz )  								\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
-						RKH_TRC_UI16( 									\
-							(rkhui16_t)(								\
-								(RKH_SMA_EN_TRC_SENDER		 ) |		\
-								(RKH_TRC_RUNTIME_FILTER	<< 1 ) |		\
-								(RKH_TRC_EN_USER_TRACE	<< 2 ) |		\
-								(RKH_TRC_ALL			<< 3 ) |		\
-								(RKH_TRC_EN_MP			<< 4 ) |		\
-								(RKH_TRC_EN_RQ			<< 5 ) |		\
-								(RKH_TRC_EN_SMA			<< 6 ) |		\
-								(RKH_TRC_EN_TIM			<< 7 ) |		\
-								(RKH_TRC_EN_SM			<< 8 ) |		\
-								(RKH_TRC_EN_FWK			<< 9 ) |		\
-								(RKH_TRC_EN_ASSERT		<< 10) |		\
-						/*NEW*/	(RKH_RQ_EN_GET_LWMARK	<< 11) |		\
-						/*NEW*/	(RKH_MP_EN_GET_LWM		<< 12)));		\
+						RKH_TRC_UI32( 									\
+							(rkhui32_t)(								\
+								(RKH_SMA_EN_TRC_SENDER	 	  ) |		\
+								(RKH_TRC_RUNTIME_FILTER	 << 1 ) |		\
+								(RKH_TRC_EN_USER_TRACE	 << 2 ) |		\
+								(RKH_TRC_ALL			 << 3 ) |		\
+								(RKH_TRC_EN_MP			 << 4 ) |		\
+								(RKH_TRC_EN_RQ			 << 5 ) |		\
+								(RKH_TRC_EN_SMA			 << 6 ) |		\
+								(RKH_TRC_EN_TIM			 << 7 ) |		\
+								(RKH_TRC_EN_SM			 << 8 ) |		\
+								(RKH_TRC_EN_FWK			 << 9 ) |		\
+								(RKH_TRC_EN_ASSERT		 << 10) |		\
+								(RKH_RQ_EN_GET_LWMARK	 << 11) |		\
+								(RKH_MP_EN_GET_LWM		 << 12) |		\
+								(RKH_TRC_RTFIL_SMA_EN	 << 13) |		\
+								(RKH_TRC_RTFIL_SIGNAL_EN << 14) |		\
+								(RKH_TRC_EN_NSEQ	     << 15) |		\
+								(RKH_TRC_EN_TSTAMP	     << 16) |		\
+								(RKH_TRC_EN_CHK          << 17)));		\
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
-							(rkhui8_t)(RKH_TRC_SIZEOF_TSTAMP)/8));		\
+							RKH_TRC_SIZEOF_TSTAMP/8));		            \
 						RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |\
 							RKH_TIM_SIZEOF_NTIMER/8));					\
@@ -2595,12 +2635,10 @@ enum rkh_trc_fmt
 							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK/8 << 4) | 	\
 							RKH_RQ_SIZEOF_NELEM/8));					\
 						RKH_TRC_UI8( 									\
-							(rkhui8_t)((RKH_SIZEOF_ESIZE/8 << 4) |		\
-							RKH_TRC_EN_NSEQ));							\
-						RKH_TRC_UI8( 									\
-							(rkhui8_t)((RKH_TRC_EN_CHK << 4) |			\
-							RKH_TRC_EN_TSTAMP));						\
-				/*NEW*/	RKH_TRC_UI8( 									\
+							(rkhui8_t)(RKH_SIZEOF_ESIZE/8));            \
+						RKH_TRC_UI16(                                   \
+							(rkhui16_t)(ts_hz));				        \
+				       	RKH_TRC_UI8( 									\
 							(rkhui8_t)((RKH_MP_SIZEOF_BSIZE/8 << 4) |	\
 							RKH_MAX_EPOOL));							\
 					RKH_TRC_END_WOFIL()									\
