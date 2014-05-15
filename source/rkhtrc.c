@@ -336,6 +336,13 @@ rkh_trc_end( void )
 }
 
 
+void
+rkh_trc_clear_chk( void )
+{
+	chk = 0;
+}
+
+
 void 
 rkh_trc_u8( rkhui8_t d )
 {

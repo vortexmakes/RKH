@@ -906,6 +906,26 @@ typedef enum rkh_trc_events
 #define RKH_TRC_END_WOFIL_NOCRIT()					\
 				rkh_trc_end();						\
 
+/**
+ * 	Idem RKH_TRC_BEGIN() macro with default configuration, i.e. 
+ * 	without timestamp, and number of sequence, but with 8-bit checksum.
+ */
+
+#define RKH_TRC_BEGIN_DFT( eid_ )					\
+				RKH_SR_ALLOC();						\
+				RKH_ENTER_CRITICAL_();				\
+				rkh_trc_clear_chk();                \
+				RKH_TRC_UI8( eid_ );
+
+/**
+ * 	Idem RKH_TRC_END() macro but use it for trace events that are 
+ * 	independent of any runtime filter.
+ */
+
+#define RKH_TRC_END_DFT()							\
+				rkh_trc_end();						\
+				RKH_EXIT_CRITICAL_();
+
 
 /**
  * 	\brief
@@ -2604,7 +2624,7 @@ enum rkh_trc_fmt
 		 */
 
 		#define RKH_TR_FWK_TCFG( ts_hz )  								\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TCFG )				\
+					RKH_TRC_BEGIN_DFT( RKH_TE_FWK_TCFG )				\
 						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
 						RKH_TRC_UI32( 									\
 							(rkhui32_t)(								\
@@ -2642,7 +2662,7 @@ enum rkh_trc_fmt
 							RKH_MAX_EPOOL));							\
 						RKH_TRC_UI16(                                   \
 							(rkhui16_t)(ts_hz));				        \
-					RKH_TRC_END_WOFIL()									\
+					RKH_TRC_END_DFT()									\
 					RKH_TRC_FLUSH()
 
 		/* --- Assertion --------- */
@@ -3509,6 +3529,18 @@ void rkh_trc_begin( rkhui8_t eid );
  */
 
 void rkh_trc_end( void );
+
+
+/**
+ * 	\brief
+ * 	Clear to zero the trace record checksum.
+ *
+ * 	\note
+ *	This function should be called indirectly through the macro 
+ *	RKH_TRC_BEGIN_DFT().
+ */
+
+void rkh_trc_clear_chk( void );
 
 
 /**
