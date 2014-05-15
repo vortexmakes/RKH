@@ -2579,17 +2579,17 @@ enum rkh_trc_fmt
 		 * 	[ 2, 5: 1] - RKH_TRC_EN_RQ
 		 * 	[ 2, 6: 1] - RKH_TRC_EN_SMA
 		 * 	[ 2, 7: 1] - RKH_TRC_EN_TIM
-		 * 	[ 2, 8: 1] - RKH_TRC_EN_SM
-		 * 	[ 2, 9: 1] - RKH_TRC_EN_FWK
-		 * 	[ 2,10: 1] - RKH_TRC_EN_ASSERT
-		 * 	[ 2,11: 1] - RKH_RQ_EN_GET_LWMARK
-		 * 	[ 2,13: 1] - RKH_MP_EN_GET_LWM
-		 * 	[ 2,13: 1] - RKH_TRC_RTFIL_SMA_EN
-		 * 	[ 2,14: 1] - RKH_TRC_RTFIL_SIGNAL_EN
-		 * 	[ 2,15: 1] - RKH_TRC_EN_NSEQ
-		 * 	[ 2,16: 1] - RKH_TRC_EN_TSTAMP
-		 * 	[ 2,17: 1] - RKH_TRC_EN_CHK
-		 * 	[ 2,18:14] - 0 (Reserved)
+		 * 	[ 3, 8: 1] - RKH_TRC_EN_SM
+		 * 	[ 3, 9: 1] - RKH_TRC_EN_FWK
+		 * 	[ 3,10: 1] - RKH_TRC_EN_ASSERT
+		 * 	[ 3,11: 1] - RKH_RQ_EN_GET_LWMARK
+		 * 	[ 3,12: 1] - RKH_MP_EN_GET_LWM
+		 * 	[ 3,13: 1] - RKH_TRC_RTFIL_SMA_EN
+		 * 	[ 3,14: 1] - RKH_TRC_RTFIL_SIGNAL_EN
+		 * 	[ 3,15: 1] - RKH_TRC_EN_NSEQ
+		 * 	[ 4,16: 1] - RKH_TRC_EN_TSTAMP
+		 * 	[ 4,17: 1] - RKH_TRC_EN_CHK
+		 * 	[ 4,18:14] - 0 (Reserved)
 		 * 	[ 6, 0: 4] - RKH_SIZEOF_EVENT
 		 * 	[ 6, 4: 4] - RKH_TRC_SIZEOF_TSTAMP
 		 * 	[ 7, 0: 4] - RKH_TRC_SIZEOF_POINTER
@@ -2598,7 +2598,7 @@ enum rkh_trc_fmt
 		 * 	[ 8, 4: 4] - RKH_RQ_SIZEOF_NELEM
 		 * 	[ 9, 0: 4] - RKH_SIZEOF_ESIZE
 		 * 	[ 9, 4: 4] - 0 (Reserved)
-		  	[10, 0: 4] - RKH_MP_SIZEOF_BSIZE
+		 * 	[10, 0: 4] - RKH_MP_SIZEOF_BSIZE
 		 * 	[10, 4: 4] - RKH_MAX_EPOOL
 		 * 	[11, 0:16] - Timestamp HZ (ticks per second)
 		 */
