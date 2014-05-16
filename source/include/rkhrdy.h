@@ -1,33 +1,73 @@
-/*
- *	file: rkhrdy.h
+/**
+ * 	\file
+ * 	\ingroup sch
+ * 	\brief Native priority management.
+ * 	\cond
+ *  --------------------------------------------------------------------------
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 27, 2012
+ *	By:						  LF
+ *  --------------------------------------------------------------------------
+ *                                Framework RKH
+ *                                -------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
+ *
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *  --------------------------------------------------------------------------
+ * 	\endcond
  */
 
+
+#ifndef __RKHRDY_H__
+#define __RKHRDY_H__
+
+
+#include "rkhcfg.h"
+#include "rkhtype.h"
+
+
+#if RKH_MAX_SMA <= 8
+	#define RKH_NUM_RDYGRP		1
+#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
+	#define RKH_NUM_RDYGRP		2
+#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
+	#define RKH_NUM_RDYGRP		3
+#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
+	#define RKH_NUM_RDYGRP		4
+#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
+	#define RKH_NUM_RDYGRP		5
+#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
+	#define RKH_NUM_RDYGRP		6
+#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
+	#define RKH_NUM_RDYGRP		7
+#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
+	#define RKH_NUM_RDYGRP		8
+#endif
+
+
 /**
- * 	\file rkhrdy.h
- *
  * 	\brief
- * 	Native priority management.
+ *	SMA ready table.
  *
  * 	Each SMA is assigned a unique priority level between 0 and 
  * 	RKH_LOWEST_PRIO.
@@ -66,42 +106,6 @@
  * 	Bit 7 in rkhrg.grp is 1 when any bit in rkhrg.tbl[7] is 1.
  * 	
  * 	[JL]
- */
-
-
-#ifndef __RKHRDY_H__
-#define __RKHRDY_H__
-
-
-#include "rkhcfg.h"
-#include "rkhtype.h"
-
-
-#if RKH_MAX_SMA <= 8
-	#define RKH_NUM_RDYGRP		1
-#elif RKH_MAX_SMA > 8 && RKH_MAX_SMA <= 16
-	#define RKH_NUM_RDYGRP		2
-#elif RKH_MAX_SMA > 16 && RKH_MAX_SMA <= 24
-	#define RKH_NUM_RDYGRP		3
-#elif RKH_MAX_SMA > 24 && RKH_MAX_SMA <= 32
-	#define RKH_NUM_RDYGRP		4
-#elif RKH_MAX_SMA > 32 && RKH_MAX_SMA <= 40
-	#define RKH_NUM_RDYGRP		5
-#elif RKH_MAX_SMA > 40 && RKH_MAX_SMA <= 48
-	#define RKH_NUM_RDYGRP		6
-#elif RKH_MAX_SMA > 48 && RKH_MAX_SMA <= 56
-	#define RKH_NUM_RDYGRP		7
-#elif RKH_MAX_SMA > 56 && RKH_MAX_SMA <= 64
-	#define RKH_NUM_RDYGRP		8
-#endif
-
-
-/**
- * 	\brief
- *	SMA ready table.
- *
- *  Each SMA that is ready to run is placed in a ready list consisting of two 
- * 	variables, rkhrg.grp and rkhrg.tbl[]. 
  */
 
 typedef struct

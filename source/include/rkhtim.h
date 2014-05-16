@@ -1,43 +1,41 @@
-/*
- *	file: rkhtim.h
+/**
+ * 	\file
+ * 	\ingroup tmr
+ * 	\brief Platform-independent interface for supporting software timer 
+ * 	services.
+ * 	\cond
+ *  --------------------------------------------------------------------------
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 24, 2012
+ *	By:						  LF
+ *  --------------------------------------------------------------------------
+ *                                Framework RKH
+ *                                -------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
- */
-
-/**
- * 	\file rkhtim.h
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
  *
- * 	\brief
- * 	Platform-independent interface for supporting software timer services.
- *
- * 	RKH software timers enables to execute application C functions and/or 
- * 	send an event to application state machine (SMA) at specific intervals of 
- * 	time. It can also set an application timer to expire only once. This type 
- * 	of timer is called a one-shot timer, while repeating interval timers are 
- * 	called periodic timers. Each application timer is a public resource.
- *	Time intervals are measured by periodic timer interrupts. Each timer 
- *	interrupt is called a timer-tick. The actual time between timer-ticks is 
- *	specified by the application. On the other hand, application timers 
- *	execute in the order in which they become active.
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *  --------------------------------------------------------------------------
+ * 	\endcond
  */
 
 
@@ -103,6 +101,17 @@ typedef struct rkh_tim_info_t
  * 	Defines the data structure used to maintain information that allows the 
  * 	timer-handling facility to update and expire software timers. 
  *
+ * 	RKH software timers enables to execute application C functions and/or 
+ * 	send an event to application state machine (SMA) at specific intervals of 
+ * 	time. It can also set an application timer to expire only once. This type 
+ * 	of timer is called a one-shot timer, while repeating interval timers are 
+ * 	called periodic timers. Each application timer is a public resource.
+ *	Time intervals are measured by periodic timer interrupts. Each timer 
+ *	interrupt is called a timer-tick. The actual time between timer-ticks is 
+ *	specified by the application. On the other hand, application timers 
+ *	execute in the order in which they become active.
+ *
+ *	\note
  * 	RKH prohibits an application from explicitly modifying the RKHT_T 
  * 	structure. The RKH's timer structures can be located anywhere in memory, 
  * 	but it is most common to make it a global structure by defining it 

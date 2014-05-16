@@ -1,63 +1,41 @@
-/*
- *	file: rkhmp.h
+/**
+ * 	\file
+ * 	\ingroup mp
+ * 	\brief Platform-independent interface for supporting fixed-size memory 
+ * 	blocks facility.
+ * 	\cond
+ *  --------------------------------------------------------------------------
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 27, 2012
+ *	By:						  LF
+ *  --------------------------------------------------------------------------
+ *                                Framework RKH
+ *                                -------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
- */
-
-/**
- * 	\file rkhmp.h
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
  *
- * 	\brief
- * 	Platform-independent interface for supporting fixed-size memory blocks 
- * 	facility.
- *
- * 	Since memory block pools consist of fixed-size blocks, there are 
- * 	never any fragmentation problems. Of course, fragmentation causes 
- * 	behavior that is inherently un-deterministic. In addition, the time
- * 	required to allocate and free a fixed-size memory is comparable to 
- * 	that of simple linked-list manipulation.
- * 	Lack of flexibility is the main drawback of fixed-size memory pools. 
- * 	The block size of a pool must be large enough to handle the worst 
- * 	case memory requirements of its users. Of course, memory may be wasted 
- * 	if many different size memory requests are made to the same pool. 
- * 	A possible solution is to make several different memory block pools 
- * 	that contain different sized memory blocks. Each memory block pool 
- * 	is a public resource.
- *
- * 	The memory block pools contain a number of fixed-size blocks. The block 
- * 	size, in bytes, is specified during creation of the pool. Each memory 
- * 	block in the pool imposes a small amount of overhead the size of a C 
- * 	pointer. In addition, RKH may pad the block size in order to keep the 
- * 	beginning of each memory block on proper alignment. 
- * 	
- * 	The number of memory blocks in a pool depends on the block size and the 
- * 	total number of bytes in the memory area supplied during creation. To 
- * 	calculate the capacity of a pool (number of blocks that will be 
- * 	available), divide the block size (including padding and the pointer 
- * 	overhead bytes) into the total number of bytes in the supplied memory area.
- * 	
- * 	The memory area for the block pool is specified during creation, and can 
- * 	be located anywhere in the target's address space. This is an important 
- * 	feature because of the considerable flexibility it gives the application. 
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *  --------------------------------------------------------------------------
+ * 	\endcond
  */
 
 
@@ -152,6 +130,36 @@ typedef struct
  * 	\brief
  * 	Defines the data structure used to memory block pool facility. 
  *
+ * 	Since memory block pools consist of fixed-size blocks, there are 
+ * 	never any fragmentation problems. Of course, fragmentation causes 
+ * 	behavior that is inherently un-deterministic. In addition, the time
+ * 	required to allocate and free a fixed-size memory is comparable to 
+ * 	that of simple linked-list manipulation.
+ * 	Lack of flexibility is the main drawback of fixed-size memory pools. 
+ * 	The block size of a pool must be large enough to handle the worst 
+ * 	case memory requirements of its users. Of course, memory may be wasted 
+ * 	if many different size memory requests are made to the same pool. 
+ * 	A possible solution is to make several different memory block pools 
+ * 	that contain different sized memory blocks. Each memory block pool 
+ * 	is a public resource.
+ *
+ * 	The memory block pools contain a number of fixed-size blocks. The block 
+ * 	size, in bytes, is specified during creation of the pool. Each memory 
+ * 	block in the pool imposes a small amount of overhead the size of a C 
+ * 	pointer. In addition, RKH may pad the block size in order to keep the 
+ * 	beginning of each memory block on proper alignment. 
+ * 	
+ * 	The number of memory blocks in a pool depends on the block size and the 
+ * 	total number of bytes in the memory area supplied during creation. To 
+ * 	calculate the capacity of a pool (number of blocks that will be 
+ * 	available), divide the block size (including padding and the pointer 
+ * 	overhead bytes) into the total number of bytes in the supplied memory area.
+ * 	
+ * 	The memory area for the block pool is specified during creation, and can 
+ * 	be located anywhere in the target's address space. This is an important 
+ * 	feature because of the considerable flexibility it gives the application. 
+ *
+ *	\note
  * 	RKH prohibits an application from explicitly modifying the RKHMP_T 
  * 	structure. The RKH's memory block pool structures can be located anywhere 
  * 	in memory, but it is most common to make it a global structure by defining 

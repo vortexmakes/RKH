@@ -1,49 +1,40 @@
-/*
- *	file: rkhrq.h
+/**
+ * 	\file
+ * 	\ingroup que
+ *	\brief Platform-independent interface for supporting queue services.
+ * 	\cond
+ *  --------------------------------------------------------------------------
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 23, 2012
+ *	By:						  LF
+ *  --------------------------------------------------------------------------
+ *                                Framework RKH
+ *                                -------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
- */
-
-/**
- * 	\file rkhrq.h
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
  *
- *	\brief
- * 	Platform-independent interface for supporting queue (by reference) 
- * 	services.
- *
- * 	The queue is a buffer-like object through which state machine applications 
- * 	(SMA) and ISRs send and receive messages to communicate and synchornize 
- * 	with data. It temporarily holds pointer to messages from a sender until 
- * 	the intended receiver is ready to read them.
- *
- * 	The number of messages a queue can hold depends on its message size 
- * 	(pointer size) and the size of the memory area supplied during creation. 
- * 	To calculate the total message capacity of the queue, divide the number of 
- * 	bytes in each message into the total number of bytes in the supplied 
- *
- * 	The memory area for buffering messages is specified during queue creation. 
- * 	It can be located anywhere in the target's address space. This is an 
- * 	important feature because it gives the application considerable 
- * 	flexibility.
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *  --------------------------------------------------------------------------
+ * 	\endcond
  */
 
 
@@ -111,6 +102,22 @@ typedef struct rkh_qinfo_t
  * 	\brief
  * 	Defines the data structure used to maintain information about the queue. 
  *
+ * 	The queue is a buffer-like object through which state machine applications 
+ * 	(SMA) and ISRs send and receive messages to communicate and synchornize 
+ * 	with data. It temporarily holds pointer to messages from a sender until 
+ * 	the intended receiver is ready to read them.
+ *
+ * 	The number of messages a queue can hold depends on its message size 
+ * 	(pointer size) and the size of the memory area supplied during creation. 
+ * 	To calculate the total message capacity of the queue, divide the number of 
+ * 	bytes in each message into the total number of bytes in the supplied 
+ *
+ * 	The memory area for buffering messages is specified during queue creation. 
+ * 	It can be located anywhere in the target's address space. This is an 
+ * 	important feature because it gives the application considerable 
+ * 	flexibility.
+ *
+ * 	\note
  * 	RKH prohibits an application from explicitly modifying the RKHRQ_T 
  * 	structure. The RKH's queue structures can be located anywhere in memory, 
  * 	but it is most common to make it a global structure by defining it 

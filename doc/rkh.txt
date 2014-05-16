@@ -4,6 +4,14 @@
 #
 
 /**
+
+\defgroup trc Trace (Sophisticated tracing mechanism in run-time)
+\defgroup prt Port  (Porting RKH)
+\defgroup sch RKHS  (Native, cooperative, non-preemtive scheduler)
+\defgroup tmr Timer (Software timer service)
+\defgroup que Queue (Queue service)
+\defgroup fwk RKH   (State-machine framework for reactive embedded systems)
+
 \anchor main_page
 \mainpage RKH Reference Manual
 \image html rkh_super_bunner.jpg

@@ -1,97 +1,40 @@
-/*
- *	file: rkhassert.h
+/**
+ * 	\file
+ * 	\ingroup assert
+ *	\brief Assert definitions.
+ * 	\cond
+ *  --------------------------------------------------------------------------
  *	Last updated for version: 1.5.00
  *	Date of the last update:  June 21, 2011
+ *	By:						  LF
+ *  --------------------------------------------------------------------------
+ *                                Framework RKH
+ *                                -------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
- */
-
-/**
- * 	\file rkhassert.h
- *	\brief
- *	Assert definitions.
- *	
- *	The assertions (\c RKHASSERT() macro) are used to check expressions that 
- *	ought to be true as long as the program is running correctly. It is a 
- *	convenient way to insert sanity checks.
- *	A number of philosophies can be employed when deciding where to use an 
- *	\c RKHASSERT() macro. Broadly speaking, the assertions only serve the 
- *	purposes of catching bugs and helping documentation. Helping to document 
- *	the code means that the statements inside the assertion tell the reader 
- *	something he might not already know.
- *	
- *	\note 
- *	The preprocessor switch RKH_ASSERT_EN disables checking assertions.
- * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
- * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
- * 	passed as the argument to these macros. One notable exception is the
- * 	macro RKHALLEGE(), that still evaluates the test condition, but does
- * 	not report assertion failures when the switch RKH_ASSERT_EN is defined.
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
  *
- *	Example of use:
- *	\code
- *	...
- *	some_function( const char *p, int size )
- *	{
- *		RKHASSERT( 	p != ( const char* )0 &&
- *					size > 0  && size < MAX_SIZE );
- *		...
- *	}
- *	\endcode
- *
- * 	If the expression evaluates to FALSE (0), the function rkh_assert() 
- * 	will be invoked, typically halting the program in some way and 
- * 	storing or reporting the error code.
- * 	Once the rkh_assert() callback has stored or reported the error, it 
- * 	must decide on the system's next action. One option is:
- *		
- *	-# disable general interrupt
- *	-# stores or send detected error (could be use a trace facility)
- *	-# trigger a software reset
- *
- *	The policy chooses will be largely determined by the nature of 
- *	product. 
- *	If the system is running with a source level debugger, place a 
- *	breakpoint within. Another option is to trigger a software reset and 
- *	attempt to run the system again.
- *
- * 	Also a unique identifier that can be reported from the field, easing 
- * 	the investigation of the problem. Therefore, the error code could be
- * 	composed of the software version number, file number (.c file), 
- * 	line number of assertion, and other information. A number is easier 
- * 	to fill in on a report form and easier to store in NVRAM.
- *
- *	The following listing shows a illustrative example for Visual Studio 
- *	C++ 2008 IDE:
- *
- *	\code
- *	void 
- *	rkh_assert( RKHROM char * const file, int line )
- *	{
- *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
- *
- *		RKH_DIS_INTERRUPT();
- *		RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
- *		__debugbreak();
- *	}
- *	\endcode
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *  --------------------------------------------------------------------------
+ * 	\endcond
  */
 
 
@@ -132,16 +75,19 @@
 	 * 	line number of assertion, and other information. A number is easier 
 	 * 	to fill in on a report form and easier to store in NVRAM.
 	 *
-	 *	The following listing shows a illustrative example for VC2008 IDE:
+ 	 *	The following listing shows a illustrative example for Visual Studio 
+     *	C++ 2008 IDE:
 	 *
 	 *	\code
 	 *	void 
 	 *	rkh_assert( RKHROM char * const file, int line )
 	 *	{
 	 *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
+	 *
+	 *		RKH_DIS_INTERRUPT();
+	 *		RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
 	 *		__debugbreak();
 	 *	}
-	 *	\endcode
 	 *	
 	 *	\note
 	 *	The rkh_assert() callback will only get called if RKH_ASSERT_EN is 
@@ -181,6 +127,24 @@
 	 * 	\brief 
 	 * 	The RKHASSERT() macro is used to check expressions that ought to 
 	 * 	be true as long as the program is running correctly. 
+	 *
+ 	 *	The assertions (\c RKHASSERT() macro) are used to check expressions 
+	 *	that ought to be true as long as the program is running correctly. It 
+	 *	is a convenient way to insert sanity checks.
+	 *	A number of philosophies can be employed when deciding where to use an 
+	 *	\c RKHASSERT() macro. Broadly speaking, the assertions only serve the 
+	 *	purposes of catching bugs and helping documentation. Helping to 
+	 *	document the code means that the statements inside the assertion tell 
+	 *	the reader something he might not already know.
+	 *	
+	 *	\note 
+	 *	The preprocessor switch RKH_ASSERT_EN disables checking assertions.
+	 * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
+	 * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
+	 * 	passed as the argument to these macros. One notable exception is the
+	 * 	macro RKHALLEGE(), that still evaluates the test condition, but does
+	 * 	not report assertion failures when the switch RKH_ASSERT_EN is 
+	 * 	defined.
 	 *
 	 *	Example of use:
 	 *	\code

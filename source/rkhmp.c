@@ -1,45 +1,40 @@
-/*
- *	file: rkhmp.c
+/**
+ * 	\file
+ * 	\ingroup mp
+ * 	\brief Implements a pool of fixed-size memory blocks.
+ * 	\cond
+ *  --------------------------------------------------------------------------
  *	Last updated for version: 1.0.00
  *	Date of the last update:  Feb 27, 2012
+ *	By:						  LF
+ *  --------------------------------------------------------------------------
+ *                                Framework RKH
+ *                                -------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
- */
-
-/**
- * 	\file rkhmp.c
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
  *
- * 	\brief
- * 	Implements a pool of fixed-size memory blocks.
- *
- * 	Since memory block pools consist of fixed-size blocks, there are 
- * 	never any fragmentation problems. Of course, fragmentation causes 
- * 	behavior that is inherently un-deterministic. In addition, the time
- * 	required to allocate and free a fixed-size memory is comparable to 
- * 	that of simple linked-list manipulation.
- * 	Lack of flexibility is the main drawback of fixed-size memory pools. 
- * 	The block size of a pool must be large enough to handle the worst 
- * 	case memory requirements of its users. Of course, memory may be wasted 
- * 	if many different size memory requests are made to the same pool. 
- * 	A possible solution is to make several different memory block pools 
- * 	that contain different sized memory blocks.
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *  --------------------------------------------------------------------------
+ * 	\endcond
  */
 
 

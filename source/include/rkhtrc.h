@@ -1,50 +1,10 @@
 /**
  * 	\file
+ * 	\ingroup trc
  * 	\brief Platform-independent interface for RKH trace facility.
- *
- * 	When a program needs to be traced, it has to generate some information 
- * 	each time it reaches a "significant step" (certain instruction in the 
- * 	program's source code). In the standard terminology, this step is called 
- * 	a trace point, and the tracing information which is generated at that 
- * 	point is called a trace event. A program containing one or more of this 
- * 	trace points is named instrumented application.
- *
- * 	The definition of events and the mapping between these and their 
- * 	corresponding names is hard-coded in the RKH implementation. Therefore, 
- * 	these events are common for all the state machine applications and never 
- * 	change (they are always traced). 
- * 	The trace events are associated with a integer value and are explicity 
- * 	listed and defined (enumerated) as shown below in this file.
- * 		
- *	The standard defines that the trace system has to store some information 
- *	for each trace event (also named arguments) being generated, including, 
- *	at least, the following:
- *
- * 	- the trace event identifier (#RKH_TRC_EVENTS enumerated list),
- * 	- a timestamp (optional),
- * 	- any extra data that the system wants to associate with the event 
- * 	(optional).
- *
- * 	When the system or an application trace an event, all the information 
- * 	related to it has to be stored somewhere before it can be retrieved, in 
- * 	order to be analyzed. This place is a trace stream. Formally speaking, a 
- * 	trace stream is defined as a non-persistent, internal (opaque) data 
- * 	object containing a sequence of trace events plus some internal 
- * 	information to interpret those trace events.
- *	
- *	Also, the streams support runtime filtering. The application can define and 
- *	apply a filter to a trace stream. Basically, the filter establishes which 
- *	event types the stream is accepting (and hence storing) and which are not.
- *	Therefore, trace events corresponding to types which are filtered out 
- *	from a certain stream will not be stored in the stream. The stream in the 
- *	system can potentially be applied a different filter. This filter can be 
- *	applied, removed or changed at any time.
- *
- *	\sa RKH_TRC_EVENTS the enumerated list of RKH trace events.
- *
  * 	\cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 2.4.04
+ *	Last updated for version: 1.0.00
  *	Date of the last update:  May 15, 2014
  *	By:						  LF
  *  --------------------------------------------------------------------------

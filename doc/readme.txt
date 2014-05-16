@@ -79,8 +79,102 @@ The following figure shows the \c \\source directory.
 <HR>
 \section portable_dir RKH portable directory
 
-\copydetails rkhplat.h
-\copydetails rkhtype.h
+All software components of the RKH, contain a platform abstraction 
+layer. It is an indirection layer that hides the differences in 
+hardware and software environments in which RKH operates so that the RKH 
+source code does not need to be changed to run in a different 
+environment. Instead, all the changes required to adapt RKH are confined 
+to this layer. It's basically composed by a few files, \b rkhplat.h and 
+rkhtype.h, which include references to the actual platform-dependent 
+files like \b rkhport.h and \b rkht.h. The platform-specific code for 
+the RKH port is defined by \b rkhport.c. Not all RKH ports require this 
+file.
+
+As said above, each platform, compiler or processor supported by RKH must 
+have its own platform-dependent file, called \b rkhport.h by RKH 
+convention. 
+Next, each \b rkhport.h file must be referenced from rkhplat.h header 
+file, located in \\include directory.  The next listing shows an example 
+of \b rkhplat.h, where __CFV1CW63__, and __W32STVC08__ are used to 
+nstruct the C/C++ compiler to include header files from the specific 
+KH port directory. The key point of the design is that all 
+latform-independent RKH source files include the same \b rkhplat.h 
+eader file as the application source files.
+
+\code
+#ifdef __CFV1CW63__
+	#include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
+#endif
+
+#ifdef __W32STVC08__
+#include "..\portable\80x86\win32_st\vc08\rkhport.h"
+#endif
+..
+\endcode
+
+The idea behind conditional compilation is that a \b rkhport.h can be 
+electively compiled, depending upon whether a specific value has been 
+efined.
+
+\note The path of platform-dependent file must be relative.
+
+The RKH uses a set of integer quantities. That maybe machine or compiler 
+dependent. These types must be defined in \b rkht.h file. The following 
+listing shows the required data type definitions:
+
+\code
+// Denotes a signed integer type with a width of exactly 8 bits
+typedef signed char 	rkhi8_t;
+
+// Denotes a signed integer type with a width of exactly 16 bits
+typedef signed short 	rkhi16_t;
+
+// Denotes a signed integer type with a width of exactly 32 bits
+typedef signed long		rkhi32_t;
+
+// Denotes an unsigned integer type with a width of exactly 8 bits
+typedef unsigned char 	rkhui8_t;
+
+// Denotes an unsigned integer type with a width of exactly 16 bits
+typedef unsigned short 	rkhui16_t;
+
+// Denotes an unsigned integer type with a width of exactly 32 bits
+typedef unsigned long	rkhui32_t;
+
+// Denotes an unsigned integer type that is usually fastest to operate with 
+// among all integer types.
+typedef unsigned int	HUInt;
+
+// Denotes a signed integer type that is usually fastest to operate with 
+// among all integer types.
+typedef signed int		HInt;
+\endcode
+
+Next, each \b rkht.h file must be referenced from \b rkhtype.h header 
+file, located in \\include directory.  The next listing shows an example 
+of \b rkhtype.h, where __CFV1CW63__, and __W32STVC08__ are used to 
+instruct the C/C++ compiler to include header files from the specific 
+RKH port directory. The key point of the design is that all 
+platform-independent RKH source files include the same \b rkhtype.h 
+header file as the application source files.
+
+\code
+#ifdef __CFV1CW63__
+	#include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
+#endif
+
+#ifdef __W32STVC08__
+	#include "..\portable\80x86\win32_st\vc08\rkht.h"
+#endif
+...
+\endcode
+
+The idea behind conditional compilation is that a \b rkht.h can be 
+selectively compiled, depending upon whether a specific value has been 
+defined.
+
+\note The path of platform-dependent file must be relative.
+
 See the \ref Porting section for more information. 
 The following figure shows the \c \\portable directory.
 
@@ -345,13 +439,12 @@ the aspects to be considered to port RKH:
 \n <HR>
 \section files Platform-dependent files
 
-\copydetails rkhplat.h
 Please, see \ref portable_dir section.
 
 \n <HR>
 \section data Data types definitions
 
-\copydetails rkhtype.h
+Please, see \ref portable_dir section.
 
 \n <HR>
 \section rom ROM allocator
@@ -2844,7 +2937,42 @@ Prev: \ref main_page "Home"
 Prev: \ref main_page "Home" \n
 Next: \ref cross "Examples"
 
-\copydetails rkhtrc.h
+When a program needs to be traced, it has to generate some information 
+each time it reaches a "significant step" (certain instruction in the 
+program's source code). In the standard terminology, this step is called 
+a trace point, and the tracing information which is generated at that 
+point is called a trace event. A program containing one or more of this 
+trace points is named instrumented application.
+
+The definition of events and the mapping between these and their 
+corresponding names is hard-coded in the RKH implementation. Therefore, 
+these events are common for all the state machine applications and never 
+change (they are always traced). 
+The trace events are associated with a integer value and are explicity 
+listed and defined (enumerated) as shown below in this file.
+	
+The standard defines that the trace system has to store some information 
+for each trace event (also named arguments) being generated, including, 
+at least, the following:
+
+- the trace event identifier (#RKH_TRC_EVENTS enumerated list),
+- a timestamp (optional),
+- any extra data that the system wants to associate with the event (optional).
+ 
+When the system or an application trace an event, all the information 
+related to it has to be stored somewhere before it can be retrieved, in 
+order to be analyzed. This place is a trace stream. Formally speaking, a 
+trace stream is defined as a non-persistent, internal (opaque) data 
+object containing a sequence of trace events plus some internal 
+information to interpret those trace events.
+
+Also, the streams support runtime filtering. The application can define and 
+apply a filter to a trace stream. Basically, the filter establishes which 
+event types the stream is accepting (and hence storing) and which are not.
+Therefore, trace events corresponding to types which are filtered out 
+from a certain stream will not be stored in the stream. The stream in the 
+system can potentially be applied a different filter. This filter can be 
+applied, removed or changed at any time.
 
 \n This section includes:
 
