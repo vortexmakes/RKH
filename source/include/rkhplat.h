@@ -1,13 +1,7 @@
 /**
- * 	\file
- * 	\ingroup prt
- *	\brief RKH platform-dependent interface.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 2.4.04
- *	Date of the last update:  May 15, 2014
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -33,8 +27,17 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhplat.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	prt
+ *	\brief 		RKH platform-dependent interface.
  */
 
 

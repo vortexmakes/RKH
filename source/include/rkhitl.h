@@ -1,14 +1,7 @@
 /**
- * 	\file
- * 	\ingroup fwk
- * 	\brief RKH engine interface. This header file is directly included in RKH 
- * 	interface file, rkh.h.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  May 28, 2010
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -34,8 +27,19 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhitl.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	fwk
+ *
+ * 	\brief 		RKH engine interface. This header file is directly included 
+ * 				in RKH interface file, rkh.h.
  */
 
 

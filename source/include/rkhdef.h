@@ -1,16 +1,7 @@
 /**
- * 	\file
- * 	\ingroup fwk
- *	\brief Platform-independent file that contains standard constants and 
- *	macros. All constants and macros are prefixed with RKH_ to provide a 
- *	consistent naming convention and to avoid namespace conflicts with other 
- *	constants and macros in your application.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 2.4.00
- *	Date of the last update:  April 15, 2014
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -36,8 +27,22 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhdef.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	fwk
+ *
+ *	\brief 		Platform-independent file that contains standard constants 
+ *				and macros. 
+ *	\details	All constants and macros are prefixed with RKH_ to provide 
+ *				a consistent naming convention and to avoid namespace 
+ *				conflicts with other constants and macros in your application.
  */
 
 

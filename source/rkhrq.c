@@ -1,13 +1,7 @@
 /**
- * 	\file
- * 	\ingroup que
- *	\brief Implements a queue (by reference) services.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 23, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -33,8 +27,17 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhrq.c
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	que
+ *	\brief 		Implements a queue (by reference) services.
  */
 
 

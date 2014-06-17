@@ -1,14 +1,7 @@
 /**
- * 	\file
- * 	\ingroup fwk
- *	\brief Event data type and other related macros. This header file must be 
- *	included in all modules (*.c files) that use RKH.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 28, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -34,8 +27,19 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhevt.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	fwk
+ *
+ *	\brief 		Event data type and other related macros. This header file 
+ *				must be included in all modules (*.c files) that use RKH.
  */
 
 

@@ -1,5 +1,7 @@
 /**
+ * \cond
  *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -27,17 +29,19 @@
  * 	e-mail:			francuccilea@gmail.com
  *
  *  --------------------------------------------------------------------------
- *	Last updated for version: 2.4.04
- *	Date of the last update:  May 15, 2014
- *	By:                       LF
+ *  File                     : rkh.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
  *  --------------------------------------------------------------------------
+ *  \endcond
  *
  * 	\file
- * 	\ingroup fwk
- * 	\brief RKH framwwork platform-independent interface.
- * 	\note 
- * 	(1) This header file must be included in all modules (*.c files) that 
- * 	    use RKH.
+ * 	\ingroup 	fwk
+ *
+ * 	\brief 		RKH framwwork platform-independent interface.
+ *
+ * 	\note 		(1) This header file must be included in all modules (*.c 
+ * 				files) that use RKH.
  */
 
 

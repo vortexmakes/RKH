@@ -1,14 +1,7 @@
 /**
- * 	\file
- * 	\ingroup mp
- * 	\brief Platform-independent interface for supporting fixed-size memory 
- * 	blocks facility.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 27, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -34,8 +27,19 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhmp.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	mp
+ *
+ * 	\brief 		Platform-independent interface for supporting fixed-size 
+ * 				memory blocks facility.
  */
 
 

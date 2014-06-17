@@ -1,14 +1,7 @@
 /**
- * 	\file rkhs.c
- * 	\ingroup sch
- *	\brief Implements a native, simple and cooperative scheduler called 
- *	RKS to deal with multiple event-driven state machines.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 22, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -34,8 +27,19 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhs.c
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	sch
+ *
+ *	\brief 		Implements a native, simple and cooperative scheduler called 
+ *				RKS to deal with multiple event-driven state machines.
  */
 
 

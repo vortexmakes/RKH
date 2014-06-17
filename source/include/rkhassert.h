@@ -1,13 +1,7 @@
 /**
- * 	\file
- * 	\ingroup assert
- *	\brief Assert definitions.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.5.00
- *	Date of the last update:  June 21, 2011
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -33,8 +27,18 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
+ *  --------------------------------------------------------------------------
+ *  File                     : rkhassert.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
  *  --------------------------------------------------------------------------
  * 	\endcond
+ *
+ * 	\file
+ * 	\ingroup 	assert
+ *
+ *	\brief 		Assert definitions.
  */
 
 
