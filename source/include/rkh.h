@@ -1,14 +1,4 @@
 /**
- * 	\file
- * 	\ingroup fwk
- * 	\brief RKH framwwork platform-independent interface.
- * 	\note This header file must be included in all modules (*.c files) that 
- * 	use RKH.
- * 	\cond
- *  --------------------------------------------------------------------------
- *	Last updated for version: 2.4.04
- *	Date of the last update:  May 15, 2014
- *	By:						  LF
  *  --------------------------------------------------------------------------
  *                                Framework RKH
  *                                -------------
@@ -35,8 +25,19 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *	Last updated for version: 2.4.04
+ *	Date of the last update:  May 15, 2014
+ *	By:                       LF
+ *  --------------------------------------------------------------------------
+ *
+ * 	\file
+ * 	\ingroup fwk
+ * 	\brief RKH framwwork platform-independent interface.
+ * 	\note 
+ * 	(1) This header file must be included in all modules (*.c files) that 
+ * 	    use RKH.
  */
 
 
