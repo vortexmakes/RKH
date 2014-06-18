@@ -1,12 +1,7 @@
 /**
- * 	\file
- * 	\brief RKH user configuration
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 2.3.00
- *	Date of the last update:  Mar 26, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -32,8 +27,17 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhcfg.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ *
+ * 	\brief 		RKH user configuration
  */
 
 

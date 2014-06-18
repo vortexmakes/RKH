@@ -1,26 +1,44 @@
-/*
- *	file: bsp.c
- *	Last updated for version: 2.3
- *	Date of the last update:  Jul 11, 2013
+/**
+ * \cond
+ *  --------------------------------------------------------------------------
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *                                Framework RKH
+ *                                -------------
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
+ * 	          State-machine framework for reactive embedded systems            
+ * 	        
+ * 	                    Copyright (C) 2010 Leandro Francucci.
+ * 	        All rights reserved. Protected by international copyright laws.
  *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
+ * 	RKH is free software: you can redistribute it and/or modify it under the 
+ * 	terms of the GNU General Public License as published by the Free Software 
+ * 	Foundation, either version 3 of the License, or (at your option) any 
+ * 	later version.
  *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  more details.
+ *
+ *  You should have received a copy of the GNU General Public License along 
+ *  with RKH, see copying.txt file.
+ *
+ * 	Contact information:
+ * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
+ * 	e-mail:			francuccilea@gmail.com
+ *
+ *  --------------------------------------------------------------------------
+ *  File                     : bsp.c
+ *	Last updated for version : v2.4.04
+ *	By                       : DB
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	prt
+ *
+ * 	\brief 		BSP for DemoQE128 CW10
  */
 
 
@@ -149,7 +167,7 @@ rkh_hk_exit( void )
 void 
 rkh_hk_idle( void )				/* called within critical section */
 {
-//    RKH_EXIT_CRITICAL( dummy );
+	/*RKH_EXIT_CRITICAL( dummy );*/
 	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
 }
@@ -325,9 +343,9 @@ bsp_init( int argc, char *argv[] )
 
 	RKH_TRC_OPEN();
 
-//#if defined( RKH_USE_TRC_SENDER )
+/*#if defined( RKH_USE_TRC_SENDER )*/
 	RKH_TR_FWK_OBJ( &l_isr_kbd );
 	RKH_TR_FWK_OBJ( &l_isr_tick );
-//#endif
+/*#endif*/
 
 }

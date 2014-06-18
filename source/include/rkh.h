@@ -41,7 +41,7 @@
  * 	\brief 		RKH framwwork platform-independent interface.
  *
  * 	\note 		(1) This header file must be included in all modules (*.c 
- * 				files) that use RKH.
+ * 					files) that use RKH.
  */
 
 

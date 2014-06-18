@@ -1,13 +1,7 @@
 /**
- * 	\file
- * 	\ingroup prt
- * 	\brief Visual Studio 2008 Single-Thread port
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 27, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -33,8 +27,18 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhport.h
+ *	Last updated for version : v2.4.04
+ *	By                       : LF
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	prt
+ *
+ * 	\brief 		Visual Studio 2008 Single-Thread port (win32)
  */
 
 

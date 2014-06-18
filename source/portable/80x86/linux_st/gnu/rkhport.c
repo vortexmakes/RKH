@@ -1,13 +1,7 @@
 /**
- * 	\file
- * 	\ingroup prt
- * 	\brief Eclipse Cygwin port.
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Sep 05, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -33,8 +27,18 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : rkhport.c
+ *	Last updated for version : v2.4.04
+ *	By                       : JC
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	prt
+ *
+ * 	\brief 		Linux 32-bits (single thread).
  */
 
 
