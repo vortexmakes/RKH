@@ -130,7 +130,7 @@
  * 	rkh_set_static_event() and rkh_gc().
  */
 
-typedef struct
+typedef struct RKHEVT_T
 {
 	/**
 	 * 	\brief
