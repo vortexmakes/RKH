@@ -50,7 +50,11 @@
 
 #if RKH_TRC_EN == RKH_ENABLED
 
-RKH_MODULE_NAME( rkhtrc )
+/* This macro is needed only if the module requires to check 	... */
+/* ... expressions that ought to be true as long as the program ... */
+/* ... is running. 													*/
+
+/* RKH_MODULE_NAME( rkhtrc ) */
 
 #define GETGRP( e )				(rkhui8_t)(((e) & 0xE0) >> 5)
 #define GETEVT( e )				(rkhui8_t)((e) & 0x1F)
@@ -143,8 +147,8 @@ static rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
  * 	The tables to filter trace events related to signal and active objects.
  */
 
-const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, (rkhui8_t *const)&trcsigftbl };
-const FIL_T fsma = { RKH_TRC_MAX_SMA, (rkhui8_t *const)&trcsmaftbl };
+const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, 	(rkhui8_t *const)trcsigftbl };
+const FIL_T fsma = { RKH_TRC_MAX_SMA, 		(rkhui8_t *const)trcsmaftbl };
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =

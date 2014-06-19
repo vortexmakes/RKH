@@ -466,7 +466,7 @@ typedef enum rkh_trc_groups
  *	(1) RKH_TRC_USR_BEGIN( MY_TRACE )	\
  *	(2)		RKH_TRC_ARG0( arg0 ); 		\
  *	(3)		RKH_TRC_ARG1( arg1 ); 		\
- *	(4)		RKH_TRC_....( ... ); 		\	
+ *	(4)		RKH_TRC_....( ... ); 		\
  *	(5)	RKH_TRC_USR_END();
  *	\endcode
  *

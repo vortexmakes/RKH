@@ -1,13 +1,7 @@
 /**
- * 	\file
- * 	\ingroup prt
- * 	\brief BSP for 80x86 OS linux
- * 	\cond
+ * \cond
  *  --------------------------------------------------------------------------
- *	Last updated for version: 2.0
- *	Date of the last update:  Feb 28, 2012
- *	By:						  LF
- *  --------------------------------------------------------------------------
+ *
  *                                Framework RKH
  *                                -------------
  *
@@ -33,8 +27,18 @@
  * 	Contact information:
  * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
  * 	e-mail:			francuccilea@gmail.com
+ *
  *  --------------------------------------------------------------------------
- * 	\endcond
+ *  File                     : bsp.h
+ *	Last updated for version : v2.4.04
+ *	By                       : JC
+ *  --------------------------------------------------------------------------
+ *  \endcond
+ *
+ * 	\file
+ * 	\ingroup 	prt
+ *
+ * 	\brief 		BSP for 80x86 OS linux
  */
 
 
