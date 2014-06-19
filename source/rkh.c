@@ -159,7 +159,7 @@ RKH_MODULE_NAME( rkh )
 
 
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
-	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
+	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nex )						\
 		for( ix_n = 0, ix_x = islca = 0, stx = src; 						\
 				stx != CST( 0 ); ++ix_x )									\
 		{																	\
@@ -195,11 +195,11 @@ RKH_MODULE_NAME( rkh )
 			UPDATE_PARENT( stx );											\
 		}																	\
 										 /* save the # of entered states */ \
-		nn = ix_n
+		nex = ix_n
 #else
-	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nn )						\
+	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nex )						\
 		stx = src;															\
-		nn = ix_n = ix_x = (rkhui8_t)(stx != tgt)
+		nex = ix_n = ix_x = (rkhui8_t)(stx != tgt)
 #endif
 
 
@@ -226,6 +226,7 @@ RKH_MODULE_NAME( rkh )
 		}
 #else
 	#define RKH_EXEC_ENTRY_ACTION( nen, sma, stn, snl, ix_n )			\
+		nen = 0;														\
 		if( ix_n == ix_x && ix_x == 0 )									\
 		{}																\
 		else															\
@@ -337,10 +338,16 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKHROM RKHSSBM_T *dp;
 #endif
 	                      /* to deal with Statechart's transition sequence */
-	RKH_RAM RKHROM RKHST_T *stn, *stx, **snl;
-	RKH_RAM rkhui8_t ix_n, ix_x, islca, nn;
+	RKH_RAM RKHROM RKHST_T *stn, *stx;
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
+	RKH_RAM RKHROM RKHST_T **snl;
+	RKH_RAM rkhui8_t islca;
+#endif
+	RKH_RAM rkhui8_t ix_n, ix_x, nn;
                                                    /* set of entered states */
+#if RKH_SMA_EN_HCAL == RKH_ENABLED
 	RKH_RAM RKHROM RKHST_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
+#endif
                                       /* set of executed transition actions */
 	RKH_RAM RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
                                         /* pointer to transition action set */
@@ -390,7 +397,6 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	ets = tr->target;	   /* temporarily save the target of the transition */
 	ts = CST( ets );
 
-	nn = 0;
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
