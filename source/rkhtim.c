@@ -74,7 +74,7 @@ RKH_MODULE_NAME( rkhtim )
 #if defined( RKH_USE_TRC_SENDER )
 	#define RKH_TICK_POST( t_, sender_ ) \
 				RKH_SMA_POST_FIFO((RKHSMA_T *)t_->sma, t_->evt, \
-						sender_ != (const void *const)0 ? sender_ : t_)
+						sender_ != (const void *)0 ? sender_ : t_)
 #else
 	#define RKH_TICK_POST( t_, sender_ ) \
 					RKH_SMA_POST_FIFO((RKHSMA_T *)t_->sma, t_->evt, sender_ )

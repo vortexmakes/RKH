@@ -26,7 +26,7 @@ svr_init( const struct rkhsma_t *sma )
 	HInt cn;
 
 	(void)sma;
-	rkh_rq_init( &qreq, qreq_sto, MAX_SIZEOF_QREQ, NULL );
+	rkh_rq_init( &qreq, qreq_sto, MAX_SIZEOF_QREQ, CSMA(0) );
 
 	RKH_CAST(SVR_T, sma)->ntot = 0;
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
@@ -55,7 +55,8 @@ svr_resume( const struct rkhsma_t *sma )
 {
 	REQ_EVT_T *e;
 
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) != NULL )
+	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) 
+			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
 }
 
@@ -84,7 +85,8 @@ svr_end( const struct rkhsma_t *sma, RKHEVT_T *pe )
 	REQ_EVT_T *e;
 
 	(void)pe;
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) != NULL )
+	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) 
+			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
 }
 

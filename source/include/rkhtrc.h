@@ -1898,7 +1898,7 @@ enum rkh_trc_fmt
 							RKH_TRC_UI8( nex ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_NENEX( ao, nen, nex )		(void)0	
+			#define RKH_TR_SM_NENEX( ao, nen, nex )		(void)nen	
 		#endif
 
 		/**
