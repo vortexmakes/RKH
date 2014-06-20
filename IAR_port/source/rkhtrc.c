@@ -147,8 +147,8 @@ static rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
  * 	The tables to filter trace events related to signal and active objects.
  */
 
-const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, 	(rkhui8_t *const)trcsigftbl };
-const FIL_T fsma = { RKH_TRC_MAX_SMA, 		(rkhui8_t *const)trcsmaftbl };
+const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, 	trcsigftbl };
+const FIL_T fsma = { RKH_TRC_MAX_SMA, 		trcsmaftbl };
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =

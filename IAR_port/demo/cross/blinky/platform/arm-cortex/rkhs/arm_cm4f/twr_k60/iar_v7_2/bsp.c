@@ -87,6 +87,12 @@ rkh_hk_start( void )
 
 
 void 
+rkh_hk_timetick( void ) 
+{
+
+}
+
+void 
 rkh_hk_exit( void ) 
 {
 	RKH_TRC_FLUSH();

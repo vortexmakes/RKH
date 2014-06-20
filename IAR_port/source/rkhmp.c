@@ -75,7 +75,7 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 	 * close to the top of the dynamic range.
      */
 
-	RKHASSERT( 	sstart != NULL && 
+	RKHASSERT( 	sstart != RKH_NULL && 
 				ssize >= sizeof( RKH_FREE_BLK_T ) &&
 				(RKH_MPBS_T)( bsize + sizeof( RKH_FREE_BLK_T ) ) > bsize );
 
@@ -137,7 +137,7 @@ rkh_mp_get( RKHMP_T *mp )
 	RKH_ENTER_CRITICAL_();
 
     fb = ( RKH_FREE_BLK_T* )mp->free;           /* get a free block or NULL */
-    if( fb != NULL )							   /* free block available? */
+    if( fb != RKH_NULL )					       /* free block available? */
 	{
         mp->free = fb->next;     /* adjust list head to the next free block */
         RKHASSERT(mp->nfree > (RKH_MPNB_T)0);    /* at least one free block */
