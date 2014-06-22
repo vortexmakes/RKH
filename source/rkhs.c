@@ -101,7 +101,7 @@ rkh_enter( void )
 			RKH_ENA_INTERRUPT();
 
             e = rkh_sma_get( sma );
-			rkh_dispatch( sma, e );
+			(void)rkh_dispatch( sma, e );
             RKH_GC( e );
         }
         else 
