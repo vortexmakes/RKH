@@ -356,7 +356,6 @@ Also, shows its implementation using the RKH framework.
 
 (1) RKH_SMA_CREATE( 	
 (2)						MYSM_T, 
-(3)						0, 
 (4)						my, 
 (5)						0, 
 (6)						HCAL, 
@@ -385,9 +384,6 @@ Explanation
 \li (1)	Declares and allocates a SMA (a.k.a active object) derived from 
 		RKHSMA_T.
 \li (2)	As said before, \c MYSM_T represents the SMA object struture.
-\li (3)	\c 0 is the SMA ID. This number allows to uniquely identify a SMA. 
-		This argument is optional, thus it could be eliminated in 
-		compile-time with RKH_SMA_EN_ID = 0.
 \li (4)	\c my is the name of SMA. Also, it represents the top state of state 
 		diagram. 
 \li (5)	\c 0 is the SMA priority. A unique priority number must be assigned 
@@ -447,7 +443,6 @@ Also, shows its implementation using the RKH framework.
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_COMP_STATE( 	S1, 
-(3)							0, 
 (4)							set_y_0, 
 (5)							dummy_exit, 
 (6)							RKH_ROOT, 
@@ -469,7 +464,6 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_COMP_STATE() macro is used.
 \li (2)	\c S1 is the state name. Represents a composite state structure.
-\li (3)	\c 0 is the value of state ID.
 \li (4)	\c set_y_0() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S1 state. This argument is optional, 
 		thus it could be declared as NULL. The RKHENT_T defines the function 
@@ -553,7 +547,6 @@ implementation using the RKH framework.
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_BASIC_STATE( S2, 
-(3)							0, 
 (4)							NULL, 
 (5)							NULL, 
 (6)							RKH_ROOT, 
@@ -574,7 +567,6 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_BASIC_STATE() macro is used.
 \li (2)	\c S2 is the state name. Represents a substate structure.
-\li (3)	\c 0 is the value of state ID.
 \li (4)	the entry action is unused, therefore it is declared as NULL.
 \li (5)	the exit action is unused, therefore it is declared as NULL.
 \li (6)	\c RKH_ROOT is the parent state of \c S2. If a state has no 

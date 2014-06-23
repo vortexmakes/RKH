@@ -36,6 +36,7 @@ typedef struct
 void kuart_init( UART_MemMapPtr channel, const KUARTPP_ST* pu );
 char kuart_getchar( UART_MemMapPtr channel );
 void kuart_putchar( UART_MemMapPtr channel, char ch );
+void kuart_putnchar( UART_MemMapPtr channel, char *p, uint16 n );
 void kuart_putstr( UART_MemMapPtr channel, char *str );
 int kuart_getchar_present( UART_MemMapPtr channel );
 void kuart_hflwctrl( UART_MemMapPtr channel, KUART_HFC_T ctrl );

@@ -200,9 +200,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKHSCMP_T structure definition for more information.
  *
  * 	\param name		state name. Represents a composite state structure.
- * 	\param id		the value of state ID. This argument is optional, thus it 
- * 					could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
  *					The RKH implementation preserves the transition sequence 
@@ -217,15 +214,15 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					optional, thus it could be declared as NULL.
  */
 
-#define RKH_CREATE_COMP_STATE( name,id,en,ex,parent,defchild,history )	\
-																		\
-								extern RKHROM RKHTR_T name##_trtbl[];	\
-																		\
-								RKHROM RKHSCMP_T name =					\
-								{										\
-									{{MKBASE(RKH_COMPOSITE,id)},		\
-									MKST(en,ex,parent)},				\
-									MKCOMP(name,defchild,history)		\
+#define RKH_CREATE_COMP_STATE( name, en, ex, parent, defchild, history ) \
+																		 \
+								extern RKHROM RKHTR_T name##_trtbl[];	 \
+																		 \
+								RKHROM RKHSCMP_T name =					 \
+								{										 \
+									{{MKBASE(RKH_COMPOSITE)},			 \
+									MKST(en,ex,parent)},				 \
+									MKCOMP(name,defchild,history)		 \
 								}
 
 
@@ -237,9 +234,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKHSBSC_T structure definition for more information.
  *
  * 	\param name		state name. Represents a basic state structure.
- * 	\param id		the value of state ID. This argument is optional, thus it 
- * 					could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
  *					The RKH implementation preserves the transition sequence 
@@ -276,20 +270,20 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					
  *					static const SDATA_T option = { preprocessor,4,8,token1 };
  *					
- *					RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
+ *					RKH_CREATE_BASIC_STATE( S111, set_x_1, 
  *											NULL, &S11, preprocessor ); 
- *					RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
+ *					RKH_CREATE_BASIC_STATE( S22, set_x_4, 
  *											NULL, &S2, (RKHPPRO_T*)&option ); 
  *					\endcode
  */
 
-#define RKH_CREATE_BASIC_STATE( name,id,en,ex,parent,prepro )			\
+#define RKH_CREATE_BASIC_STATE( name, en, ex, parent, prepro )			\
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
 								RKHROM RKHSBSC_T name =					\
 								{										\
-									{{MKBASE(RKH_BASIC,id)},			\
+									{{MKBASE(RKH_BASIC)},				\
 									MKST(en,ex,parent)},				\
 									MKBASIC(name,prepro)				\
 								}
@@ -317,18 +311,15 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a conditional pseudostate 
  * 					structure.
- * 	\param id		the value of state ID. This argument is optional, thus it 
- * 					could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
  */
 
-#define RKH_CREATE_COND_STATE( name,id )								\
+#define RKH_CREATE_COND_STATE( name )									\
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
 								RKHROM RKHSCOND_T name =				\
 								{										\
-									{MKBASE(RKH_CONDITIONAL,id)},		\
+									{MKBASE(RKH_CONDITIONAL)},			\
 									name##_trtbl 						\
 								}
 
@@ -356,18 +347,15 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a choice pseudostate 
  * 					structure.
- * 	\param id		the value of state ID. This argument is optional, thus it 
- * 					could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
  */
 
-#define RKH_CREATE_CHOICE_STATE( name,id )								\
+#define RKH_CREATE_CHOICE_STATE( name )									\
 																		\
 								extern RKHROM RKHTR_T name##_trtbl[];	\
 																		\
 								RKHROM RKHSCHOICE_T name =				\
 								{										\
-									{MKBASE(RKH_CHOICE,id)},			\
+									{MKBASE(RKH_CHOICE)},				\
 									name##_trtbl 						\
 								}
 
@@ -385,19 +373,16 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a deep history 
  * 					pseudostate structure.
- * 	\param id		the value of state ID. This argument is optional, thus it 
- * 					could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param parent	pointer to parent state.
  */
 
-#define RKH_CREATE_DEEP_HISTORY_STATE( name,id,parent )					\
+#define RKH_CREATE_DEEP_HISTORY_STATE( name, parent )					\
 																		\
 						static RKHROM RKHST_T *ram##name;				\
 																		\
 						RKHROM RKHSHIST_T name =						\
 						{												\
-							{MKBASE(RKH_DHISTORY,id)},					\
+							{MKBASE(RKH_DHISTORY)},						\
 							(RKHROM struct rkhst_t *)parent,&ram##name 	\
 						}
 
@@ -415,19 +400,16 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		pseudostate name. Represents a shallow history pseudostate 
  * 					structure.
- * 	\param id		the value of state ID. This argument is optional, thus it 
- * 					could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0. 	
  * 	\param parent	pointer to parent state.
  */
 
-#define RKH_CREATE_SHALLOW_HISTORY_STATE( name,id,parent )				\
+#define RKH_CREATE_SHALLOW_HISTORY_STATE( name, parent )				\
 																		\
 						static RKHROM RKHST_T *ram##name;				\
 																		\
 						RKHROM RKHSHIST_T name =						\
 						{												\
-							{MKBASE(RKH_SHISTORY,id)},					\
+							{MKBASE(RKH_SHISTORY)},						\
 							(RKHROM struct rkhst_t *)parent,&ram##name 	\
 						}
 
@@ -458,7 +440,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  *	\code
  *	RKH_CREATE_SUBMACHINE_STATE( 	adquire,		// state name
- *									1, 				// ID
  *									start_adquire, 	// entry action
  *									stop_adquire, 	// exit action
  *									&processing, 	// parent state
@@ -470,9 +451,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\param name		submachine state name. Represents a submachine state 
  * 					structure.
- * 	\param id		the value of submachine state ID. This argument is 
- * 					optional, thus it could be eliminated in compile-time 
- * 					with RKH_SMA_EN_STATE_ID = 0.	
  * 	\param en		pointer to state entry action. This argument is 
  *					optional, thus it could be declared as NULL.
  *					The RKH implementation preserves the transition sequence 
@@ -485,14 +463,14 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param sbm		pointer to referenced submachine state machine.
  */
 
-#define RKH_CREATE_SUBMACHINE_STATE( name,id,en,ex,parent,sbm )			\
+#define RKH_CREATE_SUBMACHINE_STATE( name, en, ex, parent, sbm )		\
 																		\
 							extern RKHROM RKHEXPCN_T name##_exptbl[];	\
 							extern RKHROM RKHTR_T name##_trtbl[];		\
 																		\
 							RKHROM RKHSSBM_T name =						\
 							{											\
-								{{MKBASE(RKH_SUBMACHINE,id)},			\
+								{{MKBASE(RKH_SUBMACHINE)},				\
 								MKST(en,ex,parent)},					\
 								MKSBM(name,sbm)							\
 							}
@@ -628,7 +606,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 															\
 							RKHROM RKHSENP_T name =			\
 							{								\
-								{MKBASE(RKH_ENPOINT,id)},	\
+								{MKBASE(RKH_ENPOINT)},		\
 								MKENP(enpnt,subm)			\
 							}
 
@@ -640,7 +618,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	\code
  * 	RKH_CREATE_REF_SUBMACHINE( 	adquire, 
- * 								4, 
  * 								&wait, 
  * 								init_adquire );
  * 	\endcode
@@ -649,9 +626,6 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	RKHRSM_T structure definition for more information.
  *
  * 	\param name		submachine name. Represents a submachine structure.
- * 	\param id		the value of submachine ID. This argument is optional, 
- * 					thus it could be eliminated in compile-time with 
- * 					RKH_SMA_EN_STATE_ID = 0.	
  * 	\param defchild	pointer to default child state.
  * 	\param iact		pointer to initialization action (optional). The 
  * 					function prototype is defined as RKHINIT_T. This 
@@ -659,13 +633,13 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 					NULL.
  */
 
-#define RKH_CREATE_REF_SUBMACHINE( name,id,defchild,iact )				\
+#define RKH_CREATE_REF_SUBMACHINE( name, defchild, iact )				\
 																		\
 								static RKHROM RKHST_T *rdyp_##name;		\
 																		\
 								RKHROM RKHRSM_T name =					\
 								{										\
-									{MKBASE(RKH_REF_SUBMACHINE,id)},	\
+									{MKBASE(RKH_REF_SUBMACHINE)},		\
 									MKMCH(defchild,iact,name) 			\
 								}
 
@@ -1070,10 +1044,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\code
  *	// Defines SMAs (a.k.a Active Objects)
  *
- *	RKH_SMA_CREATE( CLI_T, 1, cli0, 1, HCAL, &cli_idle, cli_init, NULL );
- *	RKH_SMA_CREATE( CLI_T, 2, cli1, 2, HCAL, &cli_idle, cli_init, NULL );
- *	RKH_SMA_CREATE( CLI_T, 3, cli2, 3, HCAL, &cli_idle, cli_init, NULL );
- *	RKH_SMA_CREATE( CLI_T, 4, cli3, 4, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli0, 1, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli1, 2, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli2, 3, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli3, 4, HCAL, &cli_idle, cli_init, NULL );
  *
  *	RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS ) 
  *	{
@@ -1451,7 +1425,7 @@ void rkh_exit( void );
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, 0, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
  *
  *	void
  *	main( void )
@@ -1531,14 +1505,10 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, 0, my, 0, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
  * 	\param sma_t		data type of the SMA. Could be derived from RKHSMA_T.
- * 	\param id			ID of state machine application. This number allows 
- * 						to uniquely identify a state machine. This argument 
- * 						is optional, thus it could be eliminated in 
- * 						compile-time with RKH_SMA_EN_ID = 0.	
  * 	\param name			name of state machine application. Also, it represents 
  * 						the top state of state diagram.
  * 	\param prio			state machine application priority. A unique priority 
@@ -1562,12 +1532,12 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  * 						RKH_SMA_EN_IEVENT = 0.
  */
 
-#define RKH_SMA_CREATE( sma_t, id, name, prio, ppty, ist, iact, ievt )		\
+#define RKH_SMA_CREATE( sma_t, name, prio, ppty, ist, iact, ievt )			\
 																			\
-	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, id, ist, 		\
-												iact, ievt );				\
-	static sma_t s_##name = MKSMA( &rs_##name,ist );						\
-	RKHSMA_T *const name = ( RKHSMA_T* )&s_##name
+	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	prio, ppty, ist, iact, 		\
+												ievt );						\
+	static sma_t s_##name = MKSMA( &rs_##name, ist );						\
+	RKHSMA_T *const name = (RKHSMA_T *)&s_##name
 
 
 /**

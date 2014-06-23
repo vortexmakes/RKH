@@ -1232,7 +1232,6 @@ This section includes:
 (3) static RKH_DCLR_STATIC_EVENT( turnon, TURNON );
 
 (4) RKH_SMA_CREATE( 	MYSM_T, 	// state machine application data type
-(5) 					3, 			// ID
 (6) 					my, 		// name
 (7)						2,			// priority number
 (8) 					HCAL, 		// hierarchical state machine
@@ -1268,8 +1267,6 @@ Explanation
 		object is explicitly placed in ROM..
 \li (4)	As said below, the MYSM_T defines the \c my state machine application 
 		structure.
-\li (5)	\c 3 is the state machine application ID. This number allows to 
-		uniquely identify a state machine application.
 \li (6)	\c my is the state machine application. Represents the top state of 
 		state diagram. 
 \li (7)	\c 2 is the state machine application priority.
@@ -1328,7 +1325,6 @@ This section includes:
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_COMP_STATE( 	S1, 
-(3)							0, 
 (4)							turn_on, 
 (5)							turn_off, 
 (6)							&SA, 
@@ -1350,7 +1346,6 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_COMP_STATE() macro is used.
 \li (2)	\c S1 is the state name. Represents a composite state structure.
-\li (3)	\c 0 is the value of state ID.
 \li (4)	\c turn_on() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S1 state. This argument is optional, 
 		thus it could be declared as NULL. The RKHENT_T defines the function 
@@ -1408,7 +1403,6 @@ arguments is very similar to RKH_CREATE_COMP_STATE() macro.
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_BASIC_STATE( S11, 
-(3)							4, 
 (4)							start_process, 
 (5)							stop_process, 
 (6)							&S1, 
@@ -1429,7 +1423,6 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_BASIC_STATE() macro is used.
 \li (2)	\c S11 is the state name. Represents a substate structure.
-\li (3)	\c 4 is the value of state ID.
 \li (4)	\c start_process() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S11 state. This argument is optional, 
 		thus it could be declared as NULL. The RKHENT_T defines the function 
@@ -1483,10 +1476,10 @@ typedef struct
 static const SDATA_T option = { preprocessor, 4, 8, token };
 
 /* Define S11 state as a substate of S1 */
-RKH_CREATE_BASIC_STATE( S11, 4, start_process, start_process, &S1, in_keyb ); 
+RKH_CREATE_BASIC_STATE( S11, start_process, start_process, &S1, in_keyb ); 
 
 /* Define S12 state as a substate of S1 */
-RKH_CREATE_BASIC_STATE( S12, 5, NULL, NULL, &S1, (RKHPPRO_T*)&option ); 
+RKH_CREATE_BASIC_STATE( S12, NULL, NULL, &S1, (RKHPPRO_T*)&option ); 
 \endcode
 
 \b Customization
@@ -1570,7 +1563,6 @@ usage and its related macros. We will give our submachine state the name
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_SUBMACHINE_STATE( 	S12, 
-(3)									7, 
 (4)									NULL, 
 (5)									NULL, 
 (6)									&S1, 
@@ -1583,7 +1575,6 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_SUBMACHINE_STATE() macro is used.
 \li (2)	\c S12 is the state name. Represents a submachine state structure.
-\li (3)	\c 7 is the value of state ID.
 \li (4)	the entry action is not used.
 \li (5)	the exit action is not used.
 \li (6)	\c S1 is the parent state of \c S12. If a state has no 
@@ -1718,7 +1709,6 @@ usage and its related macros. We will give our submachine the name \c SB.
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_REF_SUBMACHINE( 	SB, 
-(3)								0, 
 (4)								&SB1, 
 (5)								NULL );
 \endcode
@@ -1729,7 +1719,6 @@ Explanation
 		inside a dedicated source file (.c file), from which the 
 		RKH_CREATE_REF_SUBMACHINE() macro is used.
 \li (2)	\c SB is the submachine name. Represents a submachine structure.
-\li (3)	\c 0 is the value of submachine ID.
 \li (4) \c SB1 is the default state of \c SB submachine. At each level of 
 		nesting, a submachine can have a private initial transition that 
 		designates the active substate after the submachine is entered 
@@ -1939,8 +1928,7 @@ RKH_CREATE_BASIC_STATE() macro.
 \code
 (1)	//	my.c: state-machine's module
 
-(2)	RKH_CREATE_COND_STATE( 	C1, 
-(3)							0 );
+(2)	RKH_CREATE_COND_STATE( 	C1 );
 \endcode
 
 <b>Declaring a conditional pseudostate</b>
@@ -1958,7 +1946,6 @@ Explanation
 		RKH_CREATE_COND_STATE() macro is used.
 \li (2)	\c C1 is the pseudostate name. Represents a conditional pseudostate 
 		structure.
-\li (3)	\c 0 is the value of pseudostate ID.
 
 \b Customization
 
@@ -2105,7 +2092,6 @@ similar to RKH_CREATE_SHALLOW_HISTORY_STATE() macro.
 (1)	//	my.c: state-machine's module
 
 (2)	RKH_CREATE_DEEP_HISTORY_STATE(	H1, 
-(3)									7,
 (4)									&S21 );
 \endcode
 
@@ -2124,7 +2110,6 @@ Explanation
 		RKH_CREATE_DEEP_HISTORY_STATE() macro is used.
 \li (2)	\c H2 is the pseudostate name. Represents a deep history 
 		pseudostate structure.
-\li (3)	\c 7 is the value of pseudostate ID.
 \li (6)	\c S21 is the parent state of \c H2.
 
 \b Customization
@@ -2160,8 +2145,7 @@ macro and its arguments is very similar to RKH_CREATE_COND_STATE() macro.
 \code
 (1)	//	my.c: state-machine's module
 
-(2)	RKH_CREATE_CHOICE_STATE( 	CH, 
-(3)								8 );
+(2)	RKH_CREATE_CHOICE_STATE( CH );
 \endcode
 
 <b>Declaring a choice pseudostate</b>
@@ -2179,7 +2163,6 @@ Explanation
 		RKH_CREATE_CHOICE_STATE() macro is used.
 \li (2)	\c CH is the pseudostate name. Represents a choice pseudostate 
 		structure.
-\li (3)	\c 0 is the value of pseudostate ID.
 
 \b Customization
 

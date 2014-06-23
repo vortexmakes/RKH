@@ -91,11 +91,11 @@ the definitions of object structures related to the state machine. \n \n
  *	Defines SMA (active object) 'blinky'.
  */
 
-RKH_SMA_CREATE( BKYSM_T, 0, blinky, 0, HCAL, &led_on, blinky_init, NULL );
+RKH_SMA_CREATE( BKYSM_T, blinky, 0, HCAL, &led_on, blinky_init, NULL );
 
 
 /* Defines the "led_on" state */
-RKH_CREATE_BASIC_STATE( led_on, 0, NULL, NULL, RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( led_on, NULL, NULL, RKH_ROOT, NULL );
 
 /* led_on's state transition table */
 RKH_CREATE_TRANS_TABLE( led_on )
@@ -103,7 +103,7 @@ RKH_CREATE_TRANS_TABLE( led_on )
 RKH_END_TRANS_TABLE
 
 /* Defines the "led_off" state */
-RKH_CREATE_BASIC_STATE( led_off, 1, NULL, NULL, RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( led_off, NULL, NULL, RKH_ROOT, NULL );
 
 /* led_off's state transition table */
 RKH_CREATE_TRANS_TABLE( led_off )
@@ -575,10 +575,10 @@ See the following sections:
  *	Defines SMA (a.k.a Active Object) "cli".
  */
 
-RKH_SMA_CREATE( CLI_T, 1, cli0, CLI_PRIO_0, HCAL, &cli_idle, cli_init, NULL );
-RKH_SMA_CREATE( CLI_T, 2, cli1, CLI_PRIO_1, HCAL, &cli_idle, cli_init, NULL );
-RKH_SMA_CREATE( CLI_T, 3, cli2, CLI_PRIO_2, HCAL, &cli_idle, cli_init, NULL );
-RKH_SMA_CREATE( CLI_T, 4, cli3, CLI_PRIO_3, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_CREATE( CLI_T, cli0, CLI_PRIO_0, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_CREATE( CLI_T, cli1, CLI_PRIO_1, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_CREATE( CLI_T, cli2, CLI_PRIO_2, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_CREATE( CLI_T, cli3, CLI_PRIO_3, HCAL, &cli_idle, cli_init, NULL );
 
 RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS ) 
 {
@@ -590,7 +590,7 @@ RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS )
  *	Defines states and pseudostates.
  */
 
-RKH_CREATE_BASIC_STATE( cli_idle, 0, 
+RKH_CREATE_BASIC_STATE( cli_idle,
 						cli_delay_req, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( cli_idle )
 
@@ -600,7 +600,7 @@ RKH_CREATE_TRANS_TABLE( cli_idle )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE( cli_waiting, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( cli_waiting, NULL, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( cli_waiting )
 
 	RKH_TRREG( START,		NULL,	cli_start,	&cli_using ),
@@ -608,7 +608,7 @@ RKH_CREATE_TRANS_TABLE( cli_waiting )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE( cli_using, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( cli_using, NULL, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( cli_using )
 
 	RKH_TRREG( TOUT_USING,	NULL,	cli_end,	&cli_idle ),
@@ -617,7 +617,7 @@ RKH_CREATE_TRANS_TABLE( cli_using )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE( cli_paused, 0, 
+RKH_CREATE_BASIC_STATE( cli_paused, 
 						cli_pause, cli_resume, RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( cli_paused )
 
@@ -829,14 +829,14 @@ See following sections:
  *	Defines SMA (a.k.a Active Object) "svr".
  */
 
-RKH_SMA_CREATE( SVR_T, 0, svr, 0, HCAL, &svr_idle, svr_init, NULL );
+RKH_SMA_CREATE( SVR_T, svr, 0, HCAL, &svr_idle, svr_init, NULL );
 
 
 /*
  *	Defines states and pseudostates.
  */
 
-RKH_CREATE_BASIC_STATE( svr_idle, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( svr_idle, NULL, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( svr_idle )
 
 	RKH_TRINT( TERM,	NULL,	svr_terminate ),
@@ -846,7 +846,7 @@ RKH_CREATE_TRANS_TABLE( svr_idle )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE( svr_busy, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( svr_busy, NULL, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( svr_busy )
 
 	RKH_TRINT( REQ,		NULL,	svr_defer ),
@@ -857,7 +857,7 @@ RKH_CREATE_TRANS_TABLE( svr_busy )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE(	svr_paused, 0, 
+RKH_CREATE_BASIC_STATE(	svr_paused, 
 						svr_pause, svr_resume, RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( svr_paused )
 

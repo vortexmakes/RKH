@@ -46,11 +46,22 @@
 #define __BSP_H__
 
 
-#define BSP_MAX_NESTING_CSECT 	8
+#define BSP_MAX_NESTING_CSECT 		8
+#define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
+
+/**
+ * 	\brief
+ * 	This macro represents the number of timestamp clock ticks per second. 
+ * 	Dividing a count of timestamp ticks by this macro yields the number 
+ * 	of seconds.
+ */
+
+#define BSP_TS_RATE_HZ		   		MCU_BUSCLK
 
 
 void bsp_init( int argc, char *argv[] );
 void bsp_led_on( void );
 void bsp_led_off( void );
+
 
 #endif

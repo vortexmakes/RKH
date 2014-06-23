@@ -323,6 +323,23 @@ kuart_putchar (UART_MemMapPtr channel, char ch)
 }
 
 
+/*
+ * Wait for space in the UART Tx FIFO and then send a character
+ *
+ * Parameters:
+ *  channel      UART channel to send to
+ *  *p			 pointer to data buffer
+ *  n			 char quantity to send
+ */ 
+
+void
+kuart_putnchar (UART_MemMapPtr channel, char *p, uint16 n )
+{
+	while( n-- )
+		kuart_putchar( channel, *p++ );
+}
+
+
 void
 kuart_putstr( UART_MemMapPtr channel, char *str )
 {

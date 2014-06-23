@@ -2594,46 +2594,46 @@ enum rkh_trc_fmt
 		 * 	[11, 0:16] - Timestamp HZ (ticks per second)
 		 */
 
-		#define RKH_TR_FWK_TCFG( ts_hz )  								\
-					RKH_TRC_BEGIN_DFT( RKH_TE_FWK_TCFG )				\
-						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );	\
-						RKH_TRC_UI32( 									\
-							(rkhui32_t)(								\
-								(RKH_SMA_EN_TRC_SENDER	 	  ) |		\
-								(RKH_TRC_RUNTIME_FILTER	 << 1 ) |		\
-								(RKH_TRC_EN_USER_TRACE	 << 2 ) |		\
-								(RKH_TRC_ALL			 << 3 ) |		\
-								(RKH_TRC_EN_MP			 << 4 ) |		\
-								(RKH_TRC_EN_RQ			 << 5 ) |		\
-								(RKH_TRC_EN_SMA			 << 6 ) |		\
-								(RKH_TRC_EN_TIM			 << 7 ) |		\
-								(RKH_TRC_EN_SM			 << 8 ) |		\
-								(RKH_TRC_EN_FWK			 << 9 ) |		\
-								(RKH_TRC_EN_ASSERT		 << 10) |		\
-								(RKH_RQ_EN_GET_LWMARK	 << 11) |		\
-								(RKH_MP_EN_GET_LWM		 << 12) |		\
-								(RKH_TRC_RTFIL_SMA_EN	 << 13) |		\
-								(RKH_TRC_RTFIL_SIGNAL_EN << 14) |		\
-								(RKH_TRC_EN_NSEQ	     << 15) |		\
-								(RKH_TRC_EN_TSTAMP	     << 16) |		\
-								(RKH_TRC_EN_CHK          << 17)));		\
-						RKH_TRC_UI8( 									\
-							(rkhui8_t)((RKH_SIZEOF_EVENT/8 << 4) | 		\
-							RKH_TRC_SIZEOF_TSTAMP/8));		            \
-						RKH_TRC_UI8( 									\
-							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |\
-							RKH_TIM_SIZEOF_NTIMER/8));					\
-						RKH_TRC_UI8( 									\
-							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK/8 << 4) | 	\
-							RKH_RQ_SIZEOF_NELEM/8));					\
-						RKH_TRC_UI8( 									\
-							(rkhui8_t)(RKH_SIZEOF_ESIZE/8));            \
-				       	RKH_TRC_UI8( 									\
-							(rkhui8_t)((RKH_MP_SIZEOF_BSIZE/8 << 4) |	\
-							RKH_MAX_EPOOL));							\
-						RKH_TRC_UI16(                                   \
-							(rkhui16_t)(ts_hz));				        \
-					RKH_TRC_END_DFT()									\
+		#define RKH_TR_FWK_TCFG( ts_hz )  									\
+					RKH_TRC_BEGIN_DFT( RKH_TE_FWK_TCFG )					\
+						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );		\
+						RKH_TRC_UI32( 										\
+							(rkhui32_t)(									\
+							((rkhui32_t)RKH_SMA_EN_TRC_SENDER	     ) |	\
+							((rkhui32_t)RKH_TRC_RUNTIME_FILTER	<< 1 ) |	\
+							((rkhui32_t)RKH_TRC_EN_USER_TRACE	<< 2 ) |	\
+							((rkhui32_t)RKH_TRC_ALL			 	<< 3 ) |	\
+							((rkhui32_t)RKH_TRC_EN_MP			<< 4 ) |	\
+							((rkhui32_t)RKH_TRC_EN_RQ			<< 5 ) |	\
+							((rkhui32_t)RKH_TRC_EN_SMA			<< 6 ) |	\
+							((rkhui32_t)RKH_TRC_EN_TIM			<< 7 ) |	\
+							((rkhui32_t)RKH_TRC_EN_SM			<< 8 ) |	\
+							((rkhui32_t)RKH_TRC_EN_FWK			<< 9 ) |	\
+							((rkhui32_t)RKH_TRC_EN_ASSERT		<< 10) |	\
+							((rkhui32_t)RKH_RQ_EN_GET_LWMARK	<< 11) |	\
+							((rkhui32_t)RKH_MP_EN_GET_LWM		<< 12) |	\
+							((rkhui32_t)RKH_TRC_RTFIL_SMA_EN	<< 13) |	\
+							((rkhui32_t)RKH_TRC_RTFIL_SIGNAL_EN << 14) |	\
+							((rkhui32_t)RKH_TRC_EN_NSEQ	     	<< 15) |	\
+							((rkhui32_t)RKH_TRC_EN_TSTAMP	    << 16) |	\
+							((rkhui32_t)RKH_TRC_EN_CHK          << 17)));	\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_SIZEOF_EVENT/8		 << 4) |    \
+										RKH_TRC_SIZEOF_TSTAMP/8      ));    \
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |	\
+										RKH_TIM_SIZEOF_NTIMER/8      ));	\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK/8   << 4) | 	\
+										RKH_RQ_SIZEOF_NELEM/8));			\
+						RKH_TRC_UI8( 										\
+							(rkhui8_t)(RKH_SIZEOF_ESIZE/8));            	\
+				       	RKH_TRC_UI8( 										\
+							(rkhui8_t)((RKH_MP_SIZEOF_BSIZE/8    << 4) |	\
+										RKH_MAX_EPOOL));					\
+						RKH_TRC_UI16(                                   	\
+							(rkhui16_t)(ts_hz));				        	\
+					RKH_TRC_END_DFT()										\
 					RKH_TRC_FLUSH()
 
 		/* --- Assertion --------- */
@@ -2683,7 +2683,7 @@ enum rkh_trc_fmt
 		 * 		rkhui8_t y;
 		 * 	} AO_T;
 		 * 	
-		 * 	RKH_SMA_CREATE( AO_T, 0, ao, 0, HCAL, &S1, ao_init, NULL );
+		 * 	RKH_SMA_CREATE( AO_T, ao, 0, HCAL, &S1, ao_init, NULL );
 		 * 	RKH_TR_FWK_OBJ( &ao );
 		 * 	\endcode
 		 */
@@ -2715,7 +2715,7 @@ enum rkh_trc_fmt
 		 *
 		 * 	\code
 		 * 	...
-		 * 	RKH_CREATE_COMP_STATE( S1, 0, en, ex, RKH_ROOT, &S11, NULL );
+		 * 	RKH_CREATE_COMP_STATE( S1, en, ex, RKH_ROOT, &S11, NULL );
 		 * 	RKH_CREATE_TRANS_TABLE( S1 )
 		 * 		RKH_TRINT( SIX, 	NULL, 		show_data ),
 		 * 		RKH_TRREG( TWO, 	NULL, 		set_y_2,	&S2 ),

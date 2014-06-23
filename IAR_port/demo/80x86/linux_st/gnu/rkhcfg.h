@@ -198,28 +198,11 @@
 /* --- Configuration options related to state machine applications -------- */
 
 /**
- *	If the #RKH_SMA_EN_ID is set to 1 then RKH allows to add a numerical 
- *	value to every state machine. This number allows to uniquely identify a 
- *	state machine application. 
- */
-
-#define RKH_SMA_EN_ID					0
-
-
-/**
  *	If the #RKH_SMA_EN_GET_INFO is set to 1 then RKH will include the 
  *	rkh_clear_info() and rkh_get_info() functions.
  */
 
 #define RKH_SMA_EN_GET_INFO				0
-
-/**
- *	If the #RKH_SMA_EN_STATE_ID is set to 1 then RKH allows to add a numerical 
- *	value to every state and pseudostate. This number allows to uniquely 
- *	identify a state and/or pseudostate. 
- */
-
-#define RKH_SMA_EN_STATE_ID				0
 
 /**
  *	If the #RKH_SMA_EN_PPRO is set to 1 then RKH allows to reference a event 

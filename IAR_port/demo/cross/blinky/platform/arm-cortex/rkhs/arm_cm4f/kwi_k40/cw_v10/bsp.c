@@ -71,11 +71,25 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_OPEN()		kuart_init( UART5_BASE_PTR, &trz_uart )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
 	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART5_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
+					kuart_putnchar( UART5_BASE_PTR,		\
+								(char *)(buf_), 		\
+								(rkhui16_t)(len_))
+
 #else
-	#define SERIAL_TRACE_OPEN()		(void)0
-	#define SERIAL_TRACE_CLOSE()	(void)0
-	#define SERIAL_TRACE_SEND( d )	(void)0
+
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
+
 #endif
+
+
+void 
+rkh_hk_timetick( void ) 
+{
+}
 
 
 void 

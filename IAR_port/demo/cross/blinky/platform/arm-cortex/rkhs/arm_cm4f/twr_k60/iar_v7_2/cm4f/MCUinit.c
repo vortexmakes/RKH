@@ -33,13 +33,16 @@
 #include "kuart.h"
 
 /* Interrupt vector table type definition */
-typedef void (*const tIsrFunc)(void);
-typedef struct {
-  void * __ptr;
-  tIsrFunc __fun[0x77];
-} tVectorTable;
+typedef  void (*CPU_FNCT_VOID)(void);
 
-extern const tVectorTable __vect_table;
+typedef  union
+{
+    CPU_FNCT_VOID Fnct;
+    void *Ptr;
+} APP_INTVECT_ELEM;
+
+extern const  APP_INTVECT_ELEM  __vector_table[];
+
 extern  void  __iar_program_start (void);
 
 /* User declarations and definitions */
@@ -77,7 +80,7 @@ void __init_hardware(void)
 {
   /*** ### MK60DN512VLQ10 "Cpu" init code ... ***/
   /*** PE initialization code after reset ***/
-  SCB_VTOR = (uint32_t)(&__vect_table); /* Set the interrupt vector table position */
+  SCB_VTOR = (uint32_t)(&__vector_table); /* Set the interrupt vector table position */
   /* SIM_SCGC6: RTC=1 */
   SIM_SCGC6 |= (uint32_t)0x20000000UL;                       
   if ((RTC_CR & RTC_CR_OSCE_MASK) == 0u) { /* Only if the OSCILLATOR is not already enabled */
@@ -135,7 +138,7 @@ void __init_hardware(void)
 */
 void MCU_init(void)
 {
-      /* Initialization of the SIM module */
+  /* Initialization of the SIM module */
   /* PORTA_PCR4: ISF=0,MUX=7 */
   PORTA_PCR4 = (uint32_t)((PORTA_PCR4 & (uint32_t)~0x01000000UL) | (uint32_t)0x0700UL);
 
@@ -272,6 +275,7 @@ void wdog_disable(void)
 static void program_start( void )
 {
     wdog_disable();
+	__init_hardware();
     __iar_program_start();
 }
 
@@ -290,18 +294,6 @@ extern void __thumb_startup( void );
 #endif
 
 
-/*
-*********************************************************************************************************
-*                                          LOCAL DATA TYPES
-*********************************************************************************************************
-*/
-typedef            void      (*CPU_FNCT_VOID)(void);            /* See Note #2a.                                        */
-
-typedef  union {
-    CPU_FNCT_VOID Fnct;
-    void *Ptr;
-} APP_INTVECT_ELEM;
-
 
 /*
 *********************************************************************************************************
@@ -314,125 +306,125 @@ typedef  union {
 
  __root  const  APP_INTVECT_ELEM  __vector_table[] @ ".intvec" = {
   { .Ptr = (void *)__sfe( "CSTACK" )},                        /* 000 Initial stack pointer.                           */
-   (tIsrFunc)&program_start,                             /* 1 (0x00000004) (prior: -) */
-   (tIsrFunc)&isrINT_NMI,                                  /* 2 (0x00000008) (prior: -2) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 3 (0x0000000C) (prior: -1) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 4 (0x00000010) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 5 (0x00000014) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 6 (0x00000018) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 7 (0x0000001C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 8 (0x00000020) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 9 (0x00000024) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 10 (0x00000028) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 11 (0x0000002C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 12 (0x00000030) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 13 (0x00000034) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 14 (0x00000038) (prior: -) */
-   (tIsrFunc)&isr_systick,                                 /* 15 (0x0000003C) (prior: 3) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 16 (0x00000040) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 17 (0x00000044) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 18 (0x00000048) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 19 (0x0000004C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 20 (0x00000050) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 21 (0x00000054) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 22 (0x00000058) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 23 (0x0000005C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 24 (0x00000060) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 25 (0x00000064) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 26 (0x00000068) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 27 (0x0000006C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 28 (0x00000070) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 29 (0x00000074) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 30 (0x00000078) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 31 (0x0000007C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 32 (0x00000080) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 33 (0x00000084) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 34 (0x00000088) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 35 (0x0000008C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 36 (0x00000090) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 37 (0x00000094) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 38 (0x00000098) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 39 (0x0000009C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 40 (0x000000A0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 41 (0x000000A4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 42 (0x000000A8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 43 (0x000000AC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 44 (0x000000B0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 45 (0x000000B4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 46 (0x000000B8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 47 (0x000000BC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 48 (0x000000C0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 49 (0x000000C4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 50 (0x000000C8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 51 (0x000000CC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 52 (0x000000D0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 53 (0x000000D4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 54 (0x000000D8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 55 (0x000000DC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 56 (0x000000E0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 57 (0x000000E4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 58 (0x000000E8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 59 (0x000000EC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 60 (0x000000F0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 61 (0x000000F4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 62 (0x000000F8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 63 (0x000000FC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 64 (0x00000100) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 65 (0x00000104) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 66 (0x00000108) (prior: -) */
-   (tIsrFunc)&kuart3_isr,                          /* 67 (0x0000010C) (prior: 0) */
-   (tIsrFunc)&UNASSIGNED_ISR,                            /* 68 (0x00000110) (prior: 0) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 69 (0x00000114) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 70 (0x00000118) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 71 (0x0000011C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 72 (0x00000120) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 73 (0x00000124) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 74 (0x00000128) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 75 (0x0000012C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 76 (0x00000130) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 77 (0x00000134) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 78 (0x00000138) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 79 (0x0000013C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 80 (0x00000140) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 81 (0x00000144) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 82 (0x00000148) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 83 (0x0000014C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 84 (0x00000150) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 85 (0x00000154) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 86 (0x00000158) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 87 (0x0000015C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 88 (0x00000160) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 89 (0x00000164) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 90 (0x00000168) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 91 (0x0000016C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 92 (0x00000170) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 93 (0x00000174) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 94 (0x00000178) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 95 (0x0000017C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 96 (0x00000180) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 97 (0x00000184) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 98 (0x00000188) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 99 (0x0000018C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 100 (0x00000190) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 101 (0x00000194) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 102 (0x00000198) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 103 (0x0000019C) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 104 (0x000001A0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 105 (0x000001A4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 106 (0x000001A8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 107 (0x000001AC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 108 (0x000001B0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 109 (0x000001B4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 110 (0x000001B8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 111 (0x000001BC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 112 (0x000001C0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 113 (0x000001C4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 114 (0x000001C8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 115 (0x000001CC) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 116 (0x000001D0) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 117 (0x000001D4) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR,                              /* 118 (0x000001D8) (prior: -) */
-   (tIsrFunc)&UNASSIGNED_ISR                               /* 119 (0x000001DC) (prior: -) */
+   &program_start,                             /* 1 (0x00000004) (prior: -) */
+   &isrINT_NMI,                                  /* 2 (0x00000008) (prior: -2) */
+   &UNASSIGNED_ISR,                              /* 3 (0x0000000C) (prior: -1) */
+   &UNASSIGNED_ISR,                              /* 4 (0x00000010) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 5 (0x00000014) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 6 (0x00000018) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 7 (0x0000001C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 8 (0x00000020) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 9 (0x00000024) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 10 (0x00000028) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 11 (0x0000002C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 12 (0x00000030) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 13 (0x00000034) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 14 (0x00000038) (prior: -) */
+   &isr_systick,                                 /* 15 (0x0000003C) (prior: 3) */
+   &UNASSIGNED_ISR,                              /* 16 (0x00000040) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 17 (0x00000044) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 18 (0x00000048) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 19 (0x0000004C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 20 (0x00000050) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 21 (0x00000054) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 22 (0x00000058) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 23 (0x0000005C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 24 (0x00000060) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 25 (0x00000064) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 26 (0x00000068) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 27 (0x0000006C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 28 (0x00000070) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 29 (0x00000074) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 30 (0x00000078) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 31 (0x0000007C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 32 (0x00000080) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 33 (0x00000084) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 34 (0x00000088) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 35 (0x0000008C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 36 (0x00000090) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 37 (0x00000094) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 38 (0x00000098) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 39 (0x0000009C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 40 (0x000000A0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 41 (0x000000A4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 42 (0x000000A8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 43 (0x000000AC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 44 (0x000000B0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 45 (0x000000B4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 46 (0x000000B8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 47 (0x000000BC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 48 (0x000000C0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 49 (0x000000C4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 50 (0x000000C8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 51 (0x000000CC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 52 (0x000000D0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 53 (0x000000D4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 54 (0x000000D8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 55 (0x000000DC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 56 (0x000000E0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 57 (0x000000E4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 58 (0x000000E8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 59 (0x000000EC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 60 (0x000000F0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 61 (0x000000F4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 62 (0x000000F8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 63 (0x000000FC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 64 (0x00000100) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 65 (0x00000104) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 66 (0x00000108) (prior: -) */
+   &kuart3_isr,                          		 /* 67 (0x0000010C) (prior: 0) */
+   &UNASSIGNED_ISR,                              /* 68 (0x00000110) (prior: 0) */
+   &UNASSIGNED_ISR,                              /* 69 (0x00000114) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 70 (0x00000118) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 71 (0x0000011C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 72 (0x00000120) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 73 (0x00000124) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 74 (0x00000128) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 75 (0x0000012C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 76 (0x00000130) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 77 (0x00000134) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 78 (0x00000138) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 79 (0x0000013C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 80 (0x00000140) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 81 (0x00000144) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 82 (0x00000148) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 83 (0x0000014C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 84 (0x00000150) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 85 (0x00000154) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 86 (0x00000158) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 87 (0x0000015C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 88 (0x00000160) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 89 (0x00000164) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 90 (0x00000168) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 91 (0x0000016C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 92 (0x00000170) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 93 (0x00000174) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 94 (0x00000178) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 95 (0x0000017C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 96 (0x00000180) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 97 (0x00000184) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 98 (0x00000188) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 99 (0x0000018C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 100 (0x00000190) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 101 (0x00000194) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 102 (0x00000198) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 103 (0x0000019C) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 104 (0x000001A0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 105 (0x000001A4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 106 (0x000001A8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 107 (0x000001AC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 108 (0x000001B0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 109 (0x000001B4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 110 (0x000001B8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 111 (0x000001BC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 112 (0x000001C0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 113 (0x000001C4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 114 (0x000001C8) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 115 (0x000001CC) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 116 (0x000001D0) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 117 (0x000001D4) (prior: -) */
+   &UNASSIGNED_ISR,                              /* 118 (0x000001D8) (prior: -) */
+   &UNASSIGNED_ISR                               /* 119 (0x000001DC) (prior: -) */
 };
 
 
