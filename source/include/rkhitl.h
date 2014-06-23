@@ -523,20 +523,6 @@
 
 /*  STATE MACHINE APPLICATIONS  -------------------------------------------- */
 
-#ifndef RKH_SMA_EN_ID
-	#error "RKH_SMA_EN_ID                          not #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "                                    [     || RKH_DISABLED]        "
-
-#elif 	((RKH_SMA_EN_ID != RKH_ENABLED) && \
-        	(RKH_SMA_EN_ID != RKH_DISABLED))
-	#error "RKH_SMA_EN_ID                    illegally #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be  RKH_ENABLED ]       "
-	#error "                                    [     ||  RKH_DISABLED]       "
-
-#endif
-
-
 #ifndef RKH_SMA_EN_GET_INFO
 	#error "RKH_SMA_EN_GET_INFO                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -545,20 +531,6 @@
 #elif 	((RKH_SMA_EN_GET_INFO != RKH_ENABLED) && \
         	(RKH_SMA_EN_GET_INFO != RKH_DISABLED))
 	#error "RKH_SMA_EN_GET_INFO              illegally #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be  RKH_ENABLED ]       "
-	#error "                                    [     ||  RKH_DISABLED]       "
-
-#endif
-
-
-#ifndef RKH_SMA_EN_STATE_ID
-	#error "RKH_SMA_EN_STATE_ID                    not #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "                                    [     || RKH_DISABLED]        "
-
-#elif 	((RKH_SMA_EN_STATE_ID != RKH_ENABLED) && \
-        	(RKH_SMA_EN_STATE_ID != RKH_DISABLED))
-	#error "RKH_SMA_EN_STATE_ID              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1661,35 +1633,33 @@
 #endif
 
 
-#if (RKH_SMA_EN_ID == RKH_ENABLED)
-	#if (RKH_SMA_EN_IEVENT == RKH_ENABLED)
-		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)is,(ia),(ie)}
-	#else
-		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(id),(RKHROM struct rkhst_t*)is,(ia)}
-	#endif
+#if (	(RKH_TRC_EN == RKH_ENABLED) && \
+	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
+	#define R_TRC_OBJ_NAME_EN	RKH_ENABLED
 #else
-	#if (RKH_SMA_EN_IEVENT == RKH_ENABLED)
-		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(RKHROM struct rkhst_t*)is,(ia),(ie)}
-	#else
-		#define MKRRKH(prio,ppty,id,is,ia,ie)				\
-				{(prio),(ppty),(RKHROM struct rkhst_t*)is,(ia)}
-	#endif
+	#define R_TRC_OBJ_NAME_EN	RKH_DISABLED
 #endif
 
 
-#define MKSMA( rr, s )					\
-						{ {(RKHROM ROMRKH_T*)(rr), \
-							 	(RKHROM struct rkhst_t*)(s)} }
-
-
-#if (RKH_SMA_EN_STATE_ID == RKH_ENABLED)
-	#define MKBASE(t,id)			t,id
+#if (RKH_SMA_EN_IEVENT == RKH_ENABLED)
+	#define MKRRKH(prio, ppty, is, ia, ie) \
+			{(prio), (ppty), (RKHROM struct rkhst_t*)is, (ia), (ie)}
 #else
-	#define MKBASE(t,id)			t
+	#define MKRRKH(prio, ppty, is, ia, ie) \
+			{(prio), (ppty), (RKHROM struct rkhst_t*)is, (ia)}
 #endif
+
+
+#define MKSMA( rr, s )								\
+			{										\
+				{ 									\
+					(RKHROM ROMRKH_T*)(rr), 		\
+				 	(RKHROM struct rkhst_t*)(s)		\
+				}									\
+			}
+
+
+#define MKBASE(t)		t
 
 
 #if (RKH_SMA_EN_HCAL == RKH_ENABLED)
@@ -2183,18 +2153,19 @@ typedef struct romrkh_t
 
 	rkhui8_t ppty;
 
-	/**	
- 	 * 	\brief
-	 * 	ID of state machine application. 
-	 * 	
-	 * 	ID of state machine application. This number allows to uniquely 
-	 * 	identify a state machine. When a particular application requires 
-	 * 	runtime tracing (native tracing features), the option RKH_SMA_EN_ID 
-	 * 	must be set to one. 
+	/**
+	 * 	\brief
+	 * 	Name of State Machine Application (a.k.a Active Object).
+	 *
+	 * 	Pointer to an ASCII string (NULL terminated) to assign a name to the 
+	 *	State Machine Application (a.k.a Active Object). The name can be 
+	 *	displayed by debuggers or by Trazer.
 	 */
-
-#if RKH_SMA_EN_ID == RKH_ENABLED
-	rkhui8_t id;
+#if 0
+#if (	(RKH_TRC_EN == RKH_ENABLED) && \
+	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
+	const char *name;
+#endif
 #endif
 
 	/** 
@@ -2261,7 +2232,7 @@ typedef struct romrkh_t
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, 0, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
  *	\sa
@@ -2306,7 +2277,6 @@ typedef struct rkhsma_t
 
 #if RKH_EN_SMA_THREAD == RKH_ENABLED
 	RKH_THREAD_TYPE thread;
-#endif
 
 	/**
 	 * 	\brief
@@ -2328,9 +2298,9 @@ typedef struct rkhsma_t
 	 * 	with RKH_EN_SMA_THREAD_DATA = 0.
 	 */
 
-#if (RKH_EN_SMA_THREAD == RKH_ENABLED && \
-		RKH_EN_SMA_THREAD_DATA == RKH_ENABLED)
+#if RKH_EN_SMA_THREAD_DATA == RKH_ENABLED
 	RKH_OSSIGNAL_TYPE os_signal;
+#endif
 #endif
 
 	/**
@@ -2598,16 +2568,6 @@ typedef struct rkhbase_t
 
 	HUInt type;					
 
-	/**	
- 	 * 	\brief
-	 *	State ID. 
-	 *
-	 *	This number isn't internally used by RKH framework.
-	 */
-
-#if RKH_SMA_EN_STATE_ID == RKH_ENABLED
-	HUInt id;
-#endif
 } RKHBASE_T;
 
 
@@ -2791,10 +2751,10 @@ typedef struct rkhsbsc_t
 	 *
 	 *	static const SDATA_T option = { preprocessor, 4, 8, token1 };
 	 *
-	 *	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
-	 *					NULL, &S11, preprocessor ); 
-	 *	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
-	 *					NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *	RKH_CREATE_BASIC_STATE( S111, set_x_1, 
+	 *							NULL, &S11, preprocessor ); 
+	 *	RKH_CREATE_BASIC_STATE( S22, set_x_4, 
+	 *							NULL, &S2, (RKHPPRO_T*)&option ); 
 	 * \endcode
 	 */
 
@@ -2853,10 +2813,10 @@ typedef struct rkhscmp_t
 	 *
 	 *	static const SDATA_T option = { preprocessor, 4, 8, token1 };
 	 *
-	 *	RKH_CREATE_BASIC_STATE( S111, 0, set_x_1, 
-	 *					NULL, &S11, preprocessor ); 
-	 *	RKH_CREATE_BASIC_STATE( S22, 0, set_x_4, 
-	 *					NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *	RKH_CREATE_BASIC_STATE( S111, set_x_1, 
+	 *							NULL, &S11, preprocessor ); 
+	 *	RKH_CREATE_BASIC_STATE( S22, set_x_4, 
+	 *							NULL, &S2, (RKHPPRO_T*)&option ); 
 	 * \endcode
 	 */
 

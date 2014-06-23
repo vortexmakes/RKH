@@ -2683,7 +2683,7 @@ enum rkh_trc_fmt
 		 * 		rkhui8_t y;
 		 * 	} AO_T;
 		 * 	
-		 * 	RKH_SMA_CREATE( AO_T, 0, ao, 0, HCAL, &S1, ao_init, NULL );
+		 * 	RKH_SMA_CREATE( AO_T, ao, 0, HCAL, &S1, ao_init, NULL );
 		 * 	RKH_TR_FWK_OBJ( &ao );
 		 * 	\endcode
 		 */
@@ -2715,7 +2715,7 @@ enum rkh_trc_fmt
 		 *
 		 * 	\code
 		 * 	...
-		 * 	RKH_CREATE_COMP_STATE( S1, 0, en, ex, RKH_ROOT, &S11, NULL );
+		 * 	RKH_CREATE_COMP_STATE( S1, en, ex, RKH_ROOT, &S11, NULL );
 		 * 	RKH_CREATE_TRANS_TABLE( S1 )
 		 * 		RKH_TRINT( SIX, 	NULL, 		show_data ),
 		 * 		RKH_TRREG( TWO, 	NULL, 		set_y_2,	&S2 ),

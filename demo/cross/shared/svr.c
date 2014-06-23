@@ -24,14 +24,14 @@
  *	Defines SMA (a.k.a Active Object) "svr".
  */
 
-RKH_SMA_CREATE( SVR_T, 0, svr, 0, HCAL, &svr_idle, svr_init, NULL );
+RKH_SMA_CREATE( SVR_T, svr, 0, HCAL, &svr_idle, svr_init, NULL );
 
 
 /*
  *	Defines states and pseudostates.
  */
 
-RKH_CREATE_BASIC_STATE( svr_idle, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( svr_idle, NULL, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( svr_idle )
 
 	RKH_TRINT( TERM,	NULL,	svr_terminate ),
@@ -41,7 +41,7 @@ RKH_CREATE_TRANS_TABLE( svr_idle )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE( svr_busy, 0, NULL, NULL,  RKH_ROOT, NULL );
+RKH_CREATE_BASIC_STATE( svr_busy, NULL, NULL,  RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( svr_busy )
 
 	RKH_TRINT( REQ,		NULL,	svr_defer ),
@@ -52,7 +52,7 @@ RKH_CREATE_TRANS_TABLE( svr_busy )
 RKH_END_TRANS_TABLE
 
 
-RKH_CREATE_BASIC_STATE(	svr_paused, 0, 
+RKH_CREATE_BASIC_STATE(	svr_paused, 
 						svr_pause, svr_resume, RKH_ROOT, NULL );
 RKH_CREATE_TRANS_TABLE( svr_paused )
 
