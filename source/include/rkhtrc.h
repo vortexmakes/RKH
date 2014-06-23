@@ -1436,7 +1436,7 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_MP_GET )				\
 						RKH_TRC_SYM( mp ); 								\
 						RKH_TRC_NBLK( nfree ); 							\
-				/*NEW*/ RKH_TRC_MP_NMIN( nmin );						\
+				        RKH_TRC_MP_NMIN( nmin );						\
 					RKH_TRC_END()
 	
 		/**
@@ -2142,8 +2142,8 @@ enum rkh_trc_fmt
 		#define RKH_TR_TIM_STOP( t, nt, per )							\
 					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_STOP )			\
 						RKH_TRC_SYM( t ); 								\
-				/*NEW*/ RKH_TRC_NTICK( nt );							\
-				/*NEW*/ RKH_TRC_NTICK( per );							\
+				        RKH_TRC_NTICK( nt );							\
+				        RKH_TRC_NTICK( per );							\
 					RKH_TRC_END()
 
 		/**
@@ -2161,8 +2161,8 @@ enum rkh_trc_fmt
 									(ao)->romrkh->prio,					\
 									sig )								\
 						RKH_TRC_SYM( t ); 								\
-				/*NEW*/ RKH_TRC_SIG( sig );								\
-				/*NEW*/ RKH_TRC_SYM( ao );								\
+				        RKH_TRC_SIG( sig );								\
+				        RKH_TRC_SYM( ao );								\
 					RKH_TRC_END()
 
 		/**
@@ -2249,8 +2249,8 @@ enum rkh_trc_fmt
 					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_AE )				\
 						RKH_TRC_ES( es );								\
 						RKH_TRC_SIG( ev->e );							\
-				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );								\
+				        RKH_TRC_UI8( pid );								\
+				        RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -2266,8 +2266,8 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_GC( ev, pid, rc )							\
 					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_GC )				\
 						RKH_TRC_SIG( ev->e );							\
-				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );								\
+				        RKH_TRC_UI8( pid );								\
+				        RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -2283,8 +2283,8 @@ enum rkh_trc_fmt
 		#define RKH_TR_FWK_GCR( ev, pid, rc )							\
 					RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_GCR )				\
 						RKH_TRC_SIG( ev->e );							\
-				/*NEW*/ RKH_TRC_UI8( pid );								\
-				/*NEW*/ RKH_TRC_UI8( rc );								\
+				        RKH_TRC_UI8( pid );								\
+				        RKH_TRC_UI8( rc );								\
 					RKH_TRC_END()
 
 		/**
@@ -2346,12 +2346,9 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_OBJ( __o )									\
 				do{ 													\
-					static RKHROM char *const __o_n = #__o;				\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ )				\
-						RKH_TRC_SYM( __o );								\
-						RKH_TRC_STR( __o_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					static RKHROM char __o_n[] = #__o;					\
+					rkh_trc_obj( RKH_TE_FWK_OBJ, (rkhui8_t *)__o, 		\
+													       __o_n );		\
 				} while(0)
 
 		/* --- Symbol entry table for objects with name --------- */
@@ -2364,6 +2361,8 @@ enum rkh_trc_fmt
 		 *
 		 *	\note
 		 *	This macro uses the same trace event that RKH_TR_FWK_OBJ().
+		 *	Use when the object name is very long and the Trazer's view is 
+		 *	unclear.
 		 *
 		 * 	Desc 	= entry symbol table for memory object\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2375,18 +2374,13 @@ enum rkh_trc_fmt
 		 *
 		 * 	\code
 		 * 	...
-		 * 	RKH_TR_FWK_OBJ_NAME( &RKH_CAST(CLI_T, sma)->cli_utmr, "cli_utmr" );
+		 * 	RKH_TR_FWK_OBJ_NAME( &RKH_CAST(CLI_T, sma)->cli_utmr, "cliutmr" );
 		 * 	\endcode
 		 */
 
 		#define RKH_TR_FWK_OBJ_NAME( __o, __n )							\
 				do{ 													\
-					static RKHROM char *const __o_n = __n;				\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_OBJ )				\
-						RKH_TRC_SYM( __o );								\
-						RKH_TRC_STR( __o_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					rkh_trc_obj( RKH_TE_FWK_OBJ, (rkhui8_t *)__o, __n );\
 				} while(0)
 
 		/* --- Symbol entry table for event signals ---- */
@@ -2426,12 +2420,8 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_SIG( __s )									\
 				do{ 													\
-					static RKHROM char *const __s_n = #__s;				\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_SIG )				\
-						RKH_TRC_SIG( __s );								\
-						RKH_TRC_STR( __s_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					static RKHROM char __s_n[] = #__s;					\
+					rkh_trc_sig( __s, __s_n );							\
 				} while(0)
 
 		/* --- Symbol entry table for functions ---- */
@@ -2465,12 +2455,9 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_FUN( __f )									\
 				do{ 													\
-					static RKHROM char *const __f_n = #__f;				\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_FUN )				\
-						RKH_TRC_FUN( __f );								\
-						RKH_TRC_STR( __f_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					static RKHROM char __f_n[] = #__f;					\
+					rkh_trc_obj( RKH_TE_FWK_FUN, (rkhui8_t *)__f, 		\
+													       __f_n );		\
 				} while(0)
 
 		/**
@@ -2538,7 +2525,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_TUSR( __e )									\
 				do{ 													\
-					static RKHROM char *const __e_n = #__e;				\
+					static RKHROM char __e_n[] = #__e;					\
 					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TUSR )				\
 						RKH_TRC_UI8( EXTE( __e, RKH_TG_USR ) );			\
 						RKH_TRC_STR( __e_n );							\
@@ -2690,12 +2677,7 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_AO( __ao )									\
 				do{ 													\
-					static RKHROM char *const __ao_n = #__ao;			\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_AO )				\
-						RKH_TRC_SYM( __ao );							\
-						RKH_TRC_STR( __ao_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					rkh_trc_ao( (struct rkhsma_t *)__ao );				\
 				} while(0)
 
 		/* --- Symbol entry table for state objects --------- */
@@ -2728,13 +2710,8 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_STATE( __ao, __so )							\
 				do{ 													\
-					static RKHROM char *const __so_n = #__so;			\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )				\
-						RKH_TRC_SYM( __ao );							\
-						RKH_TRC_SYM( __so );							\
-						RKH_TRC_STR( __so_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					rkh_trc_state((struct rkhsma_t *)__ao, 				\
+								  (rkhui8_t *)__so); 					\
 				} while(0)
 
 		/* --- Symbol entry table for pseudostate objects --------- */
@@ -2768,13 +2745,8 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_PSTATE( __ao, __pso )						\
 				do{ 													\
-					static RKHROM char *const __pso_n = #__pso;			\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_PSTATE )			\
-						RKH_TRC_SYM( __ao );							\
-						RKH_TRC_SYM( __pso );							\
-						RKH_TRC_STR( __pso_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					rkh_trc_state((struct rkhsma_t *)__ao, 				\
+								  (rkhui8_t *)__pso); 					\
 				} while(0)
 
 		/* --- Symbol entry table for timer objects --------- */
@@ -2802,12 +2774,9 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_TIMER( __to )								\
 				do{ 													\
-					static RKHROM char *const __to_n = #__to;			\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_TIMER )				\
-						RKH_TRC_SYM( __to );							\
-						RKH_TRC_STR( __to_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					static RKHROM char __to_n[] = #__to;				\
+					rkh_trc_obj( RKH_TE_FWK_TIMER, (rkhui8_t *)__to, 	\
+												             __to_n );	\
 				} while(0)
 
 		/* --- Symbol entry table for event pool objects --------- */
@@ -2842,12 +2811,9 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_EPOOL( __epo )								\
 				do{ 													\
-					static RKHROM char *const __epo_n = #__epo;			\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_EPOOL )				\
-						RKH_TRC_SYM( __epo );							\
-						RKH_TRC_STR( __to_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					static RKHROM char __epo_n[] = #__epo;				\
+					rkh_trc_obj( RKH_TE_FWK_EPOOL, (rkhui8_t *)__epo, 	\
+  											                 __epo_n );	\
 				} while(0)
 
 		/* --- Symbol entry table for queue objects --------- */
@@ -2880,12 +2846,9 @@ enum rkh_trc_fmt
 
 		#define RKH_TR_FWK_QUEUE( __qo )								\
 				do{ 													\
-					static RKHROM char *const __qo_n = #__qo;			\
-					RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_QUEUE )				\
-						RKH_TRC_SYM( __qo );							\
-						RKH_TRC_STR( __qo_n );							\
-					RKH_TRC_END_WOFIL()									\
-					RKH_TRC_FLUSH();									\
+					static RKHROM char __qo_n[] = #__qo;				\
+					rkh_trc_obj( RKH_TE_FWK_QUEUE, (rkhui8_t *)__qo, 	\
+												             __qo_n );	\
 				} while(0)
 
 	#else
@@ -3556,6 +3519,30 @@ void rkh_trc_u32( rkhui32_t d );
  */
 
 void rkh_trc_str( const char *s );
+
+
+/**
+ */
+
+void rkh_trc_obj( rkhui8_t tre, rkhui8_t *obj, const char *obj_name );
+
+
+/**
+ */
+
+void rkh_trc_sig( RKHE_T sig, const char *sig_name );
+
+
+/**
+ */
+
+void rkh_trc_ao( struct rkhsma_t *ao );
+
+
+/**
+ */
+
+void rkh_trc_state( struct rkhsma_t *ao, rkhui8_t *state );
 
 
 /**
