@@ -305,6 +305,8 @@
           <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\demo\cross\shared</state>
           <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\demo\cross\shared\platform\arm-cortex\rkhs\arm_cm4f\twr_k60\iar_v7_2</state>
           <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\demo\cross\shared\platform\arm-cortex\rkhs\arm_cm4f\twr_k60\iar_v7_2\cm4f</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\demo\cross\shared\platform\arm-cortex\rkhs\arm_cm4f\twr_k60\iar_v7_2\seq</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\demo\cross\shared\platform\arm-cortex\rkhs\arm_cm4f\twr_k60\iar_v7_2\switch</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -714,7 +716,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\CONFIG\generic.icf</state>
+          <state>$TOOLKIT_DIR$\config\linker\Freescale\MK60xN512_10.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -774,7 +776,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -1914,6 +1916,54 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\cm4f\MK60D10.h</name>
+      </file>
+    </group>
+    <group>
+      <name>seq</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\genled.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\mytypes.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqchbak.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqdefs.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqlog.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqlog.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqtbl.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqtbl.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\sequence.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\sequence.h</name>
+      </file>
+    </group>
+    <group>
+      <name>switch</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\swhdl.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\swhdl.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\switch.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\switch.h</name>
       </file>
     </group>
     <file>

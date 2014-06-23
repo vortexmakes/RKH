@@ -41,23 +41,51 @@
  * 	\brief 		BSP for TWR-K60D100M IAR V6.5
  */
 
-
 #include "bsp.h"
+#include "rkh.h"
+#include "scevt.h"
 #include "svr.h"
 #include "cli.h"
-#include "rkh.h"
 
 #include "cpu.h"
-#include "kuart.h"
 #include "gpio.h"
+#include "kuart.h"
+
+#include "seqchbak.h"
+#include "seqlog.h"
+#include "sequence.h"
+#include "genled.h"
+#include "switch.h"
+
+
+
+/*
+#include "sequence.h"
+#include "switch.h"
+#include "gpio.h"*/
 
 
 #define SERIAL_TRACE			1
+
+#define SIZEOF_EP0STO				32
+#define SIZEOF_EP0_BLOCK			sizeof( RKHEVT_T )
+#define SIZEOF_EP1STO				16
+#define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
 
 
 RKH_THIS_MODULE
 
 static rkhui32_t l_rnd;			/* random seed */
+
+static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
+
+static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ];
+
+#if defined( RKH_USE_TRC_SENDER )
+static rkhui8_t l_isr_kbd;
+#endif
+
 
 /*
  * 	For serial trace feature.
@@ -71,27 +99,48 @@ static rkhui32_t l_rnd;			/* random seed */
 	};
 
 	/* Trazer Tool COM Port */
-	#define TRC_COM_PORT		COM1	
-
 	#define SERIAL_TRACE_OPEN()		kuart_init( UART3_BASE_PTR, &trz_uart )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
 	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
+					kuart_putnchar( UART3_BASE_PTR, 	\
+								(char *)(buf_), 		\
+								(rkhui16_t)(len_))
 #else
-	#define SERIAL_TRACE_OPEN()		(void)0
-	#define SERIAL_TRACE_CLOSE()	(void)0
-	#define SERIAL_TRACE_SEND( d )	(void)0
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
+
+
+static
+void
+bsp_publish( const RKHEVT_T *e )
+{
+	HInt cn;
+
+	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
+		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
+}
 
 
 void
 rkh_hk_timetick( void )
 {
+	sem = 0;
+	sequence_interrupt();
+	switch_tick();
 }
 
 
 void 
 rkh_hk_start( void ) 
 {
+	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
@@ -113,10 +162,8 @@ rkh_hk_idle( void )				/* called within critical section */
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	(void)line;
-
 	RKH_DIS_INTERRUPT();
-	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
+	RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
 	rkh_exit();
 	reset_now();
 }
@@ -128,7 +175,9 @@ void
 rkh_trc_open( void )
 {
 	rkh_trc_init();
+
 	SERIAL_TRACE_OPEN();
+	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
 
 
@@ -149,16 +198,28 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rkhui8_t *blk;
+	TRCQTY_T nbytes;
+	RKH_SR_ALLOC();
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	FOREVER
 	{
-		SERIAL_TRACE_SEND( (char)*d );		
+		nbytes = 128;
+
+		RKH_ENTER_CRITICAL_();
+		blk = rkh_trc_get_block( &nbytes );
+		RKH_EXIT_CRITICAL_();
+
+		if((blk != (rkhui8_t *)0))
+		{
+			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
+		}
+		else
+			break;
 	}
 }
 #endif
 
-#if 0
 void
 bsp_switch_evt( rkhui8_t s, rkhui8_t st )
 {
@@ -168,7 +229,6 @@ bsp_switch_evt( rkhui8_t s, rkhui8_t st )
 	if(s == SW1_SWITCH )
 		bsp_publish( &e_pause );
 }
-#endif
 
 
 rkhui32_t 
@@ -179,7 +239,7 @@ bsp_rand( void )
 	 * "Super-Duper" Linear Congruential Generator (LCG)
 	 * LCG(2^32, 3*7*11*13*23, 0, seed) [MS]
 	 */
-    l_rnd = l_rnd * (3*7*11*13*23);
+    l_rnd = (rkhui32_t)(l_rnd * (3*7*11*13*23));
     return l_rnd >> 8;
 }
 
@@ -198,51 +258,47 @@ bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 	(void)req_time;
 }
 
+static rkhui8_t cli;
 
 void 
 bsp_cli_req( rkhui8_t clino )
 {
-#if 0
+        cli = clino;
 	set_cli_sled( clino, CLI_WAITING );
-#endif
 }
 
 
 void 
 bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 {
-#if 0
 	(void)using_time;
-	
+
+        cli = clino;	
 	set_cli_sled( clino, CLI_WORKING );
-#endif
 }
 
 
 void 
 bsp_cli_paused( rkhui8_t clino )
 {
-#if 0
+          cli = clino;
 	set_cli_sled( clino, CLI_PAUSED );
-#endif
 }
 
 
 void 
 bsp_cli_resumed( rkhui8_t clino )
 {
-#if 0
+          cli = clino;
 	set_cli_sled( clino, CLI_IDLE );
-#endif
 }
 
 
 void 
 bsp_cli_done( rkhui8_t clino )
 {
-#if 0
+          cli = clino;
 	set_cli_sled( clino, CLI_IDLE );
-#endif
 }
 
 
@@ -263,18 +319,35 @@ bsp_svr_paused( const RKHSMA_T *sma )
 void 
 bsp_init( int argc, char *argv[]  )
 {
+	HInt cn;
+
 	(void)argc;
 	(void)argv;
-	
+
 	cpu_init();
-
 	systick_init( RKH_TICK_RATE_HZ );
-	
 	cpu_tstmr_init();
+	init_ioports();
+	init_seqs();
+    bsp_srand( 1234U );
 
-	init_led( LED1 );
+	rkh_init();
 
-	RKH_ENA_INTERRUPT();
+	RKH_FILTER_OFF_SMA( svr );
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
+		RKH_FILTER_OFF_SMA( CLI(cn) );
+
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_ALL_SIGNALS();
+
+        RKH_TRC_OPEN();
+
+#if defined( RKH_USE_TRC_SENDER )
+	RKH_TR_FWK_OBJ( &l_isr_kbd );
+	RKH_TR_FWK_OBJ( &g_isr_tick );
+#endif
+        RKH_ENA_INTERRUPT();
 }
 
 

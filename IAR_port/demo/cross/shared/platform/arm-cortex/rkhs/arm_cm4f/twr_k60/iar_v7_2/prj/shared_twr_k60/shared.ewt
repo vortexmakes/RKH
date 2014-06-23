@@ -199,6 +199,54 @@
         <name>$PROJ_DIR$\..\..\cm4f\MK60D10.h</name>
       </file>
     </group>
+    <group>
+      <name>seq</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\genled.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\mytypes.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqchbak.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqdefs.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqlog.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqlog.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqtbl.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\seqtbl.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\sequence.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\seq\sequence.h</name>
+      </file>
+    </group>
+    <group>
+      <name>switch</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\swhdl.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\swhdl.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\switch.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\switch\switch.h</name>
+      </file>
+    </group>
     <file>
       <name>$PROJ_DIR$\..\..\bsp.c</name>
     </file>

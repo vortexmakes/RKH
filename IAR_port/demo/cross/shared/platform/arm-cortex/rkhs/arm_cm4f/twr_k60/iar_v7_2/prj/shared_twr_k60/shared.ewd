@@ -77,7 +77,7 @@
         </option>
         <option>
           <name>OCDownloadVerifyAll</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OCProductVersion</name>
@@ -85,7 +85,7 @@
         </option>
         <option>
           <name>OCDynDriverList</name>
-          <state>ARMSIM_ID</state>
+          <state>PEMICRO_ID</state>
         </option>
         <option>
           <name>OCLastSavedByProductVersion</name>
@@ -97,7 +97,7 @@
         </option>
         <option>
           <name>UseFlashLoader</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CLowLevel</name>
@@ -1060,7 +1060,7 @@
         <option>
           <name>CCPEMicroInterfaceList</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCPEMicroResetDelay</name>
@@ -1068,7 +1068,7 @@
         </option>
         <option>
           <name>CCPEMicroJtagSpeed</name>
-          <state>#UNINITIALIZED#</state>
+          <state>5000</state>
         </option>
         <option>
           <name>CCJPEMicroShowSettings</name>

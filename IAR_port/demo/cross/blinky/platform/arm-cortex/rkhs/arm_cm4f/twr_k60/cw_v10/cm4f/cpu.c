@@ -12,6 +12,10 @@ uint32_t mcu_busclk_hz;
 uint32_t mcu_fbusclk_hz;
 uint32_t mcu_flshclk_hz;
 
+#if defined( RKH_USE_TRC_SENDER )
+static rkhui8_t l_isr_tick;
+#endif
+
 static
 int
 fll_mfactor( void )
@@ -65,7 +69,7 @@ systick_init( uint32_t tick_hz )
 void
 isr_systick( void )
 {
-	rkh_tim_tick();
+	RKH_TIM_TICK( &l_isr_tick );
 }
 
 void

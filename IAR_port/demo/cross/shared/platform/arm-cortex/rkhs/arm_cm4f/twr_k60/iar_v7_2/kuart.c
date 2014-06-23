@@ -335,11 +335,8 @@ kuart_putchar (UART_MemMapPtr channel, char ch)
 void
 kuart_putnchar (UART_MemMapPtr channel, char *p, uint16 n )
 {
-	while( n-- != 0 )
+	while( n-- )
 		kuart_putchar( channel, *p++ );
-	
-	/* flush buffer */
-	UART_CFIFO_REG(channel) |= UART_CFIFO_TXFLUSH_MASK; 
 }
 
 

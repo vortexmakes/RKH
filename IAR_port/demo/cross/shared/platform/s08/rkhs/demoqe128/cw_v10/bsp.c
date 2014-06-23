@@ -94,10 +94,15 @@ interrupt VectorNumber_Vrtc void l_isr_tick( void );
 	#define SERIAL_TRACE_OPEN()		serial_init( TRC_COM_PORT )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
 	#define SERIAL_TRACE_SEND( d ) 	put_char( TRC_COM_PORT, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 							\
+					put_nchar( 	TRC_COM_PORT, 								\
+								(const unsigned char *)(buf_), 				\
+								(rkhui16_t)(len_))
 #else
-	#define SERIAL_TRACE_OPEN()		(void)0
-	#define SERIAL_TRACE_CLOSE()	(void)0
-	#define SERIAL_TRACE_SEND( d )	(void)0
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
 
@@ -148,6 +153,11 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 }
 #endif
 
+void
+rkh_hk_timetick( void )
+{
+}
+
 
 void 
 rkh_hk_start( void ) 
@@ -167,7 +177,6 @@ rkh_hk_exit( void )
 void 
 rkh_hk_idle( void )				/* called within critical section */
 {
-	/*RKH_EXIT_CRITICAL( dummy );*/
 	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
 }
@@ -176,7 +185,6 @@ rkh_hk_idle( void )				/* called within critical section */
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
 	rkh_exit();
@@ -213,11 +221,24 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rkhui8_t *blk;
+	TRCQTY_T nbytes;
+	RKH_SR_ALLOC();
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	FOREVER
 	{
-		SERIAL_TRACE_SEND( *d );		
+		nbytes = 128;
+
+		RKH_ENTER_CRITICAL_();
+		blk = rkh_trc_get_block( &nbytes );
+		RKH_EXIT_CRITICAL_();
+
+		if((blk != (rkhui8_t *)0))
+		{
+			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
+		}
+		else
+			break;
 	}
 }
 #endif

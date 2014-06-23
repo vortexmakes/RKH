@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for TWR-K60D100M IAR V6.5
+ * 	\brief 		BSP for TWR-K60D100M IAR V7.2
  */
 
 
@@ -51,7 +51,15 @@
 #include "derivative.h"
 #include "cpu.h"
 
+
+
+#define BSP_KERNEL_IRQ_PRIO		6
+#define BSP_UART_IRQ_PRIO		7
+#define BSP_HIGHEST_IRQ_PRI		5
+
+
 #define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
+
 
 /**
  * 	\brief
@@ -60,12 +68,9 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		CLOCKS_PER_SEC
+#define BSP_TS_RATE_HZ		   		MCU_TS_RATE_HZ
 
 
-#define BSP_KERNEL_IRQ_PRIO		6
-#define BSP_UART_IRQ_PRIO		7
-#define BSP_HIGHEST_IRQ_PRI		5
 
 void bsp_init( int argc, char *argv[] );
 rkhui32_t bsp_rand( void );
@@ -79,6 +84,7 @@ void bsp_cli_resumed( rkhui8_t clino );
 void bsp_cli_done( rkhui8_t clino );
 void bsp_svr_recall( rkhui8_t clino );
 void bsp_svr_paused( const RKHSMA_T *sma );
+void bsp_switch_evt( rkhui8_t s, rkhui8_t st );
 
 #ifdef RKH_DEBUG
 #define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )
