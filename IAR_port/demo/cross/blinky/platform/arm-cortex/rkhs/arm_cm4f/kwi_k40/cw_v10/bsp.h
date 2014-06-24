@@ -64,7 +64,8 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		mcu_coreclk_hz
+#define BSP_TS_RATE_HZ		   		MCU_TS_RATE_HZ
+
 
 void bsp_init( int argc, char *argv[] );
 void bsp_led_on( void );

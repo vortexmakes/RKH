@@ -305,6 +305,16 @@ bsp_init( int argc, char *argv[] )
 
 	srand( ( unsigned )time( NULL ) );
 	print_banner();
+	rkh_init();
+
+	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TIM_TOUT );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_SMA( blinky );
+	RKH_FILTER_OFF_ALL_SIGNALS();
+
+	RKH_TRC_OPEN();
 }
 
 

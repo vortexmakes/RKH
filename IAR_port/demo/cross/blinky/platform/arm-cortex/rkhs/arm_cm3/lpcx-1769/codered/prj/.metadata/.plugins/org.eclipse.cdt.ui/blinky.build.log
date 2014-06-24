@@ -1,7 +1,6 @@
-16:03:14 **** Clean-only build of configuration Debug for project blinky ****
-make clean 
-rm -rf  ./src/bsp/lpc17xx/cr_startup_lpc176x.o ./src/bsp/lpc17xx/lpc17xx.o ./src/bsp/lpc17xx/system_LPC17xx.o  ./src/bsp/bsp.o ./src/bsp/uart.o  ./src/RKH/source/portable/rkhport.o  ./src/RKH/source/rkh.o ./src/RKH/source/rkhdyn.o ./src/RKH/source/rkhmp.o ./src/RKH/source/rkhrq.o ./src/RKH/source/rkhs.o ./src/RKH/source/rkhsma.o ./src/RKH/source/rkhtbl.o ./src/RKH/source/rkhtim.o ./src/RKH/source/rkhtrc.o  ./src/bky.o ./src/bkyact.o ./src/main.o  ./src/bsp/lpc17xx/cr_startup_lpc176x.d ./src/bsp/lpc17xx/lpc17xx.d ./src/bsp/lpc17xx/system_LPC17xx.d  ./src/bsp/bsp.d ./src/bsp/uart.d  ./src/RKH/source/portable/rkhport.d  ./src/RKH/source/rkh.d ./src/RKH/source/rkhdyn.d ./src/RKH/source/rkhmp.d ./src/RKH/source/rkhrq.d ./src/RKH/source/rkhs.d ./src/RKH/source/rkhsma.d ./src/RKH/source/rkhtbl.d ./src/RKH/source/rkhtim.d ./src/RKH/source/rkhtrc.d  ./src/bky.d ./src/bkyact.d ./src/main.d  blinky.axf
- 
+14:21:05 **** Incremental Build of configuration Debug for project blinky ****
+make all 
+make: Nothing to be done for `all'.
 
-16:03:14 Build Finished (took 541ms)
+14:21:05 Build Finished (took 141ms)
 

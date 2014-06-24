@@ -22,6 +22,7 @@
 #define MCU_BUSCLK_DIV	(((SIM_CLKDIV1 & SIM_CLKDIV1_OUTDIV4_MASK)>>SIM_CLKDIV1_OUTDIV4_SHIFT)+1)
 #define MCU_FLSHCLK_DIV	MCU_BUSCLK_DIV
 
+#define MCU_TS_RATE_HZ			(40000000)
 
 extern uint32_t mcu_coreclk_hz;
 extern uint32_t mcu_busclk_hz;

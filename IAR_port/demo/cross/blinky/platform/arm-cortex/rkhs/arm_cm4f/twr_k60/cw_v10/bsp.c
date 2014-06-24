@@ -183,7 +183,19 @@ bsp_init( int argc, char *argv[]  )
 	systick_init( RKH_TICK_RATE_HZ );
 	cpu_tstmr_init();
 	init_led( LED1 );
+
+	rkh_init();
+
 	RKH_ENA_INTERRUPT();
+	
+	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TIM_TOUT );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_SMA( blinky );
+	RKH_FILTER_OFF_ALL_SIGNALS();
+
+	RKH_TRC_OPEN();
 }
 
 

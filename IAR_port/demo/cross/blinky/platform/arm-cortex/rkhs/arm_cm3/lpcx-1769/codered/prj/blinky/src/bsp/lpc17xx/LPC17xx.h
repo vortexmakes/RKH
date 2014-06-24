@@ -996,7 +996,6 @@ typedef struct
  * @}
  */
 #define configCPU_CLOCK_HZ			( ( unsigned long ) SystemFrequency )
-#define configTICK_RATE_HZ			( ( unsigned short ) RKH_TICK_RATE_HZ )
 
 #define portNVIC_SYSTICK_CTRL		( ( volatile unsigned long *) 0xe000e010 )
 #define portNVIC_SYSTICK_LOAD		( ( volatile unsigned long *) 0xe000e014 )
@@ -1016,7 +1015,7 @@ typedef struct
 #define portNVIC_SYSTICK_INT		0x00000002
 #define portNVIC_SYSTICK_ENABLE		0x00000001
 
-
+#define MCU_TS_RATE_HZ				(1000000) //RIT
 
 /*
  * Time stamp read function

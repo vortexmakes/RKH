@@ -56,7 +56,7 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		MCU_BUSCLK
+#define BSP_TS_RATE_HZ		   		(MCU_BUSCLK)
 
 
 void bsp_init( int argc, char *argv[] );

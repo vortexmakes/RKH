@@ -94,6 +94,15 @@ void uart_putchar (UART_MemMapPtr channel, char ch)
       UART_D_REG(channel) = (uint8)ch;
     
  }
+
+
+void
+uart_putnchar (UART_MemMapPtr channel, char *p, uint16 n )
+{
+	while( n-- )
+		uart_putchar( channel, *p++ );
+}
+
 /********************************************************************/
 /*
  * Check to see if a character has been received
@@ -290,6 +299,14 @@ void uart0_putchar (UART0_MemMapPtr channel, char ch)
       UART0_D_REG(channel) = (uint8)ch;
     
  }
+
+void
+uart0_putnchar (UART0_MemMapPtr channel, char *p, uint16 n )
+{
+	while( n-- )
+		uart0_putchar( channel, *p++ );
+}
+
 /********************************************************************/
 /*
  * Check to see if a character has been received
