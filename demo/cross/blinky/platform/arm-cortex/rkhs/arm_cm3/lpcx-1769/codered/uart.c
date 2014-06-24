@@ -342,6 +342,14 @@ void UARTPutc( uint32_t portNum, uint8_t c )
   return;
 }
 
+
+void
+UARTPutnc(  uint32_t portNum, char *p, uint16_t n )
+{
+	while( n-- )
+		UARTPutc( portNum, *p++ );
+}
+
 /******************************************************************************
 **                            End Of File
 ******************************************************************************/

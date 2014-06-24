@@ -69,6 +69,10 @@
 	#include "../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkhport.h"
 #endif
 
+#ifdef __ARM_CM4FIAR7_2__
+	#include "../portable/arm-cortex/rkhs/arm_cm4f/iar_v7_2/rkhport.h"
+#endif
+
 #ifdef __ARM_CM0CW10__
 	#include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkhport.h"
 #endif

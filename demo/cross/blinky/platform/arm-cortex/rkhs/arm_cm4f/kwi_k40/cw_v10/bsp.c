@@ -71,11 +71,25 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_OPEN()		kuart_init( UART5_BASE_PTR, &trz_uart )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
 	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART5_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
+					kuart_putnchar( UART5_BASE_PTR,		\
+								(char *)(buf_), 		\
+								(rkhui16_t)(len_))
+
 #else
-	#define SERIAL_TRACE_OPEN()		(void)0
-	#define SERIAL_TRACE_CLOSE()	(void)0
-	#define SERIAL_TRACE_SEND( d )	(void)0
+
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
+
 #endif
+
+
+void 
+rkh_hk_timetick( void ) 
+{
+}
 
 
 void 
@@ -118,6 +132,7 @@ rkh_trc_open( void )
 {
 	rkh_trc_init();
 	SERIAL_TRACE_OPEN();
+	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
 
 
@@ -138,12 +153,25 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rkhui8_t *blk;
+	TRCQTY_T nbytes;
+	RKH_SR_ALLOC();
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	FOREVER
 	{
-		SERIAL_TRACE_SEND( (char)*d );		
-	}
+		nbytes = 128;
+
+		RKH_ENTER_CRITICAL_();
+		blk = rkh_trc_get_block( &nbytes );
+		RKH_EXIT_CRITICAL_();
+
+		if((blk != (rkhui8_t *)0))
+		{
+			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
+		}
+		else
+			break;
+	}	
 }
 #endif
 
@@ -160,7 +188,19 @@ bsp_init( int argc, char *argv[]  )
 	_SLCDModule_Init();
 	_SLCDModule_TurnOnFreescaleSign();
 	_SLCDModule_PrintScrolling( "RKH" );
+
+	rkh_init();
+	
 	RKH_ENA_INTERRUPT();
+	
+	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TIM_TOUT );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_SMA( blinky );
+	RKH_FILTER_OFF_ALL_SIGNALS();
+
+	RKH_TRC_OPEN();
 }
 
 

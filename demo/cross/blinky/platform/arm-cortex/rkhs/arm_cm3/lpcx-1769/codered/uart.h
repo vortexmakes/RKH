@@ -46,6 +46,7 @@ void UART0_IRQHandler( void );
 void UART1_IRQHandler( void );
 void UARTSend( uint32_t portNum, uint8_t *BufferPtr, uint32_t Length );
 void UARTPutc( uint32_t portNum, uint8_t c );
+void UARTPutnc(  uint32_t portNum, char *p, uint16_t n );
 
 #endif /* end __UART_H */
 /*****************************************************************************

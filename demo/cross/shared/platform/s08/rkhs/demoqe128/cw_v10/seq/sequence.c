@@ -435,7 +435,8 @@ sequence_interrupt( void )
 {
 	MUInt status;
 	static unsigned short interrupt_counter = 1;
-
+	
+	sem = 0;
 	status = (*pfinter)( interrupt_counter );
 	if( ++interrupt_counter >= HUNDRED_MS )
 		interrupt_counter = 0;

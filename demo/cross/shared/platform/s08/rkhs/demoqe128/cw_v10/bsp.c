@@ -52,6 +52,7 @@
 #include "gpio.h"
 #include "serial.h"
 #include "sequence.h"
+#include "seqchbak.h"
 #include "genled.h"
 #include "switch.h"
 
@@ -62,8 +63,6 @@
 #define SIZEOF_EP0_BLOCK			sizeof( RKHEVT_T )
 #define SIZEOF_EP1STO				16
 #define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
-#define SVR_NAME					"Server    -"
-#define CLI_NAME					"Client"
 
 
 RKH_THIS_MODULE
@@ -71,7 +70,6 @@ RKH_THIS_MODULE
 
 static rkhui32_t l_rnd;			/* random seed */
 
-static RKH_DCLR_STATIC_EVENT( e_term, TERM );
 static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
 
 static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
@@ -79,7 +77,7 @@ static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
 
 #if defined( RKH_USE_TRC_SENDER )
 static rkhui8_t l_isr_kbd;
-interrupt VectorNumber_Vrtc void l_isr_tick( void );
+extern rkhui8_t g_isr_tick;
 #endif
 
 /*
@@ -94,10 +92,15 @@ interrupt VectorNumber_Vrtc void l_isr_tick( void );
 	#define SERIAL_TRACE_OPEN()		serial_init( TRC_COM_PORT )
 	#define SERIAL_TRACE_CLOSE() 	(void)0
 	#define SERIAL_TRACE_SEND( d ) 	put_char( TRC_COM_PORT, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 							\
+					put_nchar( 	TRC_COM_PORT, 								\
+								(const unsigned char *)(buf_), 				\
+								(rkhui16_t)(len_))
 #else
-	#define SERIAL_TRACE_OPEN()		(void)0
-	#define SERIAL_TRACE_CLOSE()	(void)0
-	#define SERIAL_TRACE_SEND( d )	(void)0
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
 
@@ -113,40 +116,13 @@ bsp_publish( const RKHEVT_T *e )
 		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
 }
 
-#if 0
-static 
-DWORD WINAPI 
-isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
+
+void
+rkh_hk_timetick( void )
 {
-    ( void )par;
-    while( running ) 
-	{
-		RKH_TIM_TICK( &l_isr_tick );
-        Sleep( tick_msec );
-    }
-    return 0;
+	sequence_interrupt();
+	switch_tick();
 }
-
-
-static 
-DWORD WINAPI 
-isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
-{
-	int c;
-
-    ( void )par;
-    while( running ) 
-	{
-		c = _getch();
-		
-		if( c == ESC )
-			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
-		else if( tolower(c) == 'p' )
-			bsp_publish( &e_pause );
-    }
-    return 0;
-}
-#endif
 
 
 void 
@@ -167,7 +143,6 @@ rkh_hk_exit( void )
 void 
 rkh_hk_idle( void )				/* called within critical section */
 {
-	/*RKH_EXIT_CRITICAL( dummy );*/
 	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
 }
@@ -176,7 +151,6 @@ rkh_hk_idle( void )				/* called within critical section */
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
 	rkh_exit();
@@ -213,11 +187,24 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rkhui8_t *blk;
+	TRCQTY_T nbytes;
+	RKH_SR_ALLOC();
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	FOREVER
 	{
-		SERIAL_TRACE_SEND( *d );		
+		nbytes = 128;
+
+		RKH_ENTER_CRITICAL_();
+		blk = rkh_trc_get_block( &nbytes );
+		RKH_EXIT_CRITICAL_();
+
+		if((blk != (rkhui8_t *)0))
+		{
+			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
+		}
+		else
+			break;
 	}
 }
 #endif
@@ -326,13 +313,7 @@ bsp_init( int argc, char *argv[] )
 	init_seqs();
     bsp_srand( 1234U );
     
-	RKH_ENA_INTERRUPT();
-	
 	rkh_init();
-
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
@@ -340,12 +321,14 @@ bsp_init( int argc, char *argv[] )
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_ALL_SIGNALS();
 
 	RKH_TRC_OPEN();
 
-/*#if defined( RKH_USE_TRC_SENDER )*/
+#if defined( RKH_USE_TRC_SENDER )
 	RKH_TR_FWK_OBJ( &l_isr_kbd );
-	RKH_TR_FWK_OBJ( &l_isr_tick );
-/*#endif*/
+	RKH_TR_FWK_OBJ( &g_isr_tick );
+#endif
 
+	RKH_ENA_INTERRUPT();
 }
