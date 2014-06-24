@@ -342,7 +342,7 @@ rkh_trc_simfil( const FIL_T *filter, TRCFS_T slot, rkhui8_t mode )
 	rkhui8_t x, y, onoff, *ft, c;
 	TRCFS_T ix;
 
-	onoff = mode & RKH_FILTER_MODE_MASK;
+	onoff = (rkhui8_t)(mode & RKH_FILTER_MODE_MASK);
 	if( mode & RKH_TRC_ALL_FILTERS )
 	{
 		for( 	ft = (rkhui8_t *)(filter->tbl), 
