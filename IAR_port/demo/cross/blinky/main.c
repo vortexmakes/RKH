@@ -32,11 +32,11 @@ main( int argc, char *argv[] )
 	rkh_init();
 	RKH_TRC_OPEN();
 
-	RKH_TR_FWK_OBJ( blinky );
-	RKH_TR_FWK_OBJ( &blinky->equeue );
-	RKH_TR_FWK_OBJ( &led_on );
-	RKH_TR_FWK_OBJ( &led_off );
-	RKH_TR_FWK_OBJ( &bkytim );
+	RKH_TR_FWK_AO( blinky );
+	RKH_TR_FWK_QUEUE( &blinky->equeue );
+	RKH_TR_FWK_STATE( blinky, &led_on );
+	RKH_TR_FWK_STATE( blinky, &led_off );
+	RKH_TR_FWK_TIMER( &bkytim );
 	RKH_TR_FWK_SIG( TIMEOUT );
 
 	rkh_sma_activate( blinky, (const RKHEVT_T **)qsto, QSTO_SIZE, CV(0), 0 );

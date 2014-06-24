@@ -107,17 +107,14 @@ mcu_init( unsigned char tick_ms )
  * System Tick
  */
 
+rkhui8_t g_isr_tick;
 
 interrupt VectorNumber_Vrtc 
-void l_isr_tick( void )
+void isr_tick( void )
 {
 	RTCSC_RTIF = 1;
 
-	RKH_TIM_TICK( &l_isr_tick );
-
-	sem = 0;
-	sequence_interrupt();
-	switch_tick();
+	RKH_TIM_TICK( &g_isr_tick );
 }
 
 

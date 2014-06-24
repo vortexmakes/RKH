@@ -130,7 +130,6 @@ bsp_publish( const RKHEVT_T *e )
 void
 rkh_hk_timetick( void )
 {
-	sem = 0;
 	sequence_interrupt();
 	switch_tick();
 }
@@ -258,12 +257,10 @@ bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 	(void)req_time;
 }
 
-static rkhui8_t cli;
 
 void 
 bsp_cli_req( rkhui8_t clino )
 {
-        cli = clino;
 	set_cli_sled( clino, CLI_WAITING );
 }
 
@@ -273,7 +270,6 @@ bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 {
 	(void)using_time;
 
-        cli = clino;	
 	set_cli_sled( clino, CLI_WORKING );
 }
 
@@ -281,7 +277,6 @@ bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 void 
 bsp_cli_paused( rkhui8_t clino )
 {
-          cli = clino;
 	set_cli_sled( clino, CLI_PAUSED );
 }
 
@@ -289,7 +284,6 @@ bsp_cli_paused( rkhui8_t clino )
 void 
 bsp_cli_resumed( rkhui8_t clino )
 {
-          cli = clino;
 	set_cli_sled( clino, CLI_IDLE );
 }
 
@@ -297,7 +291,6 @@ bsp_cli_resumed( rkhui8_t clino )
 void 
 bsp_cli_done( rkhui8_t clino )
 {
-          cli = clino;
 	set_cli_sled( clino, CLI_IDLE );
 }
 

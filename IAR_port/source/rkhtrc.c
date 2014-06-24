@@ -431,6 +431,51 @@ rkh_trc_str( const char *s )
 }
 
 
+void
+rkh_trc_obj( rkhui8_t tre, rkhui8_t *obj, const char *obj_name )
+{
+	RKH_TRC_BEGIN_WOFIL( tre )
+		RKH_TRC_SYM( obj );
+		RKH_TRC_STR( obj_name );
+	RKH_TRC_END_WOFIL()
+	RKH_TRC_FLUSH();
+}
+
+
+void
+rkh_trc_sig( RKHE_T sig, const char *sig_name )
+{
+	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_SIG )
+		RKH_TRC_SIG( sig );
+		RKH_TRC_STR( sig_name );
+	RKH_TRC_END_WOFIL()
+	RKH_TRC_FLUSH();
+}
+
+
+void
+rkh_trc_ao( struct rkhsma_t *ao )
+{
+	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_AO )
+		RKH_TRC_SYM( ao );
+		RKH_TRC_STR( ao->romrkh->name );
+	RKH_TRC_END_WOFIL()
+	RKH_TRC_FLUSH();
+}
+
+
+void
+rkh_trc_state( struct rkhsma_t *ao, rkhui8_t *state )
+{
+	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )
+		RKH_TRC_SYM( ao );
+		RKH_TRC_SYM( state );
+		RKH_TRC_STR( ((struct rkhbase_t *)state)->name );
+	RKH_TRC_END_WOFIL()
+	RKH_TRC_FLUSH();
+}
+
+
 #if RKH_TRC_EN_USER_TRACE == RKH_ENABLED
 void 
 rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )

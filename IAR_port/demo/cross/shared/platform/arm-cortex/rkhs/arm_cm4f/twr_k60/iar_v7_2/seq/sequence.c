@@ -332,7 +332,7 @@ init_seqs( void )
 	
 }
 
-
+#if 0
 static
 MUInt
 count_minors( unsigned minor_pattern )
@@ -344,7 +344,7 @@ count_minors( unsigned minor_pattern )
 			++num;
 	return num;
 }
-
+#endif
 
 /*
  * 	set_sequence:
@@ -368,13 +368,13 @@ count_minors( unsigned minor_pattern )
 void
 set_sequence( MUInt major, unsigned minor, MUInt code )
 {
-  const MAJOR_T *pmajor;
-  MUInt minors_num, minors_max, seqs_max;
+  //const MAJOR_T *pmajor;
+  //MUInt minors_num, minors_max, seqs_max;
 
-  pmajor		= &majors_t[ major ];
-  minors_max	= pmajor->minors_num;
-  minors_num	= count_minors( minor );
-  seqs_max	= pmajor->seqs_num;
+  //pmajor		= &majors_t[ major ];
+  //minors_max	= pmajor->minors_num;
+  //minors_num	= count_minors( minor );
+  //seqs_max	= pmajor->seqs_num;
   wait_for_semaphore();
   install_new( major, minor, code );
 }
@@ -435,9 +435,10 @@ sequence_interrupt( void )
 {
 	MUInt status;
 	static unsigned short interrupt_counter = 1;
-	
-	sem = 0;
+
+        sem = 0;
 	status = (*pfinter)( interrupt_counter );
+        (void)status;
 	if( ++interrupt_counter >= HUNDRED_MS )
 		interrupt_counter = 0;
 }

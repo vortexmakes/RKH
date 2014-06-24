@@ -1635,18 +1635,28 @@
 
 #if (	(RKH_TRC_EN == RKH_ENABLED) && \
 	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
-	#define R_TRC_OBJ_NAME_EN	RKH_ENABLED
+	#define R_TRC_AO_NAME_EN	RKH_ENABLED
 #else
-	#define R_TRC_OBJ_NAME_EN	RKH_DISABLED
+	#define R_TRC_AO_NAME_EN	RKH_DISABLED
 #endif
 
 
 #if (RKH_SMA_EN_IEVENT == RKH_ENABLED)
-	#define MKRRKH(prio, ppty, is, ia, ie) \
+	#if (R_TRC_AO_NAME_EN == RKH_ENABLED)
+		#define MKRRKH(name, prio, ppty, is, ia, ie) \
+			{(prio), (ppty), #name, (RKHROM struct rkhst_t*)is, (ia), (ie)}
+	#else
+		#define MKRRKH(name, prio, ppty, is, ia, ie) \
 			{(prio), (ppty), (RKHROM struct rkhst_t*)is, (ia), (ie)}
+	#endif
 #else
-	#define MKRRKH(prio, ppty, is, ia, ie) \
+	#if (R_TRC_AO_NAME_EN == RKH_ENABLED)
+		#define MKRRKH(name, prio, ppty, is, ia, ie) \
+			{(prio), (ppty), #name, (RKHROM struct rkhst_t*)is, (ia)}
+	#else
+		#define MKRRKH(name, prio, ppty, is, ia, ie) \
 			{(prio), (ppty), (RKHROM struct rkhst_t*)is, (ia)}
+	#endif
 #endif
 
 
@@ -1659,7 +1669,7 @@
 			}
 
 
-#define MKBASE(t)		t
+#define MKBASE(t, n)		t, #n
 
 
 #if (RKH_SMA_EN_HCAL == RKH_ENABLED)
@@ -2161,11 +2171,10 @@ typedef struct romrkh_t
 	 *	State Machine Application (a.k.a Active Object). The name can be 
 	 *	displayed by debuggers or by Trazer.
 	 */
-#if 0
+
 #if (	(RKH_TRC_EN == RKH_ENABLED) && \
 	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
 	const char *name;
-#endif
 #endif
 
 	/** 
@@ -2567,6 +2576,19 @@ typedef struct rkhbase_t
 	 */
 
 	HUInt type;					
+
+	/**
+	 * 	\brief
+	 * 	Name of state or pseudostate.
+	 *
+	 * 	Pointer to an ASCII string (NULL terminated) to assign a name to the 
+	 *	state object or pseudostate object. The name can be displayed by 
+	 *	debuggers or by Trazer.
+	 */
+#if (	(RKH_TRC_EN == RKH_ENABLED) && \
+	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
+	const char *name;
+#endif
 
 } RKHBASE_T;
 
