@@ -7,6 +7,7 @@
 #include "bky.h"
 #include "bkyact.h"
 #include "bsp.h"
+#include <stdio.h>
 
 
 #define CBKY( sm_ )		(( BKYSM_T* )(sm_))
@@ -53,6 +54,8 @@ blinky_led_on( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 	rkh_tim_oneshot( &bkytim, blinky, LED_ON_TIME );
 	bsp_led_on();
+	printf("state = %s - %s\n", ((RKHBASE_T *)(sma->state))->name, 
+								((BKY_ST_T *)(sma->state))->title);
 	++CBKY(sma)->cnt;
 }
 

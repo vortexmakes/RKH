@@ -1296,7 +1296,7 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: #RKH_SMA_EN_IEVENT, #RKH_SMA_EN_ID. 
+structure: #RKH_SMA_EN_IEVENT. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -1378,7 +1378,7 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: #RKH_SMA_EN_HCAL, #RKH_SMA_EN_STATE_ID. 
+structure: #RKH_SMA_EN_HCAL. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -1492,7 +1492,7 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PPRO.
+structure: RKH_SMA_EN_PPRO.
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -1824,8 +1824,7 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_EN_SUBMACHINE, 
-RKH_SMA_EN_STATE_ID.
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, and RKH_SMA_EN_SUBMACHINE.
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -1957,8 +1956,8 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
-RKH_SMA_EN_CONDITIONAL, RKH_SMA_MAX_TR_SEGS. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_EN_CONDITIONAL, 
+RKH_SMA_MAX_TR_SEGS. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -2065,8 +2064,8 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
-RKH_SMA_MAX_TR_SEGS, RKH_EN_SHALLOW_HISTORY. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_MAX_TR_SEGS, 
+RKH_EN_SHALLOW_HISTORY. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -2121,8 +2120,8 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
-RKH_SMA_MAX_TR_SEGS, RKH_EN_DEEP_HISTORY. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_MAX_TR_SEGS, 
+RKH_EN_DEEP_HISTORY. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -2174,8 +2173,8 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_STATE_ID, RKH_SMA_EN_PSEUDOSTATE, 
-RKH_SMA_EN_CHOICE, RKH_SMA_MAX_TR_SEGS. 
+structure: RKH_SMA_EN_HCAL, RKH_SMA_EN_PSEUDOSTATE, RKH_SMA_EN_CHOICE, 
+RKH_SMA_MAX_TR_SEGS. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -4191,26 +4190,12 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH><B><I> Default </I></B></TH> 
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_SMA_EN_ID </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_SMA_EN_ID </TD>
-	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_GET_INFO </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_GET_INFO </TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_SMA_EN_STATE_ID </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_SMA_EN_STATE_ID </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_PPRO </TD>
