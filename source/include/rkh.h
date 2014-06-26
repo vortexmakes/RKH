@@ -1120,6 +1120,125 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 									sma_t * const gob = &s_##sm;
 
 
+/**
+ * 	\brief
+ * 	Declares a state transition table.
+ *
+ * 	\param name			name of state (basic or composite) object.
+ */
+
+#define RKH_DECLARE_TR_TBL( name ) \
+			extern RKHROM RKHTR_T name##_trtbl[]
+
+
+/**
+ * 	\brief
+ *	Initializes the parameters (attibutes) of a basic state object.
+ *	
+ *	By means of single inheritance in C it could be used to associate data 
+ *	to a basic state. Moreover, implementing the single inheritance in C 
+ *	is very simply by literally embedding the base type, RKHSBSC_T in this 
+ *	case, as the first member of the derived structure. The following 
+ *	listing shows an example:
+ *
+ *	\code
+ *	(1) typedef struct MENU_ST_T
+ *		{
+ *	(2)		RKHROM RKHSBSC_T base;
+ *	(3)		const char *title;
+ *		} MENU_ST_T;
+ *	
+ *	...
+ *
+ *	(4) #define MENU_BASIC_STATE( type_t, name, en, ex, parent, title ) \
+ *	(5)				RKH_DECLARE_TR_TBL( name ); \
+ *					\
+ *	(6)				RKHROM type_t name = \
+ *					{ \
+ *	(7)					RKH_INIT_BASIC_STATE( name, en, ex, parent, NULL ), \
+ *	(8)					title \
+ *					}
+ *					
+ *	(9) MENU_BASIC_STATE( MENU_ST_T, menu_cfg, 	NULL, NULL, RKH_ROOT, 
+ *												"Menu 1" );
+ *		RKH_CREATE_TRANS_TABLE( menu_cfg )
+ *			RKH_TRREG( TIMEOUT, NULL, mc_title, &menu_cfg_resume ),
+ *			...
+ *		RKH_END_TRANS_TABLE
+ *
+ * 	...
+ *
+ *	 
+ *	(10) void
+ *		 mc_title( const struct rkhsma_t *sma )
+ *		 {
+ *		 	...
+ *			lcd_print( "%s\n", ((MENU_ST_T *)(sma->state))->title );
+ *		 }
+ *	\endcode
+ *
+ *	(1)  Defines MENU_ST_T as a derived structure from the basic state 
+ *		 structure. It could be used to associate data to a basic state 
+ *		 objects. \n
+ *	(2)	 Implementing the single inheritance in C is very simply by literally 
+ *		 embedding the base type, RKHSBSC_T in this case, as the first member 
+ *		 of the derived structure.  \n
+ *	(3)  Private members of MENU_ST_T derived structure. \n
+ *	(4)  Defines a simple macro to instantiate the derived state object.
+ *		 It is not strictly necessary.  \n
+ *	(4)	 Declares the transtion table by means of RKH_DECLARE_TR_TBL() macro 
+ *		 provided by the framework. \n
+ *	(6)  Instantiates the derived state structure. \n
+ *	(7)  Initializes the base structure, basic state in this case, using the 
+ *		 RKH_INIT_BASIC_STATE() macro provided by the framework. \n
+ *	(8)  Initializes the private member of derived state. \n
+ *	(9)  Invokes the BLINKY_BASIC_STATE() macro to instantiate the 
+ *		 derived state object, menu_cfg. Note that the "Menu 1" string is 
+ *		 associated to the state machine context, menu_cfg state in this 
+ *		 case. \n
+ *	(10) Lastly, on the transtion action mc_title(), or any other action, is 
+ *		 used the state data after casting the active object state to 
+ *		 derived state object.
+ *
+ *	\sa
+ *	See #RKH_CREATE_BASIC_STATE() macro for more information.
+ */
+
+#define RKH_INIT_BASIC_STATE( name, en, ex, parent, prepro ) 			\
+			{ 															\
+				{ 														\
+					{MKBASE(RKH_BASIC, name)}, 	/* RKHBASE_T */ 		\
+					MKST(en, ex, parent) 								\
+				}, 								/* RKHST_T */ 			\
+				MKBASIC(name, prepro) 									\
+			}									/* RKHSBSC_T */ 		\
+
+
+/**
+ * 	\brief
+ *	Initializes the parameters (attibutes) of a composite state object.
+ *	
+ *	By means of single inheritance in C it could be used to associate data 
+ *	to a basic state. Moreover, implementing the single inheritance in C 
+ *	is very simply by literally embedding the base type, RKHSCMP_T in this 
+ *	case, as the first member of the derived structure. 
+ *	
+ *	\note
+ *	See RKH_INIT_BASIC_STATE() and RKH_CREATE_COMP_STATE() macros to more 
+ *	information.
+ */
+
+#define RKH_INIT_COMPOSITE_STATE( 	name, en, ex, parent, 				\
+									defchild, history ) 				\
+			{ 															\
+				{ 														\
+					{MKBASE(RKH_COMPOSITE, name)}, /* RKHBASE_T */ 		\
+					MKST(en, ex, parent) 								\
+				}, 								   /* RKHST_T */ 		\
+				MKCOMP(name, defchild, history) 						\
+			}									   /* RKHSCMP_T */ 		\
+
+
 /** 	
  * 	\brief
  *  Return codes from rkh_dispatch() function.

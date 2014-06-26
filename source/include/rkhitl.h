@@ -718,6 +718,20 @@
 
 #endif
 
+#ifndef RKH_SMA_EN_ENT_ARG_STATE
+	#error "RKH_SMA_EN_ENT_ARG_STATE               not #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be RKH_ENABLED ]        "
+	#error "                                    [     || RKH_DISABLED]        "
+
+#elif 	((RKH_SMA_EN_ENT_ARG_STATE != RKH_ENABLED) && \
+        	(RKH_SMA_EN_ENT_ARG_STATE != RKH_DISABLED))
+	#error "RKH_SMA_EN_ENT_ARG_STATE         illegally #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be  RKH_ENABLED ]       "
+	#error "                                    [     ||  RKH_DISABLED]       "
+
+#endif
+
+
 #ifndef RKH_SMA_EN_EXT_ARG_SMA
 	#error "RKH_SMA_EN_EXT_ARG_SMA                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -726,6 +740,19 @@
 #elif 	((RKH_SMA_EN_EXT_ARG_SMA != RKH_ENABLED) && \
         	(RKH_SMA_EN_EXT_ARG_SMA != RKH_DISABLED))
 	#error "RKH_SMA_EN_EXT_ARG_SMA           illegally #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be  RKH_ENABLED ]       "
+	#error "                                    [     ||  RKH_DISABLED]       "
+
+#endif
+
+#ifndef RKH_SMA_EN_EXT_ARG_STATE
+	#error "RKH_SMA_EN_EXT_ARG_STATE               not #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be RKH_ENABLED ]        "
+	#error "                                    [     || RKH_DISABLED]        "
+
+#elif 	((RKH_SMA_EN_EXT_ARG_STATE != RKH_ENABLED) && \
+        	(RKH_SMA_EN_EXT_ARG_STATE != RKH_DISABLED))
+	#error "RKH_SMA_EN_EXT_ARG_STATE         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -2369,19 +2396,38 @@ typedef struct rkhsma_t
 
 
 #if RKH_SMA_EN_ENT_ARG_SMA == RKH_ENABLED
-	typedef void ( *RKHENT_T )( const struct rkhsma_t *sma );
-	#define RKH_EXEC_ENTRY( s, h )				\
-	{											\
-		if( (s)->enter != NULL )				\
-			(*(s)->enter)( h ); 				\
-	}
+	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+		typedef void ( *RKHENT_T )( const struct rkhsma_t *sma, 
+									const struct rkhst_t *state );
+		#define RKH_EXEC_ENTRY( s, h )							\
+		{														\
+			if( (s)->enter != NULL )							\
+				(*(s)->enter)( h, s ); 							\
+		}
+	#else
+		typedef void ( *RKHENT_T )( const struct rkhsma_t *sma );
+		#define RKH_EXEC_ENTRY( s, h )							\
+		{														\
+			if( (s)->enter != NULL )							\
+				(*(s)->enter)( h ); 							\
+		}
+	#endif
 #else
-	typedef void ( *RKHENT_T )( void );
-	#define RKH_EXEC_ENTRY( s, h )				\
-	{											\
-		if( (s)->enter != NULL )				\
-			(*(s)->enter)(); 					\
-	}
+	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+		typedef void ( *RKHENT_T )( const struct rkhst_t *state );
+		#define RKH_EXEC_ENTRY( s, h )							\
+		{														\
+			if( (s)->enter != NULL )							\
+				(*(s)->enter)( s ); 							\
+		}
+	#else
+		typedef void ( *RKHENT_T )( void );
+		#define RKH_EXEC_ENTRY( s, h )							\
+		{														\
+			if( (s)->enter != NULL )							\
+				(*(s)->enter)(); 								\
+		}
+	#endif
 #endif
 
 
@@ -2411,19 +2457,38 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_EXT_ARG_SMA == RKH_ENABLED
-	typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma );
-	#define RKH_EXEC_EXIT( s, h )				\
-	{											\
-		if( (s)->exit != NULL )					\
-			(*(s)->exit)( h ); 					\
-	}
+	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+		typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma,
+									const struct rkhst_t *state );
+		#define RKH_EXEC_EXIT( s, h )							\
+		{														\
+			if( (s)->exit != NULL )								\
+				(*(s)->exit)( h, s ); 							\
+		}
+	#else
+		typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma );
+		#define RKH_EXEC_EXIT( s, h )							\
+		{														\
+			if( (s)->exit != NULL )								\
+				(*(s)->exit)( h ); 								\
+		}
+	#endif
 #else
-	typedef void ( *RKHEXT_T )( void );
-	#define RKH_EXEC_EXIT( s, h )				\
-	{											\
-		if( (s)->exit != NULL )					\
-			(*(s)->exit)(); 					\
-	}
+	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+		typedef void ( *RKHEXT_T )( const struct rkhst_t *state );
+		#define RKH_EXEC_EXIT( s, h )							\
+		{														\
+			if( (s)->exit != NULL )								\
+				(*(s)->exit)( s ); 								\
+		}
+	#else
+		typedef void ( *RKHEXT_T )( void );
+		#define RKH_EXEC_EXIT( s, h )							\
+		{														\
+			if( (s)->exit != NULL )								\
+				(*(s)->exit)(); 								\
+		}
+	#endif
 #endif
 
 

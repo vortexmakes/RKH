@@ -227,9 +227,9 @@
 
 /**
  * 	Specify the maximum number of hierarchical levels. The smaller this 
- * 	number, the lower the RAM consumption. Typically, the most of hierarchical 
- * 	state machines uses up to 4 levels. Currently #RKH_SMA_MAX_HCAL_DEPTH cannot 
- * 	exceed 8.
+ * 	number, the lower the RAM consumption. Typically, the most of 
+ * 	hierarchical state machines uses up to 4 levels. Currently 
+ * 	#RKH_SMA_MAX_HCAL_DEPTH cannot exceed 8.
  */
 
 #define RKH_SMA_MAX_HCAL_DEPTH			4
@@ -258,8 +258,8 @@
 #define RKH_SMA_EN_DEEP_HISTORY			1
 
 /**
- *	If the #RKH_SMA_EN_SHALLOW_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set to 1, 
- *	the RKH allows shallow history pseudostate usage.
+ *	If the #RKH_SMA_EN_SHALLOW_HISTORY and #RKH_SMA_EN_PSEUDOSTATE are set 
+ *	to 1, the RKH allows shallow history pseudostate usage.
  */
 
 #define RKH_SMA_EN_SHALLOW_HISTORY		1
@@ -296,20 +296,28 @@
 /* --- Configuration options related to SMA action featues ---------------- */
 
 /**
- *	If the #RKH_SMA_EN_INIT_ARG_SMA is set to 1 then the initial action prototype 
- *	will add as argument a pointer to state machine structure #RKHSMA_T. See 
- *	#RKHINIT_T definition.
+ *	If the #RKH_SMA_EN_INIT_ARG_SMA is set to 1 then the initial action 
+ *	prototype will add as argument a pointer to state machine structure 
+ *	#RKHSMA_T. See #RKHINIT_T definition.
  */
 
 #define RKH_SMA_EN_INIT_ARG_SMA			1
 
 /**
- *	If the #RKH_SMA_EN_ENT_ARG_SMA is set to 1 then the entry action prototype 
- *	will add as argument a pointer to state machine structure #RKHSMA_T. See 
- *	#RKHENT_T definition.
+ *	If the #RKH_SMA_EN_ENT_ARG_SMA is set to 1 then the entry action 
+ *	prototype will add as argument a pointer to state machine structure 
+ *	#RKHSMA_T. See #RKHENT_T definition.
  */
 
 #define RKH_SMA_EN_ENT_ARG_SMA			1
+
+/**
+ *	If the #RKH_SMA_EN_ENT_ARG_STATE is set to 1 then the entry action 
+ *	prototype will add as argument a pointer to "this" state structure 
+ *	#RKHST_T. See #RKHENT_T definition.
+ */
+
+#define RKH_SMA_EN_ENT_ARG_STATE		0
 
 /**
  *	If the #RKH_SMA_EN_EXT_ARG_SMA is set to 1 then the exit action prototype 
@@ -318,6 +326,14 @@
  */
 
 #define RKH_SMA_EN_EXT_ARG_SMA			1
+
+/**
+ *	If the #RKH_SMA_EN_EXT_ARG_STATE is set to 1 then the exit action 
+ *	prototype will add as argument a pointer to "this" state structure 
+ *	#RKHST_T. See #RKHEXT_T definition.
+ */
+
+#define RKH_SMA_EN_EXT_ARG_STATE		0
 
 /**
  *	If the #RKH_SMA_EN_ACT_ARG_SMA is set to 1 then the transition action 
@@ -428,15 +444,15 @@
 #define RKH_TRC_EN_RQ					0
 
 /**
- *	If the #RKH_TRC_EN_SMA is set to 1 then RKH will include all trace records 
- *	related to the state machine applications.
+ *	If the #RKH_TRC_EN_SMA is set to 1 then RKH will include all trace 
+ *	records related to the state machine applications.
  */
 
 #define RKH_TRC_EN_SMA					0
 
 /**
- *	If the #RKH_TRC_EN_TIM is set to 1 then RKH will include all trace records 
- *	related to the native software timer.
+ *	If the #RKH_TRC_EN_TIM is set to 1 then RKH will include all trace 
+ *	records related to the native software timer.
  */
 
 #define RKH_TRC_EN_TIM					0
@@ -449,8 +465,8 @@
 #define RKH_TRC_EN_SM					0
 
 /**
- *	If the #RKH_TRC_EN_FWK is set to 1 then RKH will include all trace records 
- *	related to the nativenative  event framework.
+ *	If the #RKH_TRC_EN_FWK is set to 1 then RKH will include all trace 
+ *	records related to the nativenative  event framework.
  */
 
 #define RKH_TRC_EN_FWK					1
@@ -540,23 +556,24 @@
 #define RKH_TRC_EN_SM_PROCESS			1
 
 /**
- *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace record an 
- *	incremental number (1-byte), used like a sequence number.
+ *	If the #RKH_TRC_EN_NSEQ is set to 1 then RKH will add to the trace 
+ *	record an incremental number (1-byte), used like a sequence number.
  *	See RKH_TRC_NSEQ() and RKH_TRC_HDR() macros.
  */
 
 #define RKH_TRC_EN_NSEQ					1
 
 /**
- *	If the #RKH_TRC_EN_CHK is set to 1 then RKH will add to the trace record a 
- *	checksum (1-byte). See RKH_TRC_CHK() macro.
+ *	If the #RKH_TRC_EN_CHK is set to 1 then RKH will add to the trace 
+ *	record a checksum (1-byte). See RKH_TRC_CHK() macro.
  */
 
 #define RKH_TRC_EN_CHK					1
 
 /**
- *	If the #RKH_TRC_EN_TSTAMP is set to 1 then RKH will add to the trace record 
- *	a timestamp field. It's configurable by means of #RKH_TRC_SIZEOF_TSTAMP.
+ *	If the #RKH_TRC_EN_TSTAMP is set to 1 then RKH will add to the trace 
+ *	record a timestamp field. It's configurable by means of 
+ *	#RKH_TRC_SIZEOF_TSTAMP.
  */
 
 #define RKH_TRC_EN_TSTAMP				1
@@ -604,9 +621,9 @@
 #define RKH_RQ_EN_GET_INFO				0
 
 /**
- *	If the #RKH_RQ_EN_READ is set to 1 then RKH will include the rkh_rq_read() 
- *	function that allows read an element from a queue without remove it.
- *	See rkh_rq_read() function.
+ *	If the #RKH_RQ_EN_READ is set to 1 then RKH will include the 
+ *	rkh_rq_read() function that allows read an element from a queue without 
+ *	remove it. See rkh_rq_read() function.
  */
 
 #define	RKH_RQ_EN_READ					1

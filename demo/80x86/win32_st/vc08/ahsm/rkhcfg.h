@@ -318,12 +318,20 @@
 #define RKH_SMA_EN_INIT_ARG_SMA			RKH_ENABLED
 
 /**
- *	If the #RKH_SMA_EN_ENT_ARG_SMA is set to 1 then the entry action prototype 
- *	will add as argument a pointer to state machine structure #RKHSMA_T. See 
- *	#RKHENT_T definition.
+ *	If the #RKH_SMA_EN_ENT_ARG_SMA is set to 1 then the entry action 
+ *	prototype will add as argument a pointer to state machine structure 
+ *	#RKHSMA_T. See #RKHENT_T definition.
  */
 
 #define RKH_SMA_EN_ENT_ARG_SMA			RKH_ENABLED
+
+/**
+ *	If the #RKH_SMA_EN_ENT_ARG_STATE is set to 1 then the entry action 
+ *	prototype will add as argument a pointer to "this" state structure 
+ *	#RKHST_T. See #RKHENT_T definition.
+ */
+
+#define RKH_SMA_EN_ENT_ARG_STATE		RKH_DISABLED
 
 /**
  *	If the #RKH_SMA_EN_EXT_ARG_SMA is set to 1 then the exit action prototype 
@@ -332,6 +340,14 @@
  */
 
 #define RKH_SMA_EN_EXT_ARG_SMA			RKH_ENABLED
+
+/**
+ *	If the #RKH_SMA_EN_EXT_ARG_STATE is set to 1 then the exit action 
+ *	prototype will add as argument a pointer to "this" state structure 
+ *	#RKHST_T. See #RKHEXT_T definition.
+ */
+
+#define RKH_SMA_EN_EXT_ARG_STATE		RKH_DISABLED
 
 /**
  *	If the #RKH_SMA_EN_ACT_ARG_SMA is set to 1 then the transition action 

@@ -4288,12 +4288,26 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_ENT_ARG_SMA </TD>
 	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_ENT_ARG_STATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_ENT_ARG_STATE </TD>
+	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_EXT_ARG_SMA </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_SMA_EN_EXT_ARG_SMA </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_SMA_EN_EXT_ARG_STATE </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_SMA_EN_EXT_ARG_STATE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_ACT_ARG_SMA </TD>
