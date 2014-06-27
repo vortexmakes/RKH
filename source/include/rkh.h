@@ -1212,6 +1212,56 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *		 used the state data after casting the active object state to 
  *		 derived state object.
  *
+ * 	The following listing shows another example for derived state structure, 
+ * 	which access to RAM from ROM object (state structure).
+ *	
+ *	\code
+ *	    typedef struct XY_T
+ *		{
+ *			int x;
+ *			int y;
+ *		} XY_T;
+ *
+ *	(1) typedef struct NUM_STATE_T
+ *		{
+ *	(2)		RKHROM RKHSBSC_T base;
+ *	(3) 	XY_T *p_ram_xy;
+ *		} NUM_STATE_T;
+ *
+ *	(4) #define NUM_BASIC_STATE( name, en, ex, parent, p_xy ) \
+ *	   				RKH_DECLARE_TR_TBL( name ); \
+ *					\
+ *	   				RKHROM NUM_STATE_T name = \
+ *					{ \
+ *	   					RKH_INIT_BASIC_STATE( name, en, ex, parent, NULL ), \
+ *	(5)					p_xy \
+ *					}
+ *
+ *		static XY_T xy;
+ *	(6) NUM_BASIC_STATE( num, NULL, NULL, RKH_ROOT, &xy );
+ *
+ *	    void
+ *		num_inc( const struct rkhsma_t *sma )
+ *		{
+ *	(7)		((NUM_STATE_T *)(sma->state))->p_ram_xy++;
+ *			...
+ *		}
+ *	\endcode
+ *
+ *	(1)  Defines NUM_STATE_T as a derived structure from the basic state 
+ *		 structure. \n
+ *	(2)	 Implementing the single inheritance in C is very simply by literally 
+ *		 embedding the base type, RKHSBSC_T in this case, as the first member 
+ *		 of the derived structure. \n
+ *	(3)  Private members of NUM_STATE_T derived structure. It allows to 
+ *		 acccess to RAM locations from this object (NUM_STATE_ST) allocated 
+ *		 in ROM. \n
+ *	(4)  Defines a simple macro to instantiate the derived state object. \n
+ *	(5)  Initializes the private member of derived state. \n
+ *	(6,7)Invokes the NUM_BASIC_STATE() macro to instantiate the derived 
+ *		 state object, num. Note that the variable xy is allocated in RAM 
+ *		 but it is access to read and write from ROM object. \n
+ *
  *	\sa
  *	See #RKH_CREATE_BASIC_STATE() macro for more information.
  */
