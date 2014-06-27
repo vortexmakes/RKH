@@ -51,7 +51,7 @@
 
 
 RKH_MODULE_NAME( rkhs )
-RKHRG_T rkhrg;				/* ready group of SMAs */
+RKH_RG_T rkhrg;				/* ready group of SMAs */
 
 
 void 
@@ -84,8 +84,8 @@ void
 rkh_enter( void )
 {
 	rkhui8_t prio;
-	RKHSMA_T *sma;
-	RKHEVT_T *e;
+	RKH_SMA_T *sma;
+	RKH_EVT_T *e;
 	RKH_SR_ALLOC();
 
 	RKH_HK_START();
@@ -125,14 +125,14 @@ rkh_exit( void )
 
 
 void 
-rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
     ( void )stks;
     ( void )stksize;
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( (qs != (const RKHEVT_T **)0) && (qsize != (RKH_RQNE_T)0) );
+	RKHREQUIRE( (qs != (const RKH_EVT_T **)0) && (qsize != (RKH_RQNE_T)0) );
 
 	rkh_rq_init( &sma->equeue, (const void** )qs, qsize, sma );
 	rkh_sma_register( sma );
@@ -142,7 +142,7 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 
 
 void 
-rkh_sma_terminate( RKHSMA_T *sma )
+rkh_sma_terminate( RKH_SMA_T *sma )
 {
 	RKH_SR_ALLOC();
 

@@ -28,13 +28,13 @@ enum
 
 typedef struct
 {
-	RKHSMA_T sma;	/* base structure */
+	RKH_SMA_T sma;	/* base structure */
 	rkhui8_t cnt;	/* private member */
-} BKYSM_T;			/* SMA derived from RKHSMA_T structure */
+} BKYSM_T;			/* SMA derived from RKH_SMA_T structure */
 
 typedef struct BKY_ST_T
 {
-	RKHROM RKHSBSC_T base;
+	RKHROM RKH_SBSC_T base;
 	const char *title;
 } BKY_ST_T;
 

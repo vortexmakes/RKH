@@ -60,7 +60,7 @@
 #define SERIAL_TRACE				1
 
 #define SIZEOF_EP0STO				32
-#define SIZEOF_EP0_BLOCK			sizeof( RKHEVT_T )
+#define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
 #define SIZEOF_EP1STO				16
 #define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
 
@@ -106,7 +106,7 @@ extern rkhui8_t g_isr_tick;
 
 static
 void
-bsp_publish( const RKHEVT_T *e )
+bsp_publish( const RKH_EVT_T *e )
 {
 	HInt cn;
 
@@ -177,10 +177,10 @@ rkh_trc_close( void )
 }
 
 
-RKHTS_T 
+RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKHTS_T )get_ts();
+	return ( RKH_TS_T )get_ts();
 }
 
 
@@ -294,7 +294,7 @@ bsp_svr_recall( rkhui8_t clino )
 
 
 void 
-bsp_svr_paused( const RKHSMA_T *sma )
+bsp_svr_paused( const RKH_SMA_T *sma )
 {
 	(void)sma;
 }

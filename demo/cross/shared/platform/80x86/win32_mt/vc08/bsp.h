@@ -72,7 +72,7 @@ void bsp_cli_paused( rkhui8_t clino );
 void bsp_cli_resumed( rkhui8_t clino );
 void bsp_cli_done( rkhui8_t clino );
 void bsp_svr_recall( rkhui8_t clino );
-void bsp_svr_paused( const RKHSMA_T *sma );
+void bsp_svr_paused( const RKH_SMA_T *sma );
 
 
 #endif

@@ -28,10 +28,10 @@ typedef enum cli_prio
 
 typedef struct
 {
-	RKHSMA_T sma;		/* base structure */
-	RKHT_T cli_utmr; 	/* usage time */
-	RKHT_T cli_rtmr;	/* waiting request time */
-} CLI_T;				/* Active Object derived from RKHSMA_T structure */
+	RKH_SMA_T sma;		/* base structure */
+	RKH_TMR_T cli_utmr; /* usage time */
+	RKH_TMR_T cli_rtmr;	/* waiting request time */
+} CLI_T;				/* Active Object derived from RKH_SMA_T structure */
 
 
 /*

@@ -36,9 +36,9 @@ void cli_resume( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
-void cli_req( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void cli_start( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void cli_end( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void cli_end( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 #endif

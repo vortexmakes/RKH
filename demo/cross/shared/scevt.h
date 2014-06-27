@@ -31,14 +31,14 @@ typedef enum sc_sigs_t
 
 typedef struct
 {
-	RKHEVT_T e;			/** base structure */
+	RKH_EVT_T e;			/** base structure */
 	rkhui8_t clino; 	/** client number (ID) */
 } REQ_EVT_T;
 
 
 typedef struct
 {
-	RKHEVT_T e;			/** base structure */
+	RKH_EVT_T e;			/** base structure */
 	rkhui8_t clino; 	/** client number (ID) */
 } START_EVT_T;
 

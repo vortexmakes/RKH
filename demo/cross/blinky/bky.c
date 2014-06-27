@@ -41,7 +41,7 @@ RKH_END_TRANS_TABLE
 #else
 
 #define RKH_DECLARE_TR_TBL( name ) \
-			extern RKHROM RKHTR_T name##_trtbl[]
+			extern RKHROM RKH_TR_T name##_trtbl[]
 
 #define RKH_INIT_BASIC_STATE( name, en, ex, parent, prepro ) \
 			{ \

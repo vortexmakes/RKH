@@ -263,10 +263,10 @@ rkh_trc_close( void )
 }
 
 
-RKHTS_T 
+RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKHTS_T )clock();
+	return ( RKH_TS_T )clock();
 }
 
 

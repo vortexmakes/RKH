@@ -146,22 +146,22 @@ const char *rkh_get_port_desc( void );
 #define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
 
 
-#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_EQ_TYPE              		RKH_RQ_T
 #define RKH_OSSIGNAL_TYPE				void*
 #define RKH_THREAD_TYPE					void*
 
 
 #define RKH_SMA_BLOCK( sma ) 			\
-				while( ((RKHSMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
+				while( ((RKH_SMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
 				{ \
 					RKH_EXIT_CRITICAL_(); \
-					(void)WaitForSingleObject( ((RKHSMA_T*)(sma))->os_signal, \
+					(void)WaitForSingleObject( ((RKH_SMA_T*)(sma))->os_signal, \
 														(DWORD)INFINITE ); \
 					RKH_ENTER_CRITICAL_(); \
 				}
 
 #define RKH_SMA_READY( rg, sma ) 		\
-			    (void)SetEvent( ((RKHSMA_T*)(sma))->os_signal )
+			    (void)SetEvent( ((RKH_SMA_T*)(sma))->os_signal )
 
 #define RKH_SMA_UNREADY( rg, sma )		(void)0
 

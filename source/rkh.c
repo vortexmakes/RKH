@@ -100,11 +100,11 @@ RKH_MODULE_NAME( rkh )
 
 #if RKH_SMA_EN_PPRO == RKH_ENABLED
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
-				(RKHE_T)( ((s)->prepro != CPP(0)) ?					\
+				(RKH_SIG_T)( ((s)->prepro != CPP(0)) ?				\
 						rkh_call_prepro((s),(h),(pe)) : (pe)->e )
 #else
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
-				(RKHE_T)((pe)->e)
+				(RKH_SIG_T)((pe)->e)
 #endif
 
 
@@ -256,13 +256,13 @@ rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
 #if defined( RKH_DEEP_ENABLED )
 	static
 	void
-	rkh_update_deep_hist( RKHROM RKHST_T *from )
+	rkh_update_deep_hist( RKHROM RKH_ST_T *from )
 	{
-		RKHROM RKHST_T *s;
-		RKHROM RKHSHIST_T *h;
+		RKHROM RKH_ST_T *s;
+		RKHROM RKH_SHIST_T *h;
 
 		for( s = from->parent; 
-				s != (RKHROM RKHST_T *)0; s = s->parent )
+				s != (RKHROM RKH_ST_T *)0; s = s->parent )
 		{
 #if defined( RKH_SUBMACHINE_ENABLED )
 			if( IS_REF_SUBMACHINE( s ) )
@@ -271,7 +271,7 @@ rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
 				continue;
 			}
 #endif
-			if( ( h = CCMP(s)->history ) != (RKHROM RKHSHIST_T *)0 && 
+			if( ( h = CCMP(s)->history ) != (RKHROM RKH_SHIST_T *)0 && 
 					CB(h)->type == RKH_DHISTORY )
 				*h->target = from;
 		}
@@ -282,15 +282,15 @@ rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
 
 
 void 
-rkh_init_hsm( RKHSMA_T *sma )
+rkh_init_hsm( RKH_SMA_T *sma )
 {
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
-	RKHROM RKHST_T *s;
+	RKHROM RKH_ST_T *s;
 #endif
 	RKH_SR_ALLOC();
 
-    RKHASSERT( 	sma != (RKHSMA_T *)0 && 
-				sma->romrkh->istate != (RKHROM RKHST_T *)0 );
+    RKHASSERT( 	sma != (RKH_SMA_T *)0 && 
+				sma->romrkh->istate != (RKHROM RKH_ST_T *)0 );
 	RKH_TR_SM_INIT( sma, sma->romrkh->istate );
 	RKH_EXEC_INIT( sma );
 
@@ -313,7 +313,7 @@ rkh_init_hsm( RKHSMA_T *sma )
 
 #if defined( RKH_HISTORY_ENABLED )
 void
-rkh_clear_history( RKHROM RKHSHIST_T *h )
+rkh_clear_history( RKHROM RKH_SHIST_T *h )
 {
 	*h->target = (RKHROM void *)0;
 }
@@ -321,32 +321,32 @@ rkh_clear_history( RKHROM RKHSHIST_T *h )
 
 
 HUInt
-rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
+rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
-	RKHROM RKHST_T *cs, *ts;
+	RKHROM RKH_ST_T *cs, *ts;
 	RKHROM void *ets;
-	RKHROM RKHTR_T *tr;
+	RKHROM RKH_TR_T *tr;
 	HUInt inttr;
-	RKHE_T in;
+	RKH_SIG_T in;
 #if RKH_TRC_EN == RKH_ENABLED
 	rkhui8_t step;
 #endif
 #if defined( RKH_SHALLOW_ENABLED )
-	RKHROM RKHSHIST_T *h;
+	RKHROM RKH_SHIST_T *h;
 #endif
 #if defined( RKH_SUBMACHINE_ENABLED )
-	RKHROM RKHSSBM_T *dp;
+	RKHROM RKH_SSBM_T *dp;
 #endif
 	                      /* to deal with Statechart's transition sequence */
-	RKH_RAM RKHROM RKHST_T *stn, *stx;
+	RKH_RAM RKHROM RKH_ST_T *stn, *stx;
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
-	RKH_RAM RKHROM RKHST_T **snl;
+	RKH_RAM RKHROM RKH_ST_T **snl;
 	RKH_RAM rkhui8_t islca;
 #endif
 	RKH_RAM rkhui8_t ix_n, ix_x, nn;
                                                    /* set of entered states */
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
-	RKH_RAM RKHROM RKHST_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
+	RKH_RAM RKHROM RKH_ST_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
 #endif
                                       /* set of executed transition actions */
 	RKH_RAM RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
@@ -356,7 +356,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 	RKH_RAM rkhui8_t nal;
 	RKH_SR_ALLOC();
 
-    RKHASSERT( sma != (RKHSMA_T *)0 && pe != (RKHEVT_T *)0 );
+    RKHASSERT( sma != (RKH_SMA_T *)0 && pe != (RKH_EVT_T *)0 );
 
 	inttr = 0;
 	INFO_RCV_EVENTS( sma );
@@ -590,7 +590,7 @@ rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *pe )
 
 #if RKH_SMA_EN_GET_INFO == RKH_ENABLED
 void 
-rkh_sma_clear_info( RKHSMA_T *sma )
+rkh_sma_clear_info( RKH_SMA_T *sma )
 {
 	RKH_SMAI_T *psi;
 	RKH_SR_ALLOC();
@@ -604,7 +604,7 @@ rkh_sma_clear_info( RKHSMA_T *sma )
 
 
 void 
-rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi )
+rkh_sma_get_info( RKH_SMA_T *sma, RKH_SMAI_T *psi )
 {
 	RKH_SR_ALLOC();
 
@@ -618,7 +618,7 @@ rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi )
 #if		((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
 		(RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED))
 HUInt
-rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
+rkh_else( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -627,7 +627,7 @@ rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe )
 #elif 	((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
 		(RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED))
 HUInt 
-rkh_else( RKHEVT_T *pe )
+rkh_else( RKH_EVT_T *pe )
 {
 	(void)pe;
 	return RKH_GTRUE;

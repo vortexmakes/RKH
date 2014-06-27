@@ -18,11 +18,11 @@
 
 typedef struct
 {
-	RKHSMA_T sma;		                                   /* base structure */
-	rkhui32_t ntot;		                /* total number of attended requests */
-							  /* number of attended requests of every client */
+	RKH_SMA_T sma;		                                  /* base structure */
+	rkhui32_t ntot;		               /* total number of attended requests */
+							 /* number of attended requests of every client */
 	rkhui32_t ncr[ NUM_CLIENTS ];
-} SVR_T;			        /* Active Object derived from RKHSMA_T structure */
+} SVR_T;			      /* Active Object derived from RKH_SMA_T structure */
 
 
 /*

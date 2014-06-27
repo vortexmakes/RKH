@@ -51,7 +51,7 @@
 #include "rkhcfg.h"
 
 
-#define RCE( e )			(( RKHEVT_T*)(e))
+#define RCE( e )			(( RKH_EVT_T*)(e))
 
 
 /** 
@@ -61,13 +61,13 @@
  */
 
 #if RKH_SIZEOF_EVENT == 8
-	typedef rkhui8_t RKHE_T;
+	typedef rkhui8_t RKH_SIG_T;
 #elif RKH_SIZEOF_EVENT == 16
-	typedef rkhui16_t RKHE_T;
+	typedef rkhui16_t RKH_SIG_T;
 #elif RKH_SIZEOF_EVENT == 32
-	typedef rkhui32_t RKHE_T;
+	typedef rkhui32_t RKH_SIG_T;
 #else
-	typedef rkhui8_t RKHE_T;
+	typedef rkhui8_t RKH_SIG_T;
 #endif
 
 
@@ -78,13 +78,13 @@
  */
 
 #if RKH_SIZEOF_ESIZE == 8
-	typedef rkhui8_t RKHES_T;
+	typedef rkhui8_t RKH_ES_T;
 #elif RKH_SIZEOF_ESIZE == 16
-	typedef rkhui16_t RKHES_T;
+	typedef rkhui16_t RKH_ES_T;
 #elif RKH_SIZEOF_ESIZE == 32
-	typedef rkhui32_t RKHES_T;
+	typedef rkhui32_t RKH_ES_T;
 #else
-	typedef rkhui8_t RKHES_T;
+	typedef rkhui8_t RKH_ES_T;
 #endif
 
 
@@ -96,16 +96,16 @@
  * 	instance to convey not only the occurrence of some interesting 
  * 	incident but also quantitative information regarding that occurrence.
  *	Implementing the single inheritance in C is very simply by literally
- *	embedding the base structure, RKHEVT_T in this case, as the first 
+ *	embedding the base structure, RKH_EVT_T in this case, as the first 
  *	member of the derived structure.
  * 	For example, the structure MYEVT_T derived from the base structure 
- * 	RKHEVT_T by embedding the RKHEVT_T instance as the first member of 
+ * 	RKH_EVT_T by embedding the RKH_EVT_T instance as the first member of 
  *	MYEVT_T.
  *
  * 	\code
  * 	typedef struct
  * 	{
- * 		RKHEVT_T evt;	// base structure
+ * 		RKH_EVT_T evt;	// base structure
  *		int x;			// parameter 'x'
  *		int y;			// parameter 'y'
  * 	} MYEVT_T;
@@ -114,30 +114,30 @@
  *	Such nesting of structures always aligns the data member 'evt' at the 
  *	beginning of every instance of the derived structure. In particular, this 
  *	alignment lets you treat a pointer to the derived MYEVT_T structure as a 
- *	pointer to the RKHEVT_T base structure. Consequently, you can always 
+ *	pointer to the RKH_EVT_T base structure. Consequently, you can always 
  *	safely pass a pointer to MYEVT_T to any C function that expects a pointer 
- *	to RKHEVT_T. (To be strictly correct in C, you should explicitly cast this 
+ *	to RKH_EVT_T. (To be strictly correct in C, you should explicitly cast this 
  *	pointer. In OOP such casting is called upcasting and is always safe.) 
- *	Therefore, all functions designed for the RKHEVT_T structure are 
+ *	Therefore, all functions designed for the RKH_EVT_T structure are 
  *	automatically available to the MYEVT_T structure as well as other 
- *	structures derived from RKHEVT_T.
+ *	structures derived from RKH_EVT_T.
  *
  * 	\note
- * 	The RKH takes the \a 'e' member of RKHEVT_T structure for triggering a 
+ * 	The RKH takes the \a 'e' member of RKH_EVT_T structure for triggering a 
  * 	state transition.
  *
  * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
  * 	rkh_set_static_event() and rkh_gc().
  */
 
-typedef struct RKHEVT_T
+typedef struct RKH_EVT_T
 {
 	/**
 	 * 	\brief
 	 *	Signal of the event instance.
 	 */
 
-	RKHE_T e;
+	RKH_SIG_T e;
 
 	/**
 	 * 	\brief
@@ -146,7 +146,7 @@ typedef struct RKHEVT_T
 
 	rkhui8_t nref;
 	rkhui8_t pool;
-} RKHEVT_T;
+} RKH_EVT_T;
 
 
 #endif

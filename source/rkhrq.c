@@ -67,7 +67,7 @@ RKH_MODULE_NAME( rkhrq )
 #endif
 
 
-void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
+void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
 					const struct rkhsma_t *sma )
 {
 	RKH_SR_ALLOC();
@@ -91,12 +91,12 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 
 #if RKH_RQ_EN_IS_FULL == RKH_ENABLED
 HUInt 
-rkh_rq_is_full( RKHRQ_T *q )
+rkh_rq_is_full( RKH_RQ_T *q )
 {
 	RKH_RQNE_T qty;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != (RKHRQ_T *)0 );
+	RKHASSERT( q != (RKH_RQ_T *)0 );
 	
 	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
@@ -109,7 +109,7 @@ rkh_rq_is_full( RKHRQ_T *q )
 
 #if RKH_RQ_EN_GET_NELEMS == RKH_ENABLED
 RKH_RQNE_T 
-rkh_rq_get_num( RKHRQ_T *q )
+rkh_rq_get_num( RKH_RQ_T *q )
 {
 	RKH_RQNE_T qty;
 	RKH_SR_ALLOC();
@@ -127,7 +127,7 @@ rkh_rq_get_num( RKHRQ_T *q )
 
 #if RKH_RQ_EN_GET_LWMARK == RKH_ENABLED
 RKH_RQNE_T 
-rkh_rq_get_lwm( RKHRQ_T *q )
+rkh_rq_get_lwm( RKH_RQ_T *q )
 {
 	RKH_RQNE_T nmin;
 	RKH_SR_ALLOC();
@@ -144,7 +144,7 @@ rkh_rq_get_lwm( RKHRQ_T *q )
 
 
 void *
-rkh_rq_get( RKHRQ_T *q  )
+rkh_rq_get( RKH_RQ_T *q  )
 {
 	void *e = CV(0);
 	RKH_SR_ALLOC();
@@ -173,7 +173,7 @@ rkh_rq_get( RKHRQ_T *q  )
 
 	if( q->sma != CSMA(0) && q->qty == 0 )
 	{
-		RKH_SMA_UNREADY( rkhrg, (RKHSMA_T *)( q->sma ) );
+		RKH_SMA_UNREADY( rkhrg, (RKH_SMA_T *)( q->sma ) );
 		RKH_EXIT_CRITICAL_();
 		RKH_TR_RQ_GET_LAST( q );
 	}
@@ -187,7 +187,7 @@ rkh_rq_get( RKHRQ_T *q  )
 
 
 void 
-rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
+rkh_rq_put_fifo( RKH_RQ_T *q, const void *pe )
 {
 	RKH_SR_ALLOC();
 
@@ -211,7 +211,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 
 	if( q->sma != CSMA(0) )
 	{
-		RKH_SMA_READY( rkhrg, (RKHSMA_T *)( q->sma ) );
+		RKH_SMA_READY( rkhrg, (RKH_SMA_T *)( q->sma ) );
 	}
 
 #if RKH_RQ_EN_GET_LWMARK == RKH_ENABLED
@@ -226,7 +226,7 @@ rkh_rq_put_fifo( RKHRQ_T *q, const void *pe )
 
 #if RKH_RQ_EN_PUT_LIFO == RKH_ENABLED
 void 
-rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
+rkh_rq_put_lifo( RKH_RQ_T *q, const void *pe )
 {
 	RKH_SR_ALLOC();
 
@@ -253,7 +253,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 
 	if( q->sma != CSMA(0) )
 	{
-		RKH_SMA_READY( rkhrg, (RKHSMA_T *)( q->sma ) );
+		RKH_SMA_READY( rkhrg, (RKH_SMA_T *)( q->sma ) );
 	}
 
 #if RKH_RQ_EN_GET_LWMARK == RKH_ENABLED
@@ -268,7 +268,7 @@ rkh_rq_put_lifo( RKHRQ_T *q, const void *pe )
 
 #if RKH_RQ_EN_DEPLETE == RKH_ENABLED
 void 
-rkh_rq_deplete( RKHRQ_T *q )
+rkh_rq_deplete( RKH_RQ_T *q )
 {
 	RKH_SR_ALLOC();
 
@@ -277,7 +277,7 @@ rkh_rq_deplete( RKHRQ_T *q )
 	q->qty = 0;
 	q->pin = q->pout = ( void ** )q->pstart;
 	if( q->sma != CSMA(0) )
-		RKH_SMA_UNREADY( rkhrg, (RKHSMA_T *)( q->sma ) );
+		RKH_SMA_UNREADY( rkhrg, (RKH_SMA_T *)( q->sma ) );
 	RKH_EXIT_CRITICAL_();
 	RKH_TR_RQ_DPT( q );
 }
@@ -286,7 +286,7 @@ rkh_rq_deplete( RKHRQ_T *q )
 
 #if RKH_RQ_EN_READ == RKH_ENABLED
 HUInt 
-rkh_rq_read( RKHRQ_T *q, void *pe )
+rkh_rq_read( RKH_RQ_T *q, void *pe )
 {
 	RKH_SR_ALLOC();
 
@@ -311,7 +311,7 @@ rkh_rq_read( RKHRQ_T *q, void *pe )
 
 #if RKH_RQ_EN_GET_INFO == RKH_ENABLED
 void 
-rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
+rkh_rq_get_info( RKH_RQ_T *q, RKH_RQI_T *pqi )
 {
 	RKH_SR_ALLOC();
 
@@ -322,7 +322,7 @@ rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi )
 
 
 void 
-rkh_rq_clear_info( RKHRQ_T *q )
+rkh_rq_clear_info( RKH_RQ_T *q )
 {
 	RKH_RQI_T *prqi;
 	RKH_SR_ALLOC();

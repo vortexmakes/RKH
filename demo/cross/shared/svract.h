@@ -35,10 +35,10 @@ void svr_resume( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
-void svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void svr_end( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void svr_defer( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void svr_terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 #endif

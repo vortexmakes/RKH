@@ -656,24 +656,24 @@ typedef enum rkh_trc_events
 
 #if RKH_TRC_EN_TSTAMP == RKH_ENABLED
 	#if RKH_TRC_SIZEOF_TSTAMP == 8
-		typedef rkhui8_t RKHTS_T;
+		typedef rkhui8_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI8( rkh_trc_getts() )
 	#elif RKH_TRC_SIZEOF_TSTAMP == 16
-		typedef rkhui16_t RKHTS_T;
+		typedef rkhui16_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI16( rkh_trc_getts() )
 	#elif RKH_TRC_SIZEOF_TSTAMP == 32
-		typedef rkhui32_t RKHTS_T;
+		typedef rkhui32_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI32( rkh_trc_getts() )
 	#else
-		typedef rkhui16_t RKHTS_T;
+		typedef rkhui16_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI16( rkh_trc_getts() )
 	#endif
 #else
-	typedef rkhui16_t RKHTS_T;
+	typedef rkhui16_t RKH_TS_T;
 	#define RKH_TRC_TSTAMP()
 #endif
 
@@ -960,7 +960,7 @@ enum rkh_trc_fmt
 	RKH_MEM_T,		/**< up to 255-bytes memory block format */
 	RKH_OBJ_T,		/**< object pointer format */
 	RKH_FUN_T,		/**< function pointer format */
-	RKH_SIG_T		/**< event signal format */
+	RKH_ESIG_T		/**< event signal format */
 };
 
 
@@ -1127,16 +1127,16 @@ enum rkh_trc_fmt
 
 	#if RKH_SIZEOF_EVENT == 8
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
+					rkh_trc_fmt_u8((rkhui8_t)RKH_ESIG_T, (rkhui8_t)(sig_))
 	#elif RKH_SIZEOF_EVENT == 16
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u16((rkhui8_t)RKH_SIG_T, (rkhui16_t)(sig_))
+					rkh_trc_fmt_u16((rkhui8_t)RKH_ESIG_T, (rkhui16_t)(sig_))
 	#elif RKH_SIZEOF_EVENT == 32
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u32((rkhui8_t)RKH_SIG_T, (rkhui32_t)(sig_))
+					rkh_trc_fmt_u32((rkhui8_t)RKH_ESIG_T, (rkhui32_t)(sig_))
 	#else
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u8((rkhui8_t)RKH_SIG_T, (rkhui8_t)(sig_))
+					rkh_trc_fmt_u8((rkhui8_t)RKH_ESIG_T, (rkhui8_t)(sig_))
 	#endif
 #else
 	#define RKH_TRC_USR_BEGIN( eid_ ) 			(void)0;
@@ -2337,7 +2337,7 @@ enum rkh_trc_fmt
 		 * 	\code
 		 * 	...
 		 * 	static int g_status; 
-		 * 	static RKHT_T tdll; 
+		 * 	static RKH_TMR_T tdll; 
 		 *
 		 * 	RKH_TR_FWK_OBJ( &g_status );
 		 * 	RKH_TR_FWK_OBJ( &tdll );
@@ -2665,7 +2665,7 @@ enum rkh_trc_fmt
 		 * 	...
 		 * 	typedef struct
 		 * 	{
-		 * 		RKHSMA_T ao;
+		 * 		RKH_SMA_T ao;
 		 * 		rkhui8_t x;
 		 * 		rkhui8_t y;
 		 * 	} AO_T;
@@ -2766,7 +2766,7 @@ enum rkh_trc_fmt
 		 *
 		 * 	\code
 		 * 	...
-		 * 	static RKHT_T bky_tmr;
+		 * 	static RKH_TMR_T bky_tmr;
 		 *
 		 * 	RKH_TR_FWK_TIMER( &bky_tmr );
 		 * 	\endcode
@@ -2834,11 +2834,11 @@ enum rkh_trc_fmt
 		 * 	\code
 		 * 	...
 		 * 	#define QSTO_SIZE			4
-		 * 	static RKHEVT_T *qsto[ QSTO_SIZE ];
+		 * 	static RKH_EVT_T *qsto[ QSTO_SIZE ];
 		 *
 		 * 	...
 		 * 	RKH_TR_FWK_QUEUE( &blinky->equeue );
-		 * 	rkh_sma_activate( blinky, (const RKHEVT_T **)qsto, 
+		 * 	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, 
 		 * 											QSTO_SIZE, CV(0), 0 );
 		 *	...
 		 * 	\endcode
@@ -3530,7 +3530,7 @@ void rkh_trc_obj( rkhui8_t tre, rkhui8_t *obj, const char *obj_name );
 /**
  */
 
-void rkh_trc_sig( RKHE_T sig, const char *sig_name );
+void rkh_trc_sig( RKH_SIG_T sig, const char *sig_name );
 
 
 /**

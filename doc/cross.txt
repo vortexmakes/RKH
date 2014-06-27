@@ -39,8 +39,8 @@ active object, which clearly shows the life cycle consisting of states
 			transition in the my state machine. The function prototype is 
 			defined as RKHINIT_T. This argument is (optional), thus it could 
 			be declared as NULL. 
-\li ( 2) 	The timer \c bkytim is declared with the RKHT_T data type and is 
-			defined with the rkh_tim_init() RKH service. The timer is 
+\li ( 2) 	The timer \c bkytim is declared with the RKH_TMR_T data type 
+			and is defined with the rkh_tim_init() RKH service. The timer is 
 			initialized in a non-active state (stopped). In this case, a 
 			subsequent start service call is necessary to get the timer 
 			actually started.
@@ -143,7 +143,7 @@ static RKH_DCLR_STATIC_EVENT( e_tout, TIMEOUT );
  * 	'blinky'.
  */
 
-RKHT_T bkytim;
+RKH_TMR_T bkytim;
 
 
 /*
@@ -163,7 +163,7 @@ blinky_init( const struct rkhsma_t *sma )
  */
 
 void
-blinky_led_on( const struct rkhsma_t *sma, RKHEVT_T *pe )
+blinky_led_on( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 
@@ -174,7 +174,7 @@ blinky_led_on( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void
-blinky_led_off( const struct rkhsma_t *sma, RKHEVT_T *pe )
+blinky_led_off( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -205,8 +205,8 @@ void blinky_init( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
-void blinky_led_on( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void blinky_led_off( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void blinky_led_on( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void blinky_led_off( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 #endif
@@ -216,7 +216,7 @@ void blinky_led_off( const struct rkhsma_t *sma, RKHEVT_T *pe );
 \section blinky_ao Signals, events, and active objects
 
 \n In RKH, signals are typically enumerated constants and events with 
-parameters are structures derived from the RKHEVT_T base structure. The next 
+parameters are structures derived from the RKH_EVT_T base structure. The next 
 listing shows signals and events used in the Blinky application 
 (\ref bky_h "bky.h"). \n \n
 
@@ -248,9 +248,9 @@ enum
 
 typedef struct
 {
-	RKHSMA_T sma;	/* base structure */
+	RKH_SMA_T sma;	/* base structure */
 	rkhui8_t cnt;	/* private member */
-} BKYSM_T;			/* SMA derived from RKHSMA_T structure */
+} BKYSM_T;			/* SMA derived from RKH_SMA_T structure */
 
 
 /*
@@ -289,8 +289,8 @@ in a platform-independent way. \n
 
 #define QSTO_SIZE			4
 
-static RKHEVT_T *svr_qsto[ QSTO_SIZE ];
-static RKHEVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
+static RKH_EVT_T *svr_qsto[ QSTO_SIZE ];
+static RKH_EVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
 
 
 int
@@ -324,10 +324,10 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( PAUSE );
 	RKH_TR_FWK_SIG( TERM );
 
-	rkh_sma_activate( svr, (const RKHEVT_T **)svr_qsto, QSTO_SIZE, 
+	rkh_sma_activate( svr, (const RKH_EVT_T **)svr_qsto, QSTO_SIZE, 
 																CV(0), 0 );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		rkh_sma_activate( CLI(cn), (const RKHEVT_T **)cli_qsto[cn], 
+		rkh_sma_activate( CLI(cn), (const RKH_EVT_T **)cli_qsto[cn], 
 												QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
@@ -709,7 +709,7 @@ cli_resume( const struct rkhsma_t *sma )
  */
 
 void 
-cli_req( const struct rkhsma_t *sma, RKHEVT_T *pe )
+cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	REQ_EVT_T *e_req;
 
@@ -722,7 +722,7 @@ cli_req( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-cli_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
+cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	RKH_TNT_T time;
 
@@ -734,7 +734,7 @@ cli_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-cli_end( const struct rkhsma_t *sma, RKHEVT_T *pe )
+cli_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	(void)sma;
@@ -782,9 +782,9 @@ void cli_resume( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
-void cli_req( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void cli_start( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void cli_end( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void cli_end( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 #endif
@@ -888,8 +888,8 @@ Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
 #define MAX_SIZEOF_QREQ				2*NUM_CLIENTS
 
 
-static RKHRQ_T qreq;
-static RKHEVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
+static RKH_RQ_T qreq;
+static RKH_EVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
 
 
 /*
@@ -931,7 +931,7 @@ svr_resume( const struct rkhsma_t *sma )
 {
 	REQ_EVT_T *e;
 
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) != NULL )
+	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
 		bsp_svr_recall( e->clino );
 }
 
@@ -941,7 +941,7 @@ svr_resume( const struct rkhsma_t *sma )
  */
 
 void 
-svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	START_EVT_T *e_start;
 
@@ -955,18 +955,18 @@ svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-svr_end( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	REQ_EVT_T *e;
 
 	(void)pe;
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) != NULL )
+	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
 		bsp_svr_recall( e->clino );
 }
 
 
 void 
-svr_defer( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	rkh_defer( &qreq, pe );
@@ -974,7 +974,7 @@ svr_defer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-svr_terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -1020,10 +1020,10 @@ void svr_resume( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
-void svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void svr_end( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void svr_defer( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void svr_terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 #endif
@@ -1035,7 +1035,7 @@ Prev: \ref shared_sm_svr \n
 \section shared_ao Signals, events, and active objects
 
 In RKH, signals are typically enumerated constants and events with 
-parameters are structures derived from the RKHEVT_T base structure. The next 
+parameters are structures derived from the RKH_EVT_T base structure. The next 
 listing shows signals and events used in the Shared application 
 (\ref scevt_h "scevt.h"). \n \n
 
@@ -1067,14 +1067,14 @@ typedef enum sc_sigs_t
 
 typedef struct
 {
-	RKHEVT_T e;			/** base structure */
+	RKH_EVT_T e;			/** base structure */
 	rkhui8_t clino; 	/** client number (ID) */
 } REQ_EVT_T;
 
 
 typedef struct
 {
-	RKHEVT_T e;			/** base structure */
+	RKH_EVT_T e;			/** base structure */
 	rkhui8_t clino; 	/** client number (ID) */
 } START_EVT_T;
 
@@ -1100,11 +1100,11 @@ typedef struct
 
 typedef struct
 {
-	RKHSMA_T sma;		                                   /* base structure */
+	RKH_SMA_T sma;		                                   /* base structure */
 	rkhui32_t ntot;		                /* total number of attended requests */
 							  /* number of attended requests of every client */
 	rkhui32_t ncr[ NUM_CLIENTS ];
-} SVR_T;			        /* Active Object derived from RKHSMA_T structure */
+} SVR_T;			        /* Active Object derived from RKH_SMA_T structure */
 
 
 /*
@@ -1152,10 +1152,10 @@ typedef enum cli_prio
 
 typedef struct
 {
-	RKHSMA_T sma;		/* base structure */
-	RKHT_T cli_utmr; 	/* usage time */
-	RKHT_T cli_rtmr;	/* waiting request time */
-} CLI_T;				/* Active Object derived from RKHSMA_T structure */
+	RKH_SMA_T sma;		/* base structure */
+	RKH_TMR_T cli_utmr; /* usage time */
+	RKH_TMR_T cli_rtmr;	/* waiting request time */
+} CLI_T;				/* Active Object derived from RKH_SMA_T structure */
 
 
 /*
@@ -1193,8 +1193,8 @@ in a platform-independent way. \n \n
 
 #define QSTO_SIZE			4
 
-static RKHEVT_T *qsto[ QSTO_SIZE ];
-extern RKHT_T bkytim;
+static RKH_EVT_T *qsto[ QSTO_SIZE ];
+extern RKH_TMR_T bkytim;
 
 
 int
@@ -1219,7 +1219,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_OBJ( &bkytim );
 	RKH_TR_FWK_SIG( TIMEOUT );
 
-	rkh_sma_activate( blinky, (const RKHEVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
 	RKH_TRC_CLOSE();

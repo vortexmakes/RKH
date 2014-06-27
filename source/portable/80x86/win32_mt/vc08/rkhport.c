@@ -135,7 +135,7 @@ rkh_exit( void )
 
 
 void 
-rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
 	int priority;
@@ -144,7 +144,7 @@ rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
     ( void )stksize;
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( (qs != (const RKHEVT_T **)0) && ( stks == (void *)0) );
+	RKHREQUIRE( (qs != (const RKH_EVT_T **)0) && ( stks == (void *)0) );
 
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
@@ -183,7 +183,7 @@ rkh_sma_activate( RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 
 
 void 
-rkh_sma_terminate( RKHSMA_T *sma )
+rkh_sma_terminate( RKH_SMA_T *sma )
 {
 	sma->thread = (HANDLE)0;
 }
@@ -198,15 +198,15 @@ thread_function( LPVOID arg )
 
 	do
 	{
-		RKHEVT_T *e = rkh_sma_get( (RKHSMA_T *)arg );
-        rkh_dispatch( (RKHSMA_T *)arg, e );
+		RKH_EVT_T *e = rkh_sma_get( (RKH_SMA_T *)arg );
+        rkh_dispatch( (RKH_SMA_T *)arg, e );
         RKH_GC( e );
 	}
-	while( ((RKHSMA_T *)arg)->thread != (HANDLE)0 );
+	while( ((RKH_SMA_T *)arg)->thread != (HANDLE)0 );
 
-	rkh_sma_unregister( (RKHSMA_T *)arg );
-	RKH_TR_SMA_TERM( (RKHSMA_T *)arg, 
-			RKH_GET_PRIO( (RKHSMA_T *)arg ));
-	CloseHandle( ((RKHSMA_T *)arg)->os_signal );
+	rkh_sma_unregister( (RKH_SMA_T *)arg );
+	RKH_TR_SMA_TERM( (RKH_SMA_T *)arg, 
+			RKH_GET_PRIO( (RKH_SMA_T *)arg ));
+	CloseHandle( ((RKH_SMA_T *)arg)->os_signal );
 	return 0;
 }

@@ -159,7 +159,7 @@ void rkh_exit_critical( void );
 #define RKH_ENTER_CRITICAL( dummy )		rkh_enter_critical()
 #define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
 
-#define RKH_EQ_TYPE              		RKHRQ_T
+#define RKH_EQ_TYPE              		RKH_RQ_T
 
 
 

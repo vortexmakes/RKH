@@ -105,7 +105,7 @@
 #if RKH_EN_NATIVE_DYN_EVENT == RKH_ENABLED && \
 	RKH_EN_DOXYGEN == RKH_DISABLED
 
-		#define RKH_DYNE_TYPE			RKHMP_T
+		#define RKH_DYNE_TYPE			RKH_MP_T
 
 		#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
     			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
@@ -114,7 +114,7 @@
 				( (mp)->bsize )
 
 		#define RKH_DYNE_GET( mp, e )						\
-				( (e) = (RKHEVT_T*)rkh_mp_get( (mp) ) )
+				( (e) = (RKH_EVT_T*)rkh_mp_get( (mp) ) )
 
 		#define RKH_DYNE_PUT( mp, e )						\
 				( rkh_mp_put( (mp), e ) )
@@ -137,7 +137,7 @@
  * 	the higher the priority. 
  */
 
-extern RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];
+extern RKH_SMA_T *rkh_sptbl[ RKH_MAX_SMA ];
 
 
 /**
@@ -197,7 +197,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a composite state.
  *
  *	\sa
- *	RKHSCMP_T structure definition for more information.
+ *	RKH_SCMP_T structure definition for more information.
  *
  * 	\param name		state name. Represents a composite state structure.
  * 	\param en		pointer to state entry action. This argument is 
@@ -216,9 +216,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_COMP_STATE( name, en, ex, parent, defchild, history ) \
 																		 \
-								extern RKHROM RKHTR_T name##_trtbl[];	 \
+								extern RKHROM RKH_TR_T name##_trtbl[];	 \
 																		 \
-								RKHROM RKHSCMP_T name =					 \
+								RKHROM RKH_SCMP_T name =					 \
 								{										 \
 									{{MKBASE(RKH_COMPOSITE, name)},		 \
 									MKST(en,ex,parent)},				 \
@@ -231,7 +231,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a basic state.
  *
  *	\sa
- *	RKHSBSC_T structure definition for more information.
+ *	RKH_SBSC_T structure definition for more information.
  *
  * 	\param name		state name. Represents a basic state structure.
  * 	\param en		pointer to state entry action. This argument is 
@@ -252,11 +252,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					Moreover, implementing the single inheritance in C 
  *					is very simply by literally embedding the base type, 
  *					RKHPPRO_T in this case, as the first member of the 
- *					derived structure. See \a prepro member of RKHSBSC_T 
+ *					derived structure. See \a prepro member of RKH_SBSC_T 
  *					structure for more information. Example:
  *  				\code
- *					static RKHE_T
- *					preprocessor( RKHEVT_T *pe )
+ *					static RKH_SIG_T
+ *					preprocessor( RKH_EVT_T *pe )
  *					{
  *						...
  *					}
@@ -279,9 +279,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_BASIC_STATE( name, en, ex, parent, prepro )			\
 																		\
-								extern RKHROM RKHTR_T name##_trtbl[];	\
+								extern RKHROM RKH_TR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSBSC_T name =					\
+								RKHROM RKH_SBSC_T name =				\
 								{										\
 									{{MKBASE(RKH_BASIC, name)},			\
 									MKST(en,ex,parent)},				\
@@ -307,7 +307,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	from dynamic conditional branches that are realized by choice vertices.
  *	
  *	\sa
- *	RKHSCOND_T structure definition for more information.
+ *	RKH_SCOND_T structure definition for more information.
  *
  * 	\param name		pseudostate name. Represents a conditional pseudostate 
  * 					structure.
@@ -315,9 +315,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_COND_STATE( name )									\
 																		\
-								extern RKHROM RKHTR_T name##_trtbl[];	\
+								extern RKHROM RKH_TR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSCOND_T name =				\
+								RKHROM RKH_SCOND_T name =				\
 								{										\
 									{MKBASE(RKH_CONDITIONAL, name)},	\
 									name##_trtbl 						\
@@ -343,7 +343,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	providing for the nesting of branches.
  *	
  *	\sa
- *	RKHSCHOICE_T structure definition for more information.
+ *	RKH_SCHOICE_T structure definition for more information.
  *
  * 	\param name		pseudostate name. Represents a choice pseudostate 
  * 					structure.
@@ -351,9 +351,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_CHOICE_STATE( name )									\
 																		\
-								extern RKHROM RKHTR_T name##_trtbl[];	\
+								extern RKHROM RKH_TR_T name##_trtbl[];	\
 																		\
-								RKHROM RKHSCHOICE_T name =				\
+								RKHROM RKH_SCHOICE_T name =				\
 								{										\
 									{MKBASE(RKH_CHOICE, name)},			\
 									name##_trtbl 						\
@@ -373,7 +373,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	pseudostate).
  *
  *	\sa
- *	RKHSHIST_T structure definition for more information.
+ *	RKH_SHIST_T structure definition for more information.
  *
  *	Arguments:
  *
@@ -384,9 +384,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_DEEP_HISTORY_STATE( name, parent )					\
 																		\
-						static RKHROM RKHST_T *ram##name;				\
+						static RKHROM RKH_ST_T *ram##name;				\
 																		\
-						RKHROM RKHSHIST_T name =						\
+						RKHROM RKH_SHIST_T name =						\
 						{												\
 							{MKBASE(RKH_DHISTORY, name)},				\
 							(RKHROM struct rkhst_t *)parent,&ram##name 	\
@@ -408,18 +408,18 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	pseudostate).
  *
  *	\sa
- *	RKHSHIST_T structure definition for more information.
+ *	RKH_SHIST_T structure definition for more information.
  *
- * 	\param name		pseudostate name. Represents a shallow history pseudostate 
- * 					structure.
+ * 	\param name		pseudostate name. Represents a shallow history 
+ * 					pseudostate structure.
  * 	\param parent	pointer to parent state.
  */
 
 #define RKH_CREATE_SHALLOW_HISTORY_STATE( name, parent )				\
 																		\
-						static RKHROM RKHST_T *ram##name;				\
+						static RKHROM RKH_ST_T *ram##name;				\
 																		\
-						RKHROM RKHSHIST_T name =						\
+						RKHROM RKH_SHIST_T name =						\
 						{												\
 							{MKBASE(RKH_SHISTORY, name)},				\
 							(RKHROM struct rkhst_t *)parent,&ram##name 	\
@@ -459,7 +459,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  *	\sa
- *	RKHSSBM_T structure definition for more information.
+ *	RKH_SSBM_T structure definition for more information.
  *
  * 	\param name		submachine state name. Represents a submachine state 
  * 					structure.
@@ -477,10 +477,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_SUBMACHINE_STATE( name, en, ex, parent, sbm )		\
 																		\
-							extern RKHROM RKHEXPCN_T name##_exptbl[];	\
-							extern RKHROM RKHTR_T name##_trtbl[];		\
+							extern RKHROM RKH_EXPCN_T name##_exptbl[];	\
+							extern RKHROM RKH_TR_T name##_trtbl[];		\
 																		\
-							RKHROM RKHSSBM_T name =						\
+							RKHROM RKH_SSBM_T name =						\
 							{											\
 								{{MKBASE(RKH_SUBMACHINE, name)},		\
 								MKST(en,ex,parent)},					\
@@ -512,7 +512,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_CREATE_EX_CNNPNT_TABLE( name )								\
-								RKHROM RKHEXPCN_T name##_exptbl[]={
+								RKHROM RKH_EXPCN_T name##_exptbl[]={
 
 
 /**
@@ -548,7 +548,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  *	\sa
- *	RKHEXPCN_T structure definition for more information.
+ *	RKH_EXPCN_T structure definition for more information.
  *
  *	\code
  *	\endcode
@@ -604,7 +604,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	an entry point pseudostate.
  *
  *	\sa
- *	RKHSENP_T structure definition for more information.
+ *	RKH_SENP_T structure definition for more information.
  *
  *	\code
  *	\endcode
@@ -616,7 +616,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_EN_CNNPNT( name, enpnt, subm )						\
 																\
-							RKHROM RKHSENP_T name =				\
+							RKHROM RKH_SENP_T name =				\
 							{									\
 								{MKBASE(RKH_ENPOINT, name)},	\
 								MKENP(enpnt,subm)				\
@@ -635,7 +635,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\endcode
  *
  *	\sa
- *	RKHRSM_T structure definition for more information.
+ *	RKH_RSM_T structure definition for more information.
  *
  * 	\param name		submachine name. Represents a submachine structure.
  * 	\param defchild	pointer to default child state.
@@ -647,9 +647,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_REF_SUBMACHINE( name, defchild, iact )				\
 																		\
-								static RKHROM RKHST_T *rdyp_##name;		\
+								static RKHROM RKH_ST_T *rdyp_##name;		\
 																		\
-								RKHROM RKHRSM_T name =					\
+								RKHROM RKH_RSM_T name =					\
 								{										\
 									{MKBASE(RKH_REF_SUBMACHINE, name)},	\
 									MKMCH(defchild,iact,name) 			\
@@ -673,7 +673,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\endcode
  *
  *	\sa
- *	RKHSEXP_T structure definition for more information.
+ *	RKH_SEXP_T structure definition for more information.
  *
  *	\code
  *	// --- exit point pseudostates of SB submachine ---
@@ -700,7 +700,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_REF_EXPNT( name, ix, subm )				\
 															\
-							RKHROM RKHSEXP_T name =			\
+							RKHROM RKH_SEXP_T name =			\
 							{								\
 								{MKBASE(RKH_EXPOINT, name)},\
 								ix, subm 					\
@@ -726,7 +726,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\endcode
  *
  *	\sa
- *	RKHENPCN_T structure definition for more information.
+ *	RKH_ENPCN_T structure definition for more information.
  *
  *	\code
  *	\endcode
@@ -740,7 +740,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_REF_ENPNT( name, act, ts, subm  )					\
 																		\
-								RKHROM RKHENPCN_T name = 				\
+								RKHROM RKH_ENPCN_T name = 				\
 								{										\
 									act, (RKHROM struct rkhst_t *)ts	\
 								}
@@ -771,7 +771,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 #define RKH_CREATE_TRANS_TABLE( name )									\
 																		\
-								RKHROM RKHTR_T name##_trtbl[]={
+								RKHROM RKH_TR_T name##_trtbl[]={
 
 
 /**
@@ -793,7 +793,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  *	\sa
- *	RKHTR_T structure definition for more information.
+ *	RKH_TR_T structure definition for more information.
  *
  * 	\param e		triggering event.
  * 	\param g		pointer to guard function. This argument is 
@@ -821,7 +821,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  *	\sa
- *	RKHTR_T structure definition for more information.
+ *	RKH_TR_T structure definition for more information.
  *
  * 	\param e		triggering event.
  * 	\param g		pointer to guard function.	
@@ -904,7 +904,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  *	\sa
- *	RKHTR_T structure definition for more information.
+ *	RKH_TR_T structure definition for more information.
  *
  * 	\param g		branch guard function. Branches are labeled with guards 
  * 					that determine which one is to be actually taken. Use 
@@ -964,8 +964,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	This global pointer represent the state machine in the application. 
  * 	The state machine pointers are "opaque" because they cannot access the 
  * 	whole state machine structure, but only the part inherited from the 
- * 	RKHSMA_T structure. The power of an "opaque" pointer is that it allows to 
- * 	completely hide the definition of the state machine structure and make 
+ * 	RKH_SMA_T structure. The power of an "opaque" pointer is that it allows 
+ * 	to completely hide the definition of the state machine structure and make 
  * 	it inaccessible to the rest of the application. 
  *	
  *	\note
@@ -984,7 +984,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param sma		pointer to previously created state machine application.
  */
 
-#define RKH_SMA_DCLR( sma )		extern RKHSMA_T *const sma
+#define RKH_SMA_DCLR( sma )		extern RKH_SMA_T *const sma
 
 
 /**@{
@@ -997,17 +997,17 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	Generally, this macro is used in the state-machine's header file.
  */
 
-#define RKH_DCLR_COMP_STATE		extern RKHROM RKHSCMP_T
-#define RKH_DCLR_BASIC_STATE	extern RKHROM RKHSBSC_T
-#define RKH_DCLR_COND_STATE		extern RKHROM RKHSCOND_T
-#define RKH_DCLR_CHOICE_STATE	extern RKHROM RKHSCHOICE_T
-#define RKH_DCLR_DHIST_STATE	extern RKHROM RKHSHIST_T 
-#define RKH_DCLR_SHIST_STATE	extern RKHROM RKHSHIST_T
-#define RKH_DCLR_SUBM_STATE		extern RKHROM RKHSSBM_T
-#define RKH_DCLR_REF_SUBM		extern RKHROM RKHRSM_T
-#define RKH_DCLR_ENPNT			extern RKHROM RKHSENP_T
-#define RKH_DCLR_REF_EXPNT		extern RKHROM RKHSEXP_T
-#define RKH_DCLR_REF_ENPNT		extern RKHROM RKHENPCN_T
+#define RKH_DCLR_COMP_STATE		extern RKHROM RKH_SCMP_T
+#define RKH_DCLR_BASIC_STATE	extern RKHROM RKH_SBSC_T
+#define RKH_DCLR_COND_STATE		extern RKHROM RKH_SCOND_T
+#define RKH_DCLR_CHOICE_STATE	extern RKHROM RKH_SCHOICE_T
+#define RKH_DCLR_DHIST_STATE	extern RKHROM RKH_SHIST_T 
+#define RKH_DCLR_SHIST_STATE	extern RKHROM RKH_SHIST_T
+#define RKH_DCLR_SUBM_STATE		extern RKHROM RKH_SSBM_T
+#define RKH_DCLR_REF_SUBM		extern RKHROM RKH_RSM_T
+#define RKH_DCLR_ENPNT			extern RKHROM RKH_SENP_T
+#define RKH_DCLR_REF_EXPNT		extern RKHROM RKH_SEXP_T
+#define RKH_DCLR_REF_ENPNT		extern RKHROM RKH_ENPCN_T
 /*@}*/
 
 
@@ -1026,10 +1026,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	
  * 	typedef struct
  * 	{
- * 		RKHSMA_T sma;		// base structure
- * 		RKHT_T cli_utmr; 	// usage time
- * 		RKHT_T cli_rtmr;	// waiting request time
- * 	} CLI_T;				// Active Object derived from RKHSMA_T structure
+ * 		RKH_SMA_T sma;		// base structure
+ * 		RKH_TMR_T cli_utmr; // usage time
+ * 		RKH_TMR_T cli_rtmr;	// waiting request time
+ * 	} CLI_T;				// Active Object derived from RKH_SMA_T structure
  *
  * 	RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
  * 	\endcode
@@ -1044,13 +1044,13 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_ARRAY_SMA_DCLR( _arr, _num )	\
-						extern RKHSMA_T *const *_arr[ _num ]
+						extern RKH_SMA_T *const *_arr[ _num ]
 
 
 /**
  * 	\brief
  * 	Declare and allocate an array of SMAs (a.k.a active objects) derived from 
- * 	RKHSMA_T.
+ * 	RKH_SMA_T.
  *
  * 	Example:
  * 	\code
@@ -1072,7 +1072,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_ARRAY_SMA_CREATE( _arr, _num )	\
-						RKHSMA_T *const *_arr[ _num ] =
+						RKH_SMA_T *const *_arr[ _num ] =
 
 /**
  * 	\brief
@@ -1090,10 +1090,10 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  * 	typedef struct
  * 	{
- * 		RKHSMA_T sma;		// base structure
- * 		RKHT_T cli_utmr; 	// usage time
- * 		RKHT_T cli_rtmr;	// waiting request time
- * 	} CLI_T;				// Active Object derived from RKHSMA_T structure
+ * 		RKH_SMA_T sma;		// base structure
+ * 		RKH_TMR_T cli_utmr; // usage time
+ * 		RKH_TMR_T cli_rtmr;	// waiting request time
+ * 	} CLI_T;				// Active Object derived from RKH_SMA_T structure
  *
  * 	RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
  * 	\endcode
@@ -1116,9 +1116,9 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	\endcode
  *
  *	\sa
- *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink, and \link RKH_CREATE_BASIC_STATE 
- *	another example \endlink.
+ *	RKH_SMA_T structure definition for more information. Also, 
+ *	\link RKH_EVT_T single inheritance in C \endlink, and 
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  *
  * 	\param sma_t		data type of SMA.
  	\param sm			name of previously created SMA.
@@ -1140,7 +1140,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_DECLARE_TR_TBL( name ) \
-			extern RKHROM RKHTR_T name##_trtbl[]
+			extern RKHROM RKH_TR_T name##_trtbl[]
 
 
 /**
@@ -1149,14 +1149,14 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	
  *	By means of single inheritance in C it could be used to associate data 
  *	to a basic state. Moreover, implementing the single inheritance in C 
- *	is very simply by literally embedding the base type, RKHSBSC_T in this 
+ *	is very simply by literally embedding the base type, RKH_SBSC_T in this 
  *	case, as the first member of the derived structure. The following 
  *	listing shows an example:
  *
  *	\code
  *	(1) typedef struct MENU_ST_T
  *		{
- *	(2)		RKHROM RKHSBSC_T base;
+ *	(2)		RKHROM RKH_SBSC_T base;
  *	(3)		const char *title;
  *		} MENU_ST_T;
  *	
@@ -1193,8 +1193,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *		 structure. It could be used to associate data to a basic state 
  *		 objects. \n
  *	(2)	 Implementing the single inheritance in C is very simply by literally 
- *		 embedding the base type, RKHSBSC_T in this case, as the first member 
- *		 of the derived structure.  \n
+ *		 embedding the base type, RKH_SBSC_T in this case, as the first 
+ *		 member of the derived structure.  \n
  *	(3)  Private members of MENU_ST_T derived structure. \n
  *	(4)  Defines a simple macro to instantiate the derived state object.
  *		 It is not strictly necessary.  \n
@@ -1224,7 +1224,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  *	(1) typedef struct NUM_STATE_T
  *		{
- *	(2)		RKHROM RKHSBSC_T base;
+ *	(2)		RKHROM RKH_SBSC_T base;
  *	(3) 	XY_T *p_ram_xy;
  *		} NUM_STATE_T;
  *
@@ -1251,8 +1251,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	(1)  Defines NUM_STATE_T as a derived structure from the basic state 
  *		 structure. \n
  *	(2)	 Implementing the single inheritance in C is very simply by literally 
- *		 embedding the base type, RKHSBSC_T in this case, as the first member 
- *		 of the derived structure. \n
+ *		 embedding the base type, RKH_SBSC_T in this case, as the first 
+ *		 member of the derived structure. \n
  *	(3)  Private members of NUM_STATE_T derived structure. It allows to 
  *		 acccess to RAM locations from this object (NUM_STATE_ST) allocated 
  *		 in ROM. \n
@@ -1269,11 +1269,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 #define RKH_INIT_BASIC_STATE( name, en, ex, parent, prepro ) 			\
 			{ 															\
 				{ 														\
-					{MKBASE(RKH_BASIC, name)}, 	/* RKHBASE_T */ 		\
+					{MKBASE(RKH_BASIC, name)}, 	/* RKH_BASE_T */ 		\
 					MKST(en, ex, parent) 								\
-				}, 								/* RKHST_T */ 			\
+				}, 								/* RKH_ST_T */ 			\
 				MKBASIC(name, prepro) 									\
-			}									/* RKHSBSC_T */ 		\
+			}									/* RKH_SBSC_T */ 		\
 
 
 /**
@@ -1282,7 +1282,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	
  *	By means of single inheritance in C it could be used to associate data 
  *	to a basic state. Moreover, implementing the single inheritance in C 
- *	is very simply by literally embedding the base type, RKHSCMP_T in this 
+ *	is very simply by literally embedding the base type, RKH_SCMP_T in this 
  *	case, as the first member of the derived structure. 
  *	
  *	\note
@@ -1294,11 +1294,11 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 									defchild, history ) 				\
 			{ 															\
 				{ 														\
-					{MKBASE(RKH_COMPOSITE, name)}, /* RKHBASE_T */ 		\
+					{MKBASE(RKH_COMPOSITE, name)}, /* RKH_BASE_T */ 	\
 					MKST(en, ex, parent) 								\
-				}, 								   /* RKHST_T */ 		\
+				}, 								   /* RKH_ST_T */ 		\
 				MKCOMP(name, defchild, history) 						\
-			}									   /* RKHSCMP_T */ 		\
+			}									   /* RKH_SCMP_T */ 		\
 
 
 /** 	
@@ -1455,8 +1455,8 @@ void rkh_init( void );
  *	rkh_enter( void )
  *	{ 
  *		rkhui8_t prio;
- *		RKHSMA_T *sma;
- *		RKHEVT_T *e;
+ *		RKH_SMA_T *sma;
+ *		RKH_EVT_T *e;
  *
  *		RKH_HK_START();
  *		RKH_TR_FWK_EN();
@@ -1591,8 +1591,8 @@ void rkh_exit( void );
  * 	Initializes and activates a previously created state machine application 
  * 	(SMA) as known as active object.
  *
- * 	A state machine application (SMA) is declared with the RKHSMA_T data type 
- * 	and is defined with the rkh_sma_activate() service.
+ * 	A state machine application (SMA) is declared with the RKH_SMA_T data 
+ * 	type and is defined with the rkh_sma_activate() service.
  *
  *	Example:
  *	\code
@@ -1600,7 +1600,7 @@ void rkh_exit( void );
  *
  *	typedef struct
  *	{
- *		RKHSMA_T sm;	// base structure
+ *		RKH_SMA_T sm;	// base structure
  *		rkhui8_t x;		// private member
  *		rkhui8_t y;		// private member
  *	} MYSM_T;
@@ -1612,7 +1612,7 @@ void rkh_exit( void );
  *	main( void )
  *	{
  *		...
- *		rkh_sma_activate( my, 4, qsto, sizeof( RKHEVT_T* ), (void*)0, 0 );
+ *		rkh_sma_activate( my, 4, qsto, sizeof( RKH_EVT_T* ), (void*)0, 0 );
  *	}
  *	\endcode
  * 	
@@ -1625,8 +1625,8 @@ void rkh_exit( void );
  *	Example:
  *	\code
  *	void 
- *	rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
- *						void *stks, rkhui32_t stksize )
+ *	rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, 
+ *						RKH_RQNE_T qsize, void *stks, rkhui32_t stksize )
  *	{
  *		( void )stks;
  *		( void )stksize;
@@ -1648,13 +1648,13 @@ void rkh_exit( void );
  * 	\param stksize		size of stack memory area [in bytes].
  */
 
-void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
-						void *stks, rkhui32_t stksize );
+void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, 
+						RKH_RQNE_T qsize, void *stks, rkhui32_t stksize );
 
 
 /**
  * 	\brief
- * 	Declare and allocate a SMA (active object) derived from RKHSMA_T. Also, 
+ * 	Declare and allocate a SMA (active object) derived from RKH_SMA_T. Also, 
  * 	initializes and assigns a state machine to previously declared SMA.
  *
  * 	In the UML specification, every state machine has a top state 
@@ -1667,11 +1667,11 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	However, use the RKH_SMA_DCLR() macro to declare a "opaque" pointer 
  *	to that state machine application structure to be used in the rest of the 
  *	application but hiding the proper definition.
- * 	RKHSMA_T is not intended to be instantiated directly, but rather
+ * 	RKH_SMA_T is not intended to be instantiated directly, but rather
  * 	serves as the base structure for derivation of state machines in the
  * 	application code.
  * 	The following example illustrates how to derive an state machine from
- * 	RKHSMA_T. Please note that the RKHSMA_T member sm is defined as the
+ * 	RKH_SMA_T. Please note that the RKH_SMA_T member sm is defined as the
  * 	FIRST member of the derived structure.
  *
  *	Example:
@@ -1680,7 +1680,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *
  *	typedef struct
  *	{
- *		RKHSMA_T sm;	// base structure
+ *		RKH_SMA_T sm;	// base structure
  *		rkhui8_t x;		// private member
  *		rkhui8_t y;		// private member
  *	} MYSM_T;
@@ -1689,9 +1689,9 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
  *
- * 	\param sma_t		data type of the SMA. Could be derived from RKHSMA_T.
- * 	\param name			name of state machine application. Also, it represents 
- * 						the top state of state diagram.
+ * 	\param sma_t		data type of the SMA. Could be derived from RKH_SMA_T.
+ * 	\param name			name of state machine application. Also, it 
+ * 						represents the top state of state diagram.
  * 	\param prio			state machine application priority. A unique priority 
  * 						number must be assigned to each SMA from 0 to 
  * 						RKH_LOWEST_PRIO. The lower the number, the higher the 
@@ -1718,7 +1718,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	name, prio, ppty, ist, 		\
 												iact, ievt );				\
 	static sma_t s_##name = MKSMA( &rs_##name, ist );						\
-	RKHSMA_T *const name = (RKHSMA_T *)&s_##name
+	RKH_SMA_T *const name = (RKH_SMA_T *)&s_##name
 
 
 /**
@@ -1738,7 +1738,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  *	Example:
  *	\code
  *	void 
- *	rkh_sma_terminate( RKHSMA_T *sma )
+ *	rkh_sma_terminate( RKH_SMA_T *sma )
  *	{
  *		rkh_sma_unregister( sma );
  *		RKH_TR_SMA_TERM( sma );
@@ -1749,7 +1749,7 @@ void rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
  * 						application.
  */
 
-void rkh_sma_terminate( RKHSMA_T *sma );
+void rkh_sma_terminate( RKH_SMA_T *sma );
 
 
 #if defined( RKH_USE_TRC_SENDER )
@@ -1782,7 +1782,7 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 	 * 					publisher of the event.
 	 */
 
-	void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+	void rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e, 
 												const void *const sender );
 
 	/**
@@ -1810,7 +1810,7 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 
 #else
 
-	void rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e );
+	void rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e );
 	#define RKH_SMA_POST_FIFO( _sma, _e, _dummy ) \
 				rkh_sma_post_fifo( (_sma), (_e) )
 
@@ -1846,7 +1846,7 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 	 * 					publisher of the event.
 	 */
 
-	void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+	void rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e, 
 												const void *const sender );
 
 	/**
@@ -1874,7 +1874,7 @@ void rkh_sma_terminate( RKHSMA_T *sma );
 
 #else
 
-	void rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e );
+	void rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e );
 	#define RKH_SMA_POST_LIFO( _sma, _e, _dummy ) \
 				rkh_sma_post_lifo( (_sma), (_e) )
 
@@ -1902,7 +1902,7 @@ void rkh_sma_terminate( RKHSMA_T *sma );
  * 	otherwise a NULL pointer.
  */
 
-RKHEVT_T *rkh_sma_get( RKHSMA_T *sma );
+RKH_EVT_T *rkh_sma_get( RKH_SMA_T *sma );
 
 
 /**
@@ -1928,7 +1928,7 @@ RKHEVT_T *rkh_sma_get( RKHSMA_T *sma );
  * 					information will be copied by reference.
  */
 
-void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
+void rkh_sma_get_info( RKH_SMA_T *sma, RKH_SMAI_T *psi );
 
 
 /**
@@ -1943,7 +1943,7 @@ void rkh_sma_get_info( RKHSMA_T *sma, RKH_SMAI_T *psi );
  * 	\param sma		pointer to previously created state machine application.
  */
 
-void rkh_sma_clear_info( RKHSMA_T *sma );
+void rkh_sma_clear_info( RKH_SMA_T *sma );
 
 
 /**
@@ -1955,7 +1955,7 @@ void rkh_sma_clear_info( RKHSMA_T *sma );
  * 	\param sma		pointer to previously created state machine application.
  */
 
-void rkh_sma_register( RKHSMA_T *sma );
+void rkh_sma_register( RKH_SMA_T *sma );
 
 
 /**
@@ -1967,7 +1967,7 @@ void rkh_sma_register( RKHSMA_T *sma );
  * 	\param sma		pointer to previously created state machine application.
  */
 
-void rkh_sma_unregister( RKHSMA_T *sma );
+void rkh_sma_unregister( RKH_SMA_T *sma );
 
 
 /**
@@ -1987,14 +1987,14 @@ void rkh_sma_unregister( RKHSMA_T *sma );
  *	
  *	Example:
  *	\code
- *	static RKHRQ_T qurc;
- *	static RKHEVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
+ *	static RKH_RQ_T qurc;
+ *	static RKH_EVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
  *
  *	rkh_rq_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
  *	...
  *
  *	void 
- *	ring( const struct rkh_t *sma, RKHEVT_T *pe )
+ *	ring( const struct rkh_t *sma, RKH_EVT_T *pe )
  *	{
  *		(void)sma;      		// argument not used
  *		rkh_defer( &qurc, pe );	// defer event
@@ -2013,7 +2013,7 @@ void rkh_sma_unregister( RKHSMA_T *sma );
  * 	\param e		pointer to event.
  */
 
-void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e );
+void rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e );
 
 
 /**
@@ -2044,7 +2044,7 @@ void rkh_defer( RKHRQ_T *q, const RKHEVT_T *e );
  * 	event has been recalled.
  */
 
-RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
+RKH_EVT_T *rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
 
 
 /**
@@ -2068,7 +2068,7 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  * 	be adapted for RKH event pools. In case such support is missing, RKH 
  * 	provides a native RKH event pool implementation. The macro 
  * 	#RKH_DYNE_TYPE determines the type of event pool used by a particular 
- * 	RKH port. See structure RKHMP_T for more information.
+ * 	RKH port. See structure RKH_MP_T for more information.
  *
  * 	For adapting RKH event pools to any fixed-size memory block service RTOS 
  * 	provided the application code must define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
@@ -2095,20 +2095,20 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  *	
  *	typedef struct
  *	{
- *		RKHEVT_T evt;                   // base structure
+ *		RKH_EVT_T evt;                   // base structure
  *		int timerno;					// parameter 'timerno'
  *	} TOUT_T;
  *
  *	typedef struct
  *	{
- *		RKHEVT_T evt;                   // base structure
+ *		RKH_EVT_T evt;                   // base structure
  *		char dial[ MAX_SIZE_DIAL ];     // parameter 'dial'
  *		int qty;                        // parameter 'qty'
  *	} DIAL_T;
  *		
  *	typedef struct
  *	{
- *		RKHEVT_T evt;                   // base structure
+ *		RKH_EVT_T evt;                   // base structure
  *		int volume;                     // parameter 'volume'
  *		int baud_rate;                  // parameter 'baud_rate'
  *		char name[ MAX_SIZE_NAME ];     // parameter 'name'
@@ -2134,7 +2134,7 @@ RKHEVT_T *rkh_recall( RKHSMA_T *sma, RKHRQ_T *q );
  * 					block in the pool.
  */
 
-void rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize );
+void rkh_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize );
 
 
 /**
@@ -2152,7 +2152,7 @@ void rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize );
  * 	\param e		event signal.
  */
 
-RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
+RKH_EVT_T *rkh_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
 /**
@@ -2183,7 +2183,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 		#define RKH_ALLOC_EVENT( et, e ) \
-					(et*)rkh_ae((RKHES_T)sizeof(et),(RKHE_T)(e))
+					(et*)rkh_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
 		#define RKH_ALLOC_EVENT( et, e ) \
 					(void)0
@@ -2219,7 +2219,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 	#define RKH_GC( e ) 			rkh_gc( e )
-	void rkh_gc( RKHEVT_T *e );
+	void rkh_gc( RKH_EVT_T *e );
 #else
 	#define RKH_GC( e ) \
 					(void)0
@@ -2239,7 +2239,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 	#define RKH_RSV( e ) 			rkh_reserve( e )
-	void rkh_reserve( RKHEVT_T *e );
+	void rkh_reserve( RKH_EVT_T *e );
 #else
 	#define RKH_RSV( e )			(void)0
 #endif
@@ -2256,12 +2256,12 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  *	Example:
  *	\code
  *	...
- *	RKHEVT_T e;
+ *	RKH_EVT_T e;
  *
  *	RKH_SET_STATIC_EVENT( &e, TOUT );
  *	\endcode
  *
- * 	\param e		pointer to event structure derived from RKHEVT_T.
+ * 	\param e		pointer to event structure derived from RKH_EVT_T.
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
  */
@@ -2289,7 +2289,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  *	}
  *	\endcode
  *
- * 	\param e		name of event structure (RKHEVT_T).
+ * 	\param e		name of event structure (RKH_EVT_T).
  * 	\param es		event signal. The RKH takes this value for triggering 
  * 					a state transition.
  */
@@ -2312,7 +2312,7 @@ RKHEVT_T *rkh_ae( RKHES_T esize, RKHE_T e );
  *	\param e		pointer to arrived event.
  */
 
-void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
+void rkh_hk_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 
 
 /**
@@ -2328,7 +2328,7 @@ void rkh_hk_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  *	\param e		pointer to arrived event.
  */
 
-void rkh_hk_signal( RKHEVT_T *e );
+void rkh_hk_signal( RKH_EVT_T *e );
 
 
 /**
@@ -2343,8 +2343,8 @@ void rkh_hk_signal( RKHEVT_T *e );
  *	hook function. 
  *
  *	\param t		pointer to previously allocated timer structure. 
- *					A cast to RKHT_T data type must be internally implemented 
- *					to get the appropiated timer control block.
+ *					A cast to RKH_TMR_T data type must be internally 
+ *					implemented to get the appropiated timer control block.
  */
 
 void rkh_hk_timeout( const void *t );
@@ -2437,7 +2437,7 @@ void rkh_hk_timetick( void );
  * 	\param sma		pointer to previously created state machine application.
  */
 
-void rkh_init_hsm( RKHSMA_T *sma );
+void rkh_init_hsm( RKH_SMA_T *sma );
 
 
 /**
@@ -2496,7 +2496,7 @@ void rkh_init_hsm( RKHSMA_T *sma );
  *	Result RKH_RCODE_T code.
  */
 
-HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
+HUInt rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 
 
 /**
@@ -2510,7 +2510,7 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  */
 
 #define RKH_GET_CSTATE_ID( sma )									\
-								((RKHBASE_T*)((sma)->state))->id	
+								((RKH_BASE_T*)((sma)->state))->id	
 
 
 /**
@@ -2539,10 +2539,10 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
 
 /**
  * 	\brief
- * 	Perform cast to pointer to RKH event structure (RKHEVT_T*).
+ * 	Perform cast to pointer to RKH event structure (RKH_EVT_T*).
  */
 
-#define RKH_EVT_CAST( _e )		((RKHEVT_T*)(_e))
+#define RKH_EVT_CAST( _e )		((RKH_EVT_T*)(_e))
 
 
 /**
@@ -2553,7 +2553,7 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  * 	Example:
  * 	\code
  * 	void 
- * 	svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
+ * 	svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
  * 	{
  * 		START_EVT_T *e_start;
  * 		
@@ -2565,7 +2565,7 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  * 	\endcode
  *
  *	\sa
- *	\link RKHEVT_T single inheritance in C \endlink, and 
+ *	\link RKH_EVT_T single inheritance in C \endlink, and 
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
 
@@ -2579,7 +2579,7 @@ HUInt rkh_dispatch( RKHSMA_T *sma, RKHEVT_T *e );
  * 	\param h 		pointer to history pseudostate.
  */
 
-void rkh_clear_history( RKHROM RKHSHIST_T *h );
+void rkh_clear_history( RKHROM RKH_SHIST_T *h );
 
 
 /**
@@ -2731,20 +2731,20 @@ void rkh_clear_history( RKHROM RKHSHIST_T *h );
  *	Example:
  *
  *	\code
- *	RKHTS_T 
+ *	RKH_TS_T 
  *	rkh_trc_getts( void )
  *	{
- *		return ( RKHTS_T )clock();
+ *		return ( RKH_TS_T )clock();
  *	}
  *	\endcode
  *
  * 	\returns
- * 	Timestamp (RKHTS_T data type).
+ * 	Timestamp (RKH_TS_T data type).
  *
  * 	\sa \b rkhtrc.h file.
  */
 
-RKHTS_T rkh_trc_getts( void );
+RKH_TS_T rkh_trc_getts( void );
 
 
 /**

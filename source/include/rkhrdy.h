@@ -129,7 +129,7 @@ typedef struct
 	 */
 
 	unsigned char tbl[ RKH_NUM_RDYGRP ];
-} RKHRG_T;
+} RKH_RG_T;
 
 
 /**

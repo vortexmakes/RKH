@@ -54,18 +54,18 @@
 #if RKH_EN_NATIVE_SCHEDULER == 1 && \
 	RKH_EN_DOXYGEN == 0
 
-	#define RKH_EQ_TYPE				RKHRQ_T
+	#define RKH_EQ_TYPE				RKH_RQ_T
 
 	#define RKH_SMA_BLOCK( sma ) 							\
-					RKHASSERT( ((RKHSMA_T*)(sma))->equeue.qty != 0 )
+					RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 	#define RKH_SMA_READY( rg, sma ) 						\
-					rkh_rdy_ins( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+					rkh_rdy_ins( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
 	#define RKH_SMA_UNREADY( rg, sma ) 						\
-					rkh_rdy_rem( (rg), ((RKHSMA_T*)(sma))->romrkh->prio )
+					rkh_rdy_rem( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
-	extern RKHRG_T rkhrg;
+	extern RKH_RG_T rkhrg;
 
 #endif
 

@@ -135,10 +135,10 @@ rkh_trc_close( void )
 }
 
 
-RKHTS_T 
+RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKHTS_T )get_ts();
+	return ( RKH_TS_T )get_ts();
 }
 
 

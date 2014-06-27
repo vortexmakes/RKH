@@ -137,7 +137,7 @@ Changes between V1.1.4 and V1.1.5 released 02/01/2012
 +	Changed RKH_CREATE_HSM and RKH_DCLR_HSM macros to implement a easy way for deriving state machine structures from RKH_T.
 +	Added dynamic and defer event support. This facility is implemented by means of 
 	rkh_ae(), rkh_gc(), rkh_put_fifo(), rkh_put_lifo(), rkh_defer() and rkh_recall() and
-	added member dynamic_ to RKHEVT_T structure.
+	added member dynamic_ to RKH_EVT_T structure.
 +	Changed rkh.h file name to rkhitl.h.
 +	Changed rkhsm.h file name to rkh.h.
 +	Added rkh_enter_critical() and rkh_exit_critical() to be defined within rkhport.h 
@@ -157,7 +157,7 @@ Changes between V1.1.3 and V1.1.4 released 06/10/2011
 
 Changes between V1.1.2 and V1.1.3 released 05/19/2011
 
-+	Changed RKHEVT_T data type.
++	Changed RKH_EVT_T data type.
 +	Added rkh_get_sdata() macro to rkhsm.h file.
 +	Added state's abstract data by means of single inheritance.
 +	Update demo and doc files.

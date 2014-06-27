@@ -52,7 +52,7 @@ RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" )
 
 CRITICAL_SECTION csection;		/* Win32 critical section */
 HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
-RKHRG_T rkhrg;					/* ready group of SMAs */
+RKH_RG_T rkhrg;					/* ready group of SMAs */
 
 extern rkhui8_t running;
 
@@ -85,8 +85,8 @@ void
 rkh_enter( void )
 {
 	rkhui8_t prio;
-	RKHSMA_T *sma;
-	RKHEVT_T *e;
+	RKH_SMA_T *sma;
+	RKH_EVT_T *e;
 	RKH_SR_ALLOC();
 
     RKH_HK_START();
@@ -126,7 +126,7 @@ rkh_exit( void )
 
 
 void 
-rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
 						void *stks, rkhui32_t stksize )
 {
     ( void )stks;
@@ -141,7 +141,7 @@ rkh_sma_activate(	RKHSMA_T *sma, const RKHEVT_T **qs, RKH_RQNE_T qsize,
 
 
 void 
-rkh_sma_terminate( RKHSMA_T *sma )
+rkh_sma_terminate( RKH_SMA_T *sma )
 {
 	RKH_SR_ALLOC();
 

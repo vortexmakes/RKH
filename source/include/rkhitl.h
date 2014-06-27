@@ -126,7 +126,7 @@
  *	This macro is used to indicate the end of a transition table.
  */
 
-#define RKH_ANY						((RKHE_T)(-1))
+#define RKH_ANY						((RKH_SIG_T)(-1))
 
 
 /**
@@ -155,30 +155,30 @@
  * 	Macros for casting 
  */
 
-#define CB( p )						((RKHBASE_T*)(p))
-#define CST( p )					((RKHST_T*)(p))
-#define CCMP( p )					((RKHSCMP_T*)(p))
-#define CBSC( p )					((RKHSBSC_T*)(p))
-#define CCD( p )					((RKHSCOND_T*)(p))
-#define CCH( p )					((RKHSCHOICE_T*)(p))
-#define CH( p )						((RKHSHIST_T*)(p))
-#define CSBM( p )					((RKHSSBM_T*)(p))
-#define CRSM( p )					((RKHRSM_T*)(p))
-#define CM( p )						((RKHROM RKHSMA_T*)(p))
-#define CT( p )						((RKHROM RKHTR_T*)(p))
+#define CB( p )						((RKH_BASE_T*)(p))
+#define CST( p )					((RKH_ST_T*)(p))
+#define CCMP( p )					((RKH_SCMP_T*)(p))
+#define CBSC( p )					((RKH_SBSC_T*)(p))
+#define CCD( p )					((RKH_SCOND_T*)(p))
+#define CCH( p )					((RKH_SCHOICE_T*)(p))
+#define CH( p )						((RKH_SHIST_T*)(p))
+#define CSBM( p )					((RKH_SSBM_T*)(p))
+#define CRSM( p )					((RKH_RSM_T*)(p))
+#define CM( p )						((RKHROM RKH_SMA_T*)(p))
+#define CT( p )						((RKHROM RKH_TR_T*)(p))
 #define CPT( p )					((RKHROM struct rkhscmp_t*)(p))
 #define CPP( p )					((RKHPPRO_T)(p))
 #define CG( p )						((RKHGUARD_T)(p))
 #define CA( p )						((RKHACT_T)(p))
-#define CENP( p )					((RKHSENP_T*)(p))
-#define CEXP( p )					((RKHSEXP_T*)(p))
-#define CENPCN( p )					((RKHENPCN_T*)(p))
-#define CEXPCN( p )					((RKHEXPCN_T*)(p))
-#define CE( p )						((RKHEVT_T*)(p))
-#define CCE( p )					((const RKHEVT_T*)(p))
+#define CENP( p )					((RKH_SENP_T*)(p))
+#define CEXP( p )					((RKH_SEXP_T*)(p))
+#define CENPCN( p )					((RKH_ENPCN_T*)(p))
+#define CEXPCN( p )					((RKH_EXPCN_T*)(p))
+#define CE( p )						((RKH_EVT_T*)(p))
+#define CCE( p )					((const RKH_EVT_T*)(p))
 #define CV( p )						((void*)(p))
 #define CSMA( p )					((const struct rkhsma_t*)(p))
-#define CQ( p )						((RKHRQ_T*)(p))
+#define CQ( p )						((RKH_RQ_T*)(p))
 
 
 /*
@@ -1607,7 +1607,7 @@
 
 #if RKH_HK_DISPATCH_EN == RKH_ENABLED
 	#define RKH_HK_DISPATCH( sma, e )	\
-							rkh_hk_dispatch( (sma), (RKHEVT_T*)(e) )
+							rkh_hk_dispatch( (sma), (RKH_EVT_T*)(e) )
 
 #else
 	#define RKH_HK_DISPATCH( sma, e )	\
@@ -1626,7 +1626,7 @@
 
 #if	(RKH_HK_SIGNAL_EN == RKH_ENABLED)
 	#define RKH_HK_SIGNAL( e )	\
-							rkh_hk_signal( (RKHEVT_T*)(e) )
+							rkh_hk_signal( (RKH_EVT_T*)(e) )
 #else
 	#define RKH_HK_SIGNAL( e )	\
 							(void)0
@@ -1709,7 +1709,7 @@
 	#endif
 	#define MKST(en,ex,p)			en,ex,(RKHROM struct rkhst_t *)p
 	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
-	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T**)&rdyp_##n
+	#define MKMCH(d,i,n)			d,i,(RKHROM RKH_ST_T**)&rdyp_##n
 	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #else
 	#if (RKH_SMA_EN_PPRO == RKH_ENABLED)
@@ -1721,16 +1721,16 @@
 	#endif
 	#define MKST(en,ex,p)
 	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
-	#define MKMCH(d,i,n)			d,i,(RKHROM RKHST_T*)&rdyp_##n
+	#define MKMCH(d,i,n)			d,i,(RKHROM RKH_ST_T*)&rdyp_##n
 	#define MKENP(e,s)				e,(RKHROM struct rkhst_t *)s
 #endif
 
 
 #define mksevt( evt, es )		\
-							((RKHEVT_T*)(evt))->e = (RKHE_T)es;		\
-							((RKHEVT_T*)(evt))->nref = 0;
+							((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es;		\
+							((RKH_EVT_T*)(evt))->nref = 0;
 #define mkievt( evt, es )		\
-							RKHROM RKHEVT_T evt = { es, 0 }
+							RKHROM RKH_EVT_T evt = { es, 0 }
 
 #ifndef RKH_DIS_INTERRUPT
 	#error  "rkhport.h, Must be defined the platform-dependent macro RKH_DIS_INTERRUPT"
@@ -1825,13 +1825,13 @@
 	 * 	Defines the data type of the event queue for active objects. 
 	 * 	The event queue can be implemented with a message queue of 
 	 * 	the RTOS/OS. But it is also possible to use the native RKH 
-	 * 	queue RKHRQ_T type if the underlying RTOS/OS does not provide 
+	 * 	queue RKH_RQ_T type if the underlying RTOS/OS does not provide 
 	 * 	an adequate queue.
 	 *
 	 * 	<EM>Example for using the native queue</EM>
 	 * 	\code
 	 *	// RKH's native queue
-	 * 	#define RKH_EQ_TYPE			RKHRQ_T
+	 * 	#define RKH_EQ_TYPE			RKH_RQ_T
 	 *	// Message queue of ucos/II
 	 * 	#define RKH_EQ_TYPE			OS_EVENT
 	 *	// Message queue of FreeRTOS
@@ -1868,9 +1868,9 @@
 	#define RKH_THREAD_TYPE
 
 	/**
-	 * 	The \c os_signal member of RKHSMA_T is necessary when the underlying 
+	 * 	The \c os_signal member of RKH_SMA_T is necessary when the underlying 
 	 * 	OS does not provide an adequate queue facility, so the native RKH 
-	 * 	queue RKHRQ_T must be used. In this case the RKH_OSSIGNAL_TYPE 
+	 * 	queue RKH_RQ_T must be used. In this case the RKH_OSSIGNAL_TYPE 
 	 * 	indicates an operating system specific primitive to efficiently 
 	 * 	block the native RKH event queue when the queue is empty.
 	 * 	Frequently, the active object has its own task processing loop that 
@@ -2002,7 +2002,7 @@
 	 *
 	 * 	The fixed-size memory block can be implemented with a RTOS/OS 
 	 * 	service provided to that. But it's also possible to use the native 
-	 * 	RKH fixed-size memory block RKHMP_T type if the underlying RTOS/OS 
+	 * 	RKH fixed-size memory block RKH_MP_T type if the underlying RTOS/OS 
 	 * 	does not provide an adequate support.
 	 */
 
@@ -2163,9 +2163,9 @@ typedef struct rkh_smai_t
  *	ROMRKH_T is a ROM base structure of RKH_T.
  *
  *	\sa
- *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink, and \link RKH_CREATE_BASIC_STATE 
- *	another example \endlink.
+ *	RKH_SMA_T structure definition for more information. Also, 
+ *	\link RKH_EVT_T single inheritance in C \endlink, and 
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
 
 typedef struct romrkh_t
@@ -2234,7 +2234,7 @@ typedef struct romrkh_t
 	 */
 
 #if RKH_SMA_EN_IEVENT == RKH_ENABLED
-	const RKHEVT_T *ievent;
+	const RKH_EVT_T *ievent;
 #endif
 } ROMRKH_T;
 
@@ -2249,11 +2249,11 @@ typedef struct romrkh_t
  *	to reduce the size of RAM consume. The key parameters of a state machine 
  *	are allocated within. Therefore cannot be modified in runtime.
  *
- * 	RKHSMA_T is not intended to be instantiated directly, but rather
+ * 	RKH_SMA_T is not intended to be instantiated directly, but rather
  * 	serves as the base structure for derivation of state machines in the
  * 	application code.
  * 	The following example illustrates how to derive an state machine from
- * 	RKH_T. Please note that the RKHSMA_T member sm is defined as the
+ * 	RKH_T. Please note that the RKH_SMA_T member sm is defined as the
  * 	FIRST member of the derived struct.
  *
  *	Example:
@@ -2262,7 +2262,7 @@ typedef struct romrkh_t
  *
  *	typedef struct
  *	{
- *		RKHSMA_T sm;	// base structure
+ *		RKH_SMA_T sm;	// base structure
  *		rkhui8_t x;		// private member
  *		rkhui8_t y;		// private member
  *	} MYSM_T;
@@ -2272,9 +2272,9 @@ typedef struct romrkh_t
  *	\endcode
  *
  *	\sa
- *	RKHSMA_T structure definition for more information. Also, \link RKHEVT_T 
- *	single inheritance in C \endlink, and \link RKH_CREATE_BASIC_STATE 
- *	another example \endlink.
+ *	RKH_SMA_T structure definition for more information. Also, 
+ *	\link RKH_EVT_T single inheritance in C \endlink, and 
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
 
 typedef struct rkhsma_t
@@ -2365,7 +2365,7 @@ typedef struct rkhsma_t
 	RKH_SMAI_T sinfo;
 #endif	
 
-} RKHSMA_T;
+} RKH_SMA_T;
 
 
 /**
@@ -2513,10 +2513,11 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_PPRO_ARG_SMA == RKH_ENABLED
-	typedef RKHE_T ( *RKHPPRO_T )( const struct rkhsma_t *sma, RKHEVT_T *pe );
+	typedef RKH_SIG_T ( *RKHPPRO_T )( 	const struct rkhsma_t *sma, 
+										RKH_EVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
 #else
-	typedef RKHE_T ( *RKHPPRO_T )( RKHEVT_T *pe );
+	typedef RKH_SIG_T ( *RKHPPRO_T )( RKH_EVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( e )
 #endif
 
@@ -2556,11 +2557,11 @@ typedef struct rkhsma_t
 
 #if (RKH_SMA_EN_ACT_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_ACT_ARG_SMA == RKH_ENABLED)
-	typedef void (*RKHACT_T)( const struct rkhsma_t *sma, RKHEVT_T *pe );
+	typedef void (*RKHACT_T)( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h), (e) )
 #elif (RKH_SMA_EN_ACT_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_ACT_ARG_SMA == RKH_DISABLED)
-	typedef void (*RKHACT_T)( RKHEVT_T *pe );
+	typedef void (*RKHACT_T)( RKH_EVT_T *pe );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (e) )
 #elif (RKH_SMA_EN_ACT_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_ACT_ARG_SMA == RKH_ENABLED)
@@ -2598,14 +2599,14 @@ typedef struct rkhsma_t
 
 #if (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
-	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma, RKHEVT_T *pe );
+	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
-	HUInt rkh_else( const struct rkhsma_t *sma, RKHEVT_T *pe );
+	HUInt rkh_else( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 #elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED)
-	typedef HUInt (*RKHGUARD_T)( RKHEVT_T *pe );
+	typedef HUInt (*RKHGUARD_T)( RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
-	HUInt rkh_else( RKHEVT_T *pe );
+	HUInt rkh_else( RKH_EVT_T *pe );
 #elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
 	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma );
@@ -2655,7 +2656,7 @@ typedef struct rkhbase_t
 	const char *name;
 #endif
 
-} RKHBASE_T;
+} RKH_BASE_T;
 
 
 /**
@@ -2674,7 +2675,7 @@ typedef struct rkhtr_t
 	 *  Triggering event.
 	 */
 
-	RKHE_T event;
+	RKH_SIG_T event;
 	
 	/**	
  	 * 	\brief
@@ -2696,7 +2697,7 @@ typedef struct rkhtr_t
 	 */
 
 	RKHROM void *target;
-} RKHTR_T;
+} RKH_TR_T;
 
 
 /**
@@ -2721,7 +2722,7 @@ typedef struct rkhexpcn_t
 	 */
 
 	RKHROM void *target;
-} RKHEXPCN_T;
+} RKH_EXPCN_T;
 
 
 /**
@@ -2746,7 +2747,7 @@ typedef struct rkhenpcn_t
 	 */
 
 	RKHROM void *target;
-} RKHENPCN_T;
+} RKH_ENPCN_T;
 
 
 /**
@@ -2787,7 +2788,7 @@ typedef struct rkhst_t
 	RKHROM struct rkhst_t *parent;
 #endif
 
-} RKHST_T;
+} RKH_ST_T;
 
 
 /**
@@ -2797,7 +2798,7 @@ typedef struct rkhst_t
 
 typedef struct rkhsbsc_t
 {
-	RKHST_T st;
+	RKH_ST_T st;
 
 	/**	
  	 * 	\brief
@@ -2822,8 +2823,8 @@ typedef struct rkhsbsc_t
 	 *  
 	 *  \code
 	 *	static
-	 *	RKHE_T
-	 *	preprocessor( RKHEVT_T *pe )
+	 *	RKH_SIG_T
+	 *	preprocessor( RKH_EVT_T *pe )
 	 *	{
 	 *		...
 	 *	}
@@ -2849,7 +2850,7 @@ typedef struct rkhsbsc_t
 	RKHPPRO_T prepro;
 #endif
 
-} RKHSBSC_T;
+} RKH_SBSC_T;
 
 
 /**
@@ -2859,7 +2860,7 @@ typedef struct rkhsbsc_t
 
 typedef struct rkhscmp_t
 {
-	RKHST_T st;
+	RKH_ST_T st;
 
 	/**	
  	 * 	\brief
@@ -2884,8 +2885,8 @@ typedef struct rkhscmp_t
 	 *  
 	 *  \code
 	 *	static
-	 *	RKHE_T
-	 *	preprocessor( RKHEVT_T *pe )
+	 *	RKH_SIG_T
+	 *	preprocessor( RKH_EVT_T *pe )
 	 *	{
 	 *		...
 	 *	}
@@ -2927,7 +2928,7 @@ typedef struct rkhscmp_t
 	RKHROM struct rkhshist_t *history;
 #endif
 
-} RKHSCMP_T;
+} RKH_SCMP_T;
 
 
 /**
@@ -2990,7 +2991,7 @@ typedef struct rkhscmp_t
 
 typedef struct rkhssbm_t
 {
-	RKHST_T st;
+	RKH_ST_T st;
 
 	/**	
  	 * 	\brief
@@ -3013,7 +3014,7 @@ typedef struct rkhssbm_t
 
 	RKHROM struct rkhrsm_t *sbm;
 
-} RKHSSBM_T;
+} RKH_SSBM_T;
 
 
 /**
@@ -3054,7 +3055,7 @@ typedef struct rkhrsm_t
 	 */
 
 	RKHROM struct rkhst_t **dyp;
-} RKHRSM_T;
+} RKH_RSM_T;
 
 
 /**
@@ -3083,7 +3084,7 @@ typedef struct rkhsenp_t
 	 *	Points to entry point connection.
 	 */
 
-	RKHROM RKHENPCN_T *enpcn;
+	RKHROM RKH_ENPCN_T *enpcn;
 
 	/**	
  	 * 	\brief
@@ -3092,7 +3093,7 @@ typedef struct rkhsenp_t
 
 	RKHROM struct rkhst_t *parent;
 
-} RKHSENP_T;
+} RKH_SENP_T;
 
 
 /**
@@ -3127,8 +3128,8 @@ typedef struct rkhsexp_t
 	 *	Points to state's parent (referenced submachine).
 	 */
 
-	RKHROM RKHRSM_T *parent;
-} RKHSEXP_T;
+	RKHROM RKH_RSM_T *parent;
+} RKH_SEXP_T;
 
 
 /**
@@ -3151,7 +3152,7 @@ typedef struct rkhscond_t
 	 */
 
 	RKHROM struct rkhtr_t *trtbl;
-} RKHSCOND_T;
+} RKH_SCOND_T;
 
 
 /**
@@ -3174,7 +3175,7 @@ typedef struct rkhschoice_t
 	 */
 
 	RKHROM struct rkhtr_t *trtbl;
-} RKHSCHOICE_T;
+} RKH_SCHOICE_T;
 
 
 /**
@@ -3198,7 +3199,7 @@ typedef struct rkhshist_t
 	 *	Points to state's parent.
 	 */
 
-	RKHROM RKHST_T *parent;
+	RKHROM RKH_ST_T *parent;
 
 	/**	
  	 * 	\brief
@@ -3206,8 +3207,8 @@ typedef struct rkhshist_t
 	 *	the state's history.
 	 */
 
-	RKHROM RKHST_T **target;
-} RKHSHIST_T;
+	RKHROM RKH_ST_T **target;
+} RKH_SHIST_T;
 
 
 #endif

@@ -52,7 +52,7 @@
 RKH_MODULE_NAME( rkhtim )
 
 
-#define CPTIM( p )			(( RKHT_T* )(p))
+#define CPTIM( p )			(( RKH_TMR_T* )(p))
 
 #if RKH_TIM_EN_HOOK == RKH_ENABLED
 	#define RKH_EXEC_THOOK()							\
@@ -73,20 +73,20 @@ RKH_MODULE_NAME( rkhtim )
 
 #if defined( RKH_USE_TRC_SENDER )
 	#define RKH_TICK_POST( t_, sender_ ) \
-				RKH_SMA_POST_FIFO((RKHSMA_T *)t_->sma, t_->evt, \
+				RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, \
 						sender_ != (const void *)0 ? sender_ : t_)
 #else
 	#define RKH_TICK_POST( t_, sender_ ) \
-					RKH_SMA_POST_FIFO((RKHSMA_T *)t_->sma, t_->evt, sender_ )
+					RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, sender_ )
 #endif
 
 
-static RKHT_T *thead;
+static RKH_TMR_T *thead;
 
 
 static
 void
-rem_from_list( RKHT_T *t, RKHT_T *tprev )
+rem_from_list( RKH_TMR_T *t, RKH_TMR_T *tprev )
 {
 	RKH_SR_ALLOC();
 
@@ -106,7 +106,7 @@ rkh_tim_tick( const void *const sender )
 rkh_tim_tick( void )
 #endif
 {
-	RKHT_T *t, *tprev;
+	RKH_TMR_T *t, *tprev;
 	RKH_SR_ALLOC();
 
 	RKH_HK_TIMETICK();			/* call user definable hook */
@@ -146,9 +146,9 @@ rkh_tim_tick( void )
 
 void 
 #if RKH_TIM_EN_HOOK == RKH_DISABLED
-rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e )
+rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e )
 #else
-rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e, RKH_THK_T thk )
+rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk )
 #endif
 {
 	RKH_SR_ALLOC();
@@ -166,7 +166,7 @@ rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e, RKH_THK_T thk )
 
 
 void 
-rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick )
+rkh_tim_start( RKH_TMR_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick )
 {
 	RKH_SR_ALLOC();
 
@@ -184,7 +184,7 @@ rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick )
 
 
 void 
-rkh_tim_stop( RKHT_T *t )
+rkh_tim_stop( RKH_TMR_T *t )
 {
 	RKH_SR_ALLOC();
 
@@ -200,7 +200,7 @@ rkh_tim_stop( RKHT_T *t )
 
 #if RKH_TIM_EN_GET_INFO	== RKH_ENABLED
 void 
-rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info )
+rkh_tim_get_info( RKH_TMR_T *t, RKH_TINFO_T *info )
 {
 	RKH_SR_ALLOC();
 
@@ -211,7 +211,7 @@ rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info )
 
 
 void 
-rkh_tim_clear_info( RKHT_T *t )
+rkh_tim_clear_info( RKH_TMR_T *t )
 {
 	RKH_TINFO_T *pi;
 	RKH_SR_ALLOC();

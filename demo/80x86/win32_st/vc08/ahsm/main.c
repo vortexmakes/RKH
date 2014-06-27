@@ -11,7 +11,7 @@
 
 #define QSTO_SIZE			4
 
-static RKHEVT_T *qsto[ QSTO_SIZE ];
+static RKH_EVT_T *qsto[ QSTO_SIZE ];
 
 enum
 {
@@ -83,7 +83,7 @@ main( int argc, char *argv[] )
 		RKH_TUSR_SIG( ZERO );
 	RKH_TRC_USR_END();
 
-	rkh_sma_activate( my, (const RKHEVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_sma_activate( my, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
 	RKH_TRC_CLOSE();

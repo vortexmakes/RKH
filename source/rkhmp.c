@@ -62,7 +62,7 @@ typedef struct rkh_free_blk_t
 
 
 void 
-rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize, 
+rkh_mp_init( RKH_MP_T *mp, void *sstart, rkhui16_t ssize, 
 												RKH_MPBS_T bsize )
 {
     RKH_FREE_BLK_T *fb;
@@ -127,12 +127,12 @@ rkh_mp_init( RKHMP_T *mp, void *sstart, rkhui16_t ssize,
 
 
 void *
-rkh_mp_get( RKHMP_T *mp )
+rkh_mp_get( RKH_MP_T *mp )
 {
     RKH_FREE_BLK_T *fb;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 && mp->bsize != 0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 && mp->bsize != 0 );
 
 	RKH_ENTER_CRITICAL_();
 
@@ -156,11 +156,11 @@ rkh_mp_get( RKHMP_T *mp )
 
 
 void 
-rkh_mp_put( RKHMP_T *mp, void *blk )
+rkh_mp_put( RKH_MP_T *mp, void *blk )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 );
 	RKHASSERT( mp->bsize != 0 );
 
 #if RKH_MP_REDUCED == RKH_DISABLED
@@ -185,12 +185,12 @@ rkh_mp_put( RKHMP_T *mp, void *blk )
 
 #if RKH_MP_EN_GET_BSIZE == RKH_ENABLED
 RKH_MPBS_T 
-rkh_mp_get_bsize( RKHMP_T *mp )
+rkh_mp_get_bsize( RKH_MP_T *mp )
 {
     RKH_MPBS_T bs;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     bs = mp->bsize;
@@ -203,12 +203,12 @@ rkh_mp_get_bsize( RKHMP_T *mp )
 
 #if RKH_MP_EN_GET_NFREE == RKH_ENABLED
 RKH_MPNB_T 
-rkh_mp_get_nfree( RKHMP_T *mp )
+rkh_mp_get_nfree( RKH_MP_T *mp )
 {
     RKH_MPNB_T nfree;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     nfree = mp->nfree;
@@ -222,12 +222,12 @@ rkh_mp_get_nfree( RKHMP_T *mp )
 #if RKH_MP_EN_GET_LWM == RKH_ENABLED && \
 	RKH_MP_REDUCED == RKH_DISABLED
 RKH_MPNB_T 
-rkh_mp_get_low_wmark( RKHMP_T *mp )
+rkh_mp_get_low_wmark( RKH_MP_T *mp )
 {
     RKH_MPNB_T nmin;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     nmin = mp->nmin;
@@ -241,11 +241,11 @@ rkh_mp_get_low_wmark( RKHMP_T *mp )
 #if RKH_MP_EN_GET_INFO == RKH_ENABLED && \
 	RKH_MP_REDUCED == RKH_DISABLED
 void 
-rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
+rkh_mp_get_info( RKH_MP_T *mp, RKH_MPI_T *mpi )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 && mpi != ( RKH_MPI_T* )0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 && mpi != ( RKH_MPI_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
 	*mpi = mp->mpi;
@@ -254,12 +254,12 @@ rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi )
 
 
 void 
-rkh_mp_clear_info( RKHMP_T *mp )
+rkh_mp_clear_info( RKH_MP_T *mp )
 {
 	RKH_MPI_T *pmpi;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKHMP_T* )0 );
+	RKHASSERT( mp != ( RKH_MP_T* )0 );
 	pmpi = &mp->mpi;
 
 	RKH_ENTER_CRITICAL_();

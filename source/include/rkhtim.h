@@ -54,7 +54,7 @@
  * 	\brief
  * 	The prototype of callback function (hook) to call when the timer expires.
  *
- * 	\param t		pointer to elapsed timer (RKHT_T data structure).
+ * 	\param t		pointer to elapsed timer (RKH_TMR_T data structure).
  */
 
 typedef void ( *RKH_THK_T )( void *t );
@@ -116,32 +116,32 @@ typedef struct rkh_tim_info_t
  *	execute in the order in which they become active.
  *
  *	\note
- * 	RKH prohibits an application from explicitly modifying the RKHT_T 
+ * 	RKH prohibits an application from explicitly modifying the RKH_TMR_T 
  * 	structure. The RKH's timer structures can be located anywhere in memory, 
  * 	but it is most common to make it a global structure by defining it 
  * 	outside the scope of any function.
  * 	An RKH timer is created when an application timer is declared with the 
- * 	RKHT_T data type. The following listing declares "my_timer" timer:
+ * 	RKH_TMR_T data type. The following listing declares "my_timer" timer:
  *
  * 	\code
- * 	RKHT_T my_timer;
+ * 	RKH_TMR_T my_timer;
  * 	\endcode
  */
 
-typedef struct RKHT_T RKHT_T;
-struct RKHT_T
+typedef struct RKH_TMR_T RKH_TMR_T;
+struct RKH_TMR_T
 {
 	/**
 	 * 	Points to timer event.
 	 */
 
-	RKHEVT_T *evt;
+	RKH_EVT_T *evt;
 
 	/**
 	 * 	Points to next timer structure in the doubly linked list.
 	 */
 
-	RKHT_T *tnext;
+	RKH_TMR_T *tnext;
 
 	/**
 	 * 	\brief
@@ -196,9 +196,9 @@ struct RKHT_T
 
 /**
  * 	\brief
- *	Initializes the previously allocated timer structure RKHT_T. 
+ *	Initializes the previously allocated timer structure RKH_TMR_T. 
  *
- * 	A timer is declared with the RKHT_T data type and is defined with the 
+ * 	A timer is declared with the RKH_TMR_T data type and is defined with the 
  * 	rkh_tim_init() service.
  *	The timer is initialized in a non-active state (stopped). In this case, a 
  *	subsequent start service call is necessary to get the timer actually 
@@ -210,7 +210,7 @@ struct RKHT_T
  * 	\code
  *	#define MY_TICK				100
  *
- *	static RKHT_T my_timer;
+ *	static RKH_TMR_T my_timer;
  *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
@@ -219,27 +219,27 @@ struct RKHT_T
  * 	\endcode
  *
  *	\note 
- *	See RKHT_T structure for more information.
+ *	See RKH_TMR_T structure for more information.
  *		
  *	\param t_		pointer to previously allocated timer structure. Any 
- *					software module intending to install a software timer must 
- *					first allocate a timer structure RKHT_T.
+ *					software module intending to install a software timer 
+ *					must first allocate a timer structure RKH_TMR_T.
  *	\param e_		event to be directly posted (using the FIFO policy) into 
  *					the event queue of the target agreed state machine 
  *					application at the timer expiration.
  *	\param th_ 		hook function to be called at the timer expiration. This 
- *					argument is optional, thus it could be declared as NULL or 
- *					eliminated in compile-time with RKH_TIM_EN_HOOK.
+ *					argument is optional, thus it could be declared as NULL 
+ *					or eliminated in compile-time with RKH_TIM_EN_HOOK.
  */
 
 #if RKH_TIM_EN_HOOK == RKH_ENABLED
 	#define rkh_tim_init( t_, e_, th_ )	\
 				rkh_tim_init_( (t_), (e_), (th_) )
-	void rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e, RKH_THK_T thk );
+	void rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk );
 #else
 	#define rkh_tim_init( t_, e_, th_ )	\
 				rkh_tim_init_( (t_), (e_) )
-	void rkh_tim_init_( RKHT_T *t, const RKHEVT_T *e );
+	void rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e );
 #endif
 
 
@@ -257,7 +257,7 @@ struct RKHT_T
  * 	\code
  *	#define MY_TICK				100
  *
- *	static RKHT_T my_timer;
+ *	static RKH_TMR_T my_timer;
  *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
@@ -291,7 +291,7 @@ struct RKHT_T
  * 	\code
  *	#define MY_TICK			100
  *
- *	static RKHT_T my_timer;
+ *	static RKH_TMR_T my_timer;
  *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
@@ -326,7 +326,8 @@ struct RKHT_T
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick );
+void rkh_tim_start( RKH_TMR_T *t, 	const struct rkhsma_t *sma, 
+									RKH_TNT_T itick );
 
 
 /**
@@ -339,7 +340,7 @@ void rkh_tim_start( RKHT_T *t, const struct rkhsma_t *sma, RKH_TNT_T itick );
  *	\param t		pointer to previously created timer structure.
  */
 
-void rkh_tim_stop( RKHT_T *t );
+void rkh_tim_stop( RKH_TMR_T *t );
 
 
 /**
@@ -364,7 +365,7 @@ void rkh_tim_stop( RKHT_T *t );
  * 					information will be copied by reference.
  */
 
-void rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info );
+void rkh_tim_get_info( RKH_TMR_T *t, RKH_TINFO_T *info );
 
 
 /**
@@ -379,7 +380,7 @@ void rkh_tim_get_info( RKHT_T *t, RKH_TINFO_T *info );
  *	\param t		pointer to previously created timer structure.
  */
 
-void rkh_tim_clear_info( RKHT_T *t );
+void rkh_tim_clear_info( RKH_TMR_T *t );
 
 
 #endif

@@ -78,7 +78,7 @@ dummy_exit( const struct rkhsma_t *sma )
 
 
 void
-set_x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+set_x1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	CMY( sma )->x = 1;
@@ -86,7 +86,7 @@ set_x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void
-set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
+set_y_2( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	CMY( sma )->y = 2;
@@ -94,7 +94,7 @@ set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void
-set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+set_y_1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	CMY( sma )->y = 1;
@@ -102,7 +102,7 @@ set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void
-dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe )
+dummy_act( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -110,7 +110,7 @@ dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void
-show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
+show_data( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -118,7 +118,7 @@ show_data( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
+terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -132,7 +132,7 @@ terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y_0( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_0( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
@@ -140,7 +140,7 @@ y_0( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
@@ -148,7 +148,7 @@ y_1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
+y_2( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
@@ -156,7 +156,7 @@ y_2( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
+x1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
@@ -164,7 +164,7 @@ x1( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 HUInt
-x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe )
+x2_or_x3( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;

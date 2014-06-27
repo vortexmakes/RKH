@@ -443,7 +443,7 @@ rkh_trc_obj( rkhui8_t tre, rkhui8_t *obj, const char *obj_name )
 
 
 void
-rkh_trc_sig( RKHE_T sig, const char *sig_name )
+rkh_trc_sig( RKH_SIG_T sig, const char *sig_name )
 {
 	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_SIG )
 		RKH_TRC_SIG( sig );

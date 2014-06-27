@@ -286,7 +286,7 @@ rkh_trc_close( void )
 }
 
 
-RKHTS_T 
+RKH_TS_T 
 rkh_trc_getts( void )
 {
 	struct timeval tv;   /* see gettimeofday(2) */
@@ -294,7 +294,7 @@ rkh_trc_getts( void )
 
 	gettimeofday(&tv, NULL);
 	t = (double) tv.tv_sec + (double) 1e-6 * tv.tv_usec; 
-	return ( RKHTS_T )t;
+	return ( RKH_TS_T )t;
 }
 
 

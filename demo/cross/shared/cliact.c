@@ -75,7 +75,7 @@ cli_resume( const struct rkhsma_t *sma )
  */
 
 void 
-cli_req( const struct rkhsma_t *sma, RKHEVT_T *pe )
+cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	REQ_EVT_T *e_req;
 
@@ -88,7 +88,7 @@ cli_req( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-cli_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
+cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	RKH_TNT_T time;
 
@@ -100,7 +100,7 @@ cli_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-cli_end( const struct rkhsma_t *sma, RKHEVT_T *pe )
+cli_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	(void)sma;

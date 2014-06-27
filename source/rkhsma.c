@@ -65,17 +65,17 @@ RKHROM char rkh_version[] =
 };
 
 
-RKHSMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
+RKH_SMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
 
 
 void 
-rkh_sma_register( RKHSMA_T *sma )
+rkh_sma_register( RKH_SMA_T *sma )
 {
     rkhui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
     RKHREQUIRE(	(prio <= (rkhui8_t)RKH_LOWEST_PRIO) && 
-				(rkh_sptbl[ prio ] == (RKHSMA_T *)0));
+				(rkh_sptbl[ prio ] == (RKH_SMA_T *)0));
 
 	RKH_ENTER_CRITICAL_();
     rkh_sptbl[ prio ] = sma;
@@ -85,7 +85,7 @@ rkh_sma_register( RKHSMA_T *sma )
 
 
 void 
-rkh_sma_unregister( RKHSMA_T *sma )
+rkh_sma_unregister( RKH_SMA_T *sma )
 {
     rkhui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
@@ -94,7 +94,7 @@ rkh_sma_unregister( RKHSMA_T *sma )
 				(rkh_sptbl[ prio ] == sma));
 
 	RKH_ENTER_CRITICAL_();
-    rkh_sptbl[ prio ] = ( RKHSMA_T * )0;
+    rkh_sptbl[ prio ] = ( RKH_SMA_T * )0;
 	RKH_EXIT_CRITICAL_();
 	RKH_TR_SMA_UNREG( sma, prio );
 }

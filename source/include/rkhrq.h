@@ -122,16 +122,16 @@ typedef struct rkh_qinfo_t
  * 	flexibility.
  *
  * 	\note
- * 	RKH prohibits an application from explicitly modifying the RKHRQ_T 
+ * 	RKH prohibits an application from explicitly modifying the RKH_RQ_T 
  * 	structure. The RKH's queue structures can be located anywhere in memory, 
  * 	but it is most common to make it a global structure by defining it 
  * 	outside the scope of any function.
  * 	An RKH queue is created when an queue (copy by reference) is declared 
- * 	with the RKHRQ_T data type. The following listing declares "gsmque" 
+ * 	with the RKH_RQ_T data type. The following listing declares "gsmque" 
  * 	timer:
  *
  * 	\code
- * 	RKHRQ_T gsmque;
+ * 	RKH_RQ_T gsmque;
  * 	\endcode
  */
 
@@ -211,14 +211,14 @@ typedef struct rkhrq_t
 	RKH_RQI_T rqi;
 #endif
 
-} RKHRQ_T;
+} RKH_RQ_T;
 
 
 /**
  * \brief
- *	Initializes the previously allocated queue data structure RKHRQ_T.
+ *	Initializes the previously allocated queue data structure RKH_RQ_T.
  *
- * 	A queue is declared with the RKHRQ_T data type and is defined with the 
+ * 	A queue is declared with the RKH_RQ_T data type and is defined with the 
  * 	rkh_rq_init() service. The total number of messages is calculated from 
  * 	the specified message size (pointer size) and the total number of bytes 
  * 	in the queue. Note that if the total number of bytes specified in the 
@@ -226,7 +226,7 @@ typedef struct rkhrq_t
  * 	size, the remaining bytes in the memory area are not used.
  *
  *	\sa 
- *	RKHRQ_T structure for more information.
+ *	RKH_RQ_T structure for more information.
  *
  * 	\param q		pointer to previously allocated queue structure.
  * 	\param sstart	storage start. Pointer to an array of pointers that holds 
@@ -239,7 +239,7 @@ typedef struct rkhrq_t
  * 					parameter must be set to NULL.
  */
 
-void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
+void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
 					const struct rkhsma_t *sma );
 
 
@@ -254,7 +254,7 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  */
 
 #define rkh_rq_is_empty( q )								\
-				(HUInt)(rkh_rq_get_num((RKHRQ_T*)(q))==0)
+				(HUInt)(rkh_rq_get_num((RKH_RQ_T*)(q))==0)
 
 
 /**
@@ -271,7 +271,7 @@ void rkh_rq_init( 	RKHRQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	'1' (TRUE) if queue is full, otherwise '0' (FALSE).
  */
 
-HUInt rkh_rq_is_full( RKHRQ_T *q );
+HUInt rkh_rq_is_full( RKH_RQ_T *q );
 
 
 /**
@@ -285,7 +285,7 @@ HUInt rkh_rq_is_full( RKHRQ_T *q );
  * 	\param q		pointer to previously created queue.
  */
 
-RKH_RQNE_T rkh_rq_get_num( RKHRQ_T *q );
+RKH_RQNE_T rkh_rq_get_num( RKH_RQ_T *q );
 
 
 /**
@@ -305,7 +305,7 @@ RKH_RQNE_T rkh_rq_get_num( RKHRQ_T *q );
  * 	Lowest number of free elements ever present in the queue.
  */
 
-RKH_RQNE_T rkh_rq_get_lwm( RKHRQ_T *q );
+RKH_RQNE_T rkh_rq_get_lwm( RKH_RQ_T *q );
 
 
 /**
@@ -316,7 +316,7 @@ RKH_RQNE_T rkh_rq_get_lwm( RKHRQ_T *q );
  * 					elements are received.
  */
 
-void *rkh_rq_get( RKHRQ_T *q );
+void *rkh_rq_get( RKH_RQ_T *q );
 
 
 /**
@@ -333,7 +333,7 @@ void *rkh_rq_get( RKHRQ_T *q );
  * 	\param pe		pointer-sized variable and is application specific.
  */
 
-void rkh_rq_put_fifo( RKHRQ_T *q, const void *pe );
+void rkh_rq_put_fifo( RKH_RQ_T *q, const void *pe );
 
 
 /**
@@ -353,7 +353,7 @@ void rkh_rq_put_fifo( RKHRQ_T *q, const void *pe );
  * 	\param pe		pointer-sized variable and is application specific.
  */
 
-void rkh_rq_put_lifo( RKHRQ_T *q, const void *pe );
+void rkh_rq_put_lifo( RKH_RQ_T *q, const void *pe );
 
 
 /**
@@ -376,7 +376,7 @@ void rkh_rq_put_lifo( RKHRQ_T *q, const void *pe );
  * 	\param q		pointer to previously created queue.
  */
 
-void rkh_rq_deplete( RKHRQ_T *q );
+void rkh_rq_deplete( RKH_RQ_T *q );
 
 
 /**
@@ -397,7 +397,7 @@ void rkh_rq_deplete( RKHRQ_T *q );
  * 	error code.
  */
 
-HUInt rkh_rq_read( RKHRQ_T *q, void *pe ); 
+HUInt rkh_rq_read( RKH_RQ_T *q, void *pe ); 
 
 
 /**
@@ -422,7 +422,7 @@ HUInt rkh_rq_read( RKHRQ_T *q, void *pe );
  * 					information will be copied.
  */
 
-void rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi );
+void rkh_rq_get_info( RKH_RQ_T *q, RKH_RQI_T *pqi );
 
 
 /**
@@ -436,7 +436,7 @@ void rkh_rq_get_info( RKHRQ_T *q, RKH_RQI_T *pqi );
  * 	\param q		pointer to previously created queue.
  */
 
-void rkh_rq_clear_info( RKHRQ_T *q );
+void rkh_rq_clear_info( RKH_RQ_T *q );
 
 
 #endif

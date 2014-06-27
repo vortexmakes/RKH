@@ -12,8 +12,8 @@
 
 #define QSTO_SIZE			4
 
-static RKHEVT_T *qsto[ QSTO_SIZE ];
-extern RKHT_T bkytim;
+static RKH_EVT_T *qsto[ QSTO_SIZE ];
+extern RKH_TMR_T bkytim;
 
 
 int
@@ -32,7 +32,7 @@ main( int argc, char *argv[] )
 	/* send signals to trazer */
 	RKH_TR_FWK_SIG( TIMEOUT );
 
-	rkh_sma_activate( blinky, (const RKHEVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
 	rkh_enter();
 
 	RKH_TRC_CLOSE();

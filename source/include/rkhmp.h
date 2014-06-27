@@ -164,15 +164,15 @@ typedef struct
  * 	feature because of the considerable flexibility it gives the application. 
  *
  *	\note
- * 	RKH prohibits an application from explicitly modifying the RKHMP_T 
+ * 	RKH prohibits an application from explicitly modifying the RKH_MP_T 
  * 	structure. The RKH's memory block pool structures can be located anywhere 
  * 	in memory, but it is most common to make it a global structure by defining 
  * 	it outside the scope of any function.
  * 	An RKH memory pool is created when an memory pool is declared with the 
- * 	RKHMP_T data type. The following listing declares "my_pool" memory pool:
+ * 	RKH_MP_T data type. The following listing declares "my_pool" memory pool:
  *
  * 	\code
- * 	RKHMP_T my_pool;
+ * 	RKH_MP_T my_pool;
  * 	\endcode
  */
 
@@ -261,14 +261,14 @@ typedef struct rkhmp_t
 #if RKH_MP_EN_GET_INFO == RKH_ENABLED
 	RKH_MPI_T mpi;
 #endif
-} RKHMP_T;
+} RKH_MP_T;
 
 
 /**
  * 	\brief
- *	Initializes the previously allocated memory pool data strcuture RKHMP_T.
+ *	Initializes the previously allocated memory pool data strcuture RKH_MP_T.
  *
- * 	A memory block pool is declared with the RKHMP_T data type and is defined 
+ * 	A memory block pool is declared with the RKH_MP_T data type and is defined 
  * 	with the rkh_mp_init() service.
  *
  * 	A general challenge in writing this function is portability, 
@@ -287,7 +287,7 @@ typedef struct rkhmp_t
  *	function.
  *
  *	\note 
- *	See RKHMP_T structure for more information.
+ *	See RKH_MP_T structure for more information.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  * 	\param sstart	storage start. Pointer to memory from which memory blocks 
@@ -297,7 +297,7 @@ typedef struct rkhmp_t
  * 					block in the pool.
  */
 
-void rkh_mp_init( 	RKHMP_T *mp, void *sstart, rkhui16_t ssize, 
+void rkh_mp_init( 	RKH_MP_T *mp, void *sstart, rkhui16_t ssize, 
 					RKH_MPBS_T bsize );
 
 
@@ -311,7 +311,7 @@ void rkh_mp_init( 	RKHMP_T *mp, void *sstart, rkhui16_t ssize,
  * 	A pointer to a new memory block or NULL if the pool runs out of blocks.
  */
 
-void *rkh_mp_get( RKHMP_T *mp );
+void *rkh_mp_get( RKH_MP_T *mp );
 
 
 /**
@@ -324,7 +324,7 @@ void *rkh_mp_get( RKHMP_T *mp );
  * 	\param blk		pointer to the returned memory block.
  */
 
-void rkh_mp_put( RKHMP_T *mp, void *blk );
+void rkh_mp_put( RKH_MP_T *mp, void *blk );
 
 
 /**
@@ -341,7 +341,7 @@ void rkh_mp_put( RKHMP_T *mp, void *blk );
  * 	The size of memory block in bytes.
  */
 
-RKH_MPBS_T rkh_mp_get_bsize( RKHMP_T *mp );
+RKH_MPBS_T rkh_mp_get_bsize( RKH_MP_T *mp );
 
 
 /**
@@ -358,7 +358,7 @@ RKH_MPBS_T rkh_mp_get_bsize( RKHMP_T *mp );
  * 	The number of free memory blocks in the pool.
  */
 
-RKH_MPNB_T rkh_mp_get_nfree( RKHMP_T *mp );
+RKH_MPNB_T rkh_mp_get_nfree( RKH_MP_T *mp );
 
 
 /**
@@ -377,7 +377,7 @@ RKH_MPNB_T rkh_mp_get_nfree( RKHMP_T *mp );
  * 	Lowest number of free blocks ever present in the pool.
  */
 
-RKH_MPNB_T rkh_mp_get_low_wmark( RKHMP_T *mp );
+RKH_MPNB_T rkh_mp_get_low_wmark( RKH_MP_T *mp );
 
 
 /**
@@ -398,7 +398,7 @@ RKH_MPNB_T rkh_mp_get_low_wmark( RKHMP_T *mp );
  * 					will be copied by reference.
  */
 
-void rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi );
+void rkh_mp_get_info( RKH_MP_T *mp, RKH_MPI_T *mpi );
 
 
 /**
@@ -412,7 +412,7 @@ void rkh_mp_get_info( RKHMP_T *mp, RKH_MPI_T *mpi );
  * 	\param mp		pointer to previously allocated memory pool structure.
  */
 
-void rkh_mp_clear_info( RKHMP_T *mp );
+void rkh_mp_clear_info( RKH_MP_T *mp );
 
 
 #endif

@@ -28,7 +28,7 @@ static RKH_DCLR_STATIC_EVENT( e_tout, TIMEOUT );
  * 	'blinky'.
  */
 
-RKHT_T bkytim;
+RKH_TMR_T bkytim;
 
 
 /*
@@ -48,20 +48,20 @@ blinky_init( const struct rkhsma_t *sma )
  */
 
 void
-blinky_led_on( const struct rkhsma_t *sma, RKHEVT_T *pe )
+blinky_led_on( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 
 	rkh_tim_oneshot( &bkytim, blinky, LED_ON_TIME );
 	bsp_led_on();
-	printf("state = %s - %s\n", ((RKHBASE_T *)(sma->state))->name, 
+	printf("state = %s - %s\n", ((RKH_BASE_T *)(sma->state))->name, 
 								((BKY_ST_T *)(sma->state))->title);
 	++CBKY(sma)->cnt;
 }
 
 
 void
-blinky_led_off( const struct rkhsma_t *sma, RKHEVT_T *pe )
+blinky_led_off( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;

@@ -71,10 +71,10 @@ RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 static rkhui8_t rkhnpool;
 
 
-RKHEVT_T *
-rkh_ae( RKHES_T esize, RKHE_T e )
+RKH_EVT_T *
+rkh_ae( RKH_ES_T esize, RKH_SIG_T e )
 {
-    RKHEVT_T *evt;
+    RKH_EVT_T *evt;
     /* find the pool index that fits the requested event size ... */
     rkhui8_t idx = 0;
 	RKH_DYNE_TYPE *ep = rkheplist;
@@ -106,7 +106,7 @@ rkh_ae( RKHES_T esize, RKHE_T e )
 
 
 void 
-rkh_gc( RKHEVT_T *e )
+rkh_gc( RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 	
@@ -135,7 +135,7 @@ rkh_gc( RKHEVT_T *e )
 
 
 void
-rkh_reserve( RKHEVT_T *e )
+rkh_reserve( RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 
@@ -146,7 +146,7 @@ rkh_reserve( RKHEVT_T *e )
 
 
 void 
-rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
+rkh_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize )
 {
 	RKH_SR_ALLOC();
 
@@ -162,10 +162,10 @@ rkh_epool_register( void *sstart, rkhui32_t ssize, RKHES_T esize )
 #if RKH_EN_NATIVE_EQUEUE == RKH_ENABLED
 void 
 #if defined( RKH_USE_TRC_SENDER )
-rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e, 
 									const void *const sender )
 #else
-rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
+rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 #endif
 {
 	RKH_SR_ALLOC();
@@ -186,10 +186,10 @@ rkh_sma_post_fifo( RKHSMA_T *sma, const RKHEVT_T *e )
 	RKH_RQ_EN_PUT_LIFO == RKH_ENABLED
 void 
 #if defined( RKH_USE_TRC_SENDER )
-rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e, 
+rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e, 
 									const void *const sender )
 #else
-rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
+rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 #endif
 {
 	RKH_SR_ALLOC();
@@ -207,17 +207,17 @@ rkh_sma_post_lifo( RKHSMA_T *sma, const RKHEVT_T *e )
 
 
 #if RKH_EN_NATIVE_EQUEUE == RKH_ENABLED
-RKHEVT_T *
-rkh_sma_get( RKHSMA_T *sma )
+RKH_EVT_T *
+rkh_sma_get( RKH_SMA_T *sma )
 {
-	RKHEVT_T *e;
+	RKH_EVT_T *e;
 	RKH_SR_ALLOC();
 
     /*RKH_ENTER_CRITICAL_();*/
 	e = rkh_rq_get( &sma->equeue );
     /*RKH_EXIT_CRITICAL_();*/
 
-	RKHASSERT( e != ( RKHEVT_T * )0 );
+	RKHASSERT( e != ( RKH_EVT_T * )0 );
 	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
 	return e;
 }
@@ -226,7 +226,7 @@ rkh_sma_get( RKHSMA_T *sma )
 
 #if RKH_EN_DEFERRED_EVENT == RKH_ENABLED
 void 
-rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
+rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e )
 { 
 	RKH_SR_ALLOC();
 
@@ -239,10 +239,10 @@ rkh_defer( RKHRQ_T *q, const RKHEVT_T *e )
 }
 
 
-RKHEVT_T *
-rkh_recall( RKHSMA_T *sma, RKHRQ_T *q )
+RKH_EVT_T *
+rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
 {
-    RKHEVT_T *e;
+    RKH_EVT_T *e;
 	RKH_SR_ALLOC();
 	
 	e = rkh_rq_get( q );		/* get an event from deferred queue */

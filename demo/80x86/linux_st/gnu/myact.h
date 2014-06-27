@@ -44,23 +44,23 @@ void dummy_exit( const struct rkhsma_t *sma );
  *	Defines transition action functions
  */
 
-void set_x1( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void set_y_2( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void set_y_1( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void dummy_act( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void show_data( const struct rkhsma_t *sma, RKHEVT_T *pe );
-void terminate( const struct rkhsma_t *sma, RKHEVT_T *pe );
+void set_x1( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void set_y_2( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void set_y_1( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void dummy_act( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void show_data( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 /*
  *	Defines branch's guards
  */
 
-HUInt y_0( const struct rkhsma_t *sma, RKHEVT_T *pe );
-HUInt y_1( const struct rkhsma_t *sma, RKHEVT_T *pe );
-HUInt y_2( const struct rkhsma_t *sma, RKHEVT_T *pe );
-HUInt x1( const struct rkhsma_t *sma, RKHEVT_T *pe );
-HUInt x2_or_x3( const struct rkhsma_t *sma, RKHEVT_T *pe );
+HUInt y_0( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+HUInt y_1( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+HUInt y_2( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+HUInt x1( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+HUInt x2_or_x3( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 
 
 /*

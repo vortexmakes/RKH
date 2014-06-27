@@ -12,8 +12,8 @@
 #define MAX_SIZEOF_QREQ				2*NUM_CLIENTS
 
 
-static RKHRQ_T qreq;
-static RKHEVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
+static RKH_RQ_T qreq;
+static RKH_EVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
 
 
 /*
@@ -55,7 +55,7 @@ svr_resume( const struct rkhsma_t *sma )
 {
 	REQ_EVT_T *e;
 
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) 
+	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) 
 			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
 }
@@ -66,7 +66,7 @@ svr_resume( const struct rkhsma_t *sma )
  */
 
 void 
-svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	START_EVT_T *e_start;
 
@@ -80,19 +80,19 @@ svr_start( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-svr_end( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	REQ_EVT_T *e;
 
 	(void)pe;
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKHSMA_T*)sma, &qreq )) 
+	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) 
 			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
 }
 
 
 void 
-svr_defer( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	rkh_defer( &qreq, pe );
@@ -100,7 +100,7 @@ svr_defer( const struct rkhsma_t *sma, RKHEVT_T *pe )
 
 
 void 
-svr_terminate( const struct rkhsma_t *sma, RKHEVT_T *pe )
+svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;

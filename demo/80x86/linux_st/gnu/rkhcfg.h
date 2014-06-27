@@ -83,14 +83,14 @@
  * 	Specify the size of the event signal. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. The higher the signal size, the higher the 
  * 	event structure size and therefore more memory consumption.
- * 	See #RKHE_T data type.
+ * 	See #RKH_SIG_T data type.
  */
 
 #define RKH_SIZEOF_EVENT				8
 
 /**
  * 	Specify the data type of event size. The valid values [in bits] are 
- * 	8, 16 or 32. Default is 8. See #RKHES_T, rkh_epool_register(), and 
+ * 	8, 16 or 32. Default is 8. See #RKH_ES_T, rkh_epool_register(), and 
  *	RKH_ALLOC_EVENT(). Use a 8 value if the bigger event size is minor to 
  *	256 bytes.
  */
@@ -210,7 +210,7 @@
  *	inheritance in C it could be used as state's abstract data. 
  *	Moreover, implementing the single inheritance in C is very simply by 
  *	literally embedding the base type, #RKHPPRO_T in this case, as the first 
- *	member of the derived structure. See \a prepro member of #RKHST_T 
+ *	member of the derived structure. See \a prepro member of #RKH_ST_T 
  *	structure for more information.
  */
 
@@ -298,7 +298,7 @@
 /**
  *	If the #RKH_SMA_EN_INIT_ARG_SMA is set to 1 then the initial action 
  *	prototype will add as argument a pointer to state machine structure 
- *	#RKHSMA_T. See #RKHINIT_T definition.
+ *	#RKH_SMA_T. See #RKHINIT_T definition.
  */
 
 #define RKH_SMA_EN_INIT_ARG_SMA			1
@@ -306,7 +306,7 @@
 /**
  *	If the #RKH_SMA_EN_ENT_ARG_SMA is set to 1 then the entry action 
  *	prototype will add as argument a pointer to state machine structure 
- *	#RKHSMA_T. See #RKHENT_T definition.
+ *	#RKH_SMA_T. See #RKHENT_T definition.
  */
 
 #define RKH_SMA_EN_ENT_ARG_SMA			1
@@ -314,14 +314,14 @@
 /**
  *	If the #RKH_SMA_EN_ENT_ARG_STATE is set to 1 then the entry action 
  *	prototype will add as argument a pointer to "this" state structure 
- *	#RKHST_T. See #RKHENT_T definition.
+ *	#RKH_ST_T. See #RKHENT_T definition.
  */
 
 #define RKH_SMA_EN_ENT_ARG_STATE		0
 
 /**
  *	If the #RKH_SMA_EN_EXT_ARG_SMA is set to 1 then the exit action prototype 
- *	will add as argument a pointer to state machine structure #RKHSMA_T. See 
+ *	will add as argument a pointer to state machine structure #RKH_SMA_T. See 
  *	#RKHEXT_T definition.
  */
 
@@ -330,7 +330,7 @@
 /**
  *	If the #RKH_SMA_EN_EXT_ARG_STATE is set to 1 then the exit action 
  *	prototype will add as argument a pointer to "this" state structure 
- *	#RKHST_T. See #RKHEXT_T definition.
+ *	#RKH_ST_T. See #RKHEXT_T definition.
  */
 
 #define RKH_SMA_EN_EXT_ARG_STATE		0
@@ -338,7 +338,7 @@
 /**
  *	If the #RKH_SMA_EN_ACT_ARG_SMA is set to 1 then the transition action 
  *	prototype will add as argument a pointer to state machine structure 
- *	#RKHSMA_T. See #RKHACT_T definition.
+ *	#RKH_SMA_T. See #RKHACT_T definition.
  */
 
 #define RKH_SMA_EN_ACT_ARG_SMA			1
@@ -362,7 +362,7 @@
 /**
  *	If the #RKH_SMA_EN_GRD_ARG_SMA is set to 1 then the transition guard  
  *	prototype will add as argument a pointer to state machine structure 
- *	RKHSMA_T. See RKHGUARD_T definition.
+ *	RKH_SMA_T. See RKHGUARD_T definition.
  */
 
 #define RKH_SMA_EN_GRD_ARG_SMA			1
@@ -371,7 +371,7 @@
  *	If the #RKH_SMA_EN_PPRO_ARG_SMA is set to 1 then the event preprocessor  
  *	(Moore function like entry and exit actions) prototype will add as 
  *	argument a pointer to state machine structure 
- *	RKHSMA_T. See RKHPPRO_T definition.
+ *	RKH_SMA_T. See RKHPPRO_T definition.
  */
 
 #define RKH_SMA_EN_PPRO_ARG_SMA			1	
