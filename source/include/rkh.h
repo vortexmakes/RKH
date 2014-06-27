@@ -366,6 +366,12 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *
  *	Deep history applies downwards to all levels of nesting.
  *
+ *	\note
+ *	At this framework version, it is not recommended to instantiate the 
+ *	same history object more than once using this macro, since it uses a 
+ *	static memory to store the last visited state (memory of history 
+ *	pseudostate).
+ *
  *	\sa
  *	RKHSHIST_T structure definition for more information.
  *
@@ -392,9 +398,15 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *	This macro creates a shallow history pseudostate. 
  *
  *	Shallow history means that history applies to the current nesting context 
- *	only – states nested more deeply are not affected by the 
- *	presence of a history pseudostates in a higher context.
+ *	only – states nested more deeply are not affected by the presence of a 
+ *	history pseudostates in a higher context.
  *	
+ *	\note
+ *	At this framework version, it is not recommended to instantiate the 
+ *	same history object more than once using this macro, since it uses a 
+ *	static memory to store the last visited state (memory of history 
+ *	pseudostate).
+ *
  *	\sa
  *	RKHSHIST_T structure definition for more information.
  *
