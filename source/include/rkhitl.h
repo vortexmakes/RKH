@@ -167,9 +167,9 @@
 #define CM( p )						((RKHROM RKH_SMA_T*)(p))
 #define CT( p )						((RKHROM RKH_TR_T*)(p))
 #define CPT( p )					((RKHROM struct rkhscmp_t*)(p))
-#define CPP( p )					((RKHPPRO_T)(p))
-#define CG( p )						((RKHGUARD_T)(p))
-#define CA( p )						((RKHACT_T)(p))
+#define CPP( p )					((RKH_PPRO_T)(p))
+#define CG( p )						((RKH_GUARD_T)(p))
+#define CA( p )						((RKH_TRN_ACT_T)(p))
 #define CENP( p )					((RKH_SENP_T*)(p))
 #define CEXP( p )					((RKH_SEXP_T*)(p))
 #define CENPCN( p )					((RKH_ENPCN_T*)(p))
@@ -1690,7 +1690,7 @@
 #define MKSMA( rr, s )								\
 			{										\
 				{ 									\
-					(RKHROM ROMRKH_T*)(rr), 		\
+					(RKHROM RKH_ROM_T*)(rr), 		\
 				 	(RKHROM struct rkhst_t*)(s)		\
 				}									\
 			}
@@ -2090,7 +2090,7 @@ struct rkh_t;
 struct rkhsma_t;
 
 
-#define CIA( s )	((RKHINIT_T)((s)->romrkh->iaction))
+#define CIA( s )	((RKH_INIT_ACT_T)((s)->romrkh->iaction))
 
 /**
  * 	\brief
@@ -2106,7 +2106,7 @@ struct rkhsma_t;
 
 #if (RKH_SMA_EN_INIT_ARG_SMA == RKH_ENABLED && \
 		RKH_SMA_EN_IEVENT == RKH_ENABLED)
-	typedef void ( *RKHINIT_T )( const void *sma, 
+	typedef void ( *RKH_INIT_ACT_T )( const void *sma, 
 										const struct rkhevt_t *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
@@ -2115,7 +2115,7 @@ struct rkhsma_t;
 	}
 #elif (RKH_SMA_EN_INIT_ARG_SMA == RKH_ENABLED && \
 		RKH_SMA_EN_IEVENT == RKH_DISABLED)
-	typedef void ( *RKHINIT_T )( const struct rkhsma_t *sma );
+	typedef void ( *RKH_INIT_ACT_T )( const struct rkhsma_t *sma );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
@@ -2123,14 +2123,14 @@ struct rkhsma_t;
 	}
 #elif (RKH_SMA_EN_INIT_ARG_SMA == RKH_DISABLED && \
 		RKH_SMA_EN_IEVENT == RKH_ENABLED)
-	typedef void ( *RKHINIT_T )( const struct rkhevt_t *e );
+	typedef void ( *RKH_INIT_ACT_T )( const struct rkhevt_t *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( CIA(h)->romrkh->ievent );					\
 	}
 #else
-	typedef void ( *RKHINIT_T )( void );
+	typedef void ( *RKH_INIT_ACT_T )( void );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
@@ -2160,7 +2160,7 @@ typedef struct rkh_smai_t
  * 	Constant parameters of state machine.
  *
  *	The constant key parameters of a state machine are allocated within. 
- *	ROMRKH_T is a ROM base structure of RKH_T.
+ *	RKH_ROM_T is a ROM base structure of RKH_T.
  *
  *	\sa
  *	RKH_SMA_T structure definition for more information. Also, 
@@ -2218,11 +2218,11 @@ typedef struct romrkh_t
  	 * 	\brief
 	 * 	Points to initializing action (optional). 
 	 *
-	 * 	The function prototype is defined as RKHINIT_T. This argument is 
+	 * 	The function prototype is defined as RKH_INIT_ACT_T. This argument is 
 	 * 	optional, thus it could be declared as NULL.
 	 */
 
-	RKHINIT_T iaction;
+	RKH_INIT_ACT_T iaction;
 
 	/**
 	 * 	\brief
@@ -2236,7 +2236,7 @@ typedef struct romrkh_t
 #if RKH_SMA_EN_IEVENT == RKH_ENABLED
 	const RKH_EVT_T *ievent;
 #endif
-} ROMRKH_T;
+} RKH_ROM_T;
 
 
 /**
@@ -2245,7 +2245,7 @@ typedef struct romrkh_t
  *
  *	This structure resides in RAM because its members are dinamically updated
  *	by RKH (context of state machine).
- *	The \b #romrkh member points to ROMRKH_T structure, allocated in ROM, 
+ *	The \b #romrkh member points to RKH_ROM_T structure, allocated in ROM, 
  *	to reduce the size of RAM consume. The key parameters of a state machine 
  *	are allocated within. Therefore cannot be modified in runtime.
  *
@@ -2284,7 +2284,7 @@ typedef struct rkhsma_t
 	 * 	Points to state machine object.
 	 */
 	
-	RKHROM ROMRKH_T *romrkh;
+	RKHROM RKH_ROM_T *romrkh;
 
 	/** 
  	 * 	\brief
@@ -2397,7 +2397,7 @@ typedef struct rkhsma_t
 
 #if RKH_SMA_EN_ENT_ARG_SMA == RKH_ENABLED
 	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
-		typedef void ( *RKHENT_T )( const struct rkhsma_t *sma, 
+		typedef void ( *RKH_ENT_ACT_T )( const struct rkhsma_t *sma, 
 									const struct rkhst_t *state );
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
@@ -2405,7 +2405,7 @@ typedef struct rkhsma_t
 				(*(s)->enter)( h, s ); 							\
 		}
 	#else
-		typedef void ( *RKHENT_T )( const struct rkhsma_t *sma );
+		typedef void ( *RKH_ENT_ACT_T )( const struct rkhsma_t *sma );
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
@@ -2414,14 +2414,14 @@ typedef struct rkhsma_t
 	#endif
 #else
 	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
-		typedef void ( *RKHENT_T )( const struct rkhst_t *state );
+		typedef void ( *RKH_ENT_ACT_T )( const struct rkhst_t *state );
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
 				(*(s)->enter)( s ); 							\
 		}
 	#else
-		typedef void ( *RKHENT_T )( void );
+		typedef void ( *RKH_ENT_ACT_T )( void );
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
@@ -2458,7 +2458,7 @@ typedef struct rkhsma_t
 
 #if RKH_SMA_EN_EXT_ARG_SMA == RKH_ENABLED
 	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
-		typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma,
+		typedef void ( *RKH_EXT_ACT_T )( const struct rkhsma_t *sma,
 									const struct rkhst_t *state );
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
@@ -2466,7 +2466,7 @@ typedef struct rkhsma_t
 				(*(s)->exit)( h, s ); 							\
 		}
 	#else
-		typedef void ( *RKHEXT_T )( const struct rkhsma_t *sma );
+		typedef void ( *RKH_EXT_ACT_T )( const struct rkhsma_t *sma );
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
@@ -2475,14 +2475,14 @@ typedef struct rkhsma_t
 	#endif
 #else
 	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
-		typedef void ( *RKHEXT_T )( const struct rkhst_t *state );
+		typedef void ( *RKH_EXT_ACT_T )( const struct rkhst_t *state );
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
 				(*(s)->exit)( s ); 								\
 		}
 	#else
-		typedef void ( *RKHEXT_T )( void );
+		typedef void ( *RKH_EXT_ACT_T )( void );
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
@@ -2513,16 +2513,16 @@ typedef struct rkhsma_t
  */
 
 #if RKH_SMA_EN_PPRO_ARG_SMA == RKH_ENABLED
-	typedef RKH_SIG_T ( *RKHPPRO_T )( 	const struct rkhsma_t *sma, 
+	typedef RKH_SIG_T ( *RKH_PPRO_T )( 	const struct rkhsma_t *sma, 
 										RKH_EVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
 #else
-	typedef RKH_SIG_T ( *RKHPPRO_T )( RKH_EVT_T *pe );
+	typedef RKH_SIG_T ( *RKH_PPRO_T )( RKH_EVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( e )
 #endif
 
 
-#define CTA( ta )	((RKHACT_T)(ta))
+#define CTA( ta )	((RKH_TRN_ACT_T)(ta))
 
 /**
  * 	\brief
@@ -2557,18 +2557,19 @@ typedef struct rkhsma_t
 
 #if (RKH_SMA_EN_ACT_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_ACT_ARG_SMA == RKH_ENABLED)
-	typedef void (*RKHACT_T)( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+	typedef void (*RKH_TRN_ACT_T)( 	const struct rkhsma_t *sma, 
+									RKH_EVT_T *pe );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h), (e) )
 #elif (RKH_SMA_EN_ACT_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_ACT_ARG_SMA == RKH_DISABLED)
-	typedef void (*RKHACT_T)( RKH_EVT_T *pe );
+	typedef void (*RKH_TRN_ACT_T)( RKH_EVT_T *pe );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (e) )
 #elif (RKH_SMA_EN_ACT_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_ACT_ARG_SMA == RKH_ENABLED)
-	typedef void (*RKHACT_T)( const struct rkhsma_t *sma );
+	typedef void (*RKH_TRN_ACT_T)( const struct rkhsma_t *sma );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h) )
 #else
-	typedef void (*RKHACT_T)( void );
+	typedef void (*RKH_TRN_ACT_T)( void );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))()
 #endif
 
@@ -2599,21 +2600,21 @@ typedef struct rkhsma_t
 
 #if (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
-	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+	typedef HUInt (*RKH_GUARD_T)( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
 	HUInt rkh_else( const struct rkhsma_t *sma, RKH_EVT_T *pe );
 #elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED)
-	typedef HUInt (*RKHGUARD_T)( RKH_EVT_T *pe );
+	typedef HUInt (*RKH_GUARD_T)( RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
 	HUInt rkh_else( RKH_EVT_T *pe );
 #elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
-	typedef HUInt (*RKHGUARD_T)( const struct rkhsma_t *sma );
+	typedef HUInt (*RKH_GUARD_T)( const struct rkhsma_t *sma );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
 	HUInt rkh_else( const struct rkhsma_t *sma );
 #else
-	typedef HUInt (*RKHGUARD_T)( void );
+	typedef HUInt (*RKH_GUARD_T)( void );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
 	HUInt rkh_else( void );
 #endif
@@ -2682,14 +2683,14 @@ typedef struct rkhtr_t
 	 *	Points to guard function.
 	 */
 
-	RKHGUARD_T guard;
+	RKH_GUARD_T guard;
 	
 	/** 	
  	 * 	\brief
 	 *  Points to transition action.
 	 */
 
-	RKHACT_T action;
+	RKH_TRN_ACT_T action;
 
 	/** 	
  	 * 	\brief
@@ -2714,7 +2715,7 @@ typedef struct rkhexpcn_t
 	 *  Points to transition action.
 	 */
 
-	RKHACT_T action;
+	RKH_TRN_ACT_T action;
 
 	/** 	
  	 * 	\brief
@@ -2739,7 +2740,7 @@ typedef struct rkhenpcn_t
 	 *  Points to transition action.
 	 */
 
-	RKHACT_T action;
+	RKH_TRN_ACT_T action;
 
 	/** 	
  	 * 	\brief
@@ -2771,14 +2772,14 @@ typedef struct rkhst_t
 	 *	Points to entry action.
 	 */
 
-	RKHENT_T enter;
+	RKH_ENT_ACT_T enter;
 
 	/**	
  	 * 	\brief
 	 *	Points to exit action.
 	 */
 
-	RKHEXT_T exit;
+	RKH_EXT_ACT_T exit;
 
 	/**	
  	 * 	\brief
@@ -2814,7 +2815,7 @@ typedef struct rkhsbsc_t
 	 *	Aditionally, by means of single inheritance in C it could be 
 	 *	used as state's abstract data.
 	 *	Aditionally, implementing the single inheritance in C is very 
-	 *	simply by literally embedding the base type, RKHPPRO_T in 
+	 *	simply by literally embedding the base type, RKH_PPRO_T in 
 	 *	this case, as the first member of the derived structure.
 	 *	
 	 *	This argument is optional, thus it could be declared as NULL.
@@ -2831,7 +2832,7 @@ typedef struct rkhsbsc_t
 	 *  
 	 *	typedef struct
 	 *	{
-	 *		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 *		RKH_PPRO_T prepro; 	// extend the RKH_PPRO_T class
 	 *		unsigned min:4;
 	 *		unsigned max:4;
 	 *		char *buff;
@@ -2842,12 +2843,12 @@ typedef struct rkhsbsc_t
 	 *	RKH_CREATE_BASIC_STATE( S111, set_x_1, 
 	 *							NULL, &S11, preprocessor ); 
 	 *	RKH_CREATE_BASIC_STATE( S22, set_x_4, 
-	 *							NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *							NULL, &S2, (RKH_PPRO_T*)&option ); 
 	 * \endcode
 	 */
 
 #if RKH_SMA_EN_PPRO == RKH_ENABLED
-	RKHPPRO_T prepro;
+	RKH_PPRO_T prepro;
 #endif
 
 } RKH_SBSC_T;
@@ -2876,7 +2877,7 @@ typedef struct rkhscmp_t
 	 *	Aditionally, by means of single inheritance in C it could be 
 	 *	used as state's abstract data.
 	 *	Aditionally, implementing the single inheritance in C is very 
-	 *	simply by literally embedding the base type, RKHPPRO_T in 
+	 *	simply by literally embedding the base type, RKH_PPRO_T in 
 	 *	this case, as the first member of the derived structure.
 	 *	
 	 *	This argument is optional, thus it could be declared as NULL.
@@ -2893,7 +2894,7 @@ typedef struct rkhscmp_t
 	 *  
 	 *	typedef struct
 	 *	{
-	 *		RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	 *		RKH_PPRO_T prepro; 	// extend the RKH_PPRO_T class
 	 *		unsigned min:4;
 	 *		unsigned max:4;
 	 *		char *buff;
@@ -2904,12 +2905,12 @@ typedef struct rkhscmp_t
 	 *	RKH_CREATE_BASIC_STATE( S111, set_x_1, 
 	 *							NULL, &S11, preprocessor ); 
 	 *	RKH_CREATE_BASIC_STATE( S22, set_x_4, 
-	 *							NULL, &S2, (RKHPPRO_T*)&option ); 
+	 *							NULL, &S2, (RKH_PPRO_T*)&option ); 
 	 * \endcode
 	 */
 
 #if RKH_SMA_EN_PPRO == RKH_ENABLED
-	RKHPPRO_T prepro;
+	RKH_PPRO_T prepro;
 #endif
 
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
@@ -3042,11 +3043,11 @@ typedef struct rkhrsm_t
  	 * 	\brief
 	 * 	Points to initializing action (optional). 
 	 *
-	 * 	The function prototype is defined as RKHACT_T. This argument is 
+	 * 	The function prototype is defined as RKH_TRN_ACT_T. This argument is 
 	 * 	optional, thus it could be declared as NULL.
 	 */
 
-	RKHACT_T iaction;
+	RKH_TRN_ACT_T iaction;
 
 	/**	
  	 * 	\brief

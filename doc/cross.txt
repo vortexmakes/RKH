@@ -37,7 +37,7 @@ active object, which clearly shows the life cycle consisting of states
 
 \li ( 1) 	The \c blinky_init() function defines the topmost initial 
 			transition in the my state machine. The function prototype is 
-			defined as RKHINIT_T. This argument is (optional), thus it could 
+			defined as RKH_INIT_ACT_T. This argument is (optional), thus it could 
 			be declared as NULL. 
 \li ( 2) 	The timer \c bkytim is declared with the RKH_TMR_T data type 
 			and is defined with the rkh_tim_init() RKH service. The timer is 

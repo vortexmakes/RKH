@@ -223,7 +223,7 @@
  *	preprocessor to any basic state. Aditionally, by means of single 
  *	inheritance in C it could be used as state's abstract data. 
  *	Moreover, implementing the single inheritance in C is very simply by 
- *	literally embedding the base type, #RKHPPRO_T in this case, as the first 
+ *	literally embedding the base type, #RKH_PPRO_T in this case, as the first 
  *	member of the derived structure. See \a prepro member of #RKH_ST_T 
  *	structure for more information.
  */
@@ -312,7 +312,7 @@
 /**
  *	If the #RKH_SMA_EN_INIT_ARG_SMA is set to 1 then the initial action 
  *	prototype will add as argument a pointer to state machine structure 
- *	#RKH_SMA_T. See #RKHINIT_T definition.
+ *	#RKH_SMA_T. See #RKH_INIT_ACT_T definition.
  */
 
 #define RKH_SMA_EN_INIT_ARG_SMA			RKH_ENABLED
@@ -320,7 +320,7 @@
 /**
  *	If the #RKH_SMA_EN_ENT_ARG_SMA is set to 1 then the entry action 
  *	prototype will add as argument a pointer to state machine structure 
- *	#RKH_SMA_T. See #RKHENT_T definition.
+ *	#RKH_SMA_T. See #RKH_ENT_ACT_T definition.
  */
 
 #define RKH_SMA_EN_ENT_ARG_SMA			RKH_ENABLED
@@ -328,7 +328,7 @@
 /**
  *	If the #RKH_SMA_EN_ENT_ARG_STATE is set to 1 then the entry action 
  *	prototype will add as argument a pointer to "this" state structure 
- *	#RKH_ST_T. See #RKHENT_T definition.
+ *	#RKH_ST_T. See #RKH_ENT_ACT_T definition.
  */
 
 #define RKH_SMA_EN_ENT_ARG_STATE		RKH_DISABLED
@@ -336,7 +336,7 @@
 /**
  *	If the #RKH_SMA_EN_EXT_ARG_SMA is set to 1 then the exit action prototype 
  *	will add as argument a pointer to state machine structure #RKH_SMA_T. See 
- *	#RKHEXT_T definition.
+ *	#RKH_EXT_ACT_T definition.
  */
 
 #define RKH_SMA_EN_EXT_ARG_SMA			RKH_ENABLED
@@ -344,7 +344,7 @@
 /**
  *	If the #RKH_SMA_EN_EXT_ARG_STATE is set to 1 then the exit action 
  *	prototype will add as argument a pointer to "this" state structure 
- *	#RKH_ST_T. See #RKHEXT_T definition.
+ *	#RKH_ST_T. See #RKH_EXT_ACT_T definition.
  */
 
 #define RKH_SMA_EN_EXT_ARG_STATE		RKH_DISABLED
@@ -352,7 +352,7 @@
 /**
  *	If the #RKH_SMA_EN_ACT_ARG_SMA is set to 1 then the transition action 
  *	prototype will add as argument a pointer to state machine structure 
- *	#RKH_SMA_T. See #RKHACT_T definition.
+ *	#RKH_SMA_T. See #RKH_TRN_ACT_T definition.
  */
 
 #define RKH_SMA_EN_ACT_ARG_SMA			RKH_ENABLED
@@ -360,7 +360,7 @@
 /**
  *	If the #RKH_SMA_EN_ACT_ARG_EVT is set to 1 then the transition action 
  *	prototype will add as argument a pointer to ocurred event. 
- *	See RKHACT_T definition.
+ *	See RKH_TRN_ACT_T definition.
  */
 
 #define RKH_SMA_EN_ACT_ARG_EVT			RKH_ENABLED
@@ -368,7 +368,7 @@
 /**
  *	If the #RKH_SMA_EN_GRD_ARG_EVT is set to 1 then the transition guard  
  *	prototype will add as argument a pointer to ocurred event. 
- *	See RKHGUARD_T definition.
+ *	See RKH_GUARD_T definition.
  */
 
 #define RKH_SMA_EN_GRD_ARG_EVT			RKH_ENABLED
@@ -376,7 +376,7 @@
 /**
  *	If the #RKH_SMA_EN_GRD_ARG_SMA is set to 1 then the transition guard  
  *	prototype will add as argument a pointer to state machine structure 
- *	RKH_SMA_T. See RKHGUARD_T definition.
+ *	RKH_SMA_T. See RKH_GUARD_T definition.
  */
 
 #define RKH_SMA_EN_GRD_ARG_SMA			RKH_ENABLED
@@ -385,7 +385,7 @@
  *	If the #RKH_SMA_EN_PPRO_ARG_SMA is set to 1 then the event preprocessor  
  *	(Moore function like entry and exit actions) prototype will add as 
  *	argument a pointer to state machine structure 
- *	RKH_SMA_T. See RKHPPRO_T definition.
+ *	RKH_SMA_T. See RKH_PPRO_T definition.
  */
 
 #define RKH_SMA_EN_PPRO_ARG_SMA			RKH_ENABLED

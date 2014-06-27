@@ -395,7 +395,7 @@ Explanation
 \li (7)	\c S1 is the initial state.
 \li (8)	the \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
-		The function prototype is defined as RKHINIT_T. This argument is 
+		The function prototype is defined as RKH_INIT_ACT_T. This argument is 
 		(optional), thus it could be declared as NULL.
 \li (9) not used.
 \li (10)The \c MYSM_T defines the SMA object structure \c my.
@@ -466,11 +466,11 @@ Explanation
 \li (2)	\c S1 is the state name. Represents a composite state structure.
 \li (4)	\c set_y_0() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S1 state. This argument is optional, 
-		thus it could be declared as NULL. The RKHENT_T defines the function 
+		thus it could be declared as NULL. The RKH_ENT_ACT_T defines the function 
 		prototype.
 \li (5)	\c dummy_exit() defines the exit action, which is executed upon exit 
 		from the \c S1 state. This argument is optional, thus it could be 
-		declared as NULL. The RKHEXT_T defines the function prototype.
+		declared as NULL. The RKH_EXT_ACT_T defines the function prototype.
 \li (6)	\c RKH_ROOT is the parent state of \c S1. If a state has no 
 		explicit superstate means that it is implicitly nested in 
 		the "top" state, and the parent state is defined by means of RKH_ROOT

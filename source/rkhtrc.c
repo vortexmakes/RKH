@@ -147,8 +147,8 @@ static rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
  * 	The tables to filter trace events related to signal and active objects.
  */
 
-const FIL_T fsig = { RKH_TRC_MAX_SIGNALS, 	trcsigftbl };
-const FIL_T fsma = { RKH_TRC_MAX_SMA, 		trcsmaftbl };
+const RKH_TRC_FIL_T fsig = { RKH_TRC_MAX_SIGNALS, 	trcsigftbl };
+const RKH_TRC_FIL_T fsma = { RKH_TRC_MAX_SMA, 		trcsmaftbl };
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
 static RKHROM rkhui8_t trcgmtbl[] =
@@ -325,7 +325,7 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 
 
 HUInt
-rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot )
+rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot )
 {
 	rkhui8_t x, y;
 
@@ -337,7 +337,7 @@ rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot )
 
 
 void 
-rkh_trc_simfil( const FIL_T *filter, TRCFS_T slot, rkhui8_t mode )
+rkh_trc_simfil( const RKH_TRC_FIL_T *filter, TRCFS_T slot, rkhui8_t mode )
 {
 	rkhui8_t x, y, onoff, *ft, c;
 	TRCFS_T ix;

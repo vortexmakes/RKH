@@ -122,15 +122,15 @@
  *	Represents the filter of signal and active object.
  */
 
-typedef struct FIL_T
+typedef struct RKH_TRC_FIL_T
 {
 	TRCFS_T size;			/** Size of filter table in bytes */
 	rkhui8_t *const tbl;	/** Points to filter table in RAM */
-} FIL_T;
+} RKH_TRC_FIL_T;
 
 
-extern const FIL_T fsig;
-extern const FIL_T fsma;
+extern const RKH_TRC_FIL_T fsig;
+extern const RKH_TRC_FIL_T fsma;
 
 
 #if RKH_TRC_SIZEOF_STREAM < 255u
@@ -3342,7 +3342,8 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  * 					FILTER_OFF. 
  */
 
-void rkh_trc_simfil( const FIL_T *filter, TRCFS_T slot, rkhui8_t mode );
+void rkh_trc_simfil( 	const RKH_TRC_FIL_T *filter, 
+						TRCFS_T slot, rkhui8_t mode );
 
 
 /**
@@ -3360,7 +3361,7 @@ void rkh_trc_simfil( const FIL_T *filter, TRCFS_T slot, rkhui8_t mode );
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
  */
 
-HUInt rkh_trc_simfil_isoff( const FIL_T *filter, TRCFS_T slot );
+HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot );
 
 
 /**

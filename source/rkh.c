@@ -238,7 +238,7 @@ RKH_MODULE_NAME( rkh )
 
 static
 HUInt
-rkh_add_tr_action( RKHACT_T **list, RKHACT_T act, rkhui8_t *num )
+rkh_add_tr_action( RKH_TRN_ACT_T **list, RKH_TRN_ACT_T act, rkhui8_t *num )
 {
 	if( *num >= RKH_SMA_MAX_TRC_SEGS )
 		return 1;
@@ -349,9 +349,9 @@ rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	RKH_RAM RKHROM RKH_ST_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
 #endif
                                       /* set of executed transition actions */
-	RKH_RAM RKHACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
+	RKH_RAM RKH_TRN_ACT_T al[ RKH_SMA_MAX_TRC_SEGS ];
                                         /* pointer to transition action set */
-	RKH_RAM RKHACT_T *pal;
+	RKH_RAM RKH_TRN_ACT_T *pal;
                                         /* # of executed transition actions */
 	RKH_RAM rkhui8_t nal;
 	RKH_SR_ALLOC();

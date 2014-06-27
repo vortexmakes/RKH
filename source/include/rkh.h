@@ -251,7 +251,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					could be used as state's abstract data. 
  *					Moreover, implementing the single inheritance in C 
  *					is very simply by literally embedding the base type, 
- *					RKHPPRO_T in this case, as the first member of the 
+ *					RKH_PPRO_T in this case, as the first member of the 
  *					derived structure. See \a prepro member of RKH_SBSC_T 
  *					structure for more information. Example:
  *  				\code
@@ -262,7 +262,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					}
  *					typedef struct
  *					{
- *						RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+ *						RKH_PPRO_T prepro; 	// extend the RKH_PPRO_T class
  *						unsigned min:4;
  *						unsigned max:4;
  *						char *buff;
@@ -273,7 +273,8 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  *					RKH_CREATE_BASIC_STATE( S111, set_x_1, 
  *											NULL, &S11, preprocessor ); 
  *					RKH_CREATE_BASIC_STATE( S22, set_x_4, 
- *											NULL, &S2, (RKHPPRO_T*)&option ); 
+ *											NULL, &S2, 
+ *											(RKH_PPRO_T*)&option ); 
  *					\endcode
  */
 
@@ -640,7 +641,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
  * 	\param name		submachine name. Represents a submachine structure.
  * 	\param defchild	pointer to default child state.
  * 	\param iact		pointer to initialization action (optional). The 
- * 					function prototype is defined as RKHINIT_T. This 
+ * 					function prototype is defined as RKH_INIT_ACT_T. This 
  * 					argument is optional, thus it could be declared as 
  * 					NULL.
  */
@@ -1702,7 +1703,7 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
  * 	\param ist			pointer to initial state. This state could be defined 
  * 						either composite or basic (not pseudo-state).
  * 	\param iact			pointer to initialization action (optional). The 
- * 						function prototype is defined as RKHINIT_T. This 
+ * 						function prototype is defined as RKH_INIT_ACT_T. This 
  * 						argument is optional, thus it could be declared as 
  * 						NULL.
  * 	\param ievt			pointer to an event that will be passed to state 
@@ -1715,7 +1716,7 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
 
 #define RKH_SMA_CREATE( sma_t, name, prio, ppty, ist, iact, ievt )			\
 																			\
-	static RKHROM ROMRKH_T rs_##name = MKRRKH( 	name, prio, ppty, ist, 		\
+	static RKHROM RKH_ROM_T rs_##name = MKRRKH( name, prio, ppty, ist, 		\
 												iact, ievt );				\
 	static sma_t s_##name = MKSMA( &rs_##name, ist );						\
 	RKH_SMA_T *const name = (RKH_SMA_T *)&s_##name

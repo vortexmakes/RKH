@@ -1276,7 +1276,7 @@ Explanation
 \li (9)	\c S1 is the initial state.
 \li (10) \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
-		The function prototype is defined as RKHINIT_T. This argument is 
+		The function prototype is defined as RKH_INIT_ACT_T. This argument is 
 		(optional), thus it could be declared as NULL. The application code 
 		must trigger the initial transition explicitly by invoking 
 		rkh_sma_activate() function.
@@ -1348,11 +1348,11 @@ Explanation
 \li (2)	\c S1 is the state name. Represents a composite state structure.
 \li (4)	\c turn_on() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S1 state. This argument is optional, 
-		thus it could be declared as NULL. The RKHENT_T defines the function 
+		thus it could be declared as NULL. The RKH_ENT_ACT_T defines the function 
 		prototype.
 \li (5)	\c turn_off() defines the exit action, which is executed upon exit 
 		from the \c S1 state. This argument is optional, thus it could be 
-		declared as NULL. The RKHEXT_T defines the function prototype.
+		declared as NULL. The RKH_EXT_ACT_T defines the function prototype.
 \li (6)	\c SA is the parent state of \c S1. If a state has no 
 		explicit superstate means that it is implicitly nested in 
 		the "top" state, and the parent state is defined by means of RKH_ROOT
@@ -1425,11 +1425,11 @@ Explanation
 \li (2)	\c S11 is the state name. Represents a substate structure.
 \li (4)	\c start_process() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S11 state. This argument is optional, 
-		thus it could be declared as NULL. The RKHENT_T defines the function 
+		thus it could be declared as NULL. The RKH_ENT_ACT_T defines the function 
 		prototype.
 \li (5)	\c stop_process() defines the exit action, which is executed upon exit 
 		from the \c S11 state. This argument is optional, thus it could be 
-		declared as NULL. The RKHEXT_T defines the function prototype.
+		declared as NULL. The RKH_EXT_ACT_T defines the function prototype.
 \li (6)	\c S1 is the parent state of \c S11. If a state has no 
 		explicit superstate means that it is implicitly nested in 
 		the "top" state, and the parent state is defined by means of RKH_ROOT
@@ -1460,14 +1460,14 @@ in_keyb( RKH_EVT_T *pe )
 \li (7)	Aditionally, by means of single inheritance in C it could be 
 		used to supply additional information to state.
 		Implementing the single inheritance in C is very 
-		simply by literally embedding the base type, RKHPPRO_T in 
+		simply by literally embedding the base type, RKH_PPRO_T in 
 		this case, as the first member of the derived structure.
 		This argument is optional, thus it could be declared as NULL.
 		Example:
 \code
 typedef struct
 {
-	RKHPPRO_T prepro; 	// extend the RKHPPRO_T class
+	RKH_PPRO_T prepro; 	// extend the RKH_PPRO_T class
 	unsigned min:4;		// addtional information...
 	unsigned max:4;
 	char *buff;
@@ -1479,7 +1479,7 @@ static const SDATA_T option = { preprocessor, 4, 8, token };
 RKH_CREATE_BASIC_STATE( S11, start_process, start_process, &S1, in_keyb ); 
 
 /* Define S12 state as a substate of S1 */
-RKH_CREATE_BASIC_STATE( S12, NULL, NULL, &S1, (RKHPPRO_T*)&option ); 
+RKH_CREATE_BASIC_STATE( S12, NULL, NULL, &S1, (RKH_PPRO_T*)&option ); 
 \endcode
 
 \b Customization
@@ -2196,7 +2196,7 @@ is mandatory to known for properly using the framework.
 
 <b>Initialization action</b>
 
-\copydetails RKHINIT_T
+\copydetails RKH_INIT_ACT_T
 
 As said above, the application must explicitly trigger initial transitions 
 in all state machines. The following listing shows the use of 
@@ -2229,7 +2229,7 @@ manager_init( const struct rkh_t *sma )
 
 <b>Exit action</b>
 
-\copydetails RKHEXT_T
+\copydetails RKH_EXT_ACT_T
 
 The next listing shows an example of the exit action implementation.
 
@@ -2244,7 +2244,7 @@ idle_exit( const struct rkh_t *sma )
 
 <b>Entry action</b>
 
-\copydetails RKHENT_T
+\copydetails RKH_ENT_ACT_T
 
 The next listing shows an example of the entry action implementation.
 
@@ -2259,7 +2259,7 @@ wait_process_entry( const struct rkh_t *sma )
 
 <b>Transition action</b>
 
-\copydetails RKHACT_T
+\copydetails RKH_TRN_ACT_T
 
 The next listing shows an example of the transition action implementation.
 
@@ -2280,7 +2280,7 @@ set_config( const struct rkh_t *sma, RKH_EVT_T *pe )
 
 <b>Event preprocessor</b>
 
-\copydetails RKHPPRO_T
+\copydetails RKH_PPRO_T
 
 The next listing shows an example of the event preprocessor 
 action implementation.
@@ -2300,7 +2300,7 @@ preprocess_keys( const struct rkh_t *sma, RKH_EVT_T *pe )
 
 <b>Guard</b>
 
-\copydetails RKHGUARD_T
+\copydetails RKH_GUARD_T
 
 The next listing shows an example of the guard function implementation.
 
@@ -2634,7 +2634,7 @@ Prev: \ref qref "Quick reference"
 
 \n Prev: \ref qref "Quick reference"
 
-\copydetails RKHPPRO_T
+\copydetails RKH_PPRO_T
 
 The next listing shows an example of the event preprocessor 
 action implementation.
@@ -3261,7 +3261,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
-		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
@@ -3272,7 +3272,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
-		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=4 align="center"> 2 </TD>
@@ -3351,7 +3351,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
-		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 6 </TD>
@@ -3362,7 +3362,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
-		<TD><I> \copybrief ROMRKH_T::prio </I></TD>
+		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
 	</TR>
 
 	<TR bgColor="#c0c0c0">
@@ -3385,7 +3385,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> ist </I></TD>
-		<TD><I> \copybrief ROMRKH_T::istate </I></TD>
+		<TD><I> \copybrief RKH_ROM_T::istate </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
