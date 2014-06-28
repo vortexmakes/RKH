@@ -325,7 +325,7 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 
 
 HUInt
-rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot )
+rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot )
 {
 	rkhui8_t x, y;
 
@@ -337,16 +337,17 @@ rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot )
 
 
 void 
-rkh_trc_simfil( const RKH_TRC_FIL_T *filter, TRCFS_T slot, rkhui8_t mode )
+rkh_trc_simfil( const RKH_TRC_FIL_T *filter, 	RKH_TRC_FSLOT slot, 
+												rkhui8_t mode )
 {
 	rkhui8_t x, y, onoff, *ft, c;
-	TRCFS_T ix;
+	RKH_TRC_FSLOT ix;
 
 	onoff = (rkhui8_t)(mode & RKH_FILTER_MODE_MASK);
 	if( mode & RKH_TRC_ALL_FILTERS )
 	{
 		for( 	ft = (rkhui8_t *)(filter->tbl), 
-				ix = (TRCFS_T)0, 
+				ix = (RKH_TRC_FSLOT)0, 
 				c = (rkhui8_t)((onoff == FILTER_OFF) ? 0xFF : 0);
 				ix < filter->size; ++ix, ++ft )
 			*ft = c;

@@ -192,7 +192,7 @@ isr_kbd_thread( void *par )	/* thread to emulate keyboard ISR */
 
 
 void 
-rkh_hk_start( void ) 
+rkh_hook_start( void ) 
 {
 	pthread_t thtmr_id, thkbd_id;  /* thread identifiers */
  	pthread_attr_t threadAttr;
@@ -217,7 +217,7 @@ rkh_hk_start( void )
 
 
 void 
-rkh_hk_exit( void ) 
+rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
 	tcsetattr( STDIN_FILENO, TCSANOW, &orgt );
@@ -225,7 +225,7 @@ rkh_hk_exit( void )
 
 
 void 
-rkh_hk_idle( void )				/* called within critical section */
+rkh_hook_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
 	RKH_TRC_FLUSH();
@@ -240,7 +240,7 @@ rkh_assert( RKHROM char * const file, int line )
 						"file\n", line, file );
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
-	rkh_exit();
+	rkh_fwk_exit();
 }
 
 
@@ -333,7 +333,7 @@ bsp_init( int argc, char *argv[] )
 
 	srand( ( unsigned )time( NULL ) );
 	print_banner();
-	rkh_init();
+	rkh_fwk_init();
 
 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );

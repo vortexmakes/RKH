@@ -60,7 +60,7 @@ RKH_MODULE_NAME( rkhdyn )
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 
-RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
+RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
 
 
 /**
@@ -72,12 +72,12 @@ static rkhui8_t rkhnpool;
 
 
 RKH_EVT_T *
-rkh_ae( RKH_ES_T esize, RKH_SIG_T e )
+rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e )
 {
     RKH_EVT_T *evt;
     /* find the pool index that fits the requested event size ... */
     rkhui8_t idx = 0;
-	RKH_DYNE_TYPE *ep = rkheplist;
+	RKH_DYNE_TYPE *ep = rkh_eplist;
 	RKH_SR_ALLOC();
 
     while( esize > RKH_DYNE_GET_ESIZE( ep ) ) 
@@ -128,7 +128,7 @@ rkh_gc( RKH_EVT_T *e )
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
 			RKH_TR_FWK_GCR( e, e->pool, e->nref );
-            RKH_DYNE_PUT( &rkheplist[ idx ], e );
+            RKH_DYNE_PUT( &rkh_eplist[ idx ], e );
         }
     }
 }
@@ -146,14 +146,14 @@ rkh_reserve( RKH_EVT_T *e )
 
 
 void 
-rkh_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize )
+rkh_fwk_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize )
 {
 	RKH_SR_ALLOC();
 
 	RKHASSERT( ( (rkhui8_t)(rkhnpool + (rkhui8_t)1) ) <= RKH_MAX_EPOOL );
 
 	++rkhnpool;
-	RKH_DYNE_INIT( &rkheplist[ rkhnpool - 1 ], sstart, ssize, esize );
+	RKH_DYNE_INIT( &rkh_eplist[ rkhnpool - 1 ], sstart, ssize, esize );
 	RKH_TR_FWK_EPREG( rkhnpool, ssize, esize );
 }
 #endif
@@ -170,7 +170,7 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 	
-	RKH_HK_SIGNAL( e );
+	RKH_HOOK_SIGNAL( e );
 
 	RKH_ENTER_CRITICAL_();
 	RKH_INC_REF( e );
@@ -194,7 +194,7 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 
-	RKH_HK_SIGNAL( e );
+	RKH_HOOK_SIGNAL( e );
 
 	RKH_ENTER_CRITICAL_();
 	RKH_INC_REF( e );
@@ -226,7 +226,7 @@ rkh_sma_get( RKH_SMA_T *sma )
 
 #if RKH_EN_DEFERRED_EVENT == RKH_ENABLED
 void 
-rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e )
+rkh_fwk_defer( RKH_RQ_T *q, const RKH_EVT_T *e )
 { 
 	RKH_SR_ALLOC();
 
@@ -240,7 +240,7 @@ rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e )
 
 
 RKH_EVT_T *
-rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
+rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
 {
     RKH_EVT_T *e;
 	RKH_SR_ALLOC();

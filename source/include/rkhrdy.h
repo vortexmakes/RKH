@@ -139,7 +139,7 @@ typedef struct
  * 	\param rg		ready group.
  */
 
-#define rkh_rdy_is_empty( rg )			\
+#define RKH_RDY_IS_EMPTY( rg )			\
 					( (rg).grp == 0 )
 			
 
@@ -150,7 +150,7 @@ typedef struct
  * 	\param rg		ready group.
  */
 
-#define rkh_rdy_isnot_empty( rg )		\
+#define RKH_RDY_ISNOT_EMPTY( rg )		\
 					( (rg).grp != 0 )
 
 
@@ -167,7 +167,7 @@ typedef struct
  * 	\param p		number of SMA's priotity.
  */
 
-#define rkh_rdy_ins( rg, p )									\
+#define RKH_RDY_INSERT( rg, p )									\
 				(rg).grp |= rkh_maptbl[(p) >> 3];				\
 				(rg).tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07]
 
@@ -184,7 +184,7 @@ typedef struct
  * 	\param p		number of SMA's priotity.
  */
 
-#define rkh_rdy_rem( rg, p )										\
+#define RKH_RDY_REM( rg, p )										\
 				if(((rg).tbl[(p)>>3] &= ~rkh_maptbl[(p)&0x07])==0)	\
 					(rg).grp &= ~rkh_maptbl[(p)>>3]
 
@@ -204,7 +204,7 @@ typedef struct
  * 	\param p		the found highest priority is assigned to \a p.
  */
 
-#define rkh_rdy_findh( rg, p )									\
+#define RKH_RDY_FIND_HIGHEST( rg, p )							\
 				(p) = rkh_unmaptbl[ (rg).grp ];					\
 				(p) = (rkhui8_t)(((p) << 3) +					\
 						(rkhui8_t)rkh_unmaptbl[(rg).tbl[(p)]])

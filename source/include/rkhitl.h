@@ -1305,84 +1305,84 @@
 #endif
 
 
-#ifndef RKH_HK_DISPATCH_EN
-	#error "RKH_HK_DISPATCH_EN                     not #define'd in 'rkhcfg.h'"
+#ifndef RKH_HOOK_DISPATCH_EN
+	#error "RKH_HOOK_DISPATCH_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HK_DISPATCH_EN != RKH_ENABLED) && \
-        	(RKH_HK_DISPATCH_EN != RKH_DISABLED))
-	#error "RKH_HK_DISPATCH_EN               illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_HOOK_DISPATCH_EN != RKH_ENABLED) && \
+        	(RKH_HOOK_DISPATCH_EN != RKH_DISABLED))
+	#error "RKH_HOOK_DISPATCH_EN             illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HK_SIGNAL_EN
-	#error "RKH_HK_SIGNAL_EN                       not #define'd in 'rkhcfg.h'"
+#ifndef RKH_HOOK_SIGNAL_EN
+	#error "RKH_HOOK_SIGNAL_EN                     not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HK_SIGNAL_EN != RKH_ENABLED) && \
-        	(RKH_HK_SIGNAL_EN != RKH_DISABLED))
-	#error "RKH_HK_SIGNAL_EN                 illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_HOOK_SIGNAL_EN != RKH_ENABLED) && \
+        	(RKH_HOOK_SIGNAL_EN != RKH_DISABLED))
+	#error "RKH_HOOK_SIGNAL_EN               illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HK_TIMEOUT_EN
-	#error "RKH_HK_TIMEOUT_EN                      not #define'd in 'rkhcfg.h'"
+#ifndef RKH_HOOK_TIMEOUT_EN
+	#error "RKH_HOOK_TIMEOUT_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HK_TIMEOUT_EN != RKH_ENABLED) && \
-        	(RKH_HK_TIMEOUT_EN != RKH_DISABLED))
-	#error "RKH_HK_TIMEOUT_EN                illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_HOOK_TIMEOUT_EN != RKH_ENABLED) && \
+        	(RKH_HOOK_TIMEOUT_EN != RKH_DISABLED))
+	#error "RKH_HOOK_TIMEOUT_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HK_START_EN
-	#error "RKH_HK_START_EN                        not #define'd in 'rkhcfg.h'"
+#ifndef RKH_HOOK_START_EN
+	#error "RKH_HOOK_START_EN                      not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HK_START_EN != RKH_ENABLED) && \
-        	(RKH_HK_START_EN != RKH_DISABLED))
-	#error "RKH_HK_START_EN                  illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_HOOK_START_EN != RKH_ENABLED) && \
+        	(RKH_HOOK_START_EN != RKH_DISABLED))
+	#error "RKH_HOOK_START_EN                illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HK_EXIT_EN
-	#error "RKH_HK_EXIT_EN                         not #define'd in 'rkhcfg.h'"
+#ifndef RKH_HOOK_EXIT_EN
+	#error "RKH_HOOK_EXIT_EN                       not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HK_EXIT_EN != RKH_ENABLED) && \
-        	(RKH_HK_EXIT_EN != RKH_DISABLED))
-	#error "RKH_HK_EXIT_EN                   illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_HOOK_EXIT_EN != RKH_ENABLED) && \
+        	(RKH_HOOK_EXIT_EN != RKH_DISABLED))
+	#error "RKH_HOOK_EXIT_EN                 illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HK_TIMETICK_EN
-	#error "RKH_HK_TIMETICK_EN                     not #define'd in 'rkhcfg.h'"
+#ifndef RKH_HOOK_TIMETICK_EN
+	#error "RKH_HOOK_TIMETICK_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HK_TIMETICK_EN != RKH_ENABLED) && \
-        	(RKH_HK_TIMETICK_EN != RKH_DISABLED))
-	#error "RKH_HK_TIMETICK_EN               illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_HOOK_TIMETICK_EN != RKH_ENABLED) && \
+        	(RKH_HOOK_TIMETICK_EN != RKH_DISABLED))
+	#error "RKH_HOOK_TIMETICK_EN             illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1605,57 +1605,57 @@
 #endif
 	
 
-#if RKH_HK_DISPATCH_EN == RKH_ENABLED
-	#define RKH_HK_DISPATCH( sma, e )	\
-							rkh_hk_dispatch( (sma), (RKH_EVT_T*)(e) )
+#if RKH_HOOK_DISPATCH_EN == RKH_ENABLED
+	#define RKH_HOOK_DISPATCH( sma, e )	\
+							rkh_hook_dispatch( (sma), (RKH_EVT_T*)(e) )
 
 #else
-	#define RKH_HK_DISPATCH( sma, e )	\
+	#define RKH_HOOK_DISPATCH( sma, e )	\
 							(void)0
 #endif
 
 
-#if	(RKH_HK_TIMEOUT_EN == RKH_ENABLED)
-	#define RKH_HK_TIMEOUT( t )	\
-							rkh_hk_timeout( (t) )
+#if	(RKH_HOOK_TIMEOUT_EN == RKH_ENABLED)
+	#define RKH_HOOK_TIMEOUT( t )	\
+							rkh_hook_timeout( (t) )
 #else
-	#define RKH_HK_TIMEOUT( t )	\
+	#define RKH_HOOK_TIMEOUT( t )	\
 							(void)0
 #endif
 
 
-#if	(RKH_HK_SIGNAL_EN == RKH_ENABLED)
-	#define RKH_HK_SIGNAL( e )	\
-							rkh_hk_signal( (RKH_EVT_T*)(e) )
+#if	(RKH_HOOK_SIGNAL_EN == RKH_ENABLED)
+	#define RKH_HOOK_SIGNAL( e )	\
+							rkh_hook_signal( (RKH_EVT_T*)(e) )
 #else
-	#define RKH_HK_SIGNAL( e )	\
+	#define RKH_HOOK_SIGNAL( e )	\
 							(void)0
 #endif
 
 
-#if	(RKH_HK_START_EN == RKH_ENABLED)
-	#define RKH_HK_START()	\
-							rkh_hk_start()
+#if	(RKH_HOOK_START_EN == RKH_ENABLED)
+	#define RKH_HOOK_START()	\
+							rkh_hook_start()
 #else
-	#define RKH_HK_START()	\
+	#define RKH_HOOK_START()	\
 							(void)0
 #endif
 
 
-#if	(RKH_HK_EXIT_EN == RKH_ENABLED)
-	#define RKH_HK_EXIT()	\
-							rkh_hk_exit()
+#if	(RKH_HOOK_EXIT_EN == RKH_ENABLED)
+	#define RKH_HOOK_EXIT()	\
+							rkh_hook_exit()
 #else
-	#define RKH_HK_EXIT()	\
+	#define RKH_HOOK_EXIT()	\
 							(void)0
 #endif
 
 
-#if	(RKH_HK_TIMETICK_EN == RKH_ENABLED)
-	#define RKH_HK_TIMETICK()	\
-							rkh_hk_timetick()
+#if	(RKH_HOOK_TIMETICK_EN == RKH_ENABLED)
+	#define RKH_HOOK_TIMETICK()	\
+							rkh_hook_timetick()
 #else
-	#define RKH_HK_TIMETICK()	\
+	#define RKH_HOOK_TIMETICK()	\
 							(void)0
 #endif
 

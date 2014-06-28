@@ -166,7 +166,7 @@ bsp_publish( const RKH_EVT_T *e )
 
 
 void
-rkh_hk_timetick( void )
+rkh_hook_timetick( void )
 {
 	if( _kbhit() )
 	{
@@ -181,11 +181,11 @@ rkh_hk_timetick( void )
 
 
 void 
-rkh_hk_start( void ) 
+rkh_hook_start( void ) 
 {
 	rkh_set_tickrate( BSP_TICKS_PER_SEC );
-	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 
 	/* 
 	 * 	For avoiding to have multiple threads (idle and main) sending data on 
@@ -200,7 +200,7 @@ rkh_hk_start( void )
 
 
 void 
-rkh_hk_exit( void ) 
+rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
 #if RKH_TRC_EN == RKH_ENABLED
@@ -218,7 +218,7 @@ rkh_assert( RKHROM char * const file, int line )
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	__debugbreak();
-	rkh_exit();
+	rkh_fwk_exit();
 }
 
 
@@ -435,7 +435,7 @@ bsp_init( int argc, char *argv[] )
 
     bsp_srand( 1234U );
 	print_banner();
-	rkh_init();
+	rkh_fwk_init();
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )

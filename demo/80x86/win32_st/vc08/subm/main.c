@@ -29,7 +29,7 @@ main( int argc, char *argv[] )
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_ENSTATE );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_EXSTATE );
 
-	rkh_init();
+	rkh_fwk_init();
 	RKH_TRC_OPEN();
 
 	RKH_TR_FWK_OBJ( &S1 );
@@ -58,7 +58,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( TERM	);
 	
 	rkh_sma_activate( my, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
-	rkh_enter();
+	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
 	return 0;

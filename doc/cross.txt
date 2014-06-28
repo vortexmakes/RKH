@@ -298,7 +298,7 @@ main( int argc, char *argv[] )
 {
 	HInt cn;
 
-	/* invoke the rkh_init() function */
+	/* invoke the rkh_fwk_init() function */
 	bsp_init( argc, argv );
 
 	/* send objects to trazer */
@@ -329,7 +329,7 @@ main( int argc, char *argv[] )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		rkh_sma_activate( CLI(cn), (const RKH_EVT_T **)cli_qsto[cn], 
 												QSTO_SIZE, CV(0), 0 );
-	rkh_enter();
+	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
 	return 0;
@@ -931,7 +931,7 @@ svr_resume( const struct rkhsma_t *sma )
 {
 	REQ_EVT_T *e;
 
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
+	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
 		bsp_svr_recall( e->clino );
 }
 
@@ -960,7 +960,7 @@ svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 	REQ_EVT_T *e;
 
 	(void)pe;
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
+	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
 		bsp_svr_recall( e->clino );
 }
 
@@ -969,7 +969,7 @@ void
 svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
-	rkh_defer( &qreq, pe );
+	rkh_fwk_defer( &qreq, pe );
 }
 
 
@@ -979,7 +979,7 @@ svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 	(void)sma;
 	(void)pe;
 
-	rkh_exit();
+	rkh_fwk_exit();
 }
 \endcode
 
@@ -1209,7 +1209,7 @@ main( int argc, char *argv[] )
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
 	RKH_FILTER_OFF_SMA( blinky );
 
-	rkh_init();
+	rkh_fwk_init();
 	RKH_TRC_OPEN();
 
 	RKH_TR_FWK_OBJ( blinky );
@@ -1220,7 +1220,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( TIMEOUT );
 
 	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
-	rkh_enter();
+	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
 	return 0;

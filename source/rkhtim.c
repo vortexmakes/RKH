@@ -109,7 +109,7 @@ rkh_tim_tick( void )
 	RKH_TMR_T *t, *tprev;
 	RKH_SR_ALLOC();
 
-	RKH_HK_TIMETICK();			/* call user definable hook */
+	RKH_HOOK_TIMETICK();			/* call user definable hook */
 
 	RKH_ENTER_CRITICAL_();
 	if( thead == CPTIM(0) )		/* is empty list? */
@@ -133,7 +133,7 @@ rkh_tim_tick( void )
 					t->ntick = t->period;
 					tprev = t;
 				}
-				RKH_HK_TIMEOUT( t );
+				RKH_HOOK_TIMEOUT( t );
 				RKH_EXEC_THOOK();
 				RKH_TICK_POST( t, sender );
 			}

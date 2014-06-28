@@ -79,26 +79,26 @@ RKH_THIS_MODULE
 
 
 void 
-rkh_hk_timetick( void ) 
+rkh_hook_timetick( void ) 
 {
 }
 
 
 void 
-rkh_hk_start( void ) 
+rkh_hook_start( void ) 
 {
 }
 
 
 void 
-rkh_hk_exit( void ) 
+rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
 }
 
 
 void 
-rkh_hk_idle( void )				/* called within critical section */
+rkh_hook_idle( void )				/* called within critical section */
 {
 	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
@@ -112,7 +112,7 @@ rkh_assert( RKHROM char * const file, int line )
 
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
-	rkh_exit();
+	rkh_fwk_exit();
 	reset_now();
 }
 
@@ -183,7 +183,7 @@ bsp_init( int argc, char *argv[]  )
 	init_led( LED_G );
 	init_led( LED_B );
 
-	rkh_init();
+	rkh_fwk_init();
 
 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );

@@ -172,7 +172,7 @@ extern RKHROM char rkh_version[];
  */
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
+extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
 #endif
 
 
@@ -1304,7 +1304,7 @@ extern RKH_DYNE_TYPE rkheplist[ RKH_MAX_EPOOL ];
 
 /** 	
  * 	\brief
- *  Return codes from rkh_dispatch() function.
+ *  Return codes from rkh_sma_dispatch() function.
  */
 
 typedef enum
@@ -1408,7 +1408,7 @@ typedef enum
  * 	\brief
  * 	Initializes the RKH framework. 
  *
- * 	A requirement of RKH is that must be called rkh_init() before call any 
+ * 	A requirement of RKH is that must be called rkh_fwk_init() before call any 
  * 	of its other services. This function initializes all of RKH's variables 
  * 	and data structures.
  *
@@ -1421,7 +1421,7 @@ typedef enum
  *	Example for x86, VC2008, and win32 single thread:
  *	\code
  *	void 
- *	rkh_init( void )
+ *	rkh_fwk_init( void )
  *	{
  *		InitializeCriticalSection( &csection );
  *		sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
@@ -1429,7 +1429,7 @@ typedef enum
  *	\endcode
  */
 
-void rkh_init( void );
+void rkh_fwk_init( void );
 
 
 /**
@@ -1453,34 +1453,34 @@ void rkh_init( void );
  *	Example for x86, VC2008, and win32 single thread:
  *	\code
  *	void 
- *	rkh_enter( void )
+ *	rkh_fwk_enter( void )
  *	{ 
  *		rkhui8_t prio;
  *		RKH_SMA_T *sma;
  *		RKH_EVT_T *e;
  *
- *		RKH_HK_START();
+ *		RKH_HOOK_START();
  *		RKH_TR_FWK_EN();
  *		running = 1;
  *
  *		while( running )
  *		{
  *			RKH_ENTER_CRITICAL( dummy );
- *			if( rkh_rdy_isnot_empty( rkhrg ) ) 
+ *			if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
  *			{
- *				rkh_rdy_findh( rkhrg, prio );
+ *				RKH_RDY_FIND_HIGHEST( rkhrg, prio );
  *				RKH_EXIT_CRITICAL( dummy );
  *				
  *				sma = rkh_sptbl[ prio ];
  *				e = rkh_sma_get( sma );
- *				rkh_dispatch( sma, e );
+ *				rkh_sma_dispatch( sma, e );
  *				RKH_GC( e );
  *			}
  *			else
- *				rkh_hk_idle();
+ *				rkh_hook_idle();
  *		}
  *		
- *		rkh_hk_exit();
+ *		rkh_hook_exit();
  *		CloseHandle( sma_is_rdy );
  *		DeleteCriticalSection( &csection );	
  *	}
@@ -1505,7 +1505,7 @@ void rkh_init( void );
  *	\endcode
  */
 
-void rkh_enter( void );
+void rkh_fwk_enter( void );
 
 
 /**
@@ -1530,15 +1530,15 @@ void rkh_enter( void );
  *	Example:
  *	\code
  *	void 
- *	rkh_exit( void )
+ *	rkh_fwk_exit( void )
  *	{
- *		rkh_hk_exit();
+ *		rkh_hook_exit();
  *		RKH_TR_FWK_EX();
  *	}
  *	\endcode
  */
 
-void rkh_exit( void );
+void rkh_fwk_exit( void );
 
 
 #if defined( RKH_USE_TRC_SENDER )
@@ -1634,7 +1634,7 @@ void rkh_exit( void );
  *		
  *		rkh_rq_init( &sma->equeue, qs, qsize, sma );
  *		rkh_sma_register( sma );
- *		rkh_init_hsm( sma );
+ *		rkh_sma_init_hsm( sma );
  *		RKH_TR_SMA_ACT( sma );
  *	}
  *	\endcode
@@ -1984,7 +1984,7 @@ void rkh_sma_unregister( RKH_SMA_T *sma );
  * 	RKH correctly accounts for another outstanding reference to the event 
  * 	and will not recycle the event at the end of the RTC step. 
  * 	Later, the SMA might recall one event at a time from the 
- * 	event queue by means of rkh_recall() function.
+ * 	event queue by means of rkh_fwk_recall() function.
  *	
  *	Example:
  *	\code
@@ -1997,8 +1997,8 @@ void rkh_sma_unregister( RKH_SMA_T *sma );
  *	void 
  *	ring( const struct rkh_t *sma, RKH_EVT_T *pe )
  *	{
- *		(void)sma;      		// argument not used
- *		rkh_defer( &qurc, pe );	// defer event
+ *		(void)sma;      			// argument not used
+ *		rkh_fwk_defer( &qurc, pe );	// defer event
  *	}
  *	\endcode
  *
@@ -2014,7 +2014,7 @@ void rkh_sma_unregister( RKH_SMA_T *sma );
  * 	\param e		pointer to event.
  */
 
-void rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e );
+void rkh_fwk_defer( RKH_RQ_T *q, const RKH_EVT_T *e );
 
 
 /**
@@ -2032,7 +2032,7 @@ void rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e );
  *	void 
  *	exit_rx_manager( const struct rkh_t *sma )
  *	{
- *		rkh_recall( sma, &qurc );
+ *		rkh_fwk_recall( sma, &qurc );
  *	}
  *	\endcode
  *
@@ -2045,7 +2045,7 @@ void rkh_defer( RKH_RQ_T *q, const RKH_EVT_T *e );
  * 	event has been recalled.
  */
 
-RKH_EVT_T *rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
+RKH_EVT_T *rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
 
 
 /**
@@ -2055,13 +2055,13 @@ RKH_EVT_T *rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  * 	Before using dynamic events (or event with arguments) the application 
  * 	code must register the event pools, which stores the events as a 
  * 	fixed-sized memory block. Each event pool must be registered with the 
- * 	RKH framework, by means of the rkh_epool_register() function.
+ * 	RKH framework, by means of the rkh_fwk_epool_register() function.
  *
  *	This function initializes one event pool at a time and must be called
  * 	exactly once for each event pool before the pool can be used.
  *
  * 	The application code might initialize the event pools by making calls 
- * 	to the rkh_epool_register() function. However, for the simplicity of 
+ * 	to the rkh_fwk_epool_register() function. However, for the simplicity of 
  * 	the internal implementation, the application code initialize event pools 
  * 	in the ascending order of the event size.
  *
@@ -2122,9 +2122,9 @@ RKH_EVT_T *rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  *					ep2sto[ SIZEOF_EP2STO ];
  *
  * 	...
- * 	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
- * 	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
- * 	rkh_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
+ * 	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+ * 	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+ * 	rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
  * 	...
  *	\endcode
  *
@@ -2135,7 +2135,7 @@ RKH_EVT_T *rkh_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  * 					block in the pool.
  */
 
-void rkh_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize );
+void rkh_fwk_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize );
 
 
 /**
@@ -2153,7 +2153,7 @@ void rkh_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize );
  * 	\param e		event signal.
  */
 
-RKH_EVT_T *rkh_ae( RKH_ES_T esize, RKH_SIG_T e );
+RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
 /**
@@ -2174,8 +2174,8 @@ RKH_EVT_T *rkh_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	\endcode
  *
  * 	\note
- *	The assertions inside rkh_ae() function guarantee that the pointer is 
- *	valid, so you don't need to check the pointer returned from rkh_ae(), 
+ *	The assertions inside rkh_fwk_ae() function guarantee that the pointer is 
+ *	valid, so you don't need to check the pointer returned from rkh_fwk_ae(), 
  *	unlike the value returned from malloc(), which you should check.
  *
  * 	\param et		type of event.
@@ -2184,7 +2184,7 @@ RKH_EVT_T *rkh_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 		#define RKH_ALLOC_EVENT( et, e ) \
-					(et*)rkh_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
+					(et*)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
 		#define RKH_ALLOC_EVENT( et, e ) \
 					(void)0
@@ -2305,41 +2305,41 @@ RKH_EVT_T *rkh_ae( RKH_ES_T esize, RKH_SIG_T e );
  * 	executed.
  *
  *	\note
- *	The dispatch hook will only get called if RKH_HK_DISPATCH_EN is set to 1 
- *	within rkhcfg.h file. When this is set the application must provide the 
+ *	The dispatch hook will only get called if RKH_HOOK_DISPATCH_EN is set to 
+ *	1 within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  *
  * 	\param sma		pointer to previously created state machine application.
  *	\param e		pointer to arrived event.
  */
 
-void rkh_hk_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
+void rkh_hook_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 
 
 /**
  * 	\brief
  * 	When the producer of an event directly posts the event to the event queue 
- * 	of the consumer SMA the rkh_hk_signal() will optionally called.
+ * 	of the consumer SMA the rkh_hook_signal() will optionally called.
  * 	
  *	\note
- *	The signal hook will only get called if RKH_HK_SIGNAL_EN is set to 1 
+ *	The signal hook will only get called if RKH_HOOK_SIGNAL_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  *
  *	\param e		pointer to arrived event.
  */
 
-void rkh_hk_signal( RKH_EVT_T *e );
+void rkh_hook_signal( RKH_EVT_T *e );
 
 
 /**
  * 	\brief
- * 	If a timer expires the rkh_hk_timeout() function is called just before the 
- * 	assigned event is directly posted into the state machine application 
+ * 	If a timer expires the rkh_hook_timeout() function is called just before 
+ * 	the assigned event is directly posted into the state machine application 
  * 	queue. 
  * 	
  *	\note
- *	The timeout hook will only get called if RKH_HK_TIMEOUT_EN is set to 1 
+ *	The timeout hook will only get called if RKH_HOOK_TIMEOUT_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  *
@@ -2348,7 +2348,7 @@ void rkh_hk_signal( RKH_EVT_T *e );
  *					implemented to get the appropiated timer control block.
  */
 
-void rkh_hk_timeout( const void *t );
+void rkh_hook_timeout( const void *t );
 
 
 /**
@@ -2357,27 +2357,27 @@ void rkh_hk_timeout( const void *t );
  * 	the application.
  *
  *	\note
- *	The start hook will only get called if RKH_HK_START_EN is set to 1 
+ *	The start hook will only get called if RKH_HOOK_START_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
 
-void rkh_hk_start( void );
+void rkh_hook_start( void );
 
 
 /**
  * 	\brief
  * 	This hook function is called just before the RKH returns to the 
- * 	underlying OS/RTOS. Usually, the rkh_hk_exit() is useful when executing
+ * 	underlying OS/RTOS. Usually, the rkh_hook_exit() is useful when executing
  * 	clean-up code upon SMA terminate or framework exit.
  *
  *	\note
- *	The exit hook will only get called if RKH_HK_EXIT_EN is set to 1 
+ *	The exit hook will only get called if RKH_HOOK_EXIT_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
 
-void rkh_hk_exit( void );
+void rkh_hook_exit( void );
 
 
 /**
@@ -2390,7 +2390,7 @@ void rkh_hk_exit( void );
  * 	there is no processing to be performed.
  *
  * 	\note
- *	The rkh_hk_idle() callback is called with interrupts locked, because the
+ *	The rkh_hook_idle() callback is called with interrupts locked, because the
  *	determination of the idle condition might change by any interrupt posting
  *	an event. This function must internally unlock interrupts, ideally
  *	atomically with putting the CPU to the power-saving mode.
@@ -2399,7 +2399,7 @@ void rkh_hk_exit( void );
  *	
  *	\code
  *	void
- *	rkh_hk_idle( void ) 		// NOTE: entered with interrupts DISABLED
+ *	rkh_hook_idle( void ) 		// NOTE: entered with interrupts DISABLED
  *	{
  *		RKH_ENA_INTERRUPT();	// must at least enable interrupts
  *		...
@@ -2407,28 +2407,28 @@ void rkh_hk_exit( void );
  *	\endcode
  */
 
-void rkh_hk_idle( void );
+void rkh_hook_idle( void );
 
 
 /**
  * 	\brief
  * 	This function is called by rkh_tim_tick(), which is assumed to be called 
- * 	from an ISR. rkh_hk_timetick() is called at the very beginning of 
+ * 	from an ISR. rkh_hook_timetick() is called at the very beginning of 
  * 	rkh_tim_tick(), to give priority to user or port-specific code when the 
  * 	tick interrupt occurs. 
  *	Usually, this hook allows to the application to extend the functionality 
  *	of RKH, giving the port developer the opportunity to add code that will 
- *	be called by rkh_tim_tick(). Frequently, the rkh_hk_timetick() is called 
- *	from the tick ISR and must not make any blocking calls and must execute 
- *	as quickly as possible.
+ *	be called by rkh_tim_tick(). Frequently, the rkh_hook_timetick() is 
+ *	called from the tick ISR and must not make any blocking calls and must 
+ *	execute as quickly as possible.
  *
  *	\note
- *	The time tick hook will only get called if RKH_HK_TIMETICK_EN is set to 1 
+ *	The time tick hook will only get called if RKH_HOOK_TIMETICK_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
 
-void rkh_hk_timetick( void );
+void rkh_hook_timetick( void );
 
 
 /**
@@ -2438,7 +2438,7 @@ void rkh_hk_timetick( void );
  * 	\param sma		pointer to previously created state machine application.
  */
 
-void rkh_init_hsm( RKH_SMA_T *sma );
+void rkh_sma_init_hsm( RKH_SMA_T *sma );
 
 
 /**
@@ -2461,7 +2461,7 @@ void rkh_init_hsm( RKH_SMA_T *sma );
  * 	- Execute entry actions of the target state.
  *
  * 	Here now are the details of the main part of this algorithm 
- * 	(rkh_dispatch()), in which an event is processed by the statechart. 
+ * 	(rkh_sma_dispatch()), in which an event is processed by the statechart. 
  * 	
  * 	\li	Determine the compound transition (CT) that will fire in response 
  * 		to the event: traverse the states in the active configuration from 
@@ -2497,7 +2497,7 @@ void rkh_init_hsm( RKH_SMA_T *sma );
  *	Result RKH_RCODE_T code.
  */
 
-HUInt rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
+HUInt rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 
 
 /**
@@ -2580,7 +2580,7 @@ HUInt rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  * 	\param h 		pointer to history pseudostate.
  */
 
-void rkh_clear_history( RKHROM RKH_SHIST_T *h );
+void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 
 
 /**

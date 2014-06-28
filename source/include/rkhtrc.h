@@ -96,23 +96,23 @@
 
 #if RKH_TRC_MAX_SMA > RKH_TRC_MAX_SIGNALS
 	#if (RKH_TRC_MAX_SMA * 8) <= RKH_BIT(8)
-		typedef rkhui8_t TRCFS_T;
+		typedef rkhui8_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SMA * 8) <= RKH_BIT(16)
-		typedef rkhui16_t TRCFS_T;
+		typedef rkhui16_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SMA * 8) <= RKH_BIT(32)
-		typedef rkhui32_t TRCFS_T;
+		typedef rkhui32_t RKH_TRC_FSLOT;
 	#else
-		typedef rkhui8_t TRCFS_T;
+		typedef rkhui8_t RKH_TRC_FSLOT;
 	#endif
 #else
 	#if (RKH_TRC_MAX_SIGNALS * 8) <= RKH_BIT(8)
-		typedef rkhui8_t TRCFS_T;
+		typedef rkhui8_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SIGNALS * 8) <= RKH_BIT(16)
-		typedef rkhui16_t TRCFS_T;
+		typedef rkhui16_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SIGNALS * 8) <= RKH_BIT(32)
-		typedef rkhui32_t TRCFS_T;
+		typedef rkhui32_t RKH_TRC_FSLOT;
 	#else
-		typedef rkhui8_t TRCFS_T;
+		typedef rkhui8_t RKH_TRC_FSLOT;
 	#endif
 #endif
 
@@ -124,7 +124,7 @@
 
 typedef struct RKH_TRC_FIL_T
 {
-	TRCFS_T size;			/** Size of filter table in bytes */
+	RKH_TRC_FSLOT size;		/** Size of filter table in bytes */
 	rkhui8_t *const tbl;	/** Points to filter table in RAM */
 } RKH_TRC_FIL_T;
 
@@ -947,7 +947,7 @@ typedef enum rkh_trc_events
  * 	user data elements.
  */
 
-enum rkh_trc_fmt
+enum RKH_TRC_FMT
 {
 	RKH_I8_T,		/**< signed 8-bit integer format */
 	RKH_UI8_T,		/**< unsigned 8-bit integer format */
@@ -1393,14 +1393,6 @@ enum rkh_trc_fmt
 #endif
 
 
-/**
- * 	Used to invalidate the SMA filter in the RKH_TRC_BEGIN() macro.
- */
-
-#define AOINV		RKH_MAX_SMA	
-#define SIGINV		RKH_DISABLE		
-
-
 #if RKH_TRC_EN == RKH_ENABLED
 	/* --- Memory Pool (MP) ------------------ */
 	#if RKH_TRC_ALL == RKH_ENABLED || RKH_TRC_EN_MP == RKH_ENABLED
@@ -1731,7 +1723,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_init_hsm
+		 * 	\copybrief rkh_sma_init_hsm
 		 *
 		 * 	Desc 	= start (initialize) a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1752,7 +1744,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 *	\copybrief rkh_clear_history
+		 *	\copybrief rkh_fwk_clear_history
 		 *
 		 * 	Desc 	= clear history pseudostate\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -1773,7 +1765,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_dispatch
+		 * 	\copybrief rkh_sma_dispatch
 		 *
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
@@ -2192,7 +2184,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_init
+		 * 	\copybrief rkh_fwk_init
 		 *
 		 * 	Desc 	= initialize the RKH\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2206,7 +2198,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_exit
+		 * 	\copybrief rkh_fwk_exit
 		 *
 		 * 	Desc 	= exit the RKH\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2220,7 +2212,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_epool_register
+		 * 	\copybrief rkh_fwk_epool_register
 		 *
 		 * 	Desc 	= event pool register\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2237,7 +2229,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_ae
+		 * 	\copybrief rkh_fwk_ae
 		 *
 		 * 	Desc 	= allocate an event\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2289,7 +2281,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_defer
+		 * 	\copybrief rkh_fwk_defer
 		 *
 		 * 	Desc 	= defer an event\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2305,7 +2297,7 @@ enum rkh_trc_fmt
 
 		/**
 		 * 	\brief
-		 * 	\copybrief rkh_recall
+		 * 	\copybrief rkh_fwk_recall
 		 *
 		 * 	Desc 	= recall an event\n
 		 * 	Group 	= RKH_TG_FWK\n
@@ -2803,8 +2795,8 @@ enum rkh_trc_fmt
 		 * 	RKH_TR_FWK_EPOOL( &ep0_sto );
 		 * 	RKH_TR_FWK_EPOOL( &ep1_sto );
 		 *
-		 *	rkh_epool_register( ep0_sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-		 *	rkh_epool_register( ep1_sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+		 *	rkh_fwk_epool_register( ep0_sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+		 *	rkh_fwk_epool_register( ep1_sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 		 *	...
 		 * 	\endcode
 		 */
@@ -3343,7 +3335,7 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  */
 
 void rkh_trc_simfil( 	const RKH_TRC_FIL_T *filter, 
-						TRCFS_T slot, rkhui8_t mode );
+						RKH_TRC_FSLOT slot, rkhui8_t mode );
 
 
 /**
@@ -3361,7 +3353,7 @@ void rkh_trc_simfil( 	const RKH_TRC_FIL_T *filter,
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
  */
 
-HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot );
+HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
 
 
 /**
@@ -3380,7 +3372,7 @@ HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot );
 
 #if RKH_TRC_RTFIL_SMA_EN == RKH_ENABLED
 		#define RKH_TRC_AO_ISOFF( prio ) \
-					&& rkh_trc_simfil_isoff( &fsma, (TRCFS_T)(prio) )
+					&& rkh_trc_simfil_isoff( &fsma, (RKH_TRC_FSLOT)(prio) )
 #else
 		#define RKH_TRC_AO_ISOFF( prio )
 #endif
@@ -3402,7 +3394,7 @@ HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, TRCFS_T slot );
 
 #if RKH_TRC_RTFIL_SIGNAL_EN == RKH_ENABLED
 		#define RKH_TRC_SIG_ISOFF( sig ) \
-					&& rkh_trc_simfil_isoff( &fsig, (TRCFS_T)(sig) )
+					&& rkh_trc_simfil_isoff( &fsig, (RKH_TRC_FSLOT)(sig) )
 #else
 		#define RKH_TRC_SIG_ISOFF( sig )
 #endif

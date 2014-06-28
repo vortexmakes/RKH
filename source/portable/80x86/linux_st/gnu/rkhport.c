@@ -78,42 +78,42 @@ rkh_get_port_desc( void )
 
 
 void 
-rkh_init( void )
+rkh_fwk_init( void )
 {
     sem_init( &sma_is_rdy, 0, 0 );
 }
 
 
 void 
-rkh_enter( void )
+rkh_fwk_enter( void )
 {
 	rkhui8_t prio;
 	RKH_SMA_T *sma;
 	RKH_EVT_T *e;
 	RKH_SR_ALLOC();
 
-	RKH_HK_START();
+	RKH_HOOK_START();
 	RKH_TR_FWK_EN();
 	running = 1;
 
 	while( running )
 	{
 		RKH_ENTER_CRITICAL( dummy );
-		if( rkh_rdy_isnot_empty( rkhrg ) ) 
+		if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
 		{
-			rkh_rdy_findh( rkhrg, prio );
+			RKH_RDY_FIND_HIGHEST( rkhrg, prio );
 			RKH_EXIT_CRITICAL( dummy );
 
 			sma = rkh_sptbl[ prio ];
 			e = rkh_sma_get( sma );
-			rkh_dispatch( sma, e );
+			rkh_sma_dispatch( sma, e );
 			RKH_GC( e );
 		}
 		else
-			rkh_hk_idle();
+			rkh_hook_idle();
 	}
 
-	rkh_hk_exit();
+	rkh_hook_exit();
 	sem_destroy( &sma_is_rdy );
 
 	pthread_mutex_destroy( &csection );	
@@ -121,11 +121,11 @@ rkh_enter( void )
 
 
 void 
-rkh_exit( void )
+rkh_fwk_exit( void )
 {
 	RKH_SR_ALLOC();
 
-	rkh_hk_exit();
+	rkh_hook_exit();
 	RKH_TR_FWK_EX();
 }
 
@@ -140,7 +140,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
-	rkh_init_hsm( sma );
+	rkh_sma_init_hsm( sma );
 	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
 }
 

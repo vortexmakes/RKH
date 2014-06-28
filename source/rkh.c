@@ -65,7 +65,7 @@ RKH_MODULE_NAME( rkh )
 						RKH_EN_REENTRANT == RKH_DISABLED
 	#define RKH_RAM		static
 #else
-			          /* allocate the automatic variables of rkh_dispatch() */
+		          /* allocate the automatic variables of rkh_sma_dispatch() */
 										          /* function on the stack. */
 	                                   /* Therefore, the code is reentrant. */
 	#define RKH_RAM
@@ -282,7 +282,7 @@ rkh_add_tr_action( RKH_TRN_ACT_T **list, RKH_TRN_ACT_T act, rkhui8_t *num )
 
 
 void 
-rkh_init_hsm( RKH_SMA_T *sma )
+rkh_sma_init_hsm( RKH_SMA_T *sma )
 {
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
 	RKHROM RKH_ST_T *s;
@@ -313,7 +313,7 @@ rkh_init_hsm( RKH_SMA_T *sma )
 
 #if defined( RKH_HISTORY_ENABLED )
 void
-rkh_clear_history( RKHROM RKH_SHIST_T *h )
+rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h )
 {
 	*h->target = (RKHROM void *)0;
 }
@@ -321,7 +321,7 @@ rkh_clear_history( RKHROM RKH_SHIST_T *h )
 
 
 HUInt
-rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
+rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	RKHROM RKH_ST_T *cs, *ts;
 	RKHROM void *ets;
@@ -360,7 +360,7 @@ rkh_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 
 	inttr = 0;
 	INFO_RCV_EVENTS( sma );
-	RKH_HK_DISPATCH( sma, pe );
+	RKH_HOOK_DISPATCH( sma, pe );
 															/* ---- Stage 1 */
 	cs = sma->state;						           /* get current state */
 

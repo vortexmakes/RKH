@@ -201,13 +201,13 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 
 
 void
-rkh_hk_timetick( void )
+rkh_hook_timetick( void )
 {
 }
 
 
 void 
-rkh_hk_start( void ) 
+rkh_hook_start( void ) 
 {
     DWORD thtmr_id, thkbd_id;
     HANDLE hth_tmr, hth_kbd;
@@ -226,20 +226,20 @@ rkh_hk_start( void )
     RKHASSERT( hth_kbd != (HANDLE)0 );
     SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
 	
-	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
 void 
-rkh_hk_exit( void ) 
+rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
 }
 
 
 void 
-rkh_hk_idle( void )				/* called within critical section */
+rkh_hook_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
 	RKH_TRC_FLUSH();
@@ -256,7 +256,7 @@ rkh_assert( RKHROM char * const file, int line )
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	__debugbreak();
-	rkh_exit();
+	rkh_fwk_exit();
 }
 
 
@@ -445,7 +445,7 @@ bsp_init( int argc, char *argv[] )
 
     bsp_srand( 1234U );
 	print_banner();
-	rkh_init();
+	rkh_fwk_init();
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )

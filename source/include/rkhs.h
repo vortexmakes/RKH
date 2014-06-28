@@ -60,10 +60,10 @@
 					RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 	#define RKH_SMA_READY( rg, sma ) 						\
-					rkh_rdy_ins( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
+					RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
 	#define RKH_SMA_UNREADY( rg, sma ) 						\
-					rkh_rdy_rem( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
+					RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
 	extern RKH_RG_T rkhrg;
 

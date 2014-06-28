@@ -476,8 +476,8 @@ in a separate task or thread.
 RKH_SMA_UNREADY() in \c rkhport.h according to underlying OS or RTOS.
 \li (3) Define the macros #RKH_OSSIGNAL_TYPE, and #RKH_THREAD_TYPE in 
 \c rkhport.h according to underlying OS or RTOS. 
-\li (4) Then, implement the platform-specific functions rkh_init(), rkh_enter(), 
-rkh_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
+\li (4) Then, implement the platform-specific functions rkh_fwk_init(), rkh_fwk_enter(), 
+rkh_fwk_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
 are placed in \c rkhport.c.
 
 <EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
@@ -491,60 +491,60 @@ are placed in \c rkhport.c.
 				RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 							\
-			    rkh_rdy_ins( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); 	\
+			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); 	\
 			    (void)SetEvent( sma_is_rdy )
 
 #define RKH_SMA_UNREADY( rg, sma ) 							\
-			    rkh_rdy_rem( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
+			    RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
 #define RKH_WAIT_FOR_EVENTS() 								\
 			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
 \endcode
 \code
 void 
-rkh_init( void )
+rkh_fwk_init( void )
 {
 	InitializeCriticalSection( &csection );
 	sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
 }
 
 void 
-rkh_enter( void )
+rkh_fwk_enter( void )
 {
 	rkhui8_t prio;
 	RKH_SMA_T *sma;
 	RKH_EVT_T *e;
 
-    RKH_HK_START();
+    RKH_HOOK_START();
 	RKH_TR_FWK_EN();
     running = 1;
 
     while( running )
 	{
         RKH_ENTER_CRITICAL( dummy );
-        if( rkh_rdy_isnot_empty( rkhrg ) ) 
+        if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
 		{
-			rkh_rdy_findh( rkhrg, prio );
+			RKH_RDY_FIND_HIGHEST( rkhrg, prio );
             RKH_EXIT_CRITICAL( dummy );
 
             sma = rkh_sptbl[ prio ];
             e = rkh_sma_get( sma );
-            rkh_dispatch( sma, e );
+            rkh_sma_dispatch( sma, e );
             RKH_GC( e );
         }
         else
-            rkh_hk_idle();
+            rkh_hook_idle();
     }
 
-    rkh_hk_exit();
+    rkh_hook_exit();
     CloseHandle( sma_is_rdy );
     DeleteCriticalSection( &csection );	
 }
 
 void 
-rkh_exit( void )
+rkh_fwk_exit( void )
 {
-	rkh_hk_exit();
+	rkh_hook_exit();
 	RKH_TR_FWK_EX();
 }
 
@@ -557,7 +557,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 
 	rkh_rq_init( &sma->equeue, qs, qsize, sma );
 	rkh_sma_register( sma );
-    rkh_init_hsm( sma );
+    rkh_sma_init_hsm( sma );
 	RKH_TR_SMA_ACT( sma );
 }
 
@@ -576,7 +576,7 @@ rkh_sma_terminate( RKH_SMA_T *sma )
 \li (2) Define the macros #RKH_EQ_TYPE = RKH_RQ_T, RKH_SMA_BLOCK(), 
 RKH_SMA_READY(), RKH_SMA_UNREADY() in \c rkhport.h. 
 \li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
-functions rkh_init(), rkh_enter(), rkh_exit(), rkh_sma_activate(), and 
+functions rkh_fwk_init(), rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), and 
 rkh_sma_terminate(). 
 \li (4) Also, the macros RKH_EQ_TYPE, RKH_SMA_BLOCK(), 
 \li (5) RKH_SMA_READY(), RKH_SMA_UNREADY() are RKH provided. 
@@ -592,8 +592,8 @@ priority mechanism?</EM>
 \b YES: \n
 \li (1) Declare an RKH_RG_T variable.
 \li (2) Include the \c rkhrdy.h in \c rkhport.h.
-\li (3) Then, the RKH port could be use the macros rkh_rdy_is_empty(), 
-rkh_rdy_isnot_empty(), rkh_rdy_ins(), rkh_rdy_rem(), and rkh_rdy_findh(). 
+\li (3) Then, the RKH port could be use the macros RKH_RDY_IS_EMPTY(), 
+RKH_RDY_ISNOT_EMPTY(), RKH_RDY_INSERT(), RKH_RDY_REM(), and RKH_RDY_FIND_HIGHEST(). 
 Frequently, the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
 RKH_SMA_UNREADY() use the macros provided by \c rkhrdy.h.
 
@@ -620,7 +620,7 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 	
-	RKH_HK_SIGNAL( e );
+	RKH_HOOK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
     if( RCE( e )->pool != 0 ) 
         ++RCE( e )->nref;
@@ -635,7 +635,7 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 
-	RKH_HK_SIGNAL( e );
+	RKH_HOOK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
     if( RCE( e )->pool != 0 ) 
         ++RCE( e )->nref;
@@ -747,29 +747,29 @@ A RKH port cannot and should not define all the functions that it calls,
 because this would render the port too inflexible. The functions that RKH 
 calls but doesn't actually implement are referred to as callback or hook 
 functions. All these functions in RKH are easily indentifiable by the 
-\b "_hk_" key word used in the function name, rkh_hk_dispatch(), 
-rkh_hk_signal(), rkh_hk_timeout(), rkh_hk_start(), rkh_hk_exit(), 
-and rkh_hk_idle(). 
-Please, see RKH_HK_DISPATCH_EN, RKH_HK_SIGNAL_EN, RKH_HK_TIMEOUT_EN, 
-RKH_HK_START_EN, and RKH_HK_EXIT_EN options from the \c rkhcfg.h.\n
+\b "_hook_" key word used in the function name, rkh_hook_dispatch(), 
+rkh_hook_signal(), rkh_hook_timeout(), rkh_hook_start(), rkh_hook_exit(), 
+and rkh_hook_idle(). 
+Please, see RKH_HOOK_DISPATCH_EN, RKH_HOOK_SIGNAL_EN, RKH_HOOK_TIMEOUT_EN, 
+RKH_HOOK_START_EN, and RKH_HOOK_EXIT_EN options from the \c rkhcfg.h.\n
 
-\code void rkh_hk_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e )\endcode
-\copydetails RKH_HK_DISPATCH_EN
+\code void rkh_hook_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e )\endcode
+\copydetails RKH_HOOK_DISPATCH_EN
 
-\code void rkh_hk_signal( RKH_EVT_T *e )\endcode
-\copydetails RKH_HK_SIGNAL_EN
+\code void rkh_hook_signal( RKH_EVT_T *e )\endcode
+\copydetails RKH_HOOK_SIGNAL_EN
 
-\code void rkh_hk_timeout( const void *t )\endcode
-\copydetails RKH_HK_TIMEOUT_EN
+\code void rkh_hook_timeout( const void *t )\endcode
+\copydetails RKH_HOOK_TIMEOUT_EN
 
-\code void rkh_hk_start( void )\endcode
-\copydetails RKH_HK_START_EN
+\code void rkh_hook_start( void )\endcode
+\copydetails RKH_HOOK_START_EN
 
-\code void rkh_hk_exit( void )\endcode
-\copydetails RKH_HK_EXIT_EN
+\code void rkh_hook_exit( void )\endcode
+\copydetails RKH_HOOK_EXIT_EN
 
-\code void rkh_hk_idle( void )\endcode
-\copydetails rkh_hk_idle
+\code void rkh_hook_idle( void )\endcode
+\copydetails rkh_hook_idle
 
 \n <HR>
 \section ilock Interrupt locking mechanism
@@ -974,11 +974,11 @@ const char *rkh_get_port_desc( void );
 				RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 								\
-			    rkh_rdy_ins( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \
+			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \
 			    (void)SetEvent( sma_is_rdy ); \
 
 #define RKH_SMA_UNREADY( rg, sma ) 							\
-			    rkh_rdy_rem( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
+			    RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
 #define RKH_WAIT_FOR_EVENTS() 								\
 			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
@@ -1089,7 +1089,7 @@ rkh_get_port_desc( void )
 
 
 void 
-rkh_init( void )
+rkh_fwk_init( void )
 {
     InitializeCriticalSection( &csection );
     sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
@@ -1097,41 +1097,41 @@ rkh_init( void )
 
 
 void 
-rkh_enter( void )
+rkh_fwk_enter( void )
 {
 	rkhui8_t prio;
 	RKH_SMA_T *sma;
 	RKH_EVT_T *e;
 
-    RKH_HK_START();
+    RKH_HOOK_START();
 	RKH_TR_FWK_EN();
     running = 1;
 
     while( running )
 	{
         RKH_ENTER_CRITICAL( dummy );
-        if( rkh_rdy_isnot_empty( rkhrg ) ) 
+        if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
 		{
-			rkh_rdy_findh( rkhrg, prio );
+			RKH_RDY_FIND_HIGHEST( rkhrg, prio );
             RKH_EXIT_CRITICAL( dummy );
 
             sma = rkh_sptbl[ prio ];
             e = rkh_sma_get( sma );
-            rkh_dispatch( sma, e );
+            rkh_sma_dispatch( sma, e );
             RKH_GC( e );
         }
         else
-            rkh_hk_idle();
+            rkh_hook_idle();
     }
 
-    RKH_HK_EXIT();
+    RKH_HOOK_EXIT();
     CloseHandle( sma_is_rdy );
     DeleteCriticalSection( &csection );	
 }
 
 
 void 
-rkh_exit( void )
+rkh_fwk_exit( void )
 {
 	RKH_TR_FWK_EX();
 	running = 0;
@@ -1147,7 +1147,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
-    rkh_init_hsm( sma );
+    rkh_sma_init_hsm( sma );
 	RKH_TR_SMA_ACT( sma );
 }
 
@@ -2381,12 +2381,12 @@ Before using dynamic events (or event with arguments) the application code
 must register the proper event pools, which stores the events as a 
 fixed-sized memory block. 
 Each event pool must be registered with the RKH framework, by means of the 
-rkh_epool_register() function. This function initializes one event pool at a 
+rkh_fwk_epool_register() function. This function initializes one event pool at a 
 time and must be called exactly once for each event pool before the pool can 
 be used.
 
 The application code might initialize the event pools by making calls 
-to the rkh_epool_register() function. However, for the simplicity of 
+to the rkh_fwk_epool_register() function. However, for the simplicity of 
 the internal implementation, the application code initialize event pools 
 in the ascending order of the event size.
 
@@ -2428,9 +2428,9 @@ static rkhui8_t	ep0sto[ SIZEOF_EP0STO ],
 				ep2sto[ SIZEOF_EP2STO ];
 
 ...
-rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
-rkh_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
+rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
 ...
 \endcode
 
@@ -2571,37 +2571,37 @@ to recycle "dynamic" events.
 
 \code
 	void 
-	rkh_enter( void )
+	rkh_fwk_enter( void )
     {
 		rkhui8_t prio;
 		RKH_SMA_T *sma;
 		RKH_EVT_T *e;
 
-		rkh_hk_start();
+		rkh_hook_start();
 		RKH_TR_FWK_EN();
 
 		FOREVER
 		{
 			RKH_DIS_INTERRUPT();
-			if( rkh_rdy_isnot_empty( rkhrg ) )
+			if( RKH_RDY_ISNOT_EMPTY( rkhrg ) )
 			{
-				rkh_rdy_findh( rkhrg, prio );
+				RKH_RDY_FIND_HIGHEST( rkhrg, prio );
 				sma = rkh_sptbl[ prio ];
 				RKH_ENA_INTERRUPT();
 
 (1)				e = rkh_sma_get( sma );
-(2)				rkh_dispatch( sma, e );
+(2)				rkh_sma_dispatch( sma, e );
 (3)				RKH_GC( e );
 			}
 			else 
 			//
-			// rkh_hk_idle() must be called with interrupts DISABLED because the 
+			// rkh_hook_idle() must be called with interrupts DISABLED because the 
 			// determination of the idle condition (no events in the queues) can 
 			// change at any time by an interrupt posting events to a queue. The 
-			// rkh_hk_idle() MUST enable interrups internally, perhaps at the 
+			// rkh_hook_idle() MUST enable interrups internally, perhaps at the 
 			// same time as putting the CPU into a power-saving mode.
 			//			
-				rkh_hk_idle();
+				rkh_hook_idle();
 		}
     }
 \endcode
@@ -2669,7 +2669,7 @@ uses this function to defer an event \a e to the event queue \a q.
 RKH correctly accounts for another outstanding reference to the event 
 and will not recycle the event at the end of the RTC step. 
 Later, the SMA might recall one event at a time from the 
-event queue by means of rkh_recall(sma,q) function. 
+event queue by means of rkh_fwk_recall(sma,q) function. 
 Recalling an event means that it is removed from the deferred event 
 queue \c q and posted (LIFO) to the event queue of the \c sma state 
 machine application.
@@ -2692,7 +2692,7 @@ void
 ring( const struct rkh_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;      				// argument not used
-(2)	rkh_defer( &qurc, pe );
+(2)	rkh_fwk_defer( &qurc, pe );
 }
 \endcode
 
@@ -2707,7 +2707,7 @@ Explanation
 void 
 exit_rx_manager( const struct rkh_t *sma )
 {
-(1)	rkh_defer( sma, &qurc );
+(1)	rkh_fwk_defer( sma, &qurc );
 }
 \endcode
 
@@ -2765,10 +2765,10 @@ for more information about this.
 		int c;
 
 (1)		rkh_trc_open();
-(2)		rkh_init();
+(2)		rkh_fwk_init();
 
 		srand( ( unsigned )time( NULL ) );
-(3)  	rkh_init_hsm( my );
+(3)  	rkh_sma_init_hsm( my );
 
 (4)		FOREVER
 		{
@@ -2778,19 +2778,19 @@ for more information about this.
 (6)				rkh_trc_flush();
 			else if ( c == ESC )
 			{
-(7)				rkh_dispatch( my, &term );
+(7)				rkh_sma_dispatch( my, &term );
 				break;
 			}
 			else
 			{
 (8)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
 (9)				mye->ts = ( rkhui16_t )rand();
-(10)			rkh_dispatch( my, ( RKH_EVT_T* )mye );
+(10)			rkh_sma_dispatch( my, ( RKH_EVT_T* )mye );
 			}
 		}
 
 (11)	rkh_trc_close();
-(12)	rkh_exit();
+(12)	rkh_fwk_exit();
 	}
 \endcode
 
@@ -4122,39 +4122,39 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_ASSERT_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_DISPATCH_EN </TD>
+		<TD align="left"> #RKH_HOOK_DISPATCH_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_HK_DISPATCH_EN </TD>
+		<TD align="left"> \copydetails RKH_HOOK_DISPATCH_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_SIGNAL_EN </TD>
+		<TD align="left"> #RKH_HOOK_SIGNAL_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_HK_SIGNAL_EN </TD>
+		<TD align="left"> \copydetails RKH_HOOK_SIGNAL_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_TIMEOUT_EN </TD>
+		<TD align="left"> #RKH_HOOK_TIMEOUT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_HK_TIMEOUT_EN </TD>
+		<TD align="left"> \copydetails RKH_HOOK_TIMEOUT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_START_EN </TD>
+		<TD align="left"> #RKH_HOOK_START_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_HK_START_EN </TD>
+		<TD align="left"> \copydetails RKH_HOOK_START_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_HK_EXIT_EN </TD>
+		<TD align="left"> #RKH_HOOK_EXIT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_HK_EXIT_EN </TD>
+		<TD align="left"> \copydetails RKH_HOOK_EXIT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_SMA_EN_IEVENT </TD>

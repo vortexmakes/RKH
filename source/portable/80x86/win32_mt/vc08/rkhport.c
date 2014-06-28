@@ -98,16 +98,16 @@ rkh_get_port_desc( void )
 
 
 void 
-rkh_init( void )
+rkh_fwk_init( void )
 {
     InitializeCriticalSection( &csection );
 }
 
 
 void 
-rkh_enter( void )
+rkh_fwk_enter( void )
 {
-    RKH_HK_START();						/* start-up callback */
+    RKH_HOOK_START();						/* start-up callback */
 	RKH_TR_FWK_EN();
 
 	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_HIGHEST );
@@ -119,17 +119,17 @@ rkh_enter( void )
 		Sleep( tick_msec );				/* wait for the tick interval */
 		RKH_TIM_TICK( &l_isr_tick );	/* tick handler */
     }
-    RKH_HK_EXIT();						/* cleanup callback */
+    RKH_HOOK_EXIT();						/* cleanup callback */
 	RKH_TRC_CLOSE();					/* cleanup the trace session */
     DeleteCriticalSection( &csection );
 }
 
 
 void 
-rkh_exit( void )
+rkh_fwk_exit( void )
 {
 	RKH_TR_FWK_EX();
-	RKH_HK_EXIT();
+	RKH_HOOK_EXIT();
 	running = (rkhui8_t)0;
 }
 
@@ -149,7 +149,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
 	sma->os_signal = CreateEvent( NULL, FALSE, FALSE, NULL );
-    rkh_init_hsm( sma );
+    rkh_sma_init_hsm( sma );
 	sma->thread = CreateThread( NULL, stksize, thread_function, 
 														sma, 0, NULL );
 	RKHASSERT( sma->thread != (HANDLE)0 );
@@ -199,7 +199,7 @@ thread_function( LPVOID arg )
 	do
 	{
 		RKH_EVT_T *e = rkh_sma_get( (RKH_SMA_T *)arg );
-        rkh_dispatch( (RKH_SMA_T *)arg, e );
+        rkh_sma_dispatch( (RKH_SMA_T *)arg, e );
         RKH_GC( e );
 	}
 	while( ((RKH_SMA_T *)arg)->thread != (HANDLE)0 );

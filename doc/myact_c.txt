@@ -127,7 +127,7 @@ terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
-	rkh_exit();
+	rkh_fwk_exit();
 }
 
 

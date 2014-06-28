@@ -128,7 +128,7 @@ bsp_publish( const RKH_EVT_T *e )
 
 
 void
-rkh_hk_timetick( void )
+rkh_hook_timetick( void )
 {
 	sequence_interrupt();
 	switch_tick();
@@ -136,22 +136,22 @@ rkh_hk_timetick( void )
 
 
 void 
-rkh_hk_start( void ) 
+rkh_hook_start( void ) 
 {
-	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
 void 
-rkh_hk_exit( void ) 
+rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
 }
 
 
 void 
-rkh_hk_idle( void )				/* called within critical section */
+rkh_hook_idle( void )				/* called within critical section */
 {
 	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
@@ -163,7 +163,7 @@ rkh_assert( RKHROM char * const file, int line )
 {
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
-	rkh_exit();
+	rkh_fwk_exit();
 	reset_now();
 }
 
@@ -324,7 +324,7 @@ bsp_init( int argc, char *argv[]  )
 	init_seqs();
     bsp_srand( 1234U );
 
-	rkh_init();
+	rkh_fwk_init();
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )

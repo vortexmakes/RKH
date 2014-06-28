@@ -285,7 +285,7 @@ behavior of a system in a substantial manner.
 - Support local transitions.
 - Support the entry and exit actions.
 - Implement the traditional transition sequence.
-- Include mechanism for \link rkh_defer() deferring events\endlink.
+- Include mechanism for \link rkh_fwk_defer() deferring events\endlink.
 - Support \link RKH_EVT_T event dispatching with parameters\endlink.
 - Include \link RKH_EVT_T dynamic events\endlink.
 - Support a easy way to use \link RKH_EVT_T events with arguments\endlink.
@@ -1288,7 +1288,7 @@ of event \b B in a RTC manner.
 <B>Dealing with RTC model in a nonpreemtive manner</B>
 
 Here is the basic algorithm for interpreting the native kernel. 
-The rkh_enter() function implemented in \b \\source\\rkhs.c source 
+The rkh_fwk_enter() function implemented in \b \\source\\rkhs.c source 
 file is self-explanatory.
 
 \code
@@ -1342,7 +1342,7 @@ main( int argc, char *argv[] )
 	
 	RKH_FILTER_OFF_SMA( my );
 
-	rkh_init();
+	rkh_fwk_init();
 	RKH_TRC_OPEN();
 
 	/* send objects to trazer */
@@ -1375,7 +1375,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( TERM );
 
 	rkh_sma_activate( my, qsto, QSTO_SIZE, CV(0), 0 );
-	rkh_enter();
+	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
 	return 0;

@@ -23,7 +23,7 @@ main( int argc, char *argv[] )
 {
 	HInt cn;
 
-	/* invoke the rkh_init() function */
+	/* invoke the rkh_fwk_init() function */
 	bsp_init( argc, argv );
 
 	/* send objects to trazer */
@@ -54,7 +54,7 @@ main( int argc, char *argv[] )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		rkh_sma_activate( CLI(cn), (const RKH_EVT_T **)cli_qsto[cn], 
 												QSTO_SIZE, CV(0), 0 );
-	rkh_enter();
+	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
 	return 0;

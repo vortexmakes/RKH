@@ -162,11 +162,11 @@ const char *rkh_get_port_desc( void );
 				RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 								\
-			    rkh_rdy_ins( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \
+			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \
 			    (void)sem_post( &sma_is_rdy ); \
 
 #define RKH_SMA_UNREADY( rg, sma ) 							\
-			    rkh_rdy_rem( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
+			    RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
 
 #define RKH_WAIT_FOR_EVENTS() 								\
 			    ((void)sem_wait( &sma_is_rdy ))

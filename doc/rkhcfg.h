@@ -97,7 +97,7 @@
 
 /**
  * 	Specify the data type of event size. The valid values [in bits] are 
- * 	8, 16 or 32. Default is 8. See #RKH_ES_T, rkh_epool_register(), and 
+ * 	8, 16 or 32. Default is 8. See #RKH_ES_T, rkh_fwk_epool_register(), and 
  *	RKH_ALLOC_EVENT(). Use a 8 value if the bigger event size is minor to 
  *	256 bytes.
  */
@@ -124,64 +124,64 @@
 #define RKH_ASSERT_EN					RKH_ENABLED
 
 /**
- *	If the #RKH_HK_DISPATCH_EN is set to 1, RKH will invoke the dispatch 
- *	hook function rkh_hk_dispatch() when dispatching an event to a SMA.
+ *	If the #RKH_HOOK_DISPATCH_EN is set to 1, RKH will invoke the dispatch 
+ *	hook function rkh_hook_dispatch() when dispatching an event to a SMA.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_DISPATCH_EN				RKH_ENABLED
+#define RKH_HOOK_DISPATCH_EN				RKH_ENABLED
 
 /**
- *	If the #RKH_HK_SIGNAL_EN is set to 1, RKH will invoke the signal 
- *	hook function rkh_hk_signal() when the producer of an event directly 
+ *	If the #RKH_HOOK_SIGNAL_EN is set to 1, RKH will invoke the signal 
+ *	hook function rkh_hook_signal() when the producer of an event directly 
  *	posts the event to the event queue of the consumer SMA.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_SIGNAL_EN				RKH_ENABLED
+#define RKH_HOOK_SIGNAL_EN				RKH_ENABLED
 
 /**
- *	If the #RKH_HK_TIMEOUT_EN is set to 1, RKH will invoke the timeout 
- *	hook function rkh_hk_timeout() when a timer expires just before the 
+ *	If the #RKH_HOOK_TIMEOUT_EN is set to 1, RKH will invoke the timeout 
+ *	hook function rkh_hook_timeout() when a timer expires just before the 
  *	assigned event is directly posted into the state machine application 
  *	queue.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_TIMEOUT_EN				RKH_ENABLED
+#define RKH_HOOK_TIMEOUT_EN				RKH_ENABLED
 
 /**
- *	If the #RKH_HK_START_EN is set to 1, RKH will invoke the start 
- *	hook function rkh_hk_start() just before the RKH takes over control of 
+ *	If the #RKH_HOOK_START_EN is set to 1, RKH will invoke the start 
+ *	hook function rkh_hook_start() just before the RKH takes over control of 
  * 	the application.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_START_EN					RKH_ENABLED
+#define RKH_HOOK_START_EN					RKH_ENABLED
 
 /**
- *	If the #RKH_HK_EXIT_EN is set to 1, RKH will invoke the exit 
+ *	If the #RKH_HOOK_EXIT_EN is set to 1, RKH will invoke the exit 
  *	hook function just before it returns to the underlying OS/RTOS. Usually, 
- *	the rkh_hk_exit() is useful when executing clean-up code upon SMA 
+ *	the rkh_hook_exit() is useful when executing clean-up code upon SMA 
  *	terminate or framework exit.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_EXIT_EN					RKH_ENABLED
+#define RKH_HOOK_EXIT_EN					RKH_ENABLED
 
 /**
- *	If the #RKH_HK_TIMETICK_EN is set to 1, RKH will invoke the time tick 
+ *	If the #RKH_HOOK_TIMETICK_EN is set to 1, RKH will invoke the time tick 
  *	hook function from rkh_tim_tick(), at the very beginning of that, to give 
  *	priority to user or port-specific code when the tick interrupt occurs. 
- *	Usually, the rkh_hk_timetick() allows to the application to extend the 
+ *	Usually, the rkh_hook_timetick() allows to the application to extend the 
  *	functionality of RKH, giving the port developer the opportunity to add 
  *	code that will be called by rkh_tim_tick(). Frequently, the 
- *	rkh_hk_timetick() is called from the tick ISR and must not make any 
+ *	rkh_hook_timetick() is called from the tick ISR and must not make any 
  *	blocking calls and must execute as quickly as possible.
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_HK_TIMETICK_EN				RKH_ENABLED
+#define RKH_HOOK_TIMETICK_EN				RKH_ENABLED
 
 /**
  *	If the #RKH_SMA_EN_IEVENT is set to 1 then an initial event could be 

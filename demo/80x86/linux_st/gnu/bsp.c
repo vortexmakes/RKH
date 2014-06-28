@@ -198,7 +198,7 @@ isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 
 
 void 
-rkh_hk_start( void ) 
+rkh_hook_start( void ) 
 {
 	pthread_t thtmr_id, thkbd_id;  /* thread identifiers */
  	pthread_attr_t threadAttr;
@@ -220,13 +220,13 @@ rkh_hk_start( void )
 	/* Destroy the thread attributes */
 	pthread_attr_destroy(&threadAttr);
 	
-	rkh_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
 void 
-rkh_hk_exit( void ) 
+rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
     running = 0;
@@ -235,7 +235,7 @@ rkh_hk_exit( void )
 
 
 void 
-rkh_hk_idle( void )				/* called within critical section */
+rkh_hook_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
 	RKH_TRC_FLUSH();
@@ -250,7 +250,7 @@ rkh_assert( RKHROM char * const file, int line )
 						"file\n", line, file );
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
-	rkh_exit();
+	rkh_fwk_exit();
 }
 
 

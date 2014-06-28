@@ -55,7 +55,7 @@ svr_resume( const struct rkhsma_t *sma )
 {
 	REQ_EVT_T *e;
 
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) 
+	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) 
 			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
 }
@@ -85,7 +85,7 @@ svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 	REQ_EVT_T *e;
 
 	(void)pe;
-	if( (e = (REQ_EVT_T *)rkh_recall( (RKH_SMA_T*)sma, &qreq )) 
+	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) 
 			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
 }
@@ -95,7 +95,7 @@ void
 svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
-	rkh_defer( &qreq, pe );
+	rkh_fwk_defer( &qreq, pe );
 }
 
 
@@ -105,5 +105,5 @@ svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 	(void)sma;
 	(void)pe;
 
-	rkh_exit();
+	rkh_fwk_exit();
 }

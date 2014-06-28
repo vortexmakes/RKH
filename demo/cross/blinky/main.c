@@ -19,7 +19,7 @@ extern RKH_TMR_T bkytim;
 int
 main( int argc, char *argv[] )
 {
-	/* invoke the rkh_init() function */
+	/* invoke the rkh_fwk_init() function */
 	bsp_init( argc, argv );
 
 	/* send objects to trazer */
@@ -33,7 +33,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( TIMEOUT );
 
 	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
-	rkh_enter();
+	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
 	return 0;
