@@ -92,7 +92,7 @@ typedef void ( *RKH_THK_T )( void *t );
  *	optimize the application.
  */
 
-typedef struct rkh_tim_info_t
+typedef struct RKH_TINFO_T
 {
 	rkhui16_t nexp;			/** # of expirations */
 	rkhui16_t nstart;		/**	# of start requests */
@@ -149,7 +149,7 @@ struct RKH_TMR_T
 	 * 	timer event.
 	 */
 
-	const struct rkhsma_t *sma;
+	const struct RKH_SMA_T *sma;
 
 	/**
 	 * 	\brief
@@ -326,7 +326,7 @@ struct RKH_TMR_T
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_tim_start( RKH_TMR_T *t, 	const struct rkhsma_t *sma, 
+void rkh_tim_start( RKH_TMR_T *t, 	const struct RKH_SMA_T *sma, 
 									RKH_TNT_T itick );
 
 

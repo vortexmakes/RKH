@@ -29,7 +29,7 @@ static RKH_DCLR_STATIC_EVENT( e_done, DONE );
  */
 
 void
-cli_init( const struct rkhsma_t *sma )
+cli_init( const struct RKH_SMA_T *sma )
 {
 	rkh_tim_init( &RKH_CAST(CLI_T, sma)->cli_utmr, &e_touse, NULL );
 	rkh_tim_init( &RKH_CAST(CLI_T, sma)->cli_rtmr, &e_toreq, NULL );
@@ -41,7 +41,7 @@ cli_init( const struct rkhsma_t *sma )
  */
 
 void 
-cli_pause( const struct rkhsma_t *sma )
+cli_pause( const struct RKH_SMA_T *sma )
 {
 	rkh_tim_stop( &RKH_CAST(CLI_T, sma)->cli_rtmr );
 	bsp_cli_paused( RKH_GET_PRIO(sma) );
@@ -49,7 +49,7 @@ cli_pause( const struct rkhsma_t *sma )
 
 
 void 
-cli_delay_req( const struct rkhsma_t *sma )
+cli_delay_req( const struct RKH_SMA_T *sma )
 {
 	RKH_TNT_T time;
 
@@ -64,7 +64,7 @@ cli_delay_req( const struct rkhsma_t *sma )
  */
 
 void 
-cli_resume( const struct rkhsma_t *sma )
+cli_resume( const struct RKH_SMA_T *sma )
 {
 	bsp_cli_resumed( RKH_GET_PRIO(sma) );
 }
@@ -75,7 +75,7 @@ cli_resume( const struct rkhsma_t *sma )
  */
 
 void 
-cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+cli_req( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	REQ_EVT_T *e_req;
 
@@ -88,7 +88,7 @@ cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 void 
-cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+cli_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	RKH_TNT_T time;
 
@@ -100,7 +100,7 @@ cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 void 
-cli_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+cli_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	(void)sma;

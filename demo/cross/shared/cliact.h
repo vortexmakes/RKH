@@ -14,31 +14,31 @@
  *	Defines HSM init function
  */
 
-void cli_init( const struct rkhsma_t *sma );
+void cli_init( const struct RKH_SMA_T *sma );
 
 
 /*
  *	Defines state entry functions
  */
 
-void cli_delay_req( const struct rkhsma_t *sma );
-void cli_pause( const struct rkhsma_t *sma );
+void cli_delay_req( const struct RKH_SMA_T *sma );
+void cli_pause( const struct RKH_SMA_T *sma );
 
 
 /*
  *	Defines state exit functions
  */
 
-void cli_resume( const struct rkhsma_t *sma );
+void cli_resume( const struct RKH_SMA_T *sma );
 
 
 /*
  *	Defines transition action functions
  */
 
-void cli_req( const struct rkhsma_t *sma, RKH_EVT_T *pe );
-void cli_start( const struct rkhsma_t *sma, RKH_EVT_T *pe );
-void cli_end( const struct rkhsma_t *sma, RKH_EVT_T *pe );
+void cli_req( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+void cli_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+void cli_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
 
 
 #endif

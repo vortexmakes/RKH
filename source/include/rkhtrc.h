@@ -2669,7 +2669,7 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_AO( __ao )									\
 				do{ 													\
-					rkh_trc_ao( (struct rkhsma_t *)__ao );				\
+					rkh_trc_ao( (struct RKH_SMA_T *)__ao );				\
 				} while(0)
 
 		/* --- Symbol entry table for state objects --------- */
@@ -2702,7 +2702,7 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_STATE( __ao, __so )							\
 				do{ 													\
-					rkh_trc_state((struct rkhsma_t *)__ao, 				\
+					rkh_trc_state((struct RKH_SMA_T *)__ao, 				\
 								  (rkhui8_t *)__so); 					\
 				} while(0)
 
@@ -2737,7 +2737,7 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_PSTATE( __ao, __pso )						\
 				do{ 													\
-					rkh_trc_state((struct rkhsma_t *)__ao, 				\
+					rkh_trc_state((struct RKH_SMA_T *)__ao, 				\
 								  (rkhui8_t *)__pso); 					\
 				} while(0)
 
@@ -3529,13 +3529,13 @@ void rkh_trc_sig( RKH_SIG_T sig, const char *sig_name );
 /**
  */
 
-void rkh_trc_ao( struct rkhsma_t *ao );
+void rkh_trc_ao( struct RKH_SMA_T *ao );
 
 
 /**
  */
 
-void rkh_trc_state( struct rkhsma_t *ao, rkhui8_t *state );
+void rkh_trc_state( struct RKH_SMA_T *ao, rkhui8_t *state );
 
 
 /**

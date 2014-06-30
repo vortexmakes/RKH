@@ -92,7 +92,7 @@ typedef enum
  *	optimize the application.
  */
 
-typedef struct rkh_qinfo_t
+typedef struct RKH_QINFO_T
 {
 	rkhui16_t nputs;		/*	# of put requests */
 	rkhui16_t ngets;		/*	# of get requests */
@@ -135,7 +135,7 @@ typedef struct rkh_qinfo_t
  * 	\endcode
  */
 
-typedef struct rkhrq_t
+typedef struct RKH_RQ_T
 {
 	/**
 	 * 	\brief
@@ -188,7 +188,7 @@ typedef struct rkhrq_t
 	 * 	If \a sma is set to NULL they never block.
 	 */
 
-	const struct rkhsma_t *sma;
+	const struct RKH_SMA_T *sma;
 
 	/** 
 	 * 	\brief
@@ -240,7 +240,7 @@ typedef struct rkhrq_t
  */
 
 void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
-					const struct rkhsma_t *sma );
+					const struct RKH_SMA_T *sma );
 
 
 /**

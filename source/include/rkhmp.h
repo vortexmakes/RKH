@@ -176,7 +176,7 @@ typedef struct
  * 	\endcode
  */
 
-typedef struct rkhmp_t
+typedef struct RKH_MP_T
 {
 	/**
 	 * 	\brief

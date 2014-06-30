@@ -390,7 +390,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
 						RKHROM RKH_SHIST_T name =						\
 						{												\
 							{MKBASE(RKH_DHISTORY, name)},				\
-							(RKHROM struct rkhst_t *)parent,&ram##name 	\
+							(RKHROM struct RKH_ST_T *)parent,&ram##name \
 						}
 
 
@@ -423,7 +423,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
 						RKHROM RKH_SHIST_T name =						\
 						{												\
 							{MKBASE(RKH_SHISTORY, name)},				\
-							(RKHROM struct rkhst_t *)parent,&ram##name 	\
+							(RKHROM struct RKH_ST_T *)parent,&ram##name \
 						}
 
 
@@ -562,7 +562,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
  */
 
 #define RKH_EX_CNNPNT( name, expnt, act, ts )		\
-								{act, (RKHROM struct rkhst_t *)ts}
+								{act, (RKHROM struct RKH_ST_T *)ts}
 
 
 /**
@@ -743,7 +743,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
 																		\
 								RKHROM RKH_ENPCN_T name = 				\
 								{										\
-									act, (RKHROM struct rkhst_t *)ts	\
+									act, (RKHROM struct RKH_ST_T *)ts	\
 								}
 
 
@@ -1183,7 +1183,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
  *
  *	 
  *	(10) void
- *		 mc_title( const struct rkhsma_t *sma )
+ *		 mc_title( const struct RKH_SMA_T *sma )
  *		 {
  *		 	...
  *			lcd_print( "%s\n", ((MENU_ST_T *)(sma->state))->title );
@@ -1242,7 +1242,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
  *	(6) NUM_BASIC_STATE( num, NULL, NULL, RKH_ROOT, &xy );
  *
  *	    void
- *		num_inc( const struct rkhsma_t *sma )
+ *		num_inc( const struct RKH_SMA_T *sma )
  *		{
  *	(7)		((NUM_STATE_T *)(sma->state))->p_ram_xy++;
  *			...
@@ -2096,20 +2096,20 @@ RKH_EVT_T *rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  *	
  *	typedef struct
  *	{
- *		RKH_EVT_T evt;                   // base structure
+ *		RKH_EVT_T evt;                  // base structure
  *		int timerno;					// parameter 'timerno'
  *	} TOUT_T;
  *
  *	typedef struct
  *	{
- *		RKH_EVT_T evt;                   // base structure
+ *		RKH_EVT_T evt;                  // base structure
  *		char dial[ MAX_SIZE_DIAL ];     // parameter 'dial'
  *		int qty;                        // parameter 'qty'
  *	} DIAL_T;
  *		
  *	typedef struct
  *	{
- *		RKH_EVT_T evt;                   // base structure
+ *		RKH_EVT_T evt;                  // base structure
  *		int volume;                     // parameter 'volume'
  *		int baud_rate;                  // parameter 'baud_rate'
  *		char name[ MAX_SIZE_NAME ];     // parameter 'name'
@@ -2554,7 +2554,7 @@ HUInt rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  * 	Example:
  * 	\code
  * 	void 
- * 	svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+ * 	svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
  * 	{
  * 		START_EVT_T *e_start;
  * 		

@@ -455,7 +455,7 @@ rkh_trc_sig( RKH_SIG_T sig, const char *sig_name )
 
 
 void
-rkh_trc_ao( struct rkhsma_t *ao )
+rkh_trc_ao( struct RKH_SMA_T *ao )
 {
 	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_AO )
 		RKH_TRC_SYM( ao );
@@ -466,12 +466,12 @@ rkh_trc_ao( struct rkhsma_t *ao )
 
 
 void
-rkh_trc_state( struct rkhsma_t *ao, rkhui8_t *state )
+rkh_trc_state( struct RKH_SMA_T *ao, rkhui8_t *state )
 {
 	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )
 		RKH_TRC_SYM( ao );
 		RKH_TRC_SYM( state );
-		RKH_TRC_STR( ((struct rkhbase_t *)state)->name );
+		RKH_TRC_STR( ((struct RKH_BASE_T *)state)->name );
 	RKH_TRC_END_WOFIL()
 	RKH_TRC_FLUSH();
 }

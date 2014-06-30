@@ -28,7 +28,7 @@ Changes between V2.4 and V2.4.3 released 07/15/2013
 +	Adds new arguments to trace event macros. See "trace event table".
 +	Adds macros RKH_EVT_CAST() and RKH_CAST().
 +	Updating the configuration table and preprocessor checking in rkhitl.h.
-+	Adds to rkhst_t structure (base structure for basic, composite and 
++	Adds to RKH_ST_T structure (base structure for basic, composite and 
 	submachine states) the "trtbl" member (pointer to transition table), as 
 	new basic attribute.
 +	

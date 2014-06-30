@@ -68,7 +68,7 @@ RKH_MODULE_NAME( rkhrq )
 
 
 void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize, 
-					const struct rkhsma_t *sma )
+					const struct RKH_SMA_T *sma )
 {
 	RKH_SR_ALLOC();
 

@@ -21,7 +21,7 @@ static RKH_EVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
  */
 
 void 
-svr_init( const struct rkhsma_t *sma )
+svr_init( const struct RKH_SMA_T *sma )
 {
 	HInt cn;
 
@@ -39,7 +39,7 @@ svr_init( const struct rkhsma_t *sma )
  */
 
 void 
-svr_pause( const struct rkhsma_t *sma )
+svr_pause( const struct RKH_SMA_T *sma )
 {
 	(void)sma;
 	bsp_svr_paused( sma );
@@ -51,7 +51,7 @@ svr_pause( const struct rkhsma_t *sma )
  */
 
 void 
-svr_resume( const struct rkhsma_t *sma )
+svr_resume( const struct RKH_SMA_T *sma )
 {
 	REQ_EVT_T *e;
 
@@ -66,7 +66,7 @@ svr_resume( const struct rkhsma_t *sma )
  */
 
 void 
-svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	START_EVT_T *e_start;
 
@@ -80,7 +80,7 @@ svr_start( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 void 
-svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+svr_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	REQ_EVT_T *e;
 
@@ -92,7 +92,7 @@ svr_end( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 void 
-svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+svr_defer( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	rkh_fwk_defer( &qreq, pe );
@@ -100,7 +100,7 @@ svr_defer( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 void 
-svr_terminate( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+svr_terminate( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;

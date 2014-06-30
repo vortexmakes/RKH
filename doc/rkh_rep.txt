@@ -906,28 +906,28 @@ show_data( const struct rkh_t *ph, RKH_EVT_T *pe )
 
 \code
 void
-set_x_1( const struct rkhsma_t *sma )
+set_x_1( const struct RKH_SMA_T *sma )
 {
 	CMY( sma )->x = 1;
 }
 
 
 void
-set_x_2( const struct rkhsma_t *sma )
+set_x_2( const struct RKH_SMA_T *sma )
 {
 	CMY( sma )->x = 2;
 }
 
 
 void
-set_x_3( const struct rkhsma_t *sma )
+set_x_3( const struct RKH_SMA_T *sma )
 {
 	CMY( sma )->x = 3;
 }
 
 
 void
-set_y_0( const struct rkhsma_t *sma )
+set_y_0( const struct RKH_SMA_T *sma )
 {
 	CMY( sma )->y = 0;
 }
@@ -962,7 +962,7 @@ x_equal_1( const struct rkh_t *ph, RKH_EVT_T *pe )
 
 \code
 HUInt
-y0( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+y0( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
@@ -970,7 +970,7 @@ y0( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 HUInt
-y1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+y1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
@@ -978,7 +978,7 @@ y1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 HUInt
-y2( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+y2( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
@@ -986,7 +986,7 @@ y2( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 HUInt
-x1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+x1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
@@ -994,7 +994,7 @@ x1( const struct rkhsma_t *sma, RKH_EVT_T *pe )
 
 
 HUInt
-x2_or_x3( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+x2_or_x3( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;

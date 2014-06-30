@@ -618,7 +618,7 @@ rkh_sma_get_info( RKH_SMA_T *sma, RKH_SMAI_T *psi )
 #if		((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
 		(RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED))
 HUInt
-rkh_else( const struct rkhsma_t *sma, RKH_EVT_T *pe )
+rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
@@ -635,7 +635,7 @@ rkh_else( RKH_EVT_T *pe )
 #elif 	RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED
 HUInt 
-rkh_else( const struct rkhsma_t *sma )
+rkh_else( const struct RKH_SMA_T *sma )
 {
 	(void)sma;
 	return RKH_GTRUE;
