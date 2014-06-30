@@ -29,7 +29,7 @@ enum
 typedef struct
 {
 	RKH_SMA_T sma;	/* base structure */
-	rkhui8_t cnt;	/* private member */
+	rui8_t cnt;		/* private member */
 } BKYSM_T;			/* SMA derived from RKH_SMA_T structure */
 
 typedef struct BKY_ST_T

@@ -10,14 +10,14 @@
 
 static
 const COM_T *
-verify_serial_channel( HUInt channel )
+verify_serial_channel( ruint channel )
 {
 	return &serial_default[ channel ];
 }
 
 
 void
-serial_init( HUInt channel )
+serial_init( ruint channel )
 {
 	const COM_T *psd;
 
@@ -27,7 +27,7 @@ serial_init( HUInt channel )
 
 
 void
-put_nchar( HUInt channel, const unsigned char *p, rkhui16_t qty )
+put_nchar( ruint channel, const unsigned char *p, rui16_t qty )
 {
 	const COM_T *psd;
 
@@ -41,14 +41,14 @@ put_nchar( HUInt channel, const unsigned char *p, rkhui16_t qty )
 
 
 void
-put_string( HUInt channel, const char *p )
+put_string( ruint channel, const char *p )
 {
-	put_nchar( channel, (unsigned char*)p, (rkhui16_t)strlen( p ) );
+	put_nchar( channel, (unsigned char*)p, (rui16_t)strlen( p ) );
 }
 
 
 void
-put_char( HUInt channel, const unsigned char c )
+put_char( ruint channel, const unsigned char c )
 {
 	const COM_T *psd;
 

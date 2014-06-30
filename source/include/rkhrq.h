@@ -60,13 +60,13 @@
  */
 
 #if RKH_RQ_SIZEOF_NELEM == 8
-	typedef rkhui8_t RKH_RQNE_T;
+	typedef rui8_t RKH_RQNE_T;
 #elif RKH_RQ_SIZEOF_NELEM == 16
-	typedef rkhui16_t RKH_RQNE_T;
+	typedef rui16_t RKH_RQNE_T;
 #elif RKH_RQ_SIZEOF_NELEM == 32
-	typedef rkhui32_t RKH_RQNE_T;
+	typedef rui32_t RKH_RQNE_T;
 #else
-	typedef rkhui8_t RKH_RQNE_T;
+	typedef rui8_t RKH_RQNE_T;
 #endif
 
 
@@ -94,11 +94,11 @@ typedef enum
 
 typedef struct RKH_QINFO_T
 {
-	rkhui16_t nputs;		/*	# of put requests */
-	rkhui16_t ngets;		/*	# of get requests */
-	rkhui16_t nreads;		/*	# of queue read requests */
-	rkhui16_t nempty;		/*	# of queue empty retrieves */
-	rkhui16_t nfull;		/*	# of queue full retrieves */
+	rui16_t nputs;		/*	# of put requests */
+	rui16_t ngets;		/*	# of get requests */
+	rui16_t nreads;		/*	# of queue read requests */
+	rui16_t nempty;		/*	# of queue empty retrieves */
+	rui16_t nfull;		/*	# of queue full retrieves */
 } RKH_RQI_T;
 
 
@@ -254,7 +254,7 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  */
 
 #define rkh_rq_is_empty( q )								\
-				(HUInt)(rkh_rq_get_num((RKH_RQ_T*)(q))==0)
+				(ruint)(rkh_rq_get_num((RKH_RQ_T*)(q))==0)
 
 
 /**
@@ -271,7 +271,7 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	'1' (TRUE) if queue is full, otherwise '0' (FALSE).
  */
 
-HUInt rkh_rq_is_full( RKH_RQ_T *q );
+ruint rkh_rq_is_full( RKH_RQ_T *q );
 
 
 /**
@@ -397,7 +397,7 @@ void rkh_rq_deplete( RKH_RQ_T *q );
  * 	error code.
  */
 
-HUInt rkh_rq_read( RKH_RQ_T *q, void *pe ); 
+ruint rkh_rq_read( RKH_RQ_T *q, void *pe ); 
 
 
 /**

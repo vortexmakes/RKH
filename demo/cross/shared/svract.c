@@ -23,7 +23,7 @@ static RKH_EVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
 void 
 svr_init( const struct RKH_SMA_T *sma )
 {
-	HInt cn;
+	rint cn;
 
 	(void)sma;
 	rkh_rq_init( &qreq, (const void **)qreq_sto, MAX_SIZEOF_QREQ, CSMA(0) );

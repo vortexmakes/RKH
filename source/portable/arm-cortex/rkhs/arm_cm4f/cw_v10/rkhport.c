@@ -68,7 +68,7 @@ RKH_MODULE_DESC( rkhport, "ARM Cortex-M4F, Eclipse CW10" )
 			)
 
 
-static HUInt critical_nesting;
+static ruint critical_nesting;
 
 
 const 

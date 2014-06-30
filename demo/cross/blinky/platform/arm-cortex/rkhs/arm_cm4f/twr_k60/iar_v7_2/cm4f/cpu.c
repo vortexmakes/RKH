@@ -13,7 +13,7 @@ uint32_t mcu_fbusclk_hz;
 uint32_t mcu_flshclk_hz;
 
 #if defined( RKH_USE_TRC_SENDER )
-static rkhui8_t l_isr_tick;
+static rui8_t l_isr_tick;
 #endif
 
 static

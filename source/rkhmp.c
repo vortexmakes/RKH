@@ -62,7 +62,7 @@ typedef struct rkh_free_blk_t
 
 
 void 
-rkh_mp_init( RKH_MP_T *mp, void *sstart, rkhui16_t ssize, 
+rkh_mp_init( RKH_MP_T *mp, void *sstart, rui16_t ssize, 
 												RKH_MPBS_T bsize )
 {
     RKH_FREE_BLK_T *fb;
@@ -97,18 +97,18 @@ rkh_mp_init( RKH_MP_T *mp, void *sstart, rkhui16_t ssize,
     bsize = mp->bsize;		         /* use the rounded-up value from now on */
 	
 	              /* The pool buffer must fit at least one rounded-up block. */
-	RKHASSERT( ssize >= ( rkhui16_t )bsize );
+	RKHASSERT( ssize >= ( rui16_t )bsize );
 
 	                           /* Chain all blocks together in a free-list...*/
-    ssize -= ( rkhui16_t )bsize;	           /* don't count the last block */
+    ssize -= ( rui16_t )bsize;	           /* don't count the last block */
     mp->nblocks = 1;				   /* the last block already in the pool */
     fb = ( RKH_FREE_BLK_T* )mp->free;	/*start at the head of the free list */
 
-    while( ssize >= ( rkhui16_t )bsize ) 
+    while( ssize >= ( rui16_t )bsize ) 
 	{
         fb->next = &fb[ nblocks ];	/* point the next link to the next block */
         fb = fb->next;				/* advance to the next block */
-        ssize -= (rkhui16_t)bsize;	/* reduce the available pool size */
+        ssize -= (rui16_t)bsize;	/* reduce the available pool size */
         ++mp->nblocks;				/* increment the number of blocks so far */
     }
 

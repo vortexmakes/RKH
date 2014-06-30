@@ -52,9 +52,9 @@ RKH_MODULE_DESC( rkhport, "Windows 32-bits (multi-thread)" )
 
 static CRITICAL_SECTION csection;		/* Win32 critical section object */
 static DWORD tick_msec = 10u;			/* clock tick in [msec] */
-static rkhui8_t running;
+static rui8_t running;
 #if defined( RKH_USE_TRC_SENDER )
-static rkhui8_t l_isr_tick;
+static rui8_t l_isr_tick;
 #endif
 
 static DWORD WINAPI thread_function( LPVOID arg );
@@ -75,7 +75,7 @@ rkh_exit_critical( void )
 
 
 void 
-rkh_set_tickrate( rkhui32_t tick_rate_hz )
+rkh_set_tickrate( rui32_t tick_rate_hz )
 {
 	tick_msec = 1000UL/tick_rate_hz;
 }
@@ -111,7 +111,7 @@ rkh_fwk_enter( void )
 	RKH_TR_FWK_EN();
 
 	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_HIGHEST );
-    running = (rkhui8_t)1;
+    running = (rui8_t)1;
 	RKH_TR_FWK_OBJ( &l_isr_tick );
 
     while( running )
@@ -130,13 +130,13 @@ rkh_fwk_exit( void )
 {
 	RKH_TR_FWK_EX();
 	RKH_HOOK_EXIT();
-	running = (rkhui8_t)0;
+	running = (rui8_t)0;
 }
 
 
 void 
 rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
-						void *stks, rkhui32_t stksize )
+						void *stks, rui32_t stksize )
 {
 	int priority;
 

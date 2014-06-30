@@ -24,12 +24,12 @@
 void 
 com1_init( COMSET_T const *p )
 {
-	rkhui16_t *pbaud;
+	rui16_t *pbaud;
 
 	while( !SCI1S1_TC || !SCI1S1_TDRE )
 		;
 
-	pbaud = (rkhui16_t*)&SCI1BDH;
+	pbaud = (rui16_t*)&SCI1BDH;
 
 	SCI1C2_RIE = 0;
 	SCI1C2_TE = 0;								/* disable transmit channel */
@@ -58,12 +58,12 @@ com1_init( COMSET_T const *p )
 void 
 com2_init( COMSET_T const *p )
 {
-	rkhui16_t *pbaud;
+	rui16_t *pbaud;
 
 	while( !SCI2S1_TC || !SCI2S1_TDRE )
 		;
   
-	pbaud = (rkhui16_t*)&SCI2BDH;
+	pbaud = (rui16_t*)&SCI2BDH;
 	
 	SCI2C2_RIE = 0;
 	SCI2C2_TE = 0;

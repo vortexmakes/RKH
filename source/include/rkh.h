@@ -108,7 +108,7 @@
 		#define RKH_DYNE_TYPE			RKH_MP_T
 
 		#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
-    			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
+    			rkh_mp_init( (mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize )
 
 		#define RKH_DYNE_GET_ESIZE( mp )					\
 				( (mp)->bsize )
@@ -119,7 +119,7 @@
 		#define RKH_DYNE_PUT( mp, e )						\
 				( rkh_mp_put( (mp), e ) )
 #else
-	#define RKH_DYNE_TYPE								rkhui8_t
+	#define RKH_DYNE_TYPE								rui8_t
 	#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	(void)0
 	#define RKH_DYNE_GET_ESIZE( mp )					(void)0
 	#define RKH_DYNE_GET( mp, e )						(void)0
@@ -146,7 +146,7 @@ extern RKH_SMA_T *rkh_sptbl[ RKH_MAX_SMA ];
  * 	bit mask.
  */
 
-extern RKHROM rkhui8_t rkh_maptbl[ 8 ];
+extern RKHROM rui8_t rkh_maptbl[ 8 ];
 
 
 /**
@@ -155,7 +155,7 @@ extern RKHROM rkhui8_t rkh_maptbl[ 8 ];
  * 	highest priority bit set - a number between 0 and 7.
  */
 
-extern RKHROM rkhui8_t rkh_unmaptbl[ 256 ];
+extern RKHROM rui8_t rkh_unmaptbl[ 256 ];
 
 
 /**
@@ -1455,7 +1455,7 @@ void rkh_fwk_init( void );
  *	void 
  *	rkh_fwk_enter( void )
  *	{ 
- *		rkhui8_t prio;
+ *		rui8_t prio;
  *		RKH_SMA_T *sma;
  *		RKH_EVT_T *e;
  *
@@ -1602,8 +1602,8 @@ void rkh_fwk_exit( void );
  *	typedef struct
  *	{
  *		RKH_SMA_T sm;	// base structure
- *		rkhui8_t x;		// private member
- *		rkhui8_t y;		// private member
+ *		rui8_t x;		// private member
+ *		rui8_t y;		// private member
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
@@ -1627,7 +1627,7 @@ void rkh_fwk_exit( void );
  *	\code
  *	void 
  *	rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, 
- *						RKH_RQNE_T qsize, void *stks, rkhui32_t stksize )
+ *						RKH_RQNE_T qsize, void *stks, rui32_t stksize )
  *	{
  *		( void )stks;
  *		( void )stksize;
@@ -1650,7 +1650,7 @@ void rkh_fwk_exit( void );
  */
 
 void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, 
-						RKH_RQNE_T qsize, void *stks, rkhui32_t stksize );
+						RKH_RQNE_T qsize, void *stks, rui32_t stksize );
 
 
 /**
@@ -1682,8 +1682,8 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
  *	typedef struct
  *	{
  *		RKH_SMA_T sm;	// base structure
- *		rkhui8_t x;		// private member
- *		rkhui8_t y;		// private member
+ *		rui8_t x;		// private member
+ *		rui8_t y;		// private member
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
@@ -2117,7 +2117,7 @@ RKH_EVT_T *rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  *	} SETUP_T;
  *	
  *	// declares the storage memory of event pool
- *	static rkhui8_t	ep0sto[ SIZEOF_EP0STO ],
+ *	static rui8_t	ep0sto[ SIZEOF_EP0STO ],
  *					ep1sto[ SIZEOF_EP1STO ],
  *					ep2sto[ SIZEOF_EP2STO ];
  *
@@ -2135,7 +2135,7 @@ RKH_EVT_T *rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  * 					block in the pool.
  */
 
-void rkh_fwk_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize );
+void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
 
 
 /**
@@ -2257,9 +2257,13 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	Example:
  *	\code
  *	...
- *	RKH_EVT_T e;
+ *	static RKH_EVT_T e;
  *
- *	RKH_SET_STATIC_EVENT( &e, TOUT );
+ * 	some_function( ... )
+ * 	{
+ *		RKH_SET_STATIC_EVENT( &e, TOUT );
+ *		...
+ *	}
  *	\endcode
  *
  * 	\param e		pointer to event structure derived from RKH_EVT_T.
@@ -2268,14 +2272,16 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  */
 
 #define RKH_SET_STATIC_EVENT( e, es )				\
-										mksevt( e, es )
+										MK_SEVT( e, es )
 
 
 /**
  * 	\brief
  *	This macro declares and initializes the event structure \a e with \a es 
- *	signal and establishes it as one static event. The created event object 
- *	is explicitly placed in ROM.
+ *	signal and establishes it as one static event. 
+ *
+ *	\note 
+ *	The created event object is explicitly placed in ROM.
  *
  *	Example:
  *	\code
@@ -2296,7 +2302,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  */
 
 #define RKH_DCLR_STATIC_EVENT( e, es )					\
-										mkievt( e, es )
+										MK_IEVT( e, es )
 
 
 /**
@@ -2497,7 +2503,7 @@ void rkh_sma_init_hsm( RKH_SMA_T *sma );
  *	Result RKH_RCODE_T code.
  */
 
-HUInt rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
+ruint rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 
 
 /**
@@ -2524,7 +2530,7 @@ HUInt rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  */
 
 #define RKH_GET_SMA( _prio )			\
-								rkh_sptbl[(rkhui8_t)(_prio)]
+								rkh_sptbl[(rui8_t)(_prio)]
 
 
 /**
@@ -2535,7 +2541,7 @@ HUInt rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  */
 
 #define RKH_GET_PRIO( _ao )			\
-								(rkhui8_t)((_ao)->romrkh->prio)
+								(rui8_t)((_ao)->romrkh->prio)
 
 
 /**
@@ -2685,7 +2691,7 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
  * 	void 
  * 	rkh_trc_flush( void )
  * 	{
- * 		rkhui8_t *blk;
+ * 		rui8_t *blk;
  * 		TRCQTY_T nbytes;
  * 		RKH_SR_ALLOC();
  *
@@ -2697,7 +2703,7 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
  * 			blk = rkh_trc_get_block( &nbytes );
  * 			RKH_EXIT_CRITICAL_();
  *
- * 			if((blk != (rkhui8_t *)0))
+ * 			if((blk != (rui8_t *)0))
  * 			{
  * 				FTBIN_FLUSH( blk, nbytes );
  * 				TCP_TRACE_SEND_BLOCK( blk, nbytes );

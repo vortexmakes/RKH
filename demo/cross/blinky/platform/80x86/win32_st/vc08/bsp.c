@@ -60,7 +60,7 @@
 RKH_THIS_MODULE
 
 static DWORD tick_msec;			/* clock tick in msec */
-rkhui8_t running;
+rui8_t running;
 static RKH_DCLR_STATIC_EVENT( ev_term, TERMINATE );
 
 
@@ -180,7 +180,7 @@ rkh_hook_start( void )
 
 	/* set the desired tick rate */
     tick_msec = RKH_TICK_RATE_MS;
-    running = (rkhui8_t)1;
+    running = (rui8_t)1;
 	
 	/* create the ISR timer thread */
     hth_tmr = CreateThread( NULL, 1024, &isr_tmr_thread, 0, 0, &thtmr_id );
@@ -273,7 +273,7 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *blk;
+	rui8_t *blk;
 	TRCQTY_T nbytes;
 	RKH_SR_ALLOC();
 
@@ -285,7 +285,7 @@ rkh_trc_flush( void )
 		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
 
-		if((blk != (rkhui8_t *)0))
+		if((blk != (rui8_t *)0))
 		{
 			FTBIN_FLUSH( blk, nbytes );
 			TCP_TRACE_SEND_BLOCK( blk, nbytes );

@@ -21,7 +21,7 @@ static RKH_EVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
 int
 main( int argc, char *argv[] )
 {
-	HInt cn;
+	rint cn;
 
 	/* invoke the rkh_fwk_init() function */
 	bsp_init( argc, argv );

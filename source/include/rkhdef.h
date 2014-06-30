@@ -105,9 +105,9 @@
  * 	Bit mask with single, specified bit set.
  */
 
-#define RKH_BIT08(bit)			(( rkhui8_t)(( rkhui8_t)1u  << (bit)))
-#define RKH_BIT16(bit)        	((rkhui16_t)((rkhui16_t)1u  << (bit)))
-#define RKH_BIT32(bit)        	((rkhui32_t)((rkhui32_t)1u  << (bit)))
+#define RKH_BIT08(bit)			(( rui8_t)(( rui8_t)1u  << (bit)))
+#define RKH_BIT16(bit)        	((rui16_t)((rui16_t)1u  << (bit)))
+#define RKH_BIT32(bit)        	((rui32_t)((rui32_t)1u  << (bit)))
 /*@}*/
 
 
@@ -138,11 +138,11 @@
  */
 
 #define RKH_BIT_MASK_08(bit_mask, bit_shift) \
-						((rkhui8_t)((rkhui8_t)(bit_mask) << (bit_shift)))
+						((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
 #define RKH_BIT_MASK_16(bit_mask, bit_shift) \
-						((rkhui8_t)((rkhui8_t)(bit_mask) << (bit_shift)))
+						((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
 #define RKH_BIT_MASK_32(bit_mask, bit_shift) \
-						((rkhui8_t)((rkhui8_t)(bit_mask) << (bit_shift)))
+						((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
 /*@}*/
 
 
@@ -158,11 +158,11 @@
  */
 
 #define RKH_BIT_SET_08(val, mask) \
-				((val) = (rkhui8_t)(((rkhui8_t)(val)) | ((rkhui8_t)(mask))))
+				((val) = (rui8_t)(((rui8_t)(val)) | ((rui8_t)(mask))))
 #define RKH_BIT_SET_16(val, mask) \
-				((val) = (rkhui16_t)(((rkhui16_t)(val)) | ((rkhui16_t)(mask))))
+				((val) = (rui16_t)(((rui16_t)(val)) | ((rui16_t)(mask))))
 #define RKH_BIT_SET_32(val, mask) \
-				((val) = (rkhui32_t)(((rkhui32_t)(val)) | ((rkhui32_t)(mask))))
+				((val) = (rui32_t)(((rui32_t)(val)) | ((rui32_t)(mask))))
 /*@}*/
 
 
@@ -178,11 +178,11 @@
  */
 
 #define RKH_BIT_CLR_08(val, mask) \
-				((val) = (rkhui8_t)(((rkhui8_t)(val)) & ((rkhui8_t)~(mask))))
+				((val) = (rui8_t)(((rui8_t)(val)) & ((rui8_t)~(mask))))
 #define RKH_BIT_CLR_16(val, mask) \
-				((val) = (rkhui16_t)(((rkhui16_t)(val)) & ((rkhui16_t)~(mask))))
+				((val) = (rui16_t)(((rui16_t)(val)) & ((rui16_t)~(mask))))
 #define RKH_BIT_CLR_32(val, mask) \
-				((val) = (rkhui32_t)(((rkhui32_t)(val)) & ((rkhui32_t)~(mask))))
+				((val) = (rui32_t)(((rui32_t)(val)) & ((rui32_t)~(mask))))
 /*@}*/
 
 

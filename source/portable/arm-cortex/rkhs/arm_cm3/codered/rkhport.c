@@ -69,7 +69,7 @@ RKH_MODULE_DESC( rkhport, "ARM Cortex-M, LPCXpresso" )
 			)
 
 
-static HUInt critical_nesting;
+static ruint critical_nesting;
 
 
 const 

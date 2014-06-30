@@ -66,9 +66,9 @@
 RKH_THIS_MODULE
 
 static DWORD tick_msec;			/* clock tick in msec */
-rkhui8_t running;
+rui8_t running;
 static RKH_DCLR_STATIC_EVENT( eterm, TERM );
-static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
 
 
@@ -168,7 +168,7 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		else
 		{
 			mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
-			mye->ts = ( rkhui16_t )rand();
+			mye->ts = ( rui16_t )rand();
 			rkh_sma_post_fifo( my, RKH_EVT_CAST(mye) );
 		}
     }
@@ -184,7 +184,7 @@ rkh_hook_start( void )
 
 	/* set the desired tick rate */
     tick_msec = 1000UL/BSP_TICKS_PER_SEC;
-    running = (rkhui8_t)1;
+    running = (rui8_t)1;
 	
 	/* create the ISR timer thread */
     hth_tmr = CreateThread( NULL, 1024, &isr_tmr_thread, 0, 0, &thtmr_id );
@@ -280,9 +280,9 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *d;
+	rui8_t *d;
 
-	while( ( d = rkh_trc_get() ) != ( rkhui8_t* )0 )
+	while( ( d = rkh_trc_get() ) != ( rui8_t* )0 )
 	{
 		FTBIN_FLUSH( d );
 		TCP_TRACE_SEND( *d );		

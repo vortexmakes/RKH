@@ -124,30 +124,30 @@ listing shows the required data type definitions:
 
 \code
 // Denotes a signed integer type with a width of exactly 8 bits
-typedef signed char 	rkhi8_t;
+typedef signed char 	ri8_t;
 
 // Denotes a signed integer type with a width of exactly 16 bits
-typedef signed short 	rkhi16_t;
+typedef signed short 	ri16_t;
 
 // Denotes a signed integer type with a width of exactly 32 bits
-typedef signed long		rkhi32_t;
+typedef signed long		ri32_t;
 
 // Denotes an unsigned integer type with a width of exactly 8 bits
-typedef unsigned char 	rkhui8_t;
+typedef unsigned char 	rui8_t;
 
 // Denotes an unsigned integer type with a width of exactly 16 bits
-typedef unsigned short 	rkhui16_t;
+typedef unsigned short 	rui16_t;
 
 // Denotes an unsigned integer type with a width of exactly 32 bits
-typedef unsigned long	rkhui32_t;
+typedef unsigned long	rui32_t;
 
 // Denotes an unsigned integer type that is usually fastest to operate with 
 // among all integer types.
-typedef unsigned int	HUInt;
+typedef unsigned int	ruint;
 
 // Denotes a signed integer type that is usually fastest to operate with 
 // among all integer types.
-typedef signed int		HInt;
+typedef signed int		rint;
 \endcode
 
 Next, each \b rkht.h file must be referenced from \b rkhtype.h header 
@@ -511,7 +511,7 @@ rkh_fwk_init( void )
 void 
 rkh_fwk_enter( void )
 {
-	rkhui8_t prio;
+	rui8_t prio;
 	RKH_SMA_T *sma;
 	RKH_EVT_T *e;
 
@@ -550,7 +550,7 @@ rkh_fwk_exit( void )
 
 void 
 rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
-						void *stks, rkhui32_t stksize )
+						void *stks, rui32_t stksize )
 {
     ( void )stks;
     ( void )stksize;
@@ -622,8 +622,8 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 	
 	RKH_HOOK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
-    if( RCE( e )->pool != 0 ) 
-        ++RCE( e )->nref;
+    if( R_CAST_EVT( e )->pool != 0 ) 
+        ++R_CAST_EVT( e )->nref;
     RKH_EXIT_CRITICAL_();
 
     os_post_fifo_message( &sma->equeue, e );
@@ -637,8 +637,8 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_HOOK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
-    if( RCE( e )->pool != 0 ) 
-        ++RCE( e )->nref;
+    if( R_CAST_EVT( e )->pool != 0 ) 
+        ++R_CAST_EVT( e )->nref;
     RKH_EXIT_CRITICAL_();
 
     os_post_lifo_message( &sma->equeue, e );
@@ -712,7 +712,7 @@ according to underlying OS/RTOS.
 #define RKH_DYNE_TYPE			RKH_MP_T
 
 #define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
-			rkh_mp_init( (mp),sstart,(rkhui16_t)ssize,(RKH_MPBS_T)esize )
+			rkh_mp_init( (mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize )
 
 #define RKH_DYNE_GET_ESIZE( mp )					\
 			( (mp)->bsize )
@@ -1003,21 +1003,21 @@ const char *rkh_get_port_desc( void );
  *
  * 	Note:
  *
- * 	The 'HUInt' and 'HInt' will normally be the natural size 
+ * 	The 'ruint' and 'rint' will normally be the natural size 
  * 	for a particular machine. These types designates an integer 
  * 	type that is usually fastest to operate with among all integer 
  * 	types.
  */
 
-typedef signed char 	rkhi8_t;
-typedef signed short 	rkhi16_t;
-typedef signed long		rkhi32_t;
-typedef unsigned char 	rkhui8_t;
-typedef unsigned short 	rkhui16_t;
-typedef unsigned long	rkhui32_t;
+typedef signed char 	ri8_t;
+typedef signed short 	ri16_t;
+typedef signed long		ri32_t;
+typedef unsigned char 	rui8_t;
+typedef unsigned short 	rui16_t;
+typedef unsigned long	rui32_t;
 
-typedef unsigned int	HUInt;
-typedef signed int		HInt;
+typedef unsigned int	ruint;
+typedef signed int		rint;
 
 
 #endif
@@ -1069,7 +1069,7 @@ CRITICAL_SECTION csection;		/* Win32 critical section */
 HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
 RKH_RG_T rkhrg;					/* ready group of SMAs */
 
-extern rkhui8_t running;
+extern rui8_t running;
 
 
 const 
@@ -1099,7 +1099,7 @@ rkh_fwk_init( void )
 void 
 rkh_fwk_enter( void )
 {
-	rkhui8_t prio;
+	rui8_t prio;
 	RKH_SMA_T *sma;
 	RKH_EVT_T *e;
 
@@ -1140,7 +1140,7 @@ rkh_fwk_exit( void )
 
 void 
 rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
-						void *stks, rkhui32_t stksize )
+						void *stks, rui32_t stksize )
 {
     ( void )stks;
     ( void )stksize;
@@ -1225,8 +1225,8 @@ This section includes:
 (2) typedef struct
     {
 		RKH_SMA_T sm;	// base structure
-		rkhui8_t x;		// private member
-		rkhui8_t y;		// private member
+		rui8_t x;		// private member
+		rui8_t y;		// private member
 	} MYSM_T;
 
 (3) static RKH_DCLR_STATIC_EVENT( turnon, TURNON );
@@ -1898,7 +1898,7 @@ As said above, the actions and guards in RKH framework are represented by
 functions. Thus, \c is_sync() could be declared as:
 
 \code
-HUInt 
+ruint 
 is_sync( RKH_EVT_T *pe )
 {
 	return pe->e == SYNC;
@@ -2273,7 +2273,7 @@ set_config( const struct rkh_t *sma, RKH_EVT_T *pe )
 	(void)pe;		/* argument not used */
 
 	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
-	e->ts = ( rkhui16_t )rand();
+	e->ts = ( rui16_t )rand();
 	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
 }
 \endcode
@@ -2305,7 +2305,7 @@ preprocess_keys( const struct rkh_t *sma, RKH_EVT_T *pe )
 The next listing shows an example of the guard function implementation.
 
 \code
-HUInt 
+ruint 
 is_zero( const struct rkh_t *sma, RKH_EVT_T *pe )
 {
 	return get_water_level( CHANNEL( (( CHEVT_T* )pe)->ch ) ) == 0;
@@ -2423,7 +2423,7 @@ typedef struct
 } SETUP_T;
 
 // declares the storage memory of event pool
-static rkhui8_t	ep0sto[ SIZEOF_EP0STO ],
+static rui8_t	ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ],
 				ep2sto[ SIZEOF_EP2STO ];
 
@@ -2549,7 +2549,7 @@ directly posts the event to the event queue of the consumer SMA
 \code
 ...
 (1) mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
-(2) mye->ts = ( rkhui16_t )rand();
+(2) mye->ts = ( rui16_t )rand();
 (3) rkh_sma_post_fifo( my, ( RKH_EVT_T* )mye );
 \endcode
 
@@ -2573,7 +2573,7 @@ to recycle "dynamic" events.
 	void 
 	rkh_fwk_enter( void )
     {
-		rkhui8_t prio;
+		rui8_t prio;
 		RKH_SMA_T *sma;
 		RKH_EVT_T *e;
 
@@ -2784,7 +2784,7 @@ for more information about this.
 			else
 			{
 (8)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
-(9)				mye->ts = ( rkhui16_t )rand();
+(9)				mye->ts = ( rui16_t )rand();
 (10)			rkh_sma_dispatch( my, ( RKH_EVT_T* )mye );
 			}
 		}

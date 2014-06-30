@@ -55,12 +55,12 @@ RKH_MODULE_NAME( rkhsma )
 
 RKHROM char rkh_version[] = 
 {
-	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 12)	& 0x0F) + (rkhui8_t)'0' ),
+	(char)( (rui8_t)((RKH_VERSION_CODE >> 12)	& 0x0F) + (rui8_t)'0' ),
 	(char)'.',
-	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 8)	& 0x0F) + (rkhui8_t)'0' ),
+	(char)( (rui8_t)((RKH_VERSION_CODE >> 8)	& 0x0F) + (rui8_t)'0' ),
 	(char)'.',
-	(char)( (rkhui8_t)((RKH_VERSION_CODE >> 4)	& 0x0F) + (rkhui8_t)'0' ),
-	(char)( (rkhui8_t)(RKH_VERSION_CODE 		& 0x0F) + (rkhui8_t)'0' ),
+	(char)( (rui8_t)((RKH_VERSION_CODE >> 4)	& 0x0F) + (rui8_t)'0' ),
+	(char)( (rui8_t)(RKH_VERSION_CODE 		& 0x0F) + (rui8_t)'0' ),
 	(char)'\0',
 };
 
@@ -71,10 +71,10 @@ RKH_SMA_T *rkh_sptbl[ RKH_MAX_SMA ];			/* registered SMA table */
 void 
 rkh_sma_register( RKH_SMA_T *sma )
 {
-    rkhui8_t prio = RKH_GET_PRIO(sma);
+    rui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
-    RKHREQUIRE(	(prio <= (rkhui8_t)RKH_LOWEST_PRIO) && 
+    RKHREQUIRE(	(prio <= (rui8_t)RKH_LOWEST_PRIO) && 
 				(rkh_sptbl[ prio ] == (RKH_SMA_T *)0));
 
 	RKH_ENTER_CRITICAL_();
@@ -87,10 +87,10 @@ rkh_sma_register( RKH_SMA_T *sma )
 void 
 rkh_sma_unregister( RKH_SMA_T *sma )
 {
-    rkhui8_t prio = RKH_GET_PRIO(sma);
+    rui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
-    RKHREQUIRE(	(prio <= (rkhui8_t)RKH_MAX_SMA) && 
+    RKHREQUIRE(	(prio <= (rui8_t)RKH_MAX_SMA) && 
 				(rkh_sptbl[ prio ] == sma));
 
 	RKH_ENTER_CRITICAL_();

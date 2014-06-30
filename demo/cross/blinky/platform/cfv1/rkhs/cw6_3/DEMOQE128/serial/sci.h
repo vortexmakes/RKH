@@ -62,8 +62,8 @@
 
 void com1_rcv_isr( void );
 void com2_rcv_isr( void );
-void disable_rcv_interrupt( HUInt ch );
-void enable_rcv_interrupt( HUInt ch );
+void disable_rcv_interrupt( ruint ch );
+void enable_rcv_interrupt( ruint ch );
 
 
 #endif

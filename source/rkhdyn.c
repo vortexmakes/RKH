@@ -49,16 +49,6 @@ RKH_MODULE_NAME( rkhdyn )
 
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-	#define RKH_INC_REF( evt ) \
-					if( RCE( evt )->pool != 0 ) \
-				        ++RCE( evt )->nref
-#else
-	#define RKH_INC_REF( evt ) \
-					(void)0
-#endif
-
-
-#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
 
 RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
 
@@ -68,18 +58,18 @@ RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
  * 	Number of initialized event pools.
  */
 
-static rkhui8_t rkhnpool;
+static rui8_t rkhnpool;
 
 
 RKH_EVT_T *
 rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e )
 {
     RKH_EVT_T *evt;
-    /* find the pool index that fits the requested event size ... */
-    rkhui8_t idx = 0;
+    rui8_t idx = 0;
 	RKH_DYNE_TYPE *ep = rkh_eplist;
 	RKH_SR_ALLOC();
 
+    /* find the pool index that fits the requested event size ... */
     while( esize > RKH_DYNE_GET_ESIZE( ep ) ) 
 	{
         ++idx;
@@ -98,7 +88,7 @@ rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e )
 	 * reference counter = 0
 	 */
     evt->nref = 0;
-    evt->pool = (rkhui8_t)( idx + (rkhui8_t)1 );
+    evt->pool = (rui8_t)( idx + (rui8_t)1 );
 
 	RKH_TR_FWK_AE( esize, evt, evt->pool - 1, evt->nref );
     return evt;	
@@ -123,7 +113,7 @@ rkh_gc( RKH_EVT_T *e )
         else	/* this is the last reference to this event, recycle it */
 		{
 			/* cannot wrap around */
-            rkhui8_t idx = (rkhui8_t)( e->pool - 1 );
+            rui8_t idx = (rui8_t)( e->pool - 1 );
             RKH_EXIT_CRITICAL_();
 
             RKHASSERT( idx < RKH_MAX_EPOOL );
@@ -146,11 +136,11 @@ rkh_reserve( RKH_EVT_T *e )
 
 
 void 
-rkh_fwk_epool_register( void *sstart, rkhui32_t ssize, RKH_ES_T esize )
+rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( ( (rkhui8_t)(rkhnpool + (rkhui8_t)1) ) <= RKH_MAX_EPOOL );
+	RKHASSERT( ( (rui8_t)(rkhnpool + (rui8_t)1) ) <= RKH_MAX_EPOOL );
 
 	++rkhnpool;
 	RKH_DYNE_INIT( &rkh_eplist[ rkhnpool - 1 ], sstart, ssize, esize );
@@ -174,6 +164,7 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_ENTER_CRITICAL_();
 	RKH_INC_REF( e );
+	R_SAVE_POST( e );
 	RKH_EXIT_CRITICAL_();
 
 	rkh_rq_put_fifo( &sma->equeue, e );
@@ -198,6 +189,7 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_ENTER_CRITICAL_();
 	RKH_INC_REF( e );
+	R_SAVE_POST( e );
 	RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_lifo( &sma->equeue, e );

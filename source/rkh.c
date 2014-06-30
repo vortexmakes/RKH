@@ -199,7 +199,7 @@ RKH_MODULE_NAME( rkh )
 #else
 	#define RKH_EXEC_EXIT_ACTION( src, tgt, sma, nex )						\
 		stx = src;															\
-		nex = ix_n = ix_x = (rkhui8_t)(stx != tgt)
+		nex = ix_n = ix_x = (rui8_t)(stx != tgt)
 #endif
 
 
@@ -237,8 +237,8 @@ RKH_MODULE_NAME( rkh )
 
 
 static
-HUInt
-rkh_add_tr_action( RKH_TRN_ACT_T **list, RKH_TRN_ACT_T act, rkhui8_t *num )
+ruint
+rkh_add_tr_action( RKH_TRN_ACT_T **list, RKH_TRN_ACT_T act, rui8_t *num )
 {
 	if( *num >= RKH_SMA_MAX_TRC_SEGS )
 		return 1;
@@ -320,16 +320,16 @@ rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h )
 #endif
 
 
-HUInt
+ruint
 rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	RKHROM RKH_ST_T *cs, *ts;
 	RKHROM void *ets;
 	RKHROM RKH_TR_T *tr;
-	HUInt inttr;
+	ruint inttr;
 	RKH_SIG_T in;
 #if RKH_TRC_EN == RKH_ENABLED
-	rkhui8_t step;
+	rui8_t step;
 #endif
 #if defined( RKH_SHALLOW_ENABLED )
 	RKHROM RKH_SHIST_T *h;
@@ -341,9 +341,9 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	RKH_RAM RKHROM RKH_ST_T *stn, *stx;
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
 	RKH_RAM RKHROM RKH_ST_T **snl;
-	RKH_RAM rkhui8_t islca;
+	RKH_RAM rui8_t islca;
 #endif
-	RKH_RAM rkhui8_t ix_n, ix_x, nn;
+	RKH_RAM rui8_t ix_n, ix_x, nn;
                                                    /* set of entered states */
 #if RKH_SMA_EN_HCAL == RKH_ENABLED
 	RKH_RAM RKHROM RKH_ST_T *sentry[ RKH_SMA_MAX_HCAL_DEPTH ];
@@ -353,7 +353,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
                                         /* pointer to transition action set */
 	RKH_RAM RKH_TRN_ACT_T *pal;
                                         /* # of executed transition actions */
-	RKH_RAM rkhui8_t nal;
+	RKH_RAM rui8_t nal;
 	RKH_SR_ALLOC();
 
     RKHASSERT( sma != (RKH_SMA_T *)0 && pe != (RKH_EVT_T *)0 );
@@ -617,7 +617,7 @@ rkh_sma_get_info( RKH_SMA_T *sma, RKH_SMAI_T *psi )
 
 #if		((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
 		(RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED))
-HUInt
+ruint
 rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
@@ -626,7 +626,7 @@ rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 }
 #elif 	((RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED) && \
 		(RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED))
-HUInt 
+ruint 
 rkh_else( RKH_EVT_T *pe )
 {
 	(void)pe;
@@ -634,14 +634,14 @@ rkh_else( RKH_EVT_T *pe )
 }
 #elif 	RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED
-HUInt 
+ruint 
 rkh_else( const struct RKH_SMA_T *sma )
 {
 	(void)sma;
 	return RKH_GTRUE;
 }
 #else
-HUInt 
+ruint 
 rkh_else( void )
 {
 	return RKH_GTRUE;

@@ -70,13 +70,13 @@ typedef void ( *RKH_THK_T )( void *t );
  */
 
 #if RKH_TIM_SIZEOF_NTIMER == 8
-	typedef rkhui8_t RKH_TNT_T;
+	typedef rui8_t RKH_TNT_T;
 #elif RKH_TIM_SIZEOF_NTIMER == 16
-	typedef rkhui16_t RKH_TNT_T;
+	typedef rui16_t RKH_TNT_T;
 #elif RKH_TIM_SIZEOF_NTIMER == 32
-	typedef rkhui32_t RKH_TNT_T;
+	typedef rui32_t RKH_TNT_T;
 #else
-	typedef rkhui8_t RKH_TNT_T;
+	typedef rui8_t RKH_TNT_T;
 #endif
 
 
@@ -94,9 +94,9 @@ typedef void ( *RKH_THK_T )( void *t );
 
 typedef struct RKH_TINFO_T
 {
-	rkhui16_t nexp;			/** # of expirations */
-	rkhui16_t nstart;		/**	# of start requests */
-	rkhui16_t nstop;		/**	# of stop requests */
+	rui16_t nexp;		/** # of expirations */
+	rui16_t nstart;		/**	# of start requests */
+	rui16_t nstop;		/**	# of stop requests */
 } RKH_TINFO_T;
 
 
@@ -171,7 +171,7 @@ struct RKH_TMR_T
 	 * 	A non-zero value indicates that the timer is linked.
 	 */
 
-	rkhui8_t used;
+	rui8_t used;
 
 	/**
 	 *	Hook function to call when the timer expires. This member is optional, 

@@ -51,7 +51,18 @@
 #include "rkhcfg.h"
 
 
-#define RCE( e )			(( RKH_EVT_T*)(e))
+#define R_CAST_EVT( e )		((RKH_EVT_T *)(e))
+
+#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
+#define RKH_INC_REF( evt )	\
+							if( R_CAST_EVT( evt )->pool != 0 )		\
+							{ 										\
+								++R_CAST_EVT( evt )->nref; 			\
+							}
+#else
+#define RKH_INC_REF( evt )	\
+							(void)0
+#endif
 
 
 /** 
@@ -61,13 +72,13 @@
  */
 
 #if RKH_SIZEOF_EVENT == 8
-	typedef rkhui8_t RKH_SIG_T;
+	typedef rui8_t RKH_SIG_T;
 #elif RKH_SIZEOF_EVENT == 16
-	typedef rkhui16_t RKH_SIG_T;
+	typedef rui16_t RKH_SIG_T;
 #elif RKH_SIZEOF_EVENT == 32
-	typedef rkhui32_t RKH_SIG_T;
+	typedef rui32_t RKH_SIG_T;
 #else
-	typedef rkhui8_t RKH_SIG_T;
+	typedef rui8_t RKH_SIG_T;
 #endif
 
 
@@ -78,13 +89,13 @@
  */
 
 #if RKH_SIZEOF_ESIZE == 8
-	typedef rkhui8_t RKH_ES_T;
+	typedef rui8_t RKH_ES_T;
 #elif RKH_SIZEOF_ESIZE == 16
-	typedef rkhui16_t RKH_ES_T;
+	typedef rui16_t RKH_ES_T;
 #elif RKH_SIZEOF_ESIZE == 32
-	typedef rkhui32_t RKH_ES_T;
+	typedef rui32_t RKH_ES_T;
 #else
-	typedef rkhui8_t RKH_ES_T;
+	typedef rui8_t RKH_ES_T;
 #endif
 
 
@@ -144,8 +155,24 @@ typedef struct RKH_EVT_T
 	 * 	Attributes of dynamic event (0 for static event).
 	 */
 
-	rkhui8_t nref;
-	rkhui8_t pool;
+	rui8_t nref;
+	rui8_t pool;
+
+	/**
+	 * 	\brief
+	 * 	Post-event identification.
+	 * 	It allows to uniquely identify an event and its posting, and 
+	 * 	thus the discrete response time of system for that event.
+	 *	It is number is incremented on post-event and is sent to Trazer on 
+	 *	dispatch-event "as is". 
+	 *	Discrete response time =	time-stamp (on post-event) - 
+	 *								time-stamp (on dispatch-event)
+	 */
+
+#if (RKH_TRC_EN == RKH_ENABLED) && \
+	(RKH_TRC_RESP_TIME_MEAS_EN == RKH_ENABLED)
+	rui8_t post;
+#endif
 } RKH_EVT_T;
 
 

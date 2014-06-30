@@ -107,7 +107,7 @@ mcu_init( unsigned char tick_ms )
  * System Tick
  */
 
-rkhui8_t g_isr_tick;
+rui8_t g_isr_tick;
 
 interrupt VectorNumber_Vrtc 
 void isr_tick( void )

@@ -20,6 +20,6 @@
 #define set_sled(ch,x)	set_sequence(MAJOR_LED,(ch),(x))
 
 #define set_cli_sled( c, s )	\
-			set_sled( (unsigned)(0x01 << (rkhui8_t)(c-1)), s )
+			set_sled( (unsigned)(0x01 << (rui8_t)(c-1)), s )
 
 #endif

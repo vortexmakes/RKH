@@ -32,7 +32,7 @@ extern uint32_t mcu_flshclk_hz;
 void cpu_init( void );
 
 #if defined( RKH_USE_TRC_SENDER )
-extern rkhui8_t g_isr_tick;
+extern rui8_t g_isr_tick;
 #endif
 
 void systick_init( uint32_t tick_hz );

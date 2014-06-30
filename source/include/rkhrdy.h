@@ -120,7 +120,7 @@ typedef struct
 	 * 	is ready to run. 
 	 */
 
-	rkhui8_t grp;
+	rui8_t grp;
 
 	/**
 	 * 	\brief
@@ -204,10 +204,10 @@ typedef struct
  * 	\param p		the found highest priority is assigned to \a p.
  */
 
-#define RKH_RDY_FIND_HIGHEST( rg, p )							\
-				(p) = rkh_unmaptbl[ (rg).grp ];					\
-				(p) = (rkhui8_t)(((p) << 3) +					\
-						(rkhui8_t)rkh_unmaptbl[(rg).tbl[(p)]])
+#define RKH_RDY_FIND_HIGHEST( rg, p )						\
+				(p) = rkh_unmaptbl[ (rg).grp ];				\
+				(p) = (rui8_t)(((p) << 3) +					\
+						(rui8_t)rkh_unmaptbl[(rg).tbl[(p)]])
 
 
 #endif

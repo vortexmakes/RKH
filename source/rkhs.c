@@ -83,7 +83,7 @@ rkh_fwk_init( void )
 void 
 rkh_fwk_enter( void )
 {
-	rkhui8_t prio;
+	rui8_t prio;
 	RKH_SMA_T *sma;
 	RKH_EVT_T *e;
 	RKH_SR_ALLOC();
@@ -126,7 +126,7 @@ rkh_fwk_exit( void )
 
 void 
 rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
-						void *stks, rkhui32_t stksize )
+						void *stks, rui32_t stksize )
 {
     ( void )stks;
     ( void )stksize;

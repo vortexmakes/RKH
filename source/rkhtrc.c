@@ -56,8 +56,8 @@
 
 /* RKH_MODULE_NAME( rkhtrc ) */
 
-#define GETGRP( e )				(rkhui8_t)(((e) & 0xE0) >> 5)
-#define GETEVT( e )				(rkhui8_t)((e) & 0x1F)
+#define GETGRP( e )				(rui8_t)(((e) & 0xE0) >> 5)
+#define GETEVT( e )				(rui8_t)((e) & 0x1F)
 
 
 #if RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
@@ -82,7 +82,7 @@
  * 	(Y's) are used to determine the index into trceftbl[].
  */
 
-static rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
+static rui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
 
 /**
  * 	\brief
@@ -101,7 +101,7 @@ static rkhui8_t trceftbl[ RKH_TRC_MAX_EVENTS_IN_BYTES ];
  *	\endcode
  */
 
-static rkhui8_t trcgfilter;
+static rui8_t trcgfilter;
 
 /**
  * 	\brief
@@ -123,7 +123,7 @@ static rkhui8_t trcgfilter;
  * 	(Y's) are used to determine the index into trcsmaftbl[].
  */
 
-static rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
+static rui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
 
 /**
  * 	\brief
@@ -140,7 +140,7 @@ static rkhui8_t trcsmaftbl[ RKH_TRC_MAX_SMA ];
  * 	used to determine the index into trcsigftbl[].
  */
 
-static rkhui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
+static rui8_t trcsigftbl[ RKH_TRC_MAX_SIGNALS ];
 
 /**
  * 	\brief
@@ -151,7 +151,7 @@ const RKH_TRC_FIL_T fsig = { RKH_TRC_MAX_SIGNALS, 	trcsigftbl };
 const RKH_TRC_FIL_T fsma = { RKH_TRC_MAX_SMA, 		trcsmaftbl };
 
 /** Map (group << 4) + event to event index in trceftbl[] table. */
-static RKHROM rkhui8_t trcgmtbl[] =
+static RKHROM rui8_t trcgmtbl[] =
 {
 	/*	<offset>					| <range> [in bytes] */
 	/*              				  1 byte -> 8 events */
@@ -165,10 +165,15 @@ static RKHROM rkhui8_t trcgmtbl[] =
 };
 #endif
 
+#if (RKH_TRC_EN == RKH_ENABLED) && \
+	(RKH_TRC_RESP_TIME_MEAS_EN == RKH_ENABLED)
+rui8_t rkh_postid;
+#endif
+
 static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
 static RKH_TE_T *trcin, *trcout, *trcend;
-static rkhui8_t chk;
-static rkhui8_t nseq;
+static rui8_t chk;
+static rui8_t nseq;
 static TRCQTY_T trcqty;
 
 
@@ -184,7 +189,7 @@ rkh_trc_init( void )
 
 
 void
-rkh_trc_put( rkhui8_t b )
+rkh_trc_put( rui8_t b )
 {
 	*trcin++ = b;
 	++trcqty;
@@ -200,10 +205,10 @@ rkh_trc_put( rkhui8_t b )
 }
 
 
-rkhui8_t *
+rui8_t *
 rkh_trc_get( void )
 {
-	rkhui8_t *tre = ( rkhui8_t* )0;
+	rui8_t *tre = ( rui8_t* )0;
 
 	if( trcqty == 0 )
 		return tre;
@@ -218,10 +223,10 @@ rkh_trc_get( void )
 }
 
 
-rkhui8_t *
+rui8_t *
 rkh_trc_get_block( TRCQTY_T *nget )
 {
-	rkhui8_t *tre = (rkhui8_t *)0;
+	rui8_t *tre = (rui8_t *)0;
 	TRCQTY_T n;
 
 	if( trcqty == (TRCQTY_T)0 )
@@ -251,28 +256,28 @@ rkh_trc_get_block( TRCQTY_T *nget )
 
 
 #if RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
-HUInt
-rkh_trc_isoff_( rkhui8_t e )
+ruint
+rkh_trc_isoff_( rui8_t e )
 {
-	rkhui8_t evt, grp;
+	rui8_t evt, grp;
 
 	evt = GETEVT( e );
 	grp = GETGRP( e );
 
 	return 	(( trcgfilter & rkh_maptbl[ grp ] ) != 0 ) &&
-			(( trceftbl[(rkhui8_t)((trcgmtbl[ grp ] >> 4) + (evt >> 3))] & 
+			(( trceftbl[(rui8_t)((trcgmtbl[ grp ] >> 4) + (evt >> 3))] & 
 			   rkh_maptbl[evt & 0x7]) != 0 );
 }
 
 
 void 
-rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
+rkh_trc_filter_group_( rui8_t ctrl, rui8_t grp, rui8_t mode )
 {
-	rkhui8_t *p, ix, c, offset, range;
+	rui8_t *p, ix, c, offset, range;
 
 	if( grp == RKH_TRC_ALL_GROUPS )
 	{
-		trcgfilter = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
+		trcgfilter = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
 		return;
 	}
 
@@ -283,11 +288,11 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 
 	if( mode == ECHANGE )
 	{
-		offset = (rkhui8_t)(trcgmtbl[ grp ] >> 4);
-		range = (rkhui8_t)(trcgmtbl[ grp ] & 0x0F);
+		offset = (rui8_t)(trcgmtbl[ grp ] >> 4);
+		range = (rui8_t)(trcgmtbl[ grp ] & 0x0F);
 		for( 	p = &trceftbl[ offset ], 
 				ix = 0, 
-				c = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0); 
+				c = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0); 
 				ix < range; ++ix, ++p )
 			*p = c;
 	}
@@ -295,24 +300,24 @@ rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode )
 
 
 void 
-rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
+rkh_trc_filter_event_( rui8_t ctrl, rui8_t evt )
 {
-	rkhui8_t *p, ix, c, grp, e, offset;
+	rui8_t *p, ix, c, grp, e, offset;
 
 	if( evt == RKH_TRC_ALL_EVENTS )
 	{
 		for( 	p = trceftbl, 
 				ix = 0, 
-				c = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0); 
+				c = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0); 
 				ix < RKH_TRC_MAX_EVENTS_IN_BYTES; ++ix, ++p )
 			*p = c;
-		trcgfilter = (rkhui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
+		trcgfilter = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
 		return;
 	}
 
 	e = GETEVT( evt );
 	grp = GETGRP( evt );
-	offset = (rkhui8_t)((trcgmtbl[ grp ] >> 4) + (e >> 3));
+	offset = (rui8_t)((trcgmtbl[ grp ] >> 4) + (e >> 3));
 
 	if( ctrl == FILTER_OFF )
 	{
@@ -324,13 +329,13 @@ rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt )
 }
 
 
-HUInt
+ruint
 rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot )
 {
-	rkhui8_t x, y;
+	rui8_t x, y;
 
-	y = (rkhui8_t)(slot >> 3);
-	x = (rkhui8_t)(slot & 0x07);
+	y = (rui8_t)(slot >> 3);
+	x = (rui8_t)(slot & 0x07);
 
 	return (*(filter->tbl + y) & rkh_maptbl[x]) != 0;
 }
@@ -338,24 +343,24 @@ rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot )
 
 void 
 rkh_trc_simfil( const RKH_TRC_FIL_T *filter, 	RKH_TRC_FSLOT slot, 
-												rkhui8_t mode )
+												rui8_t mode )
 {
-	rkhui8_t x, y, onoff, *ft, c;
+	rui8_t x, y, onoff, *ft, c;
 	RKH_TRC_FSLOT ix;
 
-	onoff = (rkhui8_t)(mode & RKH_FILTER_MODE_MASK);
+	onoff = (rui8_t)(mode & RKH_FILTER_MODE_MASK);
 	if( mode & RKH_TRC_ALL_FILTERS )
 	{
-		for( 	ft = (rkhui8_t *)(filter->tbl), 
+		for( 	ft = (rui8_t *)(filter->tbl), 
 				ix = (RKH_TRC_FSLOT)0, 
-				c = (rkhui8_t)((onoff == FILTER_OFF) ? 0xFF : 0);
+				c = (rui8_t)((onoff == FILTER_OFF) ? 0xFF : 0);
 				ix < filter->size; ++ix, ++ft )
 			*ft = c;
 		return;
 	}
 
-	y = (rkhui8_t)(slot >> 3);
-	x = (rkhui8_t)(slot & 0x07);
+	y = (rui8_t)(slot >> 3);
+	x = (rui8_t)(slot & 0x07);
 
 	if( onoff == FILTER_OFF )
 		*(filter->tbl + y) |= rkh_maptbl[ x ];
@@ -366,7 +371,7 @@ rkh_trc_simfil( const RKH_TRC_FIL_T *filter, 	RKH_TRC_FSLOT slot,
 
 
 void
-rkh_trc_begin( rkhui8_t eid )
+rkh_trc_begin( rui8_t eid )
 {
 	RKH_TRC_HDR( eid );
 }
@@ -388,13 +393,13 @@ rkh_trc_clear_chk( void )
 
 
 void 
-rkh_trc_u8( rkhui8_t d )
+rkh_trc_u8( rui8_t d )
 {
-	chk = (rkhui8_t)( chk + d );
+	chk = (rui8_t)( chk + d );
 	if( d == RKH_FLG || d == RKH_ESC )
 	{
 		rkh_trc_put( RKH_ESC );
-		rkh_trc_put( (rkhui8_t)(d ^ RKH_XOR) );
+		rkh_trc_put( (rui8_t)(d ^ RKH_XOR) );
 	}
 	else
 		rkh_trc_put( d );
@@ -402,24 +407,24 @@ rkh_trc_u8( rkhui8_t d )
 
 
 void 
-rkh_trc_u16( rkhui16_t d )
+rkh_trc_u16( rui16_t d )
 {
-	rkh_trc_u8( (rkhui8_t)d );
+	rkh_trc_u8( (rui8_t)d );
 	d >>= 8;
-	rkh_trc_u8( (rkhui8_t)d );
+	rkh_trc_u8( (rui8_t)d );
 }
 
 
 void 
-rkh_trc_u32( rkhui32_t d )
+rkh_trc_u32( rui32_t d )
 {
-	rkh_trc_u8( (rkhui8_t)d );
+	rkh_trc_u8( (rui8_t)d );
 	d >>= 8;
-	rkh_trc_u8( (rkhui8_t)d );
+	rkh_trc_u8( (rui8_t)d );
 	d >>= 8;
-	rkh_trc_u8( (rkhui8_t)d );
+	rkh_trc_u8( (rui8_t)d );
 	d >>= 8;
-	rkh_trc_u8( (rkhui8_t)d );
+	rkh_trc_u8( (rui8_t)d );
 }
 
 
@@ -427,13 +432,13 @@ void
 rkh_trc_str( const char *s )
 {
 	while( *s != '\0' )
-		rkh_trc_u8( (rkhui8_t)*s++ );
+		rkh_trc_u8( (rui8_t)*s++ );
 	rkh_trc_u8( '\0' );
 }
 
 
 void
-rkh_trc_obj( rkhui8_t tre, rkhui8_t *obj, const char *obj_name )
+rkh_trc_obj( rui8_t tre, rui8_t *obj, const char *obj_name )
 {
 	RKH_TRC_BEGIN_WOFIL( tre )
 		RKH_TRC_SYM( obj );
@@ -466,7 +471,7 @@ rkh_trc_ao( struct RKH_SMA_T *ao )
 
 
 void
-rkh_trc_state( struct RKH_SMA_T *ao, rkhui8_t *state )
+rkh_trc_state( struct RKH_SMA_T *ao, rui8_t *state )
 {
 	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )
 		RKH_TRC_SYM( ao );
@@ -479,7 +484,7 @@ rkh_trc_state( struct RKH_SMA_T *ao, rkhui8_t *state )
 
 #if RKH_TRC_EN_USER_TRACE == RKH_ENABLED
 void 
-rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )
+rkh_trc_fmt_u8( rui8_t fmt, rui8_t d )
 {
 	rkh_trc_u8( fmt );
 	rkh_trc_u8( d );
@@ -487,7 +492,7 @@ rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d )
 
 
 void 
-rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d )
+rkh_trc_fmt_u16( rui8_t fmt, rui16_t d )
 {
 	rkh_trc_u8( fmt );
 	rkh_trc_u16( d );
@@ -495,7 +500,7 @@ rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d )
 
 
 void 
-rkh_trc_fmt_u32( rkhui8_t fmt, rkhui32_t d )
+rkh_trc_fmt_u32( rui8_t fmt, rui32_t d )
 {
 	rkh_trc_u8( fmt );
 	rkh_trc_u32( d );
@@ -505,21 +510,21 @@ rkh_trc_fmt_u32( rkhui8_t fmt, rkhui32_t d )
 void 
 rkh_trc_fmt_str( const char *s )
 {
-	rkh_trc_u8( (rkhui8_t)RKH_STR_T );
+	rkh_trc_u8( (rui8_t)RKH_STR_T );
 	while( *s != '\0' )
-		rkh_trc_u8( (rkhui8_t)*s++ );
+		rkh_trc_u8( (rui8_t)*s++ );
 	rkh_trc_u8( '\0' );
 }
 
 
 void 
-rkh_trc_fmt_mem( const rkhui8_t *mem, rkhui8_t size )
+rkh_trc_fmt_mem( const rui8_t *mem, rui8_t size )
 {
-	rkh_trc_u8( (rkhui8_t)RKH_MEM_T );
+	rkh_trc_u8( (rui8_t)RKH_MEM_T );
 	rkh_trc_u8( size );
     while( size != 0 )
 	{
-		rkh_trc_u8( (rkhui8_t)*mem++ );
+		rkh_trc_u8( (rui8_t)*mem++ );
         --size;
     }	
 }

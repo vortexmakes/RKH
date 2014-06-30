@@ -58,13 +58,13 @@
  */
 
 #if RKH_MP_SIZEOF_NBLOCK == 8
-	typedef rkhui8_t RKH_MPNB_T;
+	typedef rui8_t RKH_MPNB_T;
 #elif RKH_MP_SIZEOF_NBLOCK == 16
-	typedef rkhui16_t RKH_MPNB_T;
+	typedef rui16_t RKH_MPNB_T;
 #elif RKH_MP_SIZEOF_NBLOCK == 32
-	typedef rkhui32_t RKH_MPNB_T;
+	typedef rui32_t RKH_MPNB_T;
 #else
-	typedef rkhui8_t RKH_MPNB_T;
+	typedef rui8_t RKH_MPNB_T;
 #endif
 
 
@@ -75,13 +75,13 @@
  */
 
 #if RKH_MP_SIZEOF_BSIZE == 8
-	typedef rkhui8_t RKH_MPBS_T;
+	typedef rui8_t RKH_MPBS_T;
 #elif RKH_MP_SIZEOF_BSIZE == 16
-	typedef rkhui16_t RKH_MPBS_T;
+	typedef rui16_t RKH_MPBS_T;
 #elif RKH_MP_SIZEOF_BSIZE == 32
-	typedef rkhui32_t RKH_MPBS_T;
+	typedef rui32_t RKH_MPBS_T;
 #else
-	typedef rkhui8_t RKH_MPBS_T;
+	typedef rui8_t RKH_MPBS_T;
 #endif
 
 
@@ -98,35 +98,35 @@ typedef struct
 	 * 	Number of pool create requests.
 	 */
 
-	rkhui8_t inits;
+	rui8_t inits;
 
 	/**	
 	 * 	\brief
 	 *	Number of get memory block requests.
 	 */
 
-	rkhui8_t gets;
+	rui8_t gets;
 	
 	/**	
 	 * 	\brief
 	 *	Number of put memory block requests.
 	 */
 
-	rkhui8_t puts;
+	rui8_t puts;
 	
 	/**	
 	 * 	\brief
 	 *	Number of no free retrieves.
 	 */
 
-	rkhui8_t free;
+	rui8_t free;
 
 	/**	
 	 * 	\brief
 	 *	Number of full retrieves.
 	 */
 
-	rkhui8_t full;
+	rui8_t full;
 } RKH_MPI_T;
 
 
@@ -297,7 +297,7 @@ typedef struct RKH_MP_T
  * 					block in the pool.
  */
 
-void rkh_mp_init( 	RKH_MP_T *mp, void *sstart, rkhui16_t ssize, 
+void rkh_mp_init( 	RKH_MP_T *mp, void *sstart, rui16_t ssize, 
 					RKH_MPBS_T bsize );
 
 

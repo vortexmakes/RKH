@@ -53,7 +53,7 @@
 
 void rkh_enter_critical( void );
 void rkh_exit_critical( void );
-void rkh_set_tickrate( rkhui32_t tick_rate_hz );
+void rkh_set_tickrate( rui32_t tick_rate_hz );
 const char *rkh_get_port_version( void );
 const char *rkh_get_port_desc( void );
 

@@ -96,23 +96,23 @@
 
 #if RKH_TRC_MAX_SMA > RKH_TRC_MAX_SIGNALS
 	#if (RKH_TRC_MAX_SMA * 8) <= RKH_BIT(8)
-		typedef rkhui8_t RKH_TRC_FSLOT;
+		typedef rui8_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SMA * 8) <= RKH_BIT(16)
-		typedef rkhui16_t RKH_TRC_FSLOT;
+		typedef rui16_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SMA * 8) <= RKH_BIT(32)
-		typedef rkhui32_t RKH_TRC_FSLOT;
+		typedef rui32_t RKH_TRC_FSLOT;
 	#else
-		typedef rkhui8_t RKH_TRC_FSLOT;
+		typedef rui8_t RKH_TRC_FSLOT;
 	#endif
 #else
 	#if (RKH_TRC_MAX_SIGNALS * 8) <= RKH_BIT(8)
-		typedef rkhui8_t RKH_TRC_FSLOT;
+		typedef rui8_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SIGNALS * 8) <= RKH_BIT(16)
-		typedef rkhui16_t RKH_TRC_FSLOT;
+		typedef rui16_t RKH_TRC_FSLOT;
 	#elif (RKH_TRC_MAX_SIGNALS * 8) <= RKH_BIT(32)
-		typedef rkhui32_t RKH_TRC_FSLOT;
+		typedef rui32_t RKH_TRC_FSLOT;
 	#else
-		typedef rkhui8_t RKH_TRC_FSLOT;
+		typedef rui8_t RKH_TRC_FSLOT;
 	#endif
 #endif
 
@@ -125,18 +125,31 @@
 typedef struct RKH_TRC_FIL_T
 {
 	RKH_TRC_FSLOT size;		/** Size of filter table in bytes */
-	rkhui8_t *const tbl;	/** Points to filter table in RAM */
+	rui8_t *const tbl;		/** Points to filter table in RAM */
 } RKH_TRC_FIL_T;
 
 
 extern const RKH_TRC_FIL_T fsig;
 extern const RKH_TRC_FIL_T fsma;
 
+/**
+ * 	\brief
+ * 	Post-event identification.
+ * 	It allows to uniquely identify an event and its posting, and 
+ * 	thus the discrete response time of system for that event.
+ *	It is incremented on post-event and is sent to Trazer on 
+ *	dispatch-event "as is". 
+ *	Discrete response time =	time-stamp (on post-event) - 
+ *								time-stamp (on dispatch-event)
+ */
+
+extern rui8_t rkh_postid;
+
 
 #if RKH_TRC_SIZEOF_STREAM < 255u
-	typedef rkhui8_t TRCQTY_T;
+	typedef rui8_t TRCQTY_T;
 #else
-	typedef rkhui16_t TRCQTY_T;
+	typedef rui16_t TRCQTY_T;
 #endif
 
 
@@ -226,8 +239,8 @@ extern const RKH_TRC_FIL_T fsma;
 	#define NGSH					5
 #endif
 
-#define GRPLSH( grp )				(rkhui8_t)(((grp) & 7) << NGSH)
-#define EXTE( te, grp )				(rkhui8_t)((te) - GRPLSH(grp))
+#define GRPLSH( grp )				(rui8_t)(((grp) & 7) << NGSH)
+#define EXTE( te, grp )				(rui8_t)((te) - GRPLSH(grp))
 
 
 #define ECHANGE						0
@@ -508,9 +521,9 @@ typedef enum rkh_trc_groups
  *	void
  *	some_function( ... )
  *	{
- *		rkhui8_t d1 = 255;
- *		rkhui16_t d2 = 65535;
- *		rkhui32_t d3 = 65535;
+ *		rui8_t d1 = 255;
+ *		rui16_t d2 = 65535;
+ *		rui32_t d3 = 65535;
  *		char *str = "hello";
  *
  *		RKH_TRC_USR_BEGIN( LOWPWR_USR_TRACE )
@@ -522,7 +535,7 @@ typedef enum rkh_trc_groups
  *			RKH_TUSR_UI32( 5, d3 );
  *			RKH_TUSR_X32( 4, d3 );
  *			RKH_TUSR_STR( str );
- *			RKH_TUSR_MEM( (rkhui8_t*)&d3, sizeof(rkhui32_t) );
+ *			RKH_TUSR_MEM( (rui8_t*)&d3, sizeof(rui32_t) );
  *			RKH_TUSR_OBJ( my );
  *			RKH_TUSR_FUN( main );
  *			RKH_TUSR_SIG( ZERO );
@@ -629,7 +642,7 @@ typedef enum rkh_trc_events
 
 #if RKH_TRC_EN_CHK == RKH_ENABLED
 	#define RKH_TRC_CHK()					\
-				chk = (rkhui8_t)(~chk + 1); \
+				chk = (rui8_t)(~chk + 1); \
 				rkh_trc_u8( chk )
 #else
 	#define RKH_TRC_CHK()
@@ -656,24 +669,24 @@ typedef enum rkh_trc_events
 
 #if RKH_TRC_EN_TSTAMP == RKH_ENABLED
 	#if RKH_TRC_SIZEOF_TSTAMP == 8
-		typedef rkhui8_t RKH_TS_T;
+		typedef rui8_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI8( rkh_trc_getts() )
 	#elif RKH_TRC_SIZEOF_TSTAMP == 16
-		typedef rkhui16_t RKH_TS_T;
+		typedef rui16_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI16( rkh_trc_getts() )
 	#elif RKH_TRC_SIZEOF_TSTAMP == 32
-		typedef rkhui32_t RKH_TS_T;
+		typedef rui32_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI32( rkh_trc_getts() )
 	#else
-		typedef rkhui16_t RKH_TS_T;
+		typedef rui16_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI16( rkh_trc_getts() )
 	#endif
 #else
-	typedef rkhui16_t RKH_TS_T;
+	typedef rui16_t RKH_TS_T;
 	#define RKH_TRC_TSTAMP()
 #endif
 
@@ -912,7 +925,7 @@ typedef enum rkh_trc_events
  */
 
 #define RKH_TRC_UI8( d )	\
-			rkh_trc_u8( (rkhui8_t)(d) )
+			rkh_trc_u8( (rui8_t)(d) )
 
 /**
  * 	\brief
@@ -1011,65 +1024,65 @@ enum RKH_TRC_FMT
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhi8_t to the trace record.
+	 * 	Output formatted ri8_t to the trace record.
 	 */
 
 	#define RKH_TUSR_I8( w_, d_ ) \
-			rkh_trc_fmt_u8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I8_T, \
+			rkh_trc_fmt_u8((rui8_t)(((w_) << 4)) | (rui8_t)RKH_I8_T, \
 								(d_))
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhui8_t to the trace record.
+	 * 	Output formatted rui8_t to the trace record.
 	 */
 
 	#define RKH_TUSR_UI8( w_, d_ ) \
-			rkh_trc_fmt_u8((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI8_T, \
+			rkh_trc_fmt_u8((rui8_t)(((w_) << 4)) | (rui8_t)RKH_UI8_T, \
 								(d_))
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhi16_t to the trace record.
+	 * 	Output formatted ri16_t to the trace record.
 	 */
 
 	#define RKH_TUSR_I16( w_, d_ ) \
-			rkh_trc_fmt_u16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I16_T, \
+			rkh_trc_fmt_u16((rui8_t)(((w_) << 4)) | (rui8_t)RKH_I16_T, \
 								(d_))
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhui16_t to the trace record.
+	 * 	Output formatted rui16_t to the trace record.
 	 */
 
 	#define RKH_TUSR_UI16( w_, d_ ) \
-			rkh_trc_fmt_u16((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI16_T, \
+			rkh_trc_fmt_u16((rui8_t)(((w_) << 4)) | (rui8_t)RKH_UI16_T, \
 								(d_))
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhi32_t to the trace record.
+	 * 	Output formatted ri32_t to the trace record.
 	 */
 
 	#define RKH_TUSR_I32( w_, d_ ) \
-			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_I32_T, \
+			rkh_trc_fmt_u32((rui8_t)(((w_) << 4)) | (rui8_t)RKH_I32_T, \
 								(d_))
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhui32_t to the trace record.
+	 * 	Output formatted rui32_t to the trace record.
 	 */
 
 	#define RKH_TUSR_UI32( w_, d_ ) \
-			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_UI32_T, \
+			rkh_trc_fmt_u32((rui8_t)(((w_) << 4)) | (rui8_t)RKH_UI32_T, \
 								(d_))
 
 	/**
 	 * 	\brief 
-	 * 	Output formatted rkhui32_t to the trace record.
+	 * 	Output formatted rui32_t to the trace record.
 	 */
 
 	#define RKH_TUSR_X32( w_, d_ ) \
-			rkh_trc_fmt_u32((rkhui8_t)(((w_) << 4)) | (rkhui8_t)RKH_X32_T, \
+			rkh_trc_fmt_u32((rui8_t)(((w_) << 4)) | (rui8_t)RKH_X32_T, \
 								(d_))
 
 	/**
@@ -1095,13 +1108,13 @@ enum RKH_TRC_FMT
 
 	#if RKH_TRC_SIZEOF_POINTER == 16
 		#define RKH_TUSR_OBJ( obj_ )	\
-				rkh_trc_fmt_u16((rkhui8_t)RKH_OBJ_T, (rkhui16_t)(obj_))
+				rkh_trc_fmt_u16((rui8_t)RKH_OBJ_T, (rui16_t)(obj_))
 	#elif RKH_TRC_SIZEOF_POINTER == 32
 		#define RKH_TUSR_OBJ( obj_ )	\
-				rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
+				rkh_trc_fmt_u32((rui8_t)RKH_OBJ_T, (rui32_t)(obj_))
 	#else
 		#define RKH_TUSR_OBJ( obj_ )	\
-				rkh_trc_fmt_u32((rkhui8_t)RKH_OBJ_T, (rkhui32_t)(obj_))
+				rkh_trc_fmt_u32((rui8_t)RKH_OBJ_T, (rui32_t)(obj_))
 	#endif
 
 	/**
@@ -1111,13 +1124,13 @@ enum RKH_TRC_FMT
 
 	#if RKH_TRC_SIZEOF_FUN_POINTER == 16
 		#define RKH_TUSR_FUN( fun_ )	\
-				rkh_trc_fmt_u16((rkhui8_t)RKH_FUN_T, (rkhui16_t)(fun_))
+				rkh_trc_fmt_u16((rui8_t)RKH_FUN_T, (rui16_t)(fun_))
 	#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
 		#define RKH_TUSR_FUN( fun_ )	\
-				rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
+				rkh_trc_fmt_u32((rui8_t)RKH_FUN_T, (rui32_t)(fun_))
 	#else
 		#define RKH_TUSR_FUN( fun_ )	\
-				rkh_trc_fmt_u32((rkhui8_t)RKH_FUN_T, (rkhui32_t)(fun_))
+				rkh_trc_fmt_u32((rui8_t)RKH_FUN_T, (rui32_t)(fun_))
 	#endif
 
 	/**
@@ -1127,16 +1140,16 @@ enum RKH_TRC_FMT
 
 	#if RKH_SIZEOF_EVENT == 8
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u8((rkhui8_t)RKH_ESIG_T, (rkhui8_t)(sig_))
+					rkh_trc_fmt_u8((rui8_t)RKH_ESIG_T, (rui8_t)(sig_))
 	#elif RKH_SIZEOF_EVENT == 16
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u16((rkhui8_t)RKH_ESIG_T, (rkhui16_t)(sig_))
+					rkh_trc_fmt_u16((rui8_t)RKH_ESIG_T, (rui16_t)(sig_))
 	#elif RKH_SIZEOF_EVENT == 32
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u32((rkhui8_t)RKH_ESIG_T, (rkhui32_t)(sig_))
+					rkh_trc_fmt_u32((rui8_t)RKH_ESIG_T, (rui32_t)(sig_))
 	#else
 		#define RKH_TUSR_SIG( sig_ ) \
-					rkh_trc_fmt_u8((rkhui8_t)RKH_ESIG_T, (rkhui8_t)(sig_))
+					rkh_trc_fmt_u8((rui8_t)RKH_ESIG_T, (rui8_t)(sig_))
 	#endif
 #else
 	#define RKH_TRC_USR_BEGIN( eid_ ) 			(void)0;
@@ -1191,13 +1204,13 @@ enum RKH_TRC_FMT
 
 #if RKH_TRC_SIZEOF_POINTER == 16
 	#define RKH_TRC_SYM( sym )	\
-				RKH_TRC_UI16( (rkhui16_t)sym )
+				RKH_TRC_UI16( (rui16_t)sym )
 #elif RKH_TRC_SIZEOF_POINTER == 32
 	#define RKH_TRC_SYM( sym )	\
-				RKH_TRC_UI32( (rkhui32_t)sym )
+				RKH_TRC_UI32( (rui32_t)sym )
 #else
 	#define RKH_TRC_SYM( sym )	\
-				RKH_TRC_UI32( (rkhui32_t)sym )
+				RKH_TRC_UI32( (rui32_t)sym )
 #endif
 
 
@@ -1221,13 +1234,13 @@ enum RKH_TRC_FMT
 
 #if RKH_TRC_SIZEOF_FUN_POINTER == 16
 	#define RKH_TRC_FUN( sym )	\
-				RKH_TRC_UI16( (rkhui16_t)sym )
+				RKH_TRC_UI16( (rui16_t)sym )
 #elif RKH_TRC_SIZEOF_FUN_POINTER == 32
 	#define RKH_TRC_FUN( sym )	\
-				RKH_TRC_UI32( (rkhui32_t)sym )
+				RKH_TRC_UI32( (rui32_t)sym )
 #else
 	#define RKH_TRC_FUN( sym )	\
-				RKH_TRC_UI32( (rkhui32_t)sym )
+				RKH_TRC_UI32( (rui32_t)sym )
 #endif
 
 
@@ -2339,7 +2352,7 @@ enum RKH_TRC_FMT
 		#define RKH_TR_FWK_OBJ( __o )									\
 				do{ 													\
 					static RKHROM char __o_n[] = #__o;					\
-					rkh_trc_obj( RKH_TE_FWK_OBJ, (rkhui8_t *)__o, 		\
+					rkh_trc_obj( RKH_TE_FWK_OBJ, (rui8_t *)__o, 		\
 													       __o_n );		\
 				} while(0)
 
@@ -2372,7 +2385,7 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_OBJ_NAME( __o, __n )							\
 				do{ 													\
-					rkh_trc_obj( RKH_TE_FWK_OBJ, (rkhui8_t *)__o, __n );\
+					rkh_trc_obj( RKH_TE_FWK_OBJ, (rui8_t *)__o, __n );	\
 				} while(0)
 
 		/* --- Symbol entry table for event signals ---- */
@@ -2448,7 +2461,7 @@ enum RKH_TRC_FMT
 		#define RKH_TR_FWK_FUN( __f )									\
 				do{ 													\
 					static RKHROM char __f_n[] = #__f;					\
-					rkh_trc_obj( RKH_TE_FWK_FUN, (rkhui8_t *)__f, 		\
+					rkh_trc_obj( RKH_TE_FWK_FUN, (rui8_t *)__f, 		\
 													       __f_n );		\
 				} while(0)
 
@@ -2575,43 +2588,43 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_TCFG( ts_hz )  									\
 					RKH_TRC_BEGIN_DFT( RKH_TE_FWK_TCFG )					\
-						RKH_TRC_UI16( (rkhui16_t)RKH_VERSION_CODE );		\
+						RKH_TRC_UI16( (rui16_t)RKH_VERSION_CODE );			\
 						RKH_TRC_UI32( 										\
-							(rkhui32_t)(									\
-							((rkhui32_t)RKH_SMA_EN_TRC_SENDER	     ) |	\
-							((rkhui32_t)RKH_TRC_RUNTIME_FILTER	<< 1 ) |	\
-							((rkhui32_t)RKH_TRC_EN_USER_TRACE	<< 2 ) |	\
-							((rkhui32_t)RKH_TRC_ALL			 	<< 3 ) |	\
-							((rkhui32_t)RKH_TRC_EN_MP			<< 4 ) |	\
-							((rkhui32_t)RKH_TRC_EN_RQ			<< 5 ) |	\
-							((rkhui32_t)RKH_TRC_EN_SMA			<< 6 ) |	\
-							((rkhui32_t)RKH_TRC_EN_TIM			<< 7 ) |	\
-							((rkhui32_t)RKH_TRC_EN_SM			<< 8 ) |	\
-							((rkhui32_t)RKH_TRC_EN_FWK			<< 9 ) |	\
-							((rkhui32_t)RKH_TRC_EN_ASSERT		<< 10) |	\
-							((rkhui32_t)RKH_RQ_EN_GET_LWMARK	<< 11) |	\
-							((rkhui32_t)RKH_MP_EN_GET_LWM		<< 12) |	\
-							((rkhui32_t)RKH_TRC_RTFIL_SMA_EN	<< 13) |	\
-							((rkhui32_t)RKH_TRC_RTFIL_SIGNAL_EN << 14) |	\
-							((rkhui32_t)RKH_TRC_EN_NSEQ	     	<< 15) |	\
-							((rkhui32_t)RKH_TRC_EN_TSTAMP	    << 16) |	\
-							((rkhui32_t)RKH_TRC_EN_CHK          << 17)));	\
+							(rui32_t)(									    \
+							((rui32_t)RKH_SMA_EN_TRC_SENDER	     ) |	    \
+							((rui32_t)RKH_TRC_RUNTIME_FILTER	<< 1 ) |	\
+							((rui32_t)RKH_TRC_EN_USER_TRACE	<< 2 ) |	    \
+							((rui32_t)RKH_TRC_ALL			 	<< 3 ) |	\
+							((rui32_t)RKH_TRC_EN_MP			<< 4 ) |	    \
+							((rui32_t)RKH_TRC_EN_RQ			<< 5 ) |	    \
+							((rui32_t)RKH_TRC_EN_SMA			<< 6 ) |	\
+							((rui32_t)RKH_TRC_EN_TIM			<< 7 ) |	\
+							((rui32_t)RKH_TRC_EN_SM			<< 8 ) |	    \
+							((rui32_t)RKH_TRC_EN_FWK			<< 9 ) |	\
+							((rui32_t)RKH_TRC_EN_ASSERT		<< 10) |	    \
+							((rui32_t)RKH_RQ_EN_GET_LWMARK	<< 11) |    	\
+							((rui32_t)RKH_MP_EN_GET_LWM		<< 12) |    	\
+							((rui32_t)RKH_TRC_RTFIL_SMA_EN	<< 13) |    	\
+							((rui32_t)RKH_TRC_RTFIL_SIGNAL_EN << 14) |    	\
+							((rui32_t)RKH_TRC_EN_NSEQ	     	<< 15) |	\
+							((rui32_t)RKH_TRC_EN_TSTAMP	    << 16) |    	\
+							((rui32_t)RKH_TRC_EN_CHK          << 17)));	    \
 						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_SIZEOF_EVENT/8		 << 4) |    \
+							(rui8_t)((RKH_SIZEOF_EVENT/8		 << 4) |    \
 										RKH_TRC_SIZEOF_TSTAMP/8      ));    \
 						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |	\
+							(rui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |		\
 										RKH_TIM_SIZEOF_NTIMER/8      ));	\
 						RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_MP_SIZEOF_NBLOCK/8   << 4) | 	\
+							(rui8_t)((RKH_MP_SIZEOF_NBLOCK/8   << 4) | 		\
 										RKH_RQ_SIZEOF_NELEM/8));			\
 						RKH_TRC_UI8( 										\
-							(rkhui8_t)(RKH_SIZEOF_ESIZE/8));            	\
+							(rui8_t)(RKH_SIZEOF_ESIZE/8));            		\
 				       	RKH_TRC_UI8( 										\
-							(rkhui8_t)((RKH_MP_SIZEOF_BSIZE/8    << 4) |	\
+							(rui8_t)((RKH_MP_SIZEOF_BSIZE/8    << 4) |		\
 										RKH_MAX_EPOOL));					\
 						RKH_TRC_UI16(                                   	\
-							(rkhui16_t)(ts_hz));				        	\
+							(rui16_t)(ts_hz));				        		\
 					RKH_TRC_END_DFT()										\
 					RKH_TRC_FLUSH()
 
@@ -2631,7 +2644,7 @@ enum RKH_TRC_FMT
 			#define RKH_TR_FWK_ASSERT( mod_, ln_ )							\
 						RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_FWK_ASSERT )	\
 							RKH_TRC_STR( (RKHROM char *)mod_ );				\
-							RKH_TRC_UI16( (rkhui16_t)ln_ );					\
+							RKH_TRC_UI16( (rui16_t)ln_ );					\
 						RKH_TRC_END_NOCRIT()								\
 						RKH_TRC_FLUSH()
 		#else
@@ -2658,8 +2671,8 @@ enum RKH_TRC_FMT
 		 * 	typedef struct
 		 * 	{
 		 * 		RKH_SMA_T ao;
-		 * 		rkhui8_t x;
-		 * 		rkhui8_t y;
+		 * 		rui8_t x;
+		 * 		rui8_t y;
 		 * 	} AO_T;
 		 * 	
 		 * 	RKH_SMA_CREATE( AO_T, ao, 0, HCAL, &S1, ao_init, NULL );
@@ -2702,8 +2715,8 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_STATE( __ao, __so )							\
 				do{ 													\
-					rkh_trc_state((struct RKH_SMA_T *)__ao, 				\
-								  (rkhui8_t *)__so); 					\
+					rkh_trc_state((struct RKH_SMA_T *)__ao, 			\
+								  (rui8_t *)__so); 						\
 				} while(0)
 
 		/* --- Symbol entry table for pseudostate objects --------- */
@@ -2737,8 +2750,8 @@ enum RKH_TRC_FMT
 
 		#define RKH_TR_FWK_PSTATE( __ao, __pso )						\
 				do{ 													\
-					rkh_trc_state((struct RKH_SMA_T *)__ao, 				\
-								  (rkhui8_t *)__pso); 					\
+					rkh_trc_state((struct RKH_SMA_T *)__ao, 			\
+								  (rui8_t *)__pso); 					\
 				} while(0)
 
 		/* --- Symbol entry table for timer objects --------- */
@@ -2767,7 +2780,7 @@ enum RKH_TRC_FMT
 		#define RKH_TR_FWK_TIMER( __to )								\
 				do{ 													\
 					static RKHROM char __to_n[] = #__to;				\
-					rkh_trc_obj( RKH_TE_FWK_TIMER, (rkhui8_t *)__to, 	\
+					rkh_trc_obj( RKH_TE_FWK_TIMER, (rui8_t *)__to, 		\
 												             __to_n );	\
 				} while(0)
 
@@ -2788,7 +2801,7 @@ enum RKH_TRC_FMT
 		 *
 		 * 	\code
 		 * 	...
-		 * 	static rkhui8_t ep0_sto[ SIZEOF_EP0STO ],
+		 * 	static rui8_t ep0_sto[ SIZEOF_EP0STO ],
 		 * 					ep1_sto[ SIZEOF_EP1STO ];
 		 *	
 		 *	...
@@ -2804,7 +2817,7 @@ enum RKH_TRC_FMT
 		#define RKH_TR_FWK_EPOOL( __epo )								\
 				do{ 													\
 					static RKHROM char __epo_n[] = #__epo;				\
-					rkh_trc_obj( RKH_TE_FWK_EPOOL, (rkhui8_t *)__epo, 	\
+					rkh_trc_obj( RKH_TE_FWK_EPOOL, (rui8_t *)__epo, 	\
   											                 __epo_n );	\
 				} while(0)
 
@@ -2839,7 +2852,7 @@ enum RKH_TRC_FMT
 		#define RKH_TR_FWK_QUEUE( __qo )								\
 				do{ 													\
 					static RKHROM char __qo_n[] = #__qo;				\
-					rkh_trc_obj( RKH_TE_FWK_QUEUE, (rkhui8_t *)__qo, 	\
+					rkh_trc_obj( RKH_TE_FWK_QUEUE, (rui8_t *)__qo, 		\
 												             __qo_n );	\
 				} while(0)
 
@@ -2965,7 +2978,7 @@ enum RKH_TRC_FMT
  *	event in compile-time with RKH_TRC_EN_TSTAMP = 0.
  */
 
-typedef rkhui8_t RKH_TE_T;
+typedef rui8_t RKH_TE_T;
 
 
 /**
@@ -2994,7 +3007,7 @@ void rkh_trc_init( void );
  * 	otherwise NULL pointer.
  */
 
-rkhui8_t *rkh_trc_get( void );
+rui8_t *rkh_trc_get( void );
 
 
 /**
@@ -3025,7 +3038,7 @@ rkhui8_t *rkh_trc_get( void );
  * 	\a nget is set to zero.
  */
 
-rkhui8_t *rkh_trc_get_block( TRCQTY_T *nget );
+rui8_t *rkh_trc_get_block( TRCQTY_T *nget );
 
 
 /**
@@ -3040,7 +3053,7 @@ rkhui8_t *rkh_trc_get_block( TRCQTY_T *nget );
  *  rkh_trc_put() is NOT protected with a critical section.
  */
 
-void rkh_trc_put( rkhui8_t b );
+void rkh_trc_put( rui8_t b );
 
 
 #if RKH_TRC_EN == RKH_ENABLED && RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
@@ -3250,7 +3263,7 @@ void rkh_trc_put( rkhui8_t b );
  * 					EUNCHANGE.
  */
 
-void rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode );
+void rkh_trc_filter_group_( rui8_t ctrl, rui8_t grp, rui8_t mode );
 
 
 /**
@@ -3297,7 +3310,7 @@ void rkh_trc_filter_group_( rkhui8_t ctrl, rkhui8_t grp, rkhui8_t mode );
  * 					RKH_TRC_EVENTS.
  */
 
-void rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt );
+void rkh_trc_filter_event_( rui8_t ctrl, rui8_t evt );
 
 
 /**
@@ -3315,7 +3328,7 @@ void rkh_trc_filter_event_( rkhui8_t ctrl, rkhui8_t evt );
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
  */
 
-HUInt rkh_trc_isoff_( rkhui8_t e );
+ruint rkh_trc_isoff_( rui8_t e );
 
 
 /**
@@ -3335,7 +3348,7 @@ HUInt rkh_trc_isoff_( rkhui8_t e );
  */
 
 void rkh_trc_simfil( 	const RKH_TRC_FIL_T *filter, 
-						RKH_TRC_FSLOT slot, rkhui8_t mode );
+						RKH_TRC_FSLOT slot, rui8_t mode );
 
 
 /**
@@ -3353,7 +3366,7 @@ void rkh_trc_simfil( 	const RKH_TRC_FIL_T *filter,
  * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
  */
 
-HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
+ruint rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
 
 
 /**
@@ -3440,7 +3453,7 @@ HUInt rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
  * 					enumerated in RKH_TRC_EVENTS.
  */
 
-void rkh_trc_begin( rkhui8_t eid );
+void rkh_trc_begin( rui8_t eid );
 
 
 /**
@@ -3478,7 +3491,7 @@ void rkh_trc_clear_chk( void );
  * 	\param d		data
  */
 
-void rkh_trc_u8( rkhui8_t d );
+void rkh_trc_u8( rui8_t d );
 
 
 /**
@@ -3489,7 +3502,7 @@ void rkh_trc_u8( rkhui8_t d );
  * 	\param d		data
  */
 
-void rkh_trc_u16( rkhui16_t d );
+void rkh_trc_u16( rui16_t d );
 
 
 /**
@@ -3500,7 +3513,7 @@ void rkh_trc_u16( rkhui16_t d );
  * 	\param d		data
  */
 
-void rkh_trc_u32( rkhui32_t d );
+void rkh_trc_u32( rui32_t d );
 
 
 /**
@@ -3517,7 +3530,7 @@ void rkh_trc_str( const char *s );
 /**
  */
 
-void rkh_trc_obj( rkhui8_t tre, rkhui8_t *obj, const char *obj_name );
+void rkh_trc_obj( rui8_t tre, rui8_t *obj, const char *obj_name );
 
 
 /**
@@ -3535,7 +3548,7 @@ void rkh_trc_ao( struct RKH_SMA_T *ao );
 /**
  */
 
-void rkh_trc_state( struct RKH_SMA_T *ao, rkhui8_t *state );
+void rkh_trc_state( struct RKH_SMA_T *ao, rui8_t *state );
 
 
 /**
@@ -3547,7 +3560,7 @@ void rkh_trc_state( struct RKH_SMA_T *ao, rkhui8_t *state );
  * 	\param d		data
  */
 
-void rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d );
+void rkh_trc_fmt_u8( rui8_t fmt, rui8_t d );
 
 
 /**
@@ -3559,7 +3572,7 @@ void rkh_trc_fmt_u8( rkhui8_t fmt, rkhui8_t d );
  * 	\param d		data
  */
 
-void rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d );
+void rkh_trc_fmt_u16( rui8_t fmt, rui16_t d );
 
 
 /**
@@ -3571,7 +3584,7 @@ void rkh_trc_fmt_u16( rkhui8_t fmt, rkhui16_t d );
  * 	\param d		data
  */
 
-void rkh_trc_fmt_u32( rkhui8_t fmt, rkhui32_t d );
+void rkh_trc_fmt_u32( rui8_t fmt, rui32_t d );
 
 
 /**
@@ -3593,7 +3606,7 @@ void rkh_trc_fmt_str( const char *s );
  * 	\param size		size of memory block.
  */
 
-void rkh_trc_fmt_mem( rkhui8_t const *mem, rkhui8_t size );
+void rkh_trc_fmt_mem( rui8_t const *mem, rui8_t size );
 
 
 #endif

@@ -75,15 +75,15 @@
 
 RKH_THIS_MODULE
 
-static rkhui32_t l_rnd;			/* random seed */
+static rui32_t l_rnd;			/* random seed */
 
 static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
 
-static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
 
 #if defined( RKH_USE_TRC_SENDER )
-static rkhui8_t l_isr_kbd;
+static rui8_t l_isr_kbd;
 #endif
 
 
@@ -105,7 +105,7 @@ static rkhui8_t l_isr_kbd;
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
 					kuart_putnchar( UART3_BASE_PTR, 	\
 								(char *)(buf_), 		\
-								(rkhui16_t)(len_))
+								(rui16_t)(len_))
 #else
 	#define SERIAL_TRACE_OPEN()						(void)0
 	#define SERIAL_TRACE_CLOSE()					(void)0
@@ -118,7 +118,7 @@ static
 void
 bsp_publish( const RKH_EVT_T *e )
 {
-	HInt cn;
+	rint cn;
 
 	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
 
@@ -197,7 +197,7 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *blk;
+	rui8_t *blk;
 	TRCQTY_T nbytes;
 	RKH_SR_ALLOC();
 
@@ -209,7 +209,7 @@ rkh_trc_flush( void )
 		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
 
-		if((blk != (rkhui8_t *)0))
+		if((blk != (rui8_t *)0))
 		{
 			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
 		}
@@ -220,7 +220,7 @@ rkh_trc_flush( void )
 #endif
 
 void
-bsp_switch_evt( rkhui8_t s, rkhui8_t st )
+bsp_switch_evt( rui8_t s, rui8_t st )
 {
 	if( st == SW_RELEASED )
 		return;
@@ -230,7 +230,7 @@ bsp_switch_evt( rkhui8_t s, rkhui8_t st )
 }
 
 
-rkhui32_t 
+rui32_t 
 bsp_rand( void )
 {  
 	/* 
@@ -238,20 +238,20 @@ bsp_rand( void )
 	 * "Super-Duper" Linear Congruential Generator (LCG)
 	 * LCG(2^32, 3*7*11*13*23, 0, seed) [MS]
 	 */
-    l_rnd = (rkhui32_t)(l_rnd * (3*7*11*13*23));
+    l_rnd = (rui32_t)(l_rnd * (3*7*11*13*23));
     return l_rnd >> 8;
 }
 
 
 void 
-bsp_srand( rkhui32_t seed )
+bsp_srand( rui32_t seed )
 {
     l_rnd = seed;
 }
 
 
 void 
-bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
+bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 {
 	(void)clino;
 	(void)req_time;
@@ -259,14 +259,14 @@ bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 
 
 void 
-bsp_cli_req( rkhui8_t clino )
+bsp_cli_req( rui8_t clino )
 {
 	set_cli_sled( clino, CLI_WAITING );
 }
 
 
 void 
-bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
+bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
 	(void)using_time;
 
@@ -275,28 +275,28 @@ bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 
 
 void 
-bsp_cli_paused( rkhui8_t clino )
+bsp_cli_paused( rui8_t clino )
 {
 	set_cli_sled( clino, CLI_PAUSED );
 }
 
 
 void 
-bsp_cli_resumed( rkhui8_t clino )
+bsp_cli_resumed( rui8_t clino )
 {
 	set_cli_sled( clino, CLI_IDLE );
 }
 
 
 void 
-bsp_cli_done( rkhui8_t clino )
+bsp_cli_done( rui8_t clino )
 {
 	set_cli_sled( clino, CLI_IDLE );
 }
 
 
 void 
-bsp_svr_recall( rkhui8_t clino )
+bsp_svr_recall( rui8_t clino )
 {
 	(void)clino;
 }
@@ -312,7 +312,7 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 void 
 bsp_init( int argc, char *argv[]  )
 {
-	HInt cn;
+	rint cn;
 
 	(void)argc;
 	(void)argv;

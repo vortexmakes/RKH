@@ -53,21 +53,21 @@
  * 	machine or compiler	dependent.
  *
  * 	\note
- * 	The 'HUInt' and 'HInt' will normally be the natural size 
+ * 	The 'ruint' and 'rint' will normally be the natural size 
  * 	for a particular machine. These types designates an integer 
  * 	type that is usually fastest to operate with among all integer 
  * 	types.
  */
 
-typedef signed char 	rkhi8_t;
-typedef signed short 	rkhi16_t;
-typedef signed long		rkhi32_t;
-typedef unsigned char 	rkhui8_t;
-typedef unsigned short 	rkhui16_t;
-typedef unsigned long	rkhui32_t;
+typedef signed char 	ri8_t;
+typedef signed short 	ri16_t;
+typedef signed long		ri32_t;
+typedef unsigned char 	rui8_t;
+typedef unsigned short 	rui16_t;
+typedef unsigned long	rui32_t;
 
-typedef unsigned char	HUInt;
-typedef signed char		HInt;
+typedef unsigned char	ruint;
+typedef signed char		rint;
 
 
 #endif

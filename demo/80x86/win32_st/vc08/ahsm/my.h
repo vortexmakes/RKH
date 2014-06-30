@@ -30,15 +30,15 @@ enum
 typedef struct
 {
 	RKH_EVT_T event;
-	rkhui16_t ts;
+	rui16_t ts;
 } MYEVT_T;
 
 
 typedef struct
 {
 	RKH_SMA_T sma;	/* base structure */
-	rkhui8_t x;		/* private member */
-	rkhui8_t y;		/* private member */
+	rui8_t x;		/* private member */
+	rui8_t y;		/* private member */
 } MYSM_T;			/* SMA derived from RKH_SMA_T structure */
 
 

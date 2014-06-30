@@ -249,7 +249,7 @@ enum
 typedef struct
 {
 	RKH_SMA_T sma;	/* base structure */
-	rkhui8_t cnt;	/* private member */
+	rui8_t cnt;	/* private member */
 } BKYSM_T;			/* SMA derived from RKH_SMA_T structure */
 
 
@@ -296,7 +296,7 @@ static RKH_EVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
 int
 main( int argc, char *argv[] )
 {
-	HInt cn;
+	rint cn;
 
 	/* invoke the rkh_fwk_init() function */
 	bsp_init( argc, argv );
@@ -899,7 +899,7 @@ static RKH_EVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
 void 
 svr_init( const struct RKH_SMA_T *sma )
 {
-	HInt cn;
+	rint cn;
 
 	(void)sma;
 	rkh_rq_init( &qreq, qreq_sto, MAX_SIZEOF_QREQ, NULL );
@@ -1068,14 +1068,14 @@ typedef enum sc_sigs_t
 typedef struct
 {
 	RKH_EVT_T e;			/** base structure */
-	rkhui8_t clino; 	/** client number (ID) */
+	rui8_t clino; 	/** client number (ID) */
 } REQ_EVT_T;
 
 
 typedef struct
 {
 	RKH_EVT_T e;			/** base structure */
-	rkhui8_t clino; 	/** client number (ID) */
+	rui8_t clino; 	/** client number (ID) */
 } START_EVT_T;
 
 
@@ -1101,9 +1101,9 @@ typedef struct
 typedef struct
 {
 	RKH_SMA_T sma;		                                   /* base structure */
-	rkhui32_t ntot;		                /* total number of attended requests */
+	rui32_t ntot;		                /* total number of attended requests */
 							  /* number of attended requests of every client */
-	rkhui32_t ncr[ NUM_CLIENTS ];
+	rui32_t ncr[ NUM_CLIENTS ];
 } SVR_T;			        /* Active Object derived from RKH_SMA_T structure */
 
 

@@ -74,7 +74,7 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
 					kuart_putnchar( UART5_BASE_PTR,		\
 								(char *)(buf_), 		\
-								(rkhui16_t)(len_))
+								(rui16_t)(len_))
 
 #else
 
@@ -153,7 +153,7 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *blk;
+	rui8_t *blk;
 	TRCQTY_T nbytes;
 	RKH_SR_ALLOC();
 
@@ -165,7 +165,7 @@ rkh_trc_flush( void )
 		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
 
-		if((blk != (rkhui8_t *)0))
+		if((blk != (rui8_t *)0))
 		{
 			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
 		}

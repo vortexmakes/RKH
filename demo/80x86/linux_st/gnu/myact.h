@@ -56,11 +56,11 @@ void terminate( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
  *	Defines branch's guards
  */
 
-HUInt y_0( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-HUInt y_1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-HUInt y_2( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-HUInt x1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-HUInt x2_or_x3( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+ruint y_0( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+ruint y_1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+ruint y_2( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+ruint x1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+ruint x2_or_x3( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
 
 
 /*

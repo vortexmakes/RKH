@@ -68,7 +68,7 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
 									uart0_putnchar( UART0_BASE_PTR,	\
 										(char *)(buf_), 		\
-										(rkhui16_t)(len_))
+										(rui16_t)(len_))
 
 #else
 	#define SERIAL_TRACE_OPEN()						(void)0
@@ -145,7 +145,7 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *blk;
+	rui8_t *blk;
 	TRCQTY_T nbytes;
 	RKH_SR_ALLOC();
 
@@ -157,7 +157,7 @@ rkh_trc_flush( void )
 		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
 
-		if((blk != (rkhui8_t *)0))
+		if((blk != (rui8_t *)0))
 		{
 			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
 		}
@@ -197,7 +197,7 @@ bsp_init( int argc, char *argv[]  )
 	RKH_ENA_INTERRUPT();
 }
 
-static rkhui8_t led_cnt = 0;
+static rui8_t led_cnt = 0;
 
 void 
 bsp_led_on( void )

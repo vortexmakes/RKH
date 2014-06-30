@@ -591,6 +591,13 @@
 
 #define RKH_TRC_SIZEOF_STREAM			128u
 
+/**
+ *	Specify the maximum number of trace events in the stream. The smaller 
+ *	this number, the lower the RAM consumption.
+ */
+
+#define RKH_TRC_RESP_TIME_MEAS_EN		RKH_DISABLED
+
 
 /* --- Configuration options related to queue (by reference) facility ----- */
 

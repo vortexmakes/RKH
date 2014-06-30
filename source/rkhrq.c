@@ -90,7 +90,7 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 
 
 #if RKH_RQ_EN_IS_FULL == RKH_ENABLED
-HUInt 
+ruint 
 rkh_rq_is_full( RKH_RQ_T *q )
 {
 	RKH_RQNE_T qty;
@@ -285,7 +285,7 @@ rkh_rq_deplete( RKH_RQ_T *q )
 
 
 #if RKH_RQ_EN_READ == RKH_ENABLED
-HUInt 
+ruint 
 rkh_rq_read( RKH_RQ_T *q, void *pe )
 {
 	RKH_SR_ALLOC();

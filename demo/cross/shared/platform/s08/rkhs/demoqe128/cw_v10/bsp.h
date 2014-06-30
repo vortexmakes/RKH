@@ -63,18 +63,18 @@
 
 
 void bsp_init( int argc, char *argv[] );
-rkhui32_t bsp_rand( void );
-void bsp_srand( rkhui32_t seed );
+rui32_t bsp_rand( void );
+void bsp_srand( rui32_t seed );
 
-void bsp_cli_req( rkhui8_t clino );
-void bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time );
-void bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time );
-void bsp_cli_paused( rkhui8_t clino );
-void bsp_cli_resumed( rkhui8_t clino );
-void bsp_cli_done( rkhui8_t clino );
-void bsp_svr_recall( rkhui8_t clino );
+void bsp_cli_req( rui8_t clino );
+void bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time );
+void bsp_cli_using( rui8_t clino, RKH_TNT_T using_time );
+void bsp_cli_paused( rui8_t clino );
+void bsp_cli_resumed( rui8_t clino );
+void bsp_cli_done( rui8_t clino );
+void bsp_svr_recall( rui8_t clino );
 void bsp_svr_paused( const RKH_SMA_T *sma );
 
-void bsp_switch_evt( rkhui8_t s, rkhui8_t st );
+void bsp_switch_evt( rui8_t s, rui8_t st );
 
 #endif

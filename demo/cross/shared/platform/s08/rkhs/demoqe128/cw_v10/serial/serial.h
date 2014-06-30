@@ -15,7 +15,7 @@
  * 	Initialize a channel 
  */
 
-void serial_init( HUInt channel );
+void serial_init( ruint channel );
 
 /*
  * 	put_nchar:
@@ -27,7 +27,7 @@ void serial_init( HUInt channel );
  * 	Blocks till there is sufficient space
  */
 
-void put_nchar( HUInt channel, const unsigned char *p, rkhui16_t qty );
+void put_nchar( ruint channel, const unsigned char *p, rui16_t qty );
 
 
 /*
@@ -38,7 +38,7 @@ void put_nchar( HUInt channel, const unsigned char *p, rkhui16_t qty );
  * 	Blocks till there is place
  */
 
-void put_string( HUInt channel, const char *p );
+void put_string( ruint channel, const char *p );
 
 /*
  *	put_char:
@@ -48,6 +48,6 @@ void put_string( HUInt channel, const char *p );
  * 	Blocks till there is place. 
  */
 
-void put_char( HUInt channel, const unsigned char c);
+void put_char( ruint channel, const unsigned char c);
 
 

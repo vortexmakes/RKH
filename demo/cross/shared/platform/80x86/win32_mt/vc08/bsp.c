@@ -69,17 +69,17 @@
 
 RKH_THIS_MODULE
 
-static rkhui32_t l_rnd;			/* random seed */
+static rui32_t l_rnd;			/* random seed */
 static RKH_DCLR_STATIC_EVENT( e_term, TERM );
 static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
-static rkhui8_t ep0sto[ SIZEOF_EP0STO ],
+static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
 #if defined( RKH_USE_TRC_SENDER )
-static rkhui8_t l_isr_kbd;
+static rui8_t l_isr_kbd;
 #endif
 
 #if RKH_TRC_EN == RKH_ENABLED
-static HUInt running;
+static ruint running;
 static HANDLE idle_thread;
 #endif
 
@@ -156,7 +156,7 @@ static
 void
 bsp_publish( const RKH_EVT_T *e )
 {
-	HInt cn;
+	rint cn;
 
 	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
 
@@ -204,7 +204,7 @@ rkh_hook_exit( void )
 {
 	RKH_TRC_FLUSH();
 #if RKH_TRC_EN == RKH_ENABLED
-	running = (rkhui8_t)0;
+	running = (rui8_t)0;
 #endif
 }
 
@@ -267,7 +267,7 @@ idle_thread_function( LPVOID par )
     (void)par;
 
     SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_IDLE );
-    running = (rkhui8_t)1;
+    running = (rui8_t)1;
 
     while( running )
 	{
@@ -312,7 +312,7 @@ rkh_trc_getts( void )
 void 
 rkh_trc_flush( void )
 {
-	rkhui8_t *blk;
+	rui8_t *blk;
 	TRCQTY_T nbytes;
 	RKH_SR_ALLOC();
 
@@ -324,7 +324,7 @@ rkh_trc_flush( void )
 		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
 
-		if((blk != (rkhui8_t *)0))
+		if((blk != (rui8_t *)0))
 		{
 			FTBIN_FLUSH( blk, nbytes );
 			TCP_TRACE_SEND_BLOCK( blk, nbytes );
@@ -336,7 +336,7 @@ rkh_trc_flush( void )
 #endif
 
 
-rkhui32_t 
+rui32_t 
 bsp_rand( void )
 {  
 	/* 
@@ -350,14 +350,14 @@ bsp_rand( void )
 
 
 void 
-bsp_srand( rkhui32_t seed )
+bsp_srand( rui32_t seed )
 {
     l_rnd = seed;
 }
 
 
 void 
-bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
+bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 {
 	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
 									CLI_ID(clino), req_time );
@@ -365,14 +365,14 @@ bsp_cli_wait_req( rkhui8_t clino, RKH_TNT_T req_time )
 
 
 void 
-bsp_cli_req( rkhui8_t clino )
+bsp_cli_req( rui8_t clino )
 {
 	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
 
 void 
-bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
+bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
 	printf( "Client[%d] - Using server for %d [seg]\n", 
 									CLI_ID(clino), using_time );
@@ -380,28 +380,28 @@ bsp_cli_using( rkhui8_t clino, RKH_TNT_T using_time )
 
 
 void 
-bsp_cli_paused( rkhui8_t clino )
+bsp_cli_paused( rui8_t clino )
 {
 	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
 }
 
 
 void 
-bsp_cli_resumed( rkhui8_t clino )
+bsp_cli_resumed( rui8_t clino )
 {
 	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
 }
 
 
 void 
-bsp_cli_done( rkhui8_t clino )
+bsp_cli_done( rui8_t clino )
 {
 	printf( "Client[%d] - Done\n", CLI_ID(clino) );
 }
 
 
 void 
-bsp_svr_recall( rkhui8_t clino )
+bsp_svr_recall( rui8_t clino )
 {
 	printf( "%s Recall a deferred request from client[%d]\n", 
 									SVR_NAME, CLI_ID(clino) );
@@ -411,7 +411,7 @@ bsp_svr_recall( rkhui8_t clino )
 void 
 bsp_svr_paused( const RKH_SMA_T *sma )
 {
-	HInt cn;
+	rint cn;
 	SVR_T *ao;
 
 	ao = RKH_CAST(SVR_T, sma);
@@ -428,7 +428,7 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 void 
 bsp_init( int argc, char *argv[] )
 {
-	HInt cn;
+	rint cn;
 
 	(void)argc;
 	(void)argv;

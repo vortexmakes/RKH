@@ -1726,11 +1726,50 @@
 #endif
 
 
-#define mksevt( evt, es )		\
-							((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es;		\
-							((RKH_EVT_T*)(evt))->nref = 0;
-#define mkievt( evt, es )		\
-							RKHROM RKH_EVT_T evt = { es, 0 }
+#if (RKH_TRC_EN == RKH_ENABLED) && \
+	(RKH_TRC_RESP_TIME_MEAS_EN == RKH_ENABLED)
+#define MK_SEVT( evt, es ) 													\
+													/* signal */ 			\
+					((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es; 				\
+										   			/* reference number */ 	\
+					((RKH_EVT_T*)(evt))->nref = 0;	  						\
+													/* pool ID */			\
+					((RKH_EVT_T*)(evt))->pool = 0;							\
+													/* post-event */		\
+					((RKH_EVT_T*)(evt))->post = 0
+
+#define MK_IEVT( evt, es )													\
+													/* signal */ 			\
+													/* reference number */ 	\
+													/* pool ID */ 			\
+													/* post-event */ 		\
+					RKHROM RKH_EVT_T evt = {es,	0, 0, 0}
+
+#define R_SAVE_POST( evt ) 													\
+					if( R_CAST_EVT( evt )->pool != 0 )						\
+					{ 														\
+						R_CAST_EVT(evt)->post = rkh_postid++
+					}
+					
+#else
+#define MK_SEVT( evt, es ) 													\
+													/* signal */ 			\
+					((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es; 				\
+										   			/* reference number */ 	\
+					((RKH_EVT_T*)(evt))->nref = 0;	  						\
+													/* pool ID */			\
+					((RKH_EVT_T*)(evt))->pool = 0
+
+#define MK_IEVT( evt, es )													\
+													/* signal */ 			\
+													/* reference number */ 	\
+													/* pool ID */ 			\
+					RKHROM RKH_EVT_T evt = {es,	0, 0}
+
+#define R_SAVE_POST( evt ) \
+					(void)0
+#endif
+
 
 #ifndef RKH_DIS_INTERRUPT
 	#error  "rkhport.h, Must be defined the platform-dependent macro RKH_DIS_INTERRUPT"
@@ -2150,8 +2189,8 @@ struct RKH_SMA_T;
 
 typedef struct RKH_SMAI_T
 {
-	rkhui16_t ndevt;			/**< # of dispatched events */
-	rkhui16_t exectr;			/**< # of executed transitions */
+	rui16_t ndevt;			/**< # of dispatched events */
+	rui16_t exectr;			/**< # of executed transitions */
 } RKH_SMAI_T;
 
 
@@ -2178,7 +2217,7 @@ typedef struct ROMRKH_T
 	 * 	RKH_LOWEST_PRIO. The lower the number, the higher the priority. 
 	 */
 
-	rkhui8_t prio;
+	rui8_t prio;
 
 	/**
  	 * 	\brief
@@ -2188,7 +2227,7 @@ typedef struct ROMRKH_T
 	 * 	the rkh.h file.
 	 */
 
-	rkhui8_t ppty;
+	rui8_t ppty;
 
 	/**
 	 * 	\brief
@@ -2263,8 +2302,8 @@ typedef struct ROMRKH_T
  *	typedef struct
  *	{
  *		RKH_SMA_T sm;	// base structure
- *		rkhui8_t x;		// private member
- *		rkhui8_t y;		// private member
+ *		rui8_t x;		// private member
+ *		rui8_t y;		// private member
  *	} MYSM_T;
  *
  * 	//	static instance of SMA object
@@ -2352,7 +2391,7 @@ typedef struct RKH_SMA_T
 	 * 	of the SMA is running.
 	 */
 
-	rkhui8_t running;
+	rui8_t running;
 
 	/** 
  	 * 	\brief
@@ -2600,23 +2639,24 @@ typedef struct RKH_SMA_T
 
 #if (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
-	typedef HUInt (*RKH_GUARD_T)( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+	typedef ruint (*RKH_GUARD_T)( 	const struct RKH_SMA_T *sma, 
+									RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
-	HUInt rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
+	ruint rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
 #elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED)
-	typedef HUInt (*RKH_GUARD_T)( RKH_EVT_T *pe );
+	typedef ruint (*RKH_GUARD_T)( RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
-	HUInt rkh_else( RKH_EVT_T *pe );
+	ruint rkh_else( RKH_EVT_T *pe );
 #elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
 		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
-	typedef HUInt (*RKH_GUARD_T)( const struct RKH_SMA_T *sma );
+	typedef ruint (*RKH_GUARD_T)( const struct RKH_SMA_T *sma );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
-	HUInt rkh_else( const struct RKH_SMA_T *sma );
+	ruint rkh_else( const struct RKH_SMA_T *sma );
 #else
-	typedef HUInt (*RKH_GUARD_T)( void );
+	typedef ruint (*RKH_GUARD_T)( void );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
-	HUInt rkh_else( void );
+	ruint rkh_else( void );
 #endif
 
 
@@ -2642,7 +2682,7 @@ typedef struct RKH_BASE_T
 	 *	- \b RKH_DHISTORY: 		deep history pseudostate.
 	 */
 
-	HUInt type;					
+	ruint type;					
 
 	/**
 	 * 	\brief
@@ -3122,7 +3162,7 @@ typedef struct RKH_SEXP_T
 	 *	Index of exit point table.
 	 */
 
-	rkhui8_t ix;
+	rui8_t ix;
 
 	/**	
  	 * 	\brief
