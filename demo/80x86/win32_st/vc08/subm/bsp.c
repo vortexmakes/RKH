@@ -167,7 +167,7 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 			rkh_sma_post_fifo( my, &eterm );
 		else
 		{
-			mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+			mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
 			mye->ts = ( rui16_t )rand();
 			rkh_sma_post_fifo( my, RKH_EVT_CAST(mye) );
 		}

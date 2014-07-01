@@ -164,7 +164,7 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_ENTER_CRITICAL_();
 	RKH_INC_REF( e );
-	R_SAVE_POST( e );
+	RKH_SAVE_POST( e );
 	RKH_EXIT_CRITICAL_();
 
 	rkh_rq_put_fifo( &sma->equeue, e );
@@ -189,7 +189,7 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_ENTER_CRITICAL_();
 	RKH_INC_REF( e );
-	R_SAVE_POST( e );
+	RKH_SAVE_POST( e );
 	RKH_EXIT_CRITICAL_();
 
     rkh_rq_put_lifo( &sma->equeue, e );

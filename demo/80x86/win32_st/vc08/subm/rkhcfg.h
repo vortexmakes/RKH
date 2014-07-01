@@ -91,7 +91,7 @@
 /**
  * 	Specify the data type of event size. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. See #RKH_ES_T, rkh_fwk_epool_register(), and 
- *	RKH_ALLOC_EVENT().
+ *	RKH_ALLOC_EVT().
  */
 
 #define RKH_SIZEOF_ESIZE				16

@@ -2144,7 +2144,7 @@ void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
  *
  * 	\note
  * 	This function is internal to RKH and the user application should 
- * 	not call it. Please use #RKH_ALLOC_EVENT() macro.
+ * 	not call it. Please use #RKH_ALLOC_EVT() macro.
  *
  * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
  * 	rkh_set_static_event() and rkh_gc().
@@ -2165,10 +2165,10 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	to three event pools (e.g., small, medium, and large events, like shirt 
  *	sizes). It returns a pointer to the event already cast to the event type 
  *	(et*). Here is an example of dynamic event allocation with the macro 
- *	RKH_ALLOC_EVENT():
+ *	RKH_ALLOC_EVT():
  *
  *	\code
- *	MYEVT_T *mye = RKH_ALLOC_EVENT( MYEVT_T, DATA );
+ *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
  *	mye->y = mye->x = 0;
  *	...
  *	\endcode
@@ -2183,10 +2183,10 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  */
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-		#define RKH_ALLOC_EVENT( et, e ) \
+		#define RKH_ALLOC_EVT( et, e ) \
 					(et*)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
-		#define RKH_ALLOC_EVENT( et, e ) \
+		#define RKH_ALLOC_EVT( et, e ) \
 					(void)0
 #endif
 
@@ -2304,6 +2304,15 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 #define RKH_DCLR_STATIC_EVENT( e, es )					\
 										MK_IEVT( e, es )
 
+/**
+ */
+
+#define RKH_ROM_STATIC_EVT( ev_name, ev_sig )
+
+/**
+ */
+
+#define RKH_RAM_STATIC_EVT( ev_name, ev_sig )
 
 /**
  * 	\brief
@@ -2564,7 +2573,7 @@ ruint rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  * 	{
  * 		START_EVT_T *e_start;
  * 		
- * 		e_start = RKH_ALLOC_EVENT( START_EVT_T, START );
+ * 		e_start = RKH_ALLOC_EVT( START_EVT_T, START );
  * 		e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
  * 		RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ), 
  *												RKH_EVT_CAST(e_start), sma );

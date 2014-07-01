@@ -2272,7 +2272,7 @@ set_config( const struct rkh_t *sma, RKH_EVT_T *pe )
 	(void)sma;		/* argument not used */
 	(void)pe;		/* argument not used */
 
-	e = RKH_ALLOC_EVENT( MYEVT_T, SIX );
+	e = RKH_ALLOC_EVT( MYEVT_T, SIX );
 	e->ts = ( rui16_t )rand();
 	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
 }
@@ -2353,7 +2353,7 @@ structures derived from RKH_EVT_T.
 The RKH takes the \a 'e' member of RKH_EVT_T structure for triggering a 
 state transition.
 
-See also rkh_sma_put_fifo(), rkh_sma_put_lifo(), RKH_ALLOC_EVENT(), 
+See also rkh_sma_put_fifo(), rkh_sma_put_lifo(), RKH_ALLOC_EVT(), 
 RKH_SET_STATIC_EVENT(), and RKH_GC().
 
 \n Prev: \ref qref "Quick reference"
@@ -2465,8 +2465,8 @@ rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
 ...
 
 (5) RKH_SET_STATIC_EVENT( &tout, TIMEOUT );
-(6)	DIAL_T *de = RKH_ALLOC_EVENT( DIAL_T, DIALED );
-(7)	SETUP_T *se = RKH_ALLOC_EVENT( SETUP_T, SET_CONFIG );
+(6)	DIAL_T *de = RKH_ALLOC_EVT( DIAL_T, DIALED );
+(7)	SETUP_T *se = RKH_ALLOC_EVT( SETUP_T, SET_CONFIG );
 (8)	se->volume = 0;
 	se->baud_rate = DEFAULT_BAUD_RATE;
 	se->iloop = 2;
@@ -2489,7 +2489,7 @@ Explanation
 			in ROM like the \c OFFHOOK event because it can change. 
 \li (5)		This macro set the event <c>TIMEOUT( timerno )</c> with \c TIMEOUT 
 			signal and establishes it as one <em>static event</em>.
-\li (6-7) 	The RKH_ALLOC_EVENT() macro dynamically creates a new instances 
+\li (6-7) 	The RKH_ALLOC_EVT() macro dynamically creates a new instances 
 			events of type \c DIAL_T and \c SETUP_T with \c DIALED and 
 			\c SET_CONFIG signals. These events are represented like this:
 			<c>DIALED( dial, qty )</c> and 
@@ -2548,7 +2548,7 @@ directly posts the event to the event queue of the consumer SMA
 
 \code
 ...
-(1) mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(1) mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
 (2) mye->ts = ( rui16_t )rand();
 (3) rkh_sma_post_fifo( my, ( RKH_EVT_T* )mye );
 \endcode
@@ -2783,7 +2783,7 @@ for more information about this.
 			}
 			else
 			{
-(8)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(8)				mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
 (9)				mye->ts = ( rui16_t )rand();
 (10)			rkh_sma_dispatch( my, ( RKH_EVT_T* )mye );
 			}

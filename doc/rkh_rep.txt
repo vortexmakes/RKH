@@ -172,7 +172,7 @@ of posting dynamic and static events from the interrupt service routines
 (3)				rkh_sma_post_fifo( my, &eterm );
 			else
 			{
-(4)				mye = RKH_ALLOC_EVENT( MYEVT_T, kbmap( c ) );
+(4)				mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
 (5)				mye->ts = ( rui16_t )rand();
 (6)				rkh_sma_post_fifo( my, ( RKH_EVT_T* )mye );
 			}
@@ -188,7 +188,7 @@ of posting dynamic and static events from the interrupt service routines
 		one static event. The created event object is explicitly placed in ROM.
 \li (2)	Win32 thread to emulate keyboard ISR.
 \li (3) The static event is posted directly to the \c my SMA.
-\li (4) The macro RKH_ALLOC_EVENT() dinamically allocates an instance of 
+\li (4) The macro RKH_ALLOC_EVT() dinamically allocates an instance of 
 		MYEVT_T event from an event pool. The macro also performs the 
 		association between the signal and the allocated event.
 		The signals are generated from the key strokes by means of 

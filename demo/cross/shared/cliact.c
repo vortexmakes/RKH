@@ -80,7 +80,7 @@ cli_req( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 	REQ_EVT_T *e_req;
 
 	(void)pe;
-	e_req = RKH_ALLOC_EVENT( REQ_EVT_T, REQ );
+	e_req = RKH_ALLOC_EVT( REQ_EVT_T, REQ );
 	e_req->clino = RKH_GET_PRIO(sma);
 	RKH_SMA_POST_FIFO( svr, RKH_EVT_CAST(e_req), sma );
 	bsp_cli_req( e_req->clino );

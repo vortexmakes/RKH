@@ -70,7 +70,7 @@ svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	START_EVT_T *e_start;
 
-	e_start = RKH_ALLOC_EVENT( START_EVT_T, START );
+	e_start = RKH_ALLOC_EVT( START_EVT_T, START );
 	e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
 	RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ), 
 												RKH_EVT_CAST(e_start), sma );

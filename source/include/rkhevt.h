@@ -165,8 +165,8 @@ typedef struct RKH_EVT_T
 	 * 	thus the discrete response time of system for that event.
 	 *	It is number is incremented on post-event and is sent to Trazer on 
 	 *	dispatch-event "as is". 
-	 *	Discrete response time =	time-stamp (on post-event) - 
-	 *								time-stamp (on dispatch-event)
+	 *	Discrete response time =	time-stamp (on dispatch-event) - 
+	 *								time-stamp (on post-event)
 	 */
 
 #if (RKH_TRC_EN == RKH_ENABLED) && \
