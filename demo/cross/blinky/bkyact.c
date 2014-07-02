@@ -16,10 +16,10 @@
 /*
  * 	Declare and allocate the 'e_tout' event.
  * 	The 'e_tout' event with TIMEOUT signal never changes, so it can be 
- * 	statically allocated just once by means of RKH_DCLR_STATIC_EVENT() macro.
+ * 	statically allocated just once by means of RKH_ROM_STATIC_EVENT() macro.
  */
 
-static RKH_DCLR_STATIC_EVENT( e_tout, TIMEOUT );
+static RKH_ROM_STATIC_EVENT( e_tout, TIMEOUT );
 
 
 /*

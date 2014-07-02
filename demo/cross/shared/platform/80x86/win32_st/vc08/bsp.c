@@ -73,8 +73,8 @@ static rui32_t l_rnd;			/* random seed */
 static DWORD tick_msec;			/* clock tick in msec */
 rui8_t running;
 
-static RKH_DCLR_STATIC_EVENT( e_term, TERM );
-static RKH_DCLR_STATIC_EVENT( e_pause, PAUSE );
+static RKH_ROM_STATIC_EVENT( e_term, TERM );
+static RKH_ROM_STATIC_EVENT( e_pause, PAUSE );
 
 static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];

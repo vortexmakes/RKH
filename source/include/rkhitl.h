@@ -1181,30 +1181,6 @@
 	#error  "                               [     && <= 2048]                 "
 	#endif
 
-	#ifndef	RKH_TRC_RESP_TIME_MEAS_EN
-	#error "RKH_TRC_RESP_TIME_MEAS_EN              not #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "                                    [     || RKH_DISABLED]        "
-
-	#elif 	((RKH_TRC_RESP_TIME_MEAS_EN != RKH_ENABLED) && \
-    	    	(RKH_TRC_RESP_TIME_MEAS_EN != RKH_DISABLED))
-	#error "RKH_TRC_RESP_TIME_MEAS_EN        illegally #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be  RKH_ENABLED ]       "
-	#error "                                    [     ||  RKH_DISABLED]       "
-
-	#elif	((RKH_TRC_EN == RKH_ENABLED)     && \
-			 (RKH_TRC_RESP_TIME_MEAS_EN == RKH_ENABLED))
-		
-		#if ((RKH_TRC_ALL == RKH_ENABLED)     || \
-			 ((RKH_TRC_EN_SMA == RKH_ENABLED) && \
-			  (RKH_TRC_EN_SM_DCH == RKH_ENABLED)))
-		#define RKH_TRC_RT_MEAS
-		#else
-		#error "Enabling discrete response time measurement requires to ...   "
-		#error "... enable (RKH_ENABLED) options RKH_TRC_ALL or RKH_TRC_EN_SMA"
-		#endif
-	#endif
-
 #endif
 
 /*  FRAMEWORK     ---------------------------------------------------------- */
@@ -1750,35 +1726,16 @@
 #endif
 
 
-#if defined( RKH_TRC_RT_MEAS )
-#define MK_SEVT( evt, es ) 													\
-					((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es; 				\
-					((RKH_EVT_T*)(evt))->nref = 0;	  						\
-					((RKH_EVT_T*)(evt))->pool = 0;							\
-					((RKH_EVT_T*)(evt))->post = 0
-
-#define MK_IEVT( evt, es )													\
-					RKHROM RKH_EVT_T evt = {es,	0, 0, 0}
-
-#define RKH_SAVE_POST( evt ) 												\
-					if((R_CAST_EVT(evt)->pool != 0) || 						\
-					   (R_CAST_EVT( evt )->nref == (rui8_t)1))				\
-					{ 														\
-						R_CAST_EVT(evt)->post = rkh_postid++;				\
-					}														\
-					
-#else
-#define MK_SEVT( evt, es ) 													\
-					((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es; 				\
-					((RKH_EVT_T*)(evt))->nref = 0;	  						\
+#define MK_SET_EVT( evt, es ) 									\
+					((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es; 	\
+					((RKH_EVT_T*)(evt))->nref = 0;	  			\
 					((RKH_EVT_T*)(evt))->pool = 0
 
-#define MK_IEVT( evt, es )													\
-					RKHROM RKH_EVT_T evt = {es,	0, 0}
+#define MK_EVT( evt, es )										\
+					RKH_EVT_T evt = {es, 0, 0}
 
-#define RKH_SAVE_POST( evt ) \
-					(void)0
-#endif
+#define MK_ROM_EVT( evt, es )									\
+					RKHROM RKH_EVT_T evt = {es,	0, 0}
 
 
 #ifndef RKH_DIS_INTERRUPT

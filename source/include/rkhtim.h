@@ -211,7 +211,7 @@ struct RKH_TMR_T
  *	#define MY_TICK				100
  *
  *	static RKH_TMR_T my_timer;
- *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
+ *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
  * 	rkh_tim_init( &my_timer, &e_timer, my_timer_hook );
@@ -258,7 +258,7 @@ struct RKH_TMR_T
  *	#define MY_TICK				100
  *
  *	static RKH_TMR_T my_timer;
- *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
+ *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
  * 	rkh_tim_init( &my_timer, e_timer, my_timer_hook );
@@ -292,7 +292,7 @@ struct RKH_TMR_T
  *	#define MY_TICK			100
  *
  *	static RKH_TMR_T my_timer;
- *	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
+ *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
  * 	rkh_tim_init( &my_timer, &e_timer, my_timer_hook );

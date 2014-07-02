@@ -165,11 +165,6 @@ static RKHROM rui8_t trcgmtbl[] =
 };
 #endif
 
-#if (RKH_TRC_EN == RKH_ENABLED) && \
-	(RKH_TRC_RESP_TIME_MEAS_EN == RKH_ENABLED)
-rui8_t rkh_postid;
-#endif
-
 static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
 static RKH_TE_T *trcin, *trcout, *trcend;
 static rui8_t chk;

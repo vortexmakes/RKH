@@ -63,7 +63,7 @@ RKH_THIS_MODULE
 
 static unsigned short tick_msec;			/* clock tick in msec */
 rui8_t running;
-static RKH_DCLR_STATIC_EVENT( ev_term, TERMINATE );
+static RKH_ROM_STATIC_EVENT( ev_term, TERMINATE );
 
 
 /* 

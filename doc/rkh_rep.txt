@@ -152,7 +152,7 @@ of posting dynamic and static events from the interrupt service routines
 	#define ESC				0x1B
 	#define kbmap( c )		( (c) - '0' )
 
-(1)	static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+(1)	static RKH_ROM_STATIC_EVENT( eterm, TERM );
 
 	...
 
@@ -183,7 +183,7 @@ of posting dynamic and static events from the interrupt service routines
 
 
 \li (1) The TERM event never changes, so it can be statically allocated just 
-		once. The RKH_DCLR_STATIC_EVENT() macro declares and initializes the 
+		once. The RKH_ROM_STATIC_EVENT() macro declares and initializes the 
 		event structure \e eterm with \a TERM signal and establishes it as 
 		one static event. The created event object is explicitly placed in ROM.
 \li (2)	Win32 thread to emulate keyboard ISR.

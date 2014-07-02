@@ -2252,16 +2252,33 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	it as one static event.
  *
  *	\sa
- *	RKH_DCLR_STATIC_EVENT() macro.
+ *	RKH_ROM_STATIC_EVENT() macro.
  *
  *	Example:
  *	\code
+ *	typedef struct
+ *	{ 
+ *		RKH_EVT_T e;
+ *		rui8_t cmd;
+ *	} RPC_REQ_T;
+ *	
+ *	typedef struct
+ *	{
+ *		RPC_REQ_T e;
+ *		rkhui8_t txtsz; 
+ *		EADR_T dst;
+ *		EADR_T sc;
+ *		char txt[ PDU_SIZEOF_UD_ASCII ];
+ *	} REQ_SEND_SMS_T;
+ *	
  *	...
- *	static RKH_EVT_T e;
- *
+ *	static REQ_SEND_SMS_T ev_txsm;
+ *	
+ *	...
  * 	some_function( ... )
  * 	{
- *		RKH_SET_STATIC_EVENT( &e, TOUT );
+ * 		RKH_SET_STATIC_EVENT( &ev_txsm, REQ_SEND_SMS );
+ * 		ev_txsm.e.cmd = RPC_SEND_SMS;
  *		...
  *	}
  *	\endcode
@@ -2271,48 +2288,65 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  * 					a state transition.
  */
 
-#define RKH_SET_STATIC_EVENT( e, es )				\
-										MK_SEVT( e, es )
+#define RKH_SET_STATIC_EVENT( e, es )						\
+										MK_SET_EVT( e, es )
 
 
 /**
  * 	\brief
- *	This macro declares and initializes the event structure \a e with \a es 
- *	signal and establishes it as one static event. 
- *
- *	\note 
- *	The created event object is explicitly placed in ROM.
+ *	This macro declares and initializes the event structure \a ev_ob with 
+ *	\a ev_sig signal number and establishes it as one static event. 
  *
  *	Example:
  *	\code
  *	...
- *	static RKH_DCLR_STATIC_EVENT( etimer, RPC_TIMER_RET );
+ *	static RKH_STATIC_EVENT( ev_udrej, UPG_DIC_REJ );
+ *
+ *	void
+ *	dm_upgdic_rej( ... )
+ *	{
+ *		...
+ *		rkh_put_fifo( drpc, &ev_udrej );
+ *	}
+ *	\endcode
+ *
+ * 	\param ev_obj	name of event structure (object).
+ * 	\param ev_sig	event signal. The RKH takes this value for triggering 
+ * 					a state transition.
+ */
+
+#define RKH_STATIC_EVENT( ev_obj, ev_sig )					\
+										MK_EVT( ev_obj, ev_sig )
+
+/**
+ * 	\brief
+ *	This macro declares and initializes the event structure \a ev_ob with 
+ *	\a ev_sig signal number and establishes it as one static event. 
+ *
+ *	\warning
+ *	The created event object is explicitly placed at ROM.
+ *
+ *	Example:
+ *	\code
+ *	...
+ *	static RKH_ROM_STATIC_EVENT( ev_timer, RPC_TIMER_RET );
  *
  *	void
  *	offhook( void )
  *	{
  *		...
- *		rkh_put_fifo( qphone, &etimer );
+ *		rkh_put_fifo( qphone, &ev_timer );
  *	}
  *	\endcode
  *
- * 	\param e		name of event structure (RKH_EVT_T).
- * 	\param es		event signal. The RKH takes this value for triggering 
+ * 	\param ev_obj	name of event structure (object).
+ * 	\param ev_sig	event signal. The RKH takes this value for triggering 
  * 					a state transition.
  */
 
-#define RKH_DCLR_STATIC_EVENT( e, es )					\
-										MK_IEVT( e, es )
+#define RKH_ROM_STATIC_EVENT( ev_obj, ev_sig )				\
+										MK_ROM_EVT( ev_obj, ev_sig )
 
-/**
- */
-
-#define RKH_ROM_STATIC_EVT( ev_name, ev_sig )
-
-/**
- */
-
-#define RKH_RAM_STATIC_EVT( ev_name, ev_sig )
 
 /**
  * 	\brief

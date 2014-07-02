@@ -118,7 +118,7 @@ Changes between V1.1.6 and V1.1.5 released 02/13/2012
 Changes between V1.1.4 and V1.1.5 released 02/01/2012
 
 +	Added support for Codewarrior Coldfire V1.
-+	Added RKH_DCLR_STATIC_EVENT macro to declare and initialize a event object as one static event.
++	Added RKH_ROM_STATIC_EVENT macro to declare and initialize a event object as one static event.
 +	Added a new configuration option RKH_EN_STATE_ID to reduce the state structure.
 +	Added RKH_DCLR_SM_GLOBAL macro to declare a state machine object as global pointer.
 +	Added assertions within rkh.c module.

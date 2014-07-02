@@ -19,9 +19,9 @@
 			(RKH_TNT_T)RKH_TIME_SEC( (bsp_rand() % 5) + 1 )
 
 
-static RKH_DCLR_STATIC_EVENT( e_touse, TOUT_USING );
-static RKH_DCLR_STATIC_EVENT( e_toreq, TOUT_REQ );
-static RKH_DCLR_STATIC_EVENT( e_done, DONE );
+static RKH_ROM_STATIC_EVENT( e_touse, TOUT_USING );
+static RKH_ROM_STATIC_EVENT( e_toreq, TOUT_REQ );
+static RKH_ROM_STATIC_EVENT( e_done, DONE );
 
 
 /*

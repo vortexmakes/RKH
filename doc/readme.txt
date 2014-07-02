@@ -1229,7 +1229,7 @@ This section includes:
 		rui8_t y;		// private member
 	} MYSM_T;
 
-(3) static RKH_DCLR_STATIC_EVENT( turnon, TURNON );
+(3) static RKH_ROM_STATIC_EVENT( turnon, TURNON );
 
 (4) RKH_SMA_CREATE( 	MYSM_T, 	// state machine application data type
 (6) 					my, 		// name
@@ -2459,7 +2459,7 @@ rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
 		int timerno;
 	} TOUT_T;
 
-(3) static RKH_DCLR_STATIC_EVENT( offh, OFFHOOK );
+(3) static RKH_ROM_STATIC_EVENT( offh, OFFHOOK );
 (4) static TOUT_T tout;
 
 ...
@@ -2536,7 +2536,7 @@ directly posts the event to the event queue of the consumer SMA
 (active object).
 
 \code
-(1) static RKH_DCLR_STATIC_EVENT( eterm, TERM );
+(1) static RKH_ROM_STATIC_EVENT( eterm, TERM );
 ...
 
 (2)	rkh_sma_post_fifo( manager, &eterm );
@@ -2830,7 +2830,7 @@ This section includes:
 \code
 ...
 (1) static RKH_TMR_T tlayer;
-(2)	static RKH_DCLR_STATIC_EVENT( e_timer, TOUT );
+(2)	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
 
 	void
 (3)	tlayer_tout( void *t )
@@ -2867,8 +2867,8 @@ Explanation
 (3) static RKH_TMR_T tpwr,
 (4) 				 tkey;
 
-(5)	static RKH_DCLR_STATIC_EVENT( e_tpwr, TPWR );
-(6)	static RKH_DCLR_STATIC_EVENT( e_tkey, TKEY );
+(5)	static RKH_ROM_STATIC_EVENT( e_tpwr, TPWR );
+(6)	static RKH_ROM_STATIC_EVENT( e_tkey, TKEY );
 
 (7)	rkh_tim_init( &tpwr, e_tpwr, NULL );
 (8)	rkh_tim_init( &tkey, e_tkey, NULL );

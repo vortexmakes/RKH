@@ -163,22 +163,6 @@ typedef struct RKH_EVT_T
 	 */
 
 	rui8_t pool;
-
-	/**
-	 * 	\brief
-	 * 	Post-event identification.
-	 * 	It allows to uniquely identify an event and its posting, and 
-	 * 	thus the discrete response time of system for that event.
-	 *	It is number is incremented on post-event and is sent to Trazer on 
-	 *	dispatch-event "as is". 
-	 *	Discrete response time =	time-stamp (on dispatch-event) - 
-	 *								time-stamp (on post-event)
-	 */
-
-#if (RKH_TRC_EN == RKH_ENABLED) && \
-	(RKH_TRC_RESP_TIME_MEAS_EN == RKH_ENABLED)
-	rui8_t post;
-#endif
 } RKH_EVT_T;
 
 
