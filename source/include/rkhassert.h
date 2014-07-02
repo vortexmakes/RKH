@@ -53,8 +53,8 @@
 
     /** 
 	 *	\brief
-	 *	Callback invoked in case the condition passed to RKHASSERT(),
-	 * 	RKHREQUIRE(), RKHENSURE(), RKHERROR(), or RKHALLEGE() evaluates 
+	 *	Callback invoked in case the condition passed to RKH_ASSERT(),
+	 * 	RKH_REQUIRE(), RKH_ENSURE(), RKH_ERROR(), or RKH_ALLEGE() evaluates 
 	 * 	to FALSE.
 	 *
 	 * 	If the expression evaluates to FALSE (0), the function rkh_assert() 
@@ -86,7 +86,7 @@
 	 *	void 
 	 *	rkh_assert( RKHROM char * const file, int line )
 	 *	{
-	 *		printf( "RKHASSERT: [%d] line from %s file\n", line, file );
+	 *		printf( "RKH_ASSERT: [%d] line from %s file\n", line, file );
 	 *
 	 *		RKH_DIS_INTERRUPT();
 	 *		RKH_TR_FWK_ASSERT( (RKHROM char *)file, line );
@@ -129,24 +129,24 @@
 
 	/**
 	 * 	\brief 
-	 * 	The RKHASSERT() macro is used to check expressions that ought to 
+	 * 	The RKH_ASSERT() macro is used to check expressions that ought to 
 	 * 	be true as long as the program is running correctly. 
 	 *
- 	 *	The assertions (\c RKHASSERT() macro) are used to check expressions 
+ 	 *	The assertions (\c RKH_ASSERT() macro) are used to check expressions 
 	 *	that ought to be true as long as the program is running correctly. It 
 	 *	is a convenient way to insert sanity checks.
 	 *	A number of philosophies can be employed when deciding where to use an 
-	 *	\c RKHASSERT() macro. Broadly speaking, the assertions only serve the 
+	 *	\c RKH_ASSERT() macro. Broadly speaking, the assertions only serve the 
 	 *	purposes of catching bugs and helping documentation. Helping to 
 	 *	document the code means that the statements inside the assertion tell 
 	 *	the reader something he might not already know.
 	 *	
 	 *	\note 
 	 *	The preprocessor switch RKH_ASSERT_EN disables checking assertions.
-	 * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
-	 * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
+	 * 	In particular macros RKH_ASSERT(), RKH_REQUIRE(), RKH_ENSURE(),
+	 * 	RKH_INVARIANT(), and RKH_ERROR() do NOT evaluate the test condition
 	 * 	passed as the argument to these macros. One notable exception is the
-	 * 	macro RKHALLEGE(), that still evaluates the test condition, but does
+	 * 	macro RKH_ALLEGE(), that still evaluates the test condition, but does
 	 * 	not report assertion failures when the switch RKH_ASSERT_EN is 
 	 * 	defined.
 	 *
@@ -155,7 +155,7 @@
 	 *	...
 	 *	some_function( const char *p, int size )
 	 *	{
-	 *		RKHASSERT( 	p != ( const char* )0 &&
+	 *		RKH_ASSERT( 	p != ( const char* )0 &&
 	 *					size > 0  &&
 	 *					size < MAX_SIZE );
 	 *		...
@@ -164,11 +164,11 @@
 	 *
 	 * 	\param exp		expression to be checked.
 	 * 	
-	 * 	\sa RKHALLEGE(), RKHREQUIRE(), RKHENSURE(), RKHERROR() and 
-	 * 	RKHINVARIANT() macros.
+	 * 	\sa RKH_ALLEGE(), RKH_REQUIRE(), RKH_ENSURE(), RKH_ERROR() and 
+	 * 	RKH_INVARIANT() macros.
 	 */
 
-	#define RKHASSERT( exp )					\
+	#define RKH_ASSERT( exp )					\
 		if( ( exp ) )							\
 		{}										\
 		else									\
@@ -179,16 +179,16 @@
     /** 
  	 * 	\brief 
 	 * 	General purpose assertion that ALWAYS evaluates the \a exp
-	 * 	argument and calls the RKHASSERT() macro if the \a exp	evaluates 
+	 * 	argument and calls the RKH_ASSERT() macro if the \a exp	evaluates 
 	 * 	to FALSE.
 	 *
 	 * 	\note The \a exp argument IS always evaluated even when assertions 
 	 * 	are disabled with the RKH_ASSERT_EN. When the RKH_ASSERT_EN is set 
-	 * 	to one (1), the RKHASSERT() macro is NOT called, even if the
+	 * 	to one (1), the RKH_ASSERT() macro is NOT called, even if the
 	 * 	\a exp evaluates to FALSE.
      */
 
-	#define RKHALLEGE( exp )				RKHASSERT( exp )
+	#define RKH_ALLEGE( exp )			RKH_ASSERT( exp )
 
     
 	/** 
@@ -200,15 +200,15 @@
 	 * 	Can be disabled with the RKH_ASSERT_EN switch.
 	 */
 
-    #define RKHERROR() 							\
-									rkh_assert(m_name,__LINE__)
+    #define RKH_ERROR() 							\
+										rkh_assert(m_name,__LINE__)
 
 #else
 	#define RKH_MODULE_NAME( __fname )
 	#define RKH_THIS_MODULE
-	#define RKHASSERT( exp )				((void)0)
-	#define RKHALLEGE( exp )				((void)(exp))
-	#define RKHERROR()						((void)0)
+	#define RKH_ASSERT( exp )			((void)0)
+	#define RKH_ALLEGE( exp )			((void)(exp))
+	#define RKH_ERROR()					((void)0)
 #endif
 
 
@@ -216,33 +216,33 @@
  * 	\brief
  *	This macro checks the precondition. 
  *
- *	This macro is equivalent to RKHASSERT() macro, except the name provides 
+ *	This macro is equivalent to RKH_ASSERT() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
 
-#define RKHREQUIRE( exp )				RKHASSERT( exp )
+#define RKH_REQUIRE( exp )				RKH_ASSERT( exp )
 
 
 /**
  * 	\brief
  *	This macro checks the postcondition. 
  *
- *	This macro is equivalent to RKHASSERT() macro, except the name provides 
+ *	This macro is equivalent to RKH_ASSERT() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
 
-#define RKHENSURE( exp )				RKHASSERT( exp )
+#define RKH_ENSURE( exp )				RKH_ASSERT( exp )
 
 
 /**
  * 	\brief
  *	This macro is used to check a loop invariant. 
  *
- *	This macro is equivalent to RKHASSERT() macro, except the name provides 
+ *	This macro is equivalent to RKH_ASSERT() macro, except the name provides 
  *	a better documentation of the intention of this assertion.
  */
 
-#define RKHINVARIANT( exp )				RKHASSERT( exp )
+#define RKH_INVARIANT( exp )			RKH_ASSERT( exp )
 
 
 #endif

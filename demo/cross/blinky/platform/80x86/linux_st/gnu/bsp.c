@@ -236,7 +236,7 @@ rkh_hook_idle( void )				/* called within critical section */
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
+	fprintf( stderr,	"RKH_ASSERT: [%d] line from %s "
 						"file\n", line, file );
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );

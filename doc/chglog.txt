@@ -59,7 +59,7 @@ Changes between V2.2 and V2.3 released 02/05/2013
 +	Add macro RKH_TR_FWK_TCFG() to send the trace configuration parameters to 
 	Trazer.
 +	Add RKH_TRC_EN_ASSERT configuration to rkhcfg.h file, RKH_TE_FWK_ASSERT 
-	trace record and RKH_TR_FWK_ASSERT() macro to RKHASSERT() macro.
+	trace record and RKH_TR_FWK_ASSERT() macro to RKH_ASSERT() macro.
 +	Eliminated RKH_TIM_EN_RESTART from rkhcfg.h.
 
 Changes between V2.1 and V2.2 released 08/13/2012
@@ -72,7 +72,7 @@ Changes between V2.1 and V2.2 released 08/13/2012
 	from a specified AO, by means of RKH_FILTER_ON_SMA() and 
 	RKH_FILTER_OFF_SMA() macros. See the main.c demo file. Used to clean 
 	up the trazer output.
-+	Change the args of RKHREQUIRE() macro in rkh_sma_register() function.
++	Change the args of RKH_REQUIRE() macro in rkh_sma_register() function.
 +	Add RKH_TRC_FLUSH() macro in RKH_TRCR_RKH_OBJ() and RKH_TRCR_RKH_SIG().
 +	Fix the name of the deplete queue (rkh_rq_deplete()).
 +	Add CCE() macro.
@@ -91,7 +91,7 @@ Changes between V2.1 and V2.2 released 08/13/2012
 +	Fix a bug in RKH_SMA_BLOCK() macro.
 +	Fix a bug in rkh_rq_get() function, when invocking the rkh_fwk_recall() 
 	function.
-+	Fix a bug in rkh_tim_restart() function RKHREQUIRE() args.
++	Fix a bug in rkh_tim_restart() function RKH_REQUIRE() args.
 +	Fix a bug in rkh_fwk_defer() function. Also, include an internal macro 
 	RKH_INC_REF() to avoid the dependence of dynamic event in deferral 
 	mechanism.

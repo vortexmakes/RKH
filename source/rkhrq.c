@@ -96,7 +96,7 @@ rkh_rq_is_full( RKH_RQ_T *q )
 	RKH_RQNE_T qty;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != (RKH_RQ_T *)0 );
+	RKH_ASSERT( q != (RKH_RQ_T *)0 );
 	
 	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
@@ -114,7 +114,7 @@ rkh_rq_get_num( RKH_RQ_T *q )
 	RKH_RQNE_T qty;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != CQ(0) );
+	RKH_ASSERT( q != CQ(0) );
 	
 	RKH_ENTER_CRITICAL_();
 	qty = q->qty;
@@ -132,7 +132,7 @@ rkh_rq_get_lwm( RKH_RQ_T *q )
 	RKH_RQNE_T nmin;
 	RKH_SR_ALLOC();
 	
-	RKHASSERT( q != CQ(0) );
+	RKH_ASSERT( q != CQ(0) );
 	
 	RKH_ENTER_CRITICAL_();
 	nmin = q->nmin;
@@ -149,7 +149,7 @@ rkh_rq_get( RKH_RQ_T *q  )
 	void *e = CV(0);
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != CQ(0) );
+	RKH_ASSERT( q != CQ(0) );
 	RKH_ENTER_CRITICAL_();
 
 	if( q->sma != CSMA(0) )
@@ -191,9 +191,9 @@ rkh_rq_put_fifo( RKH_RQ_T *q, const void *pe )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != CQ(0) && pe != ( const void* )0 );
+	RKH_ASSERT( q != CQ(0) && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
-	RKHASSERT( q->qty < q->nelems );
+	RKH_ASSERT( q->qty < q->nelems );
 
 	if( q->qty >= q->nelems )
 	{
@@ -230,9 +230,9 @@ rkh_rq_put_lifo( RKH_RQ_T *q, const void *pe )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != CQ(0) && pe != ( const void* )0 );
+	RKH_ASSERT( q != CQ(0) && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
-	RKHASSERT( q->qty < q->nelems );
+	RKH_ASSERT( q->qty < q->nelems );
 
 	if( q->qty >= q->nelems )
 	{
@@ -272,7 +272,7 @@ rkh_rq_deplete( RKH_RQ_T *q )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != CQ(0) );
+	RKH_ASSERT( q != CQ(0) );
 	RKH_ENTER_CRITICAL_();
 	q->qty = 0;
 	q->pin = q->pout = ( void ** )q->pstart;
@@ -290,7 +290,7 @@ rkh_rq_read( RKH_RQ_T *q, void *pe )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( q != CQ(0) && pe != ( const void* )0 );
+	RKH_ASSERT( q != CQ(0) && pe != ( const void* )0 );
 	RKH_ENTER_CRITICAL_();
 
 	if( q->qty == 0 )

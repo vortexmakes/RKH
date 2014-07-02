@@ -75,7 +75,7 @@ rkh_mp_init( RKH_MP_T *mp, void *sstart, rui16_t ssize,
 	 * close to the top of the dynamic range.
      */
 
-	RKHASSERT( 	sstart != RKH_NULL && 
+	RKH_ASSERT( 	sstart != RKH_NULL && 
 				ssize >= sizeof( RKH_FREE_BLK_T ) &&
 				(RKH_MPBS_T)( bsize + sizeof( RKH_FREE_BLK_T ) ) > bsize );
 
@@ -97,7 +97,7 @@ rkh_mp_init( RKH_MP_T *mp, void *sstart, rui16_t ssize,
     bsize = mp->bsize;		         /* use the rounded-up value from now on */
 	
 	              /* The pool buffer must fit at least one rounded-up block. */
-	RKHASSERT( ssize >= ( rui16_t )bsize );
+	RKH_ASSERT( ssize >= ( rui16_t )bsize );
 
 	                           /* Chain all blocks together in a free-list...*/
     ssize -= ( rui16_t )bsize;	           /* don't count the last block */
@@ -132,7 +132,7 @@ rkh_mp_get( RKH_MP_T *mp )
     RKH_FREE_BLK_T *fb;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 && mp->bsize != 0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 && mp->bsize != 0 );
 
 	RKH_ENTER_CRITICAL_();
 
@@ -140,7 +140,7 @@ rkh_mp_get( RKH_MP_T *mp )
     if( fb != RKH_NULL )					       /* free block available? */
 	{
         mp->free = fb->next;     /* adjust list head to the next free block */
-        RKHASSERT(mp->nfree > (RKH_MPNB_T)0);    /* at least one free block */
+        RKH_ASSERT(mp->nfree > (RKH_MPNB_T)0);    /* at least one free block */
         --mp->nfree;                                 /* one less free block */
 #if RKH_MP_EN_GET_LWM == RKH_ENABLED && \
 	RKH_MP_REDUCED == RKH_DISABLED
@@ -160,15 +160,15 @@ rkh_mp_put( RKH_MP_T *mp, void *blk )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 );
-	RKHASSERT( mp->bsize != 0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 );
+	RKH_ASSERT( mp->bsize != 0 );
 
 #if RKH_MP_REDUCED == RKH_DISABLED
-    RKHASSERT(	mp->start <= blk && 				     /* must be in range */
+    RKH_ASSERT(	mp->start <= blk && 				     /* must be in range */
 				blk <= mp->end && 
 				mp->nfree < mp->nblocks  ); /* # free blocks must be < total */
 #else
-    RKHASSERT(	mp->nfree < mp->nblocks );  /* # free blocks must be < total */
+    RKH_ASSERT(	mp->nfree < mp->nblocks );  /* # free blocks must be < total */
 #endif
 
 	RKH_ENTER_CRITICAL_();
@@ -190,7 +190,7 @@ rkh_mp_get_bsize( RKH_MP_T *mp )
     RKH_MPBS_T bs;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     bs = mp->bsize;
@@ -208,7 +208,7 @@ rkh_mp_get_nfree( RKH_MP_T *mp )
     RKH_MPNB_T nfree;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     nfree = mp->nfree;
@@ -227,7 +227,7 @@ rkh_mp_get_low_wmark( RKH_MP_T *mp )
     RKH_MPNB_T nmin;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
     nmin = mp->nmin;
@@ -245,7 +245,7 @@ rkh_mp_get_info( RKH_MP_T *mp, RKH_MPI_T *mpi )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 && mpi != ( RKH_MPI_T* )0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 && mpi != ( RKH_MPI_T* )0 );
 
 	RKH_ENTER_CRITICAL_();
 	*mpi = mp->mpi;
@@ -259,7 +259,7 @@ rkh_mp_clear_info( RKH_MP_T *mp )
 	RKH_MPI_T *pmpi;
 	RKH_SR_ALLOC();
 
-	RKHASSERT( mp != ( RKH_MP_T* )0 );
+	RKH_ASSERT( mp != ( RKH_MP_T* )0 );
 	pmpi = &mp->mpi;
 
 	RKH_ENTER_CRITICAL_();

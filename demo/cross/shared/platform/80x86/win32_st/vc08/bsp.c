@@ -218,12 +218,12 @@ rkh_hook_start( void )
 	
 	/* create the ISR timer thread */
     hth_tmr = CreateThread( NULL, 1024, &isr_tmr_thread, 0, 0, &thtmr_id );
-    RKHASSERT( hth_tmr != (HANDLE)0 );
+    RKH_ASSERT( hth_tmr != (HANDLE)0 );
     SetThreadPriority( hth_tmr, THREAD_PRIORITY_TIME_CRITICAL );
 
 	/* create the ISR keyboard thread */
     hth_kbd = CreateThread( NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id );
-    RKHASSERT( hth_kbd != (HANDLE)0 );
+    RKH_ASSERT( hth_kbd != (HANDLE)0 );
     SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
 	
 	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
@@ -250,7 +250,7 @@ rkh_hook_idle( void )				/* called within critical section */
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
+	fprintf( stderr,	"RKH_ASSERT: [%d] line from %s "
 						"file\n", line, file );
 	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();

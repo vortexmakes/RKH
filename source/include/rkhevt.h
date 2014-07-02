@@ -152,10 +152,16 @@ typedef struct RKH_EVT_T
 
 	/**
 	 * 	\brief
-	 * 	Attributes of dynamic event (0 for static event).
+	 * 	Attribute of dynamic events.
 	 */
 
 	rui8_t nref;
+
+	/**
+	 * 	\brief
+	 * 	Attribute of dynamic events (0 for static event).
+	 */
+
 	rui8_t pool;
 
 	/**

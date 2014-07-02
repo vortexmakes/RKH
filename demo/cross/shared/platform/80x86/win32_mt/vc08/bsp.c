@@ -212,7 +212,7 @@ rkh_hook_exit( void )
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	fprintf( stderr,	"RKHASSERT: [%d] line from %s "
+	fprintf( stderr,	"RKH_ASSERT: [%d] line from %s "
 						"file\n", line, file );
 	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();

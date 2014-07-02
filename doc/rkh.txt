@@ -91,7 +91,7 @@ platform-independent modules which is shown in the following figure.
 - Support \link RKH_EVT_T event dispatching with parameters\endlink.
 - Include \link RKH_EVT_T dynamic events\endlink.
 - Support a easy way to use \link RKH_EVT_T events with arguments\endlink.
-- Support systems-friendly \link RKHASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
+- Support systems-friendly \link RKH_ASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
 
 
 <HR>

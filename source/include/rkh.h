@@ -954,7 +954,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
  *	This macro indicates the root state of a state machine.
  */
 
-#define RKH_ROOT				NULL
+#define RKH_ROOT				RKH_NULL
 
 
 /**

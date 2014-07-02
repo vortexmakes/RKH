@@ -152,7 +152,7 @@ rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk )
 #endif
 {
 	RKH_SR_ALLOC();
-	RKHREQUIRE( t != CPTIM(0) && e != CCE(0) );
+	RKH_REQUIRE( t != CPTIM(0) && e != CCE(0) );
 
 	RKH_ENTER_CRITICAL_();
 	t->ntick = 0;
@@ -170,7 +170,7 @@ rkh_tim_start( RKH_TMR_T *t, const struct RKH_SMA_T *sma, RKH_TNT_T itick )
 {
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( t != CPTIM(0) && sma != (const struct RKH_SMA_T *)0 && itick != 0 );
+	RKH_REQUIRE( t != CPTIM(0) && sma != (const struct RKH_SMA_T *)0 && itick != 0 );
 	RKH_ENTER_CRITICAL_();
 
 	t->sma = sma;
@@ -188,7 +188,7 @@ rkh_tim_stop( RKH_TMR_T *t )
 {
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( t != CPTIM(0) );
+	RKH_REQUIRE( t != CPTIM(0) );
 	RKH_TR_TIM_STOP( t, t->ntick, t->period );
 
 	RKH_ENTER_CRITICAL_();

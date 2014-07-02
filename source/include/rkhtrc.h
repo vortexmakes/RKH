@@ -2550,7 +2550,7 @@ enum RKH_TRC_FMT
 		 * 	Args	= configuration parameters\n
 		 * 	
 		 * 	The following table shows the format of RKH_TE_FWK_TCFG arguments.
-		 * 	The first column means [<byte index>, <bit index>:<# of bits>] in 
+		 * 	The first column means ["byte index", "bit index":"# of bits"] in 
 		 * 	the data stream.
 		 *
 		 * 	[ 0, 0:16] - RKH_VERSION_CODE

@@ -176,7 +176,7 @@ RKH_MODULE_NAME( rkh )
 				else														\
 				{															\
 					RKH_TR_SM_EX_HLEVEL( sma );								\
-					RKHERROR();												\
+					RKH_ERROR();												\
 					return RKH_EX_TSEG;										\
 				}															\
 				UPDATE_PARENT( stn );										\
@@ -289,7 +289,7 @@ rkh_sma_init_hsm( RKH_SMA_T *sma )
 #endif
 	RKH_SR_ALLOC();
 
-    RKHASSERT( 	sma != (RKH_SMA_T *)0 && 
+    RKH_ASSERT( 	sma != (RKH_SMA_T *)0 && 
 				sma->romrkh->istate != (RKHROM RKH_ST_T *)0 );
 	RKH_TR_SM_INIT( sma, sma->romrkh->istate );
 	RKH_EXEC_INIT( sma );
@@ -356,7 +356,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	RKH_RAM rui8_t nal;
 	RKH_SR_ALLOC();
 
-    RKHASSERT( sma != (RKH_SMA_T *)0 && pe != (RKH_EVT_T *)0 );
+    RKH_ASSERT( sma != (RKH_SMA_T *)0 && pe != (RKH_EVT_T *)0 );
 
 	inttr = 0;
 	INFO_RCV_EVENTS( sma );
@@ -418,7 +418,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	if( rkh_add_tr_action( &pal, tr->action, &nal ) )
 	{
 		RKH_TR_SM_EX_TSEG( sma );
-		RKHERROR();
+		RKH_ERROR();
 		return RKH_EX_TSEG;
 	}
 
@@ -465,7 +465,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 					if( rkh_add_tr_action( &pal, tr->action, &nal ) )
 					{
 						RKH_TR_SM_EX_TSEG( sma );
-						RKHERROR();
+						RKH_ERROR();
 						return RKH_EX_TSEG;
 					}
 											  /* another transition segment */
@@ -492,7 +492,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 																	&nal ) )
 					{
 						RKH_TR_SM_EX_TSEG( sma );
-						RKHERROR();
+						RKH_ERROR();
 						return RKH_EX_TSEG;
 					}
 					ets = CSBM( ets )->sbm->defchild;
@@ -505,7 +505,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 																	&nal ) )
 					{
 						RKH_TR_SM_EX_TSEG( sma );
-						RKHERROR();
+						RKH_ERROR();
 						return RKH_EX_TSEG;
 					}
 					ets = CENP( ets )->enpcn->target;
@@ -518,7 +518,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 					if( rkh_add_tr_action( &pal, CEXPCN( ets )->action, &nal ) )
 					{
 						RKH_TR_SM_EX_TSEG( sma );
-						RKHERROR();
+						RKH_ERROR();
 						return RKH_EX_TSEG;
 					}
 					ets = CEXPCN( ets )->target;
@@ -527,7 +527,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 				default:
 						                   /* fatal error: unknown state... */
 					RKH_TR_SM_UNKN_STATE( sma );
-					RKHERROR();
+					RKH_ERROR();
 					return RKH_UNKN_STATE;
 			}
 			RKH_TR_SM_TS_STATE( sma, ets );

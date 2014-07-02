@@ -144,7 +144,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     ( void )stksize;
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( (qs != (const RKH_EVT_T **)0) && ( stks == (void *)0) );
+	RKH_REQUIRE( (qs != (const RKH_EVT_T **)0) && ( stks == (void *)0) );
 
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
@@ -152,7 +152,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     rkh_sma_init_hsm( sma );
 	sma->thread = CreateThread( NULL, stksize, thread_function, 
 														sma, 0, NULL );
-	RKHASSERT( sma->thread != (HANDLE)0 );
+	RKH_ASSERT( sma->thread != (HANDLE)0 );
 
 	/* map RKH priority to win32 priority */
 	switch( RKH_GET_PRIO( sma ) )

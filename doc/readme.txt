@@ -488,7 +488,7 @@ are placed in \c rkhport.c.
 
 
 #define RKH_SMA_BLOCK( sma ) 								\
-				RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
+				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 							\
 			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); 	\
@@ -653,7 +653,7 @@ rkh_sma_get( RKH_SMA_T *sma )
 
     RKH_ENTER_CRITICAL_();
 	e = os_get_message( &sma->equeue );
-	RKHASSERT( e != ( RKH_EVT_T * )0 );
+	RKH_ASSERT( e != ( RKH_EVT_T * )0 );
     RKH_EXIT_CRITICAL_();
 
 	RKH_TR_SMA_GET( sma, e );
@@ -971,7 +971,7 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_SMA_BLOCK( sma ) 									\
-				RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
+				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 #define RKH_SMA_READY( rg, sma ) 								\
 			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \

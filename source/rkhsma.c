@@ -74,7 +74,7 @@ rkh_sma_register( RKH_SMA_T *sma )
     rui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
-    RKHREQUIRE(	(prio <= (rui8_t)RKH_LOWEST_PRIO) && 
+    RKH_REQUIRE(	(prio <= (rui8_t)RKH_LOWEST_PRIO) && 
 				(rkh_sptbl[ prio ] == (RKH_SMA_T *)0));
 
 	RKH_ENTER_CRITICAL_();
@@ -90,7 +90,7 @@ rkh_sma_unregister( RKH_SMA_T *sma )
     rui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
-    RKHREQUIRE(	(prio <= (rui8_t)RKH_MAX_SMA) && 
+    RKH_REQUIRE(	(prio <= (rui8_t)RKH_MAX_SMA) && 
 				(rkh_sptbl[ prio ] == sma));
 
 	RKH_ENTER_CRITICAL_();

@@ -57,7 +57,7 @@
 	#define RKH_EQ_TYPE				RKH_RQ_T
 
 	#define RKH_SMA_BLOCK( sma ) 							\
-					RKHASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
+					RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
 	#define RKH_SMA_READY( rg, sma ) 						\
 					RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )

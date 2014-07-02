@@ -114,10 +114,10 @@
 
 /**
  *	If the #RKH_ASSERT_EN is set to 0 the checking assertions are disabled.
- * 	In particular macros RKHASSERT(), RKHREQUIRE(), RKHENSURE(),
- * 	RKHINVARIANT(), and RKHERROR() do NOT evaluate the test condition
+ * 	In particular macros RKH_ASSERT(), RKH_REQUIRE(), RKH_ENSURE(),
+ * 	RKH_INVARIANT(), and RKH_ERROR() do NOT evaluate the test condition
  * 	passed as the argument to these macros. One notable exception is the
- * 	macro RKHALLEGE(), that still evaluates the test condition, but does
+ * 	macro RKH_ALLEGE(), that still evaluates the test condition, but does
  * 	not report assertion failures when the #RKH_ASSERT_EN is enabled.
  */
 

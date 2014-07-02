@@ -132,7 +132,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     ( void )stksize;
 	RKH_SR_ALLOC();
 
-	RKHREQUIRE( (qs != (const RKH_EVT_T **)0) && (qsize != (RKH_RQNE_T)0) );
+	RKH_REQUIRE( (qs != (const RKH_EVT_T **)0) && (qsize != (RKH_RQNE_T)0) );
 
 	rkh_rq_init( &sma->equeue, (const void** )qs, qsize, sma );
 	rkh_sma_register( sma );

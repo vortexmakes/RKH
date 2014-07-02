@@ -75,12 +75,12 @@ rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e )
         ++idx;
 		++ep;
 		/* cannot run out of registered pools */
-        RKHASSERT( idx < rkhnpool );
+        RKH_ASSERT( idx < rkhnpool );
     }
 
     RKH_DYNE_GET( ep, evt );	/* get e -- platform-dependent */
 							    /* pool must not run out of events */
-    RKHASSERT( evt != RKH_EVT_CAST(0) );
+    RKH_ASSERT( evt != RKH_EVT_CAST(0) );
     evt->e = e;                 /* set signal for this event */
 
 	/* 
@@ -116,7 +116,7 @@ rkh_gc( RKH_EVT_T *e )
             rui8_t idx = (rui8_t)( e->pool - 1 );
             RKH_EXIT_CRITICAL_();
 
-            RKHASSERT( idx < RKH_MAX_EPOOL );
+            RKH_ASSERT( idx < RKH_MAX_EPOOL );
 			RKH_TR_FWK_GCR( e, e->pool, e->nref );
             RKH_DYNE_PUT( &rkh_eplist[ idx ], e );
         }
@@ -140,7 +140,7 @@ rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize )
 {
 	RKH_SR_ALLOC();
 
-	RKHASSERT( ( (rui8_t)(rkhnpool + (rui8_t)1) ) <= RKH_MAX_EPOOL );
+	RKH_ASSERT( ( (rui8_t)(rkhnpool + (rui8_t)1) ) <= RKH_MAX_EPOOL );
 
 	++rkhnpool;
 	RKH_DYNE_INIT( &rkh_eplist[ rkhnpool - 1 ], sstart, ssize, esize );
@@ -209,7 +209,7 @@ rkh_sma_get( RKH_SMA_T *sma )
 	e = rkh_rq_get( &sma->equeue );
     /*RKH_EXIT_CRITICAL_();*/
 
-	RKHASSERT( e != ( RKH_EVT_T * )0 );
+	RKH_ASSERT( e != ( RKH_EVT_T * )0 );
 	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
 	return e;
 }
@@ -254,7 +254,7 @@ rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
              * did NOT decrement the reference counter) and once in the
              * SMA's event queue.
              */
-            RKHASSERT( e->nref > 1 );
+            RKH_ASSERT( e->nref > 1 );
 
             /* 
 			 * We need to decrement the reference counter once, to account
