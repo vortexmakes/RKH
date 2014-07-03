@@ -1557,6 +1557,10 @@ void rkh_fwk_exit( void );
 	 * 	function is executed (if it's used). The expiration events of timers 
 	 * 	that expire at the same time are executed in the order they were 
 	 * 	started.
+	 * 	
+	 * 	\note
+	 * 	This function is internal to RKH and the user application should 
+	 * 	not call it. Instead, use #RKH_TIM_TICK() macro.
 	 */
 
 	void rkh_tim_tick( const void *const sender );
@@ -1564,6 +1568,7 @@ void rkh_fwk_exit( void );
 	/**
 	 * 	\brief
 	 * 	Invoke the system clock tick processing rkh_tim_tick().
+	 *
 	 * 	This macro is the recommended way of invoke the clock tick processing, 
 	 * 	because it provides the vital information for software tracing and 
 	 * 	avoids any overhead when the tracing is disabled.
@@ -1726,9 +1731,9 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
  * 	\brief
  * 	Terminate a state machine application (SMA) as known as active object.
  *
- * 	A state machine application may call this service to terminate itself. Once 
- * 	terminated, the state machine application must be re-created in order for 
- * 	it to execute again.
+ * 	A state machine application may call this service to terminate itself. 
+ * 	Once terminated, the state machine application must be re-created in 
+ * 	order for it to execute again.
  * 	
  *	\note 
  *	Platform-dependent function. All RKH ports must be defined in the RKH 
@@ -1761,6 +1766,9 @@ void rkh_sma_terminate( RKH_SMA_T *sma );
 	 * 	object through a queue using the FIFO policy. A message is a pointer 
 	 * 	size variable and its use is application specific. 
 	 *
+	 * 	\note
+	 * 	This function is internal to RKH and the user application should 
+	 * 	not call it. Instead, use RKH_SMA_POST_FIFO() macro.
 	 * 	\note 
 	 *	For memory efficiency and best performance the SMA's event queue, 
 	 *	STORE ONLY POINTERS to events, not the whole event objects.
@@ -1789,6 +1797,7 @@ void rkh_sma_terminate( RKH_SMA_T *sma );
 	/**
 	 * 	\brief 
 	 * 	Invoke the direct event posting facility rkh_sma_post_fifo().
+	 *
 	 * 	This macro is the recommended way of posting events, because it 
 	 * 	provides the vital information for software tracing and avoids any 
 	 * 	overhead when the tracing is disabled.
@@ -1827,6 +1836,9 @@ void rkh_sma_terminate( RKH_SMA_T *sma );
 	 * 	size variable and its use is application specific. 
 	 *
 	 * 	\note
+	 * 	This function is internal to RKH and the user application should 
+	 * 	not call it. Instead, use RKH_SMA_POST_LIFO() macro.
+	 * 	\note
 	 *	For memory efficiency and best performance the SMA's event queue, 
 	 *	STORE ONLY POINTERS to events, not the whole event objects.
 	 *	The assertion inside it guarantee that the pointer is valid, so is not 
@@ -1853,6 +1865,7 @@ void rkh_sma_terminate( RKH_SMA_T *sma );
 	/**
 	 * 	\brief 
 	 * 	Invoke the direct event posting facility rkh_sma_post_lifo().
+	 *
 	 * 	This macro is the recommended way of posting events, because it 
 	 * 	provides the vital information for software tracing and avoids any 
 	 * 	overhead when the tracing is disabled.
@@ -2144,7 +2157,7 @@ void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
  *
  * 	\note
  * 	This function is internal to RKH and the user application should 
- * 	not call it. Please use #RKH_ALLOC_EVT() macro.
+ * 	not call it. Instead, use #RKH_ALLOC_EVT() macro.
  *
  * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
  * 	rkh_set_static_event() and rkh_gc().
@@ -2156,91 +2169,111 @@ void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
 RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
-/**
- * 	\brief
- *	This macro dynamically creates a new event of type \a et with its signal.
- *
- *	The basic policy is to allocate the event from the first pool that has a 
- *	block size big enough to fit the requested event size. RKH can manage up 
- *	to three event pools (e.g., small, medium, and large events, like shirt 
- *	sizes). It returns a pointer to the event already cast to the event type 
- *	(et*). Here is an example of dynamic event allocation with the macro 
- *	RKH_ALLOC_EVT():
- *
- *	\code
- *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
- *	mye->y = mye->x = 0;
- *	...
- *	\endcode
- *
- * 	\note
- *	The assertions inside rkh_fwk_ae() function guarantee that the pointer is 
- *	valid, so you don't need to check the pointer returned from rkh_fwk_ae(), 
- *	unlike the value returned from malloc(), which you should check.
- *
- * 	\param et		type of event.
- * 	\param e		event signal.
- */
-
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-		#define RKH_ALLOC_EVT( et, e ) \
-					(et*)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
+
+	/**
+	 * 	\brief
+	 *	This macro dynamically creates a new event of type \a et with its 
+	 *	signal.
+	 *
+	 *	The basic policy is to allocate the event from the first pool that 
+	 *	has a block size big enough to fit the requested event size. RKH 
+	 *	can manage up to three event pools (e.g., small, medium, and large 
+	 *	events, like shirt sizes). It returns a pointer to the event 
+	 *	already cast to the event type (et*). Here is an example of dynamic 
+	 *	event allocation with the macro RKH_ALLOC_EVT():
+	 *
+	 *	\code
+	 *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
+	 *	mye->y = mye->x = 0;
+	 *	...
+	 *	\endcode
+	 *
+	 * 	\note
+	 *	The assertions inside rkh_fwk_ae() function guarantee that the 
+	 *	pointer is valid, so you don't need to check the pointer returned 
+	 *	from rkh_fwk_ae(), unlike the value returned from malloc(), which 
+	 *	you should check.
+	 *
+	 * 	\param et		type of event.
+	 * 	\param e		event signal.
+	 */
+
+	#define RKH_ALLOC_EVT( et, e ) \
+				(et*)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
-		#define RKH_ALLOC_EVT( et, e ) \
-					(void)0
+	#define RKH_ALLOC_EVT( et, e ) \
+				(void)0
 #endif
 
 
-/**
- * 	\brief
- * 	Recycle a dynamic event.
- *
- * 	This macro implements a simple garbage collector for the dynamic 
- * 	events.	Only dynamic events are candidates for recycling. (A dynamic 
- * 	event is one that is allocated from an event pool, which is determined 
- * 	as non-zero	e->nref attribute.) Next, the function decrements the 
- * 	reference counter of the event, and recycles the event only if the 
- * 	counter drops to zero (meaning that no more references are outstanding 
- * 	for this event). The dynamic event is recycled by returning it to the 
- * 	pool from which	it was originally allocated. The pool-of-origin 
- * 	information is stored in the e->pool member.
- * 	
- * 	\note 
- * 	The function rkh_gc() is internal to RKH and the user application should 
- * 	not call it. Please use #RKH_GC() macro.
- * 	\note 
- * 	The garbage collector must be explicitly invoked at all appropriate 
- * 	contexts, when an event can become garbage (automatic garbage collection).
- * 	\note
- * 	When setting RKH_EN_DYNAMIC_EVENT = 0 the garbage collector has not 
- * 	effect, thus it's eliminated in compile-time.
- *
- * 	\param e		pointer to event to be potentially recycled.
- */
-
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-	#define RKH_GC( e ) 			rkh_gc( e )
+
+	/**
+	 * 	\brief
+	 * 	Recycle a dynamic event.
+	 */
+
 	void rkh_gc( RKH_EVT_T *e );
+
+	/**
+	 * 	\brief
+	 * 	Recycle a dynamic event.
+	 *
+	 * 	This macro implements a simple garbage collector for the dynamic 
+	 * 	events.	Only dynamic events are candidates for recycling. 
+	 * 	(A dynamic event is one that is allocated from an event pool, which 
+	 * 	is determined as non-zero	e->nref attribute.) Next, the function 
+	 * 	decrements the reference counter of the event, and recycles the 
+	 * 	event only if the counter drops to zero (meaning that no more 
+	 * 	references are outstanding for this event). The dynamic event is 
+	 * 	recycled by returning it to the pool from which	it was originally 
+	 * 	allocated. The pool-of-origin information is stored in the 
+	 * 	e->pool member.
+	 * 	
+	 * 	\note 
+	 * 	This function is internal to RKH and the user application should 
+	 * 	not call it. Instead, use #RKH_GC() macro.
+	 * 	\note 
+	 * 	The garbage collector must be explicitly invoked at all appropriate 
+	 * 	contexts, when an event can become garbage (automatic garbage 
+	 * 	collection).
+	 * 	\note
+	 * 	When setting RKH_EN_DYNAMIC_EVENT = 0 the garbage collector has not 
+	 * 	effect, thus it's eliminated in compile-time.
+	 *
+	 * 	\param e		pointer to event to be potentially recycled.
+	 */
+
+	#define RKH_GC( e ) 			rkh_gc( e )
 #else
-	#define RKH_GC( e ) \
-					(void)0
+	#define RKH_GC( e )				(void)0
 #endif
 
 
-/**
- * 	\brief
- * 	Reserve the dynamic event to be recycled.
- *
- * 	This is the complement to RKH_GC(). It increments the reference count of 
- * 	a dynamic event so the event can be saved by an SMA (AO). Sometime later 
- * 	the SMA should manually release the event with RKH_GC().
- *
- * 	\param e		pointer to event to be reserved.
- */
 
 #if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-	#define RKH_RSV( e ) 			rkh_reserve( e )
+
+	/**
+	 * 	\brief
+	 * 	Reserve the dynamic event to be recycled.
+	 */
+
 	void rkh_reserve( RKH_EVT_T *e );
+
+	/**
+	 * 	\brief
+	 * 	Reserve the dynamic event to be recycled.
+	 *
+	 * 	This is the complement to RKH_GC(). It increments the reference 
+	 * 	count of a dynamic event so the event can be saved by an SMA (AO). 
+	 * 	Sometime later the SMA should manually release the event with 
+	 * 	RKH_GC().
+	 *
+	 * 	\param e		pointer to event to be reserved.
+	 */
+
+	#define RKH_RSV( e ) 			rkh_reserve( e )
 #else
 	#define RKH_RSV( e )			(void)0
 #endif
@@ -2251,8 +2284,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	This macro initialize an event \a e with \a es signal and establishes 
  *	it as one static event.
  *
- *	\sa
- *	RKH_ROM_STATIC_EVENT() macro.
+ *	\sa RKH_ROM_STATIC_EVENT() and RKH_STATIC_EVENT() macros.
  *
  *	Example:
  *	\code
@@ -2283,19 +2315,20 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	}
  *	\endcode
  *
- * 	\param e		pointer to event structure derived from RKH_EVT_T.
- * 	\param es		event signal. The RKH takes this value for triggering 
+ * 	\param ev_obj	name of event structure (object).
+ * 	\param ev_sig	event signal. The RKH takes this value for triggering 
  * 					a state transition.
  */
 
-#define RKH_SET_STATIC_EVENT( e, es )						\
-										MK_SET_EVT( e, es )
-
+#define RKH_SET_STATIC_EVENT( ev_obj, ev_sig )						\
+										MK_SET_EVT( ev_obj, ev_sig )
 
 /**
  * 	\brief
  *	This macro declares and initializes the event structure \a ev_ob with 
  *	\a ev_sig signal number and establishes it as one static event. 
+ *
+ *	\sa RKH_SET_STATIC_EVENT() and RKH_ROM_STATIC_EVENT() macros.
  *
  *	Example:
  *	\code
@@ -2323,6 +2356,8 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  *	This macro declares and initializes the event structure \a ev_ob with 
  *	\a ev_sig signal number and establishes it as one static event. 
  *
+ *	\sa RKH_SET_STATIC_EVENT() and RKH_STATIC_EVENT() macros.
+ *
  *	\warning
  *	The created event object is explicitly placed at ROM.
  *
@@ -2346,6 +2381,38 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 #define RKH_ROM_STATIC_EVENT( ev_obj, ev_sig )				\
 										MK_ROM_EVT( ev_obj, ev_sig )
+
+/**
+ * 	\brief
+ *	Initializes the attibutes of a RKH's event object structure.
+ *	
+ *	Example:
+ *	\code
+ *	typedef struct
+ *	{
+ *		RKH_EVT_T e;
+ *		rui8_t cmd;
+ *	} RPC_REQ_T;
+ *
+ *  ...
+ *	static RKHROM RPC_REQ_T ev_ssreq =
+ *	{
+ *		RKH_INIT_STATIC_EVT( REQ_SEND_SMS_REQ ),
+ *		RPC_SEND_SMS_REQ
+ *	};
+ *
+ * 	...
+ * 	void 
+ * 	some_function(void) 
+ * 	{ 
+ * 		RKH_SMA_POST_FIFO(drpc, RKH_EVT_CAST(&ev_ssreq), 0);
+ * 		...
+ * 	}
+ *	\endcode
+ */
+
+#define RKH_INIT_STATIC_EVT( ev_sig )						\
+										MK_EVT_STRUCT( ev_sig )
 
 
 /**
@@ -2465,6 +2532,7 @@ void rkh_hook_idle( void );
  * 	from an ISR. rkh_hook_timetick() is called at the very beginning of 
  * 	rkh_tim_tick(), to give priority to user or port-specific code when the 
  * 	tick interrupt occurs. 
+ *
  *	Usually, this hook allows to the application to extend the functionality 
  *	of RKH, giving the port developer the opportunity to add code that will 
  *	be called by rkh_tim_tick(). Frequently, the rkh_hook_timetick() is 
@@ -2632,141 +2700,159 @@ ruint rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 
 
-/**
- * 	\brief 
- *	Open the tracing session.
- *
- *	This function is application-specific and the user needs to define it. 
- *	At a minimum, this function must initialize and/or configure the trace 
- *	stream by calling rkh_trc_init() and RKH_TRC_SEND_CFG() respectively.
- * 
- * 	\note
- * 	The function rkh_trc_open() is internal to RKH and the user application 
- * 	should not call it. Please use #RKH_TRC_OPEN() macro.
- *
- *	Example:
- *
- *	\code
- *	#define BSP_SIZEOF_TS		32u
- *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
- *
- *	void 
- *	rkh_trc_open( void )
- *	{
- *		rkh_trc_init();
- *
- *		FTBIN_OPEN();
- *		TCP_TRACE_OPEN();
- *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
- *
- *		if(( idle_thread = CreateThread( NULL, 1024, 
- *				&idle_thread_function, (void *)0, 
- *					CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
- *			fprintf( stderr, "Cannot create the thread: [%d] line from %s "
- *				"file\n", __LINE__, __FILE__ );
- *	}
- *	\endcode
- *
- * 	\sa \b rkhtrc.h file.
- */
 
 #if RKH_TRC_EN == RKH_ENABLED
-		#define RKH_TRC_OPEN() \
-					rkh_trc_open()
-		void rkh_trc_open( void );
+
+	/**
+	 * \brief 
+	 * Open the tracing session.
+	 */
+
+	void rkh_trc_open( void );
+
+	/**
+	 * 	\brief 
+	 *	Open the tracing session.
+	 *
+	 *	This function is application-specific and the user needs to 
+	 *	define it. At a minimum, this function must initialize and/or 
+	 *	configure the trace stream by calling rkh_trc_init() and 
+	 *	RKH_TRC_SEND_CFG() respectively.
+	 * 
+	 * 	\note
+	 * 	This function is internal to RKH and the user application 
+	 * 	should not call it. Instead, use #RKH_TRC_OPEN() macro.
+	 *
+	 *	Example:
+	 *
+	 *	\code
+	 *	#define BSP_SIZEOF_TS		32u
+	 *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
+	 *
+	 *	void 
+	 *	rkh_trc_open( void )
+	 *	{
+	 *		rkh_trc_init();
+	 *
+	 *		FTBIN_OPEN();
+	 *		TCP_TRACE_OPEN();
+	 *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
+	 *
+	 *		if(( idle_thread = CreateThread( NULL, 1024, 
+	 *				&idle_thread_function, (void *)0, 
+	 *				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
+	 *			fprintf( stderr, "Cannot create the thread: [%d] 
+	 *													line from %s "
+	 *				"file\n", __LINE__, __FILE__ );
+	 *	}
+	 *	\endcode
+	 *
+	 * 	\sa \b rkhtrc.h file.
+	 */
+
+	#define RKH_TRC_OPEN() 		rkh_trc_open()
 #else
 	#define RKH_TRC_OPEN()		(void)0
 #endif
 
 
-/**
- * 	\brief 
- *	Close the tracing session.
- *
- *	This function is application-specific and the user needs to define it. 
- *
- * 	\note
- * 	The function rkh_trc_close() is internal to RKH and the user application 
- * 	should not call it. Please use #RKH_TRC_CLOSE() macro.
- *
- *	Example:
- *
- *	\code
- *	void 
- *	rkh_trc_close( void )
- *	{
- *		fclose( fdbg );
- *	#if BIN_TRACE == 1
- *		fclose( ftbin );
- *	#endif
- *	}
- *	\endcode
- *
- * 	\sa \b rkhtrc.h file.
- */
-
 #if RKH_TRC_EN == RKH_ENABLED
-		#define RKH_TRC_CLOSE() \
-					rkh_trc_close()
-		void rkh_trc_close( void );
+		
+	/**
+	 * 	\brief 
+	 *	Close the tracing session.
+	 */
+
+	void rkh_trc_close( void );
+
+	/**
+	 * 	\brief 
+	 *	Close the tracing session.
+	 *
+	 *	This function is application-specific and the user needs to 
+	 *	define it. 
+	 *
+	 * 	\note
+	 * 	This function is internal to RKH and the user application 
+	 * 	should not call it. Instead, use #RKH_TRC_CLOSE() macro.
+	 *
+	 *	Example:
+	 *
+	 *	\code
+	 *	void 
+	 *	rkh_trc_close( void )
+	 *	{
+	 *		fclose( fdbg );
+	 *	}
+	 *	\endcode
+	 *
+	 * 	\sa \b rkhtrc.h file.
+	 */
+
+	#define RKH_TRC_CLOSE() 	rkh_trc_close()
 #else
 	#define RKH_TRC_CLOSE()		(void)0
 #endif
 
 
-/**
- * 	\brief 
- *	Platform-dependent macro flushing the trace stream.
- *
- *	This function is application-specific and the user needs to define it. 
- * 	When the RKH trace an event, all the information related to it has to 
- * 	be stored somewhere before it can be retrieved, in order to be analyzed. 
- * 	This place is a trace stream. Frequently, events traced are stored in 
- * 	the stream until it is flushed.
- *
- * 	\note
- * 	The function rkh_trc_flush() is internal to RKH and the user application 
- * 	should not call it. Please use #RKH_TRC_FLUSH() macro.
- *
- *	Example:
- *
- *	\code
- * 	void 
- * 	rkh_trc_flush( void )
- * 	{
- * 		rui8_t *blk;
- * 		TRCQTY_T nbytes;
- * 		RKH_SR_ALLOC();
- *
- * 		FOREVER
- * 		{
- * 			nbytes = (TRCQTY_T)1024;
- * 			
- * 			RKH_ENTER_CRITICAL_();
- * 			blk = rkh_trc_get_block( &nbytes );
- * 			RKH_EXIT_CRITICAL_();
- *
- * 			if((blk != (rui8_t *)0))
- * 			{
- * 				FTBIN_FLUSH( blk, nbytes );
- * 				TCP_TRACE_SEND_BLOCK( blk, nbytes );
- * 			}
- * 			else
- * 				break;
- * 		}
- * 	}
- *	\endcode
- *
- * 	\sa \b rkhtrc.h file.
- */
-
 #if RKH_TRC_EN == RKH_ENABLED
-		#define RKH_TRC_FLUSH() \
-					rkh_trc_flush()
-		void rkh_trc_flush( void );
+
+	/**
+	 * 	\brief 
+	 *	Platform-dependent macro flushing the trace stream.
+	 */
+
+	void rkh_trc_flush( void );
+
+	/**
+	 * 	\brief 
+	 *	Platform-dependent macro flushing the trace stream.
+	 *
+	 *	This function is application-specific and the user needs to define 
+	 *	it. When the RKH trace an event, all the information related to it 
+	 *	has to be stored somewhere before it can be retrieved, in order to 
+	 *	be analyzed. 
+	 * 	This place is a trace stream. Frequently, events traced are stored 
+	 * 	in the stream until it is flushed.
+	 *
+	 * 	\note
+	 * 	This function is internal to RKH and the user application should 
+	 * 	not call it. Instead, use #RKH_TRC_FLUSH() macro.
+	 *
+	 *	Example:
+	 *	\code
+	 * 	void 
+	 * 	rkh_trc_flush( void )
+	 * 	{
+	 * 		rui8_t *blk;
+	 * 		TRCQTY_T nbytes;
+	 * 		RKH_SR_ALLOC();
+	 *
+	 * 		FOREVER
+	 * 		{
+	 * 			nbytes = (TRCQTY_T)1024;
+	 * 			
+	 * 			RKH_ENTER_CRITICAL_();
+	 * 			blk = rkh_trc_get_block( &nbytes );
+	 * 			RKH_EXIT_CRITICAL_();
+	 *
+	 * 			if((blk != (rui8_t *)0))
+	 * 			{
+	 * 				FTBIN_FLUSH( blk, nbytes );
+	 * 				TCP_TRACE_SEND_BLOCK( blk, nbytes );
+	 * 			}
+	 * 			else
+	 * 				break;
+	 * 		}
+	 * 	}
+	 *	\endcode
+	 *
+	 * 	\sa \b rkhtrc.h file.
+	 */
+
+	#define RKH_TRC_FLUSH()		rkh_trc_flush()
 #else
-	#define RKH_TRC_FLUSH() \
-					(void)0
+	#define RKH_TRC_FLUSH() 	(void)0
 #endif
 
 
@@ -2797,33 +2883,36 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 RKH_TS_T rkh_trc_getts( void );
 
 
-/**
- * 	\brief 
- * 	Send the trace facility configuration to host application software Trazer.
- *
- * 	Trazer is designed to work with all possible target CPU, which requires a 
- * 	wide range of configurability. For example, for any given target CPU, 
- * 	Trazer must "know" the size of object pointers, event size, timestamp 
- * 	size and so on. This configurations could be provided through 
- * 	"trazer.cfg" file in the host or invoking RKH_TRC_SEND_CFG() macro from 
- * 	the application-specific rkh_trc_open() function.
- *
- * 	\note
- *	Frequently, this macro is called from the rkh_trc_open() function, which 
- *	is provided by user application program, more specifically the board 
- *	support package (BSP).
- *
- * 	\param ts_hz		clocks per second of trace timestamp.
- *
- * 	\sa RKH_TRC_OPEN() macro.
- */
-
 #if RKH_TRC_EN == RKH_ENABLED
-		#define RKH_TRC_SEND_CFG( ts_hz ) \
-					RKH_TR_FWK_TCFG( ts_hz )
+
+	/**
+	 * 	\brief 
+	 * 	Send the trace facility configuration to host application software 
+	 * 	Trazer.
+	 *
+	 * 	Trazer is designed to work with all possible target CPU, which 
+	 * 	requires a wide range of configurability. For example, for any 
+	 * 	given target CPU, Trazer must "know" the size of object pointers, 
+	 * 	event size, timestamp size and so on. This configurations could be 
+	 * 	provided through "trazer.cfg" file in the host or invoking 
+	 * 	RKH_TRC_SEND_CFG() macro from the application-specific 
+	 * 	rkh_trc_open() function.
+	 *
+	 * 	\note
+	 *	Frequently, this macro is called from the rkh_trc_open() function, 
+	 *	which is provided by user application program, more specifically 
+	 *	the board support package (BSP).
+	 *
+	 * 	\param ts_hz		clocks per second of trace timestamp.
+	 *
+	 * 	\sa RKH_TRC_OPEN() macro.
+	 */
+
+	#define RKH_TRC_SEND_CFG( ts_hz ) \
+				RKH_TR_FWK_TCFG( ts_hz )
 #else
-		#define RKH_TRC_SEND_CFG( ts_hz ) \
-					(void)0
+	#define RKH_TRC_SEND_CFG( ts_hz ) \
+				(void)0
 #endif
 
 

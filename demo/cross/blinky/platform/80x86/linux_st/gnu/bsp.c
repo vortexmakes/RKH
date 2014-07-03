@@ -144,7 +144,7 @@ isr_tmr_thread( void *d )	/* thread to emulate timer ISR */
 
     while( running ) 
 	{
-		rkh_tim_tick();
+		RKH_TIM_TICK( 0 );
         bsp_msleep( tick_msec );
     }
 
@@ -183,7 +183,7 @@ isr_kbd_thread( void *par )	/* thread to emulate keyboard ISR */
 		c = ___getch();
 		if( c == ESC )
 		{
-			rkh_sma_post_fifo( blinky, &ev_term );
+			RKH_SMA_POST_FIFO( blinky, &ev_term, 0 );
 			running = 0;
 		}
     }

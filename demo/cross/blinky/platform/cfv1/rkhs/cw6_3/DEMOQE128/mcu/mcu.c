@@ -111,7 +111,7 @@ rti_handler( void )
 
 	toggle_iopin( LED2 );
 
-	rkh_tim_tick();
+	RKH_TIM_TICK( 0 );
 }
 
 

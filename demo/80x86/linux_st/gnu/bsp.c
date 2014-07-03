@@ -147,7 +147,7 @@ isr_tmr_thread( void *d )	/* thread to emulate timer ISR */
 
     while( running ) 
 	{
-		rkh_tim_tick();
+		RKH_TIM_TICK( 0 );
         usleep( tick_msec );
     }
 	pthread_exit(NULL);
@@ -185,12 +185,12 @@ isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 		c = mygetch();
 		
 		if( c == ESC )
-			rkh_sma_post_fifo( my, &eterm );
+			RKH_SMA_POST_FIFO( my, &eterm, 0 );
 		else
 		{
 			mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
 			mye->ts = ( rui16_t )rand();
-			rkh_sma_post_fifo( my, RKH_EVT_CAST(mye) );
+			RKH_SMA_POST_FIFO( my, RKH_EVT_CAST(mye), 0 );
 		}
     }
 	return NULL;

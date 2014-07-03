@@ -1726,16 +1726,19 @@
 #endif
 
 
-#define MK_SET_EVT( evt, es ) 									\
-					((RKH_EVT_T*)(evt))->e = (RKH_SIG_T)es; 	\
-					((RKH_EVT_T*)(evt))->nref = 0;	  			\
-					((RKH_EVT_T*)(evt))->pool = 0
+#define MK_SET_EVT( ev_obj, ev_sig ) 								\
+					((RKH_EVT_T*)(ev_obj))->e = (RKH_SIG_T)ev_sig;	\
+					((RKH_EVT_T*)(ev_obj))->nref = 0;	  			\
+					((RKH_EVT_T*)(ev_obj))->pool = 0
 
-#define MK_EVT( evt, es )										\
-					RKH_EVT_T evt = {es, 0, 0}
+#define MK_EVT( ev_obj, ev_sig )									\
+					RKH_EVT_T ev_obj = {ev_sig, 0, 0}
 
-#define MK_ROM_EVT( evt, es )									\
-					RKHROM RKH_EVT_T evt = {es,	0, 0}
+#define MK_ROM_EVT( ev_obj, ev_sig )								\
+					RKHROM RKH_EVT_T ev_obj = {ev_sig,	0, 0}
+
+#define MK_EVT_STRUCT( ev_sig )										\
+					{ev_sig, 0, 0}
 
 
 #ifndef RKH_DIS_INTERRUPT

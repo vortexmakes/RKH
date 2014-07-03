@@ -37,7 +37,7 @@ systick_init( uint32_t tick_hz )
 void 
 SysTick_Handler( void )
 {
-	rkh_tim_tick();
+	RKH_TIM_TICK( 0 );
 }
 
 

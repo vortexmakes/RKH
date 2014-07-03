@@ -208,8 +208,7 @@ systick_init( uint32_t tick_hz )
 void
 isr_systick( void )
 {
-	rkh_tim_tick();
-//	sleep_tick();
+	RKH_TIM_TICK( 0 );
 }
 
 void
