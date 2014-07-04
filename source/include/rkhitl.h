@@ -132,14 +132,15 @@
 
 /**
  * 	\brief
- * 	RKH allows up to RKH_MAX_SMA different priority levels (see rkhcfg.h).
+ * 	RKH allows up to RKH_CFG_MAX_SMA different priority levels 
+ * 	(see rkhcfg.h).
  *
  * 	In RKH, a low-priority number corresponds to a high-priority level.
  * 	Priority level zero (0) is thus the highest priority level. Priority 
- *	RKH_LOWEST_PRIO (RKH_MAX_SMA - 1) is the lowest priority level.
+ *	RKH_LOWEST_PRIO (RKH_CFG_MAX_SMA - 1) is the lowest priority level.
  */
 
-#define RKH_LOWEST_PRIO				(RKH_MAX_SMA - 1)
+#define RKH_LOWEST_PRIO				(RKH_CFG_MAX_SMA - 1)
 
 
 /* 	
@@ -197,105 +198,105 @@
 
 /*  MEMORY POOL   --------------------------------------------------------- */
 
-#ifndef	RKH_MP_EN
-	#error "RKH_MP_EN                              not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_MP_EN
+	#error "RKH_CFG_MP_EN                         not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_MP_EN != RKH_ENABLED) && \
-        	(RKH_MP_EN != RKH_DISABLED))
-	#error "RKH_MP_EN                        illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_MP_EN != RKH_ENABLED) && \
+        	(RKH_CFG_MP_EN != RKH_DISABLED))
+	#error "RKH_CFG_MP_EN                   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
-#elif 	(RKH_MP_EN == RKH_ENABLED)
+#elif 	(RKH_CFG_MP_EN == RKH_ENABLED)
 
-	#ifndef	RKH_MP_REDUCED
-	#error "RKH_MP_REDUCED                         not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_MP_REDUCED_EN
+	#error "RKH_CFG_MP_REDUCED_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_MP_REDUCED != RKH_ENABLED) && \
-    	    	(RKH_MP_REDUCED != RKH_DISABLED))
-	#error "RKH_MP_REDUCED                   illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_MP_REDUCED_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_MP_REDUCED_EN != RKH_DISABLED))
+	#error "RKH_CFG_MP_REDUCED_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 	
-	#ifndef	RKH_MP_SIZEOF_BSIZE
-	#error "RKH_MP_SIZEOF_BSIZE                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_MP_SIZEOF_BSIZE
+	#error "RKH_CFG_MP_SIZEOF_BSIZE               not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-	#elif  ((RKH_MP_SIZEOF_BSIZE != 8) && \
-    	    (RKH_MP_SIZEOF_BSIZE != 16) && \
-        	(RKH_MP_SIZEOF_BSIZE != 32))
-	#error  "RKH_MP_SIZEOF_BSIZE             illegally #define'd in 'rkhcfg.h'"
-	#error  "                               [MUST be  8  ( 8-bit size)]       "
-	#error  "                               [     || 16  (16-bit size)]       "
-	#error  "                               [     || 32  (32-bit size)]       "
-	#endif
-
-	#ifndef	RKH_MP_SIZEOF_NBLOCK
-	#error "RKH_MP_SIZEOF_NBLOCK                   not #define'd in 'rkhcfg.h'"
-	#error  "                               [MUST be  8  ( 8-bit size)]       "
-	#error  "                               [     || 16  (16-bit size)]       "
-	#error  "                               [     || 32  (32-bit size)]       "
-
-	#elif  ((RKH_MP_SIZEOF_NBLOCK != 8) && \
-	        (RKH_MP_SIZEOF_NBLOCK != 16) && \
-  	      (RKH_MP_SIZEOF_NBLOCK != 32))
-	#error  "RKH_MP_SIZEOF_NBLOCK            illegally #define'd in 'rkhcfg.h'"
+	#elif  ((RKH_CFG_MP_SIZEOF_BSIZE != 8) && \
+    	    (RKH_CFG_MP_SIZEOF_BSIZE != 16) && \
+        	(RKH_CFG_MP_SIZEOF_BSIZE != 32))
+	#error  "RKH_CFG_MP_SIZEOF_BSIZE        illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 	#endif
 
-	#ifndef	RKH_MP_EN_GET_BSIZE
-	#error "RKH_MP_EN_GET_BSIZE                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_MP_SIZEOF_NBLOCK
+	#error "RKH_CFG_MP_SIZEOF_NBLOCK              not #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+
+	#elif  ((RKH_CFG_MP_SIZEOF_NBLOCK != 8) && \
+	        (RKH_CFG_MP_SIZEOF_NBLOCK != 16) && \
+  	      (RKH_CFG_MP_SIZEOF_NBLOCK != 32))
+	#error  "RKH_CFG_MP_SIZEOF_NBLOCK       illegally #define'd in 'rkhcfg.h'"
+	#error  "                               [MUST be  8  ( 8-bit size)]       "
+	#error  "                               [     || 16  (16-bit size)]       "
+	#error  "                               [     || 32  (32-bit size)]       "
+	#endif
+
+	#ifndef	RKH_CFG_MP_GET_BSIZE_EN
+	#error "RKH_CFG_MP_GET_BSIZE_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_MP_EN_GET_BSIZE != RKH_ENABLED) && \
-    	    	(RKH_MP_EN_GET_BSIZE != RKH_DISABLED))
-	#error "RKH_MP_EN_GET_BSIZE              illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_MP_GET_BSIZE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_MP_GET_BSIZE_EN != RKH_DISABLED))
+	#error "RKH_CFG_MP_GET_BSIZE_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_MP_EN_GET_NFREE
-	#error "RKH_MP_EN_GET_NFREE                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_MP_GET_NFREE_EN
+	#error "RKH_CFG_MP_GET_NFREE_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_MP_EN_GET_NFREE != RKH_ENABLED) && \
-    	    	(RKH_MP_EN_GET_NFREE != RKH_DISABLED))
-	#error "RKH_MP_EN_GET_NFREE              illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_MP_GET_NFREE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_MP_GET_NFREE_EN != RKH_DISABLED))
+	#error "RKH_CFG_MP_GET_NFREE_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_MP_EN_GET_LWM
-	#error "RKH_MP_EN_GET_LWM                      not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_MP_GET_LWM_EN
+	#error "RKH_CFG_MP_GET_LWM_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_MP_EN_GET_LWM != RKH_ENABLED) && \
-    	    	(RKH_MP_EN_GET_LWM != RKH_DISABLED))
-	#error "RKH_MP_EN_GET_LWM                illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_MP_GET_LWM_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_MP_GET_LWM_EN != RKH_DISABLED))
+	#error "RKH_CFG_MP_GET_LWM_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_MP_EN_GET_INFO
-	#error "RKH_MP_EN_GET_INFO                     not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_MP_GET_INFO_EN
+	#error "RKH_CFG_MP_GET_INFO_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_MP_EN_GET_INFO != RKH_ENABLED) && \
-    	    	(RKH_MP_EN_GET_INFO != RKH_DISABLED))
-	#error "RKH_MP_EN_GET_INFO               illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_MP_GET_INFO_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_MP_GET_INFO_EN != RKH_DISABLED))
+	#error "RKH_CFG_MP_GET_INFO_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
@@ -304,30 +305,30 @@
 
 /*  QUEUE         --------------------------------------------------------- */
 
-#ifndef	RKH_RQ_EN
-	#error "RKH_RQ_EN                              not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_EN
+	#error "RKH_CFG_RQ_EN                         not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN != RKH_ENABLED) && \
-        	(RKH_RQ_EN != RKH_DISABLED))
-	#error "RKH_RQ_EN                        illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_EN                   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_SIZEOF_NELEM
-	#error "RKH_RQ_SIZEOF_NELEM                    not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_SIZEOF_NELEM
+	#error "RKH_CFG_RQ_SIZEOF_NELEM               not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-#elif  ((RKH_RQ_SIZEOF_NELEM != 8) && \
-        (RKH_RQ_SIZEOF_NELEM != 16) && \
-        (RKH_RQ_SIZEOF_NELEM != 32))
-	#error  "RKH_RQ_SIZEOF_NELEM             illegally #define'd in 'rkhcfg.h'"
+#elif  ((RKH_CFG_RQ_SIZEOF_NELEM != 8) && \
+        (RKH_CFG_RQ_SIZEOF_NELEM != 16) && \
+        (RKH_CFG_RQ_SIZEOF_NELEM != 32))
+	#error  "RKH_CFG_RQ_SIZEOF_NELEM        illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
@@ -335,98 +336,98 @@
 #endif
 
 
-#ifndef	RKH_RQ_EN_GET_LWMARK
-	#error "RKH_RQ_EN_GET_LWMARK                   not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_GET_LWMARK_EN
+	#error "RKH_CFG_RQ_GET_LWMARK_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_GET_LWMARK != RKH_ENABLED) && \
-        	(RKH_RQ_EN_GET_LWMARK != RKH_DISABLED))
-	#error "RKH_RQ_EN_GET_LWMARK             illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_GET_LWMARK_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_GET_LWMARK_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_GET_LWMARK_EN        illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_EN_READ
-	#error "RKH_RQ_EN_READ                         not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_READ_EN
+	#error "RKH_CFG_RQ_READ_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_READ != RKH_ENABLED) && \
-        	(RKH_RQ_EN_READ != RKH_DISABLED))
-	#error "RKH_RQ_EN_READ                   illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_READ_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_READ_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_READ_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_EN_DEPLETE
-	#error "RKH_RQ_EN_DEPLETE                      not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_DEPLETE_EN
+	#error "RKH_CFG_RQ_DEPLETE_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_DEPLETE != RKH_ENABLED) && \
-        	(RKH_RQ_EN_DEPLETE != RKH_DISABLED))
-	#error "RKH_RQ_EN_DEPLETE                illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_DEPLETE_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_DEPLETE_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_DEPLETE_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_EN_IS_FULL
-	#error "RKH_RQ_EN_IS_FULL                      not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_IS_FULL_EN
+	#error "RKH_CFG_RQ_IS_FULL_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_IS_FULL != RKH_ENABLED) && \
-        	(RKH_RQ_EN_IS_FULL != RKH_DISABLED))
-	#error "RKH_RQ_EN_IS_FULL                illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_IS_FULL_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_IS_FULL_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_IS_FULL_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_EN_GET_NELEMS
-	#error "RKH_RQ_EN_GET_NELEMS                   not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_GET_NELEMS_EN
+	#error "RKH_CFG_RQ_GET_NELEMS_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_GET_NELEMS != RKH_ENABLED) && \
-        	(RKH_RQ_EN_GET_NELEMS != RKH_DISABLED))
-	#error "RKH_RQ_EN_GET_NELEMS             illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_GET_NELEMS_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_GET_NELEMS_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_GET_NELEMS_EN        illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_EN_PUT_LIFO
-	#error "RKH_RQ_EN_PUT_LIFO                     not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_PUT_LIFO_EN
+	#error "RKH_CFG_RQ_PUT_LIFO_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_PUT_LIFO != RKH_ENABLED) && \
-        	(RKH_RQ_EN_PUT_LIFO != RKH_DISABLED))
-	#error "RKH_RQ_EN_PUT_LIFO               illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_PUT_LIFO_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_PUT_LIFO_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_PUT_LIFO_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_RQ_EN_GET_INFO
-	#error "RKH_RQ_EN_GET_INFO                     not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_RQ_GET_INFO_EN
+	#error "RKH_CFG_RQ_GET_INFO_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_RQ_EN_GET_INFO != RKH_ENABLED) && \
-        	(RKH_RQ_EN_GET_INFO != RKH_DISABLED))
-	#error "RKH_RQ_EN_GET_INFO               illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_RQ_GET_INFO_EN != RKH_ENABLED) && \
+        	(RKH_CFG_RQ_GET_INFO_EN != RKH_DISABLED))
+	#error "RKH_CFG_RQ_GET_INFO_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -434,44 +435,44 @@
 
 /*  TIMER         --------------------------------------------------------- */
 
-#ifndef RKH_TIM_EN
-	#error "RKH_TIM_EN                             not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_TMR_EN
+	#error "RKH_CFG_TMR_EN                        not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_TIM_EN != RKH_ENABLED) && \
-        	(RKH_TIM_EN != RKH_DISABLED))
-	#error "RKH_TIM_EN                       illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_TMR_EN != RKH_ENABLED) && \
+        	(RKH_CFG_TMR_EN != RKH_DISABLED))
+	#error "RKH_CFG_TMR_EN                  illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
-#elif 	(RKH_TIM_EN == RKH_ENABLED)
-	#ifndef RKH_TICK_RATE_HZ
-	#error "RKH_TICK_RATE_HZ                       not #define'd in 'rkhcfg.h'"
+#elif 	(RKH_CFG_TMR_EN == RKH_ENABLED)
+	#ifndef RKH_CFG_TICK_RATE_HZ
+	#error "RKH_CFG_TICK_RATE_HZ                  not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
-	#elif (RKH_TICK_RATE_HZ > 0u)
+	#elif (RKH_CFG_TICK_RATE_HZ > 0u)
 	/**
 	 * 	It can be used to convert ticks to milliseconds.
 	 * 	This format is more convenient and natural than ticks.
 	 * 	This configuration constant is not used by RKH, it is just 
 	 * 	a value to allow an application to deal with time when 
 	 * 	using timer services. 
-	 * 	You can use the global constant RKH_TICK_RATE_HZ (see 
+	 * 	You can use the global constant RKH_CFG_TICK_RATE_HZ (see 
 	 * 	rkhcfg.h) to convert time to ticks using the macros like 
 	 * 	RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
 	 */
 	#define RKH_TICK_RATE_MS	\
-					((RKH_TNT_T)(1000/RKH_TICK_RATE_HZ))
+					((RKH_TNT_T)(1000/RKH_CFG_TICK_RATE_HZ))
 
 	/** @{
 	 * 	\brief
 	 * 	It can be used to convert ticks to time. 
 	 *
 	 * 	This format is more convenient and natural than ticks. You can use 
-	 * 	the global constant RKH_TICK_RATE_HZ (see rkhcfg.h) to convert time to 
-	 * 	ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(), and 
-	 * 	RKH_TIME_MIN().
+	 * 	the global constant RKH_CFG_TICK_RATE_HZ (see rkhcfg.h) to convert 
+	 * 	time to ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(), 
+	 * 	and RKH_TIME_MIN().
 	 */
 	#define RKH_TIME_MS( ms_ )		((ms_)/RKH_TICK_RATE_MS)
 	#define RKH_TIME_SEC( s_ )		((s_)*1000u/RKH_TICK_RATE_MS)
@@ -479,45 +480,45 @@
 	/*@}*/
 
 	#else
-	#error "RKH_TICK_RATE_HZ                 illegally #define'd in 'rkhcfg.h'"
+	#error "RKH_CFG_TICK_RATE_HZ            illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be > 0]                     "
 	#endif
 
-	#ifndef	RKH_TIM_SIZEOF_NTIMER
-	#error "RKH_TIM_SIZEOF_NTIMER                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TMR_SIZEOF_NTIMER
+	#error "RKH_CFG_TMR_SIZEOF_NTIMER             not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-	#elif  ((RKH_TIM_SIZEOF_NTIMER != 8) && \
-    	    (RKH_TIM_SIZEOF_NTIMER != 16) && \
-        	(RKH_TIM_SIZEOF_NTIMER != 32))
-	#error  "RKH_TIM_SIZEOF_NTIMER           illegally #define'd in 'rkhcfg.h'"
+	#elif  ((RKH_CFG_TMR_SIZEOF_NTIMER != 8) && \
+    	    (RKH_CFG_TMR_SIZEOF_NTIMER != 16) && \
+        	(RKH_CFG_TMR_SIZEOF_NTIMER != 32))
+	#error  "RKH_CFG_TMR_SIZEOF_NTIMER      illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 	#endif
 
-	#ifndef RKH_TIM_EN_HOOK
-	#error "RKH_TIM_EN_HOOK                        not #define'd in 'rkhcfg.h'"
+	#ifndef RKH_CFG_TMR_HOOK_EN
+	#error "RKH_CFG_TMR_HOOK_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TIM_EN_HOOK != RKH_ENABLED) && \
-    	    	(RKH_TIM_EN_HOOK != RKH_DISABLED))
-	#error "RKH_TIM_EN_HOOK                  illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TMR_HOOK_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TMR_HOOK_EN != RKH_DISABLED))
+	#error "RKH_CFG_TMR_HOOK_EN             illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TIM_EN_GET_INFO
-	#error "RKH_TIM_EN_GET_INFO                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TMR_GET_INFO_EN
+	#error "RKH_CFG_TMR_GET_INFO_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TIM_EN_GET_INFO != RKH_ENABLED) && \
-    	    	(RKH_TIM_EN_GET_INFO != RKH_DISABLED))
-	#error "RKH_TIM_EN_GET_INFO              illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TMR_GET_INFO_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TMR_GET_INFO_EN != RKH_DISABLED))
+	#error "RKH_CFG_TMR_GET_INFO_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
@@ -526,306 +527,306 @@
 
 /*  STATE MACHINE APPLICATIONS  -------------------------------------------- */
 
-#ifndef RKH_SMA_EN_GET_INFO
-	#error "RKH_SMA_EN_GET_INFO                    not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_GET_INFO_EN
+	#error "RKH_CFG_SMA_GET_INFO_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_GET_INFO != RKH_ENABLED) && \
-        	(RKH_SMA_EN_GET_INFO != RKH_DISABLED))
-	#error "RKH_SMA_EN_GET_INFO              illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_GET_INFO_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_GET_INFO_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_GET_INFO_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_PPRO
-	#error "RKH_SMA_EN_PPRO                        not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_PPRO_EN
+	#error "RKH_CFG_SMA_PPRO_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_PPRO != RKH_ENABLED) && \
-        	(RKH_SMA_EN_PPRO != RKH_DISABLED))
-	#error "RKH_SMA_EN_PPRO                  illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_PPRO_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_PPRO_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_PPRO_EN             illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_HCAL
-	#error "RKH_SMA_EN_HCAL                        not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_HCAL_EN
+	#error "RKH_CFG_SMA_HCAL_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_HCAL != RKH_ENABLED) && \
-        	(RKH_SMA_EN_HCAL != RKH_DISABLED))
-	#error "RKH_SMA_EN_HCAL                  illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_HCAL_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_HCAL_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_HCAL_EN             illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_MAX_HCAL_DEPTH
-	#error "RKH_SMA_EN_HCAL                        not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_MAX_HCAL_DEPTH
+	#error "RKH_CFG_SMA_MAX_HCAL_DEPTH            not #define'd in 'rkhcfg.h'"
 	#error "                                [MUST be >  0]                    "
 	#error "                                [     && <= 8]                    "
 
-#elif	((RKH_SMA_MAX_HCAL_DEPTH == 0) || \
-			(RKH_SMA_MAX_HCAL_DEPTH > 8))
-	#error "RKH_SMA_MAX_HCAL_DEPTH           illegally #define'd in 'rkhcfg.h'"
+#elif	((RKH_CFG_SMA_MAX_HCAL_DEPTH == 0) || \
+			(RKH_CFG_SMA_MAX_HCAL_DEPTH > 8))
+	#error "RKH_CFG_SMA_MAX_HCAL_DEPTH      illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >= 0]                    "
 	#error  "                               [     && <= 8]                    "
 
 #endif
 
 
-#ifndef RKH_SMA_MAX_TRC_SEGS
-	#error "RKH_SMA_MAX_TRC_SEGS                   not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_MAX_TRC_SEGS
+	#error "RKH_CFG_SMA_MAX_TRC_SEGS              not #define'd in 'rkhcfg.h'"
 	#error "                                [MUST be >  0]                    "
 	#error "                                [     && <= 8]                    "
 
-#elif	((RKH_SMA_MAX_TRC_SEGS == 0) || \
-			(RKH_SMA_MAX_TRC_SEGS > 8))
-	#error "RKH_SMA_MAX_TRC_SEGS             illegally #define'd in 'rkhcfg.h'"
+#elif	((RKH_CFG_SMA_MAX_TRC_SEGS == 0) || \
+			(RKH_CFG_SMA_MAX_TRC_SEGS > 8))
+	#error "RKH_CFG_SMA_MAX_TRC_SEGS        illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >= 0]                    "
 	#error  "                               [     && <= 8]                    "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_PSEUDOSTATE
-	#error "RKH_SMA_EN_PSEUDOSTATE                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_PSEUDOSTATE_EN
+	#error "RKH_CFG_SMA_PSEUDOSTATE_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_PSEUDOSTATE != RKH_ENABLED) && \
-        	(RKH_SMA_EN_PSEUDOSTATE != RKH_DISABLED))
-	#error "RKH_SMA_EN_PSEUDOSTATE           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_PSEUDOSTATE_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_PSEUDOSTATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_PSEUDOSTATE_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_DEEP_HISTORY
-	#error "RKH_SMA_EN_DEEP_HISTORY                not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_DEEP_HISTORY_EN
+	#error "RKH_CFG_SMA_DEEP_HISTORY_EN           not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_DEEP_HISTORY != RKH_ENABLED) && \
-        	(RKH_SMA_EN_DEEP_HISTORY != RKH_DISABLED))
-	#error "RKH_SMA_EN_DEEP_HISTORY          illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_DEEP_HISTORY_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_DEEP_HISTORY_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_DEEP_HISTORY_EN     illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_SHALLOW_HISTORY
-	#error "RKH_SMA_EN_SHALLOW_HISTORY             not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_SHALLOW_HISTORY_EN
+	#error "RKH_CFG_SMA_SHALLOW_HISTORY_EN        not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_SHALLOW_HISTORY != RKH_ENABLED) && \
-        	(RKH_SMA_EN_SHALLOW_HISTORY != RKH_DISABLED))
-	#error "RKH_SMA_EN_SHALLOW_HISTORY       illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_SHALLOW_HISTORY_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_SHALLOW_HISTORY_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_SHALLOW_HISTORY_EN  illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_CHOICE
-	#error "RKH_SMA_EN_CHOICE                      not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_CHOICE_EN
+	#error "RKH_CFG_SMA_CHOICE_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_CHOICE != RKH_ENABLED) && \
-        	(RKH_SMA_EN_CHOICE != RKH_DISABLED))
-	#error "RKH_SMA_EN_CHOICE                illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_CHOICE_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_CHOICE_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_CHOICE_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_CONDITIONAL
-	#error "RKH_SMA_EN_CONDITIONAL                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_CONDITIONAL_EN
+	#error "RKH_CFG_SMA_CONDITIONAL_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_CONDITIONAL != RKH_ENABLED) && \
-        	(RKH_SMA_EN_CONDITIONAL != RKH_DISABLED))
-	#error "RKH_SMA_EN_CONDITIONAL           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_CONDITIONAL_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_CONDITIONAL_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_CONDITIONAL_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_SUBMACHINE
-	#error "RKH_SMA_EN_SUBMACHINE                  not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_SUBMACHINE_EN
+	#error "RKH_CFG_SMA_SUBMACHINE_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_SUBMACHINE != RKH_ENABLED) && \
-        	(RKH_SMA_EN_SUBMACHINE != RKH_DISABLED))
-	#error "RKH_SMA_EN_SUBMACHINE            illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_SUBMACHINE_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_SUBMACHINE_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_SUBMACHINE_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_TRC_SENDER
-	#error "RKH_SMA_EN_TRC_SENDER                  not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_TRC_SENDER_EN
+	#error "RKH_CFG_SMA_TRC_SENDER_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_TRC_SENDER != RKH_ENABLED) && \
-        	(RKH_SMA_EN_TRC_SENDER != RKH_DISABLED))
-	#error "RKH_SMA_EN_TRC_SENDER            illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_TRC_SENDER_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_TRC_SENDER_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_TRC_SENDER_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_INIT_ARG_SMA
-	#error "RKH_SMA_EN_INIT_ARG_SMA                not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_INIT_ARG_SMA_EN
+	#error "RKH_CFG_SMA_INIT_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_INIT_ARG_SMA != RKH_ENABLED) && \
-        	(RKH_SMA_EN_INIT_ARG_SMA != RKH_DISABLED))
-	#error "RKH_SMA_EN_INIT_ARG_SMA          illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_INIT_ARG_SMA_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_INIT_ARG_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_INIT_ARG_SMA_EN     illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_ENT_ARG_SMA
-	#error "RKH_SMA_EN_ENT_ARG_SMA                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_ENT_ARG_SMA_EN
+	#error "RKH_CFG_SMA_ENT_ARG_SMA_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_ENT_ARG_SMA != RKH_ENABLED) && \
-        	(RKH_SMA_EN_ENT_ARG_SMA != RKH_DISABLED))
-	#error "RKH_SMA_EN_ENT_ARG_SMA           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_ENT_ARG_SMA_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_ENT_ARG_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_ENT_ARG_SMA_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
-#ifndef RKH_SMA_EN_ENT_ARG_STATE
-	#error "RKH_SMA_EN_ENT_ARG_STATE               not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_ENT_ARG_STATE_EN
+	#error "RKH_CFG_SMA_ENT_ARG_STATE_EN          not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_ENT_ARG_STATE != RKH_ENABLED) && \
-        	(RKH_SMA_EN_ENT_ARG_STATE != RKH_DISABLED))
-	#error "RKH_SMA_EN_ENT_ARG_STATE         illegally #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be  RKH_ENABLED ]       "
-	#error "                                    [     ||  RKH_DISABLED]       "
-
-#endif
-
-
-#ifndef RKH_SMA_EN_EXT_ARG_SMA
-	#error "RKH_SMA_EN_EXT_ARG_SMA                 not #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "                                    [     || RKH_DISABLED]        "
-
-#elif 	((RKH_SMA_EN_EXT_ARG_SMA != RKH_ENABLED) && \
-        	(RKH_SMA_EN_EXT_ARG_SMA != RKH_DISABLED))
-	#error "RKH_SMA_EN_EXT_ARG_SMA           illegally #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be  RKH_ENABLED ]       "
-	#error "                                    [     ||  RKH_DISABLED]       "
-
-#endif
-
-#ifndef RKH_SMA_EN_EXT_ARG_STATE
-	#error "RKH_SMA_EN_EXT_ARG_STATE               not #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "                                    [     || RKH_DISABLED]        "
-
-#elif 	((RKH_SMA_EN_EXT_ARG_STATE != RKH_ENABLED) && \
-        	(RKH_SMA_EN_EXT_ARG_STATE != RKH_DISABLED))
-	#error "RKH_SMA_EN_EXT_ARG_STATE         illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_ENT_ARG_STATE_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_ENT_ARG_STATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_ENT_ARG_STATE_EN    illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_ACT_ARG_SMA
-	#error "RKH_SMA_EN_ACT_ARG_SMA                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_EXT_ARG_SMA_EN
+	#error "RKH_CFG_SMA_EXT_ARG_SMA_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_ACT_ARG_SMA != RKH_ENABLED) && \
-        	(RKH_SMA_EN_ACT_ARG_SMA != RKH_DISABLED))
-	#error "RKH_SMA_EN_ACT_ARG_SMA           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_EXT_ARG_SMA_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_EXT_ARG_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_EXT_ARG_SMA_EN      illegally #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be  RKH_ENABLED ]       "
+	#error "                                    [     ||  RKH_DISABLED]       "
+
+#endif
+
+#ifndef RKH_CFG_SMA_EXT_ARG_STATE_EN
+	#error "RKH_CFG_SMA_EXT_ARG_STATE_EN          not #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be RKH_ENABLED ]        "
+	#error "                                    [     || RKH_DISABLED]        "
+
+#elif 	((RKH_CFG_SMA_EXT_ARG_STATE_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_EXT_ARG_STATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_EXT_ARG_STATE_EN    illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_ACT_ARG_EVT
-	#error "RKH_SMA_EN_ACT_ARG_EVT                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_ACT_ARG_SMA_EN
+	#error "RKH_CFG_SMA_ACT_ARG_SMA_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_ACT_ARG_EVT != RKH_ENABLED) && \
-        	(RKH_SMA_EN_ACT_ARG_EVT != RKH_DISABLED))
-	#error "RKH_SMA_EN_ACT_ARG_EVT           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_ACT_ARG_SMA_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_ACT_ARG_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_ACT_ARG_SMA_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_GRD_ARG_EVT
-	#error "RKH_SMA_EN_GRD_ARG_EVT                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_ACT_ARG_EVT_EN
+	#error "RKH_CFG_SMA_ACT_ARG_EVT_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_GRD_ARG_EVT != RKH_ENABLED) && \
-        	(RKH_SMA_EN_GRD_ARG_EVT != RKH_DISABLED))
-	#error "RKH_SMA_EN_GRD_ARG_EVT           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_ACT_ARG_EVT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_ACT_ARG_EVT_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_ACT_ARG_EVT_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_GRD_ARG_SMA
-	#error "RKH_SMA_EN_GRD_ARG_SMA                 not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_GRD_ARG_EVT_EN
+	#error "RKH_CFG_SMA_GRD_ARG_EVT_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_GRD_ARG_SMA != RKH_ENABLED) && \
-        	(RKH_SMA_EN_GRD_ARG_SMA != RKH_DISABLED))
-	#error "RKH_SMA_EN_GRD_ARG_SMA           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_GRD_ARG_EVT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_GRD_ARG_EVT_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_GRD_ARG_EVT_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_SMA_EN_PPRO_ARG_SMA
-	#error "RKH_SMA_EN_PPRO_ARG_SMA                not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_GRD_ARG_SMA_EN
+	#error "RKH_CFG_SMA_GRD_ARG_SMA_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_PPRO_ARG_SMA != RKH_ENABLED) && \
-        	(RKH_SMA_EN_PPRO_ARG_SMA != RKH_DISABLED))
-	#error "RKH_SMA_EN_PPRO_ARG_SMA          illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_GRD_ARG_SMA_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_GRD_ARG_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_GRD_ARG_SMA_EN      illegally #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be  RKH_ENABLED ]       "
+	#error "                                    [     ||  RKH_DISABLED]       "
+
+#endif
+
+
+#ifndef RKH_CFG_SMA_PPRO_ARG_SMA_EN
+	#error "RKH_CFG_SMA_PPRO_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be RKH_ENABLED ]        "
+	#error "                                    [     || RKH_DISABLED]        "
+
+#elif 	((RKH_CFG_SMA_PPRO_ARG_SMA_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_PPRO_ARG_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_PPRO_ARG_SMA_EN     illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -833,327 +834,327 @@
 
 /*  TRACE         --------------------------------------------------------- */
 
-#ifndef	RKH_TRC_EN
-	#error "RKH_TRC_EN                             not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_TRC_EN
+	#error "RKH_CFG_TRC_EN                        not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_TRC_EN != RKH_ENABLED) && \
-        	(RKH_TRC_EN != RKH_DISABLED))
-	#error "RKH_TRC_EN                       illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_TRC_EN != RKH_ENABLED) && \
+        	(RKH_CFG_TRC_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_EN                  illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
-#elif 	(RKH_TRC_EN == RKH_ENABLED)
+#elif 	(RKH_CFG_TRC_EN == RKH_ENABLED)
 
-	#ifndef	RKH_TRC_RUNTIME_FILTER
-	#error "RKH_TRC_RUNTIME_FILTER                 not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_RUNTIME_FILTER_EN
+	#error "RKH_CFG_TRC_RUNTIME_FILTER_EN         not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_RUNTIME_FILTER != RKH_ENABLED) && \
-    	    	(RKH_TRC_RUNTIME_FILTER != RKH_DISABLED))
-	#error "RKH_TRC_RUNTIME_FILTER           illegally #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be  RKH_ENABLED ]       "
-	#error "                                    [     ||  RKH_DISABLED]       "
-	#endif
-
-	#ifndef	RKH_TRC_RTFIL_SMA_EN
-	#error "RKH_TRC_RTFIL_SMA_EN                   not #define'd in 'rkhcfg.h'"
-	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "                                    [     || RKH_DISABLED]        "
-
-	#elif 	((RKH_TRC_RTFIL_SMA_EN != RKH_ENABLED) && \
-    	    	(RKH_TRC_RTFIL_SMA_EN != RKH_DISABLED))
-	#error "RKH_TRC_RTFIL_SMA_EN             illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_RUNTIME_FILTER_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_RUNTIME_FILTER_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_RUNTIME_FILTER_EN   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_RTFIL_SIGNAL_EN
-	#error "RKH_TRC_RTFIL_SIGNAL_EN                not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_RTFIL_SMA_EN
+	#error "RKH_CFG_TRC_RTFIL_SMA_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_RTFIL_SIGNAL_EN != RKH_ENABLED) && \
-    	    	(RKH_TRC_RTFIL_SIGNAL_EN != RKH_DISABLED))
-	#error "RKH_TRC_RTFIL_SIGNAL_EN          illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_RTFIL_SMA_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_RTFIL_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_RTFIL_SMA_EN        illegally #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be  RKH_ENABLED ]       "
+	#error "                                    [     ||  RKH_DISABLED]       "
+	#endif
+
+	#ifndef	RKH_CFG_TRC_RTFIL_SIGNAL_EN
+	#error "RKH_CFG_TRC_RTFIL_SIGNAL_EN           not #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be RKH_ENABLED ]        "
+	#error "                                    [     || RKH_DISABLED]        "
+
+	#elif 	((RKH_CFG_TRC_RTFIL_SIGNAL_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_RTFIL_SIGNAL_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_RTFIL_SIGNAL_EN     illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 	
-	#ifndef	RKH_TRC_EN_USER_TRACE
-	#error "RKH_TRC_EN_USER_TRACE                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_USER_TRACE_EN
+	#error "RKH_CFG_TRC_USER_TRACE_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_USER_TRACE != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_USER_TRACE != RKH_DISABLED))
-	#error "RKH_TRC_EN_USER_TRACE            illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_USER_TRACE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_USER_TRACE_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_USER_TRACE_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_ALL
-	#error "RKH_TRC_ALL                            not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_ALL_EN
+	#error "RKH_CFG_TRC_ALL_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_ALL != RKH_ENABLED) && \
-    	    	(RKH_TRC_ALL != RKH_DISABLED))
-	#error "RKH_TRC_ALL                      illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_ALL_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_ALL_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_ALL_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_MP
-	#error "RKH_TRC_EN_MP                          not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_MP_EN
+	#error "RKH_CFG_TRC_MP_EN                     not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_MP != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_MP != RKH_DISABLED))
-	#error "RKH_TRC_EN_MP                    illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_MP_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_MP_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_MP_EN               illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_RQ
-	#error "RKH_TRC_EN_RQ                          not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_RQ_EN
+	#error "RKH_CFG_TRC_RQ_EN                     not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_RQ != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_RQ != RKH_DISABLED))
-	#error "RKH_TRC_EN_RQ                    illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_RQ_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_RQ_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_RQ_EN               illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SMA
-	#error "RKH_TRC_EN_SMA                         not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SMA_EN
+	#error "RKH_CFG_TRC_SMA_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SMA != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SMA != RKH_DISABLED))
-	#error "RKH_TRC_EN_SMA                   illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SMA_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SMA_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SMA_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_TIM
-	#error "RKH_TRC_EN_TIM                         not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_TIM_EN
+	#error "RKH_CFG_TRC_TIM_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_TIM != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_TIM != RKH_DISABLED))
-	#error "RKH_TRC_EN_TIM                   illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_TIM_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_TIM_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_TIM_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM
-	#error "RKH_TRC_EN_SM                          not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_EN
+	#error "RKH_CFG_TRC_SM_EN                     not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM                    illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_EN               illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_FWK
-	#error "RKH_TRC_EN_FWK                         not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_FWK_EN
+	#error "RKH_CFG_TRC_FWK_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_FWK != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_FWK != RKH_DISABLED))
-	#error "RKH_TRC_EN_FWK                   illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_FWK_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_FWK_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_FWK_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_ASSERT
-	#error "RKH_TRC_EN_ASSERT                      not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_ASSERT_EN
+	#error "RKH_CFG_TRC_ASSERT_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_ASSERT != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_ASSERT != RKH_DISABLED))
-	#error "RKH_TRC_EN_ASSERT                illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_ASSERT_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_ASSERT_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_ASSERT_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_INIT
-	#error "RKH_TRC_EN_SM_INIT                     not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_INIT_EN
+	#error "RKH_CFG_TRC_SM_INIT_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_INIT != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_INIT != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_INIT               illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_INIT_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_INIT_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_INIT_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_DCH
-	#error "RKH_TRC_EN_SM_DCH                      not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_DCH_EN
+	#error "RKH_CFG_TRC_SM_DCH_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_DCH != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_DCH != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_DCH                illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_DCH_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_DCH_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_DCH_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_CLRH
-	#error "RKH_TRC_EN_SM_CLRH                     not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_CLRH_EN
+	#error "RKH_CFG_TRC_SM_CLRH_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_CLRH != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_CLRH != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_CLRH               illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_CLRH_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_CLRH_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_CLRH_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_TRN
-	#error "RKH_TRC_EN_SM_TRN                      not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_TRN_EN
+	#error "RKH_CFG_TRC_SM_TRN_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_TRN != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_TRN != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_TRN                illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_TRN_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_TRN_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_TRN_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_STATE
-	#error "RKH_TRC_EN_SM_STATE                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_STATE_EN
+	#error "RKH_CFG_TRC_SM_STATE_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_STATE != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_STATE != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_STATE              illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_STATE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_STATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_STATE_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_ENSTATE
-	#error "RKH_TRC_EN_SM_ENSTATE                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_ENSTATE_EN
+	#error "RKH_CFG_TRC_SM_ENSTATE_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_ENSTATE != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_ENSTATE != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_ENSTATE            illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_ENSTATE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_ENSTATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_ENSTATE_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_EXSTATE
-	#error "RKH_TRC_EN_SM_EXSTATE                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_EXSTATE_EN
+	#error "RKH_CFG_TRC_SM_EXSTATE_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_EXSTATE != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_EXSTATE != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_EXSTATE            illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_EXSTATE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_EXSTATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_EXSTATE_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_NENEX
-	#error "RKH_TRC_EN_SM_NENEX                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_NENEX_EN
+	#error "RKH_CFG_TRC_SM_NENEX_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_NENEX != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_NENEX != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_NENEX              illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_NENEX_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_NENEX_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_NENEX_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_NTRNACT
-	#error "RKH_TRC_EN_SM_NTRNACT                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_NTRNACT_EN
+	#error "RKH_CFG_TRC_SM_NTRNACT_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_NTRNACT != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_NTRNACT != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_NTRNACT            illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_NTRNACT_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_NTRNACT_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_NTRNACT_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_TS_STATE
-	#error "RKH_TRC_EN_SM_TS_STATE                 not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_TS_STATE_EN
+	#error "RKH_CFG_TRC_SM_TS_STATE_EN            not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_TS_STATE != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_TS_STATE != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_TS_STATE           illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_TS_STATE_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_TS_STATE_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_TS_STATE_EN      illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_SM_PROCESS
-	#error "RKH_TRC_EN_SM_PROCESS                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SM_PROCESS_EN
+	#error "RKH_CFG_TRC_SM_PROCESS_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_SM_PROCESS != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_SM_PROCESS != RKH_DISABLED))
-	#error "RKH_TRC_EN_SM_PROCESS            illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_SM_PROCESS_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_PROCESS_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_PROCESS_EN       illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_NSEQ
-	#error "RKH_TRC_EN_NSEQ                        not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_NSEQ_EN
+	#error "RKH_CFG_TRC_NSEQ_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_NSEQ != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_NSEQ != RKH_DISABLED))
-	#error "RKH_TRC_EN_NSEQ                  illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_NSEQ_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_NSEQ_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_NSEQ_EN             illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_CHK
-	#error "RKH_TRC_EN_CHK                         not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_CHK_EN
+	#error "RKH_CFG_TRC_CHK_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_CHK != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_CHK != RKH_DISABLED))
-	#error "RKH_TRC_EN_CHK                   illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_CHK_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_CHK_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_CHK_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                     MUST be  RKH_ENABLED ]       "
 	#error "                                          ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_EN_TSTAMP
-	#error "RKH_TRC_EN_TSTAMP                      not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_TSTAMP_EN
+	#error "RKH_CFG_TRC_TSTAMP_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                     MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_TRC_EN_TSTAMP != RKH_ENABLED) && \
-    	    	(RKH_TRC_EN_TSTAMP != RKH_DISABLED))
-	#error "RKH_TRC_EN_TSTAMP                illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_TSTAMP_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_TSTAMP_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_TSTAMP_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
@@ -1173,13 +1174,14 @@
 	#error  "                               [     || 32  (32-bit size)]       "
 	#endif
 
-	#ifndef	RKH_TRC_SIZEOF_STREAM
-	#error "RKH_TRC_SIZEOF_STREAM                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_SIZEOF_STREAM
+	#error "RKH_CFG_TRC_SIZEOF_STREAM             not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >     0]                 "
 	#error  "                               [     && <= 2048]                 "
 
-	#elif	((RKH_TRC_SIZEOF_STREAM == 0) || (RKH_TRC_SIZEOF_STREAM > 2048))
-	#error "RKH_TRC_SIZEOF_STREAM            illegally #define'd in 'rkhcfg.h'"
+	#elif	((RKH_CFG_TRC_SIZEOF_STREAM == 0) || \
+			 (RKH_CFG_TRC_SIZEOF_STREAM > 2048))
+	#error "RKH_CFG_TRC_SIZEOF_STREAM       illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >    0]                  "
 	#error  "                               [     && <= 2048]                 "
 	#endif
@@ -1188,29 +1190,30 @@
 
 /*  FRAMEWORK     --------------------------------------------------------- */
 
-#ifndef	RKH_MAX_SMA
-	#error "RKH_MAX_SMA                            not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_MAX_SMA
+	#error "RKH_CFG_MAX_SMA                       not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >=  1]                   "
 	#error  "                               [     && <= 64]                   "
 
-#elif ((RKH_MAX_SMA == 0) || (RKH_MAX_SMA > 64))
-	#error "RKH_MAX_SMA                      illegally #define'd in 'rkhcfg.h'"
+#elif ((RKH_CFG_MAX_SMA == 0) || (RKH_CFG_MAX_SMA > 64))
+	#error "RKH_CFG_MAX_SMA                 illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >=  1]                   "
 	#error  "                               [     && <= 64]                   "
 
 #endif
 
 
-#ifndef	RKH_EN_DYNAMIC_EVENT
-	#error "RKH_EN_DYNAMIC_EVENT                   not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_EN_DYNAMIC_EVENT
+	#error "RKH_CFG_EN_DYNAMIC_EVENT              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	(RKH_EN_DYNAMIC_EVENT == RKH_DISABLED)
+#elif 	(RKH_CFG_EN_DYNAMIC_EVENT == RKH_DISABLED)
+
 	/*
-	 *	If the dynamic event support is disabled, RKH not allows to use events 
-	 *	with parameters, defer/recall mechanism, allocating and recycling 
-	 *	dynamic events, among other features.
+	 *	If the dynamic event support is disabled, RKH not allows to use 
+	 *	events with parameters, defer/recall mechanism, allocating and 
+	 *	recycling dynamic events, among other features.
 	 */
 	#undef RKH_EN_NATIVE_DYN_EVENT
 	#define RKH_EN_NATIVE_DYN_EVENT			RKH_DISABLED
@@ -1218,14 +1221,14 @@
 #endif
 
 
-#ifndef	RKH_MAX_EPOOL
-	#error "RKH_MAX_EPOOL                          not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_MAX_EPOOL
+	#error "RKH_CFG_MAX_EPOOL                     not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >    0]                  "
 	#error  "                               [     && <  256]                  "
 
-#elif 	(RKH_EN_DYNAMIC_EVENT == RKH_ENABLED)
-	#if ((RKH_MAX_EPOOL == 0) || (RKH_MAX_EPOOL > 255))
-	#error "RKH_MAX_EPOOL                    illegally #define'd in 'rkhcfg.h'"
+#elif 	(RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED)
+	#if ((RKH_CFG_MAX_EPOOL == 0) || (RKH_CFG_MAX_EPOOL > 255))
+	#error "RKH_CFG_MAX_EPOOL               illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >    0]                  "
 	#error  "                               [     && <  256]                  "
 	#endif
@@ -1233,16 +1236,16 @@
 #endif
 
 
-#ifndef	RKH_SIZEOF_EVENT
-	#error "RKH_SIZEOF_EVENT                       not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_SIZEOF_EVENT
+	#error "RKH_CFG_SIZEOF_EVENT                  not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-#elif  ((RKH_SIZEOF_EVENT != 8) && \
-        (RKH_SIZEOF_EVENT != 16) && \
-        (RKH_SIZEOF_EVENT != 32))
-	#error  "RKH_SIZEOF_EVENT                illegally #define'd in 'rkhcfg.h'"
+#elif  ((RKH_CFG_SIZEOF_EVENT != 8) && \
+        (RKH_CFG_SIZEOF_EVENT != 16) && \
+        (RKH_CFG_SIZEOF_EVENT != 32))
+	#error  "RKH_CFG_SIZEOF_EVENT           illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
@@ -1253,27 +1256,27 @@
 #ifndef	RKH_MAX_SIGNALS
 	#error "RKH_MAX_SIGNALS                        not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >  0]                    "
-	#error  "                               [MUST be <  2^RKH_SIZEOF_EVENT    "
+	#error  "                          [MUST be <  2^RKH_CFG_SIZEOF_EVENT    "
 
 #elif ((RKH_MAX_SIGNALS == 0u) || \
-	   (RKH_MAX_SIGNALS >= RKH_BIT(RKH_SIZEOF_EVENT)))
+	   (RKH_MAX_SIGNALS >= RKH_BIT(RKH_CFG_SIZEOF_EVENT)))
 	#error "RKH_MAX_SIGNALS                  illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >  0]                    "
-	#error  "                               [MUST be <  2^RKH_SIZEOF_EVENT    "
+	#error  "                          [MUST be <  2^RKH_CFG_SIZEOF_EVENT    "
 
 #endif
 
 
-#ifndef	RKH_SIZEOF_ESIZE
-	#error "RKH_SIZEOF_ESIZE                       not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_SIZEOF_ESIZE
+	#error "RKH_CFG_SIZEOF_ESIZE                  not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-#elif  ((RKH_SIZEOF_ESIZE != 8) && \
-        (RKH_SIZEOF_ESIZE != 16) && \
-        (RKH_SIZEOF_ESIZE != 32))
-	#error  "RKH_SIZEOF_ESIZE                illegally #define'd in 'rkhcfg.h'"
+#elif  ((RKH_CFG_SIZEOF_ESIZE != 8) && \
+        (RKH_CFG_SIZEOF_ESIZE != 16) && \
+        (RKH_CFG_SIZEOF_ESIZE != 32))
+	#error  "RKH_CFG_SIZEOF_ESIZE           illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
@@ -1281,12 +1284,12 @@
 #endif
 
 
-#ifndef RKH_EN_DEFERRED_EVENT
-	#error "RKH_EN_DEFERRED_EVENT                  not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_DEFERRED_EVENT_EN
+	#error "RKH_CFG_DEFERRED_EVENT_EN             not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_DEFERRED_EVENT == RKH_ENABLED) && \
+#elif 	((RKH_CFG_DEFERRED_EVENT_EN == RKH_ENABLED) && \
 			(RKH_EN_NATIVE_EQUEUE == RKH_DISABLED))
 	#error  "RKH_EN_NATIVE_EQUEUE            illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -1294,112 +1297,112 @@
 #endif
 
 
-#ifndef	RKH_ASSERT_EN
-	#error "RKH_ASSERT_EN                         not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFG_ASSERT_EN
+	#error "RKH_CFG_ASSERT_EN                         not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_ASSERT_EN != RKH_ENABLED) && \
-        	(RKH_ASSERT_EN != RKH_DISABLED))
-	#error "RKH_ASSERT_EN                   illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFG_ASSERT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_ASSERT_EN != RKH_DISABLED))
+	#error "RKH_CFG_ASSERT_EN                   illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HOOK_DISPATCH_EN
-	#error "RKH_HOOK_DISPATCH_EN                   not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_DISPATCH_EN
+	#error "RKH_CFG_HOOK_DISPATCH_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HOOK_DISPATCH_EN != RKH_ENABLED) && \
-        	(RKH_HOOK_DISPATCH_EN != RKH_DISABLED))
-	#error "RKH_HOOK_DISPATCH_EN             illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_HOOK_DISPATCH_EN != RKH_ENABLED) && \
+        	(RKH_CFG_HOOK_DISPATCH_EN != RKH_DISABLED))
+	#error "RKH_CFG_HOOK_DISPATCH_EN        illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HOOK_SIGNAL_EN
-	#error "RKH_HOOK_SIGNAL_EN                     not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_SIGNAL_EN
+	#error "RKH_CFG_HOOK_SIGNAL_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HOOK_SIGNAL_EN != RKH_ENABLED) && \
-        	(RKH_HOOK_SIGNAL_EN != RKH_DISABLED))
-	#error "RKH_HOOK_SIGNAL_EN               illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_HOOK_SIGNAL_EN != RKH_ENABLED) && \
+        	(RKH_CFG_HOOK_SIGNAL_EN != RKH_DISABLED))
+	#error "RKH_CFG_HOOK_SIGNAL_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HOOK_TIMEOUT_EN
-	#error "RKH_HOOK_TIMEOUT_EN                    not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_TIMEOUT_EN
+	#error "RKH_CFG_HOOK_TIMEOUT_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HOOK_TIMEOUT_EN != RKH_ENABLED) && \
-        	(RKH_HOOK_TIMEOUT_EN != RKH_DISABLED))
-	#error "RKH_HOOK_TIMEOUT_EN              illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_HOOK_TIMEOUT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_HOOK_TIMEOUT_EN != RKH_DISABLED))
+	#error "RKH_CFG_HOOK_TIMEOUT_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HOOK_START_EN
-	#error "RKH_HOOK_START_EN                      not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_START_EN
+	#error "RKH_CFG_HOOK_START_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HOOK_START_EN != RKH_ENABLED) && \
-        	(RKH_HOOK_START_EN != RKH_DISABLED))
-	#error "RKH_HOOK_START_EN                illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_HOOK_START_EN != RKH_ENABLED) && \
+        	(RKH_CFG_HOOK_START_EN != RKH_DISABLED))
+	#error "RKH_CFG_HOOK_START_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HOOK_EXIT_EN
-	#error "RKH_HOOK_EXIT_EN                       not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_EXIT_EN
+	#error "RKH_CFG_HOOK_EXIT_EN                  not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HOOK_EXIT_EN != RKH_ENABLED) && \
-        	(RKH_HOOK_EXIT_EN != RKH_DISABLED))
-	#error "RKH_HOOK_EXIT_EN                 illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_HOOK_EXIT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_HOOK_EXIT_EN != RKH_DISABLED))
+	#error "RKH_CFG_HOOK_EXIT_EN            illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_HOOK_TIMETICK_EN
-	#error "RKH_HOOK_TIMETICK_EN                   not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_TIMETICK_EN
+	#error "RKH_CFG_HOOK_TIMETICK_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_HOOK_TIMETICK_EN != RKH_ENABLED) && \
-        	(RKH_HOOK_TIMETICK_EN != RKH_DISABLED))
-	#error "RKH_HOOK_TIMETICK_EN             illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_HOOK_TIMETICK_EN != RKH_ENABLED) && \
+        	(RKH_CFG_HOOK_TIMETICK_EN != RKH_DISABLED))
+	#error "RKH_CFG_HOOK_TIMETICK_EN        illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_SMA_EN_IEVENT
-	#error "RKH_SMA_EN_IEVENT                      not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_SMA_IEVENT_EN
+	#error "RKH_CFG_SMA_IEVENT_EN                 not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_SMA_EN_IEVENT != RKH_ENABLED) && \
-        	(RKH_SMA_EN_IEVENT != RKH_DISABLED))
-	#error "RKH_SMA_EN_IEVENT                illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_IEVENT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_IEVENT_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_IEVENT_EN           illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1461,8 +1464,8 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #elif	((RKH_EN_NATIVE_EQUEUE == RKH_ENABLED) && \
-        	(RKH_RQ_EN != RKH_ENABLED))
-	#error "RKH_RQ_EN                        illegally #define'd in 'rkhcfg.h'"
+        	(RKH_CFG_RQ_EN != RKH_ENABLED))
+	#error "RKH_CFG_RQ_EN                   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
@@ -1481,11 +1484,11 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #elif	(RKH_EN_NATIVE_DYN_EVENT == RKH_ENABLED)
-	#if ((RKH_EN_DYNAMIC_EVENT == RKH_ENABLED) && \
-			(RKH_MP_EN == RKH_DISABLED))
-	#error "RKH_EN_DYNAMIC_EVENT             illegally #define'd in 'rkhcfg.h'"
+	#if ((RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED) && \
+			(RKH_CFG_MP_EN == RKH_DISABLED))
+	#error "RKH_CFG_EN_DYNAMIC_EVENT        illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
-	#error "RKH_MP_EN                        illegally #define'd in 'rkhcfg.h'"
+	#error "RKH_CFG_MP_EN                   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#endif
 
@@ -1562,53 +1565,53 @@
 #define RKH_EXPOINT						RKH_TYPE( RKH_PSEUDO, 	0x40 )	
 
 
-#if (	RKH_SMA_EN_PSEUDOSTATE == RKH_DISABLED || \
-		(	RKH_SMA_EN_DEEP_HISTORY == RKH_DISABLED &&  \
-			RKH_SMA_EN_SHALLOW_HISTORY == RKH_DISABLED && \
-			RKH_SMA_EN_SUBMACHINE == RKH_DISABLED && \
-			RKH_SMA_EN_CONDITIONAL == RKH_DISABLED && \
-			RKH_SMA_EN_CHOICE == RKH_DISABLED ))
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_DISABLED || \
+		(	RKH_CFG_SMA_DEEP_HISTORY_EN == RKH_DISABLED &&  \
+			RKH_CFG_SMA_SHALLOW_HISTORY_EN == RKH_DISABLED && \
+			RKH_CFG_SMA_SUBMACHINE_EN == RKH_DISABLED && \
+			RKH_CFG_SMA_CONDITIONAL_EN == RKH_DISABLED && \
+			RKH_CFG_SMA_CHOICE_EN == RKH_DISABLED ))
 	#define RKH_PSEUDOSTATE		RKH_DISABLED
 #else
 	#define RKH_PSEUDOSTATE		RKH_ENABLED
 #endif
 
-#if (	RKH_SMA_EN_HCAL == RKH_ENABLED && \
-		RKH_SMA_EN_PSEUDOSTATE == RKH_ENABLED && \
-			(RKH_SMA_EN_SHALLOW_HISTORY == RKH_ENABLED || \
-				RKH_SMA_EN_DEEP_HISTORY == RKH_ENABLED))
+#if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
+			(RKH_CFG_SMA_SHALLOW_HISTORY_EN == RKH_ENABLED || \
+				RKH_CFG_SMA_DEEP_HISTORY_EN == RKH_ENABLED))
 	#define RKH_HISTORY_ENABLED
 #endif
 
-#if (	RKH_SMA_EN_HCAL == RKH_ENABLED && \
-		RKH_SMA_EN_PSEUDOSTATE == RKH_ENABLED && \
-		RKH_SMA_EN_DEEP_HISTORY == RKH_ENABLED)
+#if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_DEEP_HISTORY_EN == RKH_ENABLED)
 	#define RKH_DEEP_ENABLED
 #endif
 
-#if (	RKH_SMA_EN_HCAL == RKH_ENABLED && \
-		RKH_SMA_EN_PSEUDOSTATE == RKH_ENABLED && \
-		RKH_SMA_EN_SHALLOW_HISTORY == RKH_ENABLED)
+#if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_SHALLOW_HISTORY_EN == RKH_ENABLED)
 	#define RKH_SHALLOW_ENABLED
 #endif
 
-#if (	RKH_SMA_EN_PSEUDOSTATE == RKH_ENABLED && \
-		RKH_SMA_EN_SUBMACHINE == RKH_ENABLED)
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_SUBMACHINE_EN == RKH_ENABLED)
 	#define RKH_SUBMACHINE_ENABLED
 #endif
 
-#if (	RKH_SMA_EN_PSEUDOSTATE == RKH_ENABLED && \
-		RKH_SMA_EN_CHOICE == RKH_ENABLED)
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_CHOICE_EN == RKH_ENABLED)
 	#define RKH_CHOICE_ENABLED
 #endif
 
-#if (	RKH_SMA_EN_PSEUDOSTATE == 1 && \
-		(RKH_SMA_EN_CONDITIONAL == 1 || RKH_SMA_EN_CHOICE == 1))
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == 1 && \
+		(RKH_CFG_SMA_CONDITIONAL_EN == 1 || RKH_CFG_SMA_CHOICE_EN == 1))
 	#define RKH_CHOICE_OR_CONDITIONAL_ENABLED
 #endif
 	
 
-#if RKH_HOOK_DISPATCH_EN == RKH_ENABLED
+#if RKH_CFG_HOOK_DISPATCH_EN == RKH_ENABLED
 	#define RKH_HOOK_DISPATCH( sma, e )	\
 							rkh_hook_dispatch( (sma), (RKH_EVT_T*)(e) )
 
@@ -1618,7 +1621,7 @@
 #endif
 
 
-#if	(RKH_HOOK_TIMEOUT_EN == RKH_ENABLED)
+#if	(RKH_CFG_HOOK_TIMEOUT_EN == RKH_ENABLED)
 	#define RKH_HOOK_TIMEOUT( t )	\
 							rkh_hook_timeout( (t) )
 #else
@@ -1627,7 +1630,7 @@
 #endif
 
 
-#if	(RKH_HOOK_SIGNAL_EN == RKH_ENABLED)
+#if	(RKH_CFG_HOOK_SIGNAL_EN == RKH_ENABLED)
 	#define RKH_HOOK_SIGNAL( e )	\
 							rkh_hook_signal( (RKH_EVT_T*)(e) )
 #else
@@ -1636,7 +1639,7 @@
 #endif
 
 
-#if	(RKH_HOOK_START_EN == RKH_ENABLED)
+#if	(RKH_CFG_HOOK_START_EN == RKH_ENABLED)
 	#define RKH_HOOK_START()	\
 							rkh_hook_start()
 #else
@@ -1645,7 +1648,7 @@
 #endif
 
 
-#if	(RKH_HOOK_EXIT_EN == RKH_ENABLED)
+#if	(RKH_CFG_HOOK_EXIT_EN == RKH_ENABLED)
 	#define RKH_HOOK_EXIT()	\
 							rkh_hook_exit()
 #else
@@ -1654,7 +1657,7 @@
 #endif
 
 
-#if	(RKH_HOOK_TIMETICK_EN == RKH_ENABLED)
+#if	(RKH_CFG_HOOK_TIMETICK_EN == RKH_ENABLED)
 	#define RKH_HOOK_TIMETICK()	\
 							rkh_hook_timetick()
 #else
@@ -1663,15 +1666,16 @@
 #endif
 
 
-#if (	(RKH_TRC_EN == RKH_ENABLED) && \
-	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
+#if (	(RKH_CFG_TRC_EN == RKH_ENABLED) && \
+	   ((RKH_CFG_TRC_ALL_EN == RKH_ENABLED) || \
+		(RKH_CFG_TRC_FWK_EN == RKH_ENABLED)))
 	#define R_TRC_AO_NAME_EN	RKH_ENABLED
 #else
 	#define R_TRC_AO_NAME_EN	RKH_DISABLED
 #endif
 
 
-#if (RKH_SMA_EN_IEVENT == RKH_ENABLED)
+#if (RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED)
 	#if (R_TRC_AO_NAME_EN == RKH_ENABLED)
 		#define MKRRKH(name, prio, ppty, is, ia, ie) \
 			{(prio), (ppty), #name, (RKHROM struct RKH_ST_T*)is, (ia), (ie)}
@@ -1702,8 +1706,8 @@
 #define MKBASE(t, n)		t, #n
 
 
-#if (RKH_SMA_EN_HCAL == RKH_ENABLED)
-	#if (RKH_SMA_EN_PPRO == RKH_ENABLED)
+#if (RKH_CFG_SMA_HCAL_EN == RKH_ENABLED)
+	#if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
 		#define MKBASIC(n,pp)		n##_trtbl,pp
 		#define MKCOMP(n,d,h)		n##_trtbl,NULL,d,h
 	#else
@@ -1715,7 +1719,7 @@
 	#define MKMCH(d,i,n)			d,i,(RKHROM RKH_ST_T**)&rdyp_##n
 	#define MKENP(e,s)				e,(RKHROM struct RKH_ST_T *)s
 #else
-	#if (RKH_SMA_EN_PPRO == RKH_ENABLED)
+	#if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
 		#define MKBASIC(n,pp)		n##_trtbl,pp
 		#define MKCOMP(n,d,h)		n##_trtbl,NULL
 	#else
@@ -1787,7 +1791,7 @@
 
 	/**
 	 * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
-	 *	enabled (see #RKH_RQ_EN) then RKH will include its own implementation of 
+	 *	enabled (see #RKH_CFG_RQ_EN) then RKH will include its own implementation of 
 	 *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
 	 */
 
@@ -1795,8 +1799,8 @@
 
 	/**
 	 * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
-	 * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
-	 * 	its own implementation of dynamic memory management.
+	 * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will 
+	 * 	include its own implementation of dynamic memory management.
 	 * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
 	 * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
 	 * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
@@ -2116,8 +2120,8 @@ struct RKH_SMA_T;
  * 	the initial transition explicitly by invoking rkh_sma_activate() function.
  */
 
-#if (RKH_SMA_EN_INIT_ARG_SMA == RKH_ENABLED && \
-		RKH_SMA_EN_IEVENT == RKH_ENABLED)
+#if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED)
 	typedef void ( *RKH_INIT_ACT_T )( const void *sma, 
 										const struct rkhevt_t *e );
 	#define RKH_EXEC_INIT( h )										\
@@ -2125,16 +2129,16 @@ struct RKH_SMA_T;
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( (h), CIA(h)->romrkh->ievent );				\
 	}
-#elif (RKH_SMA_EN_INIT_ARG_SMA == RKH_ENABLED && \
-		RKH_SMA_EN_IEVENT == RKH_DISABLED)
+#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_IEVENT_EN == RKH_DISABLED)
 	typedef void ( *RKH_INIT_ACT_T )( const struct RKH_SMA_T *sma );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( (h) );										\
 	}
-#elif (RKH_SMA_EN_INIT_ARG_SMA == RKH_DISABLED && \
-		RKH_SMA_EN_IEVENT == RKH_ENABLED)
+#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
+		RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED)
 	typedef void ( *RKH_INIT_ACT_T )( const struct rkhevt_t *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
@@ -2211,8 +2215,9 @@ typedef struct ROMRKH_T
 	 *	displayed by debuggers or by Trazer.
 	 */
 
-#if (	(RKH_TRC_EN == RKH_ENABLED) && \
-	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
+#if (	(RKH_CFG_TRC_EN == RKH_ENABLED) && \
+	   ((RKH_CFG_TRC_ALL_EN == RKH_ENABLED) || \
+		(RKH_CFG_TRC_FWK_EN == RKH_ENABLED)))
 	const char *name;
 #endif
 
@@ -2242,10 +2247,10 @@ typedef struct ROMRKH_T
 	 *	when it starts. Could be used to pass arguments to the state machine 
 	 *	like an argc/argv. This argument is optional, thus it could be 
 	 *	declared as NULL or eliminated in compile-time with 
-	 *	RKH_SMA_EN_IEVENT = 0.
+	 *	RKH_CFG_SMA_IEVENT_EN = 0.
 	 */
 
-#if RKH_SMA_EN_IEVENT == RKH_ENABLED
+#if RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED
 	const RKH_EVT_T *ievent;
 #endif
 } RKH_ROM_T;
@@ -2370,10 +2375,10 @@ typedef struct RKH_SMA_T
  	 * 	\brief
 	 * 	Performance information. This member is optional, thus it could be 
 	 * 	declared as NULL or eliminated in compile-time with 
-	 * 	RKH_SMA_EN_GET_INFO = 0.
+	 * 	RKH_CFG_SMA_GET_INFO_EN = 0.
 	 */
 
-#if RKH_SMA_EN_GET_INFO == RKH_ENABLED
+#if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
 	RKH_SMAI_T sinfo;
 #endif	
 
@@ -2390,7 +2395,7 @@ typedef struct RKH_SMA_T
  * 	transitions, as in a Moore automaton.
  * 	An entry function takes the state machine pointer as argument. 
  * 	This argument is optional, thus it could be eliminated in 
- * 	compile-time by means of RKH_SMA_EN_ENT_ARG_SMA.
+ * 	compile-time by means of RKH_CFG_SMA_ENT_ARG_SMA_EN.
  *
  * 	The RKH implementation preserves the transition sequence imposed by 
  * 	Harel's Statechart and UML. Specifically, the implemented transition 
@@ -2403,12 +2408,12 @@ typedef struct RKH_SMA_T
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
  * 	RKH_CREATE_BASIC_STATE() macros.
- * 	\b RKH_SMA_EN_ENT_ARG_SMA macro.
+ * 	\b RKH_CFG_SMA_ENT_ARG_SMA_EN macro.
  */
 
 
-#if RKH_SMA_EN_ENT_ARG_SMA == RKH_ENABLED
-	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+#if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED
+	#if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
 		typedef void ( *RKH_ENT_ACT_T )(	const struct RKH_SMA_T *sma, 
 											const struct RKH_ST_T *state );
 		#define RKH_EXEC_ENTRY( s, h )							\
@@ -2425,7 +2430,7 @@ typedef struct RKH_SMA_T
 		}
 	#endif
 #else
-	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+	#if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
 		typedef void ( *RKH_ENT_ACT_T )( const struct RKH_ST_T *state );
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
@@ -2453,7 +2458,7 @@ typedef struct RKH_SMA_T
  * 	Moore automaton.
  * 	An exit function takes the state machine pointer as argument. 
  * 	This argument is optional, thus it could be eliminated in 
- * 	compile-time by means of RKH_SMA_EN_EXT_ARG_SMA.
+ * 	compile-time by means of RKH_CFG_SMA_EXT_ARG_SMA_EN.
  *
  * 	The RKH implementation preserves the transition sequence imposed by 
  * 	Harel's Statechart and UML. Specifically, the implemented transition 
@@ -2468,8 +2473,8 @@ typedef struct RKH_SMA_T
  * 	RKH_CREATE_BASIC_STATE() macros.
  */
 
-#if RKH_SMA_EN_EXT_ARG_SMA == RKH_ENABLED
-	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+#if RKH_CFG_SMA_EXT_ARG_SMA_EN == RKH_ENABLED
+	#if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
 		typedef void ( *RKH_EXT_ACT_T )(	const struct RKH_SMA_T *sma,
 											const struct RKH_ST_T *state );
 		#define RKH_EXEC_EXIT( s, h )							\
@@ -2486,7 +2491,7 @@ typedef struct RKH_SMA_T
 		}
 	#endif
 #else
-	#if RKH_SMA_EN_ENT_ARG_STATE == RKH_ENABLED
+	#if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
 		typedef void ( *RKH_EXT_ACT_T )( const struct RKH_ST_T *state );
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
@@ -2517,14 +2522,14 @@ typedef struct RKH_SMA_T
  * 	This action takes the state machine pointer and the event 
  * 	pointer as arguments. 
  * 	This argument is optional, thus it could be eliminated in 
- * 	compile-time by means of RKH_SMA_EN_PPRO_ARG_SMA.
+ * 	compile-time by means of RKH_CFG_SMA_PPRO_ARG_SMA_EN.
  *
  * 	\note
  * 	This callback is referenced from RKH_CREATE_COMP_STATE() and 
  * 	RKH_CREATE_BASIC_STATE() macros.
  */
 
-#if RKH_SMA_EN_PPRO_ARG_SMA == RKH_ENABLED
+#if RKH_CFG_SMA_PPRO_ARG_SMA_EN == RKH_ENABLED
 	typedef RKH_SIG_T ( *RKH_PPRO_T )( 	const struct RKH_SMA_T *sma, 
 										RKH_EVT_T *pe );
 	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
@@ -2552,8 +2557,8 @@ typedef struct RKH_SMA_T
  * 	An action function takes the state machine pointer and the event 
  * 	pointer as arguments. 
  * 	These arguments are optional, thus they could be eliminated in 
- * 	compile-time by means of RKH_SMA_EN_ACT_ARG_EVT and \b 
- * 	RKH_SMA_EN_ACT_ARG_SMA.
+ * 	compile-time by means of RKH_CFG_SMA_ACT_ARG_EVT_EN and \b 
+ * 	RKH_CFG_SMA_ACT_ARG_SMA_EN.
  *
  * 	The RKH implementation preserves the transition sequence imposed by 
  * 	Harel's Statechart and UML. Specifically, the implemented transition 
@@ -2567,17 +2572,17 @@ typedef struct RKH_SMA_T
  * 	This callback is referenced from RKH_TRREG() and RKH_TRINT()macro. 
  */
 
-#if (RKH_SMA_EN_ACT_ARG_EVT == RKH_ENABLED && \
-		RKH_SMA_EN_ACT_ARG_SMA == RKH_ENABLED)
+#if (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
 	typedef void (*RKH_TRN_ACT_T)( 	const struct RKH_SMA_T *sma, 
 									RKH_EVT_T *pe );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h), (e) )
-#elif (RKH_SMA_EN_ACT_ARG_EVT == RKH_ENABLED && \
-		RKH_SMA_EN_ACT_ARG_SMA == RKH_DISABLED)
+#elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
 	typedef void (*RKH_TRN_ACT_T)( RKH_EVT_T *pe );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (e) )
-#elif (RKH_SMA_EN_ACT_ARG_EVT == RKH_DISABLED && \
-		RKH_SMA_EN_ACT_ARG_SMA == RKH_ENABLED)
+#elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
+		RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
 	typedef void (*RKH_TRN_ACT_T)( const struct RKH_SMA_T *sma );
 	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h) )
 #else
@@ -2603,26 +2608,26 @@ typedef struct RKH_SMA_T
  * 	A guard function takes the state machine pointer and the event 
  * 	pointer as arguments. 
  * 	These arguments are optional, thus they could be eliminated in 
- * 	compile-time by means of \b RKH_SMA_EN_GRD_ARG_EVT and 
- * 	\b RKH_SMA_EN_GRD_ARG_SMA.
+ * 	compile-time by means of \b RKH_CFG_SMA_GRD_ARG_EVT_EN and 
+ * 	\b RKH_CFG_SMA_GRD_ARG_SMA_EN.
  *
  * 	\note
  * 	This callback is referenced from RKH_BRANCH() macro. 
  */
 
-#if (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
-		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
+#if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 	typedef ruint (*RKH_GUARD_T)( 	const struct RKH_SMA_T *sma, 
 									RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
 	ruint rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-#elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_ENABLED && \
-		RKH_SMA_EN_GRD_ARG_SMA == RKH_DISABLED)
+#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
+		RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
 	typedef ruint (*RKH_GUARD_T)( RKH_EVT_T *pe );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
 	ruint rkh_else( RKH_EVT_T *pe );
-#elif (RKH_SMA_EN_GRD_ARG_EVT == RKH_DISABLED && \
-		RKH_SMA_EN_GRD_ARG_SMA == RKH_ENABLED)
+#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
+		RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 	typedef ruint (*RKH_GUARD_T)( const struct RKH_SMA_T *sma );
 	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
 	ruint rkh_else( const struct RKH_SMA_T *sma );
@@ -2665,8 +2670,9 @@ typedef struct RKH_BASE_T
 	 *	state object or pseudostate object. The name can be displayed by 
 	 *	debuggers or by Trazer.
 	 */
-#if (	(RKH_TRC_EN == RKH_ENABLED) && \
-	   ((RKH_TRC_ALL == RKH_ENABLED) || (RKH_TRC_EN_FWK == RKH_ENABLED)))
+#if (	(RKH_CFG_TRC_EN == RKH_ENABLED) && \
+	   ((RKH_CFG_TRC_ALL_EN == RKH_ENABLED) || \
+		(RKH_CFG_TRC_FWK_EN == RKH_ENABLED)))
 	const char *name;
 #endif
 
@@ -2779,7 +2785,7 @@ typedef struct RKH_ST_T
 
 	struct RKH_BASE_T base;
 
-#if RKH_SMA_EN_HCAL == RKH_ENABLED
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
 	/**	
  	 * 	\brief
 	 *	Points to entry action.
@@ -2860,7 +2866,7 @@ typedef struct RKH_SBSC_T
 	 * \endcode
 	 */
 
-#if RKH_SMA_EN_PPRO == RKH_ENABLED
+#if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
 	RKH_PPRO_T prepro;
 #endif
 
@@ -2922,11 +2928,11 @@ typedef struct RKH_SCMP_T
 	 * \endcode
 	 */
 
-#if RKH_SMA_EN_PPRO == RKH_ENABLED
+#if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
 	RKH_PPRO_T prepro;
 #endif
 
-#if RKH_SMA_EN_HCAL == RKH_ENABLED
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
 	/**	
  	 * 	\brief
 	 *	Points to state's default child.

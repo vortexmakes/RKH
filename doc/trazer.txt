@@ -119,84 +119,84 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_SENDER</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_SMA_EN_TRC_SENDER</TD>
+    <TD>\c #RKH_CFG_SMA_TRC_SENDER_EN</TD>
     <TD>Enable/Disable pointer to sender object insertion when posting event.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_RUNTIME_FILTER</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_RUNTIME_FILTER</TD>
+    <TD>\c #RKH_CFG_TRC_RUNTIME_FILTER_EN</TD>
     <TD>Enable/Disable runtime filter facility.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_USER_TRACE</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_USER_TRACE</TD>
+    <TD>\c #RKH_CFG_TRC_USER_TRACE_EN</TD>
     <TD>Enable/Disable user trace facility.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_ALL</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_ALL</TD>
+    <TD>\c #RKH_CFG_TRC_ALL_EN</TD>
     <TD>If 1 enables all RKH trace records.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_MP</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_MP</TD>
+    <TD>\c #RKH_CFG_TRC_MP_EN</TD>
     <TD>If 1 enables RKH trace records related to native fixed-size memory block.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_EN_RQ</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_RQ</TD>
+    <TD>\c #RKH_CFG_TRC_RQ_EN</TD>
     <TD>If 1 enables RKH trace records related to native native queues.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_SMA</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_SMA</TD>
+    <TD>\c #RKH_CFG_TRC_SMA_EN</TD>
     <TD>If 1 enables RKH trace records related to the state machine applications.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_EN_TIM</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_TIM</TD>
+    <TD>\c #RKH_CFG_TRC_TIM_EN</TD>
     <TD>If 1 enables RKH trace records related to the native software timer.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_SM</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_SM</TD>
+    <TD>\c #RKH_CFG_TRC_SM_EN</TD>
     <TD>If 1 enables RKH trace records related to the state machine (hierarchical and "flat").</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_EN_FWK</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_FWK</TD>
+    <TD>\c #RKH_CFG_TRC_FWK_EN</TD>
     <TD>If 1 enables RKH trace records related to the nativenative  event framework.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_ASSERT</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_ASSERT</TD>
+    <TD>\c #RKH_CFG_TRC_ASSERT_EN</TD>
     <TD>If 1 enables RKH "assertion" trace record.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_SIZEOF_SIG</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_SIZEOF_EVENT</TD>
+    <TD>\c #RKH_CFG_SIZEOF_EVENT</TD>
     <TD>Event Signal size in bytes.</TD>
   </TR>
 
@@ -217,49 +217,49 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_SIZEOF_NTIMER</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_TIM_SIZEOF_NTIMER</TD>
+    <TD>\c #RKH_CFG_TMR_SIZEOF_NTIMER</TD>
     <TD>Dynamic range of time delays measured in ticks and expresed in bytes.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_SIZEOF_NBLOCK</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_MP_SIZEOF_NBLOCK</TD>
+    <TD>\c #RKH_CFG_MP_SIZEOF_NBLOCK</TD>
     <TD>Size in bytes of number of memory block size.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_SIZEOF_NELEM</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_RQ_SIZEOF_NELEM</TD>
+    <TD>\c #RKH_CFG_RQ_SIZEOF_NELEM</TD>
     <TD>Maximum number of elements in bytes that any queue can contain.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_SIZEOF_ESIZE</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_SIZEOF_ESIZE</TD>
+    <TD>\c #RKH_CFG_SIZEOF_ESIZE</TD>
     <TD>Data type of event size, in bytes.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_NSEQ</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_NSEQ</TD>
+    <TD>\c #RKH_CFG_TRC_NSEQ_EN</TD>
     <TD> Enable/Disable Number of Sequence use in trace stream.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_EN_CHK</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_CHK</TD>
+    <TD>\c #RKH_CFG_TRC_CHK_EN</TD>
     <TD> Enable/Disable Checksum use in trace stream.</TD>
   </TR>
 
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_TSTAMP</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_TRC_EN_TSTAMP</TD>
+    <TD>\c #RKH_CFG_TRC_TSTAMP_EN</TD>
     <TD> Enable/Disable Time stamp use in trace stream.</TD>
   </TR>
 
@@ -332,31 +332,31 @@ Sequcence 23 is and example of RKH_TE_USER.
 
 Using local RKH configuration
 
-   RKH_SMA_EN_TRC_SENDER  = 0
-   RKH_TRC_RUNTIME_FILTER = 1
-   RKH_TRC_EN_USER_TRACE  = 1
-   RKH_TRC_ALL            = 1
-   RKH_TRC_EN_MP          = 0
-   RKH_TRC_EN_RQ          = 0
-   RKH_TRC_EN_SMA         = 0
-   RKH_TRC_EN_TIM         = 0
-   RKH_TRC_EN_SM          = 0
-   RKH_TRC_EN_FWK         = 1
-   RKH_TRC_EN_ASSERT      = 1
-   RKH_RQ_EN_GET_LWMARK   = 0
-   RKH_MP_EN_GET_LWM      = 0
-   RKH_SIZEOF_EVENT       = 8
+   RKH_CFG_SMA_TRC_SENDER_EN     = 0
+   RKH_CFG_TRC_RUNTIME_FILTER_EN = 1
+   RKH_CFG_TRC_USER_TRACE_EN  = 1
+   RKH_CFG_TRC_ALL_EN            = 1
+   RKH_CFG_TRC_MP_EN          = 0
+   RKH_CFG_TRC_RQ_EN          = 0
+   RKH_CFG_TRC_SMA_EN         = 0
+   RKH_CFG_TRC_TIM_EN         = 0
+   RKH_CFG_TRC_SM_EN          = 0
+   RKH_CFG_TRC_FWK_EN         = 1
+   RKH_CFG_TRC_ASSERT_EN      = 1
+   RKH_CFG_RQ_GET_LWMARK_EN   = 0
+   RKH_CFG_MP_GET_LWM_EN      = 0
+   RKH_CFG_SIZEOF_EVENT   = 8
    RKH_TRC_SIZEOF_TSTAMP  = 32
    RKH_TRC_SIZEOF_POINTER = 32
-   RKH_TIM_SIZEOF_NTIMER  = 16
-   RKH_MP_SIZEOF_NBLOCK   = 8
-   RKH_RQ_SIZEOF_NELEM    = 8
-   RKH_SIZEOF_ESIZE       = 16
-   RKH_TRC_EN_NSEQ        = 1
-   RKH_TRC_EN_CHK         = 1
-   RKH_TRC_EN_TSTAMP      = 1
-   RKH_MP_SIZEOF_BSIZE    = 1
-   RKH_MAX_EPOOL          = 4
+   RKH_CFG_TMR_SIZEOF_NTIMER  = 16
+   RKH_CFG_MP_SIZEOF_NBLOCK   = 8
+   RKH_CFG_RQ_SIZEOF_NELEM    = 8
+   RKH_CFG_SIZEOF_ESIZE   = 16
+   RKH_CFG_TRC_NSEQ_EN        = 1
+   RKH_CFG_TRC_CHK_EN         = 1
+   RKH_CFG_TRC_TSTAMP_EN      = 1
+   RKH_CFG_MP_SIZEOF_BSIZE    = 1
+   RKH_CFG_MAX_EPOOL      = 4
 
 
 -------- Parsing trace stream from TCP Port 6602 --------
@@ -364,31 +364,31 @@ Using local RKH configuration
 Accepted connection from 127.0.0.1, port 61574
        121 [  0] FWK | TCFG       : Update RKH Configuration from client
                                   | RKH_VERSION            = 2.4.03
-                                  | RKH_SMA_EN_TRC_SENDER  = 1
-                                  | RKH_TRC_RUNTIME_FILTER = 1
-                                  | RKH_TRC_EN_USER_TRACE  = 1
-                                  | RKH_TRC_ALL            = 1
-                                  | RKH_TRC_EN_MP          = 0
-                                  | RKH_TRC_EN_RQ          = 0
-                                  | RKH_TRC_EN_SMA         = 0
-                                  | RKH_TRC_EN_TIM         = 0
-                                  | RKH_TRC_EN_SM          = 0
-                                  | RKH_TRC_EN_FWK         = 1
-                                  | RKH_TRC_EN_ASSERT      = 1
-                                  | RKH_RQ_EN_GET_LWMARK   = 1
-                                  | RKH_MP_EN_GET_LWM      = 1
-                                  | RKH_SIZEOF_EVENT       = 8
+                                  | RKH_CFG_SMA_TRC_SENDER_EN  = 1
+                                  | RKH_CFG_TRC_RUNTIME_FILTER_EN = 1
+                                  | RKH_CFG_TRC_USER_TRACE_EN  = 1
+                                  | RKH_CFG_TRC_ALL_EN     = 1
+                                  | RKH_CFG_TRC_MP_EN      = 0
+                                  | RKH_CFG_TRC_RQ_EN      = 0
+                                  | RKH_CFG_TRC_SMA_EN     = 0
+                                  | RKH_CFG_TRC_TIM_EN     = 0
+                                  | RKH_CFG_TRC_SM_EN      = 0
+                                  | RKH_CFG_TRC_FWK_EN         = 1
+                                  | RKH_CFG_TRC_ASSERT_EN  = 1
+                                  | RKH_CFG_RQ_GET_LWMARK_EN   = 1
+                                  | RKH_CFG_MP_GET_LWM_EN      = 1
+                                  | RKH_CFG_SIZEOF_EVENT   = 8
                                   | RKH_TRC_SIZEOF_TSTAMP  = 32
                                   | RKH_TRC_SIZEOF_POINTER = 32
-                                  | RKH_TIM_SIZEOF_NTIMER  = 16
-                                  | RKH_MP_SIZEOF_NBLOCK   = 8
-                                  | RKH_RQ_SIZEOF_NELEM    = 8
-                                  | RKH_SIZEOF_ESIZE       = 16
-                                  | RKH_TRC_EN_NSEQ        = 1
-                                  | RKH_TRC_EN_CHK         = 1
-                                  | RKH_TRC_EN_TSTAMP      = 1
-                                  | RKH_MP_SIZEOF_BSIZE    = 1
-                                  | RKH_MAX_EPOOL          = 4
+                                  | RKH_CFG_TMR_SIZEOF_NTIMER  = 16
+                                  | RKH_CFG_MP_SIZEOF_NBLOCK   = 8
+                                  | RKH_CFG_RQ_SIZEOF_NELEM    = 8
+                                  | RKH_CFG_SIZEOF_ESIZE   = 16
+                                  | RKH_CFG_TRC_NSEQ_EN    = 1
+                                  | RKH_CFG_TRC_CHK_EN         = 1
+                                  | RKH_CFG_TRC_TSTAMP_EN      = 1
+                                  | RKH_CFG_MP_SIZEOF_BSIZE    = 1
+                                  | RKH_CFG_MAX_EPOOL      = 4
 
 
        123 [  1] FWK | OBJ        : obj=0x00180B01, nm=l_isr_kbd
@@ -449,7 +449,7 @@ In order to enhancing the capacity of the system behavior analysis,
 Trazer can recreate a sequence diagram that shown chronologically the 
 interaction between active objects.\n
 To enable this capability, RKH configuration must enable to send the pointer
-to the sender object when posting an event (RKH_SMA_EN_TRC_SENDER = 1). 
+to the sender object when posting an event (RKH_CFG_SMA_TRC_SENDER_EN = 1). 
 If so, for each RKH_TE_SMA_FIFO / RKH_TE_SMA_LIFO trace event received,
 Trazer catch the arguments ao (destination), sig (event), snr (sender) 
 to add to the diagram.

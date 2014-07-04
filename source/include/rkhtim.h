@@ -66,14 +66,14 @@ typedef void ( *RKH_THK_T )( void *t );
  * 	clock ticks (maximum number of ticks).
  *
  *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_TIM_SIZEOF_NTIMER.
+ *	configurable via the preprocessor switch RKH_CFG_TMR_SIZEOF_NTIMER.
  */
 
-#if RKH_TIM_SIZEOF_NTIMER == 8
+#if RKH_CFG_TMR_SIZEOF_NTIMER == 8
 	typedef rui8_t RKH_TNT_T;
-#elif RKH_TIM_SIZEOF_NTIMER == 16
+#elif RKH_CFG_TMR_SIZEOF_NTIMER == 16
 	typedef rui16_t RKH_TNT_T;
-#elif RKH_TIM_SIZEOF_NTIMER == 32
+#elif RKH_CFG_TMR_SIZEOF_NTIMER == 32
 	typedef rui32_t RKH_TNT_T;
 #else
 	typedef rui8_t RKH_TNT_T;
@@ -176,26 +176,26 @@ struct RKH_TMR_T
 	/**
 	 *	Hook function to call when the timer expires. This member is optional, 
 	 *	thus it could be declared as NULL or eliminated in compile-time with 
-	 *	RKH_TIM_EN_HOOK.
+	 *	RKH_CFG_TMR_HOOK_EN.
 	 */
 
-#if RKH_TIM_EN_HOOK == RKH_ENABLED
+#if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
 	RKH_THK_T timhk;
 #endif
 
 	/**
 	 * 	Performance information. This member is optional, thus it could be 
-	 * 	eliminated in compile-time with RKH_TIM_EN_GET_INFO.
+	 * 	eliminated in compile-time with RKH_CFG_TMR_GET_INFO_EN.
 	 */
 
-#if RKH_TIM_EN_GET_INFO == RKH_ENABLED
+#if RKH_CFG_TMR_GET_INFO_EN == RKH_ENABLED
 	RKH_TINFO_T info;
 #endif
 };
 
 
 
-#if RKH_TIM_EN_HOOK == RKH_ENABLED
+#if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -240,7 +240,7 @@ struct RKH_TMR_T
 	 *	\param th_ 		hook function to be called at the timer expiration. 
 	 *					This argument is optional, thus it could be declared 
 	 *					as NULL or eliminated in compile-time with 
-	 *					RKH_TIM_EN_HOOK.
+	 *					RKH_CFG_TMR_HOOK_EN.
 	 */
 
 	#define RKH_TMR_INIT( t_, e_, th_ )	\
@@ -372,7 +372,7 @@ void rkh_tmr_stop( RKH_TMR_T *t );
  * 	\note
  * 	See RKH_TINFO_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_TIM_EN_GET_INFO.
+ * 	RKH_CFG_TMR_GET_INFO_EN.
  *
  *	\param t		pointer to previously created timer structure.
  * 	\param info		pointer to the buffer into which the performance 
@@ -389,7 +389,7 @@ void rkh_tmr_get_info( RKH_TMR_T *t, RKH_TINFO_T *info );
  * 	\note
  * 	See RKH_TINFO_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_TIM_EN_GET_INFO.
+ * 	RKH_CFG_TMR_GET_INFO_EN.
  *
  *	\param t		pointer to previously created timer structure.
  */

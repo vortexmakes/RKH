@@ -47,7 +47,7 @@
 #include <stdio.h>
 
 
-#if RKH_TRC_EN == 1
+#if RKH_CFG_TRC_EN == 1
 
 /**
  * 	\warning

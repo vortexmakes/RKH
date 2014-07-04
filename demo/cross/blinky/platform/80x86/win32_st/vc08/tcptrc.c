@@ -47,7 +47,7 @@
 #include <stdio.h>
 
 
-#if RKH_TRC_EN == 1
+#if RKH_CFG_TRC_EN == 1
 
 int
 tcp_trace_open( unsigned short port, char *srv_ip, SOCKET *ps )

@@ -53,7 +53,7 @@
 #define BSP_KERNEL_IRQ_PRIO		255
 #define BSP_HIGHEST_IRQ_PRI		5
 
-#define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
+#define BSP_TICKS_PER_SEC   	RKH_CFG_TICK_RATE_HZ
 
 /**
  * 	\brief

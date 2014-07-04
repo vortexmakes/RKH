@@ -158,7 +158,7 @@ rkh_assert( RKHROM char * const file, int line )
 }
 
 
-#if RKH_TRC_EN == 1
+#if RKH_CFG_TRC_EN == 1
 
 void 
 rkh_trc_open( void )

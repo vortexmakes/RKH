@@ -48,7 +48,7 @@
 #include "rkhrdy.h"
 
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 
 /* This macro is needed only if the module requires to check 	... */
 /* ... expressions that ought to be true as long as the program ... */
@@ -60,7 +60,7 @@
 #define GETEVT( e )				(rui8_t)((e) & 0x1F)
 
 
-#if RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
+#if RKH_CFG_TRC_RUNTIME_FILTER_EN == RKH_ENABLED
 
 /**
  * 	\brief
@@ -111,7 +111,7 @@ static rui8_t trcgfilter;
  * 	In this case, each SMA is assigned a unique priority number. When a SMA 
  * 	is ready to record a trace its corresponding bit in the filter table 
  * 	must be clear. The size of #trcsmaftbl[] depends on 
- * 	#RKH_MAX_SMA (see rkhcfg.h).
+ * 	#RKH_CFG_MAX_SMA (see rkhcfg.h).
  *
  * 	SMA priority number = | Y | Y | Y | Y | Y | X | X | X |\n
  *
@@ -165,7 +165,7 @@ static RKHROM rui8_t trcgmtbl[] =
 };
 #endif
 
-static RKH_TE_T trcstm[ RKH_TRC_SIZEOF_STREAM ];
+static RKH_TE_T trcstm[ RKH_CFG_TRC_SIZEOF_STREAM ];
 static RKH_TE_T *trcin, *trcout, *trcend;
 static rui8_t chk;
 static rui8_t nseq;
@@ -178,7 +178,7 @@ rkh_trc_init( void )
 	trcin = trcout = trcstm;
 	trcqty = 0;
 	nseq = 0;
-	trcend = &trcstm[ RKH_TRC_SIZEOF_STREAM ];
+	trcend = &trcstm[ RKH_CFG_TRC_SIZEOF_STREAM ];
 	RKH_TRC_U8_RAW( RKH_FLG );
 }
 
@@ -192,9 +192,9 @@ rkh_trc_put( rui8_t b )
 	if( trcin == trcend )
 		trcin = trcstm;
 
-	if( trcqty >= RKH_TRC_SIZEOF_STREAM )
+	if( trcqty >= RKH_CFG_TRC_SIZEOF_STREAM )
 	{
-		trcqty = RKH_TRC_SIZEOF_STREAM;
+		trcqty = RKH_CFG_TRC_SIZEOF_STREAM;
 		trcout = trcin;
 	}
 }
@@ -250,7 +250,7 @@ rkh_trc_get_block( TRCQTY_T *nget )
 }
 
 
-#if RKH_TRC_RUNTIME_FILTER == RKH_ENABLED
+#if RKH_CFG_TRC_RUNTIME_FILTER_EN == RKH_ENABLED
 ruint
 rkh_trc_isoff_( rui8_t e )
 {
@@ -477,7 +477,7 @@ rkh_trc_state( struct RKH_SMA_T *ao, rui8_t *state )
 }
 
 
-#if RKH_TRC_EN_USER_TRACE == RKH_ENABLED
+#if RKH_CFG_TRC_USER_TRACE_EN == RKH_ENABLED
 void 
 rkh_trc_fmt_u8( rui8_t fmt, rui8_t d )
 {

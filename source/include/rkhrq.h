@@ -56,14 +56,14 @@
  *	can contain. 
  *
  *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is 
- *	configurable via the preprocessor switch RKH_RQ_SIZEOF_NELEM.
+ *	configurable via the preprocessor switch RKH_CFG_RQ_SIZEOF_NELEM.
  */
 
-#if RKH_RQ_SIZEOF_NELEM == 8
+#if RKH_CFG_RQ_SIZEOF_NELEM == 8
 	typedef rui8_t RKH_RQNE_T;
-#elif RKH_RQ_SIZEOF_NELEM == 16
+#elif RKH_CFG_RQ_SIZEOF_NELEM == 16
 	typedef rui16_t RKH_RQNE_T;
-#elif RKH_RQ_SIZEOF_NELEM == 32
+#elif RKH_CFG_RQ_SIZEOF_NELEM == 32
 	typedef rui32_t RKH_RQNE_T;
 #else
 	typedef rui8_t RKH_RQNE_T;
@@ -197,17 +197,17 @@ typedef struct RKH_RQ_T
 	 *	proper sizing of the queue.
 	 */
 
-#if RKH_RQ_EN_GET_LWMARK == RKH_ENABLED
+#if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
 	RKH_RQNE_T nmin;	
 #endif
 
 	/**
 	 * 	\brief
 	 * 	Performance information. This member is optional, thus it could be 
-	 * 	eliminated in compile-time with RKH_RQ_EN_GET_INFO.
+	 * 	eliminated in compile-time with RKH_CFG_RQ_GET_INFO_EN.
 	 */
 
-#if RKH_RQ_EN_GET_INFO == RKH_ENABLED
+#if RKH_CFG_RQ_GET_INFO_EN == RKH_ENABLED
 	RKH_RQI_T rqi;
 #endif
 
@@ -263,7 +263,7 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_IS_FULL.
+ * 	with RKH_CFG_RQ_IS_FULL_EN.
  *
  * 	\param q		pointer to previously created queue.
  *
@@ -280,7 +280,7 @@ ruint rkh_rq_is_full( RKH_RQ_T *q );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_GET_NELEMS.
+ * 	with RKH_CFG_RQ_GET_NELEMS_EN.
  *
  * 	\param q		pointer to previously created queue.
  */
@@ -299,7 +299,7 @@ RKH_RQNE_T rkh_rq_get_num( RKH_RQ_T *q );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_GET_LWMARK.
+ * 	with RKH_CFG_RQ_GET_LWMARK_EN.
  *
  * 	\return
  * 	Lowest number of free elements ever present in the queue.
@@ -346,7 +346,7 @@ void rkh_rq_put_fifo( RKH_RQ_T *q, const void *pe );
  * 	accept the element.
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_PUT_LIFO.
+ * 	with RKH_CFG_RQ_PUT_LIFO_EN.
  *
  * 	\param q		pointer to previously created queue into which the element 
  * 					is deposited.
@@ -371,7 +371,7 @@ void rkh_rq_put_lifo( RKH_RQ_T *q, const void *pe );
  * 
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_DEPLETE.
+ * 	with RKH_CFG_RQ_DEPLETE_EN.
  *
  * 	\param q		pointer to previously created queue.
  */
@@ -385,7 +385,7 @@ void rkh_rq_deplete( RKH_RQ_T *q );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_READ.
+ * 	with RKH_CFG_RQ_READ_EN.
  *
  * 	\param q		pointer to previously created queue from which the 
  * 					elements are received.
@@ -415,7 +415,7 @@ ruint rkh_rq_read( RKH_RQ_T *q, void *pe );
  * 	\note
  * 	See RKH_RQI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_RQ_EN_GET_INFO.
+ * 	RKH_CFG_RQ_GET_INFO_EN.
  *
  * 	\param q		pointer to previously created queue.
  * 	\param pqi		pointer to the buffer into which the performance 
@@ -431,7 +431,7 @@ void rkh_rq_get_info( RKH_RQ_T *q, RKH_RQI_T *pqi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_RQ_EN_GET_INFO.
+ * 	with RKH_CFG_RQ_GET_INFO_EN.
  *
  * 	\param q		pointer to previously created queue.
  */

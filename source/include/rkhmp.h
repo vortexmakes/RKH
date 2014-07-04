@@ -54,14 +54,14 @@
 /** 
  * 	Defines the size of number of memory block size. The valid values 
  * 	[in bits] are 8, 16 or 32. Default is 8. This type is configurable via 
- * 	the preprocessor switch RKH_MP_SIZEOF_NBLOCK.
+ * 	the preprocessor switch RKH_CFG_MP_SIZEOF_NBLOCK.
  */
 
-#if RKH_MP_SIZEOF_NBLOCK == 8
+#if RKH_CFG_MP_SIZEOF_NBLOCK == 8
 	typedef rui8_t RKH_MPNB_T;
-#elif RKH_MP_SIZEOF_NBLOCK == 16
+#elif RKH_CFG_MP_SIZEOF_NBLOCK == 16
 	typedef rui16_t RKH_MPNB_T;
-#elif RKH_MP_SIZEOF_NBLOCK == 32
+#elif RKH_CFG_MP_SIZEOF_NBLOCK == 32
 	typedef rui32_t RKH_MPNB_T;
 #else
 	typedef rui8_t RKH_MPNB_T;
@@ -71,14 +71,14 @@
 /** 
  * 	Defines the size of memory block size. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. This type is configurable via the 
- * 	preprocessor switch RKH_MP_SIZEOF_BSIZE.
+ * 	preprocessor switch RKH_CFG_MP_SIZEOF_BSIZE.
  */
 
-#if RKH_MP_SIZEOF_BSIZE == 8
+#if RKH_CFG_MP_SIZEOF_BSIZE == 8
 	typedef rui8_t RKH_MPBS_T;
-#elif RKH_MP_SIZEOF_BSIZE == 16
+#elif RKH_CFG_MP_SIZEOF_BSIZE == 16
 	typedef rui16_t RKH_MPBS_T;
-#elif RKH_MP_SIZEOF_BSIZE == 32
+#elif RKH_CFG_MP_SIZEOF_BSIZE == 32
 	typedef rui32_t RKH_MPBS_T;
 #else
 	typedef rui8_t RKH_MPBS_T;
@@ -201,7 +201,7 @@ typedef struct RKH_MP_T
 	 * 	Total number of blocks in bytes. 
 	 *
 	 * 	The type RKH_MPNB_T is configurable by the macro 
-	 * 	RKH_MP_SIZEOF_NBLOCK. 
+	 * 	RKH_CFG_MP_SIZEOF_NBLOCK. 
 	 * 	The valid values [in bits] are 8, 16 or 32. Default is 8. The dynamic 
 	 * 	range of the RKH_MPNB_T data type determines the maximum number of 
 	 * 	blocks that can be stored in the pool.
@@ -214,7 +214,7 @@ typedef struct RKH_MP_T
 	 * 	Maximum block size in bytes. 
 	 *
 	 * 	The type RKH_MPBS_T is configurable by the macro 
-	 * 	RKH_MP_SIZEOF_BSIZE. The valid values [in bits] are 8, 16 or 32. 
+	 * 	RKH_CFG_MP_SIZEOF_BSIZE. The valid values [in bits] are 8, 16 or 32. 
 	 * 	Default is 8. The dynamic range of the RKH_MPBS_T data type 
 	 * 	determines the maximum size of blocks that can be managed by the 
 	 * 	pool manager.
@@ -222,7 +222,7 @@ typedef struct RKH_MP_T
 
 	RKH_MPBS_T bsize;
 
-#if RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
 
 	/** 
 	 * 	\brief
@@ -250,7 +250,7 @@ typedef struct RKH_MP_T
 	 *	proper sizing of the memory pool.
 	 */
 
-#if RKH_MP_EN_GET_LWM == RKH_ENABLED
+#if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED
 	RKH_MPNB_T nmin;
 #endif
 
@@ -258,10 +258,10 @@ typedef struct RKH_MP_T
 
 	/**
 	 * 	Performance information. This member is optional, thus it could be 
-	 * 	eliminated in compile-time with RKH_MP_EN_GET_INFO.
+	 * 	eliminated in compile-time with RKH_CFG_MP_GET_INFO_EN.
 	 */
 
-#if RKH_MP_EN_GET_INFO == RKH_ENABLED
+#if RKH_CFG_MP_GET_INFO_EN == RKH_ENABLED
 	RKH_MPI_T mpi;
 #endif
 } RKH_MP_T;
@@ -336,7 +336,7 @@ void rkh_mp_put( RKH_MP_T *mp, void *blk );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_MP_EN_GET_BSIZE.
+ * 	with RKH_CFG_MP_GET_BSIZE_EN.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -353,7 +353,7 @@ RKH_MPBS_T rkh_mp_get_bsize( RKH_MP_T *mp );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_MP_EN_GET_NFREE.
+ * 	with RKH_CFG_MP_GET_NFREE_EN.
  * 	
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -372,7 +372,7 @@ RKH_MPNB_T rkh_mp_get_nfree( RKH_MP_T *mp );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_MP_EN_GET_LWM.
+ * 	with RKH_CFG_MP_GET_LWM_EN.
  * 	
  * 	\param mp		pointer to previously allocated memory pool structure.
  *
@@ -394,7 +394,7 @@ RKH_MPNB_T rkh_mp_get_low_wmark( RKH_MP_T *mp );
  * 	
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_MP_EN_GET_INFO.
+ * 	with RKH_CFG_MP_GET_INFO_EN.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  * 	\param mpi		pointer to the buffer into which the performance 
@@ -410,7 +410,7 @@ void rkh_mp_get_info( RKH_MP_T *mp, RKH_MPI_T *mpi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_MP_EN_GET_INFO.
+ * 	with RKH_CFG_MP_GET_INFO_EN.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
  */

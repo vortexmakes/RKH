@@ -47,14 +47,14 @@
 #include "rkh.h"
 
 
-#if RKH_TIM_EN == RKH_ENABLED
+#if RKH_CFG_TMR_EN == RKH_ENABLED
 
 RKH_MODULE_NAME( rkhtim )
 
 
 #define CPTIM( p )			(( RKH_TMR_T* )(p))
 
-#if RKH_TIM_EN_HOOK == RKH_ENABLED
+#if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
 	#define RKH_EXEC_THOOK()							\
 					if( t->timhk != ( RKH_THK_T )0 )	\
 						(*t->timhk)( t )
@@ -145,7 +145,7 @@ rkh_tmr_tick( void )
 
 
 void 
-#if RKH_TIM_EN_HOOK == RKH_DISABLED
+#if RKH_CFG_TMR_HOOK_EN == RKH_DISABLED
 rkh_tmr_init_( RKH_TMR_T *t, const RKH_EVT_T *e )
 #else
 rkh_tmr_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk )
@@ -198,7 +198,7 @@ rkh_tmr_stop( RKH_TMR_T *t )
 }
 
 
-#if RKH_TIM_EN_GET_INFO	== RKH_ENABLED
+#if RKH_CFG_TMR_GET_INFO_EN	== RKH_ENABLED
 void 
 rkh_tmr_get_info( RKH_TMR_T *t, RKH_TINFO_T *info )
 {

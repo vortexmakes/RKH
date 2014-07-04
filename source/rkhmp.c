@@ -46,7 +46,7 @@
 #include "rkh.h"
 
 
-#if RKH_MP_EN == RKH_ENABLED
+#if RKH_CFG_MP_EN == RKH_ENABLED
 
 RKH_MODULE_NAME( rkhmp )
 
@@ -114,11 +114,11 @@ rkh_mp_init( RKH_MP_T *mp, void *sstart, rui16_t ssize,
 
     fb->next  = ( RKH_FREE_BLK_T* )0;        /* the last link points to NULL */
     mp->nfree = mp->nblocks;                          /* all blocks are free */
-#if RKH_MP_EN_GET_LWM == RKH_ENABLED && \
-	RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED && \
+	RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
     mp->nmin  = mp->nblocks;            /* the minimum number of free blocks */
 #endif
-#if RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
     mp->start = sstart;               /* the original start this pool buffer */
     mp->end   = fb;                           /* the last block in this pool */
 #endif
@@ -142,8 +142,8 @@ rkh_mp_get( RKH_MP_T *mp )
         mp->free = fb->next;     /* adjust list head to the next free block */
         RKH_ASSERT(mp->nfree > (RKH_MPNB_T)0);    /* at least one free block */
         --mp->nfree;                                 /* one less free block */
-#if RKH_MP_EN_GET_LWM == RKH_ENABLED && \
-	RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED && \
+	RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
         if( mp->nmin > mp->nfree )
             mp->nmin = mp->nfree;            /* remember the minimum so far */
 #endif
@@ -163,7 +163,7 @@ rkh_mp_put( RKH_MP_T *mp, void *blk )
 	RKH_ASSERT( mp != ( RKH_MP_T* )0 );
 	RKH_ASSERT( mp->bsize != 0 );
 
-#if RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
     RKH_ASSERT(	mp->start <= blk && 				     /* must be in range */
 				blk <= mp->end && 
 				mp->nfree < mp->nblocks  ); /* # free blocks must be < total */
@@ -183,7 +183,7 @@ rkh_mp_put( RKH_MP_T *mp, void *blk )
 }
 
 
-#if RKH_MP_EN_GET_BSIZE == RKH_ENABLED
+#if RKH_CFG_MP_GET_BSIZE_EN == RKH_ENABLED
 RKH_MPBS_T 
 rkh_mp_get_bsize( RKH_MP_T *mp )
 {
@@ -201,7 +201,7 @@ rkh_mp_get_bsize( RKH_MP_T *mp )
 #endif
 
 
-#if RKH_MP_EN_GET_NFREE == RKH_ENABLED
+#if RKH_CFG_MP_GET_NFREE_EN == RKH_ENABLED
 RKH_MPNB_T 
 rkh_mp_get_nfree( RKH_MP_T *mp )
 {
@@ -219,8 +219,8 @@ rkh_mp_get_nfree( RKH_MP_T *mp )
 #endif
 
 
-#if RKH_MP_EN_GET_LWM == RKH_ENABLED && \
-	RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED && \
+	RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
 RKH_MPNB_T 
 rkh_mp_get_low_wmark( RKH_MP_T *mp )
 {
@@ -238,8 +238,8 @@ rkh_mp_get_low_wmark( RKH_MP_T *mp )
 #endif
 
 
-#if RKH_MP_EN_GET_INFO == RKH_ENABLED && \
-	RKH_MP_REDUCED == RKH_DISABLED
+#if RKH_CFG_MP_GET_INFO_EN == RKH_ENABLED && \
+	RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
 void 
 rkh_mp_get_info( RKH_MP_T *mp, RKH_MPI_T *mpi )
 {

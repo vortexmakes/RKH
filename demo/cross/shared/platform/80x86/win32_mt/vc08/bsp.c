@@ -78,7 +78,7 @@ static rui8_t ep0sto[ SIZEOF_EP0STO ],
 static rui8_t l_isr_kbd;
 #endif
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 static ruint running;
 static HANDLE idle_thread;
 #endif
@@ -203,7 +203,7 @@ void
 rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 	running = (rui8_t)0;
 #endif
 }
@@ -253,7 +253,7 @@ print_banner( void )
 }
 
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 
 #include <time.h>
 #define WIN32_LEAN_AND_MEAN

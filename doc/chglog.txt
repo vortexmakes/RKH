@@ -9,7 +9,7 @@ Changes between V2.4 and V2.4.3 released 07/15/2013
 
 + 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 
 +	Adds ARM Cortex-M0+ on Freedom KL25Z board.
-+	Adds sender object (and macro RKH_SMA_EN_TRC_SENDER to rkhcfg.h) to 
++	Adds sender object (and macro RKH_CFG_SMA_TRC_SENDER_EN to rkhcfg.h) to 
 	rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(). 
 +	Adds macros RKH_TIM_TICK, RKH_SMA_POST_FIFO/_LIFO to invoke functions 
 	rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo().
@@ -18,7 +18,7 @@ Changes between V2.4 and V2.4.3 released 07/15/2013
 	rkh_rq_put_lifo() functions.
 +	Add RKH_VERSION_CODE to RKH_TR_FWK_TCFG.
 +	Update comments.
-+	Changes RKH_TRC_EN_SM_CSTATE by RKH_TRC_EN_SM_TS_STATE.
++	Changes RKH_TRC_EN_SM_CSTATE by RKH_CFG_TRC_SM_TS_STATE_EN.
 +	Changes RKH_TE_SM_CSTATE by RKH_TE_SM_TS_STATE.
 +	Adds choice pseudostate.
 +	Adds macros RKH_GET_PRIO() and RKH_GET_SMA().
@@ -37,7 +37,7 @@ Changes between V2.3 and V2.4 released 05/03/2013
 
 + 	Add the cross-platform demo 'blinky' for arm-cortex, s08 and coldfire v1. 
 + 	Add the arm-cortex port. 
-+ 	Add RKH_TICK_RATE_HZ and RKH_TICK_RATE_MS constants. 
++ 	Add RKH_CFG_TICK_RATE_HZ and RKH_TICK_RATE_MS constants. 
 + 	Fix RKH_FILTER_OFF_GROUP_ALL_EVENTS() and 
 	RKH_FILTER_ON_GROUP_ALL_EVENTS() macros. 
 + 	Eliminated the rkhdata.h file from demos. 
@@ -48,7 +48,7 @@ Changes between V2.2 and V2.3 released 02/05/2013
 +	Enhance the software timer module.
 +	Fix the linux port.
 +	Add arbitrary trace records to be used in the application space.
-+	Add the configuration option RKH_TRC_EN_USER_TRACE for enabling/disabling 
++	Add the configuration option RKH_CFG_TRC_USER_TRACE_EN for enabling/disabling 
 	the user trace records.
 +	Add the macro RKH_TR_FWK_TUSR() for sending to Trazer a symbolic name of 
 	the user-defined trace event.
@@ -58,7 +58,7 @@ Changes between V2.2 and V2.3 released 02/05/2013
 	platform independence in rkhcfg.h file.
 +	Add macro RKH_TR_FWK_TCFG() to send the trace configuration parameters to 
 	Trazer.
-+	Add RKH_TRC_EN_ASSERT configuration to rkhcfg.h file, RKH_TE_FWK_ASSERT 
++	Add RKH_CFG_TRC_ASSERT_EN configuration to rkhcfg.h file, RKH_TE_FWK_ASSERT 
 	trace record and RKH_TR_FWK_ASSERT() macro to RKH_ASSERT() macro.
 +	Eliminated RKH_TIM_EN_RESTART from rkhcfg.h.
 
@@ -84,7 +84,7 @@ Changes between V2.1 and V2.2 released 08/13/2012
 +	Add RKH_TRC_OPEN, RKH_TRC_CLOSE, and RKH_TRC_FLUSH.
 +	Add CV() macro.
 +	Fix a bug in rkhtim.c file. Complete the RKH_SET_THOOK() macro when 
-	configuring RKH_TIM_EN_HOOK = 0.
+	configuring RKH_CFG_TMR_HOOK_EN = 0.
 +	Change 80x86 port files. Relocate the event pool from rkhport.c to 
 	bsp.c file, in rkh_hook_start() hook function. Now, the usage of event 
 	pools is resposability of the application.
@@ -124,7 +124,7 @@ Changes between V1.1.4 and V1.1.5 released 02/01/2012
 +	Added assertions within rkh.c module.
 +	Added assertion events in rkhtrace.h.
 +	Added definition of rkh_trace_getts() in rkhtrace.h.
-+	Added condition \#if RKH_EN_DYNAMIC_EVENT == 1 to include rkh_put_fifo() and rkh_put_lifo() functions.
++	Added condition \#if RKH_CFG_EN_DYNAMIC_EVENT == 1 to include rkh_put_fifo() and rkh_put_lifo() functions.
 +	Added checks every config. options from rkhcfg.h in rkhitl.h.
 +	Enhanced tested version of rkh_engine() function with TEST_GUARD option, see code.
 +	Tested version of rkh_engine() function with TEST_GUARD option, see code.

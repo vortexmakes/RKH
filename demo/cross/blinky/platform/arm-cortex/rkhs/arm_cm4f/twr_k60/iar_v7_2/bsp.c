@@ -122,7 +122,7 @@ rkh_assert( RKHROM char * const file, int line )
 }
 
 
-#if RKH_TRC_EN == 1
+#if RKH_CFG_TRC_EN == 1
 
 void 
 rkh_trc_open( void )
@@ -179,7 +179,7 @@ bsp_init( int argc, char *argv[]  )
 	(void)argv;
 	
 	cpu_init();
-	systick_init( RKH_TICK_RATE_HZ );
+	systick_init( RKH_CFG_TICK_RATE_HZ );
 	cpu_tstmr_init();
 	init_led( LED1 );
 

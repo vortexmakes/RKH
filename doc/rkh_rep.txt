@@ -582,7 +582,7 @@ Explanation
 		action function takes the state 
 		machine pointer and the event pointer as arguments. The first 
 		parameter is optional in compile-time according to 
-		RKH_SMA_EN_PPRO_ARG_SMA macro.
+		RKH_CFG_SMA_PPRO_ARG_SMA_EN macro.
 		Example:
 \code
 static

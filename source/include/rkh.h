@@ -137,7 +137,7 @@
  * 	the higher the priority. 
  */
 
-extern RKH_SMA_T *rkh_sptbl[ RKH_MAX_SMA ];
+extern RKH_SMA_T *rkh_sptbl[ RKH_CFG_MAX_SMA ];
 
 
 /**
@@ -171,8 +171,8 @@ extern RKHROM char rkh_version[];
  * 	Event pool list.
  */
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
-extern RKH_DYNE_TYPE rkh_eplist[ RKH_MAX_EPOOL ];
+#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
+extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_MAX_EPOOL ];
 #endif
 
 
@@ -1716,7 +1716,7 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
  * 						pass arguments to the state machine like an argc/argv.
  * 						This argument is optional, thus it could be declared 
  * 						as NULL or eliminated in compile-time with 
- * 						RKH_SMA_EN_IEVENT = 0.
+ * 						RKH_CFG_SMA_IEVENT_EN = 0.
  */
 
 #define RKH_SMA_CREATE( sma_t, name, prio, ppty, ist, iact, ievt )			\
@@ -1935,7 +1935,7 @@ RKH_EVT_T *rkh_sma_get( RKH_SMA_T *sma );
  * 	\note
  * 	See RKH_SMAI_T structure for more information. This function is 
  * 	optional, thus it could be eliminated in compile-time with 
- * 	RKH_SMA_EN_GET_INFO = 0.
+ * 	RKH_CFG_SMA_GET_INFO_EN = 0.
  *
  * 	\param sma		pointer to previously created state machine application.
  * 	\param psi		pointer to the buffer into which the performance 
@@ -1952,7 +1952,7 @@ void rkh_sma_get_info( RKH_SMA_T *sma, RKH_SMAI_T *psi );
  *
  * 	\note
  * 	This function is optional, thus it could be eliminated in compile-time 
- * 	with RKH_SMA_EN_GET_INFO = 0.
+ * 	with RKH_CFG_SMA_GET_INFO_EN = 0.
  *
  * 	\param sma		pointer to previously created state machine application.
  */
@@ -2090,8 +2090,8 @@ RKH_EVT_T *rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  *
  *  The dynamic allocation of events is optional then if the 
  *  #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
- * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
- * 	its own implementation of dynamic memory management.
+ * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will 
+ * 	include its own implementation of dynamic memory management.
  * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
  * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
  * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
@@ -2169,7 +2169,7 @@ void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
 RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -2207,7 +2207,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 #endif
 
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -2239,8 +2239,8 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 	 * 	contexts, when an event can become garbage (automatic garbage 
 	 * 	collection).
 	 * 	\note
-	 * 	When setting RKH_EN_DYNAMIC_EVENT = 0 the garbage collector has not 
-	 * 	effect, thus it's eliminated in compile-time.
+	 * 	When setting RKH_CFG_EN_DYNAMIC_EVENT = 0 the garbage collector has 
+	 * 	not effect, thus it's eliminated in compile-time.
 	 *
 	 * 	\param e		pointer to event to be potentially recycled.
 	 */
@@ -2252,7 +2252,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -2421,9 +2421,9 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
  * 	executed.
  *
  *	\note
- *	The dispatch hook will only get called if RKH_HOOK_DISPATCH_EN is set to 
- *	1 within rkhcfg.h file. When this is set the application must provide the 
- *	hook function. 
+ *	The dispatch hook will only get called if RKH_CFG_HOOK_DISPATCH_EN is 
+ *	set to 1 within rkhcfg.h file. When this is set the application must 
+ *	provide the hook function. 
  *
  * 	\param sma		pointer to previously created state machine application.
  *	\param e		pointer to arrived event.
@@ -2438,9 +2438,9 @@ void rkh_hook_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  * 	of the consumer SMA the rkh_hook_signal() will optionally called.
  * 	
  *	\note
- *	The signal hook will only get called if RKH_HOOK_SIGNAL_EN is set to 1 
- *	within rkhcfg.h file. When this is set the application must provide the 
- *	hook function. 
+ *	The signal hook will only get called if RKH_CFG_HOOK_SIGNAL_EN is set 
+ *	to 1 within rkhcfg.h file. When this is set the application must provide 
+ *	the hook function. 
  *
  *	\param e		pointer to arrived event.
  */
@@ -2455,9 +2455,9 @@ void rkh_hook_signal( RKH_EVT_T *e );
  * 	queue. 
  * 	
  *	\note
- *	The timeout hook will only get called if RKH_HOOK_TIMEOUT_EN is set to 1 
- *	within rkhcfg.h file. When this is set the application must provide the 
- *	hook function. 
+ *	The timeout hook will only get called if RKH_CFG_HOOK_TIMEOUT_EN is set 
+ *	to 1 within rkhcfg.h file. When this is set the application must provide 
+ *	the hook function. 
  *
  *	\param t		pointer to previously allocated timer structure. 
  *					A cast to RKH_TMR_T data type must be internally 
@@ -2473,7 +2473,7 @@ void rkh_hook_timeout( const void *t );
  * 	the application.
  *
  *	\note
- *	The start hook will only get called if RKH_HOOK_START_EN is set to 1 
+ *	The start hook will only get called if RKH_CFG_HOOK_START_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
@@ -2488,7 +2488,7 @@ void rkh_hook_start( void );
  * 	clean-up code upon SMA terminate or framework exit.
  *
  *	\note
- *	The exit hook will only get called if RKH_HOOK_EXIT_EN is set to 1 
+ *	The exit hook will only get called if RKH_CFG_HOOK_EXIT_EN is set to 1 
  *	within rkhcfg.h file. When this is set the application must provide the 
  *	hook function. 
  */
@@ -2540,9 +2540,9 @@ void rkh_hook_idle( void );
  *	execute as quickly as possible.
  *
  *	\note
- *	The time tick hook will only get called if RKH_HOOK_TIMETICK_EN is set to 1 
- *	within rkhcfg.h file. When this is set the application must provide the 
- *	hook function. 
+ *	The time tick hook will only get called if RKH_CFG_HOOK_TIMETICK_EN is 
+ *	set to 1 within rkhcfg.h file. When this is set the application must 
+ *	provide the hook function. 
  */
 
 void rkh_hook_timetick( void );
@@ -2701,7 +2701,7 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 
 
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 
 	/**
 	 * \brief 
@@ -2756,7 +2756,7 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 #endif
 
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 		
 	/**
 	 * 	\brief 
@@ -2795,7 +2795,7 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 #endif
 
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief 
@@ -2883,7 +2883,7 @@ void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
 RKH_TS_T rkh_trc_getts( void );
 
 
-#if RKH_TRC_EN == RKH_ENABLED
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief 

@@ -90,7 +90,7 @@ const char *rkh_get_port_desc( void );
 
 /**
  * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
- *	enabled (see #RKH_RQ_EN) then RKH will include its own implementation of 
+ *	enabled (see #RKH_CFG_RQ_EN) then RKH will include its own implementation of 
  *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
  */
 
@@ -98,8 +98,8 @@ const char *rkh_get_port_desc( void );
 
 /**
  * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
- * 	memory block facility is enabled (see #RKH_MP_EN) then RKH will include 
- * 	its own implementation of dynamic memory management.
+ * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will 
+ * 	include its own implementation of dynamic memory management.
  * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
  * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
  * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().

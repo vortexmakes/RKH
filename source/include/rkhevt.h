@@ -53,7 +53,7 @@
 
 #define R_CAST_EVT( e )		((RKH_EVT_T *)(e))
 
-#if RKH_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
 #define RKH_INC_REF( evt )	\
 							if( R_CAST_EVT( evt )->pool != 0 )		\
 							{ 										\
@@ -68,14 +68,14 @@
 /** 
  * 	Defines the size of event. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. This type is configurable via the 
- * 	preprocessor switch RKH_SIZEOF_EVENT.
+ * 	preprocessor switch RKH_CFG_SIZEOF_EVENT.
  */
 
-#if RKH_SIZEOF_EVENT == 8
+#if RKH_CFG_SIZEOF_EVENT == 8
 	typedef rui8_t RKH_SIG_T;
-#elif RKH_SIZEOF_EVENT == 16
+#elif RKH_CFG_SIZEOF_EVENT == 16
 	typedef rui16_t RKH_SIG_T;
-#elif RKH_SIZEOF_EVENT == 32
+#elif RKH_CFG_SIZEOF_EVENT == 32
 	typedef rui32_t RKH_SIG_T;
 #else
 	typedef rui8_t RKH_SIG_T;
@@ -85,14 +85,14 @@
 /** 
  * 	Defines the data type of event size. The valid values [in bits] are 
  * 	8, 16 or 32. Default is 8. This type is configurable via the 
- * 	preprocessor switch RKH_SIZEOF_ESIZE.
+ * 	preprocessor switch RKH_CFG_SIZEOF_ESIZE.
  */
 
-#if RKH_SIZEOF_ESIZE == 8
+#if RKH_CFG_SIZEOF_ESIZE == 8
 	typedef rui8_t RKH_ES_T;
-#elif RKH_SIZEOF_ESIZE == 16
+#elif RKH_CFG_SIZEOF_ESIZE == 16
 	typedef rui16_t RKH_ES_T;
-#elif RKH_SIZEOF_ESIZE == 32
+#elif RKH_CFG_SIZEOF_ESIZE == 32
 	typedef rui32_t RKH_ES_T;
 #else
 	typedef rui8_t RKH_ES_T;

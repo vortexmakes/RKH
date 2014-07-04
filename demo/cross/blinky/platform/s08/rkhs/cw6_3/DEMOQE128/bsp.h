@@ -47,7 +47,7 @@
 
 
 #define BSP_MAX_NESTING_CSECT 		8
-#define BSP_TICKS_PER_SEC   		RKH_TICK_RATE_HZ
+#define BSP_TICKS_PER_SEC   		RKH_CFG_TICK_RATE_HZ
 
 /**
  * 	\brief
