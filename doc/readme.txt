@@ -2274,7 +2274,7 @@ set_config( const struct rkh_t *sma, RKH_EVT_T *pe )
 
 	e = RKH_ALLOC_EVT( MYEVT_T, SIX );
 	e->ts = ( rui16_t )rand();
-	rkh_tim_oneshot( &my_timer, sma, MY_TICK );
+	RKH_TMR_ONESHOT( &my_timer, sma, MY_TICK );
 }
 \endcode
 
@@ -2839,7 +2839,7 @@ This section includes:
 		close_layer();
 	}
 
-(4)	rkh_tim_init( 	&tlayer, 
+(4)	RKH_TMR_INIT( 	&tlayer, 
 (5)					&e_timer, 
 (6)					tlayer_tout );
 ...
@@ -2870,15 +2870,15 @@ Explanation
 (5)	static RKH_ROM_STATIC_EVENT( e_tpwr, TPWR );
 (6)	static RKH_ROM_STATIC_EVENT( e_tkey, TKEY );
 
-(7)	rkh_tim_init( &tpwr, e_tpwr, NULL );
-(8)	rkh_tim_init( &tkey, e_tkey, NULL );
+(7)	RKH_TMR_INIT( &tpwr, e_tpwr, NULL );
+(8)	RKH_TMR_INIT( &tkey, e_tkey, NULL );
 ...
-(9) rkh_tim_oneshot( &tpwr, pwr, TPWR_TIME );
-(10)rkh_tim_periodic( &tkey, pwr, TKEY_TIME, TKEY_TIME/4 );
+(9) RKH_TMR_ONESHOT( &tpwr, pwr, TPWR_TIME );
+(10)RKH_TMR_PERIODIC( &tkey, pwr, TKEY_TIME, TKEY_TIME/4 );
 ...
-(11)rkh_tim_stop( &tkey );
+(11)rkh_tmr_stop( &tkey );
 ...
-(12)rkh_tim_restart( &tpwr, TPWR_TIME * 2 );
+(12)rkh_tmr_restart( &tpwr, TPWR_TIME * 2 );
 \endcode
 
 Explanation

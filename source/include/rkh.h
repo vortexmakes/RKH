@@ -1563,11 +1563,11 @@ void rkh_fwk_exit( void );
 	 * 	not call it. Instead, use #RKH_TIM_TICK() macro.
 	 */
 
-	void rkh_tim_tick( const void *const sender );
+	void rkh_tmr_tick( const void *const sender );
 
 	/**
 	 * 	\brief
-	 * 	Invoke the system clock tick processing rkh_tim_tick().
+	 * 	Invoke the system clock tick processing rkh_tmr_tick().
 	 *
 	 * 	This macro is the recommended way of invoke the clock tick processing, 
 	 * 	because it provides the vital information for software tracing and 
@@ -1579,15 +1579,15 @@ void rkh_fwk_exit( void );
 	 * 						just to unambiguously identify the ISR as the 
 	 * 						sender of the time events.
 	 *	\sa
-	 *	rkh_tim_tick().
+	 *	rkh_tmr_tick().
 	 */
 
-	#define RKH_TIM_TICK( _sender )		rkh_tim_tick( _sender )
+	#define RKH_TIM_TICK( _sender )		rkh_tmr_tick( _sender )
 
 #else
 
-	void rkh_tim_tick( void );
-	#define RKH_TIM_TICK( dummy_ )		rkh_tim_tick()
+	void rkh_tmr_tick( void );
+	#define RKH_TIM_TICK( dummy_ )		rkh_tmr_tick()
 
 #endif
 
@@ -2528,14 +2528,14 @@ void rkh_hook_idle( void );
 
 /**
  * 	\brief
- * 	This function is called by rkh_tim_tick(), which is assumed to be called 
+ * 	This function is called by rkh_tmr_tick(), which is assumed to be called 
  * 	from an ISR. rkh_hook_timetick() is called at the very beginning of 
- * 	rkh_tim_tick(), to give priority to user or port-specific code when the 
+ * 	rkh_tmr_tick(), to give priority to user or port-specific code when the 
  * 	tick interrupt occurs. 
  *
  *	Usually, this hook allows to the application to extend the functionality 
  *	of RKH, giving the port developer the opportunity to add code that will 
- *	be called by rkh_tim_tick(). Frequently, the rkh_hook_timetick() is 
+ *	be called by rkh_tmr_tick(). Frequently, the rkh_hook_timetick() is 
  *	called from the tick ISR and must not make any blocking calls and must 
  *	execute as quickly as possible.
  *

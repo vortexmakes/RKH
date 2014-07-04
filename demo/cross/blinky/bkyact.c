@@ -38,7 +38,7 @@ RKH_TMR_T bkytim;
 void 
 blinky_init( const struct RKH_SMA_T *sma )
 {
-	rkh_tim_init( &bkytim, &e_tout, NULL );
+	RKH_TMR_INIT( &bkytim, &e_tout, NULL );
 	blinky_led_on( sma, NULL  );	
 }
 
@@ -52,7 +52,7 @@ blinky_led_on( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)pe;
 
-	rkh_tim_oneshot( &bkytim, blinky, LED_ON_TIME );
+	RKH_TMR_ONESHOT( &bkytim, blinky, LED_ON_TIME );
 	bsp_led_on();
 	printf("state = %s - %s\n", ((RKH_BASE_T *)(sma->state))->name, 
 								((BKY_ST_T *)(sma->state))->title);
@@ -66,6 +66,6 @@ blinky_led_off( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 	(void)sma;
 	(void)pe;
 
-	rkh_tim_oneshot( &bkytim, blinky, LED_OFF_TIME );
+	RKH_TMR_ONESHOT( &bkytim, blinky, LED_OFF_TIME );
 	bsp_led_off();
 }

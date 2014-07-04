@@ -194,52 +194,64 @@ struct RKH_TMR_T
 };
 
 
-/**
- * 	\brief
- *	Initializes the previously allocated timer structure RKH_TMR_T. 
- *
- * 	A timer is declared with the RKH_TMR_T data type and is defined with the 
- * 	rkh_tim_init() service.
- *	The timer is initialized in a non-active state (stopped). In this case, a 
- *	subsequent start service call is necessary to get the timer actually 
- *	started.
- * 	The following listing creates an application timer that executes 
- * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100 
- * 	timer-ticks.
- *
- * 	\code
- *	#define MY_TICK				100
- *
- *	static RKH_TMR_T my_timer;
- *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
- *
- *  ...
- * 	rkh_tim_init( &my_timer, &e_timer, my_timer_hook );
- * 	rkh_tim_oneshot( &my_timer, pwr, MY_TICK );
- * 	\endcode
- *
- *	\note 
- *	See RKH_TMR_T structure for more information.
- *		
- *	\param t_		pointer to previously allocated timer structure. Any 
- *					software module intending to install a software timer 
- *					must first allocate a timer structure RKH_TMR_T.
- *	\param e_		event to be directly posted (using the FIFO policy) into 
- *					the event queue of the target agreed state machine 
- *					application at the timer expiration.
- *	\param th_ 		hook function to be called at the timer expiration. This 
- *					argument is optional, thus it could be declared as NULL 
- *					or eliminated in compile-time with RKH_TIM_EN_HOOK.
- */
 
 #if RKH_TIM_EN_HOOK == RKH_ENABLED
-	#define rkh_tim_init( t_, e_, th_ )	\
-				rkh_tim_init_( (t_), (e_), (th_) )
-	void rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk );
+
+	/**
+	 * 	\brief
+	 *	Initializes the previously allocated timer structure RKH_TMR_T. 
+	 */
+
+	void rkh_tmr_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk );
+
+	/**
+	 * 	\brief
+	 *	Initializes the previously allocated timer structure RKH_TMR_T. 
+	 *
+	 * 	A timer is declared with the RKH_TMR_T data type and is defined with 
+	 * 	the RKH_TMR_INIT() service.
+	 *	The timer is initialized in a non-active state (stopped). In this 
+	 *	case, a subsequent start service call is necessary to get the timer 
+	 *	actually started.
+	 * 	The following listing creates an application timer that executes 
+	 * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 
+	 * 	100 timer-ticks.
+	 *
+	 * 	\code
+	 *	#define MY_TICK				100
+	 *
+	 *	static RKH_TMR_T my_timer;
+	 *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
+	 *
+	 *  ...
+	 * 	RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
+	 * 	RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
+	 * 	\endcode
+	 *
+	 *	\note 
+	 *	See RKH_TMR_T structure for more information.
+	 *		
+	 *	\param t_		pointer to previously allocated timer structure. Any 
+	 *					software module intending to install a software timer 
+	 *					must first allocate a timer structure RKH_TMR_T.
+	 *	\param e_		event to be directly posted (using the FIFO policy) 
+	 *					into the event queue of the target agreed state 
+	 *					machine application at the timer expiration.
+	 *	\param th_ 		hook function to be called at the timer expiration. 
+	 *					This argument is optional, thus it could be declared 
+	 *					as NULL or eliminated in compile-time with 
+	 *					RKH_TIM_EN_HOOK.
+	 */
+
+	#define RKH_TMR_INIT( t_, e_, th_ )	\
+				rkh_tmr_init_( (t_), (e_), (th_) )
 #else
-	#define rkh_tim_init( t_, e_, th_ )	\
-				rkh_tim_init_( (t_), (e_) )
-	void rkh_tim_init_( RKH_TMR_T *t, const RKH_EVT_T *e );
+
+	#define RKH_TMR_INIT( t_, e_, th_ )	\
+				rkh_tmr_init_( (t_), (e_) )
+
+	void rkh_tmr_init_( RKH_TMR_T *t, const RKH_EVT_T *e );
+
 #endif
 
 
@@ -247,9 +259,9 @@ struct RKH_TMR_T
  * 	\brief
  * 	Start a timer as one-shot timer.
  *
- * 	This operation installs a previously created timer into	the timer-handling 
- * 	facility. The timer begins running at the completion of this operation. 
- * 	The timer won't be re-started automatically.
+ * 	This operation installs a previously created timer into	the 
+ * 	timer-handling facility. The timer begins running at the completion of 
+ * 	this operation. The timer won't be re-started automatically.
  * 	The following listing creates an application timer that executes 
  * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100 
  * 	timer-ticks.
@@ -261,8 +273,8 @@ struct RKH_TMR_T
  *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
- * 	rkh_tim_init( &my_timer, e_timer, my_timer_hook );
- * 	rkh_tim_oneshot( &my_timer, pwr, MY_TICK );
+ * 	RKH_TMR_INIT( &my_timer, e_timer, my_timer_hook );
+ * 	RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
  * 	\endcode
  *
  *	\param t		pointer to previously created timer structure.
@@ -271,19 +283,19 @@ struct RKH_TMR_T
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-#define rkh_tim_oneshot( t, sma, itick )						\
-					(t)->period = 0;							\
-					rkh_tim_start( t, sma, itick )
+#define RKH_TMR_ONESHOT( t, sma, itick )					\
+					(t)->period = 0;						\
+					rkh_tmr_start( t, sma, itick )
 
 
 /**
  * 	\brief
  * 	Start a timer as periodic timer.
  *
- * 	This operation installs a previously created timer into	the timer-handling 
- * 	facility. The timer begins running at the completion of this operation.
- * 	Once the timeout will expire the timer will be re-started (re-triggered) 
- * 	again automatically.
+ * 	This operation installs a previously created timer into	the 
+ * 	timer-handling facility. The timer begins running at the completion of 
+ * 	this operation. Once the timeout will expire the timer will be 
+ * 	re-started (re-triggered) again automatically.
  * 	The following listing creates an application timer that executes 
  * 	"my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100 
  * 	timer-ticks initially and then after every 25 timer-ticks.
@@ -295,8 +307,8 @@ struct RKH_TMR_T
  *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
  *
  *  ...
- * 	rkh_tim_init( &my_timer, &e_timer, my_timer_hook );
- * 	rkh_tim_periodic( &my_timer, pwr, MY_TICK, MY_TICK/4 );
+ * 	RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
+ * 	RKH_TMR_PERIODIC( &my_timer, pwr, MY_TICK, MY_TICK/4 );
  * 	\endcode
  *
  *	\param t		pointer to previously created timer structure.
@@ -309,16 +321,18 @@ struct RKH_TMR_T
  * 					any value in range.
  */
 
-#define rkh_tim_periodic( t, sma, itick, per )				\
+#define RKH_TMR_PERIODIC( t, sma, itick, per )				\
 					(t)->period = (per);					\
-					rkh_tim_start( (t), (sma), (itick) )
+					rkh_tmr_start( (t), (sma), (itick) )
 
 
 /**
  * 	\brief
  * 	Start a timer. 
- * 	This operation installs a previously created timer into	the timer-handling 
- * 	facility. The timer begins running at the completion of this operation.
+ *
+ * 	This operation installs a previously created timer into	the 
+ * 	timer-handling facility. The timer begins running at the completion of 
+ * 	this operation.
  *
  *	\param t		pointer to previously created timer structure.
  *	\param sma		state machine application (SMA) that receives the timer 
@@ -326,21 +340,22 @@ struct RKH_TMR_T
  * 	\param itick 	number of ticks for timer expiration.
  */
 
-void rkh_tim_start( RKH_TMR_T *t, 	const struct RKH_SMA_T *sma, 
+void rkh_tmr_start( RKH_TMR_T *t, 	const struct RKH_SMA_T *sma, 
 									RKH_TNT_T itick );
 
 
 /**
  * 	\brief
  *	Stops a running timer. 
+ *
  *	This operation stops a timer by removing the currently running timer from 
- *	the timer-handling facility. If the timer is already stopped, this service 
- *	has no effect.
+ *	the timer-handling facility. If the timer is already stopped, this 
+ *	service has no effect.
  *
  *	\param t		pointer to previously created timer structure.
  */
 
-void rkh_tim_stop( RKH_TMR_T *t );
+void rkh_tmr_stop( RKH_TMR_T *t );
 
 
 /**
@@ -350,10 +365,9 @@ void rkh_tim_stop( RKH_TMR_T *t );
  *	The user application must allocate an RKH_TINFO_T data structure used 
  *	to receive data. The performance information is available during run-time 
  *	for each of the RKH services. This can be useful in determining whether 
- *	the application is performing properly, as well as helping to optimize the 
- *	application.
- *	This information provides a "snapshot" a particular instant in time, i.e., 
- *	when the service is invoked.
+ *	the application is performing properly, as well as helping to optimize 
+ *	the application. This information provides a "snapshot" a particular 
+ *	instant in time, i.e., when the service is invoked.
  *
  * 	\note
  * 	See RKH_TINFO_T structure for more information. This function is 
@@ -365,7 +379,7 @@ void rkh_tim_stop( RKH_TMR_T *t );
  * 					information will be copied by reference.
  */
 
-void rkh_tim_get_info( RKH_TMR_T *t, RKH_TINFO_T *info );
+void rkh_tmr_get_info( RKH_TMR_T *t, RKH_TINFO_T *info );
 
 
 /**
@@ -380,7 +394,7 @@ void rkh_tim_get_info( RKH_TMR_T *t, RKH_TINFO_T *info );
  *	\param t		pointer to previously created timer structure.
  */
 
-void rkh_tim_clear_info( RKH_TMR_T *t );
+void rkh_tmr_clear_info( RKH_TMR_T *t );
 
 
 #endif

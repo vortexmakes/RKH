@@ -10,9 +10,9 @@ Changes between V2.4 and V2.4.3 released 07/15/2013
 + 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 
 +	Adds ARM Cortex-M0+ on Freedom KL25Z board.
 +	Adds sender object (and macro RKH_SMA_EN_TRC_SENDER to rkhcfg.h) to 
-	rkh_tim_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(). 
+	rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(). 
 +	Adds macros RKH_TIM_TICK, RKH_SMA_POST_FIFO/_LIFO to invoke functions 
-	rkh_tim_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo().
+	rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo().
 +	Removes RKH_TRC_MAX_EVENTS from rkhcfg.h file.
 + 	Adds the RKH_TR_RQ_FULL macro from rkh_rq_put_fifo() and 
 	rkh_rq_put_lifo() functions.
@@ -91,7 +91,7 @@ Changes between V2.1 and V2.2 released 08/13/2012
 +	Fix a bug in RKH_SMA_BLOCK() macro.
 +	Fix a bug in rkh_rq_get() function, when invocking the rkh_fwk_recall() 
 	function.
-+	Fix a bug in rkh_tim_restart() function RKH_REQUIRE() args.
++	Fix a bug in rkh_tmr_restart() function RKH_REQUIRE() args.
 +	Fix a bug in rkh_fwk_defer() function. Also, include an internal macro 
 	RKH_INC_REF() to avoid the dependence of dynamic event in deferral 
 	mechanism.

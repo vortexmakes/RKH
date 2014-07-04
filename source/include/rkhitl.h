@@ -123,6 +123,7 @@
 
 
 /**	
+ * 	\brief
  *	This macro is used to indicate the end of a transition table.
  */
 
@@ -130,7 +131,9 @@
 
 
 /**
+ * 	\brief
  * 	RKH allows up to RKH_MAX_SMA different priority levels (see rkhcfg.h).
+ *
  * 	In RKH, a low-priority number corresponds to a high-priority level.
  * 	Priority level zero (0) is thus the highest priority level. Priority 
  *	RKH_LOWEST_PRIO (RKH_MAX_SMA - 1) is the lowest priority level.
@@ -182,17 +185,17 @@
 
 
 /*
- * 	LOOK FOR MISSING #define CONSTANTS ----------------------------------------
+ * 	LOOK FOR MISSING #define CONSTANTS ---------------------------------------
  * 
- * 	This section is used to generate ERROR messages at compile time if certain 
- * 	#define constants are MISSING in rkhcfg.h.  This allows you to quickly 
- * 	determine the source of the error.
+ * 	This section is used to generate ERROR messages at compile time if 
+ * 	certain #define constants are MISSING in rkhcfg.h.  This allows you to 
+ * 	quickly determine the source of the error.
  * 
  * 	You SHOULD NOT change this section UNLESS you would like to add more 
  * 	comments as to the source of the compile time error.
  */
 
-/*  MEMORY POOL   ---------------------------------------------------------- */
+/*  MEMORY POOL   --------------------------------------------------------- */
 
 #ifndef	RKH_MP_EN
 	#error "RKH_MP_EN                              not #define'd in 'rkhcfg.h'"
@@ -299,7 +302,7 @@
 
 #endif
 
-/*  QUEUE         ---------------------------------------------------------- */
+/*  QUEUE         --------------------------------------------------------- */
 
 #ifndef	RKH_RQ_EN
 	#error "RKH_RQ_EN                              not #define'd in 'rkhcfg.h'"
@@ -429,7 +432,7 @@
 
 #endif
 
-/*  TIMER         ---------------------------------------------------------- */
+/*  TIMER         --------------------------------------------------------- */
 
 #ifndef RKH_TIM_EN
 	#error "RKH_TIM_EN                             not #define'd in 'rkhcfg.h'"
@@ -828,7 +831,7 @@
 
 #endif
 
-/*  TRACE         ---------------------------------------------------------- */
+/*  TRACE         --------------------------------------------------------- */
 
 #ifndef	RKH_TRC_EN
 	#error "RKH_TRC_EN                             not #define'd in 'rkhcfg.h'"
@@ -1183,7 +1186,7 @@
 
 #endif
 
-/*  FRAMEWORK     ---------------------------------------------------------- */
+/*  FRAMEWORK     --------------------------------------------------------- */
 
 #ifndef	RKH_MAX_SMA
 	#error "RKH_MAX_SMA                            not #define'd in 'rkhcfg.h'"
@@ -1402,7 +1405,7 @@
 
 #endif
 
-/*  PORT          ---------------------------------------------------------- */
+/*  PORT          --------------------------------------------------------- */
 
 #ifndef	RKH_EN_SMA_THREAD
 	#error "RKH_EN_SMA_THREAD                     not #define'd in 'rkhport.h'"

@@ -171,11 +171,11 @@
 
 /**
  *	If the #RKH_HOOK_TIMETICK_EN is set to 1, RKH will invoke the time tick 
- *	hook function from rkh_tim_tick(), at the very beginning of that, to give 
+ *	hook function from rkh_tmr_tick(), at the very beginning of that, to give 
  *	priority to user or port-specific code when the tick interrupt occurs. 
  *	Usually, the rkh_hook_timetick() allows to the application to extend the 
  *	functionality of RKH, giving the port developer the opportunity to add 
- *	code that will be called by rkh_tim_tick(). Frequently, the 
+ *	code that will be called by rkh_tmr_tick(). Frequently, the 
  *	rkh_hook_timetick() is called from the tick ISR and must not make any 
  *	blocking calls and must execute as quickly as possible.
  *	When this is set the application must provide the hook function. 
@@ -193,7 +193,7 @@
 
 /**
  * 	Specify the frequency of the framework tick interrupt (number of ticks 
- * 	in one second). It's the rate at which the rkh_tim_tick() function is 
+ * 	in one second). It's the rate at which the rkh_tmr_tick() function is 
  * 	invoked. This configuration constant is not used by RKH, it is just a 
  * 	value to allow an application to deal with time when using timer 
  * 	services, converting ticks to time. See RKH_TICK_RATE_MS constant.
@@ -763,8 +763,8 @@
 
 /** 
  *	If the #RKH_TIM_EN_GET_INFO is set to 1 then RKH will include the 
- *	rkh_tim_get_info() function that retrieves performance information for 
- *	a particular software timer. See rkh_tim_get_info() function.
+ *	rkh_tmr_get_info() function that retrieves performance information for 
+ *	a particular software timer. See rkh_tmr_get_info() function.
  */
 
 #define RKH_TIM_EN_GET_INFO				RKH_ENABLED

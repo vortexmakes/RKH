@@ -106,20 +106,20 @@ typedef struct RKH_QINFO_T
  * 	\brief
  * 	Defines the data structure used to maintain information about the queue. 
  *
- * 	The queue is a buffer-like object through which state machine applications 
- * 	(SMA) and ISRs send and receive messages to communicate and synchornize 
- * 	with data. It temporarily holds pointer to messages from a sender until 
- * 	the intended receiver is ready to read them.
+ * 	The queue is a buffer-like object through which state machine 
+ * 	applications (SMA) and ISRs send and receive messages to communicate and 
+ * 	synchornize with data. It temporarily holds pointer to messages from a 
+ * 	sender until the intended receiver is ready to read them.
  *
  * 	The number of messages a queue can hold depends on its message size 
  * 	(pointer size) and the size of the memory area supplied during creation. 
- * 	To calculate the total message capacity of the queue, divide the number of 
- * 	bytes in each message into the total number of bytes in the supplied 
+ * 	To calculate the total message capacity of the queue, divide the number 
+ * 	of bytes in each message into the total number of bytes in the supplied 
  *
- * 	The memory area for buffering messages is specified during queue creation. 
- * 	It can be located anywhere in the target's address space. This is an 
- * 	important feature because it gives the application considerable 
- * 	flexibility.
+ * 	The memory area for buffering messages is specified during queue 
+ * 	creation. It can be located anywhere in the target's address space. 
+ * 	This is an important feature because it gives the application 
+ * 	considerable flexibility.
  *
  * 	\note
  * 	RKH prohibits an application from explicitly modifying the RKH_RQ_T 
@@ -253,7 +253,7 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	'1' (TRUE) if queue is empty, otherwise '0' (FALSE).
  */
 
-#define rkh_rq_is_empty( q )								\
+#define RKH_RQ_IS_EMPTY( q )								\
 				(ruint)(rkh_rq_get_num((RKH_RQ_T*)(q))==0)
 
 

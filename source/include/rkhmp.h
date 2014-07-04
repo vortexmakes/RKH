@@ -157,7 +157,8 @@ typedef struct
  * 	total number of bytes in the memory area supplied during creation. To 
  * 	calculate the capacity of a pool (number of blocks that will be 
  * 	available), divide the block size (including padding and the pointer 
- * 	overhead bytes) into the total number of bytes in the supplied memory area.
+ * 	overhead bytes) into the total number of bytes in the supplied memory 
+ * 	area.
  * 	
  * 	The memory area for the block pool is specified during creation, and can 
  * 	be located anywhere in the target's address space. This is an important 
@@ -166,8 +167,8 @@ typedef struct
  *	\note
  * 	RKH prohibits an application from explicitly modifying the RKH_MP_T 
  * 	structure. The RKH's memory block pool structures can be located anywhere 
- * 	in memory, but it is most common to make it a global structure by defining 
- * 	it outside the scope of any function.
+ * 	in memory, but it is most common to make it a global structure by 
+ * 	defining it outside the scope of any function.
  * 	An RKH memory pool is created when an memory pool is declared with the 
  * 	RKH_MP_T data type. The following listing declares "my_pool" memory pool:
  *
@@ -199,7 +200,8 @@ typedef struct RKH_MP_T
 	 * 	\brief
 	 * 	Total number of blocks in bytes. 
 	 *
-	 * 	The type RKH_MPNB_T is configurable by the macro RKH_MP_SIZEOF_NBLOCK. 
+	 * 	The type RKH_MPNB_T is configurable by the macro 
+	 * 	RKH_MP_SIZEOF_NBLOCK. 
 	 * 	The valid values [in bits] are 8, 16 or 32. Default is 8. The dynamic 
 	 * 	range of the RKH_MPNB_T data type determines the maximum number of 
 	 * 	blocks that can be stored in the pool.
@@ -213,8 +215,9 @@ typedef struct RKH_MP_T
 	 *
 	 * 	The type RKH_MPBS_T is configurable by the macro 
 	 * 	RKH_MP_SIZEOF_BSIZE. The valid values [in bits] are 8, 16 or 32. 
-	 * 	Default is 8. The dynamic range of the RKH_MPBS_T data type determines 
-	 * 	the maximum size of blocks that can be managed by the pool manager.
+	 * 	Default is 8. The dynamic range of the RKH_MPBS_T data type 
+	 * 	determines the maximum size of blocks that can be managed by the 
+	 * 	pool manager.
 	 */
 
 	RKH_MPBS_T bsize;
@@ -268,8 +271,8 @@ typedef struct RKH_MP_T
  * 	\brief
  *	Initializes the previously allocated memory pool data strcuture RKH_MP_T.
  *
- * 	A memory block pool is declared with the RKH_MP_T data type and is defined 
- * 	with the rkh_mp_init() service.
+ * 	A memory block pool is declared with the RKH_MP_T data type and is 
+ * 	defined with the rkh_mp_init() service.
  *
  * 	A general challenge in writing this function is portability, 
  * 	because storage allocation is intrinsically machine-dependent. Perhaps 
@@ -293,8 +296,8 @@ typedef struct RKH_MP_T
  * 	\param sstart	storage start. Pointer to memory from which memory blocks 
  * 					are allocated.
  * 	\param ssize:	storage size. Size of the memory pool storage in bytes.
- * 	\param bsize	block size. This number determines the size of each memory 
- * 					block in the pool.
+ * 	\param bsize	block size. This number determines the size of each 
+ * 					memory block in the pool.
  */
 
 void rkh_mp_init( 	RKH_MP_T *mp, void *sstart, rui16_t ssize, 
@@ -394,8 +397,8 @@ RKH_MPNB_T rkh_mp_get_low_wmark( RKH_MP_T *mp );
  * 	with RKH_MP_EN_GET_INFO.
  *
  * 	\param mp		pointer to previously allocated memory pool structure.
- * 	\param mpi		pointer to the buffer into which the performance information
- * 					will be copied by reference.
+ * 	\param mpi		pointer to the buffer into which the performance 
+ * 					information will be copied by reference.
  */
 
 void rkh_mp_get_info( RKH_MP_T *mp, RKH_MPI_T *mpi );
