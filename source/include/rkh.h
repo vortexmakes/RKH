@@ -102,7 +102,7 @@
 						((const char*)m_desc)
 
 
-#if RKH_EN_NATIVE_DYN_EVENT == RKH_ENABLED && \
+#if RKH_CFGPORT_NATIVE_DYN_EVT_EN == RKH_ENABLED && \
 	RKH_EN_DOXYGEN == RKH_DISABLED
 
 		#define RKH_DYNE_TYPE			RKH_MP_T
@@ -1474,7 +1474,7 @@ void rkh_fwk_init( void );
  *				sma = rkh_sptbl[ prio ];
  *				e = rkh_sma_get( sma );
  *				rkh_sma_dispatch( sma, e );
- *				RKH_GC( e );
+ *				RKH_FWK_GC( e );
  *			}
  *			else
  *				rkh_hook_idle();
@@ -2089,12 +2089,12 @@ RKH_EVT_T *rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q );
  * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT() macros.
  *
  *  The dynamic allocation of events is optional then if the 
- *  #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
+ *  #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native fixed-size 
  * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will 
  * 	include its own implementation of dynamic memory management.
- * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
- * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
- * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+ * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will 
+ * 	automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
+ * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
  * 
  *	Example:
  *	\code
@@ -2160,7 +2160,7 @@ void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
  * 	not call it. Instead, use #RKH_ALLOC_EVT() macro.
  *
  * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
- * 	rkh_set_static_event() and rkh_gc().
+ * 	rkh_set_static_event() and rkh_fwk_gc().
  *
  * 	\param esize	size of event [in bytes].
  * 	\param e		event signal.
@@ -2214,7 +2214,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 	 * 	Recycle a dynamic event.
 	 */
 
-	void rkh_gc( RKH_EVT_T *e );
+	void rkh_fwk_gc( RKH_EVT_T *e );
 
 	/**
 	 * 	\brief
@@ -2233,7 +2233,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 	 * 	
 	 * 	\note 
 	 * 	This function is internal to RKH and the user application should 
-	 * 	not call it. Instead, use #RKH_GC() macro.
+	 * 	not call it. Instead, use #RKH_FWK_GC() macro.
 	 * 	\note 
 	 * 	The garbage collector must be explicitly invoked at all appropriate 
 	 * 	contexts, when an event can become garbage (automatic garbage 
@@ -2245,9 +2245,9 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 	 * 	\param e		pointer to event to be potentially recycled.
 	 */
 
-	#define RKH_GC( e ) 			rkh_gc( e )
+	#define RKH_FWK_GC( e ) 			rkh_fwk_gc( e )
 #else
-	#define RKH_GC( e )				(void)0
+	#define RKH_FWK_GC( e )				(void)0
 #endif
 
 
@@ -2259,23 +2259,23 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 	 * 	Reserve the dynamic event to be recycled.
 	 */
 
-	void rkh_reserve( RKH_EVT_T *e );
+	void rkh_fwk_reserve( RKH_EVT_T *e );
 
 	/**
 	 * 	\brief
 	 * 	Reserve the dynamic event to be recycled.
 	 *
-	 * 	This is the complement to RKH_GC(). It increments the reference 
+	 * 	This is the complement to RKH_FWK_GC(). It increments the reference 
 	 * 	count of a dynamic event so the event can be saved by an SMA (AO). 
 	 * 	Sometime later the SMA should manually release the event with 
-	 * 	RKH_GC().
+	 * 	RKH_FWK_GC().
 	 *
 	 * 	\param e		pointer to event to be reserved.
 	 */
 
-	#define RKH_RSV( e ) 			rkh_reserve( e )
+	#define RKH_FWK_RSV( e ) 			rkh_fwk_reserve( e )
 #else
-	#define RKH_RSV( e )			(void)0
+	#define RKH_FWK_RSV( e )			(void)0
 #endif
 
 	

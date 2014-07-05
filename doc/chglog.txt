@@ -52,9 +52,9 @@ Changes between V2.2 and V2.3 released 02/05/2013
 	the user trace records.
 +	Add the macro RKH_TR_FWK_TUSR() for sending to Trazer a symbolic name of 
 	the user-defined trace event.
-+ 	Move the configurations RKH_EN_SMA_THREAD, RKH_EN_SMA_THREAD_DATA, 
-	RKH_EN_NATIVE_SCHEDULER, RKH_EN_NATIVE_EQUEUE, RKH_EN_NATIVE_DYN_EVENT, 
-	and RKH_EN_REENTRANT from rkhcfg.h to rkhport.h file to achieve the 
++ 	Move the configurations RKH_CFGPORT_SMA_THREAD_EN, RKH_CFGPORT_SMA_THREAD_DATA_EN, 
+	RKH_CFGPORT_NATIVE_SCHEDULER_EN, RKH_CFGPORT_NATIVE_EQUEUE_EN, RKH_CFGPORT_NATIVE_DYN_EVT_EN, 
+	and RKH_CFGPORT_REENTRANT_EN from rkhcfg.h to rkhport.h file to achieve the 
 	platform independence in rkhcfg.h file.
 +	Add macro RKH_TR_FWK_TCFG() to send the trace configuration parameters to 
 	Trazer.
@@ -136,7 +136,7 @@ Changes between V1.1.4 and V1.1.5 released 02/01/2012
 +	Added rkh_init_hsm_obj() function to initialize a RKH_T structure in runtime.
 +	Changed RKH_CREATE_HSM and RKH_DCLR_HSM macros to implement a easy way for deriving state machine structures from RKH_T.
 +	Added dynamic and defer event support. This facility is implemented by means of 
-	rkh_fwk_ae(), rkh_gc(), rkh_put_fifo(), rkh_put_lifo(), rkh_fwk_defer() and rkh_fwk_recall() and
+	rkh_fwk_ae(), rkh_fwk_gc(), rkh_put_fifo(), rkh_put_lifo(), rkh_fwk_defer() and rkh_fwk_recall() and
 	added member dynamic_ to RKH_EVT_T structure.
 +	Changed rkh.h file name to rkhitl.h.
 +	Changed rkhsm.h file name to rkh.h.

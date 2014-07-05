@@ -138,7 +138,7 @@
  * 	state transition.
  *
  * 	\sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(), 
- * 	rkh_set_static_event() and rkh_gc().
+ * 	rkh_set_static_event() and rkh_fwk_gc().
  */
 
 typedef struct RKH_EVT_T

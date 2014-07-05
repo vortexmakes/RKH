@@ -60,7 +60,7 @@
 #define GETEVT( e )				(rui8_t)((e) & 0x1F)
 
 
-#if RKH_CFG_TRC_RUNTIME_FILTER_EN == RKH_ENABLED
+#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 
 /**
  * 	\brief
@@ -250,7 +250,7 @@ rkh_trc_get_block( TRCQTY_T *nget )
 }
 
 
-#if RKH_CFG_TRC_RUNTIME_FILTER_EN == RKH_ENABLED
+#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 ruint
 rkh_trc_isoff_( rui8_t e )
 {

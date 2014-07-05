@@ -389,19 +389,19 @@
 #define RKH_CFG_TRC_EN					RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_TRC_RUNTIME_FILTER_EN is set to 1 then RKH will include 
+ *	If the #RKH_CFG_TRC_RTFIL_EN is set to 1 then RKH will include 
  *	the runtime trace filter facility.
- * 	When #RKH_CFG_TRC_RUNTIME_FILTER_EN is enabled RKH also will 
+ * 	When #RKH_CFG_TRC_RTFIL_EN is enabled RKH also will 
  * 	automatically define RKH_FILTER_ON_GROUP(), RKH_FILTER_OFF_GROUP(), 
  * 	RKH_FILTER_ON_EVENT(), RKH_FILTER_OFF_EVENT(), 
  * 	RKH_FILTER_ON_GROUP_ALL_EVENTS(), RKH_FILTER_OFF_GROUP_ALL_EVENTS(), 
  *	RKH_FILTER_ON_SMA(), and RKH_FILTER_OFF_SMA() macros.
  */
 
-#define RKH_CFG_TRC_RUNTIME_FILTER_EN	RKH_ENABLED
+#define RKH_CFG_TRC_RTFIL_EN			RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_TRC_RUNTIME_FILTER_EN and #RKH_CFG_TRC_RTFIL_SMA_EN are 
+ *	If the #RKH_CFG_TRC_RTFIL_EN and #RKH_CFG_TRC_RTFIL_SMA_EN are 
  *	set to 1, the RKH allows the usage of runtime trace filter for state 
  *	machine applications (active objects).
  */
@@ -409,7 +409,7 @@
 #define RKH_CFG_TRC_RTFIL_SMA_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_TRC_RUNTIME_FILTER_EN and #RKH_CFG_TRC_RTFIL_SIGNAL_EN 
+ *	If the #RKH_CFG_TRC_RTFIL_EN and #RKH_CFG_TRC_RTFIL_SIGNAL_EN 
  *	are set to 1, the RKH allows the usage of runtime trace filter for 
  *	signals (events).
  */
@@ -453,11 +453,11 @@
 #define RKH_CFG_TRC_SMA_EN				RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_TRC_TIM_EN is set to 1 then RKH will include all trace 
+ *	If the #RKH_CFG_TRC_TMR_EN is set to 1 then RKH will include all trace 
  *	records related to the native software timer.
  */
 
-#define RKH_CFG_TRC_TIM_EN				RKH_DISABLED
+#define RKH_CFG_TRC_TMR_EN				RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_TRC_SM_EN is set to 1 then RKH will include all trace 
@@ -578,7 +578,7 @@
 /**
  *	If the #RKH_CFG_TRC_TSTAMP_EN is set to 1 then RKH will add to the trace 
  *	record a timestamp field. It's configurable by means of 
- *	#RKH_TRC_SIZEOF_TSTAMP.
+ *	#RKH_CFGPORT_TRC_SIZEOF_TSTAMP.
  */
 
 #define RKH_CFG_TRC_TSTAMP_EN			RKH_ENABLED

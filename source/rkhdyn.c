@@ -96,7 +96,7 @@ rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e )
 
 
 void 
-rkh_gc( RKH_EVT_T *e )
+rkh_fwk_gc( RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 	
@@ -125,7 +125,7 @@ rkh_gc( RKH_EVT_T *e )
 
 
 void
-rkh_reserve( RKH_EVT_T *e )
+rkh_fwk_reserve( RKH_EVT_T *e )
 {
 	RKH_SR_ALLOC();
 
@@ -149,7 +149,7 @@ rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize )
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == RKH_ENABLED
+#if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED
 void 
 #if defined( RKH_USE_TRC_SENDER )
 rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e, 
@@ -172,7 +172,7 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == RKH_ENABLED && \
+#if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED && \
 	RKH_CFG_RQ_PUT_LIFO_EN == RKH_ENABLED
 void 
 #if defined( RKH_USE_TRC_SENDER )
@@ -196,7 +196,7 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 #endif
 
 
-#if RKH_EN_NATIVE_EQUEUE == RKH_ENABLED
+#if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED
 RKH_EVT_T *
 rkh_sma_get( RKH_SMA_T *sma )
 {

@@ -164,7 +164,7 @@ extern const RKH_TRC_FIL_T fsma;
 #define RKH_RQ_START				GRPLSH( RKH_TG_RQ 	)
 #define RKH_SMA_START				GRPLSH( RKH_TG_SMA 	)
 #define RKH_SM_START				GRPLSH( RKH_TG_SM 	)
-#define RKH_TIM_START				GRPLSH( RKH_TG_TIM 	)
+#define RKH_TMR_START				GRPLSH( RKH_TG_TMR 	)
 #define RKH_FWK_START				GRPLSH( RKH_TG_FWK 	)
 #define RKH_USR_START				GRPLSH( RKH_TG_USR 	)
 /*@}*/
@@ -334,7 +334,7 @@ typedef enum rkh_trc_groups
 	 * 	\brief
 	 * 	Timer group (TIM)
 	 */
-	RKH_TG_TIM,
+	RKH_TG_TMR,
 
 	/**
 	 * 	\brief
@@ -375,7 +375,7 @@ typedef enum rkh_trc_groups
  *			 	and the third argument 'signal' is the event signal number. 
  *			 	These arguments are used in the on/off filters. 
  *			 	The runtime filter is optional and could be enabled or 
- *			 	disabled with the #RKH_CFG_TRC_RUNTIME_FILTER_EN in the 
+ *			 	disabled with the #RKH_CFG_TRC_RTFIL_EN in the 
  *			 	\b rkhcfg.h file. This pair of macros locks interrupts at 
  *			 	the beginning and unlocks at the end of each record.
  *	\li (2-4) 	Sandwiched between these two macros are the 
@@ -434,7 +434,7 @@ typedef enum rkh_trc_groups
  *		then RKH will add to the trace record the sequence number.
  *	-	(3) Following the sequence number is the <B>timestamp</B>. The number 
  *		of bytes used by the timestamp is configurable by the macro 
- *		#RKH_TRC_SIZEOF_TSTAMP.
+ *		#RKH_CFGPORT_TRC_SIZEOF_TSTAMP.
  *		If the #RKH_CFG_TRC_TSTAMP_EN is set to 1 then RKH will add to the 
  *		trace record the timestamp field.
  *	- 	(4) Following the timestamp is zero or more data bytes for 
@@ -561,11 +561,11 @@ typedef enum rkh_trc_events
 	RKH_TE_SMA_LIFO,				/**< \copydetails RKH_TR_SMA_LIFO */
 	RKH_TE_SMA_REG,					/**< \copydetails RKH_TR_SMA_REG */
 	RKH_TE_SMA_UNREG,				/**< \copydetails RKH_TR_SMA_UNREG */
+	RKH_TE_SMA_DCH,					/**< \copydetails RKH_TR_SMA_DCH */
 
 	/* --- State machine events (SM group) ---------------- */
 	RKH_TE_SM_INIT = RKH_SM_START,	/**< \copydetails RKH_TR_SM_INIT */
 	RKH_TE_SM_CLRH,					/**< \copydetails RKH_TR_SM_CLRH */
-	RKH_TE_SM_DCH,					/**< \copydetails RKH_TR_SM_DCH */
 	RKH_TE_SM_TRN,					/**< \copydetails RKH_TR_SM_TRN */
 	RKH_TE_SM_STATE,				/**< \copydetails RKH_TR_SM_STATE */
 	RKH_TE_SM_ENSTATE,				/**< \copydetails RKH_TR_SM_ENSTATE */
@@ -582,11 +582,11 @@ typedef enum rkh_trc_events
 	RKH_TE_SM_EX_TSEG,				/**< \copydetails RKH_TR_SM_EX_TSEG */
 
 	/* --- Timer events (TIM group) ----------------------- */
-	RKH_TE_TIM_INIT = RKH_TIM_START,/**< \copydetails RKH_TR_TIM_INIT */
-	RKH_TE_TIM_START,				/**< \copydetails RKH_TR_TIM_START */
-	RKH_TE_TIM_STOP,				/**< \copydetails RKH_TR_TIM_STOP */
-	RKH_TE_TIM_TOUT,				/**< \copydetails RKH_TR_TIM_TOUT */
-	RKH_TE_TIM_REM,					/**< \copydetails RKH_TR_TIM_REM */
+	RKH_TE_TMR_INIT = RKH_TMR_START,/**< \copydetails RKH_TR_TMR_INIT */
+	RKH_TE_TMR_START,				/**< \copydetails RKH_TR_TMR_START */
+	RKH_TE_TMR_STOP,				/**< \copydetails RKH_TR_TMR_STOP */
+	RKH_TE_TMR_TOUT,				/**< \copydetails RKH_TR_TMR_TOUT */
+	RKH_TE_TMR_REM,					/**< \copydetails RKH_TR_TMR_REM */
 
 	/* --- Framework and misc. events (FWK group) ------------------- */
 	RKH_TE_FWK_EN = RKH_FWK_START,	/**< \copydetails RKH_TR_FWK_EN */
@@ -655,19 +655,19 @@ typedef enum rkh_trc_events
  * 	Defines the size of trace timestamp. 
  *
  * 	The valid values [in bits] are 8, 16 or 32. Default is 16. This type is 
- * 	configurable via the RKH_TRC_SIZEOF_TSTAMP preprocessor option.
+ * 	configurable via the RKH_CFGPORT_TRC_SIZEOF_TSTAMP preprocessor option.
  */
 
 #if RKH_CFG_TRC_TSTAMP_EN == RKH_ENABLED
-	#if RKH_TRC_SIZEOF_TSTAMP == 8
+	#if RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 8
 		typedef rui8_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI8( rkh_trc_getts() )
-	#elif RKH_TRC_SIZEOF_TSTAMP == 16
+	#elif RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 16
 		typedef rui16_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI16( rkh_trc_getts() )
-	#elif RKH_TRC_SIZEOF_TSTAMP == 32
+	#elif RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 32
 		typedef rui32_t RKH_TS_T;
 		#define RKH_TRC_TSTAMP()					\
 					RKH_TRC_UI32( rkh_trc_getts() )
@@ -682,7 +682,7 @@ typedef enum rkh_trc_events
 #endif
 
 
-#if RKH_CFG_TRC_RUNTIME_FILTER_EN == RKH_ENABLED
+#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 
 	/**
 	 *	Each trace event always begins with the macro RKH_TRC_BEGIN() 
@@ -695,7 +695,7 @@ typedef enum rkh_trc_events
 	 * 	Both arguments are used in the on/off filter. 
 	 * 	\note
 	 * 	The runtime filter is optional and could be enabled or 
-	 * 	disabled with the RKH_CFG_TRC_RUNTIME_FILTER_EN in the rkhcfg.h file.
+	 * 	disabled with the RKH_CFG_TRC_RTFIL_EN in the rkhcfg.h file.
 	 * 	\note
 	 * 	This macro always invokes the rkh_trc_begin() function.
 	 *
@@ -1098,10 +1098,10 @@ enum RKH_TRC_FMT
 	 * 	Output formatted object pointer to the trace record.
 	 */
 
-	#if RKH_TRC_SIZEOF_POINTER == 16
+	#if RKH_CFGPORT_TRC_SIZEOF_PTR == 16
 		#define RKH_TUSR_OBJ( obj_ )	\
 				rkh_trc_fmt_u16((rui8_t)RKH_OBJ_T, (rui16_t)(obj_))
-	#elif RKH_TRC_SIZEOF_POINTER == 32
+	#elif RKH_CFGPORT_TRC_SIZEOF_PTR == 32
 		#define RKH_TUSR_OBJ( obj_ )	\
 				rkh_trc_fmt_u32((rui8_t)RKH_OBJ_T, (rui32_t)(obj_))
 	#else
@@ -1114,10 +1114,10 @@ enum RKH_TRC_FMT
 	 * 	Output formatted function pointer to the trace record.
 	 */
 
-	#if RKH_TRC_SIZEOF_FUN_POINTER == 16
+	#if RKH_CFGPORT_TRC_SIZEOF_FUN_PTR == 16u
 		#define RKH_TUSR_FUN( fun_ )	\
 				rkh_trc_fmt_u16((rui8_t)RKH_FUN_T, (rui16_t)(fun_))
-	#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
+	#elif RKH_CFGPORT_TRC_SIZEOF_FUN_PTR == 32
 		#define RKH_TUSR_FUN( fun_ )	\
 				rkh_trc_fmt_u32((rui8_t)RKH_FUN_T, (rui32_t)(fun_))
 	#else
@@ -1194,10 +1194,10 @@ enum RKH_TRC_FMT
  * 	Insert a object address as trace record argument.
  */
 
-#if RKH_TRC_SIZEOF_POINTER == 16
+#if RKH_CFGPORT_TRC_SIZEOF_PTR == 16
 	#define RKH_TRC_SYM( sym )	\
 				RKH_TRC_UI16( (rui16_t)sym )
-#elif RKH_TRC_SIZEOF_POINTER == 32
+#elif RKH_CFGPORT_TRC_SIZEOF_PTR == 32
 	#define RKH_TRC_SYM( sym )	\
 				RKH_TRC_UI32( (rui32_t)sym )
 #else
@@ -1224,10 +1224,10 @@ enum RKH_TRC_FMT
  * 	Insert a function address as trace record argument.
  */
 
-#if RKH_TRC_SIZEOF_FUN_POINTER == 16
+#if RKH_CFGPORT_TRC_SIZEOF_FUN_PTR == 16
 	#define RKH_TRC_FUN( sym )	\
 				RKH_TRC_UI16( (rui16_t)sym )
-#elif RKH_TRC_SIZEOF_FUN_POINTER == 32
+#elif RKH_CFGPORT_TRC_SIZEOF_FUN_PTR == 32
 	#define RKH_TRC_FUN( sym )	\
 				RKH_TRC_UI32( (rui32_t)sym )
 #else
@@ -1776,20 +1776,20 @@ enum RKH_TRC_FMT
 		 *
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
-		 * 	Id 		= RKH_TE_SM_DCH\n
+		 * 	Id 		= RKH_TE_SMA_DCH\n
 		 * 	Args	= ao, signal\n
 		 */
 
 		#if RKH_CFG_TRC_SM_DCH_EN == RKH_ENABLED
-			#define RKH_TR_SM_DCH( ao, ev )								\
-						RKH_TRC_BEGIN( 	RKH_TE_SM_DCH, 					\
+			#define RKH_TR_SMA_DCH( ao, ev )								\
+						RKH_TRC_BEGIN( 	RKH_TE_SMA_DCH, 					\
 										(ao)->romrkh->prio,				\
 										ev->e )							\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SM_DCH( ao, ev )				(void)0
+			#define RKH_TR_SMA_DCH( ao, ev )				(void)0
 		#endif
 
 		/**
@@ -2074,7 +2074,7 @@ enum RKH_TRC_FMT
 	#else
 	#define RKH_TR_SM_INIT( ao, ist )				(void)0
 	#define RKH_TR_SM_CLRH( ao, h )					(void)0
-	#define RKH_TR_SM_DCH( ao, ev )					(void)0
+	#define RKH_TR_SMA_DCH( ao, ev )					(void)0
 	#define RKH_TR_SM_TRN( ao, sst, tst )			(void)0
 	#define RKH_TR_SM_STATE( ao, st )				(void)0
 	#define RKH_TR_SM_ENSTATE( ao, st )				(void)0
@@ -2093,20 +2093,20 @@ enum RKH_TRC_FMT
 
 	/* --- Timer (TIM) ----------------------- */
 	#if RKH_CFG_TRC_ALL_EN == RKH_ENABLED || \
-		RKH_CFG_TRC_TIM_EN == RKH_ENABLED
+		RKH_CFG_TRC_TMR_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief
 	 * 	\copybrief RKH_TMR_INIT
 	 *
 	 * 	Desc 	= initialize a timer\n
-	 * 	Group 	= RKH_TG_TIM\n
-	 * 	Id 		= RKH_TE_TIM_INIT\n
+	 * 	Group 	= RKH_TG_TMR\n
+	 * 	Id 		= RKH_TE_TMR_INIT\n
 	 * 	Args	= timer, signal\n
 	 */
 
-	#define RKH_TR_TIM_INIT( t, sig )								\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_INIT )			\
+	#define RKH_TR_TMR_INIT( t, sig )								\
+				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_INIT )			\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_SIG( sig ); 							\
 				RKH_TRC_END()
@@ -2116,13 +2116,13 @@ enum RKH_TRC_FMT
 	 * 	\copybrief rkh_tmr_start
 	 *
 	 * 	Desc 	= start a timer\n
-	 * 	Group 	= RKH_TG_TIM\n
-	 * 	Id 		= RKH_TE_TIM_START\n
+	 * 	Group 	= RKH_TG_TMR\n
+	 * 	Id 		= RKH_TE_TMR_START\n
 	 * 	Args	= timer, ao, nticks, period\n
 	 */
 
-	#define RKH_TR_TIM_START( t, ao, nt, per )						\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_START )			\
+	#define RKH_TR_TMR_START( t, ao, nt, per )						\
+				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_START )			\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_NTICK( nt ); 							\
@@ -2134,13 +2134,13 @@ enum RKH_TRC_FMT
 	 * 	\copybrief rkh_tmr_stop
 	 *
 	 * 	Desc 	= stop a timer\n
-	 * 	Group 	= RKH_TG_TIM\n
-	 * 	Id 		= RKH_TE_TIM_STOP\n
+	 * 	Group 	= RKH_TG_TMR\n
+	 * 	Id 		= RKH_TE_TMR_STOP\n
 	 * 	Args	= timer, ntick, period\n
 	 */
 
-	#define RKH_TR_TIM_STOP( t, nt, per )							\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_STOP )			\
+	#define RKH_TR_TMR_STOP( t, nt, per )							\
+				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_STOP )			\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_NTICK( nt );							\
 					RKH_TRC_NTICK( per );							\
@@ -2151,13 +2151,13 @@ enum RKH_TRC_FMT
 	 * 	Timer expired.
 	 *
 	 * 	Desc 	= timer expired\n
-	 * 	Group 	= RKH_TG_TIM\n
-	 * 	Id 		= RKH_TE_TIM_TOUT\n
+	 * 	Group 	= RKH_TG_TMR\n
+	 * 	Id 		= RKH_TE_TMR_TOUT\n
 	 * 	Args	= timer, signal, active object\n
 	 */
 
-	#define RKH_TR_TIM_TOUT( t, sig, ao )							\
-				RKH_TRC_BEGIN( 	RKH_TE_TIM_TOUT, 					\
+	#define RKH_TR_TMR_TOUT( t, sig, ao )							\
+				RKH_TRC_BEGIN( 	RKH_TE_TMR_TOUT, 					\
 								(ao)->romrkh->prio,					\
 								sig )								\
 					RKH_TRC_SYM( t ); 								\
@@ -2170,21 +2170,21 @@ enum RKH_TRC_FMT
 	 *	Removes timer from the active timer list.
 	 *
 	 * 	Desc 	= remove timer from the active timer list\n
-	 * 	Group 	= RKH_TG_TIM\n
-	 * 	Id 		= RKH_TE_TIM_REM\n
+	 * 	Group 	= RKH_TG_TMR\n
+	 * 	Id 		= RKH_TE_TMR_REM\n
 	 * 	Args	= timer\n
 	 */
 
-	#define RKH_TR_TIM_REM( t )										\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TIM_REM )				\
+	#define RKH_TR_TMR_REM( t )										\
+				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_REM )				\
 					RKH_TRC_SYM( t ); 								\
 				RKH_TRC_END()
 	#else
-	#define RKH_TR_TIM_INIT( t, sig )					(void)0
-	#define RKH_TR_TIM_START( t, ao, nt, per )			(void)0
-	#define RKH_TR_TIM_STOP( t, nt, per )				(void)0
-	#define RKH_TR_TIM_TOUT( t, sig, ao )				(void)0
-	#define RKH_TR_TIM_REM( t )							(void)0
+	#define RKH_TR_TMR_INIT( t, sig )					(void)0
+	#define RKH_TR_TMR_START( t, ao, nt, per )			(void)0
+	#define RKH_TR_TMR_STOP( t, nt, per )				(void)0
+	#define RKH_TR_TMR_TOUT( t, sig, ao )				(void)0
+	#define RKH_TR_TMR_REM( t )							(void)0
 	#endif
 
 	/* --- Framework (RKH) ----------------------- */
@@ -2551,13 +2551,13 @@ enum RKH_TRC_FMT
 	 *
 	 * 	[ 0, 0:16] - RKH_VERSION_CODE
 	 * 	[ 2, 0: 1] - RKH_CFG_SMA_TRC_SENDER_EN
-	 * 	[ 2, 1: 1] - RKH_CFG_TRC_RUNTIME_FILTER_EN
+	 * 	[ 2, 1: 1] - RKH_CFG_TRC_RTFIL_EN
 	 * 	[ 2, 2: 1] - RKH_CFG_TRC_USER_TRACE_EN
 	 * 	[ 2, 3: 1] - RKH_CFG_TRC_ALL_EN
 	 * 	[ 2, 4: 1] - RKH_CFG_TRC_MP_EN
 	 * 	[ 2, 5: 1] - RKH_CFG_TRC_RQ_EN
 	 * 	[ 2, 6: 1] - RKH_CFG_TRC_SMA_EN
-	 * 	[ 2, 7: 1] - RKH_CFG_TRC_TIM_EN
+	 * 	[ 2, 7: 1] - RKH_CFG_TRC_TMR_EN
 	 * 	[ 3, 8: 1] - RKH_CFG_TRC_SM_EN
 	 * 	[ 3, 9: 1] - RKH_CFG_TRC_FWK_EN
 	 * 	[ 3,10: 1] - RKH_CFG_TRC_ASSERT_EN
@@ -2570,8 +2570,8 @@ enum RKH_TRC_FMT
 	 * 	[ 4,17: 1] - RKH_CFG_TRC_CHK_EN
 	 * 	[ 4,18:14] - 0 (Reserved)
 	 * 	[ 6, 0: 4] - RKH_CFG_SIZEOF_EVENT
-	 * 	[ 6, 4: 4] - RKH_TRC_SIZEOF_TSTAMP
-	 * 	[ 7, 0: 4] - RKH_TRC_SIZEOF_POINTER
+	 * 	[ 6, 4: 4] - RKH_CFGPORT_TRC_SIZEOF_TSTAMP
+	 * 	[ 7, 0: 4] - RKH_CFGPORT_TRC_SIZEOF_PTR
 	 * 	[ 7, 4: 4] - RKH_CFG_TMR_SIZEOF_NTIMER
 	 * 	[ 8, 0: 4] - RKH_CFG_MP_SIZEOF_NBLOCK
 	 * 	[ 8, 4: 4] - RKH_CFG_RQ_SIZEOF_NELEM
@@ -2588,15 +2588,15 @@ enum RKH_TRC_FMT
 					RKH_TRC_UI32( 										\
 						(rui32_t)(									    \
 						((rui32_t)RKH_CFG_SMA_TRC_SENDER_EN	     ) |	\
-						((rui32_t)RKH_CFG_TRC_RUNTIME_FILTER_EN	<< 1 )| \
-						((rui32_t)RKH_CFG_TRC_USER_TRACE_EN	<< 2 ) |	\
-						((rui32_t)RKH_CFG_TRC_ALL_EN << 3 ) |	        \
-						((rui32_t)RKH_CFG_TRC_MP_EN << 4 ) |	        \
-						((rui32_t)RKH_CFG_TRC_RQ_EN	<< 5 ) |	        \
-						((rui32_t)RKH_CFG_TRC_SMA_EN << 6 ) |	        \
-						((rui32_t)RKH_CFG_TRC_TIM_EN << 7 ) |	        \
-						((rui32_t)RKH_CFG_TRC_SM_EN	<< 8 ) |	        \
-						((rui32_t)RKH_CFG_TRC_FWK_EN << 9 ) |	        \
+						((rui32_t)RKH_CFG_TRC_RTFIL_EN << 1)|           \
+						((rui32_t)RKH_CFG_TRC_USER_TRACE_EN	<< 2) |	    \
+						((rui32_t)RKH_CFG_TRC_ALL_EN << 3) |	        \
+						((rui32_t)RKH_CFG_TRC_MP_EN << 4) |	            \
+						((rui32_t)RKH_CFG_TRC_RQ_EN	<< 5) |	            \
+						((rui32_t)RKH_CFG_TRC_SMA_EN << 6) |	        \
+						((rui32_t)RKH_CFG_TRC_TMR_EN << 7) |	        \
+						((rui32_t)RKH_CFG_TRC_SM_EN	<< 8) |	            \
+						((rui32_t)RKH_CFG_TRC_FWK_EN << 9) |	        \
 						((rui32_t)RKH_CFG_TRC_ASSERT_EN << 10) |	    \
 						((rui32_t)RKH_CFG_RQ_GET_LWMARK_EN	<< 11) |    \
 						((rui32_t)RKH_CFG_MP_GET_LWM_EN	<< 12) |    	\
@@ -2607,9 +2607,9 @@ enum RKH_TRC_FMT
 						((rui32_t)RKH_CFG_TRC_CHK_EN << 17)));	        \
 					RKH_TRC_UI8( 										\
 						(rui8_t)((RKH_CFG_SIZEOF_EVENT/8   << 4) |      \
-								  RKH_TRC_SIZEOF_TSTAMP/8));            \
+								  RKH_CFGPORT_TRC_SIZEOF_TSTAMP/8));    \
 					RKH_TRC_UI8( 										\
-						(rui8_t)((RKH_TRC_SIZEOF_POINTER/8 << 4) |		\
+						(rui8_t)((RKH_CFGPORT_TRC_SIZEOF_PTR/8 << 4) |  \
 									RKH_CFG_TMR_SIZEOF_NTIMER/8));	    \
 					RKH_TRC_UI8( 										\
 						(rui8_t)((RKH_CFG_MP_SIZEOF_NBLOCK/8 << 4) | 	\
@@ -2905,7 +2905,7 @@ enum RKH_TRC_FMT
 /* --- State machine (SM) ---------------- */
 #define RKH_TR_SM_INIT( ao, ist )					(void)0
 #define RKH_TR_SM_CLRH( ao, h )						(void)0
-#define RKH_TR_SM_DCH( ao, ev )						(void)0
+#define RKH_TR_SMA_DCH( ao, ev )					(void)0
 #define RKH_TR_SM_TRN( ao, sst, tst )				(void)0
 #define RKH_TR_SM_STATE( ao, st )					(void)0
 #define RKH_TR_SM_ENSTATE( ao, st )					(void)0
@@ -2922,11 +2922,11 @@ enum RKH_TRC_FMT
 #define RKH_TR_SM_EX_TSEG( ao )						(void)0
 
 /* --- Timer (TIM) ----------------------- */
-#define RKH_TR_TIM_INIT( t, sig )					(void)0
-#define RKH_TR_TIM_START( t, ao, nt, per )			(void)0
-#define RKH_TR_TIM_STOP( t, nt, per )				(void)0
-#define RKH_TR_TIM_TOUT( t, sig, ao )				(void)0
-#define RKH_TR_TIM_REM( t )							(void)0
+#define RKH_TR_TMR_INIT( t, sig )					(void)0
+#define RKH_TR_TMR_START( t, ao, nt, per )			(void)0
+#define RKH_TR_TMR_STOP( t, nt, per )				(void)0
+#define RKH_TR_TMR_TOUT( t, sig, ao )				(void)0
+#define RKH_TR_TMR_REM( t )							(void)0
 
 /* --- Framework (RKH) ----------------------- */
 #define RKH_TR_FWK_EN()								(void)0
@@ -3055,7 +3055,7 @@ void rkh_trc_put( rui8_t b );
 
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED && \
-	RKH_CFG_TRC_RUNTIME_FILTER_EN == RKH_ENABLED
+	RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -3290,11 +3290,11 @@ void rkh_trc_filter_group_( rui8_t ctrl, rui8_t grp, rui8_t mode );
  * 	some_function( ... )
  * 	{
  * 		RKH_FILTER_OFF_EVENT( RKH_TE_MP_INIT );
- * 		RKH_FILTER_OFF_EVENT( RKH_TE_SM_DCH );
+ * 		RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
  * 		RKH_FILTER_OFF_EVENT( RKH_TE_FWK_OBJ );
  * 		RKH_FILTER_OFF_EVENT( RKH_TE_FWK_SIG );
- * 		RKH_FILTER_OFF_EVENT( RKH_TE_TIM_START );
- * 		RKH_FILTER_OFF_EVENT( RKH_TE_TIM_TOUT );
+ * 		RKH_FILTER_OFF_EVENT( RKH_TE_TMR_START );
+ * 		RKH_FILTER_OFF_EVENT( RKH_TE_TMR_TOUT );
  * 		...
  *	}
  * 	\endcode
@@ -3428,7 +3428,7 @@ ruint rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
  *
  *	- Timestamp [1, 2 or 4 bytes]. If the RKH_CFG_TRC_TSTAMP_EN is set to 1 
  *	then RKH will add to the trace record a timestamp field. It's 
- *	configurable by means of RKH_TRC_SIZEOF_TSTAMP. 
+ *	configurable by means of RKH_CFGPORT_TRC_SIZEOF_TSTAMP. 
  *	
  *	The next listing shows the implemented RKH_TRC_HDR() macro:
  *

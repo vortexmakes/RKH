@@ -66,77 +66,78 @@ const char *rkh_get_port_desc( void );
 
 
 /**
- *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
- *	thread of execution.
+ *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) 
+ *	has its own thread of execution.
  */
 
-#define RKH_EN_SMA_THREAD 				1
+#define RKH_CFGPORT_SMA_THREAD_EN 			RKH_ENABLED
 
 /**
- *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
- *	SMA (active object) has its own thread of execution and its own object 
- *	data.
+ *	If the #RKH_CFGPORT_SMA_THREAD_EN and #RKH_CFGPORT_SMA_THREAD_DATA_EN 
+ *	are set to 1, each SMA (active object) has its own thread of execution 
+ *	and its own object data.
  */
 
-#define RKH_EN_SMA_THREAD_DATA			1
+#define RKH_CFGPORT_SMA_THREAD_DATA_EN		RKH_ENABLED
 
 /**
- * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
- * 	simple, cooperative, and nonpreemptive scheduler RKHS.
- * 	When #RKH_EN_NATIVE_SCHEDULER is enabled RKH also will automatically 
- * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
- * 	and assume the native priority scheme.
+ * 	If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will 
+ * 	include the simple, cooperative, and nonpreemptive scheduler RKHS.
+ * 	When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will 
+ * 	automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), 
+ * 	RKH_SMA_UNREADY(), and assume the native priority scheme.
  */
 
-#define RKH_EN_NATIVE_SCHEDULER			0
+#define RKH_CFGPORT_NATIVE_SCHEDULER_EN		RKH_DISABLED
 
 /**
- * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
- *	enabled (see #RKH_CFG_RQ_EN) then RKH will include its own implementation of 
- *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
+ * 	If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native event 
+ * 	queue is enabled (see #RKH_CFG_RQ_EN) then RKH will include its own 
+ * 	implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(), and 
+ * 	rkh_sma_get() functions.
  */
 
-#define RKH_EN_NATIVE_EQUEUE			1
+#define RKH_CFGPORT_NATIVE_EQUEUE_EN		RKH_ENABLED
 
 /**
- * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
- * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will 
- * 	include its own implementation of dynamic memory management.
- * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
- * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
- * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+ * 	If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native 
+ * 	fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN) then 
+ * 	RKH will include its own implementation of dynamic memory management.
+ * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will 
+ * 	automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
+ * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
  */
 
-#define RKH_EN_NATIVE_DYN_EVENT			1
+#define RKH_CFGPORT_NATIVE_DYN_EVT_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
- *	invoked from several threads of executions. Enable this only if the 
- *	application is based on a multi-thread architecture.
+ *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch 
+ *	allows to be invoked from several threads of executions. Enable this 
+ *	only if the application is based on a multi-thread architecture.
  */
 
-#define RKH_EN_REENTRANT				0
+#define RKH_CFGPORT_REENTRANT_EN			RKH_DISABLED
 
 /**
  * 	Specify the size of void pointer. The valid values [in bits] are 
  * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
  */
 
-#define RKH_TRC_SIZEOF_POINTER			32
+#define RKH_CFGPORT_TRC_SIZEOF_PTR			32u
 
 /**
  * 	Specify the size of function pointer. The valid values [in bits] are 
  * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
  */
 
-#define RKH_TRC_SIZEOF_FUN_POINTER		32
+#define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32u
 
 /** 
  * 	Specify the number of bytes (size) used by the trace record timestamp. 
  * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
  */
 
-#define RKH_TRC_SIZEOF_TSTAMP			32u
+#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
 
 /*
  * 	Declaring an object RKHROM announces that its value will

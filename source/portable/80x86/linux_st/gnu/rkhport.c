@@ -107,7 +107,7 @@ rkh_fwk_enter( void )
 			sma = rkh_sptbl[ prio ];
 			e = rkh_sma_get( sma );
 			rkh_sma_dispatch( sma, e );
-			RKH_GC( e );
+			RKH_FWK_GC( e );
 		}
 		else
 			rkh_hook_idle();

@@ -847,14 +847,14 @@
 
 #elif 	(RKH_CFG_TRC_EN == RKH_ENABLED)
 
-	#ifndef	RKH_CFG_TRC_RUNTIME_FILTER_EN
-	#error "RKH_CFG_TRC_RUNTIME_FILTER_EN         not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_RTFIL_EN
+	#error "RKH_CFG_TRC_RTFIL_EN                  not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_CFG_TRC_RUNTIME_FILTER_EN != RKH_ENABLED) && \
-    	    	(RKH_CFG_TRC_RUNTIME_FILTER_EN != RKH_DISABLED))
-	#error "RKH_CFG_TRC_RUNTIME_FILTER_EN   illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_RTFIL_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_RTFIL_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_RTFIL_EN            illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
@@ -943,14 +943,14 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_CFG_TRC_TIM_EN
-	#error "RKH_CFG_TRC_TIM_EN                    not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFG_TRC_TMR_EN
+	#error "RKH_CFG_TRC_TMR_EN                    not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-	#elif 	((RKH_CFG_TRC_TIM_EN != RKH_ENABLED) && \
-    	    	(RKH_CFG_TRC_TIM_EN != RKH_DISABLED))
-	#error "RKH_CFG_TRC_TIM_EN              illegally #define'd in 'rkhcfg.h'"
+	#elif 	((RKH_CFG_TRC_TMR_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_TMR_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_TMR_EN              illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
@@ -1159,16 +1159,16 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
-	#ifndef	RKH_TRC_SIZEOF_TSTAMP
-	#error "RKH_TRC_SIZEOF_TSTAMP                  not #define'd in 'rkhcfg.h'"
+	#ifndef	RKH_CFGPORT_TRC_SIZEOF_TSTAMP
+	#error "RKH_CFGPORT_TRC_SIZEOF_TSTAMP         not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-	#elif  ((RKH_TRC_SIZEOF_TSTAMP != 8) && \
-    	    (RKH_TRC_SIZEOF_TSTAMP != 16) && \
-        	(RKH_TRC_SIZEOF_TSTAMP != 32))
-	#error  "RKH_TRC_SIZEOF_TSTAMP           illegally #define'd in 'rkhcfg.h'"
+	#elif  ((RKH_CFGPORT_TRC_SIZEOF_TSTAMP != 8) && \
+    	    (RKH_CFGPORT_TRC_SIZEOF_TSTAMP != 16) && \
+        	(RKH_CFGPORT_TRC_SIZEOF_TSTAMP != 32))
+	#error  "RKH_CFGPORT_TRC_SIZEOF_TSTAMP  illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
@@ -1215,8 +1215,8 @@
 	 *	events with parameters, defer/recall mechanism, allocating and 
 	 *	recycling dynamic events, among other features.
 	 */
-	#undef RKH_EN_NATIVE_DYN_EVENT
-	#define RKH_EN_NATIVE_DYN_EVENT			RKH_DISABLED
+	#undef RKH_CFGPORT_NATIVE_DYN_EVT_EN
+	#define RKH_CFGPORT_NATIVE_DYN_EVT_EN			RKH_DISABLED
 
 #endif
 
@@ -1290,8 +1290,8 @@
 	#error "                                    [     || RKH_DISABLED]        "
 
 #elif 	((RKH_CFG_DEFERRED_EVENT_EN == RKH_ENABLED) && \
-			(RKH_EN_NATIVE_EQUEUE == RKH_DISABLED))
-	#error  "RKH_EN_NATIVE_EQUEUE            illegally #define'd in 'rkhcfg.h'"
+			(RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_DISABLED))
+	#error  "RKH_CFGPORT_NATIVE_EQUEUE_EN   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 
 #endif
@@ -1410,60 +1410,60 @@
 
 /*  PORT          --------------------------------------------------------- */
 
-#ifndef	RKH_EN_SMA_THREAD
-	#error "RKH_EN_SMA_THREAD                     not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_SMA_THREAD_EN
+	#error "RKH_CFGPORT_SMA_THREAD_EN            not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_SMA_THREAD != RKH_ENABLED) && \
-        	(RKH_EN_SMA_THREAD != RKH_DISABLED))
-	#error "RKH_EN_SMA_THREAD               illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFGPORT_SMA_THREAD_EN != RKH_ENABLED) && \
+        	(RKH_CFGPORT_SMA_THREAD_EN != RKH_DISABLED))
+	#error "RKH_CFGPORT_SMA_THREAD_EN      illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_EN_SMA_THREAD_DATA
-	#error "RKH_EN_SMA_THREAD_DATA                not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_SMA_THREAD_DATA_EN
+	#error "RKH_CFGPORT_SMA_THREAD_DATA_EN       not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_SMA_THREAD_DATA != RKH_ENABLED) && \
-        	(RKH_EN_SMA_THREAD_DATA != RKH_DISABLED))
-	#error "RKH_EN_SMA_THREAD_DATA          illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFGPORT_SMA_THREAD_DATA_EN != RKH_ENABLED) && \
+        	(RKH_CFGPORT_SMA_THREAD_DATA_EN != RKH_DISABLED))
+	#error "RKH_CFGPORT_SMA_THREAD_DATA_EN illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_EN_NATIVE_SCHEDULER
-	#error "RKH_EN_NATIVE_SCHEDULER               not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_NATIVE_SCHEDULER_EN
+	#error "RKH_CFGPORT_NATIVE_SCHEDULER_EN      not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_NATIVE_SCHEDULER != RKH_ENABLED) && \
-        	(RKH_EN_NATIVE_SCHEDULER != RKH_DISABLED))
-	#error "RKH_EN_NATIVE_SCHEDULER         illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFGPORT_NATIVE_SCHEDULER_EN != RKH_ENABLED) && \
+        	(RKH_CFGPORT_NATIVE_SCHEDULER_EN != RKH_DISABLED))
+	#error "RKH_CFGPORT_NATIVE_SCHEDULER_EN illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_EN_NATIVE_EQUEUE
-	#error "RKH_EN_NATIVE_EQUEUE                  not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_NATIVE_EQUEUE_EN
+	#error "RKH_CFGPORT_NATIVE_EQUEUE_EN         not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_NATIVE_EQUEUE != RKH_ENABLED) && \
-        	(RKH_EN_NATIVE_EQUEUE != RKH_DISABLED))
-	#error "RKH_EN_NATIVE_EQUEUE            illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFGPORT_NATIVE_EQUEUE_EN != RKH_ENABLED) && \
+        	(RKH_CFGPORT_NATIVE_EQUEUE_EN != RKH_DISABLED))
+	#error "RKH_CFGPORT_NATIVE_EQUEUE_EN   illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
-#elif	((RKH_EN_NATIVE_EQUEUE == RKH_ENABLED) && \
+#elif	((RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED) && \
         	(RKH_CFG_RQ_EN != RKH_ENABLED))
 	#error "RKH_CFG_RQ_EN                   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -1472,18 +1472,18 @@
 #endif
 
 
-#ifndef RKH_EN_NATIVE_DYN_EVENT
-	#error "RKH_EN_NATIVE_DYN_EVENT               not #define'd in 'rkhport.h'"
+#ifndef RKH_CFGPORT_NATIVE_DYN_EVT_EN
+	#error "RKH_CFGPORT_NATIVE_DYN_EVT_EN        not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_NATIVE_DYN_EVENT != RKH_ENABLED) && \
-        	(RKH_EN_NATIVE_DYN_EVENT != RKH_DISABLED))
-	#error "RKH_EN_NATIVE_DYN_EVENT         illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFGPORT_NATIVE_DYN_EVT_EN != RKH_ENABLED) && \
+        	(RKH_CFGPORT_NATIVE_DYN_EVT_EN != RKH_DISABLED))
+	#error "RKH_CFGPORT_NATIVE_DYN_EVT_EN  illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
-#elif	(RKH_EN_NATIVE_DYN_EVENT == RKH_ENABLED)
+#elif	(RKH_CFGPORT_NATIVE_DYN_EVT_EN == RKH_ENABLED)
 	#if ((RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED) && \
 			(RKH_CFG_MP_EN == RKH_DISABLED))
 	#error "RKH_CFG_EN_DYNAMIC_EVENT        illegally #define'd in 'rkhcfg.h'"
@@ -1495,30 +1495,30 @@
 #endif
 
 
-#ifndef	RKH_EN_REENTRANT
-	#error "RKH_EN_REENTRANT                      not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_REENTRANT_EN
+	#error "RKH_CFGPORT_REENTRANT_EN             not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_EN_REENTRANT != RKH_ENABLED) && \
-        	(RKH_EN_REENTRANT != RKH_DISABLED))
-	#error "RKH_EN_REENTRANT                illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFGPORT_REENTRANT_EN != RKH_ENABLED) && \
+        	(RKH_CFGPORT_REENTRANT_EN != RKH_DISABLED))
+	#error "RKH_CFGPORT_REENTRANT_EN       illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef	RKH_TRC_SIZEOF_POINTER
-	#error "RKH_TRC_SIZEOF_POINTER                not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_TRC_SIZEOF_PTR
+	#error "RKH_CFGPORT_TRC_SIZEOF_PTR       not #define'd in 'rkhport.h'"
 	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
 	#error  "                               [     || 16  (16-bit pointer)]    "
 	#error  "                               [     || 32  (32-bit pointer)]    "
 
-#elif  ((RKH_TRC_SIZEOF_POINTER != 8) && \
-        (RKH_TRC_SIZEOF_POINTER != 16) && \
-        (RKH_TRC_SIZEOF_POINTER != 32))
-	#error  "RKH_TRC_SIZEOF_POINTER         illegally #define'd in 'rkhport.h'"
+#elif  ((RKH_CFGPORT_TRC_SIZEOF_PTR != 8) && \
+        (RKH_CFGPORT_TRC_SIZEOF_PTR != 16) && \
+        (RKH_CFGPORT_TRC_SIZEOF_PTR != 32))
+	#error  "RKH_CFGPORT_TRC_SIZEOF_PTR illegally #define'd in 'rkhport.h'"
 	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
 	#error  "                               [     || 16  (16-bit pointer)]    "
 	#error  "                               [     || 32  (32-bit pointer)]    "
@@ -1526,16 +1526,16 @@
 #endif
 
 
-#ifndef	RKH_TRC_SIZEOF_FUN_POINTER
-	#error "RKH_TRC_SIZEOF_FUN_POINTER            not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFGPORT_TRC_SIZEOF_FUN_PTR
+	#error "RKH_CFGPORT_TRC_SIZEOF_FUN_PTR       not #define'd in 'rkhport.h'"
 	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
 	#error  "                               [     || 16  (16-bit pointer)]    "
 	#error  "                               [     || 32  (32-bit pointer)]    "
 
-#elif  ((RKH_TRC_SIZEOF_FUN_POINTER != 8) && \
-        (RKH_TRC_SIZEOF_FUN_POINTER != 16) && \
-        (RKH_TRC_SIZEOF_FUN_POINTER != 32))
-	#error  "RKH_TRC_SIZEOF_FUN_POINTER     illegally #define'd in 'rkhport.h'"
+#elif  ((RKH_CFGPORT_TRC_SIZEOF_FUN_PTR != 8) && \
+        (RKH_CFGPORT_TRC_SIZEOF_FUN_PTR != 16) && \
+        (RKH_CFGPORT_TRC_SIZEOF_FUN_PTR != 32))
+	#error  "RKH_CFGPORT_TRC_SIZEOF_FUN_PTR illegally #define'd in 'rkhport.h'"
 	#error  "                               [MUST be  8  ( 8-bit pointer)]    "
 	#error  "                               [     || 16  (16-bit pointer)]    "
 	#error  "                               [     || 32  (32-bit pointer)]    "
@@ -1765,77 +1765,78 @@
 #if RKH_EN_DOXYGEN == RKH_ENABLED
 
 	/**
-	 *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
-	 *	thread of execution.
+	 *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active 
+	 *	object) has its own thread of execution.
 	 */
 
-	#define RKH_EN_SMA_THREAD 			RKH_ENABLED
+	#define RKH_CFGPORT_SMA_THREAD_EN 			RKH_ENABLED
 
 	/**
-	 *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
-	 *	SMA (active object) has its own thread of execution and its own object 
-	 *	data.
+	 *	If the #RKH_CFGPORT_SMA_THREAD_EN and 
+	 *	#RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each SMA (active 
+	 *	object) has its own thread of execution and its own object data.
 	 */
 
-	#define RKH_EN_SMA_THREAD_DATA		RKH_ENABLED
+	#define RKH_CFGPORT_SMA_THREAD_DATA_EN		RKH_ENABLED
 
 	/**
-	 * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
-	 * 	simple, cooperative, and nonpreemptive scheduler RKHS.
-	 * 	When #RKH_EN_NATIVE_SCHEDULER is enabled RKH also will automatically 
-	 * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
-	 * 	and assume the native priority scheme.
+	 * 	If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will 
+	 * 	include the simple, cooperative, and nonpreemptive scheduler RKHS.
+	 * 	When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will 
+	 * 	automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), 
+	 * 	RKH_SMA_UNREADY(), and assume the native priority scheme.
 	 */
 
-	#define RKH_EN_NATIVE_SCHEDULER		RKH_ENABLED
+	#define RKH_CFGPORT_NATIVE_SCHEDULER_EN		RKH_ENABLED
 
 	/**
-	 * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
-	 *	enabled (see #RKH_CFG_RQ_EN) then RKH will include its own implementation of 
-	 *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
+	 * 	If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native 
+	 * 	event queue is enabled (see #RKH_CFG_RQ_EN) then RKH will include 
+	 * 	its own implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(), 
+	 * 	and rkh_sma_get() functions.
 	 */
 
-	#define RKH_EN_NATIVE_EQUEUE		RKH_ENABLED
+	#define RKH_CFGPORT_NATIVE_EQUEUE_EN		RKH_ENABLED
 
 	/**
-	 * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
-	 * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will 
-	 * 	include its own implementation of dynamic memory management.
-	 * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
-	 * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
-	 * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+	 * 	If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native 
+	 * 	fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN) 
+	 * 	then RKH will include its own implementation of dynamic memory 
+	 * 	management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH 
+	 * 	also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
+	 * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
 	 */
 
-	#define RKH_EN_NATIVE_DYN_EVENT		RKH_ENABLED
+	#define RKH_CFGPORT_NATIVE_DYN_EVT_EN		RKH_ENABLED
 
 	/**
-	 *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
-	 *	invoked from several threads of executions. Enable this only if the 
-	 *	application is based on a multi-thread architecture.
+	 *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch 
+	 *	allows to be invoked from several threads of executions. Enable this 
+	 *	only if the application is based on a multi-thread architecture.
 	 */
 
-	#define RKH_EN_REENTRANT			RKH_ENABLED
+	#define RKH_CFGPORT_REENTRANT_EN			RKH_ENABLED
 
 	/**
 	 * 	Specify the size of void pointer. The valid values [in bits] are 
 	 * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
 	 */
 
-	#define RKH_TRC_SIZEOF_POINTER		32
+	#define RKH_CFGPORT_TRC_SIZEOF_PTR			32u
 
 	/**
 	 * 	Specify the size of function pointer. The valid values [in bits] are 
 	 * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
 	 */
 
-	#define RKH_TRC_SIZEOF_FUN_POINTER	32
+	#define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32u
 
 	/** 
 	 * 	Specify the number of bytes (size) used by the trace record timestamp. 
 	 * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
 	 */
 
-	#define RKH_TRC_SIZEOF_TSTAMP		32u
+	#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
 
 	/**
 	 * 	Defines the data type of the event queue for active objects. 
@@ -2325,10 +2326,10 @@ typedef struct RKH_SMA_T
 	 *
 	 * 	\note
 	 * 	This member is optional, thus it could be declared as NULL or 
-	 * 	eliminated in compile-time with RKH_EN_SMA_THREAD = 0.
+	 * 	eliminated in compile-time with RKH_CFGPORT_SMA_THREAD_EN = 0.
 	 */
 
-#if RKH_EN_SMA_THREAD == RKH_ENABLED
+#if RKH_CFGPORT_SMA_THREAD_EN == RKH_ENABLED
 	RKH_THREAD_TYPE thread;
 
 	/**
@@ -2348,10 +2349,10 @@ typedef struct RKH_SMA_T
 	 * 	
 	 * 	\note
 	 * 	This member is optional, thus it could be eliminated in compile-time 
-	 * 	with RKH_EN_SMA_THREAD_DATA = 0.
+	 * 	with RKH_CFGPORT_SMA_THREAD_DATA_EN = 0.
 	 */
 
-#if RKH_EN_SMA_THREAD_DATA == RKH_ENABLED
+#if RKH_CFGPORT_SMA_THREAD_DATA_EN == RKH_ENABLED
 	RKH_OSSIGNAL_TYPE os_signal;
 #endif
 #endif

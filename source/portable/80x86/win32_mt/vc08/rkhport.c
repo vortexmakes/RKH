@@ -200,7 +200,7 @@ thread_function( LPVOID arg )
 	{
 		RKH_EVT_T *e = rkh_sma_get( (RKH_SMA_T *)arg );
         rkh_sma_dispatch( (RKH_SMA_T *)arg, e );
-        RKH_GC( e );
+        RKH_FWK_GC( e );
 	}
 	while( ((RKH_SMA_T *)arg)->thread != (HANDLE)0 );
 

@@ -126,7 +126,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_RUNTIME_FILTER</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_CFG_TRC_RUNTIME_FILTER_EN</TD>
+    <TD>\c #RKH_CFG_TRC_RTFIL_EN</TD>
     <TD>Enable/Disable runtime filter facility.</TD>
   </TR>
 
@@ -168,7 +168,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_EN_TIM</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_CFG_TRC_TIM_EN</TD>
+    <TD>\c #RKH_CFG_TRC_TMR_EN</TD>
     <TD>If 1 enables RKH trace records related to the native software timer.</TD>
   </TR>
 
@@ -203,14 +203,14 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_SIZEOF_TSTAMP</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_TRC_SIZEOF_TSTAMP</TD>
+    <TD>\c #RKH_CFGPORT_TRC_SIZEOF_TSTAMP</TD>
     <TD>Bytes quantity used by the trace record timestamp.</TD>
   </TR>
 
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_SIZEOF_POINTER</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_TRC_SIZEOF_POINTER</TD>
+    <TD>\c #RKH_CFGPORT_TRC_SIZEOF_PTR</TD>
     <TD>Size in bytes of void pointer.</TD>
   </TR>
 
@@ -333,21 +333,21 @@ Sequcence 23 is and example of RKH_TE_USER.
 Using local RKH configuration
 
    RKH_CFG_SMA_TRC_SENDER_EN     = 0
-   RKH_CFG_TRC_RUNTIME_FILTER_EN = 1
+   RKH_CFG_TRC_RTFIL_EN = 1
    RKH_CFG_TRC_USER_TRACE_EN  = 1
    RKH_CFG_TRC_ALL_EN            = 1
    RKH_CFG_TRC_MP_EN          = 0
    RKH_CFG_TRC_RQ_EN          = 0
    RKH_CFG_TRC_SMA_EN         = 0
-   RKH_CFG_TRC_TIM_EN         = 0
+   RKH_CFG_TRC_TMR_EN         = 0
    RKH_CFG_TRC_SM_EN          = 0
    RKH_CFG_TRC_FWK_EN         = 1
    RKH_CFG_TRC_ASSERT_EN      = 1
    RKH_CFG_RQ_GET_LWMARK_EN   = 0
    RKH_CFG_MP_GET_LWM_EN      = 0
    RKH_CFG_SIZEOF_EVENT   = 8
-   RKH_TRC_SIZEOF_TSTAMP  = 32
-   RKH_TRC_SIZEOF_POINTER = 32
+   RKH_CFGPORT_TRC_SIZEOF_TSTAMP  = 32
+   RKH_CFGPORT_TRC_SIZEOF_PTR = 32
    RKH_CFG_TMR_SIZEOF_NTIMER  = 16
    RKH_CFG_MP_SIZEOF_NBLOCK   = 8
    RKH_CFG_RQ_SIZEOF_NELEM    = 8
@@ -365,21 +365,21 @@ Accepted connection from 127.0.0.1, port 61574
        121 [  0] FWK | TCFG       : Update RKH Configuration from client
                                   | RKH_VERSION            = 2.4.03
                                   | RKH_CFG_SMA_TRC_SENDER_EN  = 1
-                                  | RKH_CFG_TRC_RUNTIME_FILTER_EN = 1
+                                  | RKH_CFG_TRC_RTFIL_EN = 1
                                   | RKH_CFG_TRC_USER_TRACE_EN  = 1
                                   | RKH_CFG_TRC_ALL_EN     = 1
                                   | RKH_CFG_TRC_MP_EN      = 0
                                   | RKH_CFG_TRC_RQ_EN      = 0
                                   | RKH_CFG_TRC_SMA_EN     = 0
-                                  | RKH_CFG_TRC_TIM_EN     = 0
+                                  | RKH_CFG_TRC_TMR_EN     = 0
                                   | RKH_CFG_TRC_SM_EN      = 0
                                   | RKH_CFG_TRC_FWK_EN         = 1
                                   | RKH_CFG_TRC_ASSERT_EN  = 1
                                   | RKH_CFG_RQ_GET_LWMARK_EN   = 1
                                   | RKH_CFG_MP_GET_LWM_EN      = 1
                                   | RKH_CFG_SIZEOF_EVENT   = 8
-                                  | RKH_TRC_SIZEOF_TSTAMP  = 32
-                                  | RKH_TRC_SIZEOF_POINTER = 32
+                                  | RKH_CFGPORT_TRC_SIZEOF_TSTAMP  = 32
+                                  | RKH_CFGPORT_TRC_SIZEOF_PTR = 32
                                   | RKH_CFG_TMR_SIZEOF_NTIMER  = 16
                                   | RKH_CFG_MP_SIZEOF_NBLOCK   = 8
                                   | RKH_CFG_RQ_SIZEOF_NELEM    = 8

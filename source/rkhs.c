@@ -47,7 +47,7 @@
 #include "rkh.h"
 
 
-#if RKH_EN_NATIVE_SCHEDULER == RKH_ENABLED
+#if RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED
 
 
 RKH_MODULE_NAME( rkhs )
@@ -102,7 +102,7 @@ rkh_fwk_enter( void )
 
             e = rkh_sma_get( sma );
 			(void)rkh_sma_dispatch( sma, e );
-            RKH_GC( e );
+            RKH_FWK_GC( e );
         }
         else 
 		/*

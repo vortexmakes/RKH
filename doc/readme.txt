@@ -469,8 +469,8 @@ Combined with a conventional RTOS, RKH takes full advantage of the
 multitasking capabilities of the RTOS by executing each active object (SMA) 
 in a separate task or thread.
 
-\li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 0, 
-#RKH_EN_SMA_THREAD = 1, and #RKH_EN_SMA_THREAD_DATA, within the 
+\li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = 0, 
+#RKH_CFGPORT_SMA_THREAD_EN = 1, and #RKH_CFGPORT_SMA_THREAD_DATA_EN, within the 
 \c rkhport.h file.
 \li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
 RKH_SMA_UNREADY() in \c rkhport.h according to underlying OS or RTOS.
@@ -530,7 +530,7 @@ rkh_fwk_enter( void )
             sma = rkh_sptbl[ prio ];
             e = rkh_sma_get( sma );
             rkh_sma_dispatch( sma, e );
-            RKH_GC( e );
+            RKH_FWK_GC( e );
         }
         else
             rkh_hook_idle();
@@ -570,8 +570,8 @@ rkh_sma_terminate( RKH_SMA_T *sma )
 \endcode
 
 \b NO: \n
-\li (1) Define the macros #RKH_EN_NATIVE_SCHEDULER = 1, 
-#RKH_EN_SMA_THREAD = 0, and #RKH_EN_SMA_THREAD_DATA = 0, within the 
+\li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = 1, 
+#RKH_CFGPORT_SMA_THREAD_EN = 0, and #RKH_CFGPORT_SMA_THREAD_DATA_EN = 0, within the 
 \c rkhcfg.h file.
 \li (2) Define the macros #RKH_EQ_TYPE = RKH_RQ_T, RKH_SMA_BLOCK(), 
 RKH_SMA_READY(), RKH_SMA_UNREADY() in \c rkhport.h. 
@@ -607,7 +607,7 @@ Nothing to do.
 the event queues with a message queue of the underlying OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \c rkhport.h
+\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 0 in \c rkhport.h
 \li (2) Define the macro #RKH_EQ_TYPE = 0 in \c rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
@@ -662,7 +662,7 @@ rkh_sma_get( RKH_SMA_T *sma )
 \endcode
 
 \b NO: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_CFG_RQ_EN = 1 in 
+\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_RQ_EN = 1 in 
 \c rkhport.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
@@ -672,14 +672,14 @@ the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 the event queues with the native queues RKH_RQ_T?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 1 y #RKH_CFG_RQ_EN = 1 in 
+\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_RQ_EN = 1 in 
 \c rkhport.h and \c rkhcfg.h respectively.
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 \li (3) Define #RKH_EQ_TYPE = RKH_RQ_T in \c rkhport.h.
 		
 \b NO: \n
-\li (1) Define the macro #RKH_EN_NATIVE_EQUEUE = 0 in \c rkhport.h
+\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 0 in \c rkhport.h
 \li (2) Define the macro #RKH_EQ_TYPE = 0 in \c rkhport.h according to OS/RTOS.
 \li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
@@ -692,7 +692,7 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 
 \b NO: \n
 \li (1) Define the macros #RKH_CFG_EN_DYNAMIC_EVENT = 0 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \c rkhport.h.
+#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h.
 
 \b YES: \n
 
@@ -702,7 +702,7 @@ OS/RTOS?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \c rkhport.h
+#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
 RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \c rkhport.h 
 according to underlying OS/RTOS.
@@ -726,7 +726,7 @@ according to underlying OS/RTOS.
 
 \b NO: \n
 \li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1,  
-#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
+#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
 
 <EM>If the application code uses the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
@@ -734,11 +734,11 @@ RKH_MP_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1 and 
-#RKH_EN_NATIVE_DYN_EVENT = 0 in \c rkhcfg.h and \c rkhport.h respectively.
+#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhcfg.h and \c rkhport.h respectively.
 
 \b NO: \n
 \li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1,  
-#RKH_EN_NATIVE_DYN_EVENT = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
+#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
 
 \n <HR>
 \section hk Hook functions
@@ -788,16 +788,16 @@ Please, see \ref Installation section about RKH port directory and files.
 When using the trace facility must be defined in \c rkhport.h the following 
 configurations:
 
-\li #RKH_TRC_SIZEOF_POINTER \copydetails #RKH_TRC_SIZEOF_POINTER 
-\li #RKH_TRC_SIZEOF_POINTER \copydetails #RKH_TRC_SIZEOF_FUN_POINTER 
-\li #RKH_TRC_SIZEOF_TSTAMP \copydetails #RKH_TRC_SIZEOF_TSTAMP 
+\li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_TRC_SIZEOF_POINTER 
+\li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_CFGPORT_TRC_SIZEOF_FUN_PTR 
+\li #RKH_CFGPORT_TRC_SIZEOF_TSTAMP \copydetails #RKH_CFGPORT_TRC_SIZEOF_TSTAMP 
 
 Example:
 
 \code 
-#define RKH_TRC_SIZEOF_POINTER			32u
-#define RKH_TRC_SIZEOF_FUN_POINTER		32u
-#define RKH_TRC_SIZEOF_TSTAMP			32u
+#define RKH_CFGPORT_TRC_SIZEOF_PTR			32u
+#define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32u
+#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP			32u
 \endcode
 
 A RKH port cannot and should not define all the functions that it calls, 
@@ -878,77 +878,77 @@ const char *rkh_get_port_desc( void );
 
 
 /**
- *	If the #RKH_EN_SMA_THREAD is set to 1, each SMA (active object) has its own 
+ *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) has its own 
  *	thread of execution.
  */
 
-#define RKH_EN_SMA_THREAD 				0
+#define RKH_CFGPORT_SMA_THREAD_EN 				0
 
 /**
- *	If the #RKH_EN_SMA_THREAD and #RKH_EN_SMA_THREAD_DATA are set to 1, each 
+ *	If the #RKH_CFGPORT_SMA_THREAD_EN and #RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each 
  *	SMA (active object) has its own thread of execution and its own object 
  *	data.
  */
 
-#define RKH_EN_SMA_THREAD_DATA			0
+#define RKH_CFGPORT_SMA_THREAD_DATA_EN			0
 
 /**
- * 	If the #RKH_EN_NATIVE_SCHEDULER is set to 1 then RKH will include the 
+ * 	If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will include the 
  * 	simple, cooperative, and nonpreemptive scheduler RKHS.
- * 	When #RKH_EN_NATIVE_SCHEDULER is enabled RKH also will automatically 
+ * 	When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will automatically 
  * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
  * 	and assume the native priority scheme.
  */
 
-#define RKH_EN_NATIVE_SCHEDULER			0
+#define RKH_CFGPORT_NATIVE_SCHEDULER_EN			0
 
 /**
- * 	If the #RKH_EN_NATIVE_EQUEUE is set to 1 and the native event queue is 
+ * 	If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native event queue is 
  *	enabled (see #RKH_CFG_RQ_EN) then RKH will include its own implementation of 
  *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
  */
 
-#define RKH_EN_NATIVE_EQUEUE			1
+#define RKH_CFGPORT_NATIVE_EQUEUE_EN			1
 
 /**
- * 	If the #RKH_EN_NATIVE_DYN_EVENT is set to 1 and the native fixed-size 
+ * 	If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native fixed-size 
  * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will include 
  * 	its own implementation of dynamic memory management.
- * 	When #RKH_EN_NATIVE_DYN_EVENT is enabled RKH also will automatically 
+ * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will automatically 
  * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
  * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
  */
 
-#define RKH_EN_NATIVE_DYN_EVENT			1
+#define RKH_CFGPORT_NATIVE_DYN_EVT_EN			1
 
 /**
- *	If the #RKH_EN_REENTRANT is set to 1, the RKH event dispatch allows to be 
+ *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch allows to be 
  *	invoked from several threads of executions. Enable this only if the 
  *	application is based on a multi-thread architecture.
  */
 
-#define RKH_EN_REENTRANT				0
+#define RKH_CFGPORT_REENTRANT_EN				0
 
 /**
  * 	Specify the size of void pointer. The valid values [in bits] are 
  * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
  */
 
-#define RKH_TRC_SIZEOF_POINTER			32
+#define RKH_CFGPORT_TRC_SIZEOF_PTR			32
 
 /**
  * 	Specify the size of function pointer. The valid values [in bits] are 
  * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
  */
 
-#define RKH_TRC_SIZEOF_FUN_POINTER		32
+#define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32
 
 /** 
  * 	Specify the number of bytes (size) used by the trace record timestamp. 
  * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
  */
 
-#define RKH_TRC_SIZEOF_TSTAMP			32u
+#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP			32u
 
 /*
  * 	Declaring an object RKHROM announces that its value will
@@ -1118,7 +1118,7 @@ rkh_fwk_enter( void )
             sma = rkh_sptbl[ prio ];
             e = rkh_sma_get( sma );
             rkh_sma_dispatch( sma, e );
-            RKH_GC( e );
+            RKH_FWK_GC( e );
         }
         else
             rkh_hook_idle();
@@ -2354,7 +2354,7 @@ The RKH takes the \a 'e' member of RKH_EVT_T structure for triggering a
 state transition.
 
 See also rkh_sma_put_fifo(), rkh_sma_put_lifo(), RKH_ALLOC_EVT(), 
-RKH_SET_STATIC_EVENT(), and RKH_GC().
+RKH_SET_STATIC_EVENT(), and RKH_FWK_GC().
 
 \n Prev: \ref qref "Quick reference"
 
@@ -2566,7 +2566,7 @@ no longer in charge of event processing and you are solely responsible for
 not leaking the event.
 The garbage collector actually recycles the event only when it determines 
 that the event is no longer referenced.
-The following listing illustrates how and when to invoke RKH_GC() macro 
+The following listing illustrates how and when to invoke RKH_FWK_GC() macro 
 to recycle "dynamic" events.
 
 \code
@@ -2591,7 +2591,7 @@ to recycle "dynamic" events.
 
 (1)				e = rkh_sma_get( sma );
 (2)				rkh_sma_dispatch( sma, e );
-(3)				RKH_GC( e );
+(3)				RKH_FWK_GC( e );
 			}
 			else 
 			//
@@ -2609,7 +2609,7 @@ to recycle "dynamic" events.
 \li (1)	An event \c e is get from the SMA queue with the highest priority.
 \li (2)	The event \c e is dispatched to the current SMA.
 \li	(2) Thus, the event \c e is passed to the RKH garbage collector for 
-		recycling. As described above, the RKH_GC() macro actually recycles 
+		recycling. As described above, the RKH_FWK_GC() macro actually recycles 
 		the wvent only when it determines that the event is no longer 
 		referenced.
 
@@ -2623,7 +2623,7 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure: RKH_CFG_EN_DYNAMIC_EVENT, RKH_CFG_MAX_EPOOL, RKH_CFG_SIZEOF_EVENT, 
-RKH_CFG_SIZEOF_ESIZE, RKH_EN_NATIVE_DYN_EVENT, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
+RKH_CFG_SIZEOF_ESIZE, RKH_CFGPORT_NATIVE_DYN_EVT_EN, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
 RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT. 
 See \ref cfg section for more information. 
 
@@ -3061,8 +3061,8 @@ Example:
  	
 \code
 RKH_FILTER_OFF_EVENT( RKH_TG_MP, RKH_TE_MP_INIT );
-RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_START );
-RKH_FILTER_OFF_EVENT( RKH_TG_TIM, RKH_TE_TIM_TOUT );
+RKH_FILTER_OFF_EVENT( RKH_TG_TMR, RKH_TE_TMR_START );
+RKH_FILTER_OFF_EVENT( RKH_TG_TMR, RKH_TE_TMR_TOUT );
 \endcode
 
 \subsection trfil_sma 	Emit or suppress the trace events related to a specific SMA (active object)
@@ -3252,7 +3252,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=22 align="center"> #RKH_TG_SMA </TD>
+		<TD rowspan=24 align="center"> #RKH_TG_SMA </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
 		<TD rowspan=2> #RKH_TE_SMA_ACT ( SYM ao, UI8 prio ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_ACT </TD>
@@ -3364,6 +3364,17 @@ the data included for each.
 		<TD><I> prio </I></TD>
 		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
 	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SMA_DCH ( SYM ao, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SMA_DCH </TD>
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKH_EVT_T::e </I></TD>
+	</TR>
 
 	<TR bgColor="#c0c0c0">
 		<TH colspan=6 align="left"><B> Related with State Machines (SM)</B></TH>
@@ -3376,7 +3387,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=30 align="center"> #RKH_TG_SM </TD>
+		<TD rowspan=29 align="center"> #RKH_TG_SM </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
 		<TD rowspan=2> #RKH_TE_SM_INIT ( SYM ao, SYM ist ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_INIT </TD>
@@ -3397,13 +3408,6 @@ the data included for each.
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> h </I></TD>
 		<TD><I> \copybrief RKH_SCMP_T::history </I></TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 2 </TD>
-		<TD rowspan=2> #RKH_TE_SM_DCH ( SYM ao, SIG sig ) </TD>
-		<TD rowspan=2> \copybrief RKH_TR_SM_DCH </TD>
-		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3549,7 +3553,7 @@ the data included for each.
 	</TR>
 
 	<TR bgColor="#c0c0c0">
-		<TH colspan=6 align="left"><B> Related with timer module (TIM)</B></TH>
+		<TH colspan=6 align="left"><B> Related with timer module (TMR)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Group </I></B></TH>
@@ -3559,10 +3563,10 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=13 align="center"> #RKH_TG_TIM </TD>
+		<TD rowspan=13 align="center"> #RKH_TG_TMR </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
-		<TD rowspan=2> #RKH_TE_TIM_INIT ( SYM t, SIG sig ) </TD>
-		<TD rowspan=2> \copybrief RKH_TR_TIM_INIT </TD>
+		<TD rowspan=2> #RKH_TE_TMR_INIT ( SYM t, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_TMR_INIT </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>
 	</TR>
@@ -3572,9 +3576,9 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=4 align="center"> 1 </TD>
-		<TD rowspan=4> #RKH_TE_TIM_START ( SYM t, SYM ao, NTICK ntick, 
+		<TD rowspan=4> #RKH_TE_TMR_START ( SYM t, SYM ao, NTICK ntick, 
 															NTICK per ) </TD>
-		<TD rowspan=4> \copybrief RKH_TR_TIM_START </TD>
+		<TD rowspan=4> \copybrief RKH_TR_TMR_START </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>
 	</TR>
@@ -3592,8 +3596,8 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 2 </TD>
-		<TD rowspan=3> #RKH_TE_TIM_STOP ( SYM t, NTICK ntick, NTICK per ) </TD>
-		<TD rowspan=3> \copybrief RKH_TR_TIM_STOP </TD>
+		<TD rowspan=3> #RKH_TE_TMR_STOP ( SYM t, NTICK ntick, NTICK per ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_TMR_STOP </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>
 	</TR>
@@ -3607,8 +3611,8 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 3 </TD>
-		<TD rowspan=3> #RKH_TE_TIM_TOUT ( SYM t, SIG sig, SYM ao ) </TD>
-		<TD rowspan=3> \copybrief RKH_TR_TIM_TOUT </TD>
+		<TD rowspan=3> #RKH_TE_TMR_TOUT ( SYM t, SIG sig, SYM ao ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_TMR_TOUT </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>
 	</TR>
@@ -3622,8 +3626,8 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 4 </TD>
-		<TD rowspan=1> #RKH_TE_TIM_REM ( SYM t ) </TD>
-		<TD rowspan=1> \copybrief RKH_TR_TIM_REM </TD>
+		<TD rowspan=1> #RKH_TE_TMR_REM ( SYM t ) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_TMR_REM </TD>
 		<TD><I> t </I></TD>
 		<TD><I> Pointer to previously allocated timer structure </I></TD>
 	</TR>
@@ -3991,67 +3995,67 @@ options with their documentation:
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_EN_SMA_THREAD </TD>
+		<TD align="left"> #RKH_CFGPORT_SMA_THREAD_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_EN_SMA_THREAD </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_SMA_THREAD_EN </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_EN_SMA_THREAD_DATA </TD>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFGPORT_SMA_THREAD_DATA_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_EN_SMA_THREAD_DATA </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_SMA_THREAD_DATA_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_EN_NATIVE_SCHEDULER </TD>
+		<TD align="left"> #RKH_CFGPORT_NATIVE_SCHEDULER_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_EN_NATIVE_SCHEDULER </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_NATIVE_SCHEDULER_EN </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_EN_NATIVE_EQUEUE </TD>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFGPORT_NATIVE_EQUEUE_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_EN_NATIVE_EQUEUE </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_NATIVE_EQUEUE_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_EN_NATIVE_DYN_EVENT </TD>
+		<TD align="left"> #RKH_CFGPORT_NATIVE_DYN_EVT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_EN_NATIVE_DYN_EVENT </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_NATIVE_DYN_EVT_EN </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_EN_REENTRANT </TD>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFGPORT_REENTRANT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_EN_REENTRANT </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_REENTRANT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_POINTER </TD>
+		<TD align="left"> #RKH_CFGPORT_TRC_SIZEOF_PTR </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 32 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_POINTER </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_TRC_SIZEOF_PTR </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_FUN_POINTER </TD>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFGPORT_TRC_SIZEOF_FUN_PTR </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 32 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_FUN_POINTER </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_TRC_SIZEOF_FUN_PTR </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_TRC_SIZEOF_TSTAMP </TD>
+		<TD align="left"> #RKH_CFGPORT_TRC_SIZEOF_TSTAMP </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 16 </TD>
-		<TD align="left"> \copydetails RKH_TRC_SIZEOF_TSTAMP </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_TRC_SIZEOF_TSTAMP </TD>
 	</TR>
 </TABLE>
 
@@ -4156,21 +4160,21 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_HOOK_EXIT_EN </TD>
 	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_HOOK_TIMETICK_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_HOOK_TIMETICK_EN </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_SMA_IEVENT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_SMA_IEVENT_EN </TD>
 	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TICK_RATE_HZ </TD>
 		<TD> integer </TD>
 		<TD> [1..1000] </TD>
@@ -4278,7 +4282,7 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_CFG_SMA_TRC_SENDER_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD></TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_SMA_TRC_SENDER_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -4295,14 +4299,14 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_SMA_ENT_ARG_SMA_EN </TD>
 	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_SMA_ENT_ARG_STATE_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_SMA_ENT_ARG_STATE_EN </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_SMA_EXT_ARG_SMA_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
@@ -4378,13 +4382,13 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_CFG_TRC_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_TRC_RUNTIME_FILTER_EN </TD>
+		<TD align="left"> #RKH_CFG_TRC_RTFIL_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_TRC_RUNTIME_FILTER_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_TRC_RTFIL_EN </TD>
 	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TRC_RTFIL_SMA_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
@@ -4434,11 +4438,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_CFG_TRC_SMA_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_TRC_TIM_EN </TD>
+		<TD align="left"> #RKH_CFG_TRC_TMR_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_TRC_TIM_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_TRC_TMR_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TRC_SM_EN </TD>
@@ -4542,7 +4546,7 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> #RKH_CFG_TRC_NSEQ_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
-		<TD></TD>
+		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_TRC_NSEQ_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -4559,7 +4563,7 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_TRC_TSTAMP_EN </TD>
 	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TRC_SIZEOF_STREAM </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
@@ -4735,7 +4739,7 @@ Back: \ref cfg "Configuring framework RKH"
 		cellpadding=4 border=0>
 	<TR bgColor="#c0c0c0">
 		<TH colspan=5 align="left"><B> Related with software timer facility 
-																(TIM)</B></TH>
+																(TMR)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Option </I></B></TH>

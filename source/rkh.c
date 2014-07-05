@@ -61,8 +61,8 @@ RKH_MODULE_NAME( rkh )
 #define IS_REF_SUBMACHINE( s )			(CB((s))->type==RKH_REF_SUBMACHINE)
 
 
-#if RKH_EN_NATIVE_SCHEDULER == RKH_ENABLED || \
-						RKH_EN_REENTRANT == RKH_DISABLED
+#if RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED || \
+						RKH_CFGPORT_REENTRANT_EN == RKH_DISABLED
 	#define RKH_RAM		static
 #else
 		          /* allocate the automatic variables of rkh_sma_dispatch() */
@@ -400,7 +400,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
-	RKH_TR_SM_DCH(	sma, 				       /* this state machine object */
+	RKH_TR_SMA_DCH(	sma, 				       /* this state machine object */
 					pe );					     				   /* event */
 	RKH_TR_SM_TRN( 	sma, 				       /* this state machine object */
 					stn, 					     /* transition source state */
