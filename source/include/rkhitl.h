@@ -132,15 +132,15 @@
 
 /**
  * 	\brief
- * 	RKH allows up to RKH_CFG_MAX_SMA different priority levels 
+ * 	RKH allows up to RKH_CFG_FWK_MAX_SMA different priority levels 
  * 	(see rkhcfg.h).
  *
  * 	In RKH, a low-priority number corresponds to a high-priority level.
  * 	Priority level zero (0) is thus the highest priority level. Priority 
- *	RKH_LOWEST_PRIO (RKH_CFG_MAX_SMA - 1) is the lowest priority level.
+ *	RKH_LOWEST_PRIO (RKH_CFG_FWK_MAX_SMA - 1) is the lowest priority level.
  */
 
-#define RKH_LOWEST_PRIO				(RKH_CFG_MAX_SMA - 1)
+#define RKH_LOWEST_PRIO				(RKH_CFG_FWK_MAX_SMA - 1)
 
 
 /* 	
@@ -447,30 +447,30 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #elif 	(RKH_CFG_TMR_EN == RKH_ENABLED)
-	#ifndef RKH_CFG_TICK_RATE_HZ
-	#error "RKH_CFG_TICK_RATE_HZ                  not #define'd in 'rkhcfg.h'"
+	#ifndef RKH_CFG_FWK_TICK_RATE_HZ
+	#error "RKH_CFG_FWK_TICK_RATE_HZ              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
-	#elif (RKH_CFG_TICK_RATE_HZ > 0u)
+	#elif (RKH_CFG_FWK_TICK_RATE_HZ > 0u)
 	/**
 	 * 	It can be used to convert ticks to milliseconds.
 	 * 	This format is more convenient and natural than ticks.
 	 * 	This configuration constant is not used by RKH, it is just 
 	 * 	a value to allow an application to deal with time when 
 	 * 	using timer services. 
-	 * 	You can use the global constant RKH_CFG_TICK_RATE_HZ (see 
+	 * 	You can use the global constant RKH_CFG_FWK_TICK_RATE_HZ (see 
 	 * 	rkhcfg.h) to convert time to ticks using the macros like 
 	 * 	RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
 	 */
 	#define RKH_TICK_RATE_MS	\
-					((RKH_TNT_T)(1000/RKH_CFG_TICK_RATE_HZ))
+					((RKH_TNT_T)(1000/RKH_CFG_FWK_TICK_RATE_HZ))
 
 	/** @{
 	 * 	\brief
 	 * 	It can be used to convert ticks to time. 
 	 *
 	 * 	This format is more convenient and natural than ticks. You can use 
-	 * 	the global constant RKH_CFG_TICK_RATE_HZ (see rkhcfg.h) to convert 
+	 * 	the global constant RKH_CFG_FWK_TICK_RATE_HZ (see rkhcfg.h) to convert 
 	 * 	time to ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(), 
 	 * 	and RKH_TIME_MIN().
 	 */
@@ -480,7 +480,7 @@
 	/*@}*/
 
 	#else
-	#error "RKH_CFG_TICK_RATE_HZ            illegally #define'd in 'rkhcfg.h'"
+	#error "RKH_CFG_FWK_TICK_RATE_HZ        illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be > 0]                     "
 	#endif
 
@@ -611,28 +611,28 @@
 #endif
 
 
-#ifndef RKH_CFG_SMA_DEEP_HISTORY_EN
-	#error "RKH_CFG_SMA_DEEP_HISTORY_EN           not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_DEEP_HIST_EN
+	#error "RKH_CFG_SMA_DEEP_HIST_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_CFG_SMA_DEEP_HISTORY_EN != RKH_ENABLED) && \
-        	(RKH_CFG_SMA_DEEP_HISTORY_EN != RKH_DISABLED))
-	#error "RKH_CFG_SMA_DEEP_HISTORY_EN     illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_DEEP_HIST_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_DEEP_HIST_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_DEEP_HIST_EN        illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #endif
 
 
-#ifndef RKH_CFG_SMA_SHALLOW_HISTORY_EN
-	#error "RKH_CFG_SMA_SHALLOW_HISTORY_EN        not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_SHALLOW_HIST_EN
+	#error "RKH_CFG_SMA_SHALLOW_HIST_EN           not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_CFG_SMA_SHALLOW_HISTORY_EN != RKH_ENABLED) && \
-        	(RKH_CFG_SMA_SHALLOW_HISTORY_EN != RKH_DISABLED))
-	#error "RKH_CFG_SMA_SHALLOW_HISTORY_EN  illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_SHALLOW_HIST_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_SHALLOW_HIST_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_SHALLOW_HIST_EN     illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -681,14 +681,14 @@
 #endif
 
 
-#ifndef RKH_CFG_SMA_TRC_SENDER_EN
-	#error "RKH_CFG_SMA_TRC_SENDER_EN             not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_SMA_TRC_SNDR_EN
+	#error "RKH_CFG_SMA_TRC_SNDR_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_CFG_SMA_TRC_SENDER_EN != RKH_ENABLED) && \
-        	(RKH_CFG_SMA_TRC_SENDER_EN != RKH_DISABLED))
-	#error "RKH_CFG_SMA_TRC_SENDER_EN       illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_TRC_SNDR_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_TRC_SNDR_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_TRC_SNDR_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1190,25 +1190,25 @@
 
 /*  FRAMEWORK     --------------------------------------------------------- */
 
-#ifndef	RKH_CFG_MAX_SMA
-	#error "RKH_CFG_MAX_SMA                       not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_FWK_MAX_SMA
+	#error "RKH_CFG_FWK_MAX_SMA                   not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >=  1]                   "
 	#error  "                               [     && <= 64]                   "
 
-#elif ((RKH_CFG_MAX_SMA == 0) || (RKH_CFG_MAX_SMA > 64))
-	#error "RKH_CFG_MAX_SMA                 illegally #define'd in 'rkhcfg.h'"
+#elif ((RKH_CFG_FWK_MAX_SMA == 0) || (RKH_CFG_MAX_SMA > 64))
+	#error "RKH_CFG_FWK_MAX_SMA             illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >=  1]                   "
 	#error  "                               [     && <= 64]                   "
 
 #endif
 
 
-#ifndef	RKH_CFG_EN_DYNAMIC_EVENT
-	#error "RKH_CFG_EN_DYNAMIC_EVENT              not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_FWK_DYN_EVT_EN
+	#error "RKH_CFG_FWK_DYN_EVT_EN                not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	(RKH_CFG_EN_DYNAMIC_EVENT == RKH_DISABLED)
+#elif 	(RKH_CFG_FWK_DYN_EVT_EN == RKH_DISABLED)
 
 	/*
 	 *	If the dynamic event support is disabled, RKH not allows to use 
@@ -1221,14 +1221,14 @@
 #endif
 
 
-#ifndef	RKH_CFG_MAX_EPOOL
-	#error "RKH_CFG_MAX_EPOOL                     not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_FWK_MAX_EVT_POOL
+	#error "RKH_CFG_FWK_MAX_EVT_POOL              not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >    0]                  "
 	#error  "                               [     && <  256]                  "
 
-#elif 	(RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED)
-	#if ((RKH_CFG_MAX_EPOOL == 0) || (RKH_CFG_MAX_EPOOL > 255))
-	#error "RKH_CFG_MAX_EPOOL               illegally #define'd in 'rkhcfg.h'"
+#elif 	(RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED)
+	#if ((RKH_CFG_FWK_MAX_EVT_POOL == 0) || (RKH_CFG_MAX_EPOOL > 255))
+	#error "RKH_CFG_FWK_MAX_EVT_POOL        illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >    0]                  "
 	#error  "                               [     && <  256]                  "
 	#endif
@@ -1236,16 +1236,16 @@
 #endif
 
 
-#ifndef	RKH_CFG_SIZEOF_EVENT
-	#error "RKH_CFG_SIZEOF_EVENT                  not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_FWK_SIZEOF_EVT
+	#error "RKH_CFG_FWK_SIZEOF_EVT                not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-#elif  ((RKH_CFG_SIZEOF_EVENT != 8) && \
-        (RKH_CFG_SIZEOF_EVENT != 16) && \
-        (RKH_CFG_SIZEOF_EVENT != 32))
-	#error  "RKH_CFG_SIZEOF_EVENT           illegally #define'd in 'rkhcfg.h'"
+#elif  ((RKH_CFG_FWK_SIZEOF_EVT != 8) && \
+        (RKH_CFG_FWK_SIZEOF_EVT != 16) && \
+        (RKH_CFG_FWK_SIZEOF_EVT != 32))
+	#error  "RKH_CFG_FWK_SIZEOF_EVT         illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
@@ -1253,30 +1253,30 @@
 #endif
 
 
-#ifndef	RKH_MAX_SIGNALS
-	#error "RKH_MAX_SIGNALS                        not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_FWK_MAX_SIGNALS
+	#error "RKH_CFG_FWK_MAX_SIGNALS               not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >  0]                    "
-	#error  "                          [MUST be <  2^RKH_CFG_SIZEOF_EVENT    "
+	#error  "                        [MUST be <  2^RKH_CFG_FWK_SIZEOF_EVT    "
 
-#elif ((RKH_MAX_SIGNALS == 0u) || \
-	   (RKH_MAX_SIGNALS >= RKH_BIT(RKH_CFG_SIZEOF_EVENT)))
-	#error "RKH_MAX_SIGNALS                  illegally #define'd in 'rkhcfg.h'"
+#elif ((RKH_CFG_FWK_MAX_SIGNALS == 0u) || \
+	   (RKH_CFG_FWK_MAX_SIGNALS >= RKH_BIT(RKH_CFG_FWK_SIZEOF_EVT)))
+	#error "RKH_CFG_FWK_MAX_SIGNALS         illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >  0]                    "
-	#error  "                          [MUST be <  2^RKH_CFG_SIZEOF_EVENT    "
+	#error  "                        [MUST be <  2^RKH_CFG_FWK_SIZEOF_EVT    "
 
 #endif
 
 
-#ifndef	RKH_CFG_SIZEOF_ESIZE
-	#error "RKH_CFG_SIZEOF_ESIZE                  not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_FWK_SIZEOF_EVT_SIZE
+	#error "RKH_CFG_FWK_SIZEOF_EVT_SIZE           not #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
 
-#elif  ((RKH_CFG_SIZEOF_ESIZE != 8) && \
-        (RKH_CFG_SIZEOF_ESIZE != 16) && \
-        (RKH_CFG_SIZEOF_ESIZE != 32))
-	#error  "RKH_CFG_SIZEOF_ESIZE           illegally #define'd in 'rkhcfg.h'"
+#elif  ((RKH_CFG_FWK_SIZEOF_EVT_SIZE != 8) && \
+        (RKH_CFG_FWK_SIZEOF_EVT_SIZE != 16) && \
+        (RKH_CFG_FWK_SIZEOF_EVT_SIZE != 32))
+	#error  "RKH_CFG_FWK_SIZEOF_EVT_SIZE    illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be  8  ( 8-bit size)]       "
 	#error  "                               [     || 16  (16-bit size)]       "
 	#error  "                               [     || 32  (32-bit size)]       "
@@ -1284,12 +1284,12 @@
 #endif
 
 
-#ifndef RKH_CFG_DEFERRED_EVENT_EN
-	#error "RKH_CFG_DEFERRED_EVENT_EN             not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_FWK_DEFER_EVT_EN
+	#error "RKH_CFG_FWK_DEFER_EVT_EN              not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_CFG_DEFERRED_EVENT_EN == RKH_ENABLED) && \
+#elif 	((RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED) && \
 			(RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_DISABLED))
 	#error  "RKH_CFGPORT_NATIVE_EQUEUE_EN   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -1297,14 +1297,14 @@
 #endif
 
 
-#ifndef	RKH_CFG_ASSERT_EN
-	#error "RKH_CFG_ASSERT_EN                         not #define'd in 'rkhport.h'"
+#ifndef	RKH_CFG_FWK_ASSERT_EN
+	#error "RKH_CFG_FWK_ASSERT_EN                not #define'd in 'rkhport.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_CFG_ASSERT_EN != RKH_ENABLED) && \
-        	(RKH_CFG_ASSERT_EN != RKH_DISABLED))
-	#error "RKH_CFG_ASSERT_EN                   illegally #define'd in 'rkhport.h'"
+#elif 	((RKH_CFG_FWK_ASSERT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_FWK_ASSERT_EN != RKH_DISABLED))
+	#error "RKH_CFG_FWK_ASSERT_EN          illegally #define'd in 'rkhport.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1395,14 +1395,14 @@
 #endif
 
 
-#ifndef	RKH_CFG_SMA_IEVENT_EN
-	#error "RKH_CFG_SMA_IEVENT_EN                 not #define'd in 'rkhcfg.h'"
+#ifndef	RKH_CFG_SMA_INIT_EVT_EN
+	#error "RKH_CFG_SMA_INIT_EVT_EN               not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "                                    [     || RKH_DISABLED]        "
 
-#elif 	((RKH_CFG_SMA_IEVENT_EN != RKH_ENABLED) && \
-        	(RKH_CFG_SMA_IEVENT_EN != RKH_DISABLED))
-	#error "RKH_CFG_SMA_IEVENT_EN           illegally #define'd in 'rkhcfg.h'"
+#elif 	((RKH_CFG_SMA_INIT_EVT_EN != RKH_ENABLED) && \
+        	(RKH_CFG_SMA_INIT_EVT_EN != RKH_DISABLED))
+	#error "RKH_CFG_SMA_INIT_EVT_EN         illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be  RKH_ENABLED ]       "
 	#error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1484,9 +1484,9 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 
 #elif	(RKH_CFGPORT_NATIVE_DYN_EVT_EN == RKH_ENABLED)
-	#if ((RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED) && \
+	#if ((RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED) && \
 			(RKH_CFG_MP_EN == RKH_DISABLED))
-	#error "RKH_CFG_EN_DYNAMIC_EVENT        illegally #define'd in 'rkhcfg.h'"
+	#error "RKH_CFG_FWK_DYN_EVT_EN          illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 	#error "RKH_CFG_MP_EN                   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -1566,8 +1566,8 @@
 
 
 #if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_DISABLED || \
-		(	RKH_CFG_SMA_DEEP_HISTORY_EN == RKH_DISABLED &&  \
-			RKH_CFG_SMA_SHALLOW_HISTORY_EN == RKH_DISABLED && \
+		(	RKH_CFG_SMA_DEEP_HIST_EN == RKH_DISABLED &&  \
+			RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_DISABLED && \
 			RKH_CFG_SMA_SUBMACHINE_EN == RKH_DISABLED && \
 			RKH_CFG_SMA_CONDITIONAL_EN == RKH_DISABLED && \
 			RKH_CFG_SMA_CHOICE_EN == RKH_DISABLED ))
@@ -1578,20 +1578,20 @@
 
 #if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
 		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-			(RKH_CFG_SMA_SHALLOW_HISTORY_EN == RKH_ENABLED || \
-				RKH_CFG_SMA_DEEP_HISTORY_EN == RKH_ENABLED))
+			(RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_ENABLED || \
+				RKH_CFG_SMA_DEEP_HIST_EN == RKH_ENABLED))
 	#define RKH_HISTORY_ENABLED
 #endif
 
 #if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
 		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_DEEP_HISTORY_EN == RKH_ENABLED)
+		RKH_CFG_SMA_DEEP_HIST_EN == RKH_ENABLED)
 	#define RKH_DEEP_ENABLED
 #endif
 
 #if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
 		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_SHALLOW_HISTORY_EN == RKH_ENABLED)
+		RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_ENABLED)
 	#define RKH_SHALLOW_ENABLED
 #endif
 
@@ -1675,7 +1675,7 @@
 #endif
 
 
-#if (RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED)
+#if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
 	#if (R_TRC_AO_NAME_EN == RKH_ENABLED)
 		#define MKRRKH(name, prio, ppty, is, ia, ie) \
 			{(prio), (ppty), #name, (RKHROM struct RKH_ST_T*)is, (ia), (ie)}
@@ -2122,8 +2122,8 @@ struct RKH_SMA_T;
  */
 
 #if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED)
-	typedef void ( *RKH_INIT_ACT_T )( const void *sma, 
+	 RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
+	typedef void ( *RKH_INIT_ACT_T )( 	const void *sma, 
 										const struct rkhevt_t *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
@@ -2131,16 +2131,16 @@ struct RKH_SMA_T;
 			(*CIA( h ))( (h), CIA(h)->romrkh->ievent );				\
 	}
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_IEVENT_EN == RKH_DISABLED)
-	typedef void ( *RKH_INIT_ACT_T )( const struct RKH_SMA_T *sma );
+		RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
+	typedef void ( *RKH_INIT_ACT_T )( 	const struct RKH_SMA_T *sma );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
 			(*CIA( h ))( (h) );										\
 	}
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
-		RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED)
-	typedef void ( *RKH_INIT_ACT_T )( const struct rkhevt_t *e );
+		RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
+	typedef void ( *RKH_INIT_ACT_T )( 	const struct rkhevt_t *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
@@ -2248,10 +2248,10 @@ typedef struct ROMRKH_T
 	 *	when it starts. Could be used to pass arguments to the state machine 
 	 *	like an argc/argv. This argument is optional, thus it could be 
 	 *	declared as NULL or eliminated in compile-time with 
-	 *	RKH_CFG_SMA_IEVENT_EN = 0.
+	 *	RKH_CFG_SMA_INIT_EVT_EN = 0.
 	 */
 
-#if RKH_CFG_SMA_IEVENT_EN == RKH_ENABLED
+#if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
 	const RKH_EVT_T *ievent;
 #endif
 } RKH_ROM_T;

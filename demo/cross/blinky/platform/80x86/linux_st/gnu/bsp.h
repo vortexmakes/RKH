@@ -46,7 +46,7 @@
 #define __BSP_H__
 
 
-#define BSP_TICKS_PER_SEC   		RKH_CFG_TICK_RATE_HZ
+#define BSP_TICKS_PER_SEC   		RKH_CFG_FWK_TICK_RATE_HZ
 
 /**
  * 	\brief

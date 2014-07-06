@@ -59,25 +59,25 @@
  *	by the application (can be a number in the range [1..64]).
  */
 
-#define RKH_CFG_MAX_SMA					8u
+#define RKH_CFG_FWK_MAX_SMA				8u
 
 /**
- *	If the dynamic event support (see #RKH_CFG_EN_DYNAMIC_EVENT) is set to 
+ *	If the dynamic event support (see #RKH_CFG_FWK_DYN_EVT_EN) is set to 
  *	1, RKH allows to use event with parameters, defer/recall, allocating 
  *	and recycling dynamic events, among other features.
  */
 
-#define RKH_CFG_EN_DYNAMIC_EVENT		RKH_ENABLED
+#define RKH_CFG_FWK_DYN_EVT_EN			RKH_ENABLED
 
 /**
- *	If the dynamic event support is enabled (see #RKH_CFG_EN_DYNAMIC_EVENT) 
- *	then the #RKH_CFG_MAX_EPOOL can be used to specify the maximum number of 
- *	fixed-size memory block pools to be used by the application (can be a 
- *	number in the range [0..256]).
+ *	If the dynamic event support is enabled (see #RKH_CFG_FWK_DYN_EVT_EN) 
+ *	then the #RKH_CFG_FWK_MAX_EVT_POOL can be used to specify the maximum 
+ *	number of fixed-size memory block pools to be used by the application 
+ *	(can be a number in the range [0..256]).
  *	Note that a value of 0 will completely suppress the memory pool services.
  */
 
-#define RKH_CFG_MAX_EPOOL				4u
+#define RKH_CFG_FWK_MAX_EVT_POOL		4u
 
 /**
  * 	Specify the size of the event signal. The valid values [in bits] are 
@@ -86,7 +86,14 @@
  * 	See #RKH_SIG_T data type.
  */
 
-#define RKH_CFG_SIZEOF_EVENT			8u
+#define RKH_CFG_FWK_SIZEOF_EVT			8u
+
+/**
+ *	Specify the maximum number of event signals to be used by the 
+ *	application.
+ */
+
+#define RKH_CFG_FWK_MAX_SIGNALS			16u
 
 /**
  * 	Specify the data type of event size. The valid values [in bits] are 
@@ -95,27 +102,27 @@
  *	256 bytes.
  */
 
-#define RKH_CFG_SIZEOF_ESIZE			16u
+#define RKH_CFG_FWK_SIZEOF_EVT_SIZE		16u
 
 /**
- *	If the #RKH_CFG_DEFERRED_EVENT_EN is set to 1 and the dynamic event 
- *	support is enabled (see #RKH_CFG_EN_DYNAMIC_EVENT), RKH enables the 
+ *	If the #RKH_CFG_FWK_DEFER_EVT_EN is set to 1 and the dynamic event 
+ *	support is enabled (see #RKH_CFG_FWK_DYN_EVT_EN), RKH enables the 
  *	defer and recall event features.
  */
 
-#define RKH_CFG_DEFERRED_EVENT_EN		RKH_ENABLED
+#define RKH_CFG_FWK_DEFER_EVT_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_ASSERT_EN is set to 0 the checking assertions are 
+ *	If the #RKH_CFG_FWK_ASSERT_EN is set to 0 the checking assertions are 
  *	disabled.
  * 	In particular macros RKH_ASSERT(), RKH_REQUIRE(), RKH_ENSURE(),
  * 	RKH_INVARIANT(), and RKH_ERROR() do NOT evaluate the test condition
  * 	passed as the argument to these macros. One notable exception is the
  * 	macro RKH_ALLEGE(), that still evaluates the test condition, but does
- * 	not report assertion failures when the #RKH_CFG_ASSERT_EN is enabled.
+ * 	not report assertion failures when the #RKH_CFG_FWK_ASSERT_EN is enabled.
  */
 
-#define RKH_CFG_ASSERT_EN				RKH_ENABLED
+#define RKH_CFG_FWK_ASSERT_EN			RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_HOOK_DISPATCH_EN is set to 1, RKH will invoke the 
@@ -179,14 +186,6 @@
 #define RKH_CFG_HOOK_TIMETICK_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_SMA_IEVENT_EN is set to 1 then an initial event could be 
- *	be passed to state machine application when it starts, like an argc/argv. 
- *	Also, the #RKH_CFG_SMA_IEVENT_EN changes the initial action prototype.
- */
-
-#define RKH_CFG_SMA_IEVENT_EN			RKH_DISABLED
-
-/**
  * 	Specify the frequency of the framework tick interrupt (number of ticks 
  * 	in one second). It's the rate at which the rkh_tmr_tick() function is 
  * 	invoked. This configuration constant is not used by RKH, it is just a 
@@ -194,7 +193,7 @@
  * 	services, converting ticks to time. See RKH_TICK_RATE_MS constant.
  */
 
-#define RKH_CFG_TICK_RATE_HZ			100u
+#define RKH_CFG_FWK_TICK_RATE_HZ			100u
 
 
 /* --- Configuration options related to state machine applications -------- */
@@ -253,18 +252,18 @@
 #define RKH_CFG_SMA_PSEUDOSTATE_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_SMA_DEEP_HISTORY_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN are 
+ *	If the #RKH_CFG_SMA_DEEP_HIST_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN are 
  *	set to 1, the RKH allows deep history pseudostate usage.
  */
 
-#define RKH_CFG_SMA_DEEP_HISTORY_EN		RKH_ENABLED
+#define RKH_CFG_SMA_DEEP_HIST_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_SMA_SHALLOW_HISTORY_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN 
+ *	If the #RKH_CFG_SMA_SHALLOW_HIST_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN 
  *	are set to 1, the RKH allows shallow history pseudostate usage.
  */
 
-#define RKH_CFG_SMA_SHALLOW_HISTORY_EN	RKH_ENABLED
+#define RKH_CFG_SMA_SHALLOW_HIST_EN		RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_SMA_CHOICE_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN are set to 
@@ -288,11 +287,20 @@
 #define RKH_CFG_SMA_SUBMACHINE_EN		RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_SMA_TRC_SENDER_EN and #RKH_CFG_TRC_EN are set to 1, 
+ *	If the #RKH_CFG_SMA_TRC_SNDR_EN and #RKH_CFG_TRC_EN are set to 1, 
  *	when posting an event the RKH inserts a pointer to the sender object.
  */
 
-#define RKH_CFG_SMA_TRC_SENDER_EN		RKH_DISABLED
+#define RKH_CFG_SMA_TRC_SNDR_EN			RKH_DISABLED
+
+/**
+ *	If the #RKH_CFG_SMA_INIT_EVT_EN is set to 1 then an initial event could 
+ *	be be passed to state machine application when it starts, like an 
+ *	argc/argv. Also, the #RKH_CFG_SMA_INIT_EVT_EN changes the initial action 
+ *	prototype.
+ */
+
+#define RKH_CFG_SMA_INIT_EVT_EN			RKH_DISABLED
 
 
 /* --- Configuration options related to SMA action featues ---------------- */

@@ -691,7 +691,7 @@ rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in
 <EM>Is required events with arguments?</EM>
 
 \b NO: \n
-\li (1) Define the macros #RKH_CFG_EN_DYNAMIC_EVENT = 0 and 
+\li (1) Define the macros #RKH_CFG_FWK_DYN_EVT_EN = 0 and 
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h.
 
 \b YES: \n
@@ -701,7 +701,7 @@ the dynamic memory support with a internal module of the underlying
 OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1 and 
+\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1 and 
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
 RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \c rkhport.h 
@@ -725,7 +725,7 @@ according to underlying OS/RTOS.
 \endcode
 
 \b NO: \n
-\li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1,  
+\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1,  
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
 
 <EM>If the application code uses the RKH native scheduler, is implemented 
@@ -733,11 +733,11 @@ the dynamic memory support with the native fixed-size memory block pool
 RKH_MP_T?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1 and 
+\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1 and 
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhcfg.h and \c rkhport.h respectively.
 
 \b NO: \n
-\li (1) Define the macro #RKH_CFG_EN_DYNAMIC_EVENT = 1,  
+\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1,  
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
 
 \n <HR>
@@ -1284,7 +1284,7 @@ Explanation
 		machine application when it starts. Could be used to pass arguments 
 		to the state machine like an argc/argv. This argument is optional, 
 		thus it could be declared as NULL or eliminated in compile-time with 
-		RKH_CFG_SMA_IEVENT_EN = 0.
+		RKH_CFG_SMA_INIT_EVT_EN = 0.
 
 \subsection qref0_3 Customization
 
@@ -1296,7 +1296,7 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 
 Use the following macros to reduce the memory taken by state machine 
-structure: #RKH_CFG_SMA_IEVENT_EN. 
+structure: #RKH_CFG_SMA_INIT_EVT_EN. 
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -2622,8 +2622,8 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_CFG_EN_DYNAMIC_EVENT, RKH_CFG_MAX_EPOOL, RKH_CFG_SIZEOF_EVENT, 
-RKH_CFG_SIZEOF_ESIZE, RKH_CFGPORT_NATIVE_DYN_EVT_EN, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
+structure: RKH_CFG_FWK_DYN_EVT_EN, RKH_CFG_FWK_MAX_EVT_POOL, RKH_CFG_FWK_SIZEOF_EVT, 
+RKH_CFG_FWK_SIZEOF_EVT_SIZE, RKH_CFGPORT_NATIVE_DYN_EVT_EN, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
 RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT. 
 See \ref cfg section for more information. 
 
@@ -4077,53 +4077,60 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_MAX_SMA </TD>
+		<TD align="left"> #RKH_CFG_FWK_MAX_SMA </TD>
 		<TD> integer </TD>
 		<TD> [1..64] </TD>
 		<TD> 4 </TD>
-		<TD align="left"> \copydetails RKH_CFG_MAX_SMA </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_MAX_SMA </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_EN_DYNAMIC_EVENT </TD>
+		<TD align="left"> #RKH_CFG_FWK_DYN_EVT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_EN_DYNAMIC_EVENT </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_DYN_EVT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_MAX_EPOOL </TD>
+		<TD align="left"> #RKH_CFG_FWK_MAX_EVT_POOL </TD>
 		<TD> integer </TD>
 		<TD> [0..255] </TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_MAX_EPOOL </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_MAX_EVT_POOL </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SIZEOF_EVENT </TD>
+		<TD align="left"> #RKH_CFG_FWK_SIZEOF_EVT </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
-		<TD align="left"> \copydetails RKH_CFG_SIZEOF_EVENT </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_SIZEOF_EVT </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_FWK_MAX_SIGNALS </TD>
+		<TD> integer </TD>
+		<TD> [1-65536] </TD>
+		<TD> 16 </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_MAX_SIGNALS </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SIZEOF_ESIZE </TD>
+		<TD align="left"> #RKH_CFG_FWK_SIZEOF_EVT_SIZE </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
-		<TD align="left"> \copydetails RKH_CFG_SIZEOF_ESIZE </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_SIZEOF_EVT_SIZE </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_DEFERRED_EVENT_EN </TD>
+		<TD align="left"> #RKH_CFG_FWK_DEFER_EVT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_DEFERRED_EVENT_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_DEFER_EVT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_ASSERT_EN </TD>
+		<TD align="left"> #RKH_CFG_FWK_ASSERT_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_ASSERT_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_ASSERT_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_HOOK_DISPATCH_EN </TD>
@@ -4167,19 +4174,12 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_HOOK_TIMETICK_EN </TD>
 	</TR>
-	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SMA_IEVENT_EN </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_SMA_IEVENT_EN </TD>
-	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_TICK_RATE_HZ </TD>
+		<TD align="left"> #RKH_CFG_FWK_TICK_RATE_HZ </TD>
 		<TD> integer </TD>
 		<TD> [1..1000] </TD>
 		<TD> 100 </TD>
-		<TD align="left"> \copydetails RKH_CFG_TICK_RATE_HZ </TD>
+		<TD align="left"> \copydetails RKH_CFG_FWK_TICK_RATE_HZ </TD>
 	</TR>
 </TABLE>
 
@@ -4244,18 +4244,18 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_CFG_SMA_PSEUDOSTATE_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SMA_DEEP_HISTORY_EN </TD>
+		<TD align="left"> #RKH_CFG_SMA_DEEP_HIST_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_SMA_DEEP_HISTORY_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_SMA_DEEP_HIST_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SMA_SHALLOW_HISTORY_EN </TD>
+		<TD align="left"> #RKH_CFG_SMA_SHALLOW_HIST_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_SMA_SHALLOW_HISTORY_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_SMA_SHALLOW_HIST_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_SMA_CHOICE_EN </TD>
@@ -4279,11 +4279,18 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copydetails RKH_CFG_SMA_SUBMACHINE_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SMA_TRC_SENDER_EN </TD>
+		<TD align="left"> #RKH_CFG_SMA_TRC_SNDR_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copydetails RKH_CFG_SMA_TRC_SENDER_EN </TD>
+		<TD align="left"> \copydetails RKH_CFG_SMA_TRC_SNDR_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_SMA_INIT_EVT_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_CFG_SMA_INIT_EVT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_SMA_INIT_ARG_SMA_EN </TD>

@@ -111,7 +111,7 @@ static rui8_t trcgfilter;
  * 	In this case, each SMA is assigned a unique priority number. When a SMA 
  * 	is ready to record a trace its corresponding bit in the filter table 
  * 	must be clear. The size of #trcsmaftbl[] depends on 
- * 	#RKH_CFG_MAX_SMA (see rkhcfg.h).
+ * 	#RKH_CFG_FWK_MAX_SMA (see rkhcfg.h).
  *
  * 	SMA priority number = | Y | Y | Y | Y | Y | X | X | X |\n
  *

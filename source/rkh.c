@@ -171,12 +171,12 @@ RKH_MODULE_NAME( rkh )
 					islca = 1;								/* found LCA */ \
 					break;													\
 				}															\
-				else if( ix_n < RKH_CFG_SMA_MAX_HCAL_DEPTH )					\
+				else if( ix_n < RKH_CFG_SMA_MAX_HCAL_DEPTH )				\
 					*snl = stn;		    /* add state in entry state list */ \
 				else														\
 				{															\
 					RKH_TR_SM_EX_HLEVEL( sma );								\
-					RKH_ERROR();												\
+					RKH_ERROR();											\
 					return RKH_EX_TSEG;										\
 				}															\
 				UPDATE_PARENT( stn );										\

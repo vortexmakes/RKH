@@ -119,7 +119,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_EN_SENDER</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_CFG_SMA_TRC_SENDER_EN</TD>
+    <TD>\c #RKH_CFG_SMA_TRC_SNDR_EN</TD>
     <TD>Enable/Disable pointer to sender object insertion when posting event.</TD>
   </TR>
 
@@ -196,7 +196,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_SIZEOF_SIG</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_CFG_SIZEOF_EVENT</TD>
+    <TD>\c #RKH_CFG_FWK_SIZEOF_EVT</TD>
     <TD>Event Signal size in bytes.</TD>
   </TR>
 
@@ -238,7 +238,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#f0f0f0">
     <TD>\c TRAZER_SIZEOF_ESIZE</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_CFG_SIZEOF_ESIZE</TD>
+    <TD>\c #RKH_CFG_FWK_SIZEOF_EVT_SIZE</TD>
     <TD>Data type of event size, in bytes.</TD>
   </TR>
 
@@ -332,7 +332,7 @@ Sequcence 23 is and example of RKH_TE_USER.
 
 Using local RKH configuration
 
-   RKH_CFG_SMA_TRC_SENDER_EN     = 0
+   RKH_CFG_SMA_TRC_SNDR_EN     = 0
    RKH_CFG_TRC_RTFIL_EN = 1
    RKH_CFG_TRC_USER_TRACE_EN  = 1
    RKH_CFG_TRC_ALL_EN            = 1
@@ -345,18 +345,18 @@ Using local RKH configuration
    RKH_CFG_TRC_ASSERT_EN      = 1
    RKH_CFG_RQ_GET_LWMARK_EN   = 0
    RKH_CFG_MP_GET_LWM_EN      = 0
-   RKH_CFG_SIZEOF_EVENT   = 8
+   RKH_CFG_FWK_SIZEOF_EVT   = 8
    RKH_CFGPORT_TRC_SIZEOF_TSTAMP  = 32
    RKH_CFGPORT_TRC_SIZEOF_PTR = 32
    RKH_CFG_TMR_SIZEOF_NTIMER  = 16
    RKH_CFG_MP_SIZEOF_NBLOCK   = 8
    RKH_CFG_RQ_SIZEOF_NELEM    = 8
-   RKH_CFG_SIZEOF_ESIZE   = 16
+   RKH_CFG_FWK_SIZEOF_EVT_SIZE   = 16
    RKH_CFG_TRC_NSEQ_EN        = 1
    RKH_CFG_TRC_CHK_EN         = 1
    RKH_CFG_TRC_TSTAMP_EN      = 1
    RKH_CFG_MP_SIZEOF_BSIZE    = 1
-   RKH_CFG_MAX_EPOOL      = 4
+   RKH_CFG_FWK_MAX_EVT_POOL      = 4
 
 
 -------- Parsing trace stream from TCP Port 6602 --------
@@ -364,7 +364,7 @@ Using local RKH configuration
 Accepted connection from 127.0.0.1, port 61574
        121 [  0] FWK | TCFG       : Update RKH Configuration from client
                                   | RKH_VERSION            = 2.4.03
-                                  | RKH_CFG_SMA_TRC_SENDER_EN  = 1
+                                  | RKH_CFG_SMA_TRC_SNDR_EN  = 1
                                   | RKH_CFG_TRC_RTFIL_EN = 1
                                   | RKH_CFG_TRC_USER_TRACE_EN  = 1
                                   | RKH_CFG_TRC_ALL_EN     = 1
@@ -377,18 +377,18 @@ Accepted connection from 127.0.0.1, port 61574
                                   | RKH_CFG_TRC_ASSERT_EN  = 1
                                   | RKH_CFG_RQ_GET_LWMARK_EN   = 1
                                   | RKH_CFG_MP_GET_LWM_EN      = 1
-                                  | RKH_CFG_SIZEOF_EVENT   = 8
+                                  | RKH_CFG_FWK_SIZEOF_EVT   = 8
                                   | RKH_CFGPORT_TRC_SIZEOF_TSTAMP  = 32
                                   | RKH_CFGPORT_TRC_SIZEOF_PTR = 32
                                   | RKH_CFG_TMR_SIZEOF_NTIMER  = 16
                                   | RKH_CFG_MP_SIZEOF_NBLOCK   = 8
                                   | RKH_CFG_RQ_SIZEOF_NELEM    = 8
-                                  | RKH_CFG_SIZEOF_ESIZE   = 16
+                                  | RKH_CFG_FWK_SIZEOF_EVT_SIZE   = 16
                                   | RKH_CFG_TRC_NSEQ_EN    = 1
                                   | RKH_CFG_TRC_CHK_EN         = 1
                                   | RKH_CFG_TRC_TSTAMP_EN      = 1
                                   | RKH_CFG_MP_SIZEOF_BSIZE    = 1
-                                  | RKH_CFG_MAX_EPOOL      = 4
+                                  | RKH_CFG_FWK_MAX_EVT_POOL      = 4
 
 
        123 [  1] FWK | OBJ        : obj=0x00180B01, nm=l_isr_kbd
@@ -449,7 +449,7 @@ In order to enhancing the capacity of the system behavior analysis,
 Trazer can recreate a sequence diagram that shown chronologically the 
 interaction between active objects.\n
 To enable this capability, RKH configuration must enable to send the pointer
-to the sender object when posting an event (RKH_CFG_SMA_TRC_SENDER_EN = 1). 
+to the sender object when posting an event (RKH_CFG_SMA_TRC_SNDR_EN = 1). 
 If so, for each RKH_TE_SMA_FIFO / RKH_TE_SMA_LIFO trace event received,
 Trazer catch the arguments ao (destination), sig (event), snr (sender) 
 to add to the diagram.

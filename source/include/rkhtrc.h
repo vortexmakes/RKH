@@ -65,30 +65,30 @@
 									 RKH_TRC_MAX_GROUPS)
 
 
-#if ((RKH_CFG_MAX_SMA & (8-1)) == 0)
+#if ((RKH_CFG_FWK_MAX_SMA & (8-1)) == 0)
 
 	/**
 	 * 	\brief
 	 * 	The size of trcsmaftbl[] (trace SMA filter table) depends on 
-	 * 	#RKH_CFG_MAX_SMA (see rkhcfg.h).
+	 * 	#RKH_CFG_FWK_MAX_SMA (see rkhcfg.h).
 	 */
 
-	#define RKH_TRC_MAX_SMA		(RKH_CFG_MAX_SMA/8)
+	#define RKH_TRC_MAX_SMA		(RKH_CFG_FWK_MAX_SMA/8)
 #else
-	#define RKH_TRC_MAX_SMA		(RKH_CFG_MAX_SMA/8 + 1)
+	#define RKH_TRC_MAX_SMA		(RKH_CFG_FWK_MAX_SMA/8 + 1)
 #endif
 
-#if ((RKH_MAX_SIGNALS & (8-1)) == 0)
+#if ((RKH_CFG_FWK_MAX_SIGNALS & (8-1)) == 0)
 
 	/**
 	 * 	\brief
 	 * 	The size of trcsigftbl[] (trace signal filter table) depends on 
-	 * 	#RKH_MAX_SIGNALS and #RKH_CFG_SIZEOF_EVENT (see rkhcfg.h).
+	 * 	#RKH_CFG_FWK_MAX_SIGNALS and #RKH_CFG_FWK_SIZEOF_EVT (see rkhcfg.h).
 	 */
 
-	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8)
+	#define RKH_TRC_MAX_SIGNALS	(RKH_CFG_FWK_MAX_SIGNALS/8)
 #else
-	#define RKH_TRC_MAX_SIGNALS	(RKH_MAX_SIGNALS/8 + 1)
+	#define RKH_TRC_MAX_SIGNALS	(RKH_CFG_FWK_MAX_SIGNALS/8 + 1)
 #endif
 
 
@@ -237,7 +237,7 @@ extern const RKH_TRC_FIL_T fsma;
 
 
 #if ((	(RKH_CFG_TRC_EN == 1) && \
-		(RKH_CFG_SMA_TRC_SENDER_EN == 1)) || \
+		(RKH_CFG_SMA_TRC_SNDR_EN == 1)) || \
 		(RKH_EN_DOXYGEN == 1))
 
 	/**
@@ -398,7 +398,7 @@ typedef enum rkh_trc_groups
  *								ev->e )					\
  *					RKH_TRC_SYM( ao ); 					\
  *					RKH_TRC_SIG( ev->e ); 				\
- *					RKH_TRC_SENDER( snr ); 				\
+ *					RKH_TRC_SNDR( snr ); 				\
  *					RKH_TRC_UI8( pid ); 				\
  *					RKH_TRC_UI8( rc ); 					\
  *				RKH_TRC_END()
@@ -1130,13 +1130,13 @@ enum RKH_TRC_FMT
 	 * 	Output formatted event signal to the trace record.
 	 */
 
-	#if RKH_CFG_SIZEOF_EVENT == 8
+	#if RKH_CFG_FWK_SIZEOF_EVT == 8
 		#define RKH_TUSR_SIG( sig_ ) \
 					rkh_trc_fmt_u8((rui8_t)RKH_ESIG_T, (rui8_t)(sig_))
-	#elif RKH_CFG_SIZEOF_EVENT == 16
+	#elif RKH_CFG_FWK_SIZEOF_EVT == 16
 		#define RKH_TUSR_SIG( sig_ ) \
 					rkh_trc_fmt_u16((rui8_t)RKH_ESIG_T, (rui16_t)(sig_))
-	#elif RKH_CFG_SIZEOF_EVENT == 32
+	#elif RKH_CFG_FWK_SIZEOF_EVT == 32
 		#define RKH_TUSR_SIG( sig_ ) \
 					rkh_trc_fmt_u32((rui8_t)RKH_ESIG_T, (rui32_t)(sig_))
 	#else
@@ -1212,10 +1212,10 @@ enum RKH_TRC_FMT
  */
 
 #if defined( RKH_USE_TRC_SENDER )
-	#define RKH_TRC_SENDER( sym ) \
+	#define RKH_TRC_SNDR( sym ) \
 				RKH_TRC_SYM( sym )
 #else
-	#define RKH_TRC_SENDER( sym )
+	#define RKH_TRC_SNDR( sym )
 #endif
 
 
@@ -1364,13 +1364,13 @@ enum RKH_TRC_FMT
  * 	Insert a signal number as trace record argument.
  */
 
-#if RKH_CFG_SIZEOF_EVENT == 8
+#if RKH_CFG_FWK_SIZEOF_EVT == 8
 	#define RKH_TRC_SIG( e )	\
 				RKH_TRC_UI8( e )
-#elif RKH_CFG_SIZEOF_EVENT == 16
+#elif RKH_CFG_FWK_SIZEOF_EVT == 16
 	#define RKH_TRC_SIG( e )	\
 				RKH_TRC_UI16( e )
-#elif RKH_CFG_SIZEOF_EVENT == 32
+#elif RKH_CFG_FWK_SIZEOF_EVT == 32
 	#define RKH_TRC_SIG( e )	\
 				RKH_TRC_UI32( e )
 #else
@@ -1383,13 +1383,13 @@ enum RKH_TRC_FMT
  * 	Insert a event size value as trace record argument.
  */
 
-#if RKH_CFG_SIZEOF_ESIZE == 8
+#if RKH_CFG_FWK_SIZEOF_EVT_SIZE == 8
 	#define RKH_TRC_ES( es )	\
 				RKH_TRC_UI8( es )
-#elif RKH_CFG_SIZEOF_ESIZE == 16
+#elif RKH_CFG_FWK_SIZEOF_EVT_SIZE == 16
 	#define RKH_TRC_ES( es )	\
 				RKH_TRC_UI16( es )
-#elif RKH_CFG_SIZEOF_ESIZE == 32
+#elif RKH_CFG_FWK_SIZEOF_EVT_SIZE == 32
 	#define RKH_TRC_ES( es )	\
 				RKH_TRC_UI32( es )
 #else
@@ -1656,7 +1656,7 @@ enum RKH_TRC_FMT
 								ev->e )								\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_SIG( ev->e ); 							\
-					RKH_TRC_SENDER( snr ); 							\
+					RKH_TRC_SNDR( snr ); 							\
 					RKH_TRC_UI8( pid );								\
 					RKH_TRC_UI8( rc );								\
 				RKH_TRC_END()
@@ -1677,7 +1677,7 @@ enum RKH_TRC_FMT
 								ev->e )								\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_SIG( ev->e ); 							\
-					RKH_TRC_SENDER( snr ); 							\
+					RKH_TRC_SNDR( snr ); 							\
 					RKH_TRC_UI8( pid );								\
 					RKH_TRC_UI8( rc );								\
 				RKH_TRC_END()
@@ -2550,7 +2550,7 @@ enum RKH_TRC_FMT
 	 * 	the data stream.
 	 *
 	 * 	[ 0, 0:16] - RKH_VERSION_CODE
-	 * 	[ 2, 0: 1] - RKH_CFG_SMA_TRC_SENDER_EN
+	 * 	[ 2, 0: 1] - RKH_CFG_SMA_TRC_SNDR_EN
 	 * 	[ 2, 1: 1] - RKH_CFG_TRC_RTFIL_EN
 	 * 	[ 2, 2: 1] - RKH_CFG_TRC_USER_TRACE_EN
 	 * 	[ 2, 3: 1] - RKH_CFG_TRC_ALL_EN
@@ -2569,16 +2569,16 @@ enum RKH_TRC_FMT
 	 * 	[ 4,16: 1] - RKH_CFG_TRC_TSTAMP_EN
 	 * 	[ 4,17: 1] - RKH_CFG_TRC_CHK_EN
 	 * 	[ 4,18:14] - 0 (Reserved)
-	 * 	[ 6, 0: 4] - RKH_CFG_SIZEOF_EVENT
+	 * 	[ 6, 0: 4] - RKH_CFG_FWK_SIZEOF_EVT
 	 * 	[ 6, 4: 4] - RKH_CFGPORT_TRC_SIZEOF_TSTAMP
 	 * 	[ 7, 0: 4] - RKH_CFGPORT_TRC_SIZEOF_PTR
 	 * 	[ 7, 4: 4] - RKH_CFG_TMR_SIZEOF_NTIMER
 	 * 	[ 8, 0: 4] - RKH_CFG_MP_SIZEOF_NBLOCK
 	 * 	[ 8, 4: 4] - RKH_CFG_RQ_SIZEOF_NELEM
-	 * 	[ 9, 0: 4] - RKH_CFG_SIZEOF_ESIZE
+	 * 	[ 9, 0: 4] - RKH_CFG_FWK_SIZEOF_EVT_SIZE
 	 * 	[ 9, 4: 4] - 0 (Reserved)
 	 * 	[10, 0: 4] - RKH_CFG_MP_SIZEOF_BSIZE
-	 * 	[10, 4: 4] - RKH_CFG_MAX_EPOOL
+	 * 	[10, 4: 4] - RKH_CFG_FWK_MAX_EVT_POOL
 	 * 	[11, 0:16] - Timestamp HZ (ticks per second)
 	 */
 
@@ -2587,7 +2587,7 @@ enum RKH_TRC_FMT
 					RKH_TRC_UI16( (rui16_t)RKH_VERSION_CODE );			\
 					RKH_TRC_UI32( 										\
 						(rui32_t)(									    \
-						((rui32_t)RKH_CFG_SMA_TRC_SENDER_EN	     ) |	\
+						((rui32_t)RKH_CFG_SMA_TRC_SNDR_EN ) |	        \
 						((rui32_t)RKH_CFG_TRC_RTFIL_EN << 1)|           \
 						((rui32_t)RKH_CFG_TRC_USER_TRACE_EN	<< 2) |	    \
 						((rui32_t)RKH_CFG_TRC_ALL_EN << 3) |	        \
@@ -2606,7 +2606,7 @@ enum RKH_TRC_FMT
 						((rui32_t)RKH_CFG_TRC_TSTAMP_EN	<< 16) |    	\
 						((rui32_t)RKH_CFG_TRC_CHK_EN << 17)));	        \
 					RKH_TRC_UI8( 										\
-						(rui8_t)((RKH_CFG_SIZEOF_EVENT/8   << 4) |      \
+						(rui8_t)((RKH_CFG_FWK_SIZEOF_EVT/8   << 4) |    \
 								  RKH_CFGPORT_TRC_SIZEOF_TSTAMP/8));    \
 					RKH_TRC_UI8( 										\
 						(rui8_t)((RKH_CFGPORT_TRC_SIZEOF_PTR/8 << 4) |  \
@@ -2615,10 +2615,10 @@ enum RKH_TRC_FMT
 						(rui8_t)((RKH_CFG_MP_SIZEOF_NBLOCK/8 << 4) | 	\
 									RKH_CFG_RQ_SIZEOF_NELEM/8));		\
 					RKH_TRC_UI8( 										\
-						(rui8_t)(RKH_CFG_SIZEOF_ESIZE/8));            	\
+						(rui8_t)(RKH_CFG_FWK_SIZEOF_EVT_SIZE/8));       \
 					RKH_TRC_UI8( 										\
 						(rui8_t)((RKH_CFG_MP_SIZEOF_BSIZE/8 << 4) |		\
-								  RKH_CFG_MAX_EPOOL));					\
+								  RKH_CFG_FWK_MAX_EVT_POOL));           \
 					RKH_TRC_UI16(                                   	\
 						(rui16_t)(ts_hz));				        		\
 				RKH_TRC_END_DFT()										\

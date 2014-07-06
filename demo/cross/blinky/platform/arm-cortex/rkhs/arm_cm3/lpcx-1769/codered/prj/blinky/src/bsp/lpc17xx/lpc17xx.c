@@ -115,6 +115,6 @@ void
 cpu_init( void )
 {
 	SystemClockUpdate();
-	systick_init( RKH_CFG_TICK_RATE_HZ );
+	systick_init( RKH_CFG_FWK_TICK_RATE_HZ );
 	init_ts_timer();
 }

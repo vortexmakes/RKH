@@ -55,7 +55,7 @@
 #define BSP_UART_IRQ_PRIO		7
 #define BSP_HIGHEST_IRQ_PRI		5
 
-#define BSP_TICKS_PER_SEC   	RKH_CFG_TICK_RATE_HZ
+#define BSP_TICKS_PER_SEC   	RKH_CFG_FWK_TICK_RATE_HZ
 
 /**
  * 	\brief
@@ -64,7 +64,7 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		MCU_TS_RATE_HZ
+#define BSP_TS_RATE_HZ		   	MCU_TS_RATE_HZ
 
 void bsp_init( int argc, char *argv[] );
 void bsp_led_on( void );

@@ -318,7 +318,7 @@ bsp_init( int argc, char *argv[]  )
 	(void)argv;
 
 	cpu_init();
-	systick_init( RKH_CFG_TICK_RATE_HZ );
+	systick_init( RKH_CFG_FWK_TICK_RATE_HZ );
 	cpu_tstmr_init();
 	init_ioports();
 	init_seqs();

@@ -9,7 +9,7 @@ Changes between V2.4 and V2.4.3 released 07/15/2013
 
 + 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 
 +	Adds ARM Cortex-M0+ on Freedom KL25Z board.
-+	Adds sender object (and macro RKH_CFG_SMA_TRC_SENDER_EN to rkhcfg.h) to 
++	Adds sender object (and macro RKH_CFG_SMA_TRC_SNDR_EN to rkhcfg.h) to 
 	rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(). 
 +	Adds macros RKH_TIM_TICK, RKH_SMA_POST_FIFO/_LIFO to invoke functions 
 	rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo().
@@ -37,7 +37,7 @@ Changes between V2.3 and V2.4 released 05/03/2013
 
 + 	Add the cross-platform demo 'blinky' for arm-cortex, s08 and coldfire v1. 
 + 	Add the arm-cortex port. 
-+ 	Add RKH_CFG_TICK_RATE_HZ and RKH_TICK_RATE_MS constants. 
++ 	Add RKH_CFG_FWK_TICK_RATE_HZ and RKH_TICK_RATE_MS constants. 
 + 	Fix RKH_FILTER_OFF_GROUP_ALL_EVENTS() and 
 	RKH_FILTER_ON_GROUP_ALL_EVENTS() macros. 
 + 	Eliminated the rkhdata.h file from demos. 
@@ -124,7 +124,7 @@ Changes between V1.1.4 and V1.1.5 released 02/01/2012
 +	Added assertions within rkh.c module.
 +	Added assertion events in rkhtrace.h.
 +	Added definition of rkh_trace_getts() in rkhtrace.h.
-+	Added condition \#if RKH_CFG_EN_DYNAMIC_EVENT == 1 to include rkh_put_fifo() and rkh_put_lifo() functions.
++	Added condition \#if RKH_CFG_FWK_DYN_EVT_EN == 1 to include rkh_put_fifo() and rkh_put_lifo() functions.
 +	Added checks every config. options from rkhcfg.h in rkhitl.h.
 +	Enhanced tested version of rkh_engine() function with TEST_GUARD option, see code.
 +	Tested version of rkh_engine() function with TEST_GUARD option, see code.

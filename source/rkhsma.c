@@ -65,7 +65,7 @@ RKHROM char rkh_version[] =
 };
 
 
-RKH_SMA_T *rkh_sptbl[ RKH_CFG_MAX_SMA ];			/* registered SMA table */
+RKH_SMA_T *rkh_sptbl[ RKH_CFG_FWK_MAX_SMA ];			/* registered SMA table */
 
 
 void 
@@ -90,7 +90,7 @@ rkh_sma_unregister( RKH_SMA_T *sma )
     rui8_t prio = RKH_GET_PRIO(sma);
 	RKH_SR_ALLOC();
 
-    RKH_REQUIRE(	(prio <= (rui8_t)RKH_CFG_MAX_SMA) && 
+    RKH_REQUIRE(	(prio <= (rui8_t)RKH_CFG_FWK_MAX_SMA) && 
 					(rkh_sptbl[ prio ] == sma));
 
 	RKH_ENTER_CRITICAL_();

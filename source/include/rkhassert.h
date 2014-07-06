@@ -49,7 +49,7 @@
 #include "rkhcfg.h"
 
 
-#if RKH_CFG_ASSERT_EN == RKH_ENABLED
+#if RKH_CFG_FWK_ASSERT_EN == RKH_ENABLED
 
     /** 
 	 *	\brief
@@ -94,9 +94,9 @@
 	 *	}
 	 *	
 	 *	\note
-	 *	The rkh_assert() callback will only get called if RKH_CFG_ASSERT_EN 
-	 *	is set to 1 within rkhcfg.h file. When this is set the application 
-	 *	must provide the callback function. 
+	 *	The rkh_assert() callback will only get called if 
+	 *	RKH_CFG_FWK_ASSERT_EN is set to 1 within rkhcfg.h file. When this 
+	 *	is set the application must provide the callback function. 
 	 * 
 	 * 	\param file			file name where the assertion failed
 	 * 	\param line 		line number at which the assertion failed
@@ -142,14 +142,14 @@
 	 *	the reader something he might not already know.
 	 *	
 	 *	\note 
-	 *	The preprocessor switch RKH_CFG_ASSERT_EN disables checking 
+	 *	The preprocessor switch RKH_CFG_FWK_ASSERT_EN disables checking 
 	 *	assertions.
 	 * 	In particular macros RKH_ASSERT(), RKH_REQUIRE(), RKH_ENSURE(),
 	 * 	RKH_INVARIANT(), and RKH_ERROR() do NOT evaluate the test condition
 	 * 	passed as the argument to these macros. One notable exception is the
 	 * 	macro RKH_ALLEGE(), that still evaluates the test condition, but does
-	 * 	not report assertion failures when the switch RKH_CFG_ASSERT_EN is 
-	 * 	defined.
+	 * 	not report assertion failures when the switch 
+	 * 	RKH_CFG_FWK_ASSERT_EN is defined.
 	 *
 	 *	Example of use:
 	 *	\code
@@ -184,9 +184,9 @@
 	 * 	to FALSE.
 	 *
 	 * 	\note The \a exp argument IS always evaluated even when assertions 
-	 * 	are disabled with the RKH_CFG_ASSERT_EN. When the RKH_CFG_ASSERT_EN 
-	 * 	is set to one (1), the RKH_ASSERT() macro is NOT called, even if the
-	 * 	\a exp evaluates to FALSE.
+	 * 	are disabled with the RKH_CFG_FWK_ASSERT_EN. 
+	 * 	When the RKH_CFG_ASSERT_EN is set to one (1), the RKH_ASSERT() 
+	 * 	macro is NOT called, even if the \a exp evaluates to FALSE.
      */
 
 	#define RKH_ALLEGE( exp )			RKH_ASSERT( exp )
@@ -198,7 +198,7 @@
 	 * 	ever executed.
 	 *
 	 * 	\note 
-	 * 	Can be disabled with the RKH_CFG_ASSERT_EN switch.
+	 * 	Can be disabled with the RKH_CFG_FWK_ASSERT_EN switch.
 	 */
 
     #define RKH_ERROR() 							\

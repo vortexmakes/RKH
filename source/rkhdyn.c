@@ -48,9 +48,9 @@
 RKH_MODULE_NAME( rkhdyn )
 
 
-#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 
-RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_MAX_EPOOL ];
+RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 
 
 /**
@@ -116,7 +116,7 @@ rkh_fwk_gc( RKH_EVT_T *e )
             rui8_t idx = (rui8_t)( e->pool - 1 );
             RKH_EXIT_CRITICAL_();
 
-            RKH_ASSERT( idx < RKH_CFG_MAX_EPOOL );
+            RKH_ASSERT( idx < RKH_CFG_FWK_MAX_EVT_POOL );
 			RKH_TR_FWK_GCR( e, e->pool, e->nref );
             RKH_DYNE_PUT( &rkh_eplist[ idx ], e );
         }
@@ -140,7 +140,8 @@ rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize )
 {
 	RKH_SR_ALLOC();
 
-	RKH_ASSERT( ( (rui8_t)(rkhnpool + (rui8_t)1) ) <= RKH_CFG_MAX_EPOOL );
+	RKH_ASSERT( ( (rui8_t)(rkhnpool + (rui8_t)1) ) <= 
+									RKH_CFG_FWK_MAX_EVT_POOL );
 
 	++rkhnpool;
 	RKH_DYNE_INIT( &rkh_eplist[ rkhnpool - 1 ], sstart, ssize, esize );
@@ -214,7 +215,7 @@ rkh_sma_get( RKH_SMA_T *sma )
 #endif
 
 
-#if RKH_CFG_DEFERRED_EVENT_EN == RKH_ENABLED
+#if RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED
 void 
 rkh_fwk_defer( RKH_RQ_T *q, const RKH_EVT_T *e )
 { 
@@ -243,7 +244,7 @@ rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
 		RKH_TR_FWK_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
 
-		#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
+		#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
         if( e->nref != 0 )	/* is it a dynamic event? */
 		{
             /* 

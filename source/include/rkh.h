@@ -137,7 +137,7 @@
  * 	the higher the priority. 
  */
 
-extern RKH_SMA_T *rkh_sptbl[ RKH_CFG_MAX_SMA ];
+extern RKH_SMA_T *rkh_sptbl[ RKH_CFG_FWK_MAX_SMA ];
 
 
 /**
@@ -171,8 +171,8 @@ extern RKHROM char rkh_version[];
  * 	Event pool list.
  */
 
-#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
-extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_MAX_EPOOL ];
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
+extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 #endif
 
 
@@ -1716,7 +1716,7 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
  * 						pass arguments to the state machine like an argc/argv.
  * 						This argument is optional, thus it could be declared 
  * 						as NULL or eliminated in compile-time with 
- * 						RKH_CFG_SMA_IEVENT_EN = 0.
+ * 						RKH_CFG_SMA_INIT_EVT_EN = 0.
  */
 
 #define RKH_SMA_CREATE( sma_t, name, prio, ppty, ist, iact, ievt )			\
@@ -2169,7 +2169,7 @@ void rkh_fwk_epool_register( void *sstart, rui32_t ssize, RKH_ES_T esize );
 RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
-#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -2207,7 +2207,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 #endif
 
 
-#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief
@@ -2239,7 +2239,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 	 * 	contexts, when an event can become garbage (automatic garbage 
 	 * 	collection).
 	 * 	\note
-	 * 	When setting RKH_CFG_EN_DYNAMIC_EVENT = 0 the garbage collector has 
+	 * 	When setting RKH_CFG_FWK_DYN_EVT_EN = 0 the garbage collector has 
 	 * 	not effect, thus it's eliminated in compile-time.
 	 *
 	 * 	\param e		pointer to event to be potentially recycled.
@@ -2252,7 +2252,7 @@ RKH_EVT_T *rkh_fwk_ae( RKH_ES_T esize, RKH_SIG_T e );
 
 
 
-#if RKH_CFG_EN_DYNAMIC_EVENT == RKH_ENABLED
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 
 	/**
 	 * 	\brief
