@@ -149,8 +149,8 @@ rkh_mp_get( RKH_MP_T *mp )
 #endif
     }
 
+	RKH_TR_MP_GET( mp, mp->nfree, mp->nmin );
 	RKH_EXIT_CRITICAL_();
-		RKH_TR_MP_GET( mp, mp->nfree, mp->nmin );
     return fb;            /* return the block or NULL pointer to the caller */
 }
 
@@ -178,8 +178,8 @@ rkh_mp_put( RKH_MP_T *mp, void *blk )
     mp->free = blk;                      /* set as new head of the free list */
     ++mp->nfree;                         /* one more free block in this pool */
 	
-	RKH_EXIT_CRITICAL_();
 	RKH_TR_MP_PUT( mp, mp->nfree );
+	RKH_EXIT_CRITICAL_();
 }
 
 

@@ -79,8 +79,8 @@ rkh_sma_register( RKH_SMA_T *sma )
 
 	RKH_ENTER_CRITICAL_();
     rkh_sptbl[ prio ] = sma;
-	RKH_EXIT_CRITICAL_();
 	RKH_TR_SMA_REG( sma, prio );
+	RKH_EXIT_CRITICAL_();
 }
 
 
@@ -95,6 +95,6 @@ rkh_sma_unregister( RKH_SMA_T *sma )
 
 	RKH_ENTER_CRITICAL_();
     rkh_sptbl[ prio ] = ( RKH_SMA_T * )0;
-	RKH_EXIT_CRITICAL_();
 	RKH_TR_SMA_UNREG( sma, prio );
+	RKH_EXIT_CRITICAL_();
 }

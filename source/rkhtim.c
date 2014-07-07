@@ -158,10 +158,10 @@ rkh_tmr_init_( RKH_TMR_T *t, const RKH_EVT_T *e, RKH_THK_T thk )
 	t->ntick = 0;
 	t->used = 0;
 	t->evt = CE(e);
+	RKH_TR_TMR_INIT( t, t->evt->e );
 	RKH_EXIT_CRITICAL_();
 
 	RKH_SET_THOOK( t, thk );
-	RKH_TR_TMR_INIT( t, t->evt->e );
 }
 
 
@@ -178,8 +178,8 @@ rkh_tmr_start( RKH_TMR_T *t, const struct RKH_SMA_T *sma, RKH_TNT_T itick )
 	if( t->used == 0 )
 		add_to_list( t );
 
-	RKH_EXIT_CRITICAL_();
 	RKH_TR_TMR_START( t, sma, itick, t->period );
+	RKH_EXIT_CRITICAL_();
 }
 
 
@@ -189,10 +189,10 @@ rkh_tmr_stop( RKH_TMR_T *t )
 	RKH_SR_ALLOC();
 
 	RKH_REQUIRE( t != CPTIM(0) );
-	RKH_TR_TMR_STOP( t, t->ntick, t->period );
 
 	RKH_ENTER_CRITICAL_();
 	t->ntick = 0;
+	RKH_TR_TMR_STOP( t, t->ntick, t->period );
 	RKH_EXIT_CRITICAL_();
 
 }

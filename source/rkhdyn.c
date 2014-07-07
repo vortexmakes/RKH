@@ -107,17 +107,17 @@ rkh_fwk_gc( RKH_EVT_T *e )
         if( e->nref > 1 )	/* isn't this the last ref? */
 		{
             --e->nref;		/* decrement the reference counter */
-            RKH_EXIT_CRITICAL_();
 			RKH_TR_FWK_GC( e, e->pool, e->nref );
+            RKH_EXIT_CRITICAL_();
         }
         else	/* this is the last reference to this event, recycle it */
 		{
 			/* cannot wrap around */
             rui8_t idx = (rui8_t)( e->pool - 1 );
+			RKH_TR_FWK_GCR( e, e->pool, e->nref );
             RKH_EXIT_CRITICAL_();
 
             RKH_ASSERT( idx < RKH_CFG_FWK_MAX_EVT_POOL );
-			RKH_TR_FWK_GCR( e, e->pool, e->nref );
             RKH_DYNE_PUT( &rkh_eplist[ idx ], e );
         }
     }
@@ -162,13 +162,13 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 	RKH_SR_ALLOC();
 	
 	RKH_HOOK_SIGNAL( e );
-
 	RKH_ENTER_CRITICAL_();
-	RKH_INC_REF( e );
-	RKH_EXIT_CRITICAL_();
 
+	RKH_INC_REF( e );
 	rkh_rq_put_fifo( &sma->equeue, e );
 	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
+
+	RKH_EXIT_CRITICAL_();
 }
 #endif
 
@@ -186,13 +186,13 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 	RKH_SR_ALLOC();
 
 	RKH_HOOK_SIGNAL( e );
-
 	RKH_ENTER_CRITICAL_();
-	RKH_INC_REF( e );
-	RKH_EXIT_CRITICAL_();
 
+	RKH_INC_REF( e );
     rkh_rq_put_lifo( &sma->equeue, e );
 	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
+
+	RKH_EXIT_CRITICAL_();
 }
 #endif
 
@@ -222,11 +222,12 @@ rkh_fwk_defer( RKH_RQ_T *q, const RKH_EVT_T *e )
 	RKH_SR_ALLOC();
 
 	RKH_ENTER_CRITICAL_();
+
 	RKH_INC_REF( e );
-	RKH_EXIT_CRITICAL_();
-	
     rkh_rq_put_fifo( q, e );
 	RKH_TR_FWK_DEFER( q, e );
+
+	RKH_EXIT_CRITICAL_();
 }
 
 
@@ -241,10 +242,10 @@ rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
 	{
 		/* post it to the front of the SMA's queue */
 		RKH_SMA_POST_LIFO( sma, e, sma );
-		RKH_TR_FWK_RCALL( sma, e );
         RKH_ENTER_CRITICAL_();
+		RKH_TR_FWK_RCALL( sma, e );
 
-		#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
         if( e->nref != 0 )	/* is it a dynamic event? */
 		{
             /* 
@@ -261,7 +262,7 @@ rkh_fwk_recall( RKH_SMA_T *sma, RKH_RQ_T *q )
              */
             --e->nref;
         }
-		#endif
+#endif
 		RKH_EXIT_CRITICAL_();
     }
     return e;

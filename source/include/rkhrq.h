@@ -324,6 +324,8 @@ void *rkh_rq_get( RKH_RQ_T *q );
  *	Puts an element on a queue in a FIFO manner. The element is queued by 
  *	reference, not by copy.
  * 	
+ * 	\note
+ * 	This function must be invoked within a critical section.
  * 	\note 
  * 	The function raises an assertion if the queue becomes full and cannot 
  * 	accept the element.
@@ -341,6 +343,8 @@ void rkh_rq_put_fifo( RKH_RQ_T *q, const void *pe );
  *	Puts an element on a queue in a LIFO manner. The element is queued by 
  *	reference, not by copy.
  *
+ * 	\note
+ * 	This function must be invoked within a critical section.
  * 	\note 
  * 	The function raises an assertion if the queue becomes full and cannot 
  * 	accept the element.

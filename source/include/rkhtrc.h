@@ -1431,11 +1431,11 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_MP_GET( mp, nfree, nmin )						\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_MP_GET )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_MP_GET )		\
 					RKH_TRC_SYM( mp ); 								\
 					RKH_TRC_NBLK( nfree ); 							\
 					RKH_TRC_MP_NMIN( nmin );						\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -1448,10 +1448,10 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_MP_PUT( mp, nfree )								\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_MP_PUT )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_MP_PUT )		\
 					RKH_TRC_SYM( mp ); 								\
 					RKH_TRC_NBLK( nfree ); 							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 	#else
 	#define RKH_TR_MP_INIT( mp, nb, bs )				(void)0
 	#define RKH_TR_MP_GET( mp, nfree, nmin )			(void)0
@@ -1489,10 +1489,10 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_RQ_GET( q, nelem )								\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_GET )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_RQ_GET )		\
 					RKH_TRC_SYM( q ); 								\
 					RKH_TRC_NE( nelem );							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -1554,9 +1554,9 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_RQ_DPT( q )										\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_DPT )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_RQ_DPT )		\
 					RKH_TRC_SYM( q ); 								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -1569,9 +1569,9 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_RQ_GET_LAST( q )									\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_RQ_GET_LAST )			\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_RQ_GET_LAST )	\
 					RKH_TRC_SYM( q ); 								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 	#else
 	#define RKH_TR_RQ_INIT( q, ao, nelem )				(void)0
 	#define RKH_TR_RQ_GET( q, nelem )					(void)0
@@ -1651,15 +1651,15 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_SMA_FIFO( ao, ev, snr, pid, rc )					\
-				RKH_TRC_BEGIN( 	RKH_TE_SMA_FIFO, 					\
-								(ao)->romrkh->prio,					\
-								ev->e )								\
+				RKH_TRC_BEGIN_NOCRIT( RKH_TE_SMA_FIFO, 				\
+									  (ao)->romrkh->prio,			\
+								      ev->e )						\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_SIG( ev->e ); 							\
 					RKH_TRC_SNDR( snr ); 							\
 					RKH_TRC_UI8( pid );								\
 					RKH_TRC_UI8( rc );								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -1672,15 +1672,15 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_SMA_LIFO( ao, ev, snr, pid, rc )					\
-				RKH_TRC_BEGIN(	 RKH_TE_SMA_LIFO, 					\
-								(ao)->romrkh->prio,					\
-								ev->e )								\
+				RKH_TRC_BEGIN_NOCRIT( RKH_TE_SMA_LIFO, 				\
+								      (ao)->romrkh->prio,			\
+								      ev->e )						\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_SIG( ev->e ); 							\
 					RKH_TRC_SNDR( snr ); 							\
 					RKH_TRC_UI8( pid );								\
 					RKH_TRC_UI8( rc );								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -1693,11 +1693,11 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_SMA_REG( ao, prio )								\
-				RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SMA_REG, 			\
-										(ao)->romrkh->prio )		\
+				RKH_TRC_BEGIN_WOSIG_NOCRIT( RKH_TE_SMA_REG, 		\
+											(ao)->romrkh->prio )	\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_UI8( prio ); 							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -1710,11 +1710,11 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_SMA_UNREG( ao, prio )							\
-				RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SMA_UNREG, 			\
-										(ao)->romrkh->prio )		\
+				RKH_TRC_BEGIN_WOSIG_NOCRIT(	RKH_TE_SMA_UNREG, 		\
+											(ao)->romrkh->prio )	\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_UI8( prio ); 							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 	#else
 	#define RKH_TR_SMA_ACT( ao, p )						(void)0
 	#define RKH_TR_SMA_TERM( ao, p )					(void)0
@@ -1780,7 +1780,7 @@ enum RKH_TRC_FMT
 		 * 	Args	= ao, signal, current state\n
 		 */
 
-		#if RKH_CFG_TRC_SM_DCH_EN == RKH_ENABLED
+		#if RKH_CFG_TRC_SMA_DCH_EN == RKH_ENABLED
 			#define RKH_TR_SMA_DCH( ao, ev, st )						\
 						RKH_TRC_BEGIN( 	RKH_TE_SMA_DCH, 				\
 										(ao)->romrkh->prio,				\
@@ -2109,10 +2109,10 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_TMR_INIT( t, sig )								\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_INIT )			\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_TMR_INIT )		\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_SIG( sig ); 							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2125,12 +2125,12 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_TMR_START( t, ao, nt, per )						\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_START )			\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_TMR_START )	\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_SYM( ao ); 								\
 					RKH_TRC_NTICK( nt ); 							\
 					RKH_TRC_NTICK( per );							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2143,11 +2143,11 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_TMR_STOP( t, nt, per )							\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_STOP )			\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_TMR_STOP )		\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_NTICK( nt );							\
 					RKH_TRC_NTICK( per );							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2160,13 +2160,13 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_TMR_TOUT( t, sig, ao )							\
-				RKH_TRC_BEGIN( 	RKH_TE_TMR_TOUT, 					\
-								(ao)->romrkh->prio,					\
-								sig )								\
+				RKH_TRC_BEGIN_NOCRIT( RKH_TE_TMR_TOUT, 				\
+									  (ao)->romrkh->prio,			\
+									  sig )							\
 					RKH_TRC_SYM( t ); 								\
 					RKH_TRC_SIG( sig );								\
 					RKH_TRC_SYM( ao );								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2179,9 +2179,9 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_TMR_REM( t )										\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_TMR_REM )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_TMR_REM )		\
 					RKH_TRC_SYM( t ); 								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 	#else
 	#define RKH_TR_TMR_INIT( t, sig )					(void)0
 	#define RKH_TR_TMR_START( t, ao, nt, per )			(void)0
@@ -2268,11 +2268,11 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_FWK_GC( ev, pid, rc )							\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_GC )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_FWK_GC )		\
 					RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_UI8( pid );								\
 					RKH_TRC_UI8( rc );								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2285,11 +2285,11 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_FWK_GCR( ev, pid, rc )							\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_GCR )				\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_FWK_GCR )		\
 					RKH_TRC_SIG( ev->e );							\
 					RKH_TRC_UI8( pid );								\
 					RKH_TRC_UI8( rc );								\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2302,10 +2302,10 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_FWK_DEFER( q, ev )								\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_DEFER )			\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_FWK_DEFER )	\
 					RKH_TRC_SYM( q );								\
 					RKH_TRC_SIG( ev->e );							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/**
 	 * 	\brief
@@ -2318,10 +2318,10 @@ enum RKH_TRC_FMT
 	 */
 
 	#define RKH_TR_FWK_RCALL( ao, ev )								\
-				RKH_TRC_BEGIN_WOAOSIG( RKH_TE_FWK_RCALL )			\
+				RKH_TRC_BEGIN_WOAOSIG_NOCRIT( RKH_TE_FWK_RCALL )	\
 					RKH_TRC_SYM( ao );								\
 					RKH_TRC_SIG( ev->e );							\
-				RKH_TRC_END()
+				RKH_TRC_END_NOCRIT()
 
 	/* --- Symbol entry table for objects --------- */
 
@@ -2609,7 +2609,7 @@ enum RKH_TRC_FMT
 						((rui32_t)RKH_CFG_TRC_TSTAMP_EN	<< 16) |    	\
 						((rui32_t)RKH_CFG_TRC_CHK_EN << 17)));	        \
 					RKH_TRC_UI8( 										\
-						(rui8_t)((RKH_CFG_FWK_SIZEOF_EVT/8   << 4) |    \
+						(rui8_t)((RKH_CFG_FWK_SIZEOF_EVT/8 << 4) |    	\
 								  RKH_CFGPORT_TRC_SIZEOF_TSTAMP/8));    \
 					RKH_TRC_UI8( 										\
 						(rui8_t)((RKH_CFGPORT_TRC_SIZEOF_PTR/8 << 4) |  \

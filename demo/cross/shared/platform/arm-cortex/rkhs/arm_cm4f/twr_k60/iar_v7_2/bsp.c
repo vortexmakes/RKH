@@ -331,16 +331,18 @@ bsp_init( int argc, char *argv[]  )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
 	RKH_FILTER_OFF_ALL_SIGNALS();
 
-        RKH_TRC_OPEN();
+    RKH_TRC_OPEN();
 
 #if defined( RKH_USE_TRC_SENDER )
 	RKH_TR_FWK_OBJ( &l_isr_kbd );
 	RKH_TR_FWK_OBJ( &g_isr_tick );
 #endif
-        RKH_ENA_INTERRUPT();
+    RKH_ENA_INTERRUPT();
 }
 
 
