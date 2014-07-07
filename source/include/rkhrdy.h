@@ -134,7 +134,7 @@ typedef struct
 
 /**
  * 	\brief
- *	This macro evaluates to TRUE if all SMAs are not ready to run.
+ *	This macro evaluates to true if all SMAs are not ready to run.
  *
  * 	\param rg		ready group.
  */
@@ -145,7 +145,7 @@ typedef struct
 
 /**
  * 	\brief
- *	This macro evaluates to TRUE if any SMA is ready to run.
+ *	This macro evaluates to true if any SMA is ready to run.
  *
  * 	\param rg		ready group.
  */

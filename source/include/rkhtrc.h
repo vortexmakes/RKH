@@ -3325,10 +3325,11 @@ void rkh_trc_filter_event_( rui8_t ctrl, rui8_t evt );
  * 					RKH_TRC_EVENTS.
  *	
  *	\return
- * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
+ * 	'1' (RKH_TRUE) if the group and event is not filtered, 
+ * 	otherwise '0' (RKH_FALSE).
  */
 
-ruint rkh_trc_isoff_( rui8_t e );
+rbool_t rkh_trc_isoff_( rui8_t e );
 
 
 /**
@@ -3363,10 +3364,12 @@ void rkh_trc_simfil( 	const RKH_TRC_FIL_T *filter,
  * 	\param slot		indicates the filter slot to be applied.
  *	
  *	\return
- * 	'1' (TRUE) if the group and event is not filtered, otherwise '0' (FALSE).
+ * 	'1' (RKH_TRUE) if the group and event is not filtered, 
+ * 	otherwise '0' (RKH_FALSE).
  */
 
-ruint rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
+rbool_t rkh_trc_simfil_isoff( 	const RKH_TRC_FIL_T *filter, 
+								RKH_TRC_FSLOT slot );
 
 
 /**
@@ -3380,7 +3383,7 @@ ruint rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
  * 	\param prio		SMA priority.
  *	
  *	\return
- * 	'1' (TRUE) if the SMA is not filtered, otherwise '0' (FALSE).
+ * 	'1' (RKH_TRUE) if the SMA is not filtered, otherwise '0' (RKH_FALSE).
  */
 
 #if RKH_CFG_TRC_RTFIL_SMA_EN == RKH_ENABLED
@@ -3402,7 +3405,7 @@ ruint rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot );
  * 	\param sig		event signal.
  *	
  *	\return
- * 	'1' (TRUE) if the signal is not filtered, otherwise '0' (FALSE).
+ * 	'1' (RKH_TRUE) if the signal is not filtered, otherwise '0' (RKH_FALSE).
  */
 
 #if RKH_CFG_TRC_RTFIL_SIGNAL_EN == RKH_ENABLED

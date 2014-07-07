@@ -1392,16 +1392,13 @@ typedef enum
  * 	\brief
  * 	This values are retrived by guard functions. 
  *
- * 	A guard is a boolean condition that returns a TRUE or FALSE value that 
+ * 	A guard is a boolean condition that returns a true or false value that 
  * 	controls whether or not a transition is taken following the receipt of 
  * 	a triggering event.
  */
 
-typedef enum
-{
-	RKH_GFALSE,	/**< False condition */
-	RKH_GTRUE	/**< True condition */
-} RKH_GRET_T;
+#define RKH_GFALSE		RKH_FALSE	/**< False condition */
+#define	RKH_GTRUE		RKH_TRUE	/**< True condition */
 
 
 /**

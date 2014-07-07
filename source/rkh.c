@@ -237,7 +237,7 @@ RKH_MODULE_NAME( rkh )
 
 
 static
-ruint
+rbool_t
 rkh_add_tr_action( RKH_TRN_ACT_T **list, RKH_TRN_ACT_T act, rui8_t *num )
 {
 	if( *num >= RKH_CFG_SMA_MAX_TRC_SEGS )
@@ -326,7 +326,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	RKHROM RKH_ST_T *cs, *ts;
 	RKHROM void *ets;
 	RKHROM RKH_TR_T *tr;
-	ruint inttr;
+	rbool_t inttr;
 	RKH_SIG_T in;
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 	rui8_t step;
@@ -615,35 +615,43 @@ rkh_sma_get_info( RKH_SMA_T *sma, RKH_SMAI_T *psi )
 #endif
 
 
-#if		((RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED) && \
-		(RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED))
-ruint
+#if	(RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
+	 RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
+
+rbool_t
 rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 {
 	(void)sma;
 	(void)pe;
 	return RKH_GTRUE;
 }
-#elif 	((RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED) && \
-		(RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED))
-ruint 
+
+#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
+	   RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
+
+rbool_t 
 rkh_else( RKH_EVT_T *pe )
 {
 	(void)pe;
 	return RKH_GTRUE;
 }
-#elif 	RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
-		RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED
-ruint 
+
+#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
+	   RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
+
+rbool_t 
 rkh_else( const struct RKH_SMA_T *sma )
 {
 	(void)sma;
 	return RKH_GTRUE;
 }
+
 #else
-ruint 
+
+rbool_t 
 rkh_else( void )
 {
 	return RKH_GTRUE;
 }
+
 #endif

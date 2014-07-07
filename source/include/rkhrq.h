@@ -250,11 +250,11 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	\param q		pointer to previously created queue.
  *
  * 	\return
- * 	'1' (TRUE) if queue is empty, otherwise '0' (FALSE).
+ * 	'1' (RKH_TRUE) if queue is empty, otherwise '0' (RKH_FALSE).
  */
 
-#define RKH_RQ_IS_EMPTY( q )								\
-				(ruint)(rkh_rq_get_num((RKH_RQ_T*)(q))==0)
+#define RKH_RQ_IS_EMPTY( q )	\
+				(rbool_t)(rkh_rq_get_num((RKH_RQ_T*)(q)) == 0)
 
 
 /**
@@ -268,10 +268,10 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
  * 	\param q		pointer to previously created queue.
  *
  * 	\return
- * 	'1' (TRUE) if queue is full, otherwise '0' (FALSE).
+ * 	'1' (RKH_TRUE) if queue is full, otherwise '0' (RKH_FALSE).
  */
 
-ruint rkh_rq_is_full( RKH_RQ_T *q );
+rbool_t rkh_rq_is_full( RKH_RQ_T *q );
 
 
 /**

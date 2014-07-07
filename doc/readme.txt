@@ -148,6 +148,11 @@ typedef unsigned int	ruint;
 // Denotes a signed integer type that is usually fastest to operate with 
 // among all integer types.
 typedef signed int		rint;
+
+// Denotes a boolean type.
+// The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
+// definitions in \c rkhdef.h file.
+typedef unsigned int	rbool_t;
 \endcode
 
 Next, each \b rkht.h file must be referenced from \b rkhtype.h header 
@@ -1898,7 +1903,7 @@ As said above, the actions and guards in RKH framework are represented by
 functions. Thus, \c is_sync() could be declared as:
 
 \code
-ruint 
+rbool_t 
 is_sync( RKH_EVT_T *pe )
 {
 	return pe->e == SYNC;
@@ -2305,7 +2310,7 @@ preprocess_keys( const struct rkh_t *sma, RKH_EVT_T *pe )
 The next listing shows an example of the guard function implementation.
 
 \code
-ruint 
+rbool_t 
 is_zero( const struct rkh_t *sma, RKH_EVT_T *pe )
 {
 	return get_water_level( CHANNEL( (( CHEVT_T* )pe)->ch ) ) == 0;

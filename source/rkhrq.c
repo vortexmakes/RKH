@@ -90,7 +90,7 @@ void rkh_rq_init( 	RKH_RQ_T *q, const void **sstart, RKH_RQNE_T ssize,
 
 
 #if RKH_CFG_RQ_IS_FULL_EN == RKH_ENABLED
-ruint 
+rbool_t 
 rkh_rq_is_full( RKH_RQ_T *q )
 {
 	RKH_RQNE_T qty;

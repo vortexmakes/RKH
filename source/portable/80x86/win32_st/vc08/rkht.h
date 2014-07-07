@@ -46,18 +46,11 @@
 #define __RKHT_H__
 
 
+/* ---- Portable data types ---------------------------------------------- */
+
 /*
- * 	Portable data types.
- *
- * 	The RKH uses a set of integer quantities. That maybe 
- * 	machine or compiler	dependent.
- *
- * 	Note:
- *
- * 	The 'ruint' and 'rint' will normally be the natural size 
- * 	for a particular machine. These types designates an integer 
- * 	type that is usually fastest to operate with among all integer 
- * 	types.
+ * 	The RKH uses a set of integer quantities. That maybe machine or 
+ * 	compiler dependent.
  */
 
 typedef signed char 	ri8_t;
@@ -67,8 +60,23 @@ typedef unsigned char 	rui8_t;
 typedef unsigned short 	rui16_t;
 typedef unsigned long	rui32_t;
 
+/*
+ * 	The 'ruint' and 'rint' will normally be the natural size for a 
+ * 	particular machine. These types designates an integer type that is 
+ * 	usually fastest to operate with among all integer types.
+ */
+
 typedef unsigned int	ruint;
 typedef signed int		rint;
 
+/*
+ * 	Boolean data type and constants.
+ *
+ * 	\note
+ * 	The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
+ * 	definitions in \c rkhdef.h file.
+ */
+
+typedef unsigned int	rbool_t;
 
 #endif

@@ -251,7 +251,7 @@ rkh_trc_get_block( TRCQTY_T *nget )
 
 
 #if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
-ruint
+rbool_t
 rkh_trc_isoff_( rui8_t e )
 {
 	rui8_t evt, grp;
@@ -324,7 +324,7 @@ rkh_trc_filter_event_( rui8_t ctrl, rui8_t evt )
 }
 
 
-ruint
+rbool_t
 rkh_trc_simfil_isoff( const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot )
 {
 	rui8_t x, y;

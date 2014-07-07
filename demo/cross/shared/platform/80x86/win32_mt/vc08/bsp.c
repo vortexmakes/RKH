@@ -79,7 +79,7 @@ static rui8_t l_isr_kbd;
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-static ruint running;
+static rbool_t running;
 static HANDLE idle_thread;
 #endif
 
