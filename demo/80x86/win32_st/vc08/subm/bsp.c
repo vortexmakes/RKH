@@ -218,6 +218,12 @@ rkh_hook_idle( void )				/* called within critical section */
 
 
 void 
+rkh_hook_timetick( void ) 
+{
+}
+
+
+void 
 rkh_assert( RKHROM char * const file, int line )
 {
 	fprintf( stderr,	"RKH_ASSERT: [%d] line from %s "

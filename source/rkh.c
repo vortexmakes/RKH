@@ -388,9 +388,13 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	FIND_TRANS( tr, CBSC(stn)->trtbl, in );
 #endif
 
+	RKH_TR_SMA_DCH(	sma, 				       /* this state machine object */
+					pe,								               /* event */
+					cs );					     		   /* current state */
 	if( IS_NOT_FOUND_TRANS( tr ) )					   /* transition taken? */
 	{
-		RKH_TR_SM_EVT_NFOUND( sma );	   				   /* ignored event */
+		RKH_TR_SM_EVT_NFOUND( sma,             /* this state machine object */
+					          pe );					     	       /* event */
 		return RKH_EVT_NFOUND;
 	}
 
@@ -400,8 +404,6 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	nal = 0;                           /* initialize transition action list */
 	pal = al;
 	RKH_CLR_STEP();
-	RKH_TR_SMA_DCH(	sma, 				       /* this state machine object */
-					pe );					     				   /* event */
 	RKH_TR_SM_TRN( 	sma, 				       /* this state machine object */
 					stn, 					     /* transition source state */
 					ts );					     /* transition target state */

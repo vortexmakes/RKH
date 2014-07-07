@@ -3257,7 +3257,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=24 align="center"> #RKH_TG_SMA </TD>
+		<TD rowspan=25 align="center"> #RKH_TG_SMA </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
 		<TD rowspan=2> #RKH_TE_SMA_ACT ( SYM ao, UI8 prio ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_ACT </TD>
@@ -3370,15 +3370,19 @@ the data included for each.
 		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 2 </TD>
-		<TD rowspan=2> #RKH_TE_SMA_DCH ( SYM ao, SIG sig ) </TD>
-		<TD rowspan=2> \copybrief RKH_TR_SMA_DCH </TD>
+		<TD rowspan=3 align="center"> 2 </TD>
+		<TD rowspan=3> #RKH_TE_SMA_DCH ( SYM ao, SIG sig, SYM st ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SMA_DCH </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
 		<TD><I> \copybrief RKH_EVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> st </I></TD>
+		<TD><I> Current state (basic or substate) </I></TD>
 	</TR>
 
 	<TR bgColor="#c0c0c0">
@@ -3413,10 +3417,6 @@ the data included for each.
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> h </I></TD>
 		<TD><I> \copybrief RKH_SCMP_T::history </I></TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD><I> sig </I></TD>
-		<TD><I> \copybrief RKH_EVT_T::e </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 3 </TD>
@@ -3515,11 +3515,15 @@ the data included for each.
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=1 align="center"> 11 </TD>
-		<TD rowspan=1> #RKH_TE_SM_EVT_NFOUND ( SYM ao ) </TD>
-		<TD rowspan=1> \copybrief RKH_TR_SM_EVT_NFOUND </TD>
+		<TD rowspan=2 align="center"> 2 </TD>
+		<TD rowspan=2> #RKH_TE_SM_EVT_NFOUND ( SYM ao, SIG sig ) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_SM_EVT_NFOUND </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKH_EVT_T::e </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 12 </TD>

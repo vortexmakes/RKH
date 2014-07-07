@@ -164,7 +164,7 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == ESC )
-			RKH_SMA_POST_FIFO( my, &eterm, 0 )
+			RKH_SMA_POST_FIFO( my, &eterm, 0 );
 		else
 		{
 			mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
@@ -216,6 +216,11 @@ rkh_hook_idle( void )				/* called within critical section */
     RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
 
+
+void 
+rkh_hook_timetick( void ) 
+{
+}
 
 void 
 rkh_assert( RKHROM char * const file, int line )

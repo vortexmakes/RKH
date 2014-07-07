@@ -1777,19 +1777,20 @@ enum RKH_TRC_FMT
 		 * 	Desc 	= dispatch an event to a state machine\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SMA_DCH\n
-		 * 	Args	= ao, signal\n
+		 * 	Args	= ao, signal, current state\n
 		 */
 
 		#if RKH_CFG_TRC_SM_DCH_EN == RKH_ENABLED
-			#define RKH_TR_SMA_DCH( ao, ev )								\
-						RKH_TRC_BEGIN( 	RKH_TE_SMA_DCH, 					\
+			#define RKH_TR_SMA_DCH( ao, ev, st )						\
+						RKH_TRC_BEGIN( 	RKH_TE_SMA_DCH, 				\
 										(ao)->romrkh->prio,				\
 										ev->e )							\
 							RKH_TRC_SYM( ao ); 							\
 							RKH_TRC_SIG( ev->e ); 						\
+							RKH_TRC_SYM( st ); 							\
 						RKH_TRC_END()
 		#else
-			#define RKH_TR_SMA_DCH( ao, ev )				(void)0
+			#define RKH_TR_SMA_DCH( ao, ev, st )			(void)0
 		#endif
 
 		/**
@@ -1971,13 +1972,15 @@ enum RKH_TRC_FMT
 		 * 			  table.\n
 		 * 	Group 	= RKH_TG_SM\n
 		 * 	Id 		= RKH_TE_SM_EVT_NFOUND\n
-		 * 	Args	= ao\n
+		 * 	Args	= ao, signal\n
 		 */
 
-			#define RKH_TR_SM_EVT_NFOUND( ao )							\
-						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EVT_NFOUND,	\
-												(ao)->romrkh->prio )	\
+			#define RKH_TR_SM_EVT_NFOUND( ao, ev )						\
+						RKH_TRC_BEGIN( 	RKH_TE_SM_EVT_NFOUND,			\
+										(ao)->romrkh->prio,				\
+										ev->e )							\
 							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SIG( ev->e ); 						\
 						RKH_TRC_END()
 
 		/**
@@ -2064,7 +2067,7 @@ enum RKH_TRC_FMT
 						RKH_TRC_END()
 		#else
 		#define RKH_TR_SM_EVT_PROC( ao )				(void)0
-		#define RKH_TR_SM_EVT_NFOUND( ao )				(void)0
+		#define RKH_TR_SM_EVT_NFOUND( ao, ev )			(void)0
 		#define RKH_TR_SM_CND_NFOUND( ao )				(void)0
 		#define RKH_TR_SM_GRD_FALSE( ao )				(void)0
 		#define RKH_TR_SM_UNKN_STATE( ao )				(void)0
@@ -2074,7 +2077,7 @@ enum RKH_TRC_FMT
 	#else
 	#define RKH_TR_SM_INIT( ao, ist )				(void)0
 	#define RKH_TR_SM_CLRH( ao, h )					(void)0
-	#define RKH_TR_SMA_DCH( ao, ev )					(void)0
+	#define RKH_TR_SMA_DCH( ao, ev, st )			(void)0
 	#define RKH_TR_SM_TRN( ao, sst, tst )			(void)0
 	#define RKH_TR_SM_STATE( ao, st )				(void)0
 	#define RKH_TR_SM_ENSTATE( ao, st )				(void)0
@@ -2083,7 +2086,7 @@ enum RKH_TRC_FMT
 	#define RKH_TR_SM_NTRNACT( ao, nta, nts )		(void)0
 	#define RKH_TR_SM_TS_STATE( aaost )				(void)0
 	#define RKH_TR_SM_EVT_PROC( ao )				(void)0
-	#define RKH_TR_SM_EVT_NFOUND( ao )				(void)0
+	#define RKH_TR_SM_EVT_NFOUND( ao, ev )			(void)0
 	#define RKH_TR_SM_GRD_FALSE( ao )				(void)0
 	#define RKH_TR_SM_CND_NFOUND( ao )				(void)0
 	#define RKH_TR_SM_UNKN_STATE( ao )				(void)0
@@ -2905,7 +2908,7 @@ enum RKH_TRC_FMT
 /* --- State machine (SM) ---------------- */
 #define RKH_TR_SM_INIT( ao, ist )					(void)0
 #define RKH_TR_SM_CLRH( ao, h )						(void)0
-#define RKH_TR_SMA_DCH( ao, ev )					(void)0
+#define RKH_TR_SMA_DCH( ao, ev, st )				(void)0
 #define RKH_TR_SM_TRN( ao, sst, tst )				(void)0
 #define RKH_TR_SM_STATE( ao, st )					(void)0
 #define RKH_TR_SM_ENSTATE( ao, st )					(void)0
@@ -2914,7 +2917,7 @@ enum RKH_TRC_FMT
 #define RKH_TR_SM_NTRNACT( ao, nta, nts )			(void)0
 #define RKH_TR_SM_TS_STATE( ao, st )				(void)0
 #define RKH_TR_SM_EVT_PROC( ao )					(void)0
-#define RKH_TR_SM_EVT_NFOUND( ao )					(void)0
+#define RKH_TR_SM_EVT_NFOUND( ao, ev )				(void)0
 #define RKH_TR_SM_GRD_FALSE( ao )					(void)0
 #define RKH_TR_SM_CND_NFOUND( ao )					(void)0
 #define RKH_TR_SM_UNKN_STATE( ao )					(void)0
