@@ -94,7 +94,7 @@
  *	Date: 05/03/2013
  */
 
-#define RKH_VERSION_CODE			0x2404U
+#define RKH_VERSION_CODE			0x2404u
 
 
 /**
@@ -112,14 +112,26 @@
  * 	individual numbers that build up a version number. 
  *
  * 	For example, RKH_VERSION(2,2,04) expands to 0x2204. This macro is very 
- * 	useful when needs to compare the current version and a known checkpoint.
+ * 	useful when needs to compare the current version (#RKH_VERSION_CODE) and 
+ * 	a known checkpoint version at compile-time.
  *
+ * 	\code
+ * 	#if RKH_VERSION_CODE <= RKH_VERSION(1, 2, 03)
+ * 	...
+ * 	#else
+ * 	...
+ * 	#endif
+ * 	\endcode
+ * 
  * 	\param a		major revision
  * 	\param b		minor revision
  * 	\param c		release number
  */
 
-#define RKH_VERSION( a, b, c )
+#define RKH_VERSION( a, b, c )	\
+					(((((a) <<   12) & 0xF000) | \
+					  (((b) <<    8) & 0x0F00) | \
+			          (((c) &  0xFF) & 0x00FF)) & 0xFFFF)
 
 
 /**	
