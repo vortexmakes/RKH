@@ -1,0 +1,104 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+G:/VBshared/rkh/source/rkh.c \
+G:/VBshared/rkh/source/rkhdyn.c \
+G:/VBshared/rkh/source/rkhmp.c \
+G:/VBshared/rkh/source/rkhrq.c \
+G:/VBshared/rkh/source/rkhs.c \
+G:/VBshared/rkh/source/rkhsma.c \
+G:/VBshared/rkh/source/rkhtbl.c \
+G:/VBshared/rkh/source/rkhtim.c \
+G:/VBshared/rkh/source/rkhtrc.c 
+
+OBJS += \
+./src/RKH/source/rkh.o \
+./src/RKH/source/rkhdyn.o \
+./src/RKH/source/rkhmp.o \
+./src/RKH/source/rkhrq.o \
+./src/RKH/source/rkhs.o \
+./src/RKH/source/rkhsma.o \
+./src/RKH/source/rkhtbl.o \
+./src/RKH/source/rkhtim.o \
+./src/RKH/source/rkhtrc.o 
+
+C_DEPS += \
+./src/RKH/source/rkh.d \
+./src/RKH/source/rkhdyn.d \
+./src/RKH/source/rkhmp.d \
+./src/RKH/source/rkhrq.d \
+./src/RKH/source/rkhs.d \
+./src/RKH/source/rkhsma.d \
+./src/RKH/source/rkhtbl.d \
+./src/RKH/source/rkhtim.d \
+./src/RKH/source/rkhtrc.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+src/RKH/source/rkh.o: G:/VBshared/rkh/source/rkh.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhdyn.o: G:/VBshared/rkh/source/rkhdyn.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhmp.o: G:/VBshared/rkh/source/rkhmp.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhrq.o: G:/VBshared/rkh/source/rkhrq.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhs.o: G:/VBshared/rkh/source/rkhs.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhsma.o: G:/VBshared/rkh/source/rkhsma.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhtbl.o: G:/VBshared/rkh/source/rkhtbl.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhtim.o: G:/VBshared/rkh/source/rkhtim.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+src/RKH/source/rkhtrc.o: G:/VBshared/rkh/source/rkhtrc.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\blinky" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\..\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\VBshared\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcxpresso\lpc1769\codered\prj\blinky\src\bsp\lpc17xx" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

@@ -1,0 +1,98 @@
+/**
+
+\page main_c "main.c"
+
+\code
+/*
+ * main.c
+ */
+
+#include "rkh.h"
+#include "rkhtrc.h"
+#include "bsp.h"
+#include "my.h"
+#include "myact.h"
+
+
+#define QSTO_SIZE			4
+
+static RKH_EVT_T *qsto[ QSTO_SIZE ];
+
+enum
+{
+	MY_TRACE = RKH_TE_USER
+};
+
+
+int
+main( int argc, char *argv[] )
+{
+	rui8_t d1 = 255;
+	rui16_t d2 = 65535;
+	rui32_t d3 = 65535;
+	char *str = "hello";
+
+	bsp_init( argc, argv );
+
+	/* set trace filters */
+	RKH_FILTER_OFF_EVENT( MY_TRACE );
+	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
+	RKH_FILTER_OFF_SMA( my );
+
+	rkh_fwk_init();
+	RKH_TRC_OPEN();
+
+	/* send objects to trazer */
+	RKH_TR_FWK_AO( my );
+	RKH_TR_FWK_QUEUE( &my->equeue );
+	RKH_TR_FWK_STATE( &S1 );
+	RKH_TR_FWK_STATE( &S1 );
+	RKH_TR_FWK_STATE( &S11 );
+	RKH_TR_FWK_STATE( &S111 );
+	RKH_TR_FWK_STATE( &S112 );
+	RKH_TR_FWK_STATE( &S12 );
+	RKH_TR_FWK_STATE( &S2 );
+	RKH_TR_FWK_STATE( &S3 );
+	RKH_TR_FWK_STATE( &S31 );
+	RKH_TR_FWK_STATE( &S32 );
+	RKH_TR_FWK_PSTATE( &C1 );
+	RKH_TR_FWK_PSTATE( &C2 );
+	RKH_TR_FWK_PSTATE( &CH );
+	RKH_TR_FWK_PSTATE( &DH );
+	RKH_TR_FWK_PSTATE( &H );
+
+	/* send signals to trazer */
+	RKH_TR_FWK_SIG( ZERO );
+	RKH_TR_FWK_SIG( ONE	);
+	RKH_TR_FWK_SIG( TWO	);
+	RKH_TR_FWK_SIG( THREE );
+	RKH_TR_FWK_SIG( FOUR );
+	RKH_TR_FWK_SIG( FIVE );
+	RKH_TR_FWK_SIG( SIX	);
+	RKH_TR_FWK_SIG( TERM );
+
+	RKH_TR_FWK_TUSR( MY_TRACE );
+
+	RKH_TRC_USR_BEGIN( MY_TRACE )
+		RKH_TUSR_I8( 3, d1 );
+		RKH_TUSR_UI8( 3, d1 );
+		RKH_TUSR_I16( 4, d2 );
+		RKH_TUSR_UI16( 4, d2 );
+		RKH_TUSR_I32( 5, d3 );
+		RKH_TUSR_UI32( 5, d3 );
+		RKH_TUSR_X32( 4, d3 );
+		RKH_TUSR_STR( str );
+		RKH_TUSR_MEM( (rui8_t*)&d3, sizeof(rui32_t) );
+		RKH_TUSR_OBJ( my );
+		RKH_TUSR_FUN( main );
+		RKH_TUSR_SIG( ZERO );
+	RKH_TRC_USR_END();
+
+	rkh_sma_activate( my, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	rkh_fwk_enter();
+
+	RKH_TRC_CLOSE();
+	return 0;
+}
+\endcode
+*/
