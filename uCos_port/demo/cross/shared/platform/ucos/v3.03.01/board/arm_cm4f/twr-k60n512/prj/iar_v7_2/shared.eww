@@ -2,7 +2,7 @@
 
 <workspace>
   <project>
-    <path>$WS_DIR$\uCOS-III.ewp</path>
+    <path>$WS_DIR$\shared.ewp</path>
   </project>
   <batchBuild/>
 </workspace>

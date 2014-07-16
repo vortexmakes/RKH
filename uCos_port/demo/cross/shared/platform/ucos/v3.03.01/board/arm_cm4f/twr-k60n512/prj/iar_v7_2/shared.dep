@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>3226259662</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\bsp\IAR\cstartup.c</file>
+      <file>$PROJ_DIR$\..\..\bsp\bsp.c</file>
+      <file>$PROJ_DIR$\..\..\bsp\bsp_int.c</file>
+      <file>$PROJ_DIR$\..\..\bsp\bsp_ser.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\app_hooks.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_msg.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_mem.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_int.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_flag.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_dbg.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_core.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_cfg_app.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\lib_mem.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\lib_str.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_cpu_c.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\lib_math.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\lib_ascii.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu_core.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu_c.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\cstartup.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_ser.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_int.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_app_hooks.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_os.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\app.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_mutex.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_prio.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_q.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_pend_multi.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_sem.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_stat.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_task.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_tick.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_time.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_tmr.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_var.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu_a.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\lib_mem_a.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\app.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_cpu_a.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\app_hooks.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\os_app_hooks.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_os.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_int.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_ser.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\cstartup.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu_c.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu_core.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tick.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_time.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tmr.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_var.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_a.asm</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_c.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_core.c</file>
+      <file>$PROJ_DIR$\..\..\bsp\OS\bsp_os.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_a.asm</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_c.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_ascii.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_math.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_mem.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_str.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_core.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_cfg_app.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_dbg.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\Ports\ARM-Cortex-M4\IAR\lib_mem_a.asm</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_flag.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_int.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mem.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_msg.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mutex.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_pend_multi.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_prio.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_q.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_sem.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_stat.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\app.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\app_hooks.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\os_app_hooks.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_task.c</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\..\..\bsp\IAR\cstartup.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\bsp\bsp.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 44</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\bsp\bsp_int.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 45</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\bsp\bsp_ser.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tick.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 74</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_time.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 75</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tmr.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 35</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 76</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_var.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_a.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 40</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_c.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 14</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_core.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 49</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\bsp\OS\bsp_os.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_a.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 37</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_c.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 48</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_ascii.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 73</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_math.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_mem.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 12</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_str.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 22</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_core.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_cfg_app.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_dbg.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\Ports\ARM-Cortex-M4\IAR\lib_mem_a.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_flag.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_int.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 16</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mem.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_msg.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mutex.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_pend_multi.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_prio.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_q.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 28</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_sem.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_stat.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\app.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 39</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\app_hooks.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\os_app_hooks.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 42</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_task.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+
