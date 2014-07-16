@@ -50,6 +50,8 @@ RKH_MODULE_VERSION( rkhport, 1.00 )
 RKH_MODULE_DESC( rkhport, "uC/OS-III for Freescale Kinetis K60 and IAR" )
 
 
+static rui8_t running;
+
 static
 void
 thread_function( void *arg )
@@ -67,6 +69,41 @@ thread_function( void *arg )
 	rkh_sma_unregister((RKH_SMA_T *)arg);
 	RKH_TR_SMA_TERM((RKH_SMA_T *)arg, RKH_GET_PRIO((RKH_SMA_T *)arg));
 	OSTaskDel((OS_TCB *)0, &err ); /* deletes the currently running task */
+}
+
+
+const 
+char *
+rkh_get_port_version( void )
+{
+	return RKH_MODULE_GET_VERSION();
+}
+
+
+const 
+char *
+rkh_get_port_desc( void )
+{
+	return RKH_MODULE_GET_DESC();
+}
+
+
+void 
+rkh_fwk_init( void )
+{
+}
+
+
+void 
+rkh_fwk_enter( void )
+{
+ 
+}
+
+
+void 
+rkh_fwk_exit( void )
+{
 }
 
 

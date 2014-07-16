@@ -46,6 +46,7 @@
 #define __RKHPORT_H__
 
 
+#include "os.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
 
@@ -142,8 +143,8 @@ const char *rkh_get_port_desc( void );
 #define RKH_DIS_INTERRUPT()
 #define RKH_ENA_INTERRUPT()
 //#define RKH_CPUSR_TYPE
-#define RKH_ENTER_CRITICAL( dummy )		rkh_enter_critical()
-#define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
+#define RKH_ENTER_CRITICAL( dummy )		;
+#define RKH_EXIT_CRITICAL( dummy )		;
 
 
 #define RKH_EQ_TYPE              		RKH_RQ_T

@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for 80x86 win32
+ * 	\brief 		BSP for uC/OS-III for Freescale Kinetis K60 and IAR
  */
 
 
@@ -47,6 +47,9 @@
 
 
 #include "rkh.h"
+#include "os.h"
+#include "os_cfg_app.h"
+#include "bsp_twr.h"
 
 
 #define BSP_TICKS_PER_SEC   		RKH_CFG_FWK_TICK_RATE_HZ
@@ -58,7 +61,7 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		CLOCKS_PER_SEC
+#define BSP_TS_RATE_HZ		   		OS_CFG_TICK_RATE_HZ
 
 
 void bsp_init( int argc, char *argv[] );

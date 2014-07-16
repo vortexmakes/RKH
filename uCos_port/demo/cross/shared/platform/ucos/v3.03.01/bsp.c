@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for 80x86 OS win32
+ * 	\brief 		BSP for uC/OS-III for Freescale Kinetis K60 and IAR
  */
 
 
@@ -48,23 +48,19 @@
 #include "svr.h"
 #include "cli.h"
 
-#include <conio.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
+#include <bsp_twr.h>
+#include <bsp_ser.h>
+#include <os.h>
+#include <lib_math.h>
+#include <lib_math.h>
 
 
-#define BIN_TRACE					0
-#define SOCKET_TRACE				1
-#define ESC							0x1B
-#define kbmap( c )					( (c) - '0' )
+#define SERIAL_TRACE				0
 
 #define SIZEOF_EP0STO				32
 #define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
 #define SIZEOF_EP1STO				16
 #define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
-#define SVR_NAME					"Server    -"
-#define CLI_NAME					"Client"
 
 
 RKH_THIS_MODULE
@@ -80,75 +76,33 @@ static rui8_t l_isr_kbd;
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 static rbool_t running;
-static HANDLE idle_thread;
-#endif
-
-
-/* 
- * 	For binary trace feature.
- */
-
-#if BIN_TRACE == 1
-static FILE *ftbin;
+//static HANDLE idle_thread;
 #endif
 
 
 /*
- * 	For socket trace feature.
+ * 	For serial trace feature.
  */
 
-#if SOCKET_TRACE == 1
+#if SERIAL_TRACE == 1
+	static const KUARTPP_ST trz_uart = 
+	{
+		115200, 0, 1, KUART_HFC_DISABLE, NULL
+	};
 
-	#include "tcptrc.h"
-
-	/* Trazer Tool IP Address */
-	/*#define TRC_IP_ADDR					"192.168.1.143"*/
-	#define TRC_IP_ADDR					"127.0.0.1"
-
-	/* Trazer Tool TCP Port Address */
-	#define TRC_TCP_PORT				6602
-
-	/* Trace Socket */
-	static SOCKET tsock;
-
-	#define TCP_TRACE_OPEN() \
-				if( tcp_trace_open( TRC_TCP_PORT, \
-							TRC_IP_ADDR, &tsock ) < 0 ) \
-				{ \
-					printf( "Can't open socket %s:%u\n", \
-								TRC_IP_ADDR, TRC_TCP_PORT ); \
-					exit( EXIT_FAILURE ); \
-				}
-	#define TCP_TRACE_CLOSE() \
-				tcp_trace_close( tsock )
-	#define TCP_TRACE_SEND( d ) \
-				tcp_trace_send( tsock, d, (int)1 )
-	#define TCP_TRACE_SEND_BLOCK( buf_, len_ ) \
-				tcp_trace_send( tsock, (const char *)(buf_), (int)(len_) )
+	/* Trazer Tool COM Port */
+	#define SERIAL_TRACE_OPEN()		kuart_init( UART3_BASE_PTR, &trz_uart )
+	#define SERIAL_TRACE_CLOSE() 	(void)0
+	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
+					kuart_putnchar( UART3_BASE_PTR, 	\
+								(char *)(buf_), 		\
+								(rui16_t)(len_))
 #else
-	#define TCP_TRACE_OPEN()					(void)0
-	#define TCP_TRACE_CLOSE()					(void)0
-	#define TCP_TRACE_SEND( d )					(void)0
-	#define TCP_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
-#endif
-
-
-#if BIN_TRACE == 1
-	#define FTBIN_FLUSH( buf_, len_ ) \
-				fwrite ( (buf_), 1, (len_), ftbin ); \
-				fflush( ftbin )
-	#define FTBIN_CLOSE() \
-				fclose( ftbin )
-	#define FTBIN_OPEN() \
-				if( ( ftbin = fopen( "../ftbin", "w+b" ) ) == NULL ) \
-				{ \
-					perror( "Can't open file\n" ); \
-					exit( EXIT_FAILURE ); \
-				}
-#else
-	#define FTBIN_FLUSH( buf_, len_ )		(void)0
-	#define FTBIN_CLOSE()					(void)0
-	#define FTBIN_OPEN()					(void)0
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
 
@@ -168,6 +122,7 @@ bsp_publish( const RKH_EVT_T *e )
 void
 rkh_hook_timetick( void )
 {
+#if 0
 	if( _kbhit() )
 	{
 		int c = _getch();
@@ -177,25 +132,21 @@ rkh_hook_timetick( void )
 		else if( tolower(c) == 'p' )
 			bsp_publish( &e_pause );
 	}
+#endif
 }
 
 
 void 
 rkh_hook_start( void ) 
 {
+	OS_ERR err;
+
 	rkh_set_tickrate( BSP_TICKS_PER_SEC );
 	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 
-	/* 
-	 * 	For avoiding to have multiple threads (idle and main) sending data on 
-	 * 	the same socket, i.e. using the send() function, the idle thread is 
-	 * 	created to be run only after the initial process has finished.
-	 * 	Without this trick, the streams are interleaving and the trace stream 
-	 * 	is corrupted.
-	 */
-
-	ResumeThread( idle_thread );
+	/* Start multitasking (i.e. give control to uC/OS-III).  */
+    OSStart(&err);  
 }
 
 
@@ -212,54 +163,19 @@ rkh_hook_exit( void )
 void 
 rkh_assert( RKHROM char * const file, int line )
 {
-	fprintf( stderr,	"RKH_ASSERT: [%d] line from %s "
-						"file\n", line, file );
 	RKH_TRC_FLUSH();
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
-	__debugbreak();
 	rkh_fwk_exit();
-}
-
-
-static
-void
-print_banner( void )
-{
-	printf(	"\"Shared\" example\n\n" );
-	printf(	"RKH version      = %s\n", RKH_RELEASE );
-	printf(	"Port version     = %s\n", rkh_get_port_version() );
-	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
-	printf(	"Description: \n\n" );
-	printf(	"This application deals with the shared resource problem \n" );
-	printf(	"in active object systems. Showing one of the biggest \n" );
-	printf(	"benefit of using active objects: resource encapsulation. \n" );
-	printf(	"The encapsulation naturally designates the owner of the \n" );
-	printf(	"resource as the ultimate arbiter in resolving any contention \n" );
-	printf(	"and potential conflicts for the resource. \n" );
-	printf(	"The SHD application is relatively simple and can be tested \n" );
-	printf(	"only with a couple of LEDs on your target board. \n" );
-	printf(	"Still, SHD contains five (5) concurrent active objects \n" );
-	printf(	"that exchange events via direct event posting mechanism. \n" );
-	printf(	"The application uses four timers, as well as dynamic  \n" );
-	printf(	"and static events. \n" );
-	printf(	"On the other hand, this application could be used in either \n" );
-	printf(	"preemptive or cooperative enviroment. \n" );
-	printf(	"Aditionally, the SHD could be used to verify a new RKH port. \n" );
-	printf(	"\n\n\n" );
-
-	printf( "1.- Press 'P'/'p' to pause.\n" );
-	printf( "2.- Press 'escape' to quit.\n\n\n" );
+	/*** perform reset ??? ***/
 }
 
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 
-#include <time.h>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>                        /* Win32 API for multithreading */
 
-
+/** Idle task hook to flush trace */
+#if 0
 static 
 DWORD WINAPI 
 idle_thread_function( LPVOID par )
@@ -276,6 +192,7 @@ idle_thread_function( LPVOID par )
     }
     return 0;                                             /* return success */
 }
+#endif
 
 
 void 
@@ -283,29 +200,31 @@ rkh_trc_open( void )
 {
 	rkh_trc_init();
 
-	FTBIN_OPEN();
-	TCP_TRACE_OPEN();
+	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 
+	/** flush must be done in idle task */
+#if 0
 	if(( idle_thread = CreateThread( NULL, 1024, &idle_thread_function, (void *)0, 
 				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
 		fprintf( stderr, "Cannot create the idle thread: [%d] line from %s "
 						"file\n", __LINE__, __FILE__ );
+#endif
 }
 
 
 void 
 rkh_trc_close( void )
 {
-	FTBIN_CLOSE();
-	TCP_TRACE_CLOSE();
+	SERIAL_TRACE_CLOSE();
 }
 
 
 RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKH_TS_T )clock();
+  return 0;
+//	return ( RKH_TS_T )clock();
 }
 
 
@@ -326,8 +245,7 @@ rkh_trc_flush( void )
 
 		if((blk != (rui8_t *)0))
 		{
-			FTBIN_FLUSH( blk, nbytes );
-			TCP_TRACE_SEND_BLOCK( blk, nbytes );
+			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
 		}
 		else
 			break;
@@ -359,59 +277,59 @@ bsp_srand( rui32_t seed )
 void 
 bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 {
-	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
-									CLI_ID(clino), req_time );
+//	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
+//									CLI_ID(clino), req_time );
 }
 
 
 void 
 bsp_cli_req( rui8_t clino )
 {
-	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
+//	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
-	printf( "Client[%d] - Using server for %d [seg]\n", 
-									CLI_ID(clino), using_time );
+//	printf( "Client[%d] - Using server for %d [seg]\n", 
+//									CLI_ID(clino), using_time );
 }
 
 
 void 
 bsp_cli_paused( rui8_t clino )
 {
-	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
+//	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_cli_resumed( rui8_t clino )
 {
-	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
+//	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_cli_done( rui8_t clino )
 {
-	printf( "Client[%d] - Done\n", CLI_ID(clino) );
+//	printf( "Client[%d] - Done\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_svr_recall( rui8_t clino )
 {
-	printf( "%s Recall a deferred request from client[%d]\n", 
-									SVR_NAME, CLI_ID(clino) );
+//	printf( "%s Recall a deferred request from client[%d]\n", 
+//									SVR_NAME, CLI_ID(clino) );
 }
 
 
 void 
 bsp_svr_paused( const RKH_SMA_T *sma )
 {
-	rint cn;
+/*	rint cn;
 	SVR_T *ao;
 
 	ao = RKH_CAST(SVR_T, sma);
@@ -421,7 +339,44 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		printf( " cli%d=%d |", cn, ao->ncr[ cn ] );
 
-	putchar('\n');
+	putchar('\n');*/
+}
+
+
+void
+ucos_init( void )
+{
+	OS_ERR err;
+#if (CPU_CFG_NAME_EN == DEF_ENABLED)
+	CPU_ERR cpu_err;
+#endif
+
+	CPU_Init();
+	Mem_Init();			/* Initialize the Memory Management Module */
+	Math_Init();		/* Initialize the Mathematical Module */	
+
+#if (CPU_CFG_NAME_EN == DEF_ENABLED)
+	CPU_NameSet((CPU_CHAR *)"MK60N512ZVMD10",
+                (CPU_ERR  *)&cpu_err);
+#endif
+	
+	BSP_IntDisAll();   
+	
+	OSInit(&err);		/* Initialize "uC/OS-III, The Real-Time Kernel" */
+	
+	BSP_Init();         /* Start BSP and tick initialization */
+
+	BSP_Tick_Init();    /* Start Tick Initialization */
+
+#if (OS_CFG_STAT_TASK_EN > 0)
+    OSStatTaskCPUUsageInit(&err);
+#endif
+    
+#if (APP_CFG_SERIAL_EN == DEF_ENABLED)
+    BSP_Ser_Init(115200);
+#endif	
+
+    BSP_LED_Off(BSP_LED_ALL);
 }
 
 
@@ -433,8 +388,10 @@ bsp_init( int argc, char *argv[] )
 	(void)argc;
 	(void)argv;
 
-    bsp_srand( 1234U );
-	print_banner();
+	ucos_init();
+
+	bsp_srand( 1234U );
+
 	rkh_fwk_init();
 
 	RKH_FILTER_OFF_SMA( svr );
