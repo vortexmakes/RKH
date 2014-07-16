@@ -64,7 +64,6 @@ static  void  App_Spurious_ISR    (void);
 
 extern  void  __iar_program_start (void);
 
-static void program_start( void );
 
 /*
 *********************************************************************************************************
@@ -77,7 +76,7 @@ static void program_start( void );
 
 __root  const  APP_INTVECT_ELEM  __vector_table[] @ ".intvec" = {
     { .Ptr = (void *)__sfe( "CSTACK" )},                        /* 000 Initial stack pointer.                           */
-    program_start,                                        /* 001 Initial program counter.                         */
+    __iar_program_start,                                        /* 001 Initial program counter.                         */
     App_NMI_ISR,                                                /* 002 Non-maskable interrupt.                          */
     App_Fault_ISR,                                              /* 003 Hard fault exception.                            */
     BSP_IntHandlerReserved4,                                    /* 004 Reserved interrupt 4.                            */
@@ -206,42 +205,6 @@ __root  const  APP_INTVECT_ELEM  __vector_table[] @ ".intvec" = {
     BSP_IntHandlerReserved119                                   /* 119 Reserved interrupt 119.                          */
 };
 
-
-/********************************************************************/
-/*
-* Watchdog timer disable routine
-*
-* Parameters:
-* none
-*/
-void wdog_disable(void)
-{
-    /* First unlock the watchdog so that we can write to registers */
-    /* NOTE: DO NOT SINGLE STEP THROUGH THIS FUNCTION!!! */
-    /* There are timing requirements for the execution of the unlock. If
-     * you single step through the code you will cause the CPU to reset.
-     */
- 
-    /* This sequence must execute within 20 clock cycles, so disable
-         * interrupts will keep the code atomic and ensure the timing.
-         */
-   
-    /* Write 0xC520 to the unlock register */
-    WDOG_UNLOCK = 0xC520;
-   
-    /* Followed by 0xD928 to complete the unlock */
-    WDOG_UNLOCK = 0xD928;
-   
-    /* Clear the WDOGEN bit to disable the watchdog */
-    WDOG_STCTRLH &= ~WDOG_STCTRLH_WDOGEN_MASK;
-}
- 
-
-static void program_start( void )
-{
-    wdog_disable();
-    __iar_program_start();
-}
 
 /*
 *********************************************************************************************************
