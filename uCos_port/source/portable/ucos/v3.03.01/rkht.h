@@ -46,6 +46,9 @@
 #define __RKHT_H__
 
 
+#include "os.h"			/* the main uC/OS-III include file */
+
+
 /* ---- Portable data types ---------------------------------------------- */
 
 /*
@@ -54,12 +57,12 @@
  */
 
 
-typedef signed char 	ri8_t;
-typedef signed short 	ri16_t;
-typedef signed long		ri32_t;
-typedef unsigned char 	rui8_t;
-typedef unsigned short 	rui16_t;
-typedef unsigned long	rui32_t;
+typedef CPU_INT8S		ri8_t;
+typedef CPU_INT16S		ri16_t;
+typedef CPU_INT32S		ri32_t;
+typedef CPU_INT8U		rui8_t;
+typedef CPU_INT16U		rui16_t;
+typedef CPU_INT32U		rui32_t;
 
 /*
  * 	The 'ruint' and 'rint' will normally be the natural size for a 
@@ -78,6 +81,6 @@ typedef signed int		rint;
  * 	definitions in \c rkhdef.h file.
  */
 
-typedef unsigned int	rbool_t;
+typedef CPU_BOOLEAN		rbool_t;
 
 #endif

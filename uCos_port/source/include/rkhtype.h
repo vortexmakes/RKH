@@ -82,5 +82,8 @@
 	#include "..\portable\80x86\win32_mt\vc08\rkht.h"
 #endif
 
+#ifdef __UCOS_V3_03_01__ 
+	#include "..\portable\ucos\v3.03.01\rkht.h"
+#endif
 
 #endif

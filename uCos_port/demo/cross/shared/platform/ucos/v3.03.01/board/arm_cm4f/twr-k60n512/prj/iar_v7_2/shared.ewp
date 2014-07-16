@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>7.20.2.7418</state>
+          <state>7.20.1.7306</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -172,7 +172,7 @@
         </option>
         <option>
           <name>CCDefines</name>
-          <state></state>
+          <state>__UCOS_V3_03_01__=1</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -301,11 +301,13 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\..\..\..\..\..\v3.03.01</state>
-          <state>$PROJ_DIR$\..\iar_v7_2</state>
-          <state>$PROJ_DIR$\..\..\bsp</state>
-          <state>$PROJ_DIR$\..\..\bsp\OS</state>
-          <state>$PROJ_DIR$\..\..\bsp\Freescale</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\demo\cross\shared</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\..\ucos\v3.03.01</state>
+          <state>$PROJ_DIR$\..\..\..\twr-k60n512\prj\iar_v7_2</state>
+          <state>$PROJ_DIR$\..\..\..\twr-k60n512\bsp</state>
+          <state>$PROJ_DIR$\..\..\..\twr-k60n512\bsp\OS</state>
+          <state>$PROJ_DIR$\..\..\..\twr-k60n512\bsp\Freescale</state>
           <state>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU</state>
           <state>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR</state>
           <state>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB</state>
@@ -1895,232 +1897,355 @@
     </settings>
   </configuration>
   <group>
-    <name>APP</name>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\app.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\app_cfg.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\app_hooks.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\cpu_cfg.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\includes.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\lib_cfg.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\os_app_hooks.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\os_app_hooks.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\os_cfg.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\os_cfg_app.h</name>
-    </file>
-  </group>
-  <group>
-    <name>BSP</name>
+    <name>rkh</name>
     <group>
-      <name>Freescale</name>
+      <name>include</name>
       <file>
-        <name>$PROJ_DIR$\..\..\bsp\Freescale\MK60N512VMD100.h</name>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkh.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhassert.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhdef.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhevt.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhitl.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhmp.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhplat.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhrdy.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhrq.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhs.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhtim.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhtrc.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\include\rkhtype.h</name>
       </file>
     </group>
     <group>
-      <name>OS</name>
+      <name>portable</name>
       <file>
-        <name>$PROJ_DIR$\..\..\bsp\OS\bsp_os.c</name>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\portable\ucos\v3.03.01\rkhport.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\bsp\OS\bsp_os.h</name>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\portable\ucos\v3.03.01\rkhport.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\portable\ucos\v3.03.01\rkht.h</name>
       </file>
     </group>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\bsp.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkh.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\bsp.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhdyn.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\bsp_int.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhmp.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\bsp_ser.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhrq.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\bsp_ser.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhs.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\IAR\cstartup.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhsma.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\bsp\IAR\K60X_FLASH.icf</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhtbl.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhtim.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\..\..\..\source\rkhtrc.c</name>
     </file>
   </group>
   <group>
-    <name>uC/CPU</name>
+    <name>shared</name>
     <group>
-      <name>ARM-Cortex-M4</name>
+      <name>ucos</name>
       <group>
-        <name>IAR</name>
+        <name>APP</name>
         <file>
-          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu.h</name>
+          <name>$PROJ_DIR$\..\..\..\..\..\app.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_a.asm</name>
+          <name>$PROJ_DIR$\app_cfg.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_c.c</name>
+          <name>$PROJ_DIR$\..\..\..\..\..\app_hooks.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\cpu_cfg.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\includes.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\lib_cfg.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\os_app_hooks.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\os_app_hooks.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\os_cfg.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\os_cfg_app.h</name>
         </file>
       </group>
-    </group>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_core.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_core.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_def.h</name>
-    </file>
-  </group>
-  <group>
-    <name>uC/LIB</name>
-    <group>
-      <name>Ports</name>
       <group>
-        <name>ARM-Cortex-M4</name>
+        <name>BSP</name>
         <group>
-          <name>IAR</name>
+          <name>Freescale</name>
           <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\Ports\ARM-Cortex-M4\IAR\lib_mem_a.asm</name>
+            <name>$PROJ_DIR$\..\..\bsp\Freescale\MK60N512VMD100.h</name>
+          </file>
+        </group>
+        <group>
+          <name>OS</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\bsp\OS\bsp_os.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\bsp\OS\bsp_os.h</name>
+          </file>
+        </group>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp_int.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp_ser.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp_ser.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\IAR\cstartup.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\IAR\K60X_FLASH.icf</name>
+        </file>
+      </group>
+      <group>
+        <name>uC/CPU</name>
+        <group>
+          <name>ARM-Cortex-M4</name>
+          <group>
+            <name>IAR</name>
+            <file>
+              <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu.h</name>
+            </file>
+            <file>
+              <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_a.asm</name>
+            </file>
+            <file>
+              <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\ARM-Cortex-M4\IAR\cpu_c.c</name>
+            </file>
+          </group>
+        </group>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_core.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_core.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-CPU\cpu_def.h</name>
+        </file>
+      </group>
+      <group>
+        <name>uC/LIB</name>
+        <group>
+          <name>Ports</name>
+          <group>
+            <name>ARM-Cortex-M4</name>
+            <group>
+              <name>IAR</name>
+              <file>
+                <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\Ports\ARM-Cortex-M4\IAR\lib_mem_a.asm</name>
+              </file>
+            </group>
+          </group>
+        </group>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_ascii.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_ascii.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_def.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_math.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_math.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_mem.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_mem.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_str.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_str.h</name>
+        </file>
+      </group>
+      <group>
+        <name>uC/OS-III</name>
+        <group>
+          <name>Ports</name>
+          <group>
+            <name>ARM-Cortex-M4</name>
+            <group>
+              <name>Generic</name>
+              <group>
+                <name>IAR</name>
+                <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu.h</name>
+                </file>
+                <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_a.asm</name>
+                </file>
+                <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_c.c</name>
+                </file>
+              </group>
+            </group>
+          </group>
+        </group>
+        <group>
+          <name>Source</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_cfg_app.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_core.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_dbg.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_flag.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_int.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mem.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_msg.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mutex.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_pend_multi.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_prio.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_q.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_sem.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_stat.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_task.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tick.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_time.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tmr.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_type.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_var.c</name>
           </file>
         </group>
       </group>
     </group>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_ascii.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\cli.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_ascii.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\cli.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_def.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\cliact.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_math.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\cliact.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_math.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\main.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_mem.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\rkhcfg.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_mem.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\scevt.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_str.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\svr.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uC-LIB\lib_str.h</name>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\svr.h</name>
     </file>
-  </group>
-  <group>
-    <name>uC/OS-III</name>
-    <group>
-      <name>Ports</name>
-      <group>
-        <name>ARM-Cortex-M4</name>
-        <group>
-          <name>Generic</name>
-          <group>
-            <name>IAR</name>
-            <file>
-              <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu.h</name>
-            </file>
-            <file>
-              <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_a.asm</name>
-            </file>
-            <file>
-              <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Ports\ARM-Cortex-M4\Generic\IAR\os_cpu_c.c</name>
-            </file>
-          </group>
-        </group>
-      </group>
-    </group>
-    <group>
-      <name>Source</name>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_cfg_app.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_core.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_dbg.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_flag.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_int.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mem.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_msg.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_mutex.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_pend_multi.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_prio.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_q.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_sem.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_stat.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_task.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tick.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_time.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_tmr.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_type.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\..\..\micrium\Software\uCOS-III\Source\os_var.c</name>
-      </file>
-    </group>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\svract.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\..\..\..\svract.h</name>
+    </file>
   </group>
 </project>
 
