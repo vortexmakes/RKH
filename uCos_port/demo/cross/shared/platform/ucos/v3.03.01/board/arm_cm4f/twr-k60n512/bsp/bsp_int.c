@@ -36,7 +36,7 @@
 */
 
 #define  BSP_INT_MODULE
-#include <bsp.h>
+#include <bsp_twr.h>
 #include <bsp_os.h>
 
 

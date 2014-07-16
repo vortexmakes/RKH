@@ -41,7 +41,7 @@
 #ifndef  BSP_SER_PRESENT
 #define  BSP_SER_PRESENT
 
-#include <bsp.h>
+#include <bsp_twr.h>
 #include <bsp_os.h>
 #include <MK60N512VMD100.h>
 

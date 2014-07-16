@@ -32,7 +32,7 @@
 */
 
 #define  BSP_OS_MODULE
-#include <bsp.h>
+#include <bsp_twr.h>
 #include <bsp_os.h>
 
 

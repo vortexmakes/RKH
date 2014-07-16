@@ -22,7 +22,7 @@
 *                                        Freescale TWR-K60N512
 *                                          Evaluation Board
 *
-* Filename      : bsp.h
+* Filename      : bsp_twr.h
 * Version       : V1.00
 * Programmer(s) : JPB
 *                 DC

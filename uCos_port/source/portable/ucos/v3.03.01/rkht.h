@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		Micrium uCOS-III V3.03.01 multi-thread port
+ * 	\brief 		uC/OS-III for Freescale Kinetis K60 and IAR
  */
 
 
@@ -46,41 +46,41 @@
 #define __RKHT_H__
 
 
-#include "os.h"			/* the main uC/OS-III include file */
+#include "os.h"				/* the main uC/OS-III include file */
 
 
 /* ---- Portable data types ---------------------------------------------- */
 
 /*
- * 	The RKH uses a set of integer quantities. That maybe machine or 
- * 	compiler dependent.
+ * The RKH uses a set of integer quantities. That maybe machine or
+ * compiler dependent.
  */
 
-
-typedef CPU_INT8S		ri8_t;
+typedef CPU_INT08S		ri8_t;
 typedef CPU_INT16S		ri16_t;
 typedef CPU_INT32S		ri32_t;
-typedef CPU_INT8U		rui8_t;
+typedef CPU_INT08U		rui8_t;
 typedef CPU_INT16U		rui16_t;
 typedef CPU_INT32U		rui32_t;
 
 /*
- * 	The 'ruint' and 'rint' will normally be the natural size for a 
- * 	particular machine. These types designates an integer type that is 
- * 	usually fastest to operate with among all integer types.
+ * The 'ruint' and 'rint' will normally be the natural size for a
+ * particular machine. These types designates an integer type that is
+ * usually fastest to operate with among all integer types.
  */
 
-typedef unsigned int	ruint;
-typedef signed int		rint;
+typedef unsigned int    ruint;
+typedef signed int      rint;
 
 /*
- * 	Boolean data type and constants.
+ * Boolean data type and constants.
  *
- * 	\note
- * 	The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
- * 	definitions in \c rkhdef.h file.
+ * \note
+ * The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro
+ * definitions in \c rkhdef.h file.
  */
 
-typedef CPU_BOOLEAN		rbool_t;
+typedef CPU_BOOLEAN     rbool_t;
+
 
 #endif

@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		Micrium uCOS-III V3.03.01 multi-thread port
+ * 	\brief 	uC/OS-III for Freescale Kinetis K60 and IAR
  */
 
 
@@ -46,7 +46,6 @@
 #define __RKHPORT_H__
 
 
-#include <windows.h>
 #include "rkhrq.h"
 #include "rkhmp.h"
 
@@ -152,17 +151,11 @@ const char *rkh_get_port_desc( void );
 #define RKH_THREAD_TYPE					void*
 
 
-#define RKH_SMA_BLOCK( sma ) 			\
-				while( ((RKH_SMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
-				{ \
-					RKH_EXIT_CRITICAL_(); \
-					(void)WaitForSingleObject( ((RKH_SMA_T*)(sma))->os_signal, \
-														(DWORD)INFINITE ); \
-					RKH_ENTER_CRITICAL_(); \
-				}
+#define RKH_SMA_BLOCK( sma ) 			;
 
-#define RKH_SMA_READY( rg, sma ) 		\
-			    (void)SetEvent( ((RKH_SMA_T*)(sma))->os_signal )
+
+#define RKH_SMA_READY( rg, sma ) 		;
+
 
 #define RKH_SMA_UNREADY( rg, sma )		(void)0
 

@@ -22,7 +22,7 @@
 *                                        Freescale TWR-K60N512
 *                                          Evaluation Board
 *
-* Filename      : bsp.c
+* Filename      : bsp_twr.c
 * Version       : V1.00
 * Programmer(s) : JPB
 *                 DC
@@ -36,7 +36,7 @@
 */
 
 #define  BSP_MODULE
-#include  <bsp.h>
+#include  <bsp_twr.h>
 #include  <bsp_os.h>
 #include  <MK60N512VMD100.h>
 

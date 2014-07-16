@@ -2035,12 +2035,6 @@
           </file>
         </group>
         <file>
-          <name>$PROJ_DIR$\..\..\bsp\bsp.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\bsp\bsp.h</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$\..\..\bsp\bsp_int.c</name>
         </file>
         <file>
@@ -2048,6 +2042,12 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\bsp\bsp_ser.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp_twr.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\bsp_twr.h</name>
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\bsp\IAR\cstartup.c</name>

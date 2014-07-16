@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		Micrium uCOS-III V3.03.01 multi-thread port
+ * 	\brief 		uC/OS-III for Freescale Kinetis K60 and IAR
  */
 
 
@@ -47,166 +47,98 @@
 
 RKH_MODULE_NAME( rkhport )
 RKH_MODULE_VERSION( rkhport, 1.00 )
-RKH_MODULE_DESC( rkhport, "Micrium uCOS-III V3.03.01 (multi-thread)" )
+RKH_MODULE_DESC( rkhport, "uC/OS-III for Freescale Kinetis K60 and IAR" )
 
 
-static CRITICAL_SECTION csection;		/* Win32 critical section object */
-static DWORD tick_msec = 10u;			/* clock tick in [msec] */
-static rui8_t running;
-#if defined( RKH_USE_TRC_SENDER )
-static rui8_t l_isr_tick;
-#endif
-
-static DWORD WINAPI thread_function( LPVOID arg );
-
-
+static
 void
-rkh_enter_critical( void )
+thread_function( void *arg )
 {
-	EnterCriticalSection( &csection );
-}
-
-
-void
-rkh_exit_critical( void )
-{
-	LeaveCriticalSection( &csection );
-}
-
-
-void 
-rkh_set_tickrate( rui32_t tick_rate_hz )
-{
-	tick_msec = 1000UL/tick_rate_hz;
-}
-
-
-const 
-char *
-rkh_get_port_version( void )
-{
-	return RKH_MODULE_GET_VERSION();
-}
-
-
-const 
-char *
-rkh_get_port_desc( void )
-{
-	return RKH_MODULE_GET_DESC();
-}
-
-
-void 
-rkh_fwk_init( void )
-{
-    InitializeCriticalSection( &csection );
-}
-
-
-void 
-rkh_fwk_enter( void )
-{
-    RKH_HOOK_START();						/* start-up callback */
-	RKH_TR_FWK_EN();
-
-	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_HIGHEST );
-    running = (rui8_t)1;
-	RKH_TR_FWK_OBJ( &l_isr_tick );
-
-    while( running )
-	{
-		Sleep( tick_msec );				/* wait for the tick interval */
-		RKH_TIM_TICK( &l_isr_tick );	/* tick handler */
-    }
-    RKH_HOOK_EXIT();						/* cleanup callback */
-	RKH_TRC_CLOSE();					/* cleanup the trace session */
-    DeleteCriticalSection( &csection );
-}
-
-
-void 
-rkh_fwk_exit( void )
-{
-	RKH_TR_FWK_EX();
-	RKH_HOOK_EXIT();
-	running = (rui8_t)0;
-}
-
-
-void 
-rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
-						void *stks, rui32_t stksize )
-{
-	int priority;
-
-    ( void )stks;
-    ( void )stksize;
+	OS_ERR err;
 	RKH_SR_ALLOC();
 
-	RKH_REQUIRE( (qs != (const RKH_EVT_T **)0) && ( stks == (void *)0) );
-
-	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
-	rkh_sma_register( sma );
-	sma->os_signal = CreateEvent( NULL, FALSE, FALSE, NULL );
-    rkh_sma_init_hsm( sma );
-	sma->thread = CreateThread( NULL, stksize, thread_function, 
-														sma, 0, NULL );
-	RKH_ASSERT( sma->thread != (HANDLE)0 );
-
-	/* map RKH priority to win32 priority */
-	switch( RKH_GET_PRIO( sma ) )
+	while(((RKH_SMA_T *)arg)->running != (rbool_t)0)
 	{
-		case 0:
-			priority = THREAD_PRIORITY_HIGHEST;
-			break;
-		case 1:
-			priority = THREAD_PRIORITY_ABOVE_NORMAL;
-			break;
-		case RKH_LOWEST_PRIO:
-			priority = THREAD_PRIORITY_IDLE;
-			break;
-		case RKH_LOWEST_PRIO - 1:
-			priority = THREAD_PRIORITY_LOWEST;
-			break;
-		case RKH_LOWEST_PRIO - 2:
-			priority = THREAD_PRIORITY_BELOW_NORMAL;
-			break;
-		default:
-			priority = THREAD_PRIORITY_NORMAL;
-			break;
+		RKH_EVT_T *e = rkh_sma_get((RKH_SMA_T *)arg);
+        rkh_sma_dispatch((RKH_SMA_T *)arg, e);
+        RKH_FWK_GC(e);
 	}
 
-	SetThreadPriority( sma->thread, priority );
-	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
+	rkh_sma_unregister((RKH_SMA_T *)arg);
+	RKH_TR_SMA_TERM((RKH_SMA_T *)arg, RKH_GET_PRIO((RKH_SMA_T *)arg));
+	OSTaskDel((OS_TCB *)0, &err ); /* deletes the currently running task */
 }
 
 
 void 
 rkh_sma_terminate( RKH_SMA_T *sma )
 {
-	sma->thread = (HANDLE)0;
+	OS_ERR err;
+
+	sma->running = (rbool_t)0;
+#if 0
+	OSQDel(sma->queue, OS_OPT_DEL_ALWAYS, &err );
+
+    RKH_ASSERT(err == OS_ERR_NONE);
+#endif	
 }
 
 
-static
-DWORD
-WINAPI 
-thread_function( LPVOID arg )
+void
+rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
+                  void *stks, rui32_t stksize )
 {
-	RKH_SR_ALLOC();
+    OS_ERR err;
+    OS_PRIO prio;
+    RKH_SR_ALLOC();
 
-	do
-	{
-		RKH_EVT_T *e = rkh_sma_get( (RKH_SMA_T *)arg );
-        rkh_sma_dispatch( (RKH_SMA_T *)arg, e );
-        RKH_FWK_GC( e );
-	}
-	while( ((RKH_SMA_T *)arg)->thread != (HANDLE)0 );
+    RKH_REQUIRE(qs != (const RKH_EVT_T **)0); /* ??? */
+#if 0
+	OSQCreate( 	&sma->queue,				/* event message queue object */
+				"uc_queue",					/* name */
+				(OS_MSG_QTY)qsize,			/* max. size of message queue */
+				&err );						/* received error code */
 
-	rkh_sma_unregister( (RKH_SMA_T *)arg );
-	RKH_TR_SMA_TERM( (RKH_SMA_T *)arg, 
-			RKH_GET_PRIO( (RKH_SMA_T *)arg ));
-	CloseHandle( ((RKH_SMA_T *)arg)->os_signal );
-	return 0;
+    RKH_ASSERT(err == OS_ERR_NONE);
+#endif	
+    rkh_sma_register( sma );
+    rkh_sma_init_hsm( sma );
+
+    /* Map RKH priority to uC/OS-III priority. */
+	/* In both systems the lower the number the higher the priority. */
+	/* In uC/OS-III the priorities 0, 1, OS_CFG_PRIO_MAX-2 and ... */
+	/* ... OS_CFG_PRIO_MAX-2 are reserved. */
+	/* See uC/OS-III API reference manual for more information. */
+
+    switch( RKH_GET_PRIO( sma ) )
+    {
+        case 0:
+        case 1:
+            prio = RKH_GET_PRIO(sma) + 1;
+            break;
+        case OS_CFG_PRIO_MAX - 2:
+        case OS_CFG_PRIO_MAX - 1:
+            prio = OS_CFG_PRIO_MAX - 3;
+            break;
+        default:
+            prio = RKH_GET_PRIO(sma);
+            break;
+    }
+
+    OSTaskCreate(	sma->thread,			/* task object */
+                  	"uc_task", 				/* name */
+					thread_function,		/* function */
+					sma, 					/* function argument */
+					prio, 					/* priority */
+					(CPU_STK *)stks, 		/* stack base (low memory) */
+					(CPU_STK_SIZE)(stksize - 1),	/* stack limit */
+					stksize/sizeof(CPU_STK_SIZE), 	/* stack size */
+					(OS_MSG_QTY)0, 			/* queue size */
+					(OS_TICK)0, 			/* time quanta in round-robin */
+					(void *)0, 				/* TCB extension */
+					OS_OPT_TASK_STK_CLR, 	/* options */
+					&err );					/* received error code */
+
+    RKH_ASSERT(err == OS_ERR_NONE);
+	sma->running = (rbool_t)1;
 }
