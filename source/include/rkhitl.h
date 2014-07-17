@@ -1302,8 +1302,8 @@
 	#error "                                    [     || RKH_DISABLED]        "
 
 #elif 	((RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED) && \
-			(RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_DISABLED))
-	#error  "RKH_CFGPORT_NATIVE_EQUEUE_EN   illegally #define'd in 'rkhcfg.h'"
+		 (RKH_CFG_RQ_EN == RKH_DISABLED))
+	#error "RKH_CFG_RQ_EN                    illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 
 #endif
@@ -2382,7 +2382,7 @@ typedef struct RKH_SMA_T
 	 * 	of the SMA is running.
 	 */
 
-	rui8_t running;
+	rbool_t running;
 
 	/** 
  	 * 	\brief
