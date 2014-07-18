@@ -1302,7 +1302,7 @@
 	#error "                                    [     || RKH_DISABLED]        "
 
 #elif 	((RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED) && \
-			(RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_DISABLED))
+			(RKH_CFG_RQ_EN == RKH_DISABLED))
 	#error  "RKH_CFGPORT_NATIVE_EQUEUE_EN   illegally #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
 
@@ -2105,7 +2105,7 @@
 		#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
 	#endif
 #else
-	#define RKH_SR_ALLOC()
+	#define RKH_SR_ALLOC()					
 	#define RKH_ENTER_CRITICAL_()			RKH_ENTER_CRITICAL( dummy )
 	#define RKH_EXIT_CRITICAL_()			RKH_EXIT_CRITICAL( dummy )
 #endif

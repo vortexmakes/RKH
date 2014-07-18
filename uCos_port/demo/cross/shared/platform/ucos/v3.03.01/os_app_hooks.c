@@ -53,10 +53,10 @@ void  App_OS_SetAllHooks (void)
     OS_AppTaskDelHookPtr    = App_OS_TaskDelHook;
     OS_AppTaskReturnHookPtr = App_OS_TaskReturnHook;
 
-    OS_AppIdleTaskHookPtr   = App_OS_IdleTaskHook;
+//    OS_AppIdleTaskHookPtr   = App_OS_IdleTaskHook;
     OS_AppStatTaskHookPtr   = App_OS_StatTaskHook;
     OS_AppTaskSwHookPtr     = App_OS_TaskSwHook;
-    OS_AppTimeTickHookPtr   = App_OS_TimeTickHook;
+//    OS_AppTimeTickHookPtr   = App_OS_TimeTickHook;
     CPU_CRITICAL_EXIT();
 #endif
 }
@@ -85,10 +85,10 @@ void  App_OS_ClrAllHooks (void)
     OS_AppTaskDelHookPtr    = (OS_APP_HOOK_TCB)0;
     OS_AppTaskReturnHookPtr = (OS_APP_HOOK_TCB)0;
 
-    OS_AppIdleTaskHookPtr   = (OS_APP_HOOK_VOID)0;
+//    OS_AppIdleTaskHookPtr   = (OS_APP_HOOK_VOID)0;
     OS_AppStatTaskHookPtr   = (OS_APP_HOOK_VOID)0;
     OS_AppTaskSwHookPtr     = (OS_APP_HOOK_VOID)0;
-    OS_AppTimeTickHookPtr   = (OS_APP_HOOK_VOID)0;
+//    OS_AppTimeTickHookPtr   = (OS_APP_HOOK_VOID)0;
     CPU_CRITICAL_EXIT();
 #endif
 }
@@ -161,11 +161,11 @@ void  App_OS_TaskReturnHook (OS_TCB  *p_tcb)
 * Note(s)    : none
 ************************************************************************************************************************
 */
-
+/*
 void  App_OS_IdleTaskHook (void)
 {
 
-}
+}*/
 
 /*$PAGE*/
 /*
@@ -238,8 +238,8 @@ void  App_OS_TaskSwHook (void)
 * Note(s)    : 1) This function is assumed to be called from the Tick ISR.
 ************************************************************************************************************************
 */
-
+/*
 void  App_OS_TimeTickHook (void)
 {
 
-}
+}*/

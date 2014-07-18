@@ -90,7 +90,7 @@ const char *rkh_get_port_desc( void );
  * 	rkh_sma_get() functions.
  */
 
-#define RKH_CFGPORT_NATIVE_EQUEUE_EN		RKH_ENABLED
+#define RKH_CFGPORT_NATIVE_EQUEUE_EN		RKH_DISABLED
 
 /**
  * 	If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native 
@@ -142,22 +142,24 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_DIS_INTERRUPT()
 #define RKH_ENA_INTERRUPT()
-//#define RKH_CPUSR_TYPE
-#define RKH_ENTER_CRITICAL( dummy )		;
-#define RKH_EXIT_CRITICAL( dummy )		;
+#define RKH_CPUSR_TYPE					CPU_SR
+
+#define RKH_ENTER_CRITICAL( dummy )		do	{	dummy = CPU_SR_Save(); \
+												CPU_IntDisMeasStart(); \
+											} while (0)
+
+#define RKH_EXIT_CRITICAL( dummy )		do	{	CPU_IntDisMeasStop();  \
+			                                    CPU_SR_Restore(dummy); \
+											} while (0)
 
 
-#define RKH_EQ_TYPE              		RKH_RQ_T
+#define RKH_EQ_TYPE              		OS_Q
 #define RKH_OSSIGNAL_TYPE				void*
-#define RKH_THREAD_TYPE					void*
+#define RKH_THREAD_TYPE					OS_TCB
 
 
-#define RKH_SMA_BLOCK( sma ) 			;
-
-
-#define RKH_SMA_READY( rg, sma ) 		;
-
-
+#define RKH_SMA_BLOCK( sma ) 			(void)0
+#define RKH_SMA_READY( rg, sma ) 		(void)0
 #define RKH_SMA_UNREADY( rg, sma )		(void)0
 
 #define WIN32_LEAN_AND_MEAN

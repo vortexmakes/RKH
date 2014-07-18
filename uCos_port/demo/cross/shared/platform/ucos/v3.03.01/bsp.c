@@ -47,15 +47,25 @@
 #include "scevt.h"
 #include "svr.h"
 #include "cli.h"
+#include "cpu.h"
+#include "gpio.h"
+#include "switch.h"
+#include "seqchbak.h"
+#include "seqlog.h"
+#include "sequence.h"
+#include "genled.h"
+#include "switch.h"
+
 
 #include <bsp_twr.h>
 #include <bsp_ser.h>
+#include <os_app_hooks.h>
 #include <os.h>
 #include <lib_math.h>
 #include <lib_math.h>
 
 
-#define SERIAL_TRACE				0
+#define SERIAL_TRACE				1
 
 #define SIZEOF_EP0STO				32
 #define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
@@ -66,17 +76,14 @@
 RKH_THIS_MODULE
 
 static rui32_t l_rnd;			/* random seed */
-static RKH_ROM_STATIC_EVENT( e_term, TERM );
+
 static RKH_ROM_STATIC_EVENT( e_pause, PAUSE );
+
 static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
+
 #if defined( RKH_USE_TRC_SENDER )
 static rui8_t l_isr_kbd;
-#endif
-
-#if RKH_CFG_TRC_EN == RKH_ENABLED
-static rbool_t running;
-//static HANDLE idle_thread;
 #endif
 
 
@@ -84,20 +91,19 @@ static rbool_t running;
  * 	For serial trace feature.
  */
 
-#if SERIAL_TRACE == 1
-	static const KUARTPP_ST trz_uart = 
-	{
-		115200, 0, 1, KUART_HFC_DISABLE, NULL
-	};
 
-	/* Trazer Tool COM Port */
-	#define SERIAL_TRACE_OPEN()		kuart_init( UART3_BASE_PTR, &trz_uart )
+#if (SERIAL_TRACE == 1) && (APP_CFG_SERIAL_EN == DEF_ENABLED)
+
+	#define SERIAL_TRACE_BR			115200
+
+	#define SERIAL_TRACE_OPEN()		BSP_Ser_Init(115200);
 	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND( d ) 	BSP_Ser_WrByte( d )
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
-					kuart_putnchar( UART3_BASE_PTR, 	\
-								(char *)(buf_), 		\
-								(rui16_t)(len_))
+					{									\
+						while( len_-- != 0 )			\
+							BSP_Ser_WrByte( *buf_++ );	\
+					};
 #else
 	#define SERIAL_TRACE_OPEN()						(void)0
 	#define SERIAL_TRACE_CLOSE()					(void)0
@@ -122,31 +128,18 @@ bsp_publish( const RKH_EVT_T *e )
 void
 rkh_hook_timetick( void )
 {
-#if 0
-	if( _kbhit() )
-	{
-		int c = _getch();
-		
-		if( c == ESC )
-			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
-		else if( tolower(c) == 'p' )
-			bsp_publish( &e_pause );
-	}
-#endif
+	sequence_interrupt();
+	switch_tick();	
 }
 
 
 void 
 rkh_hook_start( void ) 
 {
-	OS_ERR err;
-
+	RKH_TRC_OPEN();
 	rkh_set_tickrate( BSP_TICKS_PER_SEC );
 	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
-
-	/* Start multitasking (i.e. give control to uC/OS-III).  */
-    OSStart(&err);  
 }
 
 
@@ -154,9 +147,6 @@ void
 rkh_hook_exit( void ) 
 {
 	RKH_TRC_FLUSH();
-#if RKH_CFG_TRC_EN == RKH_ENABLED
-	running = (rui8_t)0;
-#endif
 }
 
 
@@ -167,32 +157,19 @@ rkh_assert( RKHROM char * const file, int line )
 	RKH_DIS_INTERRUPT();
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	rkh_fwk_exit();
-	/*** perform reset ??? ***/
+	CPU_SW_EXCEPTION();
 }
 
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 
 
-/** Idle task hook to flush trace */
-#if 0
 static 
-DWORD WINAPI 
-idle_thread_function( LPVOID par )
+void
+idle_thread_function( void )
 {
-    (void)par;
-
-    SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_IDLE );
-    running = (rui8_t)1;
-
-    while( running )
-	{
-		RKH_TRC_FLUSH();
-        Sleep(10);                                      /* wait for a while */
-    }
-    return 0;                                             /* return success */
+	RKH_TRC_FLUSH();
 }
-#endif
 
 
 void 
@@ -203,13 +180,7 @@ rkh_trc_open( void )
 	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 
-	/** flush must be done in idle task */
-#if 0
-	if(( idle_thread = CreateThread( NULL, 1024, &idle_thread_function, (void *)0, 
-				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
-		fprintf( stderr, "Cannot create the idle thread: [%d] line from %s "
-						"file\n", __LINE__, __FILE__ );
-#endif
+	OS_AppIdleTaskHookPtr = idle_thread_function;
 }
 
 
@@ -223,8 +194,7 @@ rkh_trc_close( void )
 RKH_TS_T 
 rkh_trc_getts( void )
 {
-  return 0;
-//	return ( RKH_TS_T )clock();
+	return CPU_TS_Get32();
 }
 
 
@@ -254,6 +224,17 @@ rkh_trc_flush( void )
 #endif
 
 
+void
+bsp_switch_evt( rui8_t s, rui8_t st )
+{
+	if( st == SW_RELEASED )
+		return;
+
+	if(s == SW1_SWITCH )
+		bsp_publish( &e_pause );
+}
+
+
 rui32_t 
 bsp_rand( void )
 {  
@@ -277,69 +258,59 @@ bsp_srand( rui32_t seed )
 void 
 bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 {
-//	printf( "Client[%d] - Waiting for send request to server (%d seg)\n", 
-//									CLI_ID(clino), req_time );
+	(void)clino;
+	(void)req_time;
 }
 
 
 void 
 bsp_cli_req( rui8_t clino )
 {
-//	printf( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_WAITING );
 }
 
 
 void 
 bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
-//	printf( "Client[%d] - Using server for %d [seg]\n", 
-//									CLI_ID(clino), using_time );
+	(void)using_time;
+
+	set_cli_sled( clino, CLI_WORKING );
 }
 
 
 void 
 bsp_cli_paused( rui8_t clino )
 {
-//	printf( "Client[%d] - Paused\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_PAUSED );
 }
 
 
 void 
 bsp_cli_resumed( rui8_t clino )
 {
-//	printf( "Client[%d] - Resumed\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_IDLE );
 }
 
 
 void 
 bsp_cli_done( rui8_t clino )
 {
-//	printf( "Client[%d] - Done\n", CLI_ID(clino) );
+	set_cli_sled( clino, CLI_IDLE );
 }
 
 
 void 
 bsp_svr_recall( rui8_t clino )
 {
-//	printf( "%s Recall a deferred request from client[%d]\n", 
-//									SVR_NAME, CLI_ID(clino) );
+	(void)clino;
 }
 
 
 void 
 bsp_svr_paused( const RKH_SMA_T *sma )
 {
-/*	rint cn;
-	SVR_T *ao;
-
-	ao = RKH_CAST(SVR_T, sma);
-	printf( "%s Paused | ", SVR_NAME );
-	printf( "ntot = %d |", ao->ntot );
-
-	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		printf( " cli%d=%d |", cn, ao->ncr[ cn ] );
-
-	putchar('\n');*/
+	(void)sma;
 }
 
 
@@ -368,15 +339,13 @@ ucos_init( void )
 
 	BSP_Tick_Init();    /* Start Tick Initialization */
 
+	init_ioports();
+	init_seqs();
+
 #if (OS_CFG_STAT_TASK_EN > 0)
     OSStatTaskCPUUsageInit(&err);
 #endif
     
-#if (APP_CFG_SERIAL_EN == DEF_ENABLED)
-    BSP_Ser_Init(115200);
-#endif	
-
-    BSP_LED_Off(BSP_LED_ALL);
 }
 
 
@@ -389,6 +358,9 @@ bsp_init( int argc, char *argv[] )
 	(void)argv;
 
 	ucos_init();
+
+	init_ioports();
+	init_seqs();
 
 	bsp_srand( 1234U );
 

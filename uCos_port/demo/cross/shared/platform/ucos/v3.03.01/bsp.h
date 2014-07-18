@@ -47,8 +47,6 @@
 
 
 #include "rkh.h"
-#include "os.h"
-#include "os_cfg_app.h"
 #include "bsp_twr.h"
 
 
@@ -61,7 +59,7 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		OS_CFG_TICK_RATE_HZ
+#define BSP_TS_RATE_HZ		   		RKH_CFG_FWK_TICK_RATE_HZ
 
 
 void bsp_init( int argc, char *argv[] );
@@ -76,6 +74,7 @@ void bsp_cli_resumed( rui8_t clino );
 void bsp_cli_done( rui8_t clino );
 void bsp_svr_recall( rui8_t clino );
 void bsp_svr_paused( const RKH_SMA_T *sma );
+void bsp_switch_evt( rui8_t s, rui8_t st );
 
 
 #endif
