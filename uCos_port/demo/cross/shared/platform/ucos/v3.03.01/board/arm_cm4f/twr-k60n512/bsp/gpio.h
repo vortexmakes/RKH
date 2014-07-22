@@ -77,6 +77,18 @@
 void gpio_init(void);
 
 
+/*
+ * RKH Trace UART
+ */
+
+#define TRACE_KUART			UART3_BASE_PTR
+
+#define TRC_MUX_PPTY		(PORT_MUX_ALT3)
+#define CFGIO_TRC_RXD()		KPRPH(C, 16, TRC_MUX_PPTY,1)
+#define CFGIO_TRC_TXD()		KPRPH(C, 17, TRC_MUX_PPTY,1)
+#define CFGIO_TRC_RTS()		KPRPH(C, 18, TRC_MUX_PPTY,1)
+#define CFGIO_TRC_CTS()		KPRPH(C, 19, TRC_MUX_PPTY,1)
+
 #endif
 
 
