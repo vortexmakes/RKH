@@ -57,7 +57,7 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( SIX	);
 	RKH_TR_FWK_SIG( TERM	);
 	
-	rkh_sma_activate( my, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	RKH_SMA_ACTIVATE( my, qsto, QSTO_SIZE, 0, 0 );
 	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();

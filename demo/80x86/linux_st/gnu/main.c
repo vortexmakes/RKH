@@ -84,7 +84,7 @@ main( int argc, char *argv[] )
 		RKH_TUSR_SIG( ZERO );
 	RKH_TRC_USR_END();
 
-	rkh_sma_activate( my, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	RKH_SMA_ACTIVATE( my, qsto, QSTO_SIZE, 0, 0 );
 	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();

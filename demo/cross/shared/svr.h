@@ -14,6 +14,7 @@
 
 /* Helper macro */
 #define CLI_ID( _cp )			((_cp) - RKH_GET_PRIO(CLI(0)))
+#define SVR_STK_SIZE			1024
 
 
 typedef struct

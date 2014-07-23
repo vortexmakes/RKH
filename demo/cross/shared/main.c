@@ -14,8 +14,33 @@
 
 #define QSTO_SIZE			4
 
-static RKH_EVT_T *svr_qsto[ QSTO_SIZE ];
-static RKH_EVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
+
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+
+	/* Defines the event queue storage for active object 'server' */
+	static RKH_EVT_T *svr_qsto[ QSTO_SIZE ];
+
+	/* Defines the event queue storage for active object 'client' */
+	static RKH_EVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
+
+#else
+	#define svr_qsto
+	#define cli_qsto
+#endif
+
+
+#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+
+	/* Defines the task's stack for active object 'server' */
+	static CPU_STK svr_stk[ SVR_STK_SIZE ];
+
+	/* Defines the task's stack for active object 'client' */
+	static CPU_STK cli_stk[ NUM_CLIENTS ][ CLI_STK_SIZE ];
+
+#else
+	#define svr_stk
+	#define cli_stk
+#endif
 
 
 int
@@ -49,11 +74,10 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( PAUSE );
 	RKH_TR_FWK_SIG( TERM );
 
-	rkh_sma_activate( svr, (const RKH_EVT_T **)svr_qsto, QSTO_SIZE, 
-																CV(0), 0 );
+	RKH_SMA_ACTIVATE( svr, svr_qsto, QSTO_SIZE, 0, 0 );
+
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		rkh_sma_activate( CLI(cn), (const RKH_EVT_T **)cli_qsto[cn], 
-												QSTO_SIZE, CV(0), 0 );
+		RKH_SMA_ACTIVATE( CLI(cn), cli_qsto[cn], QSTO_SIZE, 0, 0 );
 	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();

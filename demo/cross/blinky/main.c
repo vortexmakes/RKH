@@ -32,7 +32,7 @@ main( int argc, char *argv[] )
 	/* send signals to trazer */
 	RKH_TR_FWK_SIG( TIMEOUT );
 
-	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
+	RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
 	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();

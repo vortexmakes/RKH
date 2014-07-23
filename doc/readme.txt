@@ -802,7 +802,7 @@ Example:
 \code 
 #define RKH_CFGPORT_TRC_SIZEOF_PTR			32u
 #define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32u
-#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP			32u
+#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
 \endcode
 
 A RKH port cannot and should not define all the functions that it calls, 
@@ -953,14 +953,30 @@ const char *rkh_get_port_desc( void );
  * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
  */
 
-#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP			32u
+#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
+
+/** 
+ * 	If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE() 
+ * 	macro invokes the rkh_sma_activate() function ignoring the external 
+ * 	event queue storage argument, \c qs.
+ */
+
+#define RKH_CFGPORT_SMA_QSTO_EN				RKH_ENABLED
+
+/** 
+ * 	If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE() 
+ * 	macro invokes the rkh_sma_activate() function ignoring the thread's 
+ * 	stack related arguments, \c stks and \c stksize.
+ */
+
+#define RKH_CFGPORT_SMA_STK_EN				RKH_ENABLED
 
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.
  */
 
-#define RKHROM			const	
+#define RKHROM								const
 
 
 #define RKH_DIS_INTERRUPT()
@@ -4065,6 +4081,20 @@ options with their documentation:
 		<TD> [8,16,32] </TD>
 		<TD> 16 </TD>
 		<TD align="left"> \copydetails RKH_CFGPORT_TRC_SIZEOF_TSTAMP </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFGPORT_SMA_QSTO_EN </TD>
+		<TD> boolean </TD>
+		<TD> </TD>
+		<TD> RKH_ENABLED </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_SMA_QSTO_EN </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFGPORT_SMA_STK_EN </TD>
+		<TD> boolean </TD>
+		<TD> </TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_CFGPORT_SMA_STK_EN </TD>
 	</TR>
 </TABLE>
 
