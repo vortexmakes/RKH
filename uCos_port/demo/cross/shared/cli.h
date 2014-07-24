@@ -16,6 +16,7 @@
 #define CLI1					CLI(1)
 #define CLI2					CLI(2)
 #define CLI3					CLI(3)
+#define CLI_STK_SIZE			1024
 
 
 typedef enum cli_prio

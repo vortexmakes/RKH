@@ -332,63 +332,63 @@ Sequcence 23 is and example of RKH_TE_USER.
 
 Using local RKH configuration
 
-   RKH_CFG_SMA_TRC_SNDR_EN     = 0
-   RKH_CFG_TRC_RTFIL_EN = 1
-   RKH_CFG_TRC_USER_TRACE_EN  = 1
-   RKH_CFG_TRC_ALL_EN            = 1
-   RKH_CFG_TRC_MP_EN          = 0
-   RKH_CFG_TRC_RQ_EN          = 0
-   RKH_CFG_TRC_SMA_EN         = 0
-   RKH_CFG_TRC_TMR_EN         = 0
-   RKH_CFG_TRC_SM_EN          = 0
-   RKH_CFG_TRC_FWK_EN         = 1
-   RKH_CFG_TRC_ASSERT_EN      = 1
-   RKH_CFG_RQ_GET_LWMARK_EN   = 0
-   RKH_CFG_MP_GET_LWM_EN      = 0
-   RKH_CFG_FWK_SIZEOF_EVT   = 8
-   RKH_CFGPORT_TRC_SIZEOF_TSTAMP  = 32
-   RKH_CFGPORT_TRC_SIZEOF_PTR = 32
-   RKH_CFG_TMR_SIZEOF_NTIMER  = 16
-   RKH_CFG_MP_SIZEOF_NBLOCK   = 8
-   RKH_CFG_RQ_SIZEOF_NELEM    = 8
-   RKH_CFG_FWK_SIZEOF_EVT_SIZE   = 16
-   RKH_CFG_TRC_NSEQ_EN        = 1
-   RKH_CFG_TRC_CHK_EN         = 1
-   RKH_CFG_TRC_TSTAMP_EN      = 1
-   RKH_CFG_MP_SIZEOF_BSIZE    = 1
-   RKH_CFG_FWK_MAX_EVT_POOL      = 4
+   RKH_CFG_SMA_TRC_SNDR_EN     		= 0
+   RKH_CFG_TRC_RTFIL_EN 			= 1
+   RKH_CFG_TRC_USER_TRACE_EN  		= 1
+   RKH_CFG_TRC_ALL_EN          	  	= 1
+   RKH_CFG_TRC_MP_EN          		= 0
+   RKH_CFG_TRC_RQ_EN          		= 0
+   RKH_CFG_TRC_SMA_EN         		= 0
+   RKH_CFG_TRC_TMR_EN         		= 0
+   RKH_CFG_TRC_SM_EN          		= 0
+   RKH_CFG_TRC_FWK_EN         		= 1
+   RKH_CFG_TRC_ASSERT_EN      		= 1
+   RKH_CFG_RQ_GET_LWMARK_EN   		= 0
+   RKH_CFG_MP_GET_LWM_EN      		= 0
+   RKH_CFG_FWK_SIZEOF_EVT   		= 8
+   RKH_CFGPORT_TRC_SIZEOF_TSTAMP 	= 32
+   RKH_CFGPORT_TRC_SIZEOF_PTR 		= 32
+   RKH_CFG_TMR_SIZEOF_NTIMER  		= 16
+   RKH_CFG_MP_SIZEOF_NBLOCK   		= 8
+   RKH_CFG_RQ_SIZEOF_NELEM    		= 8
+   RKH_CFG_FWK_SIZEOF_EVT_SIZE   	= 16
+   RKH_CFG_TRC_NSEQ_EN        		= 1
+   RKH_CFG_TRC_CHK_EN         		= 1
+   RKH_CFG_TRC_TSTAMP_EN      		= 1
+   RKH_CFG_MP_SIZEOF_BSIZE    		= 1
+   RKH_CFG_FWK_MAX_EVT_POOL      	= 4
 
 
 -------- Parsing trace stream from TCP Port 6602 --------
 
 Accepted connection from 127.0.0.1, port 61574
        121 [  0] FWK | TCFG       : Update RKH Configuration from client
-                                  | RKH_VERSION            = 2.4.03
-                                  | RKH_CFG_SMA_TRC_SNDR_EN  = 1
-                                  | RKH_CFG_TRC_RTFIL_EN = 1
-                                  | RKH_CFG_TRC_USER_TRACE_EN  = 1
-                                  | RKH_CFG_TRC_ALL_EN     = 1
-                                  | RKH_CFG_TRC_MP_EN      = 0
-                                  | RKH_CFG_TRC_RQ_EN      = 0
-                                  | RKH_CFG_TRC_SMA_EN     = 0
-                                  | RKH_CFG_TRC_TMR_EN     = 0
-                                  | RKH_CFG_TRC_SM_EN      = 0
-                                  | RKH_CFG_TRC_FWK_EN         = 1
-                                  | RKH_CFG_TRC_ASSERT_EN  = 1
-                                  | RKH_CFG_RQ_GET_LWMARK_EN   = 1
-                                  | RKH_CFG_MP_GET_LWM_EN      = 1
-                                  | RKH_CFG_FWK_SIZEOF_EVT   = 8
-                                  | RKH_CFGPORT_TRC_SIZEOF_TSTAMP  = 32
-                                  | RKH_CFGPORT_TRC_SIZEOF_PTR = 32
-                                  | RKH_CFG_TMR_SIZEOF_NTIMER  = 16
-                                  | RKH_CFG_MP_SIZEOF_NBLOCK   = 8
-                                  | RKH_CFG_RQ_SIZEOF_NELEM    = 8
-                                  | RKH_CFG_FWK_SIZEOF_EVT_SIZE   = 16
-                                  | RKH_CFG_TRC_NSEQ_EN    = 1
-                                  | RKH_CFG_TRC_CHK_EN         = 1
-                                  | RKH_CFG_TRC_TSTAMP_EN      = 1
-                                  | RKH_CFG_MP_SIZEOF_BSIZE    = 1
-                                  | RKH_CFG_FWK_MAX_EVT_POOL      = 4
+                                  | RKH_VERSION            			= 2.4.03
+                                  | RKH_CFG_SMA_TRC_SNDR_EN  		= 1
+                                  | RKH_CFG_TRC_RTFIL_EN 			= 1
+                                  | RKH_CFG_TRC_USER_TRACE_EN  		= 1
+                                  | RKH_CFG_TRC_ALL_EN     			= 1
+                                  | RKH_CFG_TRC_MP_EN      			= 0
+                                  | RKH_CFG_TRC_RQ_EN      			= 0
+                                  | RKH_CFG_TRC_SMA_EN     			= 0
+                                  | RKH_CFG_TRC_TMR_EN     			= 0
+                                  | RKH_CFG_TRC_SM_EN      			= 0
+                                  | RKH_CFG_TRC_FWK_EN         		= 1
+                                  | RKH_CFG_TRC_ASSERT_EN  			= 1
+                                  | RKH_CFG_RQ_GET_LWMARK_EN   		= 1
+                                  | RKH_CFG_MP_GET_LWM_EN      		= 1
+                                  | RKH_CFG_FWK_SIZEOF_EVT   		= 8
+                                  | RKH_CFGPORT_TRC_SIZEOF_TSTAMP	= 32
+                                  | RKH_CFGPORT_TRC_SIZEOF_PTR 		= 32
+                                  | RKH_CFG_TMR_SIZEOF_NTIMER  		= 16
+                                  | RKH_CFG_MP_SIZEOF_NBLOCK   		= 8
+                                  | RKH_CFG_RQ_SIZEOF_NELEM    		= 8
+                                  | RKH_CFG_FWK_SIZEOF_EVT_SIZE   	= 16
+                                  | RKH_CFG_TRC_NSEQ_EN    			= 1
+                                  | RKH_CFG_TRC_CHK_EN         		= 1
+                                  | RKH_CFG_TRC_TSTAMP_EN      		= 1
+                                  | RKH_CFG_MP_SIZEOF_BSIZE    		= 1
+                                  | RKH_CFG_FWK_MAX_EVT_POOL      	= 4
 
 
        123 [  1] FWK | OBJ        : obj=0x00180B01, nm=l_isr_kbd

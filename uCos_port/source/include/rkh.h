@@ -1655,6 +1655,84 @@ void rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
 						RKH_RQNE_T qsize, void *stks, rui32_t stksize );
 
 
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+
+	#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+	
+	/**
+	 * 	\brief
+	 * 	Invoke the active object activation function rkh_sma_activate().
+	 *
+	 * 	This macro is the recommended way of invoke the rkh_sma_activate() 
+	 * 	function to active an active object, because it allows to 
+	 * 	completely hides the platform-specific code.
+	 *
+	 *	Example:
+	 *	\code
+	 *	int
+	 *	main( int argc, char *argv[] )
+	 *	{
+	 *		...  
+	 *		RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
+	 *		...
+	 *		return 0;
+	 *	}
+	 *	\endcode
+	 *
+	 * 	\param sma__		pointer to previously created state machine 
+	 * 						application.
+	 * 	\param qsto__		base address of the event storage area. A message 
+	 * 						storage area is declared as an array of pointers 
+	 * 						to RKH events.
+	 * 	\param qsto_size__	size of the storage event area [in number of 
+	 * 						entries].
+	 * 	\param stk__		starting address of the stack's memory area.
+	 * 	\param stk_size__	size of stack memory area [in bytes].
+	 *
+	 *	\sa
+	 *	rkh_sma_activate().
+	 */
+
+	#define RKH_SMA_ACTIVATE(	sma__, qsto__, 							\
+								qsto_size__, stk__, stk_size__ ) 		\
+				rkh_sma_activate(	sma__, 								\
+									(const RKH_EVT_T **)qsto__, 		\
+									qsto_size__, 						\
+									(void *)stk__, 						\
+									(rui32_t)stk_size__ )
+	#else
+	#define RKH_SMA_ACTIVATE(	sma__, qsto__, 							\
+									qsto_size__, stk__, stk_size__ )	\
+				rkh_sma_activate(	sma__, 								\
+									(const RKH_EVT_T **)qsto__, 		\
+									qsto_size__, 						\
+									(void *)0, 							\
+									(rui32_t)0 )
+	#endif
+
+#else
+
+	#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+	#define RKH_SMA_ACTIVATE(	sma__, qsto__, 							\
+								qsto_size__, stk__, stk_size__ )		\
+				rkh_sma_activate(	sma__, 								\
+									(const RKH_EVT_T **)0, 				\
+									qsto_size__, 						\
+									(void *)stk__, 						\
+									(rui32_t)stk_size__ )
+	#else
+	#define RKH_SMA_ACTIVATE(	sma__, qsto__, 							\
+								qsto_size__, stk__, stk_size__ )		\
+				rkh_sma_activate(	sma__, 								\
+									(const RKH_EVT_T **)0, 				\
+									qsto_size__, 						\
+									(void *)0, 							\
+									(rui32_t)0 )
+	#endif
+
+#endif
+
+
 /**
  * 	\brief
  * 	Declare and allocate a SMA (active object) derived from RKH_SMA_T. Also, 

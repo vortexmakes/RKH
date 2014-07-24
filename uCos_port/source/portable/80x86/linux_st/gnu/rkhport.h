@@ -139,12 +139,28 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
 
+/** 
+ * 	If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE() 
+ * 	macro invokes the rkh_sma_activate() function ignoring the external 
+ * 	event queue storage argument, \c qs.
+ */
+
+#define RKH_CFGPORT_SMA_QSTO_EN				RKH_ENABLED
+
+/** 
+ * 	If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE() 
+ * 	macro invokes the rkh_sma_activate() function ignoring the thread's 
+ * 	stack related arguments, \c stks and \c stksize.
+ */
+
+#define RKH_CFGPORT_SMA_STK_EN				RKH_DISABLED
+
 /*
  * 	Declaring an object RKHROM announces that its value will
  * 	not be changed and it will be stored in ROM.
  */
 
-#define RKHROM			const	
+#define RKHROM								const	
 
 
 #define RKH_DIS_INTERRUPT()
