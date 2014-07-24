@@ -74,10 +74,11 @@ main( int argc, char *argv[] )
 	RKH_TR_FWK_SIG( PAUSE );
 	RKH_TR_FWK_SIG( TERM );
 
-	RKH_SMA_ACTIVATE( svr, svr_qsto, QSTO_SIZE, 0, 0 );
+	RKH_SMA_ACTIVATE( svr, svr_qsto, QSTO_SIZE, svr_stk, SVR_STK_SIZE );
 
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		RKH_SMA_ACTIVATE( CLI(cn), cli_qsto[cn], QSTO_SIZE, 0, 0 );
+		RKH_SMA_ACTIVATE( CLI(cn), cli_qsto[cn], QSTO_SIZE,	cli_stk, 
+															CLI_STK_SIZE );
 	rkh_fwk_enter();
 
 	RKH_TRC_CLOSE();
