@@ -51,7 +51,6 @@ RKH_MODULE_NAME( rkhport )
 RKH_MODULE_VERSION( rkhport, 1.00 )
 RKH_MODULE_DESC( rkhport, "uC/OS-III for Freescale Kinetis K60 and IAR" )
 
-static rui16_t tick_cnt, tick_base;
 
 static
 void
@@ -73,14 +72,6 @@ thread_function( void *arg )
 }
 
 
-void 
-rkh_set_tickrate( rui32_t tick_rate_hz )
-{
-	RKH_ASSERT( tick_rate_hz <=	OS_CFG_TICK_RATE_HZ );
-	tick_cnt = tick_base = OS_CFG_TICK_RATE_HZ/tick_rate_hz;
-}
-
-
 const 
 char *
 rkh_get_port_version( void )
@@ -97,15 +88,6 @@ rkh_get_port_desc( void )
 }
 
 
-void
-l_isr_tick( void )
-{
-	if(tick_cnt && (--tick_cnt == 0) )
-	{
-		tick_cnt = tick_base;
-		RKH_TIM_TICK( (const void *)(l_isr_tick) );
-	}
-}
 
 
 void 
@@ -113,9 +95,8 @@ rkh_fwk_init( void )
 {
 	OS_ERR err;
 	
-	OS_AppTimeTickHookPtr = l_isr_tick;
-
 	OSInit(&err);
+	
 	RKH_ASSERT(err == OS_ERR_NONE);
 }
 
@@ -128,8 +109,6 @@ rkh_fwk_enter( void )
 
     RKH_HOOK_START();	/* RKH start-up callback */
 	RKH_TR_FWK_EN();
-
-	RKH_TR_FWK_OBJ( &l_isr_tick );
 
 	OSStart(&err);		/* uC/OS-III start the multitasking */
 	RKH_TRC_CLOSE();	/* cleanup the trace session */

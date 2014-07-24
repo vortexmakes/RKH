@@ -74,6 +74,7 @@
 
 RKH_THIS_MODULE
 
+static rui16_t tick_cnt;
 static rui32_t l_rnd;			/* random seed */
 
 static RKH_ROM_STATIC_EVENT( e_pause, PAUSE );
@@ -124,6 +125,18 @@ static rui8_t l_isr_kbd;
 
 static
 void
+l_isr_tick( void )
+{
+	if(tick_cnt && (--tick_cnt == 0) )
+	{
+		tick_cnt = BSP_TICKS_RATE;
+		RKH_TIM_TICK( (const void *)(l_isr_tick) );
+	}
+}
+
+
+static
+void
 bsp_publish( const RKH_EVT_T *e )
 {
 	rint cn;
@@ -146,7 +159,6 @@ rkh_hook_timetick( void )
 void 
 rkh_hook_start( void ) 
 {
-	rkh_set_tickrate( BSP_TICKS_PER_SEC );
 	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
@@ -172,7 +184,6 @@ rkh_assert( RKHROM char * const file, int line )
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 
-
 static 
 void
 idle_thread_function( void )
@@ -188,8 +199,7 @@ rkh_trc_open( void )
 
 	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
-
-	OS_AppIdleTaskHookPtr = idle_thread_function;
+	RKH_TR_FWK_OBJ( &l_isr_tick );
 }
 
 
@@ -230,6 +240,7 @@ rkh_trc_flush( void )
 			break;
 	}
 }
+
 #endif
 
 
@@ -323,57 +334,39 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 }
 
 
-void
-ucos_init( void )
-{
-	OS_ERR err;
-#if (CPU_CFG_NAME_EN == DEF_ENABLED)
-	CPU_ERR cpu_err;
-#endif
-
-	CPU_Init();
-	Mem_Init();			/* Initialize the Memory Management Module */
-	Math_Init();		/* Initialize the Mathematical Module */	
-
-#if (CPU_CFG_NAME_EN == DEF_ENABLED)
-	CPU_NameSet((CPU_CHAR *)"MK60N512ZVMD10",
-                (CPU_ERR  *)&cpu_err);
-#endif
-	
-	BSP_IntDisAll();   
-	
-	OSInit(&err);		/* Initialize "uC/OS-III, The Real-Time Kernel" */
-	
-	BSP_Init();         /* Start BSP and tick initialization */
-
-	BSP_Tick_Init();    /* Start Tick Initialization */
-
-	init_ioports();
-	init_seqs();
-
-#if (OS_CFG_STAT_TASK_EN > 0)
-    OSStatTaskCPUUsageInit(&err);
-#endif
-    
-}
-
-
 void 
 bsp_init( int argc, char *argv[] )
 {
+#if (OS_CFG_STAT_TASK_EN > 0)	
+	OS_ERR err;
+#endif
 	rint cn;
 
 	(void)argc;
 	(void)argv;
 
-	ucos_init();
+	CPU_Init();
+	Mem_Init();
+	Math_Init();
+
+	BSP_IntDisAll();
+	BSP_Init();
+	BSP_Tick_Init();
 
 	init_ioports();
 	init_seqs();
 
 	bsp_srand( 1234U );
 
+#if (OS_CFG_STAT_TASK_EN > 0)
+    OSStatTaskCPUUsageInit(&err);
+#endif
+
 	rkh_fwk_init();
+	
+	tick_cnt = BSP_TICKS_RATE;
+	OS_AppTimeTickHookPtr = l_isr_tick;
+	OS_AppIdleTaskHookPtr = idle_thread_function;
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )

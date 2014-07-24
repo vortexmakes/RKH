@@ -48,12 +48,19 @@
 
 #include "rkh.h"
 #include "bsp_twr.h"
+#include "os_cfg_app.h"
 
 #define BSP_KERNEL_IRQ_PRIO		6
 #define BSP_UART_IRQ_PRIO		7
 #define BSP_HIGHEST_IRQ_PRI		5
 
-#define BSP_TICKS_PER_SEC   		RKH_CFG_FWK_TICK_RATE_HZ
+#if ( RKH_CFG_FWK_TICK_RATE_HZ > OS_CFG_TICK_RATE_HZ )
+#error "RKH_CFG_FWK_TICK_RATE_HZ in 'rkhcfg.h' must be <= to OS tick"
+#error "defined by RKH_CFG_FWK_TICK_RATE_HZ in 'os_cfg_app.h'       "
+#endif
+
+#define BSP_TICKS_PER_SEC	RKH_CFG_FWK_TICK_RATE_HZ
+#define BSP_TICKS_RATE   	(OS_CFG_TICK_RATE_HZ/RKH_CFG_FWK_TICK_RATE_HZ)
 
 /**
  * 	\brief

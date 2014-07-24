@@ -61,7 +61,7 @@
 */
 
                                                                 /* Configure CPU host name feature (see Note #1) :      */
-#define  CPU_CFG_NAME_EN                        DEF_ENABLED
+#define  CPU_CFG_NAME_EN                        DEF_DISABLED
                                                                 /*   DEF_DISABLED  CPU host name DISABLED               */
                                                                 /*   DEF_ENABLED   CPU host name ENABLED                */
 

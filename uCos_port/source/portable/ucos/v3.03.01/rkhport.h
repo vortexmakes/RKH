@@ -53,7 +53,6 @@
 
 void rkh_enter_critical( void );
 void rkh_exit_critical( void );
-void rkh_set_tickrate( rui32_t tick_rate_hz );
 const char *rkh_get_port_version( void );
 const char *rkh_get_port_desc( void );
 
@@ -131,6 +130,22 @@ const char *rkh_get_port_desc( void );
  */
 
 #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
+
+/** 
+ * 	If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE() 
+ * 	macro invokes the rkh_sma_activate() function ignoring the external 
+ * 	event queue storage argument, \c qs.
+ */
+
+#define RKH_CFGPORT_SMA_QSTO_EN				RKH_DISABLED
+
+/** 
+ * 	If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE() 
+ * 	macro invokes the rkh_sma_activate() function ignoring the thread's 
+ * 	stack related arguments, \c stks and \c stksize.
+ */
+
+#define RKH_CFGPORT_SMA_STK_EN				RKH_ENABLED
 
 /*
  * 	Declaring an object RKHROM announces that its value will
