@@ -49,7 +49,7 @@
 #include "cli.h"
 #include "cpu.h"
 #include "gpio.h"
-#include "switch.h"
+#include "kuart.h"
 #include "seqchbak.h"
 #include "seqlog.h"
 #include "sequence.h"
@@ -58,7 +58,6 @@
 
 
 #include <bsp_twr.h>
-#include <bsp_ser.h>
 #include <os_app_hooks.h>
 #include <os.h>
 #include <lib_math.h>
@@ -92,18 +91,29 @@ static rui8_t l_isr_kbd;
  */
 
 
-#if (SERIAL_TRACE == 1) && (APP_CFG_SERIAL_EN == DEF_ENABLED)
+#if SERIAL_TRACE == 1
 
-	#define SERIAL_TRACE_BR			115200
+	static const KUARTPP_ST trz_uart = 
+	{
+		115200, 0, 1, KUART_HFC_DISABLE, NULL
+	};
 
-	#define SERIAL_TRACE_OPEN()		BSP_Ser_Init(115200);
+	/* Trazer Tool COM Port */
+	#define SERIAL_TRACE_OPEN()								\
+			{												\
+				CFGIO_TRC_RXD();							\
+				CFGIO_TRC_TXD();							\
+				CFGIO_TRC_RTS();							\
+				CFGIO_TRC_CTS();							\
+				kuart_init( TRACE_KUART, &trz_uart );		\
+			}
+
 	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	BSP_Ser_WrByte( d )
+	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
-					{									\
-						while( len_-- != 0 )			\
-							BSP_Ser_WrByte( *buf_++ );	\
-					};
+					kuart_putnchar( UART3_BASE_PTR, 	\
+								(char *)(buf_), 		\
+								(rui16_t)(len_))
 #else
 	#define SERIAL_TRACE_OPEN()						(void)0
 	#define SERIAL_TRACE_CLOSE()					(void)0
@@ -136,7 +146,6 @@ rkh_hook_timetick( void )
 void 
 rkh_hook_start( void ) 
 {
-	RKH_TRC_OPEN();
 	rkh_set_tickrate( BSP_TICKS_PER_SEC );
 	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
 	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );

@@ -49,6 +49,9 @@
 #include "rkh.h"
 #include "bsp_twr.h"
 
+#define BSP_KERNEL_IRQ_PRIO		6
+#define BSP_UART_IRQ_PRIO		7
+#define BSP_HIGHEST_IRQ_PRI		5
 
 #define BSP_TICKS_PER_SEC   		RKH_CFG_FWK_TICK_RATE_HZ
 

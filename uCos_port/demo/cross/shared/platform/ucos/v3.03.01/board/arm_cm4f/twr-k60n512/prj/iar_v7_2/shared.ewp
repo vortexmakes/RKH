@@ -2022,6 +2022,12 @@
         <group>
           <name>Freescale</name>
           <file>
+            <name>$PROJ_DIR$\..\..\bsp\Freescale\arm_cm4.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\bsp\Freescale\arm_cm4.h</name>
+          </file>
+          <file>
             <name>$PROJ_DIR$\..\..\bsp\Freescale\kinetis.h</name>
           </file>
           <file>
@@ -2095,12 +2101,6 @@
           <name>$PROJ_DIR$\..\..\bsp\bsp_int.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\bsp\bsp_ser.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\bsp\bsp_ser.h</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$\..\..\bsp\bsp_twr.c</name>
         </file>
         <file>
@@ -2114,6 +2114,12 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\bsp\IAR\K60X_FLASH.icf</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\kuart.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\bsp\kuart.h</name>
         </file>
       </group>
       <group>

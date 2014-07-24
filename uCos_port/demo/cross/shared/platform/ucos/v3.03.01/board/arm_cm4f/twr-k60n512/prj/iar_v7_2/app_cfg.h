@@ -37,7 +37,7 @@
 *********************************************************************************************************
 */
 
-#define  APP_CFG_SERIAL_EN                          DEF_ENABLED
+#define  APP_CFG_SERIAL_EN                          DEF_DISABLED
 
 
 /*
