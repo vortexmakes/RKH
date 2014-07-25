@@ -32,12 +32,6 @@ typedef struct
 	rui8_t cnt;		/* private member */
 } BKYSM_T;			/* SMA derived from RKH_SMA_T structure */
 
-typedef struct BKY_ST_T
-{
-	RKHROM RKH_SBSC_T base;
-	const char *title;
-} BKY_ST_T;
-
 
 /*
  *	Declare HSM.
@@ -50,8 +44,7 @@ RKH_SMA_DCLR( blinky );
  *	Declare states and pseudostates.
  */
 
-RKH_DCLR_BASIC_STATE led_off/*, led_on*/;
-extern const BKY_ST_T led_on;
+RKH_DCLR_BASIC_STATE led_off, led_on;
 
 
 #endif
