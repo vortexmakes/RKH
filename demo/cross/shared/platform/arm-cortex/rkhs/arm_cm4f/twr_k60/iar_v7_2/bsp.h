@@ -84,7 +84,8 @@ void bsp_cli_resumed( rui8_t clino );
 void bsp_cli_done( rui8_t clino );
 void bsp_svr_recall( rui8_t clino );
 void bsp_svr_paused( const RKH_SMA_T *sma );
-void bsp_switch_evt( rui8_t s, rui8_t st );
+void bsp_publish( const RKH_EVT_T *e );
+
 
 #ifdef RKH_DEBUG
 #define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )
