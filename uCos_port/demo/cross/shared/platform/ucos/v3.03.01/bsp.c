@@ -31,7 +31,7 @@
  *  --------------------------------------------------------------------------
  *  File                     : bsp.c
  *	Last updated for version : v2.4.04
- *	By                       : LF
+ *	By                       : DB
  *  --------------------------------------------------------------------------
  *  \endcond
  *
@@ -72,16 +72,16 @@
 #define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
 
 
-RKH_THIS_MODULE
+/* This macro is needed only if the module requires to check 	.. */
+/* .. expressions that ought to be true as long as the program  .. */
+/* .. is running. 												   */
+
+/* RKH_THIS_MODULE */
 
 static rui16_t tick_cnt;
-static rui32_t l_rnd;			/* random seed */
-
-static RKH_ROM_STATIC_EVENT( e_pause, PAUSE );
-
+static rui32_t l_rnd;				/* random seed */
 static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
-
 #if defined( RKH_USE_TRC_SENDER )
 static rui8_t l_isr_kbd;
 #endif
@@ -101,19 +101,20 @@ static rui8_t l_isr_kbd;
 
 	/* Trazer Tool COM Port */
 	#define SERIAL_TRACE_OPEN()								\
-			{												\
-				CFGIO_TRC_RXD();							\
-				CFGIO_TRC_TXD();							\
-				CFGIO_TRC_RTS();							\
-				CFGIO_TRC_CTS();							\
-				kuart_init( TRACE_KUART, &trz_uart );		\
-			}
+				{											\
+					CFGIO_TRC_RXD();						\
+					CFGIO_TRC_TXD();						\
+					CFGIO_TRC_RTS();						\
+					CFGIO_TRC_CTS();						\
+					kuart_init( TRACE_KUART, &trz_uart );	\
+				}
 
-	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
-	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
-					kuart_putnchar( UART3_BASE_PTR, 	\
-								(char *)(buf_), 		\
+	#define SERIAL_TRACE_CLOSE() 					(void)0
+	#define SERIAL_TRACE_SEND( d ) \
+				kuart_putchar( UART3_BASE_PTR, d )
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 			\
+				kuart_putnchar( UART3_BASE_PTR, 			\
+								(char *)(buf_), 			\
 								(rui16_t)(len_))
 #else
 	#define SERIAL_TRACE_OPEN()						(void)0
@@ -125,17 +126,16 @@ static rui8_t l_isr_kbd;
 
 static
 void
-l_isr_tick( void )
+bsp_isr_tick( void )
 {
-	if(tick_cnt && (--tick_cnt == 0) )
+	if(tick_cnt && (--tick_cnt == (rui16_t)0))
 	{
 		tick_cnt = BSP_TICKS_RATE;
-		RKH_TIM_TICK( (const void *)(l_isr_tick) );
+		RKH_TIM_TICK((const void *)(bsp_isr_tick));
 	}
 }
 
 
-static
 void
 bsp_publish( const RKH_EVT_T *e )
 {
@@ -199,7 +199,7 @@ rkh_trc_open( void )
 
 	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
-	RKH_TR_FWK_OBJ( &l_isr_tick );
+	RKH_TR_FWK_OBJ( &bsp_isr_tick );
 }
 
 
@@ -242,17 +242,6 @@ rkh_trc_flush( void )
 }
 
 #endif
-
-
-void
-bsp_switch_evt( rui8_t s, rui8_t st )
-{
-	if( st == SW_RELEASED )
-		return;
-
-	if(s == SW1_SWITCH )
-		bsp_publish( &e_pause );
-}
 
 
 rui32_t 
@@ -365,7 +354,7 @@ bsp_init( int argc, char *argv[] )
 	rkh_fwk_init();
 	
 	tick_cnt = BSP_TICKS_RATE;
-	OS_AppTimeTickHookPtr = l_isr_tick;
+	OS_AppTimeTickHookPtr = bsp_isr_tick;
 	OS_AppIdleTaskHookPtr = idle_thread_function;
 
 	RKH_FILTER_OFF_SMA( svr );

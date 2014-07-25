@@ -31,7 +31,7 @@
  *  --------------------------------------------------------------------------
  *  File                     : bsp.h
  *	Last updated for version : v2.4.04
- *	By                       : LF
+ *	By                       : DB
  *  --------------------------------------------------------------------------
  *  \endcond
  *
@@ -50,17 +50,18 @@
 #include "bsp_twr.h"
 #include "os_cfg_app.h"
 
-#define BSP_KERNEL_IRQ_PRIO		6
-#define BSP_UART_IRQ_PRIO		7
-#define BSP_HIGHEST_IRQ_PRI		5
+#define BSP_KERNEL_IRQ_PRIO			6
+#define BSP_UART_IRQ_PRIO			7
+#define BSP_HIGHEST_IRQ_PRI			5
 
-#if ( RKH_CFG_FWK_TICK_RATE_HZ > OS_CFG_TICK_RATE_HZ )
+#if (RKH_CFG_FWK_TICK_RATE_HZ > OS_CFG_TICK_RATE_HZ)
 #error "RKH_CFG_FWK_TICK_RATE_HZ in 'rkhcfg.h' must be <= to OS tick"
 #error "defined by RKH_CFG_FWK_TICK_RATE_HZ in 'os_cfg_app.h'       "
 #endif
 
-#define BSP_TICKS_PER_SEC	RKH_CFG_FWK_TICK_RATE_HZ
-#define BSP_TICKS_RATE   	(OS_CFG_TICK_RATE_HZ/RKH_CFG_FWK_TICK_RATE_HZ)
+#define BSP_TICKS_PER_SEC			RKH_CFG_FWK_TICK_RATE_HZ
+#define BSP_TICKS_RATE   			(OS_CFG_TICK_RATE_HZ / \
+									RKH_CFG_FWK_TICK_RATE_HZ)
 
 /**
  * 	\brief
@@ -84,7 +85,7 @@ void bsp_cli_resumed( rui8_t clino );
 void bsp_cli_done( rui8_t clino );
 void bsp_svr_recall( rui8_t clino );
 void bsp_svr_paused( const RKH_SMA_T *sma );
-void bsp_switch_evt( rui8_t s, rui8_t st );
+void bsp_publish( const RKH_EVT_T *e );
 
 
 #endif
