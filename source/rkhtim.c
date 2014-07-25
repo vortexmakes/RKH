@@ -88,8 +88,6 @@ static
 void
 rem_from_list( RKH_TMR_T *t, RKH_TMR_T *tprev )
 {
-	RKH_SR_ALLOC();
-
 	if( thead == t )			/* is first timer in the list? */
 		thead = t->tnext;
 	else
