@@ -1601,48 +1601,49 @@
 #define RKH_EXPOINT						RKH_TYPE( RKH_PSEUDO, 	0x40 )	
 
 
-#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_DISABLED || \
-		(	RKH_CFG_SMA_DEEP_HIST_EN == RKH_DISABLED &&  \
-			RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_DISABLED && \
-			RKH_CFG_SMA_SUBMACHINE_EN == RKH_DISABLED && \
-			RKH_CFG_SMA_CONDITIONAL_EN == RKH_DISABLED && \
-			RKH_CFG_SMA_CHOICE_EN == RKH_DISABLED ))
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN 	== RKH_DISABLED || \
+	   (RKH_CFG_SMA_DEEP_HIST_EN 	== RKH_DISABLED && \
+		RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_DISABLED && \
+		RKH_CFG_SMA_SUBMACHINE_EN 	== RKH_DISABLED && \
+		RKH_CFG_SMA_CONDITIONAL_EN 	== RKH_DISABLED && \
+		RKH_CFG_SMA_CHOICE_EN 		== RKH_DISABLED))
 	#define RKH_PSEUDOSTATE		RKH_DISABLED
 #else
 	#define RKH_PSEUDOSTATE		RKH_ENABLED
 #endif
 
-#if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-			(RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_ENABLED || \
-				RKH_CFG_SMA_DEEP_HIST_EN == RKH_ENABLED))
+#if (	RKH_CFG_SMA_HCAL_EN 		== RKH_ENABLED && 	\
+		RKH_CFG_SMA_PSEUDOSTATE_EN 	== RKH_ENABLED && 	\
+	   (RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_ENABLED || 	\
+		RKH_CFG_SMA_DEEP_HIST_EN 	== RKH_ENABLED))
 	#define RKH_HISTORY_ENABLED
 #endif
 
-#if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_DEEP_HIST_EN == RKH_ENABLED)
+#if (	RKH_CFG_SMA_HCAL_EN 		== RKH_ENABLED && \
+		RKH_CFG_SMA_PSEUDOSTATE_EN 	== RKH_ENABLED && \
+		RKH_CFG_SMA_DEEP_HIST_EN 	== RKH_ENABLED)
 	#define RKH_DEEP_ENABLED
 #endif
 
-#if (	RKH_CFG_SMA_HCAL_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
+#if (	RKH_CFG_SMA_HCAL_EN 		== RKH_ENABLED && \
+		RKH_CFG_SMA_PSEUDOSTATE_EN 	== RKH_ENABLED && \
 		RKH_CFG_SMA_SHALLOW_HIST_EN == RKH_ENABLED)
 	#define RKH_SHALLOW_ENABLED
 #endif
 
-#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_SUBMACHINE_EN == RKH_ENABLED)
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN 	== RKH_ENABLED && \
+		RKH_CFG_SMA_SUBMACHINE_EN 	== RKH_ENABLED)
 	#define RKH_SUBMACHINE_ENABLED
 #endif
 
-#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == RKH_ENABLED && \
-		RKH_CFG_SMA_CHOICE_EN == RKH_ENABLED)
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN 	== RKH_ENABLED && \
+		RKH_CFG_SMA_CHOICE_EN 		== RKH_ENABLED)
 	#define RKH_CHOICE_ENABLED
 #endif
 
-#if (	RKH_CFG_SMA_PSEUDOSTATE_EN == 1 && \
-		(RKH_CFG_SMA_CONDITIONAL_EN == 1 || RKH_CFG_SMA_CHOICE_EN == 1))
+#if (	RKH_CFG_SMA_PSEUDOSTATE_EN	== RKH_ENABLED && \
+	   (RKH_CFG_SMA_CONDITIONAL_EN 	== RKH_ENABLED || \
+		RKH_CFG_SMA_CHOICE_EN 		== RKH_ENABLED))
 	#define RKH_CHOICE_OR_CONDITIONAL_ENABLED
 #endif
 	
@@ -1652,8 +1653,7 @@
 							rkh_hook_dispatch( (sma), (RKH_EVT_T*)(e) )
 
 #else
-	#define RKH_HOOK_DISPATCH( sma, e )	\
-							(void)0
+	#define RKH_HOOK_DISPATCH( sma, e )		(void)0
 #endif
 
 
@@ -1661,8 +1661,7 @@
 	#define RKH_HOOK_TIMEOUT( t )	\
 							rkh_hook_timeout( (t) )
 #else
-	#define RKH_HOOK_TIMEOUT( t )	\
-							(void)0
+	#define RKH_HOOK_TIMEOUT( t )			(void)0
 #endif
 
 
@@ -1670,8 +1669,7 @@
 	#define RKH_HOOK_SIGNAL( e )	\
 							rkh_hook_signal( (RKH_EVT_T*)(e) )
 #else
-	#define RKH_HOOK_SIGNAL( e )	\
-							(void)0
+	#define RKH_HOOK_SIGNAL( e )			(void)0
 #endif
 
 
@@ -1679,8 +1677,7 @@
 	#define RKH_HOOK_START()	\
 							rkh_hook_start()
 #else
-	#define RKH_HOOK_START()	\
-							(void)0
+	#define RKH_HOOK_START()				(void)0
 #endif
 
 
@@ -1688,8 +1685,7 @@
 	#define RKH_HOOK_EXIT()	\
 							rkh_hook_exit()
 #else
-	#define RKH_HOOK_EXIT()	\
-							(void)0
+	#define RKH_HOOK_EXIT()					(void)0
 #endif
 
 
@@ -1697,14 +1693,13 @@
 	#define RKH_HOOK_TIMETICK()	\
 							rkh_hook_timetick()
 #else
-	#define RKH_HOOK_TIMETICK()	\
-							(void)0
+	#define RKH_HOOK_TIMETICK()				(void)0
 #endif
 
 
-#if (	(RKH_CFG_TRC_EN == RKH_ENABLED) && \
-	   ((RKH_CFG_TRC_ALL_EN == RKH_ENABLED) || \
-		(RKH_CFG_TRC_FWK_EN == RKH_ENABLED)))
+#if (	RKH_CFG_TRC_EN 		== RKH_ENABLED	&& \
+	   (RKH_CFG_TRC_ALL_EN 	== RKH_ENABLED 	|| \
+		RKH_CFG_TRC_FWK_EN 	== RKH_ENABLED))
 	#define R_TRC_AO_NAME_EN	RKH_ENABLED
 #else
 	#define R_TRC_AO_NAME_EN	RKH_DISABLED
@@ -2808,56 +2803,6 @@ typedef struct RKH_TR_T
 
 
 /**
- * 	\brief
- * 	Describes the exit point connection. 
- *
- * 	...
- */
-
-typedef struct RKH_EXPCN_T
-{
-	/** 	
- 	 * 	\brief
-	 *  Points to transition action.
-	 */
-
-	RKH_TRN_ACT_T action;
-
-	/** 	
- 	 * 	\brief
-	 *  Points to target state.
-	 */
-
-	RKHROM void *target;
-} RKH_EXPCN_T;
-
-
-/**
- * 	\brief
- * 	Describes the entry point connection. 
- *
- * 	...
- */
-
-typedef struct RKH_ENPCN_T
-{
-	/** 	
- 	 * 	\brief
-	 *  Points to transition action.
-	 */
-
-	RKH_TRN_ACT_T action;
-
-	/** 	
- 	 * 	\brief
-	 *  Points to target state.
-	 */
-
-	RKHROM void *target;
-} RKH_ENPCN_T;
-
-
-/**
  *	\brief
  * 	Describes the common properties of regular states (basic, composite, 
  * 	and submachine).
@@ -3036,6 +2981,53 @@ typedef struct RKH_SCMP_T
 #endif
 
 } RKH_SCMP_T;
+
+
+/**
+ * 	\brief
+ * 	Describes the exit point connection. 
+ */
+
+#if defined( RKH_SUBMACHINE_ENABLED )
+typedef struct RKH_EXPCN_T
+{
+	/** 	
+ 	 * 	\brief
+	 *  Points to transition action.
+	 */
+
+	RKH_TRN_ACT_T action;
+
+	/** 	
+ 	 * 	\brief
+	 *  Points to target state.
+	 */
+
+	RKHROM void *target;
+} RKH_EXPCN_T;
+
+
+/**
+ * 	\brief
+ * 	Describes the entry point connection. 
+ */
+
+typedef struct RKH_ENPCN_T
+{
+	/** 	
+ 	 * 	\brief
+	 *  Points to transition action.
+	 */
+
+	RKH_TRN_ACT_T action;
+
+	/** 	
+ 	 * 	\brief
+	 *  Points to target state.
+	 */
+
+	RKHROM void *target;
+} RKH_ENPCN_T;
 
 
 /**
@@ -3237,6 +3229,7 @@ typedef struct RKH_SEXP_T
 
 	RKHROM RKH_RSM_T *parent;
 } RKH_SEXP_T;
+#endif
 
 
 /**
@@ -3244,6 +3237,7 @@ typedef struct RKH_SEXP_T
  * 	Describes the conditional pseudostate.
  */
 
+#if defined( RKH_CHOICE_OR_CONDITIONAL_ENABLED )
 typedef struct RKH_SCOND_T
 {
 	/**
@@ -3260,6 +3254,7 @@ typedef struct RKH_SCOND_T
 
 	RKHROM struct RKH_TR_T *trtbl;
 } RKH_SCOND_T;
+#endif
 
 
 /**
@@ -3267,6 +3262,7 @@ typedef struct RKH_SCOND_T
  * 	Describes the choice pseudostate.
  */
 
+#if defined(RKH_CHOICE_ENABLED)
 typedef struct RKH_SCHOICE_T
 {
 	/**
@@ -3283,6 +3279,7 @@ typedef struct RKH_SCHOICE_T
 
 	RKHROM struct RKH_TR_T *trtbl;
 } RKH_SCHOICE_T;
+#endif
 
 
 /**
@@ -3292,6 +3289,7 @@ typedef struct RKH_SCHOICE_T
  * 	It can be either be shallow or deep.
  */
 
+#if defined(RKH_HISTORY_ENABLED)
 typedef struct RKH_SHIST_T
 {
 	/**	
@@ -3316,6 +3314,7 @@ typedef struct RKH_SHIST_T
 
 	RKHROM RKH_ST_T **target;
 } RKH_SHIST_T;
+#endif
 
 
 #endif

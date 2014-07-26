@@ -284,7 +284,7 @@
  *	set to 1, the RKH allows submachine state (and exit/entry points) usage.
  */
 
-#define RKH_CFG_SMA_SUBMACHINE_EN		RKH_DISABLED
+#define RKH_CFG_SMA_SUBMACHINE_EN		RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_SMA_TRC_SNDR_EN and #RKH_CFG_TRC_EN are set to 1, 
