@@ -1739,11 +1739,21 @@
 
 #if (RKH_CFG_SMA_HCAL_EN == RKH_ENABLED)
 	#if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
-		#define MKBASIC(n,pp)		n##_trtbl,pp
-		#define MKCOMP(n,d,h)		n##_trtbl,NULL,d,h
+		#if defined( RKH_HISTORY_ENABLED )
+			#define MKBASIC(n,pp)		n##_trtbl,pp
+			#define MKCOMP(n,d,h)		n##_trtbl,NULL,d,h
+		#else
+			#define MKBASIC(n,pp)		n##_trtbl,pp
+			#define MKCOMP(n,d,h)		n##_trtbl,NULL,d
+		#endif
 	#else
-		#define MKBASIC(n,pp)		n##_trtbl
-		#define MKCOMP(n,d,h)		n##_trtbl,d,h
+		#if defined( RKH_HISTORY_ENABLED )
+			#define MKBASIC(n,pp)		n##_trtbl
+			#define MKCOMP(n,d,h)		n##_trtbl,d,h
+		#else
+			#define MKBASIC(n,pp)		n##_trtbl
+			#define MKCOMP(n,d,h)		n##_trtbl,d
+		#endif
 	#endif
 	#define MKST(en,ex,p)			en,ex,(RKHROM struct RKH_ST_T *)p
 	#define MKSBM(n,sbm)			n##_trtbl,n##_exptbl,sbm
@@ -2977,7 +2987,9 @@ typedef struct RKH_SCMP_T
 	 *	Points to state's history. 
 	 */
 
+#if defined(RKH_HISTORY_ENABLED)
 	RKHROM struct RKH_SHIST_T *history;
+#endif
 #endif
 
 } RKH_SCMP_T;

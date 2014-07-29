@@ -2765,6 +2765,7 @@ ruint rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 #define RKH_CAST( _type, _obj )		((_type*)(_obj))
 
 
+#if defined(RKH_HISTORY_ENABLED)
 /**
  * 	\brief
  * 	Erase the history of a state. It can be a shallow or deep history.
@@ -2773,7 +2774,9 @@ ruint rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
  */
 
 void rkh_fwk_clear_history( RKHROM RKH_SHIST_T *h );
-
+#else
+#define rkh_fwk_clear_history( h )			(void)0
+#endif
 
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
