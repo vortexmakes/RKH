@@ -77,7 +77,7 @@ main( int argc, char *argv[] )
 	RKH_SMA_ACTIVATE( svr, svr_qsto, QSTO_SIZE, svr_stk, SVR_STK_SIZE );
 
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		RKH_SMA_ACTIVATE( CLI(cn), cli_qsto[cn], QSTO_SIZE,	cli_stk, 
+		RKH_SMA_ACTIVATE( CLI(cn), cli_qsto[cn], QSTO_SIZE,	cli_stk[cn], 
 															CLI_STK_SIZE );
 	rkh_fwk_enter();
 

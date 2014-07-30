@@ -58,7 +58,6 @@
 
 
 #include <bsp_twr.h>
-#include <os_app_hooks.h>
 #include <os.h>
 #include <lib_math.h>
 #include <lib_math.h>
