@@ -480,6 +480,9 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 				case RKH_DHISTORY:
 	                         /* found a shallow or deep history pseudostate */
 										      /* in the compound transition */
+					RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0) &&
+								(CCMP(CH(ets)->parent)->history != 
+								 						(RKHROM RKH_SHIST_T *)0));
 					if( IS_EMPTY_HIST( ets ) )
 						ets = CH(ets)->parent;
 					else

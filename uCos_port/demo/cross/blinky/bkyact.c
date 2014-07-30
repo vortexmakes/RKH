@@ -54,8 +54,6 @@ blinky_led_on( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 
 	RKH_TMR_ONESHOT( &bkytim, blinky, LED_ON_TIME );
 	bsp_led_on();
-	printf("state = %s - %s\n", ((RKH_BASE_T *)(sma->state))->name, 
-								((BKY_ST_T *)(sma->state))->title);
 	++CBKY(sma)->cnt;
 }
 

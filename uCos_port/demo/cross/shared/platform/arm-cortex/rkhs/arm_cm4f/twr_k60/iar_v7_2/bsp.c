@@ -114,7 +114,6 @@ static rui8_t l_isr_kbd;
 #endif
 
 
-static
 void
 bsp_publish( const RKH_EVT_T *e )
 {
@@ -218,16 +217,6 @@ rkh_trc_flush( void )
 	}
 }
 #endif
-
-void
-bsp_switch_evt( rui8_t s, rui8_t st )
-{
-	if( st == SW_RELEASED )
-		return;
-
-	if(s == SW1_SWITCH )
-		bsp_publish( &e_pause );
-}
 
 
 rui32_t 
