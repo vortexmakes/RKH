@@ -560,7 +560,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     ( void )stks;
     ( void )stksize;
 
-	rkh_rq_init( &sma->equeue, qs, qsize, sma );
+	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_sma_init_hsm( sma );
 	RKH_TR_SMA_ACT( sma );
@@ -2706,7 +2706,7 @@ This section includes:
 static RKH_RQ_T qurc;
 static RKH_EVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
 
-(1) rkh_rq_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
+(1) rkh_rq_init( &qurc, (const void **)qurc_sto, MAX_SIZEOF_QURC, NULL );
 ...
 
 void 

@@ -479,7 +479,7 @@
  *	records related to the nativenative  event framework.
  */
 
-#define RKH_CFG_TRC_FWK_EN				RKH_DISABLED
+#define RKH_CFG_TRC_FWK_EN				RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_TRC_ASSERT_EN and #RKH_CFG_TRC_FWK_EN are set to 1 then 
