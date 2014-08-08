@@ -437,7 +437,7 @@
  *	trace records.
  */
 
-#define RKH_CFG_TRC_ALL_EN				1
+#define RKH_CFG_TRC_ALL_EN				RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_TRC_MP_EN is set to 1 then RKH will include all trace 
