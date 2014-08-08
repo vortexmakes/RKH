@@ -2181,8 +2181,8 @@ struct RKH_SMA_T;
 #if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
 	 RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
 
-	typedef void ( *RKH_INIT_ACT_T )( 	const void *sma, 
-										const struct rkhevt_t *e );
+	typedef void ( *RKH_INIT_ACT_T )( 	const struct RKH_SMA_T *sma, 
+										const struct RKH_EVT_T *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
@@ -2199,7 +2199,7 @@ struct RKH_SMA_T;
 	}
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
 		RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-	typedef void ( *RKH_INIT_ACT_T )( 	const struct rkhevt_t *e );
+	typedef void ( *RKH_INIT_ACT_T )( 	const struct RKH_EVT_T *e );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
