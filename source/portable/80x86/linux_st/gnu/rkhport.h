@@ -171,8 +171,8 @@ const char *rkh_get_port_desc( void );
 
 
 #define RKH_EQ_TYPE              		RKH_RQ_T
-#define RKH_OSSIGNAL_TYPE
-#define RKH_THREAD_TYPE
+#define RKH_OSSIGNAL_TYPE				pthread_cond_t
+#define RKH_THREAD_TYPE					pthread_t
 
 
 #define RKH_SMA_BLOCK( sma ) 									\
