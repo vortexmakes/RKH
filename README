@@ -96,6 +96,11 @@ RKH changelog file
 
 This file resumes the changes across project version releases.
 
+Changes between V2.4.3 and V2.4.4 released 08/11/2014 
+
++ 	Adds very important features and enhancements. These changes will be 
+	explained in detail.
+
 Changes between V2.4 and V2.4.3 released 07/15/2013 
 
 + 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 

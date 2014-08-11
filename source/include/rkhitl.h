@@ -91,7 +91,7 @@
  *	denoted the minor revision, and the number C (2-digit) indicated the 
  *	release number. For example, the code for 2.2.04 is 0x2204.
  *	
- *	Date: 05/03/2013
+ *	Date: 11/08/2014
  */
 
 #define RKH_VERSION_CODE			0x2404u
