@@ -459,7 +459,7 @@ rkh_trc_ao( struct RKH_SMA_T *ao )
 {
 	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_AO )
 		RKH_TRC_SYM( ao );
-		RKH_TRC_STR( ao->romrkh->name );
+		RKH_TRC_STR( RKH_GET_AO_NAME(ao) );
 	RKH_TRC_END_WOFIL()
 	RKH_TRC_FLUSH();
 }
@@ -471,7 +471,7 @@ rkh_trc_state( struct RKH_SMA_T *ao, rui8_t *state )
 	RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_STATE )
 		RKH_TRC_SYM( ao );
 		RKH_TRC_SYM( state );
-		RKH_TRC_STR( ((struct RKH_BASE_T *)state)->name );
+		RKH_TRC_STR( RKH_GET_VERTEX_NAME(state) );
 	RKH_TRC_END_WOFIL()
 	RKH_TRC_FLUSH();
 }

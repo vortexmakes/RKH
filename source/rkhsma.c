@@ -64,6 +64,9 @@ RKHROM char rkh_version[] =
 	(char)'\0',
 };
 
+#ifndef R_TRC_AO_NAME_EN
+RKHROM char noname[] = "null";
+#endif
 
 RKH_SMA_T *rkh_sptbl[ RKH_CFG_FWK_MAX_SMA ];			/* registered SMA table */
 
