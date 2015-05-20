@@ -1701,13 +1701,11 @@
 	   (RKH_CFG_TRC_ALL_EN 	== RKH_ENABLED 	|| \
 		RKH_CFG_TRC_FWK_EN 	== RKH_ENABLED))
 	#define R_TRC_AO_NAME_EN	RKH_ENABLED
-#else
-	#define R_TRC_AO_NAME_EN	RKH_DISABLED
 #endif
 
 
 #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-	#if (R_TRC_AO_NAME_EN == RKH_ENABLED)
+	#if defined(R_TRC_AO_NAME_EN)
 		#define MKRRKH(name, prio, ppty, is, ia, ie) \
 			{(prio), (ppty), #name, (RKHROM struct RKH_ST_T*)is, (ia), (ie)}
 	#else
@@ -1715,7 +1713,7 @@
 			{(prio), (ppty), (RKHROM struct RKH_ST_T*)is, (ia), (ie)}
 	#endif
 #else
-	#if (R_TRC_AO_NAME_EN == RKH_ENABLED)
+	#if defined(R_TRC_AO_NAME_EN)
 		#define MKRRKH(name, prio, ppty, is, ia, ie) \
 			{(prio), (ppty), #name, (RKHROM struct RKH_ST_T*)is, (ia)}
 	#else
@@ -1734,7 +1732,11 @@
 			}
 
 
-#define MKBASE(t, n)		t, #n
+#if defined(R_TRC_AO_NAME_EN)
+	#define MKBASE(t, n)		{t, #n}
+#else
+	#define MKBASE(t, n)		{t}
+#endif
 
 
 #if (RKH_CFG_SMA_HCAL_EN == RKH_ENABLED)
@@ -2275,7 +2277,7 @@ typedef struct ROMRKH_T
 	 *	displayed by debuggers or by Trazer.
 	 */
 
-#if defined( R_TRC_AO_NAME_EN )
+#if defined(R_TRC_AO_NAME_EN)
 	const char *name;
 #endif
 
@@ -2764,7 +2766,7 @@ typedef struct RKH_BASE_T
 	 *	debuggers or by Trazer.
 	 */
 
-#if defined( R_TRC_AO_NAME_EN )
+#if defined(R_TRC_AO_NAME_EN)
 	const char *name;
 #endif
 

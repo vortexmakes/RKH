@@ -56,7 +56,7 @@ RKH_MODULE_DESC( rkhport, "ARM Cortex-M4F, Eclipse CW10" )
 			(						\
 				"	mov r0, %0								\n"	\
 				"	msr basepri, r0							\n"	\
-				::"i"(((BSP_HIGHEST_IRQ_PRI<<(8 - __NVIC_PRIO_BITS))&0xFF)):"r0" \
+				::"i"(((BSP_HIGHEST_IRQ_PRI<<(8 - ARM_INTERRUPT_LEVEL_BITS))&0xFF)):"r0" \
 			)
 
 #define cortex_m4_exit_critical()		\

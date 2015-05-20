@@ -168,6 +168,14 @@ extern RKHROM char rkh_version[];
 
 /**
  * 	\brief
+ * 	String representing the name of undefined object name. 
+ */
+
+extern RKHROM char noname[];
+
+
+/**
+ * 	\brief
  * 	Event pool list.
  */
 
@@ -218,9 +226,9 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 																		 \
 								extern RKHROM RKH_TR_T name##_trtbl[];	 \
 																		 \
-								RKHROM RKH_SCMP_T name =					 \
+								RKHROM RKH_SCMP_T name =				 \
 								{										 \
-									{{MKBASE(RKH_COMPOSITE, name)},		 \
+									{MKBASE(RKH_COMPOSITE, name),		 \
 									MKST(en,ex,parent)},				 \
 									MKCOMP(name,defchild,history)		 \
 								}
@@ -284,7 +292,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 																		\
 								RKHROM RKH_SBSC_T name =				\
 								{										\
-									{{MKBASE(RKH_BASIC, name)},			\
+									{MKBASE(RKH_BASIC, name),			\
 									MKST(en,ex,parent)},				\
 									MKBASIC(name,prepro)				\
 								}
@@ -320,7 +328,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 																		\
 								RKHROM RKH_SCOND_T name =				\
 								{										\
-									{MKBASE(RKH_CONDITIONAL, name)},	\
+									MKBASE(RKH_CONDITIONAL, name),		\
 									name##_trtbl 						\
 								}
 
@@ -356,7 +364,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 																		\
 								RKHROM RKH_SCHOICE_T name =				\
 								{										\
-									{MKBASE(RKH_CHOICE, name)},			\
+									MKBASE(RKH_CHOICE, name),			\
 									name##_trtbl 						\
 								}
 
@@ -389,7 +397,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 																		\
 						RKHROM RKH_SHIST_T name =						\
 						{												\
-							{MKBASE(RKH_DHISTORY, name)},				\
+							MKBASE(RKH_DHISTORY, name),					\
 							(RKHROM struct RKH_ST_T *)parent,&ram##name \
 						}
 
@@ -422,7 +430,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 																		\
 						RKHROM RKH_SHIST_T name =						\
 						{												\
-							{MKBASE(RKH_SHISTORY, name)},				\
+							MKBASE(RKH_SHISTORY, name),					\
 							(RKHROM struct RKH_ST_T *)parent,&ram##name \
 						}
 
@@ -481,9 +489,9 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 							extern RKHROM RKH_EXPCN_T name##_exptbl[];	\
 							extern RKHROM RKH_TR_T name##_trtbl[];		\
 																		\
-							RKHROM RKH_SSBM_T name =						\
+							RKHROM RKH_SSBM_T name =					\
 							{											\
-								{{MKBASE(RKH_SUBMACHINE, name)},		\
+								{MKBASE(RKH_SUBMACHINE, name),			\
 								MKST(en,ex,parent)},					\
 								MKSBM(name,sbm)							\
 							}
@@ -617,9 +625,9 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 
 #define RKH_EN_CNNPNT( name, enpnt, subm )						\
 																\
-							RKHROM RKH_SENP_T name =				\
+							RKHROM RKH_SENP_T name =			\
 							{									\
-								{MKBASE(RKH_ENPOINT, name)},	\
+								MKBASE(RKH_ENPOINT, name),		\
 								MKENP(enpnt,subm)				\
 							}
 
@@ -648,11 +656,11 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 
 #define RKH_CREATE_REF_SUBMACHINE( name, defchild, iact )				\
 																		\
-								static RKHROM RKH_ST_T *rdyp_##name;		\
+								static RKHROM RKH_ST_T *rdyp_##name;	\
 																		\
 								RKHROM RKH_RSM_T name =					\
 								{										\
-									{MKBASE(RKH_REF_SUBMACHINE, name)},	\
+									MKBASE(RKH_REF_SUBMACHINE, name),	\
 									MKMCH(defchild,iact,name) 			\
 								}
 
@@ -701,9 +709,9 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 
 #define RKH_CREATE_REF_EXPNT( name, ix, subm )				\
 															\
-							RKHROM RKH_SEXP_T name =			\
+							RKHROM RKH_SEXP_T name =		\
 							{								\
-								{MKBASE(RKH_EXPOINT, name)},\
+								MKBASE(RKH_EXPOINT, name),	\
 								ix, subm 					\
 							}
 
@@ -1270,7 +1278,7 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 #define RKH_INIT_BASIC_STATE( name, en, ex, parent, prepro ) 			\
 			{ 															\
 				{ 														\
-					{MKBASE(RKH_BASIC, name)}, 	/* RKH_BASE_T */ 		\
+					MKBASE(RKH_BASIC, name), 	/* RKH_BASE_T */ 		\
 					MKST(en, ex, parent) 								\
 				}, 								/* RKH_ST_T */ 			\
 				MKBASIC(name, prepro) 									\
@@ -1295,11 +1303,11 @@ extern RKH_DYNE_TYPE rkh_eplist[ RKH_CFG_FWK_MAX_EVT_POOL ];
 									defchild, history ) 				\
 			{ 															\
 				{ 														\
-					{MKBASE(RKH_COMPOSITE, name)}, /* RKH_BASE_T */ 	\
+					MKBASE(RKH_COMPOSITE, name), 	/* RKH_BASE_T */ 	\
 					MKST(en, ex, parent) 								\
 				}, 								   /* RKH_ST_T */ 		\
 				MKCOMP(name, defchild, history) 						\
-			}									   /* RKH_SCMP_T */ 		\
+			}									   /* RKH_SCMP_T */ 	\
 
 
 /** 	
@@ -2704,6 +2712,38 @@ ruint rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e );
 
 #define RKH_GET_CSTATE_ID( sma )									\
 								((RKH_BASE_T*)((sma)->state))->id	
+
+
+#if defined(R_TRC_AO_NAME_EN)
+	/**
+	 * 	\brief
+	 * 	This macro retrieves the name of an registered active object.
+	 *
+	 * 	\param ao		pointer to previously created active object.
+	 *
+	 * 	\return
+	 * 	Name of active object.
+	 */
+
+	#define RKH_GET_AO_NAME( ao )		(ao)->romrkh->name
+
+
+	/**
+	 * 	\brief
+	 * 	This macro retrieves the name of a vertex.
+	 *
+	 * 	\param vx		pointer to previously created vertex object.
+	 *
+	 * 	\return
+	 * 	Name of vertex object.
+	 */
+
+	#define RKH_GET_VERTEX_NAME( vx )								\
+									((struct RKH_BASE_T *)(vx))->name
+#else
+	#define RKH_GET_AO_NAME( ao )			noname
+	#define RKH_GET_VERTEX_NAME( vx )		noname
+#endif
 
 
 /**
