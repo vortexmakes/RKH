@@ -82,5 +82,9 @@
 	#include "..\portable\80x86\win32_mt\vc08\rkht.h"
 #endif
 
+#ifdef __KSDK_KDS__
+	#include "..\portable\arm-cortex\rkhs\ksdk\kds\rkht.h"
+#endif
+
 
 #endif

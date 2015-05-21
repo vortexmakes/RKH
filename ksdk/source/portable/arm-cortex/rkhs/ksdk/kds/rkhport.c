@@ -29,72 +29,40 @@
  * 	e-mail:			francuccilea@gmail.com
  *
  *  --------------------------------------------------------------------------
- *  File                     : rkhplat.h
+ *  File                     : rkhport.c
  *	Last updated for version : v2.4.04
- *	By                       : LF
+ *	By                       : DB
  *  --------------------------------------------------------------------------
  *  \endcond
  *
  * 	\file
  * 	\ingroup 	prt
- *	\brief 		RKH platform-dependent interface.
+ *
+ * 	\brief 		ARM Cortex-M MCU's, Freescale KSDK Kinetic Design Studio port	
  */
 
 
-#ifndef __RKHPLAT_H__
-#define __RKHPLAT_H__
+#include "rkh.h"
+#include "bsp.h"
 
 
-#ifdef __CFV1CW63__
-	#include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
-#endif
-
-#ifdef __W32STVC08__
-	#include "..\portable\80x86\win32_st\vc08\rkhport.h"
-#endif
-
-#ifdef __S08CW63__
-	#include "..\portable\s08\rkhs\cw6_3\rkhport.h"
-#endif
-
-#ifdef __LNXGNU__
-	#include "../portable/80x86/linux_st/gnu/rkhport.h"
-#endif
-
-#ifdef __ARM_CM3CRED__
-	#include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.h"
-#endif
-
-#ifdef __ARM_CM4FCW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkhport.h"
-#endif
-
-#ifdef __ARM_CM4FIAR7_2__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/iar_v7_2/rkhport.h"
-#endif
-
-#ifdef __ARM_CM0CW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkhport.h"
-#endif
-
-#ifdef __W32MTVC08__
-	#include "..\portable\80x86\win32_mt\vc08\rkhport.h"
-#endif
-
-#ifdef __KSDK_KDS__
-	#include "..\portable\arm-cortex\rkhs\ksdk\kds\rkhport.h"
-#endif
-
-/**
- * 	\brief
- *	If RKHROM has not been defined then	\b rkhport.h has not yet been 
- *	included - as every \b rkhport.h provides a RKHROM definition.
- */
-
-#ifndef RKHROM
-	#error "rkhplat.h: Missing definition of platform to be used.\
-	See Porting chapter in readme file for more information"
-#endif
+RKH_MODULE_NAME( rkhport )
+RKH_MODULE_VERSION( rkhport, 1.00 )
+RKH_MODULE_DESC( rkhport, "Freescale ARM Cortex, KSDK KDS" )
 
 
-#endif
+const 
+char *
+rkh_get_port_version( void )
+{
+	return RKH_MODULE_GET_VERSION();
+}
+
+
+const 
+char *
+rkh_get_port_desc( void )
+{
+	return RKH_MODULE_GET_DESC();
+}
+
