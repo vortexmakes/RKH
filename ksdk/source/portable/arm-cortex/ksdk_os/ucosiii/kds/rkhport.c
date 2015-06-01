@@ -38,25 +38,24 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		uC/OS-III for Freescale Kinetis K60 and IAR
+ * 	\brief 		uC/OS-III for Freescale KSDK and KDS
  */
 
 
 #include "rkh.h"
-#include "os.h"
-#include "os_cfg_app.h"
+#include "fsl_os_abstraction.h"
 
 
 RKH_MODULE_NAME( rkhport )
 RKH_MODULE_VERSION( rkhport, 1.00 )
-RKH_MODULE_DESC( rkhport, "uC/OS-III for Freescale Kinetis K60 and IAR" )
+RKH_MODULE_DESC( rkhport, "uC/OS-III for Freescale KSDK and KDS" )
 
 
 static
 void
 thread_function( void *arg )
 {
-	OS_ERR err;
+	osa_status_t status;
 	RKH_SR_ALLOC();
 
 	while(((RKH_SMA_T *)arg)->running != (rbool_t)0)
@@ -68,7 +67,9 @@ thread_function( void *arg )
 
 	rkh_sma_unregister((RKH_SMA_T *)arg);
 	RKH_TR_SMA_TERM((RKH_SMA_T *)arg, RKH_GET_PRIO((RKH_SMA_T *)arg));
-	OSTaskDel((OS_TCB *)0, &err ); /* deletes the currently running task */
+                                       /* deletes the currently running task */
+	status = OSA_TaskDestroy((task_handler_t)&sma->thread);
+	RKH_ENSURE(status == kStatus_OSA_Success);
 }
 
 
@@ -88,32 +89,84 @@ rkh_get_port_desc( void )
 }
 
 
+/* Include required OSA_MsgQPutLifo() implementation based on RTOS selection */
+#if defined (FSL_RTOS_MQX)
+	#define OSA_MsgQPutLifo(h, pm)		(void)0
+
+#elif defined (FSL_RTOS_FREE_RTOS)
+	#define OSA_MsgQPutLifo(h, pm)		(void)0
+
+#elif defined (FSL_RTOS_UCOSII)
+	#define OSA_MsgQPutLifo(h, pm)		(void)0
+
+#elif defined (FSL_RTOS_UCOSIII)
+	static
+	osa_status_t 
+	OSA_MsgQPutLifo(msg_queue_handler_t handler, void* pMessage)
+	{
+		OS_ERR err;
+		void *localMsg;
+		int32_t  *from_ptr, *to_ptr;
+		uint32_t msg_size = handler->size;
+
+		/* In this case, the message is saved into internal memory */
+		localMsg = OSMemGet(&(handler->mem), &err);
+		if (!localMsg)
+		{
+			return kStatus_OSA_Error;
+		}
+
+		/* Copy msg to localMsg. */
+		from_ptr = (int32_t*)pMessage;
+		to_ptr   = (int32_t*)localMsg;
+		while (msg_size--)
+		{
+			*to_ptr++ = *from_ptr++;
+		}
+
+		OSQPost(&(handler->queue),
+				localMsg,
+				handler->size*sizeof(int32_t),
+				OS_OPT_POST_LIFO,
+				&err);
+
+		if (OS_ERR_NONE != err)
+		{
+			OSMemPut(&(handler->mem), localMsg, &err);
+			return kStatus_OSA_Error;
+		}
+
+		return kStatus_OSA_Success;
+	}
+
+#else
+	#define OSA_MsgQPutLifo(h, pm)		(void)0
+#endif
 
 
 void 
 rkh_fwk_init( void )
 {
-	OS_ERR err;
-	
-	OSInit(&err);
-	
-	RKH_ASSERT(err == OS_ERR_NONE);
+	osa_status_t status;
+
+	status = OSA_Init();
+	RKH_ENSURE(status == kStatus_OSA_Success);
 }
 
 
 void 
 rkh_fwk_enter( void )
 {
-	OS_ERR err;
+	osa_status_t status;
     RKH_SR_ALLOC();
 
-    RKH_HOOK_START();	/* RKH start-up callback */
+    RKH_HOOK_START();	                            /* RKH start-up callback */
 	RKH_TR_FWK_EN();
 
-	OSStart(&err);		/* uC/OS-III start the multitasking */
-	RKH_TRC_CLOSE();	/* cleanup the trace session */
-						/* NEVER supposed to come back to this point */
-	RKH_ASSERT(err == OS_ERR_NONE);
+	status = OSA_Start();	             /* uC/OS-III start the multitasking */
+	RKH_TRC_CLOSE();		                    /* cleanup the trace session */
+ 							    /* NEVER supposed to come back to this point */
+	RKH_ENSURE(status == kStatus_OSA_Success);
 }
 
 
@@ -122,18 +175,18 @@ rkh_fwk_exit( void )
 {
     RKH_SR_ALLOC();
 	RKH_TR_FWK_EX();
-    RKH_HOOK_EXIT();	/* RKH cleanup callback */
+    RKH_HOOK_EXIT();	                             /* RKH cleanup callback */
 }
 
 
 void 
 rkh_sma_terminate( RKH_SMA_T *sma )
 {
-	OS_ERR err;
+	osa_status_t status;
 
 	sma->running = (rbool_t)0;
-	OSQDel(&sma->equeue, OS_OPT_DEL_ALWAYS, &err );
-    RKH_ASSERT(err == OS_ERR_NONE);
+	status = OSA_MsgQDestroy(&sma->equeue);
+	RKH_ENSURE(status == kStatus_OSA_Success);
 }
 
 
@@ -141,44 +194,29 @@ void
 rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
                   void *stks, rui32_t stksize )
 {
-    OS_ERR err;
-    OS_PRIO prio;
+	msg_queue_handler_t qh;
+	osa_status_t status;
 
-    RKH_REQUIRE(qs == (const RKH_EVT_T **)0);
-	OSQCreate( 	&sma->equeue,				/* event message queue object */
-				"uc_queue",					/* name */
-				(OS_MSG_QTY)qsize,			/* max. size of message queue */
-				&err );						/* received error code */
+	RKH_REQUIRE(qs != (const RKH_EVT_T **)0);
 
-    RKH_ASSERT(err == OS_ERR_NONE);
+	qh = OSA_MsgQCreate(&sma->equeue,		   /* event message queue object */
+						(uint16_t)qs,		   /* max. size of message queue */
+						(uint16_t)1);		            /* allocate pointers */
+    RKH_ENSURE(qh != (msg_queue_handler_t)0);
+
     rkh_sma_register( sma );
     rkh_sma_init_hsm( sma );
 
-    /* Map RKH priority to uC/OS-III priority. */
-	/* In both systems the lower the number the higher the priority. */
-	/* In uC/OS-III the priorities 0, 1, OS_CFG_PRIO_MAX-2 and ... */
-	/* ... OS_CFG_PRIO_MAX-3 are reserved. */
-	/* See uC/OS-III API reference manual for more information. */
+	status = OSA_TaskCreate(thread_function,                     /* function */
+							"uc_task",			                     /* name */
+							(uint16_t)stksize,	               /* stack size */
+							(task_stack_t *)stks, /* stack base (low memory) */
+							(uint16_t)RKH_GET_PRIO(sma),         /* priority */
+							sma,                        /* function argument */
+							false,                /* usage of float register */
+							(task_handler_t)&sma->thread);    /* task object */
 
-	if((RKH_GET_PRIO(sma) + 2) >= (OS_CFG_PRIO_MAX - 2))
-    	RKH_ASSERT(err == OS_ERR_NONE);
-	prio = RKH_GET_PRIO(sma) + 2;
-
-    OSTaskCreate(	&sma->thread,			/* task object */
-                  	"uc_task", 				/* name */
-					thread_function,		/* function */
-					sma, 					/* function argument */
-					prio, 					/* priority */
-					(CPU_STK *)stks, 		/* stack base (low memory) */
-					(CPU_STK_SIZE)(stksize - 1),	/* stack limit */
-					stksize/sizeof(CPU_STK_SIZE), 	/* stack size */
-					(OS_MSG_QTY)0, 			/* queue size */
-					(OS_TICK)0, 			/* time quanta in round-robin */
-					(void *)0, 				/* TCB extension */
-					OS_OPT_TASK_STK_CLR, 	/* options */
-					&err );					/* received error code */
-
-    RKH_ASSERT(err == OS_ERR_NONE);
+    RKH_ENSURE(status == kStatus_OSA_Success);
 	sma->running = (rbool_t)1;
 }
 
@@ -192,20 +230,16 @@ void
 rkh_sma_post_fifo(	RKH_SMA_T *sma, const RKH_EVT_T *e )
 #endif
 {
-	OS_ERR err;
+	osa_status_t status;
 	RKH_SR_ALLOC();
-	
+
 	RKH_HOOK_SIGNAL( e );
 	RKH_ENTER_CRITICAL_();
 
 	RKH_INC_REF( e );
-	OSQPost(&sma->equeue,					/* event queue object */
-			(void *)e, 						/* actual event posted */
-			sizeof(RKH_EVT_T *), 			/* size of event */
-											/* type of POST performed */
-			OS_OPT_POST_FIFO + OS_OPT_POST_NO_SCHED,
-			&err );							/* received error code */
-    RKH_ALLEGE(err == OS_ERR_NONE);
+	status = OSA_MsgQPut(&sma->equeue,	               /* event queue object */
+						 (void *)e);                  /* actual event posted */
+    RKH_ALLEGE(status == kStatus_OSA_Success);
 	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
 
 	RKH_EXIT_CRITICAL_();
@@ -222,20 +256,16 @@ void
 rkh_sma_post_lifo( 	RKH_SMA_T *sma, const RKH_EVT_T *e )
 #endif
 {
-    OS_ERR err;
+	osa_status_t status;
 	RKH_SR_ALLOC();
 
 	RKH_HOOK_SIGNAL( e );
 	RKH_ENTER_CRITICAL_();
 
 	RKH_INC_REF( e );
-	OSQPost(&sma->equeue,					/* event queue object */
-			(void *)e, 						/* actual event posted */
-			sizeof(RKH_EVT_T *), 			/* size of event */
-											/* type of POST performed */
-			OS_OPT_POST_LIFO + OS_OPT_POST_NO_SCHED,
-			&err );							/* received error code */
-    RKH_ALLEGE(err == OS_ERR_NONE);
+	status = OSA_MsgQPutLifo(&sma->equeue,             /* event queue object */
+						     (void *)e);              /* actual event posted */
+    RKH_ALLEGE(status == kStatus_OSA_Success);
 	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
 
 	RKH_EXIT_CRITICAL_();
@@ -246,18 +276,14 @@ rkh_sma_post_lifo( 	RKH_SMA_T *sma, const RKH_EVT_T *e )
 RKH_EVT_T *
 rkh_sma_get( RKH_SMA_T *sma )
 {
-    OS_ERR err;
-	OS_MSG_SIZE ev_size;
+	osa_status_t status;
 	RKH_EVT_T *e;
 	RKH_SR_ALLOC();
 
-	e = OSQPend(&sma->equeue,				/* event queue object */
-				(OS_TICK)0,					/* wait forever for a event */
-				OS_OPT_PEND_BLOCKING,		/* blocking system call */
-				&ev_size,					/* received event size */
-				(CPU_TS *)0,				/* no time-stamp */
-				&err);						/* received error code */
-    RKH_ASSERT(err == OS_ERR_NONE);
+	status = OSA_MsgQGet(&sma->equeue,				   /* event queue object */
+						 e, 					   /* received event message */
+						 OSA_WAIT_FOREVER);			    /* wait indefinitely */
+    RKH_ENSURE(status == kStatus_OSA_Success);
 	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
 	return e;
 }

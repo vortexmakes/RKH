@@ -168,7 +168,7 @@ const char *rkh_get_port_desc( void );
 											} while (0)
 
 
-#define RKH_EQ_TYPE              		OS_Q
+#define RKH_EQ_TYPE              		msg_queue_t
 #define RKH_OSSIGNAL_TYPE				void*
 #define RKH_THREAD_TYPE					OS_TCB
 
