@@ -66,6 +66,21 @@
 			<locationURI>PARENT-8-PROJECT_LOC/blinky/rkhcfg.h</locationURI>
 		</link>
 		<link>
+			<name>bsp/board</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/board</locationURI>
+		</link>
+		<link>
+			<name>bsp/bsp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/bsp.c</locationURI>
+		</link>
+		<link>
+			<name>bsp/bsp.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/bsp.h</locationURI>
+		</link>
+		<link>
 			<name>rkh/include</name>
 			<type>2</type>
 			<locationURI>PARENT-10-PROJECT_LOC/source/include</locationURI>
