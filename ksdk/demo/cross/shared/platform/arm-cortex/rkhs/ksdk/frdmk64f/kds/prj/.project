@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>blinky_frdmk64f_ksdk</name>
+	<name>shared_frdmk64f_ksdk</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -38,97 +38,97 @@
 		<link>
 			<name>blinky/bky.c</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bky.c</locationURI>
+			<locationURI>copy_PARENT1/blinky/bky.c</locationURI>
 		</link>
 		<link>
 			<name>blinky/bky.h</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bky.h</locationURI>
+			<locationURI>copy_PARENT1/blinky/bky.h</locationURI>
 		</link>
 		<link>
 			<name>blinky/bkyact.c</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bkyact.c</locationURI>
+			<locationURI>copy_PARENT1/blinky/bkyact.c</locationURI>
 		</link>
 		<link>
 			<name>blinky/bkyact.h</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bkyact.h</locationURI>
+			<locationURI>copy_PARENT1/blinky/bkyact.h</locationURI>
 		</link>
 		<link>
 			<name>blinky/main.c</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/main.c</locationURI>
+			<locationURI>copy_PARENT1/blinky/main.c</locationURI>
 		</link>
 		<link>
 			<name>blinky/rkhcfg.h</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/rkhcfg.h</locationURI>
+			<locationURI>copy_PARENT1/blinky/rkhcfg.h</locationURI>
 		</link>
 		<link>
 			<name>bsp/board</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/board</locationURI>
+			<locationURI>copy_PARENT12/board</locationURI>
 		</link>
 		<link>
 			<name>bsp/bsp.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/bsp.c</locationURI>
+			<locationURI>copy_PARENT123/bsp.c</locationURI>
 		</link>
 		<link>
 			<name>bsp/bsp.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/bsp.h</locationURI>
+			<locationURI>copy_PARENT1234/bsp.h</locationURI>
 		</link>
 		<link>
 			<name>rkh/include</name>
 			<type>2</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/include</locationURI>
+			<locationURI>copy_PARENT12345/source/include</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkh.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkh.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkh.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhdyn.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhdyn.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhdyn.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhmp.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhmp.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhmp.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhrq.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhrq.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhrq.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhs.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhs.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhs.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhsma.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhsma.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhsma.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhtbl.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtbl.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhtbl.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhtim.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtim.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhtim.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhtrc.c</name>
 			<type>1</type>
-			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtrc.c</locationURI>
+			<locationURI>copy_PARENT12345/source/rkhtrc.c</locationURI>
 		</link>
 		<link>
 			<name>SDK/platform/fsl_uart_irq.c</name>
@@ -143,17 +143,17 @@
 		<link>
 			<name>Debug/rkh/port/rkhport.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.c</locationURI>
+			<locationURI>copy_PARENT/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.c</locationURI>
 		</link>
 		<link>
 			<name>Debug/rkh/port/rkhport.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.h</locationURI>
+			<locationURI>copy_PARENT/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.h</locationURI>
 		</link>
 		<link>
 			<name>Debug/rkh/port/rkht.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkht.h</locationURI>
+			<locationURI>copy_PARENT/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkht.h</locationURI>
 		</link>
 		<link>
 			<name>SDK/platform/hwtimer/fsl_hwtimer_systick_irq.c</name>
@@ -178,7 +178,7 @@
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1432224558369</id>
+			<id>0</id>
 			<name>blinky</name>
 			<type>5</type>
 			<matcher>
@@ -191,6 +191,30 @@
 		<variable>
 			<name>PROJECT_KSDK_PATH</name>
 			<value>file:/C:/Freescale/KSDK_1.2.0</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-2-PROJECT_LOC%7D/vortex/RKH_DB/ksdk/demo/cross/shared/platform/arm-cortex/rkhs/ksdk/frdmk64f</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT1</name>
+			<value>$%7BPARENT-6-copy_PARENT%7D</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT12</name>
+			<value>$%7Bcopy_PARENT%7D/kds</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT123</name>
+			<value>$%7Bcopy_PARENT12%7D</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT1234</name>
+			<value>$%7Bcopy_PARENT12%7D</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT12345</name>
+			<value>$%7BPARENT-2-copy_PARENT1%7D</value>
 		</variable>
 	</variableList>
 </projectDescription>
