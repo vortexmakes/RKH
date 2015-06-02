@@ -26,44 +26,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>blinky</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>rkh</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>blinky/bky.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT11/blinky/bky.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/bky.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT11/blinky/bky.h</locationURI>
-		</link>
-		<link>
-			<name>blinky/bkyact.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT11/blinky/bkyact.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/bkyact.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT11/blinky/bkyact.h</locationURI>
-		</link>
-		<link>
-			<name>blinky/main.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT11/blinky/main.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/rkhcfg.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT11/blinky/rkhcfg.h</locationURI>
 		</link>
 		<link>
 			<name>bsp/board</name>
@@ -136,6 +101,61 @@
 			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtrc.c</locationURI>
 		</link>
 		<link>
+			<name>shared/cli.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cli.c</locationURI>
+		</link>
+		<link>
+			<name>shared/cli.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cli.h</locationURI>
+		</link>
+		<link>
+			<name>shared/cliact.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cliact.c</locationURI>
+		</link>
+		<link>
+			<name>shared/cliact.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cliact.h</locationURI>
+		</link>
+		<link>
+			<name>shared/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/main.c</locationURI>
+		</link>
+		<link>
+			<name>shared/rkhcfg.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/rkhcfg.h</locationURI>
+		</link>
+		<link>
+			<name>shared/scevt.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/scevt.h</locationURI>
+		</link>
+		<link>
+			<name>shared/svr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svr.c</locationURI>
+		</link>
+		<link>
+			<name>shared/svr.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svr.h</locationURI>
+		</link>
+		<link>
+			<name>shared/svract.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svract.c</locationURI>
+		</link>
+		<link>
+			<name>shared/svract.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svract.h</locationURI>
+		</link>
+		<link>
 			<name>SDK/platform/fsl_uart_irq.c</name>
 			<type>1</type>
 			<location>C:/Freescale/KSDK_1.2.0/platform/drivers/src/uart/fsl_uart_irq.c</location>
@@ -191,17 +211,6 @@
 			<location>C:/Freescale/KSDK_1.2.0/platform/utilities/src/print_scan.h</location>
 		</link>
 	</linkedResources>
-	<filteredResources>
-		<filter>
-			<id>0</id>
-			<name>blinky</name>
-			<type>5</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-*.c,*.h</arguments>
-			</matcher>
-		</filter>
-	</filteredResources>
 	<variableList>
 		<variable>
 			<name>PROJECT_KSDK_PATH</name>
