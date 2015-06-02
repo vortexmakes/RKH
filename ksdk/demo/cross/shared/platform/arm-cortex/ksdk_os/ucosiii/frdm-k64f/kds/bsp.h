@@ -48,6 +48,7 @@
 
 #include "rkh.h"
 #include "board.h"
+#include "os_cfg_app.h"
 //#include "fsl_device_registers.h"
 
 
@@ -55,7 +56,14 @@
 #define BSP_UART_IRQ_PRIO		7
 #define BSP_HIGHEST_IRQ_PRI		5
 
-#define BSP_TICKS_PER_SEC   	RKH_CFG_FWK_TICK_RATE_HZ
+#if (RKH_CFG_FWK_TICK_RATE_HZ > OS_CFG_TICK_RATE_HZ)
+#error "RKH_CFG_FWK_TICK_RATE_HZ in 'rkhcfg.h' must be <= to OS tick"
+#error "defined by RKH_CFG_FWK_TICK_RATE_HZ in 'os_cfg_app.h'       "
+#endif
+
+#define BSP_TICKS_PER_SEC			RKH_CFG_FWK_TICK_RATE_HZ
+#define BSP_TICKS_RATE   			(OS_CFG_TICK_RATE_HZ / \
+									RKH_CFG_FWK_TICK_RATE_HZ)
 
 /**
  * 	\brief
@@ -64,11 +72,22 @@
  * 	of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   	10000
+#define BSP_TS_RATE_HZ		   		RKH_CFG_FWK_TICK_RATE_HZ
+
 
 void bsp_init( int argc, char *argv[] );
-void bsp_led_on( void );
-void bsp_led_off( void );
+rui32_t bsp_rand( void );
+void bsp_srand( rui32_t seed );
+
+void bsp_cli_req( rui8_t clino );
+void bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time );
+void bsp_cli_using( rui8_t clino, RKH_TNT_T using_time );
+void bsp_cli_paused( rui8_t clino );
+void bsp_cli_resumed( rui8_t clino );
+void bsp_cli_done( rui8_t clino );
+void bsp_svr_recall( rui8_t clino );
+void bsp_svr_paused( const RKH_SMA_T *sma );
+void bsp_publish( const RKH_EVT_T *e );
 
 #ifdef RKH_DEBUG
 #define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )

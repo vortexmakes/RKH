@@ -101,7 +101,6 @@
 									<listOptionValue builtIn="false" value=""/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs.804123259" name="Other objects" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs" valueType="userObjs">
-									<listOptionValue builtIn="false" value="&quot;${PROJECT_KSDK_PATH}/lib/ksdk_platform_lib/kds/K64F12/debug/libksdk_platform.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_KSDK_PATH}/lib/ksdk_ucosiii_lib/kds/K64F12/debug/libksdk_platform_ucosiii.a&quot;"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input.2140398968" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input">

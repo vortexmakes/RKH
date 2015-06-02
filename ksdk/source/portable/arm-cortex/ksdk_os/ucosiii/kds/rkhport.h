@@ -155,17 +155,12 @@ const char *rkh_get_port_desc( void );
 #define RKHROM							const	
 
 
-#define RKH_DIS_INTERRUPT()
-#define RKH_ENA_INTERRUPT()
-#define RKH_CPUSR_TYPE					CPU_SR
+#define RKH_DIS_INTERRUPT()				INT_SYS_DisableIRQGlobal()
+#define RKH_ENA_INTERRUPT()				INT_SYS_EnableIRQGlobal()
+//#define RKH_CPUSR_TYPE
 
-#define RKH_ENTER_CRITICAL( dummy )		do	{	dummy = CPU_SR_Save(); \
-												CPU_IntDisMeasStart(); \
-											} while (0)
-
-#define RKH_EXIT_CRITICAL( dummy )		do	{	CPU_IntDisMeasStop();  \
-			                                    CPU_SR_Restore(dummy); \
-											} while (0)
+#define RKH_ENTER_CRITICAL( dummy )		OSA_EnterCritical(kCriticalDisableInt)
+#define RKH_EXIT_CRITICAL( dummy )		OSA_ExitCritical(kCriticalDisableInt)
 
 
 #define RKH_EQ_TYPE              		msg_queue_t

@@ -31,6 +31,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>ucosiii</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>bsp/board</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/board</locationURI>
@@ -154,6 +159,106 @@
 			<name>shared/svract.h</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/svract.h</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os.h</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os.h</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_cfg_app.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_cfg_app.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_core.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_core.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_dbg.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_dbg.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_flag.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_flag.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_int.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_int.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_mem.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_mem.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_msg.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_msg.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_mutex.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_mutex.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_pend_multi.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_pend_multi.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_prio.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_prio.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_q.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_q.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_sem.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_sem.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_stat.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_stat.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_task.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_task.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_tick.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_tick.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_time.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_time.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_tmr.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_tmr.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_type.h</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_type.h</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_var.c</name>
+			<type>1</type>
+			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_var.c</locationURI>
 		</link>
 		<link>
 			<name>SDK/platform/fsl_uart_irq.c</name>

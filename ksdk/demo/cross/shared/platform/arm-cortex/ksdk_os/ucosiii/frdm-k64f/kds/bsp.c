@@ -43,13 +43,34 @@
 
 
 #include "bsp.h"
-#include "bky.h"
+#include "svr.h"
+#include "cli.h"
+#include "scevt.h"
 #include "rkh.h"
 
 #define SERIAL_TRACE			1
 
+#define SIZEOF_EP0STO				32
+#define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
+#define SIZEOF_EP1STO				16
+#define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
+
+
+/* This macro is needed only if the module requires to check 	.. */
+/* .. expressions that ought to be true as long as the program  .. */
+/* .. is running. 												   */
 
 RKH_THIS_MODULE
+
+
+static rui16_t tick_cnt;
+static rui32_t l_rnd;				/* random seed */
+static rui8_t ep0sto[ SIZEOF_EP0STO ],
+				ep1sto[ SIZEOF_EP1STO ];
+#if defined( RKH_USE_TRC_SENDER )
+static rui8_t l_isr_kbd;
+#endif
+
 
 /*
  * 	For serial trace feature.
@@ -68,29 +89,49 @@ RKH_THIS_MODULE
 #endif
 
 
+static
+void
+bsp_isr_tick( void )
+{
+	if(tick_cnt && (--tick_cnt == (rui16_t)0))
+	{
+		tick_cnt = BSP_TICKS_RATE;
+		RKH_TIM_TICK((const void *)(bsp_isr_tick));
+	}
+}
+
+
+void
+bsp_publish( const RKH_EVT_T *e )
+{
+	rint cn;
+
+	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
+		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
+}
+
+
 void 
 rkh_hook_timetick( void ) 
 {
+//	sequence_interrupt();
+//	switch_tick();	
 }
 
 
 void 
 rkh_hook_start( void ) 
 {
+	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
 void 
 rkh_hook_exit( void ) 
 {
-	RKH_TRC_FLUSH();
-}
-
-
-void 
-rkh_hook_idle( void )				/* called within critical section */
-{
-	RKH_ENA_INTERRUPT();
 	RKH_TRC_FLUSH();
 }
 
@@ -109,12 +150,22 @@ rkh_assert( RKHROM char * const file, int line )
 
 #if RKH_CFG_TRC_EN == 1
 
+
+static 
+void
+idle_thread_function( void )
+{
+	RKH_TRC_FLUSH();
+}
+
+
 void 
 rkh_trc_open( void )
 {
 	rkh_trc_init();
 	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
+	RKH_TR_FWK_OBJ( &bsp_isr_tick );
 }
 
 
@@ -141,7 +192,7 @@ rkh_trc_flush( void )
 
 	FOREVER
 	{
-		nbytes = 128;
+		nbytes = (TRCQTY_T)1024;
 
 		RKH_ENTER_CRITICAL_();
 		blk = rkh_trc_get_block( &nbytes );
@@ -157,50 +208,126 @@ rkh_trc_flush( void )
 }
 #endif
 
-#include "fsl_hwtimer_systick.h"
-#include "fsl_debug_console.h"
 
-hwtimer_t hwtimer;
-
-void
-hwtimer_callback( void* data )
-{
-	rkh_tmr_tick();
+rui32_t 
+bsp_rand( void )
+{  
+	/* 
+	 * A very cheap pseudo-random-number generator.
+	 * "Super-Duper" Linear Congruential Generator (LCG)
+	 * LCG(2^32, 3*7*11*13*23, 0, seed) [MS]
+	 */
+    l_rnd = l_rnd * (3*7*11*13*23);
+    return l_rnd >> 8;
 }
+
+
+void 
+bsp_srand( rui32_t seed )
+{
+    l_rnd = seed;
+}
+
+
+void 
+bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
+{
+	(void)clino;
+	(void)req_time;
+}
+
+
+void 
+bsp_cli_req( rui8_t clino )
+{
+//	set_cli_sled( clino, CLI_WAITING );
+}
+
+
+void 
+bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
+{
+	(void)using_time;
+
+//	set_cli_sled( clino, CLI_WORKING );
+}
+
+
+void 
+bsp_cli_paused( rui8_t clino )
+{
+//	set_cli_sled( clino, CLI_PAUSED );
+}
+
+
+void 
+bsp_cli_resumed( rui8_t clino )
+{
+//	set_cli_sled( clino, CLI_IDLE );
+}
+
+
+void 
+bsp_cli_done( rui8_t clino )
+{
+//	set_cli_sled( clino, CLI_IDLE );
+}
+
+
+void 
+bsp_svr_recall( rui8_t clino )
+{
+	(void)clino;
+}
+
+
+void 
+bsp_svr_paused( const RKH_SMA_T *sma )
+{
+	(void)sma;
+}
+
+
+#include "fsl_debug_console.h"
 
 void 
 bsp_init( int argc, char *argv[]  )
 {
+#if (OS_CFG_STAT_TASK_EN > 0)
+	OS_ERR err;
+#endif
+	rint cn;
+
 	(void)argc;
 	(void)argv;
 
     hardware_init();
 
-    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_Init
-							(&hwtimer, &kSystickDevif, 0, NULL) );
-
-    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_SetPeriod
-							(&hwtimer, (1000*1000)/RKH_CFG_FWK_TICK_RATE_HZ) );
-
-    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_RegisterCallback
-							(&hwtimer, hwtimer_callback, NULL) );
-
-    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_Start(&hwtimer) );
-
-    GPIO_DRV_Init( switchPins, ledPins );
+//    GPIO_DRV_Init( switchPins, ledPins );
 
     rkhtrc_lptmr_init();
 
+#if (OS_CFG_STAT_TASK_EN > 0)
+    OSStatTaskCPUUsageInit(&err);
+#endif
+	
 	rkh_fwk_init();
 
-	RKH_ENA_INTERRUPT();
-	
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_TOUT );
+	tick_cnt = BSP_TICKS_RATE;
+	OS_AppTimeTickHookPtr = bsp_isr_tick;
+	OS_AppIdleTaskHookPtr = idle_thread_function;
+
+	RKH_FILTER_OFF_SMA( svr );
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
+		RKH_FILTER_OFF_SMA( CLI(cn) );
+
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
-	RKH_FILTER_OFF_SMA( blinky );
-	RKH_FILTER_OFF_ALL_SIGNALS();
+	/*RKH_FILTER_OFF_ALL_SIGNALS();*/
+	RKH_FILTER_OFF_SIGNAL( REQ );
+	RKH_FILTER_OFF_SIGNAL( START );
 
 	RKH_TRC_OPEN();
 }

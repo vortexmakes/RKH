@@ -43,6 +43,7 @@
 
 
 #include "rkh.h"
+#include "os.h"
 #include "fsl_os_abstraction.h"
 
 
@@ -68,7 +69,8 @@ thread_function( void *arg )
 	rkh_sma_unregister((RKH_SMA_T *)arg);
 	RKH_TR_SMA_TERM((RKH_SMA_T *)arg, RKH_GET_PRIO((RKH_SMA_T *)arg));
                                        /* deletes the currently running task */
-	status = OSA_TaskDestroy((task_handler_t)&sma->thread);
+	//status = OSA_TaskDestroy((task_handler_t)&sma->thread);
+	status = OSA_TaskDestroy(0); /* deletes the currently running task */
 	RKH_ENSURE(status == kStatus_OSA_Success);
 }
 
