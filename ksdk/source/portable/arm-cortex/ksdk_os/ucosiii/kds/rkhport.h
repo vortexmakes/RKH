@@ -137,7 +137,7 @@ const char *rkh_get_port_desc( void );
  * 	event queue storage argument, \c qs.
  */
 
-#define RKH_CFGPORT_SMA_QSTO_EN				RKH_DISABLED
+#define RKH_CFGPORT_SMA_QSTO_EN				RKH_ENABLED
 
 /** 
  * 	If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE() 
@@ -152,27 +152,27 @@ const char *rkh_get_port_desc( void );
  * 	not be changed and it will be stored in ROM.
  */
 
-#define RKHROM							const	
+#define RKHROM								const	
 
 
-#define RKH_DIS_INTERRUPT()				INT_SYS_DisableIRQGlobal()
-#define RKH_ENA_INTERRUPT()				INT_SYS_EnableIRQGlobal()
+#define RKH_DIS_INTERRUPT()					INT_SYS_DisableIRQGlobal()
+#define RKH_ENA_INTERRUPT()					INT_SYS_EnableIRQGlobal()
 //#define RKH_CPUSR_TYPE
 
-#define RKH_ENTER_CRITICAL( dummy )		OSA_EnterCritical(kCriticalDisableInt)
-#define RKH_EXIT_CRITICAL( dummy )		OSA_ExitCritical(kCriticalDisableInt)
+#define RKH_ENTER_CRITICAL( dummy )			\
+									OSA_EnterCritical(kCriticalDisableInt)
+#define RKH_EXIT_CRITICAL( dummy )			\
+									OSA_ExitCritical(kCriticalDisableInt)
+
+#define RKH_EQ_TYPE              			msg_queue_t
+#define RKH_OSSIGNAL_TYPE					void*
+#define RKH_THREAD_TYPE						OS_TCB
+#define RKH_THREAD_STK_TYPE					task_stack_t
 
 
-#define RKH_EQ_TYPE              		msg_queue_t
-#define RKH_OSSIGNAL_TYPE				void*
-#define RKH_THREAD_TYPE					OS_TCB
-
-
-#define RKH_SMA_BLOCK( sma ) 			(void)0
-#define RKH_SMA_READY( rg, sma ) 		(void)0
-#define RKH_SMA_UNREADY( rg, sma )		(void)0
-
-#define WIN32_LEAN_AND_MEAN
+#define RKH_SMA_BLOCK( sma ) 				(void)0
+#define RKH_SMA_READY( rg, sma ) 			(void)0
+#define RKH_SMA_UNREADY( rg, sma )			(void)0
 
 
 #endif

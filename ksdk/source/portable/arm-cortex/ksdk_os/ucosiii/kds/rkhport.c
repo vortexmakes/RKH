@@ -201,9 +201,11 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 
 	RKH_REQUIRE(qs != (const RKH_EVT_T **)0);
 
+	sma->equeue.msgs = (void *)qs;
 	qh = OSA_MsgQCreate(&sma->equeue,		   /* event message queue object */
-						(uint16_t)qs,		   /* max. size of message queue */
-						(uint16_t)1);		            /* allocate pointers */
+						(uint16_t)qsize,	   /* max. size of message queue */
+													    /* allocate pointers */
+						(uint16_t)(sizeof(RKH_EVT_T *)/sizeof(uint32_t)));
     RKH_ENSURE(qh != (msg_queue_handler_t)0);
 
     rkh_sma_register( sma );
