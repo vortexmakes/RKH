@@ -46,7 +46,7 @@
 #define __RKHPORT_H__
 
 
-#include "os.h"
+#include "fsl_os_abstraction.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
 

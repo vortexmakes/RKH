@@ -29,65 +29,55 @@
  * 	e-mail:			francuccilea@gmail.com
  *
  *  --------------------------------------------------------------------------
- *  File                     : rkhtype.h
+ *  File                     : bsp.h
  *	Last updated for version : v2.4.04
- *	By                       : LF
+ *	By                       : DB
  *  --------------------------------------------------------------------------
  *  \endcond
  *
  * 	\file
  * 	\ingroup 	prt
  *
- *	\brief 		Defines the data types that uses RKH.
+ * 	\brief 		BSP for TWR-K60D100M CW10
  */
 
 
-#ifndef __RKHTYPE_H__
-#define __RKHTYPE_H__
+#ifndef __BSP_H__
+#define __BSP_H__
 
 
-#ifdef __CFV1CW63__
-	#include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
+#include "rkh.h"
+#include "board.h"
+//#include "fsl_device_registers.h"
+
+
+#define BSP_KERNEL_IRQ_PRIO		6
+#define BSP_UART_IRQ_PRIO		7
+#define BSP_HIGHEST_IRQ_PRI		5
+
+#define BSP_TICKS_PER_SEC   	RKH_CFG_FWK_TICK_RATE_HZ
+
+/**
+ * 	\brief
+ * 	This macro represents the number of timestamp clock ticks per second. 
+ * 	Dividing a count of timestamp ticks by this macro yields the number 
+ * 	of seconds.
+ */
+
+#define BSP_TS_RATE_HZ		   	10000
+
+void bsp_init( int argc, char *argv[] );
+void bsp_led_on( void );
+void bsp_led_off( void );
+
+#ifdef RKH_DEBUG
+#define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )
+#else					
+#define reset_now()		cpu_reset()
 #endif
 
-#ifdef __W32STVC08__
-	#include "..\portable\80x86\win32_st\vc08\rkht.h"
-#endif
 
-#ifdef __S08CW63__
-	#include "..\portable\s08\rkhs\cw6_3\rkht.h"
-#endif
+#define get_ts()		cpu_tstmr_read()
 
-#ifdef __LNXGNU__
-	#include "../portable/80x86/linux_st/gnu/rkht.h"
-#endif
-
-#ifdef __ARM_CM3CRED__
-	#include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
-#endif
-
-#ifdef __ARM_CM4FCW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkht.h"
-#endif
-
-#ifdef __ARM_CM4FIAR7_2__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/iar_v7_2/rkht.h"
-#endif
-
-#ifdef __ARM_CM0CW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
-#endif
-
-#ifdef __W32MTVC08__
-	#include "..\portable\80x86\win32_mt\vc08\rkht.h"
-#endif
-
-#ifdef __KSDK_KDS__
-	#include "..\portable\arm-cortex\rkhs\ksdk\kds\rkht.h"
-#endif
-
-#ifdef __KSDK_OS_KDS__
-	#include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkht.h"
-#endif
 
 #endif

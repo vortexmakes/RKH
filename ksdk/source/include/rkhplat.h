@@ -85,6 +85,10 @@
 	#include "..\portable\arm-cortex\rkhs\ksdk\kds\rkhport.h"
 #endif
 
+#ifdef __KSDK_OS_KDS__
+	#include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkhport.h"
+#endif
+
 /**
  * 	\brief
  *	If RKHROM has not been defined then	\b rkhport.h has not yet been 
