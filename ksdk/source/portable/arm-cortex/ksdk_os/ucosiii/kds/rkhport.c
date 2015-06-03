@@ -198,6 +198,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 {
 	msg_queue_handler_t qh;
 	osa_status_t status;
+	task_handler_t th;
 
 	RKH_REQUIRE(qs != (const RKH_EVT_T **)0);
 
@@ -211,6 +212,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     rkh_sma_register( sma );
     rkh_sma_init_hsm( sma );
 
+    th = &sma->thread;
 	status = OSA_TaskCreate(thread_function,                     /* function */
 							"uc_task",			                     /* name */
 							(uint16_t)stksize,	               /* stack size */
@@ -218,7 +220,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 							(uint16_t)RKH_GET_PRIO(sma),         /* priority */
 							sma,                        /* function argument */
 							false,                /* usage of float register */
-							(task_handler_t)&sma->thread);    /* task object */
+							&th);    /* task object */
 
     RKH_ENSURE(status == kStatus_OSA_Success);
 	sma->running = (rbool_t)1;
@@ -242,7 +244,7 @@ rkh_sma_post_fifo(	RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_INC_REF( e );
 	status = OSA_MsgQPut(&sma->equeue,	               /* event queue object */
-						 (void *)e);                  /* actual event posted */
+						 (void *)&e);                  /* actual event posted */
     RKH_ALLEGE(status == kStatus_OSA_Success);
 	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
 
@@ -268,7 +270,7 @@ rkh_sma_post_lifo( 	RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_INC_REF( e );
 	status = OSA_MsgQPutLifo(&sma->equeue,             /* event queue object */
-						     (void *)e);              /* actual event posted */
+						     (void *)&e);              /* actual event posted */
     RKH_ALLEGE(status == kStatus_OSA_Success);
 	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
 
@@ -285,7 +287,7 @@ rkh_sma_get( RKH_SMA_T *sma )
 	RKH_SR_ALLOC();
 
 	status = OSA_MsgQGet(&sma->equeue,				   /* event queue object */
-						 e, 					   /* received event message */
+						 &e, 					   /* received event message */
 						 OSA_WAIT_FOREVER);			    /* wait indefinitely */
     RKH_ENSURE(status == kStatus_OSA_Success);
 	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );

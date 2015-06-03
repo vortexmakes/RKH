@@ -40,6 +40,45 @@
 	#define cli_stk
 #endif
 
+static int mm;
+
+void HardFault_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void MemManage_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void BusFault_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void UsageFault_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void SVC_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void DebugMon_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+
 
 int
 main( int argc, char *argv[] )

@@ -26,6 +26,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>osa</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>rkh</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -49,6 +54,36 @@
 			<name>bsp/bsp.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/bsp.h</locationURI>
+		</link>
+		<link>
+			<name>bsp/cpu_cfg.h</name>
+			<type>1</type>
+			<locationURI>PARENT-11-PROJECT_LOC/uCos_port/demo/cross/shared/platform/ucos/v3.03.01/cpu_cfg.h</locationURI>
+		</link>
+		<link>
+			<name>bsp/os_cfg.h</name>
+			<type>1</type>
+			<locationURI>PARENT-11-PROJECT_LOC/uCos_port/demo/cross/shared/platform/ucos/v3.03.01/os_cfg.h</locationURI>
+		</link>
+		<link>
+			<name>bsp/os_cfg_app.h</name>
+			<type>1</type>
+			<locationURI>PARENT-11-PROJECT_LOC/uCos_port/demo/cross/shared/platform/ucos/v3.03.01/os_cfg_app.h</locationURI>
+		</link>
+		<link>
+			<name>osa/fsl_os_abstraction.h</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction.h</location>
+		</link>
+		<link>
+			<name>osa/fsl_os_abstraction_ucosiii.c</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/platform/osa/src/fsl_os_abstraction_ucosiii.c</location>
+		</link>
+		<link>
+			<name>osa/fsl_os_abstraction_ucosiii.h</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction_ucosiii.h</location>
 		</link>
 		<link>
 			<name>rkh/include</name>
@@ -161,6 +196,21 @@
 			<locationURI>PARENT-7-PROJECT_LOC/svract.h</locationURI>
 		</link>
 		<link>
+			<name>ucosiii/cpu_a.S</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/rtos/uCOSIII/src/uC-CPU/ARM-Cortex-M4/GNU/cpu_a.S</location>
+		</link>
+		<link>
+			<name>ucosiii/cpu_c.c</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/rtos/uCOSIII/src/uC-CPU/ARM-Cortex-M4/GNU/cpu_c.c</location>
+		</link>
+		<link>
+			<name>ucosiii/cpu_core.c</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/rtos/uCOSIII/src/uC-CPU/cpu_core.c</location>
+		</link>
+		<link>
 			<name>ucosiii/os.h</name>
 			<type>1</type>
 			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os.h</locationURI>
@@ -174,6 +224,21 @@
 			<name>ucosiii/os_core.c</name>
 			<type>1</type>
 			<locationURI>PROJECT_KSDK_PATH/rtos/uCOSIII/src/uCOS-III/Source/os_core.c</locationURI>
+		</link>
+		<link>
+			<name>ucosiii/os_cpu.h</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/rtos/uCOSIII/src/uCOS-III/Ports/ARM-Cortex-M4/Generic/GNU/os_cpu.h</location>
+		</link>
+		<link>
+			<name>ucosiii/os_cpu_a.S</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/rtos/uCOSIII/src/uCOS-III/Ports/ARM-Cortex-M4/Generic/GNU/os_cpu_a.S</location>
+		</link>
+		<link>
+			<name>ucosiii/os_cpu_c.c</name>
+			<type>1</type>
+			<location>C:/Freescale/KSDK_1.2.0/rtos/uCOSIII/src/uCOS-III/Ports/ARM-Cortex-M4/Generic/GNU/os_cpu_c.c</location>
 		</link>
 		<link>
 			<name>ucosiii/os_dbg.c</name>
@@ -294,11 +359,6 @@
 			<name>Debug/rkh/port/rkht.h</name>
 			<type>1</type>
 			<locationURI>copy_PARENT123456/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkht.h</locationURI>
-		</link>
-		<link>
-			<name>SDK/platform/hwtimer/fsl_hwtimer_systick_irq.c</name>
-			<type>1</type>
-			<location>C:/Freescale/KSDK_1.2.0/platform/system/src/hwtimer/fsl_hwtimer_systick_irq.c</location>
 		</link>
 		<link>
 			<name>SDK/platform/utilities/fsl_debug_console.c</name>

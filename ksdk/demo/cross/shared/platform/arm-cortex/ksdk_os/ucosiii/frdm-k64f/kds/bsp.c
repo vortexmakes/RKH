@@ -179,7 +179,7 @@ rkh_trc_close( void )
 RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKH_TS_T )rkhtrc_lptmr_read();
+	return ( RKH_TS_T )CPU_TS_TmrRd();
 }
 
 
@@ -302,10 +302,9 @@ bsp_init( int argc, char *argv[]  )
 	(void)argv;
 
     hardware_init();
+    CPU_Init();
 
 //    GPIO_DRV_Init( switchPins, ledPins );
-
-    rkhtrc_lptmr_init();
 
 #if (OS_CFG_STAT_TASK_EN > 0)
     OSStatTaskCPUUsageInit(&err);
@@ -321,6 +320,12 @@ bsp_init( int argc, char *argv[]  )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
+#if 1
+	//RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TRC_ALL_GROUPS );
+	RKH_FILTER_OFF_EVENT(RKH_TRC_ALL_EVENTS);
+	RKH_FILTER_OFF_ALL_SMA();
+	RKH_FILTER_OFF_ALL_SIGNALS();
+#else
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
@@ -328,6 +333,7 @@ bsp_init( int argc, char *argv[]  )
 	/*RKH_FILTER_OFF_ALL_SIGNALS();*/
 	RKH_FILTER_OFF_SIGNAL( REQ );
 	RKH_FILTER_OFF_SIGNAL( START );
+#endif
 
 	RKH_TRC_OPEN();
 }
