@@ -47,6 +47,7 @@
 #include "cli.h"
 #include "scevt.h"
 #include "rkh.h"
+#include "fsl_debug_console.h"
 
 #define SERIAL_TRACE			1
 
@@ -54,7 +55,8 @@
 #define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
 #define SIZEOF_EP1STO				16
 #define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
-
+#define SVR_NAME					"Server    -"
+#define CLI_NAME					"Client"
 
 /* This macro is needed only if the module requires to check 	.. */
 /* .. expressions that ought to be true as long as the program  .. */
@@ -148,6 +150,38 @@ rkh_assert( RKHROM char * const file, int line )
 }
 
 
+static
+void
+print_banner( void )
+{
+	PRINTF(	"\"Shared\" example\n\n" );
+	PRINTF(	"RKH version      = %s\n", RKH_RELEASE );
+	PRINTF(	"Port version     = %s\n", rkh_get_port_version() );
+	PRINTF(	"Port description = %s\n\n", rkh_get_port_desc() );
+	PRINTF(	"Description: \n\n" );
+	PRINTF(	"This application deals with the shared resource problem \n" );
+	PRINTF(	"in active object systems. Showing one of the biggest \n" );
+	PRINTF(	"benefit of using active objects: resource encapsulation. \n" );
+	PRINTF(	"The encapsulation naturally designates the owner of the \n" );
+	PRINTF(	"resource as the ultimate arbiter in resolving any contention \n" );
+	PRINTF(	"and potential conflicts for the resource. \n" );
+	PRINTF(	"The SHD application is relatively simple and can be tested \n" );
+	PRINTF(	"only with a couple of LEDs on your target board. \n" );
+	PRINTF(	"Still, SHD contains five (5) concurrent active objects \n" );
+	PRINTF(	"that exchange events via direct event posting mechanism. \n" );
+	PRINTF(	"The application uses four timers, as well as dynamic  \n" );
+	PRINTF(	"and static events. \n" );
+	PRINTF(	"On the other hand, this application could be used in either \n" );
+	PRINTF(	"preemptive or cooperative enviroment. \n" );
+	PRINTF(	"Aditionally, the SHD could be used to verify a new RKH port. \n" );
+	PRINTF(	"\n\n\n" );
+
+	PRINTF( "1.- Press 'P'/'p' to pause.\n" );
+	PRINTF( "2.- Press 'escape' to quit.\n\n\n" );
+}
+
+
+
 #if RKH_CFG_TRC_EN == 1
 
 
@@ -232,8 +266,8 @@ bsp_srand( rui32_t seed )
 void 
 bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 {
-	(void)clino;
-	(void)req_time;
+	PRINTF( "Client[%d] - Waiting for send request to server (%d seg)\n",
+									CLI_ID(clino), req_time );
 }
 
 
@@ -241,13 +275,15 @@ void
 bsp_cli_req( rui8_t clino )
 {
 //	set_cli_sled( clino, CLI_WAITING );
+	PRINTF( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
 
 void 
 bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
-	(void)using_time;
+	PRINTF( "Client[%d] - Using server for %d [seg]\n",
+									CLI_ID(clino), using_time );
 
 //	set_cli_sled( clino, CLI_WORKING );
 }
@@ -256,6 +292,7 @@ bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 void 
 bsp_cli_paused( rui8_t clino )
 {
+	PRINTF( "Client[%d] - Paused\n", CLI_ID(clino) );
 //	set_cli_sled( clino, CLI_PAUSED );
 }
 
@@ -263,6 +300,7 @@ bsp_cli_paused( rui8_t clino )
 void 
 bsp_cli_resumed( rui8_t clino )
 {
+	PRINTF( "Client[%d] - Resumed\n", CLI_ID(clino) );
 //	set_cli_sled( clino, CLI_IDLE );
 }
 
@@ -270,6 +308,7 @@ bsp_cli_resumed( rui8_t clino )
 void 
 bsp_cli_done( rui8_t clino )
 {
+	PRINTF( "Client[%d] - Done\n", CLI_ID(clino) );
 //	set_cli_sled( clino, CLI_IDLE );
 }
 
@@ -277,14 +316,25 @@ bsp_cli_done( rui8_t clino )
 void 
 bsp_svr_recall( rui8_t clino )
 {
-	(void)clino;
+	PRINTF( "%s Recall a deferred request from client[%d]\n",
+									SVR_NAME, CLI_ID(clino) );
 }
 
 
 void 
 bsp_svr_paused( const RKH_SMA_T *sma )
 {
-	(void)sma;
+	rint cn;
+	SVR_T *ao;
+
+	ao = RKH_CAST(SVR_T, sma);
+	PRINTF( "%s Paused | ", SVR_NAME );
+	PRINTF( "ntot = %d |", ao->ntot );
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )
+		PRINTF( " cli%d=%d |", cn, ao->ncr[ cn ] );
+
+	PRINTF("\n");
 }
 
 
@@ -309,7 +359,8 @@ bsp_init( int argc, char *argv[]  )
 #if (OS_CFG_STAT_TASK_EN > 0)
     OSStatTaskCPUUsageInit(&err);
 #endif
-	
+
+    print_banner();
 	rkh_fwk_init();
 
 	tick_cnt = BSP_TICKS_RATE;

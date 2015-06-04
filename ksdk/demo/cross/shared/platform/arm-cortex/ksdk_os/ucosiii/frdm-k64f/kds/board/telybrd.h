@@ -35,5 +35,6 @@ void rkhtrc_send_block( rui8_t *buf, TRCQTY_T len );
 void rkhtrc_lptmr_init(void );
 uint32_t rkhtrc_lptmr_read( void );
 
+
 #endif
 
