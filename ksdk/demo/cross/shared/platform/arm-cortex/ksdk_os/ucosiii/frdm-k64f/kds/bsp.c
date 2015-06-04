@@ -320,7 +320,7 @@ bsp_init( int argc, char *argv[]  )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
-#if 1
+#if 0
 	//RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_OFF_EVENT(RKH_TRC_ALL_EVENTS);
 	RKH_FILTER_OFF_ALL_SMA();

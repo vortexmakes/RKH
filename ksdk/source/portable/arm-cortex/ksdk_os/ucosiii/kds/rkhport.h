@@ -167,7 +167,7 @@ const char *rkh_get_port_desc( void );
 #define RKH_EQ_TYPE              			msg_queue_t
 #define RKH_OSSIGNAL_TYPE					void*
 #define RKH_THREAD_TYPE						OS_TCB
-#define RKH_THREAD_STK_TYPE					task_stack_t
+#define RKH_THREAD_STK_TYPE					rui8_t
 
 
 #define RKH_SMA_BLOCK( sma ) 				(void)0
