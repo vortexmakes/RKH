@@ -49,7 +49,14 @@
 #include "rkh.h"
 #include "fsl_debug_console.h"
 
-#define SERIAL_TRACE			1
+
+#include "seqchbak.h"
+#include "sequence.h"
+#include "genled.h"
+#include "switch.h"
+
+
+#define SERIAL_TRACE				1
 
 #define SIZEOF_EP0STO				32
 #define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
@@ -118,8 +125,8 @@ bsp_publish( const RKH_EVT_T *e )
 void 
 rkh_hook_timetick( void ) 
 {
-//	sequence_interrupt();
-//	switch_tick();	
+	sequence_interrupt();
+	switch_tick();
 }
 
 
@@ -213,7 +220,7 @@ rkh_trc_close( void )
 RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKH_TS_T )CPU_TS_TmrRd();
+	return ( RKH_TS_T )OSA_TimeGetMsec();
 }
 
 
@@ -261,7 +268,7 @@ bsp_srand( rui32_t seed )
 {
     l_rnd = seed;
 }
-
+ 
 
 void 
 bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
@@ -274,7 +281,7 @@ bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 void 
 bsp_cli_req( rui8_t clino )
 {
-//	set_cli_sled( clino, CLI_WAITING );
+	set_cli_sled( clino, CLI_WAITING );
 	PRINTF( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
@@ -284,8 +291,7 @@ bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
 	PRINTF( "Client[%d] - Using server for %d [seg]\n",
 									CLI_ID(clino), using_time );
-
-//	set_cli_sled( clino, CLI_WORKING );
+	set_cli_sled( clino, CLI_WORKING );
 }
 
 
@@ -293,7 +299,7 @@ void
 bsp_cli_paused( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Paused\n", CLI_ID(clino) );
-//	set_cli_sled( clino, CLI_PAUSED );
+	set_cli_sled( clino, CLI_PAUSED );
 }
 
 
@@ -301,7 +307,7 @@ void
 bsp_cli_resumed( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Resumed\n", CLI_ID(clino) );
-//	set_cli_sled( clino, CLI_IDLE );
+	set_cli_sled( clino, CLI_IDLE );
 }
 
 
@@ -309,7 +315,7 @@ void
 bsp_cli_done( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Done\n", CLI_ID(clino) );
-//	set_cli_sled( clino, CLI_IDLE );
+	set_cli_sled( clino, CLI_IDLE );
 }
 
 
@@ -338,32 +344,26 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 }
 
 
-#include "fsl_debug_console.h"
-
 void 
 bsp_init( int argc, char *argv[]  )
 {
-#if (OS_CFG_STAT_TASK_EN > 0)
-	OS_ERR err;
-#endif
 	rint cn;
 
 	(void)argc;
 	(void)argv;
 
-    hardware_init();
-    CPU_Init();
+	hardware_init();
+	CPU_Init();
 
-//    GPIO_DRV_Init( switchPins, ledPins );
+	GPIO_DRV_Init( switchPins, ledPins );
 
-#if (OS_CFG_STAT_TASK_EN > 0)
-    OSStatTaskCPUUsageInit(&err);
-#endif
+	init_seqs();
 
     print_banner();
 	rkh_fwk_init();
 
 	tick_cnt = BSP_TICKS_RATE;
+
 	OS_AppTimeTickHookPtr = bsp_isr_tick;
 	OS_AppIdleTaskHookPtr = idle_thread_function;
 
@@ -371,37 +371,18 @@ bsp_init( int argc, char *argv[]  )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
-#if 0
-	//RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_OFF_EVENT(RKH_TRC_ALL_EVENTS);
-	RKH_FILTER_OFF_ALL_SMA();
-	RKH_FILTER_OFF_ALL_SIGNALS();
-#else
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
-	/*RKH_FILTER_OFF_ALL_SIGNALS();*/
 	RKH_FILTER_OFF_SIGNAL( REQ );
 	RKH_FILTER_OFF_SIGNAL( START );
-#endif
 
 	RKH_TRC_OPEN();
 }
 
 
-void 
-bsp_led_on( void )
-{
-	GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_RED );
-}
 
-
-void 
-bsp_led_off( void )
-{
-	GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_RED );
-}
 
 
 

@@ -76,28 +76,6 @@ lptmr_user_config_t lptmr_tstamp =
 		.isInterruptEnabled   = false
 };
 
-#if 0
-void
-rkhtrc_lptmr_init( void )
-{
-    /* Initialize LPTMR */
-	LPTMR_DRV_Init(TSTAMP_LPTMR_INSTANCE, &tstamp_state, &lptmr_tstamp);
-
-    /* Set the timer period for 1 second */
-    LPTMR_DRV_SetTimerPeriodUs(TSTAMP_LPTMR_INSTANCE,1000000);
-
-	/* Start counting */
-    LPTMR_DRV_Start(TSTAMP_LPTMR_INSTANCE);
-}
-
-
-uint32_t 
-rkhtrc_lptmr_read( void )
-{
-	return LPTMR_DRV_GetCurrentTimeUs(TSTAMP_LPTMR_INSTANCE);
-}
-#endif
-
 
 
 /*
@@ -204,8 +182,7 @@ void  CPU_TS_TmrInit (void)
 #if (CPU_CFG_TS_TMR_EN == DEF_ENABLED)
 CPU_TS  CPU_TS_TmrRd (void)
 {
-//	return LPTMR_DRV_GetCurrentTimeUs(TSTAMP_LPTMR_INSTANCE);
-	return 0;
+	return LPTMR_DRV_GetCurrentTimeUs(TSTAMP_LPTMR_INSTANCE);
 }
 #endif
 

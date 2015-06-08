@@ -71,6 +71,16 @@
 			<locationURI>PARENT-11-PROJECT_LOC/uCos_port/demo/cross/shared/platform/ucos/v3.03.01/os_cfg_app.h</locationURI>
 		</link>
 		<link>
+			<name>bsp/seq</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/seq</locationURI>
+		</link>
+		<link>
+			<name>bsp/switch</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/switch</locationURI>
+		</link>
+		<link>
 			<name>osa/fsl_os_abstraction.h</name>
 			<type>1</type>
 			<location>C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction.h</location>
