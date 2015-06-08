@@ -48,11 +48,6 @@
 #include "scevt.h"
 #include "rkh.h"
 #include "fsl_debug_console.h"
-
-
-#include "seqchbak.h"
-#include "sequence.h"
-#include "genled.h"
 #include "switch.h"
 
 
@@ -72,7 +67,6 @@
 RKH_THIS_MODULE
 
 
-static rui16_t tick_cnt;
 static rui32_t l_rnd;				/* random seed */
 static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
@@ -98,18 +92,6 @@ static rui8_t l_isr_kbd;
 #endif
 
 
-static
-void
-bsp_isr_tick( void )
-{
-	if(tick_cnt && (--tick_cnt == (rui16_t)0))
-	{
-		tick_cnt = BSP_TICKS_RATE;
-		RKH_TIM_TICK((const void *)(bsp_isr_tick));
-	}
-}
-
-
 void
 bsp_publish( const RKH_EVT_T *e )
 {
@@ -125,7 +107,6 @@ bsp_publish( const RKH_EVT_T *e )
 void 
 rkh_hook_timetick( void ) 
 {
-	sequence_interrupt();
 	switch_tick();
 }
 
@@ -192,21 +173,12 @@ print_banner( void )
 #if RKH_CFG_TRC_EN == 1
 
 
-static 
-void
-idle_thread_function( void )
-{
-	RKH_TRC_FLUSH();
-}
-
-
 void 
 rkh_trc_open( void )
 {
 	rkh_trc_init();
 	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
-	RKH_TR_FWK_OBJ( &bsp_isr_tick );
 }
 
 
@@ -281,7 +253,6 @@ bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
 void 
 bsp_cli_req( rui8_t clino )
 {
-	set_cli_sled( clino, CLI_WAITING );
 	PRINTF( "Client[%d] - Send request to server...\n", CLI_ID(clino) );
 }
 
@@ -291,7 +262,7 @@ bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
 	PRINTF( "Client[%d] - Using server for %d [seg]\n",
 									CLI_ID(clino), using_time );
-	set_cli_sled( clino, CLI_WORKING );
+	set_cli_led( clino );
 }
 
 
@@ -299,7 +270,7 @@ void
 bsp_cli_paused( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Paused\n", CLI_ID(clino) );
-	set_cli_sled( clino, CLI_PAUSED );
+	set_paused_led();
 }
 
 
@@ -307,7 +278,7 @@ void
 bsp_cli_resumed( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Resumed\n", CLI_ID(clino) );
-	set_cli_sled( clino, CLI_IDLE );
+//	set_cli_led( clino );
 }
 
 
@@ -315,7 +286,7 @@ void
 bsp_cli_done( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Done\n", CLI_ID(clino) );
-	set_cli_sled( clino, CLI_IDLE );
+	clear_led();
 }
 
 
@@ -357,15 +328,8 @@ bsp_init( int argc, char *argv[]  )
 
 	GPIO_DRV_Init( switchPins, ledPins );
 
-	init_seqs();
-
     print_banner();
 	rkh_fwk_init();
-
-	tick_cnt = BSP_TICKS_RATE;
-
-	OS_AppTimeTickHookPtr = bsp_isr_tick;
-	OS_AppIdleTaskHookPtr = idle_thread_function;
 
 	RKH_FILTER_OFF_SMA( svr );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )

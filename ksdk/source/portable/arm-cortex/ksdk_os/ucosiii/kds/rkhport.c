@@ -51,6 +51,14 @@ RKH_MODULE_NAME( rkhport )
 RKH_MODULE_VERSION( rkhport, 1.00 )
 RKH_MODULE_DESC( rkhport, "uC/OS-III for Freescale KSDK and KDS" )
 
+#if (OSCfg_TickRate_Hz > OS_CFG_TICK_RATE_HZ)
+#error "RKH_CFG_FWK_TICK_RATE_HZ in 'rkhcfg.h' must be <= to OS tick"
+#error "defined by RKH_CFG_FWK_TICK_RATE_HZ in 'os_cfg_app.h'       "
+#endif
+
+#define RKH_TICKS_RATE   		(OSCfg_TickRate_Hz / RKH_CFG_FWK_TICK_RATE_HZ)
+
+static rui16_t tick_cnt;
 
 static
 void
@@ -71,6 +79,28 @@ thread_function( void *arg )
                                        /* deletes the currently running task */
 	status = OSA_TaskDestroy(&(((RKH_SMA_T *)arg)->thread));
 	RKH_ENSURE(status == kStatus_OSA_Success);
+}
+
+
+static 
+void
+idle_thread_function( void )
+{
+#if RKH_CFG_TRC_EN == 1
+	RKH_TRC_FLUSH();
+#endif
+}
+
+
+static
+void
+rkh_isr_tick( void )
+{
+	if(tick_cnt && (--tick_cnt == (rui16_t)0))
+	{
+		tick_cnt = RKH_TICKS_RATE;
+		RKH_TIM_TICK((const void *)(rkh_isr_tick));
+	}
 }
 
 
@@ -150,7 +180,13 @@ rkh_fwk_init( void )
 {
 	osa_status_t status;
 
+	tick_cnt = RKH_TICKS_RATE;
+
 	status = OSA_Init();
+
+	OS_AppTimeTickHookPtr = rkh_isr_tick;
+	OS_AppIdleTaskHookPtr = idle_thread_function;
+
 	RKH_ENSURE(status == kStatus_OSA_Success);
 }
 
@@ -163,6 +199,7 @@ rkh_fwk_enter( void )
 
     RKH_HOOK_START();	                            /* RKH start-up callback */
 	RKH_TR_FWK_EN();
+	RKH_TR_FWK_OBJ( &rkh_isr_tick );
 
 	status = OSA_Start();	             /* uC/OS-III start the multitasking */
 	RKH_TRC_CLOSE();		                    /* cleanup the trace session */

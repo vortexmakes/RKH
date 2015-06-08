@@ -55,7 +55,7 @@ cli_delay_req( const struct RKH_SMA_T *sma )
 
 	time = CLI_REQ_TIME;
 	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->cli_rtmr, sma, time );
-	bsp_cli_wait_req( RKH_GET_PRIO(sma), time/BSP_TICKS_PER_SEC );
+	bsp_cli_wait_req( RKH_GET_PRIO(sma), time/RKH_CFG_FWK_TICK_RATE_HZ );
 }
 
 
@@ -95,7 +95,7 @@ cli_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 	(void)pe;
 	time = CLI_USING_TIME;
 	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->cli_utmr, sma, time );
-	bsp_cli_using( RKH_CAST(START_EVT_T, pe)->clino, time/BSP_TICKS_PER_SEC );
+	bsp_cli_using( RKH_CAST(START_EVT_T, pe)->clino, time/RKH_CFG_FWK_TICK_RATE_HZ );
 }
 
 

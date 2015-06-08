@@ -189,3 +189,49 @@ CPU_TS  CPU_TS_TmrRd (void)
 
 
 
+typedef struct
+{
+	uint32_t r;
+	uint32_t g;
+	uint32_t b;
+}RGB_COLOR_ST;
+
+
+static RGB_COLOR_ST cli_color[] = {	{ 1, 0, 0 },
+									{ 0, 1, 0 },
+									{ 0, 0, 1 },
+									{ 1, 0, 1 }	};
+
+static RGB_COLOR_ST p_color =  { 0, 1, 1 };
+
+
+void
+set_cli_led( rui8_t clino )
+{
+	(cli_color[clino-1].r == 1) ? GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_RED ) :
+								GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_RED );
+	(cli_color[clino-1].g == 1) ? GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_GREEN ) :
+								GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_GREEN );	
+	(cli_color[clino-1].b == 1) ? GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_BLUE ) :
+								GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_BLUE );
+}
+
+void
+set_paused_led( void )
+{
+	(p_color.r == 1) ?	GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_RED ) :
+						GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_RED );
+	(p_color.g == 1) ? 	GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_GREEN ) :
+						GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_GREEN );
+	(p_color.b == 1) ? 	GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_BLUE ) :
+						GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_BLUE );	
+}
+
+void
+clear_led( void )
+{
+	GPIO_DRV_SetPinOutput(BOARD_GPIO_LED_RED);
+	GPIO_DRV_SetPinOutput(BOARD_GPIO_LED_GREEN);
+	GPIO_DRV_SetPinOutput(BOARD_GPIO_LED_BLUE);
+}
+

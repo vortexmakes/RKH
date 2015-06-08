@@ -36,5 +36,9 @@ void rkhtrc_lptmr_init(void );
 uint32_t rkhtrc_lptmr_read( void );
 
 
+void set_cli_led( rui8_t clino );
+void set_paused_led( void );
+void clear_led( void );
+
 #endif
 

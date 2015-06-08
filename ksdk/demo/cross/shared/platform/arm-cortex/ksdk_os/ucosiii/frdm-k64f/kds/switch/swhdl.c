@@ -2,7 +2,6 @@
  * swhdl.c
  */
 
-//#include "fsl_gpio_driver.h"
 #include "board.h"
 #include "swhdl.h"
 
