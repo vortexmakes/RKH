@@ -1,10 +1,13 @@
 /*
  * switch.c
+ *
+ * Minimal debouncing switch handler.
+ * hardware access.
+ *
  */
 
-#include "mytypes.h"
-#include "swhdl.h"
 #include "switch.h"
+#include "swhdl.h"
 #include "bsp.h"
 #include "scevt.h"
 
@@ -49,8 +52,9 @@ switch_tick( void )
 
 }
 
-uchar
-get_switch_state( uchar who )
+
+MUInt
+get_switch_state( MUInt who )
 {
 	return switchs[who].debsw;
 }

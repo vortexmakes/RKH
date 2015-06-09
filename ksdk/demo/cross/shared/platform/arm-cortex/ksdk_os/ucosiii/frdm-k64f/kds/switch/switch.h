@@ -1,15 +1,25 @@
 /*
  * switch.h
+ *
+ * Minimal debouncing switch handler
+ *
  */
 
 #ifndef __SWITCH_H__
 #define __SWITCH_H__
 
-#include "mytypes.h"
+#ifdef __TINY_PROC__
+	typedef unsigned char	MUInt;
+	typedef signed char		MInt;
+#else
+	typedef unsigned int	MUInt;
+	typedef signed int		MInt;
+#endif
+
 
 typedef struct
 {
-	uchar state;
+	unsigned char state;
 	MUInt (*rawsw)(void);
 	MUInt debsw;
 }SWITCH_ST;
@@ -28,6 +38,6 @@ enum
 };
 
 void switch_tick( void );
-uchar get_switch_state( uchar who );
+MUInt get_switch_state( MUInt who );
 
 #endif

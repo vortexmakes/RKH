@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for TWR-K60D100M CWV10
+ * 	\brief 		BSP for FRDK64F120 using Freescale OSA from KSDK
  */
 
 
@@ -70,6 +70,7 @@ RKH_THIS_MODULE
 static rui32_t l_rnd;				/* random seed */
 static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
+
 #if defined( RKH_USE_TRC_SENDER )
 static rui8_t l_isr_kbd;
 #endif
@@ -164,19 +165,20 @@ print_banner( void )
 	PRINTF(	"Aditionally, the SHD could be used to verify a new RKH port. \n" );
 	PRINTF(	"\n\n\n" );
 
-	PRINTF( "1.- Press 'P'/'p' to pause.\n" );
-	PRINTF( "2.- Press 'escape' to quit.\n\n\n" );
+	PRINTF( "1.- Each Client have your own color, Client 1-4:\n" );
+	PRINTF( "	   	RED, GREEN, BLUE, YELLOW\n" );
+	PRINTF( "2.- Press SW2 to PAUSE.\n" );
+	PRINTF( "3.- Paused state is shown with a WHITE in RGB led\n." );
 }
 
 
-
-#if RKH_CFG_TRC_EN == 1
-
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 
 void 
 rkh_trc_open( void )
 {
 	rkh_trc_init();
+	
 	SERIAL_TRACE_OPEN();
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
@@ -219,6 +221,7 @@ rkh_trc_flush( void )
 			break;
 	}	
 }
+
 #endif
 
 
@@ -241,6 +244,19 @@ bsp_srand( rui32_t seed )
     l_rnd = seed;
 }
  
+static RGB_COLOR_IDX bsp_led_colors[] = {	
+											/* Server paused */
+											RGB_WHITE,		
+
+											/* 
+											 * Client1 1-4 according
+											 * to clino arg
+											 */
+											RGB_RED,
+											RGB_LIME,
+											RGB_BLUE,
+											RGB_YELLOW
+										};
 
 void 
 bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time )
@@ -262,7 +278,7 @@ bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 {
 	PRINTF( "Client[%d] - Using server for %d [seg]\n",
 									CLI_ID(clino), using_time );
-	set_cli_led( clino );
+	set_rgb_led( bsp_led_colors[clino] );
 }
 
 
@@ -270,7 +286,7 @@ void
 bsp_cli_paused( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Paused\n", CLI_ID(clino) );
-	set_paused_led();
+	set_rgb_led( RGB_WHITE );
 }
 
 
@@ -278,7 +294,6 @@ void
 bsp_cli_resumed( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Resumed\n", CLI_ID(clino) );
-//	set_cli_led( clino );
 }
 
 
@@ -286,7 +301,7 @@ void
 bsp_cli_done( rui8_t clino )
 {
 	PRINTF( "Client[%d] - Done\n", CLI_ID(clino) );
-	clear_led();
+	set_rgb_led( RGB_BLACK );
 }
 
 
@@ -311,7 +326,7 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		PRINTF( " cli%d=%d |", cn, ao->ncr[ cn ] );
 
-	PRINTF("\n");
+	PUTCHAR('\n');
 }
 
 
@@ -323,12 +338,10 @@ bsp_init( int argc, char *argv[]  )
 	(void)argc;
 	(void)argv;
 
-	hardware_init();
-	CPU_Init();
+	board_init();
 
-	GPIO_DRV_Init( switchPins, ledPins );
-
-    print_banner();
+	bsp_srand( 1234U );
+	print_banner();
 	rkh_fwk_init();
 
 	RKH_FILTER_OFF_SMA( svr );
@@ -339,6 +352,7 @@ bsp_init( int argc, char *argv[]  )
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	/*RKH_FILTER_OFF_ALL_SIGNALS();*/
 	RKH_FILTER_OFF_SIGNAL( REQ );
 	RKH_FILTER_OFF_SIGNAL( START );
 

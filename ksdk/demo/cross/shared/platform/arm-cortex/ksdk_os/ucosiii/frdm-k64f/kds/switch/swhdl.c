@@ -1,5 +1,9 @@
 /*
  * swhdl.c
+ *
+ * Minimal debouncing switch handler.
+ * hardware access.
+ *
  */
 
 #include "board.h"

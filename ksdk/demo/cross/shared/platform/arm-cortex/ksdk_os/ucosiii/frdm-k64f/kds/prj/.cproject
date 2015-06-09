@@ -55,7 +55,6 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../../../source/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../kds&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../kds/board&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../kds/seq&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../kds/switch&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_KSDK_PATH}/platform/CMSIS/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_KSDK_PATH}/platform/devices&quot;"/>
