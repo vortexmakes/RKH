@@ -1,5 +1,5 @@
 /**
-\page cross_frdmk64f FRDMK64F for K64 processor
+\page cross_frdmk64f_ucosiii FRDMK64F for K64 processor
 \image html rkh_bunner.jpg
 
 Running Shared RKH demo on Freescale <A HREF="http://www.freescale.com/
