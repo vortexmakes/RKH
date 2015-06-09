@@ -34,7 +34,7 @@
 #include <stdint.h>
 #include "pin_mux.h"
 #include "gpio_pins.h"
-#include "telybrd.h"
+#include "boardext.h"
 
 /* The board name */
 #define BOARD_NAME                      "FRDM-K64F"
@@ -80,8 +80,8 @@
 
 /* The UART to use for debug messages. */
 #ifndef BOARD_DEBUG_UART_INSTANCE
-    #define BOARD_DEBUG_UART_INSTANCE   4
-    #define BOARD_DEBUG_UART_BASEADDR   UART4
+    #define BOARD_DEBUG_UART_INSTANCE   3
+    #define BOARD_DEBUG_UART_BASEADDR   UART3
 #endif
 #ifndef BOARD_DEBUG_UART_BAUD
     #define BOARD_DEBUG_UART_BAUD       115200

@@ -26,109 +26,154 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>blinky</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>rkh</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>blinky/bky.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/blinky/bky.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/bky.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/blinky/bky.h</locationURI>
-		</link>
-		<link>
-			<name>blinky/bkyact.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/blinky/bkyact.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/bkyact.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/blinky/bkyact.h</locationURI>
-		</link>
-		<link>
-			<name>blinky/main.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/blinky/main.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/rkhcfg.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/blinky/rkhcfg.h</locationURI>
+			<name>shared</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>bsp/board</name>
 			<type>2</type>
-			<locationURI>copy_PARENT12/board</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/board</locationURI>
 		</link>
 		<link>
 			<name>bsp/bsp.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT123/bsp.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/bsp.c</locationURI>
 		</link>
 		<link>
 			<name>bsp/bsp.h</name>
 			<type>1</type>
-			<locationURI>copy_PARENT1234/bsp.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/bsp.h</locationURI>
+		</link>
+		<link>
+			<name>bsp/switch</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/switch</locationURI>
 		</link>
 		<link>
 			<name>rkh/include</name>
 			<type>2</type>
-			<locationURI>copy_PARENT12345/source/include</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/include</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkh.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkh.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkh.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhdyn.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhdyn.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhdyn.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhmp.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhmp.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhmp.c</locationURI>
+		</link>
+		<link>
+			<name>rkh/rkhport.c</name>
+			<type>1</type>
+			<locationURI>PARENT-10-PROJECT_LOC/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.c</locationURI>
+		</link>
+		<link>
+			<name>rkh/rkhport.h</name>
+			<type>1</type>
+			<locationURI>PARENT-10-PROJECT_LOC/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.h</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhrq.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhrq.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhrq.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhs.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhs.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhs.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhsma.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhsma.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhsma.c</locationURI>
+		</link>
+		<link>
+			<name>rkh/rkht.h</name>
+			<type>1</type>
+			<locationURI>PARENT-10-PROJECT_LOC/source/portable/arm-cortex/rkhs/ksdk/kds/rkht.h</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhtbl.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhtbl.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtbl.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhtim.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhtim.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtim.c</locationURI>
 		</link>
 		<link>
 			<name>rkh/rkhtrc.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT12345/source/rkhtrc.c</locationURI>
+			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtrc.c</locationURI>
+		</link>
+		<link>
+			<name>shared/cli.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cli.c</locationURI>
+		</link>
+		<link>
+			<name>shared/cli.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cli.h</locationURI>
+		</link>
+		<link>
+			<name>shared/cliact.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cliact.c</locationURI>
+		</link>
+		<link>
+			<name>shared/cliact.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/cliact.h</locationURI>
+		</link>
+		<link>
+			<name>shared/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/main.c</locationURI>
+		</link>
+		<link>
+			<name>shared/rkhcfg.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/rkhcfg.h</locationURI>
+		</link>
+		<link>
+			<name>shared/scevt.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/scevt.h</locationURI>
+		</link>
+		<link>
+			<name>shared/svr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svr.c</locationURI>
+		</link>
+		<link>
+			<name>shared/svr.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svr.h</locationURI>
+		</link>
+		<link>
+			<name>shared/svract.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svract.c</locationURI>
+		</link>
+		<link>
+			<name>shared/svract.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/svract.h</locationURI>
 		</link>
 		<link>
 			<name>SDK/platform/fsl_uart_irq.c</name>
@@ -179,7 +224,7 @@
 	<filteredResources>
 		<filter>
 			<id>0</id>
-			<name>blinky</name>
+			<name>shared</name>
 			<type>5</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>

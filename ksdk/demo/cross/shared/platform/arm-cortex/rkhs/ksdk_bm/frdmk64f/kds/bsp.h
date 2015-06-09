@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for TWR-K60D100M CW10
+ * 	\brief 		BSP for FRDK64F120 using Freescale KSDK Bare Metal 	
  */
 
 
@@ -48,8 +48,6 @@
 
 #include "rkh.h"
 #include "board.h"
-//#include "fsl_device_registers.h"
-
 
 #define BSP_KERNEL_IRQ_PRIO		6
 #define BSP_UART_IRQ_PRIO		7
@@ -67,17 +65,24 @@
 #define BSP_TS_RATE_HZ		   	10000
 
 void bsp_init( int argc, char *argv[] );
-void bsp_led_on( void );
-void bsp_led_off( void );
+rui32_t bsp_rand( void );
+void bsp_srand( rui32_t seed );
+
+void bsp_cli_req( rui8_t clino );
+void bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time );
+void bsp_cli_using( rui8_t clino, RKH_TNT_T using_time );
+void bsp_cli_paused( rui8_t clino );
+void bsp_cli_resumed( rui8_t clino );
+void bsp_cli_done( rui8_t clino );
+void bsp_svr_recall( rui8_t clino );
+void bsp_svr_paused( const RKH_SMA_T *sma );
+void bsp_publish( const RKH_EVT_T *e );
 
 #ifdef RKH_DEBUG
 #define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )
 #else					
 #define reset_now()		cpu_reset()
 #endif
-
-
-#define get_ts()		cpu_tstmr_read()
 
 
 #endif
