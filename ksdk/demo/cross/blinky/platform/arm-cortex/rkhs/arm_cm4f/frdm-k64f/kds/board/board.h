@@ -34,7 +34,7 @@
 #include <stdint.h>
 #include "pin_mux.h"
 #include "gpio_pins.h"
-#include "telybrd.h"
+#include "boardext.h"
 
 /* The board name */
 #define BOARD_NAME                      "FRDM-K64F"

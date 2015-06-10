@@ -45,11 +45,17 @@
 #include "bsp.h"
 #include "bky.h"
 #include "rkh.h"
+#include "fsl_hwtimer_systick.h"
+
 
 #define SERIAL_TRACE			1
 
 
 RKH_THIS_MODULE
+
+
+static hwtimer_t hwtimer;			/* Systick hardware timer */
+
 
 /*
  * 	For serial trace feature.
@@ -67,6 +73,12 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
+
+void
+rkh_isr_tick( void* data )
+{
+	RKH_TIM_TICK((const void *)(rkh_isr_tick));
+}
 
 void 
 rkh_hook_timetick( void ) 
@@ -157,16 +169,6 @@ rkh_trc_flush( void )
 }
 #endif
 
-#include "fsl_hwtimer_systick.h"
-#include "fsl_debug_console.h"
-
-hwtimer_t hwtimer;
-
-void
-hwtimer_callback( void* data )
-{
-	rkh_tmr_tick();
-}
 
 void 
 bsp_init( int argc, char *argv[]  )
@@ -183,7 +185,7 @@ bsp_init( int argc, char *argv[]  )
 							(&hwtimer, (1000*1000)/RKH_CFG_FWK_TICK_RATE_HZ) );
 
     RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_RegisterCallback
-							(&hwtimer, hwtimer_callback, NULL) );
+							(&hwtimer, rkh_isr_tick, NULL) );
 
     RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_Start(&hwtimer) );
 

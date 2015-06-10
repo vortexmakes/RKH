@@ -12,15 +12,6 @@ environment.
 On this demo, multithreading is reach through RKH uCosIII port defined by 
 the Freescale KSDK OSA interface.
 
-<STRONG>Before to start you must check this jumper settings</STRONG>
-
-- J6: RXD-PTB0 close
-- J7: TXD-PTB1 close
-- J8: COM_EN ON.
-- J9: at least PTC0 position close.
-- J17: EXTAL close, XTAL close.
-- J18: RESET_EN close, STLED_EN close.
-
 <STRONG>Folder tree</STRONG>
 
 \code
