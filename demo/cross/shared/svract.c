@@ -58,6 +58,8 @@ svr_resume( const struct RKH_SMA_T *sma )
 	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) 
 			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
+	
+	bsp_svr_resume();
 }
 
 
@@ -74,6 +76,7 @@ svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 	e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
 	RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ), 
 												RKH_EVT_CAST(e_start), sma );
+	bsp_svr_start(e_start->clino);
 	++RKH_CAST(SVR_T, sma)->ntot;
 	++RKH_CAST(SVR_T, sma)->ncr[ CLI_ID(e_start->clino) ];
 }
@@ -88,6 +91,8 @@ svr_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) 
 			!= (REQ_EVT_T *)0 )
 		bsp_svr_recall( e->clino );
+
+	bsp_svr_end();
 }
 
 

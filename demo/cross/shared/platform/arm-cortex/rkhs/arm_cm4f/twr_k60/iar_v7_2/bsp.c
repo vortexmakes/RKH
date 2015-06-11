@@ -299,6 +299,25 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 
 
 void 
+bsp_svr_start( rui8_t clino )
+{
+	(void)clino;
+}
+
+
+void 
+bsp_svr_end( void )
+{
+}
+
+
+void 
+bsp_svr_resume( void )
+{
+}
+
+
+void 
 bsp_init( int argc, char *argv[]  )
 {
 	rint cn;

@@ -436,6 +436,27 @@ bsp_svr_paused( const RKH_SMA_T *sma )
 
 
 void 
+bsp_svr_start( rui8_t clino )
+{
+	printf( "%s Busy (client[%d])\n", SVR_NAME, CLI_ID(clino) );
+}
+
+
+void 
+bsp_svr_end( void )
+{
+	printf( "%s Released\n", SVR_NAME );
+}
+
+
+void 
+bsp_svr_resume( void )
+{
+	printf( "%s Resumed\n", SVR_NAME );
+}
+
+
+void 
 bsp_init( int argc, char *argv[] )
 {
 	rint cn;
