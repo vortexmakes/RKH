@@ -2152,7 +2152,7 @@
 		#define RKH_EXIT_CRITICAL_()		RKH_EXIT_CRITICAL( sr )
 	#endif
 #else
-	#define RKH_SR_ALLOC()
+	#define RKH_SR_ALLOC()					
 	#define RKH_ENTER_CRITICAL_()			RKH_ENTER_CRITICAL( dummy )
 	#define RKH_EXIT_CRITICAL_()			RKH_EXIT_CRITICAL( dummy )
 #endif

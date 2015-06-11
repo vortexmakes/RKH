@@ -81,6 +81,10 @@
 	#include "..\portable\80x86\win32_mt\vc08\rkhport.h"
 #endif
 
+#ifdef __UCOS_V3_03_01__ 
+	#include "..\portable\ucos\v3.03.01\rkhport.h"
+#endif
+
 /**
  * 	\brief
  *	If RKHROM has not been defined then	\b rkhport.h has not yet been 
