@@ -16,7 +16,6 @@
 
 
 #if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
-
 	/* Defines the event queue storage for active object 'server' */
 	static RKH_EVT_T *svr_qsto[ QSTO_SIZE ];
 
@@ -30,17 +29,55 @@
 
 
 #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
-
 	/* Defines the task's stack for active object 'server' */
-	static CPU_STK svr_stk[ SVR_STK_SIZE ];
+	static RKH_THREAD_STK_TYPE svr_stk[ SVR_STK_SIZE ];
 
 	/* Defines the task's stack for active object 'client' */
-	static CPU_STK cli_stk[ NUM_CLIENTS ][ CLI_STK_SIZE ];
+	static RKH_THREAD_STK_TYPE cli_stk[ NUM_CLIENTS ][ CLI_STK_SIZE ];
 
 #else
 	#define svr_stk
 	#define cli_stk
 #endif
+
+static int mm;
+
+void HardFault_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void MemManage_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void BusFault_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void UsageFault_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void SVC_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
+void DebugMon_Handler( void )
+{
+	++mm;
+	reset_now();
+}
+
 
 
 int
