@@ -1231,7 +1231,7 @@
 	#error  "                               [MUST be >=  1]                   "
 	#error  "                               [     && <= 64]                   "
 
-#elif ((RKH_CFG_FWK_MAX_SMA == 0) || (RKH_CFG_MAX_SMA > 64))
+#elif ((RKH_CFG_FWK_MAX_SMA == 0) || (RKH_CFG_FWK_MAX_SMA > 64))
 	#error "RKH_CFG_FWK_MAX_SMA             illegally #define'd in 'rkhcfg.h'"
 	#error  "                               [MUST be >=  1]                   "
 	#error  "                               [     && <= 64]                   "
