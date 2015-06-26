@@ -70,7 +70,7 @@ const char *rkh_get_port_desc( void );
  *	has its own thread of execution.
  */
 
-#define RKH_CFGPORT_SMA_THREAD_EN 			RKH_ENABLED
+#define RKH_CFGPORT_SMA_THREAD_EN 			RKH_DISABLED
 
 /**
  *	If the #RKH_CFGPORT_SMA_THREAD_EN and #RKH_CFGPORT_SMA_THREAD_DATA_EN 
@@ -78,7 +78,7 @@ const char *rkh_get_port_desc( void );
  *	and its own object data.
  */
 
-#define RKH_CFGPORT_SMA_THREAD_DATA_EN		RKH_ENABLED
+#define RKH_CFGPORT_SMA_THREAD_DATA_EN		RKH_DISABLED
 
 /**
  * 	If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will 
