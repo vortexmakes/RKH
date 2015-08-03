@@ -3412,7 +3412,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=29 align="center"> #RKH_TG_SM </TD>
+		<TD rowspan=33 align="center"> #RKH_TG_SM </TD>
 		<TD rowspan=2 align="center"> 0 </TD>
 		<TD rowspan=2> #RKH_TE_SM_INIT ( SYM ao, SYM ist ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_INIT </TD>
@@ -3576,6 +3576,25 @@ the data included for each.
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
 	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=4 align="center"> 8 </TD>
+		<TD rowspan=4> #RKH_TE_SM_EXE_ACT ( UI8 act_type, SYM ao, SYM st, FUN act )</TD>
+		<TD rowspan=4> \copybrief RKH_TR_SM_EXE_ACT </TD>
+		<TD><I> act_type </I></TD>
+		<TD><I> \copybrief RKH_SUBTE_SM_EXE_ACT </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> ao </I></TD>
+		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> st </I></TD>
+		<TD><I> Points to associated state </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> act </I></TD>
+		<TD><I> Points to executed action </I></TD>
+	</TR>
 
 	<TR bgColor="#c0c0c0">
 		<TH colspan=6 align="left"><B> Related with timer module (TMR)</B></TH>
@@ -3669,7 +3688,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=45 align="center"> #RKH_TG_FWK </TD>
+		<TD rowspan=48 align="center"> #RKH_TG_FWK </TD>
 		<TD rowspan=1 align="center"> 0 </TD>
 		<TD rowspan=1> #RKH_TE_FWK_EN () </TD>
 		<TD rowspan=1> \copybrief RKH_TR_FWK_EN </TD>
@@ -3794,7 +3813,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 10 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_FUN ( SYM func, STR nm ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_FUN ( FUN func, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_FUN </TD>
 		<TD><I> func </I></TD>
 		<TD><I> Function memory address </I></TD>
@@ -3805,13 +3824,28 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 11 </TD>
-		<TD rowspan=1> #RKH_TE_FWK_EXE_FUN ( SYM func ) </TD>
+		<TD rowspan=1> #RKH_TE_FWK_EXE_FUN ( FUN func ) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_FWK_EXE_FUN </TD>
 		<TD><I> func </I></TD>
 		<TD><I> Function memory address </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 12 </TD>
+		<TD rowspan=3 align="center"> 12 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_SYNC_EVT ( FUN fn, SYM snr, SYM rcr ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_SYNC_EVT </TD>
+		<TD><I> fn </I></TD>
+		<TD><I> Function address </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> snr </I></TD>
+		<TD><I> Sender object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> rcr </I></TD>
+		<TD><I> Receiver object </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=2 align="center"> 13 </TD>
 		<TD rowspan=2> #RKH_TE_FWK_TUSR ( UI8 usrtrc, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_TUSR </TD>
 		<TD><I> usrtrc </I></TD>
@@ -3822,14 +3856,14 @@ the data included for each.
 		<TD><I> Name of user-defined event </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=1 align="center"> 13 </TD>
+		<TD rowspan=1 align="center"> 14 </TD>
 		<TD rowspan=1> #RKH_TE_FWK_TCFG ( CFG cfg ) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_FWK_TCFG </TD>
 		<TD><I> cfg </I></TD>
 		<TD><I> Configuration parameters of trace facility </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 14 </TD>
+		<TD rowspan=2 align="center"> 15 </TD>
 		<TD rowspan=2> #RKH_TE_FWK_ASSERT ( SRT mod, UI16 ln ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_ASSERT </TD>
 		<TD><I> mod </I></TD>
@@ -3840,7 +3874,7 @@ the data included for each.
 		<TD><I> Line number of assertion </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 15 </TD>
+		<TD rowspan=2 align="center"> 16 </TD>
 		<TD rowspan=2> #RKH_TE_FWK_AO ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_AO </TD>
 		<TD><I> obj </I></TD>
@@ -3851,7 +3885,7 @@ the data included for each.
 		<TD><I> Name of object </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=3 align="center"> 16 </TD>
+		<TD rowspan=3 align="center"> 17 </TD>
 		<TD rowspan=3> #RKH_TE_FWK_STATE ( SYM ao, SYM obj, STR nm ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_FWK_STATE </TD>
 		<TD><I> ao </I></TD>
@@ -3866,7 +3900,7 @@ the data included for each.
 		<TD><I> Name of object </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=3 align="center"> 17 </TD>
+		<TD rowspan=3 align="center"> 18 </TD>
 		<TD rowspan=3> #RKH_TE_FWK_PSTATE ( SYM ao, SYM obj, STR nm ) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_FWK_PSTATE </TD>
 		<TD><I> ao </I></TD>
@@ -3881,7 +3915,7 @@ the data included for each.
 		<TD><I> Name of object </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 18 </TD>
+		<TD rowspan=2 align="center"> 19 </TD>
 		<TD rowspan=2> #RKH_TE_FWK_TIMER ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_TIMER </TD>
 		<TD><I> obj </I></TD>
@@ -3892,7 +3926,7 @@ the data included for each.
 		<TD><I> Name of object </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 19 </TD>
+		<TD rowspan=2 align="center"> 20 </TD>
 		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_EPOOL </TD>
 		<TD><I> obj </I></TD>
@@ -3903,7 +3937,7 @@ the data included for each.
 		<TD><I> Name of object </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=2 align="center"> 20 </TD>
+		<TD rowspan=2 align="center"> 21 </TD>
 		<TD rowspan=2> #RKH_TE_FWK_QUEUE ( SYM obj, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_QUEUE </TD>
 		<TD><I> obj </I></TD>
@@ -4587,6 +4621,13 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_TRC_SM_PROCESS_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_TRC_SM_EXE_ACT_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_CFG_TRC_SM_EXE_ACT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TRC_NSEQ_EN </TD>

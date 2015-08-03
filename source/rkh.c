@@ -101,7 +101,7 @@ RKH_MODULE_NAME( rkh )
 #if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
 				(RKH_SIG_T)( ((s)->prepro != CPP(0)) ?				\
-						rkh_call_prepro((s),(h),(pe)) : (pe)->e )
+						RKH_EXEC_PREPRO((s),(h),(pe)) : (pe)->e )
 #else
 	#define RKH_PROCESS_INPUT( s, h, pe )							\
 				(RKH_SIG_T)((pe)->e)
@@ -111,13 +111,15 @@ RKH_MODULE_NAME( rkh )
 #define FIND_BRANCH( btbl, t, sma, pe )									\
 			for( (t) = (btbl); (t)->event != RKH_ANY; ++(t) )			\
 				if( IS_VALID_GUARD( (t) ) &&							\
-					rkh_call_guard( (t), (sma), (pe) ) == RKH_GTRUE )	\
+					RKH_EXEC_GUARD( (t), (sma), (pe) ) == RKH_GTRUE )	\
 					break;
 
 
 #define RKH_EXEC_TRANSITION( sma, e )							\
 				for( pal = al; nal != 0; ++pal, --nal )			\
-					RKH_CALL_ACTION( *pal, (sma), (e) );		\
+				{ 												\
+					RKH_EXEC_EFF( *pal, (sma), (e) );			\
+				}												\
 				pal = al
 
 
@@ -411,7 +413,7 @@ rkh_sma_dispatch( RKH_SMA_T *sma, RKH_EVT_T *pe )
 	                                                 /* enabled transition? */
 	                    /* A CT is enabled if its trigger is the dispatched */
 	                             /* event, and the guard evaluates to true. */
-	if( IS_VALID_GUARD( tr ) && rkh_call_guard( tr, sma, pe ) == RKH_GFALSE )
+	if( IS_VALID_GUARD( tr ) && RKH_EXEC_GUARD( tr, sma, pe ) == RKH_GFALSE )
 	{
 		RKH_TR_SM_GRD_FALSE( sma );
 		return RKH_GRD_FALSE;

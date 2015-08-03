@@ -580,6 +580,7 @@ typedef enum rkh_trc_events
 	RKH_TE_SM_UNKN_STATE,			/**< \copydetails RKH_TR_SM_UNKN_STATE */
 	RKH_TE_SM_EX_HLEVEL,			/**< \copydetails RKH_TR_SM_EX_HLEVEL */
 	RKH_TE_SM_EX_TSEG,				/**< \copydetails RKH_TR_SM_EX_TSEG */
+	RKH_TE_SM_EXE_ACT,				/**< \copydetails RKH_TR_SM_EXE_ACT */
 
 	/* --- Timer events (TIM group) ----------------------- */
 	RKH_TE_TMR_INIT = RKH_TMR_START,/**< \copydetails RKH_TR_TMR_INIT */
@@ -601,6 +602,7 @@ typedef enum rkh_trc_events
 	RKH_TE_FWK_SIG,					/**< \copydetails RKH_TR_FWK_SIG */
 	RKH_TE_FWK_FUN,					/**< \copydetails RKH_TR_FWK_FUN */
 	RKH_TE_FWK_EXE_FUN,				/**< \copydetails RKH_TR_FWK_EXE_FUN */
+	RKH_TE_FWK_SYNC_EVT,			/**< \copydetails RKH_TR_FWK_SYNC_EVT */
 	RKH_TE_FWK_TUSR,				/**< \copydetails RKH_TR_FWK_TUSR */
 	RKH_TE_FWK_TCFG,				/**< \copydetails RKH_TR_FWK_TCFG */
 	RKH_TE_FWK_ASSERT,				/**< \copydetails RKH_TR_FWK_ASSERT */
@@ -615,6 +617,22 @@ typedef enum rkh_trc_events
 
 	RKH_TE_NEVENT = 255
 } RKH_TRC_EVENTS;
+
+
+/**
+ * 	\brief
+ * 	Sub-event of RKH_TE_SM_EXE_ACT event.
+ */
+
+typedef enum RKH_SUBTE_SM_EXE_ACT
+{
+	RKH_SUBTE_SM_EXE_ACT_EFF,		/**< \copydetails RKH_TR_SM_EXE_ACT */
+	RKH_SUBTE_SM_EXE_ACT_EN,		/**< \copydetails RKH_TR_SM_EXE_ACT */
+	RKH_SUBTE_SM_EXE_ACT_EX,		/**< \copydetails RKH_TR_SM_EXE_ACT */
+	RKH_SUBTE_SM_EXE_ACT_INI,		/**< \copydetails RKH_TR_SM_EXE_ACT */
+	RKH_SUBTE_SM_EXE_ACT_PP,		/**< \copydetails RKH_TR_SM_EXE_ACT */
+	RKH_SUBTE_SM_EXE_ACT_GRD		/**< \copydetails RKH_TR_SM_EXE_ACT */
+} RKH_SUBTE_SM_EXE_ACT;
 
 
 /** x-ored byte for stuffing a single byte */
@@ -2074,6 +2092,29 @@ enum RKH_TRC_FMT
 		#define RKH_TR_SM_EX_HLEVEL( ao )				(void)0
 		#define RKH_TR_SM_EX_TSEG( ao )					(void)0
 		#endif
+
+		/**
+		 * 	\brief
+		 *	Executes a behavior of state machine.
+		 *
+		 * 	Desc 	= executed behavior of state machine\n
+		 * 	Group 	= RKH_TG_SM\n
+		 * 	Id 		= RKH_TE_SM_EXE_ACT\n
+		 * 	Args	= act_t, ao, st, act\n
+		 */
+
+		#if RKH_CFG_TRC_SM_EXE_ACT_EN == RKH_ENABLED
+			#define RKH_TR_SM_EXE_ACT( act_t, ao, st, act )				\
+						RKH_TRC_BEGIN_WOSIG( 	RKH_TE_SM_EXE_ACT, 		\
+												(ao)->romrkh->prio )	\
+							RKH_TRC_UI8( act_t ); 						\
+							RKH_TRC_SYM( ao ); 							\
+							RKH_TRC_SYM( st ); 							\
+							RKH_TRC_FUN( act ); 						\
+						RKH_TRC_END()
+		#else
+			#define RKH_TR_SM_EXE_ACT( act_t, ao, st, act )		(void)0
+		#endif
 	#else
 	#define RKH_TR_SM_INIT( ao, ist )				(void)0
 	#define RKH_TR_SM_CLRH( ao, h )					(void)0
@@ -2092,6 +2133,7 @@ enum RKH_TRC_FMT
 	#define RKH_TR_SM_UNKN_STATE( ao )				(void)0
 	#define RKH_TR_SM_EX_HLEVEL( ao )				(void)0
 	#define RKH_TR_SM_EX_TSEG( ao )					(void)0
+	#define RKH_TR_SM_EXE_ACT( act_t, ao, st, act )	(void)0
 	#endif
 
 	/* --- Timer (TIM) ----------------------- */
@@ -2490,6 +2532,37 @@ enum RKH_TRC_FMT
 					RKH_TRC_FUN( fn );								\
 				RKH_TRC_END_WOFIL()
 
+	/**
+	 * 	\brief
+	 * 	The function was synchronously executed. It is not explicitely 
+	 * 	used by the RKH, instead it's frequently placed on application 
+	 * 	source code.
+	 *
+	 * 	Desc 	= the function was synchronously executed\n
+	 * 	Group 	= RKH_TG_FWK\n
+	 * 	Id 		= RKH_TE_FWK_SYNC_EVT\n
+	 * 	Args	= function address, sender object, receiver object \n
+	 *
+	 * 	Example:
+	 *
+	 * 	\code
+	 * 	void 
+	 * 	Gas_setCommandedFlow(Gas *me, unsigned int p_commandedFlow)
+	 * 	{
+	 * 		(void)pe;
+	 * 		Valve_setAperture(me->itsValve, 0);
+	 * 		RKH_TR_FWK_SYNC_EVT(Valve_setAperture, &itsGas, me->itsValve);
+	 * 	}
+	 * 	\endcode
+	 */
+
+	#define RKH_TR_FWK_SYNC_EVT( fn, snr, rcr )						\
+				RKH_TRC_BEGIN_WOFIL( RKH_TE_FWK_SYNC_EVT )			\
+					RKH_TRC_FUN( fn );								\
+					RKH_TRC_SNDR( snr ); 							\
+					RKH_TRC_SNDR( rcr ); 							\
+				RKH_TRC_END_WOFIL()
+
 	/* --- Symbol entry table for user user-defined trace events --------- */
 
 	/**
@@ -2871,6 +2944,7 @@ enum RKH_TRC_FMT
 	#define RKH_TR_FWK_SIG( __s )					(void)0
 	#define RKH_TR_FWK_FUN( __s )					(void)0
 	#define RKH_TR_FWK_EXE_FUN( __f )				(void)0
+	#define RKH_TR_FWK_SYNC_EVT( fn, snr, rcr )		(void)0
 	#define RKH_TR_FWK_TUSR( __e )					(void)0
 	#define RKH_TR_FWK_TCFG( ts_hz )				(void)0
 	#define RKH_TR_FWK_ASSERT( mod_, ln_ )			(void)0
@@ -2923,6 +2997,7 @@ enum RKH_TRC_FMT
 #define RKH_TR_SM_UNKN_STATE( ao )					(void)0
 #define RKH_TR_SM_EX_HLEVEL( ao )					(void)0
 #define RKH_TR_SM_EX_TSEG( ao )						(void)0
+#define RKH_TR_SM_EXE_ACT( act_t, ao, st, act )		(void)0
 
 /* --- Timer (TIM) ----------------------- */
 #define RKH_TR_TMR_INIT( t, sig )					(void)0
@@ -2945,6 +3020,7 @@ enum RKH_TRC_FMT
 #define RKH_TR_FWK_SIG( __s )						(void)0
 #define RKH_TR_FWK_FUN( __f )						(void)0
 #define RKH_TR_FWK_EXE_FUN( __f )					(void)0
+#define RKH_TR_FWK_SYNC_EVT( fn, snr, rcr )			(void)0
 #define RKH_TR_FWK_TUSR( __e )						(void)0
 #define RKH_TR_FWK_TCFG( ts_hz )					(void)0
 #define RKH_TR_FWK_ASSERT( mod_, ln_ )				(void)0

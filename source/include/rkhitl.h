@@ -1135,6 +1135,18 @@
 	#error "                                    [     ||  RKH_DISABLED]       "
 	#endif
 
+	#ifndef	RKH_CFG_TRC_SM_EXE_ACT_EN
+	#error "RKH_CFG_TRC_SM_EXE_ACT_EN              not #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be RKH_ENABLED ]        "
+	#error "                                    [     || RKH_DISABLED]        "
+
+	#elif 	((RKH_CFG_TRC_SM_EXE_ACT_EN != RKH_ENABLED) && \
+    	    	(RKH_CFG_TRC_SM_EXE_ACT_EN != RKH_DISABLED))
+	#error "RKH_CFG_TRC_SM_EXE_ACT_EN        illegally #define'd in 'rkhcfg.h'"
+	#error "                                    [MUST be  RKH_ENABLED ]       "
+	#error "                                    [     ||  RKH_DISABLED]       "
+	#endif
+
 	#ifndef	RKH_CFG_TRC_NSEQ_EN
 	#error "RKH_CFG_TRC_NSEQ_EN                   not #define'd in 'rkhcfg.h'"
 	#error "                                    [MUST be RKH_ENABLED ]        "
@@ -2188,7 +2200,13 @@ struct RKH_SMA_T;
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
+		{															\
 			(*CIA( h ))( (h), CIA(h)->romrkh->ievent );				\
+			RKH_TR_SM_EXE_ACT(	RKH_SUBTE_SM_EXE_ACT_INI,			\
+								(h), 								\
+								0,									\
+								CIA(h)); 							\
+		}
 	}
 
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
@@ -2197,7 +2215,13 @@ struct RKH_SMA_T;
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
+		{															\
 			(*CIA( h ))( (h) );										\
+			RKH_TR_SM_EXE_ACT(	RKH_SUBTE_SM_EXE_ACT_INI,			\
+								(h), 								\
+								0,									\
+								CIA(h)); 							\
+		}															\
 	}
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
 		RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
@@ -2205,14 +2229,26 @@ struct RKH_SMA_T;
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
+		{															\
 			(*CIA( h ))( CIA(h)->romrkh->ievent );					\
+			RKH_TR_SM_EXE_ACT(	RKH_SUBTE_SM_EXE_ACT_INI,			\
+								(h), 								\
+								0,									\
+								CIA(h)); 							\
+		}															\
 	}
 #else
 	typedef void ( *RKH_INIT_ACT_T )( void );
 	#define RKH_EXEC_INIT( h )										\
 	{																\
 		if( CIA( h ) != NULL )										\
+		{															\
 			(*CIA( h ))();											\
+			RKH_TR_SM_EXE_ACT(	RKH_SUBTE_SM_EXE_ACT_INI,			\
+								(h), 								\
+								0,									\
+								CIA(h)); 							\
+		}															\
 	}
 #endif
 
@@ -2480,7 +2516,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
+			{ 													\
 				(*(s)->enter)( h, s ); 							\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EN, 	\
+									(h), 						\
+									(s), 						\
+									(s)->enter); 				\
+			} 													\
 		}
 
 	#else
@@ -2489,7 +2531,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
+			{ 													\
 				(*(s)->enter)( h ); 							\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EN, 	\
+									(h), 						\
+									(s), 						\
+									(s)->enter); 				\
+			} 													\
 		}
 
 	#endif
@@ -2500,7 +2548,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
+			{ 													\
 				(*(s)->enter)( s ); 							\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EN, 	\
+									(h), 						\
+									(s), 						\
+									(s)->enter); 				\
+			} 													\
 		}
 	#else
 
@@ -2508,7 +2562,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_ENTRY( s, h )							\
 		{														\
 			if( (s)->enter != NULL )							\
+			{ 													\
 				(*(s)->enter)(); 								\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EN, 	\
+									(h), 						\
+									(s), 						\
+									(s)->enter); 				\
+			} 													\
 		}
 
 	#endif
@@ -2548,7 +2608,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
+			{ 													\
 				(*(s)->exit)( h, s ); 							\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EX, 	\
+									(h), 						\
+									(s), 						\
+									(s)->exit); 				\
+			} 													\
 		}
 
 	#else
@@ -2557,7 +2623,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
+			{ 													\
 				(*(s)->exit)( h ); 								\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EX, 	\
+									(h), 						\
+									(s), 						\
+									(s)->exit); 				\
+			} 													\
 		}
 
 	#endif
@@ -2568,7 +2640,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
+			{ 													\
 				(*(s)->exit)( s ); 								\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EX, 	\
+									(h), 						\
+									(s), 						\
+									(s)->exit); 				\
+			} 													\
 		}
 
 	#else
@@ -2577,7 +2655,13 @@ typedef struct RKH_SMA_T
 		#define RKH_EXEC_EXIT( s, h )							\
 		{														\
 			if( (s)->exit != NULL )								\
+			{ 													\
 				(*(s)->exit)(); 								\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EX, 	\
+									(h), 						\
+									(s), 						\
+									(s)->exit); 				\
+			} 													\
 		}
 
 	#endif
@@ -2608,12 +2692,22 @@ typedef struct RKH_SMA_T
 
 	typedef RKH_SIG_T ( *RKH_PPRO_T )( 	const struct RKH_SMA_T *sma, 
 										RKH_EVT_T *pe );
-	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( h, e )
+	#define RKH_EXEC_PREPRO(s, h, e)							\
+				(*(s)->prepro)( h, e );							\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_PP, 	\
+									(h), 						\
+									(h)->state,					\
+									(s)->prepro)
 
 #else
 
 	typedef RKH_SIG_T ( *RKH_PPRO_T )( RKH_EVT_T *pe );
-	#define rkh_call_prepro(s,h,e)		(*(s)->prepro)( e )
+	#define RKH_EXEC_PREPRO(s, h, e)							\
+				(*(s)->prepro)( e ); 							\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_PP, 	\
+									(h), 						\
+									(h)->state,					\
+									(s)->prepro)
 
 #endif
 
@@ -2656,24 +2750,45 @@ typedef struct RKH_SMA_T
 
 	typedef void (*RKH_TRN_ACT_T)( 	const struct RKH_SMA_T *sma, 
 									RKH_EVT_T *pe );
-	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h), (e) )
+	#define RKH_EXEC_EFF( a, h, e )								\
+				(*CTA( a ))( (h), (e) );						\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EFF, 	\
+									(h), 						\
+									(h)->state,					\
+									(a))
+
 
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
 		RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
 
 	typedef void (*RKH_TRN_ACT_T)( RKH_EVT_T *pe );
-	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (e) )
+	#define RKH_EXEC_EFF( a, h, e )								\
+				(*CTA( a ))( (e) );								\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EFF, 	\
+									(h), 						\
+									(h)->state,					\
+									(a))
 
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
 		RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
 
 	typedef void (*RKH_TRN_ACT_T)( const struct RKH_SMA_T *sma );
-	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))( (h) )
+	#define RKH_EXEC_EFF( a, h, e )								\
+				(*CTA( a ))( (h) );								\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EFF, 	\
+									(h), 						\
+									(h)->state,					\
+									(a))
 
 #else
 
 	typedef void (*RKH_TRN_ACT_T)( void );
-	#define RKH_CALL_ACTION( a,h,e )	(*CTA( a ))()
+	#define RKH_EXEC_EFF( a, h, e )								\
+				(*CTA( a ))();									\
+				RKH_TR_SM_EXE_ACT( 	RKH_SUBTE_SM_EXE_ACT_EFF, 	\
+									(h), 						\
+									(h)->state,					\
+									(a))
 
 #endif
 
@@ -2707,27 +2822,27 @@ typedef struct RKH_SMA_T
 
 	typedef rbool_t (*RKH_GUARD_T)( const struct RKH_SMA_T *sma, 
 									RKH_EVT_T *pe );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h, e )
+	#define RKH_EXEC_GUARD(t, h, e)		(*(t)->guard)( h, e )
 	rbool_t rkh_else( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
 
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
 		RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
 
 	typedef rbool_t (*RKH_GUARD_T)( RKH_EVT_T *pe );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)( e )
+	#define RKH_EXEC_GUARD(t, h, e)		(*(t)->guard)( e )
 	rbool_t rkh_else( RKH_EVT_T *pe );
 
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
 		RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 
 	typedef rbool_t (*RKH_GUARD_T)( const struct RKH_SMA_T *sma );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)( h )
+	#define RKH_EXEC_GUARD(t, h, e)		(*(t)->guard)( h )
 	rbool_t rkh_else( const struct RKH_SMA_T *sma );
 
 #else
 
 	typedef rbool_t (*RKH_GUARD_T)( void );
-	#define rkh_call_guard(t,h,e)	(*(t)->guard)()
+	#define RKH_EXEC_GUARD(t, h, e)		(*(t)->guard)()
 	rbool_t rkh_else( void );
 
 #endif

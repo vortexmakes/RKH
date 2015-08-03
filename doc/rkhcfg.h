@@ -569,6 +569,14 @@
 #define RKH_CFG_TRC_SM_PROCESS_EN		RKH_ENABLED
 
 /**
+ *	If the #RKH_CFG_TRC_SM_EXE_ACT_EN and #RKH_CFG_TRC_SM_EN are set to 1 
+ *	then RKH will include the "executed behavior of state machine" trace 
+ *	record.
+ */
+
+#define RKH_CFG_TRC_SM_EXE_ACT_EN		RKH_DISABLED
+
+/**
  *	If the #RKH_CFG_TRC_NSEQ_EN is set to 1 then RKH will add to the trace 
  *	record an incremental number (1-byte), used like a sequence number.
  *	See RKH_TRC_NSEQ() and RKH_TRC_HDR() macros.
