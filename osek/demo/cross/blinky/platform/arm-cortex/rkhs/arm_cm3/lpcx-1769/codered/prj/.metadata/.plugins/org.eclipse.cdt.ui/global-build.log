@@ -1,0 +1,31 @@
+14:20:57 **** Incremental Build of configuration Debug for project blinky ****
+make all 
+Building file: G:/vortex/RKH_DB/IAR_port/demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm3/lpcx-1769/codered/bsp.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\blinky\src\bsp\lpc17xx" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\blinky" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\codered" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"src/bsp/bsp.d" -MT"src/bsp/bsp.d" -o "src/bsp/bsp.o" "G:/vortex/RKH_DB/IAR_port/demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm3/lpcx-1769/codered/bsp.c"
+Finished building: G:/vortex/RKH_DB/IAR_port/demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm3/lpcx-1769/codered/bsp.c
+ 
+Building file: G:/vortex/RKH_DB/IAR_port/source/rkhtrc.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\blinky\src\bsp\lpc17xx" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\blinky" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\codered" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"src/RKH/source/rkhtrc.d" -MT"src/RKH/source/rkhtrc.d" -o "src/RKH/source/rkhtrc.o" "G:/vortex/RKH_DB/IAR_port/source/rkhtrc.c"
+Finished building: G:/vortex/RKH_DB/IAR_port/source/rkhtrc.c
+ 
+Building file: G:/vortex/RKH_DB/IAR_port/demo/cross/blinky/main.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -DDEBUG -D__CODE_RED -D__USE_CMSIS=CMSISv2p00_LPC17xx -D__ARM_CM3CRED__ -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\blinky\src\bsp\lpc17xx" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\..\..\source\include" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\blinky" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\..\..\..\..\..\..\..\..\source\portable\arm-cortex\rkhs\arm_cm3\codered" -I"G:\vortex\RKH_DB\IAR_port\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\..\..\codered" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "G:/vortex/RKH_DB/IAR_port/demo/cross/blinky/main.c"
+Finished building: G:/vortex/RKH_DB/IAR_port/demo/cross/blinky/main.c
+ 
+Building target: blinky.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -Xlinker -Map="blinky.map" -Xlinker --gc-sections -mcpu=cortex-m3 -mthumb -T "blinky_Debug.ld" -o "blinky.axf"  ./src/bsp/lpc17xx/cr_startup_lpc176x.o ./src/bsp/lpc17xx/lpc17xx.o ./src/bsp/lpc17xx/system_LPC17xx.o  ./src/bsp/bsp.o ./src/bsp/uart.o  ./src/RKH/source/portable/rkhport.o  ./src/RKH/source/rkh.o ./src/RKH/source/rkhdyn.o ./src/RKH/source/rkhmp.o ./src/RKH/source/rkhrq.o ./src/RKH/source/rkhs.o ./src/RKH/source/rkhsma.o ./src/RKH/source/rkhtbl.o ./src/RKH/source/rkhtim.o ./src/RKH/source/rkhtrc.o  ./src/bky.o ./src/bkyact.o ./src/main.o   
+Finished building target: blinky.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size "blinky.axf"; # arm-none-eabi-objcopy -O binary "blinky.axf" "blinky.bin" ; checksum -p LPC1769 -d "blinky.bin";
+   text	   data	    bss	    dec	    hex	filename
+  11196	     48	    404	  11648	   2d80	blinky.axf
+ 
+14:21:05 **** Incremental Build of configuration Debug for project blinky ****
+make all 
+make: Nothing to be done for `all'.
