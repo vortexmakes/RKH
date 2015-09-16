@@ -93,6 +93,11 @@
 	#include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkhport.h"
 #endif
 
+#ifdef __CIAA_OSEK__
+	#include "..\portable\osek\ciaa\rkhport.h"
+#endif
+
+
 /**
  * 	\brief
  *	If RKHROM has not been defined then	\b rkhport.h has not yet been 

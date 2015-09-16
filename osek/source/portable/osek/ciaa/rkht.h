@@ -29,7 +29,7 @@
  * 	e-mail:			francuccilea@gmail.com
  *
  *  --------------------------------------------------------------------------
- *  File                     : rkhtype.h
+ *  File                     : rkht.h
  *	Last updated for version : v2.4.04
  *	By                       : LF
  *  --------------------------------------------------------------------------
@@ -38,64 +38,47 @@
  * 	\file
  * 	\ingroup 	prt
  *
- *	\brief 		Defines the data types that uses RKH.
+ * 	\brief 		OSEK CIAA
  */
 
 
-#ifndef __RKHTYPE_H__
-#define __RKHTYPE_H__
+#ifndef __RKHT_H__
+#define __RKHT_H__
 
+#include "os.h"				/* the main uC/OS-III include file */
 
-#ifdef __CFV1CW63__
-	#include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
-#endif
+/* ---- Portable data types ---------------------------------------------- */
 
-#ifdef __W32STVC08__
-	#include "..\portable\80x86\win32_st\vc08\rkht.h"
-#endif
+/*
+ * The RKH uses a set of integer quantities. That maybe machine or
+ * compiler dependent.
+ */
 
-#ifdef __S08CW63__
-	#include "..\portable\s08\rkhs\cw6_3\rkht.h"
-#endif
+typedef sint8			ri8_t;
+typedef sint16			ri16_t;
+typedef sint32			ri32_t;
+typedef uint8			rui8_t;
+typedef uint16			rui16_t;
+typedef uint32			rui32_t;
 
-#ifdef __LNXGNU__
-	#include "../portable/80x86/linux_st/gnu/rkht.h"
-#endif
+/*
+ * The 'ruint' and 'rint' will normally be the natural size for a
+ * particular machine. These types designates an integer type that is
+ * usually fastest to operate with among all integer types.
+ */
 
-#ifdef __ARM_CM3CRED__
-	#include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
-#endif
+typedef unsigned int    ruint;
+typedef signed int      rint;
 
-#ifdef __ARM_CM4FCW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkht.h"
-#endif
+/*
+ * Boolean data type and constants.
+ *
+ * \note
+ * The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro
+ * definitions in \c rkhdef.h file.
+ */
 
-#ifdef __ARM_CM4FIAR7_2__
-	#include "../portable/arm-cortex/rkhs/arm_cm4f/iar_v7_2/rkht.h"
-#endif
+typedef boolean		     rbool_t;
 
-#ifdef __ARM_CM0CW10__
-	#include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
-#endif
-
-#ifdef __W32MTVC08__
-	#include "..\portable\80x86\win32_mt\vc08\rkht.h"
-#endif
-
-#ifdef __UCOS_V3_03_01__ 
-	#include "..\portable\ucos\v3.03.01\rkht.h"
-#endif
-
-#ifdef __KSDK_KDS__
-	#include "..\portable\arm-cortex\rkhs\ksdk\kds\rkht.h"
-#endif
-
-#ifdef __KSDK_OS_KDS__
-	#include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkht.h"
-#endif
-
-#ifdef __CIAA_OSEK__
-	#include "..\portable\osek\ciaa\rkht.h"
-#endif
 
 #endif
