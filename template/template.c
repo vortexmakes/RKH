@@ -6,6 +6,11 @@
  *  2015.10.24  LeFr    v2.4.05     Initial version
  */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr        Leandro Francucci (francuccilea@gmail.com)
+ */
+
 /* --------------------------------- Notes --------------------------------- */
 /*
  *  (1) These notes could be referenced by number.
