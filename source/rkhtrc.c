@@ -67,9 +67,9 @@
 #define GETGRP(e)             (rui8_t)(((e) & 0xE0) >> 5)
 #define GETEVT(e)             (rui8_t)((e) & 0x1F)
 
-#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
-/* ---------------------------- Local constants ---------------------------- */
+/* ------------------------------- Constants ------------------------------- */
 
+#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 /** 
  *  \brief
  *  Map (group << 4) + event to event index in trceftbl[] table. 

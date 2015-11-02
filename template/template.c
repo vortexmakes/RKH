@@ -28,11 +28,12 @@
 
 /* (1) Function macro defines */
 
-/* ---------------------------- Local constants ---------------------------- */
+/* ------------------------------- Constants ------------------------------- */
 
 /* (1) Macro defines */
 /* (2) Enumerations  */
-/* (3) Const modifier */
+/* (3) Local const modifier */
+/* (4) Global const modifier */
 
 /* ---------------------------- Local data types --------------------------- */
 
@@ -49,10 +50,8 @@
 /* (1) Static external definitions used only in this file.                   */ 
 
 /* ----------------------- Local function prototypes ----------------------- */
-
 /* ---------------------------- Local functions ---------------------------- */
-
 /* ---------------------------- Global functions --------------------------- */
-
 /* ------------------------------ File footer ------------------------------ */
+
 /*  Use file_footer.txt file                                                 */
