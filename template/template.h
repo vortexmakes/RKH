@@ -44,6 +44,7 @@ extern "C" {
 
 /* (1) Macro defines                                                         */
 /* (2) Enumerations                                                          */
+/* (3) Extern declaration of const objects defined in other files            */
 
 /* ------------------------------- Data types ------------------------------ */
 
