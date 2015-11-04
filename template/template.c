@@ -3,12 +3,12 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24  LeFr    v2.4.05     Initial version
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr        Leandro Francucci (francuccilea@gmail.com)
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -30,10 +30,10 @@
 
 /* ------------------------------- Constants ------------------------------- */
 
-/* (1) Macro defines */
-/* (2) Enumerations  */
-/* (3) Local const modifier */
-/* (4) Global const modifier */
+/* (1) Macro defines                                                         */
+/* (2) Enumerations                                                          */
+/* (3) Local const modifier                                                  */
+/* (4) Global (extern or non-static external const modifier)                 */
 
 /* ---------------------------- Local data types --------------------------- */
 
@@ -53,5 +53,4 @@
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 /* ------------------------------ File footer ------------------------------ */
-
 /*  Use file_footer.txt file                                                 */

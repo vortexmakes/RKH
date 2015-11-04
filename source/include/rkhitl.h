@@ -39,12 +39,12 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24    LeFr    v2.4.05     Initial version
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr        Leandro Francucci (francuccilea@gmail.com)
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -460,35 +460,7 @@ extern "C" {
     #error "RKH_CFG_FWK_TICK_RATE_HZ              not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]       "
     #error "                                    [     || RKH_DISABLED]       "
-    #elif (RKH_CFG_FWK_TICK_RATE_HZ > 0u)
-/**
- *  It can be used to convert ticks to milliseconds.
- *  This format is more convenient and natural than ticks.
- *  This configuration constant is not used by RKH, it is just
- *  a value to allow an application to deal with time when
- *  using timer services.
- *  You can use the global constant RKH_CFG_FWK_TICK_RATE_HZ (see
- *  rkhcfg.h) to convert time to ticks using the macros like
- *  RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
- */
-    #define RKH_TICK_RATE_MS    \
-    ((RKH_TNT_T)(1000 / RKH_CFG_FWK_TICK_RATE_HZ))
-
-/** @{
- *  \brief
- *  It can be used to convert ticks to time.
- *
- *  This format is more convenient and natural than ticks. You can use
- *  the global constant RKH_CFG_FWK_TICK_RATE_HZ (see rkhcfg.h) to convert
- *  time to ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(),
- *  and RKH_TIME_MIN().
- */
-    #define RKH_TIME_MS(ms_)      ((ms_) / RKH_TICK_RATE_MS)
-    #define RKH_TIME_SEC(s_)      ((s_) * 1000u / RKH_TICK_RATE_MS)
-    #define RKH_TIME_MIN(m_)      ((m_) * 60 * 1000u / RKH_TICK_RATE_MS)
-/*@}*/
-
-    #else
+    #elif (RKH_CFG_FWK_TICK_RATE_HZ <= 0u)
     #error "RKH_CFG_FWK_TICK_RATE_HZ        illegally #define'd in 'rkhcfg.h'"
     #error  "                               [MUST be > 0]                    "
     #endif
@@ -1235,11 +1207,11 @@ extern "C" {
 
 #elif   (RKH_CFG_FWK_DYN_EVT_EN == RKH_DISABLED)
 
-/*
- *	If the dynamic event support is disabled, RKH not allows to use
- *	events with parameters, defer/recall mechanism, allocating and
- *	recycling dynamic events, among other features.
- */
+    /*
+     *	If the dynamic event support is disabled, RKH not allows to use
+     *	events with parameters, defer/recall mechanism, allocating and
+     *	recycling dynamic events, among other features.
+     */
     #undef RKH_CFGPORT_NATIVE_DYN_EVT_EN
     #define RKH_CFGPORT_NATIVE_DYN_EVT_EN           RKH_DISABLED
 
@@ -1547,6 +1519,33 @@ extern "C" {
 
 #endif
 
+/**
+ *  It can be used to convert ticks to milliseconds.
+ *  This format is more convenient and natural than ticks.
+ *  This configuration constant is not used by RKH, it is just
+ *  a value to allow an application to deal with time when
+ *  using timer services.
+ *  You can use the global constant RKH_CFG_FWK_TICK_RATE_HZ (see
+ *  rkhcfg.h) to convert time to ticks using the macros like
+ *  RKH_TIME_MS(), RKH_TIME_SEC(), and RKH_TIME_MIN().
+ */
+#define RKH_TICK_RATE_MS    \
+    ((RKH_TNT_T)(1000 / RKH_CFG_FWK_TICK_RATE_HZ))
+
+/** @{
+ *  \brief
+ *  It can be used to convert ticks to time.
+ *
+ *  This format is more convenient and natural than ticks. You can use
+ *  the global constant RKH_CFG_FWK_TICK_RATE_HZ (see rkhcfg.h) to convert
+ *  time to ticks using the macros like RKH_TIME_MS(), RKH_TIME_SEC(),
+ *  and RKH_TIME_MIN().
+ */
+#define RKH_TIME_MS(ms_)      ((ms_) / RKH_TICK_RATE_MS)
+#define RKH_TIME_SEC(s_)      ((s_) * 1000u / RKH_TICK_RATE_MS)
+#define RKH_TIME_MIN(m_)      ((m_) * 60 * 1000u / RKH_TICK_RATE_MS)
+/*@}*/
+
 /*
  *  The following macros and constants are INTERNAL to RKH and
  *  the user application should NOT call it.
@@ -1624,35 +1623,35 @@ extern "C" {
 
 #if (RKH_CFG_HOOK_TIMEOUT_EN == RKH_ENABLED)
     #define RKH_HOOK_TIMEOUT(t)   \
-    rkh_hook_timeout((t))
+        rkh_hook_timeout((t))
 #else
     #define RKH_HOOK_TIMEOUT(t)           (void)0
 #endif
 
 #if (RKH_CFG_HOOK_SIGNAL_EN == RKH_ENABLED)
     #define RKH_HOOK_SIGNAL(e)    \
-    rkh_hook_signal((RKH_EVT_T *)(e))
+        rkh_hook_signal((RKH_EVT_T *)(e))
 #else
     #define RKH_HOOK_SIGNAL(e)            (void)0
 #endif
 
 #if (RKH_CFG_HOOK_START_EN == RKH_ENABLED)
     #define RKH_HOOK_START()    \
-    rkh_hook_start()
+        rkh_hook_start()
 #else
     #define RKH_HOOK_START()                (void)0
 #endif
 
 #if (RKH_CFG_HOOK_EXIT_EN == RKH_ENABLED)
     #define RKH_HOOK_EXIT() \
-    rkh_hook_exit()
+        rkh_hook_exit()
 #else
     #define RKH_HOOK_EXIT()                 (void)0
 #endif
 
 #if (RKH_CFG_HOOK_TIMETICK_EN == RKH_ENABLED)
     #define RKH_HOOK_TIMETICK() \
-    rkh_hook_timetick()
+        rkh_hook_timetick()
 #else
     #define RKH_HOOK_TIMETICK()             (void)0
 #endif
@@ -1666,18 +1665,18 @@ extern "C" {
 #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     #if defined(R_TRC_AO_NAME_EN)
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-    {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, (ia), (ie)}
+            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, (ia), (ie)}
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-    {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, (ia), (ie)}
+            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, (ia), (ie)}
     #endif
 #else
     #if defined(R_TRC_AO_NAME_EN)
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-    {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, (ia)}
+            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, (ia)}
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-    {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, (ia)}
+            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, (ia)}
     #endif
 #endif
 
@@ -1760,353 +1759,325 @@ extern "C" {
 #endif
 
 #if RKH_EN_DOXYGEN == RKH_ENABLED
-
-/**
- *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active
- *	object) has its own thread of execution.
- */
-
+    /**
+     *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active
+     *	object) has its own thread of execution.
+     */
     #define RKH_CFGPORT_SMA_THREAD_EN           RKH_ENABLED
 
-/**
- *	If the #RKH_CFGPORT_SMA_THREAD_EN and
- *	#RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each SMA (active
- *	object) has its own thread of execution and its own object data.
- */
-
+    /**
+     *	If the #RKH_CFGPORT_SMA_THREAD_EN and
+     *	#RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each SMA (active
+     *	object) has its own thread of execution and its own object data.
+     */
     #define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_ENABLED
 
-/**
- *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
- *  include the simple, cooperative, and nonpreemptive scheduler RKHS.
- *  When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will
- *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
- *  RKH_SMA_UNREADY(), and assume the native priority scheme.
- */
-
+    /**
+     *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
+     *  include the simple, cooperative, and nonpreemptive scheduler RKHS.
+     *  When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will
+     *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
+     *  RKH_SMA_UNREADY(), and assume the native priority scheme.
+     */
     #define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_ENABLED
 
-/**
- *  If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native
- *  event queue is enabled (see #RKH_CFG_RQ_EN) then RKH will include
- *  its own implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(),
- *  and rkh_sma_get() functions.
- */
-
+    /**
+     *  If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native
+     *  event queue is enabled (see #RKH_CFG_RQ_EN) then RKH will include
+     *  its own implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(),
+     *  and rkh_sma_get() functions.
+     */
     #define RKH_CFGPORT_NATIVE_EQUEUE_EN        RKH_ENABLED
 
-/**
- *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native
- *  fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN)
- *  then RKH will include its own implementation of dynamic memory
- *  management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH
- *  also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
- *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
- */
-
+    /**
+     *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native
+     *  fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN)
+     *  then RKH will include its own implementation of dynamic memory
+     *  management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH
+     *  also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
+     *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
+     */
     #define RKH_CFGPORT_NATIVE_DYN_EVT_EN       RKH_ENABLED
 
-/**
- *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch
- *	allows to be invoked from several threads of executions. Enable this
- *	only if the application is based on a multi-thread architecture.
- */
-
+    /**
+     *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch
+     *	allows to be invoked from several threads of executions. Enable this
+     *	only if the application is based on a multi-thread architecture.
+     */
     #define RKH_CFGPORT_REENTRANT_EN            RKH_ENABLED
 
-/**
- *  Specify the size of void pointer. The valid values [in bits] are
- *  16 or 32. Default is 32. See RKH_TRC_SYM() macro.
- */
-
+    /**
+     *  Specify the size of void pointer. The valid values [in bits] are
+     *  16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+     */
     #define RKH_CFGPORT_TRC_SIZEOF_PTR          32u
 
-/**
- *  Specify the size of function pointer. The valid values [in bits] are
- *  16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
- */
-
+    /**
+     *  Specify the size of function pointer. The valid values [in bits] are
+     *  16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+     */
     #define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR      32u
 
-/**
- *  Specify the number of bytes (size) used by the trace record timestamp.
- *  The valid values [in bits] are 8, 16 or 32. Default is 16.
- */
-
+    /**
+     *  Specify the number of bytes (size) used by the trace record timestamp.
+     *  The valid values [in bits] are 8, 16 or 32. Default is 16.
+     */
     #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP       32u
 
-/**
- *  If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE()
- *  macro invokes the rkh_sma_activate() function ignoring the external
- *  event queue storage argument, \c qs.
- */
-
+    /**
+     *  If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE()
+     *  macro invokes the rkh_sma_activate() function ignoring the external
+     *  event queue storage argument, \c qs.
+     */
     #define RKH_CFGPORT_SMA_QSTO_EN             RKH_ENABLED
 
-/**
- *  If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE()
- *  macro invokes the rkh_sma_activate() function ignoring the thread's
- *  stack related arguments, \c stks and \c stksize.
- */
-
+    /**
+     *  If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE()
+     *  macro invokes the rkh_sma_activate() function ignoring the thread's
+     *  stack related arguments, \c stks and \c stksize.
+     */
     #define RKH_CFGPORT_SMA_STK_EN              RKH_ENABLED
 
-/**
- *  Defines the data type of the event queue for active objects.
- *  The event queue can be implemented with a message queue of
- *  the RTOS/OS. But it is also possible to use the native RKH
- *  queue RKH_RQ_T type if the underlying RTOS/OS does not provide
- *  an adequate queue.
- *
- *  <EM>Example for using the native queue</EM>
- *  \code
- *	// RKH's native queue
- *  #define RKH_EQ_TYPE			RKH_RQ_T
- *	// Message queue of ucos/II
- *  #define RKH_EQ_TYPE			OS_EVENT
- *	// Message queue of FreeRTOS
- *  #define RKH_EQ_TYPE			xQueueHandle
- *  \endcode
- */
-
+    /**
+     *  Defines the data type of the event queue for active objects.
+     *  The event queue can be implemented with a message queue of
+     *  the RTOS/OS. But it is also possible to use the native RKH
+     *  queue RKH_RQ_T type if the underlying RTOS/OS does not provide
+     *  an adequate queue.
+     *
+     *  <EM>Example for using the native queue</EM>
+     *  \code
+     *	// RKH's native queue
+     *  #define RKH_EQ_TYPE			RKH_RQ_T
+     *	// Message queue of ucos/II
+     *  #define RKH_EQ_TYPE			OS_EVENT
+     *	// Message queue of FreeRTOS
+     *  #define RKH_EQ_TYPE			xQueueHandle
+     *  \endcode
+     */
     #define RKH_EQ_TYPE
 
-/**
- *  Frequently, the active object has its own task processing loop that
- *  waits for the signal to be posted, and when it is, loops to remove
- *  and process all events that are currently queued.
- *  The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS
- *  that an event has arrived. In this case, \c os_signal holds the OS
- *  object used to signal that an event has been queued.
- *  The data type RKH_THREAD_TYPE holds the thread handle associated
- *  with the active object.
- *
- *  <EM>Example for using the uCOS/II, FreeRTOS, Linux (Posix) and
- *  Win32</EM>
- *  \code
- *	// For uCOS/II
- *  #define RKH_THREAD_TYPE		INT8U
- *	// For FreeRTOS
- *  #define RKH_THREAD_TYPE		xTaskHandle
- *	// For Linux (Posix)
- *  #define RKH_THREAD_TYPE		pthread_t
- *	// For Win32
- *  #define RKH_THREAD_TYPE		void*
- *  \endcode
- */
-
+    /**
+     *  Frequently, the active object has its own task processing loop that
+     *  waits for the signal to be posted, and when it is, loops to remove
+     *  and process all events that are currently queued.
+     *  The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS
+     *  that an event has arrived. In this case, \c os_signal holds the OS
+     *  object used to signal that an event has been queued.
+     *  The data type RKH_THREAD_TYPE holds the thread handle associated
+     *  with the active object.
+     *
+     *  <EM>Example for using the uCOS/II, FreeRTOS, Linux (Posix) and
+     *  Win32</EM>
+     *  \code
+     *	// For uCOS/II
+     *  #define RKH_THREAD_TYPE		INT8U
+     *	// For FreeRTOS
+     *  #define RKH_THREAD_TYPE		xTaskHandle
+     *	// For Linux (Posix)
+     *  #define RKH_THREAD_TYPE		pthread_t
+     *	// For Win32
+     *  #define RKH_THREAD_TYPE		void*
+     *  \endcode
+     */
     #define RKH_THREAD_TYPE
 
-/**
- *  The \c os_signal member of RKH_SMA_T is necessary when the underlying
- *  OS does not provide an adequate queue facility, so the native RKH
- *  queue RKH_RQ_T must be used. In this case the RKH_OSSIGNAL_TYPE
- *  indicates an operating system specific primitive to efficiently
- *  block the native RKH event queue when the queue is empty.
- *  Frequently, the active object has its own task processing loop that
- *  waits for the signal to be posted, and when it is, loops to remove
- *  and process all events that are currently queued.
- *  The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS
- *  that an event has arrived. In this case, \c os_signal holds the OS
- *  object used to signal that an event has been queued.
- *
- *  <EM>Example for using the Linux (Posix) and Win32</EM>
- *  \code
- *	// For Linux (Posix)
- *  #define RKH_OSSIGNAL_TYPE	pthread_cond_t
- *	// For Win32
- *  #define RKH_OSSIGNAL_TYPE	void*
- *  \endcode
- */
-
+    /**
+     *  The \c os_signal member of RKH_SMA_T is necessary when the underlying
+     *  OS does not provide an adequate queue facility, so the native RKH
+     *  queue RKH_RQ_T must be used. In this case the RKH_OSSIGNAL_TYPE
+     *  indicates an operating system specific primitive to efficiently
+     *  block the native RKH event queue when the queue is empty.
+     *  Frequently, the active object has its own task processing loop that
+     *  waits for the signal to be posted, and when it is, loops to remove
+     *  and process all events that are currently queued.
+     *  The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS
+     *  that an event has arrived. In this case, \c os_signal holds the OS
+     *  object used to signal that an event has been queued.
+     *
+     *  <EM>Example for using the Linux (Posix) and Win32</EM>
+     *  \code
+     *	// For Linux (Posix)
+     *  #define RKH_OSSIGNAL_TYPE	pthread_cond_t
+     *	// For Win32
+     *  #define RKH_OSSIGNAL_TYPE	void*
+     *  \endcode
+     */
     #define RKH_OSSIGNAL_TYPE
 
-/**@{
- *  RKH need to disable interrupts in order to access critical sections
- *  of code, and re-enable interrupts when done. This allows RKH to
- *  protect critical code from being entered simultaneously. To hide the
- *  implementation method chosen by the processor, compiler, etc, RKH
- *  defines two macros to unconditionally disable and enable interrupts:
- *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
- *  they resides in \b rkhport.h file, which the user always need to
- *  provide.
- *
- *  <EM>Example for HCS08 CW6.3 from C:</EM>
- *  \code
- *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
- *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
- *  \endcode
- */
-
+    /**@{
+     *  RKH need to disable interrupts in order to access critical sections
+     *  of code, and re-enable interrupts when done. This allows RKH to
+     *  protect critical code from being entered simultaneously. To hide the
+     *  implementation method chosen by the processor, compiler, etc, RKH
+     *  defines two macros to unconditionally disable and enable interrupts:
+     *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
+     *  they resides in \b rkhport.h file, which the user always need to
+     *  provide.
+     *
+     *  <EM>Example for HCS08 CW6.3 from C:</EM>
+     *  \code
+     *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
+     *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
+     *  \endcode
+     */
     #define RKH_DIS_INTERRUPT()
     #define RKH_ENA_INTERRUPT()
-/*@}*/
+    /*@}*/
 
-/**@{
- *  \brief
- *  RKH need to disable interrupts in order to access critical sections of
- *  code, and re-enable interrupts when done.
- *
- *  This allows RKH to protect
- *  critical code from being entered simultaneously from either multiple
- *  SMAs or ISRs. Every processor generally provide instructions to
- *  disable/enable interrupts and the C compiler must have a mechanism to
- *  perform these operations directly from C. Some compilers will allows
- *  to insert in-line assembly language statements in the C source code.
- *  This makes it quite easy to insert processor instructions to enable and
- *  disable interrupts. Other compilers will actually contain language
- *  extensions to enable and disable interrupts directly from C. To hide
- *  the implementation method chosen by the compiler manufacturer, RKH
- *  defines two macros to disable and enable interrupts:
- *  RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
- *
- *  The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto
- *  the stack and then, disable interrupts.
- *  RKH_EXIT_CRITICAL() would simply be implemented by restoring the
- *  interrupt status from the stack. Using this scheme, if it's called a
- *  RKH service with either interrupts enabled or disabled then, the
- *  status would be preserved across the call. If calls a RKH service with
- *  interrupts disabled, is potentially extending the interrupt latency of
- *  application. The application can use RKH_ENTER_CRITICAL() and
- *  RKH_EXIT_CRITICAL() to also protect critical sections of code. As a
- *  general rule, should always call RKH services with interrupts enabled!.
- *
- *  \note
- *  These macros are internal to RKH and the user application should
- *  not call it.
- *
- *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
- *  \code
- *  //#define RKH_CPUSR_TYPE
- *  #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
- *  #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
- *  \endcode
- */
-
+    /**@{
+     *  \brief
+     *  RKH need to disable interrupts in order to access critical sections of
+     *  code, and re-enable interrupts when done.
+     *
+     *  This allows RKH to protect
+     *  critical code from being entered simultaneously from either multiple
+     *  SMAs or ISRs. Every processor generally provide instructions to
+     *  disable/enable interrupts and the C compiler must have a mechanism to
+     *  perform these operations directly from C. Some compilers will allows
+     *  to insert in-line assembly language statements in the C source code.
+     *  This makes it quite easy to insert processor instructions to enable and
+     *  disable interrupts. Other compilers will actually contain language
+     *  extensions to enable and disable interrupts directly from C. To hide
+     *  the implementation method chosen by the compiler manufacturer, RKH
+     *  defines two macros to disable and enable interrupts:
+     *  RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
+     *
+     *  The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto
+     *  the stack and then, disable interrupts.
+     *  RKH_EXIT_CRITICAL() would simply be implemented by restoring the
+     *  interrupt status from the stack. Using this scheme, if it's called a
+     *  RKH service with either interrupts enabled or disabled then, the
+     *  status would be preserved across the call. If calls a RKH service with
+     *  interrupts disabled, is potentially extending the interrupt latency of
+     *  application. The application can use RKH_ENTER_CRITICAL() and
+     *  RKH_EXIT_CRITICAL() to also protect critical sections of code. As a
+     *  general rule, should always call RKH services with interrupts enabled!.
+     *
+     *  \note
+     *  These macros are internal to RKH and the user application should
+     *  not call it.
+     *
+     *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
+     *  \code
+     *  //#define RKH_CPUSR_TYPE
+     *  #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
+     *  #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
+     *  \endcode
+     */
     #define RKH_CPUSR_TYPE
     #define RKH_SR_ALLOC() \
-    RKH_CPUSR_TYPE sr = \
-        (RKH_CPUSR_TYPE)0
+        RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
     #define RKH_ENTER_CRITICAL(dummy)
     #define RKH_EXIT_CRITICAL(dummy)
-/*@}*/
+    /*@}*/
 
-/**
- *  \brief
- *  Encapsulates the mechanism of blocking the event queue.
- *
- *  \param sma		pointer to SMA.
- */
-
+    /**
+     *  \brief
+     *  Encapsulates the mechanism of blocking the event queue.
+     *
+     *  \param sma		pointer to SMA.
+     */
     #define RKH_SMA_BLOCK(sma)
 
-/**
- *  \brief
- *  Encapsulates the mechanism of signaling the thread waiting on the
- *  used event queue. Thus, the SMA is inserted in the ready list as
- *  ready-to-dispatch.
- *
- *  \param rg		ready group.
- *  \param sma		pointer to SMA.
- */
-
+    /**
+     *  \brief
+     *  Encapsulates the mechanism of signaling the thread waiting on the
+     *  used event queue. Thus, the SMA is inserted in the ready list as
+     *  ready-to-dispatch.
+     *
+     *  \param rg		ready group.
+     *  \param sma		pointer to SMA.
+     */
     #define RKH_SMA_READY(rg, sma)
 
-/**
- *  \brief
- *  Informs the underlying kernel that the SMA event queue is becoming
- *  empty. Thus, the SMA is removed from the ready list.
- *
- *  \param rg		ready group.
- *  \param sma		pointer to SMA.
- */
-
+    /**
+     *  \brief
+     *  Informs the underlying kernel that the SMA event queue is becoming
+     *  empty. Thus, the SMA is removed from the ready list.
+     *
+     *  \param rg		ready group.
+     *  \param sma		pointer to SMA.
+     */
     #define RKH_SMA_UNREADY(rg, sma)
 
-/**
- *  \brief
- *  Defines the data type of the fixed-size memory block for
- *  dynamic event support.
- *
- *  The fixed-size memory block can be implemented with a RTOS/OS
- *  service provided to that. But it's also possible to use the native
- *  RKH fixed-size memory block RKH_MP_T type if the underlying RTOS/OS
- *  does not provide an adequate support.
- */
-
+    /**
+     *  \brief
+     *  Defines the data type of the fixed-size memory block for
+     *  dynamic event support.
+     *
+     *  The fixed-size memory block can be implemented with a RTOS/OS
+     *  service provided to that. But it's also possible to use the native
+     *  RKH fixed-size memory block RKH_MP_T type if the underlying RTOS/OS
+     *  does not provide an adequate support.
+     */
     #define RKH_DYNE_TYPE
 
-/**
- *  \brief
- *  Encapsulates the creation of a event pool.
- *
- *  Platform-dependent macro. Typically, must be define it in the
- *  specific port file (rkhport.h).
- *
- *  \param mp		pointer to previously allocated memory pool structure.
- *  \param sstart	storage start. Pointer to memory from which memory
- *                  blocks are allocated.
- *  \param ssize:	storage size. Size of the memory pool storage in bytes.
- *  \param esize	event size. This number determines the size of each
- *                  memory block in the pool.
- */
-
+    /**
+     *  \brief
+     *  Encapsulates the creation of a event pool.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param mp		pointer to previously allocated memory pool structure.
+     *  \param sstart	storage start. Pointer to memory from which memory
+     *                  blocks are allocated.
+     *  \param ssize:	storage size. Size of the memory pool storage in bytes.
+     *  \param esize	event size. This number determines the size of each
+     *                  memory block in the pool.
+     */
     #define RKH_DYNE_INIT(mp, sstart, ssize, esize)
 
-/**
- *  \brief
- *  Encapsulates how RKH should obtain the block size of pool.
- *
- *  Platform-dependent macro. Typically, must be define it in the
- *  specific port file (rkhport.h).
- *
- *  \param mp		pointer to previously allocated memory pool structure.
- */
-
+    /**
+     *  \brief
+     *  Encapsulates how RKH should obtain the block size of pool.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param mp		pointer to previously allocated memory pool structure.
+     */
     #define RKH_DYNE_GET_ESIZE(mp)
 
-/**
- *  \brief
- *	Encapsulates how RKH should obtain an event \c e from the
- *	event pool \c mp.
- *
- *  Platform-dependent macro. Typically, must be define it in the
- *  specific port file (rkhport.h).
- *
- *  \param mp		pointer to previously allocated memory pool structure.
- *  \param e		pointer to a new event or NULL if the pool
- *                  runs out of blocks.
- */
-
+    /**
+     *  \brief
+     *	Encapsulates how RKH should obtain an event \c e from the
+     *	event pool \c mp.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param mp		pointer to previously allocated memory pool structure.
+     *  \param e		pointer to a new event or NULL if the pool
+     *                  runs out of blocks.
+     */
     #define RKH_DYNE_GET(mp, e)
 
-/**
- *  \brief
- *	Encapsulates how RKH should return an event \c e to the event
- *	pool \c mp.
- *
- *  Platform-dependent macro. Typically, must be define it in the
- *  specific port file (rkhport.h).
- *
- *  \param mp		pointer to previously allocated memory pool structure.
- *  \param e		pointer to the returned event.
- */
-
+    /**
+     *  \brief
+     *	Encapsulates how RKH should return an event \c e to the event
+     *	pool \c mp.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param mp		pointer to previously allocated memory pool structure.
+     *  \param e		pointer to the returned event.
+     */
     #define RKH_DYNE_PUT(mp, e)
 #endif
 
 #ifdef RKH_CPUSR_TYPE
     #if RKH_EN_DOXYGEN == RKH_DISABLED
-        #define RKH_SR_ALLOC() \
-    RKH_CPUSR_TYPE sr = \
-        (RKH_CPUSR_TYPE)0
-        #define RKH_ENTER_CRITICAL_()       RKH_ENTER_CRITICAL(sr)
-        #define RKH_EXIT_CRITICAL_()        RKH_EXIT_CRITICAL(sr)
+        #define RKH_SR_ALLOC()          RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
+        #define RKH_ENTER_CRITICAL_()   RKH_ENTER_CRITICAL(sr)
+        #define RKH_EXIT_CRITICAL_()    RKH_EXIT_CRITICAL(sr)
     #endif
 #else
     #define RKH_SR_ALLOC()
-    #define RKH_ENTER_CRITICAL_()           RKH_ENTER_CRITICAL(dummy)
-    #define RKH_EXIT_CRITICAL_()            RKH_EXIT_CRITICAL(dummy)
+    #define RKH_ENTER_CRITICAL_()       RKH_ENTER_CRITICAL(dummy)
+    #define RKH_EXIT_CRITICAL_()        RKH_EXIT_CRITICAL(dummy)
 #endif
 
 #if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
@@ -2272,51 +2243,51 @@ extern "C" {
 
 #if RKH_CFG_SMA_PPRO_ARG_SMA_EN == RKH_ENABLED
     #define RKH_EXEC_PREPRO(s, h, e) \
-    (*(s)->prepro)(h, e); \
-    RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
-                      (h), \
-                      (h)->state, \
-                      (s)->prepro)
+        (*(s)->prepro)(h, e); \
+        RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
+                          (h), \
+                          (h)->state, \
+                          (s)->prepro)
 #else
     #define RKH_EXEC_PREPRO(s, h, e) \
-    (*(s)->prepro)(e); \
-    RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
-                      (h), \
-                      (h)->state, \
-                      (s)->prepro)
+        (*(s)->prepro)(e); \
+        RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
+                          (h), \
+                          (h)->state, \
+                          (s)->prepro)
 #endif
 
 #if (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
     #define RKH_EXEC_EFF(a, h, e) \
-    (*CTA(a))((h), (e)); \
-    RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                      (h), \
-                      (h)->state, \
-                      (a))
+        (*CTA(a))((h), (e)); \
+        RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
+                          (h), \
+                          (h)->state, \
+                          (a))
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
     #define RKH_EXEC_EFF(a, h, e) \
-    (*CTA(a))((e)); \
-    RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                      (h), \
-                      (h)->state, \
-                      (a))
+        (*CTA(a))((e)); \
+        RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
+                          (h), \
+                          (h)->state, \
+                          (a))
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
     #define RKH_EXEC_EFF(a, h, e) \
-    (*CTA(a))((h)); \
-    RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                      (h), \
-                      (h)->state, \
-                      (a))
+        (*CTA(a))((h)); \
+        RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
+                          (h), \
+                          (h)->state, \
+                          (a))
 #else
     #define RKH_EXEC_EFF(a, h, e) \
-    (*CTA(a))(); \
-    RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                      (h), \
-                      (h)->state, \
-                      (a))
+        (*CTA(a))(); \
+        RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
+                          (h), \
+                          (h)->state, \
+                          (a))
 #endif
 
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \

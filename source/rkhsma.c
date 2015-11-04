@@ -36,6 +36,17 @@
  *  \brief      Implements the SMA(active object) registration.
  */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2015.10.24  LeFr  v2.4.05  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 
 #include "rkhassert.h"

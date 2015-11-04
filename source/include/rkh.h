@@ -38,12 +38,12 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24    LeFr    v2.4.05     Initial version
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr        Leandro Francucci (francuccilea@gmail.com)
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -114,7 +114,7 @@ extern "C" {
     RKH_EN_DOXYGEN == RKH_DISABLED
     #define RKH_DYNE_TYPE           RKH_MP_T
     #define RKH_DYNE_INIT(mp, sstart, ssize, esize) \
-    rkh_mp_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
+        rkh_mp_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
     #define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
     #define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
     #define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
@@ -1372,75 +1372,75 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	rkh_tmr_tick().
  */
-#define RKH_TIM_TICK(_sender)     rkh_tmr_tick(_sender)
+    #define RKH_TIM_TICK(_sender)     rkh_tmr_tick(_sender)
 #else
-#define RKH_TIM_TICK(dummy_)      rkh_tmr_tick()
+    #define RKH_TIM_TICK(dummy_)      rkh_tmr_tick()
 #endif
 
 #if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
-#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
-/**
- *  \brief
- *  Invoke the active object activation function rkh_sma_activate().
- *
- *  This macro is the recommended way of invoke the rkh_sma_activate()
- *  function to active an active object, because it allows to
- *  completely hides the platform-specific code.
- *
- *	Example:
- *	\code
- *	int
- *	main( int argc, char *argv[] )
- *	{
- *		...
- *		RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
- *		...
- *		return 0;
- *	}
- *	\endcode
- *
- *  \param sma__		pointer to previously created state machine
- *                      application.
- *  \param qsto__		base address of the event storage area. A message
- *                      storage area is declared as an array of pointers
- *                      to RKH events.
- *  \param qsto_size__	size of the storage event area [in number of
- *                      entries].
- *  \param stk__		starting address of the stack's memory area.
- *  \param stk_size__	size of stack memory area [in bytes].
- *
- *	\sa
- *	rkh_sma_activate().
- */
-#define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-     rkh_sma_activate(sma__, \
-                      (const RKH_EVT_T * *)qsto__, \
-                      qsto_size__, \
-                      (void *)stk__, \
-                      (rui32_t)stk_size__)
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    /**
+     *  \brief
+     *  Invoke the active object activation function rkh_sma_activate().
+     *
+     *  This macro is the recommended way of invoke the rkh_sma_activate()
+     *  function to active an active object, because it allows to
+     *  completely hides the platform-specific code.
+     *
+     *	Example:
+     *	\code
+     *	int
+     *	main( int argc, char *argv[] )
+     *	{
+     *		...
+     *		RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
+     *		...
+     *		return 0;
+     *	}
+     *	\endcode
+     *
+     *  \param sma__		pointer to previously created state machine
+     *                      application.
+     *  \param qsto__		base address of the event storage area. A message
+     *                      storage area is declared as an array of pointers
+     *                      to RKH events.
+     *  \param qsto_size__	size of the storage event area [in number of
+     *                      entries].
+     *  \param stk__		starting address of the stack's memory area.
+     *  \param stk_size__	size of stack memory area [in bytes].
+     *
+     *	\sa
+     *	rkh_sma_activate().
+     */
+    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
+         rkh_sma_activate(sma__, \
+                          (const RKH_EVT_T * *)qsto__, \
+                          qsto_size__, \
+                          (void *)stk__, \
+                          (rui32_t)stk_size__)
+    #else
+    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
+        rkh_sma_activate(sma__, \
+                         (const RKH_EVT_T * *)qsto__, \
+                         qsto_size__, \
+                         (void *)0, \
+                         (rui32_t)0)
+    #endif
 #else
-#define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-    rkh_sma_activate(sma__, \
-                     (const RKH_EVT_T * *)qsto__, \
+#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
+        rkh_sma_activate(sma__, \
+                     (const RKH_EVT_T * *)0, \
+                     qsto_size__, \
+                     (void *)stk__, \
+                     (rui32_t)stk_size__)
+#else
+    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
+        rkh_sma_activate(sma__, \
+                     (const RKH_EVT_T * *)0, \
                      qsto_size__, \
                      (void *)0, \
                      (rui32_t)0)
-#endif
-#else
-#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
-#define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-rkh_sma_activate(sma__, \
-                 (const RKH_EVT_T * *)0, \
-                 qsto_size__, \
-                 (void *)stk__, \
-                 (rui32_t)stk_size__)
-#else
-#define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-rkh_sma_activate(sma__, \
-                 (const RKH_EVT_T * *)0, \
-                 qsto_size__, \
-                 (void *)0, \
-                 (rui32_t)0)
 #endif
 #endif
 
@@ -1513,146 +1513,145 @@ rkh_sma_activate(sma__, \
     RKH_SMA_T *const name = (RKH_SMA_T *)&s_ ## name
 
 #if defined(RKH_USE_TRC_SENDER)
-/**
- *  \brief
- *  Invoke the direct event posting facility rkh_sma_post_fifo().
- *
- *  This macro is the recommended way of posting events, because it
- *  provides the vital information for software tracing and avoids any
- *  overhead when the tracing is disabled.
- *
- *  \param _sma			pointer to previously created state machine
- *                      application.
- *  \param _e			actual event sent to the state machine application.
- *  \param _sender		pointer to the sender object. It is not
- *                      necessarily a pointer to an active object. In
- *                      fact, if RKH_SMA_POST_FIFO() is called from an
- *                      interrupt or other context, it can create a
- *                      unique object just to unambiguously identify the
- *                      publisher of the event.
- *	\sa
- *	rkh_sma_post_fifo().
- */
-#define RKH_SMA_POST_FIFO(_sma, _e, _sender) \
-rkh_sma_post_fifo((_sma), (_e), (_sender))
+    /**
+     *  \brief
+     *  Invoke the direct event posting facility rkh_sma_post_fifo().
+     *
+     *  This macro is the recommended way of posting events, because it
+     *  provides the vital information for software tracing and avoids any
+     *  overhead when the tracing is disabled.
+     *
+     *  \param _sma			pointer to previously created state machine
+     *                      application.
+     *  \param _e			actual event sent to the state machine application.
+     *  \param _sender		pointer to the sender object. It is not
+     *                      necessarily a pointer to an active object. In
+     *                      fact, if RKH_SMA_POST_FIFO() is called from an
+     *                      interrupt or other context, it can create a
+     *                      unique object just to unambiguously identify the
+     *                      publisher of the event.
+     *	\sa
+     *	rkh_sma_post_fifo().
+     */
+    #define RKH_SMA_POST_FIFO(_sma, _e, _sender) \
+        rkh_sma_post_fifo((_sma), (_e), (_sender))
 #else
-#define RKH_SMA_POST_FIFO(_sma, _e, _dummy) \
-rkh_sma_post_fifo((_sma), (_e))
+    #define RKH_SMA_POST_FIFO(_sma, _e, _dummy) \
+        rkh_sma_post_fifo((_sma), (_e))
 #endif
 
 #if defined(RKH_USE_TRC_SENDER)
-/**
- *  \brief
- *  Invoke the direct event posting facility rkh_sma_post_lifo().
- *
- *  This macro is the recommended way of posting events, because it
- *  provides the vital information for software tracing and avoids any
- *  overhead when the tracing is disabled.
- *
- *  \param _sma			pointer to previously created state machine
- *                      application.
- *  \param _e			actual event sent to the state machine application.
- *  \param _sender		pointer to the sender object. It is not
- *                      necessarily a pointer to an active object. In
- *                      fact, if RKH_SMA_POST_LIFO() is called from an
- *                      interrupt or other context, it can create a
- *                      unique object just to unambiguously identify the
- *                      publisher of the event.
- *	\sa
- *	rkh_sma_post_lifo().
- */
-#define RKH_SMA_POST_LIFO(_sma, _e, _sender) \
-rkh_sma_post_lifo((_sma), (_e), (_sender))
+    /**
+     *  \brief
+     *  Invoke the direct event posting facility rkh_sma_post_lifo().
+     *
+     *  This macro is the recommended way of posting events, because it
+     *  provides the vital information for software tracing and avoids any
+     *  overhead when the tracing is disabled.
+     *
+     *  \param _sma			pointer to previously created state machine
+     *                      application.
+     *  \param _e			actual event sent to the state machine application.
+     *  \param _sender		pointer to the sender object. It is not
+     *                      necessarily a pointer to an active object. In
+     *                      fact, if RKH_SMA_POST_LIFO() is called from an
+     *                      interrupt or other context, it can create a
+     *                      unique object just to unambiguously identify the
+     *                      publisher of the event.
+     *	\sa
+     *	rkh_sma_post_lifo().
+     */
+    #define RKH_SMA_POST_LIFO(_sma, _e, _sender) \
+        rkh_sma_post_lifo((_sma), (_e), (_sender))
 #else
-#define RKH_SMA_POST_LIFO(_sma, _e, _dummy) \
-rkh_sma_post_lifo((_sma), (_e))
+    #define RKH_SMA_POST_LIFO(_sma, _e, _dummy) \
+        rkh_sma_post_lifo((_sma), (_e))
 #endif
 
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-/**
- *  \brief
- *	This macro dynamically creates a new event of type \a et with its
- *	signal.
- *
- *	The basic policy is to allocate the event from the first pool that
- *	has a block size big enough to fit the requested event size. RKH
- *	can manage up to three event pools (e.g., small, medium, and large
- *	events, like shirt sizes). It returns a pointer to the event
- *	already cast to the event type (et*). Here is an example of dynamic
- *	event allocation with the macro RKH_ALLOC_EVT():
- *
- *	\code
- *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
- *	mye->y = mye->x = 0;
- *	...
- *	\endcode
- *
- *  \note
- *	The assertions inside rkh_fwk_ae() function guarantee that the
- *	pointer is valid, so you don't need to check the pointer returned
- *	from rkh_fwk_ae(), unlike the value returned from malloc(), which
- *	you should check.
- *
- *  \param et		type of event.
- *  \param e		event signal.
- */
-#define RKH_ALLOC_EVT(et, e) \
-(et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
+    /**
+     *  \brief
+     *	This macro dynamically creates a new event of type \a et with its
+     *	signal.
+     *
+     *	The basic policy is to allocate the event from the first pool that
+     *	has a block size big enough to fit the requested event size. RKH
+     *	can manage up to three event pools (e.g., small, medium, and large
+     *	events, like shirt sizes). It returns a pointer to the event
+     *	already cast to the event type (et*). Here is an example of dynamic
+     *	event allocation with the macro RKH_ALLOC_EVT():
+     *
+     *	\code
+     *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
+     *	mye->y = mye->x = 0;
+     *	...
+     *	\endcode
+     *
+     *  \note
+     *	The assertions inside rkh_fwk_ae() function guarantee that the
+     *	pointer is valid, so you don't need to check the pointer returned
+     *	from rkh_fwk_ae(), unlike the value returned from malloc(), which
+     *	you should check.
+     *
+     *  \param et		type of event.
+     *  \param e		event signal.
+     */
+    #define RKH_ALLOC_EVT(et, e) \
+        (et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
-#define RKH_ALLOC_EVT(et, e) \
-(void)0
+    #define RKH_ALLOC_EVT(et, e) \
+        (void)0
 #endif
 
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-/**
- *  \brief
- *  Recycle a dynamic event.
- *
- *  This macro implements a simple garbage collector for the dynamic
- *  events.	Only dynamic events are candidates for recycling.
- *  (A dynamic event is one that is allocated from an event pool, which
- *  is determined as non-zero	e->nref attribute.) Next, the function
- *  decrements the reference counter of the event, and recycles the
- *  event only if the counter drops to zero (meaning that no more
- *  references are outstanding for this event). The dynamic event is
- *  recycled by returning it to the pool from which	it was originally
- *  allocated. The pool-of-origin information is stored in the
- *  e->pool member.
- *
- *  \note
- *  This function is internal to RKH and the user application should
- *  not call it. Instead, use #RKH_FWK_GC() macro.
- *  \note
- *  The garbage collector must be explicitly invoked at all appropriate
- *  contexts, when an event can become garbage (automatic garbage
- *  collection).
- *  \note
- *  When setting RKH_CFG_FWK_DYN_EVT_EN = 0 the garbage collector has
- *  not effect, thus it's eliminated in compile-time.
- *
- *  \param e		pointer to event to be potentially recycled.
- */
-#define RKH_FWK_GC(e)             rkh_fwk_gc(e)
+    /**
+     *  \brief
+     *  Recycle a dynamic event.
+     *
+     *  This macro implements a simple garbage collector for the dynamic
+     *  events.	Only dynamic events are candidates for recycling.
+     *  (A dynamic event is one that is allocated from an event pool, which
+     *  is determined as non-zero	e->nref attribute.) Next, the function
+     *  decrements the reference counter of the event, and recycles the
+     *  event only if the counter drops to zero (meaning that no more
+     *  references are outstanding for this event). The dynamic event is
+     *  recycled by returning it to the pool from which	it was originally
+     *  allocated. The pool-of-origin information is stored in the
+     *  e->pool member.
+     *
+     *  \note
+     *  This function is internal to RKH and the user application should
+     *  not call it. Instead, use #RKH_FWK_GC() macro.
+     *  \note
+     *  The garbage collector must be explicitly invoked at all appropriate
+     *  contexts, when an event can become garbage (automatic garbage
+     *  collection).
+     *  \note
+     *  When setting RKH_CFG_FWK_DYN_EVT_EN = 0 the garbage collector has
+     *  not effect, thus it's eliminated in compile-time.
+     *
+     *  \param e		pointer to event to be potentially recycled.
+     */
+    #define RKH_FWK_GC(e)             rkh_fwk_gc(e)
 #else
-#define RKH_FWK_GC(e)             (void)0
+    #define RKH_FWK_GC(e)             (void)0
 #endif
 
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-/**
- *  \brief
- *  Reserve the dynamic event to be recycled.
- *
- *  This is the complement to RKH_FWK_GC(). It increments the reference
- *  count of a dynamic event so the event can be saved by an SMA (AO).
- *  Sometime later the SMA should manually release the event with
- *  RKH_FWK_GC().
- *
- *  \param e		pointer to event to be reserved.
- */
-
-#define RKH_FWK_RSV(e)            rkh_fwk_reserve(e)
+    /**
+     *  \brief
+     *  Reserve the dynamic event to be recycled.
+     *
+     *  This is the complement to RKH_FWK_GC(). It increments the reference
+     *  count of a dynamic event so the event can be saved by an SMA (AO).
+     *  Sometime later the SMA should manually release the event with
+     *  RKH_FWK_GC().
+     *
+     *  \param e		pointer to event to be reserved.
+     */
+    #define RKH_FWK_RSV(e)            rkh_fwk_reserve(e)
 #else
-#define RKH_FWK_RSV(e)            (void)0
+    #define RKH_FWK_RSV(e)            (void)0
 #endif
 
 /**
@@ -1800,31 +1799,31 @@ rkh_sma_post_lifo((_sma), (_e))
     ((RKH_BASE_T *)((sma)->state))->id
 
 #if defined(R_TRC_AO_NAME_EN)
-/**
- *  \brief
- *  This macro retrieves the name of an registered active object.
- *
- *  \param ao		pointer to previously created active object.
- *
- *  \return
- *  Name of active object.
- */
-#define RKH_GET_AO_NAME(ao)       (ao)->romrkh->name
+    /**
+     *  \brief
+     *  This macro retrieves the name of an registered active object.
+     *
+     *  \param ao		pointer to previously created active object.
+     *
+     *  \return
+     *  Name of active object.
+     */
+    #define RKH_GET_AO_NAME(ao)       (ao)->romrkh->name
 
-/**
- *  \brief
- *  This macro retrieves the name of a vertex.
- *
- *  \param vx		pointer to previously created vertex object.
- *
- *  \return
- *  Name of vertex object.
- */
-#define RKH_GET_VERTEX_NAME(vx) \
-((struct RKH_BASE_T *)(vx))->name
+    /**
+     *  \brief
+     *  This macro retrieves the name of a vertex.
+     *
+     *  \param vx		pointer to previously created vertex object.
+     *
+     *  \return
+     *  Name of vertex object.
+     */
+    #define RKH_GET_VERTEX_NAME(vx) \
+        ((struct RKH_BASE_T *)(vx))->name
 #else
-#define RKH_GET_AO_NAME(ao)           noname
-#define RKH_GET_VERTEX_NAME(vx)       noname
+    #define RKH_GET_AO_NAME(ao)           noname
+    #define RKH_GET_VERTEX_NAME(vx)       noname
 #endif
 
 /**
@@ -1879,157 +1878,157 @@ rkh_sma_post_lifo((_sma), (_e))
 #define RKH_CAST(_type, _obj)     ((_type *)(_obj))
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- *  \brief
- *	Open the tracing session.
- *
- *	This function is application-specific and the user needs to
- *	define it. At a minimum, this function must initialize and/or
- *	configure the trace stream by calling rkh_trc_init() and
- *	RKH_TRC_SEND_CFG() respectively.
- *
- *  \note
- *  This function is internal to RKH and the user application
- *  should not call it. Instead, use #RKH_TRC_OPEN() macro.
- *
- *	Example:
- *
- *	\code
- *	#define BSP_SIZEOF_TS		32u
- *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
- *
- *	void
- *	rkh_trc_open( void )
- *	{
- *		rkh_trc_init();
- *
- *		FTBIN_OPEN();
- *		TCP_TRACE_OPEN();
- *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
- *
- *		if(( idle_thread = CreateThread( NULL, 1024,
- *				&idle_thread_function, (void *)0,
- *				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
- *			fprintf( stderr, "Cannot create the thread: [%d]
- *													line from %s "
- *				"file\n", __LINE__, __FILE__ );
- *	}
- *	\endcode
- *
- *  \sa \b rkhtrc.h file.
- */
-#define RKH_TRC_OPEN()      rkh_trc_open()
+    /**
+     *  \brief
+     *	Open the tracing session.
+     *
+     *	This function is application-specific and the user needs to
+     *	define it. At a minimum, this function must initialize and/or
+     *	configure the trace stream by calling rkh_trc_init() and
+     *	RKH_TRC_SEND_CFG() respectively.
+     *
+     *  \note
+     *  This function is internal to RKH and the user application
+     *  should not call it. Instead, use #RKH_TRC_OPEN() macro.
+     *
+     *	Example:
+     *
+     *	\code
+     *	#define BSP_SIZEOF_TS		32u
+     *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
+     *
+     *	void
+     *	rkh_trc_open( void )
+     *	{
+     *		rkh_trc_init();
+     *
+     *		FTBIN_OPEN();
+     *		TCP_TRACE_OPEN();
+     *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
+     *
+     *		if(( idle_thread = CreateThread( NULL, 1024,
+     *				&idle_thread_function, (void *)0,
+     *				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
+     *			fprintf( stderr, "Cannot create the thread: [%d]
+     *													line from %s "
+     *				"file\n", __LINE__, __FILE__ );
+     *	}
+     *	\endcode
+     *
+     *  \sa \b rkhtrc.h file.
+     */
+    #define RKH_TRC_OPEN()      rkh_trc_open()
 #else
-#define RKH_TRC_OPEN()      (void)0
+    #define RKH_TRC_OPEN()      (void)0
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- *  \brief
- *	Close the tracing session.
- *
- *	This function is application-specific and the user needs to
- *	define it.
- *
- *  \note
- *  This function is internal to RKH and the user application
- *  should not call it. Instead, use #RKH_TRC_CLOSE() macro.
- *
- *	Example:
- *
- *	\code
- *	void
- *	rkh_trc_close( void )
- *	{
- *		fclose( fdbg );
- *	}
- *	\endcode
- *
- *  \sa \b rkhtrc.h file.
- */
-#define RKH_TRC_CLOSE()     rkh_trc_close()
+    /**
+     *  \brief
+     *	Close the tracing session.
+     *
+     *	This function is application-specific and the user needs to
+     *	define it.
+     *
+     *  \note
+     *  This function is internal to RKH and the user application
+     *  should not call it. Instead, use #RKH_TRC_CLOSE() macro.
+     *
+     *	Example:
+     *
+     *	\code
+     *	void
+     *	rkh_trc_close( void )
+     *	{
+     *		fclose( fdbg );
+     *	}
+     *	\endcode
+     *
+     *  \sa \b rkhtrc.h file.
+     */
+    #define RKH_TRC_CLOSE()     rkh_trc_close()
 #else
-#define RKH_TRC_CLOSE()     (void)0
+    #define RKH_TRC_CLOSE()     (void)0
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- *  \brief
- *	Platform-dependent macro flushing the trace stream.
- *
- *	This function is application-specific and the user needs to define
- *	it. When the RKH trace an event, all the information related to it
- *	has to be stored somewhere before it can be retrieved, in order to
- *	be analyzed.
- *  This place is a trace stream. Frequently, events traced are stored
- *  in the stream until it is flushed.
- *
- *  \note
- *  This function is internal to RKH and the user application should
- *  not call it. Instead, use #RKH_TRC_FLUSH() macro.
- *
- *	Example:
- *	\code
- *  void
- *  rkh_trc_flush( void )
- *  {
- *      rui8_t *blk;
- *      TRCQTY_T nbytes;
- *      RKH_SR_ALLOC();
- *
- *      FOREVER
- *      {
- *          nbytes = (TRCQTY_T)1024;
- *
- *          RKH_ENTER_CRITICAL_();
- *          blk = rkh_trc_get_block( &nbytes );
- *          RKH_EXIT_CRITICAL_();
- *
- *          if((blk != (rui8_t *)0))
- *          {
- *              FTBIN_FLUSH( blk, nbytes );
- *              TCP_TRACE_SEND_BLOCK( blk, nbytes );
- *          }
- *          else
- *              break;
- *      }
- *  }
- *	\endcode
- *
- *  \sa \b rkhtrc.h file.
- */
-#define RKH_TRC_FLUSH()     rkh_trc_flush()
+    /**
+     *  \brief
+     *	Platform-dependent macro flushing the trace stream.
+     *
+     *	This function is application-specific and the user needs to define
+     *	it. When the RKH trace an event, all the information related to it
+     *	has to be stored somewhere before it can be retrieved, in order to
+     *	be analyzed.
+     *  This place is a trace stream. Frequently, events traced are stored
+     *  in the stream until it is flushed.
+     *
+     *  \note
+     *  This function is internal to RKH and the user application should
+     *  not call it. Instead, use #RKH_TRC_FLUSH() macro.
+     *
+     *	Example:
+     *	\code
+     *  void
+     *  rkh_trc_flush( void )
+     *  {
+     *      rui8_t *blk;
+     *      TRCQTY_T nbytes;
+     *      RKH_SR_ALLOC();
+     *
+     *      FOREVER
+     *      {
+     *          nbytes = (TRCQTY_T)1024;
+     *
+     *          RKH_ENTER_CRITICAL_();
+     *          blk = rkh_trc_get_block( &nbytes );
+     *          RKH_EXIT_CRITICAL_();
+     *
+     *          if((blk != (rui8_t *)0))
+     *          {
+     *              FTBIN_FLUSH( blk, nbytes );
+     *              TCP_TRACE_SEND_BLOCK( blk, nbytes );
+     *          }
+     *          else
+     *              break;
+     *      }
+     *  }
+     *	\endcode
+     *
+     *  \sa \b rkhtrc.h file.
+     */
+    #define RKH_TRC_FLUSH()     rkh_trc_flush()
 #else
-#define RKH_TRC_FLUSH()     (void)0
+    #define RKH_TRC_FLUSH()     (void)0
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- *  \brief
- *  Send the trace facility configuration to host application software
- *  Trazer.
- *
- *  Trazer is designed to work with all possible target CPU, which
- *  requires a wide range of configurability. For example, for any
- *  given target CPU, Trazer must "know" the size of object pointers,
- *  event size, timestamp size and so on. This configurations could be
- *  provided through "trazer.cfg" file in the host or invoking
- *  RKH_TRC_SEND_CFG() macro from the application-specific
- *  rkh_trc_open() function.
- *
- *  \note
- *	Frequently, this macro is called from the rkh_trc_open() function,
- *	which is provided by user application program, more specifically
- *	the board support package (BSP).
- *
- *  \param ts_hz		clocks per second of trace timestamp.
- *
- *  \sa RKH_TRC_OPEN() macro.
- */
-#define RKH_TRC_SEND_CFG(ts_hz) \
-RKH_TR_FWK_TCFG(ts_hz)
+    /**
+     *  \brief
+     *  Send the trace facility configuration to host application software
+     *  Trazer.
+     *
+     *  Trazer is designed to work with all possible target CPU, which
+     *  requires a wide range of configurability. For example, for any
+     *  given target CPU, Trazer must "know" the size of object pointers,
+     *  event size, timestamp size and so on. This configurations could be
+     *  provided through "trazer.cfg" file in the host or invoking
+     *  RKH_TRC_SEND_CFG() macro from the application-specific
+     *  rkh_trc_open() function.
+     *
+     *  \note
+     *	Frequently, this macro is called from the rkh_trc_open() function,
+     *	which is provided by user application program, more specifically
+     *	the board support package (BSP).
+     *
+     *  \param ts_hz		clocks per second of trace timestamp.
+     *
+     *  \sa RKH_TRC_OPEN() macro.
+     */
+    #define RKH_TRC_SEND_CFG(ts_hz) \
+        RKH_TR_FWK_TCFG(ts_hz)
 #else
-#define RKH_TRC_SEND_CFG(ts_hz)     (void)0
+    #define RKH_TRC_SEND_CFG(ts_hz)     (void)0
 #endif
 
 /* -------------------------- Function prototypes -------------------------- */
@@ -2834,41 +2833,39 @@ void rkh_sma_init_hsm(RKH_SMA_T *sma);
 ruint rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
 
 #if defined(RKH_HISTORY_ENABLED)
-/**
- *  \brief
- *  Erase the history of a state. It can be a shallow or deep history.
- *
- *  \param h        pointer to history pseudostate.
- */
-
-void rkh_fwk_clear_history(RKHROM RKH_SHIST_T *h);
+    /**
+     *  \brief
+     *  Erase the history of a state. It can be a shallow or deep history.
+     *
+     *  \param h        pointer to history pseudostate.
+     */
+    void rkh_fwk_clear_history(RKHROM RKH_SHIST_T *h);
 #else
-#define rkh_fwk_clear_history(h)          (void)0
+    #define rkh_fwk_clear_history(h)          (void)0
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- * \brief
- * Open the tracing session.
- */
-void rkh_trc_open(void);
+    /**
+     * \brief
+     * Open the tracing session.
+     */
+    void rkh_trc_open(void);
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- *  \brief
- *	Close the tracing session.
- */
-
-void rkh_trc_close(void);
+    /**
+     *  \brief
+     *	Close the tracing session.
+     */
+    void rkh_trc_close(void);
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-/**
- *  \brief
- *	Platform-dependent macro flushing the trace stream.
- */
-void rkh_trc_flush(void);
+    /**
+     *  \brief
+     *	Platform-dependent macro flushing the trace stream.
+     */
+    void rkh_trc_flush(void);
 #endif
 
 /**

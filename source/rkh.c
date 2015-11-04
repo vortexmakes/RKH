@@ -38,12 +38,12 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.29  LeFr    v2.4.05     Apply file templates.
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr        Leandro Francucci (francuccilea@gmail.com)
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -71,9 +71,9 @@ RKH_MODULE_NAME(rkh)
     RKH_CFGPORT_REENTRANT_EN == RKH_DISABLED
     #define RKH_RAM     static
 #else
-/* allocate the automatic variables of rkh_sma_dispatch() */
-/* function on the stack. */
-/* Therefore, the code is reentrant. */
+    /* allocate the automatic variables of rkh_sma_dispatch() */
+    /* function on the stack. */
+    /* Therefore, the code is reentrant. */
     #define RKH_RAM
 #endif
 
@@ -379,10 +379,10 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     inttr = 0;
     INFO_RCV_EVENTS(sma);
     RKH_HOOK_DISPATCH(sma, pe);
-    /* ---- Stage 1 */
-    cs = sma->state;                                   /* get current state */
+    /* ---- Stage 1 -------------------------------------------------------- */
+    cs = sma->state;                                    /* get current state */
 
-    /* ---- Stage 2 */
+    /* ---- Stage 2 -------------------------------------------------------- */
     /* determine the (compound) transition (CT) that will fire */
     /* in response to the event: traverse the states in */
     /* the active configuration from lowest states in the hierarchy */
@@ -449,8 +449,8 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
 
     if (IS_NOT_INTERNAL_TRANSITION())
     {
-        /* ---- Stage 3 */
-        RKH_TR_SM_TS_STATE(sma,                /* this state machine object */
+        /* ---- Stage 3 ---------------------------------------------------- */
+        RKH_TR_SM_TS_STATE(sma,                 /* this state machine object */
                            /* target state of the transition segment */
                            ets);
 
@@ -571,7 +571,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     }
     if (IS_NOT_INTERNAL_TRANSITION())
     {
-        /* ---- Stage 4 */
+        /* ---- Stage 4 ---------------------------------------------------- */
         /* first of all, find the LCA then */
         /* perform the exit actions of the exited states according */
         /* to the order states are exited, from low state to high state, */
@@ -579,7 +579,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
         /* and, generate the set of entered states */
         RKH_EXEC_EXIT_ACTION(cs, ts, sma, nn);
     }
-    /* ---- Stage 5 */
+    /* ---- Stage 5 -------------------------------------------------------- */
     /* perform the actions on the transition sequentially */
     /* according to the order in which they are written on */
     /* the transition, from the action closest to source */
@@ -591,7 +591,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
 
     if (IS_NOT_INTERNAL_TRANSITION())
     {
-        /* ---- Stage 6 */
+        /* ---- Stage 6 ---------------------------------------------------- */
         /* perform the entry actions of the entered states */
         /* according to the order states are entered, */
         /* from high state to low state. */
@@ -604,10 +604,10 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
                         nn,                             /* # entered states */
                         ix_x);                           /* # exited states */
 
-        /* ---- Stage 7 */
+        /* ---- Stage 7 ---------------------------------------------------- */
         /* update deep history */
         rkh_update_deep_hist(CST(stn));
-        /* ---- Stage 8 */
+        /* ---- Stage 8 ---------------------------------------------------- */
         sma->state = CST(stn);                  /* update the current state */
         RKH_TR_SM_STATE(sma,                   /* this state machine object */
                         stn);                              /* current state */

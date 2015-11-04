@@ -38,12 +38,12 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24    LeFr    v2.4.05     Initial version
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr        Leandro Francucci (francuccilea@gmail.com)
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -68,14 +68,11 @@ extern "C" {
 
 #if RKH_CFGPORT_NATIVE_SCHEDULER_EN == 1 && \
     RKH_EN_DOXYGEN == 0
-        #define RKH_EQ_TYPE             RKH_RQ_T
-
+    #define RKH_EQ_TYPE             RKH_RQ_T
     #define RKH_SMA_BLOCK(sma) \
         RKH_ASSERT(((RKH_SMA_T*)(sma))->equeue.qty != 0)
-
     #define RKH_SMA_READY(rg, sma) \
         RKH_RDY_INSERT((rg), ((RKH_SMA_T*)(sma))->romrkh->prio)
-
     #define RKH_SMA_UNREADY(rg, sma) \
         RKH_RDY_REM((rg), ((RKH_SMA_T*)(sma))->romrkh->prio)
 #endif
