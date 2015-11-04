@@ -433,6 +433,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	Deep history applies downwards to all levels of nesting.
  *
+ *  \param[in] name     pseudostate name. Represents a deep history
+ *                      pseudostate structure.
+ *  \param[in] parent	pointer to parent state.
+ *
  *	\note
  *	At this framework version, it is not recommended to instantiate the
  *	same history object more than once using this macro, since it uses a
@@ -441,12 +445,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
- *
- *	Arguments:
- *
- *  \param name		pseudostate name. Represents a deep history
- *                  pseudostate structure.
- *  \param parent	pointer to parent state.
  */
 
 #define RKH_CREATE_DEEP_HISTORY_STATE(name, parent) \
@@ -467,6 +465,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	only – states nested more deeply are not affected by the presence of a
  *	history pseudostates in a higher context.
  *
+ *  \param[in] name     pseudostate name. Represents a shallow history
+ *                      pseudostate structure.
+ *  \param[in] parent	pointer to parent state.
+ *
  *	\note
  *	At this framework version, it is not recommended to instantiate the
  *	same history object more than once using this macro, since it uses a
@@ -475,10 +477,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
- *
- *  \param name		pseudostate name. Represents a shallow history
- *                  pseudostate structure.
- *  \param parent	pointer to parent state.
  */
 
 #define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent) \
@@ -2047,15 +2045,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  *
- *	Example for x86, VC2008, and win32 single thread:
- *	\code
- *	void
- *	rkh_fwk_init( void )
- *	{
- *		InitializeCriticalSection( &csection );
- *		sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
- *	}
- *	\endcode
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Initializes the RKH framework
  */
 void rkh_fwk_init(void);
 
@@ -2077,59 +2070,14 @@ void rkh_fwk_init(void);
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  *
- *	Example for x86, VC2008, and win32 single thread:
- *	\code
- *	void
- *	rkh_fwk_enter( void )
- *	{
- *		rui8_t prio;
- *		RKH_SMA_T *sma;
- *		RKH_EVT_T *e;
- *
- *		RKH_HOOK_START();
- *		RKH_TR_FWK_EN();
- *		running = 1;
- *
- *		while( running )
- *		{
- *			RKH_ENTER_CRITICAL( dummy );
- *			if( RKH_RDY_ISNOT_EMPTY( rkhrg ) )
- *			{
- *				RKH_RDY_FIND_HIGHEST( rkhrg, prio );
- *				RKH_EXIT_CRITICAL( dummy );
- *
- *				sma = rkh_sptbl[ prio ];
- *				e = rkh_sma_get( sma );
- *				rkh_sma_dispatch( sma, e );
- *				RKH_FWK_GC( e );
- *			}
- *			else
- *				rkh_hook_idle();
- *		}
- *
- *		rkh_hook_exit();
- *		CloseHandle( sma_is_rdy );
- *		DeleteCriticalSection( &csection );
- *	}
- *	\endcode
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Run RKH framework
  *
  *	Here is the basic algorithm for interpreting the listing shown above.
  *	A pseudocode description of the procedure is:
- *	\code
- *	infinite loop
- *	{
- *		disable interrupts;
- *		if( is_active_object_ready_to_run )
- *		{
- *			find the active object with highest priority;
- *			enable interrupts;
- *			e = get the event from the active object's queue;
- *			dispatch the 'e' event to the active object's state machine;
- *			}
- *		else
- *			execute the idle processing;
- *	}
- *	\endcode
+ *  \include pseudo_cooperative_emulator.c
  */
 void rkh_fwk_enter(void);
 
@@ -2152,15 +2100,10 @@ void rkh_fwk_enter(void);
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  *
- *	Example:
- *	\code
- *	void
- *	rkh_fwk_exit( void )
- *	{
- *		rkh_hook_exit();
- *		RKH_TR_FWK_EX();
- *	}
- *	\endcode
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Exit the RKH framework
  */
 void rkh_fwk_exit(void);
 
@@ -2172,24 +2115,19 @@ void rkh_fwk_exit(void);
  *  Once terminated, the state machine application must be re-created in
  *  order for it to execute again.
  *
+ *  \param[in] sma      pointer to previously created state machine
+ *                      application.
+ *
  *	\note
  *	Platform-dependent function. All RKH ports must be defined in the RKH
  *	port file to a particular platform. However, only the ports to the
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  *
- *	Example:
- *	\code
- *	void
- *	rkh_sma_terminate( RKH_SMA_T *sma )
- *	{
- *		rkh_sma_unregister( sma );
- *		RKH_TR_SMA_TERM( sma );
- *	}
- *	\endcode
- *
- *  \param sma			pointer to previously created state machine
- *                      application.
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Terminates an active object
  */
 void rkh_sma_terminate(RKH_SMA_T *sma);
 
@@ -2226,27 +2164,14 @@ void rkh_tmr_tick(void);
  *  A state machine application (SMA) is declared with the RKH_SMA_T data
  *  type and is defined with the rkh_sma_activate() service.
  *
- *	Example:
- *	\code
- *	...within state-machine application's module
- *
- *	typedef struct
- *	{
- *		RKH_SMA_T sm;	// base structure
- *		rui8_t x;		// private member
- *		rui8_t y;		// private member
- *	} MYSM_T;
- *
- *  //	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
- *
- *	void
- *	main( void )
- *	{
- *		...
- *		rkh_sma_activate( my, 4, qsto, sizeof( RKH_EVT_T* ), (void*)0, 0 );
- *	}
- *	\endcode
+ *  \param[in] sma      pointer to previously created state machine
+ *                      application.
+ *  \param[in] qs       base address of the event storage area. A message
+ *                      storage area is declared as an array of pointers to
+ *                      RKH events.
+ *  \param[in] qsize    size of the storage event area [in number of entries].
+ *  \param[in] stks     starting address of the stack's memory area.
+ *  \param[in] stksize  size of stack memory area [in bytes].
  *
  *	\note
  *	Platform-dependent function. All RKH ports must be defined in the RKH
@@ -2254,30 +2179,10 @@ void rkh_tmr_tick(void);
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  *
- *	Example:
- *	\code
- *	void
- *	rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs,
- *						RKH_RQNE_T qsize, void *stks, rui32_t stksize )
- *	{
- *		( void )stks;
- *		( void )stksize;
- *
- *		rkh_rq_init( &sma->equeue, qs, qsize, sma );
- *		rkh_sma_register( sma );
- *		rkh_sma_init_hsm( sma );
- *		RKH_TR_SMA_ACT( sma );
- *	}
- *	\endcode
- *
- *  \param sma			pointer to previously created state machine
- *                      application.
- *  \param qs			base address of the event storage area. A message
- *                      storage area is declared as an array of pointers to
- *                      RKH events.
- *  \param qsize		size of the storage event area [in number of entries].
- *  \param stks			starting address of the stack's memory area.
- *  \param stksize		size of stack memory area [in bytes].
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Activates an active object
  */
 void rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs,
                       RKH_RQNE_T qsize, void *stks, rui32_t stksize);
@@ -2288,6 +2193,15 @@ void rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs,
  *  Send an event to a state machine application (SMA) as known as active
  *  object through a queue using the FIFO policy. A message is a pointer
  *  size variable and its use is application specific.
+ *
+ *  \param[in] sma      pointer to previously created state machine
+ *                      application.
+ *  \param[in] e		actual event sent to the state machine application.
+ *  \param[in] sender	pointer to the sender object. It is not necessarily a 
+ *                      pointer to an active object. In fact, if 
+ *                      RKH_SMA_POST_FIFO() is called from an interrupt or 
+ *                      other context, it can create a unique object just to 
+ *                      unambiguously identify the publisher of the event.
  *
  *  \note
  *  This function is internal to RKH and the user application should
@@ -2302,18 +2216,7 @@ void rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs,
  *	port file to a particular platform. However, only the ports to the
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
- *
- *  \param sma		pointer to previously created state machine
- *                  application.
- *  \param e		actual event sent to the state machine application.
- *  \param sender	pointer to the sender object. It is not
- *                  necessarily a pointer to an active object. In
- *                  fact, if RKH_SMA_POST_FIFO() is called from an
- *                  interrupt or other context, it can create a
- *                  unique object just to unambiguously identify the
- *                  publisher of the event.
  */
-
 void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
                        const void *const sender);
 #else
@@ -2326,6 +2229,16 @@ void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *  Send an event to a state machine application (SMA) as known as active
  *  object through a queue using the LIFO policy. A message is a pointer
  *  size variable and its use is application specific.
+ *
+ *  \param[in] sma		pointer to previously created state machine 
+ *                      application.
+ *  \param[in] e		actual event sent to the state machine application.
+ *  \param[in] sender	pointer to the sender object. It is not
+ *                      necessarily a pointer to an active object. In
+ *                      fact, if RKH_SMA_POST_FIFO() is called from an
+ *                      interrupt or other context, it can create a
+ *                      unique object just to unambiguously identify the
+ *                      publisher of the event.
  *
  *  \note
  *  This function is internal to RKH and the user application should
@@ -2340,15 +2253,6 @@ void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *	port file to a particular platform. However, only the ports to the
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
- *
- *  \param sma		pointer to previously created state machine application.
- *  \param e		actual event sent to the state machine application.
- *  \param sender	pointer to the sender object. It is not
- *                  necessarily a pointer to an active object. In
- *                  fact, if RKH_SMA_POST_FIFO() is called from an
- *                  interrupt or other context, it can create a
- *                  unique object just to unambiguously identify the
- *                  publisher of the event.
  */
 void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
                        const void *const sender);
@@ -2364,6 +2268,12 @@ void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *  The events received are pointer size variables and their use is
  *  application specific.
  *
+ *  \param[in] sma		pointer to previously created state machine 
+ *                      application.
+ *
+ *	\return     A non-NULL pointer indicates that a event pointer was 
+ *	            available, otherwise a NULL pointer.
+ *
  *	\note
  *	Platform-dependent function. All RKH ports must be defined in the RKH
  *	port file to a particular platform. However, only the ports to the
@@ -2372,12 +2282,7 @@ void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *	Depending on the underlying OS or kernel, if no event is present at the
  *	queue, the function will block the current thread until an event is
  *	received.
- *
- *	\return
- *  A non-NULL pointer indicates that a event pointer was available,
- *  otherwise a NULL pointer.
  */
-
 RKH_EVT_T *rkh_sma_get(RKH_SMA_T *sma);
 
 /**
@@ -2394,15 +2299,14 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *sma);
  *	when the service is invoked.
  *
  *  \note
- *  See RKH_SMAI_T structure for more information. This function is
- *  optional, thus it could be eliminated in compile-time with
+ *  See RKH_SMAI_T structure for more information. This function is optional, 
+ *  thus it could be eliminated in compile-time with 
  *  RKH_CFG_SMA_GET_INFO_EN = 0.
  *
- *  \param sma		pointer to previously created state machine application.
- *  \param psi		pointer to the buffer into which the performance
+ *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] psi  pointer to the buffer into which the performance
  *                  information will be copied by reference.
  */
-
 void rkh_sma_get_info(RKH_SMA_T *sma, RKH_SMAI_T *psi);
 
 /**
@@ -2410,13 +2314,12 @@ void rkh_sma_get_info(RKH_SMA_T *sma, RKH_SMAI_T *psi);
  *  Clear performance information for a particular state machine application
  *  (SMA) as known as active object.
  *
+ *  \param[in] sma  pointer to previously created state machine application.
+ *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_SMA_GET_INFO_EN = 0.
- *
- *  \param sma		pointer to previously created state machine application.
  */
-
 void rkh_sma_clear_info(RKH_SMA_T *sma);
 
 /**
@@ -2425,9 +2328,8 @@ void rkh_sma_clear_info(RKH_SMA_T *sma);
  *  the framework, which implies to store a pointer to the SMA in the priority
  *  table.
  *
- *  \param sma		pointer to previously created state machine application.
+ *  \param[in] sma  pointer to previously created state machine application.
  */
-
 void rkh_sma_register(RKH_SMA_T *sma);
 
 /**
@@ -2436,9 +2338,8 @@ void rkh_sma_register(RKH_SMA_T *sma);
  *	thus from the framework, by simply replacing the link to the SMA being
  *	deleted with a NULL pointer.
  *
- *  \param sma		pointer to previously created state machine application.
+ *  \param[in] sma  pointer to previously created state machine application.
  */
-
 void rkh_sma_unregister(RKH_SMA_T *sma);
 
 /**
@@ -2456,7 +2357,18 @@ void rkh_sma_unregister(RKH_SMA_T *sma);
  *  Later, the SMA might recall one event at a time from the
  *  event queue by means of rkh_fwk_recall() function.
  *
- *	Example:
+ *  \param[in] q    pointer to previously created queue.
+ *  \param[in] e    pointer to event.
+ *
+ *	\note
+ *	For memory efficiency and best performance the deferred event queue,
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *  An SMA can use multiple event queues to defer events of
+ *  different kinds.
+ *	The assertion inside it guarantee that operation is valid, so is not
+ *	necessary to check the value returned from it.
+ *
+ *  \usage
  *	\code
  *	static RKH_RQ_T qurc;
  *	static RKH_EVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
@@ -2471,19 +2383,7 @@ void rkh_sma_unregister(RKH_SMA_T *sma);
  *		rkh_fwk_defer( &qurc, pe );	// defer event
  *	}
  *	\endcode
- *
- *	\note
- *	For memory efficiency and best performance the deferred event queue,
- *	STORE ONLY POINTERS to events, not the whole event objects.
- *  An SMA can use multiple event queues to defer events of
- *  different kinds.
- *	The assertion inside it guarantee that operation is valid, so is not
- *	necessary to check the value returned from it.
- *
- *  \param q		pointer to previously created queue.
- *  \param e		pointer to event.
  */
-
 void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
 
 /**
@@ -2496,7 +2396,14 @@ void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
  *  queue \a q and posted (LIFO) to the event queue of the \a sma state
  *  machine application.
  *
- *	Example:
+ *  \note
+ *	For memory efficiency and best performance the destination event queue,
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *
+ *  \return     The pointer to the recalled event to the caller, or NULL if no
+ *              event has been recalled.
+ *
+ *  \usage
  *	\code
  *	void
  *	exit_rx_manager( const struct rkh_t *sma )
@@ -2505,15 +2412,7 @@ void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
  *	}
  *	\endcode
  *
- *  \note
- *	For memory efficiency and best performance the destination event queue,
- *	STORE ONLY POINTERS to events, not the whole event objects.
- *
- *  \returns
- *  The pointer to the recalled event to the caller, or NULL if no
- *  event has been recalled.
  */
-
 RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *sma, RKH_RQ_T *q);
 
 /**
@@ -2551,7 +2450,13 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *sma, RKH_RQ_T *q);
  *  automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
  *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
  *
- *	Example:
+ *  \param[in] sstart   storage start. Pointer to memory from which memory 
+ *                      blocks are allocated.
+ *  \param[in] ssize:	storage size. Size of the memory pool storage in bytes.
+ *  \param[in] esize	event size. This number determines the size of each 
+ *                      memory block in the pool.
+ *
+ *  \usage
  *	\code
  *	#define SIZEOF_EP0STO				64
  *	#define SIZEOF_EP0_BLOCK			sizeof( TOUT_T )
@@ -2588,36 +2493,28 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *sma, RKH_RQ_T *q);
  *	static rui8_t	ep0sto[ SIZEOF_EP0STO ],
  *					ep1sto[ SIZEOF_EP1STO ],
  *					ep2sto[ SIZEOF_EP2STO ];
- *
  *  ...
  *  rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
  *  rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
  *  rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
  *  ...
  *	\endcode
- *
- *  \param sstart	storage start. Pointer to memory from which memory blocks
- *                  are allocated.
- *  \param ssize:	storage size. Size of the memory pool storage in bytes.
- *  \param esize	event size. This number determines the size of each memory
- *                  block in the pool.
  */
-
 void rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize);
 
 /**
  *  \brief
  *  Allocates an event from the previously created event pool.
  *
+ *  \param[in] esize    size of event [in bytes].
+ *  \param[in] e        event signal.
+ *
  *  \note
- *  This function is internal to RKH and the user application should
- *  not call it. Instead, use #RKH_ALLOC_EVT() macro.
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use #RKH_ALLOC_EVT() macro.
  *
  *  \sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(),
  *  rkh_set_static_event() and rkh_fwk_gc().
- *
- *  \param esize	size of event [in bytes].
- *  \param e		event signal.
  */
 
 RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e);
@@ -2626,6 +2523,8 @@ RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e);
 /**
  *  \brief
  *  Recycle a dynamic event.
+ *
+ *  \param[in] e    event signal.
  */
 void rkh_fwk_gc(RKH_EVT_T *e);
 #endif
@@ -2634,8 +2533,9 @@ void rkh_fwk_gc(RKH_EVT_T *e);
 /**
  *  \brief
  *  Reserve the dynamic event to be recycled.
+ *
+ *  \param[in] e    event signal.
  */
-
 void rkh_fwk_reserve(RKH_EVT_T *e);
 #endif
 
@@ -2644,15 +2544,14 @@ void rkh_fwk_reserve(RKH_EVT_T *e);
  *  When dispatching an event to a SMA the dispatch hook function will be
  *  executed.
  *
+ *  \param[in] sma  pointer to previously created state machine application.
+ *	\param[in] e    pointer to arrived event.
+ *
  *	\note
  *	The dispatch hook will only get called if RKH_CFG_HOOK_DISPATCH_EN is
  *	set to 1 within rkhcfg.h file. When this is set the application must
  *	provide the hook function.
- *
- *  \param sma		pointer to previously created state machine application.
- *	\param e		pointer to arrived event.
  */
-
 void rkh_hook_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
 
 /**
@@ -2660,14 +2559,13 @@ void rkh_hook_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
  *  When the producer of an event directly posts the event to the event queue
  *  of the consumer SMA the rkh_hook_signal() will optionally called.
  *
+ *	\param[in] e    pointer to arrived event.
+ *
  *	\note
  *	The signal hook will only get called if RKH_CFG_HOOK_SIGNAL_EN is set
  *	to 1 within rkhcfg.h file. When this is set the application must provide
  *	the hook function.
- *
- *	\param e		pointer to arrived event.
  */
-
 void rkh_hook_signal(RKH_EVT_T *e);
 
 /**
@@ -2676,14 +2574,14 @@ void rkh_hook_signal(RKH_EVT_T *e);
  *  the assigned event is directly posted into the state machine application
  *  queue.
  *
+ *	\param[in] t    pointer to previously allocated timer structure.
+ *					A cast to RKH_TMR_T data type must be internally
+ *					implemented to get the appropiated timer control block.
+ *
  *	\note
  *	The timeout hook will only get called if RKH_CFG_HOOK_TIMEOUT_EN is set
  *	to 1 within rkhcfg.h file. When this is set the application must provide
  *	the hook function.
- *
- *	\param t		pointer to previously allocated timer structure.
- *					A cast to RKH_TMR_T data type must be internally
- *					implemented to get the appropiated timer control block.
  */
 
 void rkh_hook_timeout(const void *t);
@@ -2712,7 +2610,6 @@ void rkh_hook_start(void);
  *	within rkhcfg.h file. When this is set the application must provide the
  *	hook function.
  */
-
 void rkh_hook_exit(void);
 
 /**
@@ -2730,8 +2627,7 @@ void rkh_hook_exit(void);
  *	an event. This function must internally unlock interrupts, ideally
  *	atomically with putting the CPU to the power-saving mode.
  *
- *	Example:
- *
+ *  \usage
  *	\code
  *	void
  *	rkh_hook_idle( void )       // NOTE: entered with interrupts DISABLED
@@ -2762,16 +2658,14 @@ void rkh_hook_idle(void);
  *	set to 1 within rkhcfg.h file. When this is set the application must
  *	provide the hook function.
  */
-
 void rkh_hook_timetick(void);
 
 /**
  *  \brief
  *  Inits a previously created state machine calling its initializing action.
  *
- *  \param sma		pointer to previously created state machine application.
+ *  \param[in] sma  pointer to previously created state machine application.
  */
-
 void rkh_sma_init_hsm(RKH_SMA_T *sma);
 
 /**
@@ -2822,50 +2716,48 @@ void rkh_sma_init_hsm(RKH_SMA_T *sma);
  *      event is completed, control returns to the dispatcher and new events
  *      can be dispatched.
  *
- *  \param sma		pointer to previously created state machine application.
- *	\param e		pointer to arrived event. It's used as state-machine's
+ *  \param[in] sma  pointer to previously created state machine application.
+ *	\param[in] e	pointer to arrived event. It's used as state-machine's
  *					input alphabet.
  *
- *	\return
- *	Result RKH_RCODE_T code.
+ *	\return         Result RKH_RCODE_T code.
  */
-
 ruint rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
 
 #if defined(RKH_HISTORY_ENABLED)
-    /**
-     *  \brief
-     *  Erase the history of a state. It can be a shallow or deep history.
-     *
-     *  \param h        pointer to history pseudostate.
-     */
-    void rkh_fwk_clear_history(RKHROM RKH_SHIST_T *h);
+/**
+ *  \brief
+ *  Erase the history of a state. It can be a shallow or deep history.
+ *
+ *  \param[in] h    pointer to history pseudostate.
+ */
+void rkh_fwk_clear_history(RKHROM RKH_SHIST_T *h);
 #else
-    #define rkh_fwk_clear_history(h)          (void)0
+#define rkh_fwk_clear_history(h)          (void)0
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     * \brief
-     * Open the tracing session.
-     */
-    void rkh_trc_open(void);
+/**
+ * \brief
+ * Open the tracing session.
+ */
+void rkh_trc_open(void);
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	Close the tracing session.
-     */
-    void rkh_trc_close(void);
+/**
+ *  \brief
+ *	Close the tracing session.
+ */
+void rkh_trc_close(void);
 #endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	Platform-dependent macro flushing the trace stream.
-     */
-    void rkh_trc_flush(void);
+/**
+ *  \brief
+ *	Platform-dependent macro flushing the trace stream.
+ */
+void rkh_trc_flush(void);
 #endif
 
 /**
@@ -2876,8 +2768,11 @@ ruint rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
  *	The data returned is defined in compile-time by means of
  *	RKH_SIZEOF_TSTAMP.
  *
- *	Example:
+ *  \return     Timestamp (RKH_TS_T data type).
  *
+ *  \sa \b rkhtrc.h file.
+ *
+ *  \usage
  *	\code
  *	RKH_TS_T
  *	rkh_trc_getts( void )
@@ -2885,11 +2780,6 @@ ruint rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
  *		return ( RKH_TS_T )clock();
  *	}
  *	\endcode
- *
- *  \returns
- *  Timestamp (RKH_TS_T data type).
- *
- *  \sa \b rkhtrc.h file.
  */
 RKH_TS_T rkh_trc_getts(void);
 

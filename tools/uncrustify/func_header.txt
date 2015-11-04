@@ -8,5 +8,10 @@
  *  \param[out]     <parameter-name> {parameter description}
  *  \param[in,out]  <parameter-name> {parameter description}
  *
- *  \retval         <return value> {description}
+ *  \retval         <return value> {description} or \return {description}
+ *
+ *  \note
+ *
+ *  \usage
+ *  \example or \snippet or \include
  */
