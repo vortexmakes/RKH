@@ -69,7 +69,7 @@ extern "C" {
  *  \brief
  *	This macro evaluates to true if all SMAs are not ready to run.
  *
- *  \param rg		ready group.
+ *  \param[in] rg		ready group.
  */
 #define RKH_RDY_IS_EMPTY(rg) \
     ((rg).grp == 0)
@@ -78,7 +78,7 @@ extern "C" {
  *  \brief
  *	This macro evaluates to true if any SMA is ready to run.
  *
- *  \param rg		ready group.
+ *  \param[in] rg		ready group.
  */
 #define RKH_RDY_ISNOT_EMPTY(rg) \
     ((rg).grp != 0)
@@ -92,8 +92,8 @@ extern "C" {
  *  used to determine the index into rkhrg.tbl[]. Note that rkh_maptbl[] is
  *  a table in ROM, used to equate an index from 0 to 7 to a bit mask.
  *
- *  \param rg		ready group.
- *  \param p		number of SMA's priotity.
+ *  \param[in] rg		ready group.
+ *  \param[in] p		number of SMA's priotity.
  */
 #define RKH_RDY_INSERT(rg, p) \
     (rg).grp |= rkh_maptbl[(p) >> 3]; \
@@ -107,8 +107,8 @@ extern "C" {
  *  rkhrg.grp only if all SMAs in a group are not ready to run, i.e. all bits
  *  in rkhrg.tbl[prio >> 3] are 0.
  *
- *  \param rg		ready group.
- *  \param p		number of SMA's priotity.
+ *  \param[in] rg		ready group.
+ *  \param[in] p		number of SMA's priotity.
  */
 #define RKH_RDY_REM(rg, p) \
     if (((rg).tbl[(p) >> 3] &= ~rkh_maptbl[(p) & 0x07]) == 0) \
@@ -125,8 +125,8 @@ extern "C" {
  *	has the highest priority. Using this byte to index the table returns the
  *	bit position of the highest priority bit set, a number between 0 and 7.
  *
- *  \param rg		ready group.
- *  \param p		the found highest priority is assigned to \a p.
+ *  \param[in] rg		ready group.
+ *  \param[in] p		the found highest priority is assigned to \a p.
  */
 #define RKH_RDY_FIND_HIGHEST(rg, p) \
     (p) = rkh_unmaptbl[(rg).grp]; \

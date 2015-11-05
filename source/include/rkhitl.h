@@ -123,6 +123,11 @@ extern "C" {
  *  useful when needs to compare the current version (#RKH_VERSION_CODE) and
  *  a known checkpoint version at compile-time.
  *
+ *  \param[in] a    major revision
+ *  \param[in] b    minor revision
+ *  \param[in] c    release number
+ *
+ *  \usage
  *  \code
  *  #if RKH_VERSION_CODE <= RKH_VERSION(1, 2, 03)
  *  ...
@@ -130,10 +135,6 @@ extern "C" {
  *  ...
  *  #endif
  *  \endcode
- *
- *  \param a		major revision
- *  \param b		minor revision
- *  \param c		release number
  */
 #define RKH_VERSION(a, b, c) \
     (((((a) <<   12) & 0xF000) | \
@@ -1976,7 +1977,7 @@ extern "C" {
      *  \brief
      *  Encapsulates the mechanism of blocking the event queue.
      *
-     *  \param sma		pointer to SMA.
+     *  \param[in] sma		pointer to SMA.
      */
     #define RKH_SMA_BLOCK(sma)
 
@@ -1986,8 +1987,8 @@ extern "C" {
      *  used event queue. Thus, the SMA is inserted in the ready list as
      *  ready-to-dispatch.
      *
-     *  \param rg		ready group.
-     *  \param sma		pointer to SMA.
+     *  \param[in] rg		ready group.
+     *  \param[in] sma		pointer to SMA.
      */
     #define RKH_SMA_READY(rg, sma)
 
@@ -1996,8 +1997,8 @@ extern "C" {
      *  Informs the underlying kernel that the SMA event queue is becoming
      *  empty. Thus, the SMA is removed from the ready list.
      *
-     *  \param rg		ready group.
-     *  \param sma		pointer to SMA.
+     *  \param[in] rg		ready group.
+     *  \param[in] sma		pointer to SMA.
      */
     #define RKH_SMA_UNREADY(rg, sma)
 
@@ -2020,12 +2021,14 @@ extern "C" {
      *  Platform-dependent macro. Typically, must be define it in the
      *  specific port file (rkhport.h).
      *
-     *  \param mp		pointer to previously allocated memory pool structure.
-     *  \param sstart	storage start. Pointer to memory from which memory
-     *                  blocks are allocated.
-     *  \param ssize:	storage size. Size of the memory pool storage in bytes.
-     *  \param esize	event size. This number determines the size of each
-     *                  memory block in the pool.
+     *  \param[in] mp	    pointer to previously allocated memory pool 
+     *                      structure.
+     *  \param[in] sstart	storage start. Pointer to memory from which 
+     *                      memory blocks are allocated.
+     *  \param[in] ssize:	storage size. Size of the memory pool storage in 
+     *                      bytes.
+     *  \param[in] esize	event size. This number determines the size of each
+     *                      memory block in the pool.
      */
     #define RKH_DYNE_INIT(mp, sstart, ssize, esize)
 
@@ -2036,7 +2039,8 @@ extern "C" {
      *  Platform-dependent macro. Typically, must be define it in the
      *  specific port file (rkhport.h).
      *
-     *  \param mp		pointer to previously allocated memory pool structure.
+     *  \param[in] mp		pointer to previously allocated memory pool 
+     *                      structure.
      */
     #define RKH_DYNE_GET_ESIZE(mp)
 
@@ -2048,9 +2052,10 @@ extern "C" {
      *  Platform-dependent macro. Typically, must be define it in the
      *  specific port file (rkhport.h).
      *
-     *  \param mp		pointer to previously allocated memory pool structure.
-     *  \param e		pointer to a new event or NULL if the pool
-     *                  runs out of blocks.
+     *  \param[in] mp		pointer to previously allocated memory pool 
+     *                      structure.
+     *  \param[in] e		pointer to a new event or NULL if the pool runs 
+     *                      out of blocks.
      */
     #define RKH_DYNE_GET(mp, e)
 
@@ -2062,8 +2067,9 @@ extern "C" {
      *  Platform-dependent macro. Typically, must be define it in the
      *  specific port file (rkhport.h).
      *
-     *  \param mp		pointer to previously allocated memory pool structure.
-     *  \param e		pointer to the returned event.
+     *  \param[in] mp		pointer to previously allocated memory pool 
+     *                      structure.
+     *  \param[in] e		pointer to the returned event.
      */
     #define RKH_DYNE_PUT(mp, e)
 #endif

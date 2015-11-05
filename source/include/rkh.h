@@ -79,8 +79,8 @@ extern "C" {
  *	This macro appears at the top of each C/C++ source file defining
  *	the version string for that file (module).
  *
- *  \param __fname		file (module) name.
- *  \param __version    file (module) version.
+ *  \param[in] __fname		file (module) name.
+ *  \param[in] __version    file (module) version.
  */
 #define RKH_MODULE_VERSION(__fname, __version) \
     static RKHROM char *const m_version = # __version;
@@ -97,8 +97,8 @@ extern "C" {
  *	This macro appears at the top of each C/C++ source file defining
  *	the description string for that file (module).
  *
- *  \param __fname		file (module) name.
- *  \param __desc	    file (module) description.
+ *  \param[in] __fname		file (module) name.
+ *  \param[in] __desc	    file (module) description.
  */
 #define RKH_MODULE_DESC(__fname, __desc) \
     static RKHROM char *const m_desc = __desc;
@@ -265,24 +265,23 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *	This macro creates a composite state.
  *
+ *  \param[in] name     state name. Represents a composite state structure.
+ *  \param[in] en       pointer to state entry action. This argument is
+ *                      optional, thus it could be declared as NULL.
+ *                      The RKH implementation preserves the transition sequence
+ *                      imposed by Harel's Statechart and UML.
+ *  \param[in] ex	    pointer to state exit action. This argument is
+ *                      optional, thus it could be declared as NULL.
+ *                      The RKH implementation preserves the transition sequence
+ *                      imposed by Harel's Statechart and UML.
+ *  \param[in] parent	pointer to parent state.
+ *  \param[in] defchild	pointer to default child state or pseudostate.
+ *  \param[in] history	pointer history pseudostate. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *
  *	\sa
  *	RKH_SCMP_T structure definition for more information.
- *
- *  \param name		state name. Represents a composite state structure.
- *  \param en		pointer to state entry action. This argument is
- *					optional, thus it could be declared as NULL.
- *					The RKH implementation preserves the transition sequence
- *					imposed by Harel's Statechart and UML.
- *  \param ex		pointer to state exit action. This argument is
- *					optional, thus it could be declared as NULL.
- *					The RKH implementation preserves the transition sequence
- *					imposed by Harel's Statechart and UML.
- *  \param parent	pointer to parent state.
- *  \param defchild	pointer to default child state or pseudostate.
- *  \param history	pointer history pseudostate. This argument is
- *					optional, thus it could be declared as NULL.
  */
-
 #define RKH_CREATE_COMP_STATE(name, en, ex, parent, defchild, history) \
                                                                        \
     extern RKHROM RKH_TR_T name ## _trtbl[]; \
@@ -298,20 +297,17 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *	This macro creates a basic state.
  *
- *	\sa
- *	RKH_SBSC_T structure definition for more information.
- *
- *  \param name		state name. Represents a basic state structure.
- *  \param en		pointer to state entry action. This argument is
+ *  \param[in] name	state name. Represents a basic state structure.
+ *  \param[in] en	pointer to state entry action. This argument is
  *					optional, thus it could be declared as NULL.
  *					The RKH implementation preserves the transition sequence
  *					imposed by Harel's Statechart and UML.
- *  \param ex		pointer to state exit action. This argument is
+ *  \param[in] ex	pointer to state exit action. This argument is
  *					optional, thus it could be declared as NULL.
  *					The RKH implementation preserves the transition sequence
  *					imposed by Harel's Statechart and UML.
- *  \param parent	pointer to parent state.
- *  \param prepro	pointer to input preprocessor function. This function
+ *  \param[in] parent	pointer to parent state.
+ *  \param[in] prepro	pointer to input preprocessor function. This function
  *                  could be called "Moore" action.
  *                  This argument is optional, thus it could be declared
  *                  as NULL.
@@ -321,7 +317,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *					is very simply by literally embedding the base type,
  *					RKH_PPRO_T in this case, as the first member of the
  *					derived structure. See \a prepro member of RKH_SBSC_T
- *					structure for more information. Example:
+ *					structure for more information. \usage
  *                  \code
  *					static RKH_SIG_T
  *					preprocessor( RKH_EVT_T *pe )
@@ -344,8 +340,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *											NULL, &S2,
  *											(RKH_PPRO_T*)&option );
  *					\endcode
+ *
+ *	\sa
+ *	RKH_SBSC_T structure definition for more information.
  */
-
 #define RKH_CREATE_BASIC_STATE(name, en, ex, parent, prepro) \
                                                              \
     extern RKHROM RKH_TR_T name ## _trtbl[]; \
@@ -375,13 +373,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  other transitions are false.) Static conditional branches are distinct
  *  from dynamic conditional branches that are realized by choice vertices.
  *
+ *  \param[in] name     pseudostate name. Represents a conditional pseudostate
+ *                      structure.
+ *
  *	\sa
  *	RKH_SCOND_T structure definition for more information.
- *
- *  \param name		pseudostate name. Represents a conditional pseudostate
- *                  structure.
  */
-
 #define RKH_CREATE_COND_STATE(name) \
                                     \
     extern RKHROM RKH_TR_T name ## _trtbl[]; \
@@ -410,13 +407,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	may contain actions. A branch can enter another choice connector, thus
  *	providing for the nesting of branches.
  *
+ *  \param[in] name		pseudostate name. Represents a choice pseudostate
+ *                      structure.
+ *
  *	\sa
  *	RKH_SCHOICE_T structure definition for more information.
- *
- *  \param name		pseudostate name. Represents a choice pseudostate
- *                  structure.
  */
-
 #define RKH_CREATE_CHOICE_STATE(name) \
                                       \
     extern RKHROM RKH_TR_T name ## _trtbl[]; \
@@ -446,7 +442,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
  */
-
 #define RKH_CREATE_DEEP_HISTORY_STATE(name, parent) \
                                                     \
     static RKHROM RKH_ST_T * ram ## name; \
@@ -478,7 +473,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
  */
-
 #define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent) \
                                                        \
     static RKHROM RKH_ST_T * ram ## name; \
@@ -513,6 +507,22 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  repetitive parts because the same state machine can be referenced from
  *  more than one submachine state.
  *
+ *  \param[in] name     submachine state name. Represents a submachine state
+ *                      structure.
+ *  \param[in] en		pointer to state entry action. This argument is
+ *                      optional, thus it could be declared as NULL.
+ *                      The RKH implementation preserves the transition sequence
+ *                      imposed by Harel's Statechart and UML.
+ *  \param[in] ex       pointer to state exit action. This argument is
+ *                      optional, thus it could be declared as NULL.
+ *                      The RKH implementation preserves the transition sequence
+ *                      imposed by Harel's Statechart and UML.
+ *  \param[in] parent	pointer to parent state.
+ *  \param[in] sbm		pointer to referenced submachine state machine.
+ *
+ *	\sa
+ *	RKH_SSBM_T structure definition for more information.
+ *
  *	\code
  *	RKH_CREATE_SUBMACHINE_STATE(    adquire,		// state name
  *									start_adquire,  // entry action
@@ -520,24 +530,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *									&processing,    // parent state
  *									&herror );		// referenced submachine
  *	\endcode
- *
- *	\sa
- *	RKH_SSBM_T structure definition for more information.
- *
- *  \param name		submachine state name. Represents a submachine state
- *                  structure.
- *  \param en		pointer to state entry action. This argument is
- *					optional, thus it could be declared as NULL.
- *					The RKH implementation preserves the transition sequence
- *					imposed by Harel's Statechart and UML.
- *  \param ex		pointer to state exit action. This argument is
- *					optional, thus it could be declared as NULL.
- *					The RKH implementation preserves the transition sequence
- *					imposed by Harel's Statechart and UML.
- *  \param parent	pointer to parent state.
- *  \param sbm		pointer to referenced submachine state machine.
  */
-
 #define RKH_CREATE_SUBMACHINE_STATE(name, en, ex, parent, sbm) \
                                                                \
     extern RKHROM RKH_EXPCN_T name ## _exptbl[]; \
@@ -553,6 +546,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 /**
  *  \brief
  *	This macro creates a exit point connection point reference table.
+ *
+ *  \param[in] name		submachine state name
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ *
+ *	\usage
  *	This table have the general structure shown below:
  *	\code
  *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
@@ -566,16 +566,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_END_EX_CNNPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point
  *	macros, RKH_EX_CNNPNT().
- *
- *	\note
- *	This macro is not terminated with the semicolon.
- *
- *  \param name		submachine state name.
  */
-
 #define RKH_CREATE_EX_CNNPNT_TABLE(name) \
     RKHROM RKH_EXPCN_T name ## _exptbl[]= \
     {
+
 /**
  *  \brief
  *	This macro creates an exit point connection point reference.
@@ -592,6 +587,16 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	A connection point reference to an exit point has the same notation as
  *	an exit point pseudostate.
  *
+ *  \param[in] name     exit point connection point reference name.
+ *  \param[in] expnt	referenced exit point.
+ *  \param[in] act		pointer to transition action function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] ts		pointer to target state.
+ *
+ *	\sa
+ *	RKH_EXPCN_T structure definition for more information.
+ *
+ *  \usage
  *  \code
  *	// --- exit point pseudostates of SB submachine ---
  *	RKH_CREATE_REF_EXPNT(   EXPNT1,
@@ -607,27 +612,19 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
- *
- *	\sa
- *	RKH_EXPCN_T structure definition for more information.
- *
- *	\code
- *	\endcode
- *
- *  \param name		exit point connection point reference name.
- *  \param expnt	referenced exit point.
- *  \param act		pointer to transition action function. This argument is
- *					optional, thus it could be declared as NULL.
- *  \param ts		pointer to target state.
  */
-
 #define RKH_EX_CNNPNT(name, expnt, act, ts) \
     {act, (RKHROM struct RKH_ST_T *)ts}
 
 /**
  *  \brief
- *	This macro is used to terminate a exit point connection reference
- *	table. This table have the general structure shown below:
+ *	This macro is used to terminate a exit point connection reference table.
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ *
+ *	\usage
+ *	This table have the general structure shown below:
  *	\code
  *	RKH_CREATE_EX_CNNPNT_TABLE( S2 )
  *		RKH_EX_CNNPNT( EX1S2, &EXPNT1, NULL, &S1 ),
@@ -640,9 +637,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_END_EX_CNNPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point
  *	macros, RKH_EX_CNNPNT().
- *
- *	\note
- *	This macro is not terminated with the semicolon.
  */
 
 #define RKH_END_EX_CNNPNT_TABLE     };
@@ -662,15 +656,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	A connection point reference to an entry point has the same notation as
  *	an entry point pseudostate.
  *
+ *  \param[in] name		entry point connection point reference name.
+ *  \param[in] enpnt	referenced entry point.
+ *  \param[in] subm		pointer to submachine state.
+ *
  *	\sa
  *	RKH_SENP_T structure definition for more information.
- *
- *	\code
- *	\endcode
- *
- *  \param name		entry point connection point reference name.
- *  \param enpnt	referenced entry point.
- *  \param subm		pointer to submachine state.
  */
 
 #define RKH_EN_CNNPNT(name, enpnt, subm) \
@@ -686,21 +677,21 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	This macro creates a submachine state machine, which is to be
  *	inserted in place of the (submachine) state.
  *
+ *  \param[in] name		submachine name. Represents a submachine structure.
+ *  \param[in] defchild	pointer to default child state.
+ *  \param[in] iact		pointer to initialization action (optional). The
+ *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      argument is optional, thus it could be declared as
+ *                      NULL.
+ *
+ *	\sa
+ *	RKH_RSM_T structure definition for more information.
+ *
  *  \code
  *  RKH_CREATE_REF_SUBMACHINE(  adquire,
  *                              &wait,
  *                              init_adquire );
  *  \endcode
- *
- *	\sa
- *	RKH_RSM_T structure definition for more information.
- *
- *  \param name		submachine name. Represents a submachine structure.
- *  \param defchild	pointer to default child state.
- *  \param iact		pointer to initialization action (optional). The
- *                  function prototype is defined as RKH_INIT_ACT_T. This
- *                  argument is optional, thus it could be declared as
- *                  NULL.
  */
 
 #define RKH_CREATE_REF_SUBMACHINE(name, defchild, iact) \
@@ -723,15 +714,22 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  entry and exit actions respectively in between the actions that are
  *  associated with the joined transitions.
  *
+ *  \param[in] name		entry point name.
+ *  \param[in] ix		index of exit point connection table. Note that each 
+ *                      row number matches with the index number of the exit 
+ *                      point pseudostate that it represent.
+ *  \param[in] subm		pointer to submachine state machine.
+ *
  *  \code
- *  RKH_CREATE_REF_EXPNT(   handled,
- *                          0,
- *                          &handle_error );
+ *  RKH_CREATE_REF_EXPNT(handled,
+ *                       0,
+ *                       &handle_error);
  *  \endcode
  *
  *	\sa
  *	RKH_SEXP_T structure definition for more information.
  *
+ *  \usage
  *	\code
  *	// --- exit point pseudostates of SB submachine ---
  *	RKH_CREATE_REF_EXPNT(   EXPNT1,
@@ -747,12 +745,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
- *
- *  \param name		entry point name.
- *  \param ix		index of exit point connection table. Note that each row
- *                  number matches with the index number of the exit point
- *                  pseudostate that it represent.
- *  \param subm		pointer to submachine state machine.
  */
 
 #define RKH_CREATE_REF_EXPNT(name, ix, subm) \
@@ -774,24 +766,21 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  entry and exit actions respectively in between the actions that are
  *  associated with the joined transitions.
  *
+ *  \param[in] name     entry point name.
+ *  \param[in] act		pointer to transition action function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] ts		pointer to target state.
+ *  \param[in] subm		pointer to submachine state machine.
+ *
+ *	\sa
+ *	RKH_ENPCN_T structure definition for more information.
+ *
  *  \code
  *  RKH_CREATE_REF_ENPNT(   show,
  *                          2,
  *                          &S2,
  *                          &handle_error );
  *  \endcode
- *
- *	\sa
- *	RKH_ENPCN_T structure definition for more information.
- *
- *	\code
- *	\endcode
- *
- *  \param name		entry point name.
- *  \param act		pointer to transition action function. This argument is
- *					optional, thus it could be declared as NULL.
- *  \param ts		pointer to target state.
- *  \param subm		pointer to submachine state machine.
  */
 
 #define RKH_CREATE_REF_ENPNT(name, act, ts, subm) \
@@ -803,8 +792,15 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
- *	This macro creates a state transition table. This table have the general
- *	structure shown below:
+ *	This macro creates a state transition table. 
+ *  
+ *  \param[in] name		state name.
+ *
+ *	\note
+ *	This macro is not terminated with the semicolon.
+ *  
+ *  \usage
+ *  This table have the general structure shown below:
  *	\code
  *	RKH_CREATE_TRANS_TABLE( state_name )		// transition table begin
  *		RKH_TRxx( ... )							// transition
@@ -817,20 +813,17 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  and ends with the macro RKH_END_TRANS_TABLE().
  *	As noted above, sandwiched between these macros are the transitions macros
  *	that actually represent behavior of state.
- *
- *	\note
- *	This macro is not terminated with the semicolon.
- *
- *  \param name		state name.
  */
 
 #define RKH_CREATE_TRANS_TABLE(name) \
                                      \
     RKHROM RKH_TR_T name ## _trtbl[]= \
     {
+
 /**
  *  \brief
  *	This macro defines a regular state transition.
+ *
  *	The general syntax of an expression labelling a transition in a
  *	statechart is \e "i[c]/a" where \e i is the input that triggers the
  *	transition, \e c is a condition that guards the transition from being
@@ -838,23 +831,23 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	is carried out if and when the transition is taken. All of these parts
  *	are optional.
  *
- *	Example:
+ *  \param[in] e	triggering event.
+ *  \param[in] g	pointer to guard function. This argument is
+ *					optional, thus it could be declared as NULL.
+ *  \param[in] a	pointer to action function. This argument is
+ *					optional, thus it could be declared as NULL.
+ *  \param[in] t	pointer to target state.
+ *
+ *	\sa
+ *	RKH_TR_T structure definition for more information.
+ *
+ *  \usage
  *	\code
  *	RKH_TRREG(  TOUT0,              // triggering event
  *				is_full,            // guard function
  *				drop_frame,         // action function
  *				&WAIT_SYNC )		// next state
  *	\endcode
- *
- *	\sa
- *	RKH_TR_T structure definition for more information.
- *
- *  \param e		triggering event.
- *  \param g		pointer to guard function. This argument is
- *					optional, thus it could be declared as NULL.
- *  \param a		pointer to action function. This argument is
- *					optional, thus it could be declared as NULL.
- *  \param t		pointer to target state.
  */
 
 #define RKH_TRREG(e, g, a, t) \
@@ -867,19 +860,19 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	to change of state and consequently never cause execution of exit
  *	actions, entry actions, or initial transitions.
  *
- *	Example:
+ *  \param[in] e    triggering event.
+ *  \param[in] g	pointer to guard function.
+ *  \param[in] a	pointer to action function.
+ *
+ *	\sa
+ *	RKH_TR_T structure definition for more information.
+ *
+ *  \usage
  *	\code
  *	RKH_TRINT(  RCV_DATA,           // triggering event
  *				is_sync,            // guard function
  *				store_data )        // action function
  *	\endcode
- *
- *	\sa
- *	RKH_TR_T structure definition for more information.
- *
- *  \param e		triggering event.
- *  \param g		pointer to guard function.
- *  \param a		pointer to action function.
  */
 
 #define RKH_TRINT(e, g, a)    {e, g, a, NULL}
@@ -908,8 +901,16 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #define RKH_END_TRANS_TABLE     {RKH_ANY, NULL, NULL, NULL}};
 
 /**
- *	This macro creates a branch table. This table have the general
- *	structure shown below:
+ *	This macro creates a branch table. 
+ *
+ *  \param[in] name		conditional pseudostate name.
+ *
+ *	\sa
+ *	This macro is not terminated with the semicolon.
+ *	Use rkh_else() when if all the guards on the other branches are false.
+ *
+ *  \usage
+ *	This table have the general structure shown below:
  *	\code
  *	RKH_CREATE_BRANCH_TABLE( C2 )
  *		RKH_BRANCH( is_power_ok,    enable_process,	&power		),
@@ -921,14 +922,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE()
  *  and ends with the macro RKH_END_BRANCH_TABLE().
  *  In RKH branches are defined by the macro RKH_BRANCH().
- *
- *	\sa
- *	This macro is not terminated with the semicolon.
- *	Use rkh_else() when if all the guards on the other branches are false.
- *
- *  \param name		conditional pseudostate name.
  */
-
 #define RKH_CREATE_BRANCH_TABLE(name) \
                                       \
     RKH_CREATE_TRANS_TABLE(name)
@@ -945,7 +939,18 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	being taken unless it is true, and \e a is an action that is carried out
  *	if and when the transition is taken. All of these parts are optional.
  *
- *	Example:
+ *  \param[in] g	branch guard function. Branches are labeled with guards
+ *                  that determine which one is to be actually taken. Use
+ *                  ELSE macro when if all the guards on the other branches
+ *                  are false.
+ *  \param[in] a	pointer to transition action. This argument is optional,
+ *                  thus it could be declared as NULL.
+ *  \param[in] t	pointer to target state.
+ *
+ *	\sa
+ *	RKH_TR_T structure definition for more information.
+ *
+ *  \usage
  *	\code
  *	RKH_CREATE_BRANCH_TABLE( C2 )
  *		RKH_BRANCH( is_power_ok,    enable_process,	&power		),
@@ -953,17 +958,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_BRANCH( ELSE,           abort,			&aborted	),
  *	RKH_END_BRANCH_TABLE
  *	\endcode
- *
- *	\sa
- *	RKH_TR_T structure definition for more information.
- *
- *  \param g		branch guard function. Branches are labeled with guards
- *                  that determine which one is to be actually taken. Use
- *                  ELSE macro when if all the guards on the other branches
- *                  are false.
- *  \param a		pointer to transition action. This argument is optional,
- *                  thus it could be declared as NULL.
- *  \param t		pointer to target state.
  */
 
 #define RKH_BRANCH(g, a, t)   {0, g, a, t}
@@ -1015,20 +1009,20 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  to completely hide the definition of the state machine structure and make
  *  it inaccessible to the rest of the application.
  *
+ *  \param[in] sma	pointer to previously created state machine application.
+ *
  *	\note
  *  Generally, this macro is used in the SMA's header file.
  *
- *  Example:
+ *  \sa
+ *  RKH_SMA_CREATE().
+ *
+ *  \usage
  *  \code
  *  //	my.h: state-machine application's header file
  *
  *  RKH_SMA_DCLR( my );
  *  \endcode
- *
- *  \sa
- *  RKH_SMA_CREATE().
- *
- *  \param sma		pointer to previously created state machine application.
  */
 
 #define RKH_SMA_DCLR(sma)     extern RKH_SMA_T * const sma
@@ -1061,10 +1055,18 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Declares a opaque pointer to previously created array of state machine
  *  applications SMA (a.k.a Active Object) to be used as a global object.
  *
+ *  \param[in] _arr		pointer to previously created array of state machine
+ *                      applications. To do that is recommended to use the 
+ *                      macro RKH_ARRAY_SMA_CREATE().
+ *  \param[in] _num		size of array [in active objects].
+ *
  *	\note
  *  Generally, this macro is used in the SMA's header file.
  *
- *  Example:
+ *  \sa
+ *  RKH_SMA_CREATE().
+ *
+ *  \usage
  *  \code
  *  //	cli.h: state-machine application's header file
  *  #define NUM_CLIENTS			4
@@ -1078,14 +1080,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
  *  \endcode
- *
- *  \sa
- *  RKH_SMA_CREATE().
- *
- *  \param _arr		pointer to previously created array of state machine
- *                  applications. To do that is recommended to use the macro
- *                  RKH_ARRAY_SMA_CREATE().
- *  \param _num		size of array [in active objects].
  */
 
 #define RKH_ARRAY_SMA_DCLR(_arr, _num) \
@@ -1096,7 +1090,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Declare and allocate an array of SMAs (a.k.a active objects) derived from
  *  RKH_SMA_T.
  *
- *  Example:
+ *  \param[in] _arr		name of SMA's array.
+ *  \param[in] _num		size of array [in active objects].
+ *
+ *  \usage
  *  \code
  *	// Defines SMAs (a.k.a Active Objects)
  *
@@ -1110,9 +1107,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		&cli0, &cli1, &cli2, &cli3
  *	};
  *  \endcode
- *
- *  \param _arr		name of SMA's array.
- *  \param _num		size of array [in active objects].
  */
 
 #define RKH_ARRAY_SMA_CREATE(_arr, _num) \
@@ -1122,7 +1116,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *  Retrieves the pointer to active object from a SMA's array.
  *
- *  Example:
+ *  \param[in] _arr		name of SMA's array.
+ *  \param[in] _ix		index (position in the array).
+ *
+ *  \usage
  *  \code
  *  #define NUM_CLIENTS				4
  *  #define CLI( _clino )			RKH_ARRAY_SMA( clis, _clino )
@@ -1141,9 +1138,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
  *  \endcode
- *
- *  \param _arr		name of SMA's array.
- *  \param _ix		index (position in the array).
  */
 
 #define RKH_ARRAY_SMA(_arr, _ix)      *_arr[_ix]
@@ -1152,23 +1146,23 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *  Declares a previously created SMA to be used as a global object.
  *
- *	Example:
- *	\code
- *	//	g_my: global pointer to SMA "my".
- *	RKH_DCLR_SM_GLOBAL( MYSM_T, my, g_my );
- *	\endcode
+ *  \param[in] sma_t		data type of SMA.
+ *  \param[in] sm			name of previously created SMA.
+ *  \param[in] gob			name of global object.
+ *
+ *  \note
+ *  Generally, this macro is used in the state-machine's module.
  *
  *	\sa
  *	RKH_SMA_T structure definition for more information. Also,
  *	\link RKH_EVT_T single inheritance in C \endlink, and
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  *
- *  \param sma_t		data type of SMA.
- *  \param sm			name of previously created SMA.
- *  \param gob			name of global object.
- *
- *  \note
- *  Generally, this macro is used in the state-machine's module.
+ *  \usage
+ *	\code
+ *	//	g_my: global pointer to SMA "my".
+ *	RKH_DCLR_SM_GLOBAL( MYSM_T, my, g_my );
+ *	\endcode
  */
 
 #define RKH_DCLR_SM_GLOBAL(sma_t, sm, gob) \
@@ -1178,7 +1172,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *  Declares a state transition table.
  *
- *  \param name			name of state (basic or composite) object.
+ *  \param[in] name			name of state (basic or composite) object.
  */
 
 #define RKH_DECLARE_TR_TBL(name) \
@@ -1362,7 +1356,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  because it provides the vital information for software tracing and
  *  avoids any overhead when the tracing is disabled.
  *
- *  \param _sender		pointer to the sender object. Typically
+ *  \param[in] _sender	pointer to the sender object. Typically
  *                      RKH_TIM_TICK() will be called from an interrupt,
  *                      in which case it would create a unique object
  *                      just to unambiguously identify the ISR as the
@@ -1385,7 +1379,20 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  function to active an active object, because it allows to
      *  completely hides the platform-specific code.
      *
-     *	Example:
+     *  \param[in] sma__	pointer to previously created state machine
+     *                      application.
+     *  \param[in] qsto__	base address of the event storage area. A message
+     *                      storage area is declared as an array of pointers
+     *                      to RKH events.
+     *  \param[in] qsto_size__  size of the storage event area [in number of
+     *                      entries].
+     *  \param[in] stk__	starting address of the stack's memory area.
+     *  \param[in] stk_size__   size of stack memory area [in bytes].
+     *
+     *	\sa
+     *	rkh_sma_activate().
+     *
+     *  \usage
      *	\code
      *	int
      *	main( int argc, char *argv[] )
@@ -1396,19 +1403,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *		return 0;
      *	}
      *	\endcode
-     *
-     *  \param sma__		pointer to previously created state machine
-     *                      application.
-     *  \param qsto__		base address of the event storage area. A message
-     *                      storage area is declared as an array of pointers
-     *                      to RKH events.
-     *  \param qsto_size__	size of the storage event area [in number of
-     *                      entries].
-     *  \param stk__		starting address of the stack's memory area.
-     *  \param stk_size__	size of stack memory area [in bytes].
-     *
-     *	\sa
-     *	rkh_sma_activate().
      */
     #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
          rkh_sma_activate(sma__, \
@@ -1464,7 +1458,30 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_SMA_T. Please note that the RKH_SMA_T member sm is defined as the
  *  FIRST member of the derived structure.
  *
- *	Example:
+ *  \param[in] sma_t	data type of the SMA. Could be derived from RKH_SMA_T.
+ *  \param[in] name		name of state machine application. Also, it represents 
+ *                      the top state of state diagram.
+ *  \param[in] prio		state machine application priority. A unique priority
+ *                      number must be assigned to each SMA from 0 to
+ *                      RKH_LOWEST_PRIO. The lower the number, the higher the
+ *                      priority.
+ *  \param[in] ppty		state machine properties. The available properties are
+ *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
+ *                      file.
+ *  \param[in] ist		pointer to initial state. This state could be defined
+ *                      either composite or basic (not pseudo-state).
+ *  \param[in] iact		pointer to initialization action (optional). The
+ *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      argument is optional, thus it could be declared as
+ *                      NULL.
+ *  \param[in] ievt		pointer to an event that will be passed to state
+ *                      machine application when it starts. Could be used to
+ *                      pass arguments to the state machine like an argc/argv.
+ *                      This argument is optional, thus it could be declared
+ *                      as NULL or eliminated in compile-time with
+ *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ *
+ *	\usage
  *	\code
  *	...within state-machine application's module
  *
@@ -1478,29 +1495,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  //	static instance of SMA object
  *	RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent );
  *	\endcode
- *
- *  \param sma_t		data type of the SMA. Could be derived from RKH_SMA_T.
- *  \param name			name of state machine application. Also, it
- *                      represents the top state of state diagram.
- *  \param prio			state machine application priority. A unique priority
- *                      number must be assigned to each SMA from 0 to
- *                      RKH_LOWEST_PRIO. The lower the number, the higher the
- *                      priority.
- *  \param ppty			state machine properties. The available properties are
- *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
- *                      file.
- *  \param ist			pointer to initial state. This state could be defined
- *                      either composite or basic (not pseudo-state).
- *  \param iact			pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
- *                      argument is optional, thus it could be declared as
- *                      NULL.
- *  \param ievt			pointer to an event that will be passed to state
- *                      machine application when it starts. Could be used to
- *                      pass arguments to the state machine like an argc/argv.
- *                      This argument is optional, thus it could be declared
- *                      as NULL or eliminated in compile-time with
- *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
  */
 
 #define RKH_SMA_CREATE(sma_t, name, prio, ppty, ist, iact, ievt) \
@@ -1519,10 +1513,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  provides the vital information for software tracing and avoids any
      *  overhead when the tracing is disabled.
      *
-     *  \param _sma			pointer to previously created state machine
+     *  \param[in] _sma		pointer to previously created state machine
      *                      application.
-     *  \param _e			actual event sent to the state machine application.
-     *  \param _sender		pointer to the sender object. It is not
+     *  \param[in] _e		actual event sent to the state machine application.
+     *  \param[in] _sender	pointer to the sender object. It is not
      *                      necessarily a pointer to an active object. In
      *                      fact, if RKH_SMA_POST_FIFO() is called from an
      *                      interrupt or other context, it can create a
@@ -1547,15 +1541,16 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  provides the vital information for software tracing and avoids any
      *  overhead when the tracing is disabled.
      *
-     *  \param _sma			pointer to previously created state machine
+     *  \param[in] _sma	    pointer to previously created state machine
      *                      application.
-     *  \param _e			actual event sent to the state machine application.
-     *  \param _sender		pointer to the sender object. It is not
+     *  \param[in] _e		actual event sent to the state machine application.
+     *  \param[in] _sender	pointer to the sender object. It is not
      *                      necessarily a pointer to an active object. In
      *                      fact, if RKH_SMA_POST_LIFO() is called from an
      *                      interrupt or other context, it can create a
      *                      unique object just to unambiguously identify the
      *                      publisher of the event.
+     *
      *	\sa
      *	rkh_sma_post_lifo().
      */
@@ -1576,14 +1571,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *	has a block size big enough to fit the requested event size. RKH
      *	can manage up to three event pools (e.g., small, medium, and large
      *	events, like shirt sizes). It returns a pointer to the event
-     *	already cast to the event type (et*). Here is an example of dynamic
-     *	event allocation with the macro RKH_ALLOC_EVT():
+     *	already cast to the event type (et*). 
      *
-     *	\code
-     *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
-     *	mye->y = mye->x = 0;
-     *	...
-     *	\endcode
+     *  \param[in] et		type of event
+     *  \param[in] e		event signal
      *
      *  \note
      *	The assertions inside rkh_fwk_ae() function guarantee that the
@@ -1591,8 +1582,15 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *	from rkh_fwk_ae(), unlike the value returned from malloc(), which
      *	you should check.
      *
-     *  \param et		type of event.
-     *  \param e		event signal.
+     *  \usage
+     *	Here is an example of dynamic event allocation with the macro 
+     *	RKH_ALLOC_EVT():
+     *
+     *	\code
+     *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
+     *	mye->y = mye->x = 0;
+     *	...
+     *	\endcode
      */
     #define RKH_ALLOC_EVT(et, e) \
         (et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
@@ -1617,6 +1615,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  allocated. The pool-of-origin information is stored in the
      *  e->pool member.
      *
+     *  \param[in] e		pointer to event to be potentially recycled.
+     *
      *  \note
      *  This function is internal to RKH and the user application should
      *  not call it. Instead, use #RKH_FWK_GC() macro.
@@ -1627,8 +1627,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  \note
      *  When setting RKH_CFG_FWK_DYN_EVT_EN = 0 the garbage collector has
      *  not effect, thus it's eliminated in compile-time.
-     *
-     *  \param e		pointer to event to be potentially recycled.
      */
     #define RKH_FWK_GC(e)             rkh_fwk_gc(e)
 #else
@@ -1645,7 +1643,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  Sometime later the SMA should manually release the event with
      *  RKH_FWK_GC().
      *
-     *  \param e		pointer to event to be reserved.
+     *  \param[in] e		pointer to event to be reserved.
      */
     #define RKH_FWK_RSV(e)            rkh_fwk_reserve(e)
 #else
@@ -1657,9 +1655,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	This macro initialize an event \a e with \a es signal and establishes
  *	it as one static event.
  *
+ *  \param[in] ev_obj	name of event structure (object).
+ *  \param[in] ev_sig	event signal. The RKH takes this value for triggering
+ *                      a state transition.
+ *
  *	\sa RKH_ROM_STATIC_EVENT() and RKH_STATIC_EVENT() macros.
  *
- *	Example:
+ *	\usage
  *	\code
  *	typedef struct
  *	{
@@ -1687,10 +1689,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		...
  *	}
  *	\endcode
- *
- *  \param ev_obj	name of event structure (object).
- *  \param ev_sig	event signal. The RKH takes this value for triggering
- *                  a state transition.
  */
 
 #define RKH_SET_STATIC_EVENT(ev_obj, ev_sig) \
@@ -1701,9 +1699,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	This macro declares and initializes the event structure \a ev_ob with
  *	\a ev_sig signal number and establishes it as one static event.
  *
+ *  \param[in] ev_obj	name of event structure (object).
+ *  \param[in] ev_sig	event signal. The RKH takes this value for triggering
+ *                      a state transition.
+ *
  *	\sa RKH_SET_STATIC_EVENT() and RKH_ROM_STATIC_EVENT() macros.
  *
- *	Example:
+ *	\usage
  *	\code
  *	...
  *	static RKH_STATIC_EVENT( ev_udrej, UPG_DIC_REJ );
@@ -1715,10 +1717,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		rkh_put_fifo( drpc, &ev_udrej );
  *	}
  *	\endcode
- *
- *  \param ev_obj	name of event structure (object).
- *  \param ev_sig	event signal. The RKH takes this value for triggering
- *                  a state transition.
  */
 #define RKH_STATIC_EVENT(ev_obj, ev_sig) \
     MK_EVT(ev_obj, ev_sig)
@@ -1728,12 +1726,16 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	This macro declares and initializes the event structure \a ev_ob with
  *	\a ev_sig signal number and establishes it as one static event.
  *
+ *  \param[in] ev_obj	name of event structure (object).
+ *  \param[in] ev_sig	event signal. The RKH takes this value for triggering
+ *                      a state transition.
+ *
  *	\sa RKH_SET_STATIC_EVENT() and RKH_STATIC_EVENT() macros.
  *
  *	\warning
  *	The created event object is explicitly placed at ROM.
  *
- *	Example:
+ *	\usage
  *	\code
  *	...
  *	static RKH_ROM_STATIC_EVENT( ev_timer, RPC_TIMER_RET );
@@ -1745,10 +1747,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		rkh_put_fifo( qphone, &ev_timer );
  *	}
  *	\endcode
- *
- *  \param ev_obj	name of event structure (object).
- *  \param ev_sig	event signal. The RKH takes this value for triggering
- *                  a state transition.
  */
 #define RKH_ROM_STATIC_EVENT(ev_obj, ev_sig) \
     MK_ROM_EVT(ev_obj, ev_sig)
@@ -1757,7 +1755,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *	Initializes the attibutes of a RKH's event object structure.
  *
- *	Example:
+ *	\usage
  *	\code
  *	typedef struct
  *	{
@@ -1788,7 +1786,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *  This macro retrieves the state ID of SMA.
  *
- *  \param sma		pointer to previously created state machine application.
+ *  \param[in] sma	pointer to previously created state machine application.
  *
  *  \return
  *  Id of current state.
@@ -1801,7 +1799,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  \brief
      *  This macro retrieves the name of an registered active object.
      *
-     *  \param ao		pointer to previously created active object.
+     *  \param[in] ao		pointer to previously created active object.
      *
      *  \return
      *  Name of active object.
@@ -1812,7 +1810,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  \brief
      *  This macro retrieves the name of a vertex.
      *
-     *  \param vx		pointer to previously created vertex object.
+     *  \param[in] vx		pointer to previously created vertex object.
      *
      *  \return
      *  Name of vertex object.
@@ -1829,8 +1827,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Retrieves the address of an registered active object (SMA) according to
  *  its priority.
  *
- *  \param _prio	registered active object (SMA) priority.
- *  \return			pointer to previously registered active object (SMA).
+ *  \param[in] _prio	registered active object (SMA) priority.
+ *  \return			    pointer to previously registered active object (SMA).
  */
 #define RKH_GET_SMA(_prio) \
     rkh_sptbl[(rui8_t)(_prio)]
@@ -1839,7 +1837,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *  Retrieves the priority number of an registered active object (SMA).
  *
- *  \param _ao		pointer to previously registered active object (SMA).
+ *  \param[in] _ao		pointer to previously registered active object (SMA).
  */
 #define RKH_GET_PRIO(_ao) \
     (rui8_t)((_ao)->romrkh->prio)
@@ -1855,7 +1853,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Perform downcast of a reference of a base class to one of its derived
  *  classes.
  *
- *  Example:
+ *  \usage
  *  \code
  *  void
  *  svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
@@ -1889,7 +1887,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  This function is internal to RKH and the user application
      *  should not call it. Instead, use #RKH_TRC_OPEN() macro.
      *
-     *	Example:
+     *	\usage
      *
      *	\code
      *	#define BSP_SIZEOF_TS		32u
@@ -1932,7 +1930,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  This function is internal to RKH and the user application
      *  should not call it. Instead, use #RKH_TRC_CLOSE() macro.
      *
-     *	Example:
+     *	\usage
      *
      *	\code
      *	void
@@ -1965,7 +1963,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  This function is internal to RKH and the user application should
      *  not call it. Instead, use #RKH_TRC_FLUSH() macro.
      *
-     *	Example:
+     *	\usage
      *	\code
      *  void
      *  rkh_trc_flush( void )
@@ -2014,12 +2012,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  RKH_TRC_SEND_CFG() macro from the application-specific
      *  rkh_trc_open() function.
      *
+     *  \param[in] ts_hz		clocks per second of trace timestamp.
+     *
      *  \note
      *	Frequently, this macro is called from the rkh_trc_open() function,
      *	which is provided by user application program, more specifically
      *	the board support package (BSP).
-     *
-     *  \param ts_hz		clocks per second of trace timestamp.
      *
      *  \sa RKH_TRC_OPEN() macro.
      */
@@ -2298,14 +2296,15 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *sma);
  *	This information provides a "snapshot" a particular instant in time, i.e.,
  *	when the service is invoked.
  *
+ *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] psi  pointer to the buffer into which the performance
+ *                  information will be copied by reference.
+ *
  *  \note
  *  See RKH_SMAI_T structure for more information. This function is optional, 
  *  thus it could be eliminated in compile-time with 
  *  RKH_CFG_SMA_GET_INFO_EN = 0.
  *
- *  \param[in] sma  pointer to previously created state machine application.
- *  \param[in] psi  pointer to the buffer into which the performance
- *                  information will be copied by reference.
  */
 void rkh_sma_get_info(RKH_SMA_T *sma, RKH_SMAI_T *psi);
 

@@ -237,14 +237,14 @@ extern "C" {
  *  \brief
  *  Test the state machine application (SMA) filter condition.
  *
- *	\note
- *  This macro is internal to RKH and the user application should not call
- *  it.
- *
- *  \param prio		SMA priority.
+ *  \param[in] prio		SMA priority.
  *
  *	\return
  *  '1' (RKH_TRUE) if the SMA is not filtered, otherwise '0' (RKH_FALSE).
+ *
+ *	\note
+ *  This macro is internal to RKH and the user application should not call
+ *  it.
  */
 #if RKH_CFG_TRC_RTFIL_SMA_EN == RKH_ENABLED
     #define RKH_TRC_AO_ISOFF(prio) \
@@ -257,14 +257,14 @@ extern "C" {
  *  \brief
  *  Test the event signal filter condition.
  *
- *	\note
- *  This macro is internal to RKH and the user application should not call
- *  it.
- *
- *  \param sig		event signal.
+ *  \param[in] sig		event signal.
  *
  *	\return
  *  '1' (RKH_TRUE) if the signal is not filtered, otherwise '0' (RKH_FALSE).
+ *
+ *	\note
+ *  This macro is internal to RKH and the user application should not call
+ *  it.
  */
 
 #if RKH_CFG_TRC_RTFIL_SIGNAL_EN == RKH_ENABLED
@@ -477,6 +477,10 @@ extern "C" {
      *  This pair of macros locks interrupts at the beginning and unlocks
      *  at the end of each record.
      *
+     *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+     *	\param[in] prio_	priority of active object.
+     *	\param[in] sig_		signal.
+     *
      *  \note
      *  Both arguments are used in the on/off filter.
      *  \note
@@ -484,10 +488,6 @@ extern "C" {
      *  disabled with the RKH_CFG_TRC_RTFIL_EN in the rkhcfg.h file.
      *  \note
      *  This macro always invokes the rkh_trc_begin() function.
-     *
-     *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
-     *	\param prio_	priority of active object.
-     *	\param sig_		signal.
      */
     #define RKH_TRC_BEGIN(eid_, prio_, sig_)  \
         if (rkh_trc_isoff_(eid_) \
@@ -535,9 +535,9 @@ extern "C" {
     /**
      *  Idem RKH_TRC_BEGIN() macro but without entering critical section.
      *
-     *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
-     *	\param prio_	priority of active object.
-     *	\param sig_		signal.
+     *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+     *	\param[in] prio_	priority of active object.
+     *	\param[in] sig_		signal.
      */
     #define RKH_TRC_BEGIN_NOCRIT(eid_, prio_, sig_) \
         if (rkh_trc_isoff_(eid_) \
@@ -550,8 +550,8 @@ extern "C" {
      *  Idem RKH_TRC_BEGIN_WOAO() macro but without entering critical
      *  section.
      *
-     *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
-     *	\param sig_		signal.
+     *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+     *	\param[in] sig_		signal.
      */
     #define RKH_TRC_BEGIN_WOAO_NOCRIT(eid_, sig_) \
         if (rkh_trc_isoff_(eid_) \
@@ -563,8 +563,8 @@ extern "C" {
      *  Idem RKH_TRC_BEGIN_WOSIG() macro but without entering critical
      *  section.
      *
-     *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
-     *	\param prio_	priority of active object.
+     *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+     *	\param[in] prio_	priority of active object.
      */
     #define RKH_TRC_BEGIN_WOSIG_NOCRIT(eid_, prio_) \
         if (rkh_trc_isoff_(eid_) \
@@ -576,7 +576,7 @@ extern "C" {
      *  Idem RKH_TRC_BEGIN_WOAOSIG() macro but without entering critical
      *  section.
      *
-     *	\param eid_		is the trace event ID (RKH_TRC_EVENTS).
+     *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
      */
     #define RKH_TRC_BEGIN_WOAOSIG_NOCRIT(eid_) \
         if (rkh_trc_isoff_(eid_)) \
@@ -3156,12 +3156,7 @@ rui8_t *rkh_trc_get(void);
  *  of the data block that the caller can accept.
  *	Frequently, this function is used by the called trace analyzer.
  *
- *  \note
- *  The data is stored in a single ring buffer, called trace stream. In this
- *	manner the recorder always holds the most recent history.
- *  rkh_trc_get_block() is NOT protected with a critical section.
- *
- *  \param nget		when this function is invoked \a nget is used as an input
+ *  \param[in] nget	when this function is invoked \a nget is used as an input
  *                  to provide the maximum size of the data block to be
  *                  retrieved. Also, it is used as an output retrieving the
  *                  size of block.
@@ -3172,6 +3167,11 @@ rui8_t *rkh_trc_get(void);
  *  differs from the \a nget parameter, the end-of-stream was reached. If
  *  the trace stream is empty, the function returns NULL and the content
  *  pointed by \a nget is set to zero.
+ *
+ *  \note
+ *  The data is stored in a single ring buffer, called trace stream. In this
+ *	manner the recorder always holds the most recent history.
+ *  rkh_trc_get_block() is NOT protected with a critical section.
  */
 rui8_t *rkh_trc_get_block(TRCQTY_T *nget);
 
@@ -3179,7 +3179,7 @@ rui8_t *rkh_trc_get_block(TRCQTY_T *nget);
  *  \brief
  *  Put a data byte into the trace stream.
  *
- *  \param b		data to be written in the trace stream.
+ *  \param[in] b	data to be written in the trace stream.
  *
  *  \note
  *  The data is stored in a single ring buffer, called trace stream. In this
@@ -3205,8 +3205,15 @@ void rkh_trc_put(rui8_t b);
  *	that can use it to reduce the amount of data to be processed. The
  *	available groups are enumerated in #RKH_TRC_GROUPS.
  *
- *  Example:
+ *  \param[in] ctrl	filter option, the available options are FILTER_ON or
+ *                  FILTER_OFF.
+ *  \param[in] grp	trace group. The available groups are enumerated in
+ *                  RKH_TRC_GROUPS.
+ *  \param[in] mode	filter mode. ECHANGE indicates that the all event's group
+ *                  are accordingly changed as filter option value, otherwise
+ *                  EUNCHANGE.
  *
+ *  \usage
  *  \code
  *  void
  *  some_function( ... )
@@ -3221,14 +3228,6 @@ void rkh_trc_put(rui8_t b);
  *  This function is internal to RKH and the user application should not call
  *  it. Please use RKH_FILTER_ON_GROUP(), or RKH_FILTER_OFF_GROUP() macros
  *  instead.
- *
- *  \param ctrl		filter option, the available options are FILTER_ON or
- *                  FILTER_OFF.
- *  \param grp		trace group. The available groups are enumerated in
- *                  RKH_TRC_GROUPS.
- *  \param mode		filter mode. ECHANGE indicates that the all event's group
- *                  are accordingly changed as filter option value, otherwise
- *                  EUNCHANGE.
  */
 void rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode);
 
@@ -3249,8 +3248,12 @@ void rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode);
  *	that can use it to reduce the amount of data to be processed. The
  *	available events are enumerated in #RKH_TRC_EVENTS.
  *
- *  Example:
+ *  \param[in] ctrl		filter option, the available options are FILTER_ON or
+ *                      FILTER_OFF.
+ *  \param[in] evt		trace event. The available events are enumerated in
+ *                      RKH_TRC_EVENTS.
  *
+ *  \usage
  *  \code
  *  void
  *  some_function( ... )
@@ -3269,11 +3272,6 @@ void rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode);
  *  This function is internal to RKH and the user application should not call
  *  it. Please use RKH_FILTER_ON_EVENT(), or RKH_FILTER_OFF_EVENT() macros
  *  instead.
- *
- *  \param ctrl		filter option, the available options are FILTER_ON or
- *                  FILTER_OFF.
- *  \param evt		trace event. The available events are enumerated in
- *                  RKH_TRC_EVENTS.
  */
 void rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt);
 
@@ -3281,16 +3279,16 @@ void rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt);
  *  \brief
  *  Test the group and event filter condition.
  *
- *	\note
- *  This function is internal to RKH and the user application should not call
- *  it.
- *
- *  \param e		trace event. The available events are enumerated in
+ *  \param[in] e	trace event. The available events are enumerated in
  *                  RKH_TRC_EVENTS.
  *
  *	\return
  *  '1' (RKH_TRUE) if the group and event is not filtered,
  *  otherwise '0' (RKH_FALSE).
+ *
+ *	\note
+ *  This function is internal to RKH and the user application should not call
+ *  it.
  */
 rbool_t rkh_trc_isoff_(rui8_t e);
 
@@ -3299,15 +3297,15 @@ rbool_t rkh_trc_isoff_(rui8_t e);
  *  Emmit or suppresse trace events related to a particular active
  *  object or event signal.
  *
+ *  \param[in] filter	filter type.
+ *  \param[in] slot		indicates the filter slot to be applied.
+ *  \param[in] mode		filter option, the available options are FILTER_ON or
+ *                      FILTER_OFF.
+ *
  *	\note
  *  This function is internal to RKH and the user application should not call
  *  it. Please use RKH_FILTER_ON_SMA()/RKH_FILTER_ON_SIGNAL(), or
  *  RKH_FILTER_OFF_SMA()/RKH_FILTER_OFF_SIGNAL() macros instead.
- *
- *  \param filter	filter type.
- *  \param slot		indicates the filter slot to be applied.
- *  \param mode		filter option, the available options are FILTER_ON or
- *                  FILTER_OFF.
  */
 void rkh_trc_simfil(const RKH_TRC_FIL_T *filter,
                     RKH_TRC_FSLOT slot, rui8_t mode);
@@ -3316,16 +3314,16 @@ void rkh_trc_simfil(const RKH_TRC_FIL_T *filter,
  *  \brief
  *  Test the active objecto or signal filter condition.
  *
- *	\note
- *  This function is internal to RKH and the user application should not call
- *  it.
- *
- *  \param filter	filter type.
- *  \param slot		indicates the filter slot to be applied.
+ *  \param[in] filter	filter type.
+ *  \param[in] slot		indicates the filter slot to be applied.
  *
  *	\return
  *  '1' (RKH_TRUE) if the group and event is not filtered,
  *  otherwise '0' (RKH_FALSE).
+ *
+ *	\note
+ *  This function is internal to RKH and the user application should not call
+ *  it.
  */
 rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
                              RKH_TRC_FSLOT slot);
@@ -3347,8 +3345,15 @@ rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
  *	then RKH will add to the trace record a timestamp field. It's
  *	configurable by means of RKH_CFGPORT_TRC_SIZEOF_TSTAMP.
  *
- *	The next listing shows the implemented RKH_TRC_HDR() macro:
+ *	\param[in] eid		trace event ID. The available events are
+ *                      enumerated in RKH_TRC_EVENTS.
  *
+ *  \note
+ *	This function should be called indirectly through the macro
+ *	RKH_TRC_BEGIN.
+ *
+ *  \usage
+ *	The next listing shows the implemented RKH_TRC_HDR() macro:
  *	\code
  *      RKH_TRC_HDR( eid )      \
  *  (1)		chk = 0;			\
@@ -3361,13 +3366,6 @@ rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
  *	\li (2)	Insert the event ID
  *	\li (3)	Insert the sequence number
  *	\li (4)	Insert the timestamp
- *
- *  \note
- *	This function should be called indirectly through the macro
- *	RKH_TRC_BEGIN.
- *
- *	\param eid		trace event ID. The available events are
- *                  enumerated in RKH_TRC_EVENTS.
  */
 void rkh_trc_begin(rui8_t eid);
 
@@ -3399,7 +3397,7 @@ void rkh_trc_clear_chk(void);
  *  Store a 8-bit data into the current trace event buffer without format
  *  information.
  *
- *  \param d		data
+ *  \param[in] d		data
  */
 void rkh_trc_u8(rui8_t d);
 
@@ -3408,7 +3406,7 @@ void rkh_trc_u8(rui8_t d);
  *  Store a 16-bit data into the current trace event buffer without format
  *  information.
  *
- *  \param d		data
+ *  \param[in] d		data
  */
 void rkh_trc_u16(rui16_t d);
 
@@ -3417,7 +3415,7 @@ void rkh_trc_u16(rui16_t d);
  *  Store a 32-bit data into the current trace event buffer without format
  *  information.
  *
- *  \param d		data
+ *  \param[in] d		data
  */
 void rkh_trc_u32(rui32_t d);
 
@@ -3426,7 +3424,7 @@ void rkh_trc_u32(rui32_t d);
  *  Store a string terminated in '\\0' into the current trace event buffer
  *  without format information.
  *
- *  \param s		pointer to string treminated in '\\0'
+ *  \param[in] s		pointer to string treminated in '\\0'
  */
 void rkh_trc_str(const char *s);
 
@@ -3451,8 +3449,8 @@ void rkh_trc_state(struct RKH_SMA_T *ao, rui8_t *state);
  *  Store a 8-bit data into the current trace event buffer with format
  *  information.
  *
- *  \param fmt		format information
- *  \param d		data
+ *  \param[in] fmt		format information
+ *  \param[in] d		data
  */
 void rkh_trc_fmt_u8(rui8_t fmt, rui8_t d);
 
@@ -3461,8 +3459,8 @@ void rkh_trc_fmt_u8(rui8_t fmt, rui8_t d);
  *  Store a 16-bit data into the current trace event buffer with format
  *  information.
  *
- *  \param fmt		format information
- *  \param d		data
+ *  \param[in] fmt		format information
+ *  \param[in] d		data
  */
 void rkh_trc_fmt_u16(rui8_t fmt, rui16_t d);
 
@@ -3471,8 +3469,8 @@ void rkh_trc_fmt_u16(rui8_t fmt, rui16_t d);
  *  Store a 32-bit data into the current trace event buffer with format
  *  information.
  *
- *  \param fmt		format information
- *  \param d		data
+ *  \param[in] fmt		format information
+ *  \param[in] d		data
  */
 void rkh_trc_fmt_u32(rui8_t fmt, rui32_t d);
 
@@ -3481,7 +3479,7 @@ void rkh_trc_fmt_u32(rui8_t fmt, rui32_t d);
  *  Store a string terminated in '\\0' into the current trace event buffer
  *  with format information.
  *
- *  \param s		pointer to string terminated in '\\0'
+ *  \param[in] s		pointer to string terminated in '\\0'
  */
 void rkh_trc_fmt_str(const char *s);
 
@@ -3489,8 +3487,8 @@ void rkh_trc_fmt_str(const char *s);
  *  \brief
  *  Output memory block of up to 255-bytes with format information.
  *
- *  \param mem		pointer to memory block.
- *  \param size		size of memory block.
+ *  \param[in] mem		pointer to memory block.
+ *  \param[in] size		size of memory block.
  */
 void rkh_trc_fmt_mem(rui8_t const *mem, rui8_t size);
 

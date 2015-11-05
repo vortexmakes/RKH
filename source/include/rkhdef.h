@@ -74,7 +74,7 @@ extern "C" {
  *  \brief
  *  Create bit mask with single, specified bit set.
  *
- *  \param bit				Bit number of bit to set.
+ *  \param[in] bit      Bit number of bit to set.
  *
  *  \return
  *  Bit mask with single, specified bit set.
@@ -85,7 +85,7 @@ extern "C" {
  *  \brief
  *  Create bit mask of specified bit size with single, specified bit set.
  *
- *  \param bit				Bit number of bit to set.
+ *  \param[in] bit      Bit number of bit to set.
  *
  *  \return
  *  Bit mask with single, specified bit set.
@@ -99,8 +99,8 @@ extern "C" {
  *  \brief
  *  Shift a bit mask.
  *
- *  \param bit_mask			Bit mask to shift.
- *  \param bit_shift		Number of bit positions to left-shift bit mask.
+ *  \param[in] bit_mask     Bit mask to shift.
+ *  \param[in] bit_shift    Number of bit positions to left-shift bit mask.
  *
  *  \return
  *  Shifted bit mask.
@@ -112,8 +112,8 @@ extern "C" {
  *  \brief
  *  Shift a bit mask of specified bit size.
  *
- *  \param bit_mask			Bit mask to shift.
- *  \param bit_shift		Number of bit positions to left-shift bit mask.
+ *  \param[in] bit_mask		Bit mask to shift.
+ *  \param[in] bit_shift	Number of bit positions to left-shift bit mask.
  *
  *  \return
  *  Shifted bit mask.
@@ -130,8 +130,8 @@ extern "C" {
  *  \brief
  *  Set specified bit(s) in a value of specified bit size.
  *
- *  \param val				Value to modify by setting specified bit(s).
- *  \param mask				Mask of bits to set.
+ *  \param[in] val		Value to modify by setting specified bit(s).
+ *  \param[in] mask		Mask of bits to set.
  *
  *  \return
  *  Modified value with specified bit(s) set.
@@ -148,8 +148,8 @@ extern "C" {
  *  \brief
  *  Clear specified bit(s) in a value of specified bit size.
  *
- *  \param val				Value to modify by clearing specified bit(s).
- *  \param mask				Mask of bits to clear.
+ *  \param[in] val		Value to modify by clearing specified bit(s).
+ *  \param[in] mask		Mask of bits to clear.
  *
  *  \return
  *  Modified value with specified bit(s) clear.
@@ -166,8 +166,8 @@ extern "C" {
  *  \brief
  *  Determine if specified bit(s) in a value are set.
  *
- *  \param val				Value to check for specified bit(s) set.
- *  \param mask				Mask of bits to check if set.
+ *  \param[in] val		Value to check for specified bit(s) set.
+ *  \param[in] mask		Mask of bits to check if set.
  *
  *  \return
  *  RKH_YES, if ALL specified bit(s) are set in value.
@@ -181,8 +181,8 @@ extern "C" {
  *  \brief
  *  Determine if specified bit(s) in a value are clear.
  *
- *  \param val				Value to check for specified bit(s) clear.
- *  \param mask				Mask of bits to check if clear.
+ *  \param[in] val		Value to check for specified bit(s) clear.
+ *  \param[in] mask		Mask of bits to check if clear.
  *
  *  \return
  *  RKH_YES, if ALL specified bit(s) are clear in value.
@@ -196,8 +196,8 @@ extern "C" {
  *  \brief
  *  Determine if any specified bit(s) in a value are set.
  *
- *  \param val				Value to check for specified bit(s) set.
- *  \param mask				Mask of bits to check if set.
+ *  \param[in] val		Value to check for specified bit(s) set.
+ *  \param[in] mask		Mask of bits to check if set.
  *
  *  \return
  *  RKH_YES, if ALL specified bit(s) are set in value.
@@ -210,8 +210,8 @@ extern "C" {
  *  \brief
  *  Determine if any specified bit(s) in a value are clear.
  *
- *  \param val				Value to check for specified bit(s) clear.
- *  \param mask				Mask of bits to check if clear.
+ *  \param[in] val		Value to check for specified bit(s) clear.
+ *  \param[in] mask		Mask of bits to check if clear.
  *
  *  \return
  *  RKH_YES, if ALL specified bit(s) are clear in value.

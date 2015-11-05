@@ -69,7 +69,7 @@ extern "C" {
  *  \brief
  *  This macro query the queue.
  *
- *  \param q		pointer to previously created queue.
+ *  \param[in] q		pointer to previously created queue.
  *
  *  \return
  *  '1' (RKH_TRUE) if queue is empty, otherwise '0' (RKH_FALSE).
@@ -241,18 +241,18 @@ typedef struct RKH_RQ_T
  *  queue's memory area is not evenly divisible by the specified message
  *  size, the remaining bytes in the memory area are not used.
  *
+ *  \param[in] q		pointer to previously allocated queue structure.
+ *  \param[in] sstart	storage start. Pointer to an array of pointers that 
+ *                      holds the elements. This array must be declared as an 
+ *                      array of void pointers.
+ *  \param[in] ssize	storage size [in the units of void pointers].
+ *  \param[in] sma		pointer to associated SMA that receives the enqueued
+ *                      events. If \a sma is set to NULL they never block. When
+ *                      using a queue to store deferred events the \a sma
+ *                      parameter must be set to NULL.
+ *
  *	\sa
  *	RKH_RQ_T structure for more information.
- *
- *  \param q		pointer to previously allocated queue structure.
- *  \param sstart	storage start. Pointer to an array of pointers that holds
- *                  the elements. This array must be declared as an array of
- *                  void pointers.
- *  \param ssize	storage size [in the units of void pointers].
- *  \param sma		pointer to associated SMA that receives the enqueued
- *                  events. If \a sma is set to NULL they never block. When
- *                  using a queue to store deferred events the \a sma
- *                  parameter must be set to NULL.
  */
 void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
                  const struct RKH_SMA_T *sma);
@@ -261,14 +261,14 @@ void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
  *  \brief
  *  This function query the queue.
  *
- *  \note
- *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_IS_FULL_EN.
- *
- *  \param q		pointer to previously created queue.
+ *  \param[in] q	pointer to previously created queue.
  *
  *  \return
  *  '1' (RKH_TRUE) if queue is full, otherwise '0' (RKH_FALSE).
+ *
+ *  \note
+ *  This function is optional, thus it could be eliminated in compile-time
+ *  with RKH_CFG_RQ_IS_FULL_EN.
  */
 rbool_t rkh_rq_is_full(RKH_RQ_T *q);
 
@@ -276,11 +276,11 @@ rbool_t rkh_rq_is_full(RKH_RQ_T *q);
  *  \brief
  *  Returns the number of elements currently in the queue.
  *
+ *  \param[in] q	pointer to previously created queue.
+ *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_GET_NELEMS_EN.
- *
- *  \param q		pointer to previously created queue.
  */
 RKH_RQNE_T rkh_rq_get_num(RKH_RQ_T *q);
 
@@ -291,14 +291,14 @@ RKH_RQNE_T rkh_rq_get_num(RKH_RQ_T *q);
  *  This number provides valuable empirical data for proper sizing of the
  *  queue.
  *
- *  \param q		pointer to previously created queue.
+ *  \param[in] q	pointer to previously created queue.
+ *
+ *  \return
+ *  Lowest number of free elements ever present in the queue.
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_GET_LWMARK_EN.
- *
- *  \return
- *  Lowest number of free elements ever present in the queue.
  */
 RKH_RQNE_T rkh_rq_get_lwm(RKH_RQ_T *q);
 
@@ -306,7 +306,7 @@ RKH_RQNE_T rkh_rq_get_lwm(RKH_RQ_T *q);
  *  \brief
  *	Get and remove an element from a queue.
  *
- *  \param q		pointer to previously created queue from which the
+ *  \param[in] q	pointer to previously created queue from which the
  *                  elements are received.
  */
 void *rkh_rq_get(RKH_RQ_T *q);
@@ -316,15 +316,15 @@ void *rkh_rq_get(RKH_RQ_T *q);
  *	Puts an element on a queue in a FIFO manner. The element is queued by
  *	reference, not by copy.
  *
+ *  \param[in] q	pointer to previously created queue into which the element
+ *                  is deposited.
+ *  \param[in] pe	pointer-sized variable and is application specific.
+ *
  *  \note
  *  This function must be invoked within a critical section.
  *  \note
  *  The function raises an assertion if the queue becomes full and cannot
  *  accept the element.
- *
- *  \param q		pointer to previously created queue into which the element
- *                  is deposited.
- *  \param pe		pointer-sized variable and is application specific.
  */
 void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
 
@@ -332,6 +332,10 @@ void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
  *  \brief
  *	Puts an element on a queue in a LIFO manner. The element is queued by
  *	reference, not by copy.
+ *
+ *  \param[in] q	pointer to previously created queue into which the element
+ *                  is deposited.
+ *  \param[in] pe	pointer-sized variable and is application specific.
  *
  *  \note
  *  This function must be invoked within a critical section.
@@ -341,10 +345,6 @@ void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_PUT_LIFO_EN.
- *
- *  \param q		pointer to previously created queue into which the element
- *                  is deposited.
- *  \param pe		pointer-sized variable and is application specific.
  */
 void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
 
@@ -352,6 +352,8 @@ void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
  *  \brief
  *	Depletes a queue. Empties the contents of the queue and eliminates all
  *	stored elements.
+ *
+ *  \param[in] q	pointer to previously created queue.
  *
  *	\note
  *	This function should be used with great care because, when to flush the
@@ -364,8 +366,6 @@ void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_DEPLETE_EN.
- *
- *  \param q		pointer to previously created queue.
  */
 void rkh_rq_deplete(RKH_RQ_T *q);
 
@@ -373,18 +373,18 @@ void rkh_rq_deplete(RKH_RQ_T *q);
  *  \brief
  *	Read an element from a queue without remove it.
  *
- *  \note
- *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_READ_EN.
- *
- *  \param q		pointer to previously created queue from which the
+ *  \param[in] q	pointer to previously created queue from which the
  *                  elements are received.
- *  \param pe		pointer to the buffer into which the received item will be
+ *  \param[in] pe	pointer to the buffer into which the received item will be
  *                  copied.
  *
  *  \return
  *  RKH_RQ_OK if an element was successfully readed from the queue, otherwise
  *  error code.
+ *
+ *  \note
+ *  This function is optional, thus it could be eliminated in compile-time
+ *  with RKH_CFG_RQ_READ_EN.
  */
 ruint rkh_rq_read(RKH_RQ_T *q, void *pe);
 
@@ -400,14 +400,14 @@ ruint rkh_rq_read(RKH_RQ_T *q, void *pe);
  *	This information provides a "snapshot" a particular instant in time, i.e.,
  *	when the service is invoked.
  *
+ *  \param[in] q	pointer to previously created queue.
+ *  \param[in] pqi	pointer to the buffer into which the performance
+ *                  information will be copied.
+ *
  *  \note
  *  See RKH_RQI_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
  *  RKH_CFG_RQ_GET_INFO_EN.
- *
- *  \param q		pointer to previously created queue.
- *  \param pqi		pointer to the buffer into which the performance
- *                  information will be copied.
  */
 void rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi);
 
@@ -415,11 +415,11 @@ void rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi);
  *  \brief
  *  Clear performance information for a particular queue.
  *
+ *  \param[in] q	pointer to previously created queue.
+ *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_GET_INFO_EN.
- *
- *  \param q		pointer to previously created queue.
  */
 void rkh_rq_clear_info(RKH_RQ_T *q);
 

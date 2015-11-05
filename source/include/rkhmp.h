@@ -287,15 +287,15 @@ typedef struct RKH_MP_T
  *	Check the capacity of the pool by calling the rkh_mp_get_nfree()
  *	function.
  *
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
+ *  \param[in] sstart	storage start. Pointer to memory from which memory 
+ *                      blocks are allocated.
+ *  \param[in] ssize 	storage size. Size of the memory pool storage in bytes.
+ *  \param[in] bsize	block size. This number determines the size of each
+ *                      memory block in the pool.
+ *
  *	\note
  *	See RKH_MP_T structure for more information.
- *
- *  \param mp		pointer to previously allocated memory pool structure.
- *  \param sstart	storage start. Pointer to memory from which memory blocks
- *                  are allocated.
- *  \param ssize:	storage size. Size of the memory pool storage in bytes.
- *  \param bsize	block size. This number determines the size of each
- *                  memory block in the pool.
  */
 void rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
                  RKH_MPBS_T bsize);
@@ -304,7 +304,7 @@ void rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
  *  \brief
  *  Get a memory block from one of the previously allocated memory pool.
  *
- *  \param mp		pointer to previously allocated memory pool structure.
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
  *
  *  \return
  *  A pointer to a new memory block or NULL if the pool runs out of blocks.
@@ -317,8 +317,8 @@ void *rkh_mp_get(RKH_MP_T *mp);
  *  to the appropiate memory pool. The block must be allocated from the same
  *  memory pool to which it is returned.
  *
- *  \param mp		pointer to previously allocated memory pool structure.
- *  \param blk		pointer to the returned memory block.
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
+ *  \param[in] blk		pointer to the returned memory block.
  */
 void rkh_mp_put(RKH_MP_T *mp, void *blk);
 
@@ -326,14 +326,14 @@ void rkh_mp_put(RKH_MP_T *mp, void *blk);
  *  \brief
  *  Retrieves the size of memory block in bytes.
  *
- *  \note
- *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_MP_GET_BSIZE_EN.
- *
- *  \param mp		pointer to previously allocated memory pool structure.
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
  *
  *  \return
  *  The size of memory block in bytes.
+ *
+ *  \note
+ *  This function is optional, thus it could be eliminated in compile-time
+ *  with RKH_CFG_MP_GET_BSIZE_EN.
  */
 RKH_MPBS_T rkh_mp_get_bsize(RKH_MP_T *mp);
 
@@ -341,14 +341,14 @@ RKH_MPBS_T rkh_mp_get_bsize(RKH_MP_T *mp);
  *  \brief
  *  Retrieves the current number of free memory blocks in the pool.
  *
- *  \note
- *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_MP_GET_NFREE_EN.
- *
- *  \param mp		pointer to previously allocated memory pool structure.
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
  *
  *  \return
  *  The number of free memory blocks in the pool.
+ *
+ *  \note
+ *  This function is optional, thus it could be eliminated in compile-time
+ *  with RKH_CFG_MP_GET_NFREE_EN.
  */
 RKH_MPNB_T rkh_mp_get_nfree(RKH_MP_T *mp);
 
@@ -358,14 +358,14 @@ RKH_MPNB_T rkh_mp_get_nfree(RKH_MP_T *mp);
  *  This number provides valuable empirical data for proper sizing of the
  *  memory pool.
  *
- *  \note
- *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_MP_GET_LWM_EN.
- *
- *  \param mp		pointer to previously allocated memory pool structure.
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
  *
  *  \return
  *  Lowest number of free blocks ever present in the pool.
+ *
+ *  \note
+ *  This function is optional, thus it could be eliminated in compile-time
+ *  with RKH_CFG_MP_GET_LWM_EN.
  */
 RKH_MPNB_T rkh_mp_get_low_wmark(RKH_MP_T *mp);
 
@@ -378,13 +378,13 @@ RKH_MPNB_T rkh_mp_get_low_wmark(RKH_MP_T *mp);
  *  the application is performing properly, as well as helping to
  *  optimize the application.
  *
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
+ *  \param[in] mpi		pointer to the buffer into which the performance
+ *                      information will be copied by reference.
+ *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_INFO_EN.
- *
- *  \param mp		pointer to previously allocated memory pool structure.
- *  \param mpi		pointer to the buffer into which the performance
- *                  information will be copied by reference.
  */
 void rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi);
 
@@ -392,11 +392,11 @@ void rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi);
  *  \brief
  *  Clear performance information for a particular memory pool.
  *
+ *  \param[in] mp		pointer to previously allocated memory pool structure.
+ *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_INFO_EN.
- *
- *  \param mp		pointer to previously allocated memory pool structure.
  */
 void rkh_mp_clear_info(RKH_MP_T *mp);
 

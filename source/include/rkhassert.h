@@ -70,7 +70,7 @@ extern "C" {
      *	This macro appears at the top of each C/C++ source file defining
      *	a name for that file.
      *
-     *  \param __fname		file name where the assertion failed
+     *  \param[in] __fname		file name where the assertion failed
      */
     #define RKH_MODULE_NAME(__fname) \
         static RKHROM char *const m_name = # __fname;
@@ -97,6 +97,8 @@ extern "C" {
      *	document the code means that the statements inside the assertion tell
      *	the reader something he might not already know.
      *
+     *  \param[in] exp		expression to be checked.
+     *
      *	\note
      *	The preprocessor switch RKH_CFG_FWK_ASSERT_EN disables checking
      *	assertions.
@@ -107,7 +109,10 @@ extern "C" {
      *  not report assertion failures when the switch
      *  RKH_CFG_FWK_ASSERT_EN is defined.
      *
-     *	Example of use:
+     *  \sa RKH_ALLEGE(), RKH_REQUIRE(), RKH_ENSURE(), RKH_ERROR() and
+     *  RKH_INVARIANT() macros.
+     *
+     *	\usage
      *	\code
      *	...
      *	some_function( const char *p, int size )
@@ -118,11 +123,6 @@ extern "C" {
      *		...
      *	}
      *	\endcode
-     *
-     *  \param exp		expression to be checked.
-     *
-     *  \sa RKH_ALLEGE(), RKH_REQUIRE(), RKH_ENSURE(), RKH_ERROR() and
-     *  RKH_INVARIANT() macros.
      */
     #define RKH_ASSERT(exp) \
         if ((exp)) \
@@ -225,9 +225,17 @@ extern "C" {
  *  line number of assertion, and other information. A number is easier
  *  to fill in on a report form and easier to store in NVRAM.
  *
+ *  \param[in] file			file name where the assertion failed
+ *  \param[in] line         line number at which the assertion failed
+ *
+ *	\note
+ *	The rkh_assert() callback will only get called if
+ *	RKH_CFG_FWK_ASSERT_EN is set to 1 within rkhcfg.h file. When this
+ *	is set the application must provide the callback function.
+ *
+ *  \usage
  *	The following listing shows a illustrative example for Visual Studio
  *	C++ 2008 IDE:
- *
  *	\code
  *	void
  *	rkh_assert( RKHROM char * const file, int line )
@@ -239,14 +247,6 @@ extern "C" {
  *		__debugbreak();
  *	}
  *	\endcode
- *
- *	\note
- *	The rkh_assert() callback will only get called if
- *	RKH_CFG_FWK_ASSERT_EN is set to 1 within rkhcfg.h file. When this
- *	is set the application must provide the callback function.
- *
- *  \param file			file name where the assertion failed
- *  \param line         line number at which the assertion failed
  */
 void rkh_assert(const char *const file, int line);
 #endif

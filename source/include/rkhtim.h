@@ -79,6 +79,21 @@ extern "C" {
      *  "my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after
      *  100 timer-ticks.
      *
+     *	\param[in] t_	pointer to previously allocated timer structure. Any
+     *					software module intending to install a software timer
+     *					must first allocate a timer structure RKH_TMR_T.
+     *	\param[in] e_	event to be directly posted (using the FIFO policy)
+     *					into the event queue of the target agreed state
+     *					machine application at the timer expiration.
+     *	\param[in] th_  hook function to be called at the timer expiration.
+     *					This argument is optional, thus it could be declared
+     *					as NULL or eliminated in compile-time with
+     *					RKH_CFG_TMR_HOOK_EN.
+     *
+     *	\note
+     *	See RKH_TMR_T structure for more information.
+     *
+     *  \usage
      *  \code
      *	#define MY_TICK				100
      *
@@ -89,20 +104,6 @@ extern "C" {
      *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
      *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
      *  \endcode
-     *
-     *	\note
-     *	See RKH_TMR_T structure for more information.
-     *
-     *	\param t_		pointer to previously allocated timer structure. Any
-     *					software module intending to install a software timer
-     *					must first allocate a timer structure RKH_TMR_T.
-     *	\param e_		event to be directly posted (using the FIFO policy)
-     *					into the event queue of the target agreed state
-     *					machine application at the timer expiration.
-     *	\param th_      hook function to be called at the timer expiration.
-     *					This argument is optional, thus it could be declared
-     *					as NULL or eliminated in compile-time with
-     *					RKH_CFG_TMR_HOOK_EN.
      */
     #define RKH_TMR_INIT(t_, e_, th_) \
         rkh_tmr_init_((t_), (e_), (th_))
@@ -122,6 +123,12 @@ extern "C" {
  *  "my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100
  *  timer-ticks.
  *
+ *	\param[in] t	    pointer to previously created timer structure.
+ *	\param[in] sma	    state machine application (SMA) that receives the timer
+ *					    event.
+ *  \param[in] itick    number of ticks for timer expiration.
+ *
+ *  \usage
  *  \code
  *	#define MY_TICK				100
  *
@@ -132,11 +139,6 @@ extern "C" {
  *  RKH_TMR_INIT( &my_timer, e_timer, my_timer_hook );
  *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
  *  \endcode
- *
- *	\param t		pointer to previously created timer structure.
- *	\param sma		state machine application (SMA) that receives the timer
- *					event.
- *  \param itick    number of ticks for timer expiration.
  */
 
 #define RKH_TMR_ONESHOT(t, sma, itick) \
@@ -155,6 +157,16 @@ extern "C" {
  *  "my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after 100
  *  timer-ticks initially and then after every 25 timer-ticks.
  *
+ *	\param[in] t		pointer to previously created timer structure.
+ *	\param[in] sma		state machine application (SMA) that receives the timer
+ *					    event.
+ *  \param[in] itick    number initial of ticks for timer expiration.
+ *  \param[in] per	    number of ticks for all timer expirations after the 
+ *                      first (expiration period). A zero for this parameter 
+ *                      makes the timer a one-shot timer, otherwise, for 
+ *                      periodic timers, any value in range.
+ *
+ *  \usage
  *  \code
  *	#define MY_TICK			100
  *
@@ -165,15 +177,6 @@ extern "C" {
  *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
  *  RKH_TMR_PERIODIC( &my_timer, pwr, MY_TICK, MY_TICK/4 );
  *  \endcode
- *
- *	\param t		pointer to previously created timer structure.
- *	\param sma		state machine application (SMA) that receives the timer
- *					event.
- *  \param itick    number initial of ticks for timer expiration.
- *  \param per	    number of ticks for all timer expirations after the first
- *                  (expiration period). A zero for this parameter makes the
- *                  timer a one-shot timer, otherwise, for periodic timers,
- *                  any value in range.
  */
 
 #define RKH_TMR_PERIODIC(t, sma, itick, per) \
@@ -187,7 +190,7 @@ extern "C" {
  *  \brief
  *  The prototype of callback function (hook) to call when the timer expires.
  *
- *  \param t		pointer to elapsed timer (RKH_TMR_T data structure).
+ *  \param[in] t		pointer to elapsed timer (RKH_TMR_T data structure).
  */
 typedef void (*RKH_THK_T)(void *t);
 
@@ -333,10 +336,10 @@ struct RKH_TMR_T
  *  timer-handling facility. The timer begins running at the completion of
  *  this operation.
  *
- *	\param t		pointer to previously created timer structure.
- *	\param sma		state machine application (SMA) that receives the timer
- *					event.
- *  \param itick    number of ticks for timer expiration.
+ *	\param[in] t		pointer to previously created timer structure.
+ *	\param[in] sma		state machine application (SMA) that receives the 
+ *	                    timer event.
+ *  \param[in] itick    number of ticks for timer expiration.
  */
 void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
                    RKH_TNT_T itick);
@@ -349,7 +352,7 @@ void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
  *	the timer-handling facility. If the timer is already stopped, this
  *	service has no effect.
  *
- *	\param t		pointer to previously created timer structure.
+ *	\param[in] t		pointer to previously created timer structure.
  */
 void rkh_tmr_stop(RKH_TMR_T *t);
 
@@ -364,14 +367,14 @@ void rkh_tmr_stop(RKH_TMR_T *t);
  *	the application. This information provides a "snapshot" a particular
  *	instant in time, i.e., when the service is invoked.
  *
+ *	\param[in] t		pointer to previously created timer structure.
+ *  \param[in] info		pointer to the buffer into which the performance
+ *                      information will be copied by reference.
+ *
  *  \note
  *  See RKH_TINFO_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
  *  RKH_CFG_TMR_GET_INFO_EN.
- *
- *	\param t		pointer to previously created timer structure.
- *  \param info		pointer to the buffer into which the performance
- *                  information will be copied by reference.
  */
 void rkh_tmr_get_info(RKH_TMR_T *t, RKH_TINFO_T *info);
 
@@ -379,12 +382,12 @@ void rkh_tmr_get_info(RKH_TMR_T *t, RKH_TINFO_T *info);
  *  \brief
  *  Clear performance information for a particular software timer.
  *
+ *	\param[in] t		pointer to previously created timer structure.
+ *
  *  \note
  *  See RKH_TINFO_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
  *  RKH_CFG_TMR_GET_INFO_EN.
- *
- *	\param t		pointer to previously created timer structure.
  */
 void rkh_tmr_clear_info(RKH_TMR_T *t);
 
