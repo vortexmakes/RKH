@@ -317,13 +317,15 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *					is very simply by literally embedding the base type,
  *					RKH_PPRO_T in this case, as the first member of the
  *					derived structure. See \a prepro member of RKH_SBSC_T
- *					structure for more information. \usage
+ *					structure for more information. 
+ *					\usage
  *                  \code
  *					static RKH_SIG_T
  *					preprocessor( RKH_EVT_T *pe )
  *					{
  *						...
  *					}
+ *
  *					typedef struct
  *					{
  *						RKH_PPRO_T prepro;  // extend the RKH_PPRO_T class
@@ -560,7 +562,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_EX_CNNPNT( EX2S2, &EXPNT2, NULL, &S3 ),
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
- *
  *  Each exit point connection reference table always begins with the macro
  *  RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro
  *  RKH_END_EX_CNNPNT_TABLE().
@@ -631,7 +632,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_EX_CNNPNT( EX2S2, &EXPNT2, NULL, &S3 ),
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
- *
  *  Each exit point table always begins with the macro
  *  RKH_CREATE_EX_CNNPNT_TABLE() and ends with the macro
  *  RKH_END_EX_CNNPNT_TABLE().
@@ -808,7 +808,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		...
  *	RKH_END_TRANS_TABLE							// transition table end
  *	\endcode
- *
  *  Each transition table always begins with the macro RKH_CREATE_TRANS_TABLE()
  *  and ends with the macro RKH_END_TRANS_TABLE().
  *	As noted above, sandwiched between these macros are the transitions macros
@@ -918,7 +917,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_BRANCH( ELSE,           abort,			&aborted	),
  *	RKH_END_BRANCH_TABLE
  *	\endcode
- *
  *  Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE()
  *  and ends with the macro RKH_END_BRANCH_TABLE().
  *  In RKH branches are defined by the macro RKH_BRANCH().
@@ -1188,6 +1186,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	case, as the first member of the derived structure. The following
  *	listing shows an example:
  *
+ *	\sa
+ *	See #RKH_CREATE_BASIC_STATE() macro for more information.
+ *
+ *  \usage
  *	\code
  *	(1) typedef struct MENU_ST_T
  *		{
@@ -1296,11 +1298,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	(6,7)Invokes the NUM_BASIC_STATE() macro to instantiate the derived
  *		 state object, num. Note that the variable xy is allocated in RAM
  *		 but it is access to read and write from ROM object. \n
- *
- *	\sa
- *	See #RKH_CREATE_BASIC_STATE() macro for more information.
  */
-
 #define RKH_INIT_BASIC_STATE(name, en, ex, parent, prepro) \
     { \
         { \
@@ -1853,6 +1851,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Perform downcast of a reference of a base class to one of its derived
  *  classes.
  *
+ *	\sa
+ *	\link RKH_EVT_T single inheritance in C \endlink, and
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ *
  *  \usage
  *  \code
  *  void
@@ -1866,10 +1868,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *												RKH_EVT_CAST(e_start), sma );
  *  }
  *  \endcode
- *
- *	\sa
- *	\link RKH_EVT_T single inheritance in C \endlink, and
- *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
 #define RKH_CAST(_type, _obj)     ((_type *)(_obj))
 
@@ -1886,6 +1884,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  \note
      *  This function is internal to RKH and the user application
      *  should not call it. Instead, use #RKH_TRC_OPEN() macro.
+     *
+     *  \sa \b rkhtrc.h file.
      *
      *	\usage
      *
@@ -1910,8 +1910,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *				"file\n", __LINE__, __FILE__ );
      *	}
      *	\endcode
-     *
-     *  \sa \b rkhtrc.h file.
      */
     #define RKH_TRC_OPEN()      rkh_trc_open()
 #else
@@ -1930,6 +1928,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  This function is internal to RKH and the user application
      *  should not call it. Instead, use #RKH_TRC_CLOSE() macro.
      *
+     *  \sa \b rkhtrc.h file.
+     *
      *	\usage
      *
      *	\code
@@ -1939,8 +1939,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *		fclose( fdbg );
      *	}
      *	\endcode
-     *
-     *  \sa \b rkhtrc.h file.
      */
     #define RKH_TRC_CLOSE()     rkh_trc_close()
 #else
@@ -1962,6 +1960,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  \note
      *  This function is internal to RKH and the user application should
      *  not call it. Instead, use #RKH_TRC_FLUSH() macro.
+     *
+     *  \sa \b rkhtrc.h file.
      *
      *	\usage
      *	\code
@@ -1990,8 +1990,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *      }
      *  }
      *	\endcode
-     *
-     *  \sa \b rkhtrc.h file.
      */
     #define RKH_TRC_FLUSH()     rkh_trc_flush()
 #else
