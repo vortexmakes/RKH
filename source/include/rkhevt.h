@@ -178,6 +178,12 @@ typedef struct RKH_EVT_T
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+
+#ifdef __cplusplus
+}
+#endif
+
 /* ------------------------------ Module end ------------------------------- */
 
 #endif
