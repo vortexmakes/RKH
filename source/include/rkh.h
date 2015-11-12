@@ -288,8 +288,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                              \
     RKHROM RKH_SCMP_T name = \
     { \
-        {MKBASE(RKH_COMPOSITE, name), \
-         MKST(en,ex,parent)}, \
+        {MKBASE(RKH_COMPOSITE, name), MKST(en,ex,parent)}, \
         MKCOMP(name,defchild,history) \
     }
 
@@ -352,8 +351,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                              \
     RKHROM RKH_SBSC_T name = \
     { \
-        {MKBASE(RKH_BASIC, name), \
-         MKST(en,ex,parent)}, \
+        {MKBASE(RKH_BASIC, name), MKST(en,ex,parent)}, \
         MKBASIC(name,prepro)  \
     }
 
@@ -540,8 +538,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                              \
     RKHROM RKH_SSBM_T name = \
     { \
-        {MKBASE(RKH_SUBMACHINE, name), \
-         MKST(en,ex,parent)}, \
+        {MKBASE(RKH_SUBMACHINE, name), MKST(en,ex,parent)}, \
         MKSBM(name,sbm) \
     }
 
@@ -615,7 +612,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\endcode
  */
 #define RKH_EX_CNNPNT(name, expnt, act, ts) \
-    {act, (RKHROM struct RKH_ST_T *)ts}
+    {(RKH_TRN_ACT_T)act, (RKHROM struct RKH_ST_T *)ts}
 
 /**
  *  \brief
@@ -787,7 +784,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                                   \
     RKHROM RKH_ENPCN_T name = \
     { \
-        act, (RKHROM struct RKH_ST_T *)ts \
+        (RKH_TRN_ACT_T)act, (RKHROM struct RKH_ST_T *)ts \
     }
 
 /**
@@ -850,7 +847,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 
 #define RKH_TRREG(e, g, a, t) \
-    {e, g, a, t}
+    {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, t}
 
 /**
  *  \brief
@@ -874,7 +871,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\endcode
  */
 
-#define RKH_TRINT(e, g, a)    {e, g, a, NULL}
+#define RKH_TRINT(e, g, a)    {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, NULL}
 
 /**
  *  \brief
@@ -958,7 +955,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\endcode
  */
 
-#define RKH_BRANCH(g, a, t)   {0, g, a, t}
+#define RKH_BRANCH(g, a, t)   {0, (RKH_GUARD_T)g, a, t}
 
 /*
  *  This macro is internal to RKH and the user application should

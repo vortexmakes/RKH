@@ -1666,18 +1666,22 @@ extern "C" {
 #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     #if defined(R_TRC_AO_NAME_EN)
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, (ia), (ie)}
+            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, \
+             (RKH_INIT_ACT_T)(ia), (ie)}
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, (ia), (ie)}
+            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, \
+             (RKH_INIT_ACT_T)(ia), (ie)}
     #endif
 #else
     #if defined(R_TRC_AO_NAME_EN)
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, (ia)}
+            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, \
+             (RKH_INIT_ACT_T)(ia)}
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, (ia)}
+            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, \
+             (RKH_INIT_ACT_T)(ia)}
     #endif
 #endif
 
@@ -1698,10 +1702,10 @@ extern "C" {
 #if (RKH_CFG_SMA_HCAL_EN == RKH_ENABLED)
     #if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
         #if defined(RKH_HISTORY_ENABLED)
-            #define MKBASIC(n,pp)       n##_trtbl,pp
+            #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n,d,h)       n##_trtbl,NULL,d,h
         #else
-            #define MKBASIC(n,pp)       n##_trtbl,pp
+            #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n,d,h)       n##_trtbl,NULL,d
         #endif
     #else
@@ -1713,13 +1717,16 @@ extern "C" {
             #define MKCOMP(n,d,h)       n##_trtbl,d
         #endif
     #endif
-    #define MKST(en,ex,p)           en,ex,(RKHROM struct RKH_ST_T *)p
+    #define MKST(en,ex,p)           (RKH_ENT_ACT_T)en, \
+                                    (RKH_EXT_ACT_T)ex, \
+                                    (RKHROM struct RKH_ST_T *)p
     #define MKSBM(n,sbm)            n##_trtbl,n##_exptbl,sbm
-    #define MKMCH(d,i,n)            d,i,(RKHROM RKH_ST_T * *)&rdyp_##n
+    #define MKMCH(d,i,n)            d, (RKH_TRN_ACT_T)i, \
+                                    (RKHROM RKH_ST_T * *)&rdyp_##n
     #define MKENP(e,s)              e,(RKHROM struct RKH_ST_T *)s
 #else
     #if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
-        #define MKBASIC(n,pp)       n##_trtbl,pp
+        #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
         #define MKCOMP(n,d,h)       n##_trtbl,NULL
     #else
         #define MKBASIC(n,pp)       n##_trtbl
@@ -1727,7 +1734,8 @@ extern "C" {
     #endif
     #define MKST(en,ex,p)
     #define MKSBM(n,sbm)            n##_trtbl,n##_exptbl,sbm
-    #define MKMCH(d,i,n)            d,i,(RKHROM RKH_ST_T *)&rdyp_##n
+    #define MKMCH(d,i,n)            d, (RKH_TRN_ACT_T)i, \
+                                    (RKHROM RKH_ST_T *)&rdyp_##n
     #define MKENP(e,s)              e,(RKHROM struct RKH_ST_T *)s
 #endif
 
