@@ -284,7 +284,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_COMP_STATE(name, en, ex, parent, defchild, history) \
                                                                        \
-    extern RKHROM RKH_TR_T name ## _trtbl[]; \
+    extern RKHROM RKH_TR_T name##_trtbl[]; \
                                              \
     RKHROM RKH_SCMP_T name = \
     { \
@@ -348,7 +348,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_BASIC_STATE(name, en, ex, parent, prepro) \
                                                              \
-    extern RKHROM RKH_TR_T name ## _trtbl[]; \
+    extern RKHROM RKH_TR_T name##_trtbl[]; \
                                              \
     RKHROM RKH_SBSC_T name = \
     { \
@@ -383,12 +383,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_COND_STATE(name) \
                                     \
-    extern RKHROM RKH_TR_T name ## _trtbl[]; \
+    extern RKHROM RKH_TR_T name##_trtbl[]; \
                                              \
     RKHROM RKH_SCOND_T name = \
     { \
         MKBASE(RKH_CONDITIONAL, name), \
-        name ## _trtbl \
+        name##_trtbl \
     }
 
 /**
@@ -417,12 +417,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_CHOICE_STATE(name) \
                                       \
-    extern RKHROM RKH_TR_T name ## _trtbl[]; \
+    extern RKHROM RKH_TR_T name##_trtbl[]; \
                                              \
     RKHROM RKH_SCHOICE_T name = \
     { \
         MKBASE(RKH_CHOICE, name), \
-        name ## _trtbl \
+        name##_trtbl \
     }
 
 /**
@@ -446,12 +446,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_DEEP_HISTORY_STATE(name, parent) \
                                                     \
-    static RKHROM RKH_ST_T * ram ## name; \
+    static RKHROM RKH_ST_T * ram##name; \
                                           \
     RKHROM RKH_SHIST_T name = \
     { \
         MKBASE(RKH_DHISTORY, name), \
-        (RKHROM struct RKH_ST_T *)parent,&ram ## name \
+        (RKHROM struct RKH_ST_T *)parent,&ram##name \
     }
 
 /**
@@ -477,12 +477,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent) \
                                                        \
-    static RKHROM RKH_ST_T * ram ## name; \
+    static RKHROM RKH_ST_T * ram##name; \
                                           \
     RKHROM RKH_SHIST_T name = \
     { \
         MKBASE(RKH_SHISTORY, name), \
-        (RKHROM struct RKH_ST_T *)parent,&ram ## name \
+        (RKHROM struct RKH_ST_T *)parent,&ram##name \
     }
 
 /**
@@ -535,8 +535,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_SUBMACHINE_STATE(name, en, ex, parent, sbm) \
                                                                \
-    extern RKHROM RKH_EXPCN_T name ## _exptbl[]; \
-    extern RKHROM RKH_TR_T name ## _trtbl[]; \
+    extern RKHROM RKH_EXPCN_T name##_exptbl[]; \
+    extern RKHROM RKH_TR_T name##_trtbl[]; \
                                              \
     RKHROM RKH_SSBM_T name = \
     { \
@@ -569,7 +569,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	macros, RKH_EX_CNNPNT().
  */
 #define RKH_CREATE_EX_CNNPNT_TABLE(name) \
-    RKHROM RKH_EXPCN_T name ## _exptbl[]= \
+    RKHROM RKH_EXPCN_T name##_exptbl[]= \
     {
 
 /**
@@ -696,7 +696,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 #define RKH_CREATE_REF_SUBMACHINE(name, defchild, iact) \
                                                         \
-    static RKHROM RKH_ST_T * rdyp_ ## name; \
+    static RKHROM RKH_ST_T * rdyp_##name; \
                                             \
     RKHROM RKH_RSM_T name = \
     { \
@@ -816,7 +816,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 #define RKH_CREATE_TRANS_TABLE(name) \
                                      \
-    RKHROM RKH_TR_T name ## _trtbl[]= \
+    RKHROM RKH_TR_T name##_trtbl[]= \
     {
 
 /**
@@ -1164,7 +1164,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 
 #define RKH_DCLR_SM_GLOBAL(sma_t, sm, gob) \
-    sma_t * const gob = &s_ ## sm;
+    sma_t * const gob = &s_##sm;
 
 /**
  *  \brief
@@ -1174,7 +1174,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 
 #define RKH_DECLARE_TR_TBL(name) \
-    extern RKHROM RKH_TR_T name ## _trtbl[]
+    extern RKHROM RKH_TR_T name##_trtbl[]
 
 /**
  *  \brief
@@ -1497,10 +1497,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 #define RKH_SMA_CREATE(sma_t, name, prio, ppty, ist, iact, ievt) \
                                                                  \
-    static RKHROM RKH_ROM_T rs_ ## name = MKRRKH(name, prio, ppty, ist, \
+    static RKHROM RKH_ROM_T rs_##name = MKRRKH(name, prio, ppty, ist, \
                                                  iact, ievt); \
-    static sma_t s_ ## name = MKSMA(&rs_ ## name, ist); \
-    RKH_SMA_T *const name = (RKH_SMA_T *)&s_ ## name
+    static sma_t s_##name = MKSMA(&rs_##name, ist); \
+    RKH_SMA_T *const name = (RKH_SMA_T *)&s_##name
 
 #if defined(RKH_USE_TRC_SENDER)
     /**
