@@ -1380,6 +1380,19 @@ extern "C" {
 
 #endif
 
+#ifndef RKH_CFG_HOOK_TRCEVT_END_EN
+    #error "RKH_CFG_HOOK_TRCEVT_END_EN             not #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be RKH_ENABLED ]        "
+    #error "                                    [     || RKH_DISABLED]        "
+
+#elif   ((RKH_CFG_HOOK_TRCEVT_END_EN != RKH_ENABLED) && \
+    (RKH_CFG_HOOK_TRCEVT_END_EN != RKH_DISABLED))
+    #error "RKH_CFG_HOOK_TRCEVT_END_EN       illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be  RKH_ENABLED ]       "
+    #error "                                    [     ||  RKH_DISABLED]       "
+
+#endif
+
 #ifndef RKH_CFG_SMA_INIT_EVT_EN
     #error "RKH_CFG_SMA_INIT_EVT_EN               not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]        "
@@ -1655,6 +1668,13 @@ extern "C" {
         rkh_hook_timetick()
 #else
     #define RKH_HOOK_TIMETICK()             (void)0
+#endif
+
+#if (RKH_CFG_HOOK_TRCEVT_END_EN == RKH_ENABLED)
+    #define RKH_HOOK_TRCEVT_END() \
+        rkh_hook_trcEvtEnd()
+#else
+    #define RKH_HOOK_TRCEVT_END()           (void)0
 #endif
 
 #if (RKH_CFG_TRC_EN      == RKH_ENABLED  && \

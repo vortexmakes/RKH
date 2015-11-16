@@ -406,6 +406,7 @@ rkh_trc_end(void)
 {
     RKH_TRC_CHK();
     RKH_TRC_FLG();
+    RKH_HOOK_TRCEVT_END();
 }
 
 void
