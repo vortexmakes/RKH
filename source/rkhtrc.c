@@ -64,34 +64,34 @@
  */
 /* RKH_MODULE_NAME( rkhtrc ) */
 
-#define GETGRP(e)             (rui8_t)(((e) & 0xE0) >> 5)
-#define GETEVT(e)             (rui8_t)((e) & 0x1F)
-
 /* ------------------------------- Constants ------------------------------- */
 
-#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
-/** 
- *  \brief
- *  Map (group << 4) + event to event index in trceftbl[] table. 
- */
-static RKHROM rui8_t trcgmtbl[] =
-{
-    /*	<offset>				| <range> [in bytes] */
-    /*                            1 byte -> 8 events */
-    ((RKH_MP_TTBL_OFFSET << 4)  | RKH_MP_TTBL_RANGE),
-    ((RKH_RQ_TTBL_OFFSET << 4)  | RKH_RQ_TTBL_RANGE),
-    ((RKH_SMA_TTBL_OFFSET << 4) | RKH_SMA_TTBL_RANGE),
-    ((RKH_SM_TTBL_OFFSET << 4)  | RKH_SM_TTBL_RANGE),
-    ((RKH_TIM_TTBL_OFFSET << 4) | RKH_TIM_TTBL_RANGE),
-    ((RKH_FWK_TTBL_OFFSET << 4) | RKH_FWK_TTBL_RANGE),
-    ((RKH_USR_TTBL_OFFSET << 4) | RKH_USR_TTBL_RANGE),
-    ((RKH_UT_TTBL_OFFSET << 4)  | RKH_UT_TTBL_RANGE)
-};
-
 /* ---------------------------- Local data types --------------------------- */
+
+#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
+typedef rui8_t RKH_GM_OFFSET_T;
+typedef rui8_t RKH_GM_RANGE_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
+typedef rui16_t RKH_GM_OFFSET_T;
+typedef rui8_t RKH_GM_RANGE_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
+typedef rui32_t RKH_GM_OFFSET_T;
+typedef rui32_t RKH_GM_RANGE_T;
+#else
+typedef rui8_t RKH_GM_OFFSET_T;
+typedef rui8_t RKH_GM_RANGE_T;
+#endif
+
+typedef struct
+{
+    RKH_GM_OFFSET_T offset;
+    RKH_GM_RANGE_T range;
+} RKH_GMTBL_T;
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 
+#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 /**
  *  \brief
  *  Filter table of trace events.
@@ -178,6 +178,22 @@ static rui8_t trcsigftbl[RKH_TRC_MAX_SIGNALS];
  */
 const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   trcsigftbl};
 const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       trcsmaftbl};
+
+/** 
+ *  \brief
+ *  Map a trace event ID to its corresponding filter.
+ */
+static RKHROM RKH_GMTBL_T trcgmtbl[] =
+{
+    {RKH_MP_TTBL_OFFSET,    RKH_MP_TTBL_RANGE},
+    {RKH_RQ_TTBL_OFFSET,    RKH_RQ_TTBL_RANGE},
+    {RKH_SMA_TTBL_OFFSET,   RKH_SMA_TTBL_RANGE},
+    {RKH_SM_TTBL_OFFSET,    RKH_SM_TTBL_RANGE},
+    {RKH_TIM_TTBL_OFFSET,   RKH_TIM_TTBL_RANGE},
+    {RKH_FWK_TTBL_OFFSET,   RKH_FWK_TTBL_RANGE},
+    {RKH_USR_TTBL_OFFSET,   RKH_USR_TTBL_RANGE},
+    {RKH_UT_TTBL_OFFSET,    RKH_UT_TTBL_RANGE}
+};
 #endif
 
 static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
@@ -221,14 +237,14 @@ rkh_trc_put(rui8_t b)
 rui8_t *
 rkh_trc_get(void)
 {
-    rui8_t *tre = (rui8_t *)0;
+    rui8_t *trByte = (rui8_t *)0;
 
     if (trcqty == 0)
     {
-        return tre;
+        return trByte;
     }
 
-    tre = trcout++;
+    trByte = trcout++;
     --trcqty;
 
     if (trcout >= trcend)
@@ -236,22 +252,22 @@ rkh_trc_get(void)
         trcout = trcstm;
     }
 
-    return tre;
+    return trByte;
 }
 
 rui8_t *
 rkh_trc_get_block(TRCQTY_T *nget)
 {
-    rui8_t *tre = (rui8_t *)0;
+    rui8_t *trByte = (rui8_t *)0;
     TRCQTY_T n;
 
     if (trcqty == (TRCQTY_T)0)
     {
         *nget = (TRCQTY_T)0;
-        return tre;
+        return trByte;
     }
 
-    tre = trcout;
+    trByte = trcout;
 
     /* Calculates the number of bytes to be retrieved */
     n = (TRCQTY_T)(trcend - trcout);    /* bytes until the end */
@@ -273,27 +289,30 @@ rkh_trc_get_block(TRCQTY_T *nget)
         trcout = trcstm;
     }
 
-    return tre;
+    return trByte;
 }
 
 #if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 rbool_t
-rkh_trc_isoff_(rui8_t e)
+rkh_trc_isoff_(RKH_TE_ID_T e)
 {
-    rui8_t evt, grp;
+    RKH_TE_ID_T evt;
+    RKH_TG_T grp;
 
     evt = GETEVT(e);
     grp = GETGRP(e);
 
     return ((trcgfilter & rkh_maptbl[grp]) != 0) &&
-           ((trceftbl[(rui8_t)((trcgmtbl[grp] >> 4) + (evt >> 3))] &
+           ((trceftbl[(RKH_TE_ID_T)(trcgmtbl[grp].offset + (evt >> 3))] &
              rkh_maptbl[evt & 0x7]) != 0);
 }
 
 void
-rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode)
+rkh_trc_filter_group_(rui8_t ctrl, RKH_TG_T grp, rui8_t mode)
 {
-    rui8_t *p, ix, c, offset, range;
+    rui8_t *p, ix, c;
+    RKH_GM_OFFSET_T offset;
+    RKH_GM_RANGE_T range;
 
     if (grp == RKH_TRC_ALL_GROUPS)
     {
@@ -312,8 +331,8 @@ rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode)
 
     if (mode == ECHANGE)
     {
-        offset = (rui8_t)(trcgmtbl[grp] >> 4);
-        range = (rui8_t)(trcgmtbl[grp] & 0x0F);
+        offset = trcgmtbl[grp].offset;
+        range = trcgmtbl[grp].range;
         for (p = &trceftbl[offset],
              ix = 0,
              c = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
@@ -323,9 +342,12 @@ rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode)
 }
 
 void
-rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt)
+rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt)
 {
-    rui8_t *p, ix, c, grp, e, offset;
+    rui8_t *p, ix, c;
+    RKH_TG_T grp;
+    RKH_TE_ID_T e;
+    RKH_GM_OFFSET_T offset;
 
     if (evt == RKH_TRC_ALL_EVENTS)
     {
@@ -340,7 +362,7 @@ rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt)
 
     e = GETEVT(evt);
     grp = GETGRP(evt);
-    offset = (rui8_t)((trcgmtbl[grp] >> 4) + (e >> 3));
+    offset = (RKH_GM_OFFSET_T)(trcgmtbl[grp].offset + (e >> 3));
 
     if (ctrl == FILTER_OFF)
     {
@@ -460,7 +482,7 @@ rkh_trc_str(const char *s)
 }
 
 void
-rkh_trc_obj(rui8_t tre, rui8_t *obj, const char *obj_name)
+rkh_trc_obj(RKH_TE_ID_T tre, rui8_t *obj, const char *obj_name)
 {
     RKH_TRC_BEGIN_WOFIL(tre)
     RKH_TRC_SYM(obj);

@@ -121,9 +121,9 @@ extern "C" {
 #define RKH_BIT_MASK_08(bit_mask, bit_shift) \
     ((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
 #define RKH_BIT_MASK_16(bit_mask, bit_shift) \
-    ((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
+    ((rui16_t)((rui16_t)(bit_mask) << (bit_shift)))
 #define RKH_BIT_MASK_32(bit_mask, bit_shift) \
-    ((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
+    ((rui32_t)((rui32_t)(bit_mask) << (bit_shift)))
 /*@}*/
 
 /**@{

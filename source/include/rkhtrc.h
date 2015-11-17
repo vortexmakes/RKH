@@ -308,24 +308,44 @@ extern "C" {
     #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
     #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
     #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+    #define RKH_GRP_MASK \
+        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
+                       RKH_NBIT_EVENT_PER_GROUP)
+    #define RKH_TE_MASK \
+        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
     #define RKH_NBITS_GROUP             8
     #define RKH_NBIT_EVENT_PER_GROUP   (16 - RKH_NBITS_GROUP)
     #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
     #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
     #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+    #define RKH_GRP_MASK \
+        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
+                       RKH_NBIT_EVENT_PER_GROUP)
+    #define RKH_TE_MASK \
+        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
     #define RKH_NBITS_GROUP             8
     #define RKH_NBIT_EVENT_PER_GROUP   (32 - RKH_NBITS_GROUP)
     #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
     #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
     #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+    #define RKH_GRP_MASK \
+        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
+                       RKH_NBIT_EVENT_PER_GROUP)
+    #define RKH_TE_MASK \
+        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #else
     #define RKH_NBITS_GROUP             3
     #define RKH_NBIT_EVENT_PER_GROUP    (8 - RKH_NBITS_GROUP)
     #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
     #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
     #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+    #define RKH_GRP_MASK \
+        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
+                       RKH_NBIT_EVENT_PER_GROUP)
+    #define RKH_TE_MASK \
+        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #endif
 
 /**
@@ -437,9 +457,14 @@ extern "C" {
 #define RKH_UT_TTBL_OFFSET          (RKH_USR_TTBL_OFFSET + RKH_USR_TTBL_RANGE)
 
 #define GRPLSH(grp) \
-    (rui8_t)(((grp) & (RKH_TRC_MAX_GROUPS - 1)) << NGSH)
+    (RKH_TE_ID_T)(((grp) & (rui8_t)(RKH_TRC_MAX_GROUPS - 1)) << NGSH)
 #define EXTE(te, grp) \
-    (rui8_t)((te) - GRPLSH(grp))
+    (RKH_TE_ID_T)((te) - GRPLSH(grp))
+
+#define GETGRP(e) \
+    (RKH_TG_T)(((e) & RKH_GRP_MASK) >> RKH_NBIT_EVENT_PER_GROUP)
+#define GETEVT(e) \
+    (RKH_TE_ID_T)((e) & RKH_TE_MASK)
 
 #define ECHANGE                     0
 #define EUNCHANGE                   1
@@ -2279,7 +2304,7 @@ extern "C" {
             { \
                 static RKHROM char __e_n[] = # __e; \
                 RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_TUSR) \
-                RKH_TRC_UI8(EXTE(__e, RKH_TG_USR)); \
+                RKH_TRC_TE_ID(EXTE(__e, RKH_TG_USR)); \
                 RKH_TRC_STR(__e_n); \
                 RKH_TRC_END_WOFIL() \
                 RKH_TRC_FLUSH(); \
@@ -2790,6 +2815,54 @@ typedef enum RKH_FIL_T
 
 /**
  *  \brief
+ *  Describes a trace event identification (ID).
+ *
+ *  The trace event ID is arranged as:
+ *  event number = | G | G | G | E | E | E | E | E |\n
+ *
+ *  G's:	group number.\n
+ *  E's:	event's group.\n
+ *
+ *  Where the lower 5 bits (E's) of the event ID are used to determine
+ *  the trace event, while the next three most significant bits
+ *  (G's) are used to determine the corresponding group.
+ *  Therefore, is able to define 8 groups and 32 events per group.
+ *
+ *  Trace events are binary data consisting of a trace header and its
+ *  associated event data. Every trace header is made up of a ID and a
+ *  timestamp. The number of bytes used by the timestamp is configurable by
+ *  RKH_TRC_SIZEOF_TS (1, 2 or 4 bytes). After the timestamp follows the
+ *  event data. The content and size of the data portion of a trace event is
+ *  determined by the event ID.
+ *	All types of events are stored in a single ring buffer, called trace
+ *	stream, using a variable event size. In this manner the recorder always
+ *	holds the most recent history.
+ *	On the other hand, all data are stored in little-endian order (least
+ *	significant byte first). Also, they are stored into the trace stream 1
+ *	byte at a time, thus avoiding any potential data misalignment problems.
+ *
+ *	\note
+ *	The timestamp is optional, thus it could be eliminated from the trace
+ *	event in compile-time with RKH_CFG_TRC_TSTAMP_EN = 0.
+ */
+#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
+    typedef rui8_t RKH_TE_ID_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
+    typedef rui16_t RKH_TE_ID_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
+    typedef rui32_t RKH_TE_ID_T;
+#else
+    typedef rui8_t RKH_TE_ID_T;
+#endif
+
+/**
+ *  \brief
+ *  Group of events 
+ */
+typedef rui8_t RKH_TG_T;
+
+/**
+ *  \brief
  *  RKH group of trace events
  */
 typedef enum rkh_trc_groups
@@ -3156,48 +3229,6 @@ typedef enum RKH_SUBTE_SM_EXE_ACT
     typedef rui16_t RKH_TS_T;
 #endif
 
-/**
- *  \brief
- *  Describes a trace event identification (ID).
- *
- *  The trace event ID is arranged as:
- *  event number = | G | G | G | E | E | E | E | E |\n
- *
- *  G's:	group number.\n
- *  E's:	event's group.\n
- *
- *  Where the lower 5 bits (E's) of the event ID are used to determine
- *  the trace event, while the next three most significant bits
- *  (G's) are used to determine the corresponding group.
- *  Therefore, is able to define 8 groups and 32 events per group.
- *
- *  Trace events are binary data consisting of a trace header and its
- *  associated event data. Every trace header is made up of a ID and a
- *  timestamp. The number of bytes used by the timestamp is configurable by
- *  RKH_TRC_SIZEOF_TS (1, 2 or 4 bytes). After the timestamp follows the
- *  event data. The content and size of the data portion of a trace event is
- *  determined by the event ID.
- *	All types of events are stored in a single ring buffer, called trace
- *	stream, using a variable event size. In this manner the recorder always
- *	holds the most recent history.
- *	On the other hand, all data are stored in little-endian order (least
- *	significant byte first). Also, they are stored into the trace stream 1
- *	byte at a time, thus avoiding any potential data misalignment problems.
- *
- *	\note
- *	The timestamp is optional, thus it could be eliminated from the trace
- *	event in compile-time with RKH_CFG_TRC_TSTAMP_EN = 0.
- */
-#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
-    typedef rui8_t RKH_TE_ID_T;
-#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
-    typedef rui16_t RKH_TE_ID_T;
-#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
-    typedef rui32_t RKH_TE_ID_T;
-#else
-    typedef rui8_t RKH_TE_ID_T;
-#endif
-
 /* -------------------------- External variables --------------------------- */
 
 extern const RKH_TRC_FIL_T fsig;
@@ -3313,7 +3344,7 @@ void rkh_trc_put(rui8_t b);
  *  it. Please use RKH_FILTER_ON_GROUP(), or RKH_FILTER_OFF_GROUP() macros
  *  instead.
  */
-void rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode);
+void rkh_trc_filter_group_(rui8_t ctrl, RKH_TG_T grp, rui8_t mode);
 
 /**
  *  \brief
@@ -3357,7 +3388,7 @@ void rkh_trc_filter_group_(rui8_t ctrl, rui8_t grp, rui8_t mode);
  *  it. Please use RKH_FILTER_ON_EVENT(), or RKH_FILTER_OFF_EVENT() macros
  *  instead.
  */
-void rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt);
+void rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt);
 
 /**
  *  \brief
@@ -3515,7 +3546,7 @@ void rkh_trc_str(const char *s);
 
 /**
  */
-void rkh_trc_obj(rui8_t tre, rui8_t *obj, const char *obj_name);
+void rkh_trc_obj(RKH_TE_ID_T tre, rui8_t *obj, const char *obj_name);
 
 /**
  */
