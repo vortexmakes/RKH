@@ -1380,14 +1380,14 @@ extern "C" {
 
 #endif
 
-#ifndef RKH_CFG_HOOK_TRCEVT_END_EN
-    #error "RKH_CFG_HOOK_TRCEVT_END_EN             not #define'd in 'rkhcfg.h'"
+#ifndef RKH_CFG_HOOK_PUT_TRCEVT_EN
+    #error "RKH_CFG_HOOK_PUT_TRCEVT_EN             not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]        "
     #error "                                    [     || RKH_DISABLED]        "
 
-#elif   ((RKH_CFG_HOOK_TRCEVT_END_EN != RKH_ENABLED) && \
-    (RKH_CFG_HOOK_TRCEVT_END_EN != RKH_DISABLED))
-    #error "RKH_CFG_HOOK_TRCEVT_END_EN       illegally #define'd in 'rkhcfg.h'"
+#elif   ((RKH_CFG_HOOK_PUT_TRCEVT_EN != RKH_ENABLED) && \
+    (RKH_CFG_HOOK_PUT_TRCEVT_EN != RKH_DISABLED))
+    #error "RKH_CFG_HOOK_PUT_TRCEVT_EN       illegally #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be  RKH_ENABLED ]       "
     #error "                                    [     ||  RKH_DISABLED]       "
 
@@ -1670,11 +1670,11 @@ extern "C" {
     #define RKH_HOOK_TIMETICK()             (void)0
 #endif
 
-#if (RKH_CFG_HOOK_TRCEVT_END_EN == RKH_ENABLED)
-    #define RKH_HOOK_TRCEVT_END() \
-        rkh_hook_trcEvtEnd()
+#if (RKH_CFG_HOOK_PUT_TRCEVT_EN == RKH_ENABLED)
+    #define RKH_HOOK_PUT_TRCEVT() \
+        rkh_hook_putTrcEvt()
 #else
-    #define RKH_HOOK_TRCEVT_END()           (void)0
+    #define RKH_HOOK_PUT_TRCEVT()           (void)0
 #endif
 
 #if (RKH_CFG_TRC_EN      == RKH_ENABLED  && \

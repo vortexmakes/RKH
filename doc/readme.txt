@@ -4247,6 +4247,13 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copydetails RKH_CFG_HOOK_TIMETICK_EN </TD>
 	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_HOOK_PUT_TRCEVT_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copydetails RKH_CFG_HOOK_PUT_TRCEVT_EN </TD>
+	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_FWK_TICK_RATE_HZ </TD>
 		<TD> integer </TD>

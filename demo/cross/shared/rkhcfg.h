@@ -186,6 +186,17 @@
 #define RKH_CFG_HOOK_TIMETICK_EN		RKH_ENABLED
 
 /**
+ *  If the #RKH_CFG_HOOK_PUT_TRCEVT_EN is set to 1, RKH will invoke the
+ *  rkh_hook_putTrcEvt() function from rkh_trc_end() function, at the end of
+ *  that, to allow to the application to extend the functionality of RKH, 
+ *  giving the port developer the opportunity to add code that will be called 
+ *  when is put a trace event into the stream buffer.
+ *  When this is set the application must provide the hook function.
+ */
+
+#define RKH_CFG_HOOK_PUT_TRCEVT_EN        RKH_DISABLED
+
+/**
  * 	Specify the frequency of the framework tick interrupt (number of ticks 
  * 	in one second). It's the rate at which the rkh_tmr_tick() function is 
  * 	invoked. This configuration constant is not used by RKH, it is just a 
