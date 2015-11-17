@@ -276,7 +276,7 @@ extern "C" {
 
 /* -------------------------------- Constants ------------------------------ */
 
-#define RKH_TRC_MAX_GROUPS          7
+#define RKH_TRC_MAX_GROUPS          8
 #define RKH_MAX_NUM_TE_PER_GROUP    32 /* 2^5 = 32 */
 
 /**
@@ -335,6 +335,7 @@ extern "C" {
 #define RKH_TMR_START               GRPLSH(RKH_TG_TMR)
 #define RKH_FWK_START               GRPLSH(RKH_TG_FWK)
 #define RKH_USR_START               GRPLSH(RKH_TG_USR)
+#define RKH_UT_START                GRPLSH(RKH_TG_UT)
 /*@}*/
 
 /**@{
@@ -350,6 +351,7 @@ extern "C" {
 #define RKH_TIM_TTBL_RANGE          1
 #define RKH_FWK_TTBL_RANGE          3
 #define RKH_USR_TTBL_RANGE          4
+#define RKH_UT_TTBL_RANGE           2
 /*@}*/
 
 /**
@@ -362,7 +364,8 @@ extern "C" {
      RKH_SM_TTBL_RANGE   + \
      RKH_TIM_TTBL_RANGE  + \
      RKH_FWK_TTBL_RANGE  + \
-     RKH_USR_TTBL_RANGE)
+     RKH_USR_TTBL_RANGE  + \
+     RKH_UT_TTBL_RANGE)
 
 /**
  *  \brief
@@ -383,6 +386,7 @@ extern "C" {
 #define RKH_TIM_TTBL_OFFSET         (RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
 #define RKH_FWK_TTBL_OFFSET         (RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
 #define RKH_USR_TTBL_OFFSET         (RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
+#define RKH_UT_TTBL_OFFSET          (RKH_USR_TTBL_OFFSET + RKH_USR_TTBL_RANGE)
 
 #if RKH_MAX_NUM_TE_PER_GROUP <= 32
     #define NGSH                    5
@@ -2788,6 +2792,12 @@ typedef enum rkh_trc_groups
      */
     RKH_TG_USR,
 
+    /**
+     *  \brief
+     *  Unit test harness group (UT)
+     */
+    RKH_TG_UT,
+
     RKH_TG_NGROUP
 } RKH_TRC_GROUPS;
 
@@ -3051,7 +3061,18 @@ typedef enum rkh_trc_events
     RKH_TE_FWK_EPOOL,               /**< \copydetails RKH_TR_FWK_EPOOL */
     RKH_TE_FWK_QUEUE,               /**< \copydetails RKH_TR_FWK_QUEUE */
 
+    /* --- User events (USR group) ----------------------------------------- */
     RKH_TE_USER = RKH_USR_START,
+
+    /* --- Unit test harness events (UT group) ----------------------------- */
+    RKH_TE_UT_INIT = RKH_UT_START,
+    RKH_TE_UT_CLEANUP,
+    RKH_TE_UT_VERIFY,
+    RKH_TE_UT_IGNORE_GROUP,
+    RKH_TE_UT_EXPECT,
+    RKH_TE_UT_EXPECT_ANYARGS,
+    RKH_TE_UT_IGNORE,
+    RKH_TE_UT_IGNORE_ARG,
 
     RKH_TE_NEVENT = 255
 } RKH_TRC_EVENTS;

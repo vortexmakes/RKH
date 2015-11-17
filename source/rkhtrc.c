@@ -84,7 +84,8 @@ static RKHROM rui8_t trcgmtbl[] =
     ((RKH_SM_TTBL_OFFSET << 4)  | RKH_SM_TTBL_RANGE),
     ((RKH_TIM_TTBL_OFFSET << 4) | RKH_TIM_TTBL_RANGE),
     ((RKH_FWK_TTBL_OFFSET << 4) | RKH_FWK_TTBL_RANGE),
-    ((RKH_USR_TTBL_OFFSET << 4) | RKH_USR_TTBL_RANGE)
+    ((RKH_USR_TTBL_OFFSET << 4) | RKH_USR_TTBL_RANGE),
+    ((RKH_UT_TTBL_OFFSET << 4)  | RKH_UT_TTBL_RANGE)
 };
 
 /* ---------------------------- Local data types --------------------------- */
