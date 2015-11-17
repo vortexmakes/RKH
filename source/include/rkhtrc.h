@@ -67,6 +67,20 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 
+#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
+    #define RKH_TRC_TE_ID(teid) \
+        RKH_TRC_UI8(teid)
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
+    #define RKH_TRC_TE_ID(teid) \
+        RKH_TRC_UI16(teid)
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
+    #define RKH_TRC_TE_ID(teid) \
+        RKH_TRC_UI32(teid)
+#else
+    #define RKH_TRC_TE_ID(teid) \
+        RKH_TRC_UI16(teid)
+#endif
+
 #if RKH_CFG_TRC_TSTAMP_EN == RKH_ENABLED
     #if RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 8
         #define RKH_TRC_TSTAMP() \
@@ -467,6 +481,18 @@ extern "C" {
 
 /**
  *  \brief
+ * 	Specify the size of the trace event identification. The valid values 
+ * 	[in bits] are 8, 16 or 32. Default is 8. 
+ *
+ * 	\sa #RKH_TE_ID_T data type.
+ *
+ *  \note In the future releases, it should be defined in the configuration 
+ *  file of the RKH framework.
+ */
+#define RKH_CFG_TRC_SIZEOF_TE_ID        8
+
+/**
+ *  \brief
  *  Inserts directly into the trace stream the flag byte in a raw (without
  *  escaped sequence) manner.
  */
@@ -668,7 +694,7 @@ extern "C" {
     RKH_SR_ALLOC(); \
     RKH_ENTER_CRITICAL_(); \
     rkh_trc_clear_chk(); \
-    RKH_TRC_UI8(eid_);
+    RKH_TRC_TE_ID(eid_);
 
 /**
  *  Idem RKH_TRC_END() macro but use it for trace events that are
@@ -902,7 +928,7 @@ extern "C" {
  */
 #define RKH_TRC_HDR(eid) \
     chk = 0; \
-    RKH_TRC_UI8(eid); \
+    RKH_TRC_TE_ID(eid); \
     RKH_TRC_NSEQ();  \
     RKH_TRC_TSTAMP()
 
@@ -3114,10 +3140,10 @@ typedef enum RKH_SUBTE_SM_EXE_ACT
 
 /**
  *  \brief
- *  Describes a trace event.
+ *  Describes a trace event identification.
  *
  *  Trace events are binary data consisting of a trace header and its
- *  associated event data. Every trace header is made up of a 1-byte ID and a
+ *  associated event data. Every trace header is made up of a ID and a
  *  timestamp. The number of bytes used by the timestamp is configurable by
  *  RKH_TRC_SIZEOF_TS (1, 2 or 4 bytes). After the timestamp follows the
  *  event data. The content and size of the data portion of a trace event is
@@ -3133,7 +3159,7 @@ typedef enum RKH_SUBTE_SM_EXE_ACT
  *	The timestamp is optional, thus it could be eliminated from the trace
  *	event in compile-time with RKH_CFG_TRC_TSTAMP_EN = 0.
  */
-typedef rui8_t RKH_TE_T;
+typedef rui8_t RKH_TE_ID_T;
 
 /* -------------------------- External variables --------------------------- */
 
@@ -3300,7 +3326,7 @@ void rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt);
  *  \brief
  *  Test the group and event filter condition.
  *
- *  \param[in] e	trace event. The available events are enumerated in
+ *  \param[in] e	trace event ID. The available events are enumerated in
  *                  RKH_TRC_EVENTS.
  *
  *	\return
@@ -3311,7 +3337,7 @@ void rkh_trc_filter_event_(rui8_t ctrl, rui8_t evt);
  *  This function is internal to RKH and the user application should not call
  *  it.
  */
-rbool_t rkh_trc_isoff_(rui8_t e);
+rbool_t rkh_trc_isoff_(RKH_TE_ID_T e);
 
 /**
  *  \brief
@@ -3356,7 +3382,8 @@ rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
  *	By means of RKH_TRC_HDR() macro stores the listed data fields in the
  *	stream buffer (in that order):
  *
- *	- Trace event ID [1-byte].
+ *	- Trace event ID [n-bytes]. The number of bytes that it uses is specified 
+ *	by the size of RKH_TE_ID_T data type.
  *
  *	- Sequence number [1-byte]. If the RKH_CFG_TRC_NSEQ_EN is set to 1 then
  *	RKH will add to the trace record an incremental number (1-byte), used
@@ -3378,7 +3405,7 @@ rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
  *	\code
  *      RKH_TRC_HDR( eid )      \
  *  (1)		chk = 0;			\
- *  (2)		RKH_TRC_UI8( eid );	\
+ *  (2)		RKH_TRC_TE_ID( eid );	\
  *  (3)		RKH_TRC_NSEQ();		\
  *  (4)		RKH_TRC_TSTAMP()
  *  \endcode
@@ -3388,7 +3415,7 @@ rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
  *	\li (3)	Insert the sequence number
  *	\li (4)	Insert the timestamp
  */
-void rkh_trc_begin(rui8_t eid);
+void rkh_trc_begin(RKH_TE_ID_T eid);
 
 /**
  *  \brief

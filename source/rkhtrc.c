@@ -180,8 +180,8 @@ const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   trcsigftbl};
 const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       trcsmaftbl};
 #endif
 
-static RKH_TE_T trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-static RKH_TE_T *trcin, *trcout, *trcend;
+static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
+static rui8_t *trcin, *trcout, *trcend;
 static rui8_t chk;
 static rui8_t nseq;
 static TRCQTY_T trcqty;
@@ -397,7 +397,7 @@ rkh_trc_simfil(const RKH_TRC_FIL_T *filter,    RKH_TRC_FSLOT slot,
 #endif
 
 void
-rkh_trc_begin(rui8_t eid)
+rkh_trc_begin(RKH_TE_ID_T eid)
 {
     RKH_TRC_HDR(eid);
 }
