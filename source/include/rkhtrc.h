@@ -67,6 +67,18 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 
+/**
+ *  \brief
+ * 	Specify the size of the trace event identification. The valid values 
+ * 	[in bits] are 8, 16 or 32. Default is 8. 
+ *
+ * 	\sa #RKH_TE_ID_T data type.
+ *
+ *  \note In the future releases, it should be defined in the configuration 
+ *  file of the RKH framework.
+ */
+#define RKH_CFG_TRC_SIZEOF_TE_ID        8
+
 #if RKH_CFG_TRC_SIZEOF_TE_ID == 8
     #define RKH_TRC_TE_ID(teid) \
         RKH_TRC_UI8(teid)
@@ -290,8 +302,31 @@ extern "C" {
 
 /* -------------------------------- Constants ------------------------------ */
 
-#define RKH_TRC_MAX_GROUPS          8
-#define RKH_MAX_NUM_TE_PER_GROUP    32 /* 2^5 = 32 */
+#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
+    #define RKH_NBITS_GROUP             3
+    #define RKH_NBIT_EVENT_PER_GROUP   (8 - RKH_NBITS_GROUP)
+    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
+    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
+    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
+    #define RKH_NBITS_GROUP             8
+    #define RKH_NBIT_EVENT_PER_GROUP   (16 - RKH_NBITS_GROUP)
+    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
+    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
+    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
+    #define RKH_NBITS_GROUP             8
+    #define RKH_NBIT_EVENT_PER_GROUP   (32 - RKH_NBITS_GROUP)
+    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
+    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
+    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+#else
+    #define RKH_NBITS_GROUP             3
+    #define RKH_NBIT_EVENT_PER_GROUP    (8 - RKH_NBITS_GROUP)
+    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
+    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
+    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+#endif
 
 /**
  *	Specify the maximum number of trace events, this number is direclty
@@ -299,7 +334,6 @@ extern "C" {
  *	the lower the RAM consumption.
  *	See \c trceftbl table.
  */
-
 #define RKH_TRC_MAX_EVENTS \
     (RKH_MAX_NUM_TE_PER_GROUP * RKH_TRC_MAX_GROUPS)
 
@@ -402,14 +436,10 @@ extern "C" {
 #define RKH_USR_TTBL_OFFSET         (RKH_FWK_TTBL_OFFSET + RKH_FWK_TTBL_RANGE)
 #define RKH_UT_TTBL_OFFSET          (RKH_USR_TTBL_OFFSET + RKH_USR_TTBL_RANGE)
 
-#if RKH_MAX_NUM_TE_PER_GROUP <= 32
-    #define NGSH                    5
-#else
-    #define NGSH                    5
-#endif
-
-#define GRPLSH(grp)                 (rui8_t)(((grp) & 7) << NGSH)
-#define EXTE(te, grp)               (rui8_t)((te) - GRPLSH(grp))
+#define GRPLSH(grp) \
+    (rui8_t)(((grp) & (RKH_TRC_MAX_GROUPS - 1)) << NGSH)
+#define EXTE(te, grp) \
+    (rui8_t)((te) - GRPLSH(grp))
 
 #define ECHANGE                     0
 #define EUNCHANGE                   1
@@ -478,18 +508,6 @@ extern "C" {
 #else
     #define RKH_TRC_CHK()
 #endif
-
-/**
- *  \brief
- * 	Specify the size of the trace event identification. The valid values 
- * 	[in bits] are 8, 16 or 32. Default is 8. 
- *
- * 	\sa #RKH_TE_ID_T data type.
- *
- *  \note In the future releases, it should be defined in the configuration 
- *  file of the RKH framework.
- */
-#define RKH_CFG_TRC_SIZEOF_TE_ID        8
 
 /**
  *  \brief
@@ -2891,7 +2909,7 @@ typedef enum rkh_trc_groups
  *
  *  \code
  *      | ...               |
- *  (1) | event ID          | 1-byte
+ *  (1) | event ID          | 1,2,4-byte
  *  (2) | sequence number   | 1-byte
  *  (3) | timestamp         | 2,4-bytes
  *  (4) | args              | n-byte
@@ -2900,7 +2918,7 @@ typedef enum rkh_trc_groups
  *      | ...               |
  *	\endcode
  *
- *	-   (1) Each frame starts with the <B>trace event ID</B> byte, which is
+ *	-   (1) Each frame starts with the <B>trace event ID</B> bytes, which is
  *		one of the predefined RKH records or an application-specific record.
  *	-   (2) Following the <B>sequence number</B> is the sequence number byte.
  *		The target component increments this number for every frame inserted
@@ -3140,7 +3158,18 @@ typedef enum RKH_SUBTE_SM_EXE_ACT
 
 /**
  *  \brief
- *  Describes a trace event identification.
+ *  Describes a trace event identification (ID).
+ *
+ *  The trace event ID is arranged as:
+ *  event number = | G | G | G | E | E | E | E | E |\n
+ *
+ *  G's:	group number.\n
+ *  E's:	event's group.\n
+ *
+ *  Where the lower 5 bits (E's) of the event ID are used to determine
+ *  the trace event, while the next three most significant bits
+ *  (G's) are used to determine the corresponding group.
+ *  Therefore, is able to define 8 groups and 32 events per group.
  *
  *  Trace events are binary data consisting of a trace header and its
  *  associated event data. Every trace header is made up of a ID and a
@@ -3159,7 +3188,15 @@ typedef enum RKH_SUBTE_SM_EXE_ACT
  *	The timestamp is optional, thus it could be eliminated from the trace
  *	event in compile-time with RKH_CFG_TRC_TSTAMP_EN = 0.
  */
-typedef rui8_t RKH_TE_ID_T;
+#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
+    typedef rui8_t RKH_TE_ID_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
+    typedef rui16_t RKH_TE_ID_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
+    typedef rui32_t RKH_TE_ID_T;
+#else
+    typedef rui8_t RKH_TE_ID_T;
+#endif
 
 /* -------------------------- External variables --------------------------- */
 
