@@ -90,7 +90,7 @@ extern "C" {
         RKH_TRC_UI32(teid)
 #else
     #define RKH_TRC_TE_ID(teid) \
-        RKH_TRC_UI16(teid)
+        RKH_TRC_UI8(teid)
 #endif
 
 #if RKH_CFG_TRC_TSTAMP_EN == RKH_ENABLED
