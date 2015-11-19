@@ -3190,6 +3190,7 @@ typedef enum rkh_trc_events
     RKH_TE_UT_EXPECT_ANYARGS,
     RKH_TE_UT_IGNORE,
     RKH_TE_UT_IGNORE_ARG,
+    RKH_TE_UT_IGNORE_GROUP,
 
     RKH_TE_NEVENT = 255
 } RKH_TRC_EVENTS;
