@@ -71,14 +71,10 @@ runAllTests(void)
 
 /* ---------------------------- Global functions --------------------------- */
 
-void
-main(void)
+int
+main(int argc, char *argv[])
 {
-	static int argc;
-	static const char *argv[2];
-
-	argc = 1;
-	argv[0] = "rkhtrc.c";
+	bsp_init(argc, argv);
 	UnityMain(argc, argv, runAllTests);
 
 	for(;;)

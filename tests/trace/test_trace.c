@@ -72,7 +72,7 @@ TEST_TEAR_DOWN(trace)
 {
 }
 
-TEST(trace, simpleTransition)
+TEST(trace, first)
 {
 }
 
