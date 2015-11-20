@@ -50,9 +50,6 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include <conio.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 #include <time.h>
@@ -60,6 +57,7 @@
 #include <windows.h>        /* Win32 API for multithreading */
 #endif
 
+#include "unity.h"
 #include "bsp.h"
 #include "rkh.h"
 
@@ -72,28 +70,44 @@
 #define BIN_TRACE           0
 #define SOCKET_TRACE        1
 #define ESC                 0x1B
+#define UT_SIZEOF_MSG       256
 
 /* ---------------------------- Local data types --------------------------- */
+
+typedef enum
+{
+    UT_PROC_SUCCESS, UT_PROC_FAIL
+} UT_RET_CODE;
+
+typedef struct ProcessOut ProcessOut;
+struct ProcessOut
+{
+    char msg[UT_SIZEOF_MSG];    /* String terminated in '\0' according to */
+                                /* cmock's ruby scripts */
+    UNITY_LINE_TYPE line;       /* Line number of expectation */
+    /* Another parameters from trazer */
+};
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 
 RKH_THIS_MODULE
 
-#if defined(RKH_USE_TRC_SENDER)
+static rui32_t l_rnd;			/* random seed */
+static DWORD tick_msec;			/* clock tick in msec */
+rui8_t running;
+
+#if defined( RKH_USE_TRC_SENDER )
 static rui8_t l_isr_kbd;
+static rui8_t l_isr_tick;
 #endif
 
-#if RKH_CFG_TRC_EN == RKH_ENABLED
-static rbool_t running;
-static HANDLE idle_thread;
-#endif
-
-/*
- *  For binary trace feature.
- */
+/* For binary trace feature */
 #if BIN_TRACE == 1
 static FILE *ftbin;
 #endif
+
+static ProcessOut out;
 
 /*
  *  For socket trace feature.
@@ -152,58 +166,68 @@ static FILE *ftbin;
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 
-#if RKH_CFG_TRC_EN == RKH_ENABLED
-static
-DWORD WINAPI
-idle_thread_function(LPVOID par)
+static 
+DWORD WINAPI 
+isr_tmr_thread( LPVOID par )	/* Win32 thread to emulate timer ISR */
 {
-    (void)par;
-
-    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE);
-    running = (rui8_t)1;
-
-    while (running)
-    {
-        RKH_TRC_FLUSH();
-        Sleep(10);      /* wait for a while */
+    ( void )par;
+    while( running ) 
+	{
+		RKH_TIM_TICK( &l_isr_tick );
+        Sleep( tick_msec );
     }
-    return 0;           /* return success */
+    return 0;
 }
-#endif
+
+
+static 
+DWORD WINAPI 
+isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
+{
+	int c;
+
+    ( void )par;
+    while( running ) 
+	{
+		c = _getch();
+    }
+    return 0;
+}
+
+static
+UT_RET_CODE
+ut_process(ProcessOut *pOut)
+{
+    /* Blocking call with timeout */
+    return UT_PROC_FAIL;
+}
 
 /* ---------------------------- Global functions --------------------------- */
 
 void
 rkh_hook_timetick(void)
 {
-    if (_kbhit())
-    {
-        int c = _getch();
-
-        if (c == ESC)
-        {
-            RKH_SMA_POST_FIFO(svr, &e_term, &l_isr_kbd);
-        }
-        else if (tolower(c) == 'p')
-        {
-            bsp_publish(&e_pause);
-        }
-    }
 }
 
 void
 rkh_hook_start(void)
 {
-    rkh_set_tickrate(BSP_TICKS_PER_SEC);
+    DWORD thtmr_id, thkbd_id;
+    HANDLE hth_tmr, hth_kbd;
 
-    /*
-     *  For avoiding to have multiple threads (idle and main) sending data on
-     *  the same socket, i.e. using the send() function, the idle thread is
-     *  created to be run only after the initial process has finished.
-     *  Without this trick, the streams are interleaving and the trace stream
-     *  is corrupted.
-     */
-    ResumeThread(idle_thread);
+	/* set the desired tick rate */
+    tick_msec = 1000UL/BSP_TICKS_PER_SEC;
+    running = (rui8_t)1;
+	
+	/* create the ISR timer thread */
+    hth_tmr = CreateThread( NULL, 1024, &isr_tmr_thread, 0, 0, &thtmr_id );
+    RKH_ASSERT( hth_tmr != (HANDLE)0 );
+    SetThreadPriority( hth_tmr, THREAD_PRIORITY_TIME_CRITICAL );
+
+	/* create the ISR keyboard thread */
+    hth_kbd = CreateThread( NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id );
+    RKH_ASSERT( hth_kbd != (HANDLE)0 );
+    SetThreadPriority( hth_kbd, THREAD_PRIORITY_NORMAL );
 }
 
 void
@@ -213,6 +237,24 @@ rkh_hook_exit(void)
 #if RKH_CFG_TRC_EN == RKH_ENABLED
     running = (rui8_t)0;
 #endif
+}
+
+void 
+rkh_hook_idle( void )           /* called within critical section */
+{
+    RKH_EXIT_CRITICAL( dummy );
+	RKH_TRC_FLUSH();
+    RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
+}
+
+void
+rkh_hook_putTrcEvt(void)
+{
+    UT_RET_CODE ret;
+
+    RKH_TRC_FLUSH();
+    ret = ut_process(&out);
+    UNITY_TEST_ASSERT(ret != UT_PROC_FAIL, out.line, out.msg);
 }
 
 void
@@ -231,19 +273,11 @@ rkh_assert(RKHROM char * const file, int line)
 void
 rkh_trc_open(void)
 {
-    rkh_trc_init();
+	rkh_trc_init();
 
-    FTBIN_OPEN();
-    TCP_TRACE_OPEN();
-    RKH_TRC_SEND_CFG(BSP_TS_RATE_HZ);
-
-    if ((idle_thread =
-             CreateThread(NULL, 1024, &idle_thread_function, (void *)0,
-                          CREATE_SUSPENDED, NULL)) == (HANDLE)0)
-    {
-        fprintf(stderr, "Cannot create the idle thread: [%d] line from %s "
-                "file\n", __LINE__, __FILE__);
-    }
+	FTBIN_OPEN();
+	/*TCP_TRACE_OPEN();*/
+	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
 
 void

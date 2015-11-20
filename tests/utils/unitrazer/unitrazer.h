@@ -54,8 +54,8 @@
 
 /* ----------------------------- Include files ----------------------------- */
 
+#include "unity_fixture.h"
 #include "rkh.h"
-#include "unity.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 

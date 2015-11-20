@@ -50,7 +50,7 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include "rkh.h"
-#include "unity.h"
+#include "unity_fixture.h"
 #include "unitrazer.h"
 
 /* ----------------------------- Local macros ------------------------------ */

@@ -3,8 +3,8 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="trace"
-	ProjectGUID="{9C498F1F-016A-4C61-94DB-FDB91B7D2DEB}"
-	RootNamespace="shared"
+	ProjectGUID="{22224FE9-1695-42D1-8CE3-1F452020F783}"
+	RootNamespace="trace"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -41,13 +41,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\source\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC08__"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc&quot;;&quot;$(ProjectDir)..\..\..\..\..\unity\fixture&quot;;&quot;$(ProjectDir)..\..\..\..\..\utils\unitrazer&quot;;&quot;$(ProjectDir)..\..\..\..\..\unity&quot;;&quot;$(ProjectDir)..\..\..\..\..\trace&quot;;&quot;$(ProjectDir)..\&quot;;&quot;$(ProjectDir)..\..\..\..\..\..\source\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;__W32STVC08__"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -172,77 +172,221 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath="..\bsp.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\cli.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\cliact.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\main.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\svr.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\svract.c"
-				>
-			</File>
-			<File
-				RelativePath="..\tcptrc.c"
-				>
-			</File>
 			<Filter
 				Name="rkh"
 				>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkh.c"
+					RelativePath="..\..\..\..\..\..\source\rkh.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhdyn.c"
+					RelativePath="..\..\..\..\..\..\source\rkhdyn.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhmp.c"
+					RelativePath="..\..\..\..\..\..\source\rkhmp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhrq.c"
+					RelativePath="..\..\..\..\..\..\source\rkhrq.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhs.c"
+					RelativePath="..\..\..\..\..\..\source\rkhs.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhsma.c"
+					RelativePath="..\..\..\..\..\..\source\rkhsma.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhtbl.c"
+					RelativePath="..\..\..\..\..\..\source\rkhtbl.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhtim.c"
+					RelativePath="..\..\..\..\..\..\source\rkhtim.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\rkhtrc.c"
+					RelativePath="..\..\..\..\..\..\source\rkhtrc.c"
 					>
 				</File>
+				<Filter
+					Name="inc"
+					>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhassert.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhdef.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhevt.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhitl.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhmp.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhplat.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhrdy.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhrq.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhs.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhtim.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhtrc.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\include\rkhtype.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="port"
+					>
+					<File
+						RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="tests"
+				>
+				<Filter
+					Name="utils"
+					>
+					<Filter
+						Name="unitrazer"
+						>
+						<File
+							RelativePath="..\..\..\..\..\utils\unitrazer\unitrazer.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\..\utils\unitrazer\unitrazer.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="bsp"
+						>
+						<File
+							RelativePath="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="unity"
+					>
+					<File
+						RelativePath="..\..\..\..\..\unity\unity.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\unity\unity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\unity\unity_config.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\..\unity\unity_internals.h"
+						>
+					</File>
+					<Filter
+						Name="fixture"
+						>
+						<File
+							RelativePath="..\..\..\..\..\unity\fixture\unity_fixture.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\..\unity\fixture\unity_fixture.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\..\unity\fixture\unity_fixture_internals.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="trace"
+					>
+					<File
+						RelativePath="..\bsp.c"
+						>
+					</File>
+					<File
+						RelativePath="..\bsp.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\rkhcfg.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\test_trace.c"
+						>
+					</File>
+					<Filter
+						Name="test_runners"
+						>
+						<File
+							RelativePath="..\..\..\..\test_runners\all_tests.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\test_runners\test_trace_runner.c"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -250,98 +394,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\bsp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\cli.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\cliact.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\rkhcfg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\scevt.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\svr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\svract.h"
-				>
-			</File>
-			<File
-				RelativePath="..\tcptrc.h"
-				>
-			</File>
-			<Filter
-				Name="rkh"
-				>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkh.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhassert.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhevt.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhitl.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhmp.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhplat.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhrdy.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhrq.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhs.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhtim.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhtrc.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\..\..\..\source\include\rkhtype.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
