@@ -67,6 +67,7 @@ static
 void 
 runAllTests(void)
 {
+	RUN_TEST_GROUP(trace_filter);
 	RUN_TEST_GROUP(trace);
 }
 

@@ -3251,10 +3251,10 @@ typedef struct
 
 typedef struct RKH_FilterTbl
 {
-    const RKH_TRC_FIL_T *filSig;
-    const RKH_TRC_FIL_T *filAo;
-    rui8_t *filEvt;
-    rui8_t *filGrp;
+    const RKH_TRC_FIL_T *signal;
+    const RKH_TRC_FIL_T *ao;
+    rui8_t *event;
+    rui8_t *group;
     const RKH_GMTBL_T *grpFilMap;
 } RKH_FilterTbl;
 

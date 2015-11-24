@@ -89,7 +89,6 @@
  *  the bit position in trceftbl[], while the next four most significant bits
  *  (Y's) are used to determine the index into trceftbl[].
  */
-
 static rui8_t trceftbl[RKH_TRC_MAX_EVENTS_IN_BYTES];
 
 /**
@@ -108,7 +107,6 @@ static rui8_t trceftbl[RKH_TRC_MAX_EVENTS_IN_BYTES];
  *                           |_______________________ RKH_TG_FWK
  *	\endcode
  */
-
 static rui8_t trcgfilter;
 
 /**
@@ -130,7 +128,6 @@ static rui8_t trcgfilter;
  *  the bit position in trcsmaftbl[], while the next five most significant bits
  *  (Y's) are used to determine the index into trcsmaftbl[].
  */
-
 static rui8_t trcsmaftbl[RKH_TRC_MAX_SMA];
 
 /**
@@ -147,7 +144,6 @@ static rui8_t trcsmaftbl[RKH_TRC_MAX_SMA];
  *  position in trcsigftbl[], while the next most significant bits (Y's) are
  *  used to determine the index into trcsigftbl[].
  */
-
 static rui8_t trcsigftbl[RKH_TRC_MAX_SIGNALS];
 
 /**
@@ -549,10 +545,10 @@ rkh_trc_filter_get(RKH_FilterTbl *outFilterTbl)
 {
     if (outFilterTbl == (RKH_FilterTbl *)0)
         return;
-    outFilterTbl->filSig = &fsig;
-    outFilterTbl->filAo = &fsma;
-    outFilterTbl->filEvt = trceftbl;
-    outFilterTbl->filGrp = &trcgfilter;
+    outFilterTbl->signal = &fsig;
+    outFilterTbl->ao = &fsma;
+    outFilterTbl->event = trceftbl;
+    outFilterTbl->group = &trcgfilter;
     outFilterTbl->grpFilMap = trcgmtbl;
 }
 

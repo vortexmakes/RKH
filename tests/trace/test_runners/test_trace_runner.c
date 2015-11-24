@@ -60,6 +60,16 @@
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 
+TEST_GROUP_RUNNER(trace_filter)
+{
+	RUN_TEST_CASE(trace_filter, getBitIndex0);
+	RUN_TEST_CASE(trace_filter, getBitIndexX);
+	RUN_TEST_CASE(trace_filter, setBitIndex0);
+	RUN_TEST_CASE(trace_filter, resetBitIndex0);
+	RUN_TEST_CASE(trace_filter, setBitIndexX);
+	RUN_TEST_CASE(trace_filter, resetBitIndexX);
+}
+
 TEST_GROUP_RUNNER(trace)
 {
 	RUN_TEST_CASE(trace, firstStateAfterInit);
