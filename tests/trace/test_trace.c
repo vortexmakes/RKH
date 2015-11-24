@@ -60,6 +60,9 @@
 TEST_GROUP(trace);
 
 /* ---------------------------- Local variables ---------------------------- */
+
+static RKH_FilterTbl filStatus;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
@@ -72,8 +75,9 @@ TEST_TEAR_DOWN(trace)
 {
 }
 
-TEST(trace, first)
+TEST(trace, firstStateAfterInit)
 {
+    rkh_trc_filter_get(&filStatus);
 }
 
 /* ------------------------------ End of file ------------------------------ */

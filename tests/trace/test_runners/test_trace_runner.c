@@ -62,7 +62,7 @@
 
 TEST_GROUP_RUNNER(trace)
 {
-	RUN_TEST_CASE(trace, first);
+	RUN_TEST_CASE(trace, firstStateAfterInit);
 }
 
 /* ------------------------------ End of file ------------------------------ */

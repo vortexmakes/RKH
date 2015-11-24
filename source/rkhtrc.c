@@ -66,27 +66,6 @@
 
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
-
-#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
-typedef rui8_t RKH_GM_OFFSET_T;
-typedef rui8_t RKH_GM_RANGE_T;
-#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
-typedef rui16_t RKH_GM_OFFSET_T;
-typedef rui8_t RKH_GM_RANGE_T;
-#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
-typedef rui32_t RKH_GM_OFFSET_T;
-typedef rui32_t RKH_GM_RANGE_T;
-#else
-typedef rui8_t RKH_GM_OFFSET_T;
-typedef rui8_t RKH_GM_RANGE_T;
-#endif
-
-typedef struct
-{
-    RKH_GM_OFFSET_T offset;
-    RKH_GM_RANGE_T range;
-} RKH_GMTBL_T;
-
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 
@@ -564,6 +543,18 @@ rkh_trc_fmt_mem(const rui8_t *mem, rui8_t size)
     }
 }
 #endif
+
+void 
+rkh_trc_filter_get(RKH_FilterTbl *outFilterTbl)
+{
+    if (outFilterTbl == (RKH_FilterTbl *)0)
+        return;
+    outFilterTbl->filSig = &fsig;
+    outFilterTbl->filAo = &fsma;
+    outFilterTbl->filEvt = trceftbl;
+    outFilterTbl->filGrp = &trcgfilter;
+    outFilterTbl->grpFilMap = trcgmtbl;
+}
 
 #endif
 /* ------------------------------ End of file ------------------------------ */

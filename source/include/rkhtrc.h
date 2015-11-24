@@ -3229,6 +3229,35 @@ typedef enum RKH_SUBTE_SM_EXE_ACT
     typedef rui16_t RKH_TS_T;
 #endif
 
+#if RKH_CFG_TRC_SIZEOF_TE_ID == 8
+typedef rui8_t RKH_GM_OFFSET_T;
+typedef rui8_t RKH_GM_RANGE_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
+typedef rui16_t RKH_GM_OFFSET_T;
+typedef rui8_t RKH_GM_RANGE_T;
+#elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
+typedef rui32_t RKH_GM_OFFSET_T;
+typedef rui32_t RKH_GM_RANGE_T;
+#else
+typedef rui8_t RKH_GM_OFFSET_T;
+typedef rui8_t RKH_GM_RANGE_T;
+#endif
+
+typedef struct
+{
+    RKH_GM_OFFSET_T offset;
+    RKH_GM_RANGE_T range;
+} RKH_GMTBL_T;
+
+typedef struct RKH_FilterTbl
+{
+    const RKH_TRC_FIL_T *filSig;
+    const RKH_TRC_FIL_T *filAo;
+    rui8_t *filEvt;
+    rui8_t *filGrp;
+    const RKH_GMTBL_T *grpFilMap;
+} RKH_FilterTbl;
+
 /* -------------------------- External variables --------------------------- */
 
 extern const RKH_TRC_FIL_T fsig;
@@ -3607,6 +3636,14 @@ void rkh_trc_fmt_str(const char *s);
  *  \param[in] size		size of memory block.
  */
 void rkh_trc_fmt_mem(rui8_t const *mem, rui8_t size);
+
+/**
+ *  \brief
+ *  Get a memory reference to every trace filter table.
+ *
+ *  \param[out] outFilterTbls   pointer to every filter table.
+ */
+void rkh_trc_filter_get(RKH_FilterTbl *outFilterTbl);
 
 /* -------------------- External C language linkage end -------------------- */
 
