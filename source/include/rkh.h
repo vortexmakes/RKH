@@ -2656,6 +2656,15 @@ void rkh_hook_timetick(void);
 
 /**
  *  \brief
+ *  This function is called from rkh_trc_end() function, at the end of that, 
+ *  to allow to the application to extend the functionality of RKH, giving 
+ *  the port developer the opportunity to add code that will be called when 
+ *  is put a trace event into the stream buffer.
+ */
+void rkh_hook_putTrcEvt(void);
+
+/**
+ *  \brief
  *  Inits a previously created state machine calling its initializing action.
  *
  *  \param[in] sma  pointer to previously created state machine application.
