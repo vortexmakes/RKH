@@ -72,7 +72,10 @@ TEST_GROUP_RUNNER(trace_filter)
 
 TEST_GROUP_RUNNER(trace)
 {
-	RUN_TEST_CASE(trace, firstStateAfterInit);
+	RUN_TEST_CASE(trace, filEventsAreOnAfterInit);
+	RUN_TEST_CASE(trace, turnOffOneFilEvent);
+	RUN_TEST_CASE(trace, turnOnOneFilEvent);
+	RUN_TEST_CASE(trace, turnOffMultipleFilEvent);
 }
 
 /* ------------------------------ End of file ------------------------------ */
