@@ -300,38 +300,30 @@ TEST(trace, filEventsAreOnAfterInit)
 
 TEST(trace, turnOffOneFilEvent)
 {
-    RKH_TE_ID_T event;
     RKH_GM_OFFSET_T offset;
 
     offset = RKH_SM_TTBL_OFFSET;
     memset(bitTbl, FILTER_ON, RKH_TRC_MAX_EVENTS_IN_BYTES);
     bitTbl[offset] = 0x01;
 
-    event = RKH_TE_SM_INIT;
-    rkh_trc_filter_event_(FILTER_OFF, event);
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
 
     TEST_ASSERT_EQUAL(1, getBitTbl(&filStatus.event[offset], 0)); 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
     TEST_ASSERT_EQUAL_HEX8(0x01, 
-            filStatus.event[offset + GETEVT(event)]);
+            filStatus.event[offset + GETEVT(RKH_TE_SM_INIT)]);
     TEST_ASSERT_EQUAL_HEX8(0x08, *filStatus.group);
 }
 
 TEST(trace, turnOnOneFilEvent)
 {
-    RKH_TE_ID_T event;
-
     memset(bitTbl, FILTER_ON, RKH_TRC_MAX_EVENTS_IN_BYTES);
     bitTbl[RKH_SM_TTBL_OFFSET + 0] = 0x02;
 
-    event = RKH_TE_SM_INIT;
-    rkh_trc_filter_event_(FILTER_OFF, event);
-    event = RKH_TE_SM_CLRH;
-    rkh_trc_filter_event_(FILTER_OFF, event);
-
-    event = RKH_TE_SM_INIT;
-    rkh_trc_filter_event_(FILTER_ON, event);
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_CLRH);
+    rkh_trc_filter_event_(FILTER_ON, RKH_TE_SM_INIT);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
@@ -340,7 +332,6 @@ TEST(trace, turnOnOneFilEvent)
 
 TEST(trace, turnOffMultipleFilEvent)
 {
-    RKH_TE_ID_T event;
     RKH_GM_OFFSET_T offset;
 
     offset = RKH_SM_TTBL_OFFSET;
@@ -348,13 +339,43 @@ TEST(trace, turnOffMultipleFilEvent)
     bitTbl[offset] = 0x01;
     bitTbl[offset + 1] = 0x01;
 
-    event = RKH_TE_SM_INIT;
-    rkh_trc_filter_event_(FILTER_OFF, event);
-    event = RKH_TE_SM_TS_STATE;
-    rkh_trc_filter_event_(FILTER_OFF, event);
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_TS_STATE);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
+}
+
+TEST(trace, allOffFilEvent)
+{
+    memset(bitTbl, FILTER_OFF_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
+
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS);
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
+                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+    TEST_ASSERT_EQUAL_HEX8(0xff, *filStatus.group);
+}
+
+TEST(trace, allOnFilEvent)
+{
+    memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
+
+    rkh_trc_filter_event_(FILTER_ON, RKH_TRC_ALL_EVENTS);
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
+                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+    TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
+}
+
+TEST(trace, isOnOffFilEvent)
+{
+    TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_FWK_OBJ) == RKH_FALSE);
+
+    setBitTbl(filStatus.event, RKH_TE_MP_INIT, FILTER_OFF);
+    setBitTbl(filStatus.group, RKH_TG_MP, FILTER_OFF);
+    TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_MP_INIT) == RKH_TRUE);
+
+    setBitTbl(filStatus.event, RKH_TE_MP_INIT, FILTER_ON);
+    TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_MP_INIT) == RKH_FALSE);
 }
 
 /* ------------------------------ End of file ------------------------------ */

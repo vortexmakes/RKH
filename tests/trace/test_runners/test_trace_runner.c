@@ -76,6 +76,9 @@ TEST_GROUP_RUNNER(trace)
 	RUN_TEST_CASE(trace, turnOffOneFilEvent);
 	RUN_TEST_CASE(trace, turnOnOneFilEvent);
 	RUN_TEST_CASE(trace, turnOffMultipleFilEvent);
+	RUN_TEST_CASE(trace, allOffFilEvent);
+	RUN_TEST_CASE(trace, allOnFilEvent);
+	RUN_TEST_CASE(trace, isOnOffFilEvent);
 }
 
 /* ------------------------------ End of file ------------------------------ */
