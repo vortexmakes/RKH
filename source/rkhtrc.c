@@ -62,7 +62,7 @@
  * This macro is needed only if the module requires to check expressions 
  * that ought to be true as long as the program  is running.
  */
-/* RKH_MODULE_NAME( rkhtrc ) */
+/*RKH_MODULE_NAME(rkhtrc)*/
 
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
@@ -323,6 +323,9 @@ rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt)
     RKH_TE_ID_T e;
     RKH_GM_OFFSET_T offset;
 
+    if (evt > RKH_TRC_ALL_EVENTS)
+        return;
+
     if (evt == RKH_TRC_ALL_EVENTS)
     {
         for (p = trceftbl,
@@ -350,7 +353,7 @@ rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt)
 }
 
 rbool_t
-rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot)
+rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot)
 {
     rui8_t x, y;
 
@@ -361,8 +364,7 @@ rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot)
 }
 
 void
-rkh_trc_simfil(const RKH_TRC_FIL_T *filter,    RKH_TRC_FSLOT slot,
-               rui8_t mode)
+rkh_trc_symFil(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot, rui8_t mode)
 {
     rui8_t x, y, onoff, *ft, c;
     RKH_TRC_FSLOT ix;

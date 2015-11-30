@@ -277,6 +277,7 @@ TEST_SETUP(trace)
 {
     rkh_trc_filter_get(&filStatus);
     rkh_trc_filter_init();
+    memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
 TEST_TEAR_DOWN(trace)
@@ -303,7 +304,6 @@ TEST(trace, turnOffOneFilEvent)
     RKH_GM_OFFSET_T offset;
 
     offset = RKH_SM_TTBL_OFFSET;
-    memset(bitTbl, FILTER_ON, RKH_TRC_MAX_EVENTS_IN_BYTES);
     bitTbl[offset] = 0x01;
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
@@ -318,7 +318,6 @@ TEST(trace, turnOffOneFilEvent)
 
 TEST(trace, turnOnOneFilEvent)
 {
-    memset(bitTbl, FILTER_ON, RKH_TRC_MAX_EVENTS_IN_BYTES);
     bitTbl[RKH_SM_TTBL_OFFSET + 0] = 0x02;
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
@@ -335,7 +334,6 @@ TEST(trace, turnOffMultipleFilEvent)
     RKH_GM_OFFSET_T offset;
 
     offset = RKH_SM_TTBL_OFFSET;
-    memset(bitTbl, FILTER_ON, RKH_TRC_MAX_EVENTS_IN_BYTES);
     bitTbl[offset] = 0x01;
     bitTbl[offset + 1] = 0x01;
 
@@ -358,8 +356,6 @@ TEST(trace, allOffFilEvent)
 
 TEST(trace, allOnFilEvent)
 {
-    memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
-
     rkh_trc_filter_event_(FILTER_ON, RKH_TRC_ALL_EVENTS);
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
@@ -376,6 +372,109 @@ TEST(trace, isOnOffFilEvent)
 
     setBitTbl(filStatus.event, RKH_TE_MP_INIT, FILTER_ON);
     TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_MP_INIT) == RKH_FALSE);
+}
+
+TEST(trace, upperAndLowerBoundsFilEvent)
+{
+    bitTbl[0] = 0x01;
+    bitTbl[RKH_TRC_MAX_EVENTS_IN_BYTES - 2] = 0x80;
+
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_MP_INIT);
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TE_UT_IGNORE_ARG);
+
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
+                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+}
+
+TEST(trace, outOfBoundsChangesNothingFilEvent)
+{
+    rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
+
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
+                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+}
+
+TEST(trace, turnOffOneGroup)
+{
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0x01, *filStatus.group);
+}
+
+TEST(trace, turnOnOneGroup)
+{
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
+    rkh_trc_filter_group_(FILTER_ON, RKH_TG_MP, EUNCHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
+}
+
+TEST(trace, allOnOffGroup)
+{
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TRC_ALL_GROUPS, EUNCHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0xff, *filStatus.group);
+    rkh_trc_filter_group_(FILTER_ON, RKH_TRC_ALL_GROUPS, EUNCHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
+}
+
+TEST(trace, turnOnOffMultipleGroups)
+{
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TG_SM, EUNCHANGE);
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TG_UT, EUNCHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0x89, *filStatus.group);
+
+    rkh_trc_filter_group_(FILTER_ON, RKH_TG_MP, EUNCHANGE);
+    rkh_trc_filter_group_(FILTER_ON, RKH_TG_SM, EUNCHANGE);
+    rkh_trc_filter_group_(FILTER_ON, RKH_TG_UT, EUNCHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
+}
+
+TEST(trace, turnOffOneGroupChangedItsEventFilters)
+{
+    RKHROM RKH_GMTBL_T *pTrcMap;
+
+    rkh_trc_filter_group_(FILTER_OFF, RKH_TG_UT, ECHANGE);
+    TEST_ASSERT_EQUAL_HEX8(0x80, *filStatus.group);
+
+    pTrcMap = &filStatus.grpFilMap[RKH_TG_UT];
+    memset(&bitTbl[pTrcMap->offset], FILTER_OFF_BYTE, pTrcMap->range);
+
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
+                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+}
+
+TEST(trace, turnOffSymFil)
+{
+    TEST_IGNORE();
+}
+
+TEST(trace, turnOnSymFil)
+{
+    TEST_IGNORE();
+}
+
+TEST(trace, allOffOnSymFil)
+{
+    TEST_IGNORE();
+}
+
+TEST(trace, turnOnOffMultipleSymFil)
+{
+    TEST_IGNORE();
+}
+
+TEST(trace, isOnOffSymFil)
+{
+    TEST_IGNORE();
+}
+
+TEST(trace, upperAndLowerBoundsSymFil)
+{
+    TEST_IGNORE();
+}
+
+TEST(trace, outOfBoundsChangesNothingSymFil)
+{
+    TEST_IGNORE();
 }
 
 /* ------------------------------ End of file ------------------------------ */

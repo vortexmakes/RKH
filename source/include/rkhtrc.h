@@ -173,7 +173,7 @@ extern "C" {
      *  object.
      */
         #define RKH_FILTER_ON_SMA(sma) \
-            rkh_trc_simfil(&fsma, (sma)->romrkh->prio, FILTER_ON)
+            rkh_trc_symFil(&fsma, (sma)->romrkh->prio, FILTER_ON)
 
     /**
      *  \brief
@@ -181,7 +181,7 @@ extern "C" {
      *  object.
      */
         #define RKH_FILTER_ON_ALL_SMA() \
-            rkh_trc_simfil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_ON))
+            rkh_trc_symFil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_ON))
 
     /**
      *  \brief
@@ -189,14 +189,14 @@ extern "C" {
      *  object.
      */
         #define RKH_FILTER_OFF_SMA(sma) \
-            rkh_trc_simfil(&fsma, (sma)->romrkh->prio, FILTER_OFF)
+            rkh_trc_symFil(&fsma, (sma)->romrkh->prio, FILTER_OFF)
 
     /**
      *  \brief
      *  Emmit all enabled trace events related to specified active object.
      */
         #define RKH_FILTER_OFF_ALL_SMA() \
-            rkh_trc_simfil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF))
+            rkh_trc_symFil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF))
 
     #else
         #define RKH_FILTER_ON_SMA(sma)          (void)0
@@ -212,7 +212,7 @@ extern "C" {
      *  signal.
      */
         #define RKH_FILTER_ON_SIGNAL(sig) \
-            rkh_trc_simfil(&fsig, (sig), FILTER_ON)
+            rkh_trc_symFil(&fsig, (sig), FILTER_ON)
 
     /**
      *  \brief
@@ -220,7 +220,7 @@ extern "C" {
      *  signal.
      */
         #define RKH_FILTER_ON_ALL_SIGNALS() \
-            rkh_trc_simfil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_ON))
+            rkh_trc_symFil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_ON))
 
     /**
      *  \brief
@@ -228,14 +228,14 @@ extern "C" {
      *  signal.
      */
         #define RKH_FILTER_OFF_SIGNAL(sig) \
-            rkh_trc_simfil(&fsig, (sig), FILTER_OFF)
+            rkh_trc_symFil(&fsig, (sig), FILTER_OFF)
 
     /**
      *  \brief
      *  Emmit all enabled trace events related to specified event signal.
      */
         #define RKH_FILTER_OFF_ALL_SIGNALS() \
-            rkh_trc_simfil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF))
+            rkh_trc_symFil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF))
     #else
         #define RKH_FILTER_ON_SIGNAL(sig)       (void)0
         #define RKH_FILTER_ON_ALL_SIGNALS()     (void)0
@@ -274,7 +274,7 @@ extern "C" {
  */
 #if RKH_CFG_TRC_RTFIL_SMA_EN == RKH_ENABLED
     #define RKH_TRC_AO_ISOFF(prio) \
-        && rkh_trc_simfil_isoff(&fsma, (RKH_TRC_FSLOT)(prio))
+        && rkh_trc_symFil_isoff(&fsma, (RKH_TRC_FSLOT)(prio))
 #else
     #define RKH_TRC_AO_ISOFF(prio)
 #endif
@@ -295,7 +295,7 @@ extern "C" {
 
 #if RKH_CFG_TRC_RTFIL_SIGNAL_EN == RKH_ENABLED
     #define RKH_TRC_SIG_ISOFF(sig) \
-        && rkh_trc_simfil_isoff(&fsig, (RKH_TRC_FSLOT)(sig))
+        && rkh_trc_symFil_isoff(&fsig, (RKH_TRC_FSLOT)(sig))
 #else
     #define RKH_TRC_SIG_ISOFF(sig)
 #endif
@@ -3191,7 +3191,7 @@ typedef enum rkh_trc_events
     RKH_TE_UT_IGNORE,
     RKH_TE_UT_IGNORE_ARG,
 
-    RKH_TE_NEVENT = 255
+    RKH_TE_NEVENT = RKH_TE_UT_IGNORE_ARG + 1         /* The last trace event */
 } RKH_TRC_EVENTS;
 
 /**
@@ -3451,7 +3451,7 @@ rbool_t rkh_trc_isoff_(RKH_TE_ID_T e);
  *  it. Please use RKH_FILTER_ON_SMA()/RKH_FILTER_ON_SIGNAL(), or
  *  RKH_FILTER_OFF_SMA()/RKH_FILTER_OFF_SIGNAL() macros instead.
  */
-void rkh_trc_simfil(const RKH_TRC_FIL_T *filter,
+void rkh_trc_symFil(const RKH_TRC_FIL_T *filter,
                     RKH_TRC_FSLOT slot, rui8_t mode);
 
 /**
@@ -3469,7 +3469,7 @@ void rkh_trc_simfil(const RKH_TRC_FIL_T *filter,
  *  This function is internal to RKH and the user application should not call
  *  it.
  */
-rbool_t rkh_trc_simfil_isoff(const RKH_TRC_FIL_T *filter,
+rbool_t rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter,
                              RKH_TRC_FSLOT slot);
 
 /**
