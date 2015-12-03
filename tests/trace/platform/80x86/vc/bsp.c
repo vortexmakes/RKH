@@ -257,6 +257,7 @@ rkh_hook_putTrcEvt(void)
     UNITY_TEST_ASSERT(ret != UT_PROC_FAIL, out.line, out.msg);
 }
 
+#if 0
 void
 rkh_assert(RKHROM char * const file, int line)
 {
@@ -268,6 +269,7 @@ rkh_assert(RKHROM char * const file, int line)
     __debugbreak();
     rkh_fwk_exit();
 }
+#endif
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 void

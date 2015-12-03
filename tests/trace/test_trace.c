@@ -51,6 +51,7 @@
 
 #include "unity_fixture.h"
 #include "rkh.h"
+#include "rkhassert_stub.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -76,7 +77,7 @@ static rui8_t bitTbl[SIZEOF_BIT_TBL];
 
 static
 void
-setBitTbl(rui8_t *bt, rui16_t bit, ruint value)
+setBitTbl(rui8_t *bt, rui16_t bit, rui8_t value)
 {
     rui8_t bitPos;
     rui16_t ix;
@@ -85,7 +86,7 @@ setBitTbl(rui8_t *bt, rui16_t bit, ruint value)
                         (bit < MAX_NUM_BITS) ||
                         (value <= 1));
 
-    bitPos = (rui8_t)(bit & 0x07);
+    bitPos = (rui8_t)(bit & 7);
     ix = (rui16_t)(bit >> 3);
 
     if (value == 1)
@@ -114,10 +115,10 @@ getBitTbl(rui8_t *bt, rui16_t bit)
 
 static
 void
-setAllBitTbl(rui8_t *bt, ruint value)
+setAllBitTbl(rui8_t *bt, ruint value, ruint size)
 {
     TEST_ASSERT_TRUE(bt != (rui8_t *)0);
-    memset(bitTbl, value, SIZEOF_BIT_TBL);
+    memset(bitTbl, value, size);
 }
 
 static
@@ -181,7 +182,7 @@ TEST_TEAR_DOWN(trace_filter)
 
 TEST(trace_filter, getBitIndex0)
 {
-    setAllBitTbl(bitTbl, 0);
+    setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
     bitTbl[0] = 0x82;
 
     TEST_ASSERT_EQUAL(0, getBitTbl(bitTbl, 0)); 
@@ -191,7 +192,7 @@ TEST(trace_filter, getBitIndex0)
 
 TEST(trace_filter, getBitIndexX)
 {
-    setAllBitTbl(bitTbl, 0);
+    setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
     bitTbl[0] = 0x80;
     bitTbl[1] = 0x03;
     bitTbl[2] = 0xc0;
@@ -207,7 +208,7 @@ TEST(trace_filter, getBitIndexX)
 
 TEST(trace_filter, setBitIndex0)
 {
-    setAllBitTbl(bitTbl, 0);
+    setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
 
     setBitTbl(bitTbl, 0, 1);
     TEST_ASSERT_EQUAL_HEX8(0x01, bitTbl[0]);
@@ -224,7 +225,7 @@ TEST(trace_filter, setBitIndex0)
 
 TEST(trace_filter, resetBitIndex0)
 {
-    setAllBitTbl(bitTbl, 0xff);
+    setAllBitTbl(bitTbl, 0xff, SIZEOF_BIT_TBL);
 
     setBitTbl(bitTbl, 0, 0);
     TEST_ASSERT_EQUAL_HEX8(0xfe, bitTbl[0]);
@@ -241,7 +242,7 @@ TEST(trace_filter, resetBitIndex0)
 
 TEST(trace_filter, setBitIndexX)
 {
-    setAllBitTbl(bitTbl, 0);
+    setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
 
     setBitTbl(bitTbl, 8, 1);
     TEST_ASSERT_EQUAL_HEX8(0x01, bitTbl[1]);
@@ -257,7 +258,7 @@ TEST(trace_filter, setBitIndexX)
 
 TEST(trace_filter, resetBitIndexX)
 {
-    setAllBitTbl(bitTbl, 0xff);
+    setAllBitTbl(bitTbl, 0xff, SIZEOF_BIT_TBL);
 
     setBitTbl(bitTbl, 8, 0);
     TEST_ASSERT_EQUAL_HEX8(0xfe, bitTbl[1]);
@@ -278,6 +279,7 @@ TEST_SETUP(trace)
     rkh_trc_filter_get(&filStatus);
     rkh_trc_filter_init();
     memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
+    rkh_assertStub_reset();
 }
 
 TEST_TEAR_DOWN(trace)
@@ -386,12 +388,10 @@ TEST(trace, upperAndLowerBoundsFilEvent)
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST(trace, outOfBoundsChangesNothingFilEvent)
+TEST(trace, outOfBoundsProducesRuntimeError)
 {
     rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
-
-    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
-                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+    TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
 TEST(trace, turnOffOneGroup)
@@ -442,39 +442,72 @@ TEST(trace, turnOffOneGroupChangedItsEventFilters)
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST(trace, turnOffSymFil)
+TEST(trace, turnOffOneSymFil)
 {
-    TEST_IGNORE();
+    bitTbl[0] = 0x01;
+    rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, turnOnSymFil)
+TEST(trace, turnOnOneSymFil)
 {
-    TEST_IGNORE();
-}
-
-TEST(trace, allOffOnSymFil)
-{
-    TEST_IGNORE();
+    bitTbl[0] = 0x00;
+    rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA - 1, FILTER_OFF);
+    rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA - 1, FILTER_ON);
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(trace, turnOnOffMultipleSymFil)
 {
-    TEST_IGNORE();
+    bitTbl[0] = 0x89;
+    rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
+    rkh_trc_symFil(filStatus.ao, 3, FILTER_OFF);
+    rkh_trc_symFil(filStatus.ao, 7, FILTER_OFF);
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
+}
+
+TEST(trace, allOffOnSymFil)
+{
+    setAllBitTbl(bitTbl, FILTER_OFF_BYTE, RKH_TRC_MAX_SMA);
+    rkh_trc_symFil(filStatus.ao, 0, RKH_TRC_SET_ALL(FILTER_OFF));
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
+
+    setAllBitTbl(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_SMA);
+    rkh_trc_symFil(filStatus.ao, 0, RKH_TRC_SET_ALL(FILTER_ON));
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(trace, isOnOffSymFil)
 {
-    TEST_IGNORE();
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_FALSE);
+
+    setBitTbl(filStatus.ao->tbl, 0, FILTER_OFF);
+    setBitTbl(filStatus.ao->tbl, 3, FILTER_OFF);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_TRUE);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 3) == RKH_TRUE);
+
+    setBitTbl(filStatus.ao->tbl, 0, FILTER_ON);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_FALSE);
 }
 
 TEST(trace, upperAndLowerBoundsSymFil)
 {
-    TEST_IGNORE();
+    setBitTbl(bitTbl, 0, FILTER_OFF);
+    setBitTbl(bitTbl, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
+
+    rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
+    rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
+
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, outOfBoundsChangesNothingSymFil)
+TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
 {
-    TEST_IGNORE();
+    rkh_trc_symFil(filStatus.ao, (filStatus.ao->size * 8) + 1, FILTER_OFF);
+    TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
+
+    rkh_trc_symFil(0, 0, FILTER_OFF);
+    TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
 /* ------------------------------ End of file ------------------------------ */

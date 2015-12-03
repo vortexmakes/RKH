@@ -80,7 +80,7 @@ TEST_GROUP_RUNNER(trace)
 	RUN_TEST_CASE(trace, allOnFilEvent);
 	RUN_TEST_CASE(trace, isOnOffFilEvent);
 	RUN_TEST_CASE(trace, upperAndLowerBoundsFilEvent);
-	RUN_TEST_CASE(trace, outOfBoundsChangesNothingFilEvent);
+	RUN_TEST_CASE(trace, outOfBoundsProducesRuntimeError);
 
 	RUN_TEST_CASE(trace, turnOffOneGroup);
 	RUN_TEST_CASE(trace, turnOnOneGroup);
@@ -88,13 +88,13 @@ TEST_GROUP_RUNNER(trace)
     RUN_TEST_CASE(trace, turnOnOffMultipleGroups);
     RUN_TEST_CASE(trace, turnOffOneGroupChangedItsEventFilters);
 
-	RUN_TEST_CASE(trace, turnOffSymFil);
-	RUN_TEST_CASE(trace, turnOnSymFil);
-	RUN_TEST_CASE(trace, allOffOnSymFil);
+	RUN_TEST_CASE(trace, turnOffOneSymFil);
+	RUN_TEST_CASE(trace, turnOnOneSymFil);
 	RUN_TEST_CASE(trace, turnOnOffMultipleSymFil);
+	RUN_TEST_CASE(trace, allOffOnSymFil);
 	RUN_TEST_CASE(trace, isOnOffSymFil);
 	RUN_TEST_CASE(trace, upperAndLowerBoundsSymFil);
-	RUN_TEST_CASE(trace, outOfBoundsChangesNothingSymFil);
+	RUN_TEST_CASE(trace, outOfBoundsProducesRuntimeErrorSymFil);
 }
 
 /* ------------------------------ End of file ------------------------------ */

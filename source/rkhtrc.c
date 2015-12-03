@@ -62,7 +62,7 @@
  * This macro is needed only if the module requires to check expressions 
  * that ought to be true as long as the program  is running.
  */
-/*RKH_MODULE_NAME(rkhtrc)*/
+RKH_MODULE_NAME(rkhtrc)
 
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
@@ -178,6 +178,47 @@ static TRCQTY_T trcqty;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+
+static
+void
+setAllFilters(rui8_t *filterTbl, rui8_t value, ruint size)
+{
+    rui8_t *ft, ix, c;
+
+    for (ft = filterTbl, ix = 0,
+         c = (rui8_t)((value == FILTER_OFF) ? 0xFF : 0);
+         ix < size; ++ix, ++ft)
+    {
+        *ft = c;
+    }
+}
+
+static
+void
+setOneFilter(rui8_t *filterByte, rui8_t value, rui8_t bitPos)
+{
+    if (value == FILTER_OFF)
+    {
+        *filterByte |= rkh_maptbl[bitPos];
+    }
+    else
+    {
+        *filterByte &= ~rkh_maptbl[bitPos];
+    }
+}
+
+static
+rbool_t
+isOffFilter(rui8_t *filterTbl, RKH_TE_ID_T filter)
+{
+    rui8_t x;
+    RKH_TE_ID_T y;
+
+    y = filter >> 3;
+    x = (rui8_t)(filter & 7);
+    return (*(filterTbl + y) & rkh_maptbl[x]) != 0;
+}
+
 /* ---------------------------- Global functions --------------------------- */
 
 void
@@ -272,19 +313,19 @@ rkh_trc_isoff_(RKH_TE_ID_T e)
 {
     RKH_TE_ID_T evt;
     RKH_TG_T grp;
+    RKH_GM_OFFSET_T offset;
 
     evt = GETEVT(e);
     grp = GETGRP(e);
+    offset = trcgmtbl[grp].offset;
 
-    return ((trcgfilter & rkh_maptbl[grp]) != 0) &&
-           ((trceftbl[(RKH_TE_ID_T)(trcgmtbl[grp].offset + (evt >> 3))] &
-             rkh_maptbl[evt & 0x7]) != 0);
+    return (((trcgfilter & rkh_maptbl[grp]) != 0) && 
+              isOffFilter(&trceftbl[offset], evt));
 }
 
 void
 rkh_trc_filter_group_(rui8_t ctrl, RKH_TG_T grp, rui8_t mode)
 {
-    rui8_t *p, ix, c;
     RKH_GM_OFFSET_T offset;
     RKH_GM_RANGE_T range;
 
@@ -294,102 +335,72 @@ rkh_trc_filter_group_(rui8_t ctrl, RKH_TG_T grp, rui8_t mode)
         return;
     }
 
-    if (ctrl == FILTER_OFF)
-    {
-        trcgfilter |= rkh_maptbl[grp];
-    }
-    else
-    {
-        trcgfilter &= ~rkh_maptbl[grp];
-    }
+    setOneFilter(&trcgfilter, ctrl, grp);
 
     if (mode == ECHANGE)
     {
         offset = trcgmtbl[grp].offset;
         range = trcgmtbl[grp].range;
-        for (p = &trceftbl[offset],
-             ix = 0,
-             c = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
-             ix < range; ++ix, ++p)
-            *p = c;
+        setAllFilters(&trceftbl[offset], ctrl, range);
     }
 }
 
 void
 rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt)
 {
-    rui8_t *p, ix, c;
     RKH_TG_T grp;
     RKH_TE_ID_T e;
     RKH_GM_OFFSET_T offset;
 
-    if (evt > RKH_TRC_ALL_EVENTS)
-        return;
+    RKH_ASSERT(evt <= RKH_TRC_ALL_EVENTS);
 
     if (evt == RKH_TRC_ALL_EVENTS)
     {
-        for (p = trceftbl,
-             ix = 0,
-             c = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
-             ix < RKH_TRC_MAX_EVENTS_IN_BYTES; ++ix, ++p)
-            *p = c;
+        setAllFilters(trceftbl, ctrl, RKH_TRC_MAX_EVENTS_IN_BYTES);
         trcgfilter = (rui8_t)((ctrl == FILTER_OFF) ? 0xFF : 0);
-        return;
-    }
-
-    e = GETEVT(evt);
-    grp = GETGRP(evt);
-    offset = (RKH_GM_OFFSET_T)(trcgmtbl[grp].offset + (e >> 3));
-
-    if (ctrl == FILTER_OFF)
-    {
-        trceftbl[offset] |= rkh_maptbl[e & 0x7];
-        trcgfilter |= rkh_maptbl[grp];
     }
     else
     {
-        trceftbl[offset] &= ~rkh_maptbl[e & 0x7];
+        e = GETEVT(evt);
+        grp = GETGRP(evt);
+        offset = (RKH_GM_OFFSET_T)(trcgmtbl[grp].offset + (e >> 3));
+
+        setOneFilter(&trceftbl[offset], ctrl, e & 7);
+        if (ctrl == FILTER_OFF)
+        {
+            trcgfilter |= rkh_maptbl[grp];
+        }
     }
 }
 
 rbool_t
 rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot)
 {
-    rui8_t x, y;
-
-    y = (rui8_t)(slot >> 3);
-    x = (rui8_t)(slot & 0x07);
-
-    return (*(filter->tbl + y) & rkh_maptbl[x]) != 0;
+    return isOffFilter(filter->tbl, (RKH_TE_ID_T)slot);
 }
 
 void
 rkh_trc_symFil(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot, rui8_t mode)
 {
-    rui8_t x, y, onoff, *ft, c;
-    RKH_TRC_FSLOT ix;
+    rui8_t x, onoff;
+    RKH_TRC_FSLOT y;
+
+    if ((filter == (const RKH_TRC_FIL_T *)0) || (slot > (filter->size << 3)))
+    {
+        RKH_ASSERT(0);
+        return;
+    }
 
     onoff = (rui8_t)(mode & RKH_FILTER_MODE_MASK);
     if (mode & RKH_TRC_ALL_FILTERS)
     {
-        for (ft = (rui8_t *)(filter->tbl),
-             ix = (RKH_TRC_FSLOT)0,
-             c = (rui8_t)((onoff == FILTER_OFF) ? 0xFF : 0);
-             ix < filter->size; ++ix, ++ft)
-            *ft = c;
-        return;
-    }
-
-    y = (rui8_t)(slot >> 3);
-    x = (rui8_t)(slot & 0x07);
-
-    if (onoff == FILTER_OFF)
-    {
-        *(filter->tbl + y) |= rkh_maptbl[x];
+        setAllFilters(filter->tbl, onoff, filter->size);
     }
     else
     {
-        *(filter->tbl + y) &= ~rkh_maptbl[x];
+        y = (RKH_TRC_FSLOT)(slot >> 3);
+        x = (rui8_t)(slot & 7);
+        setOneFilter(filter->tbl + y, onoff, x);
     }
 }
 #endif

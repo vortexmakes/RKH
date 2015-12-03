@@ -367,6 +367,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\rkhassert_stub.c"
+						>
+					</File>
+					<File
+						RelativePath="..\rkhassert_stub.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\rkhcfg.h"
 						>
 					</File>
