@@ -58,7 +58,6 @@
 
 /* ----------------------------- Include files ----------------------------- */
 
-#include <stdlib.h>
 #include "rkhitl.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
@@ -127,6 +126,11 @@ extern "C" {
 #endif
 
 /* -------------------------------- Constants ------------------------------ */
+
+#ifndef NULL
+#define NULL    (void *)0
+#endif
+
 /* ------------------------------- Data types ------------------------------ */
 
 /**
