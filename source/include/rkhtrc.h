@@ -3556,18 +3556,55 @@ void rkh_trc_u32(rui32_t d);
 void rkh_trc_str(const char *s);
 
 /**
+ *  \brief
+ *  Output object symbol record.
+ *
+ *  \param[in] tre		trace event ID. The available events are enumerated in
+ *                      RKH_TRC_EVENTS.
+ *  \param[in] obj		address of the object in memory.
+ *  \param[in] obj_name	string terminated in '\\0'.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it.
  */
 void rkh_trc_obj(RKH_TE_ID_T tre, rui8_t *obj, const char *obj_name);
 
 /**
+ *  \brief
+ *  Output signal symbol record.
+ *
+ *  \param[in] sig		signal number.
+ *  \param[in] sig_name	string terminated in '\\0'.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it.
  */
 void rkh_trc_sig(RKH_SIG_T sig, const char *sig_name);
 
 /**
+ *  \brief
+ *  Output active object (AO) symbol record.
+ *
+ *  \param[in] ao		address of active object symbol.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it.
  */
 void rkh_trc_ao(struct RKH_SMA_T *ao);
 
 /**
+ *  \brief
+ *  Output state symbol record.
+ *
+ *  \param[in] ao		address of active object symbol.
+ *  \param[in] state	address of state symbol.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it.
  */
 void rkh_trc_state(struct RKH_SMA_T *ao, rui8_t *state);
 
@@ -3623,7 +3660,7 @@ void rkh_trc_fmt_mem(rui8_t const *mem, rui8_t size);
  *  \brief
  *  Get a memory reference to every trace filter table.
  *
- *  \param[out] outFilterTbls   pointer to every filter table.
+ *  \param[out] outFilterTbl   pointer to every filter table.
  */
 void rkh_trc_filter_get(RKH_FilterTbl *outFilterTbl);
 
