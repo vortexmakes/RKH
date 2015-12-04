@@ -79,6 +79,7 @@ TEST_GROUP_RUNNER(trace)
 	RUN_TEST_CASE(trace, allOffFilEvent);
 	RUN_TEST_CASE(trace, allOnFilEvent);
 	RUN_TEST_CASE(trace, isOnOffFilEvent);
+    RUN_TEST_CASE(trace, setAllEventsFromOneGroup);
 	RUN_TEST_CASE(trace, upperAndLowerBoundsFilEvent);
 	RUN_TEST_CASE(trace, outOfBoundsProducesRuntimeError);
 

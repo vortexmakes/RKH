@@ -140,6 +140,18 @@ checkBitTblAreOn(rui8_t *bt, rui16_t size)
     return res;
 }
 
+static
+void
+setBlockBit(rui8_t *bt, ruint value, ruint to)
+{
+    ruint bitPos;
+
+    for (bitPos = 0; bitPos < to; ++bitPos)
+    {
+        setBitTbl(bt, bitPos, value);
+    }
+}
+
 /* It could be added to rkhtrc module */
 static
 void
@@ -383,6 +395,24 @@ TEST(trace, upperAndLowerBoundsFilEvent)
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_MP_INIT);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_UT_IGNORE_ARG);
+
+    TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
+                             RKH_TRC_MAX_EVENTS_IN_BYTES);
+}
+
+TEST(trace, setAllEventsFromOneGroup)
+{
+    RKH_TE_ID_T filter, filterFrom, filterTo, offset;
+
+    filterFrom = RKH_SM_START;
+    filterTo = RKH_SM_END;
+    offset = filStatus.grpFilMap[GETGRP(RKH_SM_START)].offset;
+    setBlockBit(&bitTbl[offset], 1, filterTo - filterFrom);
+
+    for (filter = filterFrom; filter < filterTo; ++filter)
+    {
+        rkh_trc_filter_event_(FILTER_OFF, filter);
+    }
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
