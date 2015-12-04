@@ -304,49 +304,24 @@ extern "C" {
 
 #if RKH_CFG_TRC_SIZEOF_TE_ID == 8
     #define RKH_NBITS_GROUP             3
-    #define RKH_NBIT_EVENT_PER_GROUP   (8 - RKH_NBITS_GROUP)
-    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
-    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
-    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
-    #define RKH_GRP_MASK \
-        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
-                       RKH_NBIT_EVENT_PER_GROUP)
-    #define RKH_TE_MASK \
-        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
     #define RKH_NBITS_GROUP             8
-    #define RKH_NBIT_EVENT_PER_GROUP   (16 - RKH_NBITS_GROUP)
-    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
-    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
-    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
-    #define RKH_GRP_MASK \
-        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
-                       RKH_NBIT_EVENT_PER_GROUP)
-    #define RKH_TE_MASK \
-        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
     #define RKH_NBITS_GROUP             8
-    #define RKH_NBIT_EVENT_PER_GROUP   (32 - RKH_NBITS_GROUP)
-    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
-    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
-    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
-    #define RKH_GRP_MASK \
-        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
-                       RKH_NBIT_EVENT_PER_GROUP)
-    #define RKH_TE_MASK \
-        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #else
     #define RKH_NBITS_GROUP             3
-    #define RKH_NBIT_EVENT_PER_GROUP    (8 - RKH_NBITS_GROUP)
-    #define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
-    #define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
-    #define NGSH                        RKH_NBIT_EVENT_PER_GROUP
-    #define RKH_GRP_MASK \
-        (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
-                       RKH_NBIT_EVENT_PER_GROUP)
-    #define RKH_TE_MASK \
-        (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 #endif
+
+#define RKH_NBIT_EVENT_PER_GROUP   (RKH_CFG_TRC_SIZEOF_TE_ID - \
+                                    RKH_NBITS_GROUP)
+#define RKH_TRC_MAX_GROUPS          RKH_BIT(RKH_NBITS_GROUP)
+#define RKH_MAX_NUM_TE_PER_GROUP    RKH_BIT(RKH_NBIT_EVENT_PER_GROUP)
+#define NGSH                        RKH_NBIT_EVENT_PER_GROUP
+#define RKH_GRP_MASK \
+    (RKH_TE_ID_T)((RKH_BIT(RKH_NBITS_GROUP) - 1) << \
+                   RKH_NBIT_EVENT_PER_GROUP)
+#define RKH_TE_MASK \
+    (RKH_TE_ID_T)(RKH_BIT(RKH_NBIT_EVENT_PER_GROUP) - 1)
 
 /**
  *	Specify the maximum number of trace events, this number is direclty
@@ -3108,6 +3083,7 @@ typedef enum rkh_trc_events
     RKH_TE_MP_INIT = RKH_MP_START,  /**< \copydetails RKH_TR_MP_INIT */
     RKH_TE_MP_GET,                  /**< \copydetails RKH_TR_MP_GET */
     RKH_TE_MP_PUT,                  /**< \copydetails RKH_TR_MP_PUT */
+    RKH_MP_END = RKH_TE_MP_PUT,
 
     /* --- Queue events (RQ group) ----------------------------------------- */
     RKH_TE_RQ_INIT = RKH_RQ_START,  /**< \copydetails RKH_TR_RQ_INIT */
@@ -3117,6 +3093,7 @@ typedef enum rkh_trc_events
     RKH_TE_RQ_FULL,                 /**< \copydetails RKH_TR_RQ_FULL */
     RKH_TE_RQ_DPT,                  /**< \copydetails RKH_TR_RQ_DPT */
     RKH_TE_RQ_GET_LAST,             /**< \copydetails RKH_TR_RQ_GET_LAST */
+    RKH_RQ_END = RKH_TE_RQ_GET_LAST,
 
     /* --- State Machine Application events (SMA group) -------------------- */
     RKH_TE_SMA_ACT = RKH_SMA_START, /**< \copydetails RKH_TR_SMA_ACT */
@@ -3127,6 +3104,7 @@ typedef enum rkh_trc_events
     RKH_TE_SMA_REG,                 /**< \copydetails RKH_TR_SMA_REG */
     RKH_TE_SMA_UNREG,               /**< \copydetails RKH_TR_SMA_UNREG */
     RKH_TE_SMA_DCH,                 /**< \copydetails RKH_TR_SMA_DCH */
+    RKH_SMA_END = RKH_TE_SMA_DCH,
 
     /* --- State machine events (SM group) --------------------------------- */
     RKH_TE_SM_INIT = RKH_SM_START,  /**< \copydetails RKH_TR_SM_INIT */
@@ -3146,6 +3124,7 @@ typedef enum rkh_trc_events
     RKH_TE_SM_EX_HLEVEL,            /**< \copydetails RKH_TR_SM_EX_HLEVEL */
     RKH_TE_SM_EX_TSEG,              /**< \copydetails RKH_TR_SM_EX_TSEG */
     RKH_TE_SM_EXE_ACT,              /**< \copydetails RKH_TR_SM_EXE_ACT */
+    RKH_SM_END = RKH_TE_SM_EXE_ACT,
 
     /* --- Timer events (TIM group) ---------------------------------------- */
     RKH_TE_TMR_INIT = RKH_TMR_START, /**< \copydetails RKH_TR_TMR_INIT */
@@ -3153,6 +3132,7 @@ typedef enum rkh_trc_events
     RKH_TE_TMR_STOP,                /**< \copydetails RKH_TR_TMR_STOP */
     RKH_TE_TMR_TOUT,                /**< \copydetails RKH_TR_TMR_TOUT */
     RKH_TE_TMR_REM,                 /**< \copydetails RKH_TR_TMR_REM */
+    RKH_TMR_END = RKH_TE_TMR_REM,
 
     /* --- Framework and misc. events (FWK group) -------------------------- */
     RKH_TE_FWK_EN = RKH_FWK_START,  /**< \copydetails RKH_TR_FWK_EN */
@@ -3177,6 +3157,7 @@ typedef enum rkh_trc_events
     RKH_TE_FWK_TIMER,               /**< \copydetails RKH_TR_FWK_TIMER */
     RKH_TE_FWK_EPOOL,               /**< \copydetails RKH_TR_FWK_EPOOL */
     RKH_TE_FWK_QUEUE,               /**< \copydetails RKH_TR_FWK_QUEUE */
+    RKH_FWK_END = RKH_TE_FWK_QUEUE,
 
     /* --- User events (USR group) ----------------------------------------- */
     RKH_TE_USER = RKH_USR_START,
@@ -3190,8 +3171,9 @@ typedef enum rkh_trc_events
     RKH_TE_UT_EXPECT_ANYARGS,
     RKH_TE_UT_IGNORE,
     RKH_TE_UT_IGNORE_ARG,
+    RKH_UT_END = RKH_TE_UT_IGNORE_ARG,
 
-    RKH_TE_NEVENT = RKH_TE_UT_IGNORE_ARG + 1         /* The last trace event */
+    RKH_TE_NEVENT = RKH_UT_END + 1         /* The last trace event */
 } RKH_TRC_EVENTS;
 
 /**
