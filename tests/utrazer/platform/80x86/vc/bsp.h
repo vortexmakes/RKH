@@ -29,85 +29,55 @@
  * 	e-mail:			francuccilea@gmail.com
  *
  *  --------------------------------------------------------------------------
- *  File                     : tcptrc.h
+ *  File                     : bsp.h
  *	Last updated for version : v2.4.04
- *	By                       : DB
- *	                           LF
+ *	By                       : LF
  *  --------------------------------------------------------------------------
  *  \endcond
  *
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		Socket TCP/IP support for 80x86 OS win32
- *
- * 	\note	    (1) To use the windows socket must be added the "ws2_32.lib" 
- * 					library in Linker->Input->Additional Dependencies 
- * 					configuration.
+ * 	\brief 		BSP for 80x86 win32
  */
 
 
-#ifndef __TCPTRC_H__
-#define __TCPTRC_H__
+#ifndef __BSP_H__
+#define __BSP_H__
 
 
-#include <winsock.h>
-	
+#include "rkh.h"
 
+
+#define BSP_TICKS_PER_SEC   		RKH_CFG_FWK_TICK_RATE_HZ
 
 /**
  * 	\brief
- *	---.
- * 
- *	---.
- *
- * 	\param port 		---.
- * 	\param srvip 		---.
- * 	\param ps 			---.
- *
- * 	\returns
- * 	---.
+ * 	This macro represents the number of timestamp clock ticks per second. 
+ * 	Dividing a count of timestamp ticks by this macro yields the number 
+ * 	of seconds.
  */
 
-int tcp_trace_open( unsigned short port, char *srvip, SOCKET *ps );
+#define BSP_TS_RATE_HZ		   		CLOCKS_PER_SEC
 
 
-/**
- * 	\brief
- *	---.
- * 
- *	---.
- *
- * 	\param s 			---.
- * 	\param c 			---.
- * 	\param len 			---.
- */
+void bsp_init( int argc, char *argv[] );
+rui32_t bsp_rand( void );
+void bsp_srand( rui32_t seed );
 
-void tcp_trace_send( SOCKET s, const char *buf, int len );
+void bsp_cli_req( rui8_t clino );
+void bsp_cli_wait_req( rui8_t clino, RKH_TNT_T req_time );
+void bsp_cli_using( rui8_t clino, RKH_TNT_T using_time );
+void bsp_cli_paused( rui8_t clino );
+void bsp_cli_resumed( rui8_t clino );
+void bsp_cli_done( rui8_t clino );
+void bsp_svr_recall( rui8_t clino );
+void bsp_svr_paused( const RKH_SMA_T *sma );
+void bsp_svr_start( rui8_t clino );
+void bsp_svr_end( void );
+void bsp_svr_resume( void );
 
-   /**
- * 	\brief
- *	---.
- * 
- *	---.
- *
- * 	\param s 			---.
- * 	\param c 			---.
- * 	\param len 			---.
- */
- 
-int tcp_trace_recv( SOCKET s, char *buf, int len );
-
-/**
- * 	\brief
- *	---.
- * 
- *	---.
- *
- * 	\param s	 		---.
- */
-
-void tcp_trace_close( SOCKET s );
-
+void bsp_led_on( void );
+void bsp_led_off( void );
 
 #endif

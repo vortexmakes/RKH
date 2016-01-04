@@ -57,7 +57,7 @@ tcp_trace_open( unsigned short port, char *srv_ip, SOCKET *ps )
 	SOCKADDR_IN target; /* Socket address information */
 	SOCKET s;
 	int err;
-
+	
 	/* --- INITIALIZATION ----------------------------------- */
 	wVersionRequested = MAKEWORD( 1, 1 );
 	err = WSAStartup( wVersionRequested, &wsaData );
@@ -78,7 +78,7 @@ tcp_trace_open( unsigned short port, char *srv_ip, SOCKET *ps )
 	/* ------------------------------------------------------ */
 	
 	/* ---- create SOCKET-------------------------------------- */
-	s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); /* Create socket */
+	s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if( s == INVALID_SOCKET )
 	{
 		printf("socket error %ld" , WSAGetLastError() );
@@ -103,6 +103,13 @@ void
 tcp_trace_send( SOCKET s, const char *buf, int len )
 {
 	send( s, buf, len, 0 ); 
+}
+
+
+int 
+tcp_trace_recv( SOCKET s, char *buf, int len )
+{
+	return recv(s, buf, len, 0);
 }
 
 

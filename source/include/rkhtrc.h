@@ -3171,6 +3171,8 @@ typedef enum rkh_trc_events
     RKH_TE_UT_EXPECT_ANYARGS,
     RKH_TE_UT_IGNORE,
     RKH_TE_UT_IGNORE_ARG,
+   	RKH_TE_UT_SUCCESS,
+	RKH_TE_UT_FAIL,
     RKH_UT_END = RKH_TE_UT_IGNORE_ARG,
 
     RKH_TE_NEVENT = RKH_UT_END + 1         /* The last trace event */
