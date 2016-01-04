@@ -3,12 +3,12 @@
  *	Last updated for version: 2.0
  *	Date of the last update:  Mar 19, 2012
  *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
+ *  Copyright (C) 2010 Leandro Francucci. All rights reserved.
  *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
+ *  RKH is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
  *  RKH is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,10 +30,11 @@
 
 enum
 {
-	PARSER_WFLAG, PARSER_COLLECT, PARSER_ESCAPING
+    PARSER_WFLAG, PARSER_COLLECT, PARSER_ESCAPING
 };
 
-void trazer_parse( rui8_t d, UtrzProcessOut *p );
-void trazer_init( void );
+void trazer_parse(rui8_t d, UtrzProcessOut *p);
+void trazer_init(void);
 
 #endif
+/* ------------------------------ End of file ------------------------------ */

@@ -4,23 +4,23 @@
  *                                Framework RKH
  *                                -------------
  *
- *            State-machine framework for reactive embedded systems            
- *          
+ *            State-machine framework for reactive embedded systems
+ *
  *                      Copyright (C) 2010 Leandro Francucci.
  *          All rights reserved. Protected by international copyright laws.
  *
  *
- *  RKH is free software: you can redistribute it and/or modify it under the 
- *  terms of the GNU General Public License as published by the Free Software 
- *  Foundation, either version 3 of the License, or (at your option) any 
+ *  RKH is free software: you can redistribute it and/or modify it under the
+ *  terms of the GNU General Public License as published by the Free Software
+ *  Foundation, either version 3 of the License, or (at your option) any
  *  later version.
  *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  *  more details.
  *
- *  You should have received a copy of the GNU General Public License along 
+ *  You should have received a copy of the GNU General Public License along
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
@@ -64,16 +64,16 @@
 /* ============================ Expect functions =========================== */
 
 void
-unitrazer_expect_wSymArg( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
-                        rui8_t nArgs, ... )
+unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                         rui8_t nArgs, ...)
 {
     va_list args;
 
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT);
     RKH_TRC_UI32(cmockLine);
     RKH_TRC_UI8(trcEvt);
-   	va_start(args, nArgs);
-   	while( nArgs-- )
+    va_start(args, nArgs);
+    while (nArgs--)
     {
         RKH_TRC_SYM(va_arg(args, const void *));
     }
@@ -81,18 +81,17 @@ unitrazer_expect_wSymArg( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
     RKH_TRC_END_WOFIL();
 }
 
-
 void
-unitrazer_expect_wNumArg( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
-                        rui8_t nArgs, ... )
+unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                         rui8_t nArgs, ...)
 {
     va_list args;
 
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT);
     RKH_TRC_UI32(cmockLine);
     RKH_TRC_UI8(trcEvt);
-   	va_start(args, nArgs);
-   	while( nArgs-- )
+    va_start(args, nArgs);
+    while (nArgs--)
     {
         RKH_TRC_UI8(va_arg(args, rui8_t));
     }
@@ -101,8 +100,8 @@ unitrazer_expect_wNumArg( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
 }
 
 void
-unitrazer_expect_wSig( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
-                        RKH_SIG_T signal)
+unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                      RKH_SIG_T signal)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT);
     RKH_TRC_UI32(cmockLine);
@@ -112,7 +111,7 @@ unitrazer_expect_wSig( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
 }
 
 void
-unitrazer_expect_noArgs( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt )
+unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT)
     RKH_TRC_UI32(cmockLine);
@@ -121,8 +120,8 @@ unitrazer_expect_noArgs( UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt )
 }
 
 void
-unitrazer_sm_exeAct_expect( UNITY_LINE_TYPE cmockLine, 
-                            rui8_t actType, RKH_ST_T *state, void * action )
+unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
+                           rui8_t actType, RKH_ST_T *state, void * action)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT)
     RKH_TRC_UI32(cmockLine);
@@ -135,7 +134,7 @@ unitrazer_sm_exeAct_expect( UNITY_LINE_TYPE cmockLine,
 
 /* ============================ Init function ============================== */
 
-void 
+void
 unitrazer_init(void)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_INIT);
@@ -144,7 +143,7 @@ unitrazer_init(void)
 
 /* ============================ CleanUp function =========================== */
 
-void 
+void
 unitrazer_cleanup(void)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_CLEANUP);
@@ -153,7 +152,7 @@ unitrazer_cleanup(void)
 
 /* ============================ Verify function ============================ */
 
-void 
+void
 unitrazer_verify(void)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_VERIFY);
@@ -162,7 +161,7 @@ unitrazer_verify(void)
 
 /* ============================ Ignore functions =========================== */
 
-void 
+void
 unitrazer_ignoreGroup(UNITY_LINE_TYPE cmock_line, RKH_TRC_GROUPS group)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_IGNORE_GROUP)

@@ -4,23 +4,23 @@
  *                                Framework RKH
  *                                -------------
  *
- *            State-machine framework for reactive embedded systems            
- *          
+ *            State-machine framework for reactive embedded systems
+ *
  *                      Copyright (C) 2010 Leandro Francucci.
  *          All rights reserved. Protected by international copyright laws.
  *
  *
- *  RKH is free software: you can redistribute it and/or modify it under the 
- *  terms of the GNU General Public License as published by the Free Software 
- *  Foundation, either version 3 of the License, or (at your option) any 
+ *  RKH is free software: you can redistribute it and/or modify it under the
+ *  terms of the GNU General Public License as published by the Free Software
+ *  Foundation, either version 3 of the License, or (at your option) any
  *  later version.
  *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  *  more details.
  *
- *  You should have received a copy of the GNU General Public License along 
+ *  You should have received a copy of the GNU General Public License along
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
@@ -71,7 +71,7 @@ extern "C" {
     unitrazer_expect_wSymArg(line, RKH_TE_SM_INIT, 1, initState)
 
 #define sm_init_expect(initState) \
-    unitrazer_sm_init_expect(__LINE__, initState )
+    unitrazer_sm_init_expect(__LINE__, initState)
 
 #define sm_init_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_INIT)
@@ -81,7 +81,7 @@ extern "C" {
     unitrazer_expect_wSymArg(line, RKH_TE_SM_CLRH, 1, historyState)
 
 #define sm_clrh_expect(historyState) \
-    unitrazer_sm_clrh_expect(__LINE__, historyState )
+    unitrazer_sm_clrh_expect(__LINE__, historyState)
 
 #define sm_clrh_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_CLRH)
@@ -128,7 +128,7 @@ extern "C" {
 
 /* RKH_TE_SM_NENEX */
 #define unitrazer_sm_nenex_expect(line, nEntry, nExit) \
-    unitrazer_expect_wNumArg(line, RKH_TE_SM_NENEX, 2, nEntry, nExit )
+    unitrazer_expect_wNumArg(line, RKH_TE_SM_NENEX, 2, nEntry, nExit)
 
 #define sm_nenex_expect(nEntry, nExit) \
     unitrazer_sm_nenex_expect(__LINE__, nEntry, nExit)
@@ -210,7 +210,7 @@ extern "C" {
 
 /* RKH_TE_SM_EXE_ACT */
 #define sm_exeAct_expect(actType, state, action) \
-    unitrazer_sm_exeAct_expect(__LINE__, actType, state, action)    
+    unitrazer_sm_exeAct_expect(__LINE__, actType, state, action)
 
 #define sm_exeAct_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_EXE_ACT)
@@ -290,11 +290,11 @@ extern "C" {
 /* RKH_TE_SM_UNKN_STATE */
 #define sm_unknState_ignore() \
     unitrazer_ignore(__LINE__, RKH_TE_SM_UNKN_STATE)
-    
+
 /* RKH_TE_SM_EX_HLEVEL */
 #define sm_exHLevel_ignore() \
     unitrazer_ignore(__LINE__, RKH_TE_SM_EX_HLEVEL)
-    
+
 /* RKH_TE_SM_EX_TSEG */
 #define sm_exTSeg_ignore() \
     unitrazer_ignore(__LINE__, RKH_TE_SM_EX_TSEG)
@@ -311,7 +311,7 @@ extern "C" {
 
 #define sm_exeAct_ignoreArg_action() \
     unitrazer_ignoreArg(__LINE__, RKH_TE_SM_EXE_ACT, UT_ARGNO_3)
-    
+
 /* -------------------------------- Ignore Groups--------------------------- */
 
 /* RKH_MP_GROUP */
@@ -351,7 +351,7 @@ typedef struct UtrzProcessOut UtrzProcessOut;
 
 struct UtrzProcessOut
 {
-	UT_RET_CODE status;			/* result code UT_PROC_SUCCESS/FAIL */
+    UT_RET_CODE status;         /* result code UT_PROC_SUCCESS/FAIL */
     char msg[UT_SIZEOF_MSG];    /* String terminated in '\0' according to */
                                 /* cmock's ruby scripts */
     UNITY_LINE_TYPE line;       /* Line number of expectation */
@@ -366,8 +366,8 @@ void ut_resetOut(void);
 
 /* ============================ Expect functions =========================== */
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Identifies the trace event to expect with one or more arguments.
  *
  *  \param[in] cmockLine    line number from which this function is called
@@ -375,11 +375,11 @@ void ut_resetOut(void);
  *  \param[in] nArgs         number of trace event arguments
  *  \param[in] ...           list of arguments
  */
-void unitrazer_expect_wSymArg( UNITY_LINE_TYPE cmock_line, 
-                            RKH_TRC_EVENTS trace_event, rui8_t nArgs, ... );
+void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmock_line,
+                              RKH_TRC_EVENTS trace_event, rui8_t nArgs, ...);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Identifies the trace event to expect with one or more arguments.
  *
  *  \param[in] cmockLine    line number from which this function is called
@@ -387,75 +387,75 @@ void unitrazer_expect_wSymArg( UNITY_LINE_TYPE cmock_line,
  *  \param[in] nArgs         number of trace event arguments
  *  \param[in] ...           list of arguments
  */
-void unitrazer_expect_wNumArg( UNITY_LINE_TYPE cmock_line, 
-                            RKH_TRC_EVENTS trace_event, rui8_t nArgs, ... );
+void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmock_line,
+                              RKH_TRC_EVENTS trace_event, rui8_t nArgs, ...);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Identifies the trace event to expect and one signal argument.
  *
  *  \param[in] cmockLine    line number from which this function is called
  *  \param[in] trcEvt       trace event to expect
- *  \param[in] signal       argument of trace event with signal 
+ *  \param[in] signal       argument of trace event with signal
  */
-void unitrazer_expect_wSig( UNITY_LINE_TYPE cmockLine, 
-                            RKH_TRC_EVENTS trcEvt, RKH_SIG_T signal );
+void unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine,
+                           RKH_TRC_EVENTS trcEvt, RKH_SIG_T signal);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Identifies the trace event to expect without arguments.
  *
  *  \param[in] cmockLine    line number from which this function is called
  *  \param[in] trcEvt       trace event to expect
  */
-void unitrazer_expect_noArgs( UNITY_LINE_TYPE cmockLine, 
-                                RKH_TRC_EVENTS trcEvt );
+void unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine,
+                             RKH_TRC_EVENTS trcEvt);
 
 /* ======================== Common expect functions ======================== */
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Establish the preconditions to the tests.
  */
 void unitrazer_init(void);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Return the system under test to its initial state after the test.
  */
 void unitrazer_cleanup(void);
 
-/** 
- *  \brief 
- *  Makes sure there are no unused expectations, if there are, this function 
+/**
+ *  \brief
+ *  Makes sure there are no unused expectations, if there are, this function
  *  causes the test to fail.
  */
 void unitrazer_verify(void);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Expect a specific trace event regardless its arguments.
  *
  *  \param[in] cmock_line   line number from which this function is called
- *  \param[in] trcEvt       produced trace event to expect but it ignores its 
+ *  \param[in] trcEvt       produced trace event to expect but it ignores its
  *                          arguments
  */
 void unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Expect for RKH_TE_SM_EXE_ACT trace event.
  *
  *  \param[in] cmock_line   line number from which this function is called
- *  \param[in] actType      action type according to RKH_SUBTE_SM_EXE_ACT enum 
+ *  \param[in] actType      action type according to RKH_SUBTE_SM_EXE_ACT enum
  *  \param[in] state        action execution context
  *  \param[in] action       executed action
  */
-void unitrazer_sm_exeAct_expect( UNITY_LINE_TYPE cmockLine, 
-                            rui8_t actType, RKH_ST_T *state, void * action );
+void unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
+                                rui8_t actType, RKH_ST_T *state, void * action);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Ignore a specific trace event.
  *
  *  \param[in] cmock_line   line number from which this function is called
@@ -463,29 +463,28 @@ void unitrazer_sm_exeAct_expect( UNITY_LINE_TYPE cmockLine,
  */
 void unitrazer_ignore(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt);
 
-/** 
- *  \brief 
- *  Adds the ability to specify specifc arguments to ignore for a produced 
- *  trace event, instead of ignoring all the arguments or the entire generated 
+/**
+ *  \brief
+ *  Adds the ability to specify specifc arguments to ignore for a produced
+ *  trace event, instead of ignoring all the arguments or the entire generated
  *  trace event, as the unitrazer_ignore() function supports.
  *
  *  \param[in] cmock_line   line number from which this function is called
  *  \param[in] trcEvt       produced trace event to expect
- *  \param[in] noArg        number of argument to ignore. See UT_ARGNO_<x> 
+ *  \param[in] noArg        number of argument to ignore. See UT_ARGNO_<x>
  *                          macro.
  */
-void unitrazer_ignoreArg(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt, 
+void unitrazer_ignoreArg(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt,
                          rui8_t noArg);
 
-/** 
- *  \brief 
+/**
+ *  \brief
  *  Force to ignore every produced trace event from a specifc trace group.
  *
  *  \param[in] cmock_line   line number from which this function is called
  *  \param[in] group        group to ignore
  */
 void unitrazer_ignoreGroup(UNITY_LINE_TYPE cmock_line, RKH_TRC_GROUPS group);
-
 
 /* -------------------- External C language linkage end -------------------- */
 
