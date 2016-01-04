@@ -11,6 +11,7 @@
 \defgroup tmr Timer (Software timer service)
 \defgroup que Queue (Queue service)
 \defgroup fwk RKH   (State-machine framework for reactive embedded systems)
+\defgroup test Test (Module and test unit cases)
 
 \anchor main_page
 \mainpage RKH Reference Manual

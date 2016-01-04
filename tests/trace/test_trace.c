@@ -30,10 +30,13 @@
  */
 
 /**
- *  \file       test_sm.c
- *  \ingroup    Test
- *
+ *  \file       test_trace.c
  *  \brief      Unit test for RKH's trace module.
+ *
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_trace Trace
+ *  @{
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -184,6 +187,12 @@ rkh_trc_filter_init(void)
 
 /* =========================== Filter test group =========================== */
 
+/**
+ *  \name Filter Group
+ *  Description
+ *  @{
+ */
+
 TEST_SETUP(trace_filter)
 {
 }
@@ -192,6 +201,9 @@ TEST_TEAR_DOWN(trace_filter)
 {
 }
 
+/**
+ *  \brief Bla bla
+ */
 TEST(trace_filter, getBitIndex0)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
@@ -202,6 +214,9 @@ TEST(trace_filter, getBitIndex0)
     TEST_ASSERT_EQUAL(1, getBitTbl(bitTbl, 7)); 
 }
 
+/**
+ *  \brief Bla bla
+ */
 TEST(trace_filter, getBitIndexX)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
@@ -218,6 +233,9 @@ TEST(trace_filter, getBitIndexX)
     TEST_ASSERT_EQUAL(1, getBitTbl(bitTbl, 23)); 
 }
 
+/**
+ *  \brief Bla bla
+ */
 TEST(trace_filter, setBitIndex0)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
@@ -235,6 +253,9 @@ TEST(trace_filter, setBitIndex0)
     TEST_ASSERT_EQUAL_HEX8(0x00, bitTbl[3]);
 }
 
+/**
+ *  \brief Bla bla
+ */
 TEST(trace_filter, resetBitIndex0)
 {
     setAllBitTbl(bitTbl, 0xff, SIZEOF_BIT_TBL);
@@ -252,6 +273,9 @@ TEST(trace_filter, resetBitIndex0)
     TEST_ASSERT_EQUAL_HEX8(0xff, bitTbl[3]);
 }
 
+/**
+ *  \brief Bla bla
+ */
 TEST(trace_filter, setBitIndexX)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
@@ -268,6 +292,9 @@ TEST(trace_filter, setBitIndexX)
     TEST_ASSERT_EQUAL_HEX8(0x00, bitTbl[3]);
 }
 
+/**
+ *  \brief Bla bla
+ */
 TEST(trace_filter, resetBitIndexX)
 {
     setAllBitTbl(bitTbl, 0xff, SIZEOF_BIT_TBL);
@@ -284,7 +311,13 @@ TEST(trace_filter, resetBitIndexX)
     TEST_ASSERT_EQUAL_HEX8(0xff, bitTbl[3]);
 }
 
+/** @} doxygen end group definition */
 /* ============================ Trace test group =========================== */
+
+/**
+ *  \addtogroup test_trace_rec Records group
+ *  @{
+ */
 
 TEST_SETUP(trace)
 {
@@ -540,4 +573,7 @@ TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
     TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */
