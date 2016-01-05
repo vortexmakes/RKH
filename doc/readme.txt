@@ -2938,7 +2938,7 @@ Prev: \ref main_page "Home"
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
-Next: \ref cross "Examples"
+Next: \ref utest
 
 When a program needs to be traced, it has to generate some information 
 each time it reaches a "significant step" (certain instruction in the 
@@ -3966,7 +3966,7 @@ and the wide range of RKH framework configurations.
 Here is the \ref trazer
 
 Prev: \ref main_page "Home" \n
-Next: \ref cross "Examples"
+Next: \ref utest
 
 \page cross Cross-platform demos
 \image html rkh_bunner.jpg

@@ -30,10 +30,10 @@
  */
 
 /**
- *  \file       test_sm_runner.c
- *  \ingroup    Test
+ *  \file       test_trace_runner.c
+ *  \ingroup    test_trace
  *
- *  \brief      ---
+ *  \brief      Unit test for Trace module
  */
 
 /* -------------------------- Development history -------------------------- */

@@ -1,8 +1,13 @@
 /**
- *  \file       test_utrzsm.c
- *  \ingroup    Test
+ *  \file       test_utrzexpect.c
+ *  \ingroup    test_utrz
+ *  \ingroup    test_utrzexpect_group
+ *  \brief      Unit test for uTrazer module - Expect group
  *
- *  \brief      Unit test for RKH's state machine module.
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_utrz
+ *  @{
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -91,7 +96,12 @@ TEST_TEAR_DOWN(utrzExpect)
     common_tear_down();
 }
 
-/* RKH_TE_SM_INIT */
+/**
+ *  \addtogroup test_utrzexpect_group Expect group
+ *  @{
+ *  \name Test cases of Expect group
+ *  @{ 
+ */
 
 TEST(utrzExpect, sm_init_Ok)
 {
@@ -120,8 +130,6 @@ TEST(utrzExpect, sm_init_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check( "INIT", "ist", str(s21), str(s211) );
 }
 
-/* RKH_TE_SM_CLRH */
-
 TEST(utrzExpect, sm_clrh_Ok)
 {
 	sm_clrh_expect(CST(&s21));
@@ -148,8 +156,6 @@ TEST(utrzExpect, sm_clrh_WithUnexpectedArg)
     
     utrzExpect_WithUnexpectedArg_check( "CLRH", "h", str(s21), str(s211) );
 }
-
-/* RKH_TE_SM_TRN */
 
 TEST(utrzExpect, sm_trn_Ok)
 {
@@ -194,8 +200,6 @@ TEST(utrzExpect, sm_trn_WithAnyArgs)
     utrzExpect_Ok_check();
 }
 
-    /* RKH_TE_SM_STATE */
-
 TEST(utrzExpect, sm_state_Ok)
 {
 	sm_state_expect(CST(&s21));
@@ -223,7 +227,6 @@ TEST(utrzExpect, sm_state_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check( "STATE", "nxtst", str(s21), str(s211) );
 }
 
-    /* RKH_TE_SM_ENSTATE */
 TEST(utrzExpect, sm_enstate_Ok)
 {
 	sm_enstate_expect(CST(&s21));
@@ -251,7 +254,6 @@ TEST(utrzExpect, sm_enstate_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check( "ENSTATE", "st", str(s21), str(s211) );
 }
 
-    /* RKH_TE_SM_EXSTATE */
 TEST(utrzExpect, sm_exstate_Ok)
 {
 	sm_exstate_expect(CST(&s21));
@@ -278,8 +280,6 @@ TEST(utrzExpect, sm_exstate_WithUnexpectedArg)
 
     utrzExpect_WithUnexpectedArg_check( "EXSTATE", "st", str(s21), str(s211) );
 }
-
-    /* RKH_TE_SM_NENEX */
 
 TEST(utrzExpect, sm_nenex_Ok)
 {
@@ -314,7 +314,6 @@ TEST(utrzExpect, sm_nenex_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check("NENEX", "nex", "3", "2");    
 }
 
-    /* RKH_TE_SM_NTRNACT */
 TEST(utrzExpect, sm_ntrnact_Ok)
 {
 	sm_ntrnact_expect(2,3);
@@ -348,7 +347,6 @@ TEST(utrzExpect, sm_ntrnact_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check("NTRNACT", "nts", "3", "2");    
 }
 
-    /* RKH_TE_SM_TS_STATE */
 TEST(utrzExpect, sm_tsstate_Ok)
 {
     sm_tsState_expect(CST(&s21));
@@ -376,7 +374,6 @@ TEST(utrzExpect, sm_tsstate_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check("TS_STATE", "st", str(s21), str(s211) );  
 }
 
-    /* RKH_TE_SM_EVT_PROC */
 TEST(utrzExpect, sm_evtproc_Ok)
 {
 	sm_evtProc_expect();
@@ -395,7 +392,6 @@ TEST(utrzExpect, sm_evtproc_OutOfSequence)
     utrzExpect_OutOfSequence_check( "EVT_PROC", "STATE" );
 }
 
-    /* RKH_TE_SM_EVT_NFOUND */
 TEST(utrzExpect, sm_evtnfound_Ok)
 {
     RKH_STATIC_EVENT(e, A);
@@ -427,7 +423,6 @@ TEST(utrzExpect, sm_evtnfound_WithUnexpectedArg)
     utrzExpect_WithUnexpectedArg_check("EVT_NFOUND", "sig", str(A), str(B));
 }
 
-    /* RKH_TE_SM_GRD_FALSE */
 TEST(utrzExpect, sm_grdfalse_Ok)
 {
 	sm_grdFalse_expect();
@@ -446,7 +441,6 @@ TEST(utrzExpect, sm_grdfalse_OutOfSequence)
     utrzExpect_OutOfSequence_check( "GRD_FALSE", "STATE" );
 }
 
-    /* RKH_TE_SM_CND_NFOUND */
 TEST(utrzExpect, sm_cndnfound_Ok)
 {
 	sm_cndNotFound_expect();
@@ -465,7 +459,6 @@ TEST(utrzExpect, sm_cndnfound_OutOfSequence)
     utrzExpect_OutOfSequence_check( "CND_NFOUND", "STATE" );
 }
 
-    /* RKH_TE_SM_UNKN_STATE */
 TEST(utrzExpect, sm_unkstate_Ok)
 {
 	sm_unknState_expect();
@@ -484,7 +477,6 @@ TEST(utrzExpect, sm_unkstate_OutOfSequence)
     utrzExpect_OutOfSequence_check( "UNKN_STATE", "STATE" );
 }
 
-    /* RKH_TE_SM_EX_HLEVEL */
 TEST(utrzExpect, sm_exhlevel_Ok)
 {
 	sm_exHLevel_expect();
@@ -503,7 +495,6 @@ TEST(utrzExpect, sm_exhlevel_OutOfSequence)
     utrzExpect_OutOfSequence_check( "EX_HLEVEL", "STATE" );
 }
 
-    /* RKH_TE_SM_EX_TSEG */    
 TEST(utrzExpect, sm_extseg_Ok)
 {
 	sm_exTSeg_expect();
@@ -521,8 +512,6 @@ TEST(utrzExpect, sm_extseg_OutOfSequence)
 
     utrzExpect_OutOfSequence_check( "EX_TSEG", "STATE" );
 }
-
-/* RKH_TE_SM_EXE_ACT */
 
 TEST(utrzExpect, sm_exeAct_Ok)
 {
@@ -578,4 +567,8 @@ TEST(utrzExpect, sm_exeAct_WithAnyArgs)
     utrzExpect_Ok_check();
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

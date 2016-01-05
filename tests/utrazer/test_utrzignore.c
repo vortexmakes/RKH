@@ -1,8 +1,13 @@
 /**
  *  \file       test_utrzignore.c
- *  \ingroup    Test
+ *  \ingroup    test_utrz
+ *  \ingroup    test_utrzignore_group
+ *  \brief      Unit test for uTrazer module - Ignore group
  *
- *  \brief      Unit test for RKH's state machine module.
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_utrz
+ *  @{
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -65,6 +70,12 @@ TEST_TEAR_DOWN(utrzIgnore)
     common_tear_down();
 }
 
+/**
+ *  \addtogroup test_utrzignore_group Ignore group
+ *  @{
+ *  \name Test cases of Ignore group
+ *  @{ 
+ */
 
 TEST(utrzIgnore, sm_trn_Ok)
 {	
@@ -105,8 +116,6 @@ TEST(utrzIgnore, sm_trn_OneArgBeforeExpect)
 	RKH_TR_SM_TRN(aotest, &s21, &s211);
 	RKH_TR_SM_EVT_PROC(aotest);
 }
-
-/* RKH_TE_SM_EXE_ACT */
 
 TEST(utrzIgnore, sm_exeAct_Ok)
 {	
@@ -184,4 +193,9 @@ TEST(utrzIgnore, verifyFail)
 
 	unitrazer_cleanup();
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

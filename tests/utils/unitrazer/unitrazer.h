@@ -31,9 +31,9 @@
 
 /**
  *  \file       unitrazer.h
- *  \ingroup    Test
+ *  \ingroup    test
  *
- *  \brief      ---
+ *  \brief      Interface of unit test with Trazer application
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -375,8 +375,8 @@ void ut_resetOut(void);
  *  \param[in] nArgs         number of trace event arguments
  *  \param[in] ...           list of arguments
  */
-void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmock_line,
-                              RKH_TRC_EVENTS trace_event, rui8_t nArgs, ...);
+void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                              rui8_t nArgs, ...);
 
 /**
  *  \brief
@@ -387,8 +387,8 @@ void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmock_line,
  *  \param[in] nArgs         number of trace event arguments
  *  \param[in] ...           list of arguments
  */
-void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmock_line,
-                              RKH_TRC_EVENTS trace_event, rui8_t nArgs, ...);
+void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                              rui8_t nArgs, ...);
 
 /**
  *  \brief
@@ -436,17 +436,17 @@ void unitrazer_verify(void);
  *  \brief
  *  Expect a specific trace event regardless its arguments.
  *
- *  \param[in] cmock_line   line number from which this function is called
+ *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] trcEvt       produced trace event to expect but it ignores its
  *                          arguments
  */
-void unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt);
+void unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
 
 /**
  *  \brief
  *  Expect for RKH_TE_SM_EXE_ACT trace event.
  *
- *  \param[in] cmock_line   line number from which this function is called
+ *  \param[in] cmockLine    line number from which this function is called
  *  \param[in] actType      action type according to RKH_SUBTE_SM_EXE_ACT enum
  *  \param[in] state        action execution context
  *  \param[in] action       executed action
@@ -458,10 +458,10 @@ void unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
  *  \brief
  *  Ignore a specific trace event.
  *
- *  \param[in] cmock_line   line number from which this function is called
+ *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] trcEvt       produced trace event to ignore
  */
-void unitrazer_ignore(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt);
+void unitrazer_ignore(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
 
 /**
  *  \brief
@@ -469,22 +469,22 @@ void unitrazer_ignore(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt);
  *  trace event, instead of ignoring all the arguments or the entire generated
  *  trace event, as the unitrazer_ignore() function supports.
  *
- *  \param[in] cmock_line   line number from which this function is called
+ *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] trcEvt       produced trace event to expect
  *  \param[in] noArg        number of argument to ignore. See UT_ARGNO_<x>
  *                          macro.
  */
-void unitrazer_ignoreArg(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt,
+void unitrazer_ignoreArg(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt,
                          rui8_t noArg);
 
 /**
  *  \brief
  *  Force to ignore every produced trace event from a specifc trace group.
  *
- *  \param[in] cmock_line   line number from which this function is called
+ *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] group        group to ignore
  */
-void unitrazer_ignoreGroup(UNITY_LINE_TYPE cmock_line, RKH_TRC_GROUPS group);
+void unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TRC_GROUPS group);
 
 /* -------------------- External C language linkage end -------------------- */
 

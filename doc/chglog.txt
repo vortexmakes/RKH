@@ -5,6 +5,31 @@
 Prev: \ref main_page "Home" \n
 
 \code
+Changes between V2.4.4 and V2.4.5 released 06/01/2016 
+
++   The main focus of this release is to support the TDD in RKH.
++   Adds the new module unitrazer in \tests\utils\unitrazer directory to test 
+    the RKH's state machines by means of Trazer application + Unity. 
+    This module is implemented based on the "The Four-Phase Test Pattern": 
+    - Setup: establish the preconditions to the test.
+    - Exercise: do something to the system.
+    - Verify: check the expected outcome.
+    - Cleanup: return the system under test to its initial state after 
+               the test.
++   Adds the test cases of trace module. In this process, is also refactored 
+    the module under test.
++   Adds the directories to support TDD with Unity in \tests.
++   Includes the beautifier "uncrustify" in \tools\uncrustify directory.
++   Adds source and include file templates in \template directory.
++   Enhances the documentation files and commnets.
++   Adds new demos and ports.
++   Renames some types and macros.
++ 	Adds the RKH_DECLARE_TR_TBL(), RKH_INIT_BASIC_STATE(), and 
+    RKH_INIT_COMPOSITE_STATE() macros to derive a state (basic or composite) 
+    structure to any other using single inheritance in C by by literally 
+    embedding the base type, RKHSBSC_T or RKHSCMP_T, as the first member of 
+    the derived structure.
+
 Changes between V2.4 and V2.4.3 released 07/15/2013
 
 + 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 

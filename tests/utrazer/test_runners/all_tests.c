@@ -31,9 +31,9 @@
 
 /**
  *  \file       all_tests.c
- *  \ingroup    Test
+ *  \ingroup    test_utrz
  *
- *  \brief      ---
+ *  \brief      Test runner of uTrazer module
  */
 
 /* -------------------------- Development history -------------------------- */

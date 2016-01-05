@@ -31,9 +31,9 @@
 
 /**
  *  \file       all_tests.c
- *  \ingroup    Test
+ *  \ingroup    test_trace
  *
- *  \brief      ---
+ *  \brief      Test runner of Trace module
  */
 
 /* -------------------------- Development history -------------------------- */

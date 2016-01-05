@@ -1,8 +1,8 @@
 /**
- *  \file       test_utrzexeact.c
- *  \ingroup    Test
+ *  \file       test_utrzexeact_runner.c
+ *  \ingroup    test_utrzexecact_group
  *
- *  \brief      ...
+ *  \brief      Execution action group runner
  */
 
 /* -------------------------- Development history -------------------------- */

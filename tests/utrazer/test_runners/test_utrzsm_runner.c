@@ -1,8 +1,8 @@
 /**
- *  \file       test_utrzsm.c
- *  \ingroup    Test
+ *  \file       test_utrzsm_runner.c
+ *  \ingroup    test_utrzsm_group
  *
- *  \brief      ...
+ *  \brief      State machine group runner
  */
 
 /* -------------------------- Development history -------------------------- */

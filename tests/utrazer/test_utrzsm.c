@@ -1,8 +1,13 @@
 /**
  *  \file       test_utrzsm.c
- *  \ingroup    Test
+ *  \ingroup    test_utrz
+ *  \ingroup    test_utrzsm_group
+ *  \brief      Unit test for uTrazer module - State machine group
  *
- *  \brief      Unit test for RKH's state machine module.
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_utrz UTrazer
+ *  @{
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -63,6 +68,13 @@ TEST_TEAR_DOWN(utrzsm)
      */
     common_tear_down();
 }
+
+/**
+ *  \addtogroup test_utrzsm_group State machine group
+ *  @{
+ *  \name Test cases of State machine group
+ *  @{ 
+ */
 
 TEST(utrzsm, expectEventOk)
 {
@@ -164,4 +176,9 @@ TEST(utrzsm, ignoreOneArgBeforeExpect)
 	RKH_TR_SM_TRN(aotest, &s21, &s211);
 	RKH_TR_SM_EVT_PROC(aotest);
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

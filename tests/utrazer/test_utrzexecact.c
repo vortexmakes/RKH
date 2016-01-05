@@ -1,8 +1,13 @@
 /**
- *  \file       test_utrzexeact.c
- *  \ingroup    Test
+ *  \file       test_utrzexecact.c
+ *  \ingroup    test_utrz
+ *  \ingroup    test_utrzexecact_group
+ *  \brief      Unit test for uTrazer module - Execution action group
  *
- *  \brief      Unit test for RKH's state machine module.
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_utrz
+ *  @{
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -52,6 +57,13 @@ TEST_TEAR_DOWN(utrzexeact)
      */
     common_tear_down();
 }
+
+/**
+ *  \addtogroup test_utrzexecact_group Execution action group
+ *  @{
+ *  \name Test cases of Execution action group
+ *  @{ 
+ */
 
 TEST(utrzexeact, expectEventOk)
 {
@@ -154,4 +166,9 @@ TEST(utrzexeact, ignoreOneArgBeforeExpect)
 	RKH_TR_SM_TRN(aotest, &s21, &s211);
 	RKH_TR_SM_EVT_PROC(aotest);
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

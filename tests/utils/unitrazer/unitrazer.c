@@ -162,37 +162,37 @@ unitrazer_verify(void)
 /* ============================ Ignore functions =========================== */
 
 void
-unitrazer_ignoreGroup(UNITY_LINE_TYPE cmock_line, RKH_TRC_GROUPS group)
+unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TRC_GROUPS group)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_IGNORE_GROUP)
-    RKH_TRC_UI32(cmock_line);
+    RKH_TRC_UI32(cmockLine);
     RKH_TRC_UI8(group);
     RKH_TRC_END_WOFIL();
 }
 
 void
-unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt)
+unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT_ANYARGS)
-    RKH_TRC_UI32(cmock_line);
+    RKH_TRC_UI32(cmockLine);
     RKH_TRC_TE_ID(trcEvt);
     RKH_TRC_END_WOFIL();
 }
 
 void
-unitrazer_ignore(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt)
+unitrazer_ignore(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_IGNORE)
-    RKH_TRC_UI32(cmock_line);
+    RKH_TRC_UI32(cmockLine);
     RKH_TRC_TE_ID(trcEvt);
     RKH_TRC_END_WOFIL();
 }
 
 void
-unitrazer_ignoreArg(UNITY_LINE_TYPE cmock_line, rui8_t trcEvt, rui8_t noArg)
+unitrazer_ignoreArg(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt, rui8_t noArg)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_IGNORE_ARG)
-    RKH_TRC_UI32(cmock_line);
+    RKH_TRC_UI32(cmockLine);
     RKH_TRC_TE_ID(trcEvt);
     RKH_TRC_UI8(noArg);
     RKH_TRC_END_WOFIL();
