@@ -2,7 +2,7 @@
  *  \file       test_utrzexpect.c
  *  \ingroup    test_utrz
  *  \ingroup    test_utrzexpect_group
- *  \brief      Unit test for uTrazer module - Expect group
+ *  \brief      Unit test for uTrazer module - Expect test group
  *
  *  \addtogroup test
  *  @{
@@ -97,7 +97,7 @@ TEST_TEAR_DOWN(utrzExpect)
 }
 
 /**
- *  \addtogroup test_utrzexpect_group Expect group
+ *  \addtogroup test_utrzexpect_group Expect test group
  *  @{
  *  \name Test cases of Expect group
  *  @{ 

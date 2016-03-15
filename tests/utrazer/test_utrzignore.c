@@ -2,7 +2,7 @@
  *  \file       test_utrzignore.c
  *  \ingroup    test_utrz
  *  \ingroup    test_utrzignore_group
- *  \brief      Unit test for uTrazer module - Ignore group
+ *  \brief      Unit test for uTrazer module - Ignore test group
  *
  *  \addtogroup test
  *  @{
@@ -71,7 +71,7 @@ TEST_TEAR_DOWN(utrzIgnore)
 }
 
 /**
- *  \addtogroup test_utrzignore_group Ignore group
+ *  \addtogroup test_utrzignore_group Ignore test group
  *  @{
  *  \name Test cases of Ignore group
  *  @{ 

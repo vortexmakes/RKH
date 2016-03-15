@@ -2,12 +2,13 @@
  *  \file       test_utrzsm.c
  *  \ingroup    test_utrz
  *  \ingroup    test_utrzsm_group
- *  \brief      Unit test for uTrazer module - State machine group
+ *  \brief      Unit test for uTrazer module - State machine test group
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_utrz UTrazer
  *  @{
+ *  \brief      Unit test for uTrazer module
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -70,9 +71,9 @@ TEST_TEAR_DOWN(utrzsm)
 }
 
 /**
- *  \addtogroup test_utrzsm_group State machine group
+ *  \addtogroup test_utrzsm_group State machine test group
  *  @{
- *  \name Test cases of State machine group
+ *  \name Test cases of State machine test group
  *  @{ 
  */
 

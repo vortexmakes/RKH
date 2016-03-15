@@ -2,7 +2,7 @@
  *  \file       test_utrzexecact.c
  *  \ingroup    test_utrz
  *  \ingroup    test_utrzexecact_group
- *  \brief      Unit test for uTrazer module - Execution action group
+ *  \brief      Unit test for uTrazer module - Execution action test group
  *
  *  \addtogroup test
  *  @{
@@ -59,7 +59,7 @@ TEST_TEAR_DOWN(utrzexeact)
 }
 
 /**
- *  \addtogroup test_utrzexecact_group Execution action group
+ *  \addtogroup test_utrzexecact_group Execution action test group
  *  @{
  *  \name Test cases of Execution action group
  *  @{ 

@@ -339,7 +339,7 @@ extern "C" {
 #define UT_ARGNO_5      (rui8_t)4
 #define UT_ARGNO_6      (rui8_t)5
 
-#define UT_SIZEOF_MSG       256
+#define UT_SIZEOF_MSG   256
 
 /* ------------------------------- Data types ------------------------------ */
 typedef enum
@@ -351,7 +351,7 @@ typedef struct UtrzProcessOut UtrzProcessOut;
 
 struct UtrzProcessOut
 {
-    UT_RET_CODE status;         /* result code UT_PROC_SUCCESS/FAIL */
+    UT_RET_CODE status;         /* result code UT_RET_CODE */
     char msg[UT_SIZEOF_MSG];    /* String terminated in '\0' according to */
                                 /* cmock's ruby scripts */
     UNITY_LINE_TYPE line;       /* Line number of expectation */
@@ -363,55 +363,6 @@ struct UtrzProcessOut
 
 UtrzProcessOut * ut_getLastOut(void);
 void ut_resetOut(void);
-
-/* ============================ Expect functions =========================== */
-
-/**
- *  \brief
- *  Identifies the trace event to expect with one or more arguments.
- *
- *  \param[in] cmockLine    line number from which this function is called
- *  \param[in] trcEvt        trace event to expect
- *  \param[in] nArgs         number of trace event arguments
- *  \param[in] ...           list of arguments
- */
-void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
-                              rui8_t nArgs, ...);
-
-/**
- *  \brief
- *  Identifies the trace event to expect with one or more arguments.
- *
- *  \param[in] cmockLine    line number from which this function is called
- *  \param[in] trcEvt        trace event to expect
- *  \param[in] nArgs         number of trace event arguments
- *  \param[in] ...           list of arguments
- */
-void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
-                              rui8_t nArgs, ...);
-
-/**
- *  \brief
- *  Identifies the trace event to expect and one signal argument.
- *
- *  \param[in] cmockLine    line number from which this function is called
- *  \param[in] trcEvt       trace event to expect
- *  \param[in] signal       argument of trace event with signal
- */
-void unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine,
-                           RKH_TRC_EVENTS trcEvt, RKH_SIG_T signal);
-
-/**
- *  \brief
- *  Identifies the trace event to expect without arguments.
- *
- *  \param[in] cmockLine    line number from which this function is called
- *  \param[in] trcEvt       trace event to expect
- */
-void unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine,
-                             RKH_TRC_EVENTS trcEvt);
-
-/* ======================== Common expect functions ======================== */
 
 /**
  *  \brief
@@ -432,6 +383,71 @@ void unitrazer_cleanup(void);
  */
 void unitrazer_verify(void);
 
+/* ============================ Expect functions =========================== */
+
+/**
+ *  \brief
+ *  Identifies the trace event to expect with one or more arguments.
+ *
+ *  \param[in] cmockLine    line number from which this function is called
+ *  \param[in] trcEvt        trace event to expect
+ *  \param[in] nArgs         number of trace event arguments
+ *  \param[in] ...           list of arguments
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
+ */
+void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                              rui8_t nArgs, ...);
+
+/**
+ *  \brief
+ *  Identifies the trace event to expect with one or more arguments.
+ *
+ *  \param[in] cmockLine    line number from which this function is called
+ *  \param[in] trcEvt        trace event to expect
+ *  \param[in] nArgs         number of trace event arguments
+ *  \param[in] ...           list of arguments
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
+ */
+void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+                              rui8_t nArgs, ...);
+
+/**
+ *  \brief
+ *  Identifies the trace event to expect and one signal argument.
+ *
+ *  \param[in] cmockLine    line number from which this function is called
+ *  \param[in] trcEvt       trace event to expect
+ *  \param[in] signal       argument of trace event with signal
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
+ */
+void unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine,
+                           RKH_TRC_EVENTS trcEvt, RKH_SIG_T signal);
+
+/**
+ *  \brief
+ *  Identifies the trace event to expect without arguments.
+ *
+ *  \param[in] cmockLine    line number from which this function is called
+ *  \param[in] trcEvt       trace event to expect
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
+ */
+void unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine,
+                             RKH_TRC_EVENTS trcEvt);
+
+/* ======================== Common expect functions ======================== */
+
 /**
  *  \brief
  *  Expect a specific trace event regardless its arguments.
@@ -439,6 +455,10 @@ void unitrazer_verify(void);
  *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] trcEvt       produced trace event to expect but it ignores its
  *                          arguments
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
  */
 void unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
 
@@ -450,6 +470,10 @@ void unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
  *  \param[in] actType      action type according to RKH_SUBTE_SM_EXE_ACT enum
  *  \param[in] state        action execution context
  *  \param[in] action       executed action
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
  */
 void unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
                                 rui8_t actType, RKH_ST_T *state, void * action);
@@ -460,6 +484,10 @@ void unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
  *
  *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] trcEvt       produced trace event to ignore
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to ignore.
  */
 void unitrazer_ignore(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
 
@@ -473,6 +501,10 @@ void unitrazer_ignore(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
  *  \param[in] trcEvt       produced trace event to expect
  *  \param[in] noArg        number of argument to ignore. See UT_ARGNO_<x>
  *                          macro.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to ignore.
  */
 void unitrazer_ignoreArg(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt,
                          rui8_t noArg);
@@ -483,6 +515,11 @@ void unitrazer_ignoreArg(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt,
  *
  *  \param[in] cmockLine   line number from which this function is called
  *  \param[in] group        group to ignore
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event group to 
+ *  ignore.
  */
 void unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TRC_GROUPS group);
 

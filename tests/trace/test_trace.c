@@ -32,12 +32,13 @@
 /**
  *  \file       test_trace.c
  *  \ingroup    test_trace
- *  \brief      Unit test for RKH's trace module.
+ *  \brief      Unit test for trace module.
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_trace Trace
  *  @{
+ *  \brief      Unit test for trace module.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -197,7 +198,7 @@ TEST_TEAR_DOWN(trace_filter)
 }
 
 /**
- *  \addtogroup test_trace_filter Filter group
+ *  \addtogroup test_trace_filter Filter test group
  *  @{
  *  \name Test cases of filter group
  *  @{ 
@@ -313,7 +314,7 @@ TEST_TEAR_DOWN(trace)
 }
 
 /**
- *  \addtogroup test_trace_rec Records group
+ *  \addtogroup test_trace_rec Records test group
  *  @{
  *  \name Test cases of records group
  *  @{ 

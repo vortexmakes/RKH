@@ -54,7 +54,6 @@
 #include "aotest.h"
 #include "aotest_act.h"
 
-
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
@@ -65,12 +64,12 @@
 /* ---------------------------- Global functions --------------------------- */
 
 void
-common_test_setup( void )
+common_test_setup(void)
 {
     ut_resetOut();
     unitrazer_init();
     fwk_ignore();               /* Ignore every trace event of FWK group */
-	sm_tsState_ignore();
+    sm_tsState_ignore();
 
     RKH_TR_FWK_AO(aotest);
     RKH_TR_FWK_STATE(aotest, &s);
@@ -84,29 +83,29 @@ common_test_setup( void )
     RKH_TR_FWK_FUN(foo_set2zero);
     RKH_TR_FWK_FUN(foo_set2one);
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-	RKH_FILTER_OFF_SIGNAL( A );
-	RKH_FILTER_OFF_SIGNAL( B );
-	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_SM );
-	RKH_FILTER_OFF_GROUP_ALL_EVENTS( RKH_TG_FWK );
-	RKH_FILTER_OFF_SMA( aotest );
+    /* set trace filters */
+    RKH_FILTER_ON_GROUP(RKH_TRC_ALL_GROUPS);
+    RKH_FILTER_ON_EVENT(RKH_TRC_ALL_EVENTS);
+    RKH_FILTER_OFF_SIGNAL(A);
+    RKH_FILTER_OFF_SIGNAL(B);
+    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
+    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_FWK);
+    RKH_FILTER_OFF_SMA(aotest);
 
     rkh_sma_init_hsm(aotest);
 }
 
 void
-common_tear_down( void )
+common_tear_down(void)
 {
     UtrzProcessOut *p;
 
-	unitrazer_verify(); /* Makes sure there are no unused expectations, if */
-						/* there are, this function causes the test to fail. */
+    unitrazer_verify(); /* Makes sure there are no unused expectations, if */
+                        /* there are, this function causes the test to fail. */
     p = ut_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 
-	unitrazer_cleanup();    
+    unitrazer_cleanup();
 }
 
 /* ------------------------------ End of file ------------------------------ */

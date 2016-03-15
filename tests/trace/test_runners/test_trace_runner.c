@@ -33,7 +33,7 @@
  *  \file       test_trace_runner.c
  *  \ingroup    test_trace
  *
- *  \brief      Unit test for Trace module
+ *  \brief      Test runner of trace module
  */
 
 /* -------------------------- Development history -------------------------- */
