@@ -793,7 +793,7 @@ Please, see \ref Installation section about RKH port directory and files.
 When using the trace facility must be defined in \c rkhport.h the following 
 configurations:
 
-\li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_TRC_SIZEOF_POINTER 
+\li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_CFGPORT_TRC_SIZEOF_PTR  
 \li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_CFGPORT_TRC_SIZEOF_FUN_PTR 
 \li #RKH_CFGPORT_TRC_SIZEOF_TSTAMP \copydetails #RKH_CFGPORT_TRC_SIZEOF_TSTAMP 
 

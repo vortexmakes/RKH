@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EA1C4573-69C7-4C8E-8E1B-A3B8C43C1867}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>sm</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__W32STVC08__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\src;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkh.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhassert.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhdef.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhevt.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhitl.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhmp.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhplat.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrdy.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrq.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhs.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtim.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtrc.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h" />
+    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h" />
+    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_internals.h" />
+    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h" />
+    <ClInclude Include="..\..\..\..\..\unity\unity.h" />
+    <ClInclude Include="..\..\..\..\..\unity\unity_config.h" />
+    <ClInclude Include="..\..\..\..\..\unity\unity_internals.h" />
+    <ClInclude Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.h" />
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h" />
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h" />
+    <ClInclude Include="..\..\..\..\rkhcfg.h" />
+    <ClInclude Include="..\bsp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkh.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhdyn.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhmp.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhrq.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhs.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhsma.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
+    <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\..\unity\unity.c" />
+    <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c" />
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c" />
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
+    <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
+    <ClCompile Include="..\..\..\..\test_smTransition.c" />
+    <ClCompile Include="..\bsp.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
