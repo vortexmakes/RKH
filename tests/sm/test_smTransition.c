@@ -55,7 +55,10 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include "unity_fixture.h"
+#include "unitrazer.h"
 #include "rkh.h"
+#include "smTest.h"
+#include "smTestAct.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -71,10 +74,38 @@ TEST_GROUP(transition);
 
 TEST_SETUP(transition)
 {
+    unitrazer_resetOut();
+    unitrazer_init();
+
+    RKH_TR_FWK_AO(smTest);
+    RKH_TR_FWK_STATE(smTest, &s);
+    RKH_TR_FWK_STATE(smTest, &s1);
+    RKH_TR_FWK_STATE(smTest, &s11);
+    RKH_TR_FWK_STATE(smTest, &s2);
+    RKH_TR_FWK_STATE(smTest, &s21);
+    RKH_TR_FWK_STATE(smTest, &s211);
+    RKH_TR_FWK_SIG(A);
+    RKH_TR_FWK_SIG(B);
+    RKH_TR_FWK_FUN(foo_set2zero);
+    RKH_TR_FWK_FUN(foo_set2one);
+
+    RKH_FILTER_OFF_SIGNAL(A);
+    RKH_FILTER_OFF_SIGNAL(B);
+    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
+    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_FWK);
+    RKH_FILTER_OFF_SMA(smTest);
 }
 
 TEST_TEAR_DOWN(transition)
 {
+    UtrzProcessOut *p;
+
+    unitrazer_verify(); /* Makes sure there are no unused expectations, if */
+                        /* there are, this function causes the test to fail. */
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+
+    unitrazer_cleanup();
 }
 
 /**
@@ -84,9 +115,16 @@ TEST_TEAR_DOWN(transition)
  *  @{ 
  */
 
-TEST(transition, firstTest)
+TEST(transition, initializing)
 {
-    TEST_IGNORE()
+    UtrzProcessOut *p;
+
+	sm_init_expect(CST(&s2));
+
+    rkh_sma_init_hsm(smTest);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
 /** @} doxygen end group definition */

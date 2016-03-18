@@ -215,13 +215,13 @@ ut_process(UtrzProcessOut *pOut)
 /* ---------------------------- Global functions --------------------------- */
 
 UtrzProcessOut *
-ut_getLastOut(void)
+unitrazer_getLastOut(void)
 {
     return &out;
 }
 
 void
-ut_resetOut(void)
+unitrazer_resetOut(void)
 {
     out.line = 0;
     out.msg[0] = '\0';

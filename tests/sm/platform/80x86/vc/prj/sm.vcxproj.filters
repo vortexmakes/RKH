@@ -32,9 +32,6 @@
     <Filter Include="Source Files\tests\sm\test_runners">
       <UniqueIdentifier>{d5399e2c-7d30-47ea-8077-d94f53e8f7dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\tests\sm\src">
-      <UniqueIdentifier>{fe11f58c-b068-496d-ad0e-f58fe69423ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\tests\utils\bsp">
       <UniqueIdentifier>{12503d36-45e5-4343-b7bb-5908aaff77f5}</UniqueIdentifier>
     </Filter>
@@ -121,6 +118,12 @@
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\smTest.h">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\smTestAct.h">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c">
@@ -159,9 +162,6 @@
     <ClCompile Include="..\bsp.c">
       <Filter>Source Files\tests\sm</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
-      <Filter>Source Files\tests\sm\test_runners</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c">
       <Filter>Source Files\tests\sm\test_runners</Filter>
     </ClCompile>
@@ -179,6 +179,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\smTest.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\smTestAct.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
+      <Filter>Source Files\tests\sm\test_runners</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

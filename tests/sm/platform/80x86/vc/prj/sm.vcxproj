@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -50,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__W32STVC08__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\src;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,6 +103,8 @@
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h" />
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h" />
     <ClInclude Include="..\..\..\..\rkhcfg.h" />
+    <ClInclude Include="..\..\..\..\smTest.h" />
+    <ClInclude Include="..\..\..\..\smTestAct.h" />
     <ClInclude Include="..\bsp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +123,8 @@
     <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c" />
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c" />
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
+    <ClCompile Include="..\..\..\..\smTest.c" />
+    <ClCompile Include="..\..\..\..\smTestAct.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
     <ClCompile Include="..\..\..\..\test_smTransition.c" />

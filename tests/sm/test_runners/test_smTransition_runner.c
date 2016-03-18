@@ -62,7 +62,7 @@
 
 TEST_GROUP_RUNNER(transition)
 {
-	RUN_TEST_CASE(transition, firstTest);
+	RUN_TEST_CASE(transition, initializing);
 }
 
 /* ------------------------------ End of file ------------------------------ */

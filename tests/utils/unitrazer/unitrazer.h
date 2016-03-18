@@ -67,146 +67,146 @@ extern "C" {
 /* ============================= Expect macros ============================= */
 
 /* RKH_TE_SM_INIT */
-#define unitrazer_sm_init_expect(line, initState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_INIT, 1, initState)
-
 #define sm_init_expect(initState) \
     unitrazer_sm_init_expect(__LINE__, initState)
+
+#define unitrazer_sm_init_expect(line, initState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_INIT, 1, initState)
 
 #define sm_init_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_INIT)
 
 /* RKH_TE_SM_CLRH */
-#define unitrazer_sm_clrh_expect(line, historyState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_CLRH, 1, historyState)
-
 #define sm_clrh_expect(historyState) \
     unitrazer_sm_clrh_expect(__LINE__, historyState)
+
+#define unitrazer_sm_clrh_expect(line, historyState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_CLRH, 1, historyState)
 
 #define sm_clrh_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_CLRH)
 
 /* RKH_TE_SM_TRN */
-#define unitrazer_sm_trn_expect(line, sourceState, targetState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_TRN, 2, sourceState, targetState)
-
 #define sm_trn_expect(sourceState, targetState) \
     unitrazer_sm_trn_expect(__LINE__, sourceState, targetState)
+
+#define unitrazer_sm_trn_expect(line, sourceState, targetState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_TRN, 2, sourceState, targetState)
 
 #define sm_trn_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_TRN)
 
 /* RKH_TE_SM_STATE */
-#define unitrazer_sm_state_expect(line, nextState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_STATE, 1, nextState)
-
 #define sm_state_expect(nextState) \
     unitrazer_sm_state_expect(__LINE__, nextState)
+
+#define unitrazer_sm_state_expect(line, nextState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_STATE, 1, nextState)
 
 #define sm_state_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_STATE)
 
 /* RKH_TE_SM_ENSTATE */
-#define unitrazer_enstate_expect(line, entryState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_ENSTATE, 1, entryState)
-
 #define sm_enstate_expect(entryState) \
     unitrazer_enstate_expect(__LINE__, entryState)
+
+#define unitrazer_enstate_expect(line, entryState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_ENSTATE, 1, entryState)
 
 #define sm_enstate_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_ENSTATE)
 
 /* RKH_TE_SM_EXSTATE */
-#define unitrazer_exstate_expect(line, exitState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_EXSTATE, 1, exitState)
-
 #define sm_exstate_expect(exitState) \
     unitrazer_exstate_expect(__LINE__, exitState)
+
+#define unitrazer_exstate_expect(line, exitState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_EXSTATE, 1, exitState)
 
 #define sm_exstate_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_EXSTATE)
 
 /* RKH_TE_SM_NENEX */
-#define unitrazer_sm_nenex_expect(line, nEntry, nExit) \
-    unitrazer_expect_wNumArg(line, RKH_TE_SM_NENEX, 2, nEntry, nExit)
-
 #define sm_nenex_expect(nEntry, nExit) \
     unitrazer_sm_nenex_expect(__LINE__, nEntry, nExit)
+
+#define unitrazer_sm_nenex_expect(line, nEntry, nExit) \
+    unitrazer_expect_wNumArg(line, RKH_TE_SM_NENEX, 2, nEntry, nExit)
 
 #define sm_nenex_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_NENEX)
 
 /* RKH_TE_SM_NTRNACT */
-#define unitrazer_sm_ntrnact_expect(line, nActions, nSegments) \
-    unitrazer_expect_wNumArg(line, RKH_TE_SM_NTRNACT, 2, nActions, nSegments)
-
 #define sm_ntrnact_expect(nActions, nSegments) \
     unitrazer_sm_ntrnact_expect(__LINE__, nActions, nSegments)
+
+#define unitrazer_sm_ntrnact_expect(line, nActions, nSegments) \
+    unitrazer_expect_wNumArg(line, RKH_TE_SM_NTRNACT, 2, nActions, nSegments)
 
 #define sm_ntrnact_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_NTRNACT)
 
 /* RKH_TE_SM_TS_STATE */
-#define unitrazer_sm_tsState_expect(line, targetState) \
-    unitrazer_expect_wSymArg(line, RKH_TE_SM_TS_STATE, 1, targetState)
-
 #define sm_tsState_expect(targetState) \
     unitrazer_sm_tsState_expect(__LINE__, targetState)
+
+#define unitrazer_sm_tsState_expect(line, targetState) \
+    unitrazer_expect_wSymArg(line, RKH_TE_SM_TS_STATE, 1, targetState)
 
 #define sm_tsState_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_TS_STATE)
 
 /* RKH_TE_SM_EVT_PROC */
-#define unitrazer_sm_evtProc_expect(line) \
-    unitrazer_expect_noArgs(line, RKH_TE_SM_EVT_PROC)
-
 #define sm_evtProc_expect() \
     unitrazer_sm_evtProc_expect(__LINE__)
 
-/* RKH_TE_SM_EVT_NFOUND */
-#define unitrazer_sm_evtNotFound_expect(line, signal) \
-    unitrazer_expect_wSig(line, RKH_TE_SM_EVT_NFOUND, signal)
+#define unitrazer_sm_evtProc_expect(line) \
+    unitrazer_expect_noArgs(line, RKH_TE_SM_EVT_PROC)
 
+/* RKH_TE_SM_EVT_NFOUND */
 #define sm_evtNotFound_expect(signal) \
     unitrazer_sm_evtNotFound_expect(__LINE__, signal)
+
+#define unitrazer_sm_evtNotFound_expect(line, signal) \
+    unitrazer_expect_wSig(line, RKH_TE_SM_EVT_NFOUND, signal)
 
 #define sm_evtNotFound_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_EVT_NFOUND)
 
 /* RKH_TE_SM_GRD_FALSE */
-#define unitrazer_sm_grdFalse_expect(line) \
-    unitrazer_expect_noArgs(line, RKH_TE_SM_GRD_FALSE)
-
 #define sm_grdFalse_expect() \
     unitrazer_sm_grdFalse_expect(__LINE__)
 
-/* RKH_TE_SM_CND_NFOUND */
-#define unitrazer_sm_cndNotFound_expect(line) \
-    unitrazer_expect_noArgs(line, RKH_TE_SM_CND_NFOUND)
+#define unitrazer_sm_grdFalse_expect(line) \
+    unitrazer_expect_noArgs(line, RKH_TE_SM_GRD_FALSE)
 
+/* RKH_TE_SM_CND_NFOUND */
 #define sm_cndNotFound_expect() \
     unitrazer_sm_cndNotFound_expect(__LINE__)
 
-/* RKH_TE_SM_UNKN_STATE */
-#define unitrazer_sm_unknState_expect(line) \
-    unitrazer_expect_noArgs(line, RKH_TE_SM_UNKN_STATE)
+#define unitrazer_sm_cndNotFound_expect(line) \
+    unitrazer_expect_noArgs(line, RKH_TE_SM_CND_NFOUND)
 
+/* RKH_TE_SM_UNKN_STATE */
 #define sm_unknState_expect() \
     unitrazer_sm_unknState_expect(__LINE__)
 
-/* RKH_TE_SM_EX_HLEVEL */
-#define unitrazer_sm_exHLevel_expect(line) \
-    unitrazer_expect_noArgs(line, RKH_TE_SM_EX_HLEVEL)
+#define unitrazer_sm_unknState_expect(line) \
+    unitrazer_expect_noArgs(line, RKH_TE_SM_UNKN_STATE)
 
+/* RKH_TE_SM_EX_HLEVEL */
 #define sm_exHLevel_expect() \
     unitrazer_sm_exHLevel_expect(__LINE__)
 
-/* RKH_TE_SM_EX_TSEG */
-#define unitrazer_sm_exTSeg_expect(line) \
-    unitrazer_expect_noArgs(line, RKH_TE_SM_EX_TSEG)
+#define unitrazer_sm_exHLevel_expect(line) \
+    unitrazer_expect_noArgs(line, RKH_TE_SM_EX_HLEVEL)
 
+/* RKH_TE_SM_EX_TSEG */
 #define sm_exTSeg_expect() \
     unitrazer_sm_exTSeg_expect(__LINE__)
+
+#define unitrazer_sm_exTSeg_expect(line) \
+    unitrazer_expect_noArgs(line, RKH_TE_SM_EX_TSEG)
 
 /* RKH_TE_SM_EXE_ACT */
 #define sm_exeAct_expect(actType, state, action) \
@@ -361,8 +361,8 @@ struct UtrzProcessOut
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 
-UtrzProcessOut * ut_getLastOut(void);
-void ut_resetOut(void);
+UtrzProcessOut * unitrazer_getLastOut(void);
+void unitrazer_resetOut(void);
 
 /**
  *  \brief

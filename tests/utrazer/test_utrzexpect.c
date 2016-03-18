@@ -36,14 +36,14 @@
 #define utrzExpect_Ok_check()   \
         {                       \
             UtrzProcessOut *p;  \
-            p = ut_getLastOut();    \
+            p = unitrazer_getLastOut();    \
             TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);  \
         }
 
 #define utrzExpect_OutOfSequence_check(ex, rc)  \
         {                                       \
             UtrzProcessOut *p;                  \
-            p = ut_getLastOut();                \
+            p = unitrazer_getLastOut();                \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);             \
             TEST_ASSERT_EQUAL_STRING("Out of order Trace event."    \
                     " received: '"rc"' expected: '"ex"'.", p->msg); \
@@ -52,7 +52,7 @@
 #define utrzExpect_WithUnexpectedArg_check( ev, an, e, r )  \
         {                                               \
             UtrzProcessOut *p;                          \
-            p = ut_getLastOut();                        \
+            p = unitrazer_getLastOut();                        \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status); \
             TEST_ASSERT_EQUAL_STRING("Event '"ev"' ocurred with unexpected " \
                              "value for argument '"an"="r"' expected "       \
@@ -62,7 +62,7 @@
 #define utrzExpect_WithUnexpectedArgNoName_check( ev, e, r )  \
         {                                               \
             UtrzProcessOut *p;                          \
-            p = ut_getLastOut();                        \
+            p = unitrazer_getLastOut();                        \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status); \
             TEST_ASSERT_EQUAL_STRING("Event '"ev"' ocurred with unexpected " \
                              "value for argument '"r"' expected "       \

@@ -104,7 +104,8 @@ static UtrzProcessOut out;
     #include "tcptrc.h"
 
 /* Trazer Tool IP Address */
-    #define TRC_IP_ADDR                 "192.168.56.1"
+    /*#define TRC_IP_ADDR                 "192.168.56.1"*/
+    #define TRC_IP_ADDR                 "127.0.0.1"
 
 /* Trazer Tool TCP Port Address */
     #define TRC_TCP_PORT                6602
@@ -215,13 +216,13 @@ ut_process(UtrzProcessOut *pOut)
 /* ---------------------------- Global functions --------------------------- */
 
 UtrzProcessOut *
-ut_getLastOut(void)
+unitrazer_getLastOut(void)
 {
     return &out;
 }
 
 void
-ut_resetOut(void)
+unitrazer_resetOut(void)
 {
     out.line = 0;
     out.msg[0] = '\0';
@@ -274,8 +275,11 @@ rkh_hook_idle(void)             /* called within critical section */
 void
 rkh_hook_putTrcEvt(void)
 {
-    RKH_TRC_FLUSH();
-    ut_process(&out);
+   UT_RET_CODE ret;
+
+   RKH_TRC_FLUSH();
+   ret = ut_process(&out);
+   UNITY_TEST_ASSERT(ret != UT_PROC_FAIL, out.line, out.msg);
 }
 
 void

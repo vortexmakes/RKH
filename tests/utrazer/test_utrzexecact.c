@@ -87,7 +87,7 @@ TEST(utrzexeact, expectEventOk)
     /* -------- Verify --------------
      * Check the expected outcome 
      */
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
@@ -99,7 +99,7 @@ TEST(utrzexeact, expectEventOutOfSequence)
 
     RKH_TR_SM_ENSTATE(aotest, CST(&s21));
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
     TEST_ASSERT_EQUAL_STRING("Out of order Trace event. received: 'ENSTATE' "
                              "expected: 'TRN'.", p->msg);
@@ -113,7 +113,7 @@ TEST(utrzexeact, expectEventWithUnexpectedArg)
 
     RKH_TR_SM_TRN(aotest, &s21, &s21);
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
     TEST_ASSERT_EQUAL_STRING("Event 'TRN' ocurred with unexpected "
                              "value for argument 'tst=s21' expected "
@@ -129,12 +129,12 @@ TEST(utrzexeact, ignoreEvt)
 
     RKH_TR_SM_TRN(aotest, &s21, &s21);
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 
     RKH_TR_SM_EVT_PROC(aotest)
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
@@ -147,7 +147,7 @@ TEST(utrzexeact, ignoreOneArg)
 
     RKH_TR_SM_TRN(aotest, &s211, &s211);
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
@@ -159,7 +159,7 @@ TEST(utrzexeact, ignoreOneArgBeforeExpect)
 	sm_evtProc_expect();
     sm_trn_ignoreArg_sourceState();
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
     TEST_ASSERT_EQUAL_STRING("IgnoreArg called before Expect on event 'TRN'."
                                 , p->msg);

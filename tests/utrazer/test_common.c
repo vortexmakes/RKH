@@ -66,7 +66,7 @@
 void
 common_test_setup(void)
 {
-    ut_resetOut();
+    unitrazer_resetOut();
     unitrazer_init();
     fwk_ignore();               /* Ignore every trace event of FWK group */
     sm_tsState_ignore();
@@ -102,7 +102,7 @@ common_tear_down(void)
 
     unitrazer_verify(); /* Makes sure there are no unused expectations, if */
                         /* there are, this function causes the test to fail. */
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 
     unitrazer_cleanup();

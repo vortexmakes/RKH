@@ -33,14 +33,14 @@
 #define utrzOkCheck()   \
         {                       \
             UtrzProcessOut *p;  \
-            p = ut_getLastOut();    \
+            p = unitrazer_getLastOut();    \
             TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);  \
         }
 
 #define utrzFailCheck()   \
         {                       \
             UtrzProcessOut *p;  \
-            p = ut_getLastOut();    \
+            p = unitrazer_getLastOut();    \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);  \
         }
 /* ------------------------------- Constants ------------------------------- */
@@ -109,7 +109,7 @@ TEST(utrzIgnore, sm_trn_OneArgBeforeExpect)
 	sm_evtProc_expect();
     sm_trn_ignoreArg_sourceState();
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
     TEST_ASSERT_EQUAL_STRING("IgnoreArg called before Expect on event 'TRN'."
                                 , p->msg);
@@ -149,7 +149,7 @@ TEST(utrzIgnore, sm_exeAct_OneArgBeforeExpect)
 	sm_evtProc_expect();
     sm_trn_ignoreArg_sourceState();
 
-    p = ut_getLastOut();
+    p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
     TEST_ASSERT_EQUAL_STRING("IgnoreArg called before Expect on event 'TRN'."
                                 , p->msg);
