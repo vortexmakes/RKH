@@ -61,7 +61,20 @@
 #include "smTestAct.h"
 
 /* ----------------------------- Local macros ------------------------------ */
+#define RKH_STATE_CAST(state_)      ((RKH_ST_T *)state_)
+
 /* ------------------------------- Constants ------------------------------- */
+static RKH_STATIC_EVENT(evA, A);
+static RKH_STATIC_EVENT(evB, B);
+static RKH_STATIC_EVENT(evC, C);
+static RKH_STATIC_EVENT(evD, D);
+static RKH_STATIC_EVENT(evE, E);
+static RKH_STATIC_EVENT(evF, F);
+static RKH_STATIC_EVENT(evG, G);
+static RKH_STATIC_EVENT(evH, H);
+static RKH_STATIC_EVENT(evI, I);
+static RKH_STATIC_EVENT(evTerminate, TERMINATE);
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 
@@ -69,6 +82,13 @@ TEST_GROUP(transition);
 
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
+static
+void
+setStateForcesfully(RKH_SMA_T *me, const RKH_ST_T *state)
+{
+    me->state = state;
+}
+
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 
@@ -78,12 +98,9 @@ TEST_SETUP(transition)
     unitrazer_init();
 
     RKH_TR_FWK_AO(smTest);
-    RKH_TR_FWK_STATE(smTest, &s);
+    RKH_TR_FWK_STATE(smTest, &waiting);
+    RKH_TR_FWK_STATE(smTest, &s0);
     RKH_TR_FWK_STATE(smTest, &s1);
-    RKH_TR_FWK_STATE(smTest, &s11);
-    RKH_TR_FWK_STATE(smTest, &s2);
-    RKH_TR_FWK_STATE(smTest, &s21);
-    RKH_TR_FWK_STATE(smTest, &s211);
     RKH_TR_FWK_SIG(A);
     RKH_TR_FWK_SIG(B);
     RKH_TR_FWK_FUN(foo_set2zero);
@@ -98,13 +115,8 @@ TEST_SETUP(transition)
 
 TEST_TEAR_DOWN(transition)
 {
-    UtrzProcessOut *p;
-
     unitrazer_verify(); /* Makes sure there are no unused expectations, if */
                         /* there are, this function causes the test to fail. */
-    p = unitrazer_getLastOut();
-    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
-
     unitrazer_cleanup();
 }
 
@@ -115,13 +127,30 @@ TEST_TEAR_DOWN(transition)
  *  @{ 
  */
 
-TEST(transition, initializing)
+TEST(transition, firstStateAfterInit)
 {
     UtrzProcessOut *p;
 
-	sm_init_expect(CST(&s2));
+	sm_init_expect(RKH_STATE_CAST(&waiting));
 
     rkh_sma_init_hsm(smTest);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, simpleToSimpleInEqualLevel)
+{
+    UtrzProcessOut *p;
+
+	sm_init_expect(RKH_STATE_CAST(&waiting));
+	sm_enstate_expect(RKH_STATE_CAST(&waiting));
+	sm_trn_expect(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s1));
+	sm_tsState_expect(RKH_STATE_CAST(&s1));
+
+    rkh_sma_init_hsm(smTest);
+    setStateForcesfully(smTest, RKH_STATE_CAST(&s0));
+    rkh_sma_dispatch(smTest, &evA);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);

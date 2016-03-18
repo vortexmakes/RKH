@@ -28,11 +28,27 @@
 /*
  *	Defines SMA (active object) 'smTest'.
  */
-RKH_SMA_CREATE(SmTest, smTest, 0, HCAL, &s2, smTest_init, NULL);
+RKH_SMA_CREATE(SmTest, smTest, 0, HCAL, &waiting, smTest_init, NULL);
 
 /*
  *	Defines states and pseudostates.
  */
+RKH_CREATE_BASIC_STATE(waiting, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(waiting)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(s0, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(s0)
+
+    RKH_TRREG(A, NULL, NULL, &s1),
+
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(s1, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(s1)
+RKH_END_TRANS_TABLE
+
+#if 0
 RKH_CREATE_COMP_STATE(s, NULL, NULL, RKH_ROOT, &s11, NULL);
 RKH_CREATE_TRANS_TABLE(s)
 
@@ -87,6 +103,7 @@ RKH_CREATE_TRANS_TABLE(s211)
     RKH_TRREG(H, NULL,          NULL,           &s),
 
 RKH_END_TRANS_TABLE
+#endif
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */

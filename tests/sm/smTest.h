@@ -37,17 +37,16 @@ extern "C" {
 /* Signals */
 enum
 {
-    A, B, C, D, E, F, G, H, I,
-    TERMINATE,
-    AOTEST_NUM_EVENTS
+    A, B, C, D, E, F, G, H, I, TERMINATE,
+    SMTEST_NUM_EVENTS
 };
 
 /* Declare HSM */
 RKH_SMA_DCLR(smTest);
 
 /* Declare states and pseudostates */
-RKH_DCLR_COMP_STATE s, s1, s2, s21;
-RKH_DCLR_BASIC_STATE s11, s211;
+//RKH_DCLR_COMP_STATE waiting, s1, s2, s21;
+RKH_DCLR_BASIC_STATE waiting, s0, s1;
 
 /* ------------------------------- Data types ------------------------------ */
 

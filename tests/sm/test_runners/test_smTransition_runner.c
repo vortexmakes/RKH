@@ -62,7 +62,8 @@
 
 TEST_GROUP_RUNNER(transition)
 {
-	RUN_TEST_CASE(transition, initializing);
+	RUN_TEST_CASE(transition, firstStateAfterInit);
+	RUN_TEST_CASE(transition, simpleToSimpleInEqualLevel);
 }
 
 /* ------------------------------ End of file ------------------------------ */

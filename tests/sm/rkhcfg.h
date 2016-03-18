@@ -194,7 +194,7 @@
  *  When this is set the application must provide the hook function.
  */
 
-#define RKH_CFG_HOOK_PUT_TRCEVT_EN        RKH_DISABLED
+#define RKH_CFG_HOOK_PUT_TRCEVT_EN        RKH_ENABLED
 
 /**
  * 	Specify the frequency of the framework tick interrupt (number of ticks 
