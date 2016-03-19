@@ -82,6 +82,7 @@ TEST_GROUP(transition);
 
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
 static
 void
 setStateForcesfully(RKH_SMA_T *me, const RKH_ST_T *state)
@@ -89,20 +90,62 @@ setStateForcesfully(RKH_SMA_T *me, const RKH_ST_T *state)
     me->state = state;
 }
 
-/* ---------------------------- Local functions ---------------------------- */
+static
+void
+setProfile(const RKH_ST_T *sourceState, const RKH_ST_T *targetState,
+           const RKH_ST_T **entryStates, const RKH_ST_T **exitStates,
+           const RKH_ST_T *mainTargetState)
+{
+    const RKH_ST_T **state;
+    int nEntryStates, nExitStates;
+
+	sm_init_expect(RKH_STATE_CAST(&waiting));
+	sm_enstate_expect(RKH_STATE_CAST(&waiting));
+	sm_trn_expect(RKH_STATE_CAST(sourceState), RKH_STATE_CAST(targetState));
+	sm_tsState_expect(RKH_STATE_CAST(targetState));
+
+    for (nExitStates = 0, state = exitStates; 
+         *state; 
+         ++state, ++nExitStates)
+    {
+        sm_exstate_expect(RKH_STATE_CAST(*state));
+    }
+
+	sm_ntrnact_expect(0, 1);
+
+    for (nEntryStates = 0, state = entryStates; 
+         *state; 
+         ++state, ++nEntryStates)
+    {
+        sm_enstate_expect(RKH_STATE_CAST(*state));
+    }
+
+	sm_nenex_expect(nEntryStates, nExitStates);
+	sm_state_expect(RKH_STATE_CAST(mainTargetState));
+	sm_evtProc_expect();
+
+    rkh_sma_init_hsm(smTest);
+    setStateForcesfully(smTest, RKH_STATE_CAST(sourceState));
+}
+
 /* ---------------------------- Global functions --------------------------- */
 
 TEST_SETUP(transition)
 {
     unitrazer_resetOut();
     unitrazer_init();
+    fwk_ignore();
 
     RKH_TR_FWK_AO(smTest);
     RKH_TR_FWK_STATE(smTest, &waiting);
     RKH_TR_FWK_STATE(smTest, &s0);
     RKH_TR_FWK_STATE(smTest, &s1);
+    RKH_TR_FWK_STATE(smTest, &s2);
+    RKH_TR_FWK_STATE(smTest, &s21);
     RKH_TR_FWK_SIG(A);
     RKH_TR_FWK_SIG(B);
+    RKH_TR_FWK_SIG(C);
+    RKH_TR_FWK_SIG(D);
     RKH_TR_FWK_FUN(foo_set2zero);
     RKH_TR_FWK_FUN(foo_set2one);
 
@@ -132,6 +175,7 @@ TEST(transition, firstStateAfterInit)
     UtrzProcessOut *p;
 
 	sm_init_expect(RKH_STATE_CAST(&waiting));
+	sm_enstate_expect(RKH_STATE_CAST(&waiting));
 
     rkh_sma_init_hsm(smTest);
 
@@ -139,18 +183,85 @@ TEST(transition, firstStateAfterInit)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
-TEST(transition, simpleToSimpleInEqualLevel)
+TEST(transition, simpleToSimpleAtEqualLevel)
 {
     UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s1), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
 
-	sm_init_expect(RKH_STATE_CAST(&waiting));
-	sm_enstate_expect(RKH_STATE_CAST(&waiting));
-	sm_trn_expect(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s1));
-	sm_tsState_expect(RKH_STATE_CAST(&s1));
+    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s1),
+               entryStates, exitStates, RKH_STATE_CAST(&s1));
 
-    rkh_sma_init_hsm(smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(&s0));
     rkh_sma_dispatch(smTest, &evA);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, simpleToSimpleFromHighToLowLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s2), RKH_STATE_CAST(&s21), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s21), 
+               entryStates, exitStates, RKH_STATE_CAST(&s21));
+
+    rkh_sma_dispatch(smTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, simpleToSimpleFromLowToHighLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s0), 
+               entryStates, exitStates, RKH_STATE_CAST(&s0));
+
+    rkh_sma_dispatch(smTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, simpleToCompositeAtEqualLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s0),
+               entryStates, exitStates, RKH_STATE_CAST(&s0));
+
+    rkh_sma_dispatch(smTest, &evB);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);

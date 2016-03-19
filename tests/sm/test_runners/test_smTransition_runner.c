@@ -63,7 +63,10 @@
 TEST_GROUP_RUNNER(transition)
 {
 	RUN_TEST_CASE(transition, firstStateAfterInit);
-	RUN_TEST_CASE(transition, simpleToSimpleInEqualLevel);
+	RUN_TEST_CASE(transition, simpleToSimpleAtEqualLevel);
+	RUN_TEST_CASE(transition, simpleToSimpleFromHighToLowLevel);
+	RUN_TEST_CASE(transition, simpleToSimpleFromLowToHighLevel);
+	RUN_TEST_CASE(transition, simpleToCompositeAtEqualLevel);
 }
 
 /* ------------------------------ End of file ------------------------------ */
