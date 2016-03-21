@@ -184,7 +184,7 @@ RKH_MODULE_NAME(rkh)
             } \
             UPDATE_PARENT(stn); \
         } \
-        if (islca == 0) \
+        if (islca == 0 || ix_x == 0) \
         { \
             /* perform the exit actions of the exited states */ \
             RKH_EXEC_EXIT(stx, CM(sma)); \
@@ -192,6 +192,13 @@ RKH_MODULE_NAME(rkh)
             RKH_UPDATE_SHALLOW_HIST(stx, h); \
             RKH_TR_SM_EXSTATE(sma,      /* this state machine object */ \
                               stx);     /* exited state */ \
+            if (islca == 1) \
+            { \
+                *snl = stn; \
+                ++ix_n; \
+                ++ix_x; \
+                break; \
+            } \
         } \
         else \
         { \

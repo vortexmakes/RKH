@@ -67,6 +67,18 @@ TEST_GROUP_RUNNER(transition)
 	RUN_TEST_CASE(transition, simpleToSimpleFromHighToLowLevel);
 	RUN_TEST_CASE(transition, simpleToSimpleFromLowToHighLevel);
 	RUN_TEST_CASE(transition, simpleToCompositeAtEqualLevel);
+	RUN_TEST_CASE(transition, simpleToCompositeFromHighToLowLevel);
+	RUN_TEST_CASE(transition, simpleToCompositeFromLowToHighLevel);
+	RUN_TEST_CASE(transition, compositeToSimpleAtEqualLevel);
+	RUN_TEST_CASE(transition, compositeToSimpleFromHighToLowLevel);
+	RUN_TEST_CASE(transition, compositeToSimpleFromLowToHighLevel);
+	RUN_TEST_CASE(transition, compositeToCompositeAtEqualLevel);
+	RUN_TEST_CASE(transition, compositeToCompositeFromHighToLowLevel);
+	RUN_TEST_CASE(transition, compositeToCompositeFromLowToHighLevel);
+	RUN_TEST_CASE(transition, loopSimpleStateOnTop);
+	RUN_TEST_CASE(transition, loopNestedSimpleState);
+	RUN_TEST_CASE(transition, loopCompositeStateOnTop);
+	RUN_TEST_CASE(transition, loopNestedCompositeState);
 }
 
 /* ------------------------------ End of file ------------------------------ */

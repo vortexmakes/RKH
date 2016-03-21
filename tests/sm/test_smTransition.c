@@ -92,7 +92,8 @@ setStateForcesfully(RKH_SMA_T *me, const RKH_ST_T *state)
 
 static
 void
-setProfile(const RKH_ST_T *sourceState, const RKH_ST_T *targetState,
+setProfile(const RKH_ST_T *currentState, const RKH_ST_T *sourceState, 
+           const RKH_ST_T *targetState,
            const RKH_ST_T **entryStates, const RKH_ST_T **exitStates,
            const RKH_ST_T *mainTargetState)
 {
@@ -125,7 +126,7 @@ setProfile(const RKH_ST_T *sourceState, const RKH_ST_T *targetState,
 	sm_evtProc_expect();
 
     rkh_sma_init_hsm(smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(sourceState));
+    setStateForcesfully(smTest, RKH_STATE_CAST(currentState));
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -142,6 +143,10 @@ TEST_SETUP(transition)
     RKH_TR_FWK_STATE(smTest, &s1);
     RKH_TR_FWK_STATE(smTest, &s2);
     RKH_TR_FWK_STATE(smTest, &s21);
+    RKH_TR_FWK_STATE(smTest, &s22);
+    RKH_TR_FWK_STATE(smTest, &s221);
+    RKH_TR_FWK_STATE(smTest, &s3);
+    RKH_TR_FWK_STATE(smTest, &s31);
     RKH_TR_FWK_SIG(A);
     RKH_TR_FWK_SIG(B);
     RKH_TR_FWK_SIG(C);
@@ -195,7 +200,7 @@ TEST(transition, simpleToSimpleAtEqualLevel)
         RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
     };
 
-    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s1),
+    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s1),
                entryStates, exitStates, RKH_STATE_CAST(&s1));
 
     rkh_sma_dispatch(smTest, &evA);
@@ -216,7 +221,7 @@ TEST(transition, simpleToSimpleFromHighToLowLevel)
         RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
     };
 
-    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s21), 
+    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s21), 
                entryStates, exitStates, RKH_STATE_CAST(&s21));
 
     rkh_sma_dispatch(smTest, &evB);
@@ -237,7 +242,7 @@ TEST(transition, simpleToSimpleFromLowToHighLevel)
         RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(0)
     };
 
-    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s0), 
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s0), 
                entryStates, exitStates, RKH_STATE_CAST(&s0));
 
     rkh_sma_dispatch(smTest, &evB);
@@ -258,10 +263,273 @@ TEST(transition, simpleToCompositeAtEqualLevel)
         RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(0)
     };
 
-    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s0),
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s0),
                entryStates, exitStates, RKH_STATE_CAST(&s0));
 
     rkh_sma_dispatch(smTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, simpleToCompositeFromHighToLowLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s2), RKH_STATE_CAST(&s22), RKH_STATE_CAST(&s221), 
+        RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s22),
+               entryStates, exitStates, RKH_STATE_CAST(&s221));
+
+    rkh_sma_dispatch(smTest, &evD);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, simpleToCompositeFromLowToHighLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2),
+               entryStates, exitStates, RKH_STATE_CAST(&s21));
+
+    rkh_sma_dispatch(smTest, &evC);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, compositeToSimpleAtEqualLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(&s0),
+               entryStates, exitStates, RKH_STATE_CAST(&s0));
+
+    rkh_sma_dispatch(smTest, &evA);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, compositeToSimpleFromHighToLowLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s21), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), RKH_STATE_CAST(&s21),
+               entryStates, exitStates, RKH_STATE_CAST(&s21));
+
+    rkh_sma_dispatch(smTest, &evD);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, loopSimpleStateOnTop)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s1), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s1), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s1), RKH_STATE_CAST(&s1), RKH_STATE_CAST(&s1),
+               entryStates, exitStates, RKH_STATE_CAST(&s1));
+
+    rkh_sma_dispatch(smTest, &evA);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, loopNestedSimpleState)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s31), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s31), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s31), 
+               RKH_STATE_CAST(&s31), entryStates, exitStates, 
+               RKH_STATE_CAST(&s31));
+
+    rkh_sma_dispatch(smTest, &evD);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, loopCompositeStateOnTop)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s31), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s31), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
+               RKH_STATE_CAST(&s3), entryStates, exitStates, 
+               RKH_STATE_CAST(&s31));
+
+    rkh_sma_dispatch(smTest, &evA);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, loopNestedCompositeState)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s221), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s221), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), 
+               RKH_STATE_CAST(&s22), entryStates, exitStates, 
+               RKH_STATE_CAST(&s221));
+
+    rkh_sma_dispatch(smTest, &evD);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, compositeToSimpleFromLowToHighLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s0), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), RKH_STATE_CAST(&s2), 
+        RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), 
+               RKH_STATE_CAST(&s0), entryStates, exitStates, 
+               RKH_STATE_CAST(&s0));
+
+    rkh_sma_dispatch(smTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, compositeToCompositeAtEqualLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s2), RKH_STATE_CAST(&s21), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
+               RKH_STATE_CAST(&s2), entryStates, exitStates, 
+               RKH_STATE_CAST(&s21));
+
+    rkh_sma_dispatch(smTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, compositeToCompositeFromHighToLowLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s2), RKH_STATE_CAST(&s22), RKH_STATE_CAST(&s221), 
+        RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
+               RKH_STATE_CAST(&s22), entryStates, exitStates, 
+               RKH_STATE_CAST(&s221));
+
+    rkh_sma_dispatch(smTest, &evC);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, compositeToCompositeFromLowToHighLevel)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *entryStates[] = 
+    {
+        RKH_STATE_CAST(&s3), RKH_STATE_CAST(&s31), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), RKH_STATE_CAST(&s2), 
+        RKH_STATE_CAST(0)
+    };
+
+    setProfile(RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), 
+               RKH_STATE_CAST(&s3), entryStates, exitStates, 
+               RKH_STATE_CAST(&s31));
+
+    rkh_sma_dispatch(smTest, &evC);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
