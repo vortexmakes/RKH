@@ -64,6 +64,27 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+/* ============================= Common macros ============================= */
+
+/**
+ *  \brief
+ *  Establish the preconditions to the tests.
+ */
+#define sm_init() unitrazer_init()
+
+/**
+ *  \brief
+ *  Return the system under test to its initial state after the test.
+ */
+#define sm_cleanup() unitrazer_cleanup()
+
+/**
+ *  \brief
+ *  Makes sure there are no unused expectations, if there are, this function
+ *  causes the test to fail.
+ */
+#define sm_verify() unitrazer_verify()
+
 /* ============================= Expect macros ============================= */
 
 /* RKH_TE_SM_INIT */

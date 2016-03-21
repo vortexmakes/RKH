@@ -133,8 +133,7 @@ setProfile(const RKH_ST_T *currentState, const RKH_ST_T *sourceState,
 
 TEST_SETUP(transition)
 {
-    unitrazer_resetOut();
-    unitrazer_init();
+    sm_init();
     fwk_ignore();
 
     RKH_TR_FWK_AO(smTest);
@@ -163,9 +162,9 @@ TEST_SETUP(transition)
 
 TEST_TEAR_DOWN(transition)
 {
-    unitrazer_verify(); /* Makes sure there are no unused expectations, if */
-                        /* there are, this function causes the test to fail. */
-    unitrazer_cleanup();
+    sm_verify(); /* Makes sure there are no unused expectations, if */
+                 /* there are, this function causes the test to fail. */
+    sm_cleanup();
 }
 
 /**

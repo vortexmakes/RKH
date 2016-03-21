@@ -137,7 +137,10 @@ unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
 void
 unitrazer_init(void)
 {
+    unitrazer_resetOut();
+
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_INIT);
+    RKH_TRC_UI32(TEST_LINE_NUM);
     RKH_TRC_END_WOFIL();
 }
 
@@ -147,6 +150,7 @@ void
 unitrazer_cleanup(void)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_CLEANUP);
+    RKH_TRC_UI32(TEST_LINE_NUM);
     RKH_TRC_END_WOFIL();
 }
 
@@ -156,6 +160,7 @@ void
 unitrazer_verify(void)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_VERIFY);
+    RKH_TRC_UI32(TEST_LINE_NUM);
     RKH_TRC_END_WOFIL();
 }
 
