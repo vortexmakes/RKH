@@ -178,6 +178,22 @@ TEST(utrzsm, ignoreOneArgBeforeExpect)
 	RKH_TR_SM_EVT_PROC(aotest);
 }
 
+TEST(utrzsm, eventMoreThanExpect)
+{
+    UtrzProcessOut *p;
+
+	sm_trn_expect(CST(&s21), CST(&s211));
+
+    RKH_TR_SM_TRN(aotest, &s21, &s211);        
+
+    RKH_TR_SM_ENSTATE(aotest, CST(&s21));
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
+    TEST_ASSERT_EQUAL_STRING("Event 'ENSTATE' ocurred more times than"
+                             " expected.", p->msg);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

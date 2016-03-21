@@ -37,6 +37,7 @@ TEST_GROUP_RUNNER(utrzsm)
 	RUN_TEST_CASE(utrzsm, ignoreEvt);
 	RUN_TEST_CASE(utrzsm, ignoreOneArg);
 	RUN_TEST_CASE(utrzsm, ignoreOneArgBeforeExpect);
+	RUN_TEST_CASE(utrzsm, eventMoreThanExpect);
 }
 
 /* ------------------------------ End of file ------------------------------ */
