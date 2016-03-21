@@ -79,6 +79,10 @@ TEST_GROUP_RUNNER(transition)
 	RUN_TEST_CASE(transition, loopNestedSimpleState);
 	RUN_TEST_CASE(transition, loopCompositeStateOnTop);
 	RUN_TEST_CASE(transition, loopNestedCompositeState);
+	RUN_TEST_CASE(transition, internalInSimpleState);
+	RUN_TEST_CASE(transition, internalInCompositeState);
+	RUN_TEST_CASE(transition, fails_EventNotFound);
+	RUN_TEST_CASE(transition, fails_GuardFalse);
 }
 
 /* ------------------------------ End of file ------------------------------ */

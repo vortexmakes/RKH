@@ -45,8 +45,8 @@ enum
 RKH_SMA_DCLR(smTest);
 
 /* Declare states and pseudostates */
-RKH_DCLR_COMP_STATE s2, s22, s3;
-RKH_DCLR_BASIC_STATE waiting, s0, s1, s21, s221, s31;
+RKH_DCLR_COMP_STATE s2, s22, s3, s221;
+RKH_DCLR_BASIC_STATE waiting, s0, s1, s21, s2211, s31;
 
 /* ------------------------------- Data types ------------------------------ */
 

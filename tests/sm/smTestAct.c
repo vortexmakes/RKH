@@ -33,45 +33,261 @@
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 
-/* Defines HSM init function */
+/* Defines the state machine's initializing action */
 void
 smTest_init(SmTest *const me)
 {
     me->foo = 0;
 }
 
-/*
- * Defines transition action functions
- */
+/* Defines effect action */
 void
-foo_set2zero(SmTest *const me, RKH_EVT_T *pe)
+smTest_tr11(SmTest *const me, RKH_EVT_T *pe)
 {
+    (void)me;
     (void)pe;
-
-    me->foo = 0;
 }
 
 void
-foo_set2one(SmTest *const me, RKH_EVT_T *pe)
+smTest_tr12(SmTest *const me, RKH_EVT_T *pe)
 {
+    (void)me;
     (void)pe;
-
-    me->foo = 1;
 }
 
-/*
- * Defines guards functions
- */
-rbool_t
-foo_isn_zero(SmTest*const me, RKH_EVT_T *pe)
+void
+smTest_tr13(SmTest *const me, RKH_EVT_T *pe)
 {
-    return me->foo != 0;
+    (void)me;
+    (void)pe;
 }
 
-rbool_t
-foo_is_zero(SmTest *const me, RKH_EVT_T *pe)
+void
+smTest_tr14(SmTest *const me, RKH_EVT_T *pe)
 {
-    return me->foo == 0;
+    (void)me;
+    (void)pe;
+}
+
+void
+smTest_tr15(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr21(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr22(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr23(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr31(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr32(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr33(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr41(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr42(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr43(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr51(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr52(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr53(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_tr54(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+/* Defines entry actions */
+void 
+smTest_nS0(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS1(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS2(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS3(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS21(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS22(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS221(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_nS31(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+/* Defines exit actions */
+void 
+smTest_xS0(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS1(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS2(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS3(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS21(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS22(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS221(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void 
+smTest_xS31(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+/* Defines guards */
+rbool_t
+smTest_falseGuard(SmTest *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+    return RKH_FALSE;
 }
 
 /* ------------------------------ End of file ------------------------------ */
