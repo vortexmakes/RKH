@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       all_tests.c
+ *  \file       test_smPseudostate_runner.c
  *  \ingroup    test_sm
  *
  *  \brief      Test runner of state machine module
@@ -48,11 +48,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <stdio.h>
 
-#include "rkh.h"
 #include "unity_fixture.h"
-#include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -61,22 +58,11 @@
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-static 
-void 
-runAllTests(void)
-{
-	RUN_TEST_GROUP(transition);
-	RUN_TEST_GROUP(pseudostate);
-}
-
 /* ---------------------------- Global functions --------------------------- */
-int
-main(int argc, char *argv[])
+
+TEST_GROUP_RUNNER(pseudostate)
 {
-	bsp_init(argc, argv);
-	UnityMain(argc, argv, runAllTests);
-	RKH_TRC_CLOSE();
-    getchar();
+	RUN_TEST_CASE(pseudostate, transitionToEmptyShallowHistory);
 }
 
 /* ------------------------------ End of file ------------------------------ */

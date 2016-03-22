@@ -124,6 +124,12 @@
     <ClInclude Include="..\..\..\..\smTestAct.h">
       <Filter>Source Files\tests\sm</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\smPseudoTest.h">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\smPseudoTestAct.h">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c">
@@ -188,6 +194,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
       <Filter>Source Files\tests\sm\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\smPseudoTest.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\smPseudoTestAct.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_smPseudostate.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\common.c">
+      <Filter>Source Files\tests\sm</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

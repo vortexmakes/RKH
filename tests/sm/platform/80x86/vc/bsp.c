@@ -285,12 +285,14 @@ rkh_hook_putTrcEvt(void)
 void
 rkh_assert(RKHROM char * const file, int line)
 {
-    fprintf(stderr,    "RKH_ASSERT: [%d] line from %s "
+#if 0
+    fprintf(stderr, "RKH_ASSERT: [%d] line from %s "
             "file\n", line, file);
+#endif
     RKH_TRC_FLUSH();
     RKH_DIS_INTERRUPT();
     RKH_TR_FWK_ASSERT((RKHROM char *)file, __LINE__);
-    __debugbreak();
+    /* __debugbreak(); */
     rkh_fwk_exit();
 }
 

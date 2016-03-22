@@ -103,6 +103,8 @@
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h" />
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h" />
     <ClInclude Include="..\..\..\..\rkhcfg.h" />
+    <ClInclude Include="..\..\..\..\smPseudoTest.h" />
+    <ClInclude Include="..\..\..\..\smPseudoTestAct.h" />
     <ClInclude Include="..\..\..\..\smTest.h" />
     <ClInclude Include="..\..\..\..\smTestAct.h" />
     <ClInclude Include="..\bsp.h" />
@@ -123,10 +125,15 @@
     <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c" />
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c" />
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
+    <ClCompile Include="..\..\..\..\common.c" />
+    <ClCompile Include="..\..\..\..\smPseudoTest.c" />
+    <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
     <ClCompile Include="..\..\..\..\smTestAct.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
+    <ClCompile Include="..\..\..\..\test_smPseudostate.c" />
     <ClCompile Include="..\..\..\..\test_smTransition.c" />
     <ClCompile Include="..\bsp.c" />
   </ItemGroup>

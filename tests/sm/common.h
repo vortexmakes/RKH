@@ -1,8 +1,8 @@
 /**
- *  \file       smTest.h
+ *  \file       common.h
  *  \ingroup    Test
  *
- *  \brief      State machine to facilitate the test of production code.
+ *  \brief      Common functions for unit test of state machine module.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -18,8 +18,8 @@
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
 
-#ifndef __SMTEST_H__
-#define __SMTEST_H__
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
 /* ----------------------------- Include files ----------------------------- */
 
@@ -32,33 +32,24 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-/* -------------------------------- Constants ------------------------------ */
+#define RKH_STATE_CAST(state_)      ((RKH_ST_T *)state_)
 
-/* Signals */
+/* -------------------------------- Constants ------------------------------ */
 enum
 {
-    A, B, C, D, E, F, G, H, I, TERMINATE,
-    SMTEST_NUM_EVENTS
+    TRN_INTERNAL, TRN_NOT_INTERNAL
 };
-
-/* Declare HSM */
-RKH_SMA_DCLR(smTest);
-
-/* Declare states and pseudostates */
-RKH_DCLR_COMP_STATE s2, s22, s3, s221, s222, s2221;
-RKH_DCLR_BASIC_STATE waiting, s0, s1, s21, s2211, s22211, s31;
 
 /* ------------------------------- Data types ------------------------------ */
-
-typedef struct SmTest SmTest;
-struct SmTest      /* SMA derived from RKH_SMA_T structure */
-{
-    RKH_SMA_T sma;  /* base structure */
-    rui8_t foo;     /* private member */
-};
-
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+void setStateForcesfully(RKH_SMA_T *const me, const RKH_ST_T *state);
+void setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState, 
+                const RKH_ST_T *sourceState, const RKH_ST_T **targetState, 
+                const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
+                const RKH_ST_T *mainTargetState, int nExecEffectActions, 
+                int kindOfTrn);
+
 /* -------------------- External C language linkage end -------------------- */
 
 #ifdef __cplusplus

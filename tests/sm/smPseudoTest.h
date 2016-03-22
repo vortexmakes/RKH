@@ -1,5 +1,5 @@
 /**
- *  \file       smTest.h
+ *  \file       smPseudoTest.h
  *  \ingroup    Test
  *
  *  \brief      State machine to facilitate the test of production code.
@@ -18,8 +18,8 @@
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
 
-#ifndef __SMTEST_H__
-#define __SMTEST_H__
+#ifndef __SMPSEUDOTEST_H__
+#define __SPSEUDOMTEST_H__
 
 /* ----------------------------- Include files ----------------------------- */
 
@@ -42,16 +42,18 @@ enum
 };
 
 /* Declare HSM */
-RKH_SMA_DCLR(smTest);
+RKH_SMA_DCLR(smPseudoTest);
 
 /* Declare states and pseudostates */
-RKH_DCLR_COMP_STATE s2, s22, s3, s221, s222, s2221;
-RKH_DCLR_BASIC_STATE waiting, s0, s1, s21, s2211, s22211, s31;
+RKH_DCLR_COMP_STATE smPT_s1;
+RKH_DCLR_BASIC_STATE smPT_waiting, smPT_s0, smPT_s11, 
+                     smPT_s12;
+RKH_DCLR_SHIST_STATE smPT_h;
 
 /* ------------------------------- Data types ------------------------------ */
 
-typedef struct SmTest SmTest;
-struct SmTest      /* SMA derived from RKH_SMA_T structure */
+typedef struct SmPseudoTest SmPseudoTest;
+struct SmPseudoTest      /* SMA derived from RKH_SMA_T structure */
 {
     RKH_SMA_T sma;  /* base structure */
     rui8_t foo;     /* private member */
