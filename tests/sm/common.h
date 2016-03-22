@@ -43,6 +43,7 @@ enum
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+void setHistory(const RKH_SHIST_T *history, const RKH_ST_T *state);
 void setStateForcesfully(RKH_SMA_T *const me, const RKH_ST_T *state);
 void setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState, 
                 const RKH_ST_T *sourceState, const RKH_ST_T **targetState, 

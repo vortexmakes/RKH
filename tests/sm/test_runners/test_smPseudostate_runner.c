@@ -63,6 +63,7 @@
 TEST_GROUP_RUNNER(pseudostate)
 {
 	RUN_TEST_CASE(pseudostate, transitionToEmptyShallowHistory);
+	RUN_TEST_CASE(pseudostate, transitionToVisitedShallowHistory);
 }
 
 /* ------------------------------ End of file ------------------------------ */

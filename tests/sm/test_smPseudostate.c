@@ -160,6 +160,35 @@ TEST(pseudostate, transitionToEmptyShallowHistory)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
+TEST(pseudostate, transitionToVisitedShallowHistory)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *targetStates[] = 
+    {
+        RKH_STATE_CAST(&smPT_h), RKH_STATE_CAST(&smPT_s12), 
+        RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *entryStates[] = 
+    {
+       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s12), RKH_STATE_CAST(0)
+    };
+
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+               RKH_STATE_CAST(&smPT_s0), targetStates, 
+               entryStates, exitStates, 
+               RKH_STATE_CAST(&smPT_s12), 0, TRN_NOT_INTERNAL);
+
+    setHistory(&smPT_h, RKH_STATE_CAST(&smPT_s12));
+    rkh_sma_dispatch(smPseudoTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
