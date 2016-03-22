@@ -204,11 +204,11 @@
     <ClCompile Include="..\..\..\..\test_smPseudostate.c">
       <Filter>Source Files\tests\sm</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\common.c">
       <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c">
+      <Filter>Source Files\tests\sm\test_runners</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

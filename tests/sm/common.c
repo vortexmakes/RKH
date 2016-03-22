@@ -65,7 +65,40 @@
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static
+int
+executeExpectOnList(const RKH_ST_T **stateList, int kindOfExpect)
+{
+    const RKH_ST_T **state;
+    int n;
+
+    for (n = 0, state = stateList; *state; ++state, ++n)
+    {
+        switch(kindOfExpect)
+        {
+            case EXPECT_TS_STATE:
+                sm_tsState_expect(RKH_STATE_CAST(*state));
+                break;
+            case EXPECT_EXSTATE:
+                sm_exstate_expect(RKH_STATE_CAST(*state));
+                break;
+            case EXPECT_ENSTATE:
+                sm_enstate_expect(RKH_STATE_CAST(*state));
+                break;
+            default:
+                return 0;
+        }
+    }
+    return n;
+}
+
 /* ---------------------------- Global functions --------------------------- */
+const RKH_ST_T *
+getHistory(const RKH_SHIST_T *history)
+{
+    return *(history->target);
+}
+
 void 
 setHistory(const RKH_SHIST_T *history, const RKH_ST_T *state)
 {
@@ -85,7 +118,6 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
            const RKH_ST_T *mainTargetState, int nExecEffectActions, 
            int kindOfTrn)
 {
-    const RKH_ST_T **state;
     int nEntryStates, nExitStates;
 
 	sm_init_expect(RKH_STATE_CAST(me->romrkh->istate));
@@ -94,30 +126,15 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
 
     if (kindOfTrn == TRN_NOT_INTERNAL)
     {
-        for (state = targetStates; *state; ++state)
-        {
-            sm_tsState_expect(RKH_STATE_CAST(*state));
-        }
-
-        for (nExitStates = 0, state = exitStates; 
-                *state; 
-                ++state, ++nExitStates)
-        {
-            sm_exstate_expect(RKH_STATE_CAST(*state));
-        }
+        executeExpectOnList(targetStates, EXPECT_TS_STATE);
+        nExitStates = executeExpectOnList(exitStates, EXPECT_EXSTATE);
     }
 
 	sm_ntrnact_expect(nExecEffectActions, 1);
 
     if (kindOfTrn == TRN_NOT_INTERNAL)
     {
-        for (nEntryStates = 0, state = entryStates; 
-                *state; 
-                ++state, ++nEntryStates)
-        {
-            sm_enstate_expect(RKH_STATE_CAST(*state));
-        }
-
+        nEntryStates = executeExpectOnList(entryStates, EXPECT_ENSTATE);
         sm_nenex_expect(nEntryStates, nExitStates);
         sm_state_expect(RKH_STATE_CAST(mainTargetState));
     }

@@ -62,8 +62,12 @@
 
 TEST_GROUP_RUNNER(pseudostate)
 {
-	RUN_TEST_CASE(pseudostate, transitionToEmptyShallowHistory);
-	RUN_TEST_CASE(pseudostate, transitionToVisitedShallowHistory);
+	RUN_TEST_CASE(pseudostate, trnToEmptyShallowHistory);
+	RUN_TEST_CASE(pseudostate, trnToVisitedShallowHistory);
+	RUN_TEST_CASE(pseudostate, exitFromCompositeWithShallowHistory);
+	RUN_TEST_CASE(pseudostate, trnToEmptyDeepHistory);
+	RUN_TEST_CASE(pseudostate, trnToVisitedDeepHistory);
+	RUN_TEST_CASE(pseudostate, exitFromCompositeWithDeepHistory);
 }
 
 /* ------------------------------ End of file ------------------------------ */

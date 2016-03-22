@@ -40,9 +40,15 @@ enum
     TRN_INTERNAL, TRN_NOT_INTERNAL
 };
 
+enum
+{
+    EXPECT_TS_STATE, EXPECT_EXSTATE, EXPECT_ENSTATE
+};
+
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+const RKH_ST_T *getHistory(const RKH_SHIST_T *history);
 void setHistory(const RKH_SHIST_T *history, const RKH_ST_T *state);
 void setStateForcesfully(RKH_SMA_T *const me, const RKH_ST_T *state);
 void setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState, 
