@@ -24,6 +24,7 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include "rkh.h"
+#include "smPseudoTest.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 
@@ -39,9 +40,12 @@ extern "C" {
 
 /* ============================ Initial action ============================= */
 /* ============================ Effect actions ============================= */
+void smPT_trS2History(SmPseudoTest *const me, RKH_EVT_T *pe);
+
 /* ============================= Entry actions ============================= */
 /* ============================= Exit actions ============================== */
 /* ================================ Guards ================================= */
+rbool_t smPT_trueGuard(SmPseudoTest *const me, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 

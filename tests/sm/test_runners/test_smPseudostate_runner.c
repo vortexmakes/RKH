@@ -62,12 +62,14 @@
 
 TEST_GROUP_RUNNER(pseudostate)
 {
-	RUN_TEST_CASE(pseudostate, trnToEmptyShallowHistory);
-	RUN_TEST_CASE(pseudostate, trnToVisitedShallowHistory);
-	RUN_TEST_CASE(pseudostate, exitFromCompositeWithShallowHistory);
-	RUN_TEST_CASE(pseudostate, trnToEmptyDeepHistory);
-	RUN_TEST_CASE(pseudostate, trnToVisitedDeepHistory);
-	RUN_TEST_CASE(pseudostate, exitFromCompositeWithDeepHistory);
+	RUN_TEST_CASE(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn);
+	RUN_TEST_CASE(pseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn);
+	RUN_TEST_CASE(pseudostate, exitFromCompositeWithLoadedShallowHistory);
+	RUN_TEST_CASE(pseudostate, trnToEmptyDeepHistoryWithoutDefaultTrn);
+	RUN_TEST_CASE(pseudostate, trnToLoadedDeepHistoryWithoutDefaultTrn);
+	RUN_TEST_CASE(pseudostate, exitFromCompositeWithLoadedDeepHistory);
+	RUN_TEST_CASE(pseudostate, trnToEmptyShallowHistoryWithDefaultTrn);
+	RUN_TEST_CASE(pseudostate, trnToLoadedShallowHistoryWithDefaultTrn);
 }
 
 /* ------------------------------ End of file ------------------------------ */

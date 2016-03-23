@@ -458,6 +458,48 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
+ *	This macro creates a shallow history pseudostate with default transition.
+ *
+ *	Shallow history means that history applies to the current nesting context
+ *	only – states nested more deeply are not affected by the presence of a
+ *	history pseudostates in a higher context.
+ *
+ *  \param[in] name     pseudostate name. Represents a shallow history
+ *                      pseudostate structure.
+ *  \param[in] parent	pointer to parent state.
+ *  \param[in] guard	pointer to guard function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] action	pointer to action function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] target	pointer to target state. If a default history 
+ *                      Transition is defined (the target parameter is not 
+ *                      NULL) originating from the History Pseudostate, it 
+ *                      will be taken. Otherwise, default State entry is 
+ *                      applied. 
+ *
+ *	\note
+ *	At this framework version, it is not recommended to instantiate the
+ *	same history object more than once using this macro, since it uses a
+ *	static memory to store the last visited state (memory of history
+ *	pseudostate).
+ *
+ *	\sa
+ *	RKH_SHIST_T structure definition for more information.
+ */
+#define RKH_CREATE_SHALLOW_HISTORY_X_STATE(name, parent, guard, action, \
+                                                 target) \
+                                                         \
+    static RKHROM RKH_ST_T * ram##name; \
+                                        \
+    RKHROM RKH_SHIST_T name = \
+    { \
+        MKBASE(RKH_SHISTORY, name), \
+        (RKHROM struct RKH_ST_T *)parent, &ram##name, \
+        RKH_TRREG(0, guard, action, target) \
+    }
+
+/**
+ *  \brief
  *	This macro creates a shallow history pseudostate.
  *
  *	Shallow history means that history applies to the current nesting context
@@ -467,6 +509,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \param[in] name     pseudostate name. Represents a shallow history
  *                      pseudostate structure.
  *  \param[in] parent	pointer to parent state.
+ *
+ *  \warning
+ *  This macro is deprecated and just it is defined for backwards 
+ *  compatibility. Please, use for new develpments the macro 
+ *  RKH_CREATE_SHALLOW_HISTORY_X_STATE.
  *
  *	\note
  *	At this framework version, it is not recommended to instantiate the
@@ -479,13 +526,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent) \
                                                        \
-    static RKHROM RKH_ST_T * ram##name; \
-                                          \
-    RKHROM RKH_SHIST_T name = \
-    { \
-        MKBASE(RKH_SHISTORY, name), \
-        (RKHROM struct RKH_ST_T *)parent,&ram##name \
-    }
+    RKH_CREATE_SHALLOW_HISTORY_DEFAULT_STATE(name, parent, NULL, NULL, \
+                                             NULL)
 
 /**
  *  \brief

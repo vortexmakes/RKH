@@ -3017,7 +3017,7 @@ typedef struct RKH_EXPCN_T
      */
     RKH_TRN_ACT_T action;
 
-    /**
+     /**
      *  \brief
      *  Points to target state.
      */
@@ -3292,6 +3292,12 @@ typedef struct RKH_SHIST_T
      *	the state's history.
      */
     RKHROM RKH_ST_T * *target;
+    
+    /**
+     *  \brief
+     *  History default transition.
+     */
+    RKHROM RKH_TR_T trn;
 } RKH_SHIST_T;
 #endif
 

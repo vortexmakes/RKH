@@ -58,7 +58,7 @@ RKH_MODULE_NAME(rkh)
 
 #define IS_NOT_INTERNAL_TRANSITION()    (inttr == 0)
 #define IS_INTERNAL_TRANSITION(s)       ((s) == CST(0))
-#define IS_EMPTY_HIST(s)                (*(CH(s))->target == (RKHROM void *)0)
+#define IS_EMPTY_HISTORY(s)             (*(CH(s))->target == (RKHROM void *)0)
 #define IS_FOUND_TRANS(t)               ((t)->event != RKH_ANY)
 #define IS_NOT_FOUND_TRANS(t)           ((t)->event == RKH_ANY)
 #define IS_VALID_GUARD(t)               ((t)->guard != CG(0))
@@ -475,9 +475,8 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
                     /* the transition, from the action closest to source */
                     /* state to the action closest to target state. */
                     RKH_TR_SM_NTRNACT(sma,     /* this state machine object */
-                                      nal,            /* # executed actions */
-                                                      /* # transition segments
-                                                      **/
+                                      nal,     /* # executed actions */
+                                               /* # transition segments */
                                       RKH_GET_STEP());
                     RKH_EXEC_TRANSITION(sma, pe);
 #endif
@@ -510,10 +509,34 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
                     /* in the compound transition */
                     RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0) &&
                                 (CCMP(CH(ets)->parent)->history !=
-                                 (RKHROM RKH_SHIST_T *)0));
-                    if (IS_EMPTY_HIST(ets))
+                                (RKHROM RKH_SHIST_T *)0));
+                    if (IS_EMPTY_HISTORY(ets))
                     {
-                        ets = CH(ets)->parent;
+                        if (CH(ets)->trn.target)
+                        {
+                            if (IS_VALID_GUARD(&(CH(ets)->trn)) && 
+                                (RKH_EXEC_GUARD(&(CH(ets)->trn), sma, pe) 
+                                 == RKH_GFALSE))
+                            {
+                                RKH_TR_SM_GRD_FALSE(sma);
+                                return RKH_GRD_FALSE;
+                            }
+                            /* Add action of the transition segment into the */
+                            /* list */
+                            if (rkh_add_tr_action(&pal, 
+                                                  CH(ets)->trn.action,
+                                                  &nal))
+                            {
+                                RKH_TR_SM_EX_TSEG(sma);
+                                RKH_ERROR();
+                                return RKH_EX_TSEG;
+                            }
+                            ets = CH(ets)->trn.target;
+                        }
+                        else
+                        {
+                            ets = CH(ets)->parent;
+                        }
                     }
                     else
                     {

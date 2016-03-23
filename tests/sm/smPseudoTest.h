@@ -19,7 +19,7 @@
 /* --------------------------------- Module -------------------------------- */
 
 #ifndef __SMPSEUDOTEST_H__
-#define __SPSEUDOMTEST_H__
+#define __SMPSEUDOTEST_H__
 
 /* ----------------------------- Include files ----------------------------- */
 
@@ -45,11 +45,12 @@ enum
 RKH_SMA_DCLR(smPseudoTest);
 
 /* Declare states and pseudostates */
-RKH_DCLR_COMP_STATE smPT_s1, smPT_s12;
+RKH_DCLR_COMP_STATE smPT_s1, smPT_s12, smPT_s2;
 RKH_DCLR_BASIC_STATE smPT_waiting, smPT_s0, smPT_s11, 
-                     smPT_s121, smPT_s122;
-RKH_DCLR_SHIST_STATE smPT_h;
-RKH_DCLR_DHIST_STATE smPT_ha;
+                     smPT_s121, smPT_s122, smPT_s21, smPT_s22;
+RKH_DCLR_SHIST_STATE smPT_hS1;
+RKH_DCLR_DHIST_STATE smPT_haS1;
+RKH_DCLR_SHIST_STATE smPT_hS2;
 
 /* ------------------------------- Data types ------------------------------ */
 
