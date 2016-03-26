@@ -1569,6 +1569,7 @@ extern "C" {
 #define RKH_PSEUDO                      0
 #define RKH_TYPE(t,i)                   (t | i)
 
+#define RKH_UNKNOWN_VERTEX              RKH_TYPE(0,            0)
 #define RKH_BASIC                       RKH_TYPE(RKH_REGULAR,  0)
 #define RKH_COMPOSITE                   RKH_TYPE(RKH_REGULAR,  0x01)
 #define RKH_SUBMACHINE                  RKH_TYPE(RKH_REGULAR,  0x02)
@@ -1580,6 +1581,8 @@ extern "C" {
 #define RKH_DHISTORY                    RKH_TYPE(RKH_PSEUDO,   0x10)
 #define RKH_ENPOINT                     RKH_TYPE(RKH_PSEUDO,   0x20)
 #define RKH_EXPOINT                     RKH_TYPE(RKH_PSEUDO,   0x40)
+
+#define RKH_NO_HISTORY                  RKH_UNKNOWN_VERTEX
 
 #if (RKH_CFG_SMA_PSEUDOSTATE_EN  == RKH_DISABLED || \
      (RKH_CFG_SMA_DEEP_HIST_EN    == RKH_DISABLED && \
@@ -1724,17 +1727,49 @@ extern "C" {
         #if defined(RKH_HISTORY_ENABLED)
             #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n,d,h)       n##_trtbl,NULL,d,h
+            #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
+                RKHROM RKH_SHIST_T hist_##name = \
+                { \
+                    MKBASE(kOfH, hist_##name), \
+                    (RKHROM struct RKH_ST_T *)&name, &ramMem, \
+                    RKH_TRREG(0, dTG, dTA, dTT) \
+                }
+            #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem) \
+                RKHROM RKH_SHIST_T name = \
+                { \
+                    MKBASE(kOfH, name), \
+                    (RKHROM struct RKH_ST_T *)parent, &ramMem, \
+                    RKH_TRREG(0, dTG, dTA, dTT) \
+                }
         #else
             #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n,d,h)       n##_trtbl,NULL,d
+            #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
+            #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
         #endif
     #else
         #if defined(RKH_HISTORY_ENABLED)
             #define MKBASIC(n,pp)       n##_trtbl
             #define MKCOMP(n,d,h)       n##_trtbl,d,h
+            #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
+                RKHROM RKH_SHIST_T hist_##name = \
+                { \
+                    MKBASE(kOfH, hist_##name), \
+                    (RKHROM struct RKH_ST_T *)&name, &ramMem, \
+                    RKH_TRREG(0, dTG, dTA, dTT) \
+                }
+            #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem) \
+                RKHROM RKH_SHIST_T name = \
+                { \
+                    MKBASE(kOfH, name), \
+                    (RKHROM struct RKH_ST_T *)parent, &ramMem, \
+                    RKH_TRREG(0, dTG, dTA, dTT) \
+                }
         #else
             #define MKBASIC(n,pp)       n##_trtbl
             #define MKCOMP(n,d,h)       n##_trtbl,d
+            #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
+            #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
         #endif
     #endif
     #define MKST(en,ex,p)           (RKH_ENT_ACT_T)en, \

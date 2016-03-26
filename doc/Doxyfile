@@ -816,7 +816,9 @@ INPUT                  = ../source \
                          test.txt \
                          ../tests/trace/test_runners/test_trace_runner.c \
                          ../tests/sm/test_runners/test_smTransition_runner.c \
-                         ../tests/sm/test_smTransition.c
+                         ../tests/sm/test_smTransition.c \
+                         ../tests/sm/test_smPseudostate.c \
+                         ../tests/sm/test_runners/test_smPseudostate_runner.c
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

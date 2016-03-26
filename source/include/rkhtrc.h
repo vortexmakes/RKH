@@ -2449,7 +2449,7 @@ extern "C" {
          *
          *  \code
          *  ...
-         *  RKH_CREATE_COMP_STATE( S1, en, ex, RKH_ROOT, &S11, NULL );
+         *  RKH_CREATE_COMP_STATE( S1, en, ex, RKH_ROOT, &S11 );
          *  RKH_CREATE_TRANS_TABLE( S1 )
          *      RKH_TRINT( SIX,     NULL,       show_data ),
          *      RKH_TRREG( TWO,     NULL,       set_y_2,	&S2 ),

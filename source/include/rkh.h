@@ -267,6 +267,70 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
+ *	This macro creates a composite state with history (shallow or deep type).
+ *
+ *	Shallow history means that history applies to the current nesting context
+ *	only – states nested more deeply are not affected by the presence of a
+ *	history pseudostates in a higher context.
+ *	Deep history applies downwards to all levels of nesting.
+ *
+ *  \param[in] name     state name. Represents a composite state structure.
+ *  \param[in] en       pointer to state entry action. This argument is
+ *                      optional, thus it could be declared as NULL.
+ *                      The RKH implementation preserves the transition sequence
+ *                      imposed by Harel's Statechart and UML.
+ *  \param[in] ex	    pointer to state exit action. This argument is
+ *                      optional, thus it could be declared as NULL.
+ *                      The RKH implementation preserves the transition sequence
+ *                      imposed by Harel's Statechart and UML.
+ *  \param[in] parent	pointer to parent state.
+ *  \param[in] defchild	pointer to default child state or pseudostate.
+ *  \param[in] kindOfHistory 
+ *                      Kind of history pseudostate. It could be defined
+ *                      either shallow history (RKH_SHISTORY), deep history 
+ *                      (RKH_DHISTORY) or without history (RKH_NO_HISTORY).
+ *                      When it is defined as RKH_NO_HISTORY each of 
+ *                      parameters related to history default transition are 
+ *                      ignored.
+ *  \param[in] hDftTrnGuard	
+ *                      pointer to guard function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] hDftTrnAction
+ *                      pointer to action function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] hDftTarget
+ *                      pointer to target state. If a default history 
+ *                      Transition is defined (the target parameter is not 
+ *                      NULL) originating from the History Pseudostate, it 
+ *                      will be taken. Otherwise, default State entry is 
+ *                      applied. 
+ *  \param[in] hRamMem
+ *                      pointer to a RAM location which maintains the last 
+ *                      visited state of this region. If composite state don't 
+ *                      include the history pseudostate then this parameter 
+ *                      should be passed as NULL.
+ *                      Please, use RKH_CREATE_HISTORY_STORAGE() macro to 
+ *                      create the history RAM location.
+ *
+ *	\sa
+ *	RKH_SCMP_T structure definition for more information.
+ */
+#define RKH_CREATE_COMP_STATE_HISTORY(name, en, ex, parent, defchild, \
+                                      kindOfHistory, hDftTrnGuard, \
+                                      hDftTrnAction, hDftTarget, hRamMem) \
+                                                                          \
+    MKHIST_INCOMP(name, kindOfHistory, hDftTrnGuard, hDftTrnAction, \
+                  hDftTarget, hRamMem); \
+                                        \
+    extern RKHROM RKH_TR_T name##_trtbl[]; \
+    RKHROM RKH_SCMP_T name = \
+    { \
+        {MKBASE(RKH_COMPOSITE, name), MKST(en, ex, parent)}, \
+        MKCOMP(name, defchild, &hist_##name) \
+    }
+
+/**
+ *  \brief
  *	This macro creates a composite state.
  *
  *  \param[in] name     state name. Represents a composite state structure.
@@ -280,8 +344,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      imposed by Harel's Statechart and UML.
  *  \param[in] parent	pointer to parent state.
  *  \param[in] defchild	pointer to default child state or pseudostate.
- *  \param[in] history	pointer history pseudostate. This argument is
- *					    optional, thus it could be declared as NULL.
+ * 	\param[in] history	pointer history pseudostate. This argument is 
+ *                      optional, thus it could be declared as NULL.
  *
  *	\sa
  *	RKH_SCMP_T structure definition for more information.
@@ -289,11 +353,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #define RKH_CREATE_COMP_STATE(name, en, ex, parent, defchild, history) \
                                                                        \
     extern RKHROM RKH_TR_T name##_trtbl[]; \
-                                             \
     RKHROM RKH_SCMP_T name = \
     { \
-        {MKBASE(RKH_COMPOSITE, name), MKST(en,ex,parent)}, \
-        MKCOMP(name,defchild,history) \
+        {MKBASE(RKH_COMPOSITE, name), MKST(en, ex, parent)}, \
+        MKCOMP(name, defchild, history) \
     }
 
 /**
@@ -420,7 +483,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #define RKH_CREATE_CHOICE_STATE(name) \
                                       \
     extern RKHROM RKH_TR_T name##_trtbl[]; \
-                                             \
+                                           \
     RKHROM RKH_SCHOICE_T name = \
     { \
         MKBASE(RKH_CHOICE, name), \
@@ -428,106 +491,86 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
     }
 
 /**
- *  \brief
- *	This macro creates a deep history pseudostate.
+ * 	\brief
+ *	This macro creates a deep history pseudostate. 
  *
  *	Deep history applies downwards to all levels of nesting.
  *
- *  \param[in] name     pseudostate name. Represents a deep history
- *                      pseudostate structure.
- *  \param[in] parent	pointer to parent state.
- *
  *	\note
- *	At this framework version, it is not recommended to instantiate the
- *	same history object more than once using this macro, since it uses a
- *	static memory to store the last visited state (memory of history
+ *	At this framework version, it is not recommended to instantiate the 
+ *	same history object more than once using this macro, since it uses a 
+ *	static memory to store the last visited state (memory of history 
  *	pseudostate).
  *
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
- */
-#define RKH_CREATE_DEEP_HISTORY_STATE(name, parent) \
-                                                    \
-    static RKHROM RKH_ST_T * ram##name; \
-                                          \
-    RKHROM RKH_SHIST_T name = \
-    { \
-        MKBASE(RKH_DHISTORY, name), \
-        (RKHROM struct RKH_ST_T *)parent,&ram##name \
-    }
-
-/**
- *  \brief
- *	This macro creates a shallow history pseudostate with default transition.
  *
- *	Shallow history means that history applies to the current nesting context
- *	only – states nested more deeply are not affected by the presence of a
- *	history pseudostates in a higher context.
+ *	Arguments:
  *
- *  \param[in] name     pseudostate name. Represents a shallow history
+ * 	\param[in] name		pseudostate name. Represents a deep history 
  *                      pseudostate structure.
- *  \param[in] parent	pointer to parent state.
- *  \param[in] guard	pointer to guard function. This argument is
- *					    optional, thus it could be declared as NULL.
- *  \param[in] action	pointer to action function. This argument is
- *					    optional, thus it could be declared as NULL.
- *  \param[in] target	pointer to target state. If a default history 
+ * 	\param[in] parent	pointer to parent state.
+ *  \param[in] dftTrnGuard	
+ *                      pointer to guard function. This argument is
+ *			   	        optional, thus it could be declared as NULL.
+ *  \param[in] dftTrnAction
+ *                      pointer to action function. This argument is
+ *			   	        optional, thus it could be declared as NULL.
+ *  \param[in] dftTarget
+ *                      pointer to target state. If a default history 
  *                      Transition is defined (the target parameter is not 
  *                      NULL) originating from the History Pseudostate, it 
  *                      will be taken. Otherwise, default State entry is 
  *                      applied. 
- *
- *	\note
- *	At this framework version, it is not recommended to instantiate the
- *	same history object more than once using this macro, since it uses a
- *	static memory to store the last visited state (memory of history
- *	pseudostate).
- *
- *	\sa
- *	RKH_SHIST_T structure definition for more information.
  */
-#define RKH_CREATE_SHALLOW_HISTORY_X_STATE(name, parent, guard, action, \
-                                                 target) \
-                                                         \
-    static RKHROM RKH_ST_T * ram##name; \
-                                        \
-    RKHROM RKH_SHIST_T name = \
-    { \
-        MKBASE(RKH_SHISTORY, name), \
-        (RKHROM struct RKH_ST_T *)parent, &ram##name, \
-        RKH_TRREG(0, guard, action, target) \
-    }
+
+#define RKH_CREATE_DEEP_HISTORY_STATE(name, parent, dftTrnGuard, \
+                                      dftTrnAction, dftTarget) \
+                                                               \
+    static RKHROM RKH_ST_T *ram##name; \
+    MKHISTORY(name, parent, RKH_DHISTORY, dftTrnGuard, dftTrnAction, \
+              dftTarget, ram##name)
 
 /**
- *  \brief
- *	This macro creates a shallow history pseudostate.
+ * 	\brief
+ *	This macro creates a shallow history pseudostate. 
  *
- *	Shallow history means that history applies to the current nesting context
- *	only – states nested more deeply are not affected by the presence of a
+ *	Shallow history means that history applies to the current nesting context 
+ *	only – states nested more deeply are not affected by the presence of a 
  *	history pseudostates in a higher context.
- *
- *  \param[in] name     pseudostate name. Represents a shallow history
- *                      pseudostate structure.
- *  \param[in] parent	pointer to parent state.
- *
- *  \warning
- *  This macro is deprecated and just it is defined for backwards 
- *  compatibility. Please, use for new develpments the macro 
- *  RKH_CREATE_SHALLOW_HISTORY_X_STATE.
- *
+ *	
  *	\note
- *	At this framework version, it is not recommended to instantiate the
- *	same history object more than once using this macro, since it uses a
- *	static memory to store the last visited state (memory of history
+ *	At this framework version, it is not recommended to instantiate the 
+ *	same history object more than once using this macro, since it uses a 
+ *	static memory to store the last visited state (memory of history 
  *	pseudostate).
  *
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
+ *
+ * 	\param[in] name     pseudostate name. Represents a shallow history 
+ *                      pseudostate structure.
+ * 	\param[in] parent   pointer to parent state.
+ *  \param[in] dftTrnGuard	
+ *                      pointer to guard function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] dftTrnAction
+ *                      pointer to action function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] dftTarget
+ *                      pointer to target state. If a default history 
+ *                      Transition is defined (the target parameter is not 
+ *                      NULL) originating from the History Pseudostate, it 
+ *                      will be taken. Otherwise, default State entry is 
+ *                      applied. 
  */
-#define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent) \
-                                                       \
-    RKH_CREATE_SHALLOW_HISTORY_DEFAULT_STATE(name, parent, NULL, NULL, \
-                                             NULL)
+
+#define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent, dftTrnGuard, \
+                                         dftTrnAction, dftTarget) \
+                                                                  \
+    static RKHROM RKH_ST_T *ram##name; \
+    MKHISTORY(name, parent, RKH_SHISTORY, dftTrnGuard, dftTrnAction, \
+              dftTarget, ram##name)
 
 /**
  *  \brief
@@ -1002,6 +1045,16 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 
 #define RKH_BRANCH(g, a, t)   {0, (RKH_GUARD_T)g, a, t}
+
+/**
+ *  \brief
+ *  ...
+ *
+ *  \param[in] compStateName    pointer to the composite state that contains 
+ *                              this history pseudostate.
+ */
+#define RKH_CREATE_HISTORY_STORAGE(compStateName) \
+    static RKHROM RKH_ST_T *ramHist_##compStateName
 
 /*
  *  This macro is internal to RKH and the user application should

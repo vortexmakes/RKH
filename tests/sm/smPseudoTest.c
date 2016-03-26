@@ -40,14 +40,16 @@ RKH_CREATE_BASIC_STATE(smPT_s0, NULL, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(smPT_s0)
 
     RKH_TRREG(A, NULL, NULL, &smPT_s1),
-    RKH_TRREG(B, NULL, NULL, &smPT_hS1),
-    RKH_TRREG(C, NULL, NULL, &smPT_haS1),
+    RKH_TRREG(B, NULL, NULL, &hist_smPT_s1),
+    RKH_TRREG(C, NULL, NULL, &hist_smPT_s12),
     RKH_TRREG(D, NULL, NULL, &smPT_s122),
-    RKH_TRREG(E, NULL, NULL, &smPT_hS2),
+    RKH_TRREG(E, NULL, NULL, &hist_smPT_s2),
 
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_STATE(smPT_s1, NULL, NULL, RKH_ROOT, &smPT_s11, &smPT_hS1);
+RKH_CREATE_HISTORY_STORAGE(smPT_s1);
+RKH_CREATE_COMP_STATE_HISTORY(smPT_s1, NULL, NULL, RKH_ROOT, &smPT_s11, 
+                              RKH_SHISTORY, NULL, NULL, NULL, ramHist_smPT_s1);
 RKH_CREATE_TRANS_TABLE(smPT_s1)
 
     RKH_TRREG(A, NULL, NULL, &smPT_s0),
@@ -61,9 +63,10 @@ RKH_CREATE_TRANS_TABLE(smPT_s11)
 
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_SHALLOW_HISTORY_X_STATE(smPT_hS1, &smPT_s1, NULL, NULL, NULL);
-
-RKH_CREATE_COMP_STATE(smPT_s12, NULL, NULL, &smPT_s1, &smPT_s121, &smPT_haS1);
+RKH_CREATE_HISTORY_STORAGE(smPT_s12);
+RKH_CREATE_COMP_STATE_HISTORY(smPT_s12, NULL, NULL, &smPT_s1, &smPT_s121, 
+                              RKH_DHISTORY, NULL, NULL, NULL, 
+                              ramHist_smPT_s12);
 RKH_CREATE_TRANS_TABLE(smPT_s12)
 RKH_END_TRANS_TABLE
 
@@ -75,9 +78,10 @@ RKH_CREATE_BASIC_STATE(smPT_s122, NULL, NULL, &smPT_s12, NULL);
 RKH_CREATE_TRANS_TABLE(smPT_s122)
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_DEEP_HISTORY_STATE(smPT_haS1, &smPT_s12);
-
-RKH_CREATE_COMP_STATE(smPT_s2, NULL, NULL, RKH_ROOT, &smPT_s21, &smPT_hS2);
+RKH_CREATE_HISTORY_STORAGE(smPT_s2);
+RKH_CREATE_COMP_STATE_HISTORY(smPT_s2, NULL, NULL, RKH_ROOT, &smPT_s21, 
+                              RKH_SHISTORY, smPT_trueGuard, smPT_trS2History, 
+                              &smPT_s22, ramHist_smPT_s2);
 RKH_CREATE_TRANS_TABLE(smPT_s2)
 RKH_END_TRANS_TABLE
 
@@ -88,10 +92,6 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE(smPT_s22, NULL, NULL, &smPT_s2, NULL);
 RKH_CREATE_TRANS_TABLE(smPT_s22)
 RKH_END_TRANS_TABLE
-
-RKH_CREATE_SHALLOW_HISTORY_X_STATE(smPT_hS2, &smPT_s2, 
-                                   smPT_trueGuard, smPT_trS2History,
-                                   &smPT_s22);
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
