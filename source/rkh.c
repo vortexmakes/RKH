@@ -59,8 +59,8 @@ RKH_MODULE_NAME(rkh)
 #define IS_NOT_INTERNAL_TRANSITION()    (inttr == 0)
 #define IS_INTERNAL_TRANSITION(s)       ((s) == CST(0))
 #define IS_EMPTY_HISTORY(s)             (*(CH(s))->target == (RKHROM void *)0)
-#define IS_FOUND_TRANS(t)               ((t)->event != RKH_ANY)
-#define IS_NOT_FOUND_TRANS(t)           ((t)->event == RKH_ANY)
+#define IS_FOUND_TRN(t)                 ((t)->event != RKH_ANY)
+#define IS_NOT_FOUND_TRN(t)             ((t)->event == RKH_ANY)
 #define IS_VALID_GUARD(t)               ((t)->guard != CG(0))
 #define IS_PSEUDO(s)                    ((CB((s))->type & RKH_REGULAR) == 0)
 #define IS_COMPOSITE(s)                 (CB((s))->type == RKH_COMPOSITE)
@@ -77,10 +77,36 @@ RKH_MODULE_NAME(rkh)
     #define RKH_RAM
 #endif
 
-#define FIND_TRANS(t, tbl, sig) \
-    for ((t) = (tbl); \
-         (t)->event != sig && (t)->event != RKH_ANY; \
-         ++(t))
+#if 0
+#define FIND_TRN(trn_, trnTbl_, signal_) \
+    for ((trn_) = (trnTbl_); \
+         ((trn_)->event != RKH_ANY) && ((trn_)->event != signal_); \
+         ++(trn_))
+#endif
+#define FIND_TRN(me_, evt_, trn_, trnTbl_, signal_) \
+    for ((trn_) = (trnTbl_); \
+         ((trn_)->event != RKH_ANY); \
+         ++(trn_)) \
+    { \
+        if (((trn_)->event == signal_)) \
+        { \
+            if (IS_VALID_GUARD(trn_)) \
+            { \
+                if (RKH_EXEC_GUARD((trn_), (me_), (evt_)) == RKH_GTRUE) \
+                { \
+                    break; \
+                } \
+                else \
+                { \
+                    RKH_TR_SM_GRD_FALSE(sma); \
+                } \
+            } \
+            else \
+            { \
+                break; \
+            } \
+        } \
+    }
 
 #if defined(RKH_SHALLOW_ENABLED)
     #if RKH_CFG_SMA_SUBMACHINE_EN == RKH_ENABLED
@@ -402,8 +428,8 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     for (stn = cs, tr = CT(0); stn != CST(0); )
     {
         in = RKH_PROCESS_INPUT(stn, sma, pe);
-        FIND_TRANS(tr, CBSC(stn)->trtbl, in);
-        if (IS_FOUND_TRANS(tr))
+        FIND_TRN(sma, pe, tr, CBSC(stn)->trtbl, in);
+        if (IS_FOUND_TRN(tr))
         {
             break;
         }
@@ -412,13 +438,13 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
 #else
     stn = cs;
     in = RKH_PROCESS_INPUT(stn, sma, pe);
-    FIND_TRANS(tr, CBSC(stn)->trtbl, in);
+    FIND_TRN(sma, pe, tr, CBSC(stn)->trtbl, in);
 #endif
 
     RKH_TR_SMA_DCH(sma,                        /* this state machine object */
                    pe,                                             /* event */
                    cs);                                    /* current state */
-    if (IS_NOT_FOUND_TRANS(tr))                        /* transition taken? */
+    if (IS_NOT_FOUND_TRN(tr))                        /* transition taken? */
     {
         RKH_TR_SM_EVT_NFOUND(sma,              /* this state machine object */
                              pe);                                  /* event */
@@ -438,11 +464,13 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     /* enabled transition? */
     /* A CT is enabled if its trigger is the dispatched */
     /* event, and the guard evaluates to true. */
+#if 0
     if (IS_VALID_GUARD(tr) && (RKH_EXEC_GUARD(tr, sma, pe) == RKH_GFALSE))
     {
         RKH_TR_SM_GRD_FALSE(sma);
         return RKH_GRD_FALSE;
     }
+#endif
     /* add action of the transition segment in the list */
     if (rkh_add_tr_action(&pal, tr->action, &nal))
     {
@@ -458,7 +486,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     {
         /* ---- Stage 3 ---------------------------------------------------- */
         RKH_TR_SM_TS_STATE(sma,                 /* this state machine object */
-                           /* target state of the transition segment */
+                                   /* target state of the transition segment */
                            ets);
 
         /* ... traverses the taken transition until */
@@ -485,7 +513,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
                     /* evaluates the guards of its outgoing transitions */
                     FIND_BRANCH(CCD(ets)->trtbl, tr, sma, pe);
 
-                    if (IS_NOT_FOUND_TRANS(tr))
+                    if (IS_NOT_FOUND_TRN(tr))
                     {
                         RKH_TR_SM_CND_NFOUND(sma);
                         return RKH_CND_NFOUND;

@@ -24,6 +24,7 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include "rkh.h"
+#include "smTest.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 
@@ -37,10 +38,10 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 
-/* Defines the state machine's initializing action */
+/* ============================ Initial action ============================= */
 void smTest_init(SmTest *const me);
 
-/* Defines effect actions */
+/* ============================ Effect actions ============================= */
 void smTest_tr11(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr12(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr13(SmTest *const me, RKH_EVT_T *pe);
@@ -60,28 +61,31 @@ void smTest_tr52(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr53(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr54(SmTest *const me, RKH_EVT_T *pe);
 
-/* Defines entry actions */
-void smTest_nS0(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS1(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS2(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS3(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS21(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS22(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS221(SmTest *const me, RKH_EVT_T *pe);
-void smTest_nS31(SmTest *const me, RKH_EVT_T *pe);
+/* ============================= Entry actions ============================= */
+void smTest_nS0(SmTest *const me);
+void smTest_nS1(SmTest *const me);
+void smTest_nS2(SmTest *const me);
+void smTest_nS3(SmTest *const me);
+void smTest_nS21(SmTest *const me);
+void smTest_nS22(SmTest *const me);
+void smTest_nS221(SmTest *const me);
+void smTest_nS31(SmTest *const me);
 
-/* Defines exit actions */
-void smTest_xS0(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS1(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS2(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS3(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS21(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS22(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS221(SmTest *const me, RKH_EVT_T *pe);
-void smTest_xS31(SmTest *const me, RKH_EVT_T *pe);
+/* ============================= Exit actions ============================== */
+void smTest_xS0(SmTest *const me);
+void smTest_xS1(SmTest *const me);
+void smTest_xS2(SmTest *const me);
+void smTest_xS3(SmTest *const me);
+void smTest_xS21(SmTest *const me);
+void smTest_xS22(SmTest *const me);
+void smTest_xS221(SmTest *const me);
+void smTest_xS31(SmTest *const me);
 
-/* Defines guards */
+/* ================================ Guards ================================= */
 rbool_t smTest_falseGuard(SmTest *const me, RKH_EVT_T *pe);
+rbool_t smTest_guard4a(SmTest *const me, RKH_EVT_T *pe);
+rbool_t smTest_guard4b(SmTest *const me, RKH_EVT_T *pe);
+rbool_t smTest_guard4c(SmTest *const me, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 

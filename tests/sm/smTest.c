@@ -119,6 +119,18 @@ RKH_CREATE_TRANS_TABLE(s31)
 
 RKH_END_TRANS_TABLE
 
+RKH_CREATE_BASIC_STATE(s4, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(s4)
+
+    RKH_TRINT(A, smTest_guard4a, NULL),
+    RKH_TRINT(A, smTest_guard4b, NULL),
+    RKH_TRINT(A, smTest_guard4c, NULL),
+    RKH_TRINT(B, smTest_guard4a, NULL),
+    RKH_TRINT(B, smTest_guard4b, NULL),
+    RKH_TRREG(B, NULL, NULL, &s4),
+
+RKH_END_TRANS_TABLE
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */

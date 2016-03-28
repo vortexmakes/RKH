@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__W32STVC08__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\..\..\..\stub\mocks;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,6 +93,8 @@
     <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h" />
     <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h" />
     <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h" />
+    <ClInclude Include="..\..\..\..\..\cmock\cmock.h" />
+    <ClInclude Include="..\..\..\..\..\cmock\cmock_internals.h" />
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h" />
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_internals.h" />
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h" />
@@ -107,6 +109,7 @@
     <ClInclude Include="..\..\..\..\smPseudoTestAct.h" />
     <ClInclude Include="..\..\..\..\smTest.h" />
     <ClInclude Include="..\..\..\..\smTestAct.h" />
+    <ClInclude Include="..\..\..\..\stub\mocks\MocksmTestAct.h" />
     <ClInclude Include="..\bsp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +123,7 @@
     <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
+    <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c" />
@@ -129,7 +133,7 @@
     <ClCompile Include="..\..\..\..\smPseudoTest.c" />
     <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
-    <ClCompile Include="..\..\..\..\smTestAct.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />

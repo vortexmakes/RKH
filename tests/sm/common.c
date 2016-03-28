@@ -57,6 +57,7 @@
 #include "unitrazer.h"
 #include "rkh.h"
 #include "common.h"
+#include "MocksmTestAct.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */

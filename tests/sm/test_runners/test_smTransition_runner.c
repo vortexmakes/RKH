@@ -84,6 +84,8 @@ TEST_GROUP_RUNNER(transition)
 	RUN_TEST_CASE(transition, fails_EventNotFound);
 	RUN_TEST_CASE(transition, fails_GuardFalse);
 	RUN_TEST_CASE(transition, fails_ExceededHierarchicalLevel);
+	RUN_TEST_CASE(transition, multipleEnabledTrn_FiringFirstTrueGuard);
+	RUN_TEST_CASE(transition, multipleEnabledTrn_FiringFirstInvalidGuard);
 }
 
 /* ------------------------------ End of file ------------------------------ */
