@@ -117,12 +117,15 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
            const RKH_ST_T *sourceState, const RKH_ST_T **targetStates, 
            const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
            const RKH_ST_T *mainTargetState, int nExecEffectActions, 
-           int kindOfTrn)
+           int kindOfTrn, int initStateMachine)
 {
     int nEntryStates, nExitStates;
 
-	sm_init_expect(RKH_STATE_CAST(me->romrkh->istate));
-	sm_enstate_expect(RKH_STATE_CAST(me->romrkh->istate));
+    if (initStateMachine)
+    {
+        sm_init_expect(RKH_STATE_CAST(me->romrkh->istate));
+        sm_enstate_expect(RKH_STATE_CAST(me->romrkh->istate));
+    }
 	sm_trn_expect(RKH_STATE_CAST(sourceState), RKH_STATE_CAST(*targetStates));
 
     if (kindOfTrn == TRN_NOT_INTERNAL)
@@ -141,8 +144,12 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
     }
 	sm_evtProc_expect();
 
-    rkh_sma_init_hsm(me);
-    setStateForcesfully(me, RKH_STATE_CAST(currentState));
+    if (initStateMachine)
+    {
+        rkh_sma_init_hsm(me);
+    }
+    if (currentState)
+        setStateForcesfully(me, RKH_STATE_CAST(currentState));
 }
 
 /** @} doxygen end group definition */

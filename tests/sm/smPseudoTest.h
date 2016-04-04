@@ -48,9 +48,9 @@ RKH_SMA_DCLR(smPseudoTest);
 RKH_DCLR_COMP_STATE smPT_s1, smPT_s12, smPT_s2;
 RKH_DCLR_BASIC_STATE smPT_waiting, smPT_s0, smPT_s11, 
                      smPT_s121, smPT_s122, smPT_s21, smPT_s22;
-RKH_DCLR_SHIST_STATE hist_smPT_s1;
-RKH_DCLR_DHIST_STATE hist_smPT_s12;
-RKH_DCLR_SHIST_STATE hist_smPT_s2;
+RKH_DCLR_SHIST_STATE smPT_s1Hist;
+RKH_DCLR_DHIST_STATE smPT_s12Hist;
+RKH_DCLR_SHIST_STATE smPT_s2Hist;
 
 /* ------------------------------- Data types ------------------------------ */
 

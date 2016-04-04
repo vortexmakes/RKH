@@ -66,6 +66,8 @@ RKH_MODULE_NAME(rkh)
 #define IS_COMPOSITE(s)                 (CB((s))->type == RKH_COMPOSITE)
 #define IS_SUBMACHINE(s)                (CB((s))->type == RKH_SUBMACHINE)
 #define IS_REF_SUBMACHINE(s)            (CB((s))->type == RKH_REF_SUBMACHINE)
+#define IS_SIMPLE(s)                    (CB((s))->type == RKH_BASIC)
+#define IS_FINAL(s)                     (CB((s))->type == RKH_FINAL)
 
 #if RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED || \
     RKH_CFGPORT_REENTRANT_EN == RKH_DISABLED
@@ -77,33 +79,29 @@ RKH_MODULE_NAME(rkh)
     #define RKH_RAM
 #endif
 
-#if 0
-#define FIND_TRN(trn_, trnTbl_, signal_) \
-    for ((trn_) = (trnTbl_); \
-         ((trn_)->event != RKH_ANY) && ((trn_)->event != signal_); \
-         ++(trn_))
-#endif
 #define FIND_TRN(me_, evt_, trn_, trnTbl_, signal_) \
-    for ((trn_) = (trnTbl_); \
-         ((trn_)->event != RKH_ANY); \
-         ++(trn_)) \
+    for ((trn_) = (trnTbl_); ((trn_)->event != RKH_ANY); ++(trn_)) \
     { \
         if (((trn_)->event == signal_)) \
         { \
-            if (IS_VALID_GUARD(trn_)) \
+            if (IS_VALID_GUARD(trn_)) /* is enabled transition? */ \
             { \
                 if (RKH_EXEC_GUARD((trn_), (me_), (evt_)) == RKH_GTRUE) \
                 { \
-                    break; \
+                    break; /* Enabled transition */\
                 } \
                 else \
                 { \
+                    /* Disabled transition. Transitions that have a guard */ \
+                    /* which evaluates to false are disabled */ \
                     RKH_TR_SM_GRD_FALSE(sma); \
                 } \
             } \
             else \
             { \
-                break; \
+                break; /* Enabled transition. A transition that does not */ \
+                       /* have an associated guard is treated as if it */ \
+                       /* has a guard that is always true */ \
             } \
         } \
     }
@@ -251,6 +249,7 @@ RKH_MODULE_NAME(rkh)
         { \
             --snl; \
             RKH_EXEC_ENTRY(*snl, CM(sma)); \
+            isCompletionEvent  = isCompletionTrn(*snl); \
             RKH_TR_SM_ENSTATE(sma, *snl); \
         } \
         stn = *snl; \
@@ -258,6 +257,8 @@ RKH_MODULE_NAME(rkh)
         { \
             stn = CCMP(stn)->defchild; \
             RKH_EXEC_ENTRY(stn, CM(sma)); \
+            isCompletionEvent = isCompletionTrn(stn); \
+            RKH_EXEC_STATE_INIT(sma, CCMP(stn->parent)->initialAction); \
             RKH_TR_SM_ENSTATE(sma, stn); \
             ++nen; \
         } \
@@ -275,11 +276,41 @@ RKH_MODULE_NAME(rkh)
 #endif
 
 /* ------------------------------- Constants ------------------------------- */
+RKH_ROM_STATIC_EVENT(evCompletion, RKH_COMPLETION_EVENT);
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static 
+rbool_t
+findCompletionTrn(RKHROM RKH_TR_T *trnTable)
+{
+    RKHROM RKH_TR_T *trn;
+    rbool_t res; 
+
+    for (res = RKH_FALSE, trn = trnTable; trn->event != RKH_ANY; ++trn)
+    {
+        if (trn->event == RKH_COMPLETION_EVENT)
+        {
+            res = RKH_TRUE;
+            break;
+        }
+    }
+    return res;
+}
+
+static 
+rbool_t
+isCompletionTrn(RKHROM RKH_ST_T *state)
+{
+    if ((IS_SIMPLE(state) && findCompletionTrn(CBSC(state)->trtbl)) ||
+        IS_FINAL(state))
+        return RKH_TRUE;
+    else
+        return RKH_FALSE;
+}
 
 static
 rbool_t
@@ -292,9 +323,9 @@ rkh_add_tr_action(RKH_TRN_ACT_T * *list, RKH_TRN_ACT_T act, rui8_t *num)
 
     if (act != CTA(0))
     {
-        **list = act;                      /* store a new transition action */
-        ++(*list);                    /* increment the pointer to next slot */
-        ++(*num);           /* increment the counter of actions in the list */
+        **list = act;                       /* store a new transition action */
+        ++(*list);                     /* increment the pointer to next slot */
+        ++(*num);            /* increment the counter of actions in the list */
     }
     return 0;
 }
@@ -341,7 +372,7 @@ rkh_sma_init_hsm(RKH_SMA_T *sma)
     RKH_ASSERT(sma != (RKH_SMA_T *)0 &&
                sma->romrkh->istate != (RKHROM RKH_ST_T *)0);
     RKH_TR_SM_INIT(sma, sma->romrkh->istate);
-    RKH_EXEC_INIT(sma);
+    RKH_EXEC_INIT(sma, sma->romrkh->iaction);
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     for (s = CST(sma->romrkh->istate);; )
@@ -377,7 +408,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     RKHROM RKH_ST_T *cs, *ts;
     RKHROM void *ets;
     RKHROM RKH_TR_T *tr;
-    rbool_t inttr;
+    rbool_t inttr, isCompletionEvent;
     RKH_SIG_T in;
 #if RKH_CFG_TRC_EN == RKH_ENABLED
     rui8_t step;
@@ -409,23 +440,30 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
 
     RKH_ASSERT(sma != (RKH_SMA_T *)0 && pe != (RKH_EVT_T *)0);
 
-    inttr = 0;
+    isCompletionEvent = inttr = 0;
     INFO_RCV_EVENTS(sma);
     RKH_HOOK_DISPATCH(sma, pe);
+
+    do
+    {
     /* ---- Stage 1 -------------------------------------------------------- */
     cs = sma->state;                                    /* get current state */
 
     /* ---- Stage 2 -------------------------------------------------------- */
-    /* determine the (compound) transition (CT) that will fire */
-    /* in response to the event: traverse the states in */
-    /* the active configuration from lowest states in the hierarchy */
-    /* upwards. A CT is enabled if its trigger is the dispatched */
-    /* event, and the guard evaluates to true. */
+    /* Determine the (compound) transition (CT) that will fire in response */
+    /* to the event: traverse the states in the active configuration from */
+    /* lowest states in the hierarchy upwards. A CT is enabled if its */
+    /* trigger is the dispatched event, and the guard evaluates to true. */
     /* Once an enabled transition is found with a given source state */
-    /* stop traversing the states that are higher than */
-    /* this state in the hierarchy. */
+    /* stop traversing the states that are higher than this state in the */
+    /* hierarchy. */
+    if (isCompletionEvent)
+    {
+        pe = (RKH_EVT_T *)&evCompletion;
+        isCompletionEvent = RKH_FALSE;
+    }
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
-    for (stn = cs, tr = CT(0); stn != CST(0); )
+    for (stn = cs, tr = CT(0); stn != CST(0); UPDATE_IN_PARENT(stn))
     {
         in = RKH_PROCESS_INPUT(stn, sma, pe);
         FIND_TRN(sma, pe, tr, CBSC(stn)->trtbl, in);
@@ -433,7 +471,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
         {
             break;
         }
-        UPDATE_IN_PARENT(stn);
+        /* UPDATE_IN_PARENT(stn); */
     }
 #else
     stn = cs;
@@ -441,37 +479,27 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     FIND_TRN(sma, pe, tr, CBSC(stn)->trtbl, in);
 #endif
 
-    RKH_TR_SMA_DCH(sma,                        /* this state machine object */
-                   pe,                                             /* event */
-                   cs);                                    /* current state */
-    if (IS_NOT_FOUND_TRN(tr))                        /* transition taken? */
+    RKH_TR_SMA_DCH(sma,                         /* this state machine object */
+                   pe,                                              /* event */
+                   cs);                                     /* current state */
+    if (IS_NOT_FOUND_TRN(tr))                           /* transition taken? */
     {
-        RKH_TR_SM_EVT_NFOUND(sma,              /* this state machine object */
-                             pe);                                  /* event */
+        RKH_TR_SM_EVT_NFOUND(sma,               /* this state machine object */
+                             pe);                                   /* event */
         return RKH_EVT_NFOUND;
     }
 
-    ets = tr->target;      /* temporarily save the target of the transition */
+    ets = tr->target;       /* temporarily save the target of the transition */
     ts = CST(ets);
 
-    nal = 0;                           /* initialize transition action list */
+    nal = 0;                            /* initialize transition action list */
     pal = al;
     RKH_CLR_STEP();
-    RKH_TR_SM_TRN(sma,                         /* this state machine object */
-                  stn,                           /* transition source state */
-                  ts);                           /* transition target state */
+    RKH_TR_SM_TRN(sma,                          /* this state machine object */
+                  stn,                            /* transition source state */
+                  ts);                            /* transition target state */
 
-    /* enabled transition? */
-    /* A CT is enabled if its trigger is the dispatched */
-    /* event, and the guard evaluates to true. */
-#if 0
-    if (IS_VALID_GUARD(tr) && (RKH_EXEC_GUARD(tr, sma, pe) == RKH_GFALSE))
-    {
-        RKH_TR_SM_GRD_FALSE(sma);
-        return RKH_GRD_FALSE;
-    }
-#endif
-    /* add action of the transition segment in the list */
+    /* Add action of the transition segment in the list */
     if (rkh_add_tr_action(&pal, tr->action, &nal))
     {
         RKH_TR_SM_EX_TSEG(sma);
@@ -479,8 +507,8 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
         return RKH_EX_TSEG;
     }
 
-    RKH_INC_STEP();           /* increment the number of transition segment */
-    inttr = IS_INTERNAL_TRANSITION(ets);      /* is an internal transition? */
+    RKH_INC_STEP();            /* increment the number of transition segment */
+    inttr = IS_INTERNAL_TRANSITION(ets);       /* is an internal transition? */
 
     if (IS_NOT_INTERNAL_TRANSITION())
     {
@@ -625,7 +653,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
 
     if (IS_NOT_INTERNAL_TRANSITION())
     {
-        ts = CST(ets);                /* finally, set the main target state */
+        ts = CST(ets);                 /* finally, set the main target state */
     }
     if (IS_NOT_INTERNAL_TRANSITION())
     {
@@ -642,9 +670,9 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     /* according to the order in which they are written on */
     /* the transition, from the action closest to source */
     /* state to the action closest to target state. */
-    RKH_TR_SM_NTRNACT(sma,                     /* this state machine object */
-                      nal,                            /* # executed actions */
-                      RKH_GET_STEP());             /* # transition segments */
+    RKH_TR_SM_NTRNACT(sma,                      /* this state machine object */
+                      nal,                             /* # executed actions */
+                      RKH_GET_STEP());              /* # transition segments */
     RKH_EXEC_TRANSITION(sma, pe);
 
     if (IS_NOT_INTERNAL_TRANSITION())
@@ -658,20 +686,22 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
         /* until the statechart reaches basic states. */
         /* Also, update 'stn' with the target state */
         RKH_EXEC_ENTRY_ACTION(nn, sma, stn, snl, ix_n);
-        RKH_TR_SM_NENEX(sma,                   /* this state machine object */
-                        nn,                             /* # entered states */
-                        ix_x);                           /* # exited states */
-
+        RKH_TR_SM_NENEX(sma,                    /* this state machine object */
+                        nn,                              /* # entered states */
+                        ix_x);                            /* # exited states */
+ 
         /* ---- Stage 7 ---------------------------------------------------- */
         /* update deep history */
         rkh_update_deep_hist(CST(stn));
         /* ---- Stage 8 ---------------------------------------------------- */
-        sma->state = CST(stn);                  /* update the current state */
-        RKH_TR_SM_STATE(sma,                   /* this state machine object */
-                        stn);                              /* current state */
+        sma->state = CST(stn);                   /* update the current state */
+        RKH_TR_SM_STATE(sma,                    /* this state machine object */
+                        stn);                               /* current state */
     }
 
     RKH_TR_SM_EVT_PROC(sma);
+    } while (isCompletionEvent);
+
     INFO_EXEC_TRS(sma);
     return RKH_EVT_PROC;
 }

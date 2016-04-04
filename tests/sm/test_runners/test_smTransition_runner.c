@@ -85,7 +85,10 @@ TEST_GROUP_RUNNER(transition)
 	RUN_TEST_CASE(transition, fails_GuardFalse);
 	RUN_TEST_CASE(transition, fails_ExceededHierarchicalLevel);
 	RUN_TEST_CASE(transition, multipleEnabledTrn_FiringFirstTrueGuard);
-	RUN_TEST_CASE(transition, multipleEnabledTrn_FiringFirstInvalidGuard);
+	RUN_TEST_CASE(transition, multipleEnabledTrn_FiringFirstEmptyGuard);
+	RUN_TEST_CASE(transition, defaultTrnWithAssociatedEffect);
+	RUN_TEST_CASE(transition, generatedCompletionEventBySimpleState);
+	RUN_TEST_CASE(transition, generatedCompletionEventByFinalState);
 }
 
 /* ------------------------------ End of file ------------------------------ */

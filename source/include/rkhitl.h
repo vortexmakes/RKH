@@ -149,6 +149,17 @@ extern "C" {
 
 /**
  *  \brief
+ *	This macro is used to indicate the completion event.
+ *
+ *  A special kind of transition is a completion transition, which has an 
+ *  implicit trigger. The event that enables this trigger is called a 
+ *  completion event and it signifies that all behaviors associated with the 
+ *  source state of the completion transition have completed execution.
+ */
+#define RKH_COMPLETION_EVENT        (RKH_ANY - 1)
+
+/**
+ *  \brief
  *  RKH allows up to RKH_CFG_FWK_MAX_SMA different priority levels
  *  (see rkhcfg.h).
  *
@@ -1574,6 +1585,7 @@ extern "C" {
 #define RKH_COMPOSITE                   RKH_TYPE(RKH_REGULAR,  0x01)
 #define RKH_SUBMACHINE                  RKH_TYPE(RKH_REGULAR,  0x02)
 #define RKH_REF_SUBMACHINE              RKH_TYPE(RKH_REGULAR,  0x04)
+#define RKH_FINAL                       RKH_TYPE(RKH_REGULAR,  0x08)
 
 #define RKH_CONDITIONAL                 RKH_TYPE(RKH_PSEUDO,   0x02)
 #define RKH_CHOICE                      RKH_TYPE(RKH_PSEUDO,   0x04)
@@ -1725,51 +1737,71 @@ extern "C" {
 #if (RKH_CFG_SMA_HCAL_EN == RKH_ENABLED)
     #if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
         #if defined(RKH_HISTORY_ENABLED)
-            #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
-            #define MKCOMP(n,d,h)       n##_trtbl,NULL,d,h
+            #define MKBASIC(n,pp)               n##_trtbl, (RKH_PPRO_T)pp
+            #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, NULL, d, \
+                                                (RKH_INIT_ACT_T)dftTrn_, h
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
-                RKHROM RKH_SHIST_T hist_##name = \
+                RKHROM RKH_SHIST_T name##Hist = \
                 { \
-                    MKBASE(kOfH, hist_##name), \
-                    (RKHROM struct RKH_ST_T *)&name, &ramMem, \
+                    MKBASE(kOfH, name##Hist), \
+                    (RKHROM struct RKH_ST_T *)&name, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name = \
                 { \
                     MKBASE(kOfH, name), \
-                    (RKHROM struct RKH_ST_T *)parent, &ramMem, \
+                    (RKHROM struct RKH_ST_T *)parent, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
+            #define MKFINAL(name_) \
+                name_##_trtbl, NULL
+            #define MKFINAL_INCOMP(name_) \
+                RKH_CREATE_FINAL_STATE(name_##Final, &name_)
         #else
-            #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
-            #define MKCOMP(n,d,h)       n##_trtbl,NULL,d
+            #define MKBASIC(n,pp)               n##_trtbl, (RKH_PPRO_T)pp
+            #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, NULL, d, \
+                                                (RKH_INIT_ACT_T)dftTrn_
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
+            #define MKFINAL(name_) \
+                name_##_trtbl, NULL
+            #define MKFINAL_INCOMP(name_) \
+                RKH_CREATE_FINAL_STATE(name_##Final, &name_)
         #endif
     #else
         #if defined(RKH_HISTORY_ENABLED)
-            #define MKBASIC(n,pp)       n##_trtbl
-            #define MKCOMP(n,d,h)       n##_trtbl,d,h
+            #define MKBASIC(n,pp)               n##_trtbl
+            #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, d, \
+                                                (RKH_INIT_ACT_T)dftTrn_, h
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
-                RKHROM RKH_SHIST_T hist_##name = \
+                RKHROM RKH_SHIST_T name##Hist = \
                 { \
-                    MKBASE(kOfH, hist_##name), \
-                    (RKHROM struct RKH_ST_T *)&name, &ramMem, \
+                    MKBASE(kOfH, name##Hist), \
+                    (RKHROM struct RKH_ST_T *)&name, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name = \
                 { \
                     MKBASE(kOfH, name), \
-                    (RKHROM struct RKH_ST_T *)parent, &ramMem, \
+                    (RKHROM struct RKH_ST_T *)parent, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
+            #define MKFINAL(name_) \
+                name_##_trtbl
+            #define MKFINAL_INCOMP(name_) \
+                RKH_CREATE_FINAL_STATE(name_##Final, &name_)
         #else
-            #define MKBASIC(n,pp)       n##_trtbl
-            #define MKCOMP(n,d,h)       n##_trtbl,d
+            #define MKBASIC(n,pp)               n##_trtbl
+            #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, d, \
+                                                (RKH_INIT_ACT_T)dftTrn_
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
+            #define MKFINAL(name_) \
+                name_##_trtbl
+            #define MKFINAL_INCOMP(name_) \
+                RKH_CREATE_FINAL_STATE(name_##Final, &name_)
         #endif
     #endif
     #define MKST(en,ex,p)           (RKH_ENT_ACT_T)en, \
@@ -1782,10 +1814,14 @@ extern "C" {
 #else
     #if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
         #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
-        #define MKCOMP(n,d,h)       n##_trtbl,NULL
+        #define MKCOMP(n, d, dftTrn_, h)        n##_trtbl, NULL
+        #define MKFINAL(name_)
+        #define MKFINAL_INCOMP(name_)
     #else
         #define MKBASIC(n,pp)       n##_trtbl
-        #define MKCOMP(n,d,h)       n##_trtbl
+        #define MKCOMP(n, d, dftTrn_, h)        n##_trtbl
+        #define MKFINAL(name_)
+        #define MKFINAL_INCOMP(name_)
     #endif
     #define MKST(en,ex,p)
     #define MKSBM(n,sbm)            n##_trtbl,n##_exptbl,sbm
@@ -1794,18 +1830,18 @@ extern "C" {
     #define MKENP(e,s)              e,(RKHROM struct RKH_ST_T *)s
 #endif
 
-#define MK_SET_EVT(ev_obj, ev_sig)                                \
+#define MK_SET_EVT(ev_obj, ev_sig) \
     ((RKH_EVT_T *)(ev_obj))->e = (RKH_SIG_T)ev_sig;  \
-    ((RKH_EVT_T *)(ev_obj))->nref = 0;               \
+    ((RKH_EVT_T *)(ev_obj))->nref = 0; \
     ((RKH_EVT_T *)(ev_obj))->pool = 0
 
-#define MK_EVT(ev_obj, ev_sig)                                    \
+#define MK_EVT(ev_obj, ev_sig) \
     RKH_EVT_T ev_obj = {ev_sig, 0, 0}
 
-#define MK_ROM_EVT(ev_obj, ev_sig)                                \
+#define MK_ROM_EVT(ev_obj, ev_sig) \
     RKHROM RKH_EVT_T ev_obj = {ev_sig,  0, 0}
 
-#define MK_EVT_STRUCT(ev_sig)                                     \
+#define MK_EVT_STRUCT(ev_sig) \
     {ev_sig, 0, 0}
 
 #ifndef RKH_DIS_INTERRUPT
@@ -2151,225 +2187,213 @@ extern "C" {
 
 #if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
      RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #define RKH_EXEC_INIT(h) \
-    { \
-        if (CIA(h) != NULL) \
+    #define RKH_EXEC_INIT(me_, action_) \
+        if ((RKH_INIT_ACT_T)action_) \
         { \
-            (*CIA(h))((h), CIA(h)->romrkh->ievent); \
+            (*(RKH_INIT_ACT_T)action_)((me_), CM(me_)->romrkh->ievent); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (h), \
+                              (me_), \
                               0, \
-                              CIA(h)); \
-        } \
-    }
+                              CM(me_)); \
+        }
+    #define RKH_EXEC_STATE_INIT(me_, action_) \
+        RKH_EXEC_INIT(me_, action_)
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    #define RKH_EXEC_INIT(h) \
-    { \
-        if (CIA(h) != NULL) \
+    #define RKH_EXEC_INIT(me_, action_) \
+        if ((RKH_INIT_ACT_T)action_) \
         { \
-            (*CIA(h))((h)); \
+            (*(RKH_INIT_ACT_T)action_)((me_)); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (h), \
+                              (me_), \
                               0, \
-                              CIA(h)); \
-        } \
-    }
+                              CM(me_)); \
+        }
+    #define RKH_EXEC_STATE_INIT(me_, action_) \
+        RKH_EXEC_INIT(me_, action_)
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #define RKH_EXEC_INIT(h) \
-    { \
-        if (CIA(h) != NULL) \
+    #define RKH_EXEC_INIT(me_, action_) \
+        if ((RKH_INIT_ACT_T)action_) \
         { \
-            (*CIA(h))(CIA(h)->romrkh->ievent); \
+            (*(RKH_INIT_ACT_T)action_)(CM(me_)->romrkh->ievent); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (h), \
+                              (me_), \
                               0, \
-                              CIA(h)); \
-        } \
-    }
+                              CM(me_)); \
+        }
+    #define RKH_EXEC_STATE_INIT(me_, action_) \
+        RKH_EXEC_INIT(me_, action_)
 #else
-    #define RKH_EXEC_INIT(h) \
-    { \
-        if (CIA(h) != NULL) \
+    #define RKH_EXEC_INIT(me_, action_) \
+        if ((RKH_INIT_ACT_T)action_) \
         { \
-            (*CIA(h))(); \
+            (*(RKH_INIT_ACT_T)action_)(); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (h), \
+                              (me_), \
                               0, \
-                              CIA(h)); \
-        } \
-    }
+                              CM(me_)); \
+        }
+    #define RKH_EXEC_STATE_INIT(me_, action_) \
+        RKH_EXEC_INIT(me_, action_)
 #endif
 
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    #define RKH_EXEC_ENTRY(s, h) \
-    { \
-        if ((s)->enter != NULL) \
-        { \
-            (*(s)->enter)(h, s); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
-                              (h), \
-                              (s), \
-                              (s)->enter); \
-        } \
-    }
+        #define RKH_EXEC_ENTRY(state_, me_) \
+            if ((state_)->enter) \
+            { \
+                (*(state_)->enter)(me_, state_); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->enter); \
+            }
     #else
-    #define RKH_EXEC_ENTRY(s, h) \
-    { \
-        if ((s)->enter != NULL) \
-        { \
-            (*(s)->enter)(h); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
-                              (h), \
-                              (s), \
-                              (s)->enter); \
-        } \
-    }
+        #define RKH_EXEC_ENTRY(state_, me_) \
+            if ((state_)->enter) \
+            { \
+                (*(state_)->enter)(me_); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->enter); \
+            }
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    #define RKH_EXEC_ENTRY(s, h) \
-    { \
-        if ((s)->enter != NULL) \
-        { \
-            (*(s)->enter)(s); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
-                              (h), \
-                              (s), \
-                              (s)->enter); \
-        } \
-    }
+        #define RKH_EXEC_ENTRY(state_, me_) \
+            if ((state_)->enter) \
+            { \
+                (*(state_)->enter)(state_); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->enter); \
+            }
     #else
-    #define RKH_EXEC_ENTRY(s, h) \
-    { \
-        if ((s)->enter != NULL) \
+    #define RKH_EXEC_ENTRY(state_, me_) \
+        if ((state_)->enter) \
         { \
-            (*(s)->enter)(); \
+            (*(state_)->enter)(); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EN, \
-                              (h), \
-                              (s), \
-                              (s)->enter); \
-        } \
-    }
+                              (me_), \
+                              (state_), \
+                              (state_)->enter); \
+        }
     #endif
 #endif
 
 #if RKH_CFG_SMA_EXT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    #define RKH_EXEC_EXIT(s, h) \
-    { \
-        if ((s)->exit != NULL) \
-        { \
-            (*(s)->exit)(h, s); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX, \
-                              (h), \
-                              (s), \
-                              (s)->exit); \
-        } \
-    }
+        #define RKH_EXEC_EXIT(state_, me_) \
+            if ((state_)->exit) \
+            { \
+                (*(state_)->exit)(me_, state_); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX, \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->exit); \
+            }
     #else
-    #define RKH_EXEC_EXIT(s, h) \
-    {                                                       \
-        if ((s)->exit != NULL) \
-        { \
-            (*(s)->exit)(h); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX,  \
-                              (h), \
-                              (s), \
-                              (s)->exit); \
-        } \
-    }
+        #define RKH_EXEC_EXIT(state_, me_) \
+            if ((state_)->exit) \
+            { \
+                (*(state_)->exit)(me_); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX,  \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->exit); \
+            }
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    #define RKH_EXEC_EXIT(s, h) \
-    { \
-        if ((s)->exit != NULL) \
-        { \
-            (*(s)->exit)(s); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX, \
-                              (h), \
-                              (s), \
-                              (s)->exit); \
-        } \
-    }
+        #define RKH_EXEC_EXIT(state_, me_) \
+            if ((state_)->exit) \
+            { \
+                (*(state_)->exit)(state_); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX, \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->exit); \
+            }
     #else
-    #define RKH_EXEC_EXIT(s, h) \
-    { \
-        if ((s)->exit != NULL) \
-        {  \
-            (*(s)->exit)(); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX, \
-                              (h), \
-                              (s), \
-                              (s)->exit); \
-        } \
-    }
+        #define RKH_EXEC_EXIT(state_, me_) \
+            if ((state_)->exit) \
+            {  \
+                (*(state_)->exit)(); \
+                RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EX, \
+                                  (me_), \
+                                  (state_), \
+                                  (state_)->exit); \
+            }
     #endif
 #endif
 
 #if RKH_CFG_SMA_PPRO_ARG_SMA_EN == RKH_ENABLED
-    #define RKH_EXEC_PREPRO(s, h, e) \
-        (*(s)->prepro)(h, e); \
+    #define RKH_EXEC_PREPRO(state_, me_, evt_) \
+        (*(state_)->prepro)(me_, evt_); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
-                          (h), \
-                          (h)->state, \
-                          (s)->prepro)
+                          (me_), \
+                          (me_)->state, \
+                          (state_)->prepro)
 #else
-    #define RKH_EXEC_PREPRO(s, h, e) \
-        (*(s)->prepro)(e); \
+    #define RKH_EXEC_PREPRO(state_, me_, evt_) \
+        (*(state_)->prepro)(evt_); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
-                          (h), \
-                          (h)->state, \
-                          (s)->prepro)
+                          (me_), \
+                          (me_)->state, \
+                          (state_)->prepro)
 #endif
 
 #if (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
-    #define RKH_EXEC_EFF(a, h, e) \
-        (*CTA(a))((h), (e)); \
+    #define RKH_EXEC_EFF(action_, me_, evt_) \
+        (*CTA(action_))((me_), (evt_)); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                          (h), \
-                          (h)->state, \
-                          (a))
+                          (me_), \
+                          (me_)->state, \
+                          (action_))
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
-    #define RKH_EXEC_EFF(a, h, e) \
-        (*CTA(a))((e)); \
+    #define RKH_EXEC_EFF(action_, me_, evt_) \
+        (*CTA(action_))((evt_)); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                          (h), \
-                          (h)->state, \
-                          (a))
+                          (me_), \
+                          (me_)->state, \
+                          (action_))
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
-    #define RKH_EXEC_EFF(a, h, e) \
-        (*CTA(a))((h)); \
+    #define RKH_EXEC_EFF(action_, me_, evt_) \
+        (*CTA(action_))((me_)); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                          (h), \
-                          (h)->state, \
-                          (a))
+                          (me_), \
+                          (me_)->state, \
+                          (action_))
 #else
-    #define RKH_EXEC_EFF(a, h, e) \
-        (*CTA(a))(); \
+    #define RKH_EXEC_EFF(action_, me_, evt_) \
+        (*CTA(action_))(); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
-                          (h), \
-                          (h)->state, \
-                          (a))
+                          (me_), \
+                          (me_)->state, \
+                          (action_))
 #endif
 
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    #define RKH_EXEC_GUARD(t, h, e)     (*(t)->guard)(h, e)
+    #define RKH_EXEC_GUARD(trn_, me_, evt_) \
+        (*(trn_)->guard)(me_, evt_)
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
-    #define RKH_EXEC_GUARD(t, h, e)     (*(t)->guard)(e)
+    #define RKH_EXEC_GUARD(trn_, me_, evt_) \
+        (*(trn_)->guard)(evt_)
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    #define RKH_EXEC_GUARD(t, h, e)     (*(t)->guard)(h)
+    #define RKH_EXEC_GUARD(trn_, me_, evt_) \
+        (*(trn_)->guard)(me_)
 #else
-    #define RKH_EXEC_GUARD(t, h, e)     (*(t)->guard)()
+    #define RKH_EXEC_GUARD(trn_, me_, evt_) \
+        (*(trn_)->guard)()
 #endif
 
 /* -------------------------------- Constants ------------------------------ */
@@ -3031,6 +3055,12 @@ typedef struct RKH_SCMP_T
 
     /**
      *  \brief
+     *  Points to state's initial action.
+     */
+    RKH_INIT_ACT_T initialAction;
+
+    /**
+     *  \brief
      *	Points to state's history.
      */
 #if defined(RKH_HISTORY_ENABLED)
@@ -3038,6 +3068,33 @@ typedef struct RKH_SCMP_T
 #endif
 #endif
 } RKH_SCMP_T;
+
+/**
+ *	\brief
+ *  Describes a final state.
+ */
+typedef struct RKH_FINAL_T
+{
+    /**
+     *  \note
+     *  A final state has neither exit behavior nor entry behavior.
+     */
+    RKH_ST_T st;
+
+    /**
+     *  \note
+     *	A final state cannot have any outgoing transitions.
+     */
+    RKHROM struct RKH_TR_T *trtbl;
+
+    /**
+     *  \note
+     *	A final state cannot have any outgoing transitions.
+     */
+#if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
+    RKH_PPRO_T prepro;
+#endif
+} RKH_FINAL_T;
 
 /**
  *  \brief

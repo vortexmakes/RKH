@@ -22,6 +22,14 @@ void MocksmTestAct_Verify(void);
 
 #define smTest_init_Expect(me) smTest_init_CMockExpect(__LINE__, me)
 void smTest_init_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_iS3_Expect(me) smTest_iS3_CMockExpect(__LINE__, me)
+void smTest_iS3_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_iS2_Expect(me) smTest_iS2_CMockExpect(__LINE__, me)
+void smTest_iS2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_iS22_Expect(me) smTest_iS22_CMockExpect(__LINE__, me)
+void smTest_iS22_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_iS221_Expect(me) smTest_iS221_CMockExpect(__LINE__, me)
+void smTest_iS221_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_tr11_Expect(me, pe) smTest_tr11_CMockExpect(__LINE__, me, pe)
 void smTest_tr11_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe);
 #define smTest_tr12_Expect(me, pe) smTest_tr12_CMockExpect(__LINE__, me, pe)
@@ -58,6 +66,12 @@ void smTest_tr52_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_E
 void smTest_tr53_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe);
 #define smTest_tr54_Expect(me, pe) smTest_tr54_CMockExpect(__LINE__, me, pe)
 void smTest_tr54_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe);
+#define smTest_tr55_Expect(me, pe) smTest_tr55_CMockExpect(__LINE__, me, pe)
+void smTest_tr55_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe);
+#define smTest_tr61_Expect(me, pe) smTest_tr61_CMockExpect(__LINE__, me, pe)
+void smTest_tr61_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe);
+#define smTest_tr60_Expect(me, pe) smTest_tr60_CMockExpect(__LINE__, me, pe)
+void smTest_tr60_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe);
 #define smTest_nS0_Expect(me) smTest_nS0_CMockExpect(__LINE__, me)
 void smTest_nS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_nS1_Expect(me) smTest_nS1_CMockExpect(__LINE__, me)
@@ -72,8 +86,12 @@ void smTest_nS21_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 void smTest_nS22_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_nS221_Expect(me) smTest_nS221_CMockExpect(__LINE__, me)
 void smTest_nS221_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_nS2211_Expect(me) smTest_nS2211_CMockExpect(__LINE__, me)
+void smTest_nS2211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_nS31_Expect(me) smTest_nS31_CMockExpect(__LINE__, me)
 void smTest_nS31_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_nS5_Expect(me) smTest_nS5_CMockExpect(__LINE__, me)
+void smTest_nS5_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_xS0_Expect(me) smTest_xS0_CMockExpect(__LINE__, me)
 void smTest_xS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_xS1_Expect(me) smTest_xS1_CMockExpect(__LINE__, me)
@@ -90,6 +108,8 @@ void smTest_xS22_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 void smTest_xS221_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_xS31_Expect(me) smTest_xS31_CMockExpect(__LINE__, me)
 void smTest_xS31_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_xS5_Expect(me) smTest_xS5_CMockExpect(__LINE__, me)
+void smTest_xS5_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_falseGuard_ExpectAndReturn(me, pe, cmock_retval) smTest_falseGuard_CMockExpectAndReturn(__LINE__, me, pe, cmock_retval)
 void smTest_falseGuard_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
 #define smTest_guard4a_ExpectAndReturn(me, pe, cmock_retval) smTest_guard4a_CMockExpectAndReturn(__LINE__, me, pe, cmock_retval)
@@ -98,5 +118,7 @@ void smTest_guard4a_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmTest* con
 void smTest_guard4b_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
 #define smTest_guard4c_ExpectAndReturn(me, pe, cmock_retval) smTest_guard4c_CMockExpectAndReturn(__LINE__, me, pe, cmock_retval)
 void smTest_guard4c_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
+#define smTest_guardS2_ExpectAndReturn(me, pe, cmock_retval) smTest_guardS2_CMockExpectAndReturn(__LINE__, me, pe, cmock_retval)
+void smTest_guardS2_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
 
 #endif

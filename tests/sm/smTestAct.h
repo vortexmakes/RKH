@@ -38,8 +38,12 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 
-/* ============================ Initial action ============================= */
+/* ============================ Initial actions ============================ */
 void smTest_init(SmTest *const me);
+void smTest_iS3(SmTest *const me);
+void smTest_iS2(SmTest *const me);
+void smTest_iS22(SmTest *const me);
+void smTest_iS221(SmTest *const me);
 
 /* ============================ Effect actions ============================= */
 void smTest_tr11(SmTest *const me, RKH_EVT_T *pe);
@@ -60,6 +64,9 @@ void smTest_tr51(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr52(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr53(SmTest *const me, RKH_EVT_T *pe);
 void smTest_tr54(SmTest *const me, RKH_EVT_T *pe);
+void smTest_tr55(SmTest *const me, RKH_EVT_T *pe);
+void smTest_tr61(SmTest *const me, RKH_EVT_T *pe);
+void smTest_tr60(SmTest *const me, RKH_EVT_T *pe);
 
 /* ============================= Entry actions ============================= */
 void smTest_nS0(SmTest *const me);
@@ -69,7 +76,9 @@ void smTest_nS3(SmTest *const me);
 void smTest_nS21(SmTest *const me);
 void smTest_nS22(SmTest *const me);
 void smTest_nS221(SmTest *const me);
+void smTest_nS2211(SmTest *const me);
 void smTest_nS31(SmTest *const me);
+void smTest_nS5(SmTest *const me);
 
 /* ============================= Exit actions ============================== */
 void smTest_xS0(SmTest *const me);
@@ -80,12 +89,14 @@ void smTest_xS21(SmTest *const me);
 void smTest_xS22(SmTest *const me);
 void smTest_xS221(SmTest *const me);
 void smTest_xS31(SmTest *const me);
+void smTest_xS5(SmTest *const me);
 
 /* ================================ Guards ================================= */
 rbool_t smTest_falseGuard(SmTest *const me, RKH_EVT_T *pe);
 rbool_t smTest_guard4a(SmTest *const me, RKH_EVT_T *pe);
 rbool_t smTest_guard4b(SmTest *const me, RKH_EVT_T *pe);
 rbool_t smTest_guard4c(SmTest *const me, RKH_EVT_T *pe);
+rbool_t smTest_guardS2(SmTest *const me, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 

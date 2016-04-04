@@ -267,7 +267,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
- *	This macro creates a composite state with history (shallow or deep type).
+ *	This macro creates a composite state with a single region, including its 
+ *	own initial pseudostate, history (shallow and deep type) pseudostate, as 
+ *	well as its own final state.
+ *
+ *	The names of history pseudostate and final state are internally conformed 
+ *	as "<nameOfCompositeState>Hist" and "<nameOfCompositeState>Final" 
+ *	respectively. Thus, use these names as target vertex in a transition. 
  *
  *	Shallow history means that history applies to the current nesting context
  *	only – states nested more deeply are not affected by the presence of a
@@ -285,6 +291,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      imposed by Harel's Statechart and UML.
  *  \param[in] parent	pointer to parent state.
  *  \param[in] defchild	pointer to default child state or pseudostate.
+ *  \param[in] initialTrn
+ *                      pointer to initial transition action of the composite 
+ *                      state's region. This argument is optional, thus it 
+ *                      could be declared as NULL. The RKH implementation 
+ *                      preserves the transition sequence imposed by UML.
  *  \param[in] kindOfHistory 
  *                      Kind of history pseudostate. It could be defined
  *                      either shallow history (RKH_SHISTORY), deep history 
@@ -315,10 +326,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	RKH_SCMP_T structure definition for more information.
  */
-#define RKH_CREATE_COMP_STATE_HISTORY(name, en, ex, parent, defchild, \
-                                      kindOfHistory, hDftTrnGuard, \
-                                      hDftTrnAction, hDftTarget, hRamMem) \
-                                                                          \
+#define RKH_CREATE_COMP_REGION_STATE(name, en, ex, parent, defchild, \
+                                     initialTrn, \
+                                     kindOfHistory, hDftTrnGuard, \
+                                     hDftTrnAction, hDftTarget, hRamMem) \
+                                                                         \
+    MKFINAL_INCOMP(name); \
     MKHIST_INCOMP(name, kindOfHistory, hDftTrnGuard, hDftTrnAction, \
                   hDftTarget, hRamMem); \
                                         \
@@ -326,7 +339,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
     RKHROM RKH_SCMP_T name = \
     { \
         {MKBASE(RKH_COMPOSITE, name), MKST(en, ex, parent)}, \
-        MKCOMP(name, defchild, &hist_##name) \
+        MKCOMP(name, defchild, initialTrn, &name##Hist) \
     }
 
 /**
@@ -356,7 +369,27 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
     RKHROM RKH_SCMP_T name = \
     { \
         {MKBASE(RKH_COMPOSITE, name), MKST(en, ex, parent)}, \
-        MKCOMP(name, defchild, history) \
+        MKCOMP(name, defchild, NULL, history) \
+    }
+
+/**
+ *  \brief
+ *  This macro creates a final state.
+ *
+ *  \param[in] name     state name. Represents a composite state structure.
+ *  \param[in] parent	pointer to parent state.
+ *
+ *	\sa
+ *	RKH_FINAL_T structure definition for more information.
+ */
+#define RKH_CREATE_FINAL_STATE(name, parent) \
+                                             \
+    static RKHROM RKH_TR_T name##_trtbl[] = \
+        RKH_TRREG(RKH_ANY, NULL, NULL, NULL); \
+    RKHROM RKH_FINAL_T name = \
+    { \
+        {MKBASE(RKH_FINAL, name), MKST(NULL, NULL, parent)}, \
+        MKFINAL(name) \
     }
 
 /**
@@ -964,6 +997,44 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
+ *	This macro defines a completion transition.
+ *
+ *  A special kind of transition is a completion transition, which has an 
+ *  implicit trigger. The event that enables this trigger is called a 
+ *  completion event and it signifies that all behaviors associated with the 
+ *  source state of the completion transition have completed execution. 
+ *  In case of simple states, a completion event is generated when the 
+ *  associated entry behavior have completed executing. If no such behaviors 
+ *  are defined, the completion event is generated upon entry into the state. 
+ *  For composite state, a completion event is generated under the following 
+ *  circumstances:
+ *  - All internal activities (e.g., entry behavior) have completed execution, 
+ *  and
+ *  - its region have reached a finalState.
+ *
+ *  \param[in] guard_	pointer to guard function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] effect_	pointer to effect function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] target_	pointer to target vertex (state or pseudostate).
+ *
+ *	\sa
+ *	RKH_TR_T structure definition for more information.
+ *
+ *  \usage
+ *	\code
+ *	RKH_TRCOMPLETION(isFull,        // guard function
+ *				     dropFrame,     // effect function
+ *				     &waitSync),    // next state
+ *	\endcode
+ */
+
+#define RKH_TRCOMPLETION(guard_, effect_, target_) \
+    {RKH_COMPLETION_EVENT, \
+     (RKH_GUARD_T)guard_, (RKH_TRN_ACT_T)effect_, target_}
+
+/**
+ *  \brief
  *	This macro is used to terminate a state transition table.
  *	This table have the general structure shown below:
  *	\code
@@ -1133,6 +1204,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 #define RKH_DCLR_COMP_STATE     extern RKHROM RKH_SCMP_T
 #define RKH_DCLR_BASIC_STATE    extern RKHROM RKH_SBSC_T
+#define RKH_DCLR_FINAL_STATE    extern RKHROM RKH_FINAL_T
 #define RKH_DCLR_COND_STATE     extern RKHROM RKH_SCOND_T
 #define RKH_DCLR_CHOICE_STATE   extern RKHROM RKH_SCHOICE_T
 #define RKH_DCLR_DHIST_STATE    extern RKHROM RKH_SHIST_T

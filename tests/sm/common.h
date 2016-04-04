@@ -37,6 +37,11 @@ extern "C" {
 /* -------------------------------- Constants ------------------------------ */
 enum
 {
+    NO_INIT_STATE_MACHINE, INIT_STATE_MACHINE
+};
+
+enum
+{
     TRN_INTERNAL, TRN_NOT_INTERNAL
 };
 
@@ -55,7 +60,7 @@ void setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
                 const RKH_ST_T *sourceState, const RKH_ST_T **targetState, 
                 const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
                 const RKH_ST_T *mainTargetState, int nExecEffectActions, 
-                int kindOfTrn);
+                int kindOfTrn, int initStateMachine);
 
 /* -------------------- External C language linkage end -------------------- */
 

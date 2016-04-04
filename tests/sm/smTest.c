@@ -45,6 +45,7 @@ RKH_CREATE_TRANS_TABLE(s0)
     RKH_TRREG(C, NULL, smTest_tr21, &s2),
     RKH_TRREG(D, NULL, smTest_tr22, &s22),
     RKH_TRREG(E, NULL, NULL, &s22211),
+    RKH_TRREG(F, NULL, smTest_tr55, &s3),
 
 RKH_END_TRANS_TABLE
 
@@ -57,11 +58,15 @@ RKH_CREATE_TRANS_TABLE(s1)
 
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_STATE(s2, smTest_nS2, smTest_xS2, RKH_ROOT, &s21, NULL);
+RKH_CREATE_COMP_REGION_STATE(s2, smTest_nS2, smTest_xS2, RKH_ROOT, &s21, 
+                             smTest_iS2, RKH_NO_HISTORY, NULL, NULL, NULL, 
+                             NULL);
 RKH_CREATE_TRANS_TABLE(s2)
 
     RKH_TRREG(A, NULL, smTest_tr31, &s0),
     RKH_TRREG(D, NULL, smTest_tr32, &s21),
+    RKH_TRREG(E, NULL, NULL,        &s5),
+    RKH_TRCOMPLETION(smTest_guardS2, smTest_tr60, &s4),
 
 RKH_END_TRANS_TABLE
 
@@ -70,10 +75,13 @@ RKH_CREATE_TRANS_TABLE(s21)
 
     RKH_TRREG(B, NULL, smTest_tr13, &s0),
     RKH_TRREG(C, NULL, smTest_tr23, &s2),
+    RKH_TRREG(F, NULL, NULL, &s2Final),
 
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_STATE(s22, smTest_nS22, smTest_xS22, &s2, &s221, NULL);
+RKH_CREATE_COMP_REGION_STATE(s22, smTest_nS22, smTest_xS22, &s2, &s221, 
+                             smTest_iS22, RKH_NO_HISTORY, NULL, NULL, NULL, 
+                             NULL);
 RKH_CREATE_TRANS_TABLE(s22)
 
     RKH_TRREG(B, NULL, smTest_tr33, &s0),
@@ -82,11 +90,13 @@ RKH_CREATE_TRANS_TABLE(s22)
 
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_STATE(s221, smTest_nS221, smTest_xS221, &s22, &s2211, NULL);
+RKH_CREATE_COMP_REGION_STATE(s221, smTest_nS221, smTest_xS221, &s22, &s2211, 
+                             smTest_iS221, RKH_NO_HISTORY, NULL, NULL, NULL, 
+                             NULL);
 RKH_CREATE_TRANS_TABLE(s221)
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(s2211, NULL, NULL, &s221, NULL);
+RKH_CREATE_BASIC_STATE(s2211, smTest_nS2211, NULL, &s221, NULL);
 RKH_CREATE_TRANS_TABLE(s2211)
 RKH_END_TRANS_TABLE
 
@@ -102,7 +112,9 @@ RKH_CREATE_BASIC_STATE(s22211, NULL, NULL, &s2221, NULL);
 RKH_CREATE_TRANS_TABLE(s22211)
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_STATE(s3, smTest_nS3, smTest_xS3, RKH_ROOT, &s31, NULL);
+RKH_CREATE_COMP_REGION_STATE(s3, smTest_nS3, smTest_xS3, RKH_ROOT, &s31, 
+                             smTest_iS3, RKH_NO_HISTORY, NULL, NULL, NULL, 
+                             NULL);
 RKH_CREATE_TRANS_TABLE(s3)
 
     RKH_TRINT(E, NULL, smTest_tr15),
@@ -128,6 +140,13 @@ RKH_CREATE_TRANS_TABLE(s4)
     RKH_TRINT(B, smTest_guard4a, NULL),
     RKH_TRINT(B, smTest_guard4b, NULL),
     RKH_TRREG(B, NULL, NULL, &s4),
+
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(s5, smTest_nS5, smTest_xS5, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(s5)
+
+    RKH_TRCOMPLETION(NULL, smTest_tr61, &s4),
 
 RKH_END_TRANS_TABLE
 
