@@ -1390,7 +1390,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		 mc_title( const struct RKH_SMA_T *sma )
  *		 {
  *		    ...
- *			lcd_print( "%s\n", ((MENU_ST_T *)(sma->state))->title );
+ *			lcd_print("%s\n", 
+ *			          ((MENU_ST_T *)(((RKH_SM_T *)sma)->state))->title);
  *		 }
  *	\endcode
  *
@@ -1448,7 +1449,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	    void
  *		num_inc( const struct RKH_SMA_T *sma )
  *		{
- *	(7)		((NUM_STATE_T *)(sma->state))->p_ram_xy++;
+ *	(7)		((NUM_STATE_T *)(((RKH_SM_T *)sma)->state))->p_ram_xy++;
  *			...
  *		}
  *	\endcode
@@ -1602,6 +1603,58 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #endif
 #endif
 
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+/**
+ *  \brief
+ *  Use it to allocate a state machine regardless of an active object.
+ *
+ *  \param[in] type 	Data type of the SMA. Could be derived from RKH_SMA_T.
+ *  \param[in] name		Name of state machine application. Also, it represents 
+ *                      the top state of state diagram.
+ *  \param[in] prio		State machine application priority. A unique priority
+ *                      number must be assigned to each SMA from 0 to
+ *                      RKH_LOWEST_PRIO. The lower the number, the higher the
+ *                      priority.
+ *  \param[in] ppty		State machine properties. The available properties are
+ *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
+ *                      file.
+ *  \param[in] initialState
+ *                      Pointer to initial state. This state could be defined
+ *                      either composite or basic (not pseudo-state).
+ *  \param[in] initialAction
+ *                      Pointer to initialization action (optional). The
+ *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      argument is optional, thus it could be declared as
+ *                      NULL.
+ *  \param[in] initialEvt
+ *                      Pointer to an event that will be passed to state
+ *                      machine application when it starts. Could be used to
+ *                      pass arguments to the state machine like an argc/argv.
+ *                      This argument is optional, thus it could be declared
+ *                      as NULL or eliminated in compile-time with
+ *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ */
+    #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
+                          initialAction, initialEvt) \
+        RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
+                            initialEvt); \
+        static type s_##name = MKSM(&RKH_SM_CONST_NAME(name), initialState)
+
+/**
+ *  \brief
+ *  Initialize a previously created state machine object.
+ *
+ *  \param[in] sm           ...
+ *  \param[in] nameSMConst  ...
+ */
+    #define RKH_SM_INIT(sm, nameSMConst) \
+        ((RKH_SM_T *)sm)->romrkh = \
+            (RKHROM RKH_ROM_T *)(RKH_SM_GET_CONST_OBJ(nameSMConst)); \
+        ((RKH_SM_T *)sm)->state = \
+            (RKHROM struct RKH_ST_T *) \
+                ((RKH_SM_GET_CONST_OBJ(nameSMConst))->istate)
+
 /**
  *  \brief
  *  Declare and allocate a SMA (active object) derived from RKH_SMA_T. Also,
@@ -1624,23 +1677,26 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_SMA_T. Please note that the RKH_SMA_T member sm is defined as the
  *  FIRST member of the derived structure.
  *
- *  \param[in] sma_t	data type of the SMA. Could be derived from RKH_SMA_T.
- *  \param[in] name		name of state machine application. Also, it represents 
+ *  \param[in] type 	Data type of the SMA. Could be derived from RKH_SMA_T.
+ *  \param[in] name		Name of state machine application. Also, it represents 
  *                      the top state of state diagram.
- *  \param[in] prio		state machine application priority. A unique priority
+ *  \param[in] prio		State machine application priority. A unique priority
  *                      number must be assigned to each SMA from 0 to
  *                      RKH_LOWEST_PRIO. The lower the number, the higher the
  *                      priority.
- *  \param[in] ppty		state machine properties. The available properties are
+ *  \param[in] ppty		State machine properties. The available properties are
  *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
  *                      file.
- *  \param[in] ist		pointer to initial state. This state could be defined
+ *  \param[in] initialState
+ *                      Pointer to initial state. This state could be defined
  *                      either composite or basic (not pseudo-state).
- *  \param[in] iact		pointer to initialization action (optional). The
+ *  \param[in] initialAction
+ *                      Pointer to initialization action (optional). The
  *                      function prototype is defined as RKH_INIT_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
- *  \param[in] ievt		pointer to an event that will be passed to state
+ *  \param[in] initialEvt
+ *                      Pointer to an event that will be passed to state
  *                      machine application when it starts. Could be used to
  *                      pass arguments to the state machine like an argc/argv.
  *                      This argument is optional, thus it could be declared
@@ -1653,22 +1709,163 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	typedef struct
  *	{
- *		RKH_SMA_T sm;	// base structure
+ *		RKH_SMA_T ao;	// base structure
  *		rui8_t x;		// private member
  *		rui8_t y;		// private member
  *	} MYSM_T;
  *
  *  //	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE(MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent);
  *	\endcode
  */
+    #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
+                           initialAction, initialEvt) \
+        RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
+                            initialEvt); \
+        static type RKH_SMA_NAME(name) = MKSMA(&RKH_SM_CONST_NAME(name), \
+                                               initialState)
 
-#define RKH_SMA_CREATE(sma_t, name, prio, ppty, ist, iact, ievt) \
-                                                                 \
-    static RKHROM RKH_ROM_T rs_##name = MKRRKH(name, prio, ppty, ist, \
-                                                 iact, ievt); \
-    static sma_t s_##name = MKSMA(&rs_##name, ist); \
-    RKH_SMA_T *const name = (RKH_SMA_T *)&s_##name
+/**
+ *  \brief
+ *  Allocates and then initializes the constant part (in ROM) of the state 
+ *  machine.
+ *
+ *  \param[in] name		Name of state machine application. Also, it represents 
+ *                      the top state of state diagram.
+ *  \param[in] prio		State machine application priority. A unique priority
+ *                      number must be assigned to each SMA from 0 to
+ *                      RKH_LOWEST_PRIO. The lower the number, the higher the
+ *                      priority.
+ *  \param[in] ppty		State machine properties. The available properties are
+ *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
+ *                      file.
+ *  \param[in] initialState
+ *                      Pointer to initial state. This state could be defined
+ *                      either composite or basic (not pseudo-state).
+ *  \param[in] initialAction
+ *                      Pointer to initialization action (optional). The
+ *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      argument is optional, thus it could be declared as
+ *                      NULL.
+ *  \param[in] initialEvt
+ *                      Pointer to an event that will be passed to state
+ *                      machine application when it starts. Could be used to
+ *                      pass arguments to the state machine like an argc/argv.
+ *                      This argument is optional, thus it could be declared
+ *                      as NULL or eliminated in compile-time with
+ *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ */
+    #define RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
+                                initialEvt) \
+       static RKHROM RKH_ROM_T RKH_SM_CONST_NAME(name) = \
+                                    MKRRKH(name, \
+                                           prio, \
+                                           ppty, \
+                                           initialState, \
+                                           initialAction, \
+                                           initialEvt)
+
+/**
+ *  \brief
+ *  Return the address of the constant part from a previously created and 
+ *  initializated state machine.
+ *
+ *  \param[in] sm   Name of state machine.
+ */
+    #define RKH_SM_GET_CONST(sm) \
+        ((RKH_SM_T *)sm)->romrkh
+
+/**
+ *  \brief
+ *  Return the address of the constant part of a state machine.
+ *
+ *  \param[in] sm   Name of state machine.
+ */
+    #define RKH_SM_GET_CONST_OBJ(sm) \
+        &RKH_SM_CONST_NAME(sm)
+#else
+#endif
+
+/**
+ *  \brief
+ *  Declare an opaque pointer pointing to a previously created state 
+ *  machine.
+ *
+ *  \param[in] sm   Name of state machine.
+ */
+#define RKH_SM_DEF_PTR(sm) \
+    RKH_SM_T *const sm = (RKH_SM_T *)&RKH_SM_NAME(sm)
+
+/**
+ *  \brief
+ *  Declare a pointer of specified type pointing to a previously created 
+ *  state machine.
+ *  
+ *  The pointer could be used to hide (opaque) or to publish the internals of 
+ *  the class of the state machine. 
+ *
+ *  \param[in] type Data type of the state machine. Could be derived from 
+ *                  RKH_SM_T.
+ *  \param[in] sm   Name of state machine.
+ */
+#define RKH_SM_DEF_PTR_TYPE(type, sm) \
+    type *const sm = (type *)&RKH_SM_NAME(sm)
+
+/**
+ *  \brief
+ *  Declare a opaque pointer pointing to an previously created active 
+ *  object.
+ *
+ *  \param[in] sma  Name of state machine application.
+ */
+#define RKH_SMA_DEF_PTR(sma) \
+    RKH_SMA_T *const sma = (RKH_SMA_T *)&RKH_SMA_NAME(sma)
+
+/**
+ *  \brief
+ *  Declare a pointer of specified type pointing to an previously created 
+ *  active object.
+ *  
+ *  The pointer could be used to hide (opaque) or to publish the internals of 
+ *  the class of the active object. 
+ *
+ *  \param[in] type Data type of the state machine application. Could be 
+ *                  derived from RKH_SMA_T.
+ *  \param[in] sma  Name of state machine application.
+ */
+#define RKH_SMA_DEF_PTR_TYPE(type, sma) \
+    type *const sma = (type *)&RKH_SMA_NAME(sma)
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+/**
+ *  \brief
+ *  Macro for accessing to members of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ *  \param[in] member_  Member of state machine structure.
+ */
+    #define RKH_SMA_ACCESS_CONST(me_, member_) \
+        ((RKH_SM_T *)me_)->romrkh->member_
+#else
+/**
+ *  \brief
+ *  Macro for accessing to members of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ *  \param[in] member_  Member of state machine structure.
+ */
+    #define RKH_SMA_ACCESS_CONST(me_, member_) \
+        ((RKH_SM_T *)me_)->member_
+#endif
+
+/**
+ *  \brief
+ *  Macro for accessing to state member of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ */
+#define RKH_SMA_ACCESS_STATE(me_) \
+    ((RKH_SM_T *)me_)->state
 
 #if defined(RKH_USE_TRC_SENDER)
     /**
@@ -1958,7 +2155,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Id of current state.
  */
 #define RKH_GET_CSTATE_ID(sma) \
-    ((RKH_BASE_T *)((sma)->state))->id
+    ((RKH_BASE_T *)(((RKH_SM_T *)sma)->state))->id
 
 #if defined(R_TRC_AO_NAME_EN)
     /**
@@ -1970,7 +2167,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
      *  \return
      *  Name of active object.
      */
-    #define RKH_GET_AO_NAME(ao)       (ao)->romrkh->name
+    #define RKH_GET_AO_NAME(ao)       RKH_SMA_ACCESS_CONST(ao, name)
 
     /**
      *  \brief
@@ -2006,7 +2203,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \param[in] _ao		pointer to previously registered active object (SMA).
  */
 #define RKH_GET_PRIO(_ao) \
-    (rui8_t)((_ao)->romrkh->prio)
+    (rui8_t)(RKH_SMA_ACCESS_CONST(_ao, prio))
 
 /**
  *  \brief

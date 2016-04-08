@@ -207,7 +207,7 @@ extern "C" {
 #define CV(p)           ((void *)(p))
 #define CSMA(p)         ((const struct RKH_SMA_T *)(p))
 #define CQ(p)           ((RKH_RQ_T *)(p))
-#define CIA(s)          ((RKH_INIT_ACT_T)((s)->romrkh->iaction))
+#define CIA(s)          ((RKH_INIT_ACT_T)(RKH_SMA_ACCESS_CONST(sma, iaction)))
 #define CTA(ta)         ((RKH_TRN_ACT_T)(ta))
 
 
@@ -1698,6 +1698,16 @@ extern "C" {
     #define R_TRC_AO_NAME_EN    RKH_ENABLED
 #endif
 
+#define RKH_SM_NAME(smName_)         s_##smName_
+#define RKH_SMA_NAME(smaName_)       s_##smaName_
+#define RKH_SM_CONST_NAME(smName_)   rs_##smName_
+
+#define MKSM(constSM, initialState) \
+    {(RKHROM RKH_ROM_T *)(constSM), (RKHROM struct RKH_ST_T *)(initialState)}
+
+#define MKSMA(constSM, initialState) \
+    {MKSM(constSM, initialState)}
+
 #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     #if defined(R_TRC_AO_NAME_EN)
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
@@ -1719,14 +1729,6 @@ extern "C" {
              (RKH_INIT_ACT_T)(ia)}
     #endif
 #endif
-
-#define MKSMA(rr, s) \
-    { \
-        { \
-            (RKHROM RKH_ROM_T *)(rr), \
-            (RKHROM struct RKH_ST_T *)(s) \
-        } \
-    }
 
 #if defined(R_TRC_AO_NAME_EN)
     #define MKBASE(t, n)        {t, # n}
@@ -2190,7 +2192,8 @@ extern "C" {
     #define RKH_EXEC_INIT(me_, action_) \
         if ((RKH_INIT_ACT_T)action_) \
         { \
-            (*(RKH_INIT_ACT_T)action_)((me_), CM(me_)->romrkh->ievent); \
+            (*(RKH_INIT_ACT_T)action_)((me_), \
+                                      RKH_SMA_ACCESS_CONST(CM(me_), ievent)); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
                               (me_), \
                               0, \
@@ -2216,7 +2219,7 @@ extern "C" {
     #define RKH_EXEC_INIT(me_, action_) \
         if ((RKH_INIT_ACT_T)action_) \
         { \
-            (*(RKH_INIT_ACT_T)action_)(CM(me_)->romrkh->ievent); \
+            (*(RKH_INIT_ACT_T)action_)(RKH_SMA_ACCESS_CONST(CM(me_), ievent)); \
             RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
                               (me_), \
                               0, \
@@ -2335,14 +2338,14 @@ extern "C" {
         (*(state_)->prepro)(me_, evt_); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
                           (me_), \
-                          (me_)->state, \
+                          (((RKH_SM_T *)me_))->state, \
                           (state_)->prepro)
 #else
     #define RKH_EXEC_PREPRO(state_, me_, evt_) \
         (*(state_)->prepro)(evt_); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_PP, \
                           (me_), \
-                          (me_)->state, \
+                          (((RKH_SM_T *)me_))->state, \
                           (state_)->prepro)
 #endif
 
@@ -2352,7 +2355,7 @@ extern "C" {
         (*CTA(action_))((me_), (evt_)); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
                           (me_), \
-                          (me_)->state, \
+                          (((RKH_SM_T *)me_))->state, \
                           (action_))
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
@@ -2360,7 +2363,7 @@ extern "C" {
         (*CTA(action_))((evt_)); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
                           (me_), \
-                          (me_)->state, \
+                          (((RKH_SM_T *)me_))->state, \
                           (action_))
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
@@ -2368,14 +2371,14 @@ extern "C" {
         (*CTA(action_))((me_)); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
                           (me_), \
-                          (me_)->state, \
+                          (((RKH_SM_T *)me_))->state, \
                           (action_))
 #else
     #define RKH_EXEC_EFF(action_, me_, evt_) \
         (*CTA(action_))(); \
         RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_EFF, \
                           (me_), \
-                          (me_)->state, \
+                          (((RKH_SM_T *)me_))->state, \
                           (action_))
 #endif
 
@@ -2450,14 +2453,13 @@ typedef struct RKH_SMAI_T
  *  Constant parameters of state machine.
  *
  *	The constant key parameters of a state machine are allocated within.
- *	RKH_ROM_T is a ROM base structure of RKH_T.
  *
  *	\sa
  *	RKH_SMA_T structure definition for more information. Also,
  *	\link RKH_EVT_T single inheritance in C \endlink, and
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
-typedef struct ROMRKH_T
+typedef struct RKH_ROM_T
 {
     /**
      *  \brief
@@ -2522,19 +2524,43 @@ typedef struct ROMRKH_T
 
 /**
  *  \brief
+ *  Describes the state machine.
+ *
+ *  RKH_SM_T is not intended to be instantiated directly, but rather
+ *  serves as the base structure for derivation of state machines in the
+ *  application code. Also, is the base structure of active object structure 
+ *  RKH_SMA_T.
+ */
+typedef struct RKH_SM_T
+{
+    /**
+     *  \brief
+     *  Points to constant parameters of state machine.
+     */
+    RKHROM RKH_ROM_T *romrkh;
+
+    /**
+     *  \brief
+     *  Points to current stable state (simple or final state).
+     */
+    RKHROM struct RKH_ST_T *state;
+} RKH_SM_T;
+
+/**
+ *  \brief
  *  Describes the SMA (active object in UML).
  *
  *	This structure resides in RAM because its members are dinamically updated
  *	by RKH (context of state machine).
- *	The \b #romrkh member points to RKH_ROM_T structure, allocated in ROM,
- *	to reduce the size of RAM consume. The key parameters of a state machine
- *	are allocated within. Therefore cannot be modified in runtime.
+ *	The \b RKH_SM_T::romrkh member points to RKH_ROM_T structure, allocated in 
+ *	ROM, to reduce the size of RAM consume. The key parameters of a state 
+ *	machine are allocated within. Therefore cannot be modified in runtime.
  *
  *  RKH_SMA_T is not intended to be instantiated directly, but rather
- *  serves as the base structure for derivation of state machines in the
+ *  serves as the base structure for derivation of active objects in the
  *  application code.
- *  The following example illustrates how to derive an state machine from
- *  RKH_T. Please note that the RKH_SMA_T member sm is defined as the
+ *  The following example illustrates how to derive an active object from
+ *  RKH_SMA_T. Please note that the RKH_SMA_T member ao is defined as the
  *  FIRST member of the derived struct.
  *
  *	Example:
@@ -2543,13 +2569,13 @@ typedef struct ROMRKH_T
  *
  *	typedef struct
  *	{
- *		RKH_SMA_T sm;	// base structure
+ *		RKH_SMA_T ao;	// base structure
  *		rui8_t x;		// private member
  *		rui8_t y;		// private member
  *	} MYSM_T;
  *
  *  //	static instance of SMA object
- *	RKH_SMA_CREATE( MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent );
+ *	RKH_SMA_CREATE(MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent);
  *	\endcode
  *
  *	\sa
@@ -2561,15 +2587,9 @@ typedef struct RKH_SMA_T
 {
     /**
      *  \brief
-     *  Points to state machine object.
+     *  State machine.
      */
-    RKHROM RKH_ROM_T *romrkh;
-
-    /**
-     *  \brief
-     *  Points to current state (basic state).
-     */
-    RKHROM struct RKH_ST_T *state;
+    RKH_SM_T sm;
 
     /**
      *  \brief

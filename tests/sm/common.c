@@ -109,7 +109,7 @@ setHistory(const RKH_SHIST_T *history, const RKH_ST_T *state)
 void
 setStateForcesfully(RKH_SMA_T *const me, const RKH_ST_T *state)
 {
-    me->state = state;
+    ((RKH_SM_T *)me)->state = state;
 }
 
 void
@@ -123,8 +123,8 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
 
     if (initStateMachine)
     {
-        sm_init_expect(RKH_STATE_CAST(me->romrkh->istate));
-        sm_enstate_expect(RKH_STATE_CAST(me->romrkh->istate));
+        sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+        sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     }
 	sm_trn_expect(RKH_STATE_CAST(sourceState), RKH_STATE_CAST(*targetStates));
 

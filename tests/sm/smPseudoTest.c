@@ -28,6 +28,7 @@
  *	Defines SMA (active object) 'smPseudoTest'.
  */
 RKH_SMA_CREATE(SmPseudoTest, smPseudoTest, 0, HCAL, &smPT_waiting, NULL, NULL);
+RKH_SMA_DEF_PTR(smPseudoTest);
 
 /*
  *	Defines states and pseudostates.

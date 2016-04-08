@@ -29,6 +29,7 @@
  *	Defines SMA (active object) 'smTest'.
  */
 RKH_SMA_CREATE(SmTest, smTest, 0, HCAL, &waiting, smTest_init, NULL);
+RKH_SMA_DEF_PTR(smTest);
 
 /*
  *	Defines states and pseudostates.

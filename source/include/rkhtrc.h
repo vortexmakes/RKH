@@ -173,7 +173,7 @@ extern "C" {
      *  object.
      */
         #define RKH_FILTER_ON_SMA(sma) \
-            rkh_trc_symFil(&fsma, (sma)->romrkh->prio, FILTER_ON)
+            rkh_trc_symFil(&fsma, RKH_SMA_ACCESS_CONST(sma, prio), FILTER_ON)
 
     /**
      *  \brief
@@ -189,7 +189,7 @@ extern "C" {
      *  object.
      */
         #define RKH_FILTER_OFF_SMA(sma) \
-            rkh_trc_symFil(&fsma, (sma)->romrkh->prio, FILTER_OFF)
+            rkh_trc_symFil(&fsma, RKH_SMA_ACCESS_CONST(sma, prio), FILTER_OFF)
 
     /**
      *  \brief
@@ -1383,7 +1383,8 @@ extern "C" {
          *  \param[in] actObjPrio_    Active object priority
          */
         #define RKH_TR_SMA_ACT(actObj_, actObjPrio_) \
-            RKH_TRC_BEGIN_WOSIG(RKH_TE_SMA_ACT, (actObj_)->romrkh->prio) \
+            RKH_TRC_BEGIN_WOSIG(RKH_TE_SMA_ACT, \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_UI8(actObjPrio_); \
             RKH_TRC_END()
@@ -1400,7 +1401,8 @@ extern "C" {
          *  \param[in] actObjPrio_    Active object priority
          */
         #define RKH_TR_SMA_TERM(actObj_, actObjPrio_) \
-            RKH_TRC_BEGIN_WOSIG(RKH_TE_SMA_TERM, (actObj_)->romrkh->prio) \
+            RKH_TRC_BEGIN_WOSIG(RKH_TE_SMA_TERM, \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_UI8(actObjPrio_); \
             RKH_TRC_END()
@@ -1419,7 +1421,8 @@ extern "C" {
          *  \param[in] refCntr_   Reference count (for dynamic events)
          */
         #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_) \
-            RKH_TRC_BEGIN(RKH_TE_SMA_GET, (actObj_)->romrkh->prio, evt_->e) \
+            RKH_TRC_BEGIN(RKH_TE_SMA_GET, \
+                          RKH_SMA_ACCESS_CONST(actObj_, prio), evt_->e) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SIG(evt_->e); \
                 RKH_TRC_UI8(poolID_); \
@@ -1442,7 +1445,7 @@ extern "C" {
          */
         #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
             RKH_TRC_BEGIN_NOCRIT(RKH_TE_SMA_FIFO, \
-                                 (actObj_)->romrkh->prio, evt_->e) \
+                                 RKH_SMA_ACCESS_CONST(actObj_, prio), evt_->e) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SIG(evt_->e); \
                 RKH_TRC_SNDR(sender_); \
@@ -1466,7 +1469,7 @@ extern "C" {
          */
         #define RKH_TR_SMA_LIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
             RKH_TRC_BEGIN_NOCRIT(RKH_TE_SMA_LIFO, \
-                                 (actObj_)->romrkh->prio, evt_->e) \
+                                 RKH_SMA_ACCESS_CONST(actObj_, prio), evt_->e) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SIG(evt_->e); \
                 RKH_TRC_SNDR(sender_); \
@@ -1487,7 +1490,7 @@ extern "C" {
          */
         #define RKH_TR_SMA_REG(actObj_, prio) \
             RKH_TRC_BEGIN_WOSIG_NOCRIT(RKH_TE_SMA_REG, \
-                                       (actObj_)->romrkh->prio) \
+                                       RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_UI8(prio); \
             RKH_TRC_END_NOCRIT()
@@ -1505,7 +1508,7 @@ extern "C" {
          */
         #define RKH_TR_SMA_UNREG(actObj_, prio) \
             RKH_TRC_BEGIN_WOSIG_NOCRIT(RKH_TE_SMA_UNREG, \
-                                       (actObj_)->romrkh->prio) \
+                                       RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_UI8(prio); \
             RKH_TRC_END_NOCRIT()
@@ -1546,7 +1549,8 @@ extern "C" {
          */
         #if RKH_CFG_TRC_SM_INIT_EN == RKH_ENABLED
             #define RKH_TR_SM_INIT(actObj_, initState_) \
-                RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_INIT, (actObj_)->romrkh->prio) \
+                RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_INIT, \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                     RKH_TRC_SYM(actObj_); \
                     RKH_TRC_SYM(initState_); \
                 RKH_TRC_END()
@@ -1573,7 +1577,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_CLRH_EN == RKH_ENABLED
             #define RKH_TR_SM_CLRH(actObj_, history_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_CLRH, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(history_); \
                 RKH_TRC_END()
@@ -1596,7 +1600,7 @@ extern "C" {
         #if RKH_CFG_TRC_SMA_DCH_EN == RKH_ENABLED
             #define RKH_TR_SMA_DCH(actObj_, evt_, state_) \
                 RKH_TRC_BEGIN(RKH_TE_SMA_DCH, \
-                              (actObj_)->romrkh->prio, \
+                              RKH_SMA_ACCESS_CONST(actObj_, prio), \
                               evt_->e) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SIG(evt_->e); \
@@ -1622,7 +1626,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_TRN_EN == RKH_ENABLED
             #define RKH_TR_SM_TRN(actObj_, sourceState_, targetState_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_TRN, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(sourceState_); \
                 RKH_TRC_SYM(targetState_); \
@@ -1645,7 +1649,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_STATE_EN == RKH_ENABLED
             #define RKH_TR_SM_STATE(actObj_, state_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_STATE, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(state_); \
                 RKH_TRC_END()
@@ -1667,7 +1671,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_ENSTATE_EN == RKH_ENABLED
             #define RKH_TR_SM_ENSTATE(actObj_, state_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_ENSTATE, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(state_); \
                 RKH_TRC_END()
@@ -1689,7 +1693,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_EXSTATE_EN == RKH_ENABLED
             #define RKH_TR_SM_EXSTATE(actObj_, state_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_EXSTATE, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(state_); \
                 RKH_TRC_END()
@@ -1712,7 +1716,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_NENEX_EN == RKH_ENABLED
             #define RKH_TR_SM_NENEX(actObj_, nEnState_, nExState_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_NENEX, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_UI8(nEnState_); \
                 RKH_TRC_UI8(nExState_); \
@@ -1737,7 +1741,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_NTRNACT_EN == RKH_ENABLED
             #define RKH_TR_SM_NTRNACT(actObj_, nta, nts) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_NTRNACT, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_UI8(nta); \
                 RKH_TRC_UI8(nts); \
@@ -1760,7 +1764,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_TS_STATE_EN == RKH_ENABLED
             #define RKH_TR_SM_TS_STATE(actObj_, state_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_TS_STATE, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(state_); \
                 RKH_TRC_END()
@@ -1784,7 +1788,7 @@ extern "C" {
          */
         #define RKH_TR_SM_EVT_PROC(actObj_) \
             RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_EVT_PROC, \
-                                (actObj_)->romrkh->prio) \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_END()
 
@@ -1802,7 +1806,7 @@ extern "C" {
          */
         #define RKH_TR_SM_EVT_NFOUND(actObj_, evt_) \
             RKH_TRC_BEGIN(RKH_TE_SM_EVT_NFOUND, \
-                          (actObj_)->romrkh->prio, \
+                          RKH_SMA_ACCESS_CONST(actObj_, prio), \
                           evt_->e) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_SIG(evt_->e); \
@@ -1820,7 +1824,7 @@ extern "C" {
          */
         #define RKH_TR_SM_GRD_FALSE(actObj_) \
             RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_GRD_FALSE, \
-                                (actObj_)->romrkh->prio) \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_END()
 
@@ -1838,7 +1842,7 @@ extern "C" {
          */
         #define RKH_TR_SM_CND_NFOUND(actObj_) \
             RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_CND_NFOUND, \
-                                (actObj_)->romrkh->prio) \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_END()
 
@@ -1855,7 +1859,7 @@ extern "C" {
 
         #define RKH_TR_SM_UNKN_STATE(actObj_) \
             RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_UNKN_STATE, \
-                                (actObj_)->romrkh->prio) \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_END()
 
@@ -1872,7 +1876,7 @@ extern "C" {
          */
         #define RKH_TR_SM_EX_HLEVEL(actObj_) \
             RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_EX_HLEVEL, \
-                                (actObj_)->romrkh->prio) \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_END()
 
@@ -1890,7 +1894,7 @@ extern "C" {
          */
         #define RKH_TR_SM_EX_TSEG(actObj_) \
             RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_EX_TSEG, \
-                                (actObj_)->romrkh->prio) \
+                                RKH_SMA_ACCESS_CONST(actObj_, prio)) \
             RKH_TRC_SYM(actObj_); \
             RKH_TRC_END()
         #else
@@ -1920,7 +1924,7 @@ extern "C" {
         #if RKH_CFG_TRC_SM_EXE_ACT_EN == RKH_ENABLED
             #define RKH_TR_SM_EXE_ACT(actionType_, actObj_, state_, action_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SM_EXE_ACT, \
-                                    (actObj_)->romrkh->prio) \
+                                    RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                 RKH_TRC_UI8(actionType_); \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SYM(state_); \
@@ -2036,7 +2040,8 @@ extern "C" {
          *  \param[in] actObj_   Active object target
          */
         #define RKH_TR_TMR_TOUT(timer_, signal_, actObj_) \
-            RKH_TRC_BEGIN_NOCRIT(RKH_TE_TMR_TOUT, (actObj_)->romrkh->prio, \
+            RKH_TRC_BEGIN_NOCRIT(RKH_TE_TMR_TOUT, \
+                                 RKH_SMA_ACCESS_CONST(actObj_, prio), \
                                  signal_) \
                 RKH_TRC_SYM(timer_); \
                 RKH_TRC_SIG(signal_); \
@@ -3138,7 +3143,7 @@ typedef enum rkh_trc_groups
  *
  *	#define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc) \
  *				RKH_TRC_BEGIN(RKH_TE_SMA_FIFO, \
- *								(ao)->romrkh->prio,	\
+ *								RKH_SMA_ACCESS_CONST(actObj_, prio), \
  *								ev->e) \
  *					RKH_TRC_SYM(ao); \
  *					RKH_TRC_SIG(ev->e); \

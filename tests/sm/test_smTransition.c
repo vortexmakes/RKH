@@ -1,4 +1,4 @@
-	/*
+/*
  *  --------------------------------------------------------------------------
  *
  *                                Framework RKH
@@ -78,6 +78,19 @@ static RKH_STATIC_EVENT(evCompletion, RKH_COMPLETION_EVENT);
 static RKH_STATIC_EVENT(evTerminate, TERMINATE);
 
 /* ---------------------------- Local data types --------------------------- */
+typedef struct StateMachine
+{
+    RKH_SM_T sm;
+    int foo;
+} StateMachine;
+
+typedef struct Composite
+{
+    RKH_SMA_T ao;
+    int foo;
+    RKH_SM_T itsReactivePart;
+} Composite;
+
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(transition);
 
@@ -989,6 +1002,115 @@ TEST(transition, generatedCompletionEventByFinalState)
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(transition, accessingToStateMachineInternals)
+{
+    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(smTest);
+
+    TEST_ASSERT_EQUAL_PTR(smTest->sm.romrkh, pConstSM);
+    TEST_ASSERT_EQUAL(0, pConstSM->prio);
+    TEST_ASSERT_EQUAL(HCAL, pConstSM->ppty);
+    TEST_ASSERT_EQUAL_STRING("smTest", pConstSM->name);
+    TEST_ASSERT_EQUAL_PTR(&waiting, pConstSM->istate);
+    TEST_ASSERT_EQUAL_PTR(smTest_init, pConstSM->iaction);
+}
+
+TEST(transition, hidingActiveObjectInternals)
+{
+    RKH_SMA_CREATE(SmTest, smTestA, 0, HCAL, &waiting, smTest_init, NULL);
+    RKH_SMA_DEF_PTR(smTestA);
+
+    TEST_ASSERT_EQUAL(0, ((SmTest *)smTestA)->foo);
+}
+
+TEST(transition, publishingActiveObjectInternals)
+{
+    RKH_SMA_CREATE(SmTest, smTestA, 0, HCAL, &waiting, smTest_init, NULL);
+    RKH_SMA_DEF_PTR_TYPE(SmTest, smTestA);
+
+    TEST_ASSERT_EQUAL(0, smTestA->foo);
+}
+
+TEST(transition, instantiatingStateMachineRegardlessAO)
+{
+    RKH_SM_CREATE(StateMachine, stateMachineA, 4, HCAL, &waiting, 
+                  smTest_init, NULL);
+    RKH_SM_DEF_PTR(stateMachineA);
+    RKHROM RKH_ROM_T *pConstSMA = RKH_SM_GET_CONST(stateMachineA);
+
+    TEST_ASSERT_EQUAL(4, pConstSMA->prio);
+    TEST_ASSERT_EQUAL(HCAL, pConstSMA->ppty);
+    TEST_ASSERT_EQUAL_STRING("stateMachineA", pConstSMA->name);
+    TEST_ASSERT_EQUAL_PTR(&waiting, pConstSMA->istate);
+    TEST_ASSERT_EQUAL_PTR(smTest_init, pConstSMA->iaction);
+    TEST_ASSERT_EQUAL_PTR(&waiting, stateMachineA->state);
+    TEST_ASSERT_EQUAL(0, ((StateMachine *)stateMachineA)->foo);
+}
+
+TEST(transition, hidingStateMachineInternals)
+{
+    RKH_SM_CREATE(StateMachine, stateMachineA, 4, HCAL, &waiting, 
+                  smTest_init, NULL);
+    RKH_SM_DEF_PTR(stateMachineA);
+    RKHROM RKH_ROM_T *pConstSMA = RKH_SM_GET_CONST(stateMachineA);
+
+    TEST_ASSERT_EQUAL_STRING("stateMachineA", pConstSMA->name);
+    TEST_ASSERT_EQUAL_PTR(&waiting, stateMachineA->state);
+    TEST_ASSERT_EQUAL(0, ((StateMachine *)stateMachineA)->foo);
+}
+
+TEST(transition, publishingStateMachineInternals)
+{
+    RKH_SM_CREATE(StateMachine, stateMachineA, 4, HCAL, &waiting, 
+                  smTest_init, NULL);
+    RKH_SM_DEF_PTR_TYPE(StateMachine, stateMachineA);
+    RKHROM RKH_ROM_T *pConstSMA = ((RKH_SM_T *)stateMachineA)->romrkh;
+
+    TEST_ASSERT_EQUAL_STRING("stateMachineA", pConstSMA->name);
+    TEST_ASSERT_EQUAL_PTR(&waiting, ((RKH_SM_T *)stateMachineA)->state);
+    TEST_ASSERT_EQUAL(0, stateMachineA->foo);
+}
+
+TEST(transition, staticInstantiationOfCompositeActiveObject)
+{
+    RKH_SMA_CREATE(Composite, composite, 0, HCAL, &waiting, NULL, NULL);
+    RKH_SMA_DEF_PTR_TYPE(Composite, composite);
+    RKH_SM_CONST_CREATE(itsReactivePart, 2, HCAL, &s0, NULL, NULL);
+    RKH_SM_INIT(&composite->itsReactivePart, itsReactivePart);
+
+    RKH_FILTER_OFF_SMA(&composite->itsReactivePart);
+	sm_init_expect(RKH_STATE_CAST(&s0));
+	sm_enstate_expect(RKH_STATE_CAST(&s0));
+    smTest_nS0_Expect(RKH_CAST(RKH_SM_T, &composite->itsReactivePart));
+
+    rkh_sma_init_hsm((RKH_SMA_T *)&composite->itsReactivePart);
+}
+
+TEST(transition, dynamicInstantiationOfCompositeActiveObject)
+{
+    RKH_SM_CONST_CREATE(itsReactivePart, 2, HCAL, &s0, NULL, NULL);
+    RKH_SM_CONST_CREATE(composite, 0, HCAL, &waiting, NULL, NULL);
+
+    /* ----------------------- Composite constructor ----------------------- */
+    Composite *pCmp = (Composite *)malloc(sizeof(Composite));
+    TEST_ASSERT_NOT_NULL(pCmp);
+
+    /* Initialize its state machine object */
+    RKH_SM_INIT(pCmp, composite);
+
+    TEST_ASSERT_EQUAL_PTR(RKH_SM_GET_CONST_OBJ(composite), 
+                          pCmp->ao.sm.romrkh);
+    TEST_ASSERT_EQUAL_PTR(&waiting, pCmp->ao.sm.state);
+
+    /* and its (reactive) part */
+    RKH_SM_INIT(&pCmp->itsReactivePart, itsReactivePart);
+
+    TEST_ASSERT_EQUAL_PTR(RKH_SM_GET_CONST_OBJ(itsReactivePart), 
+                          pCmp->itsReactivePart.romrkh);
+    TEST_ASSERT_EQUAL_PTR(&s0, pCmp->itsReactivePart.state);
+
+    free(pCmp);
 }
 
 /** @} doxygen end group definition */

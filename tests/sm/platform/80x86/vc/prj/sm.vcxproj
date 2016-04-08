@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__W32STVC08__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__W32STVC08__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);RKH_CFG_SMA_SM_CONST=RKH_ENABLED</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\..\..\..\stub\mocks;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

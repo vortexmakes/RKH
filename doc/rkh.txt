@@ -5,6 +5,8 @@
 
 /**
 
+\defgroup config Configuration
+\brief RKH user configurations
 \defgroup trc Trace
 \brief Sophisticated tracing mechanism in run-time
 \defgroup prt Port

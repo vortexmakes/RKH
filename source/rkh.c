@@ -370,12 +370,12 @@ rkh_sma_init_hsm(RKH_SMA_T *sma)
     RKH_SR_ALLOC();
 
     RKH_ASSERT(sma != (RKH_SMA_T *)0 &&
-               sma->romrkh->istate != (RKHROM RKH_ST_T *)0);
-    RKH_TR_SM_INIT(sma, sma->romrkh->istate);
-    RKH_EXEC_INIT(sma, sma->romrkh->iaction);
+               RKH_SMA_ACCESS_CONST(sma, istate) != (RKHROM RKH_ST_T *)0);
+    RKH_TR_SM_INIT(sma, RKH_SMA_ACCESS_CONST(sma, istate));
+    RKH_EXEC_INIT(sma, RKH_SMA_ACCESS_CONST(sma, iaction));
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
-    for (s = CST(sma->romrkh->istate);; )
+    for (s = CST(RKH_SMA_ACCESS_CONST(sma, istate));; )
     {
         RKH_EXEC_ENTRY(s, CM(sma));
         RKH_TR_SM_ENSTATE(sma, s);
@@ -389,8 +389,8 @@ rkh_sma_init_hsm(RKH_SMA_T *sma)
             break;
         }
     }
-    sma->state = s;
-    rkh_update_deep_hist(sma->state);
+    ((RKH_SM_T *)sma)->state = s;
+    rkh_update_deep_hist(((RKH_SM_T *)sma)->state);
 #endif
 }
 
@@ -447,7 +447,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
     do
     {
     /* ---- Stage 1 -------------------------------------------------------- */
-    cs = sma->state;                                    /* get current state */
+    cs = ((RKH_SM_T *)sma)->state;                      /* get current state */
 
     /* ---- Stage 2 -------------------------------------------------------- */
     /* Determine the (compound) transition (CT) that will fire in response */
@@ -694,7 +694,7 @@ rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *pe)
         /* update deep history */
         rkh_update_deep_hist(CST(stn));
         /* ---- Stage 8 ---------------------------------------------------- */
-        sma->state = CST(stn);                   /* update the current state */
+        ((RKH_SM_T *)sma)->state = CST(stn);     /* update the current state */
         RKH_TR_SM_STATE(sma,                    /* this state machine object */
                         stn);                               /* current state */
     }
