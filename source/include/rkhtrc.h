@@ -1538,7 +1538,7 @@ extern "C" {
          */
         /**
          *  \brief
-         *  \copybrief rkh_sma_init_hsm
+         *  \copybrief rkh_sm_init
          *
          *  \description    Initialize a state machine
          *  \trcGroup       RKH_TG_SM
@@ -1587,7 +1587,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_sma_dispatch
+         *  \copybrief rkh_sm_dispatch
          *
          *  \description    Dispatch an event to a state machine
          *  \trcGroup       RKH_TG_SM

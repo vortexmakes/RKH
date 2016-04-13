@@ -192,7 +192,7 @@ extern "C" {
 #define CH(p)           ((RKH_SHIST_T *)(p))
 #define CSBM(p)         ((RKH_SSBM_T *)(p))
 #define CRSM(p)         ((RKH_RSM_T *)(p))
-#define CM(p)           ((RKHROM RKH_SMA_T *)(p))
+#define CM(p)           ((RKHROM RKH_SM_T *)(p))
 #define CT(p)           ((RKHROM RKH_TR_T *)(p))
 #define CPT(p)          ((RKHROM struct RKH_SCMP_T *)(p))
 #define CPP(p)          ((RKH_PPRO_T)(p))
@@ -210,7 +210,36 @@ extern "C" {
 #define CIA(s)          ((RKH_INIT_ACT_T)(RKH_SMA_ACCESS_CONST(sma, iaction)))
 #define CTA(ta)         ((RKH_TRN_ACT_T)(ta))
 
+/**
+ *  \brief
+ *  Macro for accessing to state member of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ */
+#define RKH_SMA_ACCESS_STATE(me_) \
+    ((RKH_SM_T *)me_)->state
 
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+/**
+ *  \brief
+ *  Macro for accessing to members of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ *  \param[in] member_  Member of state machine structure.
+ */
+    #define RKH_SMA_ACCESS_CONST(me_, member_) \
+        ((RKH_SM_T *)me_)->romrkh->member_
+#else
+/**
+ *  \brief
+ *  Macro for accessing to members of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ *  \param[in] member_  Member of state machine structure.
+ */
+    #define RKH_SMA_ACCESS_CONST(me_, member_) \
+        ((RKH_SM_T *)me_)->member_
+#endif
 
 /* ------------------------- Configuration errors -------------------------- */
 
@@ -794,6 +823,19 @@ extern "C" {
 #endif
 
 #ifndef RKH_CFG_SMA_PPRO_ARG_SMA_EN
+    #error "RKH_CFG_SMA_PPRO_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be RKH_ENABLED ]       "
+    #error "                                    [     || RKH_DISABLED]       "
+
+#elif   ((RKH_CFG_SMA_PPRO_ARG_SMA_EN != RKH_ENABLED) && \
+    (RKH_CFG_SMA_PPRO_ARG_SMA_EN != RKH_DISABLED))
+    #error "RKH_CFG_SMA_PPRO_ARG_SMA_EN     illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be  RKH_ENABLED ]      "
+    #error "                                    [     ||  RKH_DISABLED]      "
+
+#endif
+
+#ifndef RKH_CFG_SMA_SM_CONST_EN
     #error "RKH_CFG_SMA_PPRO_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]       "
     #error "                                    [     || RKH_DISABLED]       "
@@ -1692,24 +1734,77 @@ extern "C" {
     #define RKH_HOOK_PUT_TRCEVT()           (void)0
 #endif
 
-#if (RKH_CFG_TRC_EN      == RKH_ENABLED  && \
-     (RKH_CFG_TRC_ALL_EN  == RKH_ENABLED  || \
-      RKH_CFG_TRC_FWK_EN  == RKH_ENABLED))
+#if (RKH_CFG_TRC_EN == RKH_ENABLED  && \
+     (RKH_CFG_TRC_ALL_EN == RKH_ENABLED || \
+      RKH_CFG_TRC_SMA_EN == RKH_ENABLED || \
+      RKH_CFG_TRC_SM_EN == RKH_ENABLED || \
+      RKH_CFG_TRC_FWK_EN == RKH_ENABLED))
     #define R_TRC_AO_NAME_EN    RKH_ENABLED
+#else
+    #define R_TRC_AO_NAME_EN    RKH_DISABLED
 #endif
 
 #define RKH_SM_NAME(smName_)         s_##smName_
 #define RKH_SMA_NAME(smaName_)       s_##smaName_
 #define RKH_SM_CONST_NAME(smName_)   rs_##smName_
 
-#define MKSM(constSM, initialState) \
-    {(RKHROM RKH_ROM_T *)(constSM), (RKHROM struct RKH_ST_T *)(initialState)}
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define MKSM(constSM, initialState) \
+        { \
+            (RKHROM RKH_ROM_T *)(constSM), \
+            (RKHROM struct RKH_ST_T *)(initialState) \
+        }
 
-#define MKSMA(constSM, initialState) \
-    {MKSM(constSM, initialState)}
+    #define MKSMA(constSM, initialState) \
+        {MKSM(constSM, initialState)}
+#else
+    #define MKSM(name, prio, ppty, initialState, initialAction, initialEvt) \
+        { \
+            (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
+            (initialAction), (initialEvt), \
+            (RKHROM struct RKH_ST_T*)initialState \
+        }
+
+    #define MKSMA(name, prio, ppty, initialState, initialAction, initialEvt) \
+        { \
+            MKSM(name, prio, ppty, initialState, initialAction, initialEvt) \
+        }
+
+    #define MKRT_SM(sm, name, prio, ppty, initialState, initialAction, \
+                    initialEvt) \
+        ((RKH_SM_T *)sm)->prio = prio; \
+        ((RKH_SM_T *)sm)->ppty = ppty; \
+        MKSM_NAME(sm, name); \
+        ((RKH_SM_T *)sm)->istate = (RKHROM struct RKH_ST_T*)initialState; \
+        ((RKH_SM_T *)sm)->iaction = initialAction; \
+        MKSM_IEVENT(sm, ievent); \
+        ((RKH_SM_T *)sm)->state = (RKHROM struct RKH_ST_T*)initialState
+
+    #if R_TRC_AO_NAME_EN == RKH_ENABLED
+        #if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
+            #define MKSM_NAME(sm, name) \
+                ((RKH_SM_T *)sm)->name = #name
+            #define MKSM_IEVENT(sm, ievent) \
+                ((RKH_SM_T *)sm)->ievent = initialEvt
+        #else
+            #define MKSM_NAME(sm, name) \
+                ((RKH_SM_T *)sm)->name = #name
+            #define MKSM_IEVENT(sm, ievent)
+        #endif
+    #else
+        #if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
+            #define MKSM_NAME(sm, name)
+            #define MKSM_IEVENT(sm, ievent) \
+                ((RKH_SM_T *)sm)->ievent = initialEvt
+        #else
+            #define MKSM_NAME(sm, name)
+            #define MKSM_IEVENT(sm, ievent)
+        #endif
+    #endif
+#endif
 
 #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #if defined(R_TRC_AO_NAME_EN)
+    #if R_TRC_AO_NAME_EN == RKH_ENABLED
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, \
              (RKH_INIT_ACT_T)(ia), (ie)}
@@ -1719,7 +1814,7 @@ extern "C" {
              (RKH_INIT_ACT_T)(ia), (ie)}
     #endif
 #else
-    #if defined(R_TRC_AO_NAME_EN)
+    #if R_TRC_AO_NAME_EN == RKH_ENABLED
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, \
              (RKH_INIT_ACT_T)(ia)}
@@ -1730,7 +1825,7 @@ extern "C" {
     #endif
 #endif
 
-#if defined(R_TRC_AO_NAME_EN)
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
     #define MKBASE(t, n)        {t, # n}
 #else
     #define MKBASE(t, n)        {t}
@@ -1862,85 +1957,152 @@ extern "C" {
 
 #if RKH_EN_DOXYGEN == RKH_ENABLED
     /**
+     *  \addtogroup config
+     *  @{
+     *  \addtogroup configPort Related to RKH port
+     *  @{
+     *  \brief Configuration options related to RKH port
+     */
+
+    /**
+     *  \brief
      *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active
      *	object) has its own thread of execution.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_DISABLED
      */
     #define RKH_CFGPORT_SMA_THREAD_EN           RKH_ENABLED
 
     /**
+     *  \brief
      *	If the #RKH_CFGPORT_SMA_THREAD_EN and
      *	#RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each SMA (active
      *	object) has its own thread of execution and its own object data.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_DISABLED
      */
     #define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_ENABLED
 
     /**
+     *  \brief
      *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
      *  include the simple, cooperative, and nonpreemptive scheduler RKHS.
      *  When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will
      *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
      *  RKH_SMA_UNREADY(), and assume the native priority scheme.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_ENABLED
      */
     #define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_ENABLED
 
     /**
+     *  \brief
      *  If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native
      *  event queue is enabled (see #RKH_CFG_RQ_EN) then RKH will include
      *  its own implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(),
      *  and rkh_sma_get() functions.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_ENABLED
      */
     #define RKH_CFGPORT_NATIVE_EQUEUE_EN        RKH_ENABLED
 
     /**
+     *  \brief
      *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native
      *  fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN)
      *  then RKH will include its own implementation of dynamic memory
      *  management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH
      *  also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
      *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_ENABLED
      */
     #define RKH_CFGPORT_NATIVE_DYN_EVT_EN       RKH_ENABLED
 
     /**
+     *  \brief
      *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch
      *	allows to be invoked from several threads of executions. Enable this
      *	only if the application is based on a multi-thread architecture.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_DISABLED
      */
     #define RKH_CFGPORT_REENTRANT_EN            RKH_ENABLED
 
     /**
+     *  \brief
      *  Specify the size of void pointer. The valid values [in bits] are
      *  16 or 32. Default is 32. See RKH_TRC_SYM() macro.
+     *
+     *	\type       Integer
+     *	\range      [8, 16, 32]
+     *	\default    32
      */
     #define RKH_CFGPORT_TRC_SIZEOF_PTR          32u
 
     /**
+     *  \brief
      *  Specify the size of function pointer. The valid values [in bits] are
      *  16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
+     *
+     *	\type       Integer
+     *	\range      [8, 16, 32]
+     *	\default    32
      */
     #define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR      32u
 
     /**
+     *  \brief
      *  Specify the number of bytes (size) used by the trace record timestamp.
      *  The valid values [in bits] are 8, 16 or 32. Default is 16.
+     *
+     *	\type       Integer
+     *	\range      [8, 16, 32]
+     *	\default    16
      */
     #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP       32u
 
     /**
+     *  \brief
      *  If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE()
      *  macro invokes the rkh_sma_activate() function ignoring the external
      *  event queue storage argument, \c qs.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_ENABLED
      */
     #define RKH_CFGPORT_SMA_QSTO_EN             RKH_ENABLED
 
     /**
+     *  \brief
      *  If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE()
      *  macro invokes the rkh_sma_activate() function ignoring the thread's
      *  stack related arguments, \c stks and \c stksize.
+     *
+     * \type       Boolean 
+     * \range      
+     * \default    RKH_DISABLED
      */
     #define RKH_CFGPORT_SMA_STK_EN              RKH_ENABLED
 
+    /** @} doxygen end group definition */
+    /** @} doxygen end group definition */
+
     /**
+     *  \brief
      *  Defines the data type of the event queue for active objects.
      *  The event queue can be implemented with a message queue of
      *  the RTOS/OS. But it is also possible to use the native RKH
@@ -1960,6 +2122,7 @@ extern "C" {
     #define RKH_EQ_TYPE
 
     /**
+     *  \brief
      *  Frequently, the active object has its own task processing loop that
      *  waits for the signal to be posted, and when it is, loops to remove
      *  and process all events that are currently queued.
@@ -1985,6 +2148,7 @@ extern "C" {
     #define RKH_THREAD_TYPE
 
     /**
+     *  \brief
      *  The \c os_signal member of RKH_SMA_T is necessary when the underlying
      *  OS does not provide an adequate queue facility, so the native RKH
      *  queue RKH_RQ_T must be used. In this case the RKH_OSSIGNAL_TYPE
@@ -2008,6 +2172,7 @@ extern "C" {
     #define RKH_OSSIGNAL_TYPE
 
     /**@{
+     *  \brief
      *  RKH need to disable interrupts in order to access critical sections
      *  of code, and re-enable interrupts when done. This allows RKH to
      *  protect critical code from being entered simultaneously. To hide the
@@ -2422,11 +2587,11 @@ struct RKH_SMA_T;
  */
 #if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
      RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    typedef void (*RKH_INIT_ACT_T)(const struct RKH_SMA_T *sma,
+    typedef void (*RKH_INIT_ACT_T)(const struct RKH_SM_T *sma,
                                    const struct RKH_EVT_T *e);
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    typedef void (*RKH_INIT_ACT_T)(const struct RKH_SMA_T *sma);
+    typedef void (*RKH_INIT_ACT_T)(const struct RKH_SM_T *sma);
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     typedef void (*RKH_INIT_ACT_T)(const struct RKH_EVT_T *e);
@@ -2487,7 +2652,7 @@ typedef struct RKH_ROM_T
      *	State Machine Application (a.k.a Active Object). The name can be
      *	displayed by debuggers or by Trazer.
      */
-#if defined(R_TRC_AO_NAME_EN)
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
     const char *name;
 #endif
 
@@ -2687,10 +2852,10 @@ typedef struct RKH_SMA_T
 
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    typedef void (*RKH_ENT_ACT_T)(const struct RKH_SMA_T *sma,
+    typedef void (*RKH_ENT_ACT_T)(const struct RKH_SM_T *sma,
                                   const struct RKH_ST_T *state);
     #else
-    typedef void (*RKH_ENT_ACT_T)(const struct RKH_SMA_T *sma);
+    typedef void (*RKH_ENT_ACT_T)(const struct RKH_SM_T *sma);
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
@@ -2727,10 +2892,10 @@ typedef struct RKH_SMA_T
 
 #if RKH_CFG_SMA_EXT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    typedef void (*RKH_EXT_ACT_T)(const struct RKH_SMA_T *sma,
+    typedef void (*RKH_EXT_ACT_T)(const struct RKH_SM_T *sma,
                                   const struct RKH_ST_T *state);
     #else
-    typedef void (*RKH_EXT_ACT_T)(const struct RKH_SMA_T *sma);
+    typedef void (*RKH_EXT_ACT_T)(const struct RKH_SM_T *sma);
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
@@ -2759,7 +2924,7 @@ typedef struct RKH_SMA_T
  *  RKH_CREATE_BASIC_STATE() macros.
  */
 #if RKH_CFG_SMA_PPRO_ARG_SMA_EN == RKH_ENABLED
-    typedef RKH_SIG_T (*RKH_PPRO_T)(const struct RKH_SMA_T *sma,
+    typedef RKH_SIG_T (*RKH_PPRO_T)(const struct RKH_SM_T *sma,
                                     RKH_EVT_T *pe);
 #else
     typedef RKH_SIG_T (*RKH_PPRO_T)(RKH_EVT_T *pe);
@@ -2798,14 +2963,14 @@ typedef struct RKH_SMA_T
 
 #if (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
-    typedef void (*RKH_TRN_ACT_T)(const struct RKH_SMA_T *sma,
+    typedef void (*RKH_TRN_ACT_T)(const struct RKH_SM_T *sma,
                                   RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
     typedef void (*RKH_TRN_ACT_T)(RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
-    typedef void (*RKH_TRN_ACT_T)(const struct RKH_SMA_T *sma);
+    typedef void (*RKH_TRN_ACT_T)(const struct RKH_SM_T *sma);
 #else
     typedef void (*RKH_TRN_ACT_T)(void);
 #endif
@@ -2837,14 +3002,14 @@ typedef struct RKH_SMA_T
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 
-    typedef rbool_t (*RKH_GUARD_T)(const struct RKH_SMA_T *sma,
+    typedef rbool_t (*RKH_GUARD_T)(const struct RKH_SM_T *sma,
                                    RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
     typedef rbool_t (*RKH_GUARD_T)(RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    typedef rbool_t (*RKH_GUARD_T)(const struct RKH_SMA_T *sma);
+    typedef rbool_t (*RKH_GUARD_T)(const struct RKH_SM_T *sma);
 #else
     typedef rbool_t (*RKH_GUARD_T)(void);
 #endif
@@ -2879,7 +3044,7 @@ typedef struct RKH_BASE_T
      *	state object or pseudostate object. The name can be displayed by
      *	debuggers or by Trazer.
      */
-#if defined(R_TRC_AO_NAME_EN)
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
     const char *name;
 #endif
 } RKH_BASE_T;
@@ -3418,13 +3583,13 @@ typedef struct RKH_SHIST_T
 
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    rbool_t rkh_else(const struct RKH_SMA_T *sma, RKH_EVT_T *pe);
+    rbool_t rkh_else(const struct RKH_SM_T *sma, RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
     rbool_t rkh_else(RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    rbool_t rkh_else(const struct RKH_SMA_T *sma);
+    rbool_t rkh_else(const struct RKH_SM_T *sma);
 #else
     rbool_t rkh_else(void);
 #endif

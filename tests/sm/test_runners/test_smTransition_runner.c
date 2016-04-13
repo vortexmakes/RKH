@@ -89,14 +89,6 @@ TEST_GROUP_RUNNER(transition)
 	RUN_TEST_CASE(transition, defaultTrnWithAssociatedEffect);
 	RUN_TEST_CASE(transition, generatedCompletionEventBySimpleState);
 	RUN_TEST_CASE(transition, generatedCompletionEventByFinalState);
-	RUN_TEST_CASE(transition, accessingToStateMachineInternals);
-	RUN_TEST_CASE(transition, hidingActiveObjectInternals);
-	RUN_TEST_CASE(transition, publishingActiveObjectInternals);
-	RUN_TEST_CASE(transition, instantiatingStateMachineRegardlessAO);
-	RUN_TEST_CASE(transition, hidingStateMachineInternals);
-	RUN_TEST_CASE(transition, publishingStateMachineInternals);
-	RUN_TEST_CASE(transition, staticInstantiationOfCompositeActiveObject);
-	RUN_TEST_CASE(transition, dynamicInstantiationOfCompositeActiveObject);
 }
 
 /* ------------------------------ End of file ------------------------------ */

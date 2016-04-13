@@ -146,7 +146,7 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
 
     if (initStateMachine)
     {
-        rkh_sma_init_hsm(me);
+        rkh_sm_init((RKH_SM_T *)me);
     }
     if (currentState)
         setStateForcesfully(me, RKH_STATE_CAST(currentState));

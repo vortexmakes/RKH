@@ -397,6 +397,21 @@
 
 #define RKH_CFG_SMA_PPRO_ARG_SMA_EN		RKH_ENABLED
 
+/** 
+ *  \brief
+ *  If RKH_CFG_SMA_SM_CONST_EN is set to RKH_ENABLED then much of the state 
+ *  machine object is allocated in ROM. This approach does have as key benefit 
+ *  the little RAM consuming as compared when RKH_CFG_SMA_SM_CONST_EN is set 
+ *  to RKH_DISABLED.
+ *  Nevertheless, the primary drawback of this approach is the obfuscated API 
+ *  to use it.
+ *  In constrast, if RKH_CFG_SMA_SM_CONST_EN is set to RKH_ENABLED then the 
+ *  whole state machine object is allocated in RAM, including its own
+ *  constant part. However, the API to use it is very simple, intuitive,
+ *  and flexible, allowing easily the dynamic memory allocation
+*/
+#define RKH_CFG_SMA_SM_CONST_EN         RKH_ENABLED
+
 
 /* --- Configuration options related to trace facility -------------------- */
 

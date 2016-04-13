@@ -30,15 +30,14 @@
  */
 
 /**
- *  \file       rkhsma.c
- *  \ingroup    sch
- *
- *  \brief      Implements the SMA(active object) registration.
+ *  \file       smInstance.c
+ *  \brief      Helper functions and object defines to facilitate the test of 
+ *              production code.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24  LeFr  v2.4.05  Initial version
+ *  2016.12.15  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -48,70 +47,98 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
-#include "rkhassert.h"
 #include "rkh.h"
-
-RKH_MODULE_NAME(rkhsma)
+#include "smInstance.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
-
-/*
- *  String describing the RKH version.
- */
-RKHROM char rkh_version[] =
+/* ---------------------------- Local data types --------------------------- */
+typedef struct Single Single;
+struct Single
 {
-    (char)((rui8_t)((RKH_VERSION_CODE >> 12)    & 0x0F) + (rui8_t)'0'),
-    (char)'.',
-    (char)((rui8_t)((RKH_VERSION_CODE >> 8)     & 0x0F) + (rui8_t)'0'),
-    (char)'.',
-    (char)((rui8_t)((RKH_VERSION_CODE >> 4)     & 0x0F) + (rui8_t)'0'),
-    (char)((rui8_t)(RKH_VERSION_CODE            & 0x0F) + (rui8_t)'0'),
-    (char)'\0',
+    RKH_SMA_T ao;
+    int foo;
 };
 
-#if R_TRC_AO_NAME_EN == RKH_DISABLED
-RKHROM char noname[] = "null";
-#endif
+struct Opaque
+{
+    RKH_SMA_T ao;
+    int foo;
+};
 
-/* ---------------------------- Local data types --------------------------- */
+typedef struct StateMachine StateMachine;
+struct StateMachine
+{
+    RKH_SM_T sm;
+    int foo;
+};
+
 /* ---------------------------- Global variables --------------------------- */
-
-RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];  /* registered SMA table */
-
 /* ---------------------------- Local variables ---------------------------- */
+RKH_SMA_CREATE(Single, single, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR(single);
+
+RKH_SMA_CREATE(PublicSingle, publicSingle, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicSingle, publicSingle);
+
+RKH_SMA_CREATE(Opaque, opaque, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(Opaque, opaque);
+
+RKH_SMA_CREATE(PublicSingle, single0, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicSingle, single0);
+RKH_SMA_CREATE(Single, single1, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicSingle, single1);
+RKH_SMA_CREATE(Single, single2, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicSingle, single2);
+RKH_SMA_CREATE(Single, single3, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicSingle, single3);
+
+RKH_ARRAY_SMA_CREATE_TYPE(PublicSingle, arrayOfSingles, 4)
+{
+    &single0, &single1, &single2, &single3
+};
+
+RKH_SM_CREATE(StateMachine, stateMachine, 4, HCAL, NULL, NULL, NULL);
+RKH_SM_DEF_PTR(stateMachine);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 
 void
-rkh_sma_register(RKH_SMA_T *sma)
+Single_ctor(int foo)
 {
-    rui8_t prio = RKH_GET_PRIO(sma);
-    RKH_SR_ALLOC();
+    ((Single *)single)->foo = foo;
+}
 
-    RKH_REQUIRE((prio <= (rui8_t)RKH_LOWEST_PRIO) &&
-                (rkh_sptbl[prio] == (RKH_SMA_T *)0));
-
-    RKH_ENTER_CRITICAL_();
-    rkh_sptbl[prio] = sma;
-    RKH_TR_SMA_REG(sma, prio);
-    RKH_EXIT_CRITICAL_();
+int
+Single_getFoo(void)
+{
+    return ((Single *)single)->foo;
 }
 
 void
-rkh_sma_unregister(RKH_SMA_T *sma)
+PublicSingle_ctor(int foo)
 {
-    rui8_t prio = RKH_GET_PRIO(sma);
-    RKH_SR_ALLOC();
-
-    RKH_REQUIRE((prio <= (rui8_t)RKH_CFG_FWK_MAX_SMA) &&
-                (rkh_sptbl[prio] == sma));
-
-    RKH_ENTER_CRITICAL_();
-    rkh_sptbl[prio] = (RKH_SMA_T *)0;
-    RKH_TR_SMA_UNREG(sma, prio);
-    RKH_EXIT_CRITICAL_();
+    publicSingle->foo = foo;
 }
+
+void
+Opaque_ctor(Opaque *const me, int foo)
+{
+    me->foo = foo;
+}
+
+int
+Opaque_getFoo(Opaque *const me)
+{
+    return me->foo;
+}
+
+void
+MultiplePublicSingle_ctor(PublicSingle *const me, int foo)
+{
+    me->foo = foo;
+}
+
 /* ------------------------------ End of file ------------------------------ */

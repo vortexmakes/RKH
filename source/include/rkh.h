@@ -135,7 +135,7 @@ extern "C" {
 
 /**
  *  \brief
- *  Return codes from rkh_sma_dispatch() function.
+ *  Return codes from rkh_sm_dispatch() function.
  */
 typedef enum
 {
@@ -1189,8 +1189,45 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_SMA_DCLR( my );
  *  \endcode
  */
-
 #define RKH_SMA_DCLR(sma)     extern RKH_SMA_T * const sma
+
+/**
+ *  \brief
+ *  This macro declares a typed pointer to previously created state machine
+ *  application (SMA) to be used as a global object.
+ *
+ *
+ *  \param[in] type_
+ *                  Data type of the state machine application. Could be 
+ *                  derived from RKH_SMA_T.
+ *                  The pointer could be used to publish the internals of the 
+ *                  class of the state machine. 
+ *  \param[in] me_	pointer to previously created state machine application.
+ *
+ *	\note
+ *  Generally, this macro is used in the SMA's header file.
+ *
+ *  \sa
+ *  RKH_SMA_CREATE(), RKH_SMA_DCLR().
+ *
+ *  \usage
+ *  \code
+ *  //	my.h: state-machine application's header file
+ *
+ *  RKH_SMA_DCLR_TYPE(Blinky, blinky);
+ *  \endcode
+ */
+#define RKH_SMA_DCLR_TYPE(type_, me_)   extern type_ * const me_
+
+/**
+ *  \brief
+ */
+#define RKH_SM_DCLR(me_)                extern RKH_SM_T * const me_
+
+/**
+ *  \brief
+ */
+#define RKH_SM_DCLR_TYPE(type_, me_)    extern type_ * const me_
 
 /**@{
  *
@@ -1247,9 +1284,43 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
  *  \endcode
  */
-
 #define RKH_ARRAY_SMA_DCLR(_arr, _num) \
     extern RKH_SMA_T * const *_arr[_num]
+
+/**
+ *  \brief
+ *  Declares a typed pointer to previously created array of state machine
+ *  applications SMA (a.k.a Active Object) to be used as a global object.
+ *
+ *  \param[in] type_	data type of active object.
+ *  \param[in] array_	pointer to previously created array of state machine
+ *                      applications. To do that is recommended to use the 
+ *                      macro RKH_ARRAY_SMA_CREATE_TYPE().
+ *  \param[in] num_		size of array [in active objects].
+ *
+ *	\note
+ *  Generally, this macro is used in the SMA's header file.
+ *
+ *  \sa
+ *  RKH_SMA_CREATE().
+ *
+ *  \usage
+ *  \code
+ *  //	cli.h: state-machine application's header file
+ *  #define NUM_CLIENTS			4
+ *
+ *  typedef struct
+ *  {
+ *      RKH_SMA_T sma;		// base structure
+ *      RKH_TMR_T cli_utmr; // usage time
+ *      RKH_TMR_T cli_rtmr;	// waiting request time
+ *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
+ *
+ *  RKH_ARRAY_SMA_DCLR_TYPE(CLI_T, clis, NUM_CLIENTS);
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA_DCLR_TYPE(type_, array_, num_) \
+    extern type_ * const * array_[num_]
 
 /**
  *  \brief
@@ -1274,9 +1345,35 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	};
  *  \endcode
  */
-
 #define RKH_ARRAY_SMA_CREATE(_arr, _num) \
     RKH_SMA_T * const *_arr[_num] =
+
+/**
+ *  \brief
+ *  Declare and allocate an array of SMAs (a.k.a active objects) derived from
+ *  RKH_SMA_T.
+ *
+ *  \param[in] type_	data type of active object.
+ *  \param[in] array_	name of SMA's array.
+ *  \param[in] num_		size of array [in active objects].
+ *
+ *  \usage
+ *  \code
+ *	// Defines SMAs (a.k.a Active Objects)
+ *
+ *	RKH_SMA_CREATE(CLI_T, cli0, 1, HCAL, &cli_idle, cli_init, NULL);
+ *	RKH_SMA_CREATE(CLI_T, cli1, 2, HCAL, &cli_idle, cli_init, NULL);
+ *	RKH_SMA_CREATE(CLI_T, cli2, 3, HCAL, &cli_idle, cli_init, NULL);
+ *	RKH_SMA_CREATE(CLI_T, cli3, 4, HCAL, &cli_idle, cli_init, NULL);
+ *
+ *	RKH_ARRAY_SMA_CREATE(CLI_T, clis, NUM_CLIENTS)
+ *	{
+ *		&cli0, &cli1, &cli2, &cli3
+ *	};
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA_CREATE_TYPE(type_, array_, num_) \
+    type_ * const * array_[num_] =
 
 /**
  *  \brief
@@ -1634,6 +1731,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      This argument is optional, thus it could be declared
  *                      as NULL or eliminated in compile-time with
  *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ *
+ *  \sa RKH_SM_CONST_CREATE, RKH_SM_GET_CONST, RKH_SM_GET_CONST
  */
     #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
                           initialAction, initialEvt) \
@@ -1667,9 +1766,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	Frequently, RKH_SMA_CREATE() is used within state-machine's module
  *	(.c file), thus the structure definition is in fact entirely encapsulated
  *	in its module and is inaccessible to the rest of the application.
- *	However, use the RKH_SMA_DCLR() macro to declare a "opaque" pointer
- *	to that state machine application structure to be used in the rest of the
- *	application but hiding the proper definition.
+ *	However, use RKH_SMA_DEF_PTR() or RKH_SMA_DEF_PTR_TYPE() macros to 
+ *	define a opaque pointer or typed pointer to that state machine application 
+ *	structure, respectively. Also, use the RKH_SMA_DCLR() macro to declare it 
+ *	to be for the rest of application code. 
  *  RKH_SMA_T is not intended to be instantiated directly, but rather
  *  serves as the base structure for derivation of state machines in the
  *  application code.
@@ -1702,6 +1802,9 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      This argument is optional, thus it could be declared
  *                      as NULL or eliminated in compile-time with
  *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ *
+ *  \sa RKH_SM_CONST_CREATE(), RKH_SM_GET_CONST(), RKH_SM_GET_CONST(),
+ *      RKH_SMA_DEF_PTR(), RKH_SMA_DEF_PTR_TYPE()
  *
  *	\usage
  *	\code
@@ -1784,6 +1887,33 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
     #define RKH_SM_GET_CONST_OBJ(sm) \
         &RKH_SM_CONST_NAME(sm)
 #else
+    #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
+                          initialAction, initialEvt) \
+        static type s_##name = MKSM(name, prio, ppty, initialState, \
+                                    initialAction, initialEvt)
+
+    #define RKH_SM_INIT(sm, name, prio, ppty, initialState, \
+                        initialAction, initialEvt) \
+        MKRT_SM(sm, name, prio, ppty, initialState, initialAction, initialEvt)
+
+    #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
+                           initialAction, initialEvt) \
+        static type s_##name = MKSMA(name, \
+                                     prio, \
+                                     ppty, \
+                                     initialState, \
+                                     initialAction, \
+                                     initialEvt)
+
+    #define RKH_SMA_INIT(sma, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+        MKRT_SM(sma, sma, prio, ppty, initialState, initialAction, initialEvt)
+
+    #define RKH_SMA_GET_OBJ(type, sma) \
+        (type *)&RKH_SMA_NAME(sma)
+
+    #define RKH_SM_GET_OBJ(type, sm) \
+        (type *)&RKH_SM_NAME(sm)
 #endif
 
 /**
@@ -1792,6 +1922,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  machine.
  *
  *  \param[in] sm   Name of state machine.
+ *
+ *  \sa RKH_SMA_DCLR()
  */
 #define RKH_SM_DEF_PTR(sm) \
     RKH_SM_T *const sm = (RKH_SM_T *)&RKH_SM_NAME(sm)
@@ -1807,6 +1939,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \param[in] type Data type of the state machine. Could be derived from 
  *                  RKH_SM_T.
  *  \param[in] sm   Name of state machine.
+ *
+ *  \sa RKH_SMA_DCLR()
  */
 #define RKH_SM_DEF_PTR_TYPE(type, sm) \
     type *const sm = (type *)&RKH_SM_NAME(sm)
@@ -1817,6 +1951,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  object.
  *
  *  \param[in] sma  Name of state machine application.
+ *
+ *  \sa RKH_SMA_DCLR()
  */
 #define RKH_SMA_DEF_PTR(sma) \
     RKH_SMA_T *const sma = (RKH_SMA_T *)&RKH_SMA_NAME(sma)
@@ -1832,40 +1968,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \param[in] type Data type of the state machine application. Could be 
  *                  derived from RKH_SMA_T.
  *  \param[in] sma  Name of state machine application.
+ *
+ *  \sa RKH_SMA_DCLR()
  */
 #define RKH_SMA_DEF_PTR_TYPE(type, sma) \
     type *const sma = (type *)&RKH_SMA_NAME(sma)
-
-#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
-/**
- *  \brief
- *  Macro for accessing to members of state machine structure.
- *
- *  \param[in] me_      Pointer to object of state machine.
- *  \param[in] member_  Member of state machine structure.
- */
-    #define RKH_SMA_ACCESS_CONST(me_, member_) \
-        ((RKH_SM_T *)me_)->romrkh->member_
-#else
-/**
- *  \brief
- *  Macro for accessing to members of state machine structure.
- *
- *  \param[in] me_      Pointer to object of state machine.
- *  \param[in] member_  Member of state machine structure.
- */
-    #define RKH_SMA_ACCESS_CONST(me_, member_) \
-        ((RKH_SM_T *)me_)->member_
-#endif
-
-/**
- *  \brief
- *  Macro for accessing to state member of state machine structure.
- *
- *  \param[in] me_      Pointer to object of state machine.
- */
-#define RKH_SMA_ACCESS_STATE(me_) \
-    ((RKH_SM_T *)me_)->state
 
 #if defined(RKH_USE_TRC_SENDER)
     /**
@@ -2157,7 +2264,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #define RKH_GET_CSTATE_ID(sma) \
     ((RKH_BASE_T *)(((RKH_SM_T *)sma)->state))->id
 
-#if defined(R_TRC_AO_NAME_EN)
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
     /**
      *  \brief
      *  This macro retrieves the name of an registered active object.
@@ -3035,9 +3142,9 @@ void rkh_hook_putTrcEvt(void);
  *  \brief
  *  Inits a previously created state machine calling its initializing action.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] sma  pointer to previously created state machine.
  */
-void rkh_sma_init_hsm(RKH_SMA_T *sma);
+void rkh_sm_init(RKH_SM_T *sma);
 
 /**
  *  \brief
@@ -3059,7 +3166,7 @@ void rkh_sma_init_hsm(RKH_SMA_T *sma);
  *  - Execute entry actions of the target state.
  *
  *  Here now are the details of the main part of this algorithm
- *  (rkh_sma_dispatch()), in which an event is processed by the statechart.
+ *  (rkh_sm_dispatch()), in which an event is processed by the statechart.
  *
  *  \li	Determine the compound transition (CT) that will fire in response
  *      to the event: traverse the states in the active configuration from
@@ -3087,13 +3194,13 @@ void rkh_sma_init_hsm(RKH_SMA_T *sma);
  *      event is completed, control returns to the dispatcher and new events
  *      can be dispatched.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] me   pointer to previously created state machine application.
  *	\param[in] e	pointer to arrived event. It's used as state-machine's
  *					input alphabet.
  *
  *	\return         Result RKH_RCODE_T code.
  */
-ruint rkh_sma_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
+ruint rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *e);
 
 #if defined(RKH_HISTORY_ENABLED)
 /**

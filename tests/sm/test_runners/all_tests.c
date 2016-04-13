@@ -65,6 +65,7 @@ static
 void 
 runAllTests(void)
 {
+	RUN_TEST_GROUP(instance);
 	RUN_TEST_GROUP(transition);
 	RUN_TEST_GROUP(pseudostate);
 }

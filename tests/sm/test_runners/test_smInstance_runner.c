@@ -30,15 +30,15 @@
  */
 
 /**
- *  \file       test_common.c
- *  \ingroup    Test
+ *  \file       test_smInstance_runner.c
+ *  \ingroup    test_sm
  *
- *  \brief      ---
+ *  \brief      Test runner of state machine module
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.11.11  LeFr  v2.4.05  ---
+ *  2016.12.15  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -48,11 +48,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
-#include "test_common.h"
-#include "unitrazer.h"
-#include "aotest.h"
-#include "aotest_act.h"
+#include "unity_fixture.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -62,50 +58,21 @@
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-
-void
-common_test_setup(void)
+TEST_GROUP_RUNNER(instance)
 {
-    unitrazer_resetOut();
-    unitrazer_init();
-    fwk_ignore();               /* Ignore every trace event of FWK group */
-    sm_tsState_ignore();
-
-    RKH_TR_FWK_AO(aotest);
-    RKH_TR_FWK_STATE(aotest, &s);
-    RKH_TR_FWK_STATE(aotest, &s1);
-    RKH_TR_FWK_STATE(aotest, &s11);
-    RKH_TR_FWK_STATE(aotest, &s2);
-    RKH_TR_FWK_STATE(aotest, &s21);
-    RKH_TR_FWK_STATE(aotest, &s211);
-    RKH_TR_FWK_SIG(A);
-    RKH_TR_FWK_SIG(B);
-    RKH_TR_FWK_FUN(foo_set2zero);
-    RKH_TR_FWK_FUN(foo_set2one);
-
-    /* set trace filters */
-    RKH_FILTER_ON_GROUP(RKH_TRC_ALL_GROUPS);
-    RKH_FILTER_ON_EVENT(RKH_TRC_ALL_EVENTS);
-    RKH_FILTER_OFF_SIGNAL(A);
-    RKH_FILTER_OFF_SIGNAL(B);
-    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
-    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_FWK);
-    RKH_FILTER_OFF_SMA(aotest);
-
-    rkh_sm_init((RKH_SM_T *)aotest);
-}
-
-void
-common_tear_down(void)
-{
-    UtrzProcessOut *p;
-
-    unitrazer_verify(); /* Makes sure there are no unused expectations, if */
-                        /* there are, this function causes the test to fail. */
-    p = unitrazer_getLastOut();
-    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
-
-    unitrazer_cleanup();
+	RUN_TEST_CASE(instance, accessingToStateMachineInternals);
+	RUN_TEST_CASE(instance, hidingActiveObjectInternals);
+	RUN_TEST_CASE(instance, publishingActiveObjectInternals);
+	RUN_TEST_CASE(instance, staticInstantiationOfCompositeActiveObject);
+	RUN_TEST_CASE(instance, dynamicInstantiationOfCompositeActiveObject);
+	RUN_TEST_CASE(instance, staticPrivateAOConstructor);
+	RUN_TEST_CASE(instance, staticPublicAOConstructor);
+	RUN_TEST_CASE(instance, staticOpaqueAOConstructor);
+	RUN_TEST_CASE(instance, multipleStaticAOConstructor);
+	RUN_TEST_CASE(instance, arrayOfStaticAO);
+	RUN_TEST_CASE(instance, stateMachineRegardlessOfAO);
+	RUN_TEST_CASE(instance, hidingStateMachineInternals);
+	RUN_TEST_CASE(instance, publishingStateMachineInternals);
 }
 
 /* ------------------------------ End of file ------------------------------ */

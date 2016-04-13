@@ -103,7 +103,7 @@ rkh_fwk_enter(void)
 
             sma = rkh_sptbl[prio];
             e = rkh_sma_get(sma);
-            rkh_sma_dispatch(sma, e);
+            rkh_sm_dispatch((RKH_SM_T *)sma, e);
             RKH_FWK_GC(e);
         }
         else
@@ -141,7 +141,7 @@ rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 
     rkh_rq_init(&sma->equeue, (const void **)qs, qsize, sma);
     rkh_sma_register(sma);
-    rkh_sma_init_hsm(sma);
+    rkh_sm_init((RKH_SM_T *)sma);
     RKH_TR_SMA_ACT(sma, RKH_GET_PRIO(sma));
 }
 /** [Activates an active object] */

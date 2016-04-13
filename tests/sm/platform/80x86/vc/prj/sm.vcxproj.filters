@@ -225,5 +225,14 @@
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test_smInstance.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_smInstance_runner.c">
+      <Filter>Source Files\tests\sm\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\smInstance.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
