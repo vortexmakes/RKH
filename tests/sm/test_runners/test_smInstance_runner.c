@@ -60,19 +60,19 @@
 /* ---------------------------- Global functions --------------------------- */
 TEST_GROUP_RUNNER(instance)
 {
-	RUN_TEST_CASE(instance, accessingToStateMachineInternals);
-	RUN_TEST_CASE(instance, hidingActiveObjectInternals);
-	RUN_TEST_CASE(instance, publishingActiveObjectInternals);
-	RUN_TEST_CASE(instance, staticInstantiationOfCompositeActiveObject);
-	RUN_TEST_CASE(instance, dynamicInstantiationOfCompositeActiveObject);
 	RUN_TEST_CASE(instance, staticPrivateAOConstructor);
+	RUN_TEST_CASE(instance, staticPublicAO);
 	RUN_TEST_CASE(instance, staticPublicAOConstructor);
 	RUN_TEST_CASE(instance, staticOpaqueAOConstructor);
-	RUN_TEST_CASE(instance, multipleStaticAOConstructor);
-	RUN_TEST_CASE(instance, arrayOfStaticAO);
-	RUN_TEST_CASE(instance, stateMachineRegardlessOfAO);
-	RUN_TEST_CASE(instance, hidingStateMachineInternals);
-	RUN_TEST_CASE(instance, publishingStateMachineInternals);
+	RUN_TEST_CASE(instance, staticMultipleAOConstructor);
+	RUN_TEST_CASE(instance, staticArrayOfAO);
+	RUN_TEST_CASE(instance, staticPrivateStateMachine);
+	RUN_TEST_CASE(instance, staticPublicStateMachine);
+	RUN_TEST_CASE(instance, staticCompositeAOPrivateSingletonConstructor);
+	RUN_TEST_CASE(instance, staticCompositeAOPublicConstructor);
+	RUN_TEST_CASE(instance, staticCompositeAOWithDerivedSMPublicConstructor);
+	RUN_TEST_CASE(instance, dynamicInstantiationOfCompositeActiveObject);
+	RUN_TEST_CASE(instance, syncDispatchingToStateMachine);
 }
 
 /* ------------------------------ End of file ------------------------------ */

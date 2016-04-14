@@ -73,6 +73,14 @@ struct StateMachine
     int foo;
 };
 
+typedef struct Composite Composite;
+struct Composite
+{
+    RKH_SMA_T ao;
+    int foo;
+    RKH_SM_T itsReactivePart;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 RKH_SMA_CREATE(Single, single, 0, HCAL, NULL, NULL, NULL);
@@ -100,6 +108,22 @@ RKH_ARRAY_SMA_CREATE_TYPE(PublicSingle, arrayOfSingles, 4)
 
 RKH_SM_CREATE(StateMachine, stateMachine, 4, HCAL, NULL, NULL, NULL);
 RKH_SM_DEF_PTR(stateMachine);
+
+RKH_SM_CREATE(PublicStateMachine, publicStateMachine, 4, HCAL, NULL, NULL, 
+              NULL);
+RKH_SM_DEF_PTR_TYPE(PublicStateMachine, publicStateMachine);
+
+RKH_SMA_CREATE(Composite, composite, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR(composite);
+RKH_SM_CONST_CREATE(region, 1, HCAL, NULL, NULL, NULL);
+
+RKH_SMA_CREATE(PublicComposite, publicComposite, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicComposite, publicComposite);
+RKH_SM_CONST_CREATE(publicRegion, 1, HCAL, NULL, NULL, NULL);
+
+RKH_SMA_CREATE(PublicCompositeA, publicCompositeA, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(PublicCompositeA, publicCompositeA);
+RKH_SM_CONST_CREATE(publicRegionA, 1, HCAL, NULL, NULL, NULL);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -139,6 +163,40 @@ void
 MultiplePublicSingle_ctor(PublicSingle *const me, int foo)
 {
     me->foo = foo;
+}
+
+void
+Composite_ctor(int foo)
+{
+    ((Composite *)composite)->foo = foo;
+    RKH_SM_INIT(&((Composite *)composite)->itsReactivePart, region);
+}
+
+int
+Composite_getFoo(void)
+{
+    return ((Composite *)composite)->foo;
+}
+
+RKH_SM_T *
+Composite_getItsReactivePart(void)
+{
+    return &((Composite *)composite)->itsReactivePart;
+}
+
+void
+PublicComposite_ctor(PublicComposite *const me, int foo)
+{
+    me->foo = foo;
+    RKH_SM_INIT(&me->itsReactivePart, publicRegion);
+}
+
+void
+PublicCompositeA_ctor(PublicCompositeA *const me, int actObjFoo, int partFoo)
+{
+    me->foo = actObjFoo;
+    RKH_SM_INIT(&me->itsReactivePart, publicRegionA);
+    me->itsReactivePart.foo = partFoo;
 }
 
 /* ------------------------------ End of file ------------------------------ */

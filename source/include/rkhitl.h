@@ -241,6 +241,20 @@ extern "C" {
         ((RKH_SM_T *)me_)->member_
 #endif
 
+/**
+ *  \brief
+ *  This macro declares a typed and external pointer to previously defined 
+ *  object.
+ *
+ *  \param[in] type_    Data type of the defined object. 
+ *  \param[in] me_	    Pointer to previously defined object.
+ *
+ *  \sa
+ *  RKH_SMA_DCLR_TYPE(), RKH_SM_DCLR_TYPE().
+ */
+#define RKH_DCLR_PTR_TYPE(type_, me_) \
+        extern type_ * const me_
+
 /* ------------------------- Configuration errors -------------------------- */
 
 /*
