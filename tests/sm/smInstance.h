@@ -103,6 +103,9 @@ void PublicComposite_ctor(PublicComposite *const me, int foo);
 void PublicCompositeA_ctor(PublicCompositeA *const me, int actObjFoo, 
                            int smFoo);
 
+PublicSingle *PublicSingle_dynCtor(int foo);
+void PublicSingle_dynDtor(PublicSingle *const me);
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

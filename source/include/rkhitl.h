@@ -1772,47 +1772,78 @@ extern "C" {
     #define MKSMA(constSM, initialState) \
         {MKSM(constSM, initialState)}
 #else
-    #define MKSM(name, prio, ppty, initialState, initialAction, initialEvt) \
-        { \
-            (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
-            (initialAction), (initialEvt), \
-            (RKHROM struct RKH_ST_T*)initialState \
-        }
+    #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
+        #if R_TRC_AO_NAME_EN == RKH_ENABLED
+            #define MKSM(name, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+            { \
+                (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
+                ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
+                (RKHROM struct RKH_ST_T*)initialState \
+            }
+        #else
+            #define MKSM(name, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+            { \
+                (prio), (ppty), (RKHROM struct RKH_ST_T*)initialState, \
+                ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
+                (RKHROM struct RKH_ST_T*)initialState \
+            }
+        #endif
+    #else
+        #if R_TRC_AO_NAME_EN == RKH_ENABLED
+            #define MKSM(name, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+            { \
+                (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
+                ((RKH_INIT_ACT_T)initialAction), \
+                (RKHROM struct RKH_ST_T*)initialState \
+            }
+        #else
+            #define MKSM(name, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+            { \
+                (prio), (ppty), (RKHROM struct RKH_ST_T*)initialState, \
+                ((RKH_INIT_ACT_T)initialAction), \
+                (RKHROM struct RKH_ST_T*)initialState \
+            }
+        #endif
+    #endif
 
     #define MKSMA(name, prio, ppty, initialState, initialAction, initialEvt) \
         { \
             MKSM(name, prio, ppty, initialState, initialAction, initialEvt) \
         }
 
-    #define MKRT_SM(sm, name, prio, ppty, initialState, initialAction, \
-                    initialEvt) \
-        ((RKH_SM_T *)sm)->prio = prio; \
-        ((RKH_SM_T *)sm)->ppty = ppty; \
-        MKSM_NAME(sm, name); \
-        ((RKH_SM_T *)sm)->istate = (RKHROM struct RKH_ST_T*)initialState; \
-        ((RKH_SM_T *)sm)->iaction = initialAction; \
-        MKSM_IEVENT(sm, ievent); \
-        ((RKH_SM_T *)sm)->state = (RKHROM struct RKH_ST_T*)initialState
+    #define MKRT_SM(sm_, name_, prio_, ppty_, initialState_, initialAction_, \
+                    initialEvt_) \
+        ((RKH_SM_T *)(sm_))->prio = prio_; \
+        ((RKH_SM_T *)(sm_))->ppty = ppty_; \
+        MKSM_NAME(sm_, name_); \
+        ((RKH_SM_T *)(sm_))->istate = (RKHROM struct RKH_ST_T*)initialState_; \
+        ((RKH_SM_T *)(sm_))->iaction = (RKH_INIT_ACT_T)initialAction_; \
+        MKSM_IEVENT(sm_, initialEvt_); \
+        ((RKH_SM_T *)(sm_))->state = (RKHROM struct RKH_ST_T*)initialState_
 
     #if R_TRC_AO_NAME_EN == RKH_ENABLED
         #if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
-            #define MKSM_NAME(sm, name) \
-                ((RKH_SM_T *)sm)->name = #name
-            #define MKSM_IEVENT(sm, ievent) \
-                ((RKH_SM_T *)sm)->ievent = initialEvt
+            #define MKSM_NAME(sm_, name_) \
+                ((RKH_SM_T *)sm_)->name = #name_
+            #define MKSM_IEVENT(sm_, ievent_) \
+                ((RKH_SM_T *)sm_)->ievent = ievent_
         #else
-            #define MKSM_NAME(sm, name) \
-                ((RKH_SM_T *)sm)->name = #name
-            #define MKSM_IEVENT(sm, ievent)
+            #define MKSM_NAME(sm_, name_) \
+                ((RKH_SM_T *)sm_)->name = #name_
+            #define MKSM_IEVENT(sm_, ievent_)
         #endif
     #else
         #if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
-            #define MKSM_NAME(sm, name)
-            #define MKSM_IEVENT(sm, ievent) \
-                ((RKH_SM_T *)sm)->ievent = initialEvt
+            #define MKSM_NAME(sm_, name_) \
+            #define MKSM_IEVENT(sm_, ievent_) \
+                ((RKH_SM_T *)sm_)->ievent = ievent_
         #else
-            #define MKSM_NAME(sm, name)
-            #define MKSM_IEVENT(sm, ievent)
+            #define MKSM_NAME(sm_, name_) \
+            #define MKSM_IEVENT(sm_, ievent_)
         #endif
     #endif
 #endif
@@ -2627,6 +2658,7 @@ typedef struct RKH_SMAI_T
     rui16_t exectr;         /**< # of executed transitions */
 } RKH_SMAI_T;
 
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
 /**
  *  \brief
  *  Constant parameters of state machine.
@@ -2700,6 +2732,7 @@ typedef struct RKH_ROM_T
     const RKH_EVT_T *ievent;
 #endif
 } RKH_ROM_T;
+#endif
 
 /**
  *  \brief
@@ -2710,6 +2743,7 @@ typedef struct RKH_ROM_T
  *  application code. Also, is the base structure of active object structure 
  *  RKH_SMA_T.
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
 typedef struct RKH_SM_T
 {
     /**
@@ -2724,6 +2758,76 @@ typedef struct RKH_SM_T
      */
     RKHROM struct RKH_ST_T *state;
 } RKH_SM_T;
+#else
+typedef struct RKH_SM_T
+{
+    /**
+     *  \brief
+     *  SMA (a.k.a Active Object) priority.
+     *
+     *  A unique priority number must be assigned to each SMA from 0 to
+     *  RKH_LOWEST_PRIO. The lower the number, the higher the priority.
+     */
+    rui8_t prio;
+
+    /**
+     *  \brief
+     *  State machine properties.
+     *
+     *  The available properties are enumerated in RKH_HPPTY_T enumeration in
+     *  the rkh.h file.
+     */
+    rui8_t ppty;
+
+    /**
+     *  \brief
+     *  Name of State Machine Application (a.k.a Active Object).
+     *
+     *  Pointer to an ASCII string (NULL terminated) to assign a name to the
+     *	State Machine Application (a.k.a Active Object). The name can be
+     *	displayed by debuggers or by Trazer.
+     */
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
+    const char *name;
+#endif
+
+    /**
+     *  \brief
+     *  Points to initial state.
+     *
+     *  This state could be defined either composite or basic
+     *  (not pseudo-state).
+     */
+    RKHROM struct RKH_ST_T *istate;
+
+    /**
+     *  \brief
+     *  Points to initializing action (optional).
+     *
+     *  The function prototype is defined as RKH_INIT_ACT_T. This argument is
+     *  optional, thus it could be declared as NULL.
+     */
+    RKH_INIT_ACT_T iaction;
+
+    /**
+     *  \brief
+     *	Pointer to an event that will be passed to state machine application
+     *	when it starts. Could be used to pass arguments to the state machine
+     *	like an argc/argv. This argument is optional, thus it could be
+     *	declared as NULL or eliminated in compile-time with
+     *	RKH_CFG_SMA_INIT_EVT_EN = 0.
+     */
+#if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
+    const RKH_EVT_T *ievent;
+#endif
+
+    /**
+     *  \brief
+     *  Points to current stable state (simple or final state).
+     */
+    RKHROM struct RKH_ST_T *state;
+} RKH_SM_T;
+#endif
 
 /**
  *  \brief

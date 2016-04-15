@@ -1794,9 +1794,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Initialize (at runtime) a previously created state machine object.
  *
  *  \param[in] me_           ...
- *  \param[in] nameSMConst_  ...
+ *  \param[in] nameSMConst_  Describe it 
  */
-    #define RKH_SM_INIT(me_, nameSMConst_) \
+    #define RKH_SM_INIT(me_, nameSMConst_, prio_, ppty_, initialState_, \
+                        initialAction_, initialEvt_) \
         ((RKH_SM_T *)me_)->romrkh = \
             (RKHROM RKH_ROM_T *)(RKH_SM_GET_CONST_OBJ(nameSMConst_)); \
         ((RKH_SM_T *)me_)->state = \
@@ -1938,8 +1939,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #else
     #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
                           initialAction, initialEvt) \
-        static type s_##name = MKSM(name, prio, ppty, initialState, \
-                                    initialAction, initialEvt)
+        static type RKH_SMA_NAME(name) = MKSM(name, prio, ppty, initialState, \
+                                              initialAction, initialEvt)
 
     #define RKH_SM_INIT(sm, name, prio, ppty, initialState, \
                         initialAction, initialEvt) \
@@ -1947,12 +1948,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
     #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
                            initialAction, initialEvt) \
-        static type s_##name = MKSMA(name, \
-                                     prio, \
-                                     ppty, \
-                                     initialState, \
-                                     initialAction, \
-                                     initialEvt)
+        static type RKH_SMA_NAME(name) = MKSMA(name, \
+                                               prio, \
+                                               ppty, \
+                                               initialState, \
+                                               initialAction, \
+                                               initialEvt)
 
     #define RKH_SMA_INIT(sma, prio, ppty, initialState, initialAction, \
                          initialEvt) \
@@ -1963,6 +1964,15 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
     #define RKH_SM_GET_OBJ(type, sm) \
         (type *)&RKH_SM_NAME(sm)
+
+    #define RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
+                                initialAction, initialEvt)
+
+    #define RKH_SM_GET_CONST(sm) \
+        ((RKH_SM_T *)sm)
+
+    #define RKH_SM_GET_CONST_OBJ(sm) \
+        ((RKH_SM_T *)sm)
 #endif
 
 /**

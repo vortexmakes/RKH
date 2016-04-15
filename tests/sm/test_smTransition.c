@@ -1004,6 +1004,11 @@ TEST(transition, generatedCompletionEventByFinalState)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
+TEST(transition, syncDispatchingToStateMachine)
+{
+    TEST_IGNORE();
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

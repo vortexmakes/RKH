@@ -125,6 +125,8 @@ RKH_SMA_CREATE(PublicCompositeA, publicCompositeA, 0, HCAL, NULL, NULL, NULL);
 RKH_SMA_DEF_PTR_TYPE(PublicCompositeA, publicCompositeA);
 RKH_SM_CONST_CREATE(publicRegionA, 1, HCAL, NULL, NULL, NULL);
 
+RKH_SM_CONST_CREATE(publicSingleDyn, 1, HCAL, NULL, NULL, NULL);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
@@ -169,7 +171,8 @@ void
 Composite_ctor(int foo)
 {
     ((Composite *)composite)->foo = foo;
-    RKH_SM_INIT(&((Composite *)composite)->itsReactivePart, region);
+    RKH_SM_INIT(&((Composite *)composite)->itsReactivePart, region, 
+                1, HCAL, NULL, NULL, NULL);
 }
 
 int
@@ -188,15 +191,39 @@ void
 PublicComposite_ctor(PublicComposite *const me, int foo)
 {
     me->foo = foo;
-    RKH_SM_INIT(&me->itsReactivePart, publicRegion);
+    RKH_SM_INIT(&me->itsReactivePart, publicRegion,
+                1, HCAL, NULL, NULL, NULL);
 }
 
 void
 PublicCompositeA_ctor(PublicCompositeA *const me, int actObjFoo, int partFoo)
 {
     me->foo = actObjFoo;
-    RKH_SM_INIT(&me->itsReactivePart, publicRegionA);
+    RKH_SM_INIT(&me->itsReactivePart, publicRegionA,
+                1, HCAL, NULL, NULL, NULL);
     me->itsReactivePart.foo = partFoo;
+}
+
+PublicSingle *
+PublicSingle_dynCtor(int foo)
+{
+    PublicSingle *me = (PublicSingle *)malloc(sizeof(PublicSingle));
+
+    if (me != (PublicSingle *)0)
+    {
+        /* Initialize its own state machine object */
+        RKH_SM_INIT(me, publicSingleDyn,
+                    1, HCAL, NULL, NULL, NULL);
+        me->foo = 8;
+    }
+    return me;
+}
+
+void 
+PublicSingle_dynDtor(PublicSingle *const me)
+{
+    if (me != (PublicSingle *)0)
+        free(me);
 }
 
 /* ------------------------------ End of file ------------------------------ */

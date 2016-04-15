@@ -135,152 +135,116 @@ TEST_TEAR_DOWN(instance)
  *  @{ 
  */
 
-TEST(instance, staticPrivateAOConstructor)
+TEST(instance, ctorOfStaticPrivateAO)
 {
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(single);
     Single_ctor(4);
 
-    TEST_ASSERT_EQUAL_STRING("single", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("single", RKH_SMA_ACCESS_CONST(single, name));
     TEST_ASSERT_EQUAL(4, Single_getFoo());
 }
 
-TEST(instance, staticPublicAO)
+TEST(instance, staticPublicAOWithoutRuntimeCtor)
 {
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(publicSingle);
-
     publicSingle->foo = 8;
-    TEST_ASSERT_EQUAL_STRING("publicSingle", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("publicSingle", 
+                             RKH_SMA_ACCESS_CONST(publicSingle, name));
 }
 
-TEST(instance, staticPublicAOConstructor)
+TEST(instance, ctorOfStaticPublicAO)
 {
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(publicSingle);
     PublicSingle_ctor(8);
 
-    TEST_ASSERT_EQUAL_STRING("publicSingle", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("publicSingle", 
+                             RKH_SMA_ACCESS_CONST(publicSingle, name));
     TEST_ASSERT_EQUAL(8, publicSingle->foo);
 }
 
-TEST(instance, staticOpaqueAOConstructor)
+TEST(instance, ctorOfStaticOpaqueAO)
 {
     Opaque_ctor(opaque, 4);
 
     TEST_ASSERT_EQUAL(4, Opaque_getFoo(opaque));
 }
 
-TEST(instance, staticMultipleAOConstructor)
+TEST(instance, ctorOfStaticMultipleAO)
 {
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(single0);
     MultiplePublicSingle_ctor(single0, 8);
 
-    TEST_ASSERT_EQUAL_STRING("single0", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("single0", 
+                             RKH_SMA_ACCESS_CONST(single0, name));
     TEST_ASSERT_EQUAL(8, single0->foo);
 }
 
-TEST(instance, staticArrayOfAO)
+TEST(instance, ctorOfStaticArrayOfAO)
 {
     PublicSingle *pSingle = RKH_ARRAY_SMA(arrayOfSingles, 2);
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(pSingle);
     MultiplePublicSingle_ctor(pSingle, 8);
 
-    TEST_ASSERT_EQUAL_STRING("single2", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("single2", 
+                             RKH_SMA_ACCESS_CONST(pSingle, name));
     TEST_ASSERT_EQUAL(8, pSingle->foo);
 }
 
-TEST(instance, staticPrivateStateMachine)
+TEST(instance, staticPrivateSMWithoutRuntimeCtor)
 {
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(stateMachine);
-
-    TEST_ASSERT_EQUAL_STRING("stateMachine", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("stateMachine", 
+                             RKH_SMA_ACCESS_CONST(stateMachine, name));
     TEST_ASSERT_EQUAL_PTR(NULL, stateMachine->state);
 }
 
-TEST(instance, staticPublicStateMachine)
+TEST(instance, staticPublicSMWithoutRuntimeCtor)
 {
-    RKHROM RKH_ROM_T *pConstSM = RKH_SM_GET_CONST(publicStateMachine);
-
-    TEST_ASSERT_EQUAL_STRING("publicStateMachine", pConstSM->name);
+    TEST_ASSERT_EQUAL_STRING("publicStateMachine", 
+                             RKH_SMA_ACCESS_CONST(publicStateMachine, name));
     TEST_ASSERT_EQUAL(8, publicSingle->foo);
 }
 
-TEST(instance, staticCompositeAOPrivateSingletonConstructor)
+TEST(instance, ctorOfStaticCompositePrivateSingletonAO)
 {
-    RKHROM RKH_ROM_T *pConstCompSM, *pConstPartSM; 
-
     Composite_ctor(16);
-    pConstCompSM = RKH_SM_GET_CONST(composite);
-    pConstPartSM = RKH_SM_GET_CONST(Composite_getItsReactivePart());
 
-    TEST_ASSERT_EQUAL_STRING("composite", pConstCompSM->name);
-    TEST_ASSERT_EQUAL_STRING("region", pConstPartSM->name);
+    TEST_ASSERT_EQUAL_STRING("composite", 
+                             RKH_SMA_ACCESS_CONST(composite, name));
+    TEST_ASSERT_EQUAL_STRING("region", 
+                 RKH_SMA_ACCESS_CONST(Composite_getItsReactivePart(), name));
     TEST_ASSERT_EQUAL(16, Composite_getFoo());
 }
 
-TEST(instance, staticCompositeAOPublicConstructor)
+TEST(instance, ctorOfStaticCompositePublicAO)
 {
-    RKHROM RKH_ROM_T *pConstCompSM, *pConstPartSM; 
-
     PublicComposite_ctor(publicComposite, 16);
-    pConstCompSM = RKH_SM_GET_CONST(publicComposite);
-    pConstPartSM = RKH_SM_GET_CONST(&publicComposite->itsReactivePart);
 
-    TEST_ASSERT_EQUAL_STRING("publicComposite", pConstCompSM->name);
-    TEST_ASSERT_EQUAL_STRING("publicRegion", pConstPartSM->name);
+    TEST_ASSERT_EQUAL_STRING("publicComposite", 
+                             RKH_SMA_ACCESS_CONST(publicComposite, name));
+    TEST_ASSERT_EQUAL_STRING("publicRegion", 
+             RKH_SMA_ACCESS_CONST(&publicComposite->itsReactivePart, name));
     TEST_ASSERT_EQUAL(16, publicComposite->foo);
 }
 
-TEST(instance, staticCompositeAOWithDerivedSMPublicConstructor)
+TEST(instance, ctorOfStaticCompositeAOWithDerivedPublicSM)
 {
-    RKHROM RKH_ROM_T *pConstCompSM, *pConstPartSM; 
-
     PublicCompositeA_ctor(publicCompositeA, 16, 8);
-    pConstCompSM = RKH_SM_GET_CONST(publicCompositeA);
-    pConstPartSM = RKH_SM_GET_CONST(&publicCompositeA->itsReactivePart);
 
-    TEST_ASSERT_EQUAL_STRING("publicCompositeA", pConstCompSM->name);
-    TEST_ASSERT_EQUAL_STRING("publicRegionA", pConstPartSM->name);
+    TEST_ASSERT_EQUAL_STRING("publicCompositeA", 
+                             RKH_SMA_ACCESS_CONST(publicCompositeA, name));
+    TEST_ASSERT_EQUAL_STRING("publicRegionA", 
+             RKH_SMA_ACCESS_CONST(&publicCompositeA->itsReactivePart, name));
     TEST_ASSERT_EQUAL(16, publicCompositeA->foo);
     TEST_ASSERT_EQUAL(8, publicCompositeA->itsReactivePart.foo);
 }
 
-TEST(instance, dynamicInstantiationOfCompositeActiveObject)
+TEST(instance, ctorOfDynamicCompositeAO)
 {
-#if 0
-    RKH_SM_CONST_CREATE(itsReactivePart, 2, HCAL, &s0, NULL, NULL);
-    RKH_SM_CONST_CREATE(composite, 0, HCAL, &waiting, NULL, NULL);
+    PublicSingle *actObj;
 
-    /* ----------------------- Composite constructor ----------------------- */
-    Composite *pCmp = (Composite *)malloc(sizeof(Composite));
-    TEST_ASSERT_NOT_NULL(pCmp);
+    actObj = PublicSingle_dynCtor(8);
+    TEST_ASSERT_NOT_NULL(actObj);
+    TEST_ASSERT_EQUAL(8, actObj->foo);
 
-    /* Initialize its state machine object */
-    RKH_SM_INIT(pCmp, composite);
+    TEST_ASSERT_EQUAL_STRING("publicSingleDyn", 
+                             RKH_SMA_ACCESS_CONST(actObj, name));
 
-    TEST_ASSERT_EQUAL_PTR(RKH_SM_GET_CONST_OBJ(composite), 
-                          pCmp->ao.sm.romrkh);
-    TEST_ASSERT_EQUAL_PTR(&waiting, pCmp->ao.sm.state);
-
-    /* and its (reactive) part */
-    RKH_SM_INIT(&pCmp->itsReactivePart, itsReactivePart);
-
-    TEST_ASSERT_EQUAL_PTR(RKH_SM_GET_CONST_OBJ(itsReactivePart), 
-                          pCmp->itsReactivePart.romrkh);
-    TEST_ASSERT_EQUAL_PTR(&s0, pCmp->itsReactivePart.state);
-
-    free(pCmp);
-#endif
-}
-
-TEST(instance, syncDispatchingToStateMachine)
-{
-#if 0
-    RKH_FILTER_OFF_SMA(&composite->itsReactivePart);
-	sm_init_expect(RKH_STATE_CAST(&s0));
-	sm_enstate_expect(RKH_STATE_CAST(&s0));
-    smTest_nS0_Expect(RKH_CAST(RKH_SM_T, &composite->itsReactivePart));
-
-    rkh_sm_init((RKH_SM_T *)&composite->itsReactivePart);
-#endif
+    PublicSingle_dynDtor(actObj);
 }
 
 /** @} doxygen end group definition */
