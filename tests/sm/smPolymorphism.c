@@ -103,6 +103,14 @@ Multiple_toggle(Multiple *me)
 }
 
 /* ---------------------------- Global functions --------------------------- */
+/*
+ * Initializes the object attributes.
+ *
+ * Singleton objects (with a multiplicity of one) are instantiated only once 
+ * throughout the life of the system.
+ * Because there can be only one instance of a singleton, its operations do 
+ * not include a context pointer as their first argument.
+ */
 void
 Singleton_ctor(int foo)
 {
@@ -124,6 +132,39 @@ Singleton_getFoo(void)
     return RKH_DOWNCAST(Singleton, singleton)->foo;
 }
 
+/*
+ *  Initializes the object attributes.
+ *
+ *  In this case, the constructor only initializes the object, neither  
+ *  allocates memory for it nor returns a pointer to the object initialized.
+ *  The initializer assumes that memory has previously been allocated for the 
+ *  object (either statically or dynamically).
+ *
+ *  Because each operation associated with an object is implemented as a 
+ *  global function in C, it must be provided with a context in the form of a 
+ *  pointer to the object on which it should operate. In C++, this context is 
+ *  provided in the form of an implied this pointer as the first argument. 
+ *  In C, however, the this pointer is not available. Therefore, in RKH, the 
+ *  first argument to operations is generally a pointer to the object 
+ *  associated with the operation. This context pointer is conventionally 
+ *  called me, as shown below.
+ *  
+ *  Because there is only one instance of a singleton object, the context 
+ *  pointer is not needed for singleton operations.
+ *  
+ *  The naming convention used to name operations is to prefix each (public) 
+ *  operation with the name of the object type on which it should operate. 
+ *  Thus, the public operation names have the format 
+ *  <object_type>_<operation_name>(), and private operation names have the 
+ *  format <operation_name>().
+ *  
+ *  \note
+ *  The first argument is a constant pointer to the object being initialized. 
+ *  The const keyword defines a constant pointer in ANSI C. Passing a constant 
+ *  pointer as an argument allows the operation to change the value of the 
+ *  object that the pointer addresses, but not the address that the argument 
+ *  me contains.
+ */
 void
 Multiple_ctor(Multiple *const me, int foobar, RKHPostFifo postFifo)
 {
