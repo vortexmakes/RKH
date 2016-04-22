@@ -280,6 +280,15 @@ RKH_ROM_STATIC_EVENT(evCompletion, RKH_COMPLETION_EVENT);
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
+/** Default virtual table for the RKH_SMA_T structure */
+const RKHSmaVtbl rkhSmaVtbl = 
+{
+    rkh_sma_activate,
+    NULL,
+    rkh_sma_post_fifo,
+    rkh_sma_post_lifo
+};
+
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */

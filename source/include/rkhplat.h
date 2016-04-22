@@ -102,6 +102,10 @@
     #include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkhport.h"
 #endif
 
+#ifdef __TEST__
+    #include "..\portable\test\rkhport.h"
+#endif
+
 /* ---------------------- External C language linkage ---------------------- */
 
 #ifdef __cplusplus

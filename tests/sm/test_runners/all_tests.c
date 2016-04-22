@@ -68,6 +68,7 @@ runAllTests(void)
 	RUN_TEST_GROUP(instance);
 	RUN_TEST_GROUP(transition);
 	RUN_TEST_GROUP(pseudostate);
+	RUN_TEST_GROUP(polymorphism);
 }
 
 /* ---------------------------- Global functions --------------------------- */

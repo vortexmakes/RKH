@@ -25,9 +25,13 @@
  */
 
 RKH_SMA_CREATE( CLI_T, cli0, CLI_PRIO_0, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_DEF_PTR(cli0);
 RKH_SMA_CREATE( CLI_T, cli1, CLI_PRIO_1, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_DEF_PTR(cli1);
 RKH_SMA_CREATE( CLI_T, cli2, CLI_PRIO_2, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_DEF_PTR(cli2);
 RKH_SMA_CREATE( CLI_T, cli3, CLI_PRIO_3, HCAL, &cli_idle, cli_init, NULL );
+RKH_SMA_DEF_PTR(cli3);
 
 RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS ) 
 {

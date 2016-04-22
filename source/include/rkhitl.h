@@ -1764,55 +1764,50 @@ extern "C" {
 
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define MKSM(constSM, initialState) \
-        { \
-            (RKHROM RKH_ROM_T *)(constSM), \
-            (RKHROM struct RKH_ST_T *)(initialState) \
-        }
+        (RKHROM RKH_ROM_T *)(constSM), /** RKH_SM_T::romrkh member */ \
+        (RKHROM struct RKH_ST_T *)(initialState) /** RKH_SM_T::state member */
 
     #define MKSMA(constSM, initialState) \
-        {MKSM(constSM, initialState)}
+        { \
+            MKSM(constSM, initialState), /** RKH_SM_T members */ \
+            &rkhSmaVtbl /** RKH_SMA_T::vptr member */ \
+        }
 #else
     #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
         #if R_TRC_AO_NAME_EN == RKH_ENABLED
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-            { \
                 (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
-                (RKHROM struct RKH_ST_T*)initialState \
-            }
+                (RKHROM struct RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-            { \
                 (prio), (ppty), (RKHROM struct RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
-                (RKHROM struct RKH_ST_T*)initialState \
-            }
+                (RKHROM struct RKH_ST_T*)initialState
         #endif
     #else
         #if R_TRC_AO_NAME_EN == RKH_ENABLED
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-            { \
                 (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), \
-                (RKHROM struct RKH_ST_T*)initialState \
-            }
+                (RKHROM struct RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-            { \
                 (prio), (ppty), (RKHROM struct RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), \
-                (RKHROM struct RKH_ST_T*)initialState \
-            }
+                (RKHROM struct RKH_ST_T*)initialState
         #endif
     #endif
 
     #define MKSMA(name, prio, ppty, initialState, initialAction, initialEvt) \
         { \
-            MKSM(name, prio, ppty, initialState, initialAction, initialEvt) \
+            MKSM(name, prio, ppty, initialState, \
+                 initialAction, initialEvt), /* RKH_SM_T members */ \
+            &rkhSmaVtbl /** RKH_SMA_T::vptr member */ \
         }
 
     #define MKRT_SM(sm_, name_, prio_, ppty_, initialState_, initialAction_, \
@@ -2829,6 +2824,8 @@ typedef struct RKH_SM_T
 } RKH_SM_T;
 #endif
 
+typedef struct RKHSmaVtbl RKHSmaVtbl;
+
 /**
  *  \brief
  *  Describes the SMA (active object in UML).
@@ -2873,6 +2870,12 @@ typedef struct RKH_SMA_T
      *  State machine.
      */
     RKH_SM_T sm;
+
+    /**
+     *  \brief
+     *  Virtual pointer.
+     */
+    const RKHSmaVtbl *vptr;
 
     /**
      *  \brief
@@ -2941,6 +2944,52 @@ typedef struct RKH_SMA_T
     RKH_SMAI_T sinfo;
 #endif
 } RKH_SMA_T;
+
+/** \copydetails RKHSmaVtbl::activate */
+typedef void (*RKHActivate)(RKH_SMA_T *me, 
+                         const RKH_EVT_T **qSto, RKH_RQNE_T qSize, 
+                         void *stkSto, rui32_t stkSize);
+
+/** \copydetails RKHSmaVtbl::task */
+typedef void (*RKHTask)(RKH_SMA_T *me, void *arg);
+
+/** \copydetails RKHSmaVtbl::post_fifo */
+#if defined(RKH_USE_TRC_SENDER)
+typedef void (*RKHPostFifo)(RKH_SMA_T *me, const RKH_EVT_T *e, 
+                         const void *const sender);
+#else
+typedef void (*RKHPostFifo)(RKH_SMA_T *me, const RKH_EVT_T *e);
+#endif
+
+/** \copydetails RKHSmaVtbl::post_lifo */
+#if defined(RKH_USE_TRC_SENDER)
+typedef void (*RKHPostLifo)(RKH_SMA_T *me, const RKH_EVT_T *e, 
+                         const void *const sender);
+#else
+typedef void (*RKHPostLifo)(RKH_SMA_T *me, const RKH_EVT_T *e);
+#endif
+
+/**
+ *  \brief
+ *  Virtual table for the RKH_SMA_T structure.
+ */
+struct RKHSmaVtbl
+{
+    /** Virtual function to activate the active object (thread) */
+    /** \sa RKH_SMA_ACTIVATE() */
+    RKHActivate activate;
+
+    /** Virtual function to control the execution of the AO (thread task) */
+    RKHTask task;
+
+    /** Virtual function to asynchronously post (FIFO) an event to an AO */
+    /** \sa RKH_SMA_POST_FIFO() */
+    RKHPostFifo post_fifo;
+
+    /** Virtual function to asynchronously post (LIFO) an event to an AO */
+    /** \sa RKH_SMA_POST_LIFO() */
+    RKHPostLifo post_lifo;
+};
 
 /**
  *  \brief
@@ -3697,6 +3746,9 @@ typedef struct RKH_SHIST_T
 #endif
 
 /* -------------------------- External variables --------------------------- */
+/** Default virtual table for the RKH_SMA_T structure */
+extern const RKHSmaVtbl rkhSmaVtbl;
+
 /* -------------------------- Function prototypes -------------------------- */
 
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \

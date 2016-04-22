@@ -51,7 +51,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_HISTORY_STORAGE(smPT_s1);
 RKH_CREATE_COMP_REGION_STATE(smPT_s1, NULL, NULL, RKH_ROOT, &smPT_s11, NULL, 
                               RKH_SHISTORY, NULL, NULL, NULL, 
-                              &ramHist_smPT_s1);
+                              RKH_GET_HISTORY_STORAGE(smPT_s1));
 RKH_CREATE_TRANS_TABLE(smPT_s1)
 
     RKH_TRREG(A, NULL, NULL, &smPT_s0),
@@ -68,7 +68,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_HISTORY_STORAGE(smPT_s12);
 RKH_CREATE_COMP_REGION_STATE(smPT_s12, NULL, NULL, &smPT_s1, &smPT_s121, NULL,
                               RKH_DHISTORY, NULL, NULL, NULL, 
-                              &ramHist_smPT_s12);
+                              RKH_GET_HISTORY_STORAGE(smPT_s12));
 RKH_CREATE_TRANS_TABLE(smPT_s12)
 RKH_END_TRANS_TABLE
 
@@ -83,7 +83,8 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_HISTORY_STORAGE(smPT_s2);
 RKH_CREATE_COMP_REGION_STATE(smPT_s2, NULL, NULL, RKH_ROOT, &smPT_s21, NULL, 
                               RKH_SHISTORY, smPT_trueGuard, smPT_trS2History, 
-                              &smPT_s22, &ramHist_smPT_s2);
+                              &smPT_s22, 
+                              RKH_GET_HISTORY_STORAGE(smPT_s2));
 RKH_CREATE_TRANS_TABLE(smPT_s2)
 RKH_END_TRANS_TABLE
 

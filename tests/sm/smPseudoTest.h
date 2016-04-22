@@ -57,8 +57,8 @@ RKH_DCLR_SHIST_STATE smPT_s2Hist;
 typedef struct SmPseudoTest SmPseudoTest;
 struct SmPseudoTest      /* SMA derived from RKH_SMA_T structure */
 {
-    RKH_SMA_T sma;  /* base structure */
-    rui8_t foo;     /* private member */
+    RKH_SMA_T sma;
+    rui8_t foo;
 };
 
 /* -------------------------- External variables --------------------------- */

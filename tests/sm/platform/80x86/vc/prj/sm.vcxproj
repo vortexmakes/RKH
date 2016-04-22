@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__W32STVC08__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);RKH_CFG_SMA_SM_CONST=RKH_ENABLED</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);RKH_CFG_SMA_SM_CONST=RKH_ENABLED</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\..\..\..\stub\mocks;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -91,8 +91,8 @@
     <ClInclude Include="..\..\..\..\..\..\source\include\rkhtim.h" />
     <ClInclude Include="..\..\..\..\..\..\source\include\rkhtrc.h" />
     <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkhport.h" />
+    <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkht.h" />
     <ClInclude Include="..\..\..\..\..\cmock\cmock.h" />
     <ClInclude Include="..\..\..\..\..\cmock\cmock_internals.h" />
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h" />
@@ -113,7 +113,7 @@
     <ClInclude Include="..\bsp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkh.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhdyn.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhmp.c" />
@@ -131,15 +131,19 @@
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
     <ClCompile Include="..\..\..\..\common.c" />
     <ClCompile Include="..\..\..\..\smInstance.c" />
+    <ClCompile Include="..\..\..\..\smPolymorphism.c" />
     <ClCompile Include="..\..\..\..\smPseudoTest.c" />
     <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\MockrkhportTest.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smInstance_runner.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smPolymorphism_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
     <ClCompile Include="..\..\..\..\test_smInstance.c" />
+    <ClCompile Include="..\..\..\..\test_smPolymorphism.c" />
     <ClCompile Include="..\..\..\..\test_smPseudostate.c" />
     <ClCompile Include="..\..\..\..\test_smTransition.c" />
     <ClCompile Include="..\bsp.c" />

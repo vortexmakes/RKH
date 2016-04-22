@@ -125,6 +125,21 @@ extern "C" {
     #define RKH_DYNE_PUT(mp, e)     (void)0
 #endif
 
+/**
+ *  \brief
+ *  Convert a pointer to a base-class. 
+ *
+ *  In other words, upcasting allows us to treat a derived type as though 
+ *  it were its base type.
+ */
+#define RKH_UPCAST(BaseType_, me_)          ((BaseType_ *)me_)
+
+/**
+ *  \brief
+ *  Converts a base-class pointer to a derived-class pointer.
+ */
+#define RKH_DOWNCAST(DerivedType_, me_)     ((DerivedType_ *)me_)
+
 /* -------------------------------- Constants ------------------------------ */
 
 #ifndef NULL
@@ -1119,13 +1134,31 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
- *  ...
+ *  Define a RAM storage to mantain the last visited state of a composite 
+ *  state (history pseudostate).
+ *
+ *  Frequently, it's used before of RKH_CREATE_COMP_REGION_STATE() macro to 
+ *  define the dynamic storage of a history pseudostate.
  *
  *  \param[in] compStateName    pointer to the composite state that contains 
  *                              this history pseudostate.
  */
 #define RKH_CREATE_HISTORY_STORAGE(compStateName) \
     static RKHROM RKH_ST_T *ramHist_##compStateName
+
+/**
+ *  \brief
+ *  Return the history storage address of a composite state. 
+ *
+ *  Frequently, it's used in the hRamMem parameter of 
+ *  RKH_CREATE_COMP_REGION_STATE() macro to define the dynamic storage of a 
+ *  history pseudostate.
+ *
+ *  \param[in] compStateName    pointer to the composite state that contains 
+ *                              this history pseudostate.
+ */
+#define RKH_GET_HISTORY_STORAGE(compStateName) \
+    &ramHist_##compStateName
 
 /*
  *  This macro is internal to RKH and the user application should
@@ -1165,14 +1198,14 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 /**
  *  \brief
  *  This macro declares a opaque pointer to previously created state machine
- *  application (SMA) to be used as a global object.
+ *  application (SMA aka active object) to be used as a global object.
  *
- *  This global pointer represent the state machine in the application.
- *  The state machine pointers are "opaque" because they cannot access the
- *  whole state machine structure, but only the part inherited from the
- *  RKH_SMA_T structure. The power of an "opaque" pointer is that it allows
- *  to completely hide the definition of the state machine structure and make
- *  it inaccessible to the rest of the application.
+ *  This global pointer represent the active object in the application.
+ *  These pointers are "opaque" because they cannot access the whole active 
+ *  object structure, but only the part inherited from the RKH_SMA_T structure.
+ *  The power of an "opaque" pointer is that it allows to completely hide the 
+ *  definition of the active object structure and make it inaccessible to the 
+ *  rest of the application, thus strengthening the encapsulation concept.
  *
  *  \param[in] me_  pointer to previously created state machine application.
  *
@@ -1195,7 +1228,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 /**
  *  \brief
  *  This macro declares a typed pointer to previously created state machine
- *  application (SMA) to be used as a global object.
+ *  application (SMA aka active object) to be used as a global and public 
+ *  object.
  *
  *  \param[in] type_
  *                  Data type of the state machine application. Could be 
@@ -1232,8 +1266,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  to completely hide the definition of the state machine structure and make
  *  it inaccessible to the rest of the application.
  *
- *  \param[in] type_
- *                  Data type of the state machine, derived from RKH_SM_T. 
  *  \param[in] me_	Pointer to previously created state machine.
  *
  *	\note
@@ -1255,8 +1287,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 /**
  *  \brief
  *  This macro declares a typed pointer to previously created state machine
- *  to be used as a global object. This global pointer represent the state 
- *  machine in the application.
+ *  to be used as a global and public object.
  *
  *  \param[in] type_
  *                  Data type of the state machine, derived from RKH_SM_T. 
@@ -1300,7 +1331,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #define RKH_DCLR_ENPNT          extern RKHROM RKH_SENP_T
 #define RKH_DCLR_REF_EXPNT      extern RKHROM RKH_SEXP_T
 #define RKH_DCLR_REF_ENPNT      extern RKHROM RKH_ENPCN_T
-/*@}*/
+/**@}*/
 
 /**
  *  \brief
@@ -1325,7 +1356,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  typedef struct
  *  {
- *      RKH_SMA_T sma;		// base structure
+ *      RKH_SMA_T me;		// base structure
  *      RKH_TMR_T cli_utmr; // usage time
  *      RKH_TMR_T cli_rtmr;	// waiting request time
  *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
@@ -1360,7 +1391,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  typedef struct
  *  {
- *      RKH_SMA_T sma;		// base structure
+ *      RKH_SMA_T me;		// base structure
  *      RKH_TMR_T cli_utmr; // usage time
  *      RKH_TMR_T cli_rtmr;	// waiting request time
  *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
@@ -1443,7 +1474,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  typedef struct
  *  {
- *      RKH_SMA_T sma;		// base structure
+ *      RKH_SMA_T me;		// base structure
  *      RKH_TMR_T cli_utmr; // usage time
  *      RKH_TMR_T cli_rtmr;	// waiting request time
  *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
@@ -1533,11 +1564,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *
  *	(10) void
- *		 mc_title( const struct RKH_SMA_T *sma )
+ *		 mc_title( const struct RKH_SMA_T *me )
  *		 {
  *		    ...
  *			lcd_print("%s\n", 
- *			          ((MENU_ST_T *)(((RKH_SM_T *)sma)->state))->title);
+ *			          ((MENU_ST_T *)(((RKH_SM_T *)me)->state))->title);
  *		 }
  *	\endcode
  *
@@ -1593,9 +1624,9 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	(6) NUM_BASIC_STATE( num, NULL, NULL, RKH_ROOT, &xy );
  *
  *	    void
- *		num_inc( const struct RKH_SMA_T *sma )
+ *		num_inc( const struct RKH_SMA_T *me )
  *		{
- *	(7)		((NUM_STATE_T *)(((RKH_SM_T *)sma)->state))->p_ram_xy++;
+ *	(7)		((NUM_STATE_T *)(((RKH_SM_T *)me)->state))->p_ram_xy++;
  *			...
  *		}
  *	\endcode
@@ -1682,75 +1713,74 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
     #define RKH_TIM_TICK(dummy_)      rkh_tmr_tick()
 #endif
 
+/**
+ *  \brief
+ *  Invoke the active object activation function rkh_sma_activate().
+ *
+ *  This macro is the recommended way of invoke the rkh_sma_activate()
+ *  function to active an active object, because it allows to
+ *  completely hides the platform-specific code.
+ *
+ *  \param[in] me_	    pointer to previously created state machine
+ *                      application.
+ *  \param[in] qSto_	base address of the event storage area. A message
+ *                      storage area is declared as an array of pointers
+ *                      to RKH events.
+ *  \param[in] qStoSize size of the storage event area [in number of
+ *                      entries].
+ *  \param[in] stkSto_	starting address of the stack's memory area.
+ *  \param[in] stkSize_ size of stack memory area [in bytes].
+ *
+ *	\sa
+ *	rkh_sma_activate().
+ *
+ *  \usage
+ *	\code
+ *	int
+ *	main( int argc, char *argv[] )
+ *	{
+ *		...
+ *		RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
+ *		...
+ *		return 0;
+ *	}
+ *	\endcode
+ */
 #if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
     #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *  Invoke the active object activation function rkh_sma_activate().
-     *
-     *  This macro is the recommended way of invoke the rkh_sma_activate()
-     *  function to active an active object, because it allows to
-     *  completely hides the platform-specific code.
-     *
-     *  \param[in] sma__	pointer to previously created state machine
-     *                      application.
-     *  \param[in] qsto__	base address of the event storage area. A message
-     *                      storage area is declared as an array of pointers
-     *                      to RKH events.
-     *  \param[in] qsto_size__  size of the storage event area [in number of
-     *                      entries].
-     *  \param[in] stk__	starting address of the stack's memory area.
-     *  \param[in] stk_size__   size of stack memory area [in bytes].
-     *
-     *	\sa
-     *	rkh_sma_activate().
-     *
-     *  \usage
-     *	\code
-     *	int
-     *	main( int argc, char *argv[] )
-     *	{
-     *		...
-     *		RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
-     *		...
-     *		return 0;
-     *	}
-     *	\endcode
-     */
-    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-         rkh_sma_activate(sma__, \
-                          (const RKH_EVT_T * *)qsto__, \
-                          qsto_size__, \
-                          (void *)stk__, \
-                          (rui32_t)stk_size__)
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+         ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                              (const RKH_EVT_T **)qSto_, \
+                                              qStoSize, \
+                                              (void *)stkSto_, \
+                                              (rui32_t)stkSize_)
     #else
-    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-        rkh_sma_activate(sma__, \
-                         (const RKH_EVT_T * *)qsto__, \
-                         qsto_size__, \
-                         (void *)0, \
-                         (rui32_t)0)
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                             (const RKH_EVT_T **)qSto_, \
+                                             qStoSize, \
+                                             (void *)0, \
+                                             (rui32_t)0)
     #endif
 #else
-#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
-    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-        rkh_sma_activate(sma__, \
-                     (const RKH_EVT_T * *)0, \
-                     qsto_size__, \
-                     (void *)stk__, \
-                     (rui32_t)stk_size__)
-#else
-    #define RKH_SMA_ACTIVATE(sma__, qsto__, qsto_size__, stk__, stk_size__) \
-        rkh_sma_activate(sma__, \
-                     (const RKH_EVT_T * *)0, \
-                     qsto_size__, \
-                     (void *)0, \
-                     (rui32_t)0)
-#endif
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                             (const RKH_EVT_T **)0, \
+                                             qStoSize, \
+                                             (void *)stkSto_, \
+                                             (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                             (const RKH_EVT_T **)0, \
+                                             qStoSize, \
+                                             (void *)0, \
+                                             (rui32_t)0)
+    #endif
 #endif
 
 
-#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
 /**
  *  \brief
  *  Use it to allocate a state machine regardless of an active object.
@@ -1783,19 +1813,51 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  \sa RKH_SM_CONST_CREATE, RKH_SM_GET_CONST, RKH_SM_GET_CONST
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
                           initialAction, initialEvt) \
         RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
                             initialEvt); \
-        static type s_##name = MKSM(&RKH_SM_CONST_NAME(name), initialState)
+        static type s_##name = {MKSM(&RKH_SM_CONST_NAME(name), initialState)}
+#else
+    #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
+                          initialAction, initialEvt) \
+        static type RKH_SMA_NAME(name) = {MKSM(name, prio, ppty, initialState, \
+                                               initialAction, initialEvt)}
+#endif
 
 /**
  *  \brief
  *  Initialize (at runtime) a previously created state machine object.
  *
- *  \param[in] me_           ...
- *  \param[in] nameSMConst_  Describe it 
+ *  \param[in] me_		Name of state machine. Also, it represents the top 
+ *                      state of state diagram.
+ *  \param[in] nameSMConst_  
+ *                      Describe it 
+ *  \param[in] prio_	State machine application priority. A unique priority
+ *                      number must be assigned to each SMA from 0 to
+ *                      RKH_LOWEST_PRIO. The lower the number, the higher the
+ *                      priority.
+ *  \param[in] ppty_	State machine properties. The available properties are
+ *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
+ *                      file.
+ *  \param[in] initialState_ 
+ *                      Pointer to initial state. This state could be defined
+ *                      either composite or basic (not pseudo-state).
+ *  \param[in] initialAction_ 
+ *                      Pointer to initialization action (optional). The
+ *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      argument is optional, thus it could be declared as
+ *                      NULL.
+ *  \param[in] initialEvt_ 
+ *                      Pointer to an event that will be passed to state
+ *                      machine application when it starts. Could be used to
+ *                      pass arguments to the state machine like an argc/argv.
+ *                      This argument is optional, thus it could be declared
+ *                      as NULL or eliminated in compile-time with
+ *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_INIT(me_, nameSMConst_, prio_, ppty_, initialState_, \
                         initialAction_, initialEvt_) \
         ((RKH_SM_T *)me_)->romrkh = \
@@ -1803,6 +1865,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
         ((RKH_SM_T *)me_)->state = \
             (RKHROM struct RKH_ST_T *) \
                 ((RKH_SM_GET_CONST_OBJ(nameSMConst_))->istate)
+#else
+    #define RKH_SM_INIT(sm, name, prio, ppty, initialState, \
+                        initialAction, initialEvt) \
+        MKRT_SM(sm, name, prio, ppty, initialState, initialAction, initialEvt)
+#endif
 
 /**
  *  \brief
@@ -1871,12 +1938,23 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_SMA_CREATE(MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent);
  *	\endcode
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
                            initialAction, initialEvt) \
         RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
                             initialEvt); \
         static type RKH_SMA_NAME(name) = MKSMA(&RKH_SM_CONST_NAME(name), \
                                                initialState)
+#else
+    #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
+                           initialAction, initialEvt) \
+        static type RKH_SMA_NAME(name) = MKSMA(name, \
+                                               prio, \
+                                               ppty, \
+                                               initialState, \
+                                               initialAction, \
+                                               initialEvt)
+#endif
 
 /**
  *  \brief
@@ -1908,6 +1986,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      as NULL or eliminated in compile-time with
  *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
                                 initialAction, initialEvt) \
        static RKHROM RKH_ROM_T RKH_SM_CONST_NAME(name) = \
@@ -1917,6 +1996,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                                        initialState, \
                                                        initialAction, \
                                                        initialEvt)
+#else
+    #define RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
+                                initialAction, initialEvt)
+#endif
 
 /**
  *  \brief
@@ -1925,8 +2008,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  \param[in] sm   Name of state machine.
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_GET_CONST(sm) \
         ((RKH_SM_T *)sm)->romrkh
+#else
+    #define RKH_SM_GET_CONST(sm) \
+        ((RKH_SM_T *)sm)
+#endif
 
 /**
  *  \brief
@@ -1934,45 +2022,35 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  \param[in] sm   Name of state machine.
  */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_GET_CONST_OBJ(sm) \
         &RKH_SM_CONST_NAME(sm)
 #else
-    #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
-                          initialAction, initialEvt) \
-        static type RKH_SMA_NAME(name) = MKSM(name, prio, ppty, initialState, \
-                                              initialAction, initialEvt)
-
-    #define RKH_SM_INIT(sm, name, prio, ppty, initialState, \
-                        initialAction, initialEvt) \
-        MKRT_SM(sm, name, prio, ppty, initialState, initialAction, initialEvt)
-
-    #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
-                           initialAction, initialEvt) \
-        static type RKH_SMA_NAME(name) = MKSMA(name, \
-                                               prio, \
-                                               ppty, \
-                                               initialState, \
-                                               initialAction, \
-                                               initialEvt)
-
-    #define RKH_SMA_INIT(sma, prio, ppty, initialState, initialAction, \
-                         initialEvt) \
-        MKRT_SM(sma, sma, prio, ppty, initialState, initialAction, initialEvt)
-
-    #define RKH_SMA_GET_OBJ(type, sma) \
-        (type *)&RKH_SMA_NAME(sma)
-
-    #define RKH_SM_GET_OBJ(type, sm) \
-        (type *)&RKH_SM_NAME(sm)
-
-    #define RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
-                                initialAction, initialEvt)
-
-    #define RKH_SM_GET_CONST(sm) \
-        ((RKH_SM_T *)sm)
-
     #define RKH_SM_GET_CONST_OBJ(sm) \
         ((RKH_SM_T *)sm)
+#endif
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define RKH_SMA_INIT(me, prio, ppty, initialState, initialAction, \
+                         initialEvt)
+#else
+    #define RKH_SMA_INIT(me, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+        MKRT_SM(me, me, prio, ppty, initialState, initialAction, initialEvt)
+#endif
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define RKH_SMA_GET_OBJ(type, me)
+#else
+    #define RKH_SMA_GET_OBJ(type, me) \
+        (type *)&RKH_SMA_NAME(me)
+#endif
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define RKH_SM_GET_OBJ(type, sm)
+#else
+    #define RKH_SM_GET_OBJ(type, sm) \
+        (type *)&RKH_SM_NAME(sm)
 #endif
 
 /**
@@ -2033,94 +2111,94 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #define RKH_SMA_DEF_PTR_TYPE(type, me_) \
     type *const me_ = (type *)&RKH_SMA_NAME(me_)
 
+/**
+ *  \brief
+ *  Invoke the direct event posting facility rkh_sma_post_fifo().
+ *
+ *  This macro is the recommended way of posting events, because it
+ *  provides the vital information for software tracing and avoids any
+ *  overhead when the tracing is disabled.
+ *
+ *  \param[in] me_		pointer to previously created state machine
+ *                      application.
+ *  \param[in] e_		actual event sent to the state machine application.
+ *  \param[in] sender_	pointer to the sender object. It is not
+ *                      necessarily a pointer to an active object. In
+ *                      fact, if RKH_SMA_POST_FIFO() is called from an
+ *                      interrupt or other context, it can create a
+ *                      unique object just to unambiguously identify the
+ *                      publisher of the event.
+ *	\sa
+ *	rkh_sma_post_fifo().
+ */
 #if defined(RKH_USE_TRC_SENDER)
-    /**
-     *  \brief
-     *  Invoke the direct event posting facility rkh_sma_post_fifo().
-     *
-     *  This macro is the recommended way of posting events, because it
-     *  provides the vital information for software tracing and avoids any
-     *  overhead when the tracing is disabled.
-     *
-     *  \param[in] _sma		pointer to previously created state machine
-     *                      application.
-     *  \param[in] _e		actual event sent to the state machine application.
-     *  \param[in] _sender	pointer to the sender object. It is not
-     *                      necessarily a pointer to an active object. In
-     *                      fact, if RKH_SMA_POST_FIFO() is called from an
-     *                      interrupt or other context, it can create a
-     *                      unique object just to unambiguously identify the
-     *                      publisher of the event.
-     *	\sa
-     *	rkh_sma_post_fifo().
-     */
-    #define RKH_SMA_POST_FIFO(_sma, _e, _sender) \
-        rkh_sma_post_fifo((_sma), (_e), (_sender))
+    #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+        ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_), (sender_))
 #else
-    #define RKH_SMA_POST_FIFO(_sma, _e, _dummy) \
-        rkh_sma_post_fifo((_sma), (_e))
+    #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+        ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_))
 #endif
 
+/**
+ *  \brief
+ *  Invoke the direct event posting facility rkh_sma_post_lifo().
+ *
+ *  This macro is the recommended way of posting events, because it
+ *  provides the vital information for software tracing and avoids any
+ *  overhead when the tracing is disabled.
+ *
+ *  \param[in] me_	    pointer to previously created state machine
+ *                      application.
+ *  \param[in] e_		actual event sent to the state machine application.
+ *  \param[in] sender_	pointer to the sender object. It is not
+ *                      necessarily a pointer to an active object. In
+ *                      fact, if RKH_SMA_POST_LIFO() is called from an
+ *                      interrupt or other context, it can create a
+ *                      unique object just to unambiguously identify the
+ *                      publisher of the event.
+ *
+ *	\sa
+ *	rkh_sma_post_lifo().
+ */
 #if defined(RKH_USE_TRC_SENDER)
-    /**
-     *  \brief
-     *  Invoke the direct event posting facility rkh_sma_post_lifo().
-     *
-     *  This macro is the recommended way of posting events, because it
-     *  provides the vital information for software tracing and avoids any
-     *  overhead when the tracing is disabled.
-     *
-     *  \param[in] _sma	    pointer to previously created state machine
-     *                      application.
-     *  \param[in] _e		actual event sent to the state machine application.
-     *  \param[in] _sender	pointer to the sender object. It is not
-     *                      necessarily a pointer to an active object. In
-     *                      fact, if RKH_SMA_POST_LIFO() is called from an
-     *                      interrupt or other context, it can create a
-     *                      unique object just to unambiguously identify the
-     *                      publisher of the event.
-     *
-     *	\sa
-     *	rkh_sma_post_lifo().
-     */
-    #define RKH_SMA_POST_LIFO(_sma, _e, _sender) \
-        rkh_sma_post_lifo((_sma), (_e), (_sender))
+    #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+        ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_), (sender_))
 #else
-    #define RKH_SMA_POST_LIFO(_sma, _e, _dummy) \
-        rkh_sma_post_lifo((_sma), (_e))
+    #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+        ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_))
 #endif
 
+/**
+ *  \brief
+ *	This macro dynamically creates a new event of type \a et with its
+ *	signal.
+ *
+ *	The basic policy is to allocate the event from the first pool that
+ *	has a block size big enough to fit the requested event size. RKH
+ *	can manage up to three event pools (e.g., small, medium, and large
+ *	events, like shirt sizes). It returns a pointer to the event
+ *	already cast to the event type (et*). 
+ *
+ *  \param[in] et		type of event
+ *  \param[in] e		event signal
+ *
+ *  \note
+ *	The assertions inside rkh_fwk_ae() function guarantee that the
+ *	pointer is valid, so you don't need to check the pointer returned
+ *	from rkh_fwk_ae(), unlike the value returned from malloc(), which
+ *	you should check.
+ *
+ *  \usage
+ *	Here is an example of dynamic event allocation with the macro 
+ *	RKH_ALLOC_EVT():
+ *
+ *	\code
+ *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
+ *	mye->y = mye->x = 0;
+ *	...
+ *	\endcode
+ */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	This macro dynamically creates a new event of type \a et with its
-     *	signal.
-     *
-     *	The basic policy is to allocate the event from the first pool that
-     *	has a block size big enough to fit the requested event size. RKH
-     *	can manage up to three event pools (e.g., small, medium, and large
-     *	events, like shirt sizes). It returns a pointer to the event
-     *	already cast to the event type (et*). 
-     *
-     *  \param[in] et		type of event
-     *  \param[in] e		event signal
-     *
-     *  \note
-     *	The assertions inside rkh_fwk_ae() function guarantee that the
-     *	pointer is valid, so you don't need to check the pointer returned
-     *	from rkh_fwk_ae(), unlike the value returned from malloc(), which
-     *	you should check.
-     *
-     *  \usage
-     *	Here is an example of dynamic event allocation with the macro 
-     *	RKH_ALLOC_EVT():
-     *
-     *	\code
-     *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
-     *	mye->y = mye->x = 0;
-     *	...
-     *	\endcode
-     */
     #define RKH_ALLOC_EVT(et, e) \
         (et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
@@ -2315,13 +2393,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \brief
  *  This macro retrieves the state ID of SMA.
  *
- *  \param[in] sma	pointer to previously created state machine application.
+ *  \param[in] me	pointer to previously created state machine application.
  *
  *  \return
  *  Id of current state.
  */
-#define RKH_GET_CSTATE_ID(sma) \
-    ((RKH_BASE_T *)(((RKH_SM_T *)sma)->state))->id
+#define RKH_GET_CSTATE_ID(me) \
+    ((RKH_BASE_T *)(((RKH_SM_T *)me)->state))->id
 
 #if R_TRC_AO_NAME_EN == RKH_ENABLED
     /**
@@ -2389,14 +2467,14 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \usage
  *  \code
  *  void
- *  svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+ *  svr_start( const struct RKH_SMA_T *me, RKH_EVT_T *pe )
  *  {
  *      START_EVT_T *e_start;
  *
  *      e_start = RKH_ALLOC_EVT( START_EVT_T, START );
  *      e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
  *      RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ),
- *												RKH_EVT_CAST(e_start), sma );
+ *												RKH_EVT_CAST(e_start), me );
  *  }
  *  \endcode
  */
@@ -2642,7 +2720,7 @@ void rkh_fwk_exit(void);
  *  Once terminated, the state machine application must be re-created in
  *  order for it to execute again.
  *
- *  \param[in] sma      pointer to previously created state machine
+ *  \param[in] me      pointer to previously created state machine
  *                      application.
  *
  *	\note
@@ -2656,7 +2734,7 @@ void rkh_fwk_exit(void);
  *	scheduler non-preemptive.
  *  \snippet linux_st_rkhport.c Terminates an active object
  */
-void rkh_sma_terminate(RKH_SMA_T *sma);
+void rkh_sma_terminate(RKH_SMA_T *me);
 
 #if defined(RKH_USE_TRC_SENDER)
 /**
@@ -2691,14 +2769,14 @@ void rkh_tmr_tick(void);
  *  A state machine application (SMA) is declared with the RKH_SMA_T data
  *  type and is defined with the rkh_sma_activate() service.
  *
- *  \param[in] sma      pointer to previously created state machine
+ *  \param[in] me       pointer to previously created state machine
  *                      application.
- *  \param[in] qs       base address of the event storage area. A message
+ *  \param[in] qSto     base address of the event storage area. A message
  *                      storage area is declared as an array of pointers to
  *                      RKH events.
- *  \param[in] qsize    size of the storage event area [in number of entries].
- *  \param[in] stks     starting address of the stack's memory area.
- *  \param[in] stksize  size of stack memory area [in bytes].
+ *  \param[in] qSize    size of the storage event area [in number of entries].
+ *  \param[in] stkSto   starting address of the stack's memory area.
+ *  \param[in] stkSize  size of stack memory area [in bytes].
  *
  *	\note
  *	Platform-dependent function. All RKH ports must be defined in the RKH
@@ -2711,8 +2789,8 @@ void rkh_tmr_tick(void);
  *	scheduler non-preemptive.
  *  \snippet linux_st_rkhport.c Activates an active object
  */
-void rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs,
-                      RKH_RQNE_T qsize, void *stks, rui32_t stksize);
+void rkh_sma_activate(RKH_SMA_T *me, const RKH_EVT_T * *qSto,
+                      RKH_RQNE_T qSize, void *stkSto, rui32_t stkSize);
 
 #if defined(RKH_USE_TRC_SENDER)
 /**
@@ -2721,7 +2799,7 @@ void rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs,
  *  object through a queue using the FIFO policy. A message is a pointer
  *  size variable and its use is application specific.
  *
- *  \param[in] sma      pointer to previously created state machine
+ *  \param[in] me      pointer to previously created state machine
  *                      application.
  *  \param[in] e		actual event sent to the state machine application.
  *  \param[in] sender	pointer to the sender object. It is not necessarily a 
@@ -2744,10 +2822,10 @@ void rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs,
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  */
-void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
+void rkh_sma_post_fifo(RKH_SMA_T *me, const RKH_EVT_T *e,
                        const void *const sender);
 #else
-void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
+void rkh_sma_post_fifo(RKH_SMA_T *me, const RKH_EVT_T *e);
 #endif
 
 #if defined(RKH_USE_TRC_SENDER)
@@ -2757,7 +2835,7 @@ void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *  object through a queue using the LIFO policy. A message is a pointer
  *  size variable and its use is application specific.
  *
- *  \param[in] sma		pointer to previously created state machine 
+ *  \param[in] me		pointer to previously created state machine 
  *                      application.
  *  \param[in] e		actual event sent to the state machine application.
  *  \param[in] sender	pointer to the sender object. It is not
@@ -2781,11 +2859,11 @@ void rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  */
-void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
+void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e,
                        const void *const sender);
 
 #else
-void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
+void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e);
 #endif
 
 /**
@@ -2795,7 +2873,7 @@ void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *  The events received are pointer size variables and their use is
  *  application specific.
  *
- *  \param[in] sma		pointer to previously created state machine 
+ *  \param[in] me		pointer to previously created state machine 
  *                      application.
  *
  *	\return     A non-NULL pointer indicates that a event pointer was 
@@ -2810,7 +2888,7 @@ void rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e);
  *	queue, the function will block the current thread until an event is
  *	received.
  */
-RKH_EVT_T *rkh_sma_get(RKH_SMA_T *sma);
+RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
 
 /**
  *  \brief
@@ -2825,7 +2903,7 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *sma);
  *	This information provides a "snapshot" a particular instant in time, i.e.,
  *	when the service is invoked.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] me  pointer to previously created state machine application.
  *  \param[in] psi  pointer to the buffer into which the performance
  *                  information will be copied by reference.
  *
@@ -2835,20 +2913,20 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *sma);
  *  RKH_CFG_SMA_GET_INFO_EN = 0.
  *
  */
-void rkh_sma_get_info(RKH_SMA_T *sma, RKH_SMAI_T *psi);
+void rkh_sma_get_info(RKH_SMA_T *me, RKH_SMAI_T *psi);
 
 /**
  *  \brief
  *  Clear performance information for a particular state machine application
  *  (SMA) as known as active object.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] me  pointer to previously created state machine application.
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_SMA_GET_INFO_EN = 0.
  */
-void rkh_sma_clear_info(RKH_SMA_T *sma);
+void rkh_sma_clear_info(RKH_SMA_T *me);
 
 /**
  *  \brief
@@ -2856,9 +2934,9 @@ void rkh_sma_clear_info(RKH_SMA_T *sma);
  *  the framework, which implies to store a pointer to the SMA in the priority
  *  table.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] me  pointer to previously created state machine application.
  */
-void rkh_sma_register(RKH_SMA_T *sma);
+void rkh_sma_register(RKH_SMA_T *me);
 
 /**
  *  \brief
@@ -2866,9 +2944,9 @@ void rkh_sma_register(RKH_SMA_T *sma);
  *	thus from the framework, by simply replacing the link to the SMA being
  *	deleted with a NULL pointer.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] me  pointer to previously created state machine application.
  */
-void rkh_sma_unregister(RKH_SMA_T *sma);
+void rkh_sma_unregister(RKH_SMA_T *me);
 
 /**
  *  \brief
@@ -2905,9 +2983,9 @@ void rkh_sma_unregister(RKH_SMA_T *sma);
  *	...
  *
  *	void
- *	ring( const struct rkh_t *sma, RKH_EVT_T *pe )
+ *	ring( const struct rkh_t *me, RKH_EVT_T *pe )
  *	{
- *		(void)sma;                  // argument not used
+ *		(void)me;                  // argument not used
  *		rkh_fwk_defer( &qurc, pe );	// defer event
  *	}
  *	\endcode
@@ -2921,7 +2999,7 @@ void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
  *  This function is part of the event deferral support. An SMA
  *  uses this function to recall a deferred event from a given event queue.
  *  Recalling an event means that it is removed from the deferred event
- *  queue \a q and posted (LIFO) to the event queue of the \a sma state
+ *  queue \a q and posted (LIFO) to the event queue of the \a me state
  *  machine application.
  *
  *  \note
@@ -2934,14 +3012,14 @@ void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
  *  \usage
  *	\code
  *	void
- *	exit_rx_manager( const struct rkh_t *sma )
+ *	exit_rx_manager( const struct rkh_t *me )
  *	{
- *		rkh_fwk_recall( sma, &qurc );
+ *		rkh_fwk_recall( me, &qurc );
  *	}
  *	\endcode
  *
  */
-RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *sma, RKH_RQ_T *q);
+RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
 
 /**
  *  \brief
@@ -3072,7 +3150,7 @@ void rkh_fwk_reserve(RKH_EVT_T *e);
  *  When dispatching an event to a SMA the dispatch hook function will be
  *  executed.
  *
- *  \param[in] sma  pointer to previously created state machine application.
+ *  \param[in] me  pointer to previously created state machine application.
  *	\param[in] e    pointer to arrived event.
  *
  *	\note
@@ -3080,7 +3158,7 @@ void rkh_fwk_reserve(RKH_EVT_T *e);
  *	set to 1 within rkhcfg.h file. When this is set the application must
  *	provide the hook function.
  */
-void rkh_hook_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e);
+void rkh_hook_dispatch(RKH_SMA_T *me, RKH_EVT_T *e);
 
 /**
  *  \brief
@@ -3201,9 +3279,9 @@ void rkh_hook_putTrcEvt(void);
  *  \brief
  *  Inits a previously created state machine calling its initializing action.
  *
- *  \param[in] sma  pointer to previously created state machine.
+ *  \param[in] me  pointer to previously created state machine.
  */
-void rkh_sm_init(RKH_SM_T *sma);
+void rkh_sm_init(RKH_SM_T *me);
 
 /**
  *  \brief
