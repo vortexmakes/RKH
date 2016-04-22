@@ -63,8 +63,9 @@ TEST_GROUP_RUNNER(polymorphism)
 	RUN_TEST_CASE(polymorphism, defaultVirtualFunctions);
 	RUN_TEST_CASE(polymorphism, callVirtualFunction);
 	RUN_TEST_CASE(polymorphism, setVirtualTable);
-	RUN_TEST_CASE(polymorphism, runtimeSingletonAOCtorOverridesVtbl);
-	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorOverridesAndExtendsVtbl);
+	RUN_TEST_CASE(polymorphism, runtimeSingletonAOCtor);
+	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorWithVtblForObj);
+	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorWithVtblForType);
 }
 
 /* ------------------------------ End of file ------------------------------ */

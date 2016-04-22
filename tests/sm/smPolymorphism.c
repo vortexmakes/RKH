@@ -63,8 +63,16 @@ struct Singleton
 struct Multiple
 {
     RKH_SMA_T base;
-    MultipleVtbl vtbl;
+    MultipleVtbl vtbl;  /* Since every instance of Multiple sets in runtime */
+                        /* its own virtual functions, every instance must */
+                        /* store into RAM its virtual table. */ 
     int foobar;
+};
+
+struct Command
+{
+    RKH_SMA_T base;
+    int bar;
 };
 
 /* ---------------------------- Global variables --------------------------- */
@@ -74,20 +82,26 @@ RKH_SMA_DEF_PTR(singleton);
 
 RKH_SMA_CREATE(Multiple, multA, 0, HCAL, NULL, NULL, NULL);
 RKH_SMA_DEF_PTR_TYPE(Multiple, multA);
-
 RKH_SMA_CREATE(Multiple, multB, 0, HCAL, NULL, NULL, NULL);
 RKH_SMA_DEF_PTR_TYPE(Multiple, multB);
+
+RKH_SMA_CREATE(Command, cmdSignal, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(Command, cmdSignal);
+RKH_SMA_CREATE(Command, cmdRegister, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(Command, cmdRegister);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
 Singleton_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
-                void *stkSto, rui32_t stkSize)
+                   void *stkSto, rui32_t stkSize)
 {
     int var = 0;
 
-    if (me->vptr->task != (void(*)(RKH_SMA_T *, void *))0)
+    if (me->vptr->task != (void (*)(RKH_SMA_T *, void *)) 0)
+    {
         me->vptr->task(me, &var);
+    }
 }
 
 static void
@@ -102,13 +116,28 @@ Multiple_toggle(Multiple *me)
     me->foobar = (int)((me->foobar & 1u) == 0);
 }
 
+void
+Command_task(RKH_SMA_T *me, void *arg)
+{
+}
+
+void
+Command_postFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
+{
+}
+
+void
+Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
+{
+}
+
 /* ---------------------------- Global functions --------------------------- */
 /*
  * Initializes the object attributes.
  *
- * Singleton objects (with a multiplicity of one) are instantiated only once 
+ * Singleton objects (with a multiplicity of one) are instantiated only once
  * throughout the life of the system.
- * Because there can be only one instance of a singleton, its operations do 
+ * Because there can be only one instance of a singleton, its operations do
  * not include a context pointer as their first argument.
  */
 void
@@ -135,44 +164,53 @@ Singleton_getFoo(void)
 /*
  *  Initializes the object attributes.
  *
- *  In this case, the constructor only initializes the object, neither  
+ *  In this case, the constructor only initializes the object, neither
  *  allocates memory for it nor returns a pointer to the object initialized.
- *  The initializer assumes that memory has previously been allocated for the 
+ *  The initializer assumes that memory has previously been allocated for the
  *  object (either statically or dynamically).
  *
- *  Because each operation associated with an object is implemented as a 
- *  global function in C, it must be provided with a context in the form of a 
- *  pointer to the object on which it should operate. In C++, this context is 
- *  provided in the form of an implied this pointer as the first argument. 
- *  In C, however, the this pointer is not available. Therefore, in RKH, the 
- *  first argument to operations is generally a pointer to the object 
- *  associated with the operation. This context pointer is conventionally 
+ *  Because each operation associated with an object is implemented as a
+ *  global function in C, it must be provided with a context in the form of a
+ *  pointer to the object on which it should operate. In C++, this context is
+ *  provided in the form of an implied this pointer as the first argument.
+ *  In C, however, the this pointer is not available. Therefore, in RKH, the
+ *  first argument to operations is generally a pointer to the object
+ *  associated with the operation. This context pointer is conventionally
  *  called me, as shown below.
- *  
- *  Because there is only one instance of a singleton object, the context 
+ *
+ *  Because there is only one instance of a singleton object, the context
  *  pointer is not needed for singleton operations.
- *  
- *  The naming convention used to name operations is to prefix each (public) 
- *  operation with the name of the object type on which it should operate. 
- *  Thus, the public operation names have the format 
- *  <object_type>_<operation_name>(), and private operation names have the 
+ *
+ *  The naming convention used to name operations is to prefix each (public)
+ *  operation with the name of the object type on which it should operate.
+ *  Thus, the public operation names have the format
+ *  <object_type>_<operation_name>(), and private operation names have the
  *  format <operation_name>().
- *  
+ *
  *  \note
- *  The first argument is a constant pointer to the object being initialized. 
- *  The const keyword defines a constant pointer in ANSI C. Passing a constant 
- *  pointer as an argument allows the operation to change the value of the 
- *  object that the pointer addresses, but not the address that the argument 
+ *  The first argument is a constant pointer to the object being initialized.
+ *  The const keyword defines a constant pointer in ANSI C. Passing a constant
+ *  pointer as an argument allows the operation to change the value of the
+ *  object that the pointer addresses, but not the address that the argument
  *  me contains.
  */
 void
 Multiple_ctor(Multiple *const me, int foobar, RKHPostFifo postFifo)
 {
-    RKH_UPCAST(RKH_SMA_T, me)->vptr = &me->vtbl.super;
+    /* Link vptr to its own virtual table */
+    RKH_UPCAST(RKH_SMA_T, me)->vptr = &me->vtbl.base;
+
+    /* Initialize the virtual table */
     *((RKHSmaVtbl *)(RKH_UPCAST(RKH_SMA_T, me)->vptr)) = rkhSmaVtbl;
+
+    /* Overrides the post_fifo() virtual operation */
     ((RKHSmaVtbl *)(RKH_UPCAST(RKH_SMA_T, me)->vptr))->post_fifo = postFifo;
-    ((MultipleVtbl *)(RKH_UPCAST(RKH_SMA_T, me)->vptr))->toggle = 
-                                                            Multiple_toggle;
+
+    /* Set the toggle() virtual operation */
+    ((MultipleVtbl *)(RKH_UPCAST(RKH_SMA_T, me)->vptr))->toggle =
+        Multiple_toggle;
+
+    /* Initialize the attributes */
     me->foobar = foobar;
 }
 
@@ -194,4 +232,18 @@ Multiple_postFifoB(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
     RKH_DOWNCAST(Multiple, me)->foobar += 4;
 }
 
+static const RKHSmaVtbl commandVtbl =
+{
+    rkh_sma_activate,
+    Command_task,
+    Command_postFifo,
+    Command_postLifo
+};
+
+void
+Command_ctor(Command *const me, int bar)
+{
+    RKH_UPCAST(RKH_SMA_T, me)->vptr = &commandVtbl;
+    me->bar = bar;
+}
 /* ------------------------------ End of file ------------------------------ */

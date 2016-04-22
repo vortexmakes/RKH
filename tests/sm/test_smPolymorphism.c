@@ -90,7 +90,6 @@ testTask(RKH_SMA_T *me, void *arg)
 {
 }
 
-#if defined(RKH_USE_TRC_SENDER)
 static void
 testPostFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
@@ -100,17 +99,6 @@ static void
 testPostLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
 }
-#else
-static void
-testPostFifo(RKH_SMA_T *me, const RKH_EVT_T *e)
-{
-}
-
-static void
-testPostLifo(RKH_SMA_T *me, const RKH_EVT_T *e)
-{
-}
-#endif
 
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(polymorphism)
@@ -142,8 +130,7 @@ TEST_TEAR_DOWN(polymorphism)
 TEST(polymorphism, defaultVirtualFunctions)
 {
     checkVtbl(singleton, 
-              rkh_sma_activate, NULL, 
-              rkh_sma_post_fifo, rkh_sma_post_lifo);
+              rkh_sma_activate, NULL, rkh_sma_post_fifo, rkh_sma_post_lifo);
 
     TEST_ASSERT_EQUAL_PTR(&rkhSmaVtbl, singleton->vptr);
 }
@@ -170,11 +157,10 @@ TEST(polymorphism, setVirtualTable)
     vptr = singleton->vptr = &vtbl;
 
     checkVtbl(singleton, 
-              testActivate, testTask, 
-              testPostFifo, testPostLifo);
+              testActivate, testTask, testPostFifo, testPostLifo);
 }
 
-TEST(polymorphism, runtimeSingletonAOCtorOverridesVtbl)
+TEST(polymorphism, runtimeSingletonAOCtor)
 {
     Singleton_ctor(8);
     TEST_ASSERT_EQUAL(8, Singleton_getFoo());
@@ -183,14 +169,13 @@ TEST(polymorphism, runtimeSingletonAOCtorOverridesVtbl)
     TEST_ASSERT_EQUAL(0, Singleton_getFoo());
 }
 
-TEST(polymorphism, runtimeMultipleAOCtorOverridesAndExtendsVtbl)
+TEST(polymorphism, runtimeMultipleAOCtorWithVtblForObj)
 {
     Multiple_ctor(multA, 2, Multiple_postFifoA);
     Multiple_ctor(multB, 4, Multiple_postFifoB);
 
     checkVtbl((RKH_SMA_T *)multA, 
-              rkh_sma_activate, NULL, 
-              Multiple_postFifoA, rkh_sma_post_lifo);
+              rkh_sma_activate, NULL, Multiple_postFifoA, rkh_sma_post_lifo);
 
     TEST_ASSERT_EQUAL(2, Multiple_getFoobar(multA));
     TEST_ASSERT_EQUAL(4, Multiple_getFoobar(multB));
@@ -200,6 +185,20 @@ TEST(polymorphism, runtimeMultipleAOCtorOverridesAndExtendsVtbl)
 
     TEST_ASSERT_EQUAL(0, Multiple_getFoobar(multA));
     TEST_ASSERT_EQUAL(8, Multiple_getFoobar(multB));
+}
+
+TEST(polymorphism, runtimeMultipleAOCtorWithVtblForType)
+{
+    Command_ctor(cmdSignal, 128); 
+    Command_ctor(cmdRegister, 64); 
+
+    checkVtbl((RKH_SMA_T *)cmdSignal, 
+              rkh_sma_activate, Command_task, 
+              Command_postFifo, Command_postLifo);
+
+    checkVtbl((RKH_SMA_T *)cmdRegister, 
+              rkh_sma_activate, Command_task, 
+              Command_postFifo, Command_postLifo);
 }
 
 /** @} doxygen end group definition */

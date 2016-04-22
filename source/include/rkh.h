@@ -1731,6 +1731,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \param[in] stkSto_	starting address of the stack's memory area.
  *  \param[in] stkSize_ size of stack memory area [in bytes].
  *
+ *  \note
+ *  In the next releases this macro will be improved, calling a function 
+ *  instead of using its own vptr.  
+ *
  *	\sa
  *	rkh_sma_activate().
  *
@@ -2128,6 +2132,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      interrupt or other context, it can create a
  *                      unique object just to unambiguously identify the
  *                      publisher of the event.
+ *
+ *  \note
+ *  In the next releases this macro will be improved, calling a function 
+ *  instead of using its own vptr.  
+ *
  *	\sa
  *	rkh_sma_post_fifo().
  */
@@ -2156,6 +2165,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      interrupt or other context, it can create a
  *                      unique object just to unambiguously identify the
  *                      publisher of the event.
+ *
+ *  \note
+ *  In the next releases this macro will be improved, calling a function 
+ *  instead of using its own vptr.  
  *
  *	\sa
  *	rkh_sma_post_lifo().
