@@ -69,6 +69,7 @@ TEST_GROUP(polymorphism);
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
 static void
 checkVtbl(RKH_SMA_T *me, RKHActivate activate, RKHTask task, 
           RKHPostFifo postFifo, RKHPostLifo postLifo)
@@ -99,10 +100,12 @@ static void
 testPostLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
 }
+#endif
 
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(polymorphism)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     sm_init();
 
     RKH_FILTER_OFF_ALL_SIGNALS();
@@ -111,13 +114,16 @@ TEST_SETUP(polymorphism)
 
     /* Restore the default virtual table of RKH_SMA_T class */
     singleton->vptr = &rkhSmaVtbl;
+#endif
 }
 
 TEST_TEAR_DOWN(polymorphism)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     sm_verify(); /* Makes sure there are no unused expectations, if */
                  /* there are, this function causes the test to fail. */
     sm_cleanup();
+#endif
 }
 
 /**
@@ -129,14 +135,17 @@ TEST_TEAR_DOWN(polymorphism)
 
 TEST(polymorphism, defaultVirtualFunctions)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     checkVtbl(singleton, 
               rkh_sma_activate, NULL, rkh_sma_post_fifo, rkh_sma_post_lifo);
 
     TEST_ASSERT_EQUAL_PTR(&rkhSmaVtbl, singleton->vptr);
+#endif
 }
 
 TEST(polymorphism, callVirtualFunction)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     rkh_sma_activate_Expect(singleton, NULL, 0, NULL, 0);
     rkh_sma_post_fifo_Expect(singleton, NULL, NULL);
     rkh_sma_post_lifo_Expect(singleton, NULL, NULL);
@@ -144,10 +153,12 @@ TEST(polymorphism, callVirtualFunction)
     RKH_SMA_ACTIVATE(singleton, NULL, 0, NULL, 0);
     RKH_SMA_POST_FIFO(singleton, NULL, NULL);
     RKH_SMA_POST_LIFO(singleton, NULL, NULL);
+#endif
 }
 
 TEST(polymorphism, setVirtualTable)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     const RKHSmaVtbl *vptr;
     static const RKHSmaVtbl vtbl =
     {
@@ -158,19 +169,23 @@ TEST(polymorphism, setVirtualTable)
 
     checkVtbl(singleton, 
               testActivate, testTask, testPostFifo, testPostLifo);
+#endif
 }
 
 TEST(polymorphism, runtimeSingletonAOCtor)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     Singleton_ctor(8);
     TEST_ASSERT_EQUAL(8, Singleton_getFoo());
 
     RKH_SMA_ACTIVATE(singleton, NULL, 0, NULL, 0);
     TEST_ASSERT_EQUAL(0, Singleton_getFoo());
+#endif
 }
 
 TEST(polymorphism, runtimeMultipleAOCtorWithVtblForObj)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     Multiple_ctor(multA, 2, Multiple_postFifoA);
     Multiple_ctor(multB, 4, Multiple_postFifoB);
 
@@ -185,10 +200,12 @@ TEST(polymorphism, runtimeMultipleAOCtorWithVtblForObj)
 
     TEST_ASSERT_EQUAL(0, Multiple_getFoobar(multA));
     TEST_ASSERT_EQUAL(8, Multiple_getFoobar(multB));
+#endif
 }
 
 TEST(polymorphism, runtimeMultipleAOCtorWithVtblForType)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     Command_ctor(cmdSignal, 128); 
     Command_ctor(cmdRegister, 64); 
 
@@ -199,6 +216,31 @@ TEST(polymorphism, runtimeMultipleAOCtorWithVtblForType)
     checkVtbl((RKH_SMA_T *)cmdRegister, 
               rkh_sma_activate, Command_task, 
               Command_postFifo, Command_postLifo);
+#endif
+}
+
+TEST(polymorphism, runtimeSubObjectCtorOfSMAAndSM)
+{
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    CallControl_ctorA(16);
+
+    TEST_ASSERT_EQUAL(16, CallControl_getFoo());
+    checkVtbl((RKH_SMA_T *)theCallControl, 
+              CallControl_activate, CallControl_task, 
+              rkh_sma_post_fifo, rkh_sma_post_lifo);
+#endif
+}
+
+TEST(polymorphism, runtimeSubObjectCtorOfSMAAndSMWithDefaultVtbl)
+{
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    CallControl_ctorB(8);
+
+    TEST_ASSERT_EQUAL(8, CallControl_getFoo());
+    checkVtbl((RKH_SMA_T *)theCallControl, 
+              rkh_sma_activate, NULL, 
+              rkh_sma_post_fifo, rkh_sma_post_lifo);
+#endif
 }
 
 /** @} doxygen end group definition */

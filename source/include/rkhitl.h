@@ -862,6 +862,32 @@ extern "C" {
 
 #endif
 
+#ifndef RKH_CFG_SMA_RT_CTOR_EN
+    #error "RKH_CFG_SMA_SM_CONST_EN               not #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be RKH_ENABLED ]       "
+    #error "                                    [     || RKH_DISABLED]       "
+
+#elif   ((RKH_CFG_SMA_SM_CONST_EN != RKH_ENABLED) && \
+    (RKH_CFG_SMA_SM_CONST_EN != RKH_DISABLED))
+    #error "RKH_CFG_SMA_SM_CONST_EN         illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be  RKH_ENABLED ]      "
+    #error "                                    [     ||  RKH_DISABLED]      "
+
+#endif
+
+#ifndef RKH_CFG_SMA_VFUNCT_EN
+    #error "RKH_CFG_SMA_VFUNCT_EN               not #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be RKH_ENABLED ]       "
+    #error "                                    [     || RKH_DISABLED]       "
+
+#elif   ((RKH_CFG_SMA_VFUNCT_EN != RKH_ENABLED) && \
+    (RKH_CFG_SMA_VFUNCT_EN != RKH_DISABLED))
+    #error "RKH_CFG_SMA_VFUNCT_EN           illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be  RKH_ENABLED ]      "
+    #error "                                    [     ||  RKH_DISABLED]      "
+
+#endif
+
 /*  TRACE         --------------------------------------------------------- */
 
 #ifndef RKH_CFG_TRC_EN
@@ -1767,11 +1793,18 @@ extern "C" {
         (RKHROM RKH_ROM_T *)(constSM), /** RKH_SM_T::romrkh member */ \
         (RKHROM struct RKH_ST_T *)(initialState) /** RKH_SM_T::state member */
 
-    #define MKSMA(constSM, initialState) \
-        { \
-            MKSM(constSM, initialState), /** RKH_SM_T members */ \
-            &rkhSmaVtbl /** RKH_SMA_T::vptr member */ \
-        }
+    #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+        #define MKSMA(constSM, initialState) \
+            { \
+                MKSM(constSM, initialState), /** RKH_SM_T members */ \
+                &rkhSmaVtbl /** RKH_SMA_T::vptr member */ \
+            }
+    #else
+        #define MKSMA(constSM, initialState) \
+            { \
+                MKSM(constSM, initialState)  /** RKH_SM_T members */ \
+            }
+    #endif
 #else
     #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
         #if R_TRC_AO_NAME_EN == RKH_ENABLED
@@ -1802,13 +1835,22 @@ extern "C" {
                 (RKHROM struct RKH_ST_T*)initialState
         #endif
     #endif
-
-    #define MKSMA(name, prio, ppty, initialState, initialAction, initialEvt) \
-        { \
-            MKSM(name, prio, ppty, initialState, \
-                 initialAction, initialEvt), /* RKH_SM_T members */ \
-            &rkhSmaVtbl /** RKH_SMA_T::vptr member */ \
-        }
+    #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+        #define MKSMA(name, prio, ppty, \
+                      initialState, initialAction, initialEvt) \
+            { \
+                MKSM(name, prio, ppty, initialState, \
+                     initialAction, initialEvt), /* RKH_SM_T members */ \
+                &rkhSmaVtbl /** RKH_SMA_T::vptr member */ \
+            }
+    #else
+        #define MKSMA(name, prio, ppty, \
+                      initialState, initialAction, initialEvt) \
+            { \
+                MKSM(name, prio, ppty, initialState, \
+                     initialAction, initialEvt)  /* RKH_SM_T members */ \
+            }
+    #endif
 
     #define MKRT_SM(sm_, name_, prio_, ppty_, initialState_, initialAction_, \
                     initialEvt_) \
@@ -2875,7 +2917,9 @@ typedef struct RKH_SMA_T
      *  \brief
      *  Virtual pointer.
      */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     const RKHSmaVtbl *vptr;
+#endif
 
     /**
      *  \brief
@@ -2979,7 +3023,15 @@ struct RKHSmaVtbl
     /** \sa RKH_SMA_ACTIVATE() */
     RKHActivate activate;
 
-    /** Virtual function to control the execution of the AO (thread task) */
+    /** 
+     *  \brief
+     *  Virtual function to control the execution of the AO (thread task).
+     *
+     *  Frequently, the active object has its own task processing loop, also 
+     *  as known as thread of control, that waits for the signal to be posted,
+     *  and when it is, loops to remove and process all events that are 
+     *  currently queued.
+     */
     RKHTask task;
 
     /** Virtual function to asynchronously post (FIFO) an event to an AO */

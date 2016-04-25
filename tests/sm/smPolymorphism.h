@@ -43,6 +43,7 @@ struct MultipleVtbl
 };
 
 typedef struct Command Command;
+typedef struct CallControl CallControl;
 
 /* -------------------------- External variables --------------------------- */
 RKH_SMA_DCLR(singleton);
@@ -53,19 +54,32 @@ RKH_SMA_DCLR_TYPE(Multiple, multB);
 RKH_SMA_DCLR_TYPE(Command, cmdSignal);
 RKH_SMA_DCLR_TYPE(Command, cmdRegister);
 
+RKH_SMA_DCLR_TYPE(CallControl, theCallControl);
+
 /* -------------------------- Function prototypes -------------------------- */
 void Singleton_ctor(int foo);
 int Singleton_getFoo(void);
+
 void Multiple_ctor(Multiple *const me, int foobar, RKHPostFifo postFifo);
 int Multiple_getFoobar(Multiple *const me);
 void Multiple_postFifoA(RKH_SMA_T *me, const RKH_EVT_T *e, 
                         const void *const sender);
 void Multiple_postFifoB(RKH_SMA_T *me, const RKH_EVT_T *e, 
                         const void *const sender);
+
 void Command_task(RKH_SMA_T *me, void *arg);
-void Command_postFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender);
-void Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender);
+void Command_postFifo(RKH_SMA_T *me, const RKH_EVT_T *e, 
+                      const void *const sender);
+void Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e, 
+                      const void *const sender);
 void Command_ctor(Command *const me, int bar);
+
+void CallControl_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, 
+                          RKH_RQNE_T qSize, void *stkSto, rui32_t stkSize);
+void CallControl_task(RKH_SMA_T *me, void *arg);
+void CallControl_ctorA(int foo);
+void CallControl_ctorB(int foo);
+int CallControl_getFoo(void);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

@@ -1715,7 +1715,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 
 /**
  *  \brief
- *  Invoke the active object activation function rkh_sma_activate().
+ *  Invoke the active object activation function rkh_sma_activate(). 
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the active object to activate. 
  *
  *  This macro is the recommended way of invoke the rkh_sma_activate()
  *  function to active an active object, because it allows to
@@ -1750,6 +1753,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	}
  *	\endcode
  */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
 #if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
     #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
     #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
@@ -1782,6 +1786,41 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                              (void *)0, \
                                              (rui32_t)0)
     #endif
+#endif
+#else
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)qSto_, \
+                         qStoSize, \
+                         (void *)stkSto_, \
+                         (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)qSto_, \
+                         qStoSize, \
+                         (void *)0, \
+                         (rui32_t)0)
+    #endif
+#else
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)0, \
+                         qStoSize, \
+                         (void *)stkSto_, \
+                         (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)0, \
+                         qStoSize, \
+                         (void *)0, \
+                         (rui32_t)0)
+    #endif
+#endif
 #endif
 
 
@@ -2118,6 +2157,9 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 /**
  *  \brief
  *  Invoke the direct event posting facility rkh_sma_post_fifo().
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the target active object. 
  *
  *  This macro is the recommended way of posting events, because it
  *  provides the vital information for software tracing and avoids any
@@ -2140,17 +2182,30 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	rkh_sma_post_fifo().
  */
-#if defined(RKH_USE_TRC_SENDER)
-    #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
-        ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_), (sender_))
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_))
+    #endif
 #else
-    #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
-        ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_))
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            rkh_sma_post_fifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            rkh_sma_post_fifo((me_), (e_))
+    #endif
 #endif
 
 /**
  *  \brief
  *  Invoke the direct event posting facility rkh_sma_post_lifo().
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the target active object. 
  *
  *  This macro is the recommended way of posting events, because it
  *  provides the vital information for software tracing and avoids any
@@ -2173,12 +2228,22 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	rkh_sma_post_lifo().
  */
-#if defined(RKH_USE_TRC_SENDER)
-    #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
-        ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_), (sender_))
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_))
+    #endif
 #else
-    #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
-        ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_))
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            rkh_sma_post_lifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            rkh_sma_post_lifo((me_), (e_))
+    #endif
 #endif
 
 /**
@@ -2963,6 +3028,21 @@ void rkh_sma_unregister(RKH_SMA_T *me);
 
 /**
  *  \brief
+ *  Initializes the virtual table of the active object instance and calls the 
+ *  constructor operation of its base class.
+ *
+ *  \param[in] me   pointer to previously created state machine application.
+ *  \param[in] vtbl pointer to virtual table. Define it as null to use the 
+ *                  default virtual table, rkhSmaVtbl.
+ *
+ *  \note
+ *  The initializer assumes that memory has previously been allocated for the 
+ *  object (either statically or dynamically).
+ */
+void rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl);
+
+/**
+ *  \brief
  *	Defer an event to a given separate event queue.
  *
  *  Event deferral comes in very handy when an event arrives in a
@@ -3351,6 +3431,18 @@ void rkh_sm_init(RKH_SM_T *me);
  *	\return         Result RKH_RCODE_T code.
  */
 ruint rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *e);
+
+/**
+ *  \brief
+ *  Initializes the attributes of the state machine instance.
+ *
+ *  \param[in] me  pointer to previously created state machine.
+ *
+ *  \note
+ *  The initializer assumes that memory has previously been allocated for the 
+ *  object (either statically or dynamically).
+ */
+void rkh_sm_ctor(RKH_SM_T *me);
 
 #if defined(RKH_HISTORY_ENABLED)
 /**

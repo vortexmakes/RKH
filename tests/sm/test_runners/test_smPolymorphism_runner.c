@@ -66,6 +66,8 @@ TEST_GROUP_RUNNER(polymorphism)
 	RUN_TEST_CASE(polymorphism, runtimeSingletonAOCtor);
 	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorWithVtblForObj);
 	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorWithVtblForType);
+	RUN_TEST_CASE(polymorphism, runtimeSubObjectCtorOfSMAAndSM);
+	RUN_TEST_CASE(polymorphism, runtimeSubObjectCtorOfSMAAndSMWithDefaultVtbl);
 }
 
 /* ------------------------------ End of file ------------------------------ */

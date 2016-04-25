@@ -605,6 +605,31 @@ extern "C" {
  */
 #define RKH_CFG_SMA_SM_CONST_EN         RKH_ENABLED
 
+/** 
+ *  \brief
+ *  If RKH_CFG_SMA_RT_CTOR_EN is set to RKH_ENABLED then is allowed the use 
+ *  of run-time constructors of RKH_SM_T and RKH_SMA_T classes, rkh_sm_ctor() 
+ *  and rkh_sma_ctor() respectively.
+ *
+ *  \type       Boolean
+ *  \range      
+ *  \default    RKH_DISABLED
+ */
+#define RKH_CFG_SMA_RT_CTOR_EN          RKH_DISABLED
+
+/** 
+ *  \brief
+ *  If RKH_CFG_SMA_VFUNCT_EN is set to RKH_ENABLED, the active objects are 
+ *  defined as polymorphics, since it incorporates a virtual table of 
+ *  functions. See the default virtual table rkhSmaVtbl to known the 
+ *  available polymorphic operations. 
+ *
+ *  \type       Boolean
+ *  \range      
+ *  \default    RKH_DISABLED
+ */
+#define RKH_CFG_SMA_VFUNCT_EN           RKH_DISABLED
+
 /** @} doxygen end group definition */
 
 /**

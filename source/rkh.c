@@ -715,6 +715,14 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     return RKH_EVT_PROC;
 }
 
+#if RKH_CFG_SMA_RT_CTOR_EN == RKH_ENABLED
+void 
+rkh_sm_ctor(RKH_SM_T *me)
+{
+    (void)me;
+}
+#endif
+
 #if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
 void
 rkh_sma_clear_info(RKH_SMA_T *sma)
@@ -770,6 +778,20 @@ rbool_t
 rkh_else(void)
 {
     return RKH_GTRUE;
+}
+#endif
+
+#if RKH_CFG_SMA_RT_CTOR_EN == RKH_ENABLED
+void 
+rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl)
+{
+    rkh_sm_ctor(&me->sm);   /* Call base object constructor */
+                            /* (in fact an initializer operation) */
+
+    /* Link vptr to virtual table of me */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    me->vptr = (vtbl != (const RKHSmaVtbl *)0) ? vtbl : &rkhSmaVtbl;
+#endif
 }
 #endif
 

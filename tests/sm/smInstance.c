@@ -130,7 +130,6 @@ RKH_SM_CONST_CREATE(publicSingleDyn, 1, HCAL, NULL, NULL, NULL);
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-
 void
 Single_ctor(int foo)
 {

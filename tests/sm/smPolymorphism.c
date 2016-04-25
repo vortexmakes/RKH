@@ -75,6 +75,12 @@ struct Command
     int bar;
 };
 
+struct CallControl
+{
+    RKH_SMA_T base;
+    int foo;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 RKH_SMA_CREATE(Singleton, singleton, 0, HCAL, NULL, NULL, NULL);
@@ -90,18 +96,23 @@ RKH_SMA_DEF_PTR_TYPE(Command, cmdSignal);
 RKH_SMA_CREATE(Command, cmdRegister, 0, HCAL, NULL, NULL, NULL);
 RKH_SMA_DEF_PTR_TYPE(Command, cmdRegister);
 
+RKH_SMA_CREATE(CallControl, theCallControl, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR_TYPE(CallControl, theCallControl);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
 Singleton_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
                    void *stkSto, rui32_t stkSize)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     int var = 0;
 
     if (me->vptr->task != (void (*)(RKH_SMA_T *, void *)) 0)
     {
         me->vptr->task(me, &var);
     }
+#endif
 }
 
 static void
@@ -114,21 +125,6 @@ static void
 Multiple_toggle(Multiple *me)
 {
     me->foobar = (int)((me->foobar & 1u) == 0);
-}
-
-void
-Command_task(RKH_SMA_T *me, void *arg)
-{
-}
-
-void
-Command_postFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
-{
-}
-
-void
-Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
-{
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -151,7 +147,7 @@ Singleton_ctor(int foo)
         rkh_sma_post_lifo
     };
 
-    singleton->vptr = &vtbl;
+    rkh_sma_ctor(RKH_UPCAST(RKH_SMA_T, singleton), &vtbl);
     RKH_DOWNCAST(Singleton, singleton)->foo = foo;
 }
 
@@ -197,8 +193,9 @@ Singleton_getFoo(void)
 void
 Multiple_ctor(Multiple *const me, int foobar, RKHPostFifo postFifo)
 {
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     /* Link vptr to its own virtual table */
-    RKH_UPCAST(RKH_SMA_T, me)->vptr = &me->vtbl.base;
+    rkh_sma_ctor(RKH_UPCAST(RKH_SMA_T, me), &me->vtbl.base);
 
     /* Initialize the virtual table */
     *((RKHSmaVtbl *)(RKH_UPCAST(RKH_SMA_T, me)->vptr)) = rkhSmaVtbl;
@@ -210,8 +207,9 @@ Multiple_ctor(Multiple *const me, int foobar, RKHPostFifo postFifo)
     ((MultipleVtbl *)(RKH_UPCAST(RKH_SMA_T, me)->vptr))->toggle =
         Multiple_toggle;
 
-    /* Initialize the attributes */
+    /* Initialize the attributes of AO instance */
     me->foobar = foobar;
+#endif
 }
 
 int
@@ -241,9 +239,64 @@ static const RKHSmaVtbl commandVtbl =
 };
 
 void
+Command_task(RKH_SMA_T *me, void *arg)
+{
+}
+
+void
+Command_postFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
+{
+}
+
+void
+Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
+{
+}
+
+void
 Command_ctor(Command *const me, int bar)
 {
-    RKH_UPCAST(RKH_SMA_T, me)->vptr = &commandVtbl;
+    rkh_sma_ctor(RKH_UPCAST(RKH_SMA_T, me), &commandVtbl);
     me->bar = bar;
 }
+
+void
+CallControl_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
+                     void *stkSto, rui32_t stkSize)
+{
+}
+
+void
+CallControl_task(RKH_SMA_T *me, void *arg)
+{
+}
+
+void
+CallControl_ctorA(int foo)
+{
+    static const RKHSmaVtbl vtbl =
+    {
+        CallControl_activate,
+        CallControl_task,
+        rkh_sma_post_fifo,
+        rkh_sma_post_lifo
+    };
+
+    rkh_sma_ctor(&theCallControl->base, &vtbl);
+    theCallControl->foo = foo;
+}
+
+void
+CallControl_ctorB(int foo)
+{
+    rkh_sma_ctor(&theCallControl->base, (const RKHSmaVtbl *)0);
+    theCallControl->foo = foo;
+}
+
+int
+CallControl_getFoo(void)
+{
+    return theCallControl->foo;
+}
+
 /* ------------------------------ End of file ------------------------------ */
