@@ -24,8 +24,8 @@
  *	Defines SMA (active object) 'blinky'.
  */
 
-RKH_SMA_CREATE( BKYSM_T, blinky, 0, HCAL, &led_on, blinky_init, NULL );
-RKH_SMA_DEF_PTR(BKYSM_T);
+RKH_SMA_CREATE(BKYSM_T, blinky, 0, HCAL, &led_on, blinky_init, NULL);
+RKH_SMA_DEF_PTR(blinky);
 
 
 /*

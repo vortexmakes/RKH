@@ -126,7 +126,7 @@ TEST(utrzsm, expectEventWithUnexpectedArg)
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
-    TEST_ASSERT_EQUAL_STRING("Event 'TRN' ocurred with unexpected "
+    TEST_ASSERT_EQUAL_STRING("Event 'TRN' occurred with unexpected "
                              "value for argument 'tst=s21' expected "
                              "value='s211'.", p->msg);
 }
@@ -190,7 +190,7 @@ TEST(utrzsm, eventMoreThanExpect)
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
-    TEST_ASSERT_EQUAL_STRING("Event 'ENSTATE' ocurred more times than"
+    TEST_ASSERT_EQUAL_STRING("Event 'ENSTATE' occurred more times than"
                              " expected.", p->msg);
 }
 

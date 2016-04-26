@@ -850,24 +850,11 @@ extern "C" {
 #endif
 
 #ifndef RKH_CFG_SMA_SM_CONST_EN
-    #error "RKH_CFG_SMA_PPRO_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
-    #error "                                    [MUST be RKH_ENABLED ]       "
-    #error "                                    [     || RKH_DISABLED]       "
-
-#elif   ((RKH_CFG_SMA_PPRO_ARG_SMA_EN != RKH_ENABLED) && \
-    (RKH_CFG_SMA_PPRO_ARG_SMA_EN != RKH_DISABLED))
-    #error "RKH_CFG_SMA_PPRO_ARG_SMA_EN     illegally #define'd in 'rkhcfg.h'"
-    #error "                                    [MUST be  RKH_ENABLED ]      "
-    #error "                                    [     ||  RKH_DISABLED]      "
-
-#endif
-
-#ifndef RKH_CFG_SMA_RT_CTOR_EN
     #error "RKH_CFG_SMA_SM_CONST_EN               not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]       "
     #error "                                    [     || RKH_DISABLED]       "
 
-#elif   ((RKH_CFG_SMA_SM_CONST_EN != RKH_ENABLED) && \
+#elif ((RKH_CFG_SMA_SM_CONST_EN != RKH_ENABLED) && \
     (RKH_CFG_SMA_SM_CONST_EN != RKH_DISABLED))
     #error "RKH_CFG_SMA_SM_CONST_EN         illegally #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be  RKH_ENABLED ]      "
@@ -875,8 +862,21 @@ extern "C" {
 
 #endif
 
+#ifndef RKH_CFG_SMA_RT_CTOR_EN
+    #error "RKH_CFG_SMA_RT_CTOR_EN                not #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be RKH_ENABLED ]       "
+    #error "                                    [     || RKH_DISABLED]       "
+
+#elif ((RKH_CFG_SMA_RT_CTOR_EN != RKH_ENABLED) && \
+    (RKH_CFG_SMA_RT_CTOR_EN != RKH_DISABLED))
+    #error "RKH_CFG_SMA_RT_CTOR_EN          illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be  RKH_ENABLED ]      "
+    #error "                                    [     ||  RKH_DISABLED]      "
+
+#endif
+
 #ifndef RKH_CFG_SMA_VFUNCT_EN
-    #error "RKH_CFG_SMA_VFUNCT_EN               not #define'd in 'rkhcfg.h'"
+    #error "RKH_CFG_SMA_VFUNCT_EN                 not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]       "
     #error "                                    [     || RKH_DISABLED]       "
 
@@ -2649,12 +2649,8 @@ extern "C" {
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 
-/*
- *  For GNU compatibility.
- */
-
-struct rkh_t;
-struct RKH_SMA_T;
+typedef struct RKH_SM_T RKH_SM_T;
+typedef struct RKH_SMA_T RKH_SMA_T;
 
 /**
  *  \brief
@@ -2669,11 +2665,11 @@ struct RKH_SMA_T;
  */
 #if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
      RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    typedef void (*RKH_INIT_ACT_T)(const struct RKH_SM_T *sma,
+    typedef void (*RKH_INIT_ACT_T)(const RKH_SM_T *me,
                                    const struct RKH_EVT_T *e);
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    typedef void (*RKH_INIT_ACT_T)(const struct RKH_SM_T *sma);
+    typedef void (*RKH_INIT_ACT_T)(const RKH_SM_T *me);
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     typedef void (*RKH_INIT_ACT_T)(const struct RKH_EVT_T *e);
@@ -2781,7 +2777,7 @@ typedef struct RKH_ROM_T
  *  RKH_SMA_T.
  */
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
-typedef struct RKH_SM_T
+struct RKH_SM_T
 {
     /**
      *  \brief
@@ -2794,9 +2790,9 @@ typedef struct RKH_SM_T
      *  Points to current stable state (simple or final state).
      */
     RKHROM struct RKH_ST_T *state;
-} RKH_SM_T;
+};
 #else
-typedef struct RKH_SM_T
+struct RKH_SM_T
 {
     /**
      *  \brief
@@ -2863,7 +2859,7 @@ typedef struct RKH_SM_T
      *  Points to current stable state (simple or final state).
      */
     RKHROM struct RKH_ST_T *state;
-} RKH_SM_T;
+};
 #endif
 
 typedef struct RKHSmaVtbl RKHSmaVtbl;
@@ -2905,7 +2901,7 @@ typedef struct RKHSmaVtbl RKHSmaVtbl;
  *	\link RKH_EVT_T single inheritance in C \endlink, and
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
-typedef struct RKH_SMA_T
+struct RKH_SMA_T
 {
     /**
      *  \brief
@@ -2987,7 +2983,7 @@ typedef struct RKH_SMA_T
 #if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
     RKH_SMAI_T sinfo;
 #endif
-} RKH_SMA_T;
+};
 
 /** \copydetails RKHSmaVtbl::activate */
 typedef void (*RKHActivate)(RKH_SMA_T *me, 
@@ -3071,10 +3067,10 @@ struct RKHSmaVtbl
 
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    typedef void (*RKH_ENT_ACT_T)(const struct RKH_SM_T *sma,
+    typedef void (*RKH_ENT_ACT_T)(const RKH_SM_T *me,
                                   const struct RKH_ST_T *state);
     #else
-    typedef void (*RKH_ENT_ACT_T)(const struct RKH_SM_T *sma);
+    typedef void (*RKH_ENT_ACT_T)(const RKH_SM_T *me);
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
@@ -3111,10 +3107,10 @@ struct RKHSmaVtbl
 
 #if RKH_CFG_SMA_EXT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    typedef void (*RKH_EXT_ACT_T)(const struct RKH_SM_T *sma,
+    typedef void (*RKH_EXT_ACT_T)(const RKH_SM_T *me,
                                   const struct RKH_ST_T *state);
     #else
-    typedef void (*RKH_EXT_ACT_T)(const struct RKH_SM_T *sma);
+    typedef void (*RKH_EXT_ACT_T)(const RKH_SM_T *me);
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
@@ -3182,14 +3178,14 @@ struct RKHSmaVtbl
 
 #if (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
-    typedef void (*RKH_TRN_ACT_T)(const struct RKH_SM_T *sma,
+    typedef void (*RKH_TRN_ACT_T)(const RKH_SM_T *me,
                                   RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_DISABLED)
     typedef void (*RKH_TRN_ACT_T)(RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_ACT_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_ACT_ARG_SMA_EN == RKH_ENABLED)
-    typedef void (*RKH_TRN_ACT_T)(const struct RKH_SM_T *sma);
+    typedef void (*RKH_TRN_ACT_T)(const RKH_SM_T *me);
 #else
     typedef void (*RKH_TRN_ACT_T)(void);
 #endif
@@ -3221,14 +3217,14 @@ struct RKHSmaVtbl
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 
-    typedef rbool_t (*RKH_GUARD_T)(const struct RKH_SM_T *sma,
+    typedef rbool_t (*RKH_GUARD_T)(const RKH_SM_T *me,
                                    RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
     typedef rbool_t (*RKH_GUARD_T)(RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    typedef rbool_t (*RKH_GUARD_T)(const struct RKH_SM_T *sma);
+    typedef rbool_t (*RKH_GUARD_T)(const RKH_SM_T *me);
 #else
     typedef rbool_t (*RKH_GUARD_T)(void);
 #endif

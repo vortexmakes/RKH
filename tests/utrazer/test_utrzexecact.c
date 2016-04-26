@@ -115,7 +115,7 @@ TEST(utrzexeact, expectEventWithUnexpectedArg)
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
-    TEST_ASSERT_EQUAL_STRING("Event 'TRN' ocurred with unexpected "
+    TEST_ASSERT_EQUAL_STRING("Event 'TRN' occurred with unexpected "
                              "value for argument 'tst=s21' expected "
                              "value='s211'.", p->msg);
 }

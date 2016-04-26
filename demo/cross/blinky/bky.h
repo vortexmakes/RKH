@@ -37,7 +37,7 @@ typedef struct
  *	Declare HSM.
  */
 
-RKH_SMA_DCLR( blinky );
+RKH_SMA_DCLR(blinky);
 
 
 /*

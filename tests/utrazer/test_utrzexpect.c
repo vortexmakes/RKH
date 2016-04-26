@@ -54,7 +54,7 @@
             UtrzProcessOut *p;                          \
             p = unitrazer_getLastOut();                        \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status); \
-            TEST_ASSERT_EQUAL_STRING("Event '"ev"' ocurred with unexpected " \
+            TEST_ASSERT_EQUAL_STRING("Event '"ev"' occurred with unexpected " \
                              "value for argument '"an"="r"' expected "       \
                              "value='"e"'.", p->msg);                        \
         }
@@ -64,7 +64,7 @@
             UtrzProcessOut *p;                          \
             p = unitrazer_getLastOut();                        \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status); \
-            TEST_ASSERT_EQUAL_STRING("Event '"ev"' ocurred with unexpected " \
+            TEST_ASSERT_EQUAL_STRING("Event '"ev"' occurred with unexpected " \
                              "value for argument '"r"' expected "       \
                              "value='"e"'.", p->msg);                        \
         }

@@ -25,7 +25,7 @@
  */
 
 RKH_SMA_CREATE( SVR_T, svr, 0, HCAL, &svr_idle, svr_init, NULL );
-RKH_SMA_DEF_PTR(SVR_T);
+RKH_SMA_DEF_PTR(svr);
 
 
 /*
