@@ -246,7 +246,12 @@ ALIASES                = "usage=@par <b>Usage</b><CR>" \
                          "description=@par <b>Description</b>\n" \
                          "type=@par <b>Type value</b>\n" \
                          "range=@par <b>Range value</b>\n" \
-                         "default=@par <b>Default configuration:</b>\n"
+                         "default=@par <b>Default configuration:</b>\n" \
+                         "new=@par New features & improvements<CR>" \
+                         "ports=@par Ports <CR>" \
+                         "apichg=@par API changes <CR>" \
+                         "releasedate=@par Release Date: <CR>" \
+                         "bugfix=@par Bug fixes <CR>"
 
 # This tag can be used to specify a number of word-keyword mappings (TCL only).
 # A mapping has the form "name=value". For example adding "class=itcl::class"

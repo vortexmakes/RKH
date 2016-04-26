@@ -1,8 +1,54 @@
 /**
-\page changelog Changelog
+\page changelog Release Notes
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
+
+\tableofcontents
+
+\section rkhVersion_2_4_5 Version 2.4.5
+\releasedate 2015-07-06
+
+\apichg
+-# .........
+-# .........
+    - .........
+    - .........
+    - .........
+
+\bugfix
+....
+
+\new
+....
+
+\par Deprecated features
+....
+
+\ports
+....
+
+<HR>
+\section rkhVersion_2_4_4 Version 2.4.4
+\releasedate 2015-07-15
+
+\apichg
+- .........
+- .........
+
+\bugfix
+....
+
+\new
+- .........
+- .........
+
+\par Deprecated features
+....
+
+\ports
+....
+
 
 \code
 Changes between V2.4.4 and V2.4.5 released 06/01/2016 
