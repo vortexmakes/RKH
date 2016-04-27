@@ -444,9 +444,8 @@ extern "C" {
 #define ECHANGE                     0
 #define EUNCHANGE                   1
 
-#if (((RKH_CFG_TRC_EN == 1) && \
-     (RKH_CFG_SMA_TRC_SNDR_EN == 1)) || \
-     (RKH_EN_DOXYGEN == 1))
+#if (((RKH_CFG_TRC_EN == 1) && (RKH_CFG_SMA_TRC_SNDR_EN == 1)) || \
+     (defined(RKH_EN_DOXYGEN) && RKH_EN_DOXYGEN == 1))
     /**
      *  \brief
      *  This macro is used to verify the sender object usage on post an event.

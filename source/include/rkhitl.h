@@ -194,7 +194,7 @@ extern "C" {
 #define CRSM(p)         ((RKH_RSM_T *)(p))
 #define CM(p)           ((RKHROM RKH_SM_T *)(p))
 #define CT(p)           ((RKHROM RKH_TR_T *)(p))
-#define CPT(p)          ((RKHROM struct RKH_SCMP_T *)(p))
+#define CPT(p)          ((RKHROM RKH_SCMP_T *)(p))
 #define CPP(p)          ((RKH_PPRO_T)(p))
 #define CG(p)           ((RKH_GUARD_T)(p))
 #define CA(p)           ((RKH_TRN_ACT_T)(p))
@@ -205,7 +205,7 @@ extern "C" {
 #define CE(p)           ((RKH_EVT_T *)(p))
 #define CCE(p)          ((const RKH_EVT_T *)(p))
 #define CV(p)           ((void *)(p))
-#define CSMA(p)         ((const struct RKH_SMA_T *)(p))
+#define CSMA(p)         ((const RKH_SMA_T *)(p))
 #define CQ(p)           ((RKH_RQ_T *)(p))
 #define CIA(s)          ((RKH_INIT_ACT_T)(RKH_SMA_ACCESS_CONST(sma, iaction)))
 #define CTA(ta)         ((RKH_TRN_ACT_T)(ta))
@@ -1317,7 +1317,7 @@ extern "C" {
     #error  "                               [     && <  256]                  "
 
 #elif   (RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED)
-    #if ((RKH_CFG_FWK_MAX_EVT_POOL == 0) || (RKH_CFG_MAX_EPOOL > 255))
+    #if ((RKH_CFG_FWK_MAX_EVT_POOL == 0) || (RKH_CFG_FWK_MAX_EVT_POOL > 255))
     #error "RKH_CFG_FWK_MAX_EVT_POOL        illegally #define'd in 'rkhcfg.h'"
     #error  "                               [MUST be >    0]                  "
     #error  "                               [     && <  256]                  "
@@ -1791,7 +1791,7 @@ extern "C" {
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define MKSM(constSM, initialState) \
         (RKHROM RKH_ROM_T *)(constSM), /** RKH_SM_T::romrkh member */ \
-        (RKHROM struct RKH_ST_T *)(initialState) /** RKH_SM_T::state member */
+        (RKHROM RKH_ST_T *)(initialState) /** RKH_SM_T::state member */
 
     #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
         #define MKSMA(constSM, initialState) \
@@ -1810,29 +1810,29 @@ extern "C" {
         #if R_TRC_AO_NAME_EN == RKH_ENABLED
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-                (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
+                (prio), (ppty), #name, (RKHROM RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
-                (RKHROM struct RKH_ST_T*)initialState
+                (RKHROM RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-                (prio), (ppty), (RKHROM struct RKH_ST_T*)initialState, \
+                (prio), (ppty), (RKHROM RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
-                (RKHROM struct RKH_ST_T*)initialState
+                (RKHROM RKH_ST_T*)initialState
         #endif
     #else
         #if R_TRC_AO_NAME_EN == RKH_ENABLED
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-                (prio), (ppty), #name, (RKHROM struct RKH_ST_T*)initialState, \
+                (prio), (ppty), #name, (RKHROM RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), \
-                (RKHROM struct RKH_ST_T*)initialState
+                (RKHROM RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
-                (prio), (ppty), (RKHROM struct RKH_ST_T*)initialState, \
+                (prio), (ppty), (RKHROM RKH_ST_T*)initialState, \
                 ((RKH_INIT_ACT_T)initialAction), \
-                (RKHROM struct RKH_ST_T*)initialState
+                (RKHROM RKH_ST_T*)initialState
         #endif
     #endif
     #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
@@ -1857,10 +1857,10 @@ extern "C" {
         ((RKH_SM_T *)(sm_))->prio = prio_; \
         ((RKH_SM_T *)(sm_))->ppty = ppty_; \
         MKSM_NAME(sm_, name_); \
-        ((RKH_SM_T *)(sm_))->istate = (RKHROM struct RKH_ST_T*)initialState_; \
+        ((RKH_SM_T *)(sm_))->istate = (RKHROM RKH_ST_T*)initialState_; \
         ((RKH_SM_T *)(sm_))->iaction = (RKH_INIT_ACT_T)initialAction_; \
         MKSM_IEVENT(sm_, initialEvt_); \
-        ((RKH_SM_T *)(sm_))->state = (RKHROM struct RKH_ST_T*)initialState_
+        ((RKH_SM_T *)(sm_))->state = (RKHROM RKH_ST_T*)initialState_
 
     #if R_TRC_AO_NAME_EN == RKH_ENABLED
         #if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
@@ -1888,22 +1888,30 @@ extern "C" {
 #if (RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     #if R_TRC_AO_NAME_EN == RKH_ENABLED
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, \
-             (RKH_INIT_ACT_T)(ia), (ie)}
+            { \
+                (prio), (ppty), # name, (RKHROM RKH_ST_T *)is, \
+                (RKH_INIT_ACT_T)(ia), (ie) \
+            }
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, \
-             (RKH_INIT_ACT_T)(ia), (ie)}
+            { \
+                (prio), (ppty), (RKHROM RKH_ST_T *)is, \
+                (RKH_INIT_ACT_T)(ia), (ie) \
+            }
     #endif
 #else
     #if R_TRC_AO_NAME_EN == RKH_ENABLED
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), # name, (RKHROM struct RKH_ST_T *)is, \
-             (RKH_INIT_ACT_T)(ia)}
+            { \
+                (prio), (ppty), # name, (RKHROM RKH_ST_T *)is, \
+                (RKH_INIT_ACT_T)(ia) \
+            }
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
-            {(prio), (ppty), (RKHROM struct RKH_ST_T *)is, \
-             (RKH_INIT_ACT_T)(ia)}
+            { \
+                (prio), (ppty), (RKHROM RKH_ST_T *)is, \
+                (RKH_INIT_ACT_T)(ia) \
+            }
     #endif
 #endif
 
@@ -1923,14 +1931,14 @@ extern "C" {
                 RKHROM RKH_SHIST_T name##Hist = \
                 { \
                     MKBASE(kOfH, name##Hist), \
-                    (RKHROM struct RKH_ST_T *)&name, ramMem, \
+                    (RKHROM RKH_ST_T *)&name, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name = \
                 { \
                     MKBASE(kOfH, name), \
-                    (RKHROM struct RKH_ST_T *)parent, ramMem, \
+                    (RKHROM RKH_ST_T *)parent, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
             #define MKFINAL(name_) \
@@ -1957,14 +1965,14 @@ extern "C" {
                 RKHROM RKH_SHIST_T name##Hist = \
                 { \
                     MKBASE(kOfH, name##Hist), \
-                    (RKHROM struct RKH_ST_T *)&name, ramMem, \
+                    (RKHROM RKH_ST_T *)&name, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name = \
                 { \
                     MKBASE(kOfH, name), \
-                    (RKHROM struct RKH_ST_T *)parent, ramMem, \
+                    (RKHROM RKH_ST_T *)parent, ramMem, \
                     RKH_TRREG(0, dTG, dTA, dTT) \
                 }
             #define MKFINAL(name_) \
@@ -1985,11 +1993,11 @@ extern "C" {
     #endif
     #define MKST(en,ex,p)           (RKH_ENT_ACT_T)en, \
                                     (RKH_EXT_ACT_T)ex, \
-                                    (RKHROM struct RKH_ST_T *)p
+                                    (RKHROM RKH_ST_T *)p
     #define MKSBM(n,sbm)            n##_trtbl,n##_exptbl,sbm
     #define MKMCH(d,i,n)            d, (RKH_TRN_ACT_T)i, \
                                     (RKHROM RKH_ST_T * *)&rdyp_##n
-    #define MKENP(e,s)              e,(RKHROM struct RKH_ST_T *)s
+    #define MKENP(e,s)              e,(RKHROM RKH_ST_T *)s
 #else
     #if (RKH_CFG_SMA_PPRO_EN == RKH_ENABLED)
         #define MKBASIC(n,pp)       n##_trtbl, (RKH_PPRO_T)pp
@@ -2006,7 +2014,7 @@ extern "C" {
     #define MKSBM(n,sbm)            n##_trtbl,n##_exptbl,sbm
     #define MKMCH(d,i,n)            d, (RKH_TRN_ACT_T)i, \
                                     (RKHROM RKH_ST_T *)&rdyp_##n
-    #define MKENP(e,s)              e,(RKHROM struct RKH_ST_T *)s
+    #define MKENP(e,s)              e,(RKHROM RKH_ST_T *)s
 #endif
 
 #define MK_SET_EVT(ev_obj, ev_sig) \
@@ -2649,8 +2657,25 @@ extern "C" {
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 
+typedef struct RKH_ROM_T RKH_ROM_T;
+typedef struct RKHSmaVtbl RKHSmaVtbl;
 typedef struct RKH_SM_T RKH_SM_T;
 typedef struct RKH_SMA_T RKH_SMA_T;
+typedef struct RKH_TR_T RKH_TR_T;
+typedef struct RKH_BASE_T RKH_BASE_T;
+typedef struct RKH_ST_T RKH_ST_T;
+typedef struct RKH_SHIST_T RKH_SHIST_T;
+typedef struct RKH_SBSC_T RKH_SBSC_T;
+typedef struct RKH_SCMP_T RKH_SCMP_T;
+typedef struct RKH_FINAL_T RKH_FINAL_T;
+typedef struct RKH_EXPCN_T RKH_EXPCN_T;
+typedef struct RKH_ENPCN_T RKH_ENPCN_T;
+typedef struct RKH_SSBM_T RKH_SSBM_T;
+typedef struct RKH_RSM_T RKH_RSM_T;
+typedef struct RKH_SENP_T RKH_SENP_T;
+typedef struct RKH_SEXP_T RKH_SEXP_T;
+typedef struct RKH_SCOND_T RKH_SCOND_T;
+typedef struct RKH_SCHOICE_T RKH_SCHOICE_T;
 
 /**
  *  \brief
@@ -2703,7 +2728,7 @@ typedef struct RKH_SMAI_T
  *	\link RKH_EVT_T single inheritance in C \endlink, and
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  */
-typedef struct RKH_ROM_T
+struct RKH_ROM_T
 {
     /**
      *  \brief
@@ -2742,7 +2767,7 @@ typedef struct RKH_ROM_T
      *  This state could be defined either composite or basic
      *  (not pseudo-state).
      */
-    RKHROM struct RKH_ST_T *istate;
+    RKHROM RKH_ST_T *istate;
 
     /**
      *  \brief
@@ -2764,7 +2789,7 @@ typedef struct RKH_ROM_T
 #if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
     const RKH_EVT_T *ievent;
 #endif
-} RKH_ROM_T;
+};
 #endif
 
 /**
@@ -2789,7 +2814,7 @@ struct RKH_SM_T
      *  \brief
      *  Points to current stable state (simple or final state).
      */
-    RKHROM struct RKH_ST_T *state;
+    RKHROM RKH_ST_T *state;
 };
 #else
 struct RKH_SM_T
@@ -2831,7 +2856,7 @@ struct RKH_SM_T
      *  This state could be defined either composite or basic
      *  (not pseudo-state).
      */
-    RKHROM struct RKH_ST_T *istate;
+    RKHROM RKH_ST_T *istate;
 
     /**
      *  \brief
@@ -2858,11 +2883,9 @@ struct RKH_SM_T
      *  \brief
      *  Points to current stable state (simple or final state).
      */
-    RKHROM struct RKH_ST_T *state;
+    RKHROM RKH_ST_T *state;
 };
 #endif
-
-typedef struct RKHSmaVtbl RKHSmaVtbl;
 
 /**
  *  \brief
@@ -3068,13 +3091,13 @@ struct RKHSmaVtbl
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
     typedef void (*RKH_ENT_ACT_T)(const RKH_SM_T *me,
-                                  const struct RKH_ST_T *state);
+                                  const RKH_ST_T *state);
     #else
     typedef void (*RKH_ENT_ACT_T)(const RKH_SM_T *me);
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    typedef void (*RKH_ENT_ACT_T)(const struct RKH_ST_T *state);
+    typedef void (*RKH_ENT_ACT_T)(const RKH_ST_T *state);
     #else
     typedef void (*RKH_ENT_ACT_T)(void);
     #endif
@@ -3108,13 +3131,13 @@ struct RKHSmaVtbl
 #if RKH_CFG_SMA_EXT_ARG_SMA_EN == RKH_ENABLED
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
     typedef void (*RKH_EXT_ACT_T)(const RKH_SM_T *me,
-                                  const struct RKH_ST_T *state);
+                                  const RKH_ST_T *state);
     #else
     typedef void (*RKH_EXT_ACT_T)(const RKH_SM_T *me);
     #endif
 #else
     #if RKH_CFG_SMA_ENT_ARG_STATE_EN == RKH_ENABLED
-    typedef void (*RKH_EXT_ACT_T)(const struct RKH_ST_T *state);
+    typedef void (*RKH_EXT_ACT_T)(const RKH_ST_T *state);
     #else
     typedef void (*RKH_EXT_ACT_T)(void);
     #endif
@@ -3139,7 +3162,7 @@ struct RKHSmaVtbl
  *  RKH_CREATE_BASIC_STATE() macros.
  */
 #if RKH_CFG_SMA_PPRO_ARG_SMA_EN == RKH_ENABLED
-    typedef RKH_SIG_T (*RKH_PPRO_T)(const struct RKH_SM_T *sma,
+    typedef RKH_SIG_T (*RKH_PPRO_T)(const RKH_SM_T *sma,
                                     RKH_EVT_T *pe);
 #else
     typedef RKH_SIG_T (*RKH_PPRO_T)(RKH_EVT_T *pe);
@@ -3233,7 +3256,7 @@ struct RKHSmaVtbl
  *  \brief
  *  Maintains the basic information of a state.
  */
-typedef struct RKH_BASE_T
+struct RKH_BASE_T
 {
     /**
      *  \brief
@@ -3262,7 +3285,7 @@ typedef struct RKH_BASE_T
 #if R_TRC_AO_NAME_EN == RKH_ENABLED
     const char *name;
 #endif
-} RKH_BASE_T;
+};
 
 /**
  *  \brief
@@ -3272,7 +3295,7 @@ typedef struct RKH_BASE_T
  *  Any event that is not explicitly listed as causing an event to occur
  *  in a given state is quietly discarded should it occur.
  */
-typedef struct RKH_TR_T
+struct RKH_TR_T
 {
     /**
      *  \brief
@@ -3297,20 +3320,20 @@ typedef struct RKH_TR_T
      *  Points to target state.
      */
     RKHROM void *target;
-} RKH_TR_T;
+};
 
 /**
  *	\brief
  *  Describes the common properties of regular states (basic, composite,
  *  and submachine).
  */
-typedef struct RKH_ST_T
+struct RKH_ST_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     /**
@@ -3329,15 +3352,15 @@ typedef struct RKH_ST_T
      *  \brief
      *	Points to state's parent.
      */
-    RKHROM struct RKH_ST_T *parent;
+    RKHROM RKH_ST_T *parent;
 #endif
-} RKH_ST_T;
+};
 
 /**
  *	\brief
  *  Describes a basic state.
  */
-typedef struct RKH_SBSC_T
+struct RKH_SBSC_T
 {
     RKH_ST_T st;
 
@@ -3345,7 +3368,7 @@ typedef struct RKH_SBSC_T
      *  \brief
      *	Points to state transition table.
      */
-    RKHROM struct RKH_TR_T *trtbl;
+    RKHROM RKH_TR_T *trtbl;
 
     /**
      *  \brief
@@ -3388,13 +3411,13 @@ typedef struct RKH_SBSC_T
 #if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
     RKH_PPRO_T prepro;
 #endif
-} RKH_SBSC_T;
+};
 
 /**
  *	\brief
  *  Describes a composite state.
  */
-typedef struct RKH_SCMP_T
+struct RKH_SCMP_T
 {
     RKH_ST_T st;
 
@@ -3402,7 +3425,7 @@ typedef struct RKH_SCMP_T
      *  \brief
      *	Points to state transition table.
      */
-    RKHROM struct RKH_TR_T *trtbl;
+    RKHROM RKH_TR_T *trtbl;
 
     /**
      *  \brief
@@ -3464,16 +3487,16 @@ typedef struct RKH_SCMP_T
      *	Points to state's history.
      */
 #if defined(RKH_HISTORY_ENABLED)
-    RKHROM struct RKH_SHIST_T *history;
+    RKHROM RKH_SHIST_T *history;
 #endif
 #endif
-} RKH_SCMP_T;
+};
 
 /**
  *	\brief
  *  Describes a final state.
  */
-typedef struct RKH_FINAL_T
+struct RKH_FINAL_T
 {
     /**
      *  \note
@@ -3485,7 +3508,7 @@ typedef struct RKH_FINAL_T
      *  \note
      *	A final state cannot have any outgoing transitions.
      */
-    RKHROM struct RKH_TR_T *trtbl;
+    RKHROM RKH_TR_T *trtbl;
 
     /**
      *  \note
@@ -3494,14 +3517,14 @@ typedef struct RKH_FINAL_T
 #if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
     RKH_PPRO_T prepro;
 #endif
-} RKH_FINAL_T;
+};
 
 /**
  *  \brief
  *  Describes the exit point connection.
  */
 #if defined(RKH_SUBMACHINE_ENABLED)
-typedef struct RKH_EXPCN_T
+struct RKH_EXPCN_T
 {
     /**
      *  \brief
@@ -3514,13 +3537,13 @@ typedef struct RKH_EXPCN_T
      *  Points to target state.
      */
     RKHROM void *target;
-} RKH_EXPCN_T;
+};
 
 /**
  *  \brief
  *  Describes the entry point connection.
  */
-typedef struct RKH_ENPCN_T
+struct RKH_ENPCN_T
 {
     /**
      *  \brief
@@ -3533,7 +3556,7 @@ typedef struct RKH_ENPCN_T
      *  Points to target state.
      */
     RKHROM void *target;
-} RKH_ENPCN_T;
+};
 
 /**
  *	\brief
@@ -3593,7 +3616,7 @@ typedef struct RKH_ENPCN_T
  *	\anchor fig_sbm3
  *	\image html sbm3.png "Submachine state with usage of exit and entry points"
  */
-typedef struct RKH_SSBM_T
+struct RKH_SSBM_T
 {
     RKH_ST_T st;
 
@@ -3601,32 +3624,32 @@ typedef struct RKH_SSBM_T
      *  \brief
      *	Points to state transition table.
      */
-    RKHROM struct RKH_TR_T *trtbl;
+    RKHROM RKH_TR_T *trtbl;
 
     /**
      *  \brief
      *	Points to state transition table.
      */
-    RKHROM struct RKH_EXPCN_T *exptbl;
+    RKHROM RKH_EXPCN_T *exptbl;
 
     /**
      *  \brief
      *	Points to submachine object.
      */
-    RKHROM struct RKH_RSM_T *sbm;
-} RKH_SSBM_T;
+    RKHROM RKH_RSM_T *sbm;
+};
 
 /**
  *	\brief
  *  Describes a (referenced) submachine state machine.
  */
-typedef struct RKH_RSM_T
+struct RKH_RSM_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
     /**
      *  \brief
@@ -3648,8 +3671,8 @@ typedef struct RKH_RSM_T
      *	Points to RAM memory location which stores
      *	the dynamic parent.
      */
-    RKHROM struct RKH_ST_T * *dyp;
-} RKH_RSM_T;
+    RKHROM RKH_ST_T * *dyp;
+};
 
 /**
  *  \brief
@@ -3662,13 +3685,13 @@ typedef struct RKH_RSM_T
  *  entry and exit actions respectively in between the actions that are
  *  associated with the joined transitions.
  */
-typedef struct RKH_SENP_T
+struct RKH_SENP_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
     /**
      *  \brief
@@ -3680,8 +3703,8 @@ typedef struct RKH_SENP_T
      *  \brief
      *	Points to state's parent (submachine state).
      */
-    RKHROM struct RKH_ST_T *parent;
-} RKH_SENP_T;
+    RKHROM RKH_ST_T *parent;
+};
 
 /**
  *  \brief
@@ -3693,13 +3716,13 @@ typedef struct RKH_SENP_T
  *  entry and exit actions respectively in between the actions that are
  *  associated with the joined transitions.
  */
-typedef struct RKH_SEXP_T
+struct RKH_SEXP_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
     /**
      *  \brief
@@ -3712,7 +3735,7 @@ typedef struct RKH_SEXP_T
      *	Points to state's parent (referenced submachine).
      */
     RKHROM RKH_RSM_T *parent;
-} RKH_SEXP_T;
+};
 #endif
 
 /**
@@ -3720,20 +3743,20 @@ typedef struct RKH_SEXP_T
  *  Describes the conditional pseudostate.
  */
 #if defined(RKH_CHOICE_OR_CONDITIONAL_ENABLED)
-typedef struct RKH_SCOND_T
+struct RKH_SCOND_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
     /**
      *  \brief
      *	Points to branch table.
      */
-    RKHROM struct RKH_TR_T *trtbl;
-} RKH_SCOND_T;
+    RKHROM RKH_TR_T *trtbl;
+};
 #endif
 
 /**
@@ -3741,20 +3764,20 @@ typedef struct RKH_SCOND_T
  *  Describes the choice pseudostate.
  */
 #if defined(RKH_CHOICE_ENABLED)
-typedef struct RKH_SCHOICE_T
+struct RKH_SCHOICE_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
     /**
      *  \brief
      *	Points to branch table.
      */
-    RKHROM struct RKH_TR_T *trtbl;
-} RKH_SCHOICE_T;
+    RKHROM RKH_TR_T *trtbl;
+};
 #endif
 
 /**
@@ -3764,13 +3787,13 @@ typedef struct RKH_SCHOICE_T
  *  It can be either be shallow or deep.
  */
 #if defined(RKH_HISTORY_ENABLED)
-typedef struct RKH_SHIST_T
+struct RKH_SHIST_T
 {
     /**
      *  \brief
      *	Maintains the basic information of state.
      */
-    struct RKH_BASE_T base;
+    RKH_BASE_T base;
 
     /**
      *  \brief
@@ -3790,7 +3813,7 @@ typedef struct RKH_SHIST_T
      *  History default transition.
      */
     RKHROM RKH_TR_T trn;
-} RKH_SHIST_T;
+};
 #endif
 
 /* -------------------------- External variables --------------------------- */
@@ -3801,13 +3824,13 @@ extern const RKHSmaVtbl rkhSmaVtbl;
 
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    rbool_t rkh_else(const struct RKH_SM_T *sma, RKH_EVT_T *pe);
+    rbool_t rkh_else(const RKH_SM_T *sma, RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
     rbool_t rkh_else(RKH_EVT_T *pe);
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    rbool_t rkh_else(const struct RKH_SM_T *sma);
+    rbool_t rkh_else(const RKH_SM_T *sma);
 #else
     rbool_t rkh_else(void);
 #endif

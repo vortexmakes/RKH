@@ -84,21 +84,34 @@ static void
 testActivate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
              void *stkSto, rui32_t stkSize)
 {
+    (void)me;
+    (void)qSto;
+    (void)qSize;
+    (void)stkSto;
+    (void)stkSize;
 }
 
 static void
 testTask(RKH_SMA_T *me, void *arg)
 {
+    (void)me;
+    (void)arg;
 }
 
 static void
 testPostFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
+    (void)me;
+    (void)e;
+    (void)sender;
 }
 
 static void
 testPostLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
+    (void)me;
+    (void)e;
+    (void)sender;
 }
 #endif
 

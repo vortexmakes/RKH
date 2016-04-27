@@ -108,10 +108,20 @@ Singleton_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     int var = 0;
 
+    (void)qSto;
+    (void)qSize;
+    (void)stkSto;
+    (void)stkSize;
     if (me->vptr->task != (void (*)(RKH_SMA_T *, void *)) 0)
     {
         me->vptr->task(me, &var);
     }
+#else
+    (void)me;
+    (void)qSto;
+    (void)qSize;
+    (void)stkSto;
+    (void)stkSize;
 #endif
 }
 
@@ -221,12 +231,18 @@ Multiple_getFoobar(Multiple *const me)
 void
 Multiple_postFifoA(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
+    (void)e;
+    (void)sender;
+
     RKH_DOWNCAST(Multiple, me)->foobar = 0;
 }
 
 void
 Multiple_postFifoB(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
+    (void)e;
+    (void)sender;
+
     RKH_DOWNCAST(Multiple, me)->foobar += 4;
 }
 
@@ -241,16 +257,24 @@ static const RKHSmaVtbl commandVtbl =
 void
 Command_task(RKH_SMA_T *me, void *arg)
 {
+    (void)me;
+    (void)arg;
 }
 
 void
 Command_postFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
+    (void)me;
+    (void)e;
+    (void)sender;
 }
 
 void
 Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
 {
+    (void)me;
+    (void)e;
+    (void)sender;
 }
 
 void
@@ -264,11 +288,18 @@ void
 CallControl_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
                      void *stkSto, rui32_t stkSize)
 {
+    (void)me;
+    (void)qSto;
+    (void)qSize;
+    (void)stkSto;
+    (void)stkSize;
 }
 
 void
 CallControl_task(RKH_SMA_T *me, void *arg)
 {
+    (void)me;
+    (void)arg;
 }
 
 void

@@ -55,6 +55,7 @@ rkh_exit_critical(void)
 void
 rkh_set_tickrate(rui32_t tick_rate_hz)
 {
+    (void)tick_rate_hz;
 }
 
 const

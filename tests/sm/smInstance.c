@@ -213,7 +213,7 @@ PublicSingle_dynCtor(int foo)
         /* Initialize its own state machine object */
         RKH_SM_INIT(me, publicSingleDyn,
                     1, HCAL, NULL, NULL, NULL);
-        me->foo = 8;
+        me->foo = foo;
     }
     return me;
 }

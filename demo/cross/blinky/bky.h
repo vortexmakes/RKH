@@ -26,7 +26,7 @@ enum
 };
 
 
-typedef struct
+typedef struct BKYSM_T
 {
 	RKH_SMA_T sma;	/* base structure */
 	rui8_t cnt;		/* private member */

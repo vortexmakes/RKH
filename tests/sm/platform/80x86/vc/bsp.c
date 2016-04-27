@@ -48,8 +48,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
 #include <conio.h>
+#include "rkh.h"
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 #include <time.h>
@@ -291,7 +291,7 @@ rkh_assert(RKHROM char * const file, int line)
 #endif
     RKH_TRC_FLUSH();
     RKH_DIS_INTERRUPT();
-    RKH_TR_FWK_ASSERT((RKHROM char *)file, __LINE__);
+    RKH_TR_FWK_ASSERT((RKHROM char *)file, line);
     /* __debugbreak(); */
     rkh_fwk_exit();
 }
