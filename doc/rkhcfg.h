@@ -588,13 +588,13 @@ extern "C" {
 
 /** 
  *  \brief
- *  If RKH_CFG_SMA_SM_CONST_EN is set to RKH_ENABLED then much of the state 
+ *  If #RKH_CFG_SMA_SM_CONST_EN is set to RKH_ENABLED then much of the state 
  *  machine object is allocated in ROM. This approach does have as key benefit 
- *  the little RAM consuming as compared when RKH_CFG_SMA_SM_CONST_EN is set 
+ *  the little RAM consuming as compared when #RKH_CFG_SMA_SM_CONST_EN is set 
  *  to RKH_DISABLED.
  *  Nevertheless, the primary drawback of this approach is the obfuscated API 
  *  to use it.
- *  In constrast, if RKH_CFG_SMA_SM_CONST_EN is set to RKH_ENABLED then the 
+ *  In constrast, if #RKH_CFG_SMA_SM_CONST_EN is set to RKH_ENABLED then the 
  *  whole state machine object is allocated in RAM, including its own
  *  constant part. However, the API to use it is very simple, intuitive,
  *  and flexible, allowing easily the dynamic memory allocation
@@ -607,7 +607,7 @@ extern "C" {
 
 /** 
  *  \brief
- *  If RKH_CFG_SMA_RT_CTOR_EN is set to RKH_ENABLED then is allowed the use 
+ *  If #RKH_CFG_SMA_RT_CTOR_EN is set to RKH_ENABLED then is allowed the use 
  *  of run-time constructors of RKH_SM_T and RKH_SMA_T classes, rkh_sm_ctor() 
  *  and rkh_sma_ctor() respectively.
  *
@@ -619,7 +619,7 @@ extern "C" {
 
 /** 
  *  \brief
- *  If RKH_CFG_SMA_VFUNCT_EN is set to RKH_ENABLED, the active objects are 
+ *  If #RKH_CFG_SMA_VFUNCT_EN is set to RKH_ENABLED, the active objects are 
  *  defined as polymorphics, since it incorporates a virtual table of 
  *  functions. See the default virtual table rkhSmaVtbl to known the 
  *  available polymorphic operations. 

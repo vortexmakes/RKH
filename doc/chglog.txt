@@ -6,76 +6,93 @@ Prev: \ref main_page "Home" \n
 
 \tableofcontents
 
-\section rkhVersion_2_4_5 Version 2.4.5
+\section rkhVer_2_4_5 Version 2.4.5
 \releasedate 2015-07-06
 
 \apichg
--# .........
--# .........
-    - .........
-    - .........
-    - .........
+- N/A
 
 \bugfix
-....
+- Fixed a old bug at rkh_sm_dispatch() function in rkh.c file related with 
+  entry and exited states on a loop transition. The implemented solution have 
+  adopted the UML's local transition feature. 
 
 \new
-....
+- Added support for code beautifier Uncrustify in /tools/uncrustify, to be 
+  used as a code formatting tool according to RKH rules. Also, included source 
+  and header file templates.
+- Reformatted source and header files in /sources and /sources/include.
+- Added support for TDD with Unity + Cmock + Trazer. The directory /tests 
+  includes the related files.
+- Added #RKH_CFG_HOOK_PUT_TRCEVT_EN configuration option to include the new bsp 
+  dependent function rkh_hook_putTrcEvt().
+- Refactored trace module (/tests/trace), state machine module (/tests/sm) 
+  and trazer (/tests/utrazer) through the test harness. It implies various 
+  performance improvements, memory usage reduction, better documentation, and 
+  learning tests.
+- Removed NULL macro usage from rkh.h file, and thus <stdlib.h> inclusion.
+- Improved doc files (doxygen) and comments related to test suites.
+- Added test suite of state machine module.
+- Multiple enabled transitions (same trigger) with mutually exclusive guards 
+  according to UML is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Completion transition (also as known as null transition) and completion 
+  event in simple and composite states is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Final state in composite states is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- The default transition (also as known as initial transition) in a composite 
+  state can have its own associated behavior (effect) is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Added macro RKH_CREATE_COMP_REGION_STATE() to instantiate a composite state 
+  with a single region, including its own initial pseudostate, history 
+  (shallow or deep type) pseudostate, as well as its own final state.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Multiple enabled transitions (same trigger) with mutually exclusive guards 
+  according to UML is now supported. This usage of this feature is 
+  demonstrated through various and provided learning tests.
+- A state machine is now allowed to be instantiated regardless of an active 
+  object instance. It is very useful to create reactive parts (or orthogonal 
+  regions) of composite active objects. Also, by means of 
+  RKH_CFG_SMA_SM_CONST_EN option a state machine instance could be allocated 
+  into ROM or RAM. It is useful to dynamic allocation. This usage of this 
+  feature is demonstrated through various and provided learning tests.
+- Polimorphic active objects with "virtual" table (in C) is now supported. It 
+  is composed as activate, task, post_fifo, and post_lifo operations. 
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Added runtime constructors for active object and state machine classes for 
+  multiple and single instances. This usage of this feature is demonstrated 
+  through various and provided learning tests.
+- Added RKH_CFG_SMA_VFUNCT_EN and RKH_CFG_SMA_RT_CTOR_EN options to set the 
+  active object as polymorphic and to use the runtime constructors of 
+  RKH_SMA_T/RKH_SM_T classes. This usage of this feature is demonstrated 
+  through various and provided learning tests.
+- Template files for dealing with implementation and specification of active 
+  objects is now added to /template.
+- Added RKH_DECLARE_TR_TBL(), RKH_INIT_BASIC_STATE(), and 
+  RKH_INIT_COMPOSITE_STATE() macros to derive a state (basic or composite) 
+  class to any other using single inheritance in C by literally embedding 
+  the base type (or super-class), RKHSBSC_T or RKHSCMP_T, as the first 
+  member of the derived structure.
 
 \par Deprecated features
-....
+- The RKH_CREATE_DEEP_HISTORY_STATE() and RKH_CREATE_SHALLOW_HISTORY_STATE() 
+  macros is now deprecated and not recommended for new designs. It remains 
+  supported for backwards compatibility.
 
 \ports
-....
+- Added a port to be exclusively used in the x86 test harness in 
+  /source/portable/test directory, tagged as __TEST__.
 
 <HR>
-\section rkhVersion_2_4_4 Version 2.4.4
-\releasedate 2015-07-15
-
-\apichg
-- .........
-- .........
-
-\bugfix
-....
-
-\new
-- .........
-- .........
-
-\par Deprecated features
-....
-
-\ports
-....
-
 
 \code
-Changes between V2.4.4 and V2.4.5 released 06/01/2016 
-
-+   The main focus of this release is to support the TDD in RKH.
-+   Adds the new module unitrazer in \tests\utils\unitrazer directory to test 
-    the RKH's state machines by means of Trazer application + Unity. 
-    This module is implemented based on the "The Four-Phase Test Pattern": 
-    - Setup: establish the preconditions to the test.
-    - Exercise: do something to the system.
-    - Verify: check the expected outcome.
-    - Cleanup: return the system under test to its initial state after 
-               the test.
-+   Adds the test cases of trace module. In this process, is also refactored 
-    the module under test.
-+   Adds the directories to support TDD with Unity in \tests.
-+   Includes the beautifier "uncrustify" in \tools\uncrustify directory.
-+   Adds source and include file templates in \template directory.
-+   Enhances the documentation files and commnets.
-+   Adds new demos and ports.
-+   Renames some types and macros.
-+ 	Adds the RKH_DECLARE_TR_TBL(), RKH_INIT_BASIC_STATE(), and 
-    RKH_INIT_COMPOSITE_STATE() macros to derive a state (basic or composite) 
-    structure to any other using single inheritance in C by by literally 
-    embedding the base type, RKHSBSC_T or RKHSCMP_T, as the first member of 
-    the derived structure.
-
 Changes between V2.4 and V2.4.3 released 07/15/2013
 
 + 	Add the cross-platform demo 'shared' for s08 and x86 platforms. 
@@ -102,7 +119,6 @@ Changes between V2.4 and V2.4.3 released 07/15/2013
 +	Adds to RKH_ST_T structure (base structure for basic, composite and 
 	submachine states) the "trtbl" member (pointer to transition table), as 
 	new basic attribute.
-+	
 
 Changes between V2.3 and V2.4 released 05/03/2013 
 

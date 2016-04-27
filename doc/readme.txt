@@ -4447,7 +4447,21 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_SMA_PPRO_ARG_SMA_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_SMA_SM_CONST_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_SMA_RT_CTOR_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copybrief RKH_CFG_SMA_RT_CTOR_EN </TD>
+	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_SMA_VFUNCT_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copybrief RKH_CFG_SMA_VFUNCT_EN </TD>
 	</TR>
 </TABLE>
 

@@ -80,13 +80,11 @@ parser_chk(void)
 {
     rui8_t *p, chk;
     int i;
-    if (TRZ_RKH_CFG_TRC_CHK_EN == 1)
-    {
-        for (chk = 0, p = tr, i = trix; i--; ++p)
-            chk = (rui8_t)(chk + *p);
-        return chk == 0;
-    }
-    return 1;
+
+    for (chk = 0, p = tr, i = trix; i--; ++p)
+        chk = (rui8_t)(chk + *p);
+
+    return chk == 0;
 }
 
 static

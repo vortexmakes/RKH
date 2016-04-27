@@ -539,8 +539,9 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
     }
 
 /**
- * 	\brief
- *	This macro creates a deep history pseudostate. 
+ * 	\deprecated 
+ * 	This macro creates a deep history pseudostate. Instead use: 
+ *	RKH_CREATE_COMP_REGION_STATE() macro.
  *
  *	Deep history applies downwards to all levels of nesting.
  *
@@ -552,8 +553,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SHIST_T structure definition for more information.
- *
- *	Arguments:
  *
  * 	\param[in] name		pseudostate name. Represents a deep history 
  *                      pseudostate structure.
@@ -571,7 +570,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      will be taken. Otherwise, default State entry is 
  *                      applied. 
  */
-
 #define RKH_CREATE_DEEP_HISTORY_STATE(name, parent, dftTrnGuard, \
                                       dftTrnAction, dftTarget) \
                                                                \
@@ -580,8 +578,9 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
               dftTarget, ram##name)
 
 /**
- * 	\brief
- *	This macro creates a shallow history pseudostate. 
+ * 	\deprecated 
+ *	This macro creates a shallow history pseudostate. Instead use: 
+ *	RKH_CREATE_COMP_REGION_STATE() macro.
  *
  *	Shallow history means that history applies to the current nesting context 
  *	only – states nested more deeply are not affected by the presence of a 
@@ -612,7 +611,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      will be taken. Otherwise, default State entry is 
  *                      applied. 
  */
-
 #define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent, dftTrnGuard, \
                                          dftTrnAction, dftTarget) \
                                                                   \
@@ -772,7 +770,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	As noted above, sandwiched between these macros are the exit point
  *	macros, RKH_EX_CNNPNT().
  */
-
 #define RKH_END_EX_CNNPNT_TABLE     };
 
 /**
@@ -797,7 +794,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	RKH_SENP_T structure definition for more information.
  */
-
 #define RKH_EN_CNNPNT(name, enpnt, subm) \
                                          \
     RKHROM RKH_SENP_T name = \
@@ -827,7 +823,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                              init_adquire );
  *  \endcode
  */
-
 #define RKH_CREATE_REF_SUBMACHINE(name, defchild, iact) \
                                                         \
     static RKHROM RKH_ST_T * rdyp_##name; \
@@ -880,7 +875,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
  */
-
 #define RKH_CREATE_REF_EXPNT(name, ix, subm) \
                                              \
     RKHROM RKH_SEXP_T name = \
@@ -916,7 +910,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                          &handle_error );
  *  \endcode
  */
-
 #define RKH_CREATE_REF_ENPNT(name, act, ts, subm) \
                                                   \
     RKHROM RKH_ENPCN_T name = \
@@ -947,7 +940,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	As noted above, sandwiched between these macros are the transitions macros
  *	that actually represent behavior of state.
  */
-
 #define RKH_CREATE_TRANS_TABLE(name) \
                                      \
     RKHROM RKH_TR_T name##_trtbl[]= \
@@ -982,7 +974,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *				&WAIT_SYNC )		// next state
  *	\endcode
  */
-
 #define RKH_TRREG(e, g, a, t) \
     {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, t}
 
@@ -1007,7 +998,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *				store_data )        // action function
  *	\endcode
  */
-
 #define RKH_TRINT(e, g, a)    {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, NULL}
 
 /**
@@ -1043,7 +1033,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *				     &waitSync),    // next state
  *	\endcode
  */
-
 #define RKH_TRCOMPLETION(guard_, effect_, target_) \
     {RKH_COMPLETION_EVENT, \
      (RKH_GUARD_T)guard_, (RKH_TRN_ACT_T)effect_, target_}
@@ -1068,7 +1057,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\note
  *	This macro is not terminated with the semicolon.
  */
-
 #define RKH_END_TRANS_TABLE     {RKH_ANY, NULL, NULL, NULL}};
 
 /**
@@ -1129,7 +1117,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_END_BRANCH_TABLE
  *	\endcode
  */
-
 #define RKH_BRANCH(g, a, t)   {0, (RKH_GUARD_T)g, a, t}
 
 /**
@@ -1164,7 +1151,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  This macro is internal to RKH and the user application should
  *  not call it.
  */
-
 #define RKH_EBTBL               {RKH_ANY, NULL, NULL, NULL}
 
 /**
@@ -1185,14 +1171,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\sa
  *	This macro is not terminated with the semicolon.
  */
-
 #define RKH_END_BRANCH_TABLE    RKH_EBTBL};
 
 /**
  *  \brief
  *	This macro indicates the root state of a state machine.
  */
-
 #define RKH_ROOT                RKH_NULL
 
 /**
@@ -1318,7 +1302,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \note
  *  Generally, this macro is used in the state-machine's header file.
  */
-
 #define RKH_DCLR_COMP_STATE     extern RKHROM RKH_SCMP_T
 #define RKH_DCLR_BASIC_STATE    extern RKHROM RKH_SBSC_T
 #define RKH_DCLR_FINAL_STATE    extern RKHROM RKH_FINAL_T
@@ -1482,7 +1465,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
  *  \endcode
  */
-
 #define RKH_ARRAY_SMA(_arr, _ix)      *_arr[_ix]
 
 /**
@@ -1507,7 +1489,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_DCLR_SM_GLOBAL( MYSM_T, my, g_my );
  *	\endcode
  */
-
 #define RKH_DCLR_SM_GLOBAL(sma_t, sm, gob) \
     sma_t * const gob = &s_##sm;
 
@@ -1517,7 +1498,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  \param[in] name			name of state (basic or composite) object.
  */
-
 #define RKH_DECLARE_TR_TBL(name) \
     extern RKHROM RKH_TR_T name##_trtbl[]
 
@@ -1668,7 +1648,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	See RKH_INIT_BASIC_STATE() and RKH_CREATE_COMP_STATE() macros to more
  *	information.
  */
-
 #define RKH_INIT_COMPOSITE_STATE(name, en, ex, parent, \
                                  defchild, history) \
     { \
@@ -1687,7 +1666,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  controls whether or not a transition is taken following the receipt of
  *  a triggering event.
  */
-
 #define RKH_GFALSE      RKH_FALSE   /**< False condition */
 #define RKH_GTRUE       RKH_TRUE    /**< True condition */
 
@@ -2375,7 +2353,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	}
  *	\endcode
  */
-
 #define RKH_SET_STATIC_EVENT(ev_obj, ev_sig) \
     MK_SET_EVT(ev_obj, ev_sig)
 

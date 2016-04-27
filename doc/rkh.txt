@@ -41,6 +41,8 @@ triggers."
 
 David Harel</EM>
 
+\tableofcontents
+
 \image html rkh_framework_1.png
 \n This manual includes:
 
@@ -56,6 +58,7 @@ David Harel</EM>
 - \ref utest
 - \ref Download
 - \ref changelog
+- \ref deprecated
 - \ref Others
 - \ref Resources
 - \ref Licensing
