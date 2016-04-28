@@ -32,8 +32,33 @@
 /**
  *  \file       rkh.h
  *  \ingroup    fwk
- *
  *  \brief      RKH framwwork platform - independent interface.
+ *
+ *  \addtogroup api
+ *  @{
+ *      \addtogroup apiSM State machines
+ *      @{@}
+ *      \addtogroup apiAO Active objects
+ *      @{@}
+ *      \addtogroup apiPort Port
+ *      @{
+ *          \addtogroup apiPortMisc Miscellaneous
+ *          @{@}
+ *          \addtogroup apiPortAO Active objects
+ *          @{
+ *          \brief Related to underlying OS/RTOS
+ *          @}
+ *      @}
+ *      \addtogroup apiBSP BSP
+ *      @{
+ *          \addtogroup apiBSPHook Hooks
+ *          @{@}
+ *          \addtogroup apiBSPTrc Trace
+ *          @{
+ *          \brief Related to manage a trace session with Trazer application
+ *          @}
+ *      @}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -52,12 +77,10 @@
  */
 
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKH_H__
 #define __RKH_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhitl.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
@@ -66,13 +89,11 @@
 #include "rkhtrc.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /**
  *	\brief
  *	This macro appears at the top of each C/C++ source file defining
@@ -131,28 +152,32 @@ extern "C" {
  *
  *  In other words, upcasting allows us to treat a derived type as though 
  *  it were its base type.
+ *
+ *  \ingroup apiAO
  */
 #define RKH_UPCAST(BaseType_, me_)          ((BaseType_ *)me_)
 
 /**
  *  \brief
  *  Converts a base-class pointer to a derived-class pointer.
+ *
+ *  \ingroup apiAO
  */
 #define RKH_DOWNCAST(DerivedType_, me_)     ((DerivedType_ *)me_)
 
 /* -------------------------------- Constants ------------------------------ */
-
 #ifndef NULL
 #define NULL    (void *)0
 #endif
 
 /* ------------------------------- Data types ------------------------------ */
-
 /**
  *  \brief
  *  Return codes from rkh_sm_dispatch() function.
+ *
+ *  \ingroup apiSM
  */
-typedef enum
+typedef enum RKH_RCODE_T
 {
     /**
      *  The arrived event was succesfully processed and HSM
@@ -197,6 +222,8 @@ typedef enum
 /**
  *  \brief
  *  State machine properties.
+ *
+ *  \ingroup apiSM
  */
 typedef enum
 {
@@ -220,7 +247,6 @@ typedef enum
 } RKH_HPPTY_T;
 
 /* -------------------------- External variables --------------------------- */
-
 /**
  *  \brief
  *  Priority arranged table of registered SMA.
@@ -340,6 +366,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SCMP_T structure definition for more information.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_COMP_REGION_STATE(name, en, ex, parent, defchild, \
                                      initialTrn, \
@@ -377,6 +405,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SCMP_T structure definition for more information.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_COMP_STATE(name, en, ex, parent, defchild, history) \
                                                                        \
@@ -396,6 +426,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_FINAL_T structure definition for more information.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_FINAL_STATE(name, parent) \
                                              \
@@ -459,6 +491,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SBSC_T structure definition for more information.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_BASIC_STATE(name, en, ex, parent, prepro) \
                                                              \
@@ -493,6 +527,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SCOND_T structure definition for more information.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_COND_STATE(name) \
                                     \
@@ -527,6 +563,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	RKH_SCHOICE_T structure definition for more information.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_CHOICE_STATE(name) \
                                       \
@@ -569,6 +607,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      NULL) originating from the History Pseudostate, it 
  *                      will be taken. Otherwise, default State entry is 
  *                      applied. 
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_DEEP_HISTORY_STATE(name, parent, dftTrnGuard, \
                                       dftTrnAction, dftTarget) \
@@ -610,6 +650,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      NULL) originating from the History Pseudostate, it 
  *                      will be taken. Otherwise, default State entry is 
  *                      applied. 
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_SHALLOW_HISTORY_STATE(name, parent, dftTrnGuard, \
                                          dftTrnAction, dftTarget) \
@@ -665,6 +707,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *									&processing,    // parent state
  *									&herror );		// referenced submachine
  *	\endcode
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_SUBMACHINE_STATE(name, en, ex, parent, sbm) \
                                                                \
@@ -699,6 +743,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  RKH_END_EX_CNNPNT_TABLE().
  *	As noted above, sandwiched between these macros are the exit point
  *	macros, RKH_EX_CNNPNT().
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_EX_CNNPNT_TABLE(name) \
     RKHROM RKH_EXPCN_T name##_exptbl[]= \
@@ -822,6 +868,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                              &wait,
  *                              init_adquire );
  *  \endcode
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_REF_SUBMACHINE(name, defchild, iact) \
                                                         \
@@ -874,6 +922,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		RKH_EX_CNNPNT( EX2S12, &EXPNT2, ... ), // table index = 1 (EXPNT2)
  *	RKH_END_EX_CNNPNT_TABLE
  *	\endcode
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_REF_EXPNT(name, ix, subm) \
                                              \
@@ -909,6 +959,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                          &S2,
  *                          &handle_error );
  *  \endcode
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_REF_ENPNT(name, act, ts, subm) \
                                                   \
@@ -939,6 +991,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  and ends with the macro RKH_END_TRANS_TABLE().
  *	As noted above, sandwiched between these macros are the transitions macros
  *	that actually represent behavior of state.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_TRANS_TABLE(name) \
                                      \
@@ -1080,6 +1134,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  Each branch table always begins with the macro RKH_CREATE_BRANCH_TABLE()
  *  and ends with the macro RKH_END_BRANCH_TABLE().
  *  In RKH branches are defined by the macro RKH_BRANCH().
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_BRANCH_TABLE(name) \
                                       \
@@ -1129,6 +1185,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  \param[in] compStateName    pointer to the composite state that contains 
  *                              this history pseudostate.
+ *
+ *  \ingroup apiSM
  */
 #define RKH_CREATE_HISTORY_STORAGE(compStateName) \
     static RKHROM RKH_ST_T *ramHist_##compStateName
@@ -1685,6 +1743,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *                      sender of the time events.
  *	\sa
  *	rkh_tmr_tick().
+ *
+ *	\ingroup apiBSPHook
  */
     #define RKH_TIM_TICK(_sender)     rkh_tmr_tick(_sender)
 #else
@@ -1730,6 +1790,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		return 0;
  *	}
  *	\endcode
+ *
+ *  \ingroup apiAO
  */
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
 #if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
@@ -2159,6 +2221,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	rkh_sma_post_fifo().
+ *
+ *  \ingroup apiAO
  */
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     #if defined(RKH_USE_TRC_SENDER)
@@ -2205,6 +2269,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	rkh_sma_post_lifo().
+ *
+ *  \ingroup apiAO
  */
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     #if defined(RKH_USE_TRC_SENDER)
@@ -2253,6 +2319,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	mye->y = mye->x = 0;
  *	...
  *	\endcode
+ *
+ *  \ingroup apiEvt
  */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
     #define RKH_ALLOC_EVT(et, e) \
@@ -2262,52 +2330,56 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
         (void)0
 #endif
 
+/**
+ *  \brief
+ *  Recycle a dynamic event.
+ *
+ *  This macro implements a simple garbage collector for the dynamic
+ *  events.	Only dynamic events are candidates for recycling.
+ *  (A dynamic event is one that is allocated from an event pool, which
+ *  is determined as non-zero	e->nref attribute.) Next, the function
+ *  decrements the reference counter of the event, and recycles the
+ *  event only if the counter drops to zero (meaning that no more
+ *  references are outstanding for this event). The dynamic event is
+ *  recycled by returning it to the pool from which	it was originally
+ *  allocated. The pool-of-origin information is stored in the
+ *  e->pool member.
+ *
+ *  \param[in] e		pointer to event to be potentially recycled.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it. Instead, use #RKH_FWK_GC() macro.
+ *  \note
+ *  The garbage collector must be explicitly invoked at all appropriate
+ *  contexts, when an event can become garbage (automatic garbage
+ *  collection).
+ *  \note
+ *  When setting RKH_CFG_FWK_DYN_EVT_EN = 0 the garbage collector has
+ *  not effect, thus it's eliminated in compile-time.
+ *
+ *  \ingroup apiEvt
+ */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *  Recycle a dynamic event.
-     *
-     *  This macro implements a simple garbage collector for the dynamic
-     *  events.	Only dynamic events are candidates for recycling.
-     *  (A dynamic event is one that is allocated from an event pool, which
-     *  is determined as non-zero	e->nref attribute.) Next, the function
-     *  decrements the reference counter of the event, and recycles the
-     *  event only if the counter drops to zero (meaning that no more
-     *  references are outstanding for this event). The dynamic event is
-     *  recycled by returning it to the pool from which	it was originally
-     *  allocated. The pool-of-origin information is stored in the
-     *  e->pool member.
-     *
-     *  \param[in] e		pointer to event to be potentially recycled.
-     *
-     *  \note
-     *  This function is internal to RKH and the user application should
-     *  not call it. Instead, use #RKH_FWK_GC() macro.
-     *  \note
-     *  The garbage collector must be explicitly invoked at all appropriate
-     *  contexts, when an event can become garbage (automatic garbage
-     *  collection).
-     *  \note
-     *  When setting RKH_CFG_FWK_DYN_EVT_EN = 0 the garbage collector has
-     *  not effect, thus it's eliminated in compile-time.
-     */
     #define RKH_FWK_GC(e)             rkh_fwk_gc(e)
 #else
     #define RKH_FWK_GC(e)             (void)0
 #endif
 
+/**
+ *  \brief
+ *  Reserve the dynamic event to be recycled.
+ *
+ *  This is the complement to RKH_FWK_GC(). It increments the reference
+ *  count of a dynamic event so the event can be saved by an SMA (AO).
+ *  Sometime later the SMA should manually release the event with
+ *  RKH_FWK_GC().
+ *
+ *  \param[in] e		pointer to event to be reserved.
+ *
+ *  \ingroup apiEvt
+ */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *  Reserve the dynamic event to be recycled.
-     *
-     *  This is the complement to RKH_FWK_GC(). It increments the reference
-     *  count of a dynamic event so the event can be saved by an SMA (AO).
-     *  Sometime later the SMA should manually release the event with
-     *  RKH_FWK_GC().
-     *
-     *  \param[in] e		pointer to event to be reserved.
-     */
     #define RKH_FWK_RSV(e)            rkh_fwk_reserve(e)
 #else
     #define RKH_FWK_RSV(e)            (void)0
@@ -2352,6 +2424,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		...
  *	}
  *	\endcode
+ *
+ *  \ingroup apiEvt
  */
 #define RKH_SET_STATIC_EVENT(ev_obj, ev_sig) \
     MK_SET_EVT(ev_obj, ev_sig)
@@ -2379,6 +2453,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		rkh_put_fifo( drpc, &ev_udrej );
  *	}
  *	\endcode
+ *
+ *  \ingroup apiEvt
  */
 #define RKH_STATIC_EVENT(ev_obj, ev_sig) \
     MK_EVT(ev_obj, ev_sig)
@@ -2409,6 +2485,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *		rkh_put_fifo( qphone, &ev_timer );
  *	}
  *	\endcode
+ *
+ *  \ingroup apiEvt
  */
 #define RKH_ROM_STATIC_EVENT(ev_obj, ev_sig) \
     MK_ROM_EVT(ev_obj, ev_sig)
@@ -2440,6 +2518,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *      ...
  *  }
  *	\endcode
+ *
+ *  \ingroup apiEvt
  */
 #define RKH_INIT_STATIC_EVT(ev_sig) \
     MK_EVT_STRUCT(ev_sig)
@@ -2507,6 +2587,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 /**
  *  \brief
  *  Perform cast to pointer to RKH event structure (RKH_EVT_T*).
+ *
+ *  \ingroup apiEvt
  */
 #define RKH_EVT_CAST(_e)      ((RKH_EVT_T *)(_e))
 
@@ -2535,154 +2617,162 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #define RKH_CAST(_type, _obj)     ((_type *)(_obj))
 
+/**
+ *  \brief
+ *	Open the tracing session.
+ *
+ *	This function is application-specific and the user needs to
+ *	define it. At a minimum, this function must initialize and/or
+ *	configure the trace stream by calling rkh_trc_init() and
+ *	RKH_TRC_SEND_CFG() respectively.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application
+ *  should not call it. Instead, use #RKH_TRC_OPEN() macro.
+ *
+ *  \sa \b rkhtrc.h file.
+ *
+ *	\usage
+ *
+ *	\code
+ *	#define BSP_SIZEOF_TS		32u
+ *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
+ *
+ *	void
+ *	rkh_trc_open( void )
+ *	{
+ *		rkh_trc_init();
+ *
+ *		FTBIN_OPEN();
+ *		TCP_TRACE_OPEN();
+ *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
+ *
+ *		if(( idle_thread = CreateThread( NULL, 1024,
+ *				&idle_thread_function, (void *)0,
+ *				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
+ *			fprintf( stderr, "Cannot create the thread: [%d]
+ *													line from %s "
+ *				"file\n", __LINE__, __FILE__ );
+ *	}
+ *	\endcode
+ *
+ *	\ingroup apiBSPTrc
+ */
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	Open the tracing session.
-     *
-     *	This function is application-specific and the user needs to
-     *	define it. At a minimum, this function must initialize and/or
-     *	configure the trace stream by calling rkh_trc_init() and
-     *	RKH_TRC_SEND_CFG() respectively.
-     *
-     *  \note
-     *  This function is internal to RKH and the user application
-     *  should not call it. Instead, use #RKH_TRC_OPEN() macro.
-     *
-     *  \sa \b rkhtrc.h file.
-     *
-     *	\usage
-     *
-     *	\code
-     *	#define BSP_SIZEOF_TS		32u
-     *	#define BSP_TS_RATE_HZ		CLOCK_PER_SEC
-     *
-     *	void
-     *	rkh_trc_open( void )
-     *	{
-     *		rkh_trc_init();
-     *
-     *		FTBIN_OPEN();
-     *		TCP_TRACE_OPEN();
-     *		RKH_TRC_SEND_CFG( BSP_SIZEOF_TS, BSP_TS_RATE_HZ );
-     *
-     *		if(( idle_thread = CreateThread( NULL, 1024,
-     *				&idle_thread_function, (void *)0,
-     *				CREATE_SUSPENDED, NULL )) == (HANDLE)0 )
-     *			fprintf( stderr, "Cannot create the thread: [%d]
-     *													line from %s "
-     *				"file\n", __LINE__, __FILE__ );
-     *	}
-     *	\endcode
-     */
     #define RKH_TRC_OPEN()      rkh_trc_open()
 #else
     #define RKH_TRC_OPEN()      (void)0
 #endif
 
+/**
+ *  \brief
+ *	Close the tracing session.
+ *
+ *	This function is application-specific and the user needs to
+ *	define it.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application
+ *  should not call it. Instead, use #RKH_TRC_CLOSE() macro.
+ *
+ *  \sa \b rkhtrc.h file.
+ *
+ *	\usage
+ *
+ *	\code
+ *	void
+ *	rkh_trc_close( void )
+ *	{
+ *		fclose( fdbg );
+ *	}
+ *	\endcode
+ *
+ *	\ingroup apiBSPTrc
+ */
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	Close the tracing session.
-     *
-     *	This function is application-specific and the user needs to
-     *	define it.
-     *
-     *  \note
-     *  This function is internal to RKH and the user application
-     *  should not call it. Instead, use #RKH_TRC_CLOSE() macro.
-     *
-     *  \sa \b rkhtrc.h file.
-     *
-     *	\usage
-     *
-     *	\code
-     *	void
-     *	rkh_trc_close( void )
-     *	{
-     *		fclose( fdbg );
-     *	}
-     *	\endcode
-     */
     #define RKH_TRC_CLOSE()     rkh_trc_close()
 #else
     #define RKH_TRC_CLOSE()     (void)0
 #endif
 
+/**
+ *  \brief
+ *	Platform-dependent macro flushing the trace stream.
+ *
+ *	This function is application-specific and the user needs to define
+ *	it. When the RKH trace an event, all the information related to it
+ *	has to be stored somewhere before it can be retrieved, in order to
+ *	be analyzed.
+ *  This place is a trace stream. Frequently, events traced are stored
+ *  in the stream until it is flushed.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it. Instead, use #RKH_TRC_FLUSH() macro.
+ *
+ *  \sa \b rkhtrc.h file.
+ *
+ *	\usage
+ *	\code
+ *  void
+ *  rkh_trc_flush( void )
+ *  {
+ *      rui8_t *blk;
+ *      TRCQTY_T nbytes;
+ *      RKH_SR_ALLOC();
+ *
+ *      FOREVER
+ *      {
+ *          nbytes = (TRCQTY_T)1024;
+ *
+ *          RKH_ENTER_CRITICAL_();
+ *          blk = rkh_trc_get_block( &nbytes );
+ *          RKH_EXIT_CRITICAL_();
+ *
+ *          if((blk != (rui8_t *)0))
+ *          {
+ *              FTBIN_FLUSH( blk, nbytes );
+ *              TCP_TRACE_SEND_BLOCK( blk, nbytes );
+ *          }
+ *          else
+ *              break;
+ *      }
+ *  }
+ *	\endcode
+ *
+ *	\ingroup apiBSPTrc
+ */
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	Platform-dependent macro flushing the trace stream.
-     *
-     *	This function is application-specific and the user needs to define
-     *	it. When the RKH trace an event, all the information related to it
-     *	has to be stored somewhere before it can be retrieved, in order to
-     *	be analyzed.
-     *  This place is a trace stream. Frequently, events traced are stored
-     *  in the stream until it is flushed.
-     *
-     *  \note
-     *  This function is internal to RKH and the user application should
-     *  not call it. Instead, use #RKH_TRC_FLUSH() macro.
-     *
-     *  \sa \b rkhtrc.h file.
-     *
-     *	\usage
-     *	\code
-     *  void
-     *  rkh_trc_flush( void )
-     *  {
-     *      rui8_t *blk;
-     *      TRCQTY_T nbytes;
-     *      RKH_SR_ALLOC();
-     *
-     *      FOREVER
-     *      {
-     *          nbytes = (TRCQTY_T)1024;
-     *
-     *          RKH_ENTER_CRITICAL_();
-     *          blk = rkh_trc_get_block( &nbytes );
-     *          RKH_EXIT_CRITICAL_();
-     *
-     *          if((blk != (rui8_t *)0))
-     *          {
-     *              FTBIN_FLUSH( blk, nbytes );
-     *              TCP_TRACE_SEND_BLOCK( blk, nbytes );
-     *          }
-     *          else
-     *              break;
-     *      }
-     *  }
-     *	\endcode
-     */
     #define RKH_TRC_FLUSH()     rkh_trc_flush()
 #else
     #define RKH_TRC_FLUSH()     (void)0
 #endif
 
+/**
+ *  \brief
+ *  Send the trace facility configuration to host application software
+ *  Trazer.
+ *
+ *  Trazer is designed to work with all possible target CPU, which
+ *  requires a wide range of configurability. For example, for any
+ *  given target CPU, Trazer must "know" the size of object pointers,
+ *  event size, timestamp size and so on. This configurations could be
+ *  provided through "trazer.cfg" file in the host or invoking
+ *  RKH_TRC_SEND_CFG() macro from the application-specific
+ *  rkh_trc_open() function.
+ *
+ *  \param[in] ts_hz		clocks per second of trace timestamp.
+ *
+ *  \note
+ *	Frequently, this macro is called from the rkh_trc_open() function,
+ *	which is provided by user application program, more specifically
+ *	the board support package (BSP).
+ *
+ *  \sa RKH_TRC_OPEN() macro.
+ *
+ *	\ingroup apiBSPTrc
+ */
 #if RKH_CFG_TRC_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *  Send the trace facility configuration to host application software
-     *  Trazer.
-     *
-     *  Trazer is designed to work with all possible target CPU, which
-     *  requires a wide range of configurability. For example, for any
-     *  given target CPU, Trazer must "know" the size of object pointers,
-     *  event size, timestamp size and so on. This configurations could be
-     *  provided through "trazer.cfg" file in the host or invoking
-     *  RKH_TRC_SEND_CFG() macro from the application-specific
-     *  rkh_trc_open() function.
-     *
-     *  \param[in] ts_hz		clocks per second of trace timestamp.
-     *
-     *  \note
-     *	Frequently, this macro is called from the rkh_trc_open() function,
-     *	which is provided by user application program, more specifically
-     *	the board support package (BSP).
-     *
-     *  \sa RKH_TRC_OPEN() macro.
-     */
     #define RKH_TRC_SEND_CFG(ts_hz) \
         RKH_TR_FWK_TCFG(ts_hz)
 #else
@@ -2690,7 +2780,6 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
 #endif
 
 /* -------------------------- Function prototypes -------------------------- */
-
 /**
  *  \brief
  *  Initializes the RKH framework.
@@ -2709,6 +2798,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	Implementation example for x86, linux emulator of simple cooperative 
  *	scheduler non-preemptive.
  *  \snippet linux_st_rkhport.c Initializes the RKH framework
+ *
+ *  \ingroup apiPortMisc
  */
 void rkh_fwk_init(void);
 
@@ -2738,6 +2829,8 @@ void rkh_fwk_init(void);
  *	Here is the basic algorithm for interpreting the listing shown above.
  *	A pseudocode description of the procedure is:
  *  \include pseudo_cooperative_emulator.c
+ *
+ *  \ingroup apiPortMisc
  */
 void rkh_fwk_enter(void);
 
@@ -2764,6 +2857,8 @@ void rkh_fwk_enter(void);
  *	Implementation example for x86, linux emulator of simple cooperative 
  *	scheduler non-preemptive.
  *  \snippet linux_st_rkhport.c Exit the RKH framework
+ *
+ *  \ingroup apiPortMisc
  */
 void rkh_fwk_exit(void);
 
@@ -2788,6 +2883,8 @@ void rkh_fwk_exit(void);
  *	Implementation example for x86, linux emulator of simple cooperative 
  *	scheduler non-preemptive.
  *  \snippet linux_st_rkhport.c Terminates an active object
+ *
+ *  \ingroup apiPortAO
  */
 void rkh_sma_terminate(RKH_SMA_T *me);
 
@@ -2843,6 +2940,8 @@ void rkh_tmr_tick(void);
  *	Implementation example for x86, linux emulator of simple cooperative 
  *	scheduler non-preemptive.
  *  \snippet linux_st_rkhport.c Activates an active object
+ *
+ *  \ingroup apiPortAO
  */
 void rkh_sma_activate(RKH_SMA_T *me, const RKH_EVT_T * *qSto,
                       RKH_RQNE_T qSize, void *stkSto, rui32_t stkSize);
@@ -2876,6 +2975,8 @@ void rkh_sma_activate(RKH_SMA_T *me, const RKH_EVT_T * *qSto,
  *	port file to a particular platform. However, only the ports to the
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
+ *
+ *  \ingroup apiPortAO
  */
 void rkh_sma_post_fifo(RKH_SMA_T *me, const RKH_EVT_T *e,
                        const void *const sender);
@@ -2913,6 +3014,8 @@ void rkh_sma_post_fifo(RKH_SMA_T *me, const RKH_EVT_T *e);
  *	port file to a particular platform. However, only the ports to the
  *	external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
+ *
+ *  \ingroup apiPortAO
  */
 void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e,
                        const void *const sender);
@@ -2942,6 +3045,8 @@ void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e);
  *	Depending on the underlying OS or kernel, if no event is present at the
  *	queue, the function will block the current thread until an event is
  *	received.
+ *
+ *  \ingroup apiPortAO
  */
 RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
 
@@ -3195,23 +3300,23 @@ void rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize);
 
 RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e);
 
-#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 /**
  *  \brief
  *  Recycle a dynamic event.
  *
  *  \param[in] e    event signal.
  */
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 void rkh_fwk_gc(RKH_EVT_T *e);
 #endif
 
-#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 /**
  *  \brief
  *  Reserve the dynamic event to be recycled.
  *
  *  \param[in] e    event signal.
  */
+#if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 void rkh_fwk_reserve(RKH_EVT_T *e);
 #endif
 
@@ -3227,6 +3332,8 @@ void rkh_fwk_reserve(RKH_EVT_T *e);
  *	The dispatch hook will only get called if RKH_CFG_HOOK_DISPATCH_EN is
  *	set to 1 within rkhcfg.h file. When this is set the application must
  *	provide the hook function.
+ *
+ *	\ingroup apiBSPHook
  */
 void rkh_hook_dispatch(RKH_SMA_T *me, RKH_EVT_T *e);
 
@@ -3241,6 +3348,8 @@ void rkh_hook_dispatch(RKH_SMA_T *me, RKH_EVT_T *e);
  *	The signal hook will only get called if RKH_CFG_HOOK_SIGNAL_EN is set
  *	to 1 within rkhcfg.h file. When this is set the application must provide
  *	the hook function.
+ *
+ *	\ingroup apiBSPHook
  */
 void rkh_hook_signal(RKH_EVT_T *e);
 
@@ -3258,8 +3367,9 @@ void rkh_hook_signal(RKH_EVT_T *e);
  *	The timeout hook will only get called if RKH_CFG_HOOK_TIMEOUT_EN is set
  *	to 1 within rkhcfg.h file. When this is set the application must provide
  *	the hook function.
+ *
+ *	\ingroup apiBSPHook
  */
-
 void rkh_hook_timeout(const void *t);
 
 /**
@@ -3271,8 +3381,9 @@ void rkh_hook_timeout(const void *t);
  *	The start hook will only get called if RKH_CFG_HOOK_START_EN is set to 1
  *	within rkhcfg.h file. When this is set the application must provide the
  *	hook function.
+ *
+ *	\ingroup apiBSPHook
  */
-
 void rkh_hook_start(void);
 
 /**
@@ -3285,6 +3396,8 @@ void rkh_hook_start(void);
  *	The exit hook will only get called if RKH_CFG_HOOK_EXIT_EN is set to 1
  *	within rkhcfg.h file. When this is set the application must provide the
  *	hook function.
+ *
+ *	\ingroup apiBSPHook
  */
 void rkh_hook_exit(void);
 
@@ -3312,8 +3425,9 @@ void rkh_hook_exit(void);
  *		...
  *	}
  *	\endcode
+ *
+ *	\ingroup apiBSPHook
  */
-
 void rkh_hook_idle(void);
 
 /**
@@ -3333,6 +3447,8 @@ void rkh_hook_idle(void);
  *	The time tick hook will only get called if RKH_CFG_HOOK_TIMETICK_EN is
  *	set to 1 within rkhcfg.h file. When this is set the application must
  *	provide the hook function.
+ *
+ *	\ingroup apiBSPHook
  */
 void rkh_hook_timetick(void);
 
@@ -3342,6 +3458,8 @@ void rkh_hook_timetick(void);
  *  to allow to the application to extend the functionality of RKH, giving 
  *  the port developer the opportunity to add code that will be called when 
  *  is put a trace event into the stream buffer.
+ *
+ *	\ingroup apiBSPHook
  */
 void rkh_hook_putTrcEvt(void);
 
@@ -3350,6 +3468,8 @@ void rkh_hook_putTrcEvt(void);
  *  Inits a previously created state machine calling its initializing action.
  *
  *  \param[in] me  pointer to previously created state machine.
+ *
+ *  \ingroup apiSM
  */
 void rkh_sm_init(RKH_SM_T *me);
 
@@ -3405,7 +3525,9 @@ void rkh_sm_init(RKH_SM_T *me);
  *	\param[in] e	pointer to arrived event. It's used as state-machine's
  *					input alphabet.
  *
- *	\return         Result RKH_RCODE_T code.
+ *	\return         Result #RKH_RCODE_T code.
+ *
+ *  \ingroup apiSM
  */
 ruint rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *e);
 
@@ -3418,42 +3540,52 @@ ruint rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *e);
  *  \note
  *  The initializer assumes that memory has previously been allocated for the 
  *  object (either statically or dynamically).
+ *
+ *  \ingroup apiSM
  */
 void rkh_sm_ctor(RKH_SM_T *me);
 
-#if defined(RKH_HISTORY_ENABLED)
 /**
  *  \brief
  *  Erase the history of a state. It can be a shallow or deep history.
  *
  *  \param[in] h    pointer to history pseudostate.
+ *
+ *  \ingroup apiSM
  */
-void rkh_fwk_clear_history(RKHROM RKH_SHIST_T *h);
+#if defined(RKH_HISTORY_ENABLED)
+void rkh_sm_clear_history(RKHROM RKH_SHIST_T *h);
 #else
-#define rkh_fwk_clear_history(h)          (void)0
+#define rkh_sm_clear_history(h)          (void)0
 #endif
 
-#if RKH_CFG_TRC_EN == RKH_ENABLED
 /**
- * \brief
- * Open the tracing session.
+ *  \brief
+ *  Open the tracing session.
+ *
+ *	\ingroup apiBSPTrc
  */
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 void rkh_trc_open(void);
 #endif
 
-#if RKH_CFG_TRC_EN == RKH_ENABLED
 /**
  *  \brief
  *	Close the tracing session.
+ *
+ *	\ingroup apiBSPTrc
  */
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 void rkh_trc_close(void);
 #endif
 
-#if RKH_CFG_TRC_EN == RKH_ENABLED
 /**
  *  \brief
  *	Platform-dependent macro flushing the trace stream.
+ *
+ *	\ingroup apiBSPTrc
  */
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 void rkh_trc_flush(void);
 #endif
 
@@ -3477,16 +3609,17 @@ void rkh_trc_flush(void);
  *		return ( RKH_TS_T )clock();
  *	}
  *	\endcode
+ *
+ *	\ingroup apiBSPTrc
  */
 RKH_TS_T rkh_trc_getts(void);
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
+
 /* ------------------------------ End of file ------------------------------ */

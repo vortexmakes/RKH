@@ -2800,6 +2800,8 @@ struct RKH_ROM_T
  *  serves as the base structure for derivation of state machines in the
  *  application code. Also, is the base structure of active object structure 
  *  RKH_SMA_T.
+ *
+ *  \ingroup apiSM
  */
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
 struct RKH_SM_T
@@ -2923,6 +2925,8 @@ struct RKH_SM_T
  *	RKH_SMA_T structure definition for more information. Also,
  *	\link RKH_EVT_T single inheritance in C \endlink, and
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ *
+ *  \ingroup apiAO
  */
 struct RKH_SMA_T
 {

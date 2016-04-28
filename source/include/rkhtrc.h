@@ -32,8 +32,13 @@
 /**
  *  \file       rkhtrc.h
  *  \ingroup    trc
- *
  *  \brief      Platform - independent interface for RKH trace facility.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiTrc Trace
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -48,25 +53,21 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHTRC_H__
 #define __RKHTRC_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhcfg.h"
 #include "rkhtype.h"
 #include "rkhplat.h"
 #include "rkhevt.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /**
  *  \brief
  * 	Specify the size of the trace event identification. The valid values 
@@ -117,6 +118,8 @@ extern "C" {
      *  \brief
      *  Suppress the enabled trace events from a specific group.
      *  Use the RKH_TRC_ALL_GROUPS to disable all groups.
+     *
+     *  \ingroup apiTrc 
      */
     #define RKH_FILTER_ON_GROUP(grp) \
         rkh_trc_filter_group_(FILTER_ON, (grp), EUNCHANGE)
@@ -125,6 +128,8 @@ extern "C" {
      *  \brief
      *  Emit the enabled trace events from a specific group.
      *  Use the RKH_TRC_ALL_GROUPS to enable all groups.
+     *
+     *  \ingroup apiTrc 
      */
     #define RKH_FILTER_OFF_GROUP(grp) \
         rkh_trc_filter_group_(FILTER_OFF, (grp), EUNCHANGE)
@@ -133,6 +138,8 @@ extern "C" {
      *  \brief
      *  Suppress (disable) one trace event.
      *  Use the RKH_TRC_ALL_EVENTS to disable all trace events.
+     *
+     *  \ingroup apiTrc 
      */
     #define RKH_FILTER_ON_EVENT(evt) \
         rkh_trc_filter_event_(FILTER_ON, (evt))
@@ -144,6 +151,8 @@ extern "C" {
      *
      *  \note
      *	The container group is enabled, reglardless of its previous status.
+     *
+     *  \ingroup apiTrc 
      */
     #define RKH_FILTER_OFF_EVENT(evt) \
         rkh_trc_filter_event_(FILTER_OFF, (evt))
@@ -151,6 +160,8 @@ extern "C" {
     /**
      *  \brief
      *  Suppress (disable) all events in a specific group.
+     *
+     *  \ingroup apiTrc 
      */
     #define RKH_FILTER_ON_GROUP_ALL_EVENTS(grp) \
         rkh_trc_filter_group_(FILTER_ON, (grp), ECHANGE)
@@ -161,6 +172,8 @@ extern "C" {
      *
      *  \note
      *	The container group is enabled, reglardless of its previous status.
+     *
+     *  \ingroup apiTrc 
      */
     #define RKH_FILTER_OFF_GROUP_ALL_EVENTS(grp) \
         rkh_trc_filter_group_(FILTER_OFF, (grp), ECHANGE)
@@ -171,6 +184,8 @@ extern "C" {
      *  \brief
      *  Suppress the enable trace events related to a specified active
      *  object.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_SMA(sma) \
             rkh_trc_symFil(&fsma, RKH_SMA_ACCESS_CONST(sma, prio), FILTER_ON)
@@ -179,6 +194,8 @@ extern "C" {
      *  \brief
      *  Suppress all enabled trace events related to specified active
      *  object.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_ALL_SMA() \
             rkh_trc_symFil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_ON))
@@ -187,6 +204,8 @@ extern "C" {
      *  \brief
      *  Emmit the enabled trace events related to a specified active
      *  object.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_SMA(sma) \
             rkh_trc_symFil(&fsma, RKH_SMA_ACCESS_CONST(sma, prio), FILTER_OFF)
@@ -194,6 +213,8 @@ extern "C" {
     /**
      *  \brief
      *  Emmit all enabled trace events related to specified active object.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_ALL_SMA() \
             rkh_trc_symFil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF))
@@ -210,6 +231,8 @@ extern "C" {
      *  \brief
      *  Suppress the enabled trace events related to a specified event
      *  signal.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_SIGNAL(sig) \
             rkh_trc_symFil(&fsig, (sig), FILTER_ON)
@@ -218,6 +241,8 @@ extern "C" {
      *  \brief
      *  Suppress all enabled trace events related to specified event
      *  signal.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_ALL_SIGNALS() \
             rkh_trc_symFil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_ON))
@@ -226,6 +251,8 @@ extern "C" {
      *  \brief
      *  Emmit the enabled trace events related to a specified event
      *  signal.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_SIGNAL(sig) \
             rkh_trc_symFil(&fsig, (sig), FILTER_OFF)
@@ -233,6 +260,8 @@ extern "C" {
     /**
      *  \brief
      *  Emmit all enabled trace events related to specified event signal.
+     *
+     *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_ALL_SIGNALS() \
             rkh_trc_symFil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF))
@@ -301,7 +330,6 @@ extern "C" {
 #endif
 
 /* -------------------------------- Constants ------------------------------ */
-
 #if RKH_CFG_TRC_SIZEOF_TE_ID == 8
     #define RKH_NBITS_GROUP             3
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
@@ -1146,7 +1174,7 @@ extern "C" {
         /**
          *  \addtogroup trc
          *  @{
-         *  \addtogroup traceMP Memory pool event trace
+         *  \addtogroup traceMP Traces of memory pool services
          *  @{
          *  \brief      Macros for tracing the memory pool execution
          */
@@ -1221,7 +1249,7 @@ extern "C" {
         /**
          *  \addtogroup trc
          *  @{
-         *  \addtogroup traceQ Event queue trace
+         *  \addtogroup traceQ Traces of event queue services
          *  @{
          *  \brief      Macros for tracing the event queue execution
          */
@@ -1366,7 +1394,7 @@ extern "C" {
         /**
          *  \addtogroup trc
          *  @{
-         *  \addtogroup traceAO Active object event trace
+         *  \addtogroup traceAO Traces of active objects
          *  @{
          *  \brief      Macros for tracing the active object execution
          */
@@ -1531,7 +1559,7 @@ extern "C" {
         /**
          *  \addtogroup trc
          *  @{
-         *  \addtogroup traceSM State machine event trace
+         *  \addtogroup traceSM Traces of state machine
          *  @{
          *  \brief      Macros for tracing the state machine execution
          */
@@ -1559,7 +1587,7 @@ extern "C" {
 
         /**
          *  \brief
-         *	\copybrief rkh_fwk_clear_history
+         *	\copybrief rkh_sm_clear_history
          *
          *  Desc    = clear history pseudostate\n
          *  Group   = RKH_TG_SM\n
@@ -1965,7 +1993,7 @@ extern "C" {
         /**
          *  \addtogroup trc
          *  @{
-         *  \addtogroup traceTMR Timer event trace
+         *  \addtogroup traceTMR Traces of timer services
          *  @{
          *  \brief      Macros for tracing the timer execution
          */
@@ -2078,7 +2106,7 @@ extern "C" {
         /**
          *  \addtogroup trc
          *  @{
-         *  \addtogroup traceFWK Miscellaneous framework event trace
+         *  \addtogroup traceFWK Traces of miscellaneous framework
          *  @{
          *  \brief Macros for tracing the framework execution
          */
@@ -3450,12 +3478,10 @@ typedef struct RKH_FilterTbl
 } RKH_FilterTbl;
 
 /* -------------------------- External variables --------------------------- */
-
 extern const RKH_TRC_FIL_T fsig;
 extern const RKH_TRC_FIL_T fsma;
 
 /* -------------------------- Function prototypes -------------------------- */
-
 /**
  *  \brief
  *  Initializes the RKH's trace record service.

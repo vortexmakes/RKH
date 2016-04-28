@@ -9,18 +9,14 @@
 \brief RKH user configurations
 \defgroup trc Trace
 \brief Sophisticated tracing mechanism in run-time
-\defgroup prt Port
-\brief Porting RKH
 \defgroup sch RKHS
 \brief Native, cooperative, non-preemtive scheduler
-\defgroup tmr Timer
-\brief Software timer service
-\defgroup que Queue
-\brief Queue service
 \defgroup fwk RKH
 \brief State-machine framework for reactive embedded systems
 \defgroup test Test
 \brief Unit tests
+\defgroup api API Reference Manual
+\brief Provides a reference to RKH services
 
 \anchor main_page
 \mainpage RKH Reference Manual

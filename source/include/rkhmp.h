@@ -32,9 +32,14 @@
 /**
  *  \file       rkhmp.h
  *  \ingroup    mp
- *
  *  \brief      Platform - independent interface for supporting fixed - size
  *              memory blocks facility.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiMemPool Manager of fixed-sized memory block
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -49,17 +54,14 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHMP_H__
 #define __RKHMP_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhtype.h"
 #include "rkhcfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -67,7 +69,6 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-
 /**
  *  Defines the size of number of memory block size. The valid values
  *  [in bits] are 8, 16 or 32. Default is 8. This type is configurable via
@@ -181,6 +182,8 @@ typedef struct
  *  \code
  *  RKH_MP_T my_pool;
  *  \endcode
+ *
+ *  \ingroup apiMemPool
  */
 typedef struct RKH_MP_T
 {
@@ -264,7 +267,6 @@ typedef struct RKH_MP_T
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-
 /**
  *  \brief
  *	Initializes the previously allocated memory pool data strcuture RKH_MP_T.
@@ -296,6 +298,8 @@ typedef struct RKH_MP_T
  *
  *	\note
  *	See RKH_MP_T structure for more information.
+ *
+ *  \ingroup apiMemPool
  */
 void rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
                  RKH_MPBS_T bsize);
@@ -308,6 +312,8 @@ void rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
  *
  *  \return
  *  A pointer to a new memory block or NULL if the pool runs out of blocks.
+ *
+ *  \ingroup apiMemPool
  */
 void *rkh_mp_get(RKH_MP_T *mp);
 
@@ -319,6 +325,8 @@ void *rkh_mp_get(RKH_MP_T *mp);
  *
  *  \param[in] mp		pointer to previously allocated memory pool structure.
  *  \param[in] blk		pointer to the returned memory block.
+ *
+ *  \ingroup apiMemPool
  */
 void rkh_mp_put(RKH_MP_T *mp, void *blk);
 
@@ -334,6 +342,8 @@ void rkh_mp_put(RKH_MP_T *mp, void *blk);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_BSIZE_EN.
+ *
+ *  \ingroup apiMemPool
  */
 RKH_MPBS_T rkh_mp_get_bsize(RKH_MP_T *mp);
 
@@ -349,6 +359,8 @@ RKH_MPBS_T rkh_mp_get_bsize(RKH_MP_T *mp);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_NFREE_EN.
+ *
+ *  \ingroup apiMemPool
  */
 RKH_MPNB_T rkh_mp_get_nfree(RKH_MP_T *mp);
 
@@ -366,6 +378,8 @@ RKH_MPNB_T rkh_mp_get_nfree(RKH_MP_T *mp);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_LWM_EN.
+ *
+ *  \ingroup apiMemPool
  */
 RKH_MPNB_T rkh_mp_get_low_wmark(RKH_MP_T *mp);
 
@@ -385,6 +399,8 @@ RKH_MPNB_T rkh_mp_get_low_wmark(RKH_MP_T *mp);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_INFO_EN.
+ *
+ *  \ingroup apiMemPool
  */
 void rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi);
 
@@ -397,17 +413,17 @@ void rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_MP_GET_INFO_EN.
+ *
+ *  \ingroup apiMemPool
  */
 void rkh_mp_clear_info(RKH_MP_T *mp);
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

@@ -32,13 +32,18 @@
 /**
  *  \file       rkhdef.h
  *  \ingroup    fwk
- *
  *  \brief      Platform - independent file that contains standard constants 
  *              and macros.
  *
  *  All constants and macros are prefixed with RKH_ to provide a consistent 
  *  naming convention and to avoid namespace conflicts with other constants 
  *  and macros in your application.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiDef Definition library
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -53,19 +58,16 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHDEF_H__
 #define __RKHDEF_H__
 
 /* ----------------------------- Include files ----------------------------- */
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /* 
  * Bit's macros.
  */
@@ -78,6 +80,8 @@ extern "C" {
  *
  *  \return
  *  Bit mask with single, specified bit set.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT(bit)            (1u << (bit))
 
@@ -89,6 +93,8 @@ extern "C" {
  *
  *  \return
  *  Bit mask with single, specified bit set.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT08(bit)          ((rui8_t)((rui8_t) 1u << (bit)))
 #define RKH_BIT16(bit)          ((rui16_t)((rui16_t) 1u << (bit)))
@@ -104,6 +110,8 @@ extern "C" {
  *
  *  \return
  *  Shifted bit mask.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_MASK(bit_mask, bit_shift) \
     ((bit_mask) << (bit_shift))
@@ -117,6 +125,8 @@ extern "C" {
  *
  *  \return
  *  Shifted bit mask.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_MASK_08(bit_mask, bit_shift) \
     ((rui8_t)((rui8_t)(bit_mask) << (bit_shift)))
@@ -135,6 +145,8 @@ extern "C" {
  *
  *  \return
  *  Modified value with specified bit(s) set.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_SET_08(val, mask) \
     ((val) = (rui8_t)(((rui8_t)(val)) | ((rui8_t)(mask))))
@@ -153,6 +165,8 @@ extern "C" {
  *
  *  \return
  *  Modified value with specified bit(s) clear.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_CLR_08(val, mask) \
     ((val) = (rui8_t)(((rui8_t)(val)) & ((rui8_t) ~(mask))))
@@ -172,6 +186,8 @@ extern "C" {
  *  \return
  *  RKH_YES, if ALL specified bit(s) are set in value.
  *  RKH_NO,  if ALL specified bit(s) are NOT set in value.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_IS_SET(val, mask) \
     ((((mask)  !=  0u)  && \
@@ -187,6 +203,8 @@ extern "C" {
  *  \return
  *  RKH_YES, if ALL specified bit(s) are clear in value.
  *  RKH_NO,  if ALL specified bit(s) are NOT clear in value.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_IS_CLR(val, mask) \
     ((((mask)  !=  0u)  && \
@@ -202,6 +220,8 @@ extern "C" {
  *  \return
  *  RKH_YES, if ALL specified bit(s) are set in value.
  *  RKH_NO,  if ALL specified bit(s) are NOT set in value.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_IS_SET_ANY(val, mask) \
     ((((val) & (mask)) ==  0u) ? (RKH_NO) : (RKH_YES))
@@ -216,17 +236,20 @@ extern "C" {
  *  \return
  *  RKH_YES, if ALL specified bit(s) are clear in value.
  *  RKH_NO,  if ALL specified bit(s) are NOT clear in value.
+ *
+ *  \ingroup apiDef 
  */
 #define RKH_BIT_IS_CLR_ANY(val, mask) \
     ((((val) & (mask)) == (mask)) ? (RKH_NO) : (RKH_YES))
 
 /* -------------------------------- Constants ------------------------------ */
-
 #define  RKH_NULL               ((void *) 0)
 
 /**@{
  * \brief
  * Standard define.
+ *
+ *  \ingroup apiDef 
  */
 #define  RKH_FALSE              0u
 #define  RKH_TRUE               1u
@@ -257,12 +280,11 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
+
 /* ------------------------------ End of file ------------------------------ */

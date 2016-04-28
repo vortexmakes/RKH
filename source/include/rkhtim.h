@@ -31,10 +31,15 @@
 
 /**
  *  \file       rkhtim.h
- *  \ingroup    tmr
- *
+ *  \ingroup    apiTmr
  *  \brief      Platform - independent interface for supporting software timer
  *              services.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiTmr Timer
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -49,62 +54,60 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHTIM_H__
 #define __RKHTIM_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhevt.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
+/**
+ *  \brief
+ *	Initializes the previously allocated timer structure RKH_TMR_T.
+ *
+ *  A timer is declared with the RKH_TMR_T data type and is defined with
+ *  the RKH_TMR_INIT() service.
+ *	The timer is initialized in a non-active state (stopped). In this
+ *	case, a subsequent start service call is necessary to get the timer
+ *	actually started.
+ *  The following listing creates an application timer that executes
+ *  "my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after
+ *  100 timer-ticks.
+ *
+ *	\param[in] t_	pointer to previously allocated timer structure. Any
+ *					software module intending to install a software timer
+ *					must first allocate a timer structure RKH_TMR_T.
+ *	\param[in] e_	event to be directly posted (using the FIFO policy)
+ *					into the event queue of the target agreed state
+ *					machine application at the timer expiration.
+ *	\param[in] th_  hook function to be called at the timer expiration.
+ *					This argument is optional, thus it could be declared
+ *					as NULL or eliminated in compile-time with
+ *					RKH_CFG_TMR_HOOK_EN.
+ *
+ *	\note
+ *	See RKH_TMR_T structure for more information.
+ *
+ *  \usage
+ *  \code
+ *	#define MY_TICK				100
+ *
+ *	static RKH_TMR_T my_timer;
+ *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
+ *
+ *  ...
+ *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
+ *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
+ *  \endcode
+ *
+ *  \ingroup apiTmr
+ */
 #if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
-    /**
-     *  \brief
-     *	Initializes the previously allocated timer structure RKH_TMR_T.
-     *
-     *  A timer is declared with the RKH_TMR_T data type and is defined with
-     *  the RKH_TMR_INIT() service.
-     *	The timer is initialized in a non-active state (stopped). In this
-     *	case, a subsequent start service call is necessary to get the timer
-     *	actually started.
-     *  The following listing creates an application timer that executes
-     *  "my_timer_hook" and send the event signal "TOUT" to "pwr" SMA after
-     *  100 timer-ticks.
-     *
-     *	\param[in] t_	pointer to previously allocated timer structure. Any
-     *					software module intending to install a software timer
-     *					must first allocate a timer structure RKH_TMR_T.
-     *	\param[in] e_	event to be directly posted (using the FIFO policy)
-     *					into the event queue of the target agreed state
-     *					machine application at the timer expiration.
-     *	\param[in] th_  hook function to be called at the timer expiration.
-     *					This argument is optional, thus it could be declared
-     *					as NULL or eliminated in compile-time with
-     *					RKH_CFG_TMR_HOOK_EN.
-     *
-     *	\note
-     *	See RKH_TMR_T structure for more information.
-     *
-     *  \usage
-     *  \code
-     *	#define MY_TICK				100
-     *
-     *	static RKH_TMR_T my_timer;
-     *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
-     *
-     *  ...
-     *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
-     *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
-     *  \endcode
-     */
     #define RKH_TMR_INIT(t_, e_, th_) \
         rkh_tmr_init_((t_), (e_), (th_))
 #else
@@ -139,8 +142,9 @@ extern "C" {
  *  RKH_TMR_INIT( &my_timer, e_timer, my_timer_hook );
  *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
  *  \endcode
+ *
+ *  \ingroup apiTmr
  */
-
 #define RKH_TMR_ONESHOT(t, sma, itick) \
     (t)->period = 0; \
     rkh_tmr_start(t, sma, itick)
@@ -177,15 +181,15 @@ extern "C" {
  *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
  *  RKH_TMR_PERIODIC( &my_timer, pwr, MY_TICK, MY_TICK/4 );
  *  \endcode
+ *
+ *  \ingroup apiTmr
  */
-
 #define RKH_TMR_PERIODIC(t, sma, itick, per) \
     (t)->period = (per); \
     rkh_tmr_start((t), (sma), (itick))
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-
 /**
  *  \brief
  *  The prototype of callback function (hook) to call when the timer expires.
@@ -230,6 +234,8 @@ typedef struct RKH_TINFO_T
     rui16_t nstop;      /**	# of stop requests */
 } RKH_TINFO_T;
 
+typedef struct RKH_TMR_T RKH_TMR_T;
+
 /**
  *  \brief
  *  Defines the data structure used to maintain information that allows the
@@ -256,8 +262,9 @@ typedef struct RKH_TINFO_T
  *  \code
  *  RKH_TMR_T my_timer;
  *  \endcode
+ *
+ *  \ingroup apiTmr
  */
-typedef struct RKH_TMR_T RKH_TMR_T;
 struct RKH_TMR_T
 {
     /**
@@ -268,7 +275,6 @@ struct RKH_TMR_T
     /**
      *  Points to next timer structure in the doubly linked list.
      */
-
     RKH_TMR_T *tnext;
 
     /**
@@ -317,7 +323,6 @@ struct RKH_TMR_T
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-
 #if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
     /**
      *  \brief
@@ -340,6 +345,8 @@ struct RKH_TMR_T
  *	\param[in] sma		state machine application (SMA) that receives the 
  *	                    timer event.
  *  \param[in] itick    number of ticks for timer expiration.
+ *
+ *  \ingroup apiTmr
  */
 void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
                    RKH_TNT_T itick);
@@ -353,6 +360,8 @@ void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
  *	service has no effect.
  *
  *	\param[in] t		pointer to previously created timer structure.
+ *
+ *  \ingroup apiTmr
  */
 void rkh_tmr_stop(RKH_TMR_T *t);
 
@@ -375,6 +384,8 @@ void rkh_tmr_stop(RKH_TMR_T *t);
  *  See RKH_TINFO_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
  *  RKH_CFG_TMR_GET_INFO_EN.
+ *
+ *  \ingroup apiTmr
  */
 void rkh_tmr_get_info(RKH_TMR_T *t, RKH_TINFO_T *info);
 
@@ -388,17 +399,17 @@ void rkh_tmr_get_info(RKH_TMR_T *t, RKH_TINFO_T *info);
  *  See RKH_TINFO_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
  *  RKH_CFG_TMR_GET_INFO_EN.
+ *
+ *  \ingroup apiTmr
  */
 void rkh_tmr_clear_info(RKH_TMR_T *t);
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

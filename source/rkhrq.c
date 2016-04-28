@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhrq.c
- *  \ingroup    que
+ *  \ingroup    apiQueue
  *
  *  \brief      Implements a queue (by reference) services.
  */

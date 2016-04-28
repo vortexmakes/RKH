@@ -31,9 +31,14 @@
 
 /**
  *  \file       rkhrq.h
- *  \ingroup    que
- *
+ *  \ingroup    apiQueue
  *  \brief      Platform - independent interface for supporting queue services.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiQueue Event queues
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -48,23 +53,19 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHRQ_H__
 #define __RKHRQ_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhcfg.h"
 #include "rkhtype.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /**
  *  \brief
  *  This macro query the queue.
@@ -73,13 +74,14 @@ extern "C" {
  *
  *  \return
  *  '1' (RKH_TRUE) if queue is empty, otherwise '0' (RKH_FALSE).
+ *
+ *  \ingroup apiQueue 
  */
 #define RKH_RQ_IS_EMPTY(q) \
     (rbool_t)(rkh_rq_get_num((RKH_RQ_T *)(q)) == 0)
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-
 /**
  *  \brief
  *  This data type defines the maximum number of elements that any queue
@@ -158,6 +160,8 @@ typedef struct RKH_QINFO_T
  *  \code
  *  RKH_RQ_T gsmque;
  *  \endcode
+ *
+ *  \ingroup apiQueue 
  */
 typedef struct RKH_RQ_T
 {
@@ -229,7 +233,6 @@ typedef struct RKH_RQ_T
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-
 /**
  * \brief
  *	Initializes the previously allocated queue data structure RKH_RQ_T.
@@ -253,6 +256,8 @@ typedef struct RKH_RQ_T
  *
  *	\sa
  *	RKH_RQ_T structure for more information.
+ *
+ *  \ingroup apiQueue 
  */
 void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
                  const struct RKH_SMA_T *sma);
@@ -269,6 +274,8 @@ void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_IS_FULL_EN.
+ *
+ *  \ingroup apiQueue 
  */
 rbool_t rkh_rq_is_full(RKH_RQ_T *q);
 
@@ -281,6 +288,8 @@ rbool_t rkh_rq_is_full(RKH_RQ_T *q);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_GET_NELEMS_EN.
+ *
+ *  \ingroup apiQueue 
  */
 RKH_RQNE_T rkh_rq_get_num(RKH_RQ_T *q);
 
@@ -299,6 +308,8 @@ RKH_RQNE_T rkh_rq_get_num(RKH_RQ_T *q);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_GET_LWMARK_EN.
+ *
+ *  \ingroup apiQueue 
  */
 RKH_RQNE_T rkh_rq_get_lwm(RKH_RQ_T *q);
 
@@ -308,6 +319,8 @@ RKH_RQNE_T rkh_rq_get_lwm(RKH_RQ_T *q);
  *
  *  \param[in] q	pointer to previously created queue from which the
  *                  elements are received.
+ *
+ *  \ingroup apiQueue 
  */
 void *rkh_rq_get(RKH_RQ_T *q);
 
@@ -325,6 +338,8 @@ void *rkh_rq_get(RKH_RQ_T *q);
  *  \note
  *  The function raises an assertion if the queue becomes full and cannot
  *  accept the element.
+ *
+ *  \ingroup apiQueue 
  */
 void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
 
@@ -345,6 +360,8 @@ void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_PUT_LIFO_EN.
+ *
+ *  \ingroup apiQueue 
  */
 void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
 
@@ -366,6 +383,8 @@ void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_DEPLETE_EN.
+ *
+ *  \ingroup apiQueue 
  */
 void rkh_rq_deplete(RKH_RQ_T *q);
 
@@ -385,6 +404,8 @@ void rkh_rq_deplete(RKH_RQ_T *q);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_READ_EN.
+ *
+ *  \ingroup apiQueue 
  */
 ruint rkh_rq_read(RKH_RQ_T *q, void *pe);
 
@@ -408,6 +429,8 @@ ruint rkh_rq_read(RKH_RQ_T *q, void *pe);
  *  See RKH_RQI_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
  *  RKH_CFG_RQ_GET_INFO_EN.
+ *
+ *  \ingroup apiQueue 
  */
 void rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi);
 
@@ -420,17 +443,17 @@ void rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi);
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
  *  with RKH_CFG_RQ_GET_INFO_EN.
+ *
+ *  \ingroup apiQueue 
  */
 void rkh_rq_clear_info(RKH_RQ_T *q);
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

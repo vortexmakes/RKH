@@ -32,9 +32,14 @@
 /**
  *  \file       rkhevt.h
  *  \ingroup    fwk
- *
  *  \brief      Event data type and other related macros.This header file must 
  *              be included in all modules(*.c files) that use RKH.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiEvt Events
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -49,30 +54,26 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHEVT_H__
 #define __RKHEVT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhtype.h"
 #include "rkhcfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
-#define R_CAST_EVT(e)       ((RKH_EVT_T *)(e))
+#define RKH_CAST_EVT(e)       ((RKH_EVT_T *)(e))
 
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
     #define RKH_INC_REF(evt) \
-        if (R_CAST_EVT(evt)->pool != 0) \
+        if (RKH_CAST_EVT(evt)->pool != 0) \
         { \
-            ++R_CAST_EVT(evt)->nref; \
+            ++RKH_CAST_EVT(evt)->nref; \
         }
 #else
     #define RKH_INC_REF(evt) \
@@ -81,7 +82,6 @@ extern "C" {
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-
 /**
  *  Defines the size of event. The valid values [in bits] are 8, 16 or 32. 
  *  Default is 8. This type is configurable via the preprocessor switch 
@@ -153,6 +153,8 @@ typedef rui8_t RKH_ES_T;
  *
  *  \sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(),
  *  rkh_set_static_event() and rkh_fwk_gc().
+ *
+ *  \ingroup apiEvt 
  */
 
 typedef struct RKH_EVT_T
@@ -179,12 +181,11 @@ typedef struct RKH_EVT_T
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
+
 /* ------------------------------ End of file ------------------------------ */

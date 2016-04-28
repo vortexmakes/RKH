@@ -32,8 +32,13 @@
 /**
  *  \file       rkhassert.h
  *  \ingroup    assert
- *
  *  \brief      Assert definitions.
+ *
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiAssert Assertions
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -48,22 +53,18 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHASSERT_H__
 #define __RKHASSERT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhcfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 #if RKH_CFG_FWK_ASSERT_EN == RKH_ENABLED
     /**
      *	\brief
@@ -71,6 +72,8 @@ extern "C" {
      *	a name for that file.
      *
      *  \param[in] __fname		file name where the assertion failed
+     *
+     *  \ingroup apiAssert
      */
     #define RKH_MODULE_NAME(__fname) \
         static RKHROM char *const m_name = # __fname;
@@ -79,6 +82,8 @@ extern "C" {
      *	\brief
      *	This macro appears at the top of each C/C++ source file defining
      *	a name for that file, by means of __FILE__ compiler directive.
+     *
+     *  \ingroup apiAssert
      */
     #define RKH_THIS_MODULE \
         static RKHROM char *const m_name = __FILE__;
@@ -123,6 +128,8 @@ extern "C" {
      *		...
      *	}
      *	\endcode
+     *
+     *  \ingroup apiAssert
      */
     #define RKH_ASSERT(exp) \
         if ((exp)) \
@@ -143,6 +150,8 @@ extern "C" {
      *  are disabled with the RKH_CFG_FWK_ASSERT_EN.
      *  When the RKH_CFG_ASSERT_EN is set to one (1), the RKH_ASSERT()
      *  macro is NOT called, even if the \a exp evaluates to FALSE.
+     *
+     *  \ingroup apiAssert
      */
     #define RKH_ALLEGE(exp)     RKH_ASSERT(exp)
 
@@ -153,6 +162,8 @@ extern "C" {
      *
      *  \note
      *  Can be disabled with the RKH_CFG_FWK_ASSERT_EN switch.
+     *
+     *  \ingroup apiAssert
      */
     #define RKH_ERROR()         rkh_assert(m_name, __LINE__)
 
@@ -170,6 +181,8 @@ extern "C" {
  *
  *	This macro is equivalent to RKH_ASSERT() macro, except the name provides
  *	a better documentation of the intention of this assertion.
+ *
+ *  \ingroup apiAssert
  */
 #define RKH_REQUIRE(exp)        RKH_ASSERT(exp)
 
@@ -179,6 +192,8 @@ extern "C" {
  *
  *	This macro is equivalent to RKH_ASSERT() macro, except the name provides
  *	a better documentation of the intention of this assertion.
+ *
+ *  \ingroup apiAssert
  */
 #define RKH_ENSURE(exp)         RKH_ASSERT(exp)
 
@@ -188,6 +203,8 @@ extern "C" {
  *
  *	This macro is equivalent to RKH_ASSERT() macro, except the name provides
  *	a better documentation of the intention of this assertion.
+ *
+ *  \ingroup apiAssert
  */
 #define RKH_INVARIANT(exp)      RKH_ASSERT(exp)
 
@@ -195,7 +212,6 @@ extern "C" {
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-
 #if RKH_CFG_FWK_ASSERT_EN == RKH_ENABLED
 /**
  *	\brief
@@ -247,18 +263,18 @@ extern "C" {
  *		__debugbreak();
  *	}
  *	\endcode
+ *
+ *	\ingroup apiBSPMisc
  */
 void rkh_assert(const char *const file, int line);
 #endif
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

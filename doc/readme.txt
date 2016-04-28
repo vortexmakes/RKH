@@ -630,8 +630,8 @@ rkh_sma_post_fifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 	
 	RKH_HOOK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
-    if( R_CAST_EVT( e )->pool != 0 ) 
-        ++R_CAST_EVT( e )->nref;
+    if( RKH_CAST_EVT( e )->pool != 0 ) 
+        ++RKH_CAST_EVT( e )->nref;
     RKH_EXIT_CRITICAL_();
 
     os_post_fifo_message( &sma->equeue, e );
@@ -645,8 +645,8 @@ rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_HOOK_SIGNAL( e );
     RKH_ENTER_CRITICAL_();
-    if( R_CAST_EVT( e )->pool != 0 ) 
-        ++R_CAST_EVT( e )->nref;
+    if( RKH_CAST_EVT( e )->pool != 0 ) 
+        ++RKH_CAST_EVT( e )->nref;
     RKH_EXIT_CRITICAL_();
 
     os_post_lifo_message( &sma->equeue, e );

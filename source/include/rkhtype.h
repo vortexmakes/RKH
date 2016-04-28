@@ -31,8 +31,7 @@
 
 /**
  *  \file       rkhtype.h
- *  \ingroup    prt
- *
+ *  \ingroup    apiPortMisc
  *  \brief      Defines the data types that uses RKH.
  */
 

@@ -407,7 +407,7 @@ rkh_sm_init(RKH_SM_T *me)
 
 #if defined(RKH_HISTORY_ENABLED)
 void
-rkh_fwk_clear_history(RKHROM RKH_SHIST_T *h)
+rkh_sm_clear_history(RKHROM RKH_SHIST_T *h)
 {
     *h->target = (RKHROM void *)0;
 }

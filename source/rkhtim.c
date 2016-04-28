@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtim.c
- *  \ingroup    tmr
+ *  \ingroup    apiTmr
  *
  *  \brief      Implements the software timer.
  */
