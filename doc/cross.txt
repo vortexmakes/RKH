@@ -25,6 +25,8 @@ version, and so on.
 - \ref blinky_init
 - \ref blinky_run
 
+\tableofcontents
+
 <HR>
 \section blinky_sm State machine
 
@@ -368,7 +370,7 @@ simple cooperative scheduler is located in
 		lpc1769_xpr.php">LPCXpresso</A> </TD>
 		<TD> Codered </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_lpcx1769 "readme" </TD>
+		<TD> \subpage cross_lpcx1769 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -380,7 +382,7 @@ simple cooperative scheduler is located in
 		prod_summary.jsp?code=TWR-K60D100M">TWR-K60D100M</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_twr_K60 "readme" </TD>
+		<TD> \subpage cross_twr_K60 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -391,7 +393,7 @@ simple cooperative scheduler is located in
 		prod_summary.jsp?code=FRDM-KL25Z">FRDM-KL25Z</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_frdm_kl25 "readme" </TD>
+		<TD> \subpage cross_frdm_kl25 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -403,7 +405,7 @@ simple cooperative scheduler is located in
 		prod_summary.jsp?code=KWIKSTIK-K40">KWIKSTIK-K40</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_kwi_K40 "readme" </TD>
+		<TD> \subpage cross_kwi_K40 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -415,7 +417,7 @@ simple cooperative scheduler is located in
 		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
 		<TD> Codewarrior v6.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_demoqe128_cfv1 "readme" </TD>
+		<TD> \subpage cross_demoqe128_cfv1 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -427,7 +429,7 @@ simple cooperative scheduler is located in
 		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
 		<TD> Codewarrior v6.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_demoqe128_s08 "readme" </TD>
+		<TD> \subpage cross_demoqe128_s08 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -461,6 +463,8 @@ Prev: \ref cross "Cross-platform examples"\n
 
 \n
 Prev: \ref cross "Cross-platform examples"\n\n
+
+\tableofcontents
 
 This application deals with the shared resource problem in active object 
 systems. Showing one of the biggest benefit of using active objects: resource 

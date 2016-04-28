@@ -24,7 +24,9 @@ This manual includes:
 - \ref trazer_cfg
 - \ref trazer_human_format
 - \ref seq_diag
-- \ref rev_page_trazer
+- \subpage rev_page_trazer
+
+\tableofcontents
 
 <HR>
 \section trazer_cfg Configuration
@@ -32,8 +34,8 @@ This manual includes:
 Before using %Trazer you must provides the listed configurations:
 
 - \ref trazer_command to configure comunication link and general options.
-- \ref trazer_config (\subpage trazer_cfg_) to setup all target 
-dependencies, such as pointer sizes, signal sizes, etc.
+- \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, 
+  such as pointer sizes, signal sizes, etc.
 
 <HR>
 \section trazer_command Command-line parameters
@@ -98,14 +100,14 @@ ALIGN="center" VALIGN="middle">
 wide range of configurability. For example, for any given target CPU, 
 Trazer must "know" the size of object pointers, event size, timestamp size 
 and so on. You can provide this information by two ways: 
-  - include \subpage trazer_cfg_ configuration file in 
+  - include \ref trazer_cfg_ configuration file in 
 the same trazer.exe directory.
   - setup the target aplication to call to RKH_TR_FWK_TCFG and perform the 
   streaming the RKH configuration at startup.
 
-If \subpage trazer_cfg_ is not found, assuming default settings, 
+If \ref trazer_cfg_ is not found, assuming default settings, 
 any configuration streaming received overwrite settings. 
-The following table summarizes the \subpage trazer_cfg_ content.
+The following table summarizes the \ref trazer_cfg_ content.
 
 <TABLE SUMMARY="Trazer config" cellSpacing=4 cellPadding=1 border=0
 ALIGN="center" VALIGN="middle">

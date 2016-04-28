@@ -32,6 +32,8 @@ structure in more detail.
 - \ref portable_dir
 - \ref demo_dir
 
+\tableofcontents
+
 <HR>
 \section source_dir RKH source files
 
@@ -413,7 +415,6 @@ Next: \ref Porting "Porting"
 Prev: \ref main_page "Home" \n
 Next: \ref cfg "Configuration"
 
-
 This section describes how to adapt the RKH to various platforms, which
 is a process called porting. RKH contains a clearly defined abstraction
 layer, which encapsulates all the platform-specific code and cleanly
@@ -440,6 +441,8 @@ the aspects to be considered to port RKH:
 - \ref crt
 - \ref trc
 - \ref rkhp
+
+\tableofcontents
 
 \n <HR>
 \section files Platform-dependent files
@@ -1214,6 +1217,9 @@ This section includes:
 - \ref qref18
 
 \n
+
+\tableofcontents
+
 <HR>
 \section qref0 Defining a state machine
 
@@ -2940,6 +2946,8 @@ Prev: \ref main_page "Home"
 Prev: \ref main_page "Home" \n
 Next: \ref utest
 
+\tableofcontents
+
 When a program needs to be traced, it has to generate some information 
 each time it reaches a "significant step" (certain instruction in the 
 program's source code). In the standard terminology, this step is called 
@@ -3974,6 +3982,8 @@ Next: \ref utest
 Prev: \ref main_page "Home" \n
 Next: \ref Download "Download"
 
+\tableofcontents
+
 This section provides several examples on how to use RKH, designed to 
 experiment with RKH immediately. The simplicity of the code and state 
 diagrams means it also serves as a good starter project for people who are 
@@ -4017,6 +4027,8 @@ Next: \ref Download "Download"
 
 Prev: \ref main_page "Home" \n
 Next: \ref Usage "Getting started with RKH"
+
+\tableofcontents
 
 Each RKH application must have its own configuration file, called 
 \c rkhcfg.h. This file adapts and configures RKH by means of compiler
@@ -4930,6 +4942,8 @@ more than one submachine state.
 - \subpage representing
 - \subpage running
 - \subpage submachine
+
+\tableofcontents
 
 \anchor fig1
 \image html my.png "Figure 1 - \"my\" state diagram"
