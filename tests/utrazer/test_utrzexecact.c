@@ -101,7 +101,7 @@ TEST(utrzexeact, expectEventOutOfSequence)
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);
-    TEST_ASSERT_EQUAL_STRING("Out of order Trace event. received: 'ENSTATE' "
+    TEST_ASSERT_EQUAL_STRING("Out of order Trace event. occurred: 'ENSTATE' "
                              "expected: 'TRN'.", p->msg);
 }
 

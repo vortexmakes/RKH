@@ -46,7 +46,7 @@
             p = unitrazer_getLastOut();                \
             TEST_ASSERT_EQUAL(UT_PROC_FAIL, p->status);             \
             TEST_ASSERT_EQUAL_STRING("Out of order Trace event."    \
-                    " received: '"rc"' expected: '"ex"'.", p->msg); \
+                    " occurred: '"rc"' expected: '"ex"'.", p->msg); \
         }
 
 #define utrzExpect_WithUnexpectedArg_check( ev, an, e, r )  \
