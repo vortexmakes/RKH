@@ -1782,6 +1782,12 @@ extern "C" {
 #define RKH_SMA_NAME(smaName_)       s_##smaName_
 #define RKH_SM_CONST_NAME(smName_)   rs_##smName_
 
+#define MKTRN(evt_, guard_, effect_, target_) \
+    { \
+        evt_, (RKH_GUARD_T)guard_, \
+        (RKH_TRN_ACT_T)effect_, (RKHROM RKH_ST_T *)target_ \
+    }
+
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define MKSM(constSM, initialState) \
         (RKHROM RKH_ROM_T *)(constSM), /** RKH_SM_T::romrkh member */ \

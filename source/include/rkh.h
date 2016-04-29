@@ -1015,12 +1015,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	is carried out if and when the transition is taken. All of these parts
  *	are optional.
  *
- *  \param[in] e	triggering event.
- *  \param[in] g	pointer to guard function. This argument is
- *					optional, thus it could be declared as NULL.
- *  \param[in] a	pointer to action function. This argument is
- *					optional, thus it could be declared as NULL.
- *  \param[in] t	pointer to target state.
+ *  \param[in] evt_	    triggering event.
+ *  \param[in] guard_	pointer to guard function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] effect_	pointer to action function. This argument is
+ *					    optional, thus it could be declared as NULL.
+ *  \param[in] target_	pointer to target state.
  *
  *	\sa
  *	RKH_TR_T structure definition for more information.
@@ -1033,8 +1033,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *				&WAIT_SYNC )		// next state
  *	\endcode
  */
-#define RKH_TRREG(e, g, a, t) \
-    {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, (RKHROM RKH_ST_T *)t}
+#define RKH_TRREG(evt_, guard_, effect_, target_) \
+            MKTRN(evt_, guard_, effect_, target_)
 
 /**
  *  \brief
@@ -1158,13 +1158,13 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	being taken unless it is true, and \e a is an action that is carried out
  *	if and when the transition is taken. All of these parts are optional.
  *
- *  \param[in] g	branch guard function. Branches are labeled with guards
- *                  that determine which one is to be actually taken. Use
- *                  ELSE macro when if all the guards on the other branches
- *                  are false.
- *  \param[in] a	pointer to transition action. This argument is optional,
- *                  thus it could be declared as NULL.
- *  \param[in] t	pointer to target state.
+ *  \param[in] guard_	branch guard function. Branches are labeled with guards
+ *                      that determine which one is to be actually taken. Use
+ *                      ELSE macro when if all the guards on the other branches
+ *                      are false.
+ *  \param[in] effect_	pointer to transition action. This argument is 
+ *                      optional, thus it could be declared as NULL.
+ *  \param[in] target_	pointer to target state.
  *
  *	\sa
  *	RKH_TR_T structure definition for more information.
@@ -1178,8 +1178,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_END_BRANCH_TABLE
  *	\endcode
  */
-#define RKH_BRANCH(g, a, t)   {0, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, \
-                               (RKHROM RKH_ST_T *)t}
+#define RKH_BRANCH(guard_, effect_, target_) \
+            MKTRN(0, guard_, effect_, target_)
 
 /**
  *  \brief
