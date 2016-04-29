@@ -3803,7 +3803,7 @@ struct RKH_SHIST_T
      *	Points to RAM memory location which stores
      *	the state's history.
      */
-    RKHROM RKH_ST_T * *target;
+    RKHROM RKH_ST_T **target;
     
     /**
      *  \brief

@@ -1034,7 +1034,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	\endcode
  */
 #define RKH_TRREG(e, g, a, t) \
-    {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, t}
+    {e, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, (RKHROM RKH_ST_T *)t}
 
 /**
  *  \brief
@@ -1178,7 +1178,8 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_END_BRANCH_TABLE
  *	\endcode
  */
-#define RKH_BRANCH(g, a, t)   {0, (RKH_GUARD_T)g, a, t}
+#define RKH_BRANCH(g, a, t)   {0, (RKH_GUARD_T)g, (RKH_TRN_ACT_T)a, \
+                               (RKHROM RKH_ST_T *)t}
 
 /**
  *  \brief
