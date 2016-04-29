@@ -31,9 +31,9 @@
 
 /**
  *  \file       rkhs.h
- *  \ingroup    sch
- *
  *  \brief      Platform - independent interface to the RKS scheduler.
+ *
+ *  \ingroup    sch
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -48,24 +48,20 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHS_H__
 #define __RKHS_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhcfg.h"
 #include "rkhrdy.h"
 #include "rkhevt.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 #if RKH_CFGPORT_NATIVE_SCHEDULER_EN == 1 && \
     RKH_EN_DOXYGEN == 0
     #define RKH_EQ_TYPE             RKH_RQ_T
@@ -80,7 +76,6 @@ extern "C" {
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
-
 #if RKH_CFGPORT_NATIVE_SCHEDULER_EN == 1 && \
     RKH_EN_DOXYGEN == 0
 extern RKH_RG_T rkhrg;
@@ -88,13 +83,11 @@ extern RKH_RG_T rkhrg;
 
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

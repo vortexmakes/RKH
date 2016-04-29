@@ -9,10 +9,8 @@
 \brief RKH user configurations
 \defgroup trc Trace
 \brief Sophisticated tracing mechanism in run-time
-\defgroup sch RKHS
-\brief Native, cooperative, non-preemtive scheduler
-\defgroup fwk RKH
-\brief State-machine framework for reactive embedded systems
+\defgroup sch Native scheduler
+\brief Native, cooperative, simple and non-preemtive scheduler
 \defgroup test Test
 \brief Unit tests
 \defgroup api API Reference Manual

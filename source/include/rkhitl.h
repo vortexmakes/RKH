@@ -31,8 +31,6 @@
 
 /**
  *  \file       rkhitl.h
- *  \ingroup    fwk
- *
  *  \brief      RKH engine interface.This header file is directly included in 
  *              RKH interface file, rkh.h.
  */
@@ -49,12 +47,10 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHITL_H__
 #define __RKHITL_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 /**
  *  Defines standard constants and macros.
  */
@@ -87,13 +83,11 @@
 #include "rkhevt.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /**
  *  \brief
  *	This macro expands to the binary representation of the RKH version.
@@ -2656,7 +2650,6 @@ extern "C" {
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-
 typedef struct RKH_ROM_T RKH_ROM_T;
 typedef struct RKHSmaVtbl RKHSmaVtbl;
 typedef struct RKH_SM_T RKH_SM_T;
@@ -3825,7 +3818,6 @@ struct RKH_SHIST_T
 extern const RKHSmaVtbl rkhSmaVtbl;
 
 /* -------------------------- Function prototypes -------------------------- */
-
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
     rbool_t rkh_else(const RKH_SM_T *sma, RKH_EVT_T *pe);
@@ -3840,13 +3832,11 @@ extern const RKHSmaVtbl rkhSmaVtbl;
 #endif
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

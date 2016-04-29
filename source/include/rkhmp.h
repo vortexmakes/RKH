@@ -31,9 +31,10 @@
 
 /**
  *  \file       rkhmp.h
- *  \ingroup    mp
  *  \brief      Platform - independent interface for supporting fixed - size
  *              memory blocks facility.
+ *
+ *  \ingroup    apiMemPool
  *
  *  \addtogroup api
  *  @{

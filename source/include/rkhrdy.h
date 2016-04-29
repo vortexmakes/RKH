@@ -31,9 +31,8 @@
 
 /**
  *  \file       rkhrdy.h
- *  \ingroup    sch
- *
  *  \brief      Native priority management.
+ *  \ingroup    sch
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -48,23 +47,19 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHRDY_H__
 #define __RKHRDY_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhcfg.h"
 #include "rkhtype.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /**
  *  \brief
  *	This macro evaluates to true if all SMAs are not ready to run.
@@ -134,7 +129,6 @@ extern "C" {
                    (rui8_t)rkh_unmaptbl[(rg).tbl[(p)]])
 
 /* -------------------------------- Constants ------------------------------ */
-
 #if RKH_CFG_FWK_MAX_SMA <= 8
     #define RKH_NUM_RDYGRP      1
 #elif RKH_CFG_FWK_MAX_SMA > 8 && RKH_CFG_FWK_MAX_SMA <= 16
@@ -154,7 +148,6 @@ extern "C" {
 #endif
 
 /* ------------------------------- Data types ------------------------------ */
-
 /**
  *  \brief
  *	SMA ready table.
@@ -215,13 +208,11 @@ typedef struct
 } RKH_RG_T;
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

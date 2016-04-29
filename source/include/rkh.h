@@ -31,8 +31,10 @@
 
 /**
  *  \file       rkh.h
- *  \ingroup    fwk
  *  \brief      RKH framwwork platform - independent interface.
+ *
+ *  \ingroup    apiSM
+ *  \ingroup    apiAO
  *
  *  \addtogroup api
  *  @{
@@ -52,7 +54,10 @@
  *      \addtogroup apiBSP BSP
  *      @{
  *          \addtogroup apiBSPHook Hooks
- *          @{@}
+ *          @{
+ *          \brief The hook functions allows to bsp/port developer to extend
+ *                 the functionality of the framework.
+ *          @}
  *          \addtogroup apiBSPTrc Trace
  *          @{
  *          \brief Related to manage a trace session with Trazer application
@@ -615,7 +620,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                                                \
     static RKHROM RKH_ST_T *ram##name; \
     MKHISTORY(name, parent, RKH_DHISTORY, dftTrnGuard, dftTrnAction, \
-              dftTarget, ram##name)
+              dftTarget, &ram##name)
 
 /**
  * 	\deprecated 
@@ -658,7 +663,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
                                                                   \
     static RKHROM RKH_ST_T *ram##name; \
     MKHISTORY(name, parent, RKH_SHISTORY, dftTrnGuard, dftTrnAction, \
-              dftTarget, ram##name)
+              dftTarget, &ram##name)
 
 /**
  *  \brief

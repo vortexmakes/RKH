@@ -7,7 +7,11 @@
 \releasedate 2016-04-25
 
 \apichg
-- N/A
+- The API for RKH_CREATE_DEEP_HISTORY_STATE() and 
+  RKH_CREATE_SHALLOW_HISTORY_STATE() changed. Added arguments to set 
+  (optional) the history default transition. However, those macros are now 
+  deprecated and not recommended for new designs. It remains supported for 
+  backwards compatibility.
 
 \bugfix
 - Fixed a old bug at rkh_sm_dispatch() function in rkh.c file related with 
@@ -80,7 +84,7 @@
 
 \par Deprecated features
 - The RKH_CREATE_DEEP_HISTORY_STATE() and RKH_CREATE_SHALLOW_HISTORY_STATE() 
-  macros is now deprecated and not recommended for new designs. It remains 
+  macros are now deprecated and not recommended for new designs. It remains 
   supported for backwards compatibility.
 
 \ports

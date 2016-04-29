@@ -31,9 +31,10 @@
 
 /**
  *  \file       rkhevt.h
- *  \ingroup    fwk
  *  \brief      Event data type and other related macros.This header file must 
  *              be included in all modules(*.c files) that use RKH.
+ *
+ *  \ingroup    apiEvt
  *
  *  \addtogroup api
  *  @{

@@ -31,8 +31,9 @@
 
 /**
  *  \file       rkhrq.h
- *  \ingroup    apiQueue
  *  \brief      Platform - independent interface for supporting queue services.
+ *
+ *  \ingroup    apiQueue
  *
  *  \addtogroup api
  *  @{

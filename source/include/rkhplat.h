@@ -31,8 +31,8 @@
 
 /**
  *  \file       rkhplat.h
- *  \ingroup    apiPortMisc
  *  \brief      RKH platform - dependent interface.
+ *  \ingroup    apiPortMisc
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -47,12 +47,10 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHPLAT_H__
 #define __RKHPLAT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #ifdef __CFV1CW63__
     #include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
 #endif
@@ -106,13 +104,11 @@
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /**
  *  \brief
  *	If RKHROM has not been defined then	\b rkhport.h has not yet been
@@ -129,13 +125,11 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

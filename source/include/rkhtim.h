@@ -31,9 +31,10 @@
 
 /**
  *  \file       rkhtim.h
- *  \ingroup    apiTmr
  *  \brief      Platform - independent interface for supporting software timer
  *              services.
+ *
+ *  \ingroup    apiTmr
  *
  *  \addtogroup api
  *  @{

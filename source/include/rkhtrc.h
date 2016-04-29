@@ -31,8 +31,9 @@
 
 /**
  *  \file       rkhtrc.h
- *  \ingroup    trc
  *  \brief      Platform - independent interface for RKH trace facility.
+ *
+ *  \ingroup    apiTrc
  *
  *  \addtogroup api
  *  @{

@@ -31,8 +31,9 @@
 
 /**
  *  \file       rkhtype.h
- *  \ingroup    apiPortMisc
  *  \brief      Defines the data types that uses RKH.
+ *
+ *  \ingroup    apiPortMisc
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -47,12 +48,10 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __RKHTYPE_H__
 #define __RKHTYPE_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #ifdef __CFV1CW63__
     #include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
 #endif
@@ -106,7 +105,6 @@
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -117,13 +115,11 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

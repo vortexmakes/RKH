@@ -31,13 +31,14 @@
 
 /**
  *  \file       rkhdef.h
- *  \ingroup    fwk
  *  \brief      Platform - independent file that contains standard constants 
  *              and macros.
  *
  *  All constants and macros are prefixed with RKH_ to provide a consistent 
  *  naming convention and to avoid namespace conflicts with other constants 
  *  and macros in your application.
+ *
+ *  \ingroup apiDef
  *
  *  \addtogroup api
  *  @{

@@ -31,8 +31,9 @@
 
 /**
  *  \file       rkhassert.h
- *  \ingroup    assert
  *  \brief      Assert definitions.
+ *
+ *  \ingroup    apiAssert
  *
  *  \addtogroup api
  *  @{
