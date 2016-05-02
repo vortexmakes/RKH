@@ -89,8 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\bky.c" />
-    <ClCompile Include="..\..\..\..\..\bkyact.c" />
+    <ClCompile Include="..\..\..\..\..\blinky.c" />
     <ClCompile Include="..\..\..\..\..\main.c" />
     <ClCompile Include="..\..\..\..\..\..\..\..\source\rkh.c" />
     <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhdyn.c" />
@@ -106,8 +105,7 @@
     <ClCompile Include="..\tcptrc.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\bky.h" />
-    <ClInclude Include="..\..\..\..\bkyact.h" />
+    <ClInclude Include="..\..\..\..\..\blinky.h" />
     <ClInclude Include="..\..\..\..\rkhcfg.h" />
     <ClInclude Include="..\..\..\..\..\..\..\source\include\rkh.h" />
     <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhassert.h" />
