@@ -177,11 +177,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\cli.c"
+				RelativePath="..\..\..\..\..\client.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\cliact.c"
+				RelativePath="..\..\..\..\..\client.h"
 				>
 			</File>
 			<File
@@ -193,11 +193,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\svr.c"
+				RelativePath="..\..\..\..\..\server.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\svract.c"
+				RelativePath="..\..\..\..\..\server.h"
 				>
 			</File>
 			<File

@@ -31,8 +31,8 @@ static RKH_ROM_STATIC_EVENT( e_done, DONE );
 void
 cli_init( const struct RKH_SMA_T *sma )
 {
-	RKH_TMR_INIT( &RKH_CAST(CLI_T, sma)->cli_utmr, &e_touse, NULL );
-	RKH_TMR_INIT( &RKH_CAST(CLI_T, sma)->cli_rtmr, &e_toreq, NULL );
+	RKH_TMR_INIT( &RKH_CAST(CLI_T, sma)->usageTmr, &e_touse, NULL );
+	RKH_TMR_INIT( &RKH_CAST(CLI_T, sma)->waitReqTmr, &e_toreq, NULL );
 }
 
 
@@ -43,7 +43,7 @@ cli_init( const struct RKH_SMA_T *sma )
 void 
 cli_pause( const struct RKH_SMA_T *sma )
 {
-	rkh_tmr_stop( &RKH_CAST(CLI_T, sma)->cli_rtmr );
+	rkh_tmr_stop( &RKH_CAST(CLI_T, sma)->waitReqTmr );
 	bsp_cli_paused( RKH_GET_PRIO(sma) );
 }
 
@@ -54,7 +54,7 @@ cli_delay_req( const struct RKH_SMA_T *sma )
 	RKH_TNT_T time;
 
 	time = CLI_REQ_TIME;
-	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->cli_rtmr, sma, time );
+	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->waitReqTmr, sma, time );
 	bsp_cli_wait_req( RKH_GET_PRIO(sma), time/RKH_CFG_FWK_TICK_RATE_HZ );
 }
 
@@ -94,8 +94,9 @@ cli_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 
 	(void)pe;
 	time = CLI_USING_TIME;
-	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->cli_utmr, sma, time );
-	bsp_cli_using( RKH_CAST(START_EVT_T, pe)->clino, time/RKH_CFG_FWK_TICK_RATE_HZ );
+	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->usageTmr, sma, time );
+	bsp_cli_using(RKH_CAST(START_EVT_T, pe)->clino, 
+                  time/RKH_CFG_FWK_TICK_RATE_HZ );
 }
 
 
