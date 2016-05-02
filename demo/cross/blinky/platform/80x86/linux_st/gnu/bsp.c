@@ -190,6 +190,10 @@ isr_kbd_thread( void *par )	/* thread to emulate keyboard ISR */
 	return NULL;
 }
 
+void
+rkh_hook_timetick( void )
+{
+}
 
 void 
 rkh_hook_start( void ) 
