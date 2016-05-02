@@ -6,7 +6,6 @@
 #include "rkhtrc.h"
 #include "bsp.h"
 #include "blinky.h"
-#include "blinkyAct.h"
 
 #define QSTO_SIZE           4
 
