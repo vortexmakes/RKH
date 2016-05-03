@@ -45,8 +45,8 @@
 #include "bsp.h"
 #include "rkh.h"
 #include "scevt.h"
-#include "svr.h"
-#include "cli.h"
+#include "server.h"
+#include "client.h"
 
 #include <conio.h>
 #include <stdlib.h>
@@ -159,7 +159,7 @@ bsp_publish( const RKH_EVT_T *e )
 {
 	rint cn;
 
-	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
+	RKH_SMA_POST_FIFO( server, e, &l_isr_kbd );			/* to server */
 
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
 		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
@@ -192,7 +192,7 @@ isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
 		c = _getch();
 		
 		if( c == ESC )
-			RKH_SMA_POST_FIFO( svr, &e_term, &l_isr_kbd );
+			RKH_SMA_POST_FIFO( server, &e_term, &l_isr_kbd );
 		else if( tolower(c) == 'p' )
 			bsp_publish( &e_pause );
     }
@@ -419,17 +419,16 @@ bsp_svr_recall( rui8_t clino )
 
 
 void 
-bsp_svr_paused( const RKH_SMA_T *sma )
+bsp_svr_paused(rui32_t ntot, rui32_t *ncr)
 {
 	rint cn;
-	SVR_T *ao;
+    rui32_t *pNcr;
 
-	ao = RKH_CAST(SVR_T, sma);
-	printf( "%s Paused | ", SVR_NAME );
-	printf( "ntot = %d |", ao->ntot );
+	printf( "Server paused | ");
+	printf( "ntot = %d |", ntot );
 
-	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		printf( " cli%d=%d |", cn, ao->ncr[ cn ] );
+	for(pNcr = ncr, cn = 0; cn < NUM_CLIENTS; ++cn, ++pNcr )
+		printf( " cli%d=%d |", cn, *pNcr );
 
 	putchar('\n');
 }
@@ -468,7 +467,7 @@ bsp_init( int argc, char *argv[] )
 	print_banner();
 	rkh_fwk_init();
 
-	RKH_FILTER_OFF_SMA( svr );
+	RKH_FILTER_OFF_SMA( server );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 
