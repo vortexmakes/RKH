@@ -19,50 +19,40 @@
  */
 
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __TEMPLATE_H__
 #define __TEMPLATE_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 /* (1) #include <string.h>                                                   */
 /* (2) #include <other system headers>                                       */
 /* (3) #include “user header files”                                          */
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-
 /* (1) Function macro defines                                                */
 
 /* -------------------------------- Constants ------------------------------ */
-
 /* (1) Macro defines                                                         */
 /* (2) Enumerations                                                          */
 /* (3) Extern declaration of const objects defined in other files            */
 
 /* ------------------------------- Data types ------------------------------ */
-
 /* (1) typedefs                                                              */
 
 /* -------------------------- External variables --------------------------- */
-
 /* (1) Extern declarations of variables defined in other files               */
 
 /* -------------------------- Function prototypes -------------------------- */
-
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ File footer ------------------------------ */
