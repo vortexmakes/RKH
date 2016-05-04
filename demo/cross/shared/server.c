@@ -17,6 +17,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "bsp.h"
+#include "scevt.h"
 #include "server.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -38,33 +39,33 @@ RKH_SMA_DEF_PTR(server);
 /* ======================== States and pseudostates ======================== */
 RKH_CREATE_BASIC_STATE(server_idle, NULL, NULL,  RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(server_idle)
-RKH_TRINT(TERM,    NULL,   server_terminate),
-RKH_TRREG(REQ,     NULL,   server_start,    &server_busy),
-RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(REQ,     NULL,   server_start,    &server_busy),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(server_busy, NULL, NULL,  RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(server_busy)
-RKH_TRINT(REQ,     NULL,   server_defer),
-RKH_TRINT(TERM,    NULL,   server_terminate),
-RKH_TRREG(DONE,    NULL,   server_end,      &server_idle),
-RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
+    RKH_TRINT(REQ,     NULL,   server_defer),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(DONE,    NULL,   server_end,      &server_idle),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(server_paused,
                        server_pause, server_resume, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(server_paused)
-RKH_TRINT(REQ,     NULL,   server_defer),
-RKH_TRINT(DONE,    NULL,   NULL),
-RKH_TRINT(TERM,    NULL,   server_terminate),
-RKH_TRREG(PAUSE,   NULL,   NULL,            &server_idle),
+    RKH_TRINT(REQ,     NULL,   server_defer),
+    RKH_TRINT(DONE,    NULL,   NULL),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_idle),
 RKH_END_TRANS_TABLE
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static RKH_RQ_T qreq;
-static RKH_EVT_T *qreq_sto[MAX_SIZEOF_QREQ];
+static RKH_RQ_T queueReq;
+static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -88,8 +89,8 @@ server_init(Server *const me)
     RKH_TR_FWK_SIG(PAUSE);
     RKH_TR_FWK_SIG(TERM);
 
-    (void)me;
-    rkh_rq_init(&qreq, (const void **)qreq_sto, MAX_SIZEOF_QREQ, CSMA(0));
+    rkh_rq_init(&queueReq, (const void **)queueReqSto, MAX_SIZEOF_QREQ, 
+                CSMA(0));
 
     RKH_CAST(Server, me)->ntot = 0;
     for (cn = 0; cn < NUM_CLIENTS; ++cn)
@@ -117,7 +118,7 @@ server_end(Server *const me, RKH_EVT_T *pe)
     REQ_EVT_T *e;
 
     (void)pe;
-    if ((e = (REQ_EVT_T *)rkh_fwk_recall((RKH_SMA_T*)me, &qreq))
+    if ((e = (REQ_EVT_T *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
         != (REQ_EVT_T *)0)
     {
         bsp_svr_recall(e->clino);
@@ -130,7 +131,7 @@ void
 server_defer(Server *const me, RKH_EVT_T *pe)
 {
     (void)me;
-    rkh_fwk_defer(&qreq, pe);
+    rkh_fwk_defer(&queueReq, pe);
 }
 
 void
@@ -155,7 +156,7 @@ server_resume(Server *const me)
 {
     REQ_EVT_T *e;
 
-    if ((e = (REQ_EVT_T *)rkh_fwk_recall((RKH_SMA_T*)me, &qreq))
+    if ((e = (REQ_EVT_T *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
         != (REQ_EVT_T *)0)
     {
         bsp_svr_recall(e->clino);

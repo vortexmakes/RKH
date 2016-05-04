@@ -20,7 +20,6 @@
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "scevt.h"
 #include "client.h"
 
 /* ---------------------- External C language linkage ---------------------- */
@@ -29,8 +28,7 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-/* Helper */
-#define CLI_ID(_cp)     ((_cp) - RKH_GET_PRIO(CLI(0)))
+#define CLI_ID(cp_)     ((cp_) - RKH_GET_PRIO(CLI(0)))
 #define SVR_STK_SIZE    (512 / sizeof(RKH_THREAD_STK_TYPE))
 
 /* -------------------------------- Constants ------------------------------ */

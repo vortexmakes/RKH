@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-#define CLI(_clino)     RKH_ARRAY_SMA(clis, _clino)
+#define CLI(clino_)     RKH_ARRAY_SMA(clis, clino_)
 #define CLI0            CLI(0)
 #define CLI1            CLI(1)
 #define CLI2            CLI(2)
@@ -48,7 +48,7 @@ enum
 RKH_ARRAY_SMA_DCLR(clis, NUM_CLIENTS);
 
 /* =================== Declares states and pseudostates ==================== */
-RKH_DCLR_BASIC_STATE cli_idle, cli_waiting, cli_using, cli_paused;
+RKH_DCLR_BASIC_STATE client_idle, client_waiting, client_using, client_paused;
 
 /* ------------------------------- Data types ------------------------------ */
 typedef struct Client Client;
@@ -56,19 +56,19 @@ typedef struct Client Client;
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* ============================ Initial action ============================= */
-void cli_init(Client *const me);
+void client_init(Client *const me);
 
 /* ============================ Effect actions ============================= */
-void cli_req(Client *const me, RKH_EVT_T *pe);
-void cli_start(Client *const me, RKH_EVT_T *pe);
-void cli_end(Client *const me, RKH_EVT_T *pe);
+void client_req(Client *const me, RKH_EVT_T *pe);
+void client_start(Client *const me, RKH_EVT_T *pe);
+void client_end(Client *const me, RKH_EVT_T *pe);
 
 /* ============================= Entry actions ============================= */
-void cli_delay_req(Client *const me);
-void cli_pause(Client *const me);
+void client_delay_req(Client *const me);
+void client_pause(Client *const me);
 
 /* ============================= Exit actions ============================== */
-void cli_resume(Client *const me);
+void client_resume(Client *const me);
 
 /* ================================ Guards ================================= */
 
