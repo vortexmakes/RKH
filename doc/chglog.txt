@@ -32,7 +32,10 @@
   performance improvements, memory usage reduction, better documentation, and 
   learning tests.
 - Removed NULL macro usage from rkh.h file, and thus <stdlib.h> inclusion.
-- Improved doc files (doxygen) and comments related to test suites.
+- Improved doc files (doxygen) and comments.
+    - Added deprecated list.
+    - Enhanced module section by including the configuration, trace, test,
+      and API referecen manual sections.
 - Added test suite of state machine module.
 - Multiple enabled transitions (same trigger) with mutually exclusive guards 
   according to UML is now supported.
