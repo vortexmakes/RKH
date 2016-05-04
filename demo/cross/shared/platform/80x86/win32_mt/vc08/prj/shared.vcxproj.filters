@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\rkh">
+      <UniqueIdentifier>{4f2c33c7-df76-4fc1-a23e-b9d217121f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\rkh">
+      <UniqueIdentifier>{fb58ce73-f996-45b9-b66b-ea118bfd585a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\bsp">
+      <UniqueIdentifier>{17dc6153-7aee-4d84-aa8f-ff622506eee1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkh.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhdyn.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhmp.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhrq.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhs.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhsma.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtbl.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtim.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtrc.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\server.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tcptrc.c">
+      <Filter>Source Files\bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_mt\vc08\rkhport.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bsp.c">
+      <Filter>Source Files\bsp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\bsp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\cli.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\cliact.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\rkhcfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_mt\vc08\rkhport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_mt\vc08\rkht.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\scevt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\svr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\svract.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tcptrc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkh.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhassert.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhevt.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhitl.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhmp.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhplat.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrdy.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrq.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhs.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtim.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtrc.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtype.h">
+      <Filter>Header Files\rkh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\client.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\server.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
