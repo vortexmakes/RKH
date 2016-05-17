@@ -175,17 +175,17 @@ const char *rkh_get_port_desc( void );
 #define RKH_THREAD_TYPE					pthread_t
 
 
-#define RKH_SMA_BLOCK( sma ) 									\
+#define RKH_SMA_BLOCK( sma ) \
 				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
-#define RKH_SMA_READY( rg, sma ) 								\
-			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \
+#define RKH_SMA_READY( rg, sma ) \
+			    RKH_RDY_INSERT( (rg), RKH_SMA_ACCESS_CONST(sma, prio)); \
 			    (void)sem_post( &sma_is_rdy ); \
 
-#define RKH_SMA_UNREADY( rg, sma ) 							\
-			    RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
+#define RKH_SMA_UNREADY( rg, sma ) \
+			    RKH_RDY_REM( (rg), RKH_SMA_ACCESS_CONST(sma, prio))
 
-#define RKH_WAIT_FOR_EVENTS() 								\
+#define RKH_WAIT_FOR_EVENTS() \
 			    ((void)sem_wait( &sma_is_rdy ))
 
 

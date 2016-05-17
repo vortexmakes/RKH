@@ -43,7 +43,7 @@
 
 
 #include "bsp.h"
-#include "bky.h"
+#include "blinky.h"
 #include "rkh.h"
 
 #include <unistd.h>
@@ -190,6 +190,10 @@ isr_kbd_thread( void *par )	/* thread to emulate keyboard ISR */
 	return NULL;
 }
 
+void
+rkh_hook_timetick( void )
+{
+}
 
 void 
 rkh_hook_start( void ) 

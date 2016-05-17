@@ -1,0 +1,17 @@
+/** 
+ *  \brief 
+ *  Short description of this function
+ *
+ *  Long description of this function
+ *
+ *  \param[in]      <parameter-name> {parameter description}
+ *  \param[out]     <parameter-name> {parameter description}
+ *  \param[in,out]  <parameter-name> {parameter description}
+ *
+ *  \retval         <return value> {description} or \return {description}
+ *
+ *  \note
+ *
+ *  \usage
+ *  \example or \snippet or \include
+ */

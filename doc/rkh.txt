@@ -5,12 +5,16 @@
 
 /**
 
-\defgroup trc Trace (Sophisticated tracing mechanism in run-time)
-\defgroup prt Port  (Porting RKH)
-\defgroup sch RKHS  (Native, cooperative, non-preemtive scheduler)
-\defgroup tmr Timer (Software timer service)
-\defgroup que Queue (Queue service)
-\defgroup fwk RKH   (State-machine framework for reactive embedded systems)
+\defgroup config Configuration
+\brief RKH user configurations
+\defgroup trc Trace
+\brief Sophisticated tracing mechanism in run-time
+\defgroup sch Native scheduler
+\brief Native, cooperative, simple and non-preemtive scheduler
+\defgroup test Test
+\brief Unit tests
+\defgroup api API Reference Manual
+\brief Provides a reference to RKH services
 
 \anchor main_page
 \mainpage RKH Reference Manual
@@ -31,6 +35,8 @@ triggers."
 
 David Harel</EM>
 
+\tableofcontents
+
 \image html rkh_framework_1.png
 \n This manual includes:
 
@@ -43,8 +49,10 @@ David Harel</EM>
 - \ref Porting
 - \ref cfg
 - \ref dbg
+- \ref utest
 - \ref Download
 - \ref changelog
+- \ref deprecated
 - \ref Others
 - \ref Resources
 - \ref Licensing

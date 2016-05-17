@@ -25,6 +25,7 @@
  */
 
 RKH_SMA_CREATE( MYSM_T, my, 0, HCAL, &S1, NULL, NULL );
+RKH_SMA_DEF_PTR(my);
 
 
 /*

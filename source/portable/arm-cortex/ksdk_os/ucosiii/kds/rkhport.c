@@ -70,7 +70,7 @@ thread_function( void *arg )
 	while(((RKH_SMA_T *)arg)->running != (rbool_t)0)
 	{
 		RKH_EVT_T *e = rkh_sma_get((RKH_SMA_T *)arg);
-        rkh_sma_dispatch((RKH_SMA_T *)arg, e);
+        rkh_sm_dispatch((RKH_SM_T *)arg, e);
         RKH_FWK_GC(e);
 	}
 
@@ -246,7 +246,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     RKH_ENSURE(qh != (msg_queue_handler_t)0);
 
     rkh_sma_register( sma );
-    rkh_sma_init_hsm( sma );
+    rkh_sm_init( (RKH_SM_T *)sma );
 
     th = &sma->thread;
 	status = OSA_TaskCreate(thread_function,                     /* function */

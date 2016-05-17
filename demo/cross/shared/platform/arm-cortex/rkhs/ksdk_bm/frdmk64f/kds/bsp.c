@@ -43,8 +43,8 @@
 
 
 #include "bsp.h"
-#include "svr.h"
-#include "cli.h"
+#include "server.h"
+#include "client.h"
 #include "scevt.h"
 #include "rkh.h"
 #include "fsl_debug_console.h"
@@ -100,7 +100,7 @@ bsp_publish( const RKH_EVT_T *e )
 {
 	rint cn;
 
-	RKH_SMA_POST_FIFO( svr, e, &l_isr_kbd );			/* to server */
+	RKH_SMA_POST_FIFO( server, e, &l_isr_kbd );			/* to server */
 
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
 		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
@@ -331,18 +331,17 @@ bsp_svr_recall( rui8_t clino )
 }
 
 
-void
-bsp_svr_paused( const RKH_SMA_T *sma )
+void 
+bsp_svr_paused(rui32_t ntot, rui32_t *ncr)
 {
 	rint cn;
-	SVR_T *ao;
+    rui32_t *pNcr;
 
-	ao = RKH_CAST(SVR_T, sma);
-	PRINTF( "%s Paused | ", SVR_NAME );
-	PRINTF( "ntot = %d |", ao->ntot );
+	PRINTF( "Server paused | ");
+	PRINTF( "ntot = %d |", ntot );
 
-	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		PRINTF( " cli%d=%d |", cn, ao->ncr[ cn ] );
+	for(pNcr = ncr, cn = 0; cn < NUM_CLIENTS; ++cn, ++pNcr )
+		PRINTF( " cli%d=%d |", cn, *pNcr );
 
 	PUTCHAR('\n');
 }
@@ -390,7 +389,7 @@ bsp_init( int argc, char *argv[]  )
 
 	rkh_fwk_init();
 
-	RKH_FILTER_OFF_SMA( svr );
+	RKH_FILTER_OFF_SMA( server );
 	for( cn = 0; cn < NUM_CLIENTS; ++cn )
 		RKH_FILTER_OFF_SMA( CLI(cn) );
 

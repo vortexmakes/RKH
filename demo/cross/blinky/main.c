@@ -1,40 +1,46 @@
-/*
- * main.c
+/**
+ *  \file       main.c
+ *  \brief      Example application.
  */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhtrc.h"
 #include "bsp.h"
-#include "bky.h"
-#include "bkyact.h"
+#include "blinky.h"
 
+/* ----------------------------- Local macros ------------------------------ */
+#define QSTO_SIZE           4
 
-#define QSTO_SIZE			4
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKH_EVT_T *qsto[QSTO_SIZE];
 
-static RKH_EVT_T *qsto[ QSTO_SIZE ];
-extern RKH_TMR_T bkytim;
-
-
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
 int
-main( int argc, char *argv[] )
+main(int argc, char *argv[])
 {
-	/* invoke the rkh_fwk_init() function */
-	bsp_init( argc, argv );
+    bsp_init(argc, argv);
 
-	/* send objects to trazer */
-	RKH_TR_FWK_AO( blinky );
-	RKH_TR_FWK_QUEUE( &blinky->equeue );
-	RKH_TR_FWK_STATE( blinky, &led_on );
-	RKH_TR_FWK_STATE( blinky, &led_off );
-	RKH_TR_FWK_TIMER( &bkytim );
+    RKH_SMA_ACTIVATE(blinky, qsto, QSTO_SIZE, 0, 0);
+    rkh_fwk_enter();
 
-	/* send signals to trazer */
-	RKH_TR_FWK_SIG( TIMEOUT );
-
-	RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
-	rkh_fwk_enter();
-
-	RKH_TRC_CLOSE();
-	return 0;
+    RKH_TRC_CLOSE();
+    return 0;
 }
+
+/* ------------------------------ End of file ------------------------------ */

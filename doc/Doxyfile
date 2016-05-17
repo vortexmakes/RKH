@@ -239,7 +239,19 @@ TAB_SIZE               = 4
 # "Side Effects:". You can put \n's in the value part of an alias to insert
 # newlines.
 
-ALIASES                = 
+ALIASES                = "usage=@par <b>Usage</b><CR>" \
+                         "utest=@par <b>Unit test description</b><CR>" \
+                         "trcEvent=@par <b>EventID</b>\n" \
+                         "trcGroup=@par <b>Group</b>\n" \
+                         "description=@par <b>Description</b>\n" \
+                         "type=@par <b>Type value</b>\n" \
+                         "range=@par <b>Range value</b>\n" \
+                         "default=@par <b>Default configuration:</b>\n" \
+                         "new=@par New features & improvements<CR>" \
+                         "ports=@par Ports <CR>" \
+                         "apichg=@par API changes <CR>" \
+                         "releasedate=@par Release Date: <CR>" \
+                         "bugfix=@par Bug fixes <CR>"
 
 # This tag can be used to specify a number of word-keyword mappings (TCL only).
 # A mapping has the form "name=value". For example adding "class=itcl::class"
@@ -609,7 +621,7 @@ GENERATE_TODOLIST      = NO
 # documentation.
 # The default value is: YES.
 
-GENERATE_TESTLIST      = NO
+GENERATE_TESTLIST      = YES
 
 # The GENERATE_BUGLIST tag can be used to enable ( YES) or disable ( NO) the bug
 # list. This list is created by putting \bug commands in the documentation.
@@ -622,7 +634,7 @@ GENERATE_BUGLIST       = NO
 # the documentation.
 # The default value is: YES.
 
-GENERATE_DEPRECATEDLIST= NO
+GENERATE_DEPRECATEDLIST= YES
 
 # The ENABLED_SECTIONS tag can be used to enable conditional documentation
 # sections, marked by \if <section_label> ... \endif and \cond <section_label>
@@ -788,7 +800,27 @@ INPUT                  = ../source \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/twr_k60/cw_v10/readme.txt \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm0/frdm-kl25z/cw_v10/readme.txt \
                          chglog.txt \
-                         ../source/include/rkhdef.h
+                         ../source/include/rkhdef.h \
+                         ../tests/trace/test_trace.c \
+                         ../tests/utrazer/test_utrzsm.c \
+                         ../tests/utrazer/test_utrzexecact.c \
+                         ../tests/utrazer/test_utrzexpect.c \
+                         ../tests/utrazer/test_utrzignore.c \
+                         ../tests/utrazer/test_runners/test_utrzignore_runner.c \
+                         ../tests/utrazer/test_runners/test_utrzexeact_runner.c \
+                         ../tests/utrazer/test_runners/test_utrzexpect_runner.c \
+                         ../tests/utrazer/test_runners/test_utrzignore_runner.c \
+                         ../tests/utrazer/test_runners/test_utrzsm_runner.c \
+                         ../tests/trace/test_runners/test_trace_runner.c \
+                         ../tests/utils/unitrazer/unitrazer.h \
+                         test.txt \
+                         ../tests/trace/test_runners/test_trace_runner.c \
+                         ../tests/sm/test_runners/test_smTransition_runner.c \
+                         ../tests/sm/test_smTransition.c \
+                         ../tests/sm/test_smPseudostate.c \
+                         ../tests/sm/test_runners/test_smPseudostate_runner.c \
+                         ../tests/sm/test_smPolymorphism.c \
+                         ../tests/sm/test_runners/test_smPolymorphism_runner.c
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -834,7 +866,9 @@ EXCLUDE                = ../source/portable \
                          ../source/rkhs.c \
                          ../source/rkhtim.c \
                          ../source/rkhsma.c \
-                         ../source/rkhtbl.c
+                         ../source/rkhtbl.c \
+                         ../source/template \
+                         ../source/tools
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -867,7 +901,7 @@ EXCLUDE_SYMBOLS        =
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = 
+EXAMPLE_PATH           = ./examples
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
@@ -1428,7 +1462,7 @@ DISABLE_INDEX          = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = NO
+GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.
@@ -2146,7 +2180,7 @@ HIDE_UNDOC_RELATIONS   = YES
 # set to NO
 # The default value is: NO.
 
-HAVE_DOT               = NO
+HAVE_DOT               = YES
 
 # The DOT_NUM_THREADS specifies the number of dot invocations doxygen is allowed
 # to run in parallel. When set to 0 doxygen will base this on the number of
@@ -2197,7 +2231,7 @@ CLASS_GRAPH            = YES
 # The default value is: YES.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-COLLABORATION_GRAPH    = YES
+COLLABORATION_GRAPH    = NO
 
 # If the GROUP_GRAPHS tag is set to YES then doxygen will generate a graph for
 # groups, showing the direct groups dependencies.
@@ -2242,7 +2276,7 @@ TEMPLATE_RELATIONS     = NO
 # The default value is: YES.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-INCLUDE_GRAPH          = YES
+INCLUDE_GRAPH          = NO
 
 # If the INCLUDED_BY_GRAPH, ENABLE_PREPROCESSING and SEARCH_INCLUDES tags are
 # set to YES then doxygen will generate a graph for each documented file showing
@@ -2251,7 +2285,7 @@ INCLUDE_GRAPH          = YES
 # The default value is: YES.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-INCLUDED_BY_GRAPH      = YES
+INCLUDED_BY_GRAPH      = NO
 
 # If the CALL_GRAPH tag is set to YES then doxygen will generate a call
 # dependency graph for every global function or class method.
@@ -2318,7 +2352,7 @@ INTERACTIVE_SVG        = YES
 # found. If left blank, it is assumed the dot tool can be found in the path.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_PATH               = "../../../../../Program Files/Graphviz2.38/bin"
+DOT_PATH               = "C:\Program Files (x86)\Graphviz2.38\bin"
 
 # The DOTFILE_DIRS tag can be used to specify one or more directories that
 # contain dot files that are included in the documentation (see the \dotfile
