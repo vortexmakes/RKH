@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9C498F1F-016A-4C61-94DB-FDB91B7D2DEB}</ProjectGuid>
+    <RootNamespace>shared</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\shared;$(ProjectDir)..\..\..\..\..\..\..\..\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC08__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4127</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\bsp.c" />
+    <ClCompile Include="..\..\..\..\..\client.c" />
+    <ClCompile Include="..\..\..\..\..\main.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c" />
+    <ClCompile Include="..\..\..\..\..\server.c" />
+    <ClCompile Include="..\tcptrc.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkh.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhdyn.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhmp.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhrq.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhs.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhsma.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtbl.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtim.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtrc.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\client.h" />
+    <ClInclude Include="..\..\..\..\..\server.h" />
+    <ClInclude Include="..\bsp.h" />
+    <ClInclude Include="..\..\..\..\..\cli.h" />
+    <ClInclude Include="..\..\..\..\..\cliact.h" />
+    <ClInclude Include="..\..\..\..\..\rkhcfg.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h" />
+    <ClInclude Include="..\..\..\..\..\scevt.h" />
+    <ClInclude Include="..\..\..\..\..\svr.h" />
+    <ClInclude Include="..\..\..\..\..\svract.h" />
+    <ClInclude Include="..\tcptrc.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkh.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhassert.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhevt.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhitl.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhmp.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhplat.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrdy.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrq.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhs.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtim.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtrc.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtype.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

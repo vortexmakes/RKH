@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\rkh">
+      <UniqueIdentifier>{f354ec35-ba70-481e-8262-0427a5d921fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rkh\inc">
+      <UniqueIdentifier>{b577e444-6659-4b21-82b0-785119d582be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rkh\port">
+      <UniqueIdentifier>{73d5cb26-88ef-4c4a-a836-8151553313f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests">
+      <UniqueIdentifier>{f8920756-fcce-4de2-a74f-d9f4431c9609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\tests\utrazer">
+      <UniqueIdentifier>{6a1e96a5-bd32-4e63-9b50-cc4f46a8743f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\utrazer\test_runners">
+      <UniqueIdentifier>{06d50d17-4409-4532-9038-f191fa7788cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\utils">
+      <UniqueIdentifier>{005fbd4e-9123-41b8-82a0-87a4c47894d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\unity">
+      <UniqueIdentifier>{c757db84-f157-43d8-aa9d-2ec35f4374db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\utils\bsp">
+      <UniqueIdentifier>{c05b554f-8357-4c64-babf-191275c23600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\utils\unitrazer">
+      <UniqueIdentifier>{af5b6031-515a-4f9b-b69e-7e1347f6d14b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\src">
+      <UniqueIdentifier>{856c4a6f-82e8-42d3-94da-a9a2d9393f13}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\bsp.c">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
+      <Filter>Source Files\tests\utrazer\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\unity\unity.c">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c">
+      <Filter>Source Files\tests\utils\bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\aotest.c">
+      <Filter>Source Files\tests\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\aotest_act.c">
+      <Filter>Source Files\tests\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_utrzsm.c">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_utrzsm_runner.c">
+      <Filter>Source Files\tests\utrazer\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_utrzexeact_runner.c">
+      <Filter>Source Files\tests\utrazer\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_utrzexecact.c">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_common.c">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_utrzexpect_runner.c">
+      <Filter>Source Files\tests\utrazer\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_utrzexpect.c">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_utrzignore.c">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_utrzignore_runner.c">
+      <Filter>Source Files\tests\utrazer\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkh.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhdyn.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhmp.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhrq.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhs.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhsma.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c">
+      <Filter>Source Files\rkh\port</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\rkhcfg.h">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bsp.h">
+      <Filter>Source Files\tests\utrazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\unity.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\unity_config.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\unity_internals.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_internals.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.h">
+      <Filter>Source Files\tests\utils\bsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\aotest.h">
+      <Filter>Source Files\tests\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\aotest_act.h">
+      <Filter>Source Files\tests\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h">
+      <Filter>Source Files\rkh\port</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h">
+      <Filter>Source Files\rkh\port</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkh.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhassert.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhdef.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhevt.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhitl.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhmp.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhplat.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrdy.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrq.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhs.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtim.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtrc.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h">
+      <Filter>Source Files\rkh\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
