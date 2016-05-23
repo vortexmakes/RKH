@@ -38,11 +38,13 @@
 /* -------------------------- Development history -------------------------- */
 /*
  *  2015.10.24  LeFr  v2.4.05  Initial version
+ *  2016.05.19  DaBa  v2.4.06  Adds CIAA Osek port
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -97,6 +99,10 @@
 
 #ifdef __KSDK_OS_KDS__
     #include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkhport.h"
+#endif
+
+#ifdef __CIAA_OSEK__
+#include "..\portable\osek\ciaa\rkhport.h"
 #endif
 
 #ifdef __TEST__
