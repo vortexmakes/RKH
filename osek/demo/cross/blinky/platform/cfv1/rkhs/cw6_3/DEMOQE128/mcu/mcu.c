@@ -28,6 +28,8 @@
 
 #include "derivative.h"
 #include "gpio.h"
+#include "rkh.h"
+
 
 void 
 mcu_init( unsigned char tick_ms )

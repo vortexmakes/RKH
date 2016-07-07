@@ -43,7 +43,7 @@
 
 
 #include "bsp.h"
-#include "bky.h"
+#include "blinky.h"
 #include "rkh.h"
 
 #include "mcu.h"
@@ -117,6 +117,7 @@ rkh_assert( RKHROM char * const file, int line )
 	RKH_TR_FWK_ASSERT( (RKHROM char *)file, __LINE__ );
 	rkh_fwk_exit();
 	reset_now();
+	
 }
 
 
