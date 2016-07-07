@@ -1,63 +1,96 @@
-/**
- * \cond
+/*
  *  --------------------------------------------------------------------------
  *
  *                                Framework RKH
  *                                -------------
  *
- * 	          State-machine framework for reactive embedded systems            
- * 	        
- * 	                    Copyright (C) 2010 Leandro Francucci.
- * 	        All rights reserved. Protected by international copyright laws.
+ *            State-machine framework for reactive embedded systems
+ *
+ *                      Copyright (C) 2010 Leandro Francucci.
+ *          All rights reserved. Protected by international copyright laws.
  *
  *
- * 	RKH is free software: you can redistribute it and/or modify it under the 
- * 	terms of the GNU General Public License as published by the Free Software 
- * 	Foundation, either version 3 of the License, or (at your option) any 
- * 	later version.
+ *  RKH is free software: you can redistribute it and/or modify it under the
+ *  terms of the GNU General Public License as published by the Free Software
+ *  Foundation, either version 3 of the License, or (at your option) any
+ *  later version.
  *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  *  more details.
  *
- *  You should have received a copy of the GNU General Public License along 
+ *  You should have received a copy of the GNU General Public License along
  *  with RKH, see copying.txt file.
  *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : rkhport.h
- *	Last updated for version : v2.4.04
- *	By                       : LF
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- * 	\file
- * 	\ingroup 	prt
- *
- * 	\brief 		Visual Studio 2008 Multithread port (win32)
+ *  Contact information:
+ *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail:         francuccilea@gmail.com
+ *  ---------------------------------------------------------------------------
  */
 
+/**
+ *  \file       rkhport.h
+ *  \ingroup    prt
+ *
+ *  \brief      Visual Studio 2008 Multi-Thread port (win32)
+ */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2015.10.24  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Darío Baliña  dariosb@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
 #ifndef __RKHPORT_H__
 #define __RKHPORT_H__
 
-
+/* ----------------------------- Include files ----------------------------- */
 #include <windows.h>
 #include "rkhrq.h"
 #include "rkhmp.h"
 
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void rkh_enter_critical( void );
-void rkh_exit_critical( void );
-void rkh_set_tickrate( rui32_t tick_rate_hz );
-const char *rkh_get_port_version( void );
-const char *rkh_get_port_desc( void );
+/* --------------------------------- Macros -------------------------------- */
+#define RKH_DIS_INTERRUPT()
+#define RKH_ENA_INTERRUPT()
+//#define RKH_CPUSR_TYPE
+#define RKH_ENTER_CRITICAL( dummy )		rkh_enter_critical()
+#define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
 
 
+#define RKH_EQ_TYPE              		RKH_RQ_T
+#define RKH_OSSIGNAL_TYPE				void*
+#define RKH_THREAD_TYPE					void*
+
+
+#define RKH_SMA_BLOCK( sma ) 			\
+				while( ((RKH_SMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
+				{ \
+					RKH_EXIT_CRITICAL_(); \
+					(void)WaitForSingleObject( ((RKH_SMA_T*)(sma))->os_signal, \
+														(DWORD)INFINITE ); \
+					RKH_ENTER_CRITICAL_(); \
+				}
+
+#define RKH_SMA_READY( rg, sma ) 		\
+			    (void)SetEvent( ((RKH_SMA_T*)(sma))->os_signal )
+
+#define RKH_SMA_UNREADY( rg, sma )		(void)0
+
+#define WIN32_LEAN_AND_MEAN
+    
+/* -------------------------------- Constants ------------------------------ */
 /**
  *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) has its own 
  *	thread of execution.
@@ -154,35 +187,22 @@ const char *rkh_get_port_desc( void );
  */
 
 #define RKHROM								const	
+    
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+void rkh_enter_critical( void );
+void rkh_exit_critical( void );
+void rkh_set_tickrate( rui32_t tick_rate_hz );
+const char *rkh_get_port_version( void );
+const char *rkh_get_port_desc( void );
 
-
-#define RKH_DIS_INTERRUPT()
-#define RKH_ENA_INTERRUPT()
-//#define RKH_CPUSR_TYPE
-#define RKH_ENTER_CRITICAL( dummy )		rkh_enter_critical()
-#define RKH_EXIT_CRITICAL( dummy )		rkh_exit_critical()
-
-
-#define RKH_EQ_TYPE              		RKH_RQ_T
-#define RKH_OSSIGNAL_TYPE				void*
-#define RKH_THREAD_TYPE					void*
-
-
-#define RKH_SMA_BLOCK( sma ) 			\
-				while( ((RKH_SMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0 ) \
-				{ \
-					RKH_EXIT_CRITICAL_(); \
-					(void)WaitForSingleObject( ((RKH_SMA_T*)(sma))->os_signal, \
-														(DWORD)INFINITE ); \
-					RKH_ENTER_CRITICAL_(); \
-				}
-
-#define RKH_SMA_READY( rg, sma ) 		\
-			    (void)SetEvent( ((RKH_SMA_T*)(sma))->os_signal )
-
-#define RKH_SMA_UNREADY( rg, sma )		(void)0
-
-#define WIN32_LEAN_AND_MEAN
-
-
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
 #endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
