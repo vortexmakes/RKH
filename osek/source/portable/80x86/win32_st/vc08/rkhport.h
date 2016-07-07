@@ -65,6 +65,33 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+#define RKH_DIS_INTERRUPT()
+#define RKH_ENA_INTERRUPT()
+/* #define RKH_CPUSR_TYPE */
+#define RKH_ENTER_CRITICAL(dummy)     EnterCriticalSection(&csection)
+#define RKH_EXIT_CRITICAL(dummy)      LeaveCriticalSection(&csection)
+
+#define RKH_EQ_TYPE                   RKH_RQ_T
+#define RKH_OSSIGNAL_TYPE
+#define RKH_THREAD_TYPE
+
+#define RKH_SMA_BLOCK(sma)                                    \
+    RKH_ASSERT(((RKH_SMA_T*)(sma))->equeue.qty != 0)
+
+#define RKH_SMA_READY(rg, sma)                                \
+    RKH_RDY_INSERT((rg), RKH_SMA_ACCESS_CONST(sma, prio)); \
+    (void)SetEvent(sma_is_rdy); \
+
+#define RKH_SMA_UNREADY(rg, sma)                          \
+    RKH_RDY_REM((rg), RKH_SMA_ACCESS_CONST(sma, prio))
+
+#define RKH_WAIT_FOR_EVENTS()                               \
+    ((void)WaitForSingleObject(sma_is_rdy, (DWORD)INFINITE))
+
+#if (defined _MSC_VER)
+    #pragma warning (disable: 4127)
+#endif
+
 /* -------------------------------- Constants ------------------------------ */
 /**
  *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) has
@@ -179,37 +206,6 @@ const char *rkh_get_port_desc(void);
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-#endif
-
-/* ------------------------------ End of file ------------------------------ */
-
-#define RKH_DIS_INTERRUPT()
-#define RKH_ENA_INTERRUPT()
-/* #define RKH_CPUSR_TYPE */
-#define RKH_ENTER_CRITICAL(dummy)     EnterCriticalSection(&csection)
-#define RKH_EXIT_CRITICAL(dummy)      LeaveCriticalSection(&csection)
-
-#define RKH_EQ_TYPE                   RKH_RQ_T
-#define RKH_OSSIGNAL_TYPE
-#define RKH_THREAD_TYPE
-
-#define RKH_SMA_BLOCK(sma)                                    \
-    RKH_ASSERT(((RKH_SMA_T*)(sma))->equeue.qty != 0)
-
-#define RKH_SMA_READY(rg, sma)                                \
-    RKH_RDY_INSERT((rg), RKH_SMA_ACCESS_CONST(sma, prio)); \
-    (void)SetEvent(sma_is_rdy); \
-
-#define RKH_SMA_UNREADY(rg, sma)                          \
-    RKH_RDY_REM((rg), RKH_SMA_ACCESS_CONST(sma, prio))
-
-#define RKH_WAIT_FOR_EVENTS()                               \
-    ((void)WaitForSingleObject(sma_is_rdy, (DWORD)INFINITE))
-
-#if (defined _MSC_VER)
-    #pragma warning (disable: 4127)
-#endif
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */
