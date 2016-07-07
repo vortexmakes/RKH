@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		CIAA Oseck multithread port
+ * 	\brief 		CIAA Osek multithread port
  */
 
 

@@ -149,7 +149,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
 	sma->os_signal = CreateEvent( NULL, FALSE, FALSE, NULL );
-    rkh_sma_init_hsm( sma );
+    rkh_sm_init( (RKH_SM_T *)sma );
 	sma->thread = CreateThread( NULL, stksize, thread_function, 
 														sma, 0, NULL );
 	RKH_ASSERT( sma->thread != (HANDLE)0 );
@@ -199,7 +199,7 @@ thread_function( LPVOID arg )
 	do
 	{
 		RKH_EVT_T *e = rkh_sma_get( (RKH_SMA_T *)arg );
-        rkh_sma_dispatch( (RKH_SMA_T *)arg, e );
+        rkh_sm_dispatch( (RKH_SM_T *)arg, e );
         RKH_FWK_GC( e );
 	}
 	while( ((RKH_SMA_T *)arg)->thread != (HANDLE)0 );

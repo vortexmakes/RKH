@@ -96,6 +96,7 @@ rkh_fwk_enter( void )
 {
     RKH_HOOK_START();					/* start-up callback */
 	RKH_TR_FWK_EN();
+	RKH_TR_FWK_OBJ( &l_isr_tick );
 
 	StartOS( RkhApp );		/* Osek start the multitasking */
 
@@ -127,7 +128,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 	rkh_sma_register( sma );
 	sma->os_signal = RKHEvent;
 
-    rkh_sma_init_hsm( sma );
+    rkh_sm_init( (RKH_SM_T *)sma );
 
 	for(p = rkh_sma_task_tbl; p->sma != NULL; ++p)
 	{
@@ -150,6 +151,10 @@ rkh_sma_terminate( RKH_SMA_T *sma )
 	sma->running = (rbool_t)0;
 }
 
+ALARMCALLBACK( TickHandler )
+{
+	RKH_TIM_TICK( &l_isr_tick );
+}
 
 void
 rkh_task_function( struct SMA **arg )
@@ -159,7 +164,7 @@ rkh_task_function( struct SMA **arg )
 	while( sma->running != (rbool_t)0 )
 	{
 		RKH_EVT_T *e = rkh_sma_get( sma );
-        rkh_sma_dispatch( sma, e );
+        rkh_sm_dispatch( (RKH_SM_T *)sma, e );
         RKH_FWK_GC( e );
 	}
 

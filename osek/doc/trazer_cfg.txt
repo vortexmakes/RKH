@@ -1,6 +1,5 @@
 /**
-
-\page trazer_cfg_ "trazer.cfg"
+\page trazer_cfg_ trazer.cfg
 
 \code
 #

@@ -45,7 +45,7 @@
 #ifndef __RKHT_H__
 #define __RKHT_H__
 
-#include "os.h"				/* the main uC/OS-III include file */
+#include "os.h"				/* the main Osek include file */
 
 /* ---- Portable data types ---------------------------------------------- */
 
