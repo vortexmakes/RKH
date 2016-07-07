@@ -69,7 +69,7 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-#define RKH_SMA_BLOCK(sma)            \
+#define RKH_SMA_BLOCK(sma) \
     while (((RKH_SMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0) \
     { \
         RKH_EXIT_CRITICAL_(); \
@@ -78,7 +78,7 @@ extern "C" {
         RKH_ENTER_CRITICAL_(); \
     }
 
-#define RKH_SMA_READY(rg, sma)        \
+#define RKH_SMA_READY(rg, sma) \
     SetEvent(((RKH_SMA_T*)(sma))->thread, \
              ((RKH_SMA_T*)(sma))->os_signal)
 
@@ -86,6 +86,27 @@ extern "C" {
 
 #define RKH_SMA(x)              ((struct SMA**)&x)
 #define RKH_TASK_FUNCTION(sma)  rkh_task_function(RKH_SMA(sma))
+
+/*
+ *	CIAA OSEK Ent. critical section operations.
+ *	Note: the CIAA OSEK critical section must be able to nest.
+ *	Note: SuspendOSInterrupts()/ suspends/resumes all ISR2 type interrupts,
+ *	to also suspend/resume ISR1 interrupts use
+ *	SuspendAllInterrupts()/ResumeAllInterrupts()
+ *	In this porting version the critical sections are protected by disabling
+ *	CPU interrupts. A better way would be using the Resource mechanism.
+ *	This avoid the priority inversion problem and longer delays that disabling
+ *	interrupts can cause (Avoided with AO concepts).
+ */
+
+#define RKH_DIS_INTERRUPT()             DisableAllInterrupts()
+#define RKH_ENA_INTERRUPT()             EnableAllInterrupts()
+#define RKH_ENTER_CRITICAL(dummy)       SuspendAllInterrupts()
+#define RKH_EXIT_CRITICAL(dummy)        ResumeAllInterrupts()
+
+#define RKH_EQ_TYPE                     RKH_RQ_T
+#define RKH_OSSIGNAL_TYPE               EventMaskType
+#define RKH_THREAD_TYPE                 TaskType
 
 /* -------------------------------- Constants ------------------------------ */
 /**
@@ -185,26 +206,6 @@ extern "C" {
 
 #define RKHROM                              const
 
-/*
- *	CIAA OSEK Ent. critical section operations.
- *	Note: the CIAA OSEK critical section must be able to nest.
- *	Note: SuspendOSInterrupts()/ suspends/resumes all ISR2 type interrupts,
- *	to also suspend/resume ISR1 interrupts use
- *	SuspendAllInterrupts()/ResumeAllInterrupts()
- *	In this porting version the critical sections are protected by disabling
- *	CPU interrupts. A better way would be using the Resource mechanism.
- *	This avoid the priority inversion problem and longer delays that disabling
- *	interrupts can cause (Avoided with AO concepts).
- */
-
-#define RKH_DIS_INTERRUPT()             DisableAllInterrupts()
-#define RKH_ENA_INTERRUPT()             EnableAllInterrupts()
-#define RKH_ENTER_CRITICAL(dummy)     SuspendAllInterrupts()
-#define RKH_EXIT_CRITICAL(dummy)      ResumeAllInterrupts()
-
-#define RKH_EQ_TYPE                     RKH_RQ_T
-#define RKH_OSSIGNAL_TYPE               EventMaskType
-#define RKH_THREAD_TYPE                 TaskType
 /* ------------------------------- Data types ------------------------------ */
 typedef struct
 {
