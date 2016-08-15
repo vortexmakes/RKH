@@ -146,24 +146,14 @@
 			<locationURI>PARENT-10-PROJECT_LOC/source/rkhtrc.c</locationURI>
 		</link>
 		<link>
-			<name>shared/cli.c</name>
+			<name>shared/client.c</name>
 			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/cli.c</locationURI>
+			<locationURI>PARENT-7-PROJECT_LOC/client.c</locationURI>
 		</link>
 		<link>
-			<name>shared/cli.h</name>
+			<name>shared/client.h</name>
 			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/cli.h</locationURI>
-		</link>
-		<link>
-			<name>shared/cliact.c</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/cliact.c</locationURI>
-		</link>
-		<link>
-			<name>shared/cliact.h</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/cliact.h</locationURI>
+			<locationURI>PARENT-7-PROJECT_LOC/client.h</locationURI>
 		</link>
 		<link>
 			<name>shared/main.c</name>
@@ -181,24 +171,14 @@
 			<locationURI>PARENT-7-PROJECT_LOC/scevt.h</locationURI>
 		</link>
 		<link>
-			<name>shared/svr.c</name>
+			<name>shared/server.c</name>
 			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/svr.c</locationURI>
+			<locationURI>PARENT-7-PROJECT_LOC/server.c</locationURI>
 		</link>
 		<link>
-			<name>shared/svr.h</name>
+			<name>shared/server.h</name>
 			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/svr.h</locationURI>
-		</link>
-		<link>
-			<name>shared/svract.c</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/svract.c</locationURI>
-		</link>
-		<link>
-			<name>shared/svract.h</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/svract.h</locationURI>
+			<locationURI>PARENT-7-PROJECT_LOC/server.h</locationURI>
 		</link>
 		<link>
 			<name>ucosiii/cpu_a.S</name>

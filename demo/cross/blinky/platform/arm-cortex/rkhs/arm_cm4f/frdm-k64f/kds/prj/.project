@@ -36,24 +36,14 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>blinky/bky.c</name>
+			<name>blinky/blinky.c</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bky.c</locationURI>
+			<locationURI>PARENT-7-PROJECT_LOC/blinky.c</locationURI>
 		</link>
 		<link>
-			<name>blinky/bky.h</name>
+			<name>blinky/blinky.h</name>
 			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bky.h</locationURI>
-		</link>
-		<link>
-			<name>blinky/bkyact.c</name>
-			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bkyact.c</locationURI>
-		</link>
-		<link>
-			<name>blinky/bkyact.h</name>
-			<type>1</type>
-			<locationURI>PARENT-8-PROJECT_LOC/blinky/bkyact.h</locationURI>
+			<locationURI>PARENT-7-PROJECT_LOC/blinky.h</locationURI>
 		</link>
 		<link>
 			<name>blinky/main.c</name>
