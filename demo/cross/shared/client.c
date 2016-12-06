@@ -128,10 +128,10 @@ client_init(Client *const me)
 static void
 client_req(Client *const me, RKH_EVT_T *pe)
 {
-    REQ_EVT_T *e_req;
+    ReqEvt *e_req;
 
     (void)pe;
-    e_req = RKH_ALLOC_EVT(REQ_EVT_T, REQ);
+    e_req = RKH_ALLOC_EVT(ReqEvt, REQ);
     e_req->clino = RKH_GET_PRIO(me);
     RKH_SMA_POST_FIFO(server, RKH_EVT_CAST(e_req), me);
     bsp_cli_req(e_req->clino);
@@ -144,7 +144,7 @@ client_start(Client *const me, RKH_EVT_T *pe)
 
     time = CLI_USING_TIME;
     RKH_TMR_ONESHOT(&me->usageTmr, RKH_UPCAST(RKH_SMA_T, me), time);
-    bsp_cli_using(RKH_CAST(START_EVT_T, pe)->clino,
+    bsp_cli_using(RKH_CAST(StartEvt, pe)->clino,
                   time / RKH_CFG_FWK_TICK_RATE_HZ);
 }
 

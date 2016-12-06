@@ -121,11 +121,11 @@ server_init(Server *const me)
 static void
 server_start(Server *const me, RKH_EVT_T *pe)
 {
-    START_EVT_T *e_start;
+    StartEvt *e_start;
 
-    e_start = RKH_ALLOC_EVT(START_EVT_T, START);
-    e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
-    RKH_SMA_POST_FIFO(RKH_GET_SMA(RKH_CAST(REQ_EVT_T, pe)->clino),
+    e_start = RKH_ALLOC_EVT(StartEvt, START);
+    e_start->clino = RKH_CAST(ReqEvt, pe)->clino;
+    RKH_SMA_POST_FIFO(RKH_GET_SMA(RKH_CAST(ReqEvt, pe)->clino),
                       RKH_EVT_CAST(e_start), me);
     bsp_svr_start(e_start->clino);
     ++RKH_CAST(Server, me)->ntot;
@@ -135,11 +135,11 @@ server_start(Server *const me, RKH_EVT_T *pe)
 static void
 server_end(Server *const me, RKH_EVT_T *pe)
 {
-    REQ_EVT_T *e;
+    ReqEvt *e;
 
     (void)pe;
-    if ((e = (REQ_EVT_T *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
-        != (REQ_EVT_T *)0)
+    if ((e = (ReqEvt *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
+        != (ReqEvt *)0)
     {
         bsp_svr_recall(e->clino);
     }
@@ -174,10 +174,10 @@ server_pause(Server *const me)
 static void
 server_resume(Server *const me)
 {
-    REQ_EVT_T *e;
+    ReqEvt *e;
 
-    if ((e = (REQ_EVT_T *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
-        != (REQ_EVT_T *)0)
+    if ((e = (ReqEvt *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
+        != (ReqEvt *)0)
     {
         bsp_svr_recall(e->clino);
     }

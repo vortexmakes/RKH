@@ -47,13 +47,13 @@ typedef struct
 {
     RKH_EVT_T e;    /** base structure */
     rui8_t clino;   /** client number (ID) */
-} REQ_EVT_T;
+} ReqEvt;
 
 typedef struct
 {
     RKH_EVT_T e;    /** base structure */
     rui8_t clino;   /** client number (ID) */
-} START_EVT_T;
+} StartEvt;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

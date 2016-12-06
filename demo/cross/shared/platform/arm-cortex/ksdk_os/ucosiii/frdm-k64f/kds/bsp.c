@@ -56,7 +56,7 @@
 #define SIZEOF_EP0STO				32
 #define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
 #define SIZEOF_EP1STO				16
-#define SIZEOF_EP1_BLOCK			sizeof( REQ_EVT_T )
+#define SIZEOF_EP1_BLOCK			sizeof( ReqEvt )
 #define SVR_NAME					"Server    -"
 #define CLI_NAME					"Client"
 
