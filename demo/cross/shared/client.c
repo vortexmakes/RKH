@@ -16,7 +16,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "scevt.h"
+#include "shared.h"
 #include "server.h"
 #include "client.h"
 #include "bsp.h"

@@ -44,7 +44,7 @@
 
 #include "bsp.h"
 #include "rkh.h"
-#include "scevt.h"
+#include "shared.h"
 #include "server.h"
 #include "client.h"
 

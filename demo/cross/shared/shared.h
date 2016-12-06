@@ -1,5 +1,5 @@
 /**
- *  \file       scevt.h
+ *  \file       shared.h
  *  \brief      Server and client event definitions.
  */
 
@@ -15,8 +15,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-#ifndef __SCEVT_H__
-#define __SCEVT_H__
+#ifndef __SHARED_H__
+#define __SHARED_H__
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"

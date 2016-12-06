@@ -45,7 +45,7 @@
 #include "bsp.h"
 #include "server.h"
 #include "client.h"
-#include "scevt.h"
+#include "shared.h"
 #include "rkh.h"
 #include "fsl_debug_console.h"
 #include "fsl_hwtimer_systick.h"

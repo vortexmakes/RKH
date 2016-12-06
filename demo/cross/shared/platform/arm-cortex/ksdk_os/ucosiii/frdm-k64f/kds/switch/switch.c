@@ -9,7 +9,7 @@
 #include "switch.h"
 #include "swhdl.h"
 #include "bsp.h"
-#include "scevt.h"
+#include "shared.h"
 
 
 static RKH_ROM_STATIC_EVENT( e_pause, PAUSE );

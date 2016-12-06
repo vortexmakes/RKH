@@ -20,7 +20,7 @@
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "scevt.h"
+#include "shared.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus

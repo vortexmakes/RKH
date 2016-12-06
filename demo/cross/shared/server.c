@@ -17,7 +17,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "bsp.h"
-#include "scevt.h"
+#include "shared.h"
 #include "server.h"
 
 /* ----------------------------- Local macros ------------------------------ */
