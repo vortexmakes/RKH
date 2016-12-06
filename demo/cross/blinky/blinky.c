@@ -20,8 +20,26 @@
 #include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-/* ------------------------------- Constants ------------------------------- */
-/* ======================== States and pseudostates ======================== */
+#define LED_OFF_TIME            RKH_TIME_SEC(2)
+#define LED_ON_TIME             RKH_TIME_SEC(2)
+
+/* ......................... Declares active object ........................ */
+typedef struct Blinky Blinky;
+
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE ledOff, ledOn;
+
+/* ........................ Declares initial action ........................ */
+static void blinky_init(Blinky *const me);
+
+/* ........................ Declares effect actions ........................ */
+static void blinky_ledOn(Blinky *const me, RKH_EVT_T *pe);
+static void blinky_ledOff(Blinky *const me, RKH_EVT_T *pe);
+
+/* ......................... Declares entry actions ........................ */
+/* ......................... Declares exit actions ......................... */
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
 RKH_CREATE_BASIC_STATE(ledOn, NULL, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(ledOn)
     RKH_TRREG(TIMEOUT, NULL, blinky_ledOff, &ledOff),
@@ -32,14 +50,7 @@ RKH_CREATE_TRANS_TABLE(ledOff)
     RKH_TRREG(TIMEOUT, NULL, blinky_ledOn, &ledOn),
 RKH_END_TRANS_TABLE
 
-/*
- *  Declare and allocate the 'e_tout' event.
- *  The 'e_tout' event with TIMEOUT signal never changes, so it can be
- *  statically allocated just once by means of RKH_ROM_STATIC_EVENT() macro.
- */
-static RKH_ROM_STATIC_EVENT(e_tout, TIMEOUT);
-
-/* ---------------------------- Local data types --------------------------- */
+/* ............................. Active object ............................. */
 struct Blinky
 {
     RKH_SMA_T sma;      /* base structure */
@@ -49,17 +60,24 @@ struct Blinky
                         /* 'blinky' */
 };
 
-/* ---------------------------- Global variables --------------------------- */
-/* ============================= Active object ============================= */
 RKH_SMA_CREATE(Blinky, blinky, 0, HCAL, &ledOn, blinky_init, NULL);
 RKH_SMA_DEF_PTR(blinky);
 
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+/*
+ *  Declare and allocate the 'e_tout' event.
+ *  The 'e_tout' event with TIMEOUT signal never changes, so it can be
+ *  statically allocated just once by means of RKH_ROM_STATIC_EVENT() macro.
+ */
+static RKH_ROM_STATIC_EVENT(e_tout, TIMEOUT);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-/* ---------------------------- Global functions --------------------------- */
-/* ============================ Initial action ============================= */
-void
+/* ............................ Initial action ............................. */
+static void
 blinky_init(Blinky *const me)
 {
     RKH_TR_FWK_AO(me);
@@ -73,7 +91,8 @@ blinky_init(Blinky *const me)
     blinky_ledOn(me, NULL);
 }
 
-void
+/* ............................ Effect actions ............................. */
+static void
 blinky_ledOn(Blinky *const me, RKH_EVT_T *pe)
 {
     (void)pe;
@@ -83,7 +102,7 @@ blinky_ledOn(Blinky *const me, RKH_EVT_T *pe)
     ++me->cnt;
 }
 
-void
+static void
 blinky_ledOff(Blinky *const me, RKH_EVT_T *pe)
 {
     (void)me;
@@ -93,9 +112,8 @@ blinky_ledOff(Blinky *const me, RKH_EVT_T *pe)
     bsp_led_off();
 }
 
-/* ============================ Effect actions ============================= */
-/* ============================= Entry actions ============================= */
-/* ============================= Exit actions ============================== */
-/* ================================ Guards ================================= */
-
+/* ............................. Entry actions ............................. */
+/* ............................. Exit actions .............................. */
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
 /* ------------------------------ End of file ------------------------------ */
