@@ -36,8 +36,8 @@ extern "C" {
 #define CLI_STK_SIZE    (512 / sizeof(RKH_THREAD_STK_TYPE))
 
 /* -------------------------------- Constants ------------------------------ */
-/* ================================ Signals ================================ */
-/* ======================== Declares active object ========================= */
+/* ................................ Signals ................................ */
+/* ........................ Declares active object ......................... */
 enum
 {
     CLI_PRIO_0 = 1, CLI_PRIO_1, CLI_PRIO_2, CLI_PRIO_3,
@@ -47,31 +47,9 @@ enum
 
 RKH_ARRAY_SMA_DCLR(clis, NUM_CLIENTS);
 
-/* =================== Declares states and pseudostates ==================== */
-RKH_DCLR_BASIC_STATE client_idle, client_waiting, client_using, client_paused;
-
 /* ------------------------------- Data types ------------------------------ */
-typedef struct Client Client;
-
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-/* ============================ Initial action ============================= */
-void client_init(Client *const me);
-
-/* ============================ Effect actions ============================= */
-void client_req(Client *const me, RKH_EVT_T *pe);
-void client_start(Client *const me, RKH_EVT_T *pe);
-void client_end(Client *const me, RKH_EVT_T *pe);
-
-/* ============================= Entry actions ============================= */
-void client_delay_req(Client *const me);
-void client_pause(Client *const me);
-
-/* ============================= Exit actions ============================== */
-void client_resume(Client *const me);
-
-/* ================================ Guards ================================= */
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

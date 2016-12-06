@@ -29,8 +29,9 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-/* ================================ Signals ================================ */
-typedef enum SC_SIGS_T
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
 {
     REQ,        /* client request */
     START,      /* use server */
@@ -39,19 +40,19 @@ typedef enum SC_SIGS_T
     TOUT_USING, /* timer expired */
     PAUSE,      /* press the key 'p' on the keyboard */
     TERM        /* press the key escape on the keyboard */
-} SC_SIGS_T;
+};
 
-/* ================================= Events ================================ */
+/* ................................. Events ................................ */
 typedef struct
 {
-    RKH_EVT_T e;        /** base structure */
-    rui8_t clino;       /** client number (ID) */
+    RKH_EVT_T e;    /** base structure */
+    rui8_t clino;   /** client number (ID) */
 } REQ_EVT_T;
 
 typedef struct
 {
-    RKH_EVT_T e;        /** base structure */
-    rui8_t clino;       /** client number (ID) */
+    RKH_EVT_T e;    /** base structure */
+    rui8_t clino;   /** client number (ID) */
 } START_EVT_T;
 
 /* -------------------------- External variables --------------------------- */

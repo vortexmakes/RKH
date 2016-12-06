@@ -27,12 +27,29 @@
 #define CLI_USING_TIME \
     (RKH_TNT_T)RKH_TIME_SEC((bsp_rand() % 5) + 1)
 
-/* ------------------------------- Constants ------------------------------- */
-static RKH_ROM_STATIC_EVENT(evToUse, TOUT_USING);
-static RKH_ROM_STATIC_EVENT(evToReq, TOUT_REQ);
-static RKH_ROM_STATIC_EVENT(evDone, DONE);
+/* ......................... Declares active object ........................ */
+typedef struct Client Client;
 
-/* ======================== States and pseudostates ======================== */
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE client_idle, client_waiting, client_using, client_paused;
+
+/* ........................ Declares initial action ........................ */
+static void client_init(Client *const me);
+
+/* ........................ Declares effect actions ........................ */
+static void client_req(Client *const me, RKH_EVT_T *pe);
+static void client_start(Client *const me, RKH_EVT_T *pe);
+static void client_end(Client *const me, RKH_EVT_T *pe);
+
+/* ......................... Declares entry actions ........................ */
+static void client_delay_req(Client *const me);
+static void client_pause(Client *const me);
+
+/* ......................... Declares exit actions ......................... */
+static void client_resume(Client *const me);
+
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
 RKH_CREATE_BASIC_STATE(client_idle,
                        client_delay_req, NULL,  RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(client_idle)
@@ -58,15 +75,14 @@ RKH_CREATE_TRANS_TABLE(client_paused)
     RKH_TRREG(PAUSE,       NULL,   NULL,            &client_idle),
 RKH_END_TRANS_TABLE
 
-/* ---------------------------- Local data types --------------------------- */
+/* ............................. Active object ............................. */
 struct Client
 {
     RKH_SMA_T sma;          /* base structure */
     RKH_TMR_T usageTmr;     /* usage time */
     RKH_TMR_T waitReqTmr;   /* waiting request time */
 };
-/* ---------------------------- Global variables --------------------------- */
-/* ============================= Active object ============================= */
+
 RKH_SMA_CREATE(Client, cli0, CLI_PRIO_0, HCAL, &client_idle, client_init, NULL);
 RKH_SMA_DEF_PTR(cli0);
 RKH_SMA_CREATE(Client, cli1, CLI_PRIO_1, HCAL, &client_idle, client_init, NULL);
@@ -81,13 +97,18 @@ RKH_ARRAY_SMA_CREATE(clis, NUM_CLIENTS)
     &cli0, &cli1, &cli2, &cli3
 };
 
+/* ------------------------------- Constants ------------------------------- */
+static RKH_ROM_STATIC_EVENT(evToUse, TOUT_USING);
+static RKH_ROM_STATIC_EVENT(evToReq, TOUT_REQ);
+static RKH_ROM_STATIC_EVENT(evDone, DONE);
+
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-/* ---------------------------- Global functions --------------------------- */
-
-/* ============================ Initial action ============================= */
-void
+/* ............................ Initial action ............................. */
+static void
 client_init(Client *const me)
 {
     RKH_TR_FWK_AO(CLI0);
@@ -103,8 +124,8 @@ client_init(Client *const me)
     RKH_TMR_INIT(&me->waitReqTmr, &evToReq, NULL);
 }
 
-/* ============================ Effect actions ============================= */
-void
+/* ............................ Effect actions ............................. */
+static void
 client_req(Client *const me, RKH_EVT_T *pe)
 {
     REQ_EVT_T *e_req;
@@ -116,7 +137,7 @@ client_req(Client *const me, RKH_EVT_T *pe)
     bsp_cli_req(e_req->clino);
 }
 
-void
+static void
 client_start(Client *const me, RKH_EVT_T *pe)
 {
     RKH_TNT_T time;
@@ -127,7 +148,7 @@ client_start(Client *const me, RKH_EVT_T *pe)
                   time / RKH_CFG_FWK_TICK_RATE_HZ);
 }
 
-void
+static void
 client_end(Client *const me, RKH_EVT_T *pe)
 {
     (void)pe;
@@ -136,15 +157,15 @@ client_end(Client *const me, RKH_EVT_T *pe)
     bsp_cli_done(RKH_GET_PRIO(me));
 }
 
-/* ============================= Entry actions ============================= */
-void
+/* ............................. Entry actions ............................. */
+static void
 client_pause(Client *const me)
 {
     rkh_tmr_stop(&me->waitReqTmr);
     bsp_cli_paused(RKH_GET_PRIO(me));
 }
 
-void
+static void
 client_delay_req(Client *const me)
 {
     RKH_TNT_T time;
@@ -154,13 +175,13 @@ client_delay_req(Client *const me)
     bsp_cli_wait_req(RKH_GET_PRIO(me), time / RKH_CFG_FWK_TICK_RATE_HZ);
 }
 
-/* ============================= Exit actions ============================== */
-void
+/* ............................. Exit actions .............................. */
+static void
 client_resume(Client *const me)
 {
     bsp_cli_resumed(RKH_GET_PRIO(me));
 }
 
-/* ================================ Guards ================================= */
-
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
 /* ------------------------------ End of file ------------------------------ */

@@ -23,20 +23,29 @@
 /* ----------------------------- Local macros ------------------------------ */
 #define MAX_SIZEOF_QREQ         (2 * NUM_CLIENTS)
 
-/* ------------------------------- Constants ------------------------------- */
-struct Server
-{
-    RKH_SMA_T sma;      /* base structure */
-    rui32_t ntot;       /* total number of attended requests */
-                        /* number of attended requests of every client */
-    rui32_t ncr[NUM_CLIENTS];
-};
+/* ......................... Declares active object ........................ */
+typedef struct Server Server;
 
-/* ============================= Active object ============================= */
-RKH_SMA_CREATE(Server, server, 0, HCAL, &server_idle, server_init, NULL);
-RKH_SMA_DEF_PTR(server);
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE server_idle, server_busy, server_paused;
 
-/* ======================== States and pseudostates ======================== */
+/* ........................ Declares initial action ........................ */
+static void server_init(Server *const me);
+
+/* ........................ Declares effect actions ........................ */
+static void server_start(Server *const me, RKH_EVT_T *pe);
+static void server_end(Server *const me, RKH_EVT_T *pe);
+static void server_defer(Server *const me, RKH_EVT_T *pe);
+static void server_terminate(Server *const me, RKH_EVT_T *pe);
+
+/* ......................... Declares entry actions ........................ */
+static void server_pause(Server *const me);
+
+/* ......................... Declares exit actions ......................... */
+static void server_resume(Server *const me);
+
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
 RKH_CREATE_BASIC_STATE(server_idle, NULL, NULL,  RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(server_idle)
     RKH_TRINT(TERM,    NULL,   server_terminate),
@@ -61,6 +70,19 @@ RKH_CREATE_TRANS_TABLE(server_paused)
     RKH_TRREG(PAUSE,   NULL,   NULL,            &server_idle),
 RKH_END_TRANS_TABLE
 
+/* ............................. Active object ............................. */
+struct Server
+{
+    RKH_SMA_T sma;      /* base structure */
+    rui32_t ntot;       /* total number of attended requests */
+                        /* number of attended requests of every client */
+    rui32_t ncr[NUM_CLIENTS];
+};
+
+RKH_SMA_CREATE(Server, server, 0, HCAL, &server_idle, server_init, NULL);
+RKH_SMA_DEF_PTR(server);
+
+/* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
@@ -69,10 +91,8 @@ static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-/* ---------------------------- Global functions --------------------------- */
-
-/* ============================ Initial action ============================= */
-void
+/* ............................ Initial action ............................. */
+static void
 server_init(Server *const me)
 {
     rint cn;
@@ -97,8 +117,8 @@ server_init(Server *const me)
         RKH_CAST(Server, me)->ncr[cn] = 0;
 }
 
-/* ============================ Effect actions ============================= */
-void
+/* ............................ Effect actions ............................. */
+static void
 server_start(Server *const me, RKH_EVT_T *pe)
 {
     START_EVT_T *e_start;
@@ -112,7 +132,7 @@ server_start(Server *const me, RKH_EVT_T *pe)
     ++RKH_CAST(Server, me)->ncr[CLI_ID(e_start->clino)];
 }
 
-void
+static void
 server_end(Server *const me, RKH_EVT_T *pe)
 {
     REQ_EVT_T *e;
@@ -127,14 +147,14 @@ server_end(Server *const me, RKH_EVT_T *pe)
     bsp_svr_end();
 }
 
-void
+static void
 server_defer(Server *const me, RKH_EVT_T *pe)
 {
     (void)me;
     rkh_fwk_defer(&queueReq, pe);
 }
 
-void
+static void
 server_terminate(Server *const me, RKH_EVT_T *pe)
 {
     (void)me;
@@ -143,15 +163,15 @@ server_terminate(Server *const me, RKH_EVT_T *pe)
     rkh_fwk_exit();
 }
 
-/* ============================= Entry actions ============================= */
-void
+/* ............................. Entry actions ............................. */
+static void
 server_pause(Server *const me)
 {
     bsp_svr_paused(me->ntot, me->ncr);
 }
 
-/* ============================= Exit actions ============================== */
-void
+/* ............................. Exit actions .............................. */
+static void
 server_resume(Server *const me)
 {
     REQ_EVT_T *e;
@@ -165,6 +185,6 @@ server_resume(Server *const me)
     bsp_svr_resume();
 }
 
-/* ================================ Guards ================================= */
-
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
 /* ------------------------------ End of file ------------------------------ */
