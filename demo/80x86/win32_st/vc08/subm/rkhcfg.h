@@ -1,56 +1,15 @@
 /**
- * \cond
- *  --------------------------------------------------------------------------
- *
- *                                Framework RKH
- *                                -------------
- *
- * 	          State-machine framework for reactive embedded systems            
- * 	        
- * 	                    Copyright (C) 2010 Leandro Francucci.
- * 	        All rights reserved. Protected by international copyright laws.
- *
- *
- * 	RKH is free software: you can redistribute it and/or modify it under the 
- * 	terms of the GNU General Public License as published by the Free Software 
- * 	Foundation, either version 3 of the License, or (at your option) any 
- * 	later version.
- *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
- *  more details.
- *
- *  You should have received a copy of the GNU General Public License along 
- *  with RKH, see copying.txt file.
- *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : rkhcfg.h
- *	Last updated for version : v2.4.04
- *	By                       : LF
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- * 	\file
- *
- * 	\brief 		RKH user configuration
+ *  \file       rkhcfg.c
+ *  \brief      RKH user configuration.
  */
-
 
 #ifndef __RKHCFG_H__
 #define __RKHCFG_H__
 
-
 /**
  * 	Defines standard constants and macros.
  */
-
 #include "rkhdef.h"
-
 
 /* --- Configuration options related to framework ------------------------- */
 
@@ -205,7 +164,6 @@
  */
 
 #define RKH_CFG_FWK_TICK_RATE_HZ			100u
-
 
 /* --- Configuration options related to state machine applications -------- */
 
@@ -395,7 +353,7 @@
  *	RKH_SMA_T. See RKH_PPRO_T definition.
  */
 
-#define RKH_CFG_SMA_PPRO_ARG_SMA_EN		RKH_ENABLED	
+#define RKH_CFG_SMA_PPRO_ARG_SMA_EN		RKH_ENABLED
 
 /** 
  *  \brief
@@ -453,7 +411,7 @@
  * 	automatically define RKH_FILTER_ON_GROUP(), RKH_FILTER_OFF_GROUP(), 
  * 	RKH_FILTER_ON_EVENT(), RKH_FILTER_OFF_EVENT(), 
  * 	RKH_FILTER_ON_GROUP_ALL_EVENTS(), RKH_FILTER_OFF_GROUP_ALL_EVENTS(), 
- * 	RKH_FILTER_ON_SMA(), and RKH_FILTER_OFF_SMA() macros.
+ *	RKH_FILTER_ON_SMA(), and RKH_FILTER_OFF_SMA() macros.
  */
 
 #define RKH_CFG_TRC_RTFIL_EN			RKH_ENABLED
@@ -654,7 +612,7 @@
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_CFG_TRC_SIZEOF_STREAM		512u
+#define RKH_CFG_TRC_SIZEOF_STREAM		256u
 
 
 /* --- Configuration options related to queue (by reference) facility ----- */
@@ -804,8 +762,8 @@
 /* --- Configuration options related to software timer facility ----------- */
 
 /**
- *	If the #RKH_CFG_RQ_EN is set to 1 then RKH will include the native software 
- *	timer facility.
+ *	If the #RKH_CFG_TMR_EN is set to 1 then RKH will include the native 
+ *	software timer facility.
  */
 
 #define RKH_CFG_TMR_EN					RKH_ENABLED
@@ -824,7 +782,7 @@
  *	provide the hook function. 
  */
 
-#define RKH_CFG_TMR_HOOK_EN				RKH_ENABLED
+#define RKH_CFG_TMR_HOOK_EN				RKH_DISABLED
 
 /** 
  *	If the #RKH_CFG_TMR_GET_INFO_EN is set to 1 then RKH will include the 

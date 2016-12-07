@@ -1,67 +1,46 @@
-/*
- * main.c
+/**
+ *  \file       main.c
+ *  \brief      Example application.
  */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.12.06  LeFr  v2.4.05  Initial version
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhtrc.h"
 #include "bsp.h"
 #include "my.h"
-#include "rkhdata.h"
 
+/* ----------------------------- Local macros ------------------------------ */
+#define QSTO_SIZE           4
 
-#define QSTO_SIZE			4
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKH_EVT_T *qsto[QSTO_SIZE];
 
-static RKH_EVT_T *qsto[ QSTO_SIZE ];
-
-
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
 int
-main( int argc, char *argv[] )
+main(int argc, char *argv[])
 {
-	bsp_init( argc, argv );
+    bsp_init(argc, argv);
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+    RKH_SMA_ACTIVATE(my, qsto, QSTO_SIZE, 0, 0);
+    rkh_fwk_enter();
 
-	RKH_FILTER_OFF_SMA( my );
-	
-	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_NENEX );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_ENSTATE );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_EXSTATE );
-
-	rkh_fwk_init();
-	RKH_TRC_OPEN();
-
-	RKH_TR_FWK_OBJ( &S1 );
-	RKH_TR_FWK_OBJ( my );
-	RKH_TR_FWK_OBJ( &S11 );
-	RKH_TR_FWK_OBJ( &S13 );
-	RKH_TR_FWK_OBJ( &S3 );
-	RKH_TR_FWK_OBJ( &SB1 );
-	RKH_TR_FWK_OBJ( &SB2 );
-	RKH_TR_FWK_OBJ( &S12 );
-	RKH_TR_FWK_OBJ( &S2 );
-	RKH_TR_FWK_OBJ( &SB );
-	RKH_TR_FWK_OBJ( &EXPNT1 );
-	RKH_TR_FWK_OBJ( &EXPNT2 );
-	RKH_TR_FWK_OBJ( &ENPNT );
-	RKH_TR_FWK_OBJ( &ENS12 );
-	RKH_TR_FWK_OBJ( &ENS2 );
-
-	RKH_TR_FWK_SIG( ZERO );
-	RKH_TR_FWK_SIG( ONE	);
-	RKH_TR_FWK_SIG( TWO	);
-	RKH_TR_FWK_SIG( THREE	);
-	RKH_TR_FWK_SIG( FOUR	);
-	RKH_TR_FWK_SIG( FIVE	);
-	RKH_TR_FWK_SIG( SIX	);
-	RKH_TR_FWK_SIG( TERM	);
-	
-	RKH_SMA_ACTIVATE( my, qsto, QSTO_SIZE, 0, 0 );
-	rkh_fwk_enter();
-
-	RKH_TRC_CLOSE();
-	return 0;
+    RKH_TRC_CLOSE();
+    return 0;
 }
+
+/* ------------------------------ End of file ------------------------------ */
