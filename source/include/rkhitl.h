@@ -3390,7 +3390,7 @@ struct RKH_SBSC_T
      *  \code
      *	static
      *	RKH_SIG_T
-     *	preprocessor( RKH_EVT_T *pe )
+     *	preprocessor(RKH_EVT_T *pe)
      *	{
      *		...
      *	}
@@ -3403,12 +3403,12 @@ struct RKH_SBSC_T
      *		char *buff;
      *	} SDATA_T;
      *
-     *	static const SDATA_T option = { preprocessor, 4, 8, token1 };
+     *	static const SDATA_T option = {preprocessor, 4, 8, token1};
      *
-     *	RKH_CREATE_BASIC_STATE( S111, set_x_1,
-     *							NULL, &S11, preprocessor );
-     *	RKH_CREATE_BASIC_STATE( S22, set_x_4,
-     *							NULL, &S2, (RKH_PPRO_T*)&option );
+     *	RKH_CREATE_BASIC_STATE(S111, set_x_1,
+     *						   NULL, &S11, preprocessor);
+     *	RKH_CREATE_BASIC_STATE(S22, set_x_4,
+     *						   NULL, &S2, (RKH_PPRO_T*)&option);
      * \endcode
      */
 #if RKH_CFG_SMA_PPRO_EN == RKH_ENABLED
