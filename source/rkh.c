@@ -382,8 +382,8 @@ rkh_sm_init(RKH_SM_T *me)
 
     RKH_ASSERT(me &&
                RKH_SMA_ACCESS_CONST(me, istate) != (RKHROM RKH_ST_T *)0);
-    RKH_TR_SM_INIT(me, RKH_SMA_ACCESS_CONST(me, istate));
     RKH_EXEC_INIT(me, RKH_SMA_ACCESS_CONST(me, iaction));
+    RKH_TR_SM_INIT(me, RKH_SMA_ACCESS_CONST(me, istate));
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     for (s = CST(RKH_SMA_ACCESS_CONST(me, istate));; )
