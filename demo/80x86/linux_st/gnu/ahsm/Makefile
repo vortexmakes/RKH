@@ -1,7 +1,7 @@
 PROGNAME=rkh
 
 CC=gcc
-RKHSRCPATH=$(PWD)/../../../../source
+RKHSRCPATH=$(PWD)/../../../../../source
 PORTPATH= $(RKHSRCPATH)/portable/80x86/linux_st/gnu
 PORTFILE=rkhport
 

@@ -1,56 +1,15 @@
 /**
- * \cond
- *  --------------------------------------------------------------------------
- *
- *                                Framework RKH
- *                                -------------
- *
- * 	          State-machine framework for reactive embedded systems            
- * 	        
- * 	                    Copyright (C) 2010 Leandro Francucci.
- * 	        All rights reserved. Protected by international copyright laws.
- *
- *
- * 	RKH is free software: you can redistribute it and/or modify it under the 
- * 	terms of the GNU General Public License as published by the Free Software 
- * 	Foundation, either version 3 of the License, or (at your option) any 
- * 	later version.
- *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
- *  more details.
- *
- *  You should have received a copy of the GNU General Public License along 
- *  with RKH, see copying.txt file.
- *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : rkhcfg.h
- *	Last updated for version : v2.4.04
- *	By                       : LF
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- * 	\file
- *
- * 	\brief 		RKH user configuration
+ *  \file       rkhcfg.c
+ *  \brief      RKH user configuration.
  */
-
 
 #ifndef __RKHCFG_H__
 #define __RKHCFG_H__
 
-
 /**
  * 	Defines standard constants and macros.
  */
-
 #include "rkhdef.h"
-
 
 /* --- Configuration options related to framework ------------------------- */
 
@@ -205,7 +164,6 @@
  */
 
 #define RKH_CFG_FWK_TICK_RATE_HZ			100u
-
 
 /* --- Configuration options related to state machine applications -------- */
 
@@ -389,10 +347,10 @@
 #define RKH_CFG_SMA_GRD_ARG_SMA_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_SMA_PPRO_ARG_SMA_EN is set to 1 then the event 
- *	preprocessor (Moore function like entry and exit actions) prototype will 
- *	add as argument a pointer to state machine structure RKH_SMA_T. 
- *	See RKH_PPRO_T definition.
+ *	If the #RKH_CFG_SMA_PPRO_ARG_SMA_EN is set to 1 then the event preprocessor  
+ *	(Moore function like entry and exit actions) prototype will add as 
+ *	argument a pointer to state machine structure 
+ *	RKH_SMA_T. See RKH_PPRO_T definition.
  */
 
 #define RKH_CFG_SMA_PPRO_ARG_SMA_EN		RKH_ENABLED
@@ -660,7 +618,7 @@
 /* --- Configuration options related to queue (by reference) facility ----- */
 
 /**
- *	If the #RKH_RQ_EN is set to 1 then RKH will include the native queue 
+ *	If the #RKH_CFG_RQ_EN is set to 1 then RKH will include the native queue 
  *	facility.
  */
 
@@ -790,7 +748,7 @@
  *	See rkh_mp_get_low_wmark() function.
  */
 
-#define RKH_CFG_MP_GET_LWM_EN			RKH_DISABLED
+#define RKH_CFG_MP_GET_LWM_EN			RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_MP_GET_INFO_EN is set to 1 then RKH will include the 

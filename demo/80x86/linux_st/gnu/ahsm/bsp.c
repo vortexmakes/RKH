@@ -1,50 +1,25 @@
 /**
- * \cond
- *  --------------------------------------------------------------------------
- *
- *                                Framework RKH
- *                                -------------
- *
- * 	          State-machine framework for reactive embedded systems            
- * 	        
- * 	                    Copyright (C) 2010 Leandro Francucci.
- * 	        All rights reserved. Protected by international copyright laws.
- *
- *
- * 	RKH is free software: you can redistribute it and/or modify it under the 
- * 	terms of the GNU General Public License as published by the Free Software 
- * 	Foundation, either version 3 of the License, or (at your option) any 
- * 	later version.
- *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
- *  more details.
- *
- *  You should have received a copy of the GNU General Public License along 
- *  with RKH, see copying.txt file.
- *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : bsp.c
- *	Last updated for version : v2.4.04
- *	By                       : JC
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- * 	\file
- * 	\ingroup 	prt
- *
- * 	\brief 		BSP for 80x86 OS linux
+ *  \file       bsp.c
+ *  \brief      BSP for 80x86 OS Linux
  */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.12.06  LeFr  v2.4.05  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Darío Baliña       dariosb@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 
 
 #include "bsp.h"
 #include "my.h"
-#include "rkhdata.h"
 #include "rkh.h"
 
 #include <unistd.h>
@@ -54,42 +29,35 @@
 #include <termios.h>
 #include <sys/time.h>
 
-
-#define BIN_TRACE					1
+/* ----------------------------- Local macros ------------------------------ */
+#define BIN_TRACE				    0
 #define SOCKET_TRACE				1
 #define ESC							0x1B
 #define kbmap( c )					( (c) - '0' )
 
+/* ------------------------------- Constants ------------------------------- */
 #define SIZEOF_EP0STO				64
 #define SIZEOF_EP0_BLOCK			4
 #define SIZEOF_EP1STO				32
 #define SIZEOF_EP1_BLOCK			8
 
-
 RKH_THIS_MODULE
 
-static unsigned short tick_msec;			/* clock tick in msec */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
 rui8_t running;
+
+/* ---------------------------- Local variables ---------------------------- */
+static struct termios orgt;
+static unsigned short tick_msec;			/* clock tick in msec */
 static RKH_ROM_STATIC_EVENT( eterm, TERM );
 static rui8_t ep0sto[ SIZEOF_EP0STO ],
 				ep1sto[ SIZEOF_EP1STO ];
-
-
-/* 
- * 	For binary trace feature.
- */
-
-#if BIN_TRACE == 1
+#if BIN_TRACE == 1      /* For binary trace feature */
 static FILE *ftbin;
 #endif
 
-
-/*
- * 	For socket trace feature.
- */
-
-#if SOCKET_TRACE == 1
-
+#if SOCKET_TRACE == 1    /* For socket trace feature */
 	#include "tcptrc.h"
 
 	/* Trazer Tool IP Address */
@@ -138,9 +106,9 @@ static FILE *ftbin;
 	#define FTBIN_OPEN()			(void)0
 #endif
 
-
-static 
-void *
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+static void *
 isr_tmr_thread( void *d )	/* thread to emulate timer ISR */
 {
 	(void)d;
@@ -154,9 +122,7 @@ isr_tmr_thread( void *d )	/* thread to emulate timer ISR */
 	return NULL;
 }
 
-static struct termios orgt;
-
-int 
+static int 
 mygetch( void )
 {
 	struct termios newt;
@@ -171,13 +137,11 @@ mygetch( void )
 	return ch;
 }
 
-
-static 
-void * 
+static void * 
 isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 {
 	int c;
-	MYEVT_T *mye;
+	MyEvt *mye;
 
 	(void)d;
     while( running ) 
@@ -188,7 +152,7 @@ isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 			RKH_SMA_POST_FIFO( my, &eterm, 0 );
 		else
 		{
-			mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
+			mye = RKH_ALLOC_EVT( MyEvt, kbmap( c ) );
 			mye->ts = ( rui16_t )rand();
 			RKH_SMA_POST_FIFO( my, RKH_EVT_CAST(mye), 0 );
 		}
@@ -196,7 +160,26 @@ isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 	return NULL;
 }
 
+static
+void
+print_banner( void )
+{
+	printf(	"Abstract Hierarchical State Machine (AHSM) example\n\n" );
+	printf(	"RKH version      = %s\n", RKH_RELEASE );
+	printf(	"Port version     = %s\n", rkh_get_port_version() );
+	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
+	printf(	"Description: \n\n"
+			"The goal of this demo application is to explain how to \n"
+			"represent a state machine using the RKH framework. To do \n"
+			"that is proposed a simple and abstract example, which is \n"
+			"shown in the documentation file Figure 1 section \n"
+			"\"Representing a State Machine\". \n\n\n" );
 
+	printf( "1.- Press <numbers> to send events to state machine. \n" );
+	printf( "2.- Press ESC to quit \n\n\n" );
+}
+
+/* ---------------------------- Global functions --------------------------- */
 void 
 rkh_hook_start( void ) 
 {
@@ -224,7 +207,6 @@ rkh_hook_start( void )
 	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
-
 void 
 rkh_hook_exit( void ) 
 {
@@ -232,7 +214,6 @@ rkh_hook_exit( void )
     running = 0;
 	tcsetattr( STDIN_FILENO, TCSANOW, &orgt );
 }
-
 
 void 
 rkh_hook_idle( void )				/* called within critical section */
@@ -242,12 +223,10 @@ rkh_hook_idle( void )				/* called within critical section */
     RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
 
-
 void 
 rkh_hook_timetick( void ) 
 {
 }
-
 
 void 
 rkh_assert( RKHROM char * const file, int line )
@@ -259,29 +238,7 @@ rkh_assert( RKHROM char * const file, int line )
 	rkh_fwk_exit();
 }
 
-
-static
-void
-print_banner( void )
-{
-	printf(	"Abstract Hierarchical State Machine (AHSM) example\n\n" );
-	printf(	"RKH version      = %s\n", RKH_RELEASE );
-	printf(	"Port version     = %s\n", rkh_get_port_version() );
-	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
-	printf(	"Description: \n\n"
-			"The goal of this demo application is to explain how to \n"
-			"represent a state machine using the RKH framework. To do \n"
-			"that is proposed a simple and abstract example, which is \n"
-			"shown in the documentation file Figure 1 section \n"
-			"\"Representing a State Machine\". \n\n\n" );
-
-	printf( "1.- Press <numbers> to send events to state machine. \n" );
-	printf( "2.- Press ESC to quit \n\n\n" );
-}
-
-
 #if RKH_CFG_TRC_EN == 1
-
 void 
 rkh_trc_open( void )
 {
@@ -292,14 +249,12 @@ rkh_trc_open( void )
 	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
 }
 
-
 void 
 rkh_trc_close( void )
 {
 	FTBIN_CLOSE();
 	TCP_TRACE_CLOSE();
 }
-
 
 RKH_TS_T 
 rkh_trc_getts( void )
@@ -311,7 +266,6 @@ rkh_trc_getts( void )
 	t = (double) tv.tv_sec + (double) 1e-6 * tv.tv_usec; 
 	return ( RKH_TS_T )t;
 }
-
 
 void 
 rkh_trc_flush( void )
@@ -326,7 +280,6 @@ rkh_trc_flush( void )
 }
 #endif
 
-
 void 
 bsp_init( int argc, char *argv[] )
 {
@@ -335,4 +288,15 @@ bsp_init( int argc, char *argv[] )
 
 	srand( ( unsigned )time( NULL ) );
 	print_banner();
+    rkh_fwk_init();
+
+    /* set trace filters */
+    RKH_FILTER_ON_GROUP(RKH_TRC_ALL_GROUPS);
+    RKH_FILTER_ON_EVENT(RKH_TRC_ALL_EVENTS);
+    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
+    RKH_FILTER_OFF_SMA(my);
+
+    RKH_TRC_OPEN();
 }
+
+/* ------------------------------ End of file ------------------------------ */
