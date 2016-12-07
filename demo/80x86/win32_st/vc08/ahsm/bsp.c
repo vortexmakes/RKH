@@ -117,7 +117,7 @@ static DWORD WINAPI
 isr_kbd_thread(LPVOID par)      /* Win32 thread to emulate keyboard ISR */
 {
     int c;
-    MYEVT_T *mye;
+    MyEvt *mye;
 
     (void)par;
     while (running)
@@ -130,7 +130,7 @@ isr_kbd_thread(LPVOID par)      /* Win32 thread to emulate keyboard ISR */
         }
         else
         {
-            mye = RKH_ALLOC_EVT(MYEVT_T, kbmap(c));
+            mye = RKH_ALLOC_EVT(MyEvt, kbmap(c));
             mye->ts = (rui16_t)rand();
             RKH_SMA_POST_FIFO(my, RKH_EVT_CAST(mye), 0);
         }

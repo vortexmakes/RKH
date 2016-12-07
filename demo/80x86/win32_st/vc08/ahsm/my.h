@@ -47,7 +47,7 @@ typedef struct
 {
     RKH_EVT_T event;
     rui16_t ts;
-} MYEVT_T;
+} MyEvt;
 
 /* ........................ Declares active object ......................... */
 RKH_SMA_DCLR(my);
