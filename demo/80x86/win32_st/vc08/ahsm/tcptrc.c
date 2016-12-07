@@ -94,7 +94,6 @@ tcp_trace_close(SOCKET s)
     closesocket(s);
     WSACleanup();
 }
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */

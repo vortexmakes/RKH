@@ -256,6 +256,15 @@ bsp_init(int argc, char *argv[])
 
     srand((unsigned)time(NULL));
     print_banner();
+    rkh_fwk_init();
+
+    /* set trace filters */
+    RKH_FILTER_ON_GROUP(RKH_TRC_ALL_GROUPS);
+    RKH_FILTER_ON_EVENT(RKH_TRC_ALL_EVENTS);
+    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
+    RKH_FILTER_OFF_SMA(my);
+
+    RKH_TRC_OPEN();
 }
 
 /* ------------------------------ End of file ------------------------------ */

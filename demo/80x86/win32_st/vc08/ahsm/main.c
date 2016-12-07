@@ -18,7 +18,6 @@
 #include "rkh.h"
 #include "bsp.h"
 #include "my.h"
-#include "myact.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 #define QSTO_SIZE           4
@@ -36,15 +35,6 @@ int
 main(int argc, char *argv[])
 {
     bsp_init(argc, argv);
-
-    /* set trace filters */
-    RKH_FILTER_ON_GROUP(RKH_TRC_ALL_GROUPS);
-    RKH_FILTER_ON_EVENT(RKH_TRC_ALL_EVENTS);
-    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
-    RKH_FILTER_OFF_SMA(my);
-
-    rkh_fwk_init();
-    RKH_TRC_OPEN();
 
     RKH_SMA_ACTIVATE(my, qsto, QSTO_SIZE, 0, 0);
     rkh_fwk_enter();

@@ -17,17 +17,47 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "my.h"
-#include "myact.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ......................... Declares active object ........................ */
+typedef struct MySm MySm;
+
 /* ................... Declares states and pseudostates .................... */
-/* ........................ States and pseudostates ........................ */
+RKH_DCLR_COMP_STATE		S1,S3,S11;
+RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;
+RKH_DCLR_COND_STATE		C1,C2;
+RKH_DCLR_CHOICE_STATE	CH;
+RKH_DCLR_DHIST_STATE	DH;
+RKH_DCLR_SHIST_STATE	H;
+
 /* ........................ Declares initial action ........................ */
+void my_init(const RKH_SMA_T *me);
+
 /* ........................ Declares effect actions ........................ */
+void set_x1(const RKH_SMA_T *me, RKH_EVT_T *pe);
+void set_y_2(const RKH_SMA_T *me, RKH_EVT_T *pe);
+void set_y_1(const RKH_SMA_T *me, RKH_EVT_T *pe);
+void dummy_act(const RKH_SMA_T *me, RKH_EVT_T *pe);
+void show_data(const RKH_SMA_T *me, RKH_EVT_T *pe);
+void terminate(const RKH_SMA_T *me, RKH_EVT_T *pe);
+
 /* ......................... Declares entry actions ........................ */
+void set_x_1(const RKH_SMA_T *me);
+void set_x_2(const RKH_SMA_T *me);
+void set_x_3(const RKH_SMA_T *me);
+void set_y_0(const RKH_SMA_T *me);
+
 /* ......................... Declares exit actions ......................... */
+void dummy_exit(const RKH_SMA_T *me);
+
 /* ............................ Declares guards ............................ */
+rbool_t y_0(const RKH_SMA_T *me, RKH_EVT_T *pe);
+rbool_t y_1(const RKH_SMA_T *me, RKH_EVT_T *pe);
+rbool_t y_2(const RKH_SMA_T *me, RKH_EVT_T *pe);
+rbool_t x1(const RKH_SMA_T *me, RKH_EVT_T *pe);
+rbool_t x2_or_x3(const RKH_SMA_T *me, RKH_EVT_T *pe);
+
+/* ........................ States and pseudostates ........................ */
 RKH_CREATE_BASIC_STATE(S2, NULL, NULL,  RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(S2)
     RKH_TRINT(FOUR,    NULL,       dummy_act),
@@ -113,7 +143,14 @@ RKH_CREATE_BRANCH_TABLE(C2)
 RKH_END_BRANCH_TABLE
 
 /* ............................. Active object ............................. */
-RKH_SMA_CREATE(MYSM_T, my, 0, HCAL, &S1, my_init, NULL);
+struct MySm
+{
+    RKH_SMA_T sma;  /* base structure */
+    rui8_t x;       /* private member */
+    rui8_t y;       /* private member */
+};                  /* SMA derived from RKH_SMA_T structure */
+
+RKH_SMA_CREATE(MySm, my, 0, HCAL, &S1, my_init, NULL);
 RKH_SMA_DEF_PTR(my);
 
 /* ------------------------------- Constants ------------------------------- */
@@ -123,9 +160,153 @@ RKH_SMA_DEF_PTR(my);
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
+void
+my_init(const RKH_SMA_T *me)
+{
+    MySm *realMe = ((MySm *)(me));
+
+    RKH_TR_FWK_OBJ(&S1);
+    RKH_TR_FWK_OBJ(my);
+    RKH_TR_FWK_OBJ(&my->equeue);
+    RKH_TR_FWK_OBJ(&S1);
+    RKH_TR_FWK_OBJ(&S11);
+    RKH_TR_FWK_OBJ(&S111);
+    RKH_TR_FWK_OBJ(&S112);
+    RKH_TR_FWK_OBJ(&S12);
+    RKH_TR_FWK_OBJ(&S2);
+    RKH_TR_FWK_OBJ(&S3);
+    RKH_TR_FWK_OBJ(&S31);
+    RKH_TR_FWK_OBJ(&S32);
+    RKH_TR_FWK_OBJ(&C1);
+    RKH_TR_FWK_OBJ(&C2);
+    RKH_TR_FWK_OBJ(&CH);
+    RKH_TR_FWK_OBJ(&DH);
+    RKH_TR_FWK_OBJ(&H);
+
+    RKH_TR_FWK_SIG(ZERO);
+    RKH_TR_FWK_SIG(ONE);
+    RKH_TR_FWK_SIG(TWO);
+    RKH_TR_FWK_SIG(THREE);
+    RKH_TR_FWK_SIG(FOUR);
+    RKH_TR_FWK_SIG(FIVE);
+    RKH_TR_FWK_SIG(SIX);
+    RKH_TR_FWK_SIG(TERM);
+
+    realMe->x = realMe->y = 0;
+}
+
 /* ............................ Effect actions ............................. */
+void
+set_x1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    ((MySm *)(me))->x = 1;
+}
+
+void
+set_y_2(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    ((MySm *)(me))->y = 2;
+}
+
+void
+set_y_1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    ((MySm *)(me))->y = 1;
+}
+
+void
+dummy_act(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void
+show_data(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void
+terminate(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+    rkh_fwk_exit();
+}
+
 /* ............................. Entry actions ............................. */
+void
+set_x_1(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->x = 1;
+}
+
+void
+set_x_2(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->x = 2;
+}
+
+void
+set_x_3(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->x = 3;
+}
+
+void
+set_y_0(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->y = 0;
+}
+
 /* ............................. Exit actions .............................. */
+void
+dummy_exit(const RKH_SMA_T *me)
+{
+    (void)me;
+}
+
 /* ................................ Guards ................................. */
+rbool_t
+y_0(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->y == 0 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+y_1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->y == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+y_2(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->y == 2 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+x1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+x2_or_x3(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return (((MySm *)(me))->x == 2 || ((MySm *)(me))->x == 3) ? 
+           RKH_GTRUE : RKH_GFALSE;
+}
+
 /* ---------------------------- Global functions --------------------------- */
 /* ------------------------------ End of file ------------------------------ */
