@@ -165,23 +165,22 @@ my_init(const RKH_SMA_T *me)
 {
     MySm *realMe = ((MySm *)(me));
 
-    RKH_TR_FWK_OBJ(&S1);
-    RKH_TR_FWK_OBJ(my);
-    RKH_TR_FWK_OBJ(&my->equeue);
-    RKH_TR_FWK_OBJ(&S1);
-    RKH_TR_FWK_OBJ(&S11);
-    RKH_TR_FWK_OBJ(&S111);
-    RKH_TR_FWK_OBJ(&S112);
-    RKH_TR_FWK_OBJ(&S12);
-    RKH_TR_FWK_OBJ(&S2);
-    RKH_TR_FWK_OBJ(&S3);
-    RKH_TR_FWK_OBJ(&S31);
-    RKH_TR_FWK_OBJ(&S32);
-    RKH_TR_FWK_OBJ(&C1);
-    RKH_TR_FWK_OBJ(&C2);
-    RKH_TR_FWK_OBJ(&CH);
-    RKH_TR_FWK_OBJ(&DH);
-    RKH_TR_FWK_OBJ(&H);
+    RKH_TR_FWK_AO(my);
+    RKH_TR_FWK_QUEUE(&RKH_UPCAST(RKH_SMA_T, me)->equeue);
+    RKH_TR_FWK_STATE(me, &S1);
+    RKH_TR_FWK_STATE(me, &S11);
+    RKH_TR_FWK_STATE(me, &S111);
+    RKH_TR_FWK_STATE(me, &S12);
+    RKH_TR_FWK_STATE(me, &S112);
+    RKH_TR_FWK_STATE(me, &S2);
+    RKH_TR_FWK_STATE(me, &S3);
+    RKH_TR_FWK_STATE(me, &S31);
+    RKH_TR_FWK_STATE(me, &S32);
+    RKH_TR_FWK_STATE(me, &C1);
+    RKH_TR_FWK_STATE(me, &C2);
+    RKH_TR_FWK_STATE(me, &CH);
+    RKH_TR_FWK_STATE(me, &DH);
+    RKH_TR_FWK_STATE(me, &H);
 
     RKH_TR_FWK_SIG(ZERO);
     RKH_TR_FWK_SIG(ONE);
@@ -191,6 +190,24 @@ my_init(const RKH_SMA_T *me)
     RKH_TR_FWK_SIG(FIVE);
     RKH_TR_FWK_SIG(SIX);
     RKH_TR_FWK_SIG(TERM);
+
+    RKH_TR_FWK_FUN(&my_init);
+    RKH_TR_FWK_FUN(&set_x1);
+    RKH_TR_FWK_FUN(&set_y_2);
+    RKH_TR_FWK_FUN(&set_y_1);
+    RKH_TR_FWK_FUN(&dummy_act);
+    RKH_TR_FWK_FUN(&show_data);
+    RKH_TR_FWK_FUN(&terminate);
+    RKH_TR_FWK_FUN(&set_x_1);
+    RKH_TR_FWK_FUN(&set_x_2);
+    RKH_TR_FWK_FUN(&set_x_3);
+    RKH_TR_FWK_FUN(&set_y_0);
+    RKH_TR_FWK_FUN(&dummy_exit);
+    RKH_TR_FWK_FUN(&y_0);
+    RKH_TR_FWK_FUN(&y_1);
+    RKH_TR_FWK_FUN(&y_2);
+    RKH_TR_FWK_FUN(&x1);
+    RKH_TR_FWK_FUN(&x2_or_x3);
 
     realMe->x = realMe->y = 0;
 }
