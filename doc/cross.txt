@@ -15,10 +15,9 @@ RKH programming.
 The platform-independent Blinky source code (in C) is located in the 
 \c \<rkh\>\\demo\\cross\\blinky\\ directory, where \c \<rkh\> stands for the 
 installation directory chosed to install the accompanying software and 
-\c bky.c, \c bky.h, \c bkyact.c, \c bkyact.h, and \c main.c are the 
-platform-independent files. Thus, the code is actually identical in all 
-Blinky versions, such as the Windows version, Linux version, arm-cortex 
-version, and so on.
+\c blinky.c, \c blinky.h and \c main.c are the platform-independent files. 
+Thus, the code is actually identical in all Blinky versions, such as the 
+Windows version, Linux version, arm-cortex version, and so on.
 
 - \ref blinky_sm
 - \ref blinky_ao
@@ -38,21 +37,21 @@ active object, which clearly shows the life cycle consisting of states
 \image html rkh_blinky.png "Blinky state machine"
 
 \li ( 1) 	The \c blinky_init() function defines the topmost initial 
-			transition in the my state machine. The function prototype is 
-			defined as RKH_INIT_ACT_T. This argument is (optional), thus it could 
-			be declared as NULL. 
-\li ( 2) 	The timer \c bkytim is declared with the RKH_TMR_T data type 
+			transition in the blinky state machine. The function prototype is 
+			defined as RKH_INIT_ACT_T. This argument is (optional), thus it 
+            could be declared as NULL. 
+\li ( 2) 	The timer is declared with the RKH_TMR_T data type 
 			and is defined with the RKH_TMR_INIT() RKH service. The timer is 
 			initialized in a non-active state (stopped). In this case, a 
 			subsequent start service call is necessary to get the timer 
 			actually started.
-\li ( 3) 	Turn on the LED and trigger the \c bkytim timer as oneshot to 
-			expire in \c LED_ON_TIME milliseconds.
+\li ( 3) 	Turn on the LED and trigger the timer as oneshot to expire in 
+            \c LED_ON_TIME milliseconds.
 \li ( 4-8) 	Upon receiving the TIMEOUT event, the Blinky re-trigger the 
-			\c bkytim timer to expire in \c LED_OFF_TIME milliseconds, turn 
-			off the LED, and increments the counter.	
-\li ( 9-10)	Turn off the LED and trigger the \c bkytim timer as oneshot to 
-			expire in \c LED_OFF_TIME milliseconds.
+			timer to expire in \c LED_OFF_TIME milliseconds, turn off the 
+            LED, and increments the counter.	
+\li ( 9-10)	Turn off the LED and trigger the timer as oneshot to expire in 
+            \c LED_OFF_TIME milliseconds.
 
 \note
 The notation of UML Statecharts is not purely visual. Any nontrivial state 
@@ -63,155 +62,89 @@ either structured English or, more formally, expressions in an implementation
 language such as C [Douglass]. In practice, this means that UML Statechart 
 notation depends heavily on the specific programming language.
 
-The \ref bky_c "bky.c" file implements the state machine of Blinky active 
+The \ref bky_c "blinky.c" file implements the state machine of Blinky active 
 object, which illustrates some aspects of implementing state machines with 
 RKH framework. Please correlate this implementation with the state diagram 
-shown above. On the other hand, the header file \ref bky_h "bky.h" contains 
+shown above. On the other hand, the header file \ref bky_h "blinky.h" contains 
 the definitions of object structures related to the state machine. \n \n
 
 \anchor bky_c 
-<STRONG> \"bky.c\" - State machine representation </STRONG>
+<STRONG> \"blinky.c\" - State machine representation </STRONG>
 \code
-#include "rkh.h"
-
-
-/*
- *	Include file of HSM definitions.
- */
-
-#include "bky.h"
-
-
-/*
- *	Include file of action/guard definitions
- */
-
-#include "bkyact.h"
-
-
-/*
- *	Defines SMA (active object) 'blinky'.
- */
-
-RKH_SMA_CREATE( BKYSM_T, blinky, 0, HCAL, &led_on, blinky_init, NULL );
-
-
-/* Defines the "led_on" state */
-RKH_CREATE_BASIC_STATE( led_on, NULL, NULL, RKH_ROOT, NULL );
-
-/* led_on's state transition table */
-RKH_CREATE_TRANS_TABLE( led_on )
-	RKH_TRREG( TIMEOUT, NULL, 	blinky_led_off,		&led_off ),
+/* ........................ States and pseudostates ........................ */
+RKH_CREATE_BASIC_STATE(ledOn, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(ledOn)
+    RKH_TRREG(TIMEOUT, NULL, blinky_ledOff, &ledOff),
 RKH_END_TRANS_TABLE
 
-/* Defines the "led_off" state */
-RKH_CREATE_BASIC_STATE( led_off, NULL, NULL, RKH_ROOT, NULL );
-
-/* led_off's state transition table */
-RKH_CREATE_TRANS_TABLE( led_off )
-	RKH_TRREG( TIMEOUT,	NULL,	blinky_led_on,		&led_on ),
+RKH_CREATE_BASIC_STATE(ledOff, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(ledOff)
+    RKH_TRREG(TIMEOUT, NULL, blinky_ledOn, &ledOn),
 RKH_END_TRANS_TABLE
 \endcode
 
 \n The related actions (entry, exit, guard, and state transition) to be 
 executed by the state machine are implemented and declared in the 
-\ref bkyact_c "bkyact.c" and \ref bkyact_h "bkyact.h" file, respectively. 
+\ref bkyact_c "blinky.c". 
 Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
 
 \anchor bkyact_c 
-<STRONG> \"bkyact.c\" - Actions </STRONG>
+<STRONG> \"blinky.c\" - Actions </STRONG>
 \code
-#include "rkh.h"
-#include "bky.h"
-#include "bkyact.h"
-#include "bsp.h"
-
-
-#define CBKY( sm_ )		(( BKYSM_T* )(sm_))
-
-
-/*
- * 	Declare and allocate the 'e_tout' event.
- * 	The 'e_tout' event with TIMEOUT signal never changes, so it can be 
- * 	statically allocated just once by means of RKH_ROM_STATIC_EVENT() macro.
- */
-
-static RKH_ROM_STATIC_EVENT( e_tout, TIMEOUT );
-
-
-/*
- * 	Declare and allocate the 'blktim' timer, which is responsible for 
- * 	toggling the LED posting the TIMEOUT signal event to active object 
- * 	'blinky'.
- */
-
-RKH_TMR_T bkytim;
-
-
-/*
- *	Defines HSM init function
- */
-
-void 
-blinky_init( const struct RKH_SMA_T *sma )
+/* ............................ Initial action ............................. */
+static void
+blinky_init(Blinky *const me)
 {
-	RKH_TMR_INIT( &bkytim, &e_tout, NULL );
-	blinky_led_on( sma, NULL  );	
+    RKH_TR_FWK_AO(me);
+    RKH_TR_FWK_QUEUE(&RKH_UPCAST(RKH_SMA_T, me)->equeue);
+    RKH_TR_FWK_STATE(me, &ledOn);
+    RKH_TR_FWK_STATE(me, &ledOff);
+    RKH_TR_FWK_TIMER(&me->timer);
+    RKH_TR_FWK_SIG(TIMEOUT);
+
+    RKH_TMR_INIT(&me->timer, &e_tout, NULL);
+    blinky_ledOn(me, NULL);
 }
 
-
-/*
- *	Defines transition action functions
- */
-
-void
-blinky_led_on( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+/* ............................ Effect actions ............................. */
+static void
+blinky_ledOn(Blinky *const me, RKH_EVT_T *pe)
 {
-	(void)pe;
+    (void)pe;
 
-	RKH_TMR_ONESHOT( &bkytim, blinky, LED_ON_TIME );
-	bsp_led_on();
-	++CBKY(sma)->cnt;
+    RKH_TMR_ONESHOT(&me->timer, RKH_UPCAST(RKH_SMA_T, me), LED_ON_TIME);
+    bsp_led_on();
+    ++me->cnt;
 }
 
-
-void
-blinky_led_off( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+static void
+blinky_ledOff(Blinky *const me, RKH_EVT_T *pe)
 {
-	(void)sma;
-	(void)pe;
+    (void)me;
+    (void)pe;
 
-	RKH_TMR_ONESHOT( &bkytim, blinky, LED_OFF_TIME );
-	bsp_led_off();
+    RKH_TMR_ONESHOT(&me->timer, RKH_UPCAST(RKH_SMA_T, me), LED_OFF_TIME);
+    bsp_led_off();
 }
+
+/* ............................. Entry actions ............................. */
+/* ............................. Exit actions .............................. */
+/* ................................ Guards ................................. */
 \endcode
 
 \anchor bkyact_h 
-\n <STRONG> \"bkyact.h\" - Action declarations </STRONG>
+\n <STRONG> \"blinky.h\" - Action declarations </STRONG>
 \code
-#ifndef __BKYACT_H__
-#define __BKYACT_H__
+/* ........................ Declares initial action ........................ */
+static void blinky_init(Blinky *const me);
 
+/* ........................ Declares effect actions ........................ */
+static void blinky_ledOn(Blinky *const me, RKH_EVT_T *pe);
+static void blinky_ledOff(Blinky *const me, RKH_EVT_T *pe);
 
-#include "rkh.h"
-
-
-/*
- *	Defines HSM init function
- */
-
-void blinky_init( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines transition action functions
- */
-
-void blinky_led_on( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-void blinky_led_off( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-
-
-#endif
+/* ......................... Declares entry actions ........................ */
+/* ......................... Declares exit actions ......................... */
+/* ............................ Declares guards ............................ */
 \endcode
 
 <HR>
@@ -220,56 +153,65 @@ void blinky_led_off( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
 \n In RKH, signals are typically enumerated constants and events with 
 parameters are structures derived from the RKH_EVT_T base structure. The next 
 listing shows signals and events used in the Blinky application 
-(\ref bky_h "bky.h"). \n \n
+(\ref bky_h "blinky.h"). \n \n
 
 \anchor bky_h 
-<STRONG> \"bky.h\" - Signals, events, and active objects </STRONG>
+<STRONG> \"blinky.h\" - Signals, events, and active objects </STRONG>
 \code
-#ifndef __BKY_H__
-#define __BKY_H__
+/**
+ *  \file       bkliny.h
+ *  \brief      Example application.
+ */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __BLINKY_H__
+#define __BLINKY_H__
+
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#define LED_OFF_TIME			RKH_TIME_SEC( 2 )
-#define LED_ON_TIME				RKH_TIME_SEC( 2 )
-
-
-/*
- * 	Signals.
- */
-
-enum
+/* --------------------------------- Macros -------------------------------- */
+/* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
 {
-	TIMEOUT,		/* 'blktim' timeout */
+	TIMEOUT,		/* timeout */
 	TERMINATE,		/* press the key escape on the keyboard */
-	BKY_NUM_EVENTS
+	BLINKY_NUM_EVENTS
 };
 
+/* ........................ Declares active object ......................... */
+RKH_SMA_DCLR(blinky);
 
-typedef struct
-{
-	RKH_SMA_T sma;	/* base structure */
-	rui8_t cnt;	/* private member */
-} BKYSM_T;			/* SMA derived from RKH_SMA_T structure */
-
-
-/*
- *	Declare HSM.
- */
-
-RKH_SMA_DCLR( blinky );
-
-
-/*
- *	Declare states and pseudostates.
- */
-
-RKH_DCLR_BASIC_STATE	led_off, led_on;
-
-
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
 #endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 \n <HR>
@@ -280,62 +222,52 @@ in a platform-independent way. \n
 
 <STRONG> \"main.c\" - main() function </STRONG>
 \code
+/**
+ *  \file       main.c
+ *  \brief      Example application.
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhtrc.h"
 #include "bsp.h"
-#include "svr.h"
-#include "svract.h"
-#include "cli.h"
-#include "cliact.h"
+#include "blinky.h"
 
+/* ----------------------------- Local macros ------------------------------ */
+#define QSTO_SIZE           4
 
-#define QSTO_SIZE			4
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKH_EVT_T *qsto[QSTO_SIZE];
 
-static RKH_EVT_T *svr_qsto[ QSTO_SIZE ];
-static RKH_EVT_T *cli_qsto[ NUM_CLIENTS ][ QSTO_SIZE ];
-
-
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
 int
-main( int argc, char *argv[] )
+main(int argc, char *argv[])
 {
-	rint cn;
+    bsp_init(argc, argv);
 
-	/* invoke the rkh_fwk_init() function */
-	bsp_init( argc, argv );
+    RKH_SMA_ACTIVATE(blinky, qsto, QSTO_SIZE, 0, 0);
+    rkh_fwk_enter();
 
-	/* send objects to trazer */
-	RKH_TR_FWK_AO( svr );
-	RKH_TR_FWK_AO( CLI0 );
-	RKH_TR_FWK_AO( CLI1 );
-	RKH_TR_FWK_AO( CLI2 );
-	RKH_TR_FWK_AO( CLI3 );
-	RKH_TR_FWK_STATE( svr, &svr_idle );
-	RKH_TR_FWK_STATE( svr, &svr_busy );
-	RKH_TR_FWK_STATE( svr, &svr_paused );
-	RKH_TR_FWK_STATE( CLI0, &cli_idle );
-	RKH_TR_FWK_STATE( CLI0, &cli_waiting );
-	RKH_TR_FWK_STATE( CLI0, &cli_using );
-	RKH_TR_FWK_STATE( CLI0, &cli_paused );
-
-	/* send signals to trazer */
-	RKH_TR_FWK_SIG( REQ );
-	RKH_TR_FWK_SIG( START );
-	RKH_TR_FWK_SIG( DONE );
-	RKH_TR_FWK_SIG( TOUT_USING );
-	RKH_TR_FWK_SIG( TOUT_REQ );
-	RKH_TR_FWK_SIG( PAUSE );
-	RKH_TR_FWK_SIG( TERM );
-
-	rkh_sma_activate( svr, (const RKH_EVT_T **)svr_qsto, QSTO_SIZE, 
-																CV(0), 0 );
-	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		rkh_sma_activate( CLI(cn), (const RKH_EVT_T **)cli_qsto[cn], 
-												QSTO_SIZE, CV(0), 0 );
-	rkh_fwk_enter();
-
-	RKH_TRC_CLOSE();
-	return 0;
+    RKH_TRC_CLOSE();
+    return 0;
 }
+
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 \n <HR>
@@ -362,7 +294,7 @@ simple cooperative scheduler is located in
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD rowspan="4"> ARM - Cortex </TD>
+		<TD rowspan="6"> ARM - Cortex </TD>
 		<TD> NXP </TD>
 		<TD> <A HREF="http://www.nxp.com/products/microcontrollers/cortex_m3/
 		LPC1769FBD100.html">LPC1769</A> </TD>
@@ -374,15 +306,21 @@ simple cooperative scheduler is located in
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD> Freescale </TD>
-		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		<TD rowspan="2"> Freescale </TD>
+		<TD rowspan="2"> <A HREF="http://www.freescale.com/webapp/sps/site/
 		taxonomy.jsp?code=K60_ETHERNET_CRYPTO_MCU&
 		tid=mKOvp">Kinetis K60</A> </TD>
-		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		<TD rowspan="2"> <A HREF="http://www.freescale.com/webapp/sps/site/
 		prod_summary.jsp?code=TWR-K60D100M">TWR-K60D100M</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \subpage cross_twr_K60 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> IAR v7.2 </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_twr_K60_iar "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -406,6 +344,15 @@ simple cooperative scheduler is located in
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \subpage cross_kwi_K40 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k64-120-mhz-256kb-sram-microcontrollers-mcus-based-on-arm-cortex-m4-core:K64_120">Kinetis K64</A> </TD>
+		<TD> <A HREF="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</A></TD>
+		<TD> KDS </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_frdm_k64f_kds "readme" </TD>
 	</TR>
 
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
@@ -481,10 +428,10 @@ Aditionally, the Shared could be used to verify a new RKH port.
 The platform-independent Shared source code (in C) is located in the 
 \c \<rkh\>\\demo\\cross\\shared\\ directory, where \c \<rkh\> stands for the 
 installation directory chosed to install the accompanying software and 
-\c svr.c, \c svr.h, \c svract.c, \c svract.h, \c cli.c, \c cli.h, 
-\c cliact.c, \c cliact.h,\c scevt.h and \c main.c are the 
-platform-independent files. Thus, the code is actually identical in all 
-Shared versions, such as the Windows version, S08 version, and so on.
+\c client.h, \c server.h, \c shared.h, \c client.c, \c main.c and 
+\c server.c are the platform-independent files. Thus, the code is actually 
+identical in all Shared versions, such as the Windows version, S08 version, 
+and so on.
 
 - \ref shared_sd
 - \ref shared_sm
@@ -543,499 +490,540 @@ notation depends heavily on the specific programming language.
 
 \subsection shared_sm_cli Client state-machine implementation
 
-The \ref cli_c "cli.c" file implements the state machine of Server active 
+The \ref cli_c "client.c" file implements the state machine of Client active 
 object, which illustrates some aspects of implementing state machines with 
 RKH framework. Please correlate this implementation with the state diagram 
-shown above. On the other hand, the header file \ref cli_h "cli.h" contains 
+shown above. On the other hand, the header file \ref cli_h "client.h" contains 
 the definitions of object structures related to the state machine. 
 See the following sections:
 
-- \ref cli_c "Client state machine representation - \"cli.c\""
-- \ref cliact_c "Client actions - \"cliact.c\""
-- \ref cliact_h "Client action declarations - \"cliact.h\""
+- \ref cli_c "Client active object implementation - \"client.c\""
+- \ref cli_h "Client active object specification - \"client.h\""
 
-\n \n
 \anchor cli_c 
-<STRONG> \"cli.c\" - Client state machine representation </STRONG> \n
+<STRONG> \"client.c\" - Client active object implementation </STRONG> \n
 \code
+/**
+ *  \file       client.c
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-
-
-/*
- *	Include file of HSM definitions.
- */
-
-#include "cli.h"
-
-
-/*
- *	Include file of action/guard definitions
- */
-
-#include "cliact.h"
-
-
-/*
- *	Defines SMA (a.k.a Active Object) "cli".
- */
-
-RKH_SMA_CREATE( CLI_T, cli0, CLI_PRIO_0, HCAL, &cli_idle, cli_init, NULL );
-RKH_SMA_CREATE( CLI_T, cli1, CLI_PRIO_1, HCAL, &cli_idle, cli_init, NULL );
-RKH_SMA_CREATE( CLI_T, cli2, CLI_PRIO_2, HCAL, &cli_idle, cli_init, NULL );
-RKH_SMA_CREATE( CLI_T, cli3, CLI_PRIO_3, HCAL, &cli_idle, cli_init, NULL );
-
-RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS ) 
-{
-	&cli0, &cli1, &cli2, &cli3
-};
-
-
-/*
- *	Defines states and pseudostates.
- */
-
-RKH_CREATE_BASIC_STATE( cli_idle,
-						cli_delay_req, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( cli_idle )
-
-	RKH_TRREG( TOUT_REQ,	NULL,	cli_req,	&cli_waiting ),
-	RKH_TRREG( PAUSE,		NULL,	NULL,		&cli_paused ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_BASIC_STATE( cli_waiting, NULL, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( cli_waiting )
-
-	RKH_TRREG( START,		NULL,	cli_start,	&cli_using ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_BASIC_STATE( cli_using, NULL, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( cli_using )
-
-	RKH_TRREG( TOUT_USING,	NULL,	cli_end,	&cli_idle ),
-	RKH_TRREG( PAUSE,		NULL,	NULL,		&cli_paused ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_BASIC_STATE( cli_paused, 
-						cli_pause, cli_resume, RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( cli_paused )
-
-	RKH_TRINT( TOUT_USING,	NULL, 	cli_end ),
-	RKH_TRREG( PAUSE,		NULL,	NULL,		&cli_idle ),
-
-RKH_END_TRANS_TABLE
-\endcode
-
-Prev: \ref shared_sm_cli \n
-
-The related actions (entry, exit, guard, and state transition) to be 
-executed by the state machine are implemented and declared in the 
-\ref cliact_c "cliact.c" and \ref cliact_h "cliact.h" file, respectively. 
-Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
-
-\anchor cliact_c
-<STRONG> \"cliact.c\" - Client actions </STRONG>
-\code
-#include "rkh.h"
-#include "cli.h"
-#include "svr.h"
+#include "shared.h"
+#include "server.h"
+#include "client.h"
 #include "bsp.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
+/* ----------------------------- Local macros ------------------------------ */
+#define CLI_REQ_TIME \
+    (RKH_TNT_T)RKH_TIME_SEC((bsp_rand() % 5) + 2)
+#define CLI_USING_TIME \
+    (RKH_TNT_T)RKH_TIME_SEC((bsp_rand() % 5) + 1)
 
+/* ......................... Declares active object ........................ */
+typedef struct Client Client;
 
-#define CLI_REQ_TIME		\
-			(RKH_TNT_T)RKH_TIME_SEC( (bsp_rand() % 5) + 2 )
-#define CLI_USING_TIME		\
-			(RKH_TNT_T)RKH_TIME_SEC( (bsp_rand() % 5) + 1 )
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE client_idle, client_waiting, client_using, client_paused;
 
+/* ........................ Declares initial action ........................ */
+static void client_init(Client *const me);
 
-static RKH_ROM_STATIC_EVENT( e_touse, TOUT_USING );
-static RKH_ROM_STATIC_EVENT( e_toreq, TOUT_REQ );
-static RKH_ROM_STATIC_EVENT( e_done, DONE );
+/* ........................ Declares effect actions ........................ */
+static void client_req(Client *const me, RKH_EVT_T *pe);
+static void client_start(Client *const me, RKH_EVT_T *pe);
+static void client_end(Client *const me, RKH_EVT_T *pe);
 
+/* ......................... Declares entry actions ........................ */
+static void client_delay_req(Client *const me);
+static void client_pause(Client *const me);
 
-/*
- *	Defines HSM init function
- */
+/* ......................... Declares exit actions ......................... */
+static void client_resume(Client *const me);
 
-void
-cli_init( const struct RKH_SMA_T *sma )
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
+RKH_CREATE_BASIC_STATE(client_idle,
+                       client_delay_req, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_idle)
+    RKH_TRREG(TOUT_REQ,    NULL,   client_req,      &client_waiting),
+    RKH_TRREG(PAUSE,       NULL,   NULL,            &client_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(client_waiting, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_waiting)
+    RKH_TRREG(START,       NULL,   client_start,    &client_using),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(client_using, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_using)
+    RKH_TRREG(TOUT_USING,  NULL,   client_end,      &client_idle),
+    RKH_TRREG(PAUSE,       NULL,   NULL,            &client_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(client_paused,
+                       client_pause, client_resume, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_paused)
+    RKH_TRINT(TOUT_USING,  NULL,   client_end),
+    RKH_TRREG(PAUSE,       NULL,   NULL,            &client_idle),
+RKH_END_TRANS_TABLE
+
+/* ............................. Active object ............................. */
+struct Client
 {
-	RKH_TMR_INIT( &RKH_CAST(CLI_T, sma)->cli_utmr, &e_touse, NULL );
-	RKH_TMR_INIT( &RKH_CAST(CLI_T, sma)->cli_rtmr, &e_toreq, NULL );
+    RKH_SMA_T sma;          /* base structure */
+    RKH_TMR_T usageTmr;     /* usage time */
+    RKH_TMR_T waitReqTmr;   /* waiting request time */
+};
+
+RKH_SMA_CREATE(Client, cli0, CLI_PRIO_0, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli0);
+RKH_SMA_CREATE(Client, cli1, CLI_PRIO_1, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli1);
+RKH_SMA_CREATE(Client, cli2, CLI_PRIO_2, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli2);
+RKH_SMA_CREATE(Client, cli3, CLI_PRIO_3, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli3);
+
+RKH_ARRAY_SMA_CREATE(clis, NUM_CLIENTS)
+{
+    &cli0, &cli1, &cli2, &cli3
+};
+
+/* ------------------------------- Constants ------------------------------- */
+static RKH_ROM_STATIC_EVENT(evToUse, TOUT_USING);
+static RKH_ROM_STATIC_EVENT(evToReq, TOUT_REQ);
+static RKH_ROM_STATIC_EVENT(evDone, DONE);
+
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ............................ Initial action ............................. */
+static void
+client_init(Client *const me)
+{
+    RKH_TR_FWK_AO(CLI0);
+    RKH_TR_FWK_AO(CLI1);
+    RKH_TR_FWK_AO(CLI2);
+    RKH_TR_FWK_AO(CLI3);
+    RKH_TR_FWK_STATE(CLI0, &client_idle);
+    RKH_TR_FWK_STATE(CLI0, &client_waiting);
+    RKH_TR_FWK_STATE(CLI0, &client_using);
+    RKH_TR_FWK_STATE(CLI0, &client_paused);
+
+    RKH_TMR_INIT(&me->usageTmr, &evToUse, NULL);
+    RKH_TMR_INIT(&me->waitReqTmr, &evToReq, NULL);
 }
 
-
-/*
- *	Defines state entry functions
- */
-
-void 
-cli_pause( const struct RKH_SMA_T *sma )
+/* ............................ Effect actions ............................. */
+static void
+client_req(Client *const me, RKH_EVT_T *pe)
 {
-	rkh_tmr_stop( &RKH_CAST(CLI_T, sma)->cli_rtmr );
-	bsp_cli_paused( RKH_GET_PRIO(sma) );
+    ReqEvt *e_req;
+
+    (void)pe;
+    e_req = RKH_ALLOC_EVT(ReqEvt, REQ);
+    e_req->clino = RKH_GET_PRIO(me);
+    RKH_SMA_POST_FIFO(server, RKH_EVT_CAST(e_req), me);
+    bsp_cli_req(e_req->clino);
 }
 
-
-void 
-cli_delay_req( const struct RKH_SMA_T *sma )
+static void
+client_start(Client *const me, RKH_EVT_T *pe)
 {
-	RKH_TNT_T time;
+    RKH_TNT_T time;
 
-	time = CLI_REQ_TIME;
-	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->cli_rtmr, sma, time );
-	bsp_cli_wait_req( RKH_GET_PRIO(sma), time/BSP_TICKS_PER_SEC );
+    time = CLI_USING_TIME;
+    RKH_TMR_ONESHOT(&me->usageTmr, RKH_UPCAST(RKH_SMA_T, me), time);
+    bsp_cli_using(RKH_CAST(StartEvt, pe)->clino,
+                  time / RKH_CFG_FWK_TICK_RATE_HZ);
 }
 
-
-/*
- *	Defines state exit functions
- */
-
-void 
-cli_resume( const struct RKH_SMA_T *sma )
+static void
+client_end(Client *const me, RKH_EVT_T *pe)
 {
-	bsp_cli_resumed( RKH_GET_PRIO(sma) );
+    (void)pe;
+
+	RKH_SMA_POST_FIFO(server, &evDone, me);
+    bsp_cli_done(RKH_GET_PRIO(me));
 }
 
-
-/*
- *	Defines transition action functions
- */
-
-void 
-cli_req( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+/* ............................. Entry actions ............................. */
+static void
+client_pause(Client *const me)
 {
-	REQ_EVT_T *e_req;
-
-	(void)pe;
-	e_req = RKH_ALLOC_EVT( REQ_EVT_T, REQ );
-	e_req->clino = RKH_GET_PRIO(sma);
-	RKH_SMA_POST_FIFO( svr, RKH_EVT_CAST(e_req), sma );
-	bsp_cli_req( e_req->clino );
+    rkh_tmr_stop(&me->waitReqTmr);
+    bsp_cli_paused(RKH_GET_PRIO(me));
 }
 
-
-void 
-cli_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+static void
+client_delay_req(Client *const me)
 {
-	RKH_TNT_T time;
+    RKH_TNT_T time;
 
-	(void)pe;
-	time = CLI_USING_TIME;
-	RKH_TMR_ONESHOT( &RKH_CAST(CLI_T, sma)->cli_utmr, sma, time );
-	bsp_cli_using( RKH_CAST(START_EVT_T, pe)->clino, time/BSP_TICKS_PER_SEC );
+    time = CLI_REQ_TIME;
+    RKH_TMR_ONESHOT(&me->waitReqTmr, RKH_UPCAST(RKH_SMA_T, me), time);
+    bsp_cli_wait_req(RKH_GET_PRIO(me), time / RKH_CFG_FWK_TICK_RATE_HZ);
 }
 
-
-void 
-cli_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+/* ............................. Exit actions .............................. */
+static void
+client_resume(Client *const me)
 {
-	(void)pe;
-	(void)sma;
-
-	RKH_SMA_POST_FIFO( svr, &e_done, sma );
-	bsp_cli_done( RKH_GET_PRIO(sma) );
+    bsp_cli_resumed(RKH_GET_PRIO(me));
 }
+
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 Prev: \ref shared_sm_cli \n \n
 
-\anchor cliact_h
-\n <STRONG> \"cliact.h\" - Client action declarations </STRONG>
+\anchor cli_h
+\n <STRONG> \"client.h\" - Client active object specification </STRONG>
 \code
-#ifndef __CLIACT_H__
-#define __CLIACT_H__
+/**
+ *  \file       client.h
+ *  \brief      Example application
+ */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __CLIENT_H__
+#define __CLIENT_H__
+
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "shared.h"
 
-
-/*
- *	Defines HSM init function
- */
-
-void cli_init( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines state entry functions
- */
-
-void cli_delay_req( const struct RKH_SMA_T *sma );
-void cli_pause( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines state exit functions
- */
-
-void cli_resume( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines transition action functions
- */
-
-void cli_req( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-void cli_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-void cli_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-
-
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
 #endif
+
+/* --------------------------------- Macros -------------------------------- */
+#define CLI(clino_)     RKH_ARRAY_SMA(clis, clino_)
+#define CLI0            CLI(0)
+#define CLI1            CLI(1)
+#define CLI2            CLI(2)
+#define CLI3            CLI(3)
+#define CLI_STK_SIZE    (512 / sizeof(RKH_THREAD_STK_TYPE))
+
+/* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+/* ........................ Declares active object ......................... */
+enum
+{
+    CLI_PRIO_0 = 1, CLI_PRIO_1, CLI_PRIO_2, CLI_PRIO_3,
+    MAX_CLI_PRIO,
+    NUM_CLIENTS = MAX_CLI_PRIO - 1,
+};
+
+RKH_ARRAY_SMA_DCLR(clis, NUM_CLIENTS);
+
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 Prev: \ref shared_sm_cli \n
 
 \subsection shared_sm_svr Server state-machine implementation
 
-The \ref svr_c "svr.c" file implements the state machine of Server active 
+The \ref svr_c "server.c" file implements the state machine of Server active 
 object, which illustrates some aspects of implementing state machines with 
 RKH framework. Please correlate this implementation with the state diagram 
 shown above. On the other hand, the header file \ref svr_h "svr.h" contains 
 the definitions of object structures related to the state machine. 
 See following sections:
 
-- \ref svr_c "Server state machine representation - \"svr.c\""
-- \ref svract_c "Server actions - \"svract.c\""
-- \ref svract_h "Server action declarations - \"svract.h\""
+- \ref svr_c "Server active object implementation - \"server.c\""
+- \ref svr_h "Server active object specification - \"server.h\""
  \n \n
 \anchor svr_c 
-<STRONG> \"svr.c\" - Server state machine representation </STRONG> \n
+<STRONG> \"server.c\" - Server active object implementation </STRONG> \n
 \code
+/**
+ *  \file       server.c
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-
-
-/*
- *	Include file of HSM definitions.
- */
-
-#include "svr.h"
-
-
-/*
- *	Include file of action/guard definitions
- */
-
-#include "svract.h"
-
-
-/*
- *	Defines SMA (a.k.a Active Object) "svr".
- */
-
-RKH_SMA_CREATE( SVR_T, svr, 0, HCAL, &svr_idle, svr_init, NULL );
-
-
-/*
- *	Defines states and pseudostates.
- */
-
-RKH_CREATE_BASIC_STATE( svr_idle, NULL, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( svr_idle )
-
-	RKH_TRINT( TERM,	NULL,	svr_terminate ),
-	RKH_TRREG( REQ,		NULL,	svr_start,	&svr_busy ),
-	RKH_TRREG( PAUSE,	NULL,	NULL,		&svr_paused ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_BASIC_STATE( svr_busy, NULL, NULL,  RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( svr_busy )
-
-	RKH_TRINT( REQ,		NULL,	svr_defer ),
-	RKH_TRINT( TERM,	NULL,	svr_terminate ),
-	RKH_TRREG( DONE,	NULL,	svr_end,	&svr_idle ),
-	RKH_TRREG( PAUSE,	NULL,	NULL,		&svr_paused ),
-
-RKH_END_TRANS_TABLE
-
-
-RKH_CREATE_BASIC_STATE(	svr_paused, 
-						svr_pause, svr_resume, RKH_ROOT, NULL );
-RKH_CREATE_TRANS_TABLE( svr_paused )
-
-	RKH_TRINT( REQ,		NULL,	svr_defer ),
-	RKH_TRINT( DONE,	NULL,	NULL ),
-	RKH_TRINT( TERM,	NULL,	svr_terminate ),
-	RKH_TRREG( PAUSE,	NULL,	NULL,		&svr_idle ),
-
-RKH_END_TRANS_TABLE
-\endcode
-
-Prev: \ref shared_sm_svr \n
-
-The related actions (entry, exit, guard, and state transition) to be 
-executed by the state machine are implemented and declared in the 
-\ref svract_c "svract.c" and \ref svract_h "svract.h" file, respectively. 
-Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
-
-\anchor svract_c 
-<STRONG> \"svract.c\" - Server actions </STRONG>
-\code
-#include "rkh.h"
-#include "svr.h"
-#include "cli.h"
 #include "bsp.h"
+#include "shared.h"
+#include "server.h"
 
+/* ----------------------------- Local macros ------------------------------ */
+#define MAX_SIZEOF_QREQ         (2 * NUM_CLIENTS)
 
-#define MAX_SIZEOF_QREQ				2*NUM_CLIENTS
+/* ......................... Declares active object ........................ */
+typedef struct Server Server;
 
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE server_idle, server_busy, server_paused;
 
-static RKH_RQ_T qreq;
-static RKH_EVT_T *qreq_sto[ MAX_SIZEOF_QREQ ];
+/* ........................ Declares initial action ........................ */
+static void server_init(Server *const me);
 
+/* ........................ Declares effect actions ........................ */
+static void server_start(Server *const me, RKH_EVT_T *pe);
+static void server_end(Server *const me, RKH_EVT_T *pe);
+static void server_defer(Server *const me, RKH_EVT_T *pe);
+static void server_terminate(Server *const me, RKH_EVT_T *pe);
 
-/*
- *	Defines HSM init function
- */
+/* ......................... Declares entry actions ........................ */
+static void server_pause(Server *const me);
 
-void 
-svr_init( const struct RKH_SMA_T *sma )
+/* ......................... Declares exit actions ......................... */
+static void server_resume(Server *const me);
+
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
+RKH_CREATE_BASIC_STATE(server_idle, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(server_idle)
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(REQ,     NULL,   server_start,    &server_busy),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(server_busy, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(server_busy)
+    RKH_TRINT(REQ,     NULL,   server_defer),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(DONE,    NULL,   server_end,      &server_idle),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(server_paused,
+                       server_pause, server_resume, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(server_paused)
+    RKH_TRINT(REQ,     NULL,   server_defer),
+    RKH_TRINT(DONE,    NULL,   NULL),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_idle),
+RKH_END_TRANS_TABLE
+
+/* ............................. Active object ............................. */
+struct Server
 {
-	rint cn;
+    RKH_SMA_T sma;      /* base structure */
+    rui32_t ntot;       /* total number of attended requests */
+                        /* number of attended requests of every client */
+    rui32_t ncr[NUM_CLIENTS];
+};
 
-	(void)sma;
-	rkh_rq_init( &qreq, (const void **)qreq_sto, MAX_SIZEOF_QREQ, NULL );
+RKH_SMA_CREATE(Server, server, 0, HCAL, &server_idle, server_init, NULL);
+RKH_SMA_DEF_PTR(server);
 
-	RKH_CAST(SVR_T, sma)->ntot = 0;
-	for( cn = 0; cn < NUM_CLIENTS; ++cn )
-		RKH_CAST(SVR_T, sma)->ncr[ cn ] = 0;
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKH_RQ_T queueReq;
+static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
+
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ............................ Initial action ............................. */
+static void
+server_init(Server *const me)
+{
+    rint cn;
+
+    RKH_TR_FWK_AO(server);
+    RKH_TR_FWK_STATE(server, &server_idle);
+    RKH_TR_FWK_STATE(server, &server_busy);
+    RKH_TR_FWK_STATE(server, &server_paused);
+    RKH_TR_FWK_SIG(REQ);
+    RKH_TR_FWK_SIG(START);
+    RKH_TR_FWK_SIG(DONE);
+    RKH_TR_FWK_SIG(TOUT_USING);
+    RKH_TR_FWK_SIG(TOUT_REQ);
+    RKH_TR_FWK_SIG(PAUSE);
+    RKH_TR_FWK_SIG(TERM);
+
+    rkh_rq_init(&queueReq, (const void **)queueReqSto, MAX_SIZEOF_QREQ, 
+                CSMA(0));
+
+    RKH_CAST(Server, me)->ntot = 0;
+    for (cn = 0; cn < NUM_CLIENTS; ++cn)
+        RKH_CAST(Server, me)->ncr[cn] = 0;
 }
 
-
-/*
- *	Defines state entry functions
- */
-
-void 
-svr_pause( const struct RKH_SMA_T *sma )
+/* ............................ Effect actions ............................. */
+static void
+server_start(Server *const me, RKH_EVT_T *pe)
 {
-	(void)sma;
-	bsp_svr_paused( sma );
+    StartEvt *e_start;
+
+    e_start = RKH_ALLOC_EVT(StartEvt, START);
+    e_start->clino = RKH_CAST(ReqEvt, pe)->clino;
+    RKH_SMA_POST_FIFO(RKH_GET_SMA(RKH_CAST(ReqEvt, pe)->clino),
+                      RKH_EVT_CAST(e_start), me);
+    bsp_svr_start(e_start->clino);
+    ++RKH_CAST(Server, me)->ntot;
+    ++RKH_CAST(Server, me)->ncr[CLI_ID(e_start->clino)];
 }
 
-
-/*
- *	Defines state exit functions
- */
-
-void 
-svr_resume( const struct RKH_SMA_T *sma )
+static void
+server_end(Server *const me, RKH_EVT_T *pe)
 {
-	REQ_EVT_T *e;
+    ReqEvt *e;
 
-	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
-		bsp_svr_recall( e->clino );
-	
-	bsp_svr_resume();
+    (void)pe;
+    if ((e = (ReqEvt *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
+        != (ReqEvt *)0)
+    {
+        bsp_svr_recall(e->clino);
+    }
+
+    bsp_svr_end();
 }
 
-
-/*
- *	Defines transition action functions
- */
-
-void 
-svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+static void
+server_defer(Server *const me, RKH_EVT_T *pe)
 {
-	START_EVT_T *e_start;
-
-	e_start = RKH_ALLOC_EVT( START_EVT_T, START );
-	e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
-	RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ), 
-												RKH_EVT_CAST(e_start), sma );
-	bsp_svr_start(e_start->clino);
-	++RKH_CAST(SVR_T, sma)->ntot;
-	++RKH_CAST(SVR_T, sma)->ncr[ CLI_ID(e_start->clino) ];
+    (void)me;
+    rkh_fwk_defer(&queueReq, pe);
 }
 
-
-void 
-svr_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+static void
+server_terminate(Server *const me, RKH_EVT_T *pe)
 {
-	REQ_EVT_T *e;
+    (void)me;
+    (void)pe;
 
-	(void)pe;
-	if( (e = (REQ_EVT_T *)rkh_fwk_recall( (RKH_SMA_T*)sma, &qreq )) != NULL )
-		bsp_svr_recall( e->clino );
-
-	bsp_svr_end();
+    rkh_fwk_exit();
 }
 
-
-void 
-svr_defer( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+/* ............................. Entry actions ............................. */
+static void
+server_pause(Server *const me)
 {
-	(void)sma;
-	rkh_fwk_defer( &qreq, pe );
+    bsp_svr_paused(me->ntot, me->ncr);
 }
 
-
-void 
-svr_terminate( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+/* ............................. Exit actions .............................. */
+static void
+server_resume(Server *const me)
 {
-	(void)sma;
-	(void)pe;
+    ReqEvt *e;
 
-	rkh_fwk_exit();
+    if ((e = (ReqEvt *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
+        != (ReqEvt *)0)
+    {
+        bsp_svr_recall(e->clino);
+    }
+
+    bsp_svr_resume();
 }
+
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 Prev: \ref shared_sm_svr \n
 
-\anchor svract_h 
-\n <STRONG> \"svract.h\" - Server action declarations </STRONG>
+\anchor svr_h 
+\n <STRONG> \"server.h\" - Server active object specification </STRONG>
 \code
-#ifndef __SVRACT_H__
-#define __SVRACT_H__
+/**
+ *  \file       server.h
+ *  \brief      Example application
+ */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __SERVER_H__
+#define __SERVER_H__
+
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "client.h"
 
-
-/*
- *	Defines HSM init function
- */
-
-void svr_init( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines state entry functions
- */
-
-void svr_pause( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines state exit functions
- */
-
-void svr_resume( const struct RKH_SMA_T *sma );
-
-
-/*
- *	Defines transition action functions
- */
-
-void svr_start( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-void svr_end( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-void svr_defer( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-void svr_terminate( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
-
-
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
 #endif
+
+/* --------------------------------- Macros -------------------------------- */
+#define CLI_ID(cp_)     ((cp_) - RKH_GET_PRIO(CLI(0)))
+#define SVR_STK_SIZE    (512 / sizeof(RKH_THREAD_STK_TYPE))
+
+/* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+/* ........................ Declares active object ......................... */
+RKH_SMA_DCLR(server);
+
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 Prev: \ref shared_sm_svr \n
@@ -1046,142 +1034,79 @@ Prev: \ref shared_sm_svr \n
 In RKH, signals are typically enumerated constants and events with 
 parameters are structures derived from the RKH_EVT_T base structure. The next 
 listing shows signals and events used in the Shared application 
-(\ref scevt_h "scevt.h"). \n \n
+(\ref shared_h "shared.h"). \n \n
 
-\anchor scevt_h 
-<STRONG> \"scevt.h\" - Signals and events</STRONG>
+\anchor shared_h 
+<STRONG> \"shared.h\" - Signals and events</STRONG>
 \code
-#ifndef __SCEVT_H__
-#define __SCEVT_H__
-
-
-#include "rkh.h"
-
-
 /**
- * 	Signals
+ *  \file       shared.h
+ *  \brief      Server and client event definitions.
  */
 
-typedef enum sc_sigs_t
-{
-	REQ,		/* client request */
-	START,		/* use server */
-	DONE,		/* release server  */
-	TOUT_REQ,	/* timer expired */
-	TOUT_USING,	/* timer expired */
-	PAUSE,		/* press the key 'p' on the keyboard */
-	TERM		/* press the key escape on the keyboard */
-} SC_SIGS_T;
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.12.15  LeFr  v2.4.05  ---
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
 
-typedef struct
-{
-	RKH_EVT_T e;			/** base structure */
-	rui8_t clino; 	/** client number (ID) */
-} REQ_EVT_T;
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __SHARED_H__
+#define __SHARED_H__
 
-
-typedef struct
-{
-	RKH_EVT_T e;			/** base structure */
-	rui8_t clino; 	/** client number (ID) */
-} START_EVT_T;
-
-
-#endif
-\endcode
-
-\anchor svr_h 
-<STRONG> \"svr.h\" - Server (svr) active object</STRONG>
-\code
-#ifndef __SVR_H__
-#define __SVR_H__
-
-
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "scevt.h"
-#include "cli.h"
 
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/* Helper macro */
-#define CLI_ID( _cp )			((_cp) - RKH_GET_PRIO(CLI(0)))
+/* --------------------------------- Macros -------------------------------- */
+/* -------------------------------- Constants ------------------------------ */
+/* ------------------------------- Data types ------------------------------ */
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
+{
+    REQ,        /* client request */
+    START,      /* use server */
+    DONE,       /* release server  */
+    TOUT_REQ,   /* timer expired */
+    TOUT_USING, /* timer expired */
+    PAUSE,      /* press the key 'p' on the keyboard */
+    TERM        /* press the key escape on the keyboard */
+};
 
+/* ................................. Events ................................ */
+typedef struct
+{
+    RKH_EVT_T e;    /** base structure */
+    rui8_t clino;   /** client number (ID) */
+} ReqEvt;
 
 typedef struct
 {
-	RKH_SMA_T sma;		                                   /* base structure */
-	rui32_t ntot;		                /* total number of attended requests */
-							  /* number of attended requests of every client */
-	rui32_t ncr[ NUM_CLIENTS ];
-} SVR_T;			        /* Active Object derived from RKH_SMA_T structure */
+    RKH_EVT_T e;    /** base structure */
+    rui8_t clino;   /** client number (ID) */
+} StartEvt;
 
-
-/*
- *	Declare HSM.
- */
-
-RKH_SMA_DCLR( svr );
-
-
-/*
- *	Declare states and pseudostates.
- */
-
-RKH_DCLR_BASIC_STATE	svr_idle, svr_busy, svr_paused;
-
-
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
 #endif
-\endcode
 
-\anchor cli_h 
-<STRONG> \"cli.h\" - Client (cli) active object</STRONG>
-\code
-#ifndef __CLI_H__
-#define __CLI_H__
-
-
-#include "rkh.h"
-#include "scevt.h"
-
-
-#define CLI( _clino )			RKH_ARRAY_SMA( clis, _clino )
-#define CLI0					CLI(0)
-#define CLI1					CLI(1)
-#define CLI2					CLI(2)
-#define CLI3					CLI(3)
-
-
-typedef enum cli_prio
-{
-	CLI_PRIO_0 = 1, CLI_PRIO_1, CLI_PRIO_2, CLI_PRIO_3,
-	MAX_CLI_PRIO,
-	NUM_CLIENTS = MAX_CLI_PRIO - 1,
-}CLI_PRIO;
-
-
-typedef struct
-{
-	RKH_SMA_T sma;		/* base structure */
-	RKH_TMR_T cli_utmr; /* usage time */
-	RKH_TMR_T cli_rtmr;	/* waiting request time */
-} CLI_T;				/* Active Object derived from RKH_SMA_T structure */
-
-
-/*
- *	Declare HSM.
- */
-
-RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
-
-
-/*
- *	Declare states and pseudostates.
- */
-
-RKH_DCLR_BASIC_STATE	cli_idle, cli_waiting, cli_using, cli_paused;
-
-
+/* ------------------------------ Module end ------------------------------- */
 #endif
+
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 \n <HR>
@@ -1193,47 +1118,82 @@ in a platform-independent way. \n \n
 \anchor shared_main_c 
 <STRONG> \"main.c\" - main() function </STRONG>
 \code
+/**
+ *  \file       main.c
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhtrc.h"
 #include "bsp.h"
-#include "bky.h"
-#include "bkyact.h"
+#include "server.h"
+#include "client.h"
 
+/* ----------------------------- Local macros ------------------------------ */
+#define QSTO_SIZE           4
 
-#define QSTO_SIZE			4
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+/* Defines the event queue storage for active object 'server' */
+static RKH_EVT_T *svr_qsto[QSTO_SIZE];
 
-static RKH_EVT_T *qsto[ QSTO_SIZE ];
-extern RKH_TMR_T bkytim;
+/* Defines the event queue storage for active object 'client' */
+static RKH_EVT_T *cli_qsto[NUM_CLIENTS][QSTO_SIZE];
 
+#else
+    #define svr_qsto
+    #define cli_qsto
+#endif
 
+#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+/* Defines the task's stack for active object 'server' */
+static RKH_THREAD_STK_TYPE svr_stk[SVR_STK_SIZE];
+
+/* Defines the task's stack for active object 'client' */
+static RKH_THREAD_STK_TYPE cli_stk[NUM_CLIENTS][CLI_STK_SIZE];
+
+#else
+    #define svr_stk
+    #define cli_stk
+#endif
+
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
 int
-main( int argc, char *argv[] )
+main(int argc, char *argv[])
 {
-	bsp_init( argc, argv );
+    rint cn;
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_TOUT );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
-	RKH_FILTER_OFF_SMA( blinky );
+    bsp_init(argc, argv);
 
-	rkh_fwk_init();
-	RKH_TRC_OPEN();
+    RKH_SMA_ACTIVATE(server, svr_qsto, QSTO_SIZE, svr_stk, SVR_STK_SIZE);
+    for (cn = 0; cn < NUM_CLIENTS; ++cn)
+    {
+        RKH_SMA_ACTIVATE(CLI(cn), cli_qsto[cn], QSTO_SIZE, cli_stk[cn],
+                         CLI_STK_SIZE);
+    }
 
-	RKH_TR_FWK_OBJ( blinky );
-	RKH_TR_FWK_OBJ( &blinky->equeue );
-	RKH_TR_FWK_OBJ( &led_on );
-	RKH_TR_FWK_OBJ( &led_off );
-	RKH_TR_FWK_OBJ( &bkytim );
-	RKH_TR_FWK_SIG( TIMEOUT );
-
-	rkh_sma_activate( blinky, (const RKH_EVT_T **)qsto, QSTO_SIZE, CV(0), 0 );
-	rkh_fwk_enter();
-
-	RKH_TRC_CLOSE();
-	return 0;
+    rkh_fwk_enter();
+    RKH_TRC_CLOSE();
+    return 0;
 }
+
+/* ------------------------------ End of file ------------------------------ */
 \endcode
 
 \n <HR>
