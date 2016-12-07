@@ -14,45 +14,36 @@ using the native priority scheme among other RKH services.
 See \ref Installation section about RKH files. The application files 
 are listed below: 
 
-- \b "bsp.h":		contains the interface to the board support package and 
-					is located in the application directory.
-					See the \subpage bsp_h file.
-
-- \b "my.h": 		contains the definitions of objet structures (state 
-					machine, states, and pseudostates) and other facilities 
-					shared among the components of the application. 
+- \b "my.h": 		contains the declaration of active object structure, 
+                    signals, and other facilities shared among the components 
+                    of the application. 
 					See the \subpage my_h file.
 
-- \b "myact.h":		defines the actions to be executed.
+- \b "my.c": 		this module implements the \c my state machine, which 
+					illustrates all aspects of implementing state machines 
+					with RKH framework. Please correlate this implementation 
+					with the \c my state diagram in \ref fig1 "Figure 1".
 					Note that the \b rkhcfg.h file defines the function
 					prototype of actions. See \ref cfg section about of 
-					available options and \subpage myact_c file.
-					See the \subpage myact_h file.
+					available options.
+					See the \subpage my_c file.
+
+- \b "main.c": 		contains the \c main() function along with 
+					an example for using the RKH trace facility.
+					See the \subpage main_c file.
 
 - \b "rkhcfg.h":	adapts and configures RKH. See \ref cfg section. 
 					In the \\demo directory there are other \b rkhcfg.h files
 					already in existence and it's suggested that these 
 					are used as a reference.
 
+- \b "bsp.h":		contains the interface to the board support package and 
+					is located in the application directory.
+					See the \subpage bsp_h file.
+
 - \b "bsp.c":		contains the implementation of the board-specific 
 					functions. 
 					See the \subpage bsp_c file.
-
-- \b "main.c": 		contains the \c main() function along with 
-					an example for using the RKH trace facility.
-					See the \subpage main_c file.
-
-- \b "my.c": 		this module implements the \c my state machine, which 
-					illustrates all aspects of implementing state machines 
-					with RKH framework. Please correlate this implementation 
-					with the \c my state diagram in \ref fig1 "Figure 1".
-					See the \subpage my_c file.
-
-- \b "myact.c": 	declares each of entry, exit, transition, and guard 
-					actions to be executed.
-					Note that the \b rkhcfg.h file defines the function
-					prototype of actions. See \ref cfg section about of 
-					available options and \subpage myact_c file.
 
 \n
 Prev: \ref basics "Basics"\n
@@ -92,44 +83,52 @@ components, it is convenient to declare them in the separate header file
 \subpage my_h, which is shown below.
 
 \code
-/*
- *	my.h
+/**
+ *  \file       my.h
+ *  \brief      Example application.
  */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.12.06  LeFr  v2.4.05  Initial version
+ */
 
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
 #ifndef __MY_H__
 #define __MY_H__
 
-
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-
-
-/*
- * 	Signals
- */
-
-enum
-{
-	ZERO,		/* press the key '0' on the keyboard */
-	ONE,		/* press the key '1' on the keyboard */
-	TWO,		/* press the key '2' on the keyboard */
-	THREE,		/* press the key '3' on the keyboard */
-	FOUR,		/* press the key '4' on the keyboard */
-	FIVE,		/* press the key '5' on the keyboard */
-	SIX,		/* press the key '6' on the keyboard */
-	TERM		/* press the key escape on the keyboard */
-};
-
-
-typedef struct
-{
-	RKH_EVT_T event;
-	rui16_t ts;
-} MYEVT_T;
-
 ...
 
-#endif
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
+{
+    ZERO,       /* press the key '0' on the keyboard */
+    ONE,        /* press the key '1' on the keyboard */
+    TWO,        /* press the key '2' on the keyboard */
+    THREE,      /* press the key '3' on the keyboard */
+    FOUR,       /* press the key '4' on the keyboard */
+    FIVE,       /* press the key '5' on the keyboard */
+    SIX,        /* press the key '6' on the keyboard */
+    TERM        /* press the key escape on the keyboard */
+};
+
+/* ................................. Events ................................ */
+typedef struct
+{
+    RKH_EVT_T event;
+    rui16_t ts;
+} MyEvt;
+
+...
 \endcode
 
 <HR>
@@ -150,31 +149,32 @@ of posting dynamic and static events from the interrupt service routines
 \code
 
 	#define ESC				0x1B
-	#define kbmap( c )		( (c) - '0' )
+	#define kbmap(c)		((c) - '0')
 
-(1)	static RKH_ROM_STATIC_EVENT( eterm, TERM );
+(1)	static RKH_ROM_STATIC_EVENT(eterm, TERM);
 
 	...
 
-	static 
-	DWORD WINAPI 
-(2)	isr_kbd_thread( LPVOID par )	/* Win32 thread to emulate keyboard ISR */
+	static DWORD WINAPI 
+(2)	isr_kbd_thread(LPVOID par)	/* Win32 thread to emulate keyboard ISR */
 	{
 		int c;
 		MYEVT_T *mye;
 
-		( void )par;
-		while( running ) 
+		(void)par;
+		while (running) 
 		{
 			c = _getch();
 			
-			if( c == ESC )
-(3)				rkh_sma_post_fifo( my, &eterm );
+			if (c == ESC)
+            {
+(3)				RKH_SMA_POST_FIFO(my, &eterm, 0);
+            }
 			else
 			{
-(4)				mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
-(5)				mye->ts = ( rui16_t )rand();
-(6)				rkh_sma_post_fifo( my, ( RKH_EVT_T* )mye );
+(4)				mye = RKH_ALLOC_EVT(MYEVT_T, kbmap(c));
+(5)				mye->ts = (rui16_t)rand();
+(6)				RKH_SMA_POST_FIFO(my, RKH_EVT_CAST(mye), 0);
 			}
 		}
 		return 0;
@@ -352,38 +352,43 @@ Also, shows its implementation using the RKH framework.
 <b>Defining the state machine</b>
 \n
 \code
-	//	my.c: state machine application's module
-
-(1) RKH_SMA_CREATE( 	
-(2)						MYSM_T, 
-(4)						my, 
-(5)						0, 
-(6)						HCAL, 
-(7)						&S1, 
-(8)						my_init, 
-(9)						NULL );
+	/*	In my.c: active object implementation file */
+(1) RKH_SMA_CREATE( 
+(2)					MySm, 
+(4)					my, 
+(5)					0, 
+(6)					HCAL, 
+(7)					&S1, 
+(8)					my_init, 
+(9)					NULL);
 \endcode
 
 <b>Declaring the state machine</b>
 \n
 \code
-	//	my.h: state-machine application's header file
+	/* In my.c: active object implementation file */
+    typedef struct MySm MySm;
+    ...
 
-	typedef struct
-	{
-		RKH_SMA_T sm;	// base structure
-		rkhuint8 x;		// private member
-		rkhuint8 y;		// private member
-(10)} MYSM_T;			// SMA derived from RKH_SMA_T structure
+    struct MySm
+    {
+        RKH_SMA_T sma;  /* base structure */
+        rui8_t x;       /* private member */
+        rui8_t y;       /* private member */
+(10)};			        /* SMA derived from RKH_SMA_T structure */
+\endcode
 
-(11) RKH_SMA_DCLR( my );
+\n
+\code
+	/* In my.h: active object implementation file */
+(11)RKH_SMA_DCLR(my);
 \endcode
 
 Explanation
 
 \li (1)	Declares and allocates a SMA (a.k.a active object) derived from 
 		RKH_SMA_T.
-\li (2)	As said before, \c MYSM_T represents the SMA object struture.
+\li (2)	As said before, \c MySm represents the SMA object struture.
 \li (4)	\c my is the name of SMA. Also, it represents the top state of state 
 		diagram. 
 \li (5)	\c 0 is the SMA priority. A unique priority number must be assigned 
@@ -398,7 +403,7 @@ Explanation
 		The function prototype is defined as RKH_INIT_ACT_T. This argument is 
 		(optional), thus it could be declared as NULL.
 \li (9) not used.
-\li (10)The \c MYSM_T defines the SMA object structure \c my.
+\li (10)The \c MySm defines the SMA object structure \c my.
 		On the other hand, almost every SMA must also store other 
 		"extended-state" information. You supply this additional information 
 		by means of data members enlisted after the base structure member
@@ -447,7 +452,7 @@ Also, shows its implementation using the RKH framework.
 (5)							dummy_exit, 
 (6)							RKH_ROOT, 
 (7)							&S11, 
-(8)							&DH );
+(8)							&DH);
 \endcode
 
 <b>Declaring the composite state "S1"</b>
@@ -455,7 +460,7 @@ Also, shows its implementation using the RKH framework.
 \code
 //	my.h: state-machine's header file
 
-RKH_DCLR_COMP_STATE( S1 );
+RKH_DCLR_COMP_STATE(S1);
 \endcode
 
 Explanation
@@ -466,8 +471,8 @@ Explanation
 \li (2)	\c S1 is the state name. Represents a composite state structure.
 \li (4)	\c set_y_0() defines the entry action to be executed unconditionally 
 		upon the entry to the \c S1 state. This argument is optional, 
-		thus it could be declared as NULL. The RKH_ENT_ACT_T defines the function 
-		prototype.
+		thus it could be declared as NULL. The RKH_ENT_ACT_T defines the 
+        function prototype.
 \li (5)	\c dummy_exit() defines the exit action, which is executed upon exit 
 		from the \c S1 state. This argument is optional, thus it could be 
 		declared as NULL. The RKH_EXT_ACT_T defines the function prototype.
@@ -550,7 +555,7 @@ implementation using the RKH framework.
 (4)							NULL, 
 (5)							NULL, 
 (6)							RKH_ROOT, 
-(7)							NULL );
+(7)							NULL);
 \endcode
 
 <b>Declaring the basic state "S2"</b>
@@ -558,7 +563,7 @@ implementation using the RKH framework.
 \code
 //	my.h: state-machine's header file
 
-RKH_DCLR_BASIC_STATE( S2 );
+RKH_DCLR_BASIC_STATE(S2);
 \endcode
 
 Explanation
@@ -585,16 +590,21 @@ Explanation
 		RKH_CFG_SMA_PPRO_ARG_SMA_EN macro.
 		Example:
 \code
-static
-RKH_SIG_T
-in_keyb( RKH_EVT_T *pe )
+static RKH_SIG_T
+in_keyb(RKH_EVT_T *pe)
 {
-	if( pe->e >= 0 && pe->e <= 9 )
+	if (pe->e >= 0 && pe->e <= 9)
+    {
 		return DECIMAL;
-	if( pe->e == '.' )
+    }
+	if (pe->e == '.')
+    {
 		return POINT;
+    }
 	else
+    {
 		return pe->e;
+    }
 }
 \endcode
 
@@ -669,7 +679,7 @@ when the transition is taken. All of these parts are optional.
 The following listing shows the C2's branch table:
 
 \code
-(1)	RKH_CREATE_BRANCH_TABLE( C2 )
+(1)	RKH_CREATE_BRANCH_TABLE(C2)
 (2)		RKH_BRANCH( x1, 		dummy_act,		&S3		),
 		RKH_BRANCH( x2_or_x3, 	NULL,			&S32 	),
 (3)		RKH_BRANCH( ELSE, 		NULL,			&S2 	),
@@ -724,19 +734,16 @@ the components of the application. See the \subpage my_h file.
 The following listing shows the \subpage my_h header file, which illuminates 
 some important aspects of implementing state machines with RKH.
 
+In my.h: active object specification file.
 \code
-#ifndef __MY_H__
-#define __MY_H__
-
-
+    ...
+    /* --------------------------- Include files --------------------------- */
 (1)	#include "rkh.h"
+    ...
 
-
-   	/*
- 	 * 	Signals
- 	 */
-
-(2) enum
+    /* .............................. Signals .............................. */
+    typedef enum Signals Signals;
+(2) enum Signals
 	{
 		ZERO,		/* press the key '0' on the keyboard */
 		ONE,		/* press the key '1' on the keyboard */
@@ -751,34 +758,34 @@ some important aspects of implementing state machines with RKH.
 
 	typedef struct
 	{
-(3)		RKH_EVT_T event;	/* base structure */
-(4)		rkhuint16 ts;	/* parameter 'ts'. Private member */
-	} MYEVT_T;			/* derived from RKH_EVT_T structure */
+(3)		RKH_EVT_T event;    /* base structure */
+(4)		rkhuint16 ts;	    /* parameter 'ts'. Private member */
+	} MyEvt;			    /* derived from RKH_EVT_T structure */
+    ...
 
+    /* ...................... Declares active object ....................... */
+(5) RKH_SMA_DCLR(my);
+\endcode
 
-	typedef struct
+In my.c: active object implementation file.
+\code
+    ...
+    /* ........................... Active object ........................... */
+(6) struct MySm
 	{
 		RKH_SMA_T sma;	/* base structure */
 		rui8_t x;		/* private member */
 		rui8_t y;		/* private member */
-(5) } MYSM_T;			/* SMA derived from RKH_SMA_T structure */
+    };			        /* SMA derived from RKH_SMA_T structure */
+    ...
 
-
-/*	Declare the state machine */
-
-(6)	RKH_SMA_DCLR( my );
-
-
-/*	Defines states and pseudostates. */
-
+    /* ...................... States and pseudostates ...................... */
 (7)	RKH_DCLR_COMP_STATE		S1,S3,S11;
 	RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;
 	RKH_DCLR_COND_STATE		C1,C2;
 	RKH_DCLR_CHOICE_STATE	CH;
 	RKH_DCLR_DHIST_STATE	DH;
 	RKH_DCLR_SHIST_STATE	H;
-
-
 #endif
 \endcode
 
@@ -806,7 +813,9 @@ it is convenient to declare them in the separate header file \subpage my_h.
 		base structure. Consequently, can always safely pass a pointer 
 		to MYEVT_T to any C function that expects a pointer to #RKH_EVT_T.
 
-\li (5) The MYSM_T defines the SMA object structure \c my. On the other hand, 
+\li (5) Declares a opaque pointer to \c my SMA to be used as a global object.
+
+\li (6) The MySm defines the SMA object structure \c my. On the other hand, 
 		almost every SMA must also store other "extended-state" information. 
 		You supply this additional information by means of data members 
 		enlisted after the base structure member sm. Please note that the 
@@ -814,8 +823,6 @@ it is convenient to declare them in the separate header file \subpage my_h.
 		struct. RKH_SMA_T is not intended to be instantiated directly, but 
 		rather serves as the base structure for derivation of state machines 
 		in the application code.
-
-\li (6) Declares a opaque pointer to \c my SMA to be used as a global object.
 
 \li (7) Defines the states and pseudostates using the corresponding macros
 		listed above:
@@ -855,149 +862,177 @@ and branch selection functions.
 - \ref br_a
 
 <HR>
-\section in_a Initial action of \c my state machine
+\section in_a Initial action of "my" state machine
 
 \code
-void 
-my_init( const struct rkh_t *ph )
+void
+my_init(const RKH_SMA_T *me)
 {
-	CMY( sma )->x = CMY( sma )->y = 0;
+    MySm *realMe = ((MySm *)(me));
+
+    RKH_TR_FWK_OBJ(&S1);
+    RKH_TR_FWK_OBJ(my);
+    RKH_TR_FWK_OBJ(&my->equeue);
+    RKH_TR_FWK_OBJ(&S1);
+    RKH_TR_FWK_OBJ(&S11);
+    RKH_TR_FWK_OBJ(&S111);
+    RKH_TR_FWK_OBJ(&S112);
+    RKH_TR_FWK_OBJ(&S12);
+    RKH_TR_FWK_OBJ(&S2);
+    RKH_TR_FWK_OBJ(&S3);
+    RKH_TR_FWK_OBJ(&S31);
+    RKH_TR_FWK_OBJ(&S32);
+    RKH_TR_FWK_OBJ(&C1);
+    RKH_TR_FWK_OBJ(&C2);
+    RKH_TR_FWK_OBJ(&CH);
+    RKH_TR_FWK_OBJ(&DH);
+    RKH_TR_FWK_OBJ(&H);
+
+    RKH_TR_FWK_SIG(ZERO);
+    RKH_TR_FWK_SIG(ONE);
+    RKH_TR_FWK_SIG(TWO);
+    RKH_TR_FWK_SIG(THREE);
+    RKH_TR_FWK_SIG(FOUR);
+    RKH_TR_FWK_SIG(FIVE);
+    RKH_TR_FWK_SIG(SIX);
+    RKH_TR_FWK_SIG(TERM);
+
+    realMe->x = realMe->y = 0;
 }
 \endcode
 
 <HR>
-\section tr_a Transition actions of \c my state machine
+\section tr_a Effect actions of "my" state machine
 
 \code
 void
-set_y_2( const struct rkh_t *ph, RKH_EVT_T *pe )
+set_x1(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	CMY( sma )->y = 2;
+    (void)pe;
+    ((MySm *)(me))->x = 1;
 }
 
-
 void
-set_y_1( const struct rkh_t *ph, RKH_EVT_T *pe )
+set_y_2(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	CMY( sma )->y = 1;
+    (void)pe;
+    ((MySm *)(me))->y = 2;
 }
 
-
 void
-dummy_act( const struct rkh_t *ph, RKH_EVT_T *pe )
+set_y_1(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)sma;
-	(void)pe;
+    (void)pe;
+    ((MySm *)(me))->y = 1;
 }
 
+void
+dummy_act(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
 
 void
-show_data( const struct rkh_t *ph, RKH_EVT_T *pe )
+show_data(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)sma;
-	(void)pe;
+    (void)me;
+    (void)pe;
+}
+
+void
+terminate(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+    rkh_fwk_exit();
 }
 \endcode
 
 <HR>
-\section en_a Entry actions of \c my state machine
+\section en_a Entry actions of "my" state machine
 
 \code
 void
-set_x_1( const struct RKH_SMA_T *sma )
+set_x_1(const RKH_SMA_T *me)
 {
-	CMY( sma )->x = 1;
+    ((MySm *)(me))->x = 1;
 }
 
-
 void
-set_x_2( const struct RKH_SMA_T *sma )
+set_x_2(const RKH_SMA_T *me)
 {
-	CMY( sma )->x = 2;
+    ((MySm *)(me))->x = 2;
 }
 
-
 void
-set_x_3( const struct RKH_SMA_T *sma )
+set_x_3(const RKH_SMA_T *me)
 {
-	CMY( sma )->x = 3;
+    ((MySm *)(me))->x = 3;
 }
 
-
 void
-set_y_0( const struct RKH_SMA_T *sma )
+set_y_0(const RKH_SMA_T *me)
 {
-	CMY( sma )->y = 0;
+    ((MySm *)(me))->y = 0;
 }
 \endcode
 
 <HR>
-\section ex_a Exit actions of \c my state machine
+\section ex_a Exit actions of "my" state machine
 
 \code
-void 
-dummy_exit( const struct rkh_t *ph )
+void
+dummy_exit(const RKH_SMA_T *me)
 {
-	(void)sma;
+    (void)me;
 }
 \endcode
 
 <HR>
-\section gu_a Transition guard functions of \c my state machine
+\section gu_a Transition guard functions of "my" state machine
 
 \code
-rbool_t
-x_equal_1( const struct rkh_t *ph, RKH_EVT_T *pe )
-{
-	pd = rkh_get_data( ph );
-
-	return pd->x == 1 ? RKH_GTRUE : RKH_GFALSE;
-}
 \endcode
 
 <HR>
-\section br_a Branch selection functions of \c my state machine
+\section br_a Branch selection functions of "my" state machine
 
 \code
 rbool_t
-y0( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+y_0(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	return CMY( sma )->y == 0 ? RKH_GTRUE : RKH_GFALSE;
+    (void)pe;
+    return ((MySm *)(me))->y == 0 ? RKH_GTRUE : RKH_GFALSE;
 }
 
-
 rbool_t
-y1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+y_1(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	return CMY( sma )->y == 1 ? RKH_GTRUE : RKH_GFALSE;
+    (void)pe;
+    return ((MySm *)(me))->y == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
-
 rbool_t
-y2( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+y_2(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	return CMY( sma )->y == 2 ? RKH_GTRUE : RKH_GFALSE;
+    (void)pe;
+    return ((MySm *)(me))->y == 2 ? RKH_GTRUE : RKH_GFALSE;
 }
 
-
 rbool_t
-x1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+x1(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	return CMY( sma )->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+    (void)pe;
+    return ((MySm *)(me))->x == 1 ? RKH_GTRUE : RKH_GFALSE;
 }
 
-
 rbool_t
-x2_or_x3( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
+x2_or_x3(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
-	(void)pe;
-	return CMY( sma )->x == 2 || CMY( sma )->x == 3 ? RKH_GTRUE : RKH_GFALSE;
+    (void)pe;
+    return (((MySm *)(me))->x == 2 || ((MySm *)(me))->x == 3) ? 
+           RKH_GTRUE : RKH_GFALSE;
 }
 \endcode
 
@@ -1005,7 +1040,6 @@ x2_or_x3( const struct RKH_SMA_T *sma, RKH_EVT_T *pe )
 Prev: \ref rep_def "Defining the state machine's objects"\n
 Next: \ref rep_inc "Include files"\n\n
 */
-
 
 /**
 \page rep_inc 7. Include files
@@ -1020,19 +1054,7 @@ header files.
 
 \code
 (1) #include "rkh.h"
-
-
-/* Includes file of HSM definitions. */
-
 (2) #include "my.h"
-
-
-/* Includes file of action/guard definitions. */
-
-(3) #include "myact.h"
-
-	...
-
 \endcode
 
 \li (1) Every application C-file that uses RKH must include the \b rkh.h 
@@ -1045,8 +1067,6 @@ header files.
 		structures (state machine, states, and pseudostates), event 
 		declaration, and other facilities shared among the components of 
 		the application.
-
-\li (3) This header file declares the actions to be executed.
 
 \n
 Prev: \ref rep_act "Declaring the actions"\n
@@ -1295,7 +1315,7 @@ file is self-explanatory.
 infinite loop
 {
 	disable interrupts;
-	if( is_not_active_object_ready_to_run )
+	if(is_not_active_object_ready_to_run)
 	{
 		find the active object with highest priority;
 		enable interrupts;
@@ -1325,60 +1345,15 @@ However, the \c main() function is shown below to illustrate the RKH concept.
 
 \code
 int
-main( int argc, char *argv[] )
+main(int argc, char *argv[])
 {
-	bsp_init( argc, argv );
+    bsp_init(argc, argv);
 
-	/* set trace filters */
-	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
-	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
+    RKH_SMA_ACTIVATE(my, qsto, QSTO_SIZE, 0, 0);
+    rkh_fwk_enter();
 
-	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_NENEX );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_ENSTATE );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_EXSTATE );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SM_NTRNACT );
-	RKH_FILTER_OFF_EVENT( RKH_TE_RQ_FIFO );
-	
-	RKH_FILTER_OFF_SMA( my );
-
-	rkh_fwk_init();
-	RKH_TRC_OPEN();
-
-	/* send objects to trazer */
-	RKH_TR_FWK_AO( my );
-	RKH_TR_FWK_QUEUE( &my->equeue );
-	RKH_TR_FWK_STATE( &S1 );
-	RKH_TR_FWK_STATE( &S1 );
-	RKH_TR_FWK_STATE( &S11 );
-	RKH_TR_FWK_STATE( &S111 );
-	RKH_TR_FWK_STATE( &S112 );
-	RKH_TR_FWK_STATE( &S12 );
-	RKH_TR_FWK_STATE( &S2 );
-	RKH_TR_FWK_STATE( &S3 );
-	RKH_TR_FWK_STATE( &S31 );
-	RKH_TR_FWK_STATE( &S32 );
-	RKH_TR_FWK_PSTATE( &C1 );
-	RKH_TR_FWK_PSTATE( &C2 );
-	RKH_TR_FWK_PSTATE( &CH );
-	RKH_TR_FWK_PSTATE( &DH );
-	RKH_TR_FWK_PSTATE( &H );
-
-	/* send signals to trazer */
-	RKH_TR_FWK_SIG( ZERO );
-	RKH_TR_FWK_SIG( ONE	);
-	RKH_TR_FWK_SIG( TWO	);
-	RKH_TR_FWK_SIG( THREE );
-	RKH_TR_FWK_SIG( FOUR );
-	RKH_TR_FWK_SIG( FIVE );
-	RKH_TR_FWK_SIG( SIX	);
-	RKH_TR_FWK_SIG( TERM );
-
-	rkh_sma_activate( my, qsto, QSTO_SIZE, CV(0), 0 );
-	rkh_fwk_enter();
-
-	RKH_TRC_CLOSE();
-	return 0;
+    RKH_TRC_CLOSE();
+    return 0;
 }
 \endcode
 
