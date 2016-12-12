@@ -2,10 +2,10 @@
 \page cross_frdmk64f_rkhs FRDMK64F for K64 processor
 \image html rkh_bunner.jpg
 
-Running Shared RKH demo on Freescale <A HREF="http://www.freescale.com/
-webapp/sps/site/prod_summary.jsp?code=K64_120">K64F120</A> demostration 
-board <A HREF="http://www.freescale.com/webapp/sps/site/
-prod_summary.jsp?code=FRDM-K64F">FRDMK64F120</A>.
+Running Shared RKH demo on Freescale <A HREF="http://www.nxp.com/products/
+software-and-tools/hardware-development-tools/freedom-development-boards/
+freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:
+FRDM-K64F?tid=vanFRDM-K64F">FRDM-K64F</A>.
 This is a guide to how to setup the demo board to evaluate the RKH 
 framework. It assumes a prior knowledge on board features and development 
 environment.
