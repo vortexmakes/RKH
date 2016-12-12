@@ -25,7 +25,7 @@ This demo use native RKH scheduler (rkhs).
 
 <STRONG>Eclipse project organization</STRONG>
 
-This project use KSDK_1.2.0, you must set it´s installation path to the 
+This project use KSDK_1.2.0, you must set it's installation path to the 
 PROJECT_KSDK_PATH variable, before to build.
 \code
 \-shared_frdmk64f_ksdk\

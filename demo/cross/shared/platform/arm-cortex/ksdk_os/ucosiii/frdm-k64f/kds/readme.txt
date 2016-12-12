@@ -7,9 +7,9 @@ microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/
 k-series-performance-m4/k6x-ethernet/kinetis-k64-120-mhz-256kb-sram-
 microcontrollers-mcus-based-on-arm-cortex-m4-core:K64_120">K64F120</A> 
 demostration 
-<A HREF=http://www.nxp.com/products/software-and-tools/hardware-development
+<A HREF="http://www.nxp.com/products/software-and-tools/hardware-development
 -tools/freedom-development-boards/freedom-development-platform-for-kinetis
--k64-k63-and-k24-mcus:FRDM-K64F?tid=vanFRDM-K64Fboard <A HREF="">FRDM-K64F</A>.
+-k64-k63-and-k24-mcus:FRDM-K64F?tid=vanFRDM-K64Fboard">FRDM-K64F</A>.
 This is a guide to how to setup the demo board to evaluate the RKH 
 framework. It assumes a prior knowledge on board features and development 
 environment.
@@ -33,7 +33,7 @@ the Freescale KSDK OSA interface.
 
 <STRONG>Eclipse project organization</STRONG>
 
-This project use KSDK_1.2.0, you must set it´s installation path to the 
+This project use KSDK_1.2.0, you must set it's installation path to the 
 PROJECT_KSDK_PATH variable, before to build.
 \code
 \-shared_frdmk64f_ucosiii_ksdk\

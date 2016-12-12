@@ -1,5 +1,5 @@
 /**
-\page cross_frdm_K64F "Kinetis K64F/120Mhz ARM Cortex M-4 processor"
+\page cross_frdm_k64f_kds "Kinetis K64F/120Mhz ARM Cortex M-4 processor"
 \image html rkh_bunner.jpg
 
 Running Blinky RKH demo on Freescale ARM Cortex-M4 demostration board 

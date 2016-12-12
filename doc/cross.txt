@@ -1238,7 +1238,7 @@ simple cooperative scheduler is located in
 		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</A> </TD>
 		<TD rowspan="2"> KDS </TD>
 		<TD> uC/OS-III on KSDK </TD>
-		<TD> \ref cross_frdmk64f_ucosiii "readme" </TD>
+		<TD> --- </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -1251,7 +1251,7 @@ simple cooperative scheduler is located in
 		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/iar-kickstart-kinetis-k60-tower-system-kit:TWR-K60N512-IAR">TWR-K60N512</A> </TD>
 		<TD rowspan="2"> IAR v7.2 </TD>
 		<TD> uC/OS-III </TD>
-		<TD> \ref cross_demoqe128_s08 "readme" </TD>
+		<TD> \ref cross_frdmk64f_ucosiii "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
