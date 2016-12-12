@@ -1228,7 +1228,7 @@ simple cooperative scheduler is located in
 		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_demoqe128_s08 "readme" </TD>
+		<TD> \subpage cross_demoqe128_s08 "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -1243,7 +1243,7 @@ simple cooperative scheduler is located in
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_frdmk64f_rkhs "readme" </TD>
+		<TD> \subpage cross_frdmk64f_rkhs "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
@@ -1251,12 +1251,12 @@ simple cooperative scheduler is located in
 		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/iar-kickstart-kinetis-k60-tower-system-kit:TWR-K60N512-IAR">TWR-K60N512</A> </TD>
 		<TD rowspan="2"> IAR v7.2 </TD>
 		<TD> uC/OS-III </TD>
-		<TD> \ref cross_frdmk64f_ucosiii "readme" </TD>
+		<TD> \subpage cross_frdmk64f_ucosiii "readme" </TD>
 	</TR>
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD> Native cooperative scheduler </TD>
-		<TD> \ref cross_twr_K60_shared "readme" </TD>
+		<TD> \subpage cross_twr_K60_shared "readme" </TD>
 	</TR>
 
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
