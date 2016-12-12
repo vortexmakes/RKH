@@ -823,7 +823,11 @@ INPUT                  = ../source \
                          ../tests/sm/test_runners/test_smPolymorphism_runner.c \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/twr_k60/cw_v10/readme.txt \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/twr_k60/iar_v7_2/readme.txt \
-                         ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/frdm-k64f/kds/readme.txt
+                         ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/frdm-k64f/kds/readme.txt \
+                         ../demo/cross/shared/platform/arm-cortex/ksdk_os/ucosiii/frdm-k64f/kds/readme.txt \
+                         ../demo/cross/shared/platform/arm-cortex/rkhs/ksdk_bm/frdmk64f/kds/readme.txt \
+                         ../demo/cross/shared/platform/arm-cortex/rkhs/arm_cm4f/twr_k60/iar_v7_2/readme.txt \
+                         ../demo/cross/shared/platform/ucos/v3.03.01/board/arm_cm4f/twr-k60n512/readme.txt
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
