@@ -1,5 +1,5 @@
 /**
-\page cross_frdmk64f FRDMK64F for K64 processor
+\page cross_frdmk64f_rkhs FRDMK64F for K64 processor
 \image html rkh_bunner.jpg
 
 Running Shared RKH demo on Freescale <A HREF="http://www.freescale.com/
@@ -33,6 +33,7 @@ PROJECT_KSDK_PATH variable, before to build.
 	+- rkh			- RKH source files.
 	+- SDK			- KSDK platform library for FRDMK64F.
 	+- shared		- Shared demo aplication.
+\endcode
 
 <STRONG>Shared demo BSP</STRONG>
 	
@@ -43,7 +44,7 @@ PROJECT_KSDK_PATH variable, before to build.
 - Tracing info through SDA Virtual COM interface at 115200 8N1.
 - Debugging info through UART3 at 115200 8N1 on J1 pins: 2(RXD), 4(TXD).
 - FRDMK64F is compatible with R3 shields, <A HREF="http://shieldlist.org/
-cutedigi/rs232"> CuteDigi RS232 Shield can be used to adapt to RS232 levels
+cutedigi/rs232"> CuteDigi RS232 Shield </A> can be used to adapt to RS232 levels
 the debugging info.
 
 */

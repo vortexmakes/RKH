@@ -1,5 +1,5 @@
 /**
-\page cross_twr_K60 "Kinetis K60/100Mhz ARM Cortex M-4F processor"
+\page cross_twr_K60_shared "Kinetis K60/100Mhz ARM Cortex M-4F processor"
 \image html rkh_bunner.jpg
 
 Running Blinky RKH demo on Freescale ARM Cortex-M4F demostration board 

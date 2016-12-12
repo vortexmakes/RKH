@@ -307,11 +307,11 @@ simple cooperative scheduler is located in
 
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD rowspan="2"> Freescale </TD>
-		<TD rowspan="2"> <A HREF="http://www.freescale.com/webapp/sps/site/
-		taxonomy.jsp?code=K60_ETHERNET_CRYPTO_MCU&
-		tid=mKOvp">Kinetis K60</A> </TD>
-		<TD rowspan="2"> <A HREF="http://www.freescale.com/webapp/sps/site/
-		prod_summary.jsp?code=TWR-K60D100M">TWR-K60D100M</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/
+        arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k60-100-mhz-mixed-signal-integration-microcontrollers-mcus-based-on-arm-cortex-m4-core:K60_100">Kinetis K60</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/
+        arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/
+        kinetis-k60-100-mhz-mcu-tower-system-module:TWR-K60D100M">TWR-K60D100M</A> </TD>
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \subpage cross_twr_K60 "readme" </TD>
@@ -1219,9 +1219,9 @@ simple cooperative scheduler is located in
 		<TH><B> Notes </B></TH> 
 	</TR>
 
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD> Freescale </TD>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD> S08 </TD>
+		<TD> Freescale </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/
 		site/prod_summary.jsp?code=S08QE">S08QE128</A> </TD>
 		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
@@ -1229,6 +1229,34 @@ simple cooperative scheduler is located in
 		<TD> Codewarrior v10.x </TD>
 		<TD> Native cooperative scheduler </TD>
 		<TD> \ref cross_demoqe128_s08 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD rowspan="4"> ARM-Cortex </TD>
+		<TD rowspan="4"> Freescale </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k64-120-mhz-256kb-sram-microcontrollers-mcus-based-on-arm-cortex-m4-core:K64_120">Kinetis K64</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</A> </TD>
+		<TD rowspan="2"> KDS </TD>
+		<TD> uC/OS-III on KSDK </TD>
+		<TD> \ref cross_frdmk64f_ucosiii "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Native cooperative scheduler </TD>
+		<TD> \ref cross_frdmk64f_rkhs "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k60-100-mhz-mixed-signal-integration-microcontrollers-mcus-based-on-arm-cortex-m4-core:K60_100">Kinetis K60</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/iar-kickstart-kinetis-k60-tower-system-kit:TWR-K60N512-IAR">TWR-K60N512</A> </TD>
+		<TD rowspan="2"> IAR v7.2 </TD>
+		<TD> uC/OS-III </TD>
+		<TD> \ref cross_demoqe128_s08 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Native cooperative scheduler </TD>
+		<TD> \ref cross_twr_K60_shared "readme" </TD>
 	</TR>
 
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
