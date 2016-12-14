@@ -3,6 +3,22 @@
 
 \tableofcontents
 
+\section rkhVer_2_4_6 Version 2.4.6
+\releasedate 2016-12-14
+
+\new
+- Improved doc files (doxygen) and comments.
+- Improved template of C implementation file.
+- Deleted template_aoAct.c/.h
+- Changed the template files for active object definition.
+- Rearranged the blinky.c and blinky.h files.
+
+\bugfix
+- After executing the SM's initial action the trace event RKH_TE_SM_INIT is 
+  sent to trazer, to avoid trace events without symbols which are frequently 
+  sent within initial action.
+
+<HR>
 \section rkhVer_2_4_5 Version 2.4.5
 \releasedate 2016-04-25
 

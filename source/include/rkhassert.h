@@ -31,14 +31,26 @@
 
 /**
  *  \file       rkhassert.h
- *  \brief      Assert definitions.
+ *  \brief
+ *	The assertions (\c RKH_ASSERT() macro) are used to check expressions
+ *	that ought to be true as long as the program is running correctly. It
+ *	is a convenient way to insert sanity checks.
+ *
+ *	A number of philosophies can be employed when deciding where to use an
+ *	\c RKH_ASSERT() macro. Broadly speaking, the assertions only serve the
+ *	purposes of catching bugs and helping documentation. Helping to
+ *	document the code means that the statements inside the assertion tell
+ *	the reader something he might not already know.
  *
  *  \ingroup    apiAssert
  *
  *  \addtogroup api
  *  @{
  *  \addtogroup apiAssert Assertions
- *  @{@}
+ *  @{
+ *  \brief \copybrief rkhassert.h
+ *  \copydetails rkhassert.h
+ *  @}
  *  @}
  */
 
@@ -266,6 +278,7 @@ extern "C" {
  *	\endcode
  *
  *	\ingroup apiBSPMisc
+ *  \ingroup apiAssert
  */
 void rkh_assert(const char *const file, int line);
 #endif

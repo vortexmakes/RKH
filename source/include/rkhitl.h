@@ -97,9 +97,9 @@ extern "C" {
  *	denoted the minor revision, and the number C (2-digit) indicated the
  *	release number. For example, the code for 2.2.04 is 0x2204.
  *
- *  \releasedate 04/25/2016
+ *  \releasedate 12/14/2016
  */
-#define RKH_VERSION_CODE            0x2405u
+#define RKH_VERSION_CODE            0x2406u
 
 /**
  *  \brief

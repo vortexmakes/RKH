@@ -750,7 +750,6 @@ RKH_MP_T?</EM>
 
 \n <HR>
 \section hk Hook functions
-
 A RKH port cannot and should not define all the functions that it calls, 
 because this would render the port too inflexible. The functions that RKH 
 calls but doesn't actually implement are referred to as callback or hook 
@@ -758,8 +757,9 @@ functions. All these functions in RKH are easily indentifiable by the
 \b "_hook_" key word used in the function name, rkh_hook_dispatch(), 
 rkh_hook_signal(), rkh_hook_timeout(), rkh_hook_start(), rkh_hook_exit(), 
 and rkh_hook_idle(). 
-Please, see RKH_CFG_HOOK_DISPATCH_EN, RKH_CFG_HOOK_SIGNAL_EN, RKH_CFG_HOOK_TIMEOUT_EN, 
-RKH_CFG_HOOK_START_EN, and RKH_CFG_HOOK_EXIT_EN options from the \c rkhcfg.h.\n
+Please, see RKH_CFG_HOOK_DISPATCH_EN, RKH_CFG_HOOK_SIGNAL_EN, 
+RKH_CFG_HOOK_TIMEOUT_EN, RKH_CFG_HOOK_START_EN, and RKH_CFG_HOOK_EXIT_EN 
+options from the \c rkhcfg.h.\n
 
 \code void rkh_hook_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e )\endcode
 \copydetails RKH_CFG_HOOK_DISPATCH_EN

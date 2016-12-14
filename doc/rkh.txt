@@ -6,15 +6,18 @@
 /**
 
 \defgroup config Configuration
-\brief RKH user configurations
+    \brief RKH user configurations
+    \details See the \ref cfg section for more information. 
 \defgroup trc Trace
-\brief Sophisticated tracing mechanism in run-time
+    \brief Sophisticated tracing mechanism in run-time
+    \details See the \ref dbg section for more information. 
 \defgroup sch Native scheduler
-\brief Native, cooperative, simple and non-preemtive scheduler
+    \brief Native, cooperative, simple and non-preemtive scheduler
+    \details See the \ref running section for more information. 
 \defgroup test Test
-\brief Unit tests
+    \brief Unit tests
 \defgroup api API Reference Manual
-\brief Provides a reference to RKH services
+    \brief Provides a reference to RKH services
 
 \anchor main_page
 \mainpage RKH Reference Manual
