@@ -856,7 +856,7 @@ in the board support package (\c bsp.c).
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
+ * e-mail:			francuccilea@gmail.com
  */
 
 /*
@@ -1073,7 +1073,7 @@ typedef signed int		rint;
  *
  * Contact information:
  * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			lf@vxtsolutions.com.ar
+ * e-mail:			francuccilea@gmail.com
  */
 
 /*

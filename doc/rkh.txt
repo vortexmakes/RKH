@@ -104,6 +104,11 @@ platform-independent modules which is shown in the following figure.
 - Support a easy way to use \link RKH_EVT_T events with arguments\endlink.
 - Support systems-friendly \link RKH_ASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
 
+<STRONG> Structure </STRONG>
+
+As shown in the diagram below, the RKH framework has a layered structure.
+
+\image html rkh_structure.png
 
 <HR>
 \section Purpose Purpose and inspiration
@@ -175,7 +180,7 @@ See \ref contact section.</em>
 \section contact Contact information
 
 RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
-\n e-mail:		lf@vxtsolutions.com.ar
+\n e-mail:		francuccilea@gmail.com
 
 <HR>
 \section ack Acknowlegments
