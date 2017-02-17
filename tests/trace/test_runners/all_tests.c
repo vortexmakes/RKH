@@ -48,10 +48,10 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include <stdio.h>
 
 #include "rkh.h"
 #include "unity_fixture.h"
-#include "unitrazer.h"
 #include "bsp.h"
 
 
@@ -78,9 +78,7 @@ main(int argc, char *argv[])
 {
 	bsp_init(argc, argv);
 	UnityMain(argc, argv, runAllTests);
-
-	for(;;)
-        ;
+    getchar();
 }
 
 /* ------------------------------ End of file ------------------------------ */

@@ -158,7 +158,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_CFG_HOOK_START_EN			RKH_ENABLED
+#define RKH_CFG_HOOK_START_EN			RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_HOOK_EXIT_EN is set to 1, RKH will invoke the exit 
@@ -168,7 +168,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_CFG_HOOK_EXIT_EN			RKH_ENABLED
+#define RKH_CFG_HOOK_EXIT_EN			RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_HOOK_TIMETICK_EN is set to 1, RKH will invoke the time 
@@ -183,7 +183,7 @@
  *	When this is set the application must provide the hook function. 
  */
 
-#define RKH_CFG_HOOK_TIMETICK_EN		RKH_ENABLED
+#define RKH_CFG_HOOK_TIMETICK_EN		RKH_DISABLED
 
 /**
  *  If the #RKH_CFG_HOOK_PUT_TRCEVT_EN is set to 1, RKH will invoke the
