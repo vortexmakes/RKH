@@ -55,11 +55,9 @@ const char *rkh_get_port_version(void);
 const char *rkh_get_port_desc(void);
 
 /**
- *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) has
- *its own
- *	thread of execution.
+ *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) 
+ *	has its own thread of execution.
  */
-
 #define RKH_CFGPORT_SMA_THREAD_EN           RKH_ENABLED
 
 /**
@@ -67,7 +65,6 @@ const char *rkh_get_port_desc(void);
  *	are set to 1, each SMA (active object) has its own thread of execution
  *	and its own object data.
  */
-
 #define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_ENABLED
 
 /**
@@ -77,7 +74,6 @@ const char *rkh_get_port_desc(void);
  *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
  *  RKH_SMA_UNREADY(), and assume the native priority scheme.
  */
-
 #define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_DISABLED
 
 /**
@@ -86,7 +82,6 @@ const char *rkh_get_port_desc(void);
  *  implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(), and
  *  rkh_sma_get() functions.
  */
-
 #define RKH_CFGPORT_NATIVE_EQUEUE_EN        RKH_ENABLED
 
 /**
@@ -97,7 +92,6 @@ const char *rkh_get_port_desc(void);
  *  automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
  *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
  */
-
 #define RKH_CFGPORT_NATIVE_DYN_EVT_EN       RKH_ENABLED
 
 /**
@@ -105,28 +99,24 @@ const char *rkh_get_port_desc(void);
  *	allows to be invoked from several threads of executions. Enable this
  *	only if the application is based on a multi-thread architecture.
  */
-
 #define RKH_CFGPORT_REENTRANT_EN            RKH_ENABLED
 
 /**
  *  Specify the size of void pointer. The valid values [in bits] are
  *  16 or 32. Default is 32. See RKH_TRC_SYM() macro.
  */
-
 #define RKH_CFGPORT_TRC_SIZEOF_PTR          32u
 
 /**
  *  Specify the size of function pointer. The valid values [in bits] are
  *  16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
  */
-
 #define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR      32u
 
 /**
  *  Specify the number of bytes (size) used by the trace record timestamp.
  *  The valid values [in bits] are 8, 16 or 32. Default is 16.
  */
-
 #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP       32u
 
 /**
@@ -134,7 +124,6 @@ const char *rkh_get_port_desc(void);
  *  macro invokes the rkh_sma_activate() function ignoring the external
  *  event queue storage argument, \c qs.
  */
-
 #define RKH_CFGPORT_SMA_QSTO_EN             RKH_ENABLED
 
 /**
@@ -142,14 +131,12 @@ const char *rkh_get_port_desc(void);
  *  macro invokes the rkh_sma_activate() function ignoring the thread's
  *  stack related arguments, \c stks and \c stksize.
  */
-
 #define RKH_CFGPORT_SMA_STK_EN              RKH_ENABLED
 
 /*
  *  Declaring an object RKHROM announces that its value will
  *  not be changed and it will be stored in ROM.
  */
-
 #define RKHROM                              const
 
 #define RKH_DIS_INTERRUPT()
