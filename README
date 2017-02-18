@@ -8,7 +8,6 @@ techniques are used to give an abstract description of the dynamic
 behavior of a system in a substantial manner.
 
 ------------------------------------------------------------------------------
-
 The main features of RKH
 
 - State machines representation is based on state tables.
@@ -19,7 +18,7 @@ The main features of RKH
 - Easy to integrate with any event queuing and dispatching mechanism.
 - Useful in embedded systems.
 - The most of the RKH implementation is independent of any particular CPU, 
-operating system, or compiler.
+  operating system, or compiler.
 - Flexible and user-configurable code generation.
 - Very small footprint.
 - Include a dispatching event mechanism based on active object's priority.
@@ -44,7 +43,6 @@ operating system, or compiler.
 require, and ensure.
 
 ------------------------------------------------------------------------------
-
 Purpose and inspiration
 
 For many years, I had been used the traditional state-machine concepts 
@@ -62,7 +60,6 @@ implementation has been designed from the ground up to be used in 8-bits
 platforms but can be easily adapted to 16 or 32-bits platforms.
 
 ------------------------------------------------------------------------------
-
 Other implementations
 
 Open-source frameworks that support Statecharts.
@@ -71,29 +68,35 @@ Quantum Leap - http://www.state-machine.com/
 Intelliwizard - http://www.intelliwizard.com/ 
 
 ------------------------------------------------------------------------------
-
 Licensing
 
 Copyright (C) 2010 Leandro Francucci. All rights reserved.
 
-RKH is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+RKH is free software: you can redistribute it and/or modify it under the terms 
+of the GNU General Public License as published by the Free Software 
+Foundation, either version 3 of the License, or (at your option) any later 
+version.
 
-RKH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR 
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with RKH package. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with 
+RKH package. If not, see <http://www.gnu.org/licenses/>.
 
-(*) Observe that, the GPLv3 can be used for research & development and educational purposes (academic purposes). 
-(**) When the source code of your application should not be published under the GNU GPLv3 license (closed source code), please, contact contact me. See Contact information section.
+(*)  Observe that, the GPLv3 can be used for research & development and 
+     educational purposes (academic purposes). 
+(**) When the source code of your application should not be published under 
+     the GNU GPLv3 license (closed source code), please, contact contact me. 
+     See Contact information section.
 
 ------------------------------------------------------------------------------
-
 Contact information:
 
 RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
 e-mail: francuccilea@gmail.com
 
 ------------------------------------------------------------------------------
-
 RKH Release notes
 
 Changes between V2.4.5 and V2.4.6 released 12/14/2016
