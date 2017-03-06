@@ -98,39 +98,14 @@
     <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
-    <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\test_trace_rec.c" />
     <ClCompile Include="..\bsp.c" />
     <ClCompile Include="..\rkhassert_stub.c" />
     <ClCompile Include="..\..\..\..\test_trace.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_trace_runner.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkh.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhassert.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhdef.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhevt.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhitl.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhmp.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhplat.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrdy.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrq.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhs.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtim.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtrc.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkhport.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkht.h" />
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h" />
-    <ClInclude Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.h" />
-    <ClInclude Include="..\..\..\..\..\unity\unity.h" />
-    <ClInclude Include="..\..\..\..\..\unity\unity_config.h" />
-    <ClInclude Include="..\..\..\..\..\unity\unity_internals.h" />
-    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h" />
-    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_internals.h" />
-    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

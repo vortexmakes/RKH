@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\source\rkh.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bsp.c">
+      <Filter>rkh\bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhmp.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhrq.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhs.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhsma.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhdyn.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_trace.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_trace_runner.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\unity\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\rkhassert_stub.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_trace_rec.c">
+      <Filter>test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="rkh">
+      <UniqueIdentifier>{e260d468-def4-4910-9b48-5afbd246b8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rkh\bsp">
+      <UniqueIdentifier>{f1abef11-9509-46bb-9ea6-8b0fb30d66dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{15f2147f-34d1-42e9-9bf7-a4ac79fce62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\stub">
+      <UniqueIdentifier>{60cb9a32-0678-4c04-8b3d-5b8fddd36bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\tool">
+      <UniqueIdentifier>{07df18fa-ca3c-4c1d-93f1-e9fb5ff95f3b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

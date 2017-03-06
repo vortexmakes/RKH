@@ -98,4 +98,33 @@ TEST_GROUP_RUNNER(trace)
 	RUN_TEST_CASE(trace, outOfBoundsProducesRuntimeErrorSymFil);
 }
 
+TEST_GROUP_RUNNER(trace_stream)
+{
+	RUN_TEST_CASE(trace_stream, FlagAfterInit);
+	RUN_TEST_CASE(trace_stream, NotFullAfterInit);
+	RUN_TEST_CASE(trace_stream, NotEmptyThenEmpty);
+	RUN_TEST_CASE(trace_stream, GetPutOneValue);
+	RUN_TEST_CASE(trace_stream, GetPutAFew);
+	RUN_TEST_CASE(trace_stream, IsFull);
+	RUN_TEST_CASE(trace_stream, EmptyToFullToEmpty);
+	RUN_TEST_CASE(trace_stream, WrapAround);
+	RUN_TEST_CASE(trace_stream, GetFromEmptyReturnsNull);
+	RUN_TEST_CASE(trace_stream, GetContinuousBlock);
+}
+
+TEST_GROUP_RUNNER(trace_args)
+{
+	RUN_TEST_CASE(trace_args, InsertRecordHeader);
+	RUN_TEST_CASE(trace_args, InsertRecordEnd);
+	RUN_TEST_CASE(trace_args, InsertU8Value);
+	RUN_TEST_CASE(trace_args, InsertEscapedValues);
+	RUN_TEST_CASE(trace_args, InsertU16Value);
+	RUN_TEST_CASE(trace_args, InsertU32Value);
+	RUN_TEST_CASE(trace_args, InsertString);
+	RUN_TEST_CASE(trace_args, InsertObject);
+	RUN_TEST_CASE(trace_args, InsertSignal);
+	RUN_TEST_CASE(trace_args, InsertState);
+	RUN_TEST_CASE(trace_args, InsertRecord);
+}
+
 /* ------------------------------ End of file ------------------------------ */

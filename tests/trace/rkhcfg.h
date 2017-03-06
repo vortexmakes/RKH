@@ -508,7 +508,7 @@
  *	records related to the state machine applications.
  */
 
-#define RKH_CFG_TRC_SMA_EN				RKH_DISABLED
+#define RKH_CFG_TRC_SMA_EN				RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_TRC_TMR_EN is set to 1 then RKH will include all trace 
@@ -522,7 +522,7 @@
  *	records related to the state machine (hierarchical and "flat").
  */
 
-#define RKH_CFG_TRC_SM_EN				RKH_DISABLED
+#define RKH_CFG_TRC_SM_EN				RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_TRC_FWK_EN is set to 1 then RKH will include all trace 

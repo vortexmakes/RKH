@@ -64,6 +64,57 @@
  */
 RKH_MODULE_NAME(rkhtrc)
 
+/**
+ *  \brief
+ *  Inserts the previously calculated checksum as:
+ *  checksum = 0 - sum mod-256 -> ~(sum mod-256) + 1.
+ */
+#if RKH_CFG_TRC_CHK_EN == RKH_ENABLED
+    #define RKH_TRC_CHK() \
+        chk = (rui8_t)(~chk + 1); \
+        rkh_trc_u8(chk)
+#else
+    #define RKH_TRC_CHK()
+#endif
+
+/**
+ *  \brief
+ *  Inserts directly into the trace stream the flag byte in a raw (without
+ *  escaped sequence) manner.
+ */
+
+#define RKH_TRC_FLG()       RKH_TRC_U8_RAW(RKH_FLG)
+
+/**
+ *  \brief
+ *  Insert the sequence number byte.
+ */
+#if RKH_CFG_TRC_NSEQ_EN == RKH_ENABLED
+    #define RKH_TRC_NSEQ() \
+        RKH_TRC_UI8(nseq); \
+        ++nseq
+#else
+    #define RKH_TRC_NSEQ()
+#endif
+
+#if RKH_CFG_TRC_TSTAMP_EN == RKH_ENABLED
+    #if RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 8
+        #define RKH_TRC_TSTAMP() \
+            RKH_TRC_UI8(rkh_trc_getts())
+    #elif RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 16
+        #define RKH_TRC_TSTAMP() \
+            RKH_TRC_UI16(rkh_trc_getts())
+    #elif RKH_CFGPORT_TRC_SIZEOF_TSTAMP == 32
+        #define RKH_TRC_TSTAMP() \
+            RKH_TRC_UI32(rkh_trc_getts())
+    #else
+        #define RKH_TRC_TSTAMP() \
+            RKH_TRC_UI16(rkh_trc_getts())
+    #endif
+#else
+    #define RKH_TRC_TSTAMP()
+#endif
+
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -408,7 +459,10 @@ rkh_trc_symFil(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot, rui8_t mode)
 void
 rkh_trc_begin(RKH_TE_ID_T eid)
 {
-    RKH_TRC_HDR(eid);
+    chk = 0;            /* Initialize the trace record checksum */
+    RKH_TRC_TE_ID(eid); /* Insert the event ID */
+    RKH_TRC_NSEQ();     /* Insert the sequence number */
+    RKH_TRC_TSTAMP();   /* Insert the timestamp */
 }
 
 void
