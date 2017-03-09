@@ -326,6 +326,12 @@ rkh_sma_get( RKH_SMA_T *sma )
 						 &e, 					   /* received event message */
 						 OSA_WAIT_FOREVER);			    /* wait indefinitely */
     RKH_ENSURE(status == kStatus_OSA_Success);
-	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
+              /* To get the number of message currently in the queue and its */
+          /* minimum number of free elements is not a reliable manner in OSA */
+     /* Because the variables are obtained outside critical section could be */
+                                                         /* a race condition */
+          /* Morever, OSA abstraction layer not implements the water mark in */
+                                                                /* the queue */
+	RKH_TR_SMA_GET(sma, e, e->pool, e->nref, &sma->equeue.number, 0);
 	return e;
 }

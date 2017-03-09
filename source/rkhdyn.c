@@ -213,12 +213,13 @@ rkh_sma_get(RKH_SMA_T *sma)
     RKH_EVT_T *e;
     RKH_SR_ALLOC();
 
-    /*RKH_ENTER_CRITICAL_();*/
     e = rkh_rq_get(&sma->equeue);
-    /*RKH_EXIT_CRITICAL_();*/
 
     RKH_ASSERT(e != (RKH_EVT_T *)0);
-    RKH_TR_SMA_GET(sma, e, e->pool, e->nref);
+     /* Because the variables are obtained outside critical section could be */
+                                                         /* a race condition */
+    RKH_TR_SMA_GET(sma, e, e->pool, e->nref, 
+                   rkh_rq_get_num(&sma->equeue), rkh_rq_get_lwm(&sma->equeue));
     return e;
 }
 #endif

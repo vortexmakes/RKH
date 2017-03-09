@@ -178,7 +178,7 @@ rkh_sma_activate( RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
 	}
 
 	SetThreadPriority( sma->thread, priority );
-	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma) );
+	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma), qsize );
 }
 
 

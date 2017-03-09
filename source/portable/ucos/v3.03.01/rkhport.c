@@ -258,6 +258,13 @@ rkh_sma_get( RKH_SMA_T *sma )
 				(CPU_TS *)0,				/* no time-stamp */
 				&err);						/* received error code */
     RKH_ASSERT(err == OS_ERR_NONE);
-	RKH_TR_SMA_GET( sma, e, e->pool, e->nref );
+    /* To get the number of message currently in the queue and its */
+    /* minimum number of free elements is not a reliable manner in uC/OS */
+    /* Because the variables are obtained outside critical section could be */
+    /* a race condition */
+	RKH_TR_SMA_GET(sma, e, e->pool, e->nref, 
+                   &sma->equeue.MsgQ.NbrEntries,
+                   &sma->equeue.MsgQ.NbrEntriesSize - 
+                   &sma->equeue.MsgQ.NbrEntriesMax);
 	return e;
 }

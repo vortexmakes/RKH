@@ -125,6 +125,9 @@ TEST_GROUP_RUNNER(trace_args)
 	RUN_TEST_CASE(trace_args, InsertSignal);
 	RUN_TEST_CASE(trace_args, InsertState);
 	RUN_TEST_CASE(trace_args, InsertRecord);
+	RUN_TEST_CASE(trace_args, InsertFwkEpoolRecord);
+	RUN_TEST_CASE(trace_args, InsertFwkActorRecord);
+	RUN_TEST_CASE(trace_args, InsertSmaActivateRecord);
 }
 
 /* ------------------------------ End of file ------------------------------ */

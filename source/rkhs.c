@@ -155,7 +155,7 @@ rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs, RKH_RQNE_T qsize,
     rkh_rq_init(&sma->equeue, (const void * *)qs, qsize, sma);
     rkh_sma_register(sma);
     rkh_sm_init((RKH_SM_T *)sma);
-    RKH_TR_SMA_ACT(sma, RKH_GET_PRIO(sma));
+    RKH_TR_SMA_ACT(sma, RKH_GET_PRIO(sma), qsize);
 }
 
 void

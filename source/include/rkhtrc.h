@@ -859,7 +859,9 @@
 #define RKH_TE_FWK_EPOOL        (RKH_TE_FWK_TIMER + 1)
 /** \copybrief RKH_TR_FWK_QUEUE */
 #define RKH_TE_FWK_QUEUE        (RKH_TE_FWK_EPOOL + 1)
-#define RKH_FWK_END             RKH_TE_FWK_QUEUE
+/** \copybrief RKH_TR_FWK_ACTOR */
+#define RKH_TE_FWK_ACTOR        (RKH_TE_FWK_QUEUE + 1)
+#define RKH_FWK_END             RKH_TE_FWK_ACTOR
 
 /* --- User events (USR group) --------------------------------------------- */
 #define RKH_TE_USER             RKH_USR_START
@@ -1774,14 +1776,16 @@
              *  \trcGroup       RKH_TG_SMA
              *  \trcEvent       RKH_TE_SMA_ACT
              *
-             *  \param[in] actObj_   Active object
-             *  \param[in] actObjPrio_    Active object priority
+             *  \param[in] actObj_          Active object
+             *  \param[in] actObjPrio_      Active object priority
+             *  \param[in] actObjQueSize_   Size of active object queue
              */
-            #define RKH_TR_SMA_ACT(actObj_, actObjPrio_) \
+            #define RKH_TR_SMA_ACT(actObj_, actObjPrio_, actObjQueSize_) \
                 RKH_TRC_BEGIN_WOSIG(RKH_TE_SMA_ACT, \
                                     RKH_SMA_ACCESS_CONST(actObj_, prio)) \
                     RKH_TRC_SYM(actObj_); \
                     RKH_TRC_UI8(actObjPrio_); \
+                    RKH_TRC_UI8(actObjQueSize_); \
                 RKH_TRC_END()
 
             /**
@@ -1810,18 +1814,26 @@
              *  \trcGroup       RKH_TG_SMA
              *  \trcEvent       RKH_TE_SMA_GET
              *
-             *  \param[in] actObj_   Get an event from the active object queue
-             *  \param[in] evt_   Event signal
-             *  \param[in] poolID_  Pool ID (for dynamic events) 
-             *  \param[in] refCntr_   Reference count (for dynamic events)
+             *  \param[in] actObj_      Get an event from the active object 
+             *                          queue
+             *  \param[in] evt_         Event signal
+             *  \param[in] poolID_      Pool ID (for dynamic events) 
+             *  \param[in] refCntr_     Reference count (for dynamic events)
+             *  \param[in] nElem_       Number of elements currently in the 
+             *                          queue
+             *  \param[in] nMin_        Minimum number of free elements ever 
+             *                          in this queue
              */
-            #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_) \
+            #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_, \
+                                   nElem_, nMin_) \
                 RKH_TRC_BEGIN(RKH_TE_SMA_GET, \
                               RKH_SMA_ACCESS_CONST(actObj_, prio), (evt_)->e) \
                     RKH_TRC_SYM(actObj_); \
                     RKH_TRC_SIG((evt_)->e); \
                     RKH_TRC_UI8(poolID_); \
                     RKH_TRC_UI8(refCntr_); \
+                    RKH_TRC_NE(nElem_); \
+                    RKH_TRC_NE(nMin_); \
                 RKH_TRC_END()
 
             /**
@@ -1913,8 +1925,9 @@
             /** @} doxygen end group definition */
             /** @} doxygen end group definition */
         #else
-            #define RKH_TR_SMA_ACT(actObj_, actObjPrio_)    (void)0
-            #define RKH_TR_SMA_TERM(actObj_, actObjPrio_)   (void)0
+            #define RKH_TR_SMA_ACT(actObj_, actObjPrio_, actObjQueSize_) \
+                (void)0
+            #define RKH_TR_SMA_TERM(actObj_, actObjPrio_)               (void)0
             #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_)    (void)0
             #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
                 (void)0
@@ -3148,36 +3161,33 @@
              *  \trcGroup       RKH_TG_FWK
              *  \trcEvent       RKH_TE_FWK_OBJ
              *
-             *  \param[in] evtPoolObj_    Event pool object address
+             *  \param[in] poolId_   Event pool ID (index of event pool list)
+             *  \param[in] poolName_ String terminated in '\\0'.
              *
              *  e.g.\n
-             *  Associates the address of the event pool object, in memory
-             *  with its symbolic name.
+             *  Associates the ID of the event pool, with a symbolic name.
              *
              *  \code
-             *  ...
-             *  static rui8_t ep0_sto[ SIZEOF_EP0STO ],
-             *                  ep1_sto[ SIZEOF_EP1STO ];
-             *
              *	...
-             *  RKH_TR_FWK_EPOOL(&ep0_sto);
-             *  RKH_TR_FWK_EPOOL(&ep1_sto);
-             *
              *	rkh_fwk_epool_register(ep0_sto,	SIZEOF_EP0STO,
-             *										SIZEOF_EP0_BLOCK);
-             *	rkh_fwk_epool_register(ep1_sto,    SIZEOF_EP1STO,
-             *										SIZEOF_EP1_BLOCK);
+             *						   SIZEOF_EP0_BLOCK);
+             *	rkh_fwk_epool_register(ep1_sto, SIZEOF_EP1STO,
+             *						   SIZEOF_EP1_BLOCK);
+             *	rkh_fwk_epool_register(ep2_sto, SIZEOF_EP2STO,
+             *						   SIZEOF_EP2_BLOCK);
+             *
+             *  RKH_TR_FWK_EPOOL(0, "ep0");
+             *  RKH_TR_FWK_EPOOL(1, "ep1");
+             *  RKH_TR_FWK_EPOOL(2, "ep2");
              *	...
              *  \endcode
              */
-            #define RKH_TR_FWK_EPOOL(evtPoolObj_) \
-                do \
-                { \
-                    static RKHROM char __epo_n[] = #evtPoolObj_; \
-                    rkh_trc_obj(RKH_TE_FWK_EPOOL, (rui8_t *)evtPoolObj_, \
-                                __epo_n); \
-                } \
-                while (0)
+            #define RKH_TR_FWK_EPOOL(poolId_, poolName_) \
+                RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_EPOOL) \
+                    RKH_TRC_UI8(poolId_); \
+                    RKH_TRC_STR(poolName_); \
+                RKH_TRC_END_WOFIL() \
+                RKH_TRC_FLUSH();
 
             /* --- Symbol entry table for queue objects -------------------- */
 
@@ -3216,6 +3226,38 @@
                 } \
                 while (0)
 
+            /**
+             *  \brief
+             *	Entry symbol table for actor object.
+             *
+             *  \description    Entry symbol table for actor object
+             *  \trcGroup       RKH_TG_FWK
+             *  \trcEvent       RKH_TE_FWK_OBJ
+             *
+             *  \param[in] actorObj_    Actor object address. Generally, it's 
+             *                          used for active object and ISR, i.e. 
+             *                          event producers.
+             *  \param[in] nm_          String terminated in '\\0'
+             *
+             *  e.g.\n
+             *  Associates the address of an actor object, in memory
+             *  with its symbolic name.
+             *
+             *  \code
+             *  RKH_TR_FWK_ACTOR(blinky, RKH_GET_AO_NAME(blinky));
+             *  ...
+             *  static int buttonManager;
+             *
+             *  RKH_TR_FWK_ACTOR(&buttonManager, "buttonManager");
+             *  \endcode
+             */
+            #define RKH_TR_FWK_ACTOR(actorObj_, nm_) \
+                do \
+                { \
+                    rkh_trc_obj(RKH_TE_FWK_ACTOR, (rui8_t *)actorObj_, nm_); \
+                } \
+                while (0)
+
             /** @} doxygen end group definition */
             /** @} doxygen end group definition */
         #else
@@ -3243,6 +3285,7 @@
             #define RKH_TR_FWK_TIMER(timerObj_)                         (void)0
             #define RKH_TR_FWK_EPOOL(evtPoolObj_)                       (void)0
             #define RKH_TR_FWK_QUEUE(queueObj_)                         (void)0
+            #define RKH_TR_FWK_ACTOR(actObj_, nm_)                      (void)0
         #endif
 #else
         /* --- Memory Pool (MP) -------------------------------------------- */
@@ -3260,7 +3303,7 @@
         #define RKH_TR_RQ_GET_LAST(q)                     (void)0
 
         /* --- State Machine Application (SMA) ----------------------------- */
-        #define RKH_TR_SMA_ACT(ao, p)                     (void)0
+        #define RKH_TR_SMA_ACT(ao, p, s)                  (void)0
         #define RKH_TR_SMA_TERM(ao, p)                    (void)0
         #define RKH_TR_SMA_GET(ao, ev, pid, rc)           (void)0
         #define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc)     (void)0
@@ -3319,6 +3362,7 @@
         #define RKH_TR_FWK_TIMER(__to)                    (void)0
         #define RKH_TR_FWK_EPOOL(__epo)                   (void)0
         #define RKH_TR_FWK_QUEUE(__qo)                    (void)0
+        #define RKH_TR_FWK_ACTOR(actObj_, nm_)            (void)0
 #endif
 
     /**

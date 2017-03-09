@@ -506,6 +506,47 @@ TEST(trace_args, InsertRecord)
     checkTrailer();
 }
 
+TEST(trace_args, InsertFwkEpoolRecord)
+{
+    rui8_t poolId = 2;
+    const char *poolName = "ep0";
+
+    RKH_TR_FWK_EPOOL(poolId, poolName);
+
+    checkHeader(RKH_TE_FWK_EPOOL, 0, 0x1234567);
+    checkU8Value(poolId);
+    checkString(poolName);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkActorRecord)
+{
+    rui8_t actor;
+    const char *actorName = "Actor";
+
+    RKH_TR_FWK_ACTOR(&actor, actorName);
+
+    checkHeader(RKH_TE_FWK_ACTOR, 0, 0x1234567);
+    checkObjectAddress((rui8_t *)&actor);
+    checkString(actorName);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertSmaActivateRecord)
+{
+    RKHROM RKH_ROM_T base = {0, 0, "ao"};
+    RKH_SMA_T ao;
+
+    ao.sm.romrkh = &base;
+	RKH_TR_SMA_ACT(&ao, RKH_GET_PRIO(&ao), 16);
+
+    checkHeader(RKH_TE_SMA_ACT, 0, 0x1234567);
+    checkObjectAddress((rui8_t *)&ao);
+    checkU8Value(0);
+    checkU8Value(16);
+    checkTrailer();
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

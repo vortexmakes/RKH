@@ -3281,16 +3281,20 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=25 align="center"> #RKH_TG_SMA </TD>
-		<TD rowspan=2 align="center"> 0 </TD>
-		<TD rowspan=2> #RKH_TE_SMA_ACT ( SYM ao, UI8 prio ) </TD>
-		<TD rowspan=2> \copybrief RKH_TR_SMA_ACT </TD>
+		<TD rowspan=26 align="center"> #RKH_TG_SMA </TD>
+		<TD rowspan=3 align="center"> 0 </TD>
+		<TD rowspan=3> #RKH_TE_SMA_ACT ( SYM ao, UI8 prio ) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_SMA_ACT </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
 		<TD><I> \copybrief RKH_ROM_T::prio </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> msgQueueSize </I></TD>
+		<TD><I> \copybrief RKH_RQ_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
@@ -3935,10 +3939,10 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 20 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( SYM obj, STR nm ) </TD>
+		<TD rowspan=2> #RKH_TE_FWK_EPOOL ( UI8 poolId, STR nm ) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_FWK_EPOOL </TD>
-		<TD><I> obj </I></TD>
-		<TD><I> Event pool object memory address </I></TD>
+		<TD><I> poolId </I></TD>
+		<TD><I> Event pool ID </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nm </I></TD>
