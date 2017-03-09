@@ -285,7 +285,7 @@ ALIGN="center" VALIGN="middle">
 In the instrumented application a set of particular trace events 
 could be used to better trace visualization, 
 #RKH_TE_FWK_OBJ, #RKH_TE_FWK_AO, #RKH_TE_FWK_STATE, #RKH_TE_FWK_PSTATE,
-#RKH_TE_FWK_TIMER, #RKH_TE_FWK_EPOOL, #RKH_TE_FWK_QUEUE and #RKH_TE_FWK_SIG.
+#RKH_TE_FWK_TIMER, #RKH_TE_FWK_EPOOL, RKH_TE_FWK_QUEUE and #RKH_TE_FWK_SIG.
 
 <HR>
 \section trazer_human_format Human readable output

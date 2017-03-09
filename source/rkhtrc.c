@@ -127,9 +127,9 @@ RKH_MODULE_NAME(rkhtrc)
  *
  *  The trace filter management is similar to the native priority scheme.
  *  In this case, each trace event is assigned a unique number
- *  (#RKH_TRC_EVENTS). When a event is ready to record a trace its
- *  corresponding bit in the filter table must be clear. The size of
- *  trceftbl[] depends on #RKH_TOT_NUM_TRC_EVTS.
+ *  (See RKH_TE_<group>_<event> definitions). When a event is ready to record 
+ *  a trace its corresponding bit in the filter table must be clear. The size 
+ *  of trceftbl[] depends on #RKH_TOT_NUM_TRC_EVTS.
  *
  *  Trace event number = | 0 | Y | Y | Y | Y | X | X | X |\n
  *
@@ -147,7 +147,7 @@ static rui8_t trceftbl[RKH_TRC_MAX_EVENTS_IN_BYTES];
  *  Filter table of trace groups.
  *
  *  Each bit in #trcgfilter is used to indicate whenever any trace group
- *  is filtered out its events. See #RKH_TRC_GROUPS.
+ *  is filtered out its events. See RKH_TG_<group> and RKH_TG_T.
  *
  *  \code
  *  bit position =   7   6   5   4   3   2   1   0   -- Groups

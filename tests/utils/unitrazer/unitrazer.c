@@ -64,7 +64,7 @@
 /* ============================ Expect functions =========================== */
 
 void
-unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt,
                          rui8_t nArgs, ...)
 {
     va_list args;
@@ -82,7 +82,7 @@ unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
 }
 
 void
-unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt,
                          rui8_t nArgs, ...)
 {
     va_list args;
@@ -100,7 +100,7 @@ unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
 }
 
 void
-unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt,
                       RKH_SIG_T signal)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT);
@@ -111,7 +111,7 @@ unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
 }
 
 void
-unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt)
+unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_EXPECT)
     RKH_TRC_UI32(cmockLine);
@@ -167,7 +167,7 @@ unitrazer_verify(void)
 /* ============================ Ignore functions =========================== */
 
 void
-unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TRC_GROUPS group)
+unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TG_T group)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_IGNORE_GROUP)
     RKH_TRC_UI32(cmockLine);

@@ -2966,7 +2966,7 @@ The standard defines that the trace system has to store some information
 for each trace event (also named arguments) being generated, including, 
 at least, the following:
 
-- the trace event identifier (#RKH_TRC_EVENTS enumerated list),
+- the trace event identifier (RKH_TE_<group>_<event> definitions),
 - a timestamp (optional),
 - any extra data that the system wants to associate with the event (optional).
  
@@ -2996,7 +2996,7 @@ applied, removed or changed at any time.
 
 <HR>
 \section tre Trace event structure
-\copydetails RKH_TRC_EVENTS
+\copydetails rkhtrc.h
 
 <HR>
 \section trcfg Trace tool configuration
@@ -3053,7 +3053,7 @@ processor time. It also makes the task of interpreting the data more
 difficult. Because the amount of data that the instrumented framework 
 generates can be overwhelming, the RKH supports several types of filters 
 that can use it to reduce the amount of data to be processed. The available 
-groups are enumerated in #RKH_TRC_GROUPS.
+groups are enumerated in RKH_TG_<group>.
 
 Please use RKH_FILTER_ON_GROUP(), RKH_FILTER_ON_GROUP_ALL_EVENTS(), 
 RKH_FILTER_OFF_GROUP_ALL_EVENTS(), or RKH_FILTER_OFF_GROUP() macros to do 
@@ -3081,7 +3081,7 @@ processor time. It also makes the task of interpreting the data more
 difficult. Because the amount of data that the instrumented framework 
 generates can be overwhelming, the RKH supports several types of filters 
 that can use it to reduce the amount of data to be processed. The available 
-events are enumerated in #RKH_TRC_EVENTS.
+events are enumerated in RKH_TE_<group>_<event> definitions.
 
 Please use RKH_FILTER_ON_EVENT(), or RKH_FILTER_OFF_EVENT() macros to do 
 that.

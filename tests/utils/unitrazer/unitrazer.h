@@ -419,7 +419,7 @@ void unitrazer_verify(void);
  *  This function is internal to RKH and the user application should not call 
  *  it. Instead, use the corresponding macro for the trace event to expect.
  */
-void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt,
                               rui8_t nArgs, ...);
 
 /**
@@ -435,7 +435,7 @@ void unitrazer_expect_wSymArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
  *  This function is internal to RKH and the user application should not call 
  *  it. Instead, use the corresponding macro for the trace event to expect.
  */
-void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
+void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt,
                               rui8_t nArgs, ...);
 
 /**
@@ -451,7 +451,7 @@ void unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TRC_EVENTS trcEvt,
  *  it. Instead, use the corresponding macro for the trace event to expect.
  */
 void unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine,
-                           RKH_TRC_EVENTS trcEvt, RKH_SIG_T signal);
+                           RKH_TE_ID_T trcEvt, RKH_SIG_T signal);
 
 /**
  *  \brief
@@ -465,7 +465,7 @@ void unitrazer_expect_wSig(UNITY_LINE_TYPE cmockLine,
  *  it. Instead, use the corresponding macro for the trace event to expect.
  */
 void unitrazer_expect_noArgs(UNITY_LINE_TYPE cmockLine,
-                             RKH_TRC_EVENTS trcEvt);
+                             RKH_TE_ID_T trcEvt);
 
 /* ======================== Common expect functions ======================== */
 
@@ -542,7 +542,7 @@ void unitrazer_ignoreArg(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt,
  *  it. Instead, use the corresponding macro for the trace event group to 
  *  ignore.
  */
-void unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TRC_GROUPS group);
+void unitrazer_ignoreGroup(UNITY_LINE_TYPE cmockLine, RKH_TG_T group);
 
 /* -------------------- External C language linkage end -------------------- */
 

@@ -33,6 +33,189 @@
  *  \file       rkhtrc.h
  *  \brief      Platform - independent interface for RKH trace facility.
  *
+ *  <EM>RKH trace event structure</EM>
+ *
+ *	\code
+ *	(1) RKH_TRC_BEGIN(trc_evt, ao_prio, signal)	\
+ *	(2)		RKH_TRC_ARG0(arg0);                   \
+ *	(3)		RKH_TRC_ARG1(arg1);                   \
+ *	(4)		RKH_TRC_....(...);                    \
+ *	(5)	RKH_TRC_END()
+ *	\endcode
+ *
+ *	\li (1,5)	Each trace event always begins with the macro 
+ *	            RKH_TRC_BEGIN() and ends with the matching macro 
+ *	            RKH_TRC_END(). These macros are not terminated with the 
+ *	            semicolon. The record-begin macro RKH_TRC_BEGIN() takes 
+ *	            three arguments.
+ *			    The first argument 'trc_evt' is the trace event ID, the
+ *			    second argument 'ao_prio' is the active object priority,
+ *			    and the third argument 'signal' is the event signal number.
+ *			    These arguments are used in the on/off filters.
+ *			    The runtime filter is optional and could be enabled or
+ *			    disabled with the #RKH_CFG_TRC_RTFIL_EN in the
+ *			    \b rkhcfg.h file. This pair of macros locks interrupts at
+ *			    the beginning and unlocks at the end of each record.
+ *	\li (2-4)   Sandwiched between these two macros are the
+ *				argument-generating macros that actually insert individual
+ *				event argument elements into the trace stream.
+ *
+ *  Example:
+ *
+ *	\code
+ *	#define RKH_TR_RQ_INIT(q, ao, nelem) \
+ *				RKH_TRC_BEGIN_WOAOSIG(RKH_TE_RQ_INITS) \
+ *					RKH_TRC_SYM(q); \
+ *					RKH_TRC_SYM(ao); \
+ *					RKH_TRC_NE(nelem); \
+ *				RKH_TRC_END()
+ *
+ *	#define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc) \
+ *				RKH_TRC_BEGIN(RKH_TE_SMA_FIFO, \
+ *								RKH_SMA_ACCESS_CONST(actObj_, prio), \
+ *								ev->e) \
+ *					RKH_TRC_SYM(ao); \
+ *					RKH_TRC_SIG(ev->e); \
+ *					RKH_TRC_SNDR(snr); \
+ *					RKH_TRC_UI8(pid); \
+ *					RKH_TRC_UI8(rc); \
+ *				RKH_TRC_END()
+ *	\endcode
+ *
+ *	Each trace event and its arguments are placed in the trace stream like a
+ *	simple data protocol frame. The protocol has been specifically designed
+ *	to simplify the data management overhead in the target yet allow
+ *	detection of any data dropouts due to the trace buffer overruns.
+ *	The protocol has not only provisions for detecting gaps in the data and
+ *	other errors but allows for instantaneous resynchronization after any
+ *	error, to minimize data loss. [MS]
+ *
+ *	\a Frame
+ *
+ *  \code
+ *      | ...               |
+ *  (1) | event ID          | 1,2,4-byte
+ *  (2) | sequence number   | 1-byte
+ *  (3) | timestamp         | 2,4-bytes
+ *  (4) | args              | n-byte
+ *  (5) | checksum          | 1-byte
+ *  (6) | flag              | 1-byte
+ *      | ...               |
+ *	\endcode
+ *
+ *	-   (1) Each frame starts with the <B>trace event ID</B> bytes, which is
+ *		one of the predefined RKH records or an application-specific record.
+ *	-   (2) Following the <B>sequence number</B> is the sequence number 
+ *	        byte.
+ *		    The target component increments this number for every frame 
+ *		    inserted into the stream. The sequence number allows the 
+ *		    trazer tool to detect any data discontinuities. If the 
+ *		    #RKH_CFG_TRC_NSEQ_EN is set to 1 then RKH will add to the 
+ *		    trace record the sequence number.
+ *	-	(3) Following the sequence number is the <B>timestamp</B>. The 
+ *	        number of bytes used by the timestamp is configurable by the 
+ *	        macro #RKH_CFGPORT_TRC_SIZEOF_TSTAMP.
+ *		    If the #RKH_CFG_TRC_TSTAMP_EN is set to 1 then RKH will add to 
+ *		    the trace record the timestamp field.
+ *	-   (4) Following the timestamp is zero or more data bytes for
+ *		    <B>args</B>.
+ *	-   (5) Following the data is the <B>checksum</B> byte. The checksum is
+ *		computed over the sequence number, the trace event ID, and all the
+ *		data bytes.
+ *		If the #RKH_CFG_TRC_CHK_EN is set to 1 then RKH will add to the 
+ *		trace record a checksum byte.
+ *	-   (6) Following the checksum is the <B>flag</B> byte, which delimits
+ *		the frame. The flag is the 0x7E. Only one flag is inserted between
+ *		frames.
+ *
+ *	To avoid confusing unintentional flag bytes that can naturally occur in
+ *	the data stream with an intentionally sent flag, the protocol uses a
+ *	technique known as byte stuffing or escaping to make the flag bytes
+ *	transparent during the transmission.
+ *	Whenever the transmitter encounters a flag byte in the data, it inserts
+ *	a 2-byte escape sequence to the output stream. The first byte is the
+ *	escape byte, defined as binary 0x7D. The second byte is the original
+ *	byte XOR-ed with 0x20.
+ *	The transmitter computes the checksum over the sequence number, the
+ *	trace event ID, and all data bytes before performing any byte stuffing.
+ *
+ *  <em>User trace events</em>
+ *
+ *  The user application could defined its own trace events to be placed
+ *  at anywhere in the application level. Allowing to generate tracing
+ *  information from the application-level code like a "printf" but with
+ *  much less overhead.
+ *
+ *	\code
+ *	(1) RKH_TRC_USR_BEGIN(MY_TRACE)	\
+ *	(2)		RKH_TRC_ARG0(arg0); \
+ *	(3)		RKH_TRC_ARG1(arg1); \
+ *	(4)		RKH_TRC_....(...); \
+ *	(5)	RKH_TRC_USR_END();
+ *	\endcode
+ *
+ *	\li (1,5)	Each trace event always begins with the macro
+ *				RKH_TRC_USR_BEGIN() and ends with the matching macro
+ *				RKH_TRC_USR_END(). The record-begin macro 
+ *				RKH_TRC_USR_BEGIN() takes one argument, 'eid_' is the 
+ *				user trace event ID, from the RKH_TE_USER value. This pair 
+ *				of macros locks interrupts at the beginning and unlocks at 
+ *				the end of each record.
+ *	\li (2-4)   Sandwiched between these two macros are the
+ *				argument-generating macros that actually insert individual
+ *				event argument elements into the trace stream.
+ *
+ *	Argument-generating macros for building user trace events:
+ *
+ *	\li RKH_TUSR_I8()   \copydoc RKH_TUSR_I8
+ *	\li RKH_TUSR_UI8()  \copydoc RKH_TUSR_UI8
+ *	\li RKH_TUSR_I16()  \copydoc RKH_TUSR_I16
+ *	\li RKH_TUSR_UI16() \copydoc RKH_TUSR_UI16
+ *	\li RKH_TUSR_I32()  \copydoc RKH_TUSR_I32
+ *	\li RKH_TUSR_UI32() \copydoc RKH_TUSR_UI32
+ *	\li RKH_TUSR_X32()  \copydoc RKH_TUSR_X32
+ *	\li RKH_TUSR_STR()  \copydoc RKH_TUSR_STR
+ *	\li RKH_TUSR_MEM()  \copydoc RKH_TUSR_MEM
+ *	\li RKH_TUSR_OBJ()  \copydoc RKH_TUSR_OBJ
+ *	\li RKH_TUSR_FUN()  \copydoc RKH_TUSR_FUN
+ *	\li RKH_TUSR_SIG()  \copydoc RKH_TUSR_SIG
+ *
+ *  Example:
+ *
+ *	\code
+ *	enum
+ *	{
+ *		LOWPWR_USR_TRACE = RKH_TE_USER,
+ *		DISCONNECTED_USR_TRACE
+ *		...
+ *	};
+ *
+ *	void
+ *	some_function(...)
+ *	{
+ *		rui8_t d1 = 255;
+ *		rui16_t d2 = 65535;
+ *		rui32_t d3 = 65535;
+ *		char *str = "hello";
+ *
+ *		RKH_TRC_USR_BEGIN(LOWPWR_USR_TRACE)
+ *			RKH_TUSR_I8(3, d1);
+ *			RKH_TUSR_UI8(3, d1);
+ *			RKH_TUSR_I16(4, d2);
+ *			RKH_TUSR_UI16(4, d2);
+ *			RKH_TUSR_I32(5, d3);
+ *			RKH_TUSR_UI32(5, d3);
+ *			RKH_TUSR_X32(4, d3);
+ *			RKH_TUSR_STR(str);
+ *			RKH_TUSR_MEM((rui8_t*)&d3, sizeof(rui32_t));
+ *			RKH_TUSR_OBJ(my);
+ *			RKH_TUSR_FUN(main);
+ *			RKH_TUSR_SIG(ZERO);
+ *		RKH_TRC_USR_END();
+ *	}
+ *	\endcode
+ *
+ *	\sa RKH_TRC_END()
  *  \ingroup    apiTrc
  *
  *  \addtogroup api
@@ -335,8 +518,8 @@
 
 /**
  *	Specify the maximum number of trace events, this number is direclty
- *	related with the #RKH_TRC_EVENTS enumeration. The smaller this number,
- *	the lower the RAM consumption.
+ *	related with the RKH_TE_<group>_<event> definitions. The smaller this 
+ *	number, the lower the RAM consumption.
  *	See \c trceftbl table.
  */
 #define RKH_TRC_MAX_EVENTS \
@@ -442,7 +625,9 @@
 #define RKH_UT_TTBL_OFFSET          (RKH_USR_TTBL_OFFSET + RKH_USR_TTBL_RANGE)
 
 #define GRPLSH(grp) \
-        (RKH_TE_ID_T)(((grp) & (rui8_t)(RKH_TRC_MAX_GROUPS - 1)) << NGSH)
+        /*(RKH_TE_ID_T)(((grp) & (rui8_t)(RKH_TRC_MAX_GROUPS - 1)) << NGSH)*/ \
+        (((grp) & (RKH_TRC_MAX_GROUPS - 1)) << NGSH)
+
 #define EXTE(te, grp) \
         (RKH_TE_ID_T)((te) - GRPLSH(grp))
 
@@ -506,6 +691,241 @@
 /** escape byte stuffing a single byte */
 #define RKH_ESC     0x7D
 
+/* --- RKH group of trace events ------------------------------------------- */
+/** \brief  Memory Pool group (MP) */
+#define RKH_TG_MP           0
+
+/** \brief  Reference Queue group (RQ) */
+#define RKH_TG_RQ           1
+
+/** \brief  State Machine Application group (SMA) */
+#define RKH_TG_SMA          2
+
+/** \brief  State Machine group (SM) */
+#define RKH_TG_SM           3
+
+/** \brief  Timer group (TIM) */
+#define RKH_TG_TMR          4
+
+/** \brief  Framework RKH group (FWK) */
+#define RKH_TG_FWK          5
+
+/** \brief  User group (USR) */
+#define RKH_TG_USR          6
+
+/** \brief  Unit test harness group (UT) */
+#define RKH_TG_UT           7
+
+/** \brief  Number of trace groups */
+#define RKH_TG_NGROUP       8
+
+/* --- Memory Pool events (MP group) --------------------------------------- */
+/** \copybrief RKH_TR_MP_INIT */
+#define RKH_TE_MP_INIT          RKH_MP_START
+/** \copybrief RKH_TR_MP_GET */
+#define RKH_TE_MP_GET           (RKH_TE_MP_INIT + 1)
+/** \copybrief RKH_TR_MP_PUT */
+#define RKH_TE_MP_PUT           (RKH_TE_MP_GET + 1)
+#define RKH_MP_END              RKH_TE_MP_PUT
+
+/* --- Queue events (RQ group) --------------------------------------------- */
+/** \copybrief RKH_TR_RQ_INIT */
+#define RKH_TE_RQ_INIT          RKH_RQ_START         
+/** \copybrief RKH_TR_RQ_GET */
+#define RKH_TE_RQ_GET           (RKH_TE_RQ_INIT + 1)
+/** \copybrief RKH_TR_RQ_FIFO */
+#define RKH_TE_RQ_FIFO          (RKH_TE_RQ_GET + 1)
+/** \copybrief RKH_TR_RQ_LIFO */
+#define RKH_TE_RQ_LIFO          (RKH_TE_RQ_FIFO + 1)
+/** \copybrief RKH_TR_RQ_FULL */
+#define RKH_TE_RQ_FULL          (RKH_TE_RQ_LIFO + 1)
+/** \copybrief RKH_TR_RQ_DPT */
+#define RKH_TE_RQ_DPT           (RKH_TE_RQ_FULL + 1)
+/** \copybrief RKH_TR_RQ_GET_LAST */
+#define RKH_TE_RQ_GET_LAST      (RKH_TE_RQ_DPT +1 )
+#define RKH_RQ_END              RKH_TE_RQ_GET_LAST
+
+/* --- State Machine Application events (SMA group) ------------------------ */
+/** \copybrief RKH_TR_SMA_ACT */
+#define RKH_TE_SMA_ACT          RKH_SMA_START
+/** \copybrief RKH_TR_SMA_TERM */
+#define RKH_TE_SMA_TERM         (RKH_TE_SMA_ACT + 1)
+/** \copybrief RKH_TR_SMA_GET */
+#define RKH_TE_SMA_GET          (RKH_TE_SMA_TERM + 1)
+/** \copybrief RKH_TR_SMA_FIFO */
+#define RKH_TE_SMA_FIFO         (RKH_TE_SMA_GET + 1)
+/** \copybrief RKH_TR_SMA_LIFO */
+#define RKH_TE_SMA_LIFO         (RKH_TE_SMA_FIFO + 1)
+/** \copybrief RKH_TR_SMA_REG */
+#define RKH_TE_SMA_REG          (RKH_TE_SMA_LIFO + 1)
+/** \copybrief RKH_TR_SMA_UNREG */
+#define RKH_TE_SMA_UNREG        (RKH_TE_SMA_REG + 1)
+/** \copybrief RKH_TR_SMA_DCH */
+#define RKH_TE_SMA_DCH          (RKH_TE_SMA_UNREG + 1)
+#define RKH_SMA_END             RKH_TE_SMA_DCH
+
+/* --- State machine events (SM group) ------------------------------------- */
+/** \copybrief RKH_TR_SM_INIT */
+#define RKH_TE_SM_INIT          RKH_SM_START
+/** \copybrief RKH_TR_SM_CLRH */
+#define RKH_TE_SM_CLRH          (RKH_TE_SM_INIT + 1)
+/** \copybrief RKH_TR_SM_TRN */
+#define RKH_TE_SM_TRN           (RKH_TE_SM_CLRH + 1)
+/** \copybrief RKH_TR_SM_STATE */
+#define RKH_TE_SM_STATE         (RKH_TE_SM_TRN + 1)
+/** \copybrief RKH_TR_SM_ENSTATE */
+#define RKH_TE_SM_ENSTATE       (RKH_TE_SM_STATE + 1)
+/** \copybrief RKH_TR_SM_EXSTATE */
+#define RKH_TE_SM_EXSTATE       (RKH_TE_SM_ENSTATE + 1)
+/** \copybrief RKH_TR_SM_NENEX */
+#define RKH_TE_SM_NENEX         (RKH_TE_SM_EXSTATE + 1)
+/** \copybrief RKH_TR_SM_NTRNACT */
+#define RKH_TE_SM_NTRNACT       (RKH_TE_SM_NENEX + 1)
+/** \copybrief RKH_TR_SM_TS_STATE */
+#define RKH_TE_SM_TS_STATE      (RKH_TE_SM_NTRNACT + 1)
+/** \copybrief RKH_TR_SM_EVT_PROC */
+#define RKH_TE_SM_EVT_PROC      (RKH_TE_SM_TS_STATE + 1)
+/** \copybrief RKH_TR_SM_EVT_NFOUND */
+#define RKH_TE_SM_EVT_NFOUND    (RKH_TE_SM_EVT_PROC + 1)
+/** \copybrief RKH_TR_SM_GRD_FALSE */
+#define RKH_TE_SM_GRD_FALSE     (RKH_TE_SM_EVT_NFOUND + 1)
+/** \copybrief RKH_TR_SM_CND_NFOUND */
+#define RKH_TE_SM_CND_NFOUND    (RKH_TE_SM_GRD_FALSE + 1)
+/** \copybrief RKH_TR_SM_UNKN_STATE */
+#define RKH_TE_SM_UNKN_STATE    (RKH_TE_SM_CND_NFOUND + 1)
+/** \copybrief RKH_TR_SM_EX_HLEVEL */
+#define RKH_TE_SM_EX_HLEVEL     (RKH_TE_SM_UNKN_STATE + 1)
+/** \copybrief RKH_TR_SM_EX_TSEG */
+#define RKH_TE_SM_EX_TSEG       (RKH_TE_SM_EX_HLEVEL + 1)
+/** \copybrief RKH_TR_SM_EXE_ACT */
+#define RKH_TE_SM_EXE_ACT       (RKH_TE_SM_EX_TSEG + 1)
+#define RKH_SM_END              RKH_TE_SM_EXE_ACT
+
+/* --- Timer events (TMR group) -------------------------------------------- */
+/** \copybrief RKH_TR_TMR_INIT */
+#define RKH_TE_TMR_INIT         RKH_TMR_START
+/** \copybrief RKH_TR_TMR_START */
+#define RKH_TE_TMR_START        (RKH_TE_TMR_INIT + 1)
+/** \copybrief RKH_TR_TMR_STOP */
+#define RKH_TE_TMR_STOP         (RKH_TE_TMR_START + 1)
+/** \copybrief RKH_TR_TMR_TOUT */
+#define RKH_TE_TMR_TOUT         (RKH_TE_TMR_STOP + 1)
+/** \copybrief RKH_TR_TMR_REM */
+#define RKH_TE_TMR_REM          (RKH_TE_TMR_TOUT + 1)
+#define RKH_TMR_END             RKH_TE_TMR_REM
+
+/* --- Framework and misc. events (FWK group) ------------------------------ */
+/** \copybrief RKH_TR_FWK_EN */
+#define RKH_TE_FWK_EN           RKH_FWK_START
+/** \copybrief RKH_TR_FWK_EX */
+#define RKH_TE_FWK_EX           (RKH_TE_FWK_EN + 1)
+/** \copybrief RKH_TR_FWK_EPREG */
+#define RKH_TE_FWK_EPREG        (RKH_TE_FWK_EX + 1)
+/** \copybrief RKH_TR_FWK_AE */
+#define RKH_TE_FWK_AE           (RKH_TE_FWK_EPREG + 1)
+/** \copybrief RKH_TR_FWK_GC */
+#define RKH_TE_FWK_GC           (RKH_TE_FWK_AE + 1)
+/** \copybrief RKH_TR_FWK_GCR */
+#define RKH_TE_FWK_GCR          (RKH_TE_FWK_GC + 1)
+/** \copybrief RKH_TR_FWK_DEFER */
+#define RKH_TE_FWK_DEFER        (RKH_TE_FWK_GCR + 1)
+/** \copybrief RKH_TR_FWK_RCALL */
+#define RKH_TE_FWK_RCALL        (RKH_TE_FWK_DEFER + 1)
+/** \copybrief RKH_TR_FWK_OBJ */
+#define RKH_TE_FWK_OBJ          (RKH_TE_FWK_RCALL + 1)
+/** \copybrief RKH_TR_FWK_SIG */
+#define RKH_TE_FWK_SIG          (RKH_TE_FWK_OBJ + 1)
+/** \copybrief RKH_TR_FWK_FUN */
+#define RKH_TE_FWK_FUN          (RKH_TE_FWK_SIG + 1)
+/** \copybrief RKH_TR_FWK_EXE_FUN */
+#define RKH_TE_FWK_EXE_FUN      (RKH_TE_FWK_FUN + 1)
+/** \copybrief RKH_TR_FWK_SYNC_EVT */
+#define RKH_TE_FWK_SYNC_EVT     (RKH_TE_FWK_EXE_FUN + 1)
+/** \copybrief RKH_TR_FWK_TUSR */
+#define RKH_TE_FWK_TUSR         (RKH_TE_FWK_SYNC_EVT + 1)
+/** \copybrief RKH_TR_FWK_TCFG */
+#define RKH_TE_FWK_TCFG         (RKH_TE_FWK_TUSR + 1)
+/** \copybrief RKH_TR_FWK_ASSERT */
+#define RKH_TE_FWK_ASSERT       (RKH_TE_FWK_TCFG + 1)
+/** \copybrief RKH_TR_FWK_AO */
+#define RKH_TE_FWK_AO           (RKH_TE_FWK_ASSERT + 1)
+/** \copybrief RKH_TR_FWK_STATE */
+#define RKH_TE_FWK_STATE        (RKH_TE_FWK_AO + 1)
+/** \copybrief RKH_TR_FWK_PSTATE */
+#define RKH_TE_FWK_PSTATE       (RKH_TE_FWK_STATE + 1)
+/** \copybrief RKH_TR_FWK_TIMER */
+#define RKH_TE_FWK_TIMER        (RKH_TE_FWK_PSTATE + 1)
+/** \copybrief RKH_TR_FWK_EPOOL */
+#define RKH_TE_FWK_EPOOL        (RKH_TE_FWK_TIMER + 1)
+/** \copybrief RKH_TR_FWK_QUEUE */
+#define RKH_TE_FWK_QUEUE        (RKH_TE_FWK_EPOOL + 1)
+#define RKH_FWK_END             RKH_TE_FWK_QUEUE
+
+/* --- User events (USR group) --------------------------------------------- */
+#define RKH_TE_USER             RKH_USR_START
+
+/* --- Unit test harness events (UT group) --------------------------------- */
+#define RKH_TE_UT_INIT          RKH_UT_START
+#define RKH_TE_UT_CLEANUP       (RKH_TE_UT_INIT + 1)
+#define RKH_TE_UT_VERIFY        (RKH_TE_UT_CLEANUP + 1)
+#define RKH_TE_UT_IGNORE_GROUP  (RKH_TE_UT_VERIFY + 1)
+#define RKH_TE_UT_EXPECT        (RKH_TE_UT_IGNORE_GROUP + 1)
+#define RKH_TE_UT_EXPECT_ANYARGS    (RKH_TE_UT_EXPECT + 1)
+#define RKH_TE_UT_IGNORE        (RKH_TE_UT_EXPECT_ANYARGS + 1)
+#define RKH_TE_UT_IGNORE_ARG    (RKH_TE_UT_IGNORE + 1)
+#define RKH_TE_UT_SUCCESS       (RKH_TE_UT_IGNORE_ARG + 1)
+#define RKH_TE_UT_FAIL          (RKH_TE_UT_SUCCESS + 1)
+#define RKH_UT_END              RKH_TE_UT_IGNORE_ARG
+
+/* The last trace event */
+#define RKH_TE_NEVENT           (RKH_UT_END + 1)
+
+/* ------------------------- Configuration errors -------------------------- */
+/*
+ *  LOOK FOR WRONG #define CONSTANTS
+ *
+ *  This section is used to generate ERROR messages at compile time if
+ *  certain #define constants are WRONG in rkhtrc.h.  This allows you to
+ *  quickly determine the source of the error.
+ *
+ *  You SHOULD NOT change this section UNLESS you would like to add more
+ *  comments as to the source of the compile time error.
+ */
+#if ((RKH_MP_END - RKH_MP_START) > ((RKH_MP_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
+#if ((RKH_RQ_END - RKH_RQ_START) > ((RKH_RQ_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
+#if ((RKH_SMA_END - RKH_SMA_START) > ((RKH_SMA_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
+#if ((RKH_SM_END - RKH_SM_START) > ((RKH_SM_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
+#if ((RKH_TMR_END - RKH_TMR_START) > ((RKH_TMR_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
+#if ((RKH_FWK_END - RKH_FWK_START) > ((RKH_FWK_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
+#if ((RKH_UT_END - RKH_UT_START) > ((RKH_UT_TTBL_RANGE * 8) - 1))
+    #error  "rkhtrc.h, the total number of trace events represented"
+    #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
+#endif
+
 #if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
         /**
          *	Each trace event always begins with the macro RKH_TRC_BEGIN()
@@ -514,7 +934,8 @@
          *  This pair of macros locks interrupts at the beginning and unlocks
          *  at the end of each record.
          *
-         *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+         *	\param[in] eid_		is the trace event ID.
+         *	                    See RKH_TE_<group>_<event> definitions.
          *	\param[in] prio_	priority of active object.
          *	\param[in] sig_		signal.
          *
@@ -572,7 +993,8 @@
         /**
          *  Idem RKH_TRC_BEGIN() macro but without entering critical section.
          *
-         *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+         *	\param[in] eid_		is the trace event ID.
+         *	                    See RKH_TE_<group>_<event> definitions.
          *	\param[in] prio_	priority of active object.
          *	\param[in] sig_		signal.
          */
@@ -587,7 +1009,8 @@
          *  Idem RKH_TRC_BEGIN_WOAO() macro but without entering critical
          *  section.
          *
-         *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+         *	\param[in] eid_		is the trace event ID.
+         *	                    See RKH_TE_<group>_<event> definitions.
          *	\param[in] sig_		signal.
          */
         #define RKH_TRC_BEGIN_WOAO_NOCRIT(eid_, sig_) \
@@ -600,7 +1023,8 @@
          *  Idem RKH_TRC_BEGIN_WOSIG() macro but without entering critical
          *  section.
          *
-         *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+         *	\param[in] eid_		is the trace event ID.
+         *	                    See RKH_TE_<group>_<event> definitions.
          *	\param[in] prio_	priority of active object.
          */
         #define RKH_TRC_BEGIN_WOSIG_NOCRIT(eid_, prio_) \
@@ -613,7 +1037,8 @@
          *  Idem RKH_TRC_BEGIN_WOAOSIG() macro but without entering critical
          *  section.
          *
-         *	\param[in] eid_		is the trace event ID (RKH_TRC_EVENTS).
+         *	\param[in] eid_		is the trace event ID.
+         *	                    See RKH_TE_<group>_<event> definitions.
          */
         #define RKH_TRC_BEGIN_WOAOSIG_NOCRIT(eid_) \
             if (rkh_trc_isoff_(eid_)) \
@@ -2973,399 +3398,53 @@
         RKH_FIL_TRCE, RKH_FIL_SIG, RKH_FIL_SMA
     } RKH_FIL_T;
 
-    /**
-     *  \brief
-     *  Describes a trace event identification (ID).
-     *
-     *  The trace event ID is arranged as:
-     *  event number = | G | G | G | E | E | E | E | E |\n
-     *
-     *  G's:	group number.\n
-     *  E's:	event's group.\n
-     *
-     *  Where the lower 5 bits (E's) of the event ID are used to determine
-     *  the trace event, while the next three most significant bits
-     *  (G's) are used to determine the corresponding group.
-     *  Therefore, is able to define 8 groups and 32 events per group.
-     *
-     *  Trace events are binary data consisting of a trace header and its
-     *  associated event data. Every trace header is made up of a ID and a
-     *  timestamp. The number of bytes used by the timestamp is configurable by
-     *  RKH_TRC_SIZEOF_TS (1, 2 or 4 bytes). After the timestamp follows the
-     *  event data. The content and size of the data portion of a trace event is
-     *  determined by the event ID.
-     *	All types of events are stored in a single ring buffer, called trace
-     *	stream, using a variable event size. In this manner the recorder always
-     *	holds the most recent history.
-     *	On the other hand, all data are stored in little-endian order (least
-     *	significant byte first). Also, they are stored into the trace stream 1
-     *	byte at a time, thus avoiding any potential data misalignment problems.
-     *
-     *	\note
-     *	The timestamp is optional, thus it could be eliminated from the trace
-     *	event in compile-time with RKH_CFG_TRC_TSTAMP_EN = 0.
-     */
+/**
+ *  \brief
+ *  Describes a trace event identification (ID).
+ *
+ *  The trace event ID is arranged as:
+ *  event number = | G | G | G | E | E | E | E | E |\n
+ *
+ *  G's:	group number.\n
+ *  E's:	event's group.\n
+ *
+ *  Where the lower 5 bits (E's) of the event ID are used to determine
+ *  the trace event, while the next three most significant bits
+ *  (G's) are used to determine the corresponding group.
+ *  Therefore, is able to define 8 groups and 32 events per group.
+ *
+ *  Trace events are binary data consisting of a trace header and its
+ *  associated event data. Every trace header is made up of a ID and a
+ *  timestamp. The number of bytes used by the timestamp is configurable by
+ *  RKH_TRC_SIZEOF_TS (1, 2 or 4 bytes). After the timestamp follows the
+ *  event data. The content and size of the data portion of a trace event is
+ *  determined by the event ID.
+ *	All types of events are stored in a single ring buffer, called trace
+ *	stream, using a variable event size. In this manner the recorder always
+ *	holds the most recent history.
+ *	On the other hand, all data are stored in little-endian order (least
+ *	significant byte first). Also, they are stored into the trace stream 1
+ *	byte at a time, thus avoiding any potential data misalignment problems.
+ *
+ *	\note
+ *	The timestamp is optional, thus it could be eliminated from the trace
+ *	event in compile-time with RKH_CFG_TRC_TSTAMP_EN = 0.
+ */
 #if RKH_CFG_TRC_SIZEOF_TE_ID == 8
-        typedef rui8_t RKH_TE_ID_T;
+    typedef rui8_t RKH_TE_ID_T;
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 16
-        typedef rui16_t RKH_TE_ID_T;
+    typedef rui16_t RKH_TE_ID_T;
 #elif RKH_CFG_TRC_SIZEOF_TE_ID == 32
-        typedef rui32_t RKH_TE_ID_T;
+    typedef rui32_t RKH_TE_ID_T;
 #else
-        typedef rui8_t RKH_TE_ID_T;
+    typedef rui8_t RKH_TE_ID_T;
 #endif
 
-    /**
-     *  \brief
-     *  Group of events 
-     */
-    typedef rui8_t RKH_TG_T;
-
-    /**
-     *  \brief
-     *  RKH group of trace events
-     */
-    typedef enum rkh_trc_groups
-    {
-        /**
-         *  \brief
-         *  Memory Pool group (MP)
-         */
-        RKH_TG_MP,
-
-        /**
-         *  \brief
-         *  Reference Queue group (RQ)
-         */
-        RKH_TG_RQ,
-
-        /**
-         *  \brief
-         *  State Machine Application group (SMA)
-         */
-        RKH_TG_SMA,
-
-        /**
-         *  \brief
-         *  State Machine group (SM)
-         */
-        RKH_TG_SM,
-
-        /**
-         *  \brief
-         *  Timer group (TIM)
-         */
-        RKH_TG_TMR,
-
-        /**
-         *  \brief
-         *  Framework RKH group (FWK)
-         */
-        RKH_TG_FWK,
-
-        /**
-         *  \brief
-         *  User group (USR)
-         */
-        RKH_TG_USR,
-
-        /**
-         *  \brief
-         *  Unit test harness group (UT)
-         */
-        RKH_TG_UT,
-
-        RKH_TG_NGROUP
-    } RKH_TRC_GROUPS;
-
-    /**
-     *  \brief
-     *  RKH trace events.
-     *
-     *  <EM>RKH trace event structure</EM>
-     *
-     *	\code
-     *	(1) RKH_TRC_BEGIN(trc_evt, ao_prio, signal)	\
-     *	(2)		RKH_TRC_ARG0(arg0);                   \
-     *	(3)		RKH_TRC_ARG1(arg1);                   \
-     *	(4)		RKH_TRC_....(...);                    \
-     *	(5)	RKH_TRC_END()
-     *	\endcode
-     *
-     *	\li (1,5)	Each trace event always begins with the macro 
-     *	            RKH_TRC_BEGIN() and ends with the matching macro 
-     *	            RKH_TRC_END(). These macros are not terminated with the 
-     *	            semicolon. The record-begin macro RKH_TRC_BEGIN() takes 
-     *	            three arguments.
-     *			    The first argument 'trc_evt' is the trace event ID, the
-     *			    second argument 'ao_prio' is the active object priority,
-     *			    and the third argument 'signal' is the event signal number.
-     *			    These arguments are used in the on/off filters.
-     *			    The runtime filter is optional and could be enabled or
-     *			    disabled with the #RKH_CFG_TRC_RTFIL_EN in the
-     *			    \b rkhcfg.h file. This pair of macros locks interrupts at
-     *			    the beginning and unlocks at the end of each record.
-     *	\li (2-4)   Sandwiched between these two macros are the
-     *				argument-generating macros that actually insert individual
-     *				event argument elements into the trace stream.
-     *
-     *  Example:
-     *
-     *	\code
-     *	#define RKH_TR_RQ_INIT(q, ao, nelem) \
-     *				RKH_TRC_BEGIN_WOAOSIG(RKH_TE_RQ_INITS) \
-     *					RKH_TRC_SYM(q); \
-     *					RKH_TRC_SYM(ao); \
-     *					RKH_TRC_NE(nelem); \
-     *				RKH_TRC_END()
-     *
-     *	#define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc) \
-     *				RKH_TRC_BEGIN(RKH_TE_SMA_FIFO, \
-     *								RKH_SMA_ACCESS_CONST(actObj_, prio), \
-     *								ev->e) \
-     *					RKH_TRC_SYM(ao); \
-     *					RKH_TRC_SIG(ev->e); \
-     *					RKH_TRC_SNDR(snr); \
-     *					RKH_TRC_UI8(pid); \
-     *					RKH_TRC_UI8(rc); \
-     *				RKH_TRC_END()
-     *	\endcode
-     *
-     *	Each trace event and its arguments are placed in the trace stream like a
-     *	simple data protocol frame. The protocol has been specifically designed
-     *	to simplify the data management overhead in the target yet allow
-     *	detection of any data dropouts due to the trace buffer overruns.
-     *	The protocol has not only provisions for detecting gaps in the data and
-     *	other errors but allows for instantaneous resynchronization after any
-     *	error, to minimize data loss. [MS]
-     *
-     *	\a Frame
-     *
-     *  \code
-     *      | ...               |
-     *  (1) | event ID          | 1,2,4-byte
-     *  (2) | sequence number   | 1-byte
-     *  (3) | timestamp         | 2,4-bytes
-     *  (4) | args              | n-byte
-     *  (5) | checksum          | 1-byte
-     *  (6) | flag              | 1-byte
-     *      | ...               |
-     *	\endcode
-     *
-     *	-   (1) Each frame starts with the <B>trace event ID</B> bytes, which is
-     *		one of the predefined RKH records or an application-specific record.
-     *	-   (2) Following the <B>sequence number</B> is the sequence number 
-     *	        byte.
-     *		    The target component increments this number for every frame 
-     *		    inserted into the stream. The sequence number allows the 
-     *		    trazer tool to detect any data discontinuities. If the 
-     *		    #RKH_CFG_TRC_NSEQ_EN is set to 1 then RKH will add to the 
-     *		    trace record the sequence number.
-     *	-	(3) Following the sequence number is the <B>timestamp</B>. The 
-     *	        number of bytes used by the timestamp is configurable by the 
-     *	        macro #RKH_CFGPORT_TRC_SIZEOF_TSTAMP.
-     *		    If the #RKH_CFG_TRC_TSTAMP_EN is set to 1 then RKH will add to 
-     *		    the trace record the timestamp field.
-     *	-   (4) Following the timestamp is zero or more data bytes for
-     *		    <B>args</B>.
-     *	-   (5) Following the data is the <B>checksum</B> byte. The checksum is
-     *		computed over the sequence number, the trace event ID, and all the
-     *		data bytes.
-     *		If the #RKH_CFG_TRC_CHK_EN is set to 1 then RKH will add to the 
-     *		trace record a checksum byte.
-     *	-   (6) Following the checksum is the <B>flag</B> byte, which delimits
-     *		the frame. The flag is the 0x7E. Only one flag is inserted between
-     *		frames.
-     *
-     *	To avoid confusing unintentional flag bytes that can naturally occur in
-     *	the data stream with an intentionally sent flag, the protocol uses a
-     *	technique known as byte stuffing or escaping to make the flag bytes
-     *	transparent during the transmission.
-     *	Whenever the transmitter encounters a flag byte in the data, it inserts
-     *	a 2-byte escape sequence to the output stream. The first byte is the
-     *	escape byte, defined as binary 0x7D. The second byte is the original
-     *	byte XOR-ed with 0x20.
-     *	The transmitter computes the checksum over the sequence number, the
-     *	trace event ID, and all data bytes before performing any byte stuffing.
-     *
-     *  <em>User trace events</em>
-     *
-     *  The user application could defined its own trace events to be placed
-     *  at anywhere in the application level. Allowing to generate tracing
-     *  information from the application-level code like a "printf" but with
-     *  much less overhead.
-     *
-     *	\code
-     *	(1) RKH_TRC_USR_BEGIN(MY_TRACE)	\
-     *	(2)		RKH_TRC_ARG0(arg0); \
-     *	(3)		RKH_TRC_ARG1(arg1); \
-     *	(4)		RKH_TRC_....(...); \
-     *	(5)	RKH_TRC_USR_END();
-     *	\endcode
-     *
-     *	\li (1,5)	Each trace event always begins with the macro
-     *				RKH_TRC_USR_BEGIN() and ends with the matching macro
-     *				RKH_TRC_USR_END(). The record-begin macro 
-     *				RKH_TRC_USR_BEGIN() takes one argument, 'eid_' is the 
-     *				user trace event ID, from the RKH_TE_USER value. This pair 
-     *				of macros locks interrupts at the beginning and unlocks at 
-     *				the end of each record.
-     *	\li (2-4)   Sandwiched between these two macros are the
-     *				argument-generating macros that actually insert individual
-     *				event argument elements into the trace stream.
-     *
-     *	Argument-generating macros for building user trace events:
-     *
-     *	\li RKH_TUSR_I8()   \copydoc RKH_TUSR_I8
-     *	\li RKH_TUSR_UI8()  \copydoc RKH_TUSR_UI8
-     *	\li RKH_TUSR_I16()  \copydoc RKH_TUSR_I16
-     *	\li RKH_TUSR_UI16() \copydoc RKH_TUSR_UI16
-     *	\li RKH_TUSR_I32()  \copydoc RKH_TUSR_I32
-     *	\li RKH_TUSR_UI32() \copydoc RKH_TUSR_UI32
-     *	\li RKH_TUSR_X32()  \copydoc RKH_TUSR_X32
-     *	\li RKH_TUSR_STR()  \copydoc RKH_TUSR_STR
-     *	\li RKH_TUSR_MEM()  \copydoc RKH_TUSR_MEM
-     *	\li RKH_TUSR_OBJ()  \copydoc RKH_TUSR_OBJ
-     *	\li RKH_TUSR_FUN()  \copydoc RKH_TUSR_FUN
-     *	\li RKH_TUSR_SIG()  \copydoc RKH_TUSR_SIG
-     *
-     *  Example:
-     *
-     *	\code
-     *	enum
-     *	{
-     *		LOWPWR_USR_TRACE = RKH_TE_USER,
-     *		DISCONNECTED_USR_TRACE
-     *		...
-     *	};
-     *
-     *	void
-     *	some_function(...)
-     *	{
-     *		rui8_t d1 = 255;
-     *		rui16_t d2 = 65535;
-     *		rui32_t d3 = 65535;
-     *		char *str = "hello";
-     *
-     *		RKH_TRC_USR_BEGIN(LOWPWR_USR_TRACE)
-     *			RKH_TUSR_I8(3, d1);
-     *			RKH_TUSR_UI8(3, d1);
-     *			RKH_TUSR_I16(4, d2);
-     *			RKH_TUSR_UI16(4, d2);
-     *			RKH_TUSR_I32(5, d3);
-     *			RKH_TUSR_UI32(5, d3);
-     *			RKH_TUSR_X32(4, d3);
-     *			RKH_TUSR_STR(str);
-     *			RKH_TUSR_MEM((rui8_t*)&d3, sizeof(rui32_t));
-     *			RKH_TUSR_OBJ(my);
-     *			RKH_TUSR_FUN(main);
-     *			RKH_TUSR_SIG(ZERO);
-     *		RKH_TRC_USR_END();
-     *	}
-     *	\endcode
-     *
-     *	\sa RKH_TRC_END()
+/**
+ *  \brief
+ *  Group of events 
  */
-typedef enum rkh_trc_events
-{
-    /* --- Memory Pool events (MP group) ----------------------------------- */
-    RKH_TE_MP_INIT = RKH_MP_START,  /**< \copybrief RKH_TR_MP_INIT */
-    RKH_TE_MP_GET,                  /**< \copybrief RKH_TR_MP_GET */
-    RKH_TE_MP_PUT,                  /**< \copybrief RKH_TR_MP_PUT */
-    RKH_MP_END = RKH_TE_MP_PUT,
-
-    /* --- Queue events (RQ group) ----------------------------------------- */
-    RKH_TE_RQ_INIT = RKH_RQ_START,  /**< \copybrief RKH_TR_RQ_INIT */
-    RKH_TE_RQ_GET,                  /**< \copybrief RKH_TR_RQ_GET */
-    RKH_TE_RQ_FIFO,                 /**< \copybrief RKH_TR_RQ_FIFO */
-    RKH_TE_RQ_LIFO,                 /**< \copybrief RKH_TR_RQ_LIFO */
-    RKH_TE_RQ_FULL,                 /**< \copybrief RKH_TR_RQ_FULL */
-    RKH_TE_RQ_DPT,                  /**< \copybrief RKH_TR_RQ_DPT */
-    RKH_TE_RQ_GET_LAST,             /**< \copybrief RKH_TR_RQ_GET_LAST */
-    RKH_RQ_END = RKH_TE_RQ_GET_LAST,
-
-    /* --- State Machine Application events (SMA group) -------------------- */
-    RKH_TE_SMA_ACT = RKH_SMA_START, /**< \copybrief RKH_TR_SMA_ACT */
-    RKH_TE_SMA_TERM,                /**< \copybrief RKH_TR_SMA_TERM */
-    RKH_TE_SMA_GET,                 /**< \copybrief RKH_TR_SMA_GET */
-    RKH_TE_SMA_FIFO,                /**< \copybrief RKH_TR_SMA_FIFO */
-    RKH_TE_SMA_LIFO,                /**< \copybrief RKH_TR_SMA_LIFO */
-    RKH_TE_SMA_REG,                 /**< \copybrief RKH_TR_SMA_REG */
-    RKH_TE_SMA_UNREG,               /**< \copybrief RKH_TR_SMA_UNREG */
-    RKH_TE_SMA_DCH,                 /**< \copybrief RKH_TR_SMA_DCH */
-    RKH_SMA_END = RKH_TE_SMA_DCH,
-
-    /* --- State machine events (SM group) --------------------------------- */
-    RKH_TE_SM_INIT = RKH_SM_START,  /**< \copybrief RKH_TR_SM_INIT */
-    RKH_TE_SM_CLRH,                 /**< \copybrief RKH_TR_SM_CLRH */
-    RKH_TE_SM_TRN,                  /**< \copybrief RKH_TR_SM_TRN */
-    RKH_TE_SM_STATE,                /**< \copybrief RKH_TR_SM_STATE */
-    RKH_TE_SM_ENSTATE,              /**< \copybrief RKH_TR_SM_ENSTATE */
-    RKH_TE_SM_EXSTATE,              /**< \copybrief RKH_TR_SM_EXSTATE */
-    RKH_TE_SM_NENEX,                /**< \copybrief RKH_TR_SM_NENEX */
-    RKH_TE_SM_NTRNACT,              /**< \copybrief RKH_TR_SM_NTRNACT */
-    RKH_TE_SM_TS_STATE,             /**< \copybrief RKH_TR_SM_TS_STATE */
-    RKH_TE_SM_EVT_PROC,             /**< \copybrief RKH_TR_SM_EVT_PROC */
-    RKH_TE_SM_EVT_NFOUND,           /**< \copybrief RKH_TR_SM_EVT_NFOUND */
-    RKH_TE_SM_GRD_FALSE,            /**< \copybrief RKH_TR_SM_GRD_FALSE */
-    RKH_TE_SM_CND_NFOUND,           /**< \copybrief RKH_TR_SM_CND_NFOUND */
-    RKH_TE_SM_UNKN_STATE,           /**< \copybrief RKH_TR_SM_UNKN_STATE */
-    RKH_TE_SM_EX_HLEVEL,            /**< \copybrief RKH_TR_SM_EX_HLEVEL */
-    RKH_TE_SM_EX_TSEG,              /**< \copybrief RKH_TR_SM_EX_TSEG */
-    RKH_TE_SM_EXE_ACT,              /**< \copybrief RKH_TR_SM_EXE_ACT */
-    RKH_SM_END = RKH_TE_SM_EXE_ACT,
-
-    /* --- Timer events (TIM group) ---------------------------------------- */
-    RKH_TE_TMR_INIT = RKH_TMR_START, /**< \copybrief RKH_TR_TMR_INIT */
-    RKH_TE_TMR_START,               /**< \copybrief RKH_TR_TMR_START */
-    RKH_TE_TMR_STOP,                /**< \copybrief RKH_TR_TMR_STOP */
-    RKH_TE_TMR_TOUT,                /**< \copybrief RKH_TR_TMR_TOUT */
-    RKH_TE_TMR_REM,                 /**< \copybrief RKH_TR_TMR_REM */
-    RKH_TMR_END = RKH_TE_TMR_REM,
-
-    /* --- Framework and misc. events (FWK group) -------------------------- */
-    RKH_TE_FWK_EN = RKH_FWK_START,  /**< \copybrief RKH_TR_FWK_EN */
-    RKH_TE_FWK_EX,                  /**< \copybrief RKH_TR_FWK_EX */
-    RKH_TE_FWK_EPREG,               /**< \copybrief RKH_TR_FWK_EPREG */
-    RKH_TE_FWK_AE,                  /**< \copybrief RKH_TR_FWK_AE */
-    RKH_TE_FWK_GC,                  /**< \copybrief RKH_TR_FWK_GC */
-    RKH_TE_FWK_GCR,                 /**< \copybrief RKH_TR_FWK_GCR */
-    RKH_TE_FWK_DEFER,               /**< \copybrief RKH_TR_FWK_DEFER */
-    RKH_TE_FWK_RCALL,               /**< \copybrief RKH_TR_FWK_RCALL */
-    RKH_TE_FWK_OBJ,                 /**< \copybrief RKH_TR_FWK_OBJ */
-    RKH_TE_FWK_SIG,                 /**< \copybrief RKH_TR_FWK_SIG */
-    RKH_TE_FWK_FUN,                 /**< \copybrief RKH_TR_FWK_FUN */
-    RKH_TE_FWK_EXE_FUN,             /**< \copybrief RKH_TR_FWK_EXE_FUN */
-    RKH_TE_FWK_SYNC_EVT,            /**< \copybrief RKH_TR_FWK_SYNC_EVT */
-    RKH_TE_FWK_TUSR,                /**< \copybrief RKH_TR_FWK_TUSR */
-    RKH_TE_FWK_TCFG,                /**< \copybrief RKH_TR_FWK_TCFG */
-    RKH_TE_FWK_ASSERT,              /**< \copybrief RKH_TR_FWK_ASSERT */
-    RKH_TE_FWK_AO,                  /**< \copybrief RKH_TR_FWK_AO */
-    RKH_TE_FWK_STATE,               /**< \copybrief RKH_TR_FWK_STATE */
-    RKH_TE_FWK_PSTATE,              /**< \copybrief RKH_TR_FWK_PSTATE */
-    RKH_TE_FWK_TIMER,               /**< \copybrief RKH_TR_FWK_TIMER */
-    RKH_TE_FWK_EPOOL,               /**< \copybrief RKH_TR_FWK_EPOOL */
-    RKH_TE_FWK_QUEUE,               /**< \copybrief RKH_TR_FWK_QUEUE */
-    RKH_FWK_END = RKH_TE_FWK_QUEUE,
-
-    /* --- User events (USR group) ----------------------------------------- */
-    RKH_TE_USER = RKH_USR_START,
-
-    /* --- Unit test harness events (UT group) ----------------------------- */
-    RKH_TE_UT_INIT = RKH_UT_START,
-    RKH_TE_UT_CLEANUP,
-    RKH_TE_UT_VERIFY,
-    RKH_TE_UT_IGNORE_GROUP,
-    RKH_TE_UT_EXPECT,
-    RKH_TE_UT_EXPECT_ANYARGS,
-    RKH_TE_UT_IGNORE,
-    RKH_TE_UT_IGNORE_ARG,
-   	RKH_TE_UT_SUCCESS,
-	RKH_TE_UT_FAIL,
-    RKH_UT_END = RKH_TE_UT_IGNORE_ARG,
-
-    RKH_TE_NEVENT = RKH_UT_END + 1         /* The last trace event */
-} RKH_TRC_EVENTS;
+typedef rui8_t RKH_TG_T;
 
 /**
  *  \brief
@@ -3518,12 +3597,12 @@ void rkh_trc_put(rui8_t b);
  *	difficult. Because the amount of data that the instrumented framework
  *	generates can be overwhelming, the RKH supports several types of filters
  *	that can use it to reduce the amount of data to be processed. The
- *	available groups are enumerated in #RKH_TRC_GROUPS.
+ *	available groups are enumerated in RKH_TG_<group> definitions.
  *
  *  \param[in] ctrl	filter option, the available options are FILTER_ON or
  *                  FILTER_OFF.
  *  \param[in] grp	trace group. The available groups are enumerated in
- *                  RKH_TRC_GROUPS.
+ *                  RKH_TG_<group> definitions.
  *  \param[in] mode	filter mode. ECHANGE indicates that the all event's group
  *                  are accordingly changed as filter option value, otherwise
  *                  EUNCHANGE.
@@ -3561,12 +3640,12 @@ void rkh_trc_filter_group_(rui8_t ctrl, RKH_TG_T grp, rui8_t mode);
  *	difficult. Because the amount of data that the instrumented framework
  *	generates can be overwhelming, the RKH supports several types of filters
  *	that can use it to reduce the amount of data to be processed. The
- *	available events are enumerated in #RKH_TRC_EVENTS.
+ *	available events are enumerated in RKH_TE_<group>_<event> definitions.
  *
  *  \param[in] ctrl		filter option, the available options are FILTER_ON or
  *                      FILTER_OFF.
  *  \param[in] evt		trace event. The available events are enumerated in
- *                      RKH_TRC_EVENTS.
+ *                      RKH_TE_<group>_<event> definitions.
  *
  *  \usage
  *  \code
@@ -3595,7 +3674,7 @@ void rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt);
  *  Test the group and event filter condition.
  *
  *  \param[in] e	trace event ID. The available events are enumerated in
- *                  RKH_TRC_EVENTS.
+ *                  RKH_TE_<group>_<event> definitions.
  *
  *	\return
  *  '1' (RKH_TRUE) if the group and event is not filtered,
@@ -3659,7 +3738,7 @@ rbool_t rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter,
  *	configurable by means of RKH_CFGPORT_TRC_SIZEOF_TSTAMP.
  *
  *	\param[in] eid		trace event ID. The available events are
- *                      enumerated in RKH_TRC_EVENTS.
+ *                      enumerated in RKH_TE_<group>_<event> definitions.
  *
  *  \note
  *	This function should be called indirectly through the macro
@@ -3731,7 +3810,7 @@ void rkh_trc_str(const char *s);
  *  Output object symbol record.
  *
  *  \param[in] tre		trace event ID. The available events are enumerated in
- *                      RKH_TRC_EVENTS.
+ *                      RKH_TE_<group>_<event> definitions.
  *  \param[in] obj		address of the object in memory.
  *  \param[in] obj_name	string terminated in '\\0'.
  *
