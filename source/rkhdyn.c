@@ -218,8 +218,8 @@ rkh_sma_get(RKH_SMA_T *sma)
     e = rkh_rq_get(&sma->equeue);
 
     RKH_ASSERT(e != (RKH_EVT_T *)0);
-     /* Because the variables are obtained outside critical section could be */
-                                                         /* a race condition */
+    /* Because the variables are obtained outside critical section could be */
+    /* a race condition */
     RKH_TR_SMA_GET(sma, e, e->pool, e->nref, 
                    &sma->equeue.qty, &sma->equeue.nmin);
     return e;

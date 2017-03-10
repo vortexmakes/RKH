@@ -70,16 +70,19 @@
  *					RKH_TRC_NE(nelem); \
  *				RKH_TRC_END()
  *
- *	#define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc) \
- *				RKH_TRC_BEGIN(RKH_TE_SMA_FIFO, \
- *								RKH_SMA_ACCESS_CONST(actObj_, prio), \
- *								ev->e) \
- *					RKH_TRC_SYM(ao); \
- *					RKH_TRC_SIG(ev->e); \
- *					RKH_TRC_SNDR(snr); \
- *					RKH_TRC_UI8(pid); \
- *					RKH_TRC_UI8(rc); \
- *				RKH_TRC_END()
+ *  #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_, \
+ *                          nElem_, nMin_) \
+ *      RKH_TRC_BEGIN_NOCRIT(RKH_TE_SMA_FIFO, \
+ *                           RKH_SMA_ACCESS_CONST(actObj_, prio), \
+ *                          (evt_)->e) \
+ *          RKH_TRC_SYM(actObj_); \
+ *          RKH_TRC_SIG((evt_)->e); \
+ *          RKH_TRC_SNDR(sender_); \
+ *          RKH_TRC_UI8(poolID_); \
+ *          RKH_TRC_UI8(refCntr_); \
+ *          RKH_TRC_NE(nElem_); \
+ *          RKH_TRC_NE(nMin_); \
+ *      RKH_TRC_END_NOCRIT()
  *	\endcode
  *
  *	Each trace event and its arguments are placed in the trace stream like a
@@ -1874,7 +1877,7 @@
              *
              *  \description    Send a event to SMA's queue in a LIFO manner
              *  \trcGroup       RKH_TG_SMA
-             *  \trcEvent       RKH_TE_SMA_ACT
+             *  \trcEvent       RKH_TE_SMA_LIFO
              *
              *  \param[in] actObj_  Active object
              *  \param[in] evt_     Event signal
@@ -1943,7 +1946,8 @@
                 (void)0
             #define RKH_TR_SMA_TERM(actObj_, actObjPrio_) \
                 (void)0
-            #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_, nElem_, nMin_) \
+            #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_, nElem_, \
+                                   nMin_) \
                 (void)0
             #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_, \
                                     nElem_, nMin_) \
@@ -3252,7 +3256,7 @@
              *
              *  \description    Entry symbol table for actor object
              *  \trcGroup       RKH_TG_FWK
-             *  \trcEvent       RKH_TE_FWK_OBJ
+             *  \trcEvent       RKH_TE_FWK_ACTOR
              *
              *  \param[in] actorObj_    Actor object address. Generally, it's 
              *                          used for active object and ISR, i.e. 
