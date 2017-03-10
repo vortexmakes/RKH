@@ -280,9 +280,9 @@ rkh_sma_post_fifo(	RKH_SMA_T *sma, const RKH_EVT_T *e )
 
 	RKH_INC_REF( e );
 	status = OSA_MsgQPut(&sma->equeue,	               /* event queue object */
-						 (void *)&e);                  /* actual event posted */
+						 (void *)&e);                 /* actual event posted */
     RKH_ALLEGE(status == kStatus_OSA_Success);
-	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
+	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref, &sma->equeue.number, 0);
 
 	RKH_EXIT_CRITICAL_();
 }
@@ -308,7 +308,7 @@ rkh_sma_post_lifo( 	RKH_SMA_T *sma, const RKH_EVT_T *e )
 	status = OSA_MsgQPutLifo(&sma->equeue,             /* event queue object */
 						     (void *)&e);              /* actual event posted */
     RKH_ALLEGE(status == kStatus_OSA_Success);
-	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
+	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref, &sma->equeue.number, 0);
 
 	RKH_EXIT_CRITICAL_();
 }

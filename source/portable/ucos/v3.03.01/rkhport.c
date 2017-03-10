@@ -206,7 +206,10 @@ rkh_sma_post_fifo(	RKH_SMA_T *sma, const RKH_EVT_T *e )
 			OS_OPT_POST_FIFO + OS_OPT_POST_NO_SCHED,
 			&err );							/* received error code */
     RKH_ALLEGE(err == OS_ERR_NONE);
-	RKH_TR_SMA_FIFO( sma, e, sender, e->pool, e->nref );
+	RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref,
+                    &sma->equeue.MsgQ.NbrEntries,
+                    &sma->equeue.MsgQ.NbrEntriesSize - 
+                    &sma->equeue.MsgQ.NbrEntriesMax);
 
 	RKH_EXIT_CRITICAL_();
 }
@@ -236,7 +239,10 @@ rkh_sma_post_lifo( 	RKH_SMA_T *sma, const RKH_EVT_T *e )
 			OS_OPT_POST_LIFO + OS_OPT_POST_NO_SCHED,
 			&err );							/* received error code */
     RKH_ALLEGE(err == OS_ERR_NONE);
-	RKH_TR_SMA_LIFO( sma, e, sender, e->pool, e->nref );
+	RKH_TR_SMA_LIFO(sma, e, sender, e->pool, e->nref,
+                    &sma->equeue.MsgQ.NbrEntries,
+                    &sma->equeue.MsgQ.NbrEntriesSize - 
+                    &sma->equeue.MsgQ.NbrEntriesMax);
 
 	RKH_EXIT_CRITICAL_();
 }

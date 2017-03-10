@@ -1844,13 +1844,18 @@
              *  \trcGroup       RKH_TG_SMA
              *  \trcEvent       RKH_TE_SMA_FIFO
              *
-             *  \param[in] actObj_   Active object
-             *  \param[in] evt_   Event signal
+             *  \param[in] actObj_  Active object
+             *  \param[in] evt_     Event signal
              *  \param[in] sender_  Event sender
              *  \param[in] poolID_  Pool ID (for dynamic events) 
-             *  \param[in] refCntr_   Reference count (for dynamic events)
+             *  \param[in] refCntr_ Reference count (for dynamic events)
+             *  \param[in] nElem_   Number of elements currently in the 
+             *                      queue
+             *  \param[in] nMin_    Minimum number of free elements ever 
+             *                      in this queue
              */
-            #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
+            #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_, \
+                                    nElem_, nMin_) \
                 RKH_TRC_BEGIN_NOCRIT(RKH_TE_SMA_FIFO, \
                                      RKH_SMA_ACCESS_CONST(actObj_, prio), \
                                      (evt_)->e) \
@@ -1859,6 +1864,8 @@
                     RKH_TRC_SNDR(sender_); \
                     RKH_TRC_UI8(poolID_); \
                     RKH_TRC_UI8(refCntr_); \
+                    RKH_TRC_NE(nElem_); \
+                    RKH_TRC_NE(nMin_); \
                 RKH_TRC_END_NOCRIT()
 
             /**
@@ -1869,13 +1876,18 @@
              *  \trcGroup       RKH_TG_SMA
              *  \trcEvent       RKH_TE_SMA_ACT
              *
-             *  \param[in] actObj_   Active object
-             *  \param[in] evt_   Event signal
+             *  \param[in] actObj_  Active object
+             *  \param[in] evt_     Event signal
              *  \param[in] sender_  Event sender
              *  \param[in] poolID_  Pool ID (for dynamic events) 
-             *  \param[in] refCntr_   Reference count (for dynamic events)
+             *  \param[in] refCntr_ Reference count (for dynamic events)
+             *  \param[in] nElem_   Number of elements currently in the 
+             *                      queue
+             *  \param[in] nMin_    Minimum number of free elements ever 
+             *                      in this queue
              */
-            #define RKH_TR_SMA_LIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
+            #define RKH_TR_SMA_LIFO(actObj_, evt_, sender_, poolID_, refCntr_, \
+                                    nElem_, nMin_) \
                 RKH_TRC_BEGIN_NOCRIT(RKH_TE_SMA_LIFO, \
                                      RKH_SMA_ACCESS_CONST(actObj_, prio), \
                                      (evt_)->e) \
@@ -1884,6 +1896,8 @@
                     RKH_TRC_SNDR(sender_); \
                     RKH_TRC_UI8(poolID_); \
                     RKH_TRC_UI8(refCntr_); \
+                    RKH_TRC_NE(nElem_); \
+                    RKH_TRC_NE(nMin_); \
                 RKH_TRC_END_NOCRIT()
 
             /**
@@ -1927,14 +1941,20 @@
         #else
             #define RKH_TR_SMA_ACT(actObj_, actObjPrio_, actObjQueSize_) \
                 (void)0
-            #define RKH_TR_SMA_TERM(actObj_, actObjPrio_)               (void)0
-            #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_)    (void)0
-            #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
+            #define RKH_TR_SMA_TERM(actObj_, actObjPrio_) \
                 (void)0
-            #define RKH_TR_SMA_LIFO(actObj_, evt_, sender_, poolID_, refCntr_) \
+            #define RKH_TR_SMA_GET(actObj_, evt_, poolID_, refCntr_, nElem_, nMin_) \
                 (void)0
-            #define RKH_TR_SMA_REG(actObj_, prio)            (void)0
-            #define RKH_TR_SMA_UNREG(actObj_, prio)          (void)0
+            #define RKH_TR_SMA_FIFO(actObj_, evt_, sender_, poolID_, refCntr_, \
+                                    nElem_, nMin_) \
+                (void)0
+            #define RKH_TR_SMA_LIFO(actObj_, evt_, sender_, poolID_, refCntr_, \
+                                    nElem_, nMin_) \
+                (void)0
+            #define RKH_TR_SMA_REG(actObj_, prio) \
+                (void)0
+            #define RKH_TR_SMA_UNREG(actObj_, prio) \
+                (void)0
         #endif
 
         /* --- State machine (SM) ------------------------------------------ */
@@ -3305,9 +3325,11 @@
         /* --- State Machine Application (SMA) ----------------------------- */
         #define RKH_TR_SMA_ACT(ao, p, s)                  (void)0
         #define RKH_TR_SMA_TERM(ao, p)                    (void)0
-        #define RKH_TR_SMA_GET(ao, ev, pid, rc)           (void)0
-        #define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc)     (void)0
-        #define RKH_TR_SMA_LIFO(ao, ev, snr, pid, rc)     (void)0
+        #define RKH_TR_SMA_GET(ao, ev, pid, rc, ne, nm)   (void)0
+        #define RKH_TR_SMA_FIFO(ao, ev, snr, pid, rc, ne, nm) \
+                (void)0
+        #define RKH_TR_SMA_LIFO(ao, ev, snr, pid, rc, ne, nm) \
+                (void)0
         #define RKH_TR_SMA_REG(ao, prio)                  (void)0
         #define RKH_TR_SMA_UNREG(ao, prio)                (void)0
 

@@ -484,26 +484,6 @@ TEST(trace_args, InsertState)
 
 TEST(trace_args, InsertRecord)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "receiver"};
-    RKH_SMA_T receiver;
-    RKH_SMA_T sender;
-    RKH_EVT_T event;
-    rui8_t poolId, refCtr;
-
-    receiver.sm.romrkh = &base;
-    event.e = 3;
-    poolId = 5;
-    refCtr = 7;
-
-    RKH_TR_SMA_FIFO(&receiver, &event, &sender, poolId, refCtr);
-
-    checkHeader(RKH_TE_SMA_FIFO, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
-    checkU8Value(event.e);
-    checkObjectAddress((rui8_t *)&sender);
-    checkU8Value(poolId);
-    checkU8Value(refCtr);
-    checkTrailer();
 }
 
 TEST(trace_args, InsertFwkEpoolRecord)
@@ -544,6 +524,89 @@ TEST(trace_args, InsertSmaActivateRecord)
     checkObjectAddress((rui8_t *)&ao);
     checkU8Value(0);
     checkU8Value(16);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertSmaGetRecord)
+{
+    RKHROM RKH_ROM_T base = {0, 0, "ao"};
+    RKH_SMA_T ao;
+    RKH_EVT_T event;
+    rui8_t poolId, refCtr, nElem, nMin;
+
+    ao.sm.romrkh = &base;
+    event.e = 3;
+    poolId = 5;
+    refCtr = 7;
+    nElem = 4;
+    nMin = 2;
+
+    ao.sm.romrkh = &base;
+	RKH_TR_SMA_GET(&ao, &event, poolId, refCtr, nElem, nMin);
+
+    checkHeader(RKH_TE_SMA_GET, 0, 0x1234567);
+    checkObjectAddress((rui8_t *)&ao);
+    checkU8Value(event.e);
+    checkU8Value(poolId);
+    checkU8Value(refCtr);
+    checkU8Value(nElem);
+    checkU8Value(nMin);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertSmaPostFifoRecord)
+{
+    RKHROM RKH_ROM_T base = {0, 0, "receiver"};
+    RKH_SMA_T receiver;
+    RKH_SMA_T sender;
+    RKH_EVT_T event;
+    rui8_t poolId, refCtr, nElem, nMin;
+
+    receiver.sm.romrkh = &base;
+    event.e = 3;
+    poolId = 5;
+    refCtr = 7;
+    nElem = 4;
+    nMin = 2;
+
+    RKH_TR_SMA_FIFO(&receiver, &event, &sender, poolId, refCtr, nElem, nMin);
+
+    checkHeader(RKH_TE_SMA_FIFO, 0, 0x1234567);
+    checkObjectAddress((rui8_t *)&receiver);
+    checkU8Value(event.e);
+    checkObjectAddress((rui8_t *)&sender);
+    checkU8Value(poolId);
+    checkU8Value(refCtr);
+    checkU8Value(nElem);
+    checkU8Value(nMin);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertSmaPostLifoRecord)
+{
+    RKHROM RKH_ROM_T base = {0, 0, "receiver"};
+    RKH_SMA_T receiver;
+    RKH_SMA_T sender;
+    RKH_EVT_T event;
+    rui8_t poolId, refCtr, nElem, nMin;
+
+    receiver.sm.romrkh = &base;
+    event.e = 3;
+    poolId = 5;
+    refCtr = 7;
+    nElem = 4;
+    nMin = 2;
+
+    RKH_TR_SMA_LIFO(&receiver, &event, &sender, poolId, refCtr, nElem, nMin);
+
+    checkHeader(RKH_TE_SMA_LIFO, 0, 0x1234567);
+    checkObjectAddress((rui8_t *)&receiver);
+    checkU8Value(event.e);
+    checkObjectAddress((rui8_t *)&sender);
+    checkU8Value(poolId);
+    checkU8Value(refCtr);
+    checkU8Value(nElem);
+    checkU8Value(nMin);
     checkTrailer();
 }
 
