@@ -172,7 +172,7 @@ of posting dynamic and static events from the interrupt service routines
             }
 			else
 			{
-(4)				mye = RKH_ALLOC_EVT(MYEVT_T, kbmap(c));
+(4)				mye = RKH_ALLOC_EVT(MYEVT_T, kbmap(c), 0);
 (5)				mye->ts = (rui16_t)rand();
 (6)				RKH_SMA_POST_FIFO(my, RKH_EVT_CAST(mye), 0);
 			}

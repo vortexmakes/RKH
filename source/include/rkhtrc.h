@@ -2570,17 +2570,26 @@
              *  \trcGroup       RKH_TG_FWK
              *  \trcEvent       RKH_TE_FWK_AE
              *
-             *  \param[in] evtSize_   Event size
-             *  \param[in] evt_   Event
-             *  \param[in] poolID_  Event pool id
-             *  \param[in] refCnt_   Reference count
+             *  \param[in] evtSize_ Event size
+             *  \param[in] evt_     Pointer to event object
+             *  \param[in] nUsed_   Current number of memory blocks used 
+             *  \param[in] nMin_    Lowest number of free blocks ever present 
+             *  \param[in] sender_  Pointer to the actor that request a memory block. 
+             *                      It is not necessarily a pointer to an active 
+             *                      object. In fact, if RKH_ALLOC_EVT() is called from 
+             *                      an interrupt or other context, it can create a 
+             *                      unique object just to unambiguously identify the 
+             *                      publisher of the event.
              */
-            #define RKH_TR_FWK_AE(evtSize_, evt_, poolID_, refCnt_) \
+            #define RKH_TR_FWK_AE(evtSize_, evt_, nUsed_, nMin_, sender_) \
                 RKH_TRC_BEGIN_WOAOSIG(RKH_TE_FWK_AE) \
                     RKH_TRC_ES(evtSize_); \
                     RKH_TRC_SIG((evt_)->e); \
-                    RKH_TRC_UI8(poolID_); \
-                    RKH_TRC_UI8(refCnt_); \
+                    RKH_TRC_UI8((evt_)->pool - 1); \
+                    RKH_TRC_UI8((evt_)->nref); \
+                    RKH_TRC_UI8(nUsed_); \
+                    RKH_TRC_UI8(nMin_); \
+                    RKH_TRC_SYM(sender_); \
                 RKH_TRC_END()
 
             /**
@@ -2610,15 +2619,24 @@
              *  \trcGroup       RKH_TG_FWK
              *  \trcEvent       RKH_TE_FWK_GCR
              *
-             *  \param[in] evt_   Event
-             *  \param[in] poolID_  Event pool id
-             *  \param[in] refCnt_   Reference count
+             *  \param[in] evt_     Pointer to event object
+             *  \param[in] nUsed_   Current number of memory blocks used 
+             *  \param[in] nMin_    Lowest number of free blocks ever present 
+             *  \param[in] sender_  Pointer to the actor that request a memory block. 
+             *                      It is not necessarily a pointer to an active 
+             *                      object. In fact, if RKH_FWK_GC() is called from 
+             *                      an interrupt or other context, it can create a 
+             *                      unique object just to unambiguously identify the 
+             *                      publisher of the event.
              */
-            #define RKH_TR_FWK_GCR(evt_, poolID_, refCnt_) \
+            #define RKH_TR_FWK_GCR(evt_, nUsed_, nMin_, sender_) \
                 RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_GCR) \
                     RKH_TRC_SIG((evt_)->e); \
-                    RKH_TRC_UI8(poolID_); \
-                    RKH_TRC_UI8(refCnt_); \
+                    RKH_TRC_UI8((evt_)->pool); \
+                    RKH_TRC_UI8((evt_)->nref); \
+                    RKH_TRC_UI8(nUsed_); \
+                    RKH_TRC_UI8(nMin_); \
+                    RKH_TRC_SYM(sender_); \
                 RKH_TRC_END_NOCRIT()
 
             /**
@@ -3288,9 +3306,9 @@
             #define RKH_TR_FWK_EN()                                     (void)0
             #define RKH_TR_FWK_EX()                                     (void)0
             #define RKH_TR_FWK_EPREG(evtPool_, storageSize_, evtSize_)  (void)0
-            #define RKH_TR_FWK_AE(evtSize_, evt_, poolID_, refCnt_)     (void)0
+            #define RKH_TR_FWK_AE(evtSize_, evt_, nUsed_, nMin_, sndr_) (void)0
             #define RKH_TR_FWK_GC(evt_, poolID_, refCnt_)               (void)0
-            #define RKH_TR_FWK_GCR(evt_, poolID_, refCnt_)              (void)0
+            #define RKH_TR_FWK_GCR(evt_, nUsed_, nMin_, sndr_)          (void)0
             #define RKH_TR_FWK_DEFER(queue_, evt_)                      (void)0
             #define RKH_TR_FWK_RCALL(actObj_, evt_)                     (void)0
             #define RKH_TR_FWK_OBJ(obj_)                                (void)0
@@ -3368,9 +3386,10 @@
         #define RKH_TR_FWK_EN()                           (void)0
         #define RKH_TR_FWK_EX()                           (void)0
         #define RKH_TR_FWK_EPREG(ep, ss, es)              (void)0
-        #define RKH_TR_FWK_AE(es, ev, pid, rc)            (void)0
+        #define RKH_TR_FWK_AE(es, ev, nUsed_, nMin_, sndr_) \
+                (void)0
         #define RKH_TR_FWK_GC(ev, pid, rc)                (void)0
-        #define RKH_TR_FWK_GCR(ev, pid, rc)               (void)0
+        #define RKH_TR_FWK_GCR(ev, nUsed_, nMin_, sndr_)  (void)0
         #define RKH_TR_FWK_DEFER(q, ev)                   (void)0
         #define RKH_TR_FWK_RCALL(ao, ev)                  (void)0
         #define RKH_TR_FWK_OBJ(__o)                       (void)0

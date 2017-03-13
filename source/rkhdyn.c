@@ -77,7 +77,7 @@ static rui8_t rkhnpool;
 /* ---------------------------- Global functions --------------------------- */
 
 RKH_EVT_T *
-rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e)
+rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender)
 {
     RKH_EVT_T *evt;
     rui8_t idx = 0;
@@ -105,13 +105,15 @@ rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e)
     evt->nref = 0;
     evt->pool = (rui8_t)(idx + (rui8_t)1);
 
-    RKH_TR_FWK_AE(esize, evt, evt->pool - 1, evt->nref);
+    RKH_TR_FWK_AE(esize, evt, RKH_DYNE_GET_NUSED(ep), RKH_DYNE_GET_NMIN(ep), 
+                  sender);
     return evt;
 }
 
 void
-rkh_fwk_gc(RKH_EVT_T *e)
+rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
 {
+    RKH_DYNE_TYPE *ep;
     RKH_SR_ALLOC();
 
     if (e->nref != 0)       /* is it a dynamic event? */
@@ -128,11 +130,13 @@ rkh_fwk_gc(RKH_EVT_T *e)
         {
             /* cannot wrap around */
             rui8_t idx = (rui8_t)(e->pool - 1);
-            RKH_TR_FWK_GCR(e, e->pool, e->nref);
+            ep = &rkh_eplist[idx]; 
+            RKH_TR_FWK_GCR(e, RKH_DYNE_GET_NUSED(ep) - 1, 
+                           RKH_DYNE_GET_NMIN(ep), sender);
             RKH_EXIT_CRITICAL_();
 
             RKH_ASSERT(idx < RKH_CFG_FWK_MAX_EVT_POOL);
-            RKH_DYNE_PUT(&rkh_eplist[idx], e);
+            RKH_DYNE_PUT(ep, e);
         }
     }
 }

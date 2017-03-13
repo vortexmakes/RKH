@@ -711,24 +711,19 @@ OS/RTOS?</EM>
 \li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1 and 
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
-RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET() y RKH_DYNE_PUT() in \c rkhport.h 
-according to underlying OS/RTOS.
+RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(),
+and RKH_DYNE_GET_NMIN() in \c rkhport.h according to underlying OS/RTOS.
 
 <EM>Generic example</EM>
 \code
-#define RKH_DYNE_TYPE			RKH_MP_T
-
-#define RKH_DYNE_INIT( mp, sstart, ssize, esize ) 	\
-			rkh_mp_init( (mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize )
-
-#define RKH_DYNE_GET_ESIZE( mp )					\
-			( (mp)->bsize )
-
-#define RKH_DYNE_GET( mp, e )						\
-			( (e) = (RKH_EVT_T*)rkh_mp_get( (mp) ) )
-
-#define RKH_DYNE_PUT( mp, e )						\
-			( rkh_mp_put( (mp), e ) )
+#define RKH_DYNE_TYPE           RKH_MP_T
+#define RKH_DYNE_INIT(mp, sstart, ssize, esize) \
+            rkh_mp_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
+#define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
+#define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
+#define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
+#define RKH_DYNE_GET_NFREE(mp)  ((mp)->nfree)
+#define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
 \endcode
 
 \b NO: \n
@@ -923,7 +918,8 @@ const char *rkh_get_port_desc( void );
  * 	its own implementation of dynamic memory management.
  * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will automatically 
  * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
- * 	RKH_DYNE_GET(), and RKH_DYNE_PUT().
+ * 	RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(), and 
+ *  RKH_DYNE_GET_NMIN() macros.
  */
 
 #define RKH_CFGPORT_NATIVE_DYN_EVT_EN			1
@@ -2298,7 +2294,7 @@ set_config( const struct rkh_t *sma, RKH_EVT_T *pe )
 	(void)sma;		/* argument not used */
 	(void)pe;		/* argument not used */
 
-	e = RKH_ALLOC_EVT( MYEVT_T, SIX );
+	e = RKH_ALLOC_EVT( MYEVT_T, SIX, sma );
 	e->ts = ( rui16_t )rand();
 	RKH_TMR_ONESHOT( &my_timer, sma, MY_TICK );
 }
@@ -2491,8 +2487,8 @@ rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
 ...
 
 (5) RKH_SET_STATIC_EVENT( &tout, TIMEOUT );
-(6)	DIAL_T *de = RKH_ALLOC_EVT( DIAL_T, DIALED );
-(7)	SETUP_T *se = RKH_ALLOC_EVT( SETUP_T, SET_CONFIG );
+(6)	DIAL_T *de = RKH_ALLOC_EVT( DIAL_T, DIALED, me );
+(7)	SETUP_T *se = RKH_ALLOC_EVT( SETUP_T, SET_CONFIG, me );
 (8)	se->volume = 0;
 	se->baud_rate = DEFAULT_BAUD_RATE;
 	se->iloop = 2;
@@ -2574,7 +2570,7 @@ directly posts the event to the event queue of the consumer SMA
 
 \code
 ...
-(1) mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
+(1) mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ), me );
 (2) mye->ts = ( rui16_t )rand();
 (3) rkh_sma_post_fifo( my, ( RKH_EVT_T* )mye );
 \endcode
@@ -2649,8 +2645,9 @@ and to enhance the system performance in a substantial manner. The
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
 structure: RKH_CFG_FWK_DYN_EVT_EN, RKH_CFG_FWK_MAX_EVT_POOL, RKH_CFG_FWK_SIZEOF_EVT, 
-RKH_CFG_FWK_SIZEOF_EVT_SIZE, RKH_CFGPORT_NATIVE_DYN_EVT_EN, RKH_DYNE_TYPE, RKH_DYNE_INIT, 
-RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT. 
+RKH_CFG_FWK_SIZEOF_EVT_SIZE, RKH_CFGPORT_NATIVE_DYN_EVT_EN, RKH_DYNE_TYPE, 
+RKH_DYNE_INIT, RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT, 
+RKH_DYNE_GET_NFREE, and RKH_DYNE_GET_NMIN.
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"
@@ -2809,7 +2806,7 @@ for more information about this.
 			}
 			else
 			{
-(8)				mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ) );
+(8)				mye = RKH_ALLOC_EVT( MYEVT_T, kbmap( c ), 0 );
 (9)				mye->ts = ( rui16_t )rand();
 (10)			rkh_sm_dispatch( (RKH_SM_T *)my, ( RKH_EVT_T* )mye );
 			}
@@ -3726,7 +3723,7 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=50 align="center"> #RKH_TG_FWK </TD>
+		<TD rowspan=59 align="center"> #RKH_TG_FWK </TD>
 		<TD rowspan=1 align="center"> 0 </TD>
 		<TD rowspan=1> #RKH_TE_FWK_EN () </TD>
 		<TD rowspan=1> \copybrief RKH_TR_FWK_EN </TD>
@@ -3756,10 +3753,10 @@ the data included for each.
 		<TD><I> Event size </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=4 align="center"> 3 </TD>
-		<TD rowspan=4> #RKH_TE_FWK_AE (ES es, SIG sig, UI8 pid, 
+		<TD rowspan=7 align="center"> 3 </TD>
+		<TD rowspan=7> #RKH_TE_FWK_AE (ES es, SIG sig, UI8 pid, 
 															UI8 refc) </TD>
-		<TD rowspan=4> \copybrief RKH_TR_FWK_AE </TD>
+		<TD rowspan=7> \copybrief RKH_TR_FWK_AE </TD>
 		<TD><I> es </I></TD>
 		<TD><I> Event size </I></TD>
 	</TR>
@@ -3774,6 +3771,18 @@ the data included for each.
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> refc </I></TD>
 		<TD><I> \copybrief RKH_EVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nUsed </I></TD>
+		<TD><I> Current number of memory blocks used </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nMin </I></TD>
+		<TD><I> \copybrief RKH_MP_T::nmin </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sender </I></TD>
+		<TD><I> Pointer to the actor that request a memory block </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 4 </TD>
@@ -3791,9 +3800,36 @@ the data included for each.
 		<TD><I> \copybrief RKH_EVT_T::nref </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=3 align="center"> 5 </TD>
-		<TD rowspan=3> #RKH_TE_FWK_GCR (SIG sig, UI8 pid, UI8 refc) </TD>
-		<TD rowspan=3> \copybrief RKH_TR_FWK_GCR </TD>
+		<TD rowspan=6 align="center"> 5 </TD>
+		<TD rowspan=6> #RKH_TE_FWK_GCR (SIG sig, UI8 pid, UI8 refc) </TD>
+		<TD rowspan=6> \copybrief RKH_TR_FWK_GCR </TD>
+		<TD><I> sig </I></TD>
+		<TD><I> \copybrief RKH_EVT_T::e </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> pid </I></TD>
+		<TD><I> \copybrief RKH_EVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> refc </I></TD>
+		<TD><I> \copybrief RKH_EVT_T::nref </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nUsed </I></TD>
+		<TD><I> Current number of memory blocks used </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> nMin </I></TD>
+		<TD><I> \copybrief RKH_MP_T::nmin </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD><I> sender </I></TD>
+		<TD><I> Pointer to the actor that request a memory block </I></TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="left" valign="middle" >
+		<TD rowspan=3 align="center"> 4 </TD>
+		<TD rowspan=3> #RKH_TE_FWK_GC (SIG sig, UI8 pid, UI8 refc) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_FWK_GC </TD>
 		<TD><I> sig </I></TD>
 		<TD><I> \copybrief RKH_EVT_T::e </I></TD>
 	</TR>

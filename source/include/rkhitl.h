@@ -2111,7 +2111,8 @@ extern "C" {
      *  then RKH will include its own implementation of dynamic memory
      *  management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH
      *  also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
-     *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
+     *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), 
+     *  RKH_DYNE_GET_NUSED(), and RKH_DYNE_GET_NMIN() macros.
      *
      * \type       Boolean 
      * \range      
@@ -2428,6 +2429,34 @@ extern "C" {
      *  \param[in] e		pointer to the returned event.
      */
     #define RKH_DYNE_PUT(mp, e)
+
+    /**
+     *  \brief
+     *	Encapsulates how RKH should return the current number of memory 
+     *	blocks used in the pool \c mp.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param[in] mp		pointer to previously allocated memory pool 
+     *                      structure.
+     */
+    #define RKH_DYNE_GET_NUSED(mp)
+
+    /**
+     *  \brief
+     *	Encapsulates how RKH should return the lowest number of free 
+     *	blocks ever present in the pool \c mp.
+     *  This number provides valuable empirical data for proper sizing of the
+     *  memory pool.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param[in] mp		pointer to previously allocated memory pool 
+     *                      structure.
+     */
+    #define RKH_DYNE_GET_NMIN(mp)
 #endif
 
 #ifdef RKH_CPUSR_TYPE

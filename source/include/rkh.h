@@ -158,12 +158,17 @@ extern "C" {
     #define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
     #define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
     #define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
+    #define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
+    #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
 #else
     #define RKH_DYNE_TYPE           rui8_t
     #define RKH_DYNE_INIT(mp, sstart, ssize, esize)   (void)0
     #define RKH_DYNE_GET_ESIZE(mp)  (void)0
     #define RKH_DYNE_GET(mp, e)     (void)0
     #define RKH_DYNE_PUT(mp, e)     (void)0
+    #define RKH_DYNE_GET_NBLOCK(mp) (void)0
+    #define RKH_DYNE_GET_NUSED(mp)  (void)0
+    #define RKH_DYNE_GET_NMIN(mp)   (void)0
 #endif
 
 /**
@@ -2324,6 +2329,11 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *  \param[in] et		type of event
  *  \param[in] e		event signal
+ *  \param[in] sender_	pointer to the actor that request a memory block. It is not 
+ *                      necessarily a pointer to an active object. In fact, if 
+ *                      RKH_ALLOC_EVT() is called from an interrupt or 
+ *                      other context, it can create a unique object just to 
+ *                      unambiguously identify the publisher of the event.
  *
  *  \note
  *	The assertions inside rkh_fwk_ae() function guarantee that the
@@ -2336,7 +2346,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	RKH_ALLOC_EVT():
  *
  *	\code
- *	MYEVT_T *mye = RKH_ALLOC_EVT( MYEVT_T, DATA );
+ *	MYEVT_T *mye = RKH_ALLOC_EVT(MYEVT_T, DATA, me);
  *	mye->y = mye->x = 0;
  *	...
  *	\endcode
@@ -2344,10 +2354,10 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \ingroup apiEvt
  */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-    #define RKH_ALLOC_EVT(et, e) \
+    #define RKH_ALLOC_EVT(et, e, sender_) \
         (et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
 #else
-    #define RKH_ALLOC_EVT(et, e) \
+    #define RKH_ALLOC_EVT(et, e, sender_) \
         (void)0
 #endif
 
@@ -2367,6 +2377,12 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  e->pool member.
  *
  *  \param[in] e		pointer to event to be potentially recycled.
+ *  \param[in] sender_  Pointer to the actor that request a memory block. 
+ *                      It is not necessarily a pointer to an active 
+ *                      object. In fact, if RKH_FWK_GC() is called from 
+ *                      an interrupt or other context, it can create a 
+ *                      unique object just to unambiguously identify the 
+ *                      publisher of the event.
  *
  *  \note
  *  This function is internal to RKH and the user application should
@@ -2382,9 +2398,9 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \ingroup apiEvt
  */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-    #define RKH_FWK_GC(e)             rkh_fwk_gc(e)
+    #define RKH_FWK_GC(e, sender_)      rkh_fwk_gc(e)
 #else
-    #define RKH_FWK_GC(e)             (void)0
+    #define RKH_FWK_GC(e, sender_)      (void)0
 #endif
 
 /**
@@ -2629,7 +2645,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  {
  *      START_EVT_T *e_start;
  *
- *      e_start = RKH_ALLOC_EVT( START_EVT_T, START );
+ *      e_start = RKH_ALLOC_EVT( START_EVT_T, START, me );
  *      e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
  *      RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ),
  *												RKH_EVT_CAST(e_start), me );
@@ -3242,7 +3258,8 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
  *
  *  For adapting RKH event pools to any fixed-size memory block service RTOS
  *  provided the application code must define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
- *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT() macros.
+ *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NUSED(),
+ *  and RKH_DYNE_GET_NMIN() macros.
  *
  *  The dynamic allocation of events is optional then if the
  *  #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native fixed-size
@@ -3250,7 +3267,8 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
  *  include its own implementation of dynamic memory management.
  *  When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will
  *  automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
- *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), and RKH_DYNE_PUT().
+ *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NUSED(),
+ *  and RKH_DYNE_GET_NMIN() macros.
  *
  *  \param[in] sstart   storage start. Pointer to memory from which memory 
  *                      blocks are allocated.
@@ -3310,6 +3328,11 @@ void rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize);
  *
  *  \param[in] esize    size of event [in bytes].
  *  \param[in] e        event signal.
+ *  \param[in] sender	pointer to the actor that request a memory block. It is not 
+ *                      necessarily a pointer to an active object. In fact, if 
+ *                      RKH_ALLOC_EVT() is called from an interrupt or 
+ *                      other context, it can create a unique object just to 
+ *                      unambiguously identify the publisher of the event.
  *
  *  \note
  *  This function is internal to RKH and the user application should not call 
@@ -3319,16 +3342,22 @@ void rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize);
  *  rkh_set_static_event() and rkh_fwk_gc().
  */
 
-RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e);
+RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender);
 
 /**
  *  \brief
  *  Recycle a dynamic event.
  *
- *  \param[in] e    event signal.
+ *  \param[in] e        Event signal.
+ *  \param[in] sender   Pointer to the actor that request a memory block. 
+ *                      It is not necessarily a pointer to an active 
+ *                      object. In fact, if RKH_FWK_GC() is called from 
+ *                      an interrupt or other context, it can create a 
+ *                      unique object just to unambiguously identify the 
+ *                      publisher of the event.
  */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-void rkh_fwk_gc(RKH_EVT_T *e);
+void rkh_fwk_gc(RKH_EVT_T *e, const void *const sender);
 #endif
 
 /**

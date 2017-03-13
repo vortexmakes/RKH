@@ -133,7 +133,7 @@ isr_kbd_thread(LPVOID par)      /* Win32 thread to emulate keyboard ISR */
         }
         else
         {
-            mye = RKH_ALLOC_EVT(MyEvt, kbmap(c));
+            mye = RKH_ALLOC_EVT(MyEvt, kbmap(c), 0);
             mye->ts = (rui16_t)rand();
             RKH_SMA_POST_FIFO(my, RKH_EVT_CAST(mye), 0);
         }

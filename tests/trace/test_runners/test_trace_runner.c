@@ -131,6 +131,8 @@ TEST_GROUP_RUNNER(trace_args)
 	RUN_TEST_CASE(trace_args, InsertSmaGetRecord);
 	RUN_TEST_CASE(trace_args, InsertSmaPostFifoRecord);
 	RUN_TEST_CASE(trace_args, InsertSmaPostLifoRecord);
+	RUN_TEST_CASE(trace_args, InsertFwkAeRecord);
+	RUN_TEST_CASE(trace_args, InsertFwkGcrRecord);
 }
 
 /* ------------------------------ End of file ------------------------------ */

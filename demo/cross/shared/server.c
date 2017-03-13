@@ -123,7 +123,7 @@ server_start(Server *const me, RKH_EVT_T *pe)
 {
     StartEvt *e_start;
 
-    e_start = RKH_ALLOC_EVT(StartEvt, START);
+    e_start = RKH_ALLOC_EVT(StartEvt, START, me);
     e_start->clino = RKH_CAST(ReqEvt, pe)->clino;
     RKH_SMA_POST_FIFO(RKH_GET_SMA(RKH_CAST(ReqEvt, pe)->clino),
                       RKH_EVT_CAST(e_start), me);

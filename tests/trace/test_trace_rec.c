@@ -65,6 +65,11 @@ TEST_GROUP(trace_stream);
 TEST_GROUP(trace_args);
 
 /* ---------------------------- Local variables ---------------------------- */
+static RKHROM RKH_ROM_T base = {0, 0, "receiver"};
+static RKH_SMA_T receiver;
+static RKH_SMA_T sender;
+static RKH_EVT_T event;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
@@ -138,6 +143,18 @@ checkU8Value(rui8_t value)
 
     output = rkh_trc_get();
     TEST_ASSERT_EQUAL(value, *output);
+}
+
+static void
+checkU16Value(rui16_t value)
+{
+    rui8_t *low;
+    rui8_t *high;
+
+    low = rkh_trc_get();
+    high = rkh_trc_get();
+    TEST_ASSERT_EQUAL((rui8_t)value, *low);
+    TEST_ASSERT_EQUAL(value >> 8, *high);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -307,6 +324,10 @@ TEST_SETUP(trace_args)
 
 TEST_TEAR_DOWN(trace_args)
 {
+    receiver.sm.romrkh = &base;
+    event.e = 3;
+    event.pool = 5;
+    event.nref = 7;
 }
 
 /**
@@ -452,31 +473,24 @@ TEST(trace_args, InsertSignal)
 
 TEST(trace_args, InsertAO)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "activeObject"};
-    RKH_SMA_T activeObject;
-    
-    activeObject.sm.romrkh = &base;
-    rkh_trc_ao(&activeObject);
+    rkh_trc_ao(&receiver);
 
     checkHeader(RKH_TE_FWK_AO, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&activeObject);
-    checkString("activeObject");
+    checkObjectAddress((rui8_t *)&receiver);
+    checkString("receiver");
     checkTrailer();
 }
 
 TEST(trace_args, InsertState)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "activeObject"};
-    RKH_SMA_T activeObject;
     RKH_ST_T state;
     
-    activeObject.sm.romrkh = &base;
     state.base.name = "state";
 
-    rkh_trc_state(&activeObject, (rui8_t *)&state);
+    rkh_trc_state(&receiver, (rui8_t *)&state);
 
     checkHeader(RKH_TE_FWK_STATE, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&activeObject);
+    checkObjectAddress((rui8_t *)&receiver);
     checkObjectAddress((rui8_t *)&state);
     checkString("state");
     checkTrailer();
@@ -514,14 +528,10 @@ TEST(trace_args, InsertFwkActorRecord)
 
 TEST(trace_args, InsertSmaActivateRecord)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "ao"};
-    RKH_SMA_T ao;
-
-    ao.sm.romrkh = &base;
-	RKH_TR_SMA_ACT(&ao, RKH_GET_PRIO(&ao), 16);
+	RKH_TR_SMA_ACT(&receiver, RKH_GET_PRIO(&receiver), 16);
 
     checkHeader(RKH_TE_SMA_ACT, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&ao);
+    checkObjectAddress((rui8_t *)&receiver);
     checkU8Value(0);
     checkU8Value(16);
     checkTrailer();
@@ -529,26 +539,18 @@ TEST(trace_args, InsertSmaActivateRecord)
 
 TEST(trace_args, InsertSmaGetRecord)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "ao"};
-    RKH_SMA_T ao;
-    RKH_EVT_T event;
-    rui8_t poolId, refCtr, nElem, nMin;
+    rui8_t nElem, nMin;
 
-    ao.sm.romrkh = &base;
-    event.e = 3;
-    poolId = 5;
-    refCtr = 7;
     nElem = 4;
     nMin = 2;
 
-    ao.sm.romrkh = &base;
-	RKH_TR_SMA_GET(&ao, &event, poolId, refCtr, nElem, nMin);
+	RKH_TR_SMA_GET(&receiver, &event, event.pool, event.nref, nElem, nMin);
 
     checkHeader(RKH_TE_SMA_GET, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&ao);
+    checkObjectAddress((rui8_t *)&receiver);
     checkU8Value(event.e);
-    checkU8Value(poolId);
-    checkU8Value(refCtr);
+    checkU8Value(event.pool);
+    checkU8Value(event.nref);
     checkU8Value(nElem);
     checkU8Value(nMin);
     checkTrailer();
@@ -556,27 +558,20 @@ TEST(trace_args, InsertSmaGetRecord)
 
 TEST(trace_args, InsertSmaPostFifoRecord)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "receiver"};
-    RKH_SMA_T receiver;
-    RKH_SMA_T sender;
-    RKH_EVT_T event;
-    rui8_t poolId, refCtr, nElem, nMin;
+    rui8_t nElem, nMin;
 
-    receiver.sm.romrkh = &base;
-    event.e = 3;
-    poolId = 5;
-    refCtr = 7;
     nElem = 4;
     nMin = 2;
 
-    RKH_TR_SMA_FIFO(&receiver, &event, &sender, poolId, refCtr, nElem, nMin);
+    RKH_TR_SMA_FIFO(&receiver, &event, &sender, event.pool, event.nref, nElem, 
+                    nMin);
 
     checkHeader(RKH_TE_SMA_FIFO, 0, 0x1234567);
     checkObjectAddress((rui8_t *)&receiver);
     checkU8Value(event.e);
     checkObjectAddress((rui8_t *)&sender);
-    checkU8Value(poolId);
-    checkU8Value(refCtr);
+    checkU8Value(event.pool);
+    checkU8Value(event.nref);
     checkU8Value(nElem);
     checkU8Value(nMin);
     checkTrailer();
@@ -584,29 +579,51 @@ TEST(trace_args, InsertSmaPostFifoRecord)
 
 TEST(trace_args, InsertSmaPostLifoRecord)
 {
-    RKHROM RKH_ROM_T base = {0, 0, "receiver"};
-    RKH_SMA_T receiver;
-    RKH_SMA_T sender;
-    RKH_EVT_T event;
-    rui8_t poolId, refCtr, nElem, nMin;
+    rui8_t nElem, nMin;
 
-    receiver.sm.romrkh = &base;
-    event.e = 3;
-    poolId = 5;
-    refCtr = 7;
     nElem = 4;
     nMin = 2;
 
-    RKH_TR_SMA_LIFO(&receiver, &event, &sender, poolId, refCtr, nElem, nMin);
+    RKH_TR_SMA_LIFO(&receiver, &event, &sender, event.pool, event.nref, nElem, 
+                    nMin);
 
     checkHeader(RKH_TE_SMA_LIFO, 0, 0x1234567);
     checkObjectAddress((rui8_t *)&receiver);
     checkU8Value(event.e);
     checkObjectAddress((rui8_t *)&sender);
-    checkU8Value(poolId);
-    checkU8Value(refCtr);
+    checkU8Value(event.pool);
+    checkU8Value(event.nref);
     checkU8Value(nElem);
     checkU8Value(nMin);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkAeRecord)
+{
+    RKH_TR_FWK_AE(16, &event, 5, 2, &receiver);
+
+    checkHeader(RKH_TE_FWK_AE, 0, 0x1234567);
+    checkU16Value(16);
+    checkU8Value(event.e);
+    checkU8Value(event.pool - 1);
+    checkU8Value(event.nref);
+    checkU8Value(5);
+    checkU8Value(2);
+    checkObjectAddress((rui8_t *)&receiver);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkGcrRecord)
+{
+    RKH_TR_FWK_GCR(&event, 5, 2, &receiver);
+
+    checkHeader(RKH_TE_FWK_GCR, 0, 0x1234567);
+    checkU8Value(event.e);
+    checkU8Value(event.pool);
+    checkU8Value(event.nref);
+    checkU8Value(5);
+    checkU8Value(2);
+    checkObjectAddress((rui8_t *)&receiver);
     checkTrailer();
 }
 

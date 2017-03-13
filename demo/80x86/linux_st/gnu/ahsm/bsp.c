@@ -152,7 +152,7 @@ isr_kbd_thread( void *d )	/* thread to emulate keyboard ISR */
 			RKH_SMA_POST_FIFO( my, &eterm, 0 );
 		else
 		{
-			mye = RKH_ALLOC_EVT( MyEvt, kbmap( c ) );
+			mye = RKH_ALLOC_EVT( MyEvt, kbmap( c ), 0 );
 			mye->ts = ( rui16_t )rand();
 			RKH_SMA_POST_FIFO( my, RKH_EVT_CAST(mye), 0 );
 		}

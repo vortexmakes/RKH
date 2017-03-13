@@ -131,7 +131,7 @@ client_req(Client *const me, RKH_EVT_T *pe)
     ReqEvt *e_req;
 
     (void)pe;
-    e_req = RKH_ALLOC_EVT(ReqEvt, REQ);
+    e_req = RKH_ALLOC_EVT(ReqEvt, REQ, me);
     e_req->clino = RKH_GET_PRIO(me);
     RKH_SMA_POST_FIFO(server, RKH_EVT_CAST(e_req), me);
     bsp_cli_req(e_req->clino);

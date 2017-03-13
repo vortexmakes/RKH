@@ -63,7 +63,7 @@ thread_function( void *arg )
 	{
 		RKH_EVT_T *e = rkh_sma_get((RKH_SMA_T *)arg);
         rkh_sm_dispatch((RKH_SM_T *)arg, e);
-        RKH_FWK_GC(e);
+        RKH_FWK_GC(e, arg);
 	}
 
 	rkh_sma_unregister((RKH_SMA_T *)arg);
