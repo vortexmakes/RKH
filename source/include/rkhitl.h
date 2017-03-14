@@ -2112,7 +2112,7 @@ extern "C" {
      *  management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH
      *  also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
      *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), 
-     *  RKH_DYNE_GET_NUSED(), and RKH_DYNE_GET_NMIN() macros.
+     *  RKH_DYNE_GET_NUSED(), RKH_DYNE_GET_NMIN(), RKH_DYNE_GET_PSIZE() macros.
      *
      * \type       Boolean 
      * \range      
@@ -2457,6 +2457,19 @@ extern "C" {
      *                      structure.
      */
     #define RKH_DYNE_GET_NMIN(mp)
+
+    /**
+     *  \brief
+     *	Encapsulates how RKH should return the total number of blocks in the 
+     *	pool \c mp.
+     *
+     *  Platform-dependent macro. Typically, must be define it in the
+     *  specific port file (rkhport.h).
+     *
+     *  \param[in] mp		pointer to previously allocated memory pool 
+     *                      structure.
+     */
+    #define RKH_DYNE_GET_PSIZE(mp)
 #endif
 
 #ifdef RKH_CPUSR_TYPE

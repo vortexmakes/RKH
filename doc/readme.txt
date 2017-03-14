@@ -712,7 +712,8 @@ OS/RTOS?</EM>
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h
 \li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
 RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(),
-and RKH_DYNE_GET_NMIN() in \c rkhport.h according to underlying OS/RTOS.
+RKH_DYNE_GET_NMIN(), and  RKH_DYNE_GET_PSIZE() in \c rkhport.h according to 
+underlying OS/RTOS.
 
 <EM>Generic example</EM>
 \code
@@ -722,8 +723,9 @@ and RKH_DYNE_GET_NMIN() in \c rkhport.h according to underlying OS/RTOS.
 #define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
 #define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
 #define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
-#define RKH_DYNE_GET_NFREE(mp)  ((mp)->nfree)
+#define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
 #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
+#define RKH_DYNE_GET_PSIZE(mp)  ((mp)->nblocks)
 \endcode
 
 \b NO: \n
@@ -918,8 +920,8 @@ const char *rkh_get_port_desc( void );
  * 	its own implementation of dynamic memory management.
  * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will automatically 
  * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
- * 	RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(), and 
- *  RKH_DYNE_GET_NMIN() macros.
+ * 	RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(), RKH_DYNE_GET_NMIN(),
+ *  and RKH_DYNE_GET_PSIZE() macros.
  */
 
 #define RKH_CFGPORT_NATIVE_DYN_EVT_EN			1
@@ -2647,7 +2649,7 @@ Use the following macros to reduce the memory taken by state machine
 structure: RKH_CFG_FWK_DYN_EVT_EN, RKH_CFG_FWK_MAX_EVT_POOL, RKH_CFG_FWK_SIZEOF_EVT, 
 RKH_CFG_FWK_SIZEOF_EVT_SIZE, RKH_CFGPORT_NATIVE_DYN_EVT_EN, RKH_DYNE_TYPE, 
 RKH_DYNE_INIT, RKH_DYNE_GET_ESIZE, RKH_DYNE_GET, RKH_DYNE_PUT, 
-RKH_DYNE_GET_NFREE, and RKH_DYNE_GET_NMIN.
+RKH_DYNE_GET_NFREE, RKH_DYNE_GET_NMIN, RKH_DYNE_GET_PSIZE.
 See \ref cfg section for more information. 
 
 Prev: \ref qref "Quick reference"

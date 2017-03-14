@@ -106,7 +106,7 @@ const char *rkh_get_port_desc( void );
  * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will 
  * 	automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
  * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), 
- * 	RKH_DYNE_GET_NUSED(), and RKH_DYNE_GET_NMIN() macros.
+ * 	RKH_DYNE_GET_NUSED(), RKH_DYNE_GET_NMIN(), and RKH_DYNE_GET_PSIZE() macros.
  */
 
 #define RKH_CFGPORT_NATIVE_DYN_EVT_EN		RKH_ENABLED

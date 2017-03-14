@@ -160,6 +160,7 @@ extern "C" {
     #define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
     #define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
     #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
+    #define RKH_DYNE_GET_PSIZE(mp)  ((mp)->nblocks)
 #else
     #define RKH_DYNE_TYPE           rui8_t
     #define RKH_DYNE_INIT(mp, sstart, ssize, esize)   (void)0
@@ -169,6 +170,7 @@ extern "C" {
     #define RKH_DYNE_GET_NBLOCK(mp) (void)0
     #define RKH_DYNE_GET_NUSED(mp)  (void)0
     #define RKH_DYNE_GET_NMIN(mp)   (void)0
+    #define RKH_DYNE_GET_PSIZE(mp)  (void)0
 #endif
 
 /**
@@ -3259,7 +3261,7 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
  *  For adapting RKH event pools to any fixed-size memory block service RTOS
  *  provided the application code must define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
  *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NUSED(),
- *  and RKH_DYNE_GET_NMIN() macros.
+ *  RKH_DYNE_GET_NMIN(), and RKH_DYNE_GET_PSIZE() macros.
  *
  *  The dynamic allocation of events is optional then if the
  *  #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native fixed-size
@@ -3268,7 +3270,7 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
  *  When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will
  *  automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
  *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NUSED(),
- *  and RKH_DYNE_GET_NMIN() macros.
+ *  RKH_DYNE_GET_NMIN(), and RKH_DYNE_GET_PSIZE() macros.
  *
  *  \param[in] sstart   storage start. Pointer to memory from which memory 
  *                      blocks are allocated.

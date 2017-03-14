@@ -105,7 +105,7 @@ checkTrailer(void)
 }
 
 static void
-checkObjectAddress(rui8_t *obj)
+checkObjectAddress(void *obj)
 {
     rui32_t value;
     rui8_t *output;
@@ -155,6 +155,24 @@ checkU16Value(rui16_t value)
     high = rkh_trc_get();
     TEST_ASSERT_EQUAL((rui8_t)value, *low);
     TEST_ASSERT_EQUAL(value >> 8, *high);
+}
+
+static void
+checkU32Value(rui32_t value)
+{
+    rui8_t *byte;
+
+    byte = rkh_trc_get();
+    TEST_ASSERT_EQUAL((rui8_t)value, *byte);
+
+    byte = rkh_trc_get();
+    TEST_ASSERT_EQUAL(value >> 8, *byte);
+
+    byte = rkh_trc_get();
+    TEST_ASSERT_EQUAL(value >> 16, *byte);
+
+    byte = rkh_trc_get();
+    TEST_ASSERT_EQUAL(value >> 24, *byte);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -476,7 +494,7 @@ TEST(trace_args, InsertAO)
     rkh_trc_ao(&receiver);
 
     checkHeader(RKH_TE_FWK_AO, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
     checkString("receiver");
     checkTrailer();
 }
@@ -490,8 +508,8 @@ TEST(trace_args, InsertState)
     rkh_trc_state(&receiver, (rui8_t *)&state);
 
     checkHeader(RKH_TE_FWK_STATE, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
-    checkObjectAddress((rui8_t *)&state);
+    checkObjectAddress(&receiver);
+    checkObjectAddress(&state);
     checkString("state");
     checkTrailer();
 }
@@ -521,7 +539,7 @@ TEST(trace_args, InsertFwkActorRecord)
     RKH_TR_FWK_ACTOR(&actor, actorName);
 
     checkHeader(RKH_TE_FWK_ACTOR, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&actor);
+    checkObjectAddress(&actor);
     checkString(actorName);
     checkTrailer();
 }
@@ -531,7 +549,7 @@ TEST(trace_args, InsertSmaActivateRecord)
 	RKH_TR_SMA_ACT(&receiver, RKH_GET_PRIO(&receiver), 16);
 
     checkHeader(RKH_TE_SMA_ACT, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
     checkU8Value(0);
     checkU8Value(16);
     checkTrailer();
@@ -547,7 +565,7 @@ TEST(trace_args, InsertSmaGetRecord)
 	RKH_TR_SMA_GET(&receiver, &event, event.pool, event.nref, nElem, nMin);
 
     checkHeader(RKH_TE_SMA_GET, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
     checkU8Value(event.e);
     checkU8Value(event.pool);
     checkU8Value(event.nref);
@@ -567,9 +585,9 @@ TEST(trace_args, InsertSmaPostFifoRecord)
                     nMin);
 
     checkHeader(RKH_TE_SMA_FIFO, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
     checkU8Value(event.e);
-    checkObjectAddress((rui8_t *)&sender);
+    checkObjectAddress(&sender);
     checkU8Value(event.pool);
     checkU8Value(event.nref);
     checkU8Value(nElem);
@@ -588,9 +606,9 @@ TEST(trace_args, InsertSmaPostLifoRecord)
                     nMin);
 
     checkHeader(RKH_TE_SMA_LIFO, 0, 0x1234567);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
     checkU8Value(event.e);
-    checkObjectAddress((rui8_t *)&sender);
+    checkObjectAddress(&sender);
     checkU8Value(event.pool);
     checkU8Value(event.nref);
     checkU8Value(nElem);
@@ -609,7 +627,7 @@ TEST(trace_args, InsertFwkAeRecord)
     checkU8Value(event.nref);
     checkU8Value(5);
     checkU8Value(2);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
     checkTrailer();
 }
 
@@ -623,7 +641,19 @@ TEST(trace_args, InsertFwkGcrRecord)
     checkU8Value(event.nref);
     checkU8Value(5);
     checkU8Value(2);
-    checkObjectAddress((rui8_t *)&receiver);
+    checkObjectAddress(&receiver);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkEpregRecord)
+{
+    RKH_TR_FWK_EPREG(1, 128, 32, 4);
+
+    checkHeader(RKH_TE_FWK_EPREG, 0, 0x1234567);
+    checkU8Value(1);
+    checkU32Value(128);
+    checkU16Value(32);
+    checkU8Value(4);
     checkTrailer();
 }
 
