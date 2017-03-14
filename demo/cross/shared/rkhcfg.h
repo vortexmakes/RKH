@@ -681,7 +681,7 @@
  * 	See rkh_rq_get_lwm() function.
  */
 
-#define RKH_CFG_RQ_GET_LWMARK_EN		RKH_DISABLED
+#define RKH_CFG_RQ_GET_LWMARK_EN		RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_RQ_GET_INFO_EN is set to 1 then RKH allows to collect and 
@@ -790,7 +790,7 @@
  *	See rkh_mp_get_low_wmark() function.
  */
 
-#define RKH_CFG_MP_GET_LWM_EN			RKH_DISABLED
+#define RKH_CFG_MP_GET_LWM_EN			RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_MP_GET_INFO_EN is set to 1 then RKH will include the 

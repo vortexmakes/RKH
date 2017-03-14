@@ -2357,7 +2357,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
     #define RKH_ALLOC_EVT(et, e, sender_) \
-        (et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e))
+        (et *)rkh_fwk_ae((RKH_ES_T)sizeof(et),(RKH_SIG_T)(e), sender_)
 #else
     #define RKH_ALLOC_EVT(et, e, sender_) \
         (void)0
@@ -2400,7 +2400,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  \ingroup apiEvt
  */
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
-    #define RKH_FWK_GC(e, sender_)      rkh_fwk_gc(e)
+    #define RKH_FWK_GC(e, sender_)      rkh_fwk_gc(e, sender_)
 #else
     #define RKH_FWK_GC(e, sender_)      (void)0
 #endif

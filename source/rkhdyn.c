@@ -183,8 +183,8 @@ rkh_sma_post_fifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
 
     RKH_INC_REF(e);
     rkh_rq_put_fifo(&sma->equeue, e);
-    RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref, &sma->equeue.qty, 
-                    &sma->equeue.nmin);
+    RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref, sma->equeue.qty, 
+                    sma->equeue.nmin);
 
     RKH_EXIT_CRITICAL_();
 }
@@ -207,8 +207,8 @@ rkh_sma_post_lifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
 
     RKH_INC_REF(e);
     rkh_rq_put_lifo(&sma->equeue, e);
-    RKH_TR_SMA_LIFO(sma, e, sender, e->pool, e->nref, &sma->equeue.qty, 
-                    &sma->equeue.nmin);
+    RKH_TR_SMA_LIFO(sma, e, sender, e->pool, e->nref, sma->equeue.qty, 
+                    sma->equeue.nmin);
 
     RKH_EXIT_CRITICAL_();
 }
@@ -227,7 +227,7 @@ rkh_sma_get(RKH_SMA_T *sma)
     /* Because the variables are obtained outside critical section could be */
     /* a race condition */
     RKH_TR_SMA_GET(sma, e, e->pool, e->nref, 
-                   &sma->equeue.qty, &sma->equeue.nmin);
+                   sma->equeue.qty, sma->equeue.nmin);
     return e;
 }
 #endif
