@@ -106,22 +106,20 @@
     <ClCompile Include="..\tcptrc.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhassert.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhdef.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhevt.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhmp.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhplat.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrdy.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrq.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhs.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtim.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtrc.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtype.h" />
     <ClInclude Include="..\..\..\..\..\blinky.h" />
-    <ClInclude Include="..\..\..\..\rkhcfg.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkh.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhassert.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhevt.h" />
+    <ClInclude Include="..\..\..\..\..\rkhcfg.h" />
     <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhitl.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhmp.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhplat.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhrdy.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhrq.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhs.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkht.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhtim.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhtrc.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\source\include\rkhtype.h" />
     <ClInclude Include="..\bsp.h" />
     <ClInclude Include="..\tcptrc.h" />
   </ItemGroup>

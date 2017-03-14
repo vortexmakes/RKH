@@ -566,7 +566,7 @@
  *  This provides valuable empirical data for proper sizing of the queue.
  *  See rkh_rq_get_lwm() function.
  */
-#define RKH_CFG_RQ_GET_LWMARK_EN        RKH_ENABLED
+#define RKH_CFG_RQ_GET_LWMARK_EN        RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_RQ_GET_INFO_EN is set to 1 then RKH allows to collect and

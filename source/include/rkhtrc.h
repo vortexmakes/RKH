@@ -81,7 +81,7 @@
  *          RKH_TRC_UI8(poolID_); \
  *          RKH_TRC_UI8(refCntr_); \
  *          RKH_TRC_NE(nElem_); \
- *          RKH_TRC_NE(nMin_); \
+ *          RKH_TRC_RQ_NMIN(nMin_); \
  *      RKH_TRC_END_NOCRIT()
  *	\endcode
  *
@@ -1539,23 +1539,6 @@
             RKH_TRC_UI8(es)
 #endif
 
-/**
- *  Insert an number of blocks value as trace record argument.
- */
-#if RKH_CFG_MP_SIZEOF_NBLOCK == 8
-        #define RKH_TRC_MPNB(nBlock) \
-            RKH_TRC_UI8(nBlock)
-#elif RKH_CFG_MP_SIZEOF_NBLOCK == 16
-        #define RKH_TRC_MPNB(nBlock) \
-            RKH_TRC_UI16(nBlock)
-#elif RKH_CFG_MP_SIZEOF_NBLOCK == 32
-        #define RKH_TRC_MPNB(nBlock) \
-            RKH_TRC_UI32(nBlock)
-#else
-        #define RKH_TRC_MPNB(nBlock) \
-            RKH_TRC_UI8(nBlock)
-#endif
-
 #if RKH_CFG_TRC_EN == RKH_ENABLED
         /* --- Memory Pool (MP) -------------------------------------------- */
         #if RKH_CFG_TRC_ALL_EN == RKH_ENABLED || \
@@ -1853,7 +1836,7 @@
                     RKH_TRC_UI8(poolID_); \
                     RKH_TRC_UI8(refCntr_); \
                     RKH_TRC_NE(nElem_); \
-                    RKH_TRC_NE(nMin_); \
+                    RKH_TRC_RQ_NMIN(nMin_); \
                 RKH_TRC_END()
 
             /**
@@ -1885,7 +1868,7 @@
                     RKH_TRC_UI8(poolID_); \
                     RKH_TRC_UI8(refCntr_); \
                     RKH_TRC_NE(nElem_); \
-                    RKH_TRC_NE(nMin_); \
+                    RKH_TRC_RQ_NMIN(nMin_); \
                 RKH_TRC_END_NOCRIT()
 
             /**
@@ -1917,7 +1900,7 @@
                     RKH_TRC_UI8(poolID_); \
                     RKH_TRC_UI8(refCntr_); \
                     RKH_TRC_NE(nElem_); \
-                    RKH_TRC_NE(nMin_); \
+                    RKH_TRC_RQ_NMIN(nMin_); \
                 RKH_TRC_END_NOCRIT()
 
             /**
@@ -2579,7 +2562,7 @@
                     RKH_TRC_UI8(evtPool_); \
                     RKH_TRC_UI32(storageSize_); \
                     RKH_TRC_ES(evtSize_); \
-                    RKH_TRC_MPNB(poolSize_); \
+                    RKH_TRC_NBLK(poolSize_); \
                 RKH_TRC_END()
 
             /**
@@ -2608,8 +2591,8 @@
                     RKH_TRC_SIG((evt_)->e); \
                     RKH_TRC_UI8((evt_)->pool - 1); \
                     RKH_TRC_UI8((evt_)->nref); \
-                    RKH_TRC_MPNB(nUsed_); \
-                    RKH_TRC_MPNB(nMin_); \
+                    RKH_TRC_NBLK(nUsed_); \
+                    RKH_TRC_MP_NMIN(nMin_); \
                     RKH_TRC_SYM(sender_); \
                 RKH_TRC_END()
 
@@ -2656,8 +2639,8 @@
                     RKH_TRC_SIG((evt_)->e); \
                     RKH_TRC_UI8((evt_)->pool); \
                     RKH_TRC_UI8((evt_)->nref); \
-                    RKH_TRC_MPNB(nUsed_); \
-                    RKH_TRC_MPNB(nMin_); \
+                    RKH_TRC_NBLK(nUsed_); \
+                    RKH_TRC_MP_NMIN(nMin_); \
                     RKH_TRC_SYM(sender_); \
                 RKH_TRC_END_NOCRIT()
 

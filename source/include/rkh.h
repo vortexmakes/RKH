@@ -159,7 +159,11 @@ extern "C" {
     #define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
     #define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
     #define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
-    #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
+    #if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED
+        #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
+    #else
+        #define RKH_DYNE_GET_NMIN(mp)   (0)
+    #endif
     #define RKH_DYNE_GET_PSIZE(mp)  ((mp)->nblocks)
 #else
     #define RKH_DYNE_TYPE           rui8_t
