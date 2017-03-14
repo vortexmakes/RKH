@@ -916,7 +916,7 @@
     #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
 #endif
 
-#if ((RKH_TMR_END - RKH_TMR_START) > ((RKH_TMR_TTBL_RANGE * 8) - 1))
+#if ((RKH_TMR_END - RKH_TMR_START) > ((RKH_TIM_TTBL_RANGE * 8) - 1))
     #error  "rkhtrc.h, the total number of trace events represented"
     #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
 #endif
