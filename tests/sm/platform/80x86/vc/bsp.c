@@ -304,6 +304,7 @@ rkh_trc_open(void)
     trazer_init();
     FTBIN_OPEN();
     TCP_TRACE_OPEN();
+    unitrazer_init();
     RKH_TRC_SEND_CFG(BSP_TS_RATE_HZ);
 }
 
