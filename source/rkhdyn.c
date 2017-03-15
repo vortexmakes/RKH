@@ -61,7 +61,7 @@ RKH_MODULE_NAME(rkhdyn)
 #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
     #define RKH_SMA_GET_NMIN(ao)    (ao)->equeue.nmin
 #else
-    #define RKH_SMA_GET_NMINao)
+    #define RKH_SMA_GET_NMIN(ao)    0
 #endif
 
 /* ------------------------------- Constants ------------------------------- */
