@@ -142,11 +142,13 @@
     <ClCompile Include="..\..\..\..\test_runners\test_smInstance_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPolymorphism_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smTransitionWoutUnitrazer_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
     <ClCompile Include="..\..\..\..\test_smInstance.c" />
     <ClCompile Include="..\..\..\..\test_smPolymorphism.c" />
     <ClCompile Include="..\..\..\..\test_smPseudostate.c" />
     <ClCompile Include="..\..\..\..\test_smTransition.c" />
+    <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c" />
     <ClCompile Include="..\bsp.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

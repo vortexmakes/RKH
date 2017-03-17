@@ -30,10 +30,10 @@
  */
 
 /**
- *  \file       all_tests.c
+ *  \file       test_smTransitionWoutUnitrazer_runner.c
  *  \ingroup    test_sm
  *
- *  \brief      Test runner of state machine module
+ *  \brief      Test runner of state machine module without unitrazer facility
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -48,11 +48,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <stdio.h>
 
-#include "rkh.h"
 #include "unity_fixture.h"
-#include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -61,25 +58,38 @@
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-static 
-void 
-runAllTests(void)
-{
-	RUN_TEST_GROUP(instance);
-	RUN_TEST_GROUP(transition);
-	RUN_TEST_GROUP(pseudostate);
-	RUN_TEST_GROUP(polymorphism);
-	RUN_TEST_GROUP(trnWoutUnitrazer);
-}
-
 /* ---------------------------- Global functions --------------------------- */
-int
-main(int argc, char *argv[])
+
+TEST_GROUP_RUNNER(trnWoutUnitrazer)
 {
-	bsp_init(argc, argv);
-	UnityMain(argc, argv, runAllTests);
-	RKH_TRC_CLOSE();
-    getchar();
+	RUN_TEST_CASE(trnWoutUnitrazer, firstStateAfterInit);
+	RUN_TEST_CASE(trnWoutUnitrazer, simpleToSimpleAtEqualLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, simpleToSimpleFromHighToLowLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, simpleToSimpleFromLowToHighLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, simpleToCompositeAtEqualLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, simpleToCompositeFromHighToLowLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, simpleToCompositeFromLowToHighLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, compositeToSimpleAtEqualLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, compositeToSimpleFromHighToLowLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, compositeToSimpleFromLowToHighLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, compositeToCompositeAtEqualLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, compositeToCompositeFromHighToLowLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, compositeToCompositeFromLowToHighLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, loopSimpleStateOnTop);
+	RUN_TEST_CASE(trnWoutUnitrazer, loopNestedSimpleState);
+	RUN_TEST_CASE(trnWoutUnitrazer, loopCompositeStateOnTop);
+	RUN_TEST_CASE(trnWoutUnitrazer, loopNestedCompositeState);
+	RUN_TEST_CASE(trnWoutUnitrazer, internalInSimpleState);
+	RUN_TEST_CASE(trnWoutUnitrazer, internalInCompositeState);
+	RUN_TEST_CASE(trnWoutUnitrazer, fails_EventNotFound);
+	RUN_TEST_CASE(trnWoutUnitrazer, fails_GuardFalse);
+	RUN_TEST_CASE(trnWoutUnitrazer, fails_ExceededHierarchicalLevel);
+	RUN_TEST_CASE(trnWoutUnitrazer, multipleEnabledTrn_FiringFirstTrueGuard);
+	RUN_TEST_CASE(trnWoutUnitrazer, multipleEnabledTrn_FiringFirstEmptyGuard);
+	RUN_TEST_CASE(trnWoutUnitrazer, defaultTrnWithAssociatedEffect);
+	RUN_TEST_CASE(trnWoutUnitrazer, generatedCompletionEventBySimpleState);
+	RUN_TEST_CASE(trnWoutUnitrazer, generatedCompletionEventByFinalState);
+	RUN_TEST_CASE(trnWoutUnitrazer, syncDispatchingToStateMachine);
 }
 
 /* ------------------------------ End of file ------------------------------ */

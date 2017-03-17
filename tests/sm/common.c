@@ -152,6 +152,12 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
         setStateForcesfully(me, RKH_STATE_CAST(currentState));
 }
 
+const RKH_ST_T *
+getState(RKH_SMA_T *const me)
+{
+    return ((RKH_SM_T *)me)->state;
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

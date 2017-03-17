@@ -61,6 +61,7 @@ void setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
                 const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
                 const RKH_ST_T *mainTargetState, int nExecEffectActions, 
                 int kindOfTrn, int initStateMachine);
+const RKH_ST_T *getState(RKH_SMA_T *const me);
 
 /* -------------------- External C language linkage end -------------------- */
 

@@ -246,5 +246,11 @@
     <ClCompile Include="..\..\..\..\stub\mocks\MockrkhportTest.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_smTransitionWoutUnitrazer_runner.c">
+      <Filter>Source Files\tests\sm\test_runners</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
