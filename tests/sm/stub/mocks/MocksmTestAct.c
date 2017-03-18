@@ -328,6 +328,13 @@ typedef struct _CMOCK_smTest_xS221_CALL_INSTANCE
 
 } CMOCK_smTest_xS221_CALL_INSTANCE;
 
+typedef struct _CMOCK_smTest_xS2211_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmTest* Expected_me;
+
+} CMOCK_smTest_xS2211_CALL_INSTANCE;
+
 typedef struct _CMOCK_smTest_xS31_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
@@ -432,6 +439,7 @@ static struct MocksmTestActInstance
   CMOCK_MEM_INDEX_TYPE smTest_xS21_CallInstance;
   CMOCK_MEM_INDEX_TYPE smTest_xS22_CallInstance;
   CMOCK_MEM_INDEX_TYPE smTest_xS221_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smTest_xS2211_CallInstance;
   CMOCK_MEM_INDEX_TYPE smTest_xS31_CallInstance;
   CMOCK_MEM_INDEX_TYPE smTest_xS5_CallInstance;
   CMOCK_MEM_INDEX_TYPE smTest_falseGuard_CallInstance;
@@ -489,6 +497,7 @@ void MocksmTestAct_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_xS21_CallInstance, cmock_line, "Function 'smTest_xS21' called less times than expected.");
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_xS22_CallInstance, cmock_line, "Function 'smTest_xS22' called less times than expected.");
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_xS221_CallInstance, cmock_line, "Function 'smTest_xS221' called less times than expected.");
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_xS2211_CallInstance, cmock_line, "Function 'smTest_xS2211' called less times than expected.");
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_xS31_CallInstance, cmock_line, "Function 'smTest_xS31' called less times than expected.");
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_xS5_CallInstance, cmock_line, "Function 'smTest_xS5' called less times than expected.");
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smTest_falseGuard_CallInstance, cmock_line, "Function 'smTest_falseGuard' called less times than expected.");
@@ -1795,6 +1804,34 @@ void smTest_xS221_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me)
   Mock.smTest_xS221_CallInstance = CMock_Guts_MemChain(Mock.smTest_xS221_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_smTest_xS221(cmock_call_instance, me);
+}
+
+void smTest_xS2211(SmTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smTest_xS2211_CALL_INSTANCE* cmock_call_instance = (CMOCK_smTest_xS2211_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smTest_xS2211_CallInstance);
+  Mock.smTest_xS2211_CallInstance = CMock_Guts_MemNext(Mock.smTest_xS2211_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'smTest_xS2211' called more times than expected.");
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmTest), cmock_line, "Function 'smTest_xS2211' called with unexpected value for argument 'me'.");
+  }
+}
+
+void CMockExpectParameters_smTest_xS2211(CMOCK_smTest_xS2211_CALL_INSTANCE* cmock_call_instance, SmTest* const me)
+{
+  cmock_call_instance->Expected_me = (SmTest*)me;
+}
+
+void smTest_xS2211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smTest_xS2211_CALL_INSTANCE));
+  CMOCK_smTest_xS2211_CALL_INSTANCE* cmock_call_instance = (CMOCK_smTest_xS2211_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smTest_xS2211_CallInstance = CMock_Guts_MemChain(Mock.smTest_xS2211_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smTest_xS2211(cmock_call_instance, me);
 }
 
 void smTest_xS31(SmTest* const me)

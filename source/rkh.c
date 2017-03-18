@@ -204,7 +204,7 @@ RKH_MODULE_NAME(rkh)
             { \
                 RKH_TR_SM_EX_HLEVEL(sma); \
                 RKH_ERROR(); \
-                return RKH_EX_TSEG; \
+                return RKH_EX_HLEVEL; \
             } \
             UPDATE_PARENT(stn); \
         } \

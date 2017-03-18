@@ -88,6 +88,7 @@ void smTest_xS3(SmTest *const me);
 void smTest_xS21(SmTest *const me);
 void smTest_xS22(SmTest *const me);
 void smTest_xS221(SmTest *const me);
+void smTest_xS2211(SmTest *const me);
 void smTest_xS31(SmTest *const me);
 void smTest_xS5(SmTest *const me);
 

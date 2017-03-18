@@ -82,7 +82,8 @@ TEST_GROUP_RUNNER(trnWoutUnitrazer)
 	RUN_TEST_CASE(trnWoutUnitrazer, internalInSimpleState);
 	RUN_TEST_CASE(trnWoutUnitrazer, internalInCompositeState);
 	RUN_TEST_CASE(trnWoutUnitrazer, fails_EventNotFound);
-	RUN_TEST_CASE(trnWoutUnitrazer, fails_GuardFalse);
+	RUN_TEST_CASE(trnWoutUnitrazer, fails_GuardFalseOnInternalTrn);
+	RUN_TEST_CASE(trnWoutUnitrazer, fails_GuardFalseOnExternalTrn);
 	RUN_TEST_CASE(trnWoutUnitrazer, fails_ExceededHierarchicalLevel);
 	RUN_TEST_CASE(trnWoutUnitrazer, multipleEnabledTrn_FiringFirstTrueGuard);
 	RUN_TEST_CASE(trnWoutUnitrazer, multipleEnabledTrn_FiringFirstEmptyGuard);
