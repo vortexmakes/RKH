@@ -5,8 +5,20 @@
 Prev: \ref main_page "Home" \n
 Next: \ref cross "Examples"
 
-Oops, under construction. \n
-See section \ref test "Module, unit tests and tools for TDD"
+\n The goal in this section is to explain how to test a state machine 
+using the RKH framework and its recommended test fixture. To do that is 
+proposed a lot of complete state machines, which are shown in the 
+\ref fig_smTest "Used state machine for transtion unit tests" and 
+\ref fig_smPseudoTest "Used state machine for pseudostate unit tests" figures. 
+
+Also, this section summarizes the main rules and concepts for making the most 
+out of RKH features. For more information see section \ref test_sm "Module, unit tests and tools for TDD"
+
+\anchor fig_smTest
+\image html smTest.png "Figure - Used state machine for transition unit tests"
+
+\anchor fig_smPseudoTest
+\image html smPseudoTest.png "Figure - Used state machine for pseudostate unit tests"
 
 Prev: \ref main_page "Home" \n
 Next: \ref cross "Examples"
