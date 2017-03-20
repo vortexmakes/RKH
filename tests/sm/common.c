@@ -107,7 +107,7 @@ setHistory(const RKH_SHIST_T *history, const RKH_ST_T *state)
 }
 
 void
-setStateForcesfully(RKH_SMA_T *const me, const RKH_ST_T *state)
+setState(RKH_SMA_T *const me, const RKH_ST_T *state)
 {
     ((RKH_SM_T *)me)->state = state;
 }
@@ -149,7 +149,24 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
         rkh_sm_init((RKH_SM_T *)me);
     }
     if (currentState)
-        setStateForcesfully(me, RKH_STATE_CAST(currentState));
+        setState(me, RKH_STATE_CAST(currentState));
+}
+
+void
+setProfileWoutUnitrazer(RKH_SMA_T *const me, 
+                        const RKH_ST_T *currentState, 
+                        const RKH_ST_T *sourceState, 
+                        const RKH_ST_T *mainTargetState, 
+                        int initStateMachine)
+{
+    if (initStateMachine)
+    {
+        rkh_sm_init((RKH_SM_T *)me);
+    }
+    if (currentState && (currentState != ((RKH_SM_T *)smTest)->state))
+    {
+        setState(me, RKH_STATE_CAST(currentState));
+    }
 }
 
 const RKH_ST_T *

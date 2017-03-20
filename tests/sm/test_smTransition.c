@@ -773,7 +773,7 @@ TEST(transition, fails_EventNotFound)
 	sm_evtNotFound_expect(E);
 
     rkh_sm_init((RKH_SM_T *)smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(&s1));
+    setState(smTest, RKH_STATE_CAST(&s1));
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
 
     p = unitrazer_getLastOut();
@@ -794,7 +794,7 @@ TEST(transition, fails_GuardFalse)
                                       RKH_FALSE);
 
     rkh_sm_init((RKH_SM_T *)smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(&s1));
+    setState(smTest, RKH_STATE_CAST(&s1));
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
 
     p = unitrazer_getLastOut();
@@ -814,7 +814,7 @@ TEST(transition, fails_ExceededHierarchicalLevel)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
 
     rkh_sm_init((RKH_SM_T *)smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(&s0));
+    setState(smTest, RKH_STATE_CAST(&s0));
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
 
     p = unitrazer_getLastOut();
@@ -837,7 +837,7 @@ TEST(transition, multipleEnabledTrn_FiringFirstTrueGuard)
     sm_grdFalse_expect();
 
     rkh_sm_init((RKH_SM_T *)smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(&s4));
+    setState(smTest, RKH_STATE_CAST(&s4));
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
 
     p = unitrazer_getLastOut();
@@ -865,7 +865,7 @@ TEST(transition, multipleEnabledTrn_FiringFirstEmptyGuard)
     sm_tsState_expect(RKH_STATE_CAST(&s4));
 
     rkh_sm_init((RKH_SM_T *)smTest);
-    setStateForcesfully(smTest, RKH_STATE_CAST(&s4));
+    setState(smTest, RKH_STATE_CAST(&s4));
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
 
     p = unitrazer_getLastOut();
