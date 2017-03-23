@@ -555,7 +555,10 @@ rkh_trc_ao(struct RKH_SMA_T *ao)
 void
 rkh_trc_state(struct RKH_SMA_T *ao, rui8_t *state)
 {
-    RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_STATE)
+    
+    RKH_TRC_BEGIN_WOFIL((CB((state))->type & RKH_REGULAR) == 0 ? 
+                                                        RKH_TE_FWK_PSTATE:
+                                                        RKH_TE_FWK_STATE)
         RKH_TRC_SYM(ao);
         RKH_TRC_SYM(state);
         RKH_TRC_STR(RKH_GET_VERTEX_NAME(state));
