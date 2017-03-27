@@ -640,7 +640,7 @@ TEST(trace_args, InsertFwkGcrRecord)
 
     checkHeader(RKH_TE_FWK_GCR, 0, 0x1234567);
     checkU8Value(event.e);
-    checkU8Value(event.pool);
+    checkU8Value(event.pool - 1);
     checkU8Value(event.nref);
     checkU8Value(5);
     checkU8Value(2);

@@ -2637,7 +2637,7 @@
             #define RKH_TR_FWK_GCR(evt_, nUsed_, nMin_, sender_) \
                 RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_GCR) \
                     RKH_TRC_SIG((evt_)->e); \
-                    RKH_TRC_UI8((evt_)->pool); \
+                    RKH_TRC_UI8((evt_)->pool - 1); \
                     RKH_TRC_UI8((evt_)->nref); \
                     RKH_TRC_NBLK(nUsed_); \
                     RKH_TRC_MP_NMIN(nMin_); \
