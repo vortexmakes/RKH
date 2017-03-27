@@ -69,6 +69,9 @@ static RKHROM RKH_ROM_T base = {0, 0, "receiver"};
 static RKH_SMA_T receiver;
 static RKH_SMA_T sender;
 static RKH_EVT_T event;
+static RKH_ST_T state = {{RKH_BASIC, "state"}};
+static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
+
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -654,6 +657,28 @@ TEST(trace_args, InsertFwkEpregRecord)
     checkU32Value(128);
     checkU16Value(32);
     checkU8Value(4);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkStateRecord)
+{
+    RKH_TR_FWK_STATE(&receiver, &state);
+
+    checkHeader(RKH_TE_FWK_STATE, 0, 0x1234567);
+    checkObjectAddress(&receiver);
+    checkObjectAddress(&state);
+    checkString(state.base.name);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkPseudoStateRecord)
+{
+    RKH_TR_FWK_PSTATE(&receiver, &pseudoState);
+
+    checkHeader(RKH_TE_FWK_PSTATE, 0, 0x1234567);
+    checkObjectAddress(&receiver);
+    checkObjectAddress(&pseudoState);
+    checkString(pseudoState.base.name);
     checkTrailer();
 }
 
