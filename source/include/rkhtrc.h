@@ -3216,16 +3216,19 @@
              *
              *  \code
              *	...
-             *	rkh_fwk_epool_register(ep0_sto,	SIZEOF_EP0STO,
-             *						   SIZEOF_EP0_BLOCK);
-             *	rkh_fwk_epool_register(ep1_sto, SIZEOF_EP1STO,
-             *						   SIZEOF_EP1_BLOCK);
-             *	rkh_fwk_epool_register(ep2_sto, SIZEOF_EP2STO,
-             *						   SIZEOF_EP2_BLOCK);
+             *  rui8_t ep;
              *
-             *  RKH_TR_FWK_EPOOL(0, "ep0");
-             *  RKH_TR_FWK_EPOOL(1, "ep1");
-             *  RKH_TR_FWK_EPOOL(2, "ep2");
+             *	ep = rkh_fwk_epool_register(ep0_sto, SIZEOF_EP0STO,
+             *						        SIZEOF_EP0_BLOCK);
+             *  RKH_TR_FWK_EPOOL(ep, "smallEventPool");
+             *
+             *	ep = rkh_fwk_epool_register(ep1_sto, SIZEOF_EP1STO,
+             *		    				    SIZEOF_EP1_BLOCK);
+             *  RKH_TR_FWK_EPOOL(ep, "mediumEventPool");
+             *
+             *	ep = rkh_fwk_epool_register(ep2_sto, SIZEOF_EP2STO,
+             *						        SIZEOF_EP2_BLOCK);
+             *  RKH_TR_FWK_EPOOL(ep, "largeEventPool");
              *	...
              *  \endcode
              */

@@ -157,7 +157,7 @@ rkh_fwk_reserve(RKH_EVT_T *e)
     RKH_EXIT_CRITICAL_();
 }
 
-void
+rui8_t
 rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize)
 {
     RKH_DYNE_TYPE *ep;
@@ -170,6 +170,7 @@ rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize)
     ep = &rkh_eplist[rkhnpool - 1];
     RKH_DYNE_INIT(ep, sstart, ssize, esize);
     RKH_TR_FWK_EPREG(rkhnpool, ssize, esize, RKH_DYNE_GET_PSIZE(ep));
+    return rkhnpool - 1;
 }
 #endif
 

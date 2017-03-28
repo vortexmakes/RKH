@@ -3281,6 +3281,8 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
  *  \param[in] ssize:	storage size. Size of the memory pool storage in bytes.
  *  \param[in] esize	event size. This number determines the size of each 
  *                      memory block in the pool.
+ *  \return
+ *  Registered event pool ID (index of event pool list)
  *
  *  \usage
  *	\code
@@ -3319,14 +3321,20 @@ RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
  *	static rui8_t	ep0sto[ SIZEOF_EP0STO ],
  *					ep1sto[ SIZEOF_EP1STO ],
  *					ep2sto[ SIZEOF_EP2STO ];
+ *  rui8_t ep;
  *  ...
- *  rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
- *  rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
- *  rkh_fwk_epool_register( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
+ *  ep = rkh_fwk_epool_register(ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK);
+ *  RKH_TR_FWK_EPOOL(ep, "smallEventPool");
+ *
+ *  ep = rkh_fwk_epool_register(ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK);
+ *  RKH_TR_FWK_EPOOL(ep, "mediumEventPool");
+ *
+ *  ep = rkh_fwk_epool_register(ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK);
+ *  RKH_TR_FWK_EPOOL(ep, "largeEventPool");
  *  ...
  *	\endcode
  */
-void rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize);
+rui8_t rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize);
 
 /**
  *  \brief
