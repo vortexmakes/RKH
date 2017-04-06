@@ -422,7 +422,7 @@
  *  \range      
  *  \default    RKH_DISABLED
  */
-#define RKH_CFG_SMA_RT_CTOR_EN          RKH_DISABLED
+#define RKH_CFG_SMA_RT_CTOR_EN          RKH_ENABLED
 
 /** 
  *  \brief

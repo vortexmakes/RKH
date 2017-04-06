@@ -758,18 +758,4 @@ rkh_else(void)
 }
 #endif
 
-#if RKH_CFG_SMA_RT_CTOR_EN == RKH_ENABLED
-void 
-rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl)
-{
-    rkh_sm_ctor(&me->sm);   /* Call base object constructor */
-                            /* (in fact an initializer operation) */
-
-    /* Link vptr to virtual table of me */
-#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
-    me->vptr = (vtbl != (const RKHSmaVtbl *)0) ? vtbl : &rkhSmaVtbl;
-#endif
-}
-#endif
-
 /* ------------------------------ End of file ------------------------------ */

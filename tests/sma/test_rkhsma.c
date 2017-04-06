@@ -57,6 +57,7 @@
 #include "rkhsma.h"
 #include "Mockrkhport.h"
 #include "Mockrkhtrc.h"
+#include "Mockrkh.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -107,6 +108,13 @@ TEST(sma, UnRegister)
 
     rkh_sma_unregister(&receiver);
     TEST_ASSERT_EQUAL((RKH_SMA_T *)0, rkh_sptbl[receiver.sm.romrkh->prio]);
+}
+
+TEST(sma, Constructor)
+{
+    rkh_sm_ctor_Expect(&(receiver.sm));
+
+    rkh_sma_ctor(&receiver, (const RKHSmaVtbl *)0);
 }
 
 /** @} doxygen end group definition */

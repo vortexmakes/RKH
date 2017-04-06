@@ -96,6 +96,21 @@ void rkh_sma_unregister(RKH_SMA_T *me);
 
 /**
  *  \brief
+ *  Initializes the virtual table of the active object instance and calls the 
+ *  constructor operation of its base class.
+ *
+ *  \param[in] me   pointer to previously created state machine application.
+ *  \param[in] vtbl pointer to virtual table. Define it as null to use the 
+ *                  default virtual table, rkhSmaVtbl.
+ *
+ *  \note
+ *  The initializer assumes that memory has previously been allocated for the 
+ *  object (either statically or dynamically).
+ */
+void rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl);
+
+/**
+ *  \brief
  *  Clear performance information for a particular state machine application
  *  (SMA) as known as active object.
  *

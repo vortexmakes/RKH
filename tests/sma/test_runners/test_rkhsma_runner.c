@@ -61,6 +61,7 @@ TEST_GROUP_RUNNER(sma)
 {
 	RUN_TEST_CASE(sma, Register);
 	RUN_TEST_CASE(sma, UnRegister);
+	RUN_TEST_CASE(sma, Constructor);
 }
 
 /* ------------------------------ End of file ------------------------------ */

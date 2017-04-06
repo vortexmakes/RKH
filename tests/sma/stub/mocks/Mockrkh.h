@@ -38,12 +38,6 @@ void rkh_sma_post_fifo_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, co
 void rkh_sma_post_lifo_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T* e, const void* const sender);
 #define rkh_sma_get_ExpectAndReturn(me, cmock_retval) rkh_sma_get_CMockExpectAndReturn(__LINE__, me, cmock_retval)
 void rkh_sma_get_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_EVT_T* cmock_to_return);
-#define rkh_sma_get_info_Expect(me, psi) rkh_sma_get_info_CMockExpect(__LINE__, me, psi)
-void rkh_sma_get_info_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_SMAI_T* psi);
-#define rkh_sma_clear_info_Expect(me) rkh_sma_clear_info_CMockExpect(__LINE__, me)
-void rkh_sma_clear_info_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me);
-#define rkh_sma_ctor_Expect(me, vtbl) rkh_sma_ctor_CMockExpect(__LINE__, me, vtbl)
-void rkh_sma_ctor_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKHSmaVtbl* vtbl);
 #define rkh_fwk_defer_Expect(q, e) rkh_fwk_defer_CMockExpect(__LINE__, q, e)
 void rkh_fwk_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_RQ_T* q, const RKH_EVT_T* e);
 #define rkh_fwk_recall_ExpectAndReturn(me, q, cmock_retval) rkh_fwk_recall_CMockExpectAndReturn(__LINE__, me, q, cmock_retval)
