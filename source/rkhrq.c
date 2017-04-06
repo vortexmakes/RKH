@@ -84,7 +84,7 @@ RKH_MODULE_NAME(rkhrq)
 
 void
 rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
-            const struct RKH_SMA_T *sma)
+            void *sma)
 {
     RKH_SR_ALLOC();
 
@@ -93,7 +93,7 @@ rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
     q->nelems = ssize;
     q->qty = 0;
     q->pend = (void * *)&sstart[ssize];
-    q->sma = sma;
+    q->sma = (const struct RKH_SMA_T *)sma;
 #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
     q->nmin = q->nelems;
 #endif
@@ -101,7 +101,7 @@ rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
     q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 
                                                   q->rqi.nfull = 0;
 #endif
-    RKH_TR_RQ_INIT(q, sma, ssize);
+    RKH_TR_RQ_INIT(q, (const struct RKH_SMA_T *)sma, ssize);
 }
 
 #if RKH_CFG_RQ_IS_FULL_EN == RKH_ENABLED

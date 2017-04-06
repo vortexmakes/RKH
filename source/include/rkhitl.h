@@ -3831,7 +3831,6 @@ struct RKH_SCHOICE_T
  *
  *  It can be either be shallow or deep.
  */
-#if defined(RKH_HISTORY_ENABLED)
 struct RKH_SHIST_T
 {
     /**
@@ -3859,7 +3858,6 @@ struct RKH_SHIST_T
      */
     RKHROM RKH_TR_T trn;
 };
-#endif
 
 /* -------------------------- External variables --------------------------- */
 /** Default virtual table for the RKH_SMA_T structure */

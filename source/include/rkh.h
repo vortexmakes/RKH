@@ -3133,26 +3133,6 @@ void rkh_sma_clear_info(RKH_SMA_T *me);
 
 /**
  *  \brief
- *  Registers a state machine application (SMA) as known as active object into
- *  the framework, which implies to store a pointer to the SMA in the priority
- *  table.
- *
- *  \param[in] me  pointer to previously created state machine application.
- */
-void rkh_sma_register(RKH_SMA_T *me);
-
-/**
- *  \brief
- *	Removes the SMA as known as active object from the priority table, and
- *	thus from the framework, by simply replacing the link to the SMA being
- *	deleted with a NULL pointer.
- *
- *  \param[in] me  pointer to previously created state machine application.
- */
-void rkh_sma_unregister(RKH_SMA_T *me);
-
-/**
- *  \brief
  *  Initializes the virtual table of the active object instance and calls the 
  *  constructor operation of its base class.
  *
@@ -3609,11 +3589,7 @@ void rkh_sm_ctor(RKH_SM_T *me);
  *
  *  \ingroup apiSM
  */
-#if defined(RKH_HISTORY_ENABLED)
 void rkh_sm_clear_history(RKHROM RKH_SHIST_T *h);
-#else
-#define rkh_sm_clear_history(h)          (void)0
-#endif
 
 /**
  *  \brief

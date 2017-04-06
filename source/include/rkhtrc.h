@@ -3938,7 +3938,7 @@ void rkh_trc_sig(RKH_SIG_T sig, const char *sig_name);
  *  This function is internal to RKH and the user application should
  *  not call it.
  */
-void rkh_trc_ao(struct RKH_SMA_T *ao);
+void rkh_trc_ao(void *ao);
 
 /**
  *  \brief
@@ -3951,7 +3951,7 @@ void rkh_trc_ao(struct RKH_SMA_T *ao);
  *  This function is internal to RKH and the user application should
  *  not call it.
  */
-void rkh_trc_state(struct RKH_SMA_T *ao, rui8_t *state);
+void rkh_trc_state(void *ao, rui8_t *state);
 
 /**
  *  \brief

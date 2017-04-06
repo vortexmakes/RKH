@@ -261,7 +261,7 @@ typedef struct RKH_RQ_T
  *  \ingroup apiQueue 
  */
 void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
-                 const struct RKH_SMA_T *sma);
+                 void *sma);
 
 /**
  *  \brief

@@ -543,17 +543,17 @@ rkh_trc_sig(RKH_SIG_T sig, const char *sig_name)
 }
 
 void
-rkh_trc_ao(struct RKH_SMA_T *ao)
+rkh_trc_ao(void *ao)
 {
     RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_AO)
         RKH_TRC_SYM(ao);
-        RKH_TRC_STR(RKH_GET_AO_NAME(ao));
+        RKH_TRC_STR(RKH_GET_AO_NAME((RKH_SMA_T *)ao));
         RKH_TRC_END_WOFIL()
     RKH_TRC_FLUSH();
 }
 
 void
-rkh_trc_state(struct RKH_SMA_T *ao, rui8_t *state)
+rkh_trc_state(void *ao, rui8_t *state)
 {
     
     RKH_TRC_BEGIN_WOFIL((CB((state))->type & RKH_REGULAR) == 0 ? 
