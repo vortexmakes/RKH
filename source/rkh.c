@@ -725,31 +725,6 @@ rkh_sm_ctor(RKH_SM_T *me)
 }
 #endif
 
-#if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
-void
-rkh_sma_clear_info(RKH_SMA_T *sma)
-{
-    RKH_SMAI_T *psi;
-    RKH_SR_ALLOC();
-
-    psi = &sma->sinfo;
-
-    RKH_ENTER_CRITICAL_();
-    sma->sinfo.ndevt = sma->sinfo.exectr = 0;
-    RKH_EXIT_CRITICAL_();
-}
-
-void
-rkh_sma_get_info(RKH_SMA_T *sma, RKH_SMAI_T *psi)
-{
-    RKH_SR_ALLOC();
-
-    RKH_ENTER_CRITICAL_();
-    *psi = sma->sinfo;
-    RKH_EXIT_CRITICAL_();
-}
-#endif
-
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 rbool_t

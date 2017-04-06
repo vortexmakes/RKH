@@ -3095,44 +3095,6 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
 
 /**
  *  \brief
- *  Retrieves performance information for a particular state machine
- *  application (SMA) as known as active object.
- *
- *	The user application must allocate an RKH_SMAI_T data structure used to
- *	receive data. The performance information is available during run-time
- *	for each of the RKH services. This can be useful in determining whether
- *	the application is performing properly, as well as helping to optimize the
- *	application.
- *	This information provides a "snapshot" a particular instant in time, i.e.,
- *	when the service is invoked.
- *
- *  \param[in] me  pointer to previously created state machine application.
- *  \param[in] psi  pointer to the buffer into which the performance
- *                  information will be copied by reference.
- *
- *  \note
- *  See RKH_SMAI_T structure for more information. This function is optional, 
- *  thus it could be eliminated in compile-time with 
- *  RKH_CFG_SMA_GET_INFO_EN = 0.
- *
- */
-void rkh_sma_get_info(RKH_SMA_T *me, RKH_SMAI_T *psi);
-
-/**
- *  \brief
- *  Clear performance information for a particular state machine application
- *  (SMA) as known as active object.
- *
- *  \param[in] me  pointer to previously created state machine application.
- *
- *  \note
- *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_SMA_GET_INFO_EN = 0.
- */
-void rkh_sma_clear_info(RKH_SMA_T *me);
-
-/**
- *  \brief
  *  Initializes the virtual table of the active object instance and calls the 
  *  constructor operation of its base class.
  *

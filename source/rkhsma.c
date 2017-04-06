@@ -114,4 +114,30 @@ rkh_sma_unregister(RKH_SMA_T *sma)
     RKH_TR_SMA_UNREG(sma, prio);
     RKH_EXIT_CRITICAL_();
 }
+
+#if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
+void
+rkh_sma_clear_info(RKH_SMA_T *sma)
+{
+    RKH_SMAI_T *psi;
+    RKH_SR_ALLOC();
+
+    psi = &sma->sinfo;
+
+    RKH_ENTER_CRITICAL_();
+    sma->sinfo.ndevt = sma->sinfo.exectr = 0;
+    RKH_EXIT_CRITICAL_();
+}
+
+void
+rkh_sma_get_info(RKH_SMA_T *sma, RKH_SMAI_T *psi)
+{
+    RKH_SR_ALLOC();
+
+    RKH_ENTER_CRITICAL_();
+    *psi = sma->sinfo;
+    RKH_EXIT_CRITICAL_();
+}
+#endif
+
 /* ------------------------------ End of file ------------------------------ */
