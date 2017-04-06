@@ -55,6 +55,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "rkhsma.h"
+#include "Mockrkhport.h"
 #include "Mockrkhtrc.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -66,12 +67,13 @@ TEST_GROUP(sma);
 /* ---------------------------- Local variables ---------------------------- */
 static RKHROM RKH_ROM_T base = {0, 0, "receiver"};
 static RKH_SMA_T receiver;
-const RKH_TRC_FIL_T fsma = {0, NULL};
+const RKH_TRC_FIL_T fsma = {0, NULL};   /* Fake global variable of trace */
+                                        /* module (using for mocking) */
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-/* =========================== Stream test group =========================== */
+/* ============================= SMA test group ============================ */
 TEST_SETUP(sma)
 {
     receiver.sm.romrkh = &base;
@@ -82,15 +84,29 @@ TEST_TEAR_DOWN(sma)
 }
 
 /**
- *  \addtogroup test_trace_stream Trace record stream test group
+ *  \addtogroup test_rkhsma Active object (SMA) test group
  *  @{
- *  \name Test cases of trace record stream group
+ *  \name Test cases of active object test group
  *  @{ 
  */
-TEST(sma, FirstTest)
+TEST(sma, Register)
 {
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
     rkh_sma_register(&receiver);
-    TEST_ASSERT_EQUAL(&receiver, rkh_sptbl[0]);
+    TEST_ASSERT_EQUAL(&receiver, rkh_sptbl[receiver.sm.romrkh->prio]);
+}
+
+TEST(sma, UnRegister)
+{
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_UNREG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_sma_unregister(&receiver);
+    TEST_ASSERT_EQUAL((RKH_SMA_T *)0, rkh_sptbl[receiver.sm.romrkh->prio]);
 }
 
 /** @} doxygen end group definition */

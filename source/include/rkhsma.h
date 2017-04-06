@@ -38,7 +38,7 @@
  *
  *  \addtogroup api
  *  @{
- *  \addtogroup apiAO Manager of active objects
+ *  \addtogroup apiAO Active objects
  *  @{@}
  *  @}
  */

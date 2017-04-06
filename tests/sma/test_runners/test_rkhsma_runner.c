@@ -59,7 +59,8 @@
 /* ---------------------------- Global functions --------------------------- */
 TEST_GROUP_RUNNER(sma)
 {
-	RUN_TEST_CASE(sma, FirstTest);
+	RUN_TEST_CASE(sma, Register);
+	RUN_TEST_CASE(sma, UnRegister);
 }
 
 /* ------------------------------ End of file ------------------------------ */
