@@ -56,7 +56,6 @@
 #include "unity_fixture.h"
 #include "unitrazer.h"
 #include "rkh.h"
-#include "rkhsma.h"
 #include "common.h"
 #include "smPolymorphism.h"
 #include "MockrkhportTest.h"

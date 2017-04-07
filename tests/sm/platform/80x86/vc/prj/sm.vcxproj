@@ -105,13 +105,7 @@
     <ClInclude Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.h" />
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h" />
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h" />
-    <ClInclude Include="..\..\..\..\rkhcfg.h" />
-    <ClInclude Include="..\..\..\..\smPseudoTest.h" />
-    <ClInclude Include="..\..\..\..\smPseudoTestAct.h" />
-    <ClInclude Include="..\..\..\..\smTest.h" />
-    <ClInclude Include="..\..\..\..\smTestAct.h" />
     <ClInclude Include="..\..\..\..\stub\mocks\MocksmTestAct.h" />
-    <ClInclude Include="..\bsp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
@@ -133,20 +127,24 @@
     <ClCompile Include="..\..\..\..\common.c" />
     <ClCompile Include="..\..\..\..\smInstance.c" />
     <ClCompile Include="..\..\..\..\smPolymorphism.c" />
+    <ClCompile Include="..\..\..\..\smPseudoConditionalTest.c" />
     <ClCompile Include="..\..\..\..\smPseudoTest.c" />
     <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MockrkhportTest.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smInstance_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPolymorphism_runner.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostateConditional_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransitionWoutUnitrazer_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
     <ClCompile Include="..\..\..\..\test_smInstance.c" />
     <ClCompile Include="..\..\..\..\test_smPolymorphism.c" />
     <ClCompile Include="..\..\..\..\test_smPseudostate.c" />
+    <ClCompile Include="..\..\..\..\test_smPseudostateConditional.c" />
     <ClCompile Include="..\..\..\..\test_smTransition.c" />
     <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c" />
     <ClCompile Include="..\bsp.c" />

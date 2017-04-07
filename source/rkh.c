@@ -544,7 +544,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     RKH_TR_SM_NTRNACT(me,     /* this state machine object */
                                       nal,     /* # executed actions */
                                                /* # transition segments */
-                                      RKH_GET_STEP());
+                                       RKH_GET_STEP());
                     RKH_EXEC_TRANSITION(me, pe);
 #endif
 #if defined(RKH_CHOICE_OR_CONDITIONAL_ENABLED)

@@ -82,12 +82,6 @@
     <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h">
       <Filter>Source Files\rkh\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\rkhcfg.h">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\bsp.h">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\unity\unity.h">
       <Filter>Source Files\tests\unity</Filter>
     </ClInclude>
@@ -114,18 +108,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\smTest.h">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\smTestAct.h">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\smPseudoTest.h">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\smPseudoTestAct.h">
-      <Filter>Source Files\tests\sm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\cmock\cmock.h">
       <Filter>Source Files\tests\cmock</Filter>
@@ -251,6 +233,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\test_runners\test_smTransitionWoutUnitrazer_runner.c">
       <Filter>Source Files\tests\sm\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\smPseudoConditionalTest.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostateConditional_runner.c">
+      <Filter>Source Files\tests\sm\test_runners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test_smPseudostateConditional.c">
+      <Filter>Source Files\tests\sm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c">
+      <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
