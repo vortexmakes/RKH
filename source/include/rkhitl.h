@@ -3270,7 +3270,7 @@ struct RKHSmaVtbl
  *	the triggering event would be discarded and the transition would
  *	not be taken.
  *	Each condition connector can have one special branch with a guard
- *	labeled rkh_else, which is taken if all the guards on the other
+ *	labeled rkh_sm_else, which is taken if all the guards on the other
  *	branches are false.
  *  A guard function takes the state machine pointer and the event
  *  pointer as arguments.
@@ -3864,19 +3864,6 @@ struct RKH_SHIST_T
 extern const RKHSmaVtbl rkhSmaVtbl;
 
 /* -------------------------- Function prototypes -------------------------- */
-#if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
-     RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    rbool_t rkh_else(const RKH_SM_T *sma, RKH_EVT_T *pe);
-#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
-       RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
-    rbool_t rkh_else(RKH_EVT_T *pe);
-#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
-       RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
-    rbool_t rkh_else(const RKH_SM_T *sma);
-#else
-    rbool_t rkh_else(void);
-#endif
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

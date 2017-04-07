@@ -335,7 +335,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *  compile-time by means of RKH_EN_GRD_EVT_ARG and RKH_EN_GRD_HSM_ARG
  *  preprocessor directives.
  */
-#define ELSE        rkh_else
+#define ELSE        rkh_sm_else
 
 /**
  *  \brief
@@ -1151,7 +1151,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *
  *	\sa
  *	This macro is not terminated with the semicolon.
- *	Use rkh_else() when if all the guards on the other branches are false.
+ *	Use rkh_sm_else() when if all the guards on the other branches are false.
  *
  *  \usage
  *	This table have the general structure shown below:
@@ -1177,7 +1177,7 @@ extern RKH_DYNE_TYPE rkh_eplist[RKH_CFG_FWK_MAX_EVT_POOL];
  *	This macro defines a branch in the branch table.
  *
  *	Each condition connector can have one special branch with a guard
- *	labeled rkh_else, which is taken if all the guards on the other
+ *	labeled rkh_sm_else, which is taken if all the guards on the other
  *	branches are false.
  *	The general syntax of an expression labelling a branch in a statechart is
  *	\e "[c]/a" where \e c is a condition that guards the transition from
@@ -3537,6 +3537,19 @@ void rkh_sm_ctor(RKH_SM_T *me);
  *  \ingroup apiSM
  */
 void rkh_sm_clear_history(RKHROM RKH_SHIST_T *h);
+
+#if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
+     RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
+rbool_t rkh_sm_else(const RKH_SM_T *sma, RKH_EVT_T *pe);
+#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
+       RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
+rbool_t rkh_sm_else(RKH_EVT_T *pe);
+#elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
+       RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
+rbool_t rkh_sm_else(const RKH_SM_T *sma);
+#else
+rbool_t rkh_sm_else(void);
+#endif
 
 /**
  *  \brief

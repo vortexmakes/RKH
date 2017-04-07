@@ -201,6 +201,9 @@ TEST(pseudostateConditional, trnToChoiceWithFalseCondition)
     smPCT_onEventA_ExpectAndReturn(
         RKH_CAST(SmPseudoConditionalTest, me), 
         &evB, RKH_FALSE);
+    smPCT_onEventD_ExpectAndReturn(
+        RKH_CAST(SmPseudoConditionalTest, me), 
+        &evB, RKH_FALSE);
     smPCT_tr2_Expect(
         RKH_CAST(SmPseudoConditionalTest, me), &evB);
     /* Expect init state machine */
@@ -228,6 +231,75 @@ TEST(pseudostateConditional, trnToChoiceWithFalseCondition)
     setState((RKH_SMA_T *)me, RKH_STATE_CAST(&smPCT_s0));
 
     rkh_sm_dispatch((RKH_SM_T *)me, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(pseudostateConditional, trnToChoiceWithoutElse)
+{
+    UtrzProcessOut *p;
+    SmPseudoConditionalTest *me = RKH_CAST(SmPseudoConditionalTest, 
+                                           smPseudoConditionalTest);
+
+    /* Expect call actions */
+    smPCT_onEventA_ExpectAndReturn(
+        RKH_CAST(SmPseudoConditionalTest, me), 
+        &evC, RKH_FALSE);
+    /* Expect init state machine */
+    sm_init_expect(RKH_STATE_CAST(
+        RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(
+        RKH_SMA_ACCESS_CONST(me, istate)));
+    /* Expect first transition segment */
+	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice2));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice2));
+	sm_ntrnact_expect(0, 1);
+	sm_cndNotFound_expect();
+    /* Initialize and set state */
+    rkh_sm_init((RKH_SM_T *)me);
+    setState((RKH_SMA_T *)me, RKH_STATE_CAST(&smPCT_s0));
+
+    rkh_sm_dispatch((RKH_SM_T *)me, &evC);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(pseudostateConditional, trnToChoiceReturnToSource)
+{
+    UtrzProcessOut *p;
+    SmPseudoConditionalTest *me = RKH_CAST(SmPseudoConditionalTest, 
+                                           smPseudoConditionalTest);
+
+    /* Expect call actions */
+    smPCT_onEventA_ExpectAndReturn(RKH_CAST(SmPseudoConditionalTest, me), 
+                                   &evD, RKH_FALSE);
+    smPCT_onEventD_ExpectAndReturn(RKH_CAST(SmPseudoConditionalTest, me), 
+                                   &evD, RKH_TRUE);
+    smPCT_tr4_Expect(RKH_CAST(SmPseudoConditionalTest, me), &evD);
+    /* Expect init state machine */
+    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    /* Expect first transition segment */
+	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
+	sm_ntrnact_expect(0, 1);
+    /* Expect target state of last (second) transition */
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_s0));
+    /* Expect solve compoused transition */
+    sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
+	sm_ntrnact_expect(1, 2);
+    sm_enstate_expect(RKH_STATE_CAST(&smPCT_s0));
+    sm_nenex_expect(1, 1);
+    /* Expect main target state */
+    sm_state_expect(RKH_STATE_CAST(&smPCT_s0));
+	sm_evtProc_expect();
+    /* Initialize and set state */
+    rkh_sm_init((RKH_SM_T *)me);
+    setState((RKH_SMA_T *)me, RKH_STATE_CAST(&smPCT_s0));
+
+    rkh_sm_dispatch((RKH_SM_T *)me, &evD);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);

@@ -728,7 +728,7 @@ rkh_sm_ctor(RKH_SM_T *me)
 #if (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
      RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 rbool_t
-rkh_else(const struct RKH_SM_T *sma, RKH_EVT_T *pe)
+rkh_sm_else(const struct RKH_SM_T *sma, RKH_EVT_T *pe)
 {
     (void)sma;
     (void)pe;
@@ -737,7 +737,7 @@ rkh_else(const struct RKH_SM_T *sma, RKH_EVT_T *pe)
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_ENABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_DISABLED)
 rbool_t
-rkh_else(RKH_EVT_T *pe)
+rkh_sm_else(RKH_EVT_T *pe)
 {
     (void)pe;
     return RKH_GTRUE;
@@ -745,14 +745,14 @@ rkh_else(RKH_EVT_T *pe)
 #elif (RKH_CFG_SMA_GRD_ARG_EVT_EN == RKH_DISABLED && \
        RKH_CFG_SMA_GRD_ARG_SMA_EN == RKH_ENABLED)
 rbool_t
-rkh_else(const struct RKH_SM_T *sma)
+rkh_sm_else(const struct RKH_SM_T *sma)
 {
     (void)sma;
     return RKH_GTRUE;
 }
 #else
 rbool_t
-rkh_else(void)
+rkh_sm_else(void)
 {
     return RKH_GTRUE;
 }

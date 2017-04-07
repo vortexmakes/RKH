@@ -42,8 +42,8 @@ RKH_SMA_DCLR(smPseudoConditionalTest);
 
 /* Declare states and pseudostates */
 RKH_DCLR_COMP_STATE smPCT_s1;
-RKH_DCLR_BASIC_STATE smPCT_waiting, smPCT_s0, smPCT_s11, smPCT_s12;
-RKH_DCLR_CHOICE_STATE smPCT_choice1;
+RKH_DCLR_BASIC_STATE smPCT_waiting, smPCT_s0, smPCT_s11, smPCT_s12, smPCT_s2;
+RKH_DCLR_CHOICE_STATE smPCT_choice1, smPCT_choice2;
 
 /* ------------------------------- Data types ------------------------------ */
 typedef struct SmPseudoConditionalTest SmPseudoConditionalTest;

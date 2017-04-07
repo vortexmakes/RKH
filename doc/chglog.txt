@@ -356,7 +356,7 @@
 - Fixed VC08 project settings.
 
 \new
-- Added rkh_else function to be used when if all the guards on the other 
+- Added rkh_sm_else function to be used when if all the guards on the other 
   branches are false.
 - Changed conditional (branch) pseudostate related macros. Therefore, the 
   demo and doc files too.

@@ -1996,7 +1996,7 @@ outgoing transition segments called branches. Branches are labeled with
 guards that determine which one is to be actually taken. 
 Since the condition connector is an OR connector, only one of the branches 
 can be taken. Each condition connector can have one special branch with 
-a guard labeled rkh_else, which is taken if all the guards on the other 
+a guard labeled rkh_sm_else, which is taken if all the guards on the other 
 branches are false. 
 Branches cannot contain triggers, but in addition to a guard they may 
 contain actions. A branch can enter another condition connector, thus 

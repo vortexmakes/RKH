@@ -63,6 +63,8 @@ TEST_GROUP_RUNNER(pseudostateConditional)
 	RUN_TEST_CASE(pseudostateConditional, firstStateAfterInit);
 	RUN_TEST_CASE(pseudostateConditional, trnToChoiceWithTrueCondition);
 	RUN_TEST_CASE(pseudostateConditional, trnToChoiceWithFalseCondition);
+	RUN_TEST_CASE(pseudostateConditional, trnToChoiceWithoutElse);
+	RUN_TEST_CASE(pseudostateConditional, trnToChoiceReturnToSource);
 }
 
 /* ------------------------------ End of file ------------------------------ */

@@ -42,12 +42,15 @@ extern "C" {
 /* ============================ Effect actions ============================= */
 void smPCT_tr1(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 void smPCT_tr2(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
+void smPCT_tr3(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
+void smPCT_tr4(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 void smPCT_setCondition(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 
 /* ============================= Entry actions ============================= */
 /* ============================= Exit actions ============================== */
 /* ================================ Guards ================================= */
 rbool_t smPCT_onEventA(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
+rbool_t smPCT_onEventD(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 
