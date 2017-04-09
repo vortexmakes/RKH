@@ -51,6 +51,7 @@ void smPCT_setCondition(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 /* ================================ Guards ================================= */
 rbool_t smPCT_onEventA(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 rbool_t smPCT_onEventD(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
+rbool_t smPCT_guardTrue(SmPseudoConditionalTest *const me, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 

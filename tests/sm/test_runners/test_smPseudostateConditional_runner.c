@@ -65,6 +65,7 @@ TEST_GROUP_RUNNER(pseudostateConditional)
 	RUN_TEST_CASE(pseudostateConditional, trnToChoiceWithFalseCondition);
 	RUN_TEST_CASE(pseudostateConditional, trnToChoiceWithoutElse);
 	RUN_TEST_CASE(pseudostateConditional, trnToChoiceReturnToSource);
+	RUN_TEST_CASE(pseudostateConditional, failsTrnSegmentsExceeded);
 }
 
 /* ------------------------------ End of file ------------------------------ */

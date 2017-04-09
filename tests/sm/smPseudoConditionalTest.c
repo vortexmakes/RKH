@@ -44,6 +44,7 @@ RKH_CREATE_TRANS_TABLE(smPCT_s0)
     RKH_TRREG(B, NULL, smPCT_setCondition,  &smPCT_choice1),
     RKH_TRREG(C, NULL, NULL,                &smPCT_choice2),
     RKH_TRREG(D, NULL, NULL,                &smPCT_choice1),
+    RKH_TRREG(E, NULL, smPCT_tr1,           &smPCT_choice3),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_CHOICE_STATE(smPCT_choice1);
@@ -75,6 +76,26 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE(smPCT_s2, NULL, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(smPCT_s2)
 RKH_END_TRANS_TABLE
+
+RKH_CREATE_CHOICE_STATE(smPCT_choice3);
+RKH_CREATE_BRANCH_TABLE(smPCT_choice3)
+    RKH_BRANCH(smPCT_guardTrue, smPCT_tr1,   &smPCT_choice4),
+RKH_END_BRANCH_TABLE
+
+RKH_CREATE_CHOICE_STATE(smPCT_choice4);
+RKH_CREATE_BRANCH_TABLE(smPCT_choice4)
+    RKH_BRANCH(smPCT_guardTrue, smPCT_tr1,   &smPCT_choice5),
+RKH_END_BRANCH_TABLE
+
+RKH_CREATE_CHOICE_STATE(smPCT_choice5);
+RKH_CREATE_BRANCH_TABLE(smPCT_choice5)
+    RKH_BRANCH(smPCT_guardTrue, smPCT_tr1,   &smPCT_choice6),
+RKH_END_BRANCH_TABLE
+
+RKH_CREATE_CHOICE_STATE(smPCT_choice6);
+RKH_CREATE_BRANCH_TABLE(smPCT_choice6)
+    RKH_BRANCH(smPCT_guardTrue, smPCT_tr1,   &smPCT_s1),
+RKH_END_BRANCH_TABLE
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */

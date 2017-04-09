@@ -34,5 +34,7 @@ void smPCT_setCondition_CMockExpect(UNITY_LINE_TYPE cmock_line, SmPseudoConditio
 void smPCT_onEventA_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
 #define smPCT_onEventD_ExpectAndReturn(me, pe, cmock_retval) smPCT_onEventD_CMockExpectAndReturn(__LINE__, me, pe, cmock_retval)
 void smPCT_onEventD_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
+#define smPCT_guardTrue_ExpectAndReturn(me, pe, cmock_retval) smPCT_guardTrue_CMockExpectAndReturn(__LINE__, me, pe, cmock_retval)
+void smPCT_guardTrue_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* const me, RKH_EVT_T* pe, rbool_t cmock_to_return);
 
 #endif
