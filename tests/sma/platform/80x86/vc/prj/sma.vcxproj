@@ -88,7 +88,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\rkhsma.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />

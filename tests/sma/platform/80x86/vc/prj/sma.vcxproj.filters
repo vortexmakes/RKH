@@ -22,9 +22,6 @@
     <ClCompile Include="..\..\..\..\test_runners\test_rkhsma_runner.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
-      <Filter>rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhtrc.c">
       <Filter>test\stub</Filter>
     </ClCompile>
@@ -47,9 +44,6 @@
   <ItemGroup>
     <Filter Include="rkh">
       <UniqueIdentifier>{e260d468-def4-4910-9b48-5afbd246b8f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="rkh\bsp">
-      <UniqueIdentifier>{f1abef11-9509-46bb-9ea6-8b0fb30d66dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="test">
       <UniqueIdentifier>{15f2147f-34d1-42e9-9bf7-a4ac79fce62d}</UniqueIdentifier>
