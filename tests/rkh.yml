@@ -1,0 +1,2 @@
+:cmock:
+  :plugins: [ignore_arg]

@@ -61,6 +61,7 @@
 #include "smTest.h"
 #include "smTestAct.h"
 #include "MocksmTestAct.h"
+#include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 
@@ -583,6 +584,8 @@ TEST(trnWoutUnitrazer, fails_ExceededHierarchicalLevel)
                             RKH_STATE_CAST(&s0),
                             expectedState,
                             INIT_STATE_MACHINE);
+    rkh_assert_Expect("rkh", 0);
+    rkh_assert_IgnoreArg_line();
 
     result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
 

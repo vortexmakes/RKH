@@ -44,37 +44,7 @@
 #ifndef __BSP_H__
 #define __BSP_H__
 
-#include "rkh.h"
-
-#define BSP_TICKS_PER_SEC           RKH_CFG_FWK_TICK_RATE_HZ
-
-/**
- *  \brief
- *  This macro represents the number of timestamp clock ticks per second.
- *  Dividing a count of timestamp ticks by this macro yields the number
- *  of seconds.
- */
-
-#define BSP_TS_RATE_HZ              CLOCKS_PER_SEC
-
 void bsp_init(int argc, char *argv[]);
-rui32_t bsp_rand(void);
-void bsp_srand(rui32_t seed);
-
-void bsp_cli_req(rui8_t clino);
-void bsp_cli_wait_req(rui8_t clino, RKH_TNT_T req_time);
-void bsp_cli_using(rui8_t clino, RKH_TNT_T using_time);
-void bsp_cli_paused(rui8_t clino);
-void bsp_cli_resumed(rui8_t clino);
-void bsp_cli_done(rui8_t clino);
-void bsp_svr_recall(rui8_t clino);
-void bsp_svr_paused(const RKH_SMA_T *sma);
-void bsp_svr_start(rui8_t clino);
-void bsp_svr_end(void);
-void bsp_svr_resume(void);
-
-void bsp_led_on(void);
-void bsp_led_off(void);
 
 #endif
 /* ------------------------------ End of file ------------------------------ */

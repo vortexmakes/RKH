@@ -82,13 +82,7 @@
     <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h">
       <Filter>Source Files\rkh\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\unity\unity.h">
-      <Filter>Source Files\tests\unity</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\unity\unity_config.h">
-      <Filter>Source Files\tests\unity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\unity\unity_internals.h">
       <Filter>Source Files\tests\unity</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h">
@@ -99,12 +93,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h">
       <Filter>Source Files\tests\unity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.h">
-      <Filter>Source Files\tests\utils\bsp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h">
-      <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
@@ -124,58 +112,28 @@
     <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkht.h">
       <Filter>Source Files\rkh\port</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrzlib.h">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\unity.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\unity\unity_internals.h">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\rkh.c">
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhdyn.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhmp.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhrq.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhs.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhsma.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test_smTransition.c">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\bsp.c">
       <Filter>Source Files\tests\sm</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c">
       <Filter>Source Files\tests\sm\test_runners</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\unity\unity.c">
-      <Filter>Source Files\tests\unity</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c">
       <Filter>Source Files\tests\unity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\utils\bsp\platform\80x86\vc\tcptrc.c">
-      <Filter>Source Files\tests\utils\bsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c">
-      <Filter>Source Files\tests\utils\unitrazer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
-      <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\smTest.c">
       <Filter>Source Files\tests\sm</Filter>
@@ -204,29 +162,14 @@
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test_smInstance.c">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smInstance_runner.c">
-      <Filter>Source Files\tests\sm\test_runners</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\smInstance.c">
       <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smPolymorphism_runner.c">
-      <Filter>Source Files\tests\sm\test_runners</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\smPolymorphism.c">
       <Filter>Source Files\tests\sm</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test_smPolymorphism.c">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c">
       <Filter>Source Files\rkh\port</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\MockrkhportTest.c">
-      <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c">
       <Filter>Source Files\tests\sm</Filter>
@@ -246,5 +189,34 @@
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhrq.c">
+      <Filter>Source Files\tests\sm\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsma.c">
+      <Filter>Source Files\tests\sm\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bsp.c">
+      <Filter>Source Files\tests\utils\bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
+      <Filter>Source Files\tests\sm\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\unity\unity.c">
+      <Filter>Source Files\tests\unity</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\..\utils\unitrazer\unitrazer.lib">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </Library>
   </ItemGroup>
 </Project>

@@ -53,6 +53,7 @@
 #include "unity_fixture.h"
 #include "unitrazer.h"
 
+
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
@@ -135,8 +136,14 @@ unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
 /* ============================ Init function ============================== */
 
 void
-unitrazer_init(void)
+unitrazer_start(void)
 {
+#ifdef __UNITRAZER_LIB__
+	tzparser_init();
+	unitrazer_init();
+	start_log("unitrazer.log");
+#endif
+
     unitrazer_resetOut();
 
     RKH_TRC_BEGIN_WOFIL(RKH_TE_UT_INIT);

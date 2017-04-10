@@ -57,6 +57,10 @@
 #include "unity_fixture.h"
 #include "rkh.h"
 
+#ifdef __UNITRAZER_LIB__
+#include "unitrzlib.h"
+#endif
+
 /* ---------------------- External C language linkage ---------------------- */
 
 #ifdef __cplusplus
@@ -70,7 +74,7 @@ extern "C" {
  *  \brief
  *  Establish the preconditions to the tests.
  */
-#define sm_init() unitrazer_init()
+#define sm_init() unitrazer_start()
 
 /**
  *  \brief
@@ -389,7 +393,7 @@ void unitrazer_resetOut(void);
  *  \brief
  *  Establish the preconditions to the tests.
  */
-void unitrazer_init(void);
+void unitrazer_start(void);
 
 /**
  *  \brief

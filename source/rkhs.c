@@ -52,6 +52,7 @@
 
 #include "rkhassert.h"
 #include "rkh.h"
+#include "rkhrdy.h"
 
 #if RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED
 
