@@ -129,6 +129,33 @@ rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl)
 }
 #endif
 
+#if RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED
+void
+rkh_sma_terminate(RKH_SMA_T *sma)
+{
+    RKH_SR_ALLOC();
+
+    rkh_sma_unregister(sma);
+    RKH_TR_SMA_TERM(sma, RKH_GET_PRIO(sma));
+}
+
+void
+rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs, RKH_RQNE_T qsize,
+                 void *stks, rui32_t stksize)
+{
+    (void)stks;
+    (void)stksize;
+    RKH_SR_ALLOC();
+
+    RKH_REQUIRE((qs != (const RKH_EVT_T * *)0) && (qsize != (RKH_RQNE_T)0));
+
+    rkh_rq_init(&sma->equeue, (const void * *)qs, qsize, sma);
+    rkh_sma_register(sma);
+    rkh_sm_init((RKH_SM_T *)sma);
+    RKH_TR_SMA_ACT(sma, RKH_GET_PRIO(sma), qsize);
+}
+#endif
+
 #if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
 void
 rkh_sma_clear_info(RKH_SMA_T *sma)

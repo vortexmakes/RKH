@@ -74,7 +74,7 @@ const char *rkh_get_port_desc(void);
  *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
  *  RKH_SMA_UNREADY(), and assume the native priority scheme.
  */
-#define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_DISABLED
+#define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_ENABLED
 
 /**
  *  If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native event

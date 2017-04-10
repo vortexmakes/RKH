@@ -58,6 +58,7 @@
 #include "Mockrkhport.h"
 #include "Mockrkhtrc.h"
 #include "Mockrkh.h"
+#include "Mockrkhrq.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -115,6 +116,43 @@ TEST(sma, Constructor)
     rkh_sm_ctor_Expect(&(receiver.sm));
 
     rkh_sma_ctor(&receiver, (const RKHSmaVtbl *)0);
+}
+
+TEST(sma, TerminateOneRegisteredAO)
+{
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_sma_register(&receiver);
+
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_UNREG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_TERM, RKH_FALSE);
+
+    rkh_sma_terminate(&receiver);
+
+    TEST_ASSERT_EQUAL((RKH_SMA_T *)0, rkh_sptbl[receiver.sm.romrkh->prio]);
+}
+
+TEST(sma, ActivateOneAO)
+{
+    char *buff;
+
+    rkh_rq_init_Expect(&receiver.equeue, &buff, 16, &receiver);
+
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_sm_init_Expect((RKH_SM_T *)&receiver);
+
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_sma_activate(&receiver, (RKH_EVT_T **)&buff, 16, NULL, 0);
 }
 
 /** @} doxygen end group definition */

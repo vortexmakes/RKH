@@ -142,30 +142,5 @@ rkh_fwk_exit(void)
     RKH_TR_FWK_EX();
 }
 
-void
-rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs, RKH_RQNE_T qsize,
-                 void *stks, rui32_t stksize)
-{
-    (void)stks;
-    (void)stksize;
-    RKH_SR_ALLOC();
-
-    RKH_REQUIRE((qs != (const RKH_EVT_T * *)0) && (qsize != (RKH_RQNE_T)0));
-
-    rkh_rq_init(&sma->equeue, (const void * *)qs, qsize, sma);
-    rkh_sma_register(sma);
-    rkh_sm_init((RKH_SM_T *)sma);
-    RKH_TR_SMA_ACT(sma, RKH_GET_PRIO(sma), qsize);
-}
-
-void
-rkh_sma_terminate(RKH_SMA_T *sma)
-{
-    RKH_SR_ALLOC();
-
-    rkh_sma_unregister(sma);
-    RKH_TR_SMA_TERM(sma, RKH_GET_PRIO(sma));
-}
-
 #endif
 /* ------------------------------ End of file ------------------------------ */

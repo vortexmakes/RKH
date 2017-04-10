@@ -62,6 +62,8 @@ TEST_GROUP_RUNNER(sma)
 	RUN_TEST_CASE(sma, Register);
 	RUN_TEST_CASE(sma, UnRegister);
 	RUN_TEST_CASE(sma, Constructor);
+	RUN_TEST_CASE(sma, TerminateOneRegisteredAO);
+	RUN_TEST_CASE(sma, ActivateOneAO);
 }
 
 /* ------------------------------ End of file ------------------------------ */

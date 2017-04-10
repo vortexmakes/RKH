@@ -111,6 +111,65 @@ void rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl);
 
 /**
  *  \brief
+ *  Initializes and activates a previously created state machine application
+ *  (SMA) as known as active object.
+ *
+ *  A state machine application (SMA) is declared with the RKH_SMA_T data
+ *  type and is defined with the rkh_sma_activate() service.
+ *
+ *  \param[in] me       pointer to previously created state machine
+ *                      application.
+ *  \param[in] qSto     base address of the event storage area. A message
+ *                      storage area is declared as an array of pointers to
+ *                      RKH events.
+ *  \param[in] qSize    size of the storage event area [in number of entries].
+ *  \param[in] stkSto   starting address of the stack's memory area.
+ *  \param[in] stkSize  size of stack memory area [in bytes].
+ *
+ *	\note
+ *	Platform-dependent function. All RKH ports must be defined in the RKH
+ *	port file to a particular platform. However, only the ports to the
+ *	external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
+ *
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Activates an active object
+ *
+ *  \ingroup apiPortAO
+ */
+void rkh_sma_activate(RKH_SMA_T *me, const RKH_EVT_T * *qSto,
+                      RKH_RQNE_T qSize, void *stkSto, rui32_t stkSize);
+
+/**
+ *  \brief
+ *  Terminate a state machine application (SMA) as known as active object.
+ *
+ *  A state machine application may call this service to terminate itself.
+ *  Once terminated, the state machine application must be re-created in
+ *  order for it to execute again.
+ *
+ *  \param[in] me      pointer to previously created state machine
+ *                      application.
+ *
+ *	\note
+ *	Platform-dependent function. All RKH ports must be defined in the RKH
+ *	port file to a particular platform. However, only the ports to the
+ *	external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
+ *
+ *  \usage
+ *	Implementation example for x86, linux emulator of simple cooperative 
+ *	scheduler non-preemptive.
+ *  \snippet linux_st_rkhport.c Terminates an active object
+ *
+ *  \ingroup apiPortAO
+ */
+void rkh_sma_terminate(RKH_SMA_T *me);
+
+/**
+ *  \brief
  *  Clear performance information for a particular state machine application
  *  (SMA) as known as active object.
  *
