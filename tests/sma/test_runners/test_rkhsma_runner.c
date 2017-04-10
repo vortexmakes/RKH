@@ -64,6 +64,9 @@ TEST_GROUP_RUNNER(sma)
 	RUN_TEST_CASE(sma, Constructor);
 	RUN_TEST_CASE(sma, TerminateOneRegisteredAO);
 	RUN_TEST_CASE(sma, ActivateOneAO);
+	RUN_TEST_CASE(sma, PostFifo);
+	RUN_TEST_CASE(sma, PostLifo);
+	RUN_TEST_CASE(sma, Get);
 }
 
 /* ------------------------------ End of file ------------------------------ */

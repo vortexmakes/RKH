@@ -82,7 +82,7 @@ const char *rkh_get_port_desc(void);
  *  implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(), and
  *  rkh_sma_get() functions.
  */
-#define RKH_CFGPORT_NATIVE_EQUEUE_EN        RKH_DISABLED
+#define RKH_CFGPORT_NATIVE_EQUEUE_EN        RKH_ENABLED
 
 /**
  *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native

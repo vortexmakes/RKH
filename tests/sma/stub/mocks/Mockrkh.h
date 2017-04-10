@@ -28,12 +28,6 @@ void rkh_fwk_enter_CMockExpect(UNITY_LINE_TYPE cmock_line);
 void rkh_fwk_exit_CMockExpect(UNITY_LINE_TYPE cmock_line);
 #define rkh_tmr_tick_Expect(sender) rkh_tmr_tick_CMockExpect(__LINE__, sender)
 void rkh_tmr_tick_CMockExpect(UNITY_LINE_TYPE cmock_line, const void* const sender);
-#define rkh_sma_post_fifo_Expect(me, e, sender) rkh_sma_post_fifo_CMockExpect(__LINE__, me, e, sender)
-void rkh_sma_post_fifo_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T* e, const void* const sender);
-#define rkh_sma_post_lifo_Expect(me, e, sender) rkh_sma_post_lifo_CMockExpect(__LINE__, me, e, sender)
-void rkh_sma_post_lifo_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T* e, const void* const sender);
-#define rkh_sma_get_ExpectAndReturn(me, cmock_retval) rkh_sma_get_CMockExpectAndReturn(__LINE__, me, cmock_retval)
-void rkh_sma_get_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_EVT_T* cmock_to_return);
 #define rkh_fwk_defer_Expect(q, e) rkh_fwk_defer_CMockExpect(__LINE__, q, e)
 void rkh_fwk_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_RQ_T* q, const RKH_EVT_T* e);
 #define rkh_fwk_recall_ExpectAndReturn(me, q, cmock_retval) rkh_fwk_recall_CMockExpectAndReturn(__LINE__, me, q, cmock_retval)

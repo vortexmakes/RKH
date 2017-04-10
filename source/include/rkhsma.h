@@ -168,6 +168,110 @@ void rkh_sma_activate(RKH_SMA_T *me, const RKH_EVT_T * *qSto,
  */
 void rkh_sma_terminate(RKH_SMA_T *me);
 
+#if defined(RKH_USE_TRC_SENDER)
+/**
+ *  \brief
+ *  Send an event to a state machine application (SMA) as known as active
+ *  object through a queue using the FIFO policy. A message is a pointer
+ *  size variable and its use is application specific.
+ *
+ *  \param[in] me      pointer to previously created state machine
+ *                      application.
+ *  \param[in] e		actual event sent to the state machine application.
+ *  \param[in] sender	pointer to the sender object. It is not necessarily a 
+ *                      pointer to an active object. In fact, if 
+ *                      RKH_SMA_POST_FIFO() is called from an interrupt or 
+ *                      other context, it can create a unique object just to 
+ *                      unambiguously identify the publisher of the event.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it. Instead, use RKH_SMA_POST_FIFO() macro.
+ *  \note
+ *	For memory efficiency and best performance the SMA's event queue,
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *	The assertion inside it guarantee that the pointer is valid, so is not
+ *	necessary to check the pointer returned from rkh_sma_post_fifo().
+ *	\note
+ *	Platform-dependent function. All RKH ports must be defined in the RKH
+ *	port file to a particular platform. However, only the ports to the
+ *	external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
+ *
+ *  \ingroup apiPortAO
+ */
+void rkh_sma_post_fifo(RKH_SMA_T *me, const RKH_EVT_T *e,
+                       const void *const sender);
+#else
+void rkh_sma_post_fifo(RKH_SMA_T *me, const RKH_EVT_T *e);
+#endif
+
+#if defined(RKH_USE_TRC_SENDER)
+/**
+ *  \brief
+ *  Send an event to a state machine application (SMA) as known as active
+ *  object through a queue using the LIFO policy. A message is a pointer
+ *  size variable and its use is application specific.
+ *
+ *  \param[in] me		pointer to previously created state machine 
+ *                      application.
+ *  \param[in] e		actual event sent to the state machine application.
+ *  \param[in] sender	pointer to the sender object. It is not
+ *                      necessarily a pointer to an active object. In
+ *                      fact, if RKH_SMA_POST_FIFO() is called from an
+ *                      interrupt or other context, it can create a
+ *                      unique object just to unambiguously identify the
+ *                      publisher of the event.
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should
+ *  not call it. Instead, use RKH_SMA_POST_LIFO() macro.
+ *  \note
+ *	For memory efficiency and best performance the SMA's event queue,
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *	The assertion inside it guarantee that the pointer is valid, so is not
+ *	necessary to check the pointer returned from rkh_sma_post_lifo().
+ *	\note
+ *	Platform-dependent function. All RKH ports must be defined in the RKH
+ *	port file to a particular platform. However, only the ports to the
+ *	external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
+ *
+ *  \ingroup apiPortAO
+ */
+void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e,
+                       const void *const sender);
+
+#else
+void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e);
+#endif
+
+/**
+ *  \brief
+ *  Get an event from the event queue of an state machine application (SMA)
+ *  as known as active object.
+ *  The events received are pointer size variables and their use is
+ *  application specific.
+ *
+ *  \param[in] me		pointer to previously created state machine 
+ *                      application.
+ *
+ *	\return     A non-NULL pointer indicates that a event pointer was 
+ *	            available, otherwise a NULL pointer.
+ *
+ *	\note
+ *	Platform-dependent function. All RKH ports must be defined in the RKH
+ *	port file to a particular platform. However, only the ports to the
+ *	external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
+ *	Depending on the underlying OS or kernel, if no event is present at the
+ *	queue, the function will block the current thread until an event is
+ *	received.
+ *
+ *  \ingroup apiPortAO
+ */
+RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
+
 /**
  *  \brief
  *  Clear performance information for a particular state machine application

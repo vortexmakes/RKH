@@ -58,12 +58,6 @@ RKH_MODULE_NAME(rkhdyn)
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
 
 /* ----------------------------- Local macros ------------------------------ */
-#if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
-    #define RKH_SMA_GET_NMIN(ao)    (ao)->equeue.nmin
-#else
-    #define RKH_SMA_GET_NMIN(ao)    0
-#endif
-
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -170,71 +164,6 @@ rkh_fwk_epool_register(void *sstart, rui32_t ssize, RKH_ES_T esize)
     ep = &rkh_eplist[rkhnpool - 1];
     RKH_DYNE_INIT(ep, sstart, ssize, esize);
     RKH_TR_FWK_EPREG(rkhnpool, ssize, esize, RKH_DYNE_GET_PSIZE(ep));
-}
-#endif
-
-#if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED
-void
-#if defined(RKH_USE_TRC_SENDER)
-rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
-                  const void *const sender)
-#else
-rkh_sma_post_fifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
-#endif
-{
-    RKH_SR_ALLOC();
-
-    RKH_HOOK_SIGNAL(e);
-    RKH_ENTER_CRITICAL_();
-
-    RKH_INC_REF(e);
-    rkh_rq_put_fifo(&sma->equeue, e);
-    RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref, sma->equeue.qty, 
-                    RKH_SMA_GET_NMIN(sma));
-
-    RKH_EXIT_CRITICAL_();
-}
-#endif
-
-#if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED && \
-    RKH_CFG_RQ_PUT_LIFO_EN == RKH_ENABLED
-void
-#if defined(RKH_USE_TRC_SENDER)
-rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
-                  const void *const sender)
-#else
-rkh_sma_post_lifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
-#endif
-{
-    RKH_SR_ALLOC();
-
-    RKH_HOOK_SIGNAL(e);
-    RKH_ENTER_CRITICAL_();
-
-    RKH_INC_REF(e);
-    rkh_rq_put_lifo(&sma->equeue, e);
-    RKH_TR_SMA_LIFO(sma, e, sender, e->pool, e->nref, sma->equeue.qty, 
-                    RKH_SMA_GET_NMIN(sma));
-
-    RKH_EXIT_CRITICAL_();
-}
-#endif
-
-#if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED
-RKH_EVT_T *
-rkh_sma_get(RKH_SMA_T *sma)
-{
-    RKH_EVT_T *e;
-    RKH_SR_ALLOC();
-
-    e = rkh_rq_get(&sma->equeue);
-
-    RKH_ASSERT(e != (RKH_EVT_T *)0);
-    /* Because the variables are obtained outside critical section could be */
-    /* a race condition */
-    RKH_TR_SMA_GET(sma, e, e->pool, e->nref, 
-                   sma->equeue.qty, RKH_SMA_GET_NMIN(sma));
-    return e;
 }
 #endif
 

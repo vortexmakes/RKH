@@ -71,6 +71,8 @@ static RKHROM RKH_ROM_T base = {0, 0, "receiver"};
 static RKH_SMA_T receiver;
 const RKH_TRC_FIL_T fsma = {0, NULL};   /* Fake global variable of trace */
                                         /* module (using for mocking) */
+const RKH_TRC_FIL_T fsig = {0, NULL};
+static RKH_EVT_T event = {0, 0, 0};                                       
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -153,6 +155,39 @@ TEST(sma, ActivateOneAO)
     rkh_exit_critical_Expect();
 
     rkh_sma_activate(&receiver, (RKH_EVT_T **)&buff, 16, NULL, 0);
+}
+
+TEST(sma, PostFifo)
+{
+    rkh_enter_critical_Expect();
+    rkh_rq_put_fifo_Expect(&receiver.equeue, &event);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_sma_post_fifo(&receiver, &event, &receiver);
+}
+
+TEST(sma, PostLifo)
+{
+    rkh_enter_critical_Expect();
+    rkh_rq_put_lifo_Expect(&receiver.equeue, &event);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_sma_post_lifo(&receiver, &event, &receiver);
+}
+
+TEST(sma, Get)
+{
+    RKH_EVT_T *e;
+
+    rkh_rq_get_ExpectAndReturn(&receiver.equeue, &event);
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_GET, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    e = rkh_sma_get(&receiver);
+    TEST_ASSERT_EQUAL(&event, e);
 }
 
 /** @} doxygen end group definition */
