@@ -106,6 +106,8 @@ void smTest_xS21_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 void smTest_xS22_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_xS221_Expect(me) smTest_xS221_CMockExpect(__LINE__, me)
 void smTest_xS221_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
+#define smTest_xS2211_Expect(me) smTest_xS2211_CMockExpect(__LINE__, me)
+void smTest_xS2211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_xS31_Expect(me) smTest_xS31_CMockExpect(__LINE__, me)
 void smTest_xS31_CMockExpect(UNITY_LINE_TYPE cmock_line, SmTest* const me);
 #define smTest_xS5_Expect(me) smTest_xS5_CMockExpect(__LINE__, me)

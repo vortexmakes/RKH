@@ -91,19 +91,28 @@
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\smInstance.c" />
+    <ClCompile Include="..\..\..\..\smPolymorphism.c" />
+    <ClCompile Include="..\..\..\..\smTest.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkh.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhmp.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhport.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhrq.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhtrc.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\..\..\test_rkhsma.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_rkhsma_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smInstance_runner.c" />
+    <ClCompile Include="..\..\..\..\test_runners\test_smPolymorphism_runner.c" />
+    <ClCompile Include="..\..\..\..\test_smInstance.c" />
+    <ClCompile Include="..\..\..\..\test_smPolymorphism.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\cmock\cmock.h" />
     <ClInclude Include="..\..\..\..\..\cmock\cmock_internals.h" />
+    <ClInclude Include="..\..\..\..\smInstance.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

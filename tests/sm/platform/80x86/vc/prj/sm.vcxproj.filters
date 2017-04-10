@@ -162,12 +162,6 @@
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\smInstance.c">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\smPolymorphism.c">
-      <Filter>Source Files\tests\sm</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c">
       <Filter>Source Files\rkh\port</Filter>
     </ClCompile>

@@ -62,6 +62,8 @@ static void
 runAllTests(void)
 {
 	RUN_TEST_GROUP(sma);
+	RUN_TEST_GROUP(instance);
+	RUN_TEST_GROUP(polymorphism);
 }
 
 /* ---------------------------- Global functions --------------------------- */

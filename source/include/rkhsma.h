@@ -69,6 +69,118 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+/**
+ *  \brief
+ *  Invoke the active object activation function rkh_sma_activate(). 
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the active object to activate. 
+ *
+ *  This macro is the recommended way of invoke the rkh_sma_activate()
+ *  function to active an active object, because it allows to
+ *  completely hides the platform-specific code.
+ *
+ *  \param[in] me_	    pointer to previously created state machine
+ *                      application.
+ *  \param[in] qSto_	base address of the event storage area. A message
+ *                      storage area is declared as an array of pointers
+ *                      to RKH events.
+ *  \param[in] qStoSize size of the storage event area [in number of
+ *                      entries].
+ *  \param[in] stkSto_	starting address of the stack's memory area.
+ *  \param[in] stkSize_ size of stack memory area [in bytes].
+ *
+ *  \note
+ *  In the next releases this macro will be improved, calling a function 
+ *  instead of using its own vptr.  
+ *
+ *	\sa
+ *	rkh_sma_activate().
+ *
+ *  \usage
+ *	\code
+ *	int
+ *	main( int argc, char *argv[] )
+ *	{
+ *		...
+ *		RKH_SMA_ACTIVATE( blinky, qsto, QSTO_SIZE, 0, 0 );
+ *		...
+ *		return 0;
+ *	}
+ *	\endcode
+ *
+ *  \ingroup apiAO
+ */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+         ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                              (const RKH_EVT_T **)qSto_, \
+                                              qStoSize, \
+                                              (void *)stkSto_, \
+                                              (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                             (const RKH_EVT_T **)qSto_, \
+                                             qStoSize, \
+                                             (void *)0, \
+                                             (rui32_t)0)
+    #endif
+#else
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                             (const RKH_EVT_T **)0, \
+                                             qStoSize, \
+                                             (void *)stkSto_, \
+                                             (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        ((RKH_SMA_T *)(me_))->vptr->activate(me_, \
+                                             (const RKH_EVT_T **)0, \
+                                             qStoSize, \
+                                             (void *)0, \
+                                             (rui32_t)0)
+    #endif
+#endif
+#else
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)qSto_, \
+                         qStoSize, \
+                         (void *)stkSto_, \
+                         (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)qSto_, \
+                         qStoSize, \
+                         (void *)0, \
+                         (rui32_t)0)
+    #endif
+#else
+    #if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)0, \
+                         qStoSize, \
+                         (void *)stkSto_, \
+                         (rui32_t)stkSize_)
+    #else
+    #define RKH_SMA_ACTIVATE(me_, qSto_, qStoSize, stkSto_, stkSize_) \
+        rkh_sma_activate(me_, \
+                         (const RKH_EVT_T **)0, \
+                         qStoSize, \
+                         (void *)0, \
+                         (rui32_t)0)
+    #endif
+#endif
+#endif
+
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */

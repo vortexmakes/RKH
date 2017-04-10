@@ -116,8 +116,6 @@
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
     <ClCompile Include="..\..\..\..\common.c" />
-    <ClCompile Include="..\..\..\..\smInstance.c" />
-    <ClCompile Include="..\..\..\..\smPolymorphism.c" />
     <ClCompile Include="..\..\..\..\smPseudoConditionalTest.c" />
     <ClCompile Include="..\..\..\..\smPseudoTest.c" />
     <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
