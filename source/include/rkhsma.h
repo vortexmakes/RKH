@@ -71,6 +71,65 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /**
  *  \brief
+ *  This macro declares a opaque pointer to previously created state machine
+ *  application (SMA aka active object) to be used as a global object.
+ *
+ *  This global pointer represent the active object in the application.
+ *  These pointers are "opaque" because they cannot access the whole active 
+ *  object structure, but only the part inherited from the RKH_SMA_T structure.
+ *  The power of an "opaque" pointer is that it allows to completely hide the 
+ *  definition of the active object structure and make it inaccessible to the 
+ *  rest of the application, thus strengthening the encapsulation concept.
+ *
+ *  \param[in] me_  pointer to previously created state machine application.
+ *
+ *	\note
+ *  Generally, this macro is used in the SMA's header file.
+ *
+ *  \sa
+ *  RKH_SMA_CREATE().
+ *
+ *  \usage
+ *  \code
+ *  //	my.h: state-machine application's header file
+ *
+ *  RKH_SMA_DCLR(my);
+ *  \endcode
+ */
+#define RKH_SMA_DCLR(me_) \
+            RKH_DCLR_PTR_TYPE(RKH_SMA_T, me_)
+
+/**
+ *  \brief
+ *  This macro declares a typed pointer to previously created state machine
+ *  application (SMA aka active object) to be used as a global and public 
+ *  object.
+ *
+ *  \param[in] type_
+ *                  Data type of the state machine application. Could be 
+ *                  derived from RKH_SMA_T.
+ *                  The pointer could be used to publish the internals of the 
+ *                  class of the state machine. 
+ *  \param[in] me_	pointer to previously created state machine application.
+ *
+ *	\note
+ *  Generally, this macro is used in the SMA's header file.
+ *
+ *  \sa
+ *  RKH_SMA_CREATE(), RKH_SMA_DCLR().
+ *
+ *  \usage
+ *  \code
+ *  //	my.h: state-machine application's header file
+ *
+ *  RKH_SMA_DCLR_TYPE(Blinky, blinky);
+ *  \endcode
+ */
+#define RKH_SMA_DCLR_TYPE(type_, me_) \
+            RKH_DCLR_PTR_TYPE(type_, me_)
+
+/**
+ *  \brief
  *  Invoke the active object activation function rkh_sma_activate(). 
  *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
  *  polymorphic, where its implementation is defined by the virtual table of 
@@ -179,6 +238,232 @@ extern "C" {
                          (rui32_t)0)
     #endif
 #endif
+#endif
+
+/**
+ *  \brief
+ *  Declare and allocate a SMA (active object) derived from RKH_SMA_T. Also,
+ *  initializes and assigns a state machine to previously declared SMA.
+ *
+ *  In the UML specification, every state machine has a top state
+ *  (the abstract root of every state machine hierarchy), which contains
+ *  all the other elements of the entire state machine. RKH provides the
+ *  top state using the macro RKH_SMA_CREATE().
+ *	Frequently, RKH_SMA_CREATE() is used within state-machine's module
+ *	(.c file), thus the structure definition is in fact entirely encapsulated
+ *	in its module and is inaccessible to the rest of the application.
+ *	However, use RKH_SMA_DEF_PTR() or RKH_SMA_DEF_PTR_TYPE() macros to 
+ *	define a opaque pointer or typed pointer to that state machine application 
+ *	structure, respectively. Also, use the RKH_SMA_DCLR() macro to declare it 
+ *	to be for the rest of application code. 
+ *  RKH_SMA_T is not intended to be instantiated directly, but rather
+ *  serves as the base structure for derivation of state machines in the
+ *  application code.
+ *  The following example illustrates how to derive an state machine from
+ *  RKH_SMA_T. Please note that the RKH_SMA_T member sm is defined as the
+ *  FIRST member of the derived structure.
+ *
+ *  \param[in] type 	Data type of the SMA. Could be derived from RKH_SMA_T.
+ *  \param[in] name		Name of state machine application. Also, it represents 
+ *                      the top state of state diagram.
+ *  \param[in] prio		State machine application priority. A unique priority
+ *                      number must be assigned to each SMA from 0 to
+ *                      RKH_LOWEST_PRIO. The lower the number, the higher the
+ *                      priority.
+ *  \param[in] ppty		State machine properties. The available properties are
+ *                      enumerated in RKH_HPPTY_T enumeration in the rkh.h
+ *                      file.
+ *  \param[in] initialState
+ *                      Pointer to initial state. This state could be defined
+ *                      either composite or basic (not pseudo-state).
+ *  \param[in] initialAction
+ *                      Pointer to initialization action (optional). The
+ *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      argument is optional, thus it could be declared as
+ *                      NULL.
+ *  \param[in] initialEvt
+ *                      Pointer to an event that will be passed to state
+ *                      machine application when it starts. Could be used to
+ *                      pass arguments to the state machine like an argc/argv.
+ *                      This argument is optional, thus it could be declared
+ *                      as NULL or eliminated in compile-time with
+ *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ *
+ *  \sa RKH_SM_CONST_CREATE(), RKH_SM_GET_CONST(), RKH_SM_GET_CONST(),
+ *      RKH_SMA_DEF_PTR(), RKH_SMA_DEF_PTR_TYPE()
+ *
+ *	\usage
+ *	\code
+ *	...within state-machine application's module
+ *
+ *	typedef struct
+ *	{
+ *		RKH_SMA_T ao;	// base structure
+ *		rui8_t x;		// private member
+ *		rui8_t y;		// private member
+ *	} MYSM_T;
+ *
+ *  //	static instance of SMA object
+ *	RKH_SMA_CREATE(MYSM_T, my, 0, HCAL, &S1, my_iaction, &my_ievent);
+ *	\endcode
+ */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
+                           initialAction, initialEvt) \
+        RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
+                            initialEvt); \
+        static type RKH_SMA_NAME(name) = MKSMA(&RKH_SM_CONST_NAME(name), \
+                                               initialState)
+#else
+    #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
+                           initialAction, initialEvt) \
+        static type RKH_SMA_NAME(name) = MKSMA(name, \
+                                               prio, \
+                                               ppty, \
+                                               initialState, \
+                                               initialAction, \
+                                               initialEvt)
+#endif
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define RKH_SMA_INIT(me, prio, ppty, initialState, initialAction, \
+                         initialEvt)
+#else
+    #define RKH_SMA_INIT(me, prio, ppty, initialState, initialAction, \
+                         initialEvt) \
+        MKRT_SM(me, me, prio, ppty, initialState, initialAction, initialEvt)
+#endif
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+    #define RKH_SMA_GET_OBJ(type, me)
+#else
+    #define RKH_SMA_GET_OBJ(type, me) \
+        (type *)&RKH_SMA_NAME(me)
+#endif
+
+/**
+ *  \brief
+ *  Declare a opaque pointer pointing to an previously created active 
+ *  object.
+ *
+ *  \param[in] me_  Name of state machine application.
+ *
+ *  \sa RKH_SMA_DCLR()
+ */
+#define RKH_SMA_DEF_PTR(me_) \
+    RKH_SMA_T *const me_ = (RKH_SMA_T *)&RKH_SMA_NAME(me_)
+
+/**
+ *  \brief
+ *  Declare a pointer of specified type pointing to an previously created 
+ *  active object.
+ *  
+ *  The pointer could be used to hide (opaque) or to publish the internals of 
+ *  the class of the active object. 
+ *
+ *  \param[in] type Data type of the state machine application. Could be 
+ *                  derived from RKH_SMA_T.
+ *  \param[in] me_  Name of state machine application.
+ *
+ *  \sa RKH_SMA_DCLR()
+ */
+#define RKH_SMA_DEF_PTR_TYPE(type, me_) \
+    type *const me_ = (type *)&RKH_SMA_NAME(me_)
+
+/**
+ *  \brief
+ *  Invoke the direct event posting facility rkh_sma_post_fifo().
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the target active object. 
+ *
+ *  This macro is the recommended way of posting events, because it
+ *  provides the vital information for software tracing and avoids any
+ *  overhead when the tracing is disabled.
+ *
+ *  \param[in] me_		pointer to previously created state machine
+ *                      application.
+ *  \param[in] e_		actual event sent to the state machine application.
+ *  \param[in] sender_	pointer to the sender object. It is not
+ *                      necessarily a pointer to an active object. In
+ *                      fact, if RKH_SMA_POST_FIFO() is called from an
+ *                      interrupt or other context, it can create a
+ *                      unique object just to unambiguously identify the
+ *                      publisher of the event.
+ *
+ *  \note
+ *  In the next releases this macro will be improved, calling a function 
+ *  instead of using its own vptr.  
+ *
+ *	\sa
+ *	rkh_sma_post_fifo().
+ *
+ *  \ingroup apiAO
+ */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_fifo((me_), (e_))
+    #endif
+#else
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            rkh_sma_post_fifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_FIFO(me_, e_, sender_) \
+            rkh_sma_post_fifo((me_), (e_))
+    #endif
+#endif
+
+/**
+ *  \brief
+ *  Invoke the direct event posting facility rkh_sma_post_lifo().
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the target active object. 
+ *
+ *  This macro is the recommended way of posting events, because it
+ *  provides the vital information for software tracing and avoids any
+ *  overhead when the tracing is disabled.
+ *
+ *  \param[in] me_	    pointer to previously created state machine
+ *                      application.
+ *  \param[in] e_		actual event sent to the state machine application.
+ *  \param[in] sender_	pointer to the sender object. It is not
+ *                      necessarily a pointer to an active object. In
+ *                      fact, if RKH_SMA_POST_LIFO() is called from an
+ *                      interrupt or other context, it can create a
+ *                      unique object just to unambiguously identify the
+ *                      publisher of the event.
+ *
+ *  \note
+ *  In the next releases this macro will be improved, calling a function 
+ *  instead of using its own vptr.  
+ *
+ *	\sa
+ *	rkh_sma_post_lifo().
+ *
+ *  \ingroup apiAO
+ */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            ((RKH_SMA_T *)(me_))->vptr->post_lifo((me_), (e_))
+    #endif
+#else
+    #if defined(RKH_USE_TRC_SENDER)
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            rkh_sma_post_lifo((me_), (e_), (sender_))
+    #else
+        #define RKH_SMA_POST_LIFO(me_, e_, sender_) \
+            rkh_sma_post_lifo((me_), (e_))
+    #endif
 #endif
 
 /* -------------------------------- Constants ------------------------------ */
