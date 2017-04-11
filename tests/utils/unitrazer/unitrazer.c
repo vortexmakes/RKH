@@ -133,6 +133,12 @@ unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
     RKH_TRC_END_WOFIL();
 }
 
+void
+unitrazer_log_start(void)
+{
+	start_log("unitrazer.log");
+}
+
 /* ============================ Init function ============================== */
 
 void
@@ -141,7 +147,6 @@ unitrazer_start(void)
 #ifdef __UNITRAZER_LIB__
 	tzparser_init();
 	unitrazer_init();
-	start_log("unitrazer.log");
 #endif
 
     unitrazer_resetOut();

@@ -101,6 +101,7 @@ rkh_hook_putTrcEvt(void)
 {
    UTRZ_RESP_T *p;
 
+    RKH_TRC_FLUSH();
    p = unitrazer_get_resp();
 
    UNITY_TEST_ASSERT(p->e != RKH_TE_UT_FAIL, p->line, p->msg);
@@ -112,6 +113,7 @@ rkh_trc_open(void)
 {
     rkh_trc_init();
     unitrazer_start();
+    RKH_TRC_SEND_CFG(1);
 }
 
 void
@@ -164,6 +166,8 @@ bsp_init(int argc, char *argv[])
     (void)argv;
 
     rkh_fwk_init();
+    RKH_TRC_OPEN();
+    unitrazer_log_start();
 }
 
 /* ------------------------------ End of file ------------------------------ */

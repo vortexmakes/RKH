@@ -388,6 +388,8 @@ struct UtrzProcessOut
 
 UtrzProcessOut * unitrazer_getLastOut(void);
 void unitrazer_resetOut(void);
+void unitrazer_log_start(void);
+
 
 /**
  *  \brief
