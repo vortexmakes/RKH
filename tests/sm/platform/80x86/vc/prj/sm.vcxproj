@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkh.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />

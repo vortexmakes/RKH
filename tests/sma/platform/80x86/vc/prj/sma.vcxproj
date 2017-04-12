@@ -94,11 +94,11 @@
     <ClCompile Include="..\..\..\..\smInstance.c" />
     <ClCompile Include="..\..\..\..\smPolymorphism.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkh.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhmp.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhport.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhrq.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsm.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhtrc.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\..\..\test_rkhsma.c" />

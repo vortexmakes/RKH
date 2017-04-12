@@ -53,7 +53,6 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
 #include "unity_fixture.h"
 #include "unitrazer.h"
 #include "rkh.h"
@@ -64,7 +63,6 @@
 #include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-
 /* ------------------------------- Constants ------------------------------- */
 static RKH_STATIC_EVENT(evA, A);
 static RKH_STATIC_EVENT(evB, B);
@@ -100,7 +98,6 @@ static RKH_RCODE_T result;
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(trnWoutUnitrazer)
 {
@@ -584,7 +581,7 @@ TEST(trnWoutUnitrazer, fails_ExceededHierarchicalLevel)
                             RKH_STATE_CAST(&s0),
                             expectedState,
                             INIT_STATE_MACHINE);
-    rkh_assert_Expect("rkh", 0);
+    rkh_assert_Expect("rkhsm", 0);
     rkh_assert_IgnoreArg_line();
 
     result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);

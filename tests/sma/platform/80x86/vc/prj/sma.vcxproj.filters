@@ -34,9 +34,6 @@
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhport.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkh.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
       <Filter>test\stub</Filter>
     </ClCompile>
@@ -63,6 +60,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\test_runners\test_smPolymorphism_runner.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsm.c">
+      <Filter>test\stub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

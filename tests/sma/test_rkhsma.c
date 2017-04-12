@@ -57,8 +57,9 @@
 #include "rkhsma.h"
 #include "Mockrkhport.h"
 #include "Mockrkhtrc.h"
-#include "Mockrkh.h"
+#include "Mockrkhsm.h"
 #include "Mockrkhrq.h"
+#include "rkh.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */

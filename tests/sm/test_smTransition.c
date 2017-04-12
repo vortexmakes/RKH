@@ -811,7 +811,7 @@ TEST(transition, fails_ExceededHierarchicalLevel)
 	sm_trn_expect(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s22211));
     sm_tsState_expect(RKH_STATE_CAST(&s22211));
 	sm_exHLevel_expect();
-    rkh_assert_Expect("rkh", 0);
+    rkh_assert_Expect("rkhsm", 0);
     rkh_assert_IgnoreArg_line();
 
     smTest_init_Expect(RKH_CAST(SmTest, smTest));

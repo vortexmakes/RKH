@@ -123,9 +123,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\rkh.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test_smTransition.c">
       <Filter>Source Files\tests\sm</Filter>
     </ClCompile>
@@ -206,6 +203,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\unity\unity.c">
       <Filter>Source Files\tests\unity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c">
+      <Filter>Source Files\rkh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
