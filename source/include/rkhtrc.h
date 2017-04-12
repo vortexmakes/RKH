@@ -244,8 +244,6 @@
 #define __RKHTRC_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhcfg.h"
-#include "rkhtype.h"
 #include "rkhplat.h"
 #include "rkhevt.h"
 
@@ -641,27 +639,6 @@
 
 #define ECHANGE                     0
 #define EUNCHANGE                   1
-
-#if (((RKH_CFG_TRC_EN == 1) && (RKH_CFG_SMA_TRC_SNDR_EN == 1)) || \
-         (defined(RKH_EN_DOXYGEN) && RKH_EN_DOXYGEN == 1))
-        /**
-         *  \brief
-         *  This macro is used to verify the sender object usage on post an 
-         *  event.
-         *
-         *  The macros RKH_TIM_TICK(), RKH_SMA_POST_FIFO(), and
-         *  RKH_SMA_POST_LIFO() takes an additional argument \a sender, which 
-         *  is a pointer to the sender object. This argument is actually only 
-         *  used when software tracing is enabled (macro #RKH_USE_TRC_SENDER is
-         *  defined).
-         *  When software tracing is disabled, the macros RKH_TIM_TICK(),
-         *  RKH_SMA_POST_FIFO(), and RKH_SMA_POST_LIFO() calls rkh_tmr_tick(),
-         *  rkh_sma_post_fifo(), and rkh_sma_post_lifo() respectively without 
-         *  any arguments, so the overhead of passing this extra argument is 
-         *  entirely avoided.
-         */
-        #define RKH_USE_TRC_SENDER
-#endif
 
 /**
  *  \brief

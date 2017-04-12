@@ -64,16 +64,6 @@
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(polymorphism);
 
-#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
-const RKHSmaVtbl rkhSmaVtbl = 
-{
-    rkh_sma_activate,
-    NULL,
-    rkh_sma_post_fifo,
-    rkh_sma_post_lifo
-};
-#endif
-
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */

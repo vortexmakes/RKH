@@ -59,9 +59,7 @@
 #define __RKHSMA_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "rkh.h"
-#include "rkhtype.h"
-#include "rkhcfg.h"
+#include "rkhsm.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -69,6 +67,39 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+#define RKH_SMA_NAME(smaName_)       s_##smaName_
+
+/**
+ *  \brief
+ *  Macro for accessing to state member of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ */
+#define RKH_SMA_ACCESS_STATE(me_) \
+    ((RKH_SM_T *)me_)->state
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+/**
+ *  \brief
+ *  Macro for accessing to members of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ *  \param[in] member_  Member of state machine structure.
+ */
+    #define RKH_SMA_ACCESS_CONST(me_, member_) \
+        ((RKH_SM_T *)me_)->romrkh->member_
+#else
+/**
+ *  \brief
+ *  Macro for accessing to members of state machine structure.
+ *
+ *  \param[in] me_      Pointer to object of state machine.
+ *  \param[in] member_  Member of state machine structure.
+ */
+    #define RKH_SMA_ACCESS_CONST(me_, member_) \
+        ((RKH_SM_T *)me_)->member_
+#endif
+
 /**
  *  \brief
  *  This macro declares a opaque pointer to previously created state machine
@@ -466,9 +497,389 @@ extern "C" {
     #endif
 #endif
 
+/**
+ *  \brief
+ *  Declares a opaque pointer to previously created array of state machine
+ *  applications SMA (a.k.a Active Object) to be used as a global object.
+ *
+ *  \param[in] _arr		pointer to previously created array of state machine
+ *                      applications. To do that is recommended to use the 
+ *                      macro RKH_ARRAY_SMA_CREATE().
+ *  \param[in] _num		size of array [in active objects].
+ *
+ *	\note
+ *  Generally, this macro is used in the SMA's header file.
+ *
+ *  \sa
+ *  RKH_SMA_CREATE().
+ *
+ *  \usage
+ *  \code
+ *  //	cli.h: state-machine application's header file
+ *  #define NUM_CLIENTS			4
+ *
+ *  typedef struct
+ *  {
+ *      RKH_SMA_T me;		// base structure
+ *      RKH_TMR_T cli_utmr; // usage time
+ *      RKH_TMR_T cli_rtmr;	// waiting request time
+ *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
+ *
+ *  RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA_DCLR(_arr, _num) \
+    extern RKH_SMA_T * const *_arr[_num]
+
+/**
+ *  \brief
+ *  Declares a typed pointer to previously created array of state machine
+ *  applications SMA (a.k.a Active Object) to be used as a global object.
+ *
+ *  \param[in] type_	data type of active object.
+ *  \param[in] array_	pointer to previously created array of state machine
+ *                      applications. To do that is recommended to use the 
+ *                      macro RKH_ARRAY_SMA_CREATE_TYPE().
+ *  \param[in] num_		size of array [in active objects].
+ *
+ *	\note
+ *  Generally, this macro is used in the SMA's header file.
+ *
+ *  \sa
+ *  RKH_SMA_CREATE().
+ *
+ *  \usage
+ *  \code
+ *  //	cli.h: state-machine application's header file
+ *  #define NUM_CLIENTS			4
+ *
+ *  typedef struct
+ *  {
+ *      RKH_SMA_T me;		// base structure
+ *      RKH_TMR_T cli_utmr; // usage time
+ *      RKH_TMR_T cli_rtmr;	// waiting request time
+ *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
+ *
+ *  RKH_ARRAY_SMA_DCLR_TYPE(CLI_T, clis, NUM_CLIENTS);
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA_DCLR_TYPE(type_, array_, num_) \
+    extern type_ * const * array_[num_]
+
+/**
+ *  \brief
+ *  Declare and allocate an array of SMAs (a.k.a active objects) derived from
+ *  RKH_SMA_T.
+ *
+ *  \param[in] _arr		name of SMA's array.
+ *  \param[in] _num		size of array [in active objects].
+ *
+ *  \usage
+ *  \code
+ *	// Defines SMAs (a.k.a Active Objects)
+ *
+ *	RKH_SMA_CREATE( CLI_T, cli0, 1, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli1, 2, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli2, 3, HCAL, &cli_idle, cli_init, NULL );
+ *	RKH_SMA_CREATE( CLI_T, cli3, 4, HCAL, &cli_idle, cli_init, NULL );
+ *
+ *	RKH_ARRAY_SMA_CREATE( clis, NUM_CLIENTS )
+ *	{
+ *		&cli0, &cli1, &cli2, &cli3
+ *	};
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA_CREATE(_arr, _num) \
+    RKH_SMA_T * const *_arr[_num] =
+
+/**
+ *  \brief
+ *  Declare and allocate an array of SMAs (a.k.a active objects) derived from
+ *  RKH_SMA_T.
+ *
+ *  \param[in] type_	data type of active object.
+ *  \param[in] array_	name of SMA's array.
+ *  \param[in] num_		size of array [in active objects].
+ *
+ *  \usage
+ *  \code
+ *	// Defines SMAs (a.k.a Active Objects)
+ *
+ *	RKH_SMA_CREATE(CLI_T, cli0, 1, HCAL, &cli_idle, cli_init, NULL);
+ *	RKH_SMA_CREATE(CLI_T, cli1, 2, HCAL, &cli_idle, cli_init, NULL);
+ *	RKH_SMA_CREATE(CLI_T, cli2, 3, HCAL, &cli_idle, cli_init, NULL);
+ *	RKH_SMA_CREATE(CLI_T, cli3, 4, HCAL, &cli_idle, cli_init, NULL);
+ *
+ *	RKH_ARRAY_SMA_CREATE(CLI_T, clis, NUM_CLIENTS)
+ *	{
+ *		&cli0, &cli1, &cli2, &cli3
+ *	};
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA_CREATE_TYPE(type_, array_, num_) \
+    type_ * const * array_[num_] =
+
+/**
+ *  \brief
+ *  Retrieves the pointer to active object from a SMA's array.
+ *
+ *  \param[in] _arr		name of SMA's array.
+ *  \param[in] _ix		index (position in the array).
+ *
+ *  \usage
+ *  \code
+ *  #define NUM_CLIENTS				4
+ *  #define CLI( _clino )			RKH_ARRAY_SMA( clis, _clino )
+ *
+ *  #define CLI0					CLI(0)
+ *  #define CLI1					CLI(1)
+ *  #define CLI2					CLI(2)
+ *  #define CLI3					CLI(3)
+ *
+ *  typedef struct
+ *  {
+ *      RKH_SMA_T me;		// base structure
+ *      RKH_TMR_T cli_utmr; // usage time
+ *      RKH_TMR_T cli_rtmr;	// waiting request time
+ *  } CLI_T;				// Active Object derived from RKH_SMA_T structure
+ *
+ *  RKH_ARRAY_SMA_DCLR( clis, NUM_CLIENTS );
+ *  \endcode
+ */
+#define RKH_ARRAY_SMA(_arr, _ix)      *_arr[_ix]
+
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
+    /**
+     *  \brief
+     *  This macro retrieves the name of an registered active object.
+     *
+     *  \param[in] ao		pointer to previously created active object.
+     *
+     *  \return
+     *  Name of active object.
+     */
+    #define RKH_GET_AO_NAME(ao)       RKH_SMA_ACCESS_CONST(ao, name)
+#else
+    #define RKH_GET_AO_NAME(ao)       noname
+#endif
+
+/**
+ *  \brief
+ *  Retrieves the address of an registered active object (SMA) according to
+ *  its priority.
+ *
+ *  \param[in] _prio	registered active object (SMA) priority.
+ *  \return			    pointer to previously registered active object (SMA).
+ */
+#define RKH_GET_SMA(_prio) \
+    rkh_sptbl[(rui8_t)(_prio)]
+
+/**
+ *  \brief
+ *  Retrieves the priority number of an registered active object (SMA).
+ *
+ *  \param[in] _ao		pointer to previously registered active object (SMA).
+ */
+#define RKH_GET_PRIO(_ao) \
+    (rui8_t)(RKH_SMA_ACCESS_CONST(_ao, prio))
+
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
+/**
+ *  \brief
+ *  Defines the data structure into which the collected performance
+ *  information for state machine is stored.
+ *
+ *  This member is optional, thus it could be declared as NULL or eliminated
+ *  in compile-time with RKH_EN_SMA_GET_INFO = 0.
+ */
+typedef struct RKH_SMAI_T
+{
+    rui16_t ndevt;          /**< # of dispatched events */
+    rui16_t exectr;         /**< # of executed transitions */
+} RKH_SMAI_T;
+
+/**
+ *  \brief
+ *  Describes the SMA (active object in UML).
+ *
+ *	This structure resides in RAM because its members are dinamically updated
+ *	by RKH (context of state machine).
+ *	The \b RKH_SM_T::romrkh member points to RKH_ROM_T structure, allocated in 
+ *	ROM, to reduce the size of RAM consume. The key parameters of a state 
+ *	machine are allocated within. Therefore cannot be modified in runtime.
+ *
+ *  RKH_SMA_T is not intended to be instantiated directly, but rather
+ *  serves as the base structure for derivation of active objects in the
+ *  application code.
+ *  The following example illustrates how to derive an active object from
+ *  RKH_SMA_T. Please note that the RKH_SMA_T member ao is defined as the
+ *  FIRST member of the derived struct.
+ *
+ *	Example:
+ *	\code
+ *	//	...within state-machine's module
+ *
+ *	typedef struct
+ *	{
+ *		RKH_SMA_T ao;	// base structure
+ *		rui8_t x;		// private member
+ *		rui8_t y;		// private member
+ *	} MYSM_T;
+ *
+ *  //	static instance of SMA object
+ *	RKH_SMA_CREATE(MYSM_T, my, HCAL, &S1, my_iaction, &my_ievent);
+ *	\endcode
+ *
+ *	\sa
+ *	RKH_SMA_T structure definition for more information. Also,
+ *	\link RKH_EVT_T single inheritance in C \endlink, and
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ *
+ *  \ingroup apiAO
+ */
+struct RKH_SMA_T
+{
+    /**
+     *  \brief
+     *  State machine.
+     */
+    RKH_SM_T sm;
+
+    /**
+     *  \brief
+     *  Virtual pointer.
+     */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    const RKHSmaVtbl *vptr;
+#endif
+
+    /**
+     *  \brief
+     *  OS-dependent thread of control of the active object.
+     *
+     *  Frequently, the active object has its own task processing loop that
+     *  waits for the signal to be posted, and when it is, loops to remove
+     *  and process all events that are currently queued.
+     *  The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS
+     *  that an event has arrived. In this case, \c os_signal holds the OS
+     *  object used to signal that an event has been queued.
+     *	This data might be used in various ways, depending on the RKH port.
+     *  In some ports it's used to store the thread handler.
+     *
+     *  \note
+     *  This member is optional, thus it could be declared as NULL or
+     *  eliminated in compile-time with RKH_CFGPORT_SMA_THREAD_EN = 0.
+     */
+#if RKH_CFGPORT_SMA_THREAD_EN == RKH_ENABLED
+    RKH_THREAD_TYPE thread;
+
+    /**
+     *  \brief
+     *	OS-dependent object used to signal that an event has been queued.
+     *
+     *  Frequently, the active object has its own task processing loop that
+     *  waits for the signal to be posted, and when it is, loops to remove
+     *  and process all events that are currently queued.
+     *  The RKH_SMA_POST_FIFO() macro enqueues an event and signals	the OS
+     *  that an event has arrived. In this case, \c os_signal holds the OS
+     *  object used to signal that an event has been queued.
+     *  This data might be used in various ways, depending on the RKH port.
+     *  In some ports it's used to block the calling thread when the native
+     *  RKH queue is empty. In other RKH ports the OS-dependent	data object
+     *  might be used differently.
+     *
+     *  \note
+     *  This member is optional, thus it could be eliminated in compile-time
+     *  with RKH_CFGPORT_SMA_THREAD_DATA_EN = 0.
+     */
+#if RKH_CFGPORT_SMA_THREAD_DATA_EN == RKH_ENABLED
+    RKH_OSSIGNAL_TYPE os_signal;
+#endif
+#endif
+
+    /**
+     *  \brief
+     *  Event queue of the SMA (a.k.a Active Object).
+     */
+    RKH_EQ_TYPE equeue;
+
+    /**
+     *  \brief
+     *  The Boolean loop variable determining if the thread routine
+     *  of the SMA is running.
+     */
+    rbool_t running;
+
+    /**
+     *  \brief
+     *  Performance information. This member is optional, thus it could be
+     *  declared as NULL or eliminated in compile-time with
+     *  RKH_CFG_SMA_GET_INFO_EN = 0.
+     */
+#if RKH_CFG_SMA_GET_INFO_EN == RKH_ENABLED
+    RKH_SMAI_T sinfo;
+#endif
+};
+
+/** \copydetails RKHSmaVtbl::activate */
+typedef void (*RKHActivate)(RKH_SMA_T *me, 
+                         const RKH_EVT_T **qSto, RKH_RQNE_T qSize, 
+                         void *stkSto, rui32_t stkSize);
+
+/** \copydetails RKHSmaVtbl::task */
+typedef void (*RKHTask)(RKH_SMA_T *me, void *arg);
+
+/** \copydetails RKHSmaVtbl::post_fifo */
+#if defined(RKH_USE_TRC_SENDER)
+typedef void (*RKHPostFifo)(RKH_SMA_T *me, const RKH_EVT_T *e, 
+                         const void *const sender);
+#else
+typedef void (*RKHPostFifo)(RKH_SMA_T *me, const RKH_EVT_T *e);
+#endif
+
+/** \copydetails RKHSmaVtbl::post_lifo */
+#if defined(RKH_USE_TRC_SENDER)
+typedef void (*RKHPostLifo)(RKH_SMA_T *me, const RKH_EVT_T *e, 
+                         const void *const sender);
+#else
+typedef void (*RKHPostLifo)(RKH_SMA_T *me, const RKH_EVT_T *e);
+#endif
+
+/**
+ *  \brief
+ *  Virtual table for the RKH_SMA_T structure.
+ */
+struct RKHSmaVtbl
+{
+    /** Virtual function to activate the active object (thread) */
+    /** \sa RKH_SMA_ACTIVATE() */
+    RKHActivate activate;
+
+    /** 
+     *  \brief
+     *  Virtual function to control the execution of the AO (thread task).
+     *
+     *  Frequently, the active object has its own task processing loop, also 
+     *  as known as thread of control, that waits for the signal to be posted,
+     *  and when it is, loops to remove and process all events that are 
+     *  currently queued.
+     */
+    RKHTask task;
+
+    /** Virtual function to asynchronously post (FIFO) an event to an AO */
+    /** \sa RKH_SMA_POST_FIFO() */
+    RKHPostFifo post_fifo;
+
+    /** Virtual function to asynchronously post (LIFO) an event to an AO */
+    /** \sa RKH_SMA_POST_LIFO() */
+    RKHPostLifo post_lifo;
+};
+
 /* -------------------------- External variables --------------------------- */
+/** Default virtual table for the RKH_SMA_T structure */
+extern const RKHSmaVtbl rkhSmaVtbl;
+
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
 /**

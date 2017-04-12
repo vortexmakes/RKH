@@ -48,7 +48,6 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkhassert.h"
 #include "rkh.h"
 
@@ -62,7 +61,6 @@ RKH_MODULE_NAME(rkhsma)
 #endif
 
 /* ------------------------------- Constants ------------------------------- */
-
 /*
  *  String describing the RKH version.
  */
@@ -81,16 +79,25 @@ RKHROM char rkh_version[] =
 RKHROM char noname[] = "null";
 #endif
 
+/** Default virtual table for the RKH_SMA_T structure */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+const RKHSmaVtbl rkhSmaVtbl = 
+{
+    rkh_sma_activate,
+    NULL,
+    rkh_sma_post_fifo,
+    rkh_sma_post_lifo
+};
+#endif
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-
 RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];  /* registered SMA table */
 
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-
 void
 rkh_sma_register(RKH_SMA_T *sma)
 {

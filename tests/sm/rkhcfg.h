@@ -450,7 +450,7 @@ extern "C" {
  *  \range      
  *  \default    RKH_DISABLED
  */
-#define RKH_CFG_SMA_VFUNCT_EN           RKH_ENABLED
+#define RKH_CFG_SMA_VFUNCT_EN           RKH_DISABLED
 
 /* --- Configuration options related to trace facility -------------------- */
 

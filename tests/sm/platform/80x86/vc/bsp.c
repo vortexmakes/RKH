@@ -52,7 +52,6 @@
 #include "rkh.h"
 #include "unity.h"
 #include "bsp.h"
-#include "rkh.h"
 #include "unitrazer.h"
 
 /* ----------------------------- Local macros ------------------------------ */
