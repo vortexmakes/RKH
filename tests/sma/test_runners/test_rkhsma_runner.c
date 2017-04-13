@@ -67,6 +67,8 @@ TEST_GROUP_RUNNER(sma)
 	RUN_TEST_CASE(sma, PostFifo);
 	RUN_TEST_CASE(sma, PostLifo);
 	RUN_TEST_CASE(sma, Get);
+	RUN_TEST_CASE(sma, Defer);
+	RUN_TEST_CASE(sma, Recall);
 }
 
 /* ------------------------------ End of file ------------------------------ */

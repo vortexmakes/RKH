@@ -6,6 +6,34 @@
 #include "cmock.h"
 #include "Mockrkh.h"
 
+static const char* CMockString_e = "e";
+static const char* CMockString_esize = "esize";
+static const char* CMockString_me = "me";
+static const char* CMockString_rkh_fwk_ae = "rkh_fwk_ae";
+static const char* CMockString_rkh_fwk_enter = "rkh_fwk_enter";
+static const char* CMockString_rkh_fwk_epool_register = "rkh_fwk_epool_register";
+static const char* CMockString_rkh_fwk_exit = "rkh_fwk_exit";
+static const char* CMockString_rkh_fwk_gc = "rkh_fwk_gc";
+static const char* CMockString_rkh_fwk_init = "rkh_fwk_init";
+static const char* CMockString_rkh_fwk_reserve = "rkh_fwk_reserve";
+static const char* CMockString_rkh_hook_dispatch = "rkh_hook_dispatch";
+static const char* CMockString_rkh_hook_exit = "rkh_hook_exit";
+static const char* CMockString_rkh_hook_idle = "rkh_hook_idle";
+static const char* CMockString_rkh_hook_putTrcEvt = "rkh_hook_putTrcEvt";
+static const char* CMockString_rkh_hook_signal = "rkh_hook_signal";
+static const char* CMockString_rkh_hook_start = "rkh_hook_start";
+static const char* CMockString_rkh_hook_timeout = "rkh_hook_timeout";
+static const char* CMockString_rkh_hook_timetick = "rkh_hook_timetick";
+static const char* CMockString_rkh_tmr_tick = "rkh_tmr_tick";
+static const char* CMockString_rkh_trc_close = "rkh_trc_close";
+static const char* CMockString_rkh_trc_flush = "rkh_trc_flush";
+static const char* CMockString_rkh_trc_getts = "rkh_trc_getts";
+static const char* CMockString_rkh_trc_open = "rkh_trc_open";
+static const char* CMockString_sender = "sender";
+static const char* CMockString_ssize = "ssize";
+static const char* CMockString_sstart = "sstart";
+static const char* CMockString_t = "t";
+
 typedef struct _CMOCK_rkh_fwk_init_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
@@ -30,23 +58,6 @@ typedef struct _CMOCK_rkh_tmr_tick_CALL_INSTANCE
   void* Expected_sender;
 
 } CMOCK_rkh_tmr_tick_CALL_INSTANCE;
-
-typedef struct _CMOCK_rkh_fwk_defer_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  RKH_RQ_T* Expected_q;
-  RKH_EVT_T* Expected_e;
-
-} CMOCK_rkh_fwk_defer_CALL_INSTANCE;
-
-typedef struct _CMOCK_rkh_fwk_recall_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  RKH_EVT_T* ReturnVal;
-  RKH_SMA_T* Expected_me;
-  RKH_RQ_T* Expected_q;
-
-} CMOCK_rkh_fwk_recall_CALL_INSTANCE;
 
 typedef struct _CMOCK_rkh_fwk_epool_register_CALL_INSTANCE
 {
@@ -134,45 +145,6 @@ typedef struct _CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE
 
 } CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE;
 
-typedef struct _CMOCK_rkh_sm_init_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  RKH_SM_T* Expected_me;
-
-} CMOCK_rkh_sm_init_CALL_INSTANCE;
-
-typedef struct _CMOCK_rkh_sm_dispatch_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  ruint ReturnVal;
-  RKH_SM_T* Expected_me;
-  RKH_EVT_T* Expected_e;
-
-} CMOCK_rkh_sm_dispatch_CALL_INSTANCE;
-
-typedef struct _CMOCK_rkh_sm_ctor_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  RKH_SM_T* Expected_me;
-
-} CMOCK_rkh_sm_ctor_CALL_INSTANCE;
-
-typedef struct _CMOCK_rkh_sm_clear_history_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  RKHROM RKH_SHIST_T* Expected_h;
-
-} CMOCK_rkh_sm_clear_history_CALL_INSTANCE;
-
-typedef struct _CMOCK_rkh_sm_else_CALL_INSTANCE
-{
-  UNITY_LINE_TYPE LineNumber;
-  rbool_t ReturnVal;
-  RKH_SM_T* Expected_sma;
-  RKH_EVT_T* Expected_pe;
-
-} CMOCK_rkh_sm_else_CALL_INSTANCE;
-
 typedef struct _CMOCK_rkh_trc_open_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
@@ -204,8 +176,6 @@ static struct MockrkhInstance
   CMOCK_MEM_INDEX_TYPE rkh_fwk_enter_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_fwk_exit_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_tmr_tick_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_fwk_defer_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_fwk_recall_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_fwk_epool_register_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_fwk_ae_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_fwk_gc_CallInstance;
@@ -218,11 +188,6 @@ static struct MockrkhInstance
   CMOCK_MEM_INDEX_TYPE rkh_hook_idle_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_hook_timetick_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_hook_putTrcEvt_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_sm_init_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_sm_dispatch_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_sm_ctor_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_sm_clear_history_CallInstance;
-  CMOCK_MEM_INDEX_TYPE rkh_sm_else_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_trc_open_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_trc_close_CallInstance;
   CMOCK_MEM_INDEX_TYPE rkh_trc_flush_CallInstance;
@@ -234,33 +199,46 @@ extern jmp_buf AbortFrame;
 void Mockrkh_Verify(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_init_CallInstance, cmock_line, "Function 'rkh_fwk_init' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_enter_CallInstance, cmock_line, "Function 'rkh_fwk_enter' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_exit_CallInstance, cmock_line, "Function 'rkh_fwk_exit' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_tmr_tick_CallInstance, cmock_line, "Function 'rkh_tmr_tick' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_defer_CallInstance, cmock_line, "Function 'rkh_fwk_defer' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_recall_CallInstance, cmock_line, "Function 'rkh_fwk_recall' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_epool_register_CallInstance, cmock_line, "Function 'rkh_fwk_epool_register' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_ae_CallInstance, cmock_line, "Function 'rkh_fwk_ae' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_gc_CallInstance, cmock_line, "Function 'rkh_fwk_gc' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_reserve_CallInstance, cmock_line, "Function 'rkh_fwk_reserve' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_dispatch_CallInstance, cmock_line, "Function 'rkh_hook_dispatch' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_signal_CallInstance, cmock_line, "Function 'rkh_hook_signal' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_timeout_CallInstance, cmock_line, "Function 'rkh_hook_timeout' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_start_CallInstance, cmock_line, "Function 'rkh_hook_start' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_exit_CallInstance, cmock_line, "Function 'rkh_hook_exit' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_idle_CallInstance, cmock_line, "Function 'rkh_hook_idle' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_timetick_CallInstance, cmock_line, "Function 'rkh_hook_timetick' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_putTrcEvt_CallInstance, cmock_line, "Function 'rkh_hook_putTrcEvt' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sm_init_CallInstance, cmock_line, "Function 'rkh_sm_init' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sm_dispatch_CallInstance, cmock_line, "Function 'rkh_sm_dispatch' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sm_ctor_CallInstance, cmock_line, "Function 'rkh_sm_ctor' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sm_clear_history_CallInstance, cmock_line, "Function 'rkh_sm_clear_history' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sm_else_CallInstance, cmock_line, "Function 'rkh_sm_else' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_open_CallInstance, cmock_line, "Function 'rkh_trc_open' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_close_CallInstance, cmock_line, "Function 'rkh_trc_close' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_flush_CallInstance, cmock_line, "Function 'rkh_trc_flush' called less times than expected.");
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_getts_CallInstance, cmock_line, "Function 'rkh_trc_getts' called less times than expected.");
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_init);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_init_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_enter);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_enter_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_exit);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_exit_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_tmr_tick);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_tmr_tick_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_epool_register);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_epool_register_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_ae);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_ae_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_gc);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_gc_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_reserve);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_fwk_reserve_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_dispatch);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_dispatch_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_signal);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_signal_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_timeout);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_timeout_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_start);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_start_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_exit);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_exit_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_idle);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_idle_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_timetick);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_timetick_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_hook_putTrcEvt);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_hook_putTrcEvt_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_trc_open);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_open_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_trc_close);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_close_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_trc_flush);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_flush_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_rkh_trc_getts);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_trc_getts_CallInstance, cmock_line, CMockStringCalledLess);
 }
 
 void Mockrkh_Init(void)
@@ -277,70 +255,89 @@ void Mockrkh_Destroy(void)
 void rkh_fwk_init(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_init_CallInstance);
+  CMOCK_rkh_fwk_init_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_init);
+  cmock_call_instance = (CMOCK_rkh_fwk_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_init_CallInstance);
   Mock.rkh_fwk_init_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_init_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_init' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_init_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_init_CALL_INSTANCE));
   CMOCK_rkh_fwk_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_init_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_init_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_enter(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_enter_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_enter_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_enter_CallInstance);
+  CMOCK_rkh_fwk_enter_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_enter);
+  cmock_call_instance = (CMOCK_rkh_fwk_enter_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_enter_CallInstance);
   Mock.rkh_fwk_enter_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_enter_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_enter' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_enter_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_enter_CALL_INSTANCE));
   CMOCK_rkh_fwk_enter_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_enter_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_enter_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_enter_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_exit(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_exit_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_exit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_exit_CallInstance);
+  CMOCK_rkh_fwk_exit_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_exit);
+  cmock_call_instance = (CMOCK_rkh_fwk_exit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_exit_CallInstance);
   Mock.rkh_fwk_exit_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_exit_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_exit' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_exit_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_exit_CALL_INSTANCE));
   CMOCK_rkh_fwk_exit_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_exit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_exit_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_exit_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_tmr_tick(const void* const sender)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_tmr_tick_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_tmr_tick_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_tmr_tick_CallInstance);
+  CMOCK_rkh_tmr_tick_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_tmr_tick);
+  cmock_call_instance = (CMOCK_rkh_tmr_tick_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_tmr_tick_CallInstance);
   Mock.rkh_tmr_tick_CallInstance = CMock_Guts_MemNext(Mock.rkh_tmr_tick_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_tmr_tick' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_sender, sender, cmock_line, "Function 'rkh_tmr_tick' called with unexpected value for argument 'sender'.");
+    UNITY_SET_DETAILS(CMockString_rkh_tmr_tick,CMockString_sender);
+    if (cmock_call_instance->Expected_sender == NULL)
+      { UNITY_TEST_ASSERT_NULL(sender, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_sender, sender, 1, cmock_line, CMockStringMismatch); }
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_tmr_tick(CMOCK_rkh_tmr_tick_CALL_INSTANCE* cmock_call_instance, const void* const sender)
@@ -352,95 +349,39 @@ void rkh_tmr_tick_CMockExpect(UNITY_LINE_TYPE cmock_line, const void* const send
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_tmr_tick_CALL_INSTANCE));
   CMOCK_rkh_tmr_tick_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_tmr_tick_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_tmr_tick_CallInstance = CMock_Guts_MemChain(Mock.rkh_tmr_tick_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_tmr_tick(cmock_call_instance, sender);
-}
-
-void rkh_fwk_defer(RKH_RQ_T* q, const RKH_EVT_T* e)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_defer_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_defer_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_defer_CallInstance);
-  Mock.rkh_fwk_defer_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_defer_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_defer' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_q), (void*)(q), sizeof(RKH_RQ_T), cmock_line, "Function 'rkh_fwk_defer' called with unexpected value for argument 'q'.");
-  }
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_fwk_defer' called with unexpected value for argument 'e'.");
-  }
-}
-
-void CMockExpectParameters_rkh_fwk_defer(CMOCK_rkh_fwk_defer_CALL_INSTANCE* cmock_call_instance, RKH_RQ_T* q, const RKH_EVT_T* e)
-{
-  cmock_call_instance->Expected_q = q;
-  cmock_call_instance->Expected_e = (RKH_EVT_T*)e;
-}
-
-void rkh_fwk_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_RQ_T* q, const RKH_EVT_T* e)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_defer_CALL_INSTANCE));
-  CMOCK_rkh_fwk_defer_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_defer_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_fwk_defer_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_defer_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_fwk_defer(cmock_call_instance, q, e);
-}
-
-RKH_EVT_T* rkh_fwk_recall(RKH_SMA_T* me, RKH_RQ_T* q)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_recall_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_recall_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_recall_CallInstance);
-  Mock.rkh_fwk_recall_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_recall_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_recall' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKH_SMA_T), cmock_line, "Function 'rkh_fwk_recall' called with unexpected value for argument 'me'.");
-  }
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_q), (void*)(q), sizeof(RKH_RQ_T), cmock_line, "Function 'rkh_fwk_recall' called with unexpected value for argument 'q'.");
-  }
-  return cmock_call_instance->ReturnVal;
-}
-
-void CMockExpectParameters_rkh_fwk_recall(CMOCK_rkh_fwk_recall_CALL_INSTANCE* cmock_call_instance, RKH_SMA_T* me, RKH_RQ_T* q)
-{
-  cmock_call_instance->Expected_me = me;
-  cmock_call_instance->Expected_q = q;
-}
-
-void rkh_fwk_recall_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_RQ_T* q, RKH_EVT_T* cmock_to_return)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_recall_CALL_INSTANCE));
-  CMOCK_rkh_fwk_recall_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_recall_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_fwk_recall_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_recall_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_fwk_recall(cmock_call_instance, me, q);
-  cmock_call_instance->ReturnVal = cmock_to_return;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_epool_register(void* sstart, rui32_t ssize, RKH_ES_T esize)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_epool_register_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_epool_register_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_epool_register_CallInstance);
+  CMOCK_rkh_fwk_epool_register_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_epool_register);
+  cmock_call_instance = (CMOCK_rkh_fwk_epool_register_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_epool_register_CallInstance);
   Mock.rkh_fwk_epool_register_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_epool_register_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_epool_register' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_sstart, sstart, cmock_line, "Function 'rkh_fwk_epool_register' called with unexpected value for argument 'sstart'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_epool_register,CMockString_sstart);
+    if (cmock_call_instance->Expected_sstart == NULL)
+      { UNITY_TEST_ASSERT_NULL(sstart, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_sstart, sstart, 1, cmock_line, CMockStringMismatch); }
   }
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_ssize), (void*)(&ssize), sizeof(rui32_t), cmock_line, "Function 'rkh_fwk_epool_register' called with unexpected value for argument 'ssize'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_epool_register,CMockString_ssize);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_ssize), (void*)(&ssize), sizeof(rui32_t), cmock_line, CMockStringMismatch);
   }
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_esize), (void*)(&esize), sizeof(RKH_ES_T), cmock_line, "Function 'rkh_fwk_epool_register' called with unexpected value for argument 'esize'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_epool_register,CMockString_esize);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_esize), (void*)(&esize), sizeof(RKH_ES_T), cmock_line, CMockStringMismatch);
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_fwk_epool_register(CMOCK_rkh_fwk_epool_register_CALL_INSTANCE* cmock_call_instance, void* sstart, rui32_t ssize, RKH_ES_T esize)
@@ -454,29 +395,39 @@ void rkh_fwk_epool_register_CMockExpect(UNITY_LINE_TYPE cmock_line, void* sstart
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_epool_register_CALL_INSTANCE));
   CMOCK_rkh_fwk_epool_register_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_epool_register_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_epool_register_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_epool_register_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_fwk_epool_register(cmock_call_instance, sstart, ssize, esize);
+  UNITY_CLR_DETAILS();
 }
 
 RKH_EVT_T* rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void* const sender)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_ae_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_ae_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_ae_CallInstance);
+  CMOCK_rkh_fwk_ae_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_ae);
+  cmock_call_instance = (CMOCK_rkh_fwk_ae_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_ae_CallInstance);
   Mock.rkh_fwk_ae_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_ae_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_ae' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_esize), (void*)(&esize), sizeof(RKH_ES_T), cmock_line, "Function 'rkh_fwk_ae' called with unexpected value for argument 'esize'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_ae,CMockString_esize);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_esize), (void*)(&esize), sizeof(RKH_ES_T), cmock_line, CMockStringMismatch);
   }
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_e), (void*)(&e), sizeof(RKH_SIG_T), cmock_line, "Function 'rkh_fwk_ae' called with unexpected value for argument 'e'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_ae,CMockString_e);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_e), (void*)(&e), sizeof(RKH_SIG_T), cmock_line, CMockStringMismatch);
   }
   {
-    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_sender, sender, cmock_line, "Function 'rkh_fwk_ae' called with unexpected value for argument 'sender'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_ae,CMockString_sender);
+    if (cmock_call_instance->Expected_sender == NULL)
+      { UNITY_TEST_ASSERT_NULL(sender, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_sender, sender, 1, cmock_line, CMockStringMismatch); }
   }
+  UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
 
@@ -491,27 +442,36 @@ void rkh_fwk_ae_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_ES_T esize,
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_ae_CALL_INSTANCE));
   CMOCK_rkh_fwk_ae_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_ae_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_ae_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_ae_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_fwk_ae(cmock_call_instance, esize, e, sender);
   cmock_call_instance->ReturnVal = cmock_to_return;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_gc(RKH_EVT_T* e, const void* const sender)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_gc_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_gc_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_gc_CallInstance);
+  CMOCK_rkh_fwk_gc_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_gc);
+  cmock_call_instance = (CMOCK_rkh_fwk_gc_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_gc_CallInstance);
   Mock.rkh_fwk_gc_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_gc_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_gc' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_fwk_gc' called with unexpected value for argument 'e'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_gc,CMockString_e);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, CMockStringMismatch);
   }
   {
-    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_sender, sender, cmock_line, "Function 'rkh_fwk_gc' called with unexpected value for argument 'sender'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_gc,CMockString_sender);
+    if (cmock_call_instance->Expected_sender == NULL)
+      { UNITY_TEST_ASSERT_NULL(sender, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_sender, sender, 1, cmock_line, CMockStringMismatch); }
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_fwk_gc(CMOCK_rkh_fwk_gc_CALL_INSTANCE* cmock_call_instance, RKH_EVT_T* e, const void* const sender)
@@ -524,23 +484,28 @@ void rkh_fwk_gc_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_EVT_T* e, const void
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_gc_CALL_INSTANCE));
   CMOCK_rkh_fwk_gc_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_gc_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_gc_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_gc_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_fwk_gc(cmock_call_instance, e, sender);
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_fwk_reserve(RKH_EVT_T* e)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_fwk_reserve_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_reserve_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_reserve_CallInstance);
+  CMOCK_rkh_fwk_reserve_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_fwk_reserve);
+  cmock_call_instance = (CMOCK_rkh_fwk_reserve_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_fwk_reserve_CallInstance);
   Mock.rkh_fwk_reserve_CallInstance = CMock_Guts_MemNext(Mock.rkh_fwk_reserve_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_fwk_reserve' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_fwk_reserve' called with unexpected value for argument 'e'.");
+    UNITY_SET_DETAILS(CMockString_rkh_fwk_reserve,CMockString_e);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, CMockStringMismatch);
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_fwk_reserve(CMOCK_rkh_fwk_reserve_CALL_INSTANCE* cmock_call_instance, RKH_EVT_T* e)
@@ -552,26 +517,32 @@ void rkh_fwk_reserve_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_EVT_T* e)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_fwk_reserve_CALL_INSTANCE));
   CMOCK_rkh_fwk_reserve_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_fwk_reserve_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_fwk_reserve_CallInstance = CMock_Guts_MemChain(Mock.rkh_fwk_reserve_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_fwk_reserve(cmock_call_instance, e);
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_dispatch(RKH_SMA_T* me, RKH_EVT_T* e)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_dispatch_CallInstance);
+  CMOCK_rkh_hook_dispatch_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_dispatch);
+  cmock_call_instance = (CMOCK_rkh_hook_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_dispatch_CallInstance);
   Mock.rkh_hook_dispatch_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_dispatch_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_dispatch' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKH_SMA_T), cmock_line, "Function 'rkh_hook_dispatch' called with unexpected value for argument 'me'.");
+    UNITY_SET_DETAILS(CMockString_rkh_hook_dispatch,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKH_SMA_T), cmock_line, CMockStringMismatch);
   }
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_hook_dispatch' called with unexpected value for argument 'e'.");
+    UNITY_SET_DETAILS(CMockString_rkh_hook_dispatch,CMockString_e);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, CMockStringMismatch);
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_hook_dispatch(CMOCK_rkh_hook_dispatch_CALL_INSTANCE* cmock_call_instance, RKH_SMA_T* me, RKH_EVT_T* e)
@@ -584,23 +555,28 @@ void rkh_hook_dispatch_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RK
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_dispatch_CALL_INSTANCE));
   CMOCK_rkh_hook_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_dispatch_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_dispatch_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_hook_dispatch(cmock_call_instance, me, e);
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_signal(RKH_EVT_T* e)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_signal_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_signal_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_signal_CallInstance);
+  CMOCK_rkh_hook_signal_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_signal);
+  cmock_call_instance = (CMOCK_rkh_hook_signal_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_signal_CallInstance);
   Mock.rkh_hook_signal_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_signal_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_signal' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_hook_signal' called with unexpected value for argument 'e'.");
+    UNITY_SET_DETAILS(CMockString_rkh_hook_signal,CMockString_e);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, CMockStringMismatch);
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_hook_signal(CMOCK_rkh_hook_signal_CALL_INSTANCE* cmock_call_instance, RKH_EVT_T* e)
@@ -612,23 +588,31 @@ void rkh_hook_signal_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_EVT_T* e)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_signal_CALL_INSTANCE));
   CMOCK_rkh_hook_signal_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_signal_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_signal_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_signal_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_hook_signal(cmock_call_instance, e);
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_timeout(const void* t)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_timeout_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_timeout_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_timeout_CallInstance);
+  CMOCK_rkh_hook_timeout_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_timeout);
+  cmock_call_instance = (CMOCK_rkh_hook_timeout_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_timeout_CallInstance);
   Mock.rkh_hook_timeout_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_timeout_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_timeout' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
-    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_t, t, cmock_line, "Function 'rkh_hook_timeout' called with unexpected value for argument 't'.");
+    UNITY_SET_DETAILS(CMockString_rkh_hook_timeout,CMockString_t);
+    if (cmock_call_instance->Expected_t == NULL)
+      { UNITY_TEST_ASSERT_NULL(t, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_t, t, 1, cmock_line, CMockStringMismatch); }
   }
+  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_hook_timeout(CMOCK_rkh_hook_timeout_CALL_INSTANCE* cmock_call_instance, const void* t)
@@ -640,324 +624,208 @@ void rkh_hook_timeout_CMockExpect(UNITY_LINE_TYPE cmock_line, const void* t)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_timeout_CALL_INSTANCE));
   CMOCK_rkh_hook_timeout_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_timeout_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_timeout_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_timeout_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_hook_timeout(cmock_call_instance, t);
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_start(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_start_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_start_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_start_CallInstance);
+  CMOCK_rkh_hook_start_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_start);
+  cmock_call_instance = (CMOCK_rkh_hook_start_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_start_CallInstance);
   Mock.rkh_hook_start_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_start_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_start' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_start_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_start_CALL_INSTANCE));
   CMOCK_rkh_hook_start_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_start_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_start_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_start_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_exit(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_exit_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_exit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_exit_CallInstance);
+  CMOCK_rkh_hook_exit_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_exit);
+  cmock_call_instance = (CMOCK_rkh_hook_exit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_exit_CallInstance);
   Mock.rkh_hook_exit_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_exit_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_exit' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_exit_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_exit_CALL_INSTANCE));
   CMOCK_rkh_hook_exit_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_exit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_exit_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_exit_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_idle(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_idle_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_idle_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_idle_CallInstance);
+  CMOCK_rkh_hook_idle_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_idle);
+  cmock_call_instance = (CMOCK_rkh_hook_idle_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_idle_CallInstance);
   Mock.rkh_hook_idle_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_idle_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_idle' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_idle_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_idle_CALL_INSTANCE));
   CMOCK_rkh_hook_idle_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_idle_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_idle_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_idle_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_timetick(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_timetick_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_timetick_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_timetick_CallInstance);
+  CMOCK_rkh_hook_timetick_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_timetick);
+  cmock_call_instance = (CMOCK_rkh_hook_timetick_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_timetick_CallInstance);
   Mock.rkh_hook_timetick_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_timetick_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_timetick' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_timetick_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_timetick_CALL_INSTANCE));
   CMOCK_rkh_hook_timetick_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_timetick_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_timetick_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_timetick_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_putTrcEvt(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_putTrcEvt_CallInstance);
+  CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_hook_putTrcEvt);
+  cmock_call_instance = (CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_hook_putTrcEvt_CallInstance);
   Mock.rkh_hook_putTrcEvt_CallInstance = CMock_Guts_MemNext(Mock.rkh_hook_putTrcEvt_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_hook_putTrcEvt' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_hook_putTrcEvt_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE));
   CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_hook_putTrcEvt_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_hook_putTrcEvt_CallInstance = CMock_Guts_MemChain(Mock.rkh_hook_putTrcEvt_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
-}
-
-void rkh_sm_init(RKH_SM_T* me)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_sm_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_sm_init_CallInstance);
-  Mock.rkh_sm_init_CallInstance = CMock_Guts_MemNext(Mock.rkh_sm_init_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_sm_init' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKH_SM_T), cmock_line, "Function 'rkh_sm_init' called with unexpected value for argument 'me'.");
-  }
-}
-
-void CMockExpectParameters_rkh_sm_init(CMOCK_rkh_sm_init_CALL_INSTANCE* cmock_call_instance, RKH_SM_T* me)
-{
-  cmock_call_instance->Expected_me = me;
-}
-
-void rkh_sm_init_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SM_T* me)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sm_init_CALL_INSTANCE));
-  CMOCK_rkh_sm_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_sm_init_CallInstance = CMock_Guts_MemChain(Mock.rkh_sm_init_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_sm_init(cmock_call_instance, me);
-}
-
-ruint rkh_sm_dispatch(RKH_SM_T* me, RKH_EVT_T* e)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_sm_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_sm_dispatch_CallInstance);
-  Mock.rkh_sm_dispatch_CallInstance = CMock_Guts_MemNext(Mock.rkh_sm_dispatch_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_sm_dispatch' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKH_SM_T), cmock_line, "Function 'rkh_sm_dispatch' called with unexpected value for argument 'me'.");
-  }
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_e), (void*)(e), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_sm_dispatch' called with unexpected value for argument 'e'.");
-  }
-  return cmock_call_instance->ReturnVal;
-}
-
-void CMockExpectParameters_rkh_sm_dispatch(CMOCK_rkh_sm_dispatch_CALL_INSTANCE* cmock_call_instance, RKH_SM_T* me, RKH_EVT_T* e)
-{
-  cmock_call_instance->Expected_me = me;
-  cmock_call_instance->Expected_e = e;
-}
-
-void rkh_sm_dispatch_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SM_T* me, RKH_EVT_T* e, ruint cmock_to_return)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sm_dispatch_CALL_INSTANCE));
-  CMOCK_rkh_sm_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_sm_dispatch_CallInstance = CMock_Guts_MemChain(Mock.rkh_sm_dispatch_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_sm_dispatch(cmock_call_instance, me, e);
-  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(ruint));
-}
-
-void rkh_sm_ctor(RKH_SM_T* me)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_sm_ctor_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_ctor_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_sm_ctor_CallInstance);
-  Mock.rkh_sm_ctor_CallInstance = CMock_Guts_MemNext(Mock.rkh_sm_ctor_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_sm_ctor' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKH_SM_T), cmock_line, "Function 'rkh_sm_ctor' called with unexpected value for argument 'me'.");
-  }
-}
-
-void CMockExpectParameters_rkh_sm_ctor(CMOCK_rkh_sm_ctor_CALL_INSTANCE* cmock_call_instance, RKH_SM_T* me)
-{
-  cmock_call_instance->Expected_me = me;
-}
-
-void rkh_sm_ctor_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SM_T* me)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sm_ctor_CALL_INSTANCE));
-  CMOCK_rkh_sm_ctor_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_ctor_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_sm_ctor_CallInstance = CMock_Guts_MemChain(Mock.rkh_sm_ctor_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_sm_ctor(cmock_call_instance, me);
-}
-
-void rkh_sm_clear_history(RKHROM RKH_SHIST_T* h)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_sm_clear_history_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_clear_history_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_sm_clear_history_CallInstance);
-  Mock.rkh_sm_clear_history_CallInstance = CMock_Guts_MemNext(Mock.rkh_sm_clear_history_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_sm_clear_history' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_h), (void*)(h), sizeof(RKHROM RKH_SHIST_T), cmock_line, "Function 'rkh_sm_clear_history' called with unexpected value for argument 'h'.");
-  }
-}
-
-void CMockExpectParameters_rkh_sm_clear_history(CMOCK_rkh_sm_clear_history_CALL_INSTANCE* cmock_call_instance, RKHROM RKH_SHIST_T* h)
-{
-  cmock_call_instance->Expected_h = h;
-}
-
-void rkh_sm_clear_history_CMockExpect(UNITY_LINE_TYPE cmock_line, RKHROM RKH_SHIST_T* h)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sm_clear_history_CALL_INSTANCE));
-  CMOCK_rkh_sm_clear_history_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_clear_history_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_sm_clear_history_CallInstance = CMock_Guts_MemChain(Mock.rkh_sm_clear_history_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_sm_clear_history(cmock_call_instance, h);
-}
-
-rbool_t rkh_sm_else(const RKH_SM_T* sma, RKH_EVT_T* pe)
-{
-  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_sm_else_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_else_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_sm_else_CallInstance);
-  Mock.rkh_sm_else_CallInstance = CMock_Guts_MemNext(Mock.rkh_sm_else_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_sm_else' called more times than expected.");
-  cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_sma), (void*)(sma), sizeof(RKH_SM_T), cmock_line, "Function 'rkh_sm_else' called with unexpected value for argument 'sma'.");
-  }
-  {
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_pe), (void*)(pe), sizeof(RKH_EVT_T), cmock_line, "Function 'rkh_sm_else' called with unexpected value for argument 'pe'.");
-  }
-  return cmock_call_instance->ReturnVal;
-}
-
-void CMockExpectParameters_rkh_sm_else(CMOCK_rkh_sm_else_CALL_INSTANCE* cmock_call_instance, const RKH_SM_T* sma, RKH_EVT_T* pe)
-{
-  cmock_call_instance->Expected_sma = (RKH_SM_T*)sma;
-  cmock_call_instance->Expected_pe = pe;
-}
-
-void rkh_sm_else_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const RKH_SM_T* sma, RKH_EVT_T* pe, rbool_t cmock_to_return)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sm_else_CALL_INSTANCE));
-  CMOCK_rkh_sm_else_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sm_else_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_sm_else_CallInstance = CMock_Guts_MemChain(Mock.rkh_sm_else_CallInstance, cmock_guts_index);
-  cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_sm_else(cmock_call_instance, sma, pe);
-  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(rbool_t));
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_trc_open(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_trc_open_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_open_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_open_CallInstance);
+  CMOCK_rkh_trc_open_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_trc_open);
+  cmock_call_instance = (CMOCK_rkh_trc_open_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_open_CallInstance);
   Mock.rkh_trc_open_CallInstance = CMock_Guts_MemNext(Mock.rkh_trc_open_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_trc_open' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_trc_open_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_trc_open_CALL_INSTANCE));
   CMOCK_rkh_trc_open_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_open_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_trc_open_CallInstance = CMock_Guts_MemChain(Mock.rkh_trc_open_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_trc_close(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_trc_close_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_close_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_close_CallInstance);
+  CMOCK_rkh_trc_close_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_trc_close);
+  cmock_call_instance = (CMOCK_rkh_trc_close_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_close_CallInstance);
   Mock.rkh_trc_close_CallInstance = CMock_Guts_MemNext(Mock.rkh_trc_close_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_trc_close' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_trc_close_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_trc_close_CALL_INSTANCE));
   CMOCK_rkh_trc_close_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_close_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_trc_close_CallInstance = CMock_Guts_MemChain(Mock.rkh_trc_close_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_trc_flush(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_trc_flush_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_flush_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_flush_CallInstance);
+  CMOCK_rkh_trc_flush_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_trc_flush);
+  cmock_call_instance = (CMOCK_rkh_trc_flush_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_flush_CallInstance);
   Mock.rkh_trc_flush_CallInstance = CMock_Guts_MemNext(Mock.rkh_trc_flush_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_trc_flush' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
 }
 
 void rkh_trc_flush_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_trc_flush_CALL_INSTANCE));
   CMOCK_rkh_trc_flush_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_flush_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_trc_flush_CallInstance = CMock_Guts_MemChain(Mock.rkh_trc_flush_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
+  UNITY_CLR_DETAILS();
 }
 
 RKH_TS_T rkh_trc_getts(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_trc_getts_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_getts_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_getts_CallInstance);
+  CMOCK_rkh_trc_getts_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_trc_getts);
+  cmock_call_instance = (CMOCK_rkh_trc_getts_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_trc_getts_CallInstance);
   Mock.rkh_trc_getts_CallInstance = CMock_Guts_MemNext(Mock.rkh_trc_getts_CallInstance);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_trc_getts' called more times than expected.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
 
@@ -965,10 +833,11 @@ void rkh_trc_getts_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_TS_T cmo
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_trc_getts_CALL_INSTANCE));
   CMOCK_rkh_trc_getts_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_trc_getts_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_trc_getts_CallInstance = CMock_Guts_MemChain(Mock.rkh_trc_getts_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(RKH_TS_T));
+  UNITY_CLR_DETAILS();
 }
 

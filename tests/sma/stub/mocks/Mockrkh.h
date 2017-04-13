@@ -5,7 +5,7 @@
 #include "rkh.h"
 
 /* Ignore the following warnings, since we are copying code */
-#if defined(__GNUC__) && !defined(__ICC)
+#if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
 #if !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wpragmas"
 #endif
@@ -28,10 +28,6 @@ void rkh_fwk_enter_CMockExpect(UNITY_LINE_TYPE cmock_line);
 void rkh_fwk_exit_CMockExpect(UNITY_LINE_TYPE cmock_line);
 #define rkh_tmr_tick_Expect(sender) rkh_tmr_tick_CMockExpect(__LINE__, sender)
 void rkh_tmr_tick_CMockExpect(UNITY_LINE_TYPE cmock_line, const void* const sender);
-#define rkh_fwk_defer_Expect(q, e) rkh_fwk_defer_CMockExpect(__LINE__, q, e)
-void rkh_fwk_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_RQ_T* q, const RKH_EVT_T* e);
-#define rkh_fwk_recall_ExpectAndReturn(me, q, cmock_retval) rkh_fwk_recall_CMockExpectAndReturn(__LINE__, me, q, cmock_retval)
-void rkh_fwk_recall_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_RQ_T* q, RKH_EVT_T* cmock_to_return);
 #define rkh_fwk_epool_register_Expect(sstart, ssize, esize) rkh_fwk_epool_register_CMockExpect(__LINE__, sstart, ssize, esize)
 void rkh_fwk_epool_register_CMockExpect(UNITY_LINE_TYPE cmock_line, void* sstart, rui32_t ssize, RKH_ES_T esize);
 #define rkh_fwk_ae_ExpectAndReturn(esize, e, sender, cmock_retval) rkh_fwk_ae_CMockExpectAndReturn(__LINE__, esize, e, sender, cmock_retval)
@@ -56,16 +52,6 @@ void rkh_hook_idle_CMockExpect(UNITY_LINE_TYPE cmock_line);
 void rkh_hook_timetick_CMockExpect(UNITY_LINE_TYPE cmock_line);
 #define rkh_hook_putTrcEvt_Expect() rkh_hook_putTrcEvt_CMockExpect(__LINE__)
 void rkh_hook_putTrcEvt_CMockExpect(UNITY_LINE_TYPE cmock_line);
-#define rkh_sm_init_Expect(me) rkh_sm_init_CMockExpect(__LINE__, me)
-void rkh_sm_init_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SM_T* me);
-#define rkh_sm_dispatch_ExpectAndReturn(me, e, cmock_retval) rkh_sm_dispatch_CMockExpectAndReturn(__LINE__, me, e, cmock_retval)
-void rkh_sm_dispatch_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SM_T* me, RKH_EVT_T* e, ruint cmock_to_return);
-#define rkh_sm_ctor_Expect(me) rkh_sm_ctor_CMockExpect(__LINE__, me)
-void rkh_sm_ctor_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SM_T* me);
-#define rkh_sm_clear_history_Expect(h) rkh_sm_clear_history_CMockExpect(__LINE__, h)
-void rkh_sm_clear_history_CMockExpect(UNITY_LINE_TYPE cmock_line, RKHROM RKH_SHIST_T* h);
-#define rkh_sm_else_ExpectAndReturn(sma, pe, cmock_retval) rkh_sm_else_CMockExpectAndReturn(__LINE__, sma, pe, cmock_retval)
-void rkh_sm_else_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const RKH_SM_T* sma, RKH_EVT_T* pe, rbool_t cmock_to_return);
 #define rkh_trc_open_Expect() rkh_trc_open_CMockExpect(__LINE__)
 void rkh_trc_open_CMockExpect(UNITY_LINE_TYPE cmock_line);
 #define rkh_trc_close_Expect() rkh_trc_close_CMockExpect(__LINE__)

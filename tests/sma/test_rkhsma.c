@@ -191,6 +191,26 @@ TEST(sma, Get)
     TEST_ASSERT_EQUAL(&event, e);
 }
 
+TEST(sma, Defer)
+{
+    rkh_enter_critical_Expect();
+    rkh_rq_put_fifo_Expect(&receiver.equeue, &event);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_DEFER, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_fwk_defer(&receiver.equeue, &event);
+}
+
+TEST(sma, Recall)
+{
+    RKH_EVT_T *e;
+
+    rkh_rq_get_ExpectAndReturn(&receiver.equeue, NULL);
+
+    e = rkh_fwk_recall(&receiver, &receiver.equeue);
+    TEST_ASSERT_EQUAL(NULL, e);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

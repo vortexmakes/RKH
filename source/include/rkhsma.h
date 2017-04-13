@@ -1082,6 +1082,79 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
 
 /**
  *  \brief
+ *	Defer an event to a given separate event queue.
+ *
+ *  Event deferral comes in very handy when an event arrives in a
+ *  particularly inconvenient moment but can be deferred for some later time,
+ *  when the system is in a much better position to handle the event. RKH
+ *  supports very efficient event deferring and recalling mechanisms.
+ *  This function is part of the event deferral mechanism. An SMA
+ *  uses this function to defer an event \a e to the event queue \a q.
+ *  RKH correctly accounts for another outstanding reference to the event
+ *  and will not recycle the event at the end of the RTC step.
+ *  Later, the SMA might recall one event at a time from the
+ *  event queue by means of rkh_fwk_recall() function.
+ *
+ *  \param[in] q    pointer to previously created queue.
+ *  \param[in] e    pointer to event.
+ *
+ *	\note
+ *	For memory efficiency and best performance the deferred event queue,
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *  An SMA can use multiple event queues to defer events of
+ *  different kinds.
+ *	The assertion inside it guarantee that operation is valid, so is not
+ *	necessary to check the value returned from it.
+ *
+ *  \usage
+ *	\code
+ *	static RKH_RQ_T qurc;
+ *	static RKH_EVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
+ *
+ *	rkh_rq_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
+ *	...
+ *
+ *	void
+ *	ring( const struct rkh_t *me, RKH_EVT_T *pe )
+ *	{
+ *		(void)me;                  // argument not used
+ *		rkh_fwk_defer( &qurc, pe );	// defer event
+ *	}
+ *	\endcode
+ */
+void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
+
+/**
+ *  \brief
+ *  Recall a deferred event from a given event queue.
+ *
+ *  This function is part of the event deferral support. An SMA
+ *  uses this function to recall a deferred event from a given event queue.
+ *  Recalling an event means that it is removed from the deferred event
+ *  queue \a q and posted (LIFO) to the event queue of the \a me state
+ *  machine application.
+ *
+ *  \note
+ *	For memory efficiency and best performance the destination event queue,
+ *	STORE ONLY POINTERS to events, not the whole event objects.
+ *
+ *  \return     The pointer to the recalled event to the caller, or NULL if no
+ *              event has been recalled.
+ *
+ *  \usage
+ *	\code
+ *	void
+ *	exit_rx_manager( const struct rkh_t *me )
+ *	{
+ *		rkh_fwk_recall( me, &qurc );
+ *	}
+ *	\endcode
+ *
+ */
+RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
+
+/**
+ *  \brief
  *  Clear performance information for a particular state machine application
  *  (SMA) as known as active object.
  *
