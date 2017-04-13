@@ -61,20 +61,6 @@ RKH_MODULE_NAME(rkhsma)
 #endif
 
 /* ------------------------------- Constants ------------------------------- */
-/*
- *  String describing the RKH version.
- */
-RKHROM char rkh_version[] =
-{
-    (char)((rui8_t)((RKH_VERSION_CODE >> 12)    & 0x0F) + (rui8_t)'0'),
-    (char)'.',
-    (char)((rui8_t)((RKH_VERSION_CODE >> 8)     & 0x0F) + (rui8_t)'0'),
-    (char)'.',
-    (char)((rui8_t)((RKH_VERSION_CODE >> 4)     & 0x0F) + (rui8_t)'0'),
-    (char)((rui8_t)(RKH_VERSION_CODE            & 0x0F) + (rui8_t)'0'),
-    (char)'\0',
-};
-
 #if R_TRC_AO_NAME_EN == RKH_DISABLED
 RKHROM char noname[] = "null";
 #endif

@@ -50,6 +50,20 @@
 /* ----------------------------- Include files ----------------------------- */
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
+/*
+ *  String describing the RKH version.
+ */
+RKHROM char rkh_version[] =
+{
+    (char)((rui8_t)((RKH_VERSION_CODE >> 12)    & 0x0F) + (rui8_t)'0'),
+    (char)'.',
+    (char)((rui8_t)((RKH_VERSION_CODE >> 8)     & 0x0F) + (rui8_t)'0'),
+    (char)'.',
+    (char)((rui8_t)((RKH_VERSION_CODE >> 4)     & 0x0F) + (rui8_t)'0'),
+    (char)((rui8_t)(RKH_VERSION_CODE            & 0x0F) + (rui8_t)'0'),
+    (char)'\0',
+};
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
