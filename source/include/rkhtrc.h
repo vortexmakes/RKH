@@ -740,7 +740,7 @@
 #define RKH_TE_SMA_REG          (RKH_TE_SMA_LIFO + 1)
 /** \copybrief RKH_TR_SMA_UNREG */
 #define RKH_TE_SMA_UNREG        (RKH_TE_SMA_REG + 1)
-/** \copybrief RKH_TR_SMA_DCH */
+/** \copybrief RKH_TR_SM_DCH */
 #define RKH_TE_SMA_DCH          (RKH_TE_SMA_UNREG + 1)
 #define RKH_SMA_END             RKH_TE_SMA_DCH
 
@@ -807,9 +807,9 @@
 #define RKH_TE_FWK_GC           (RKH_TE_FWK_AE + 1)
 /** \copybrief RKH_TR_FWK_GCR */
 #define RKH_TE_FWK_GCR          (RKH_TE_FWK_GC + 1)
-/** \copybrief RKH_TR_FWK_DEFER */
+/** \copybrief RKH_TR_SMA_DEFER */
 #define RKH_TE_FWK_DEFER        (RKH_TE_FWK_GCR + 1)
-/** \copybrief RKH_TR_FWK_RCALL */
+/** \copybrief RKH_TR_SMA_RCALL */
 #define RKH_TE_FWK_RCALL        (RKH_TE_FWK_DEFER + 1)
 /** \copybrief RKH_TR_FWK_OBJ */
 #define RKH_TE_FWK_OBJ          (RKH_TE_FWK_RCALL + 1)
@@ -1916,6 +1916,40 @@
                     RKH_TRC_UI8(actObjPrio_); \
                 RKH_TRC_END_NOCRIT()
 
+            /**
+             *  \brief
+             *  \copybrief rkh_sma_defer
+             *
+             *  \description    Defer an event
+             *  \trcGroup       RKH_TG_SMA
+             *  \trcEvent       RKH_TE_SMA_DEFER
+             *
+             *  \param[in] queue_    Target queue to store deferred event
+             *  \param[in] evt_   Event
+             */
+            #define RKH_TR_SMA_DEFER(queue_, evt_) \
+                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_DEFER) \
+                    RKH_TRC_SYM(queue_); \
+                    RKH_TRC_SIG((evt_)->e); \
+                RKH_TRC_END_NOCRIT()
+
+            /**
+             *  \brief
+             *  \copybrief rkh_sma_recall
+             *
+             *  \description    Recall an event
+             *  \trcGroup       RKH_TG_SMA
+             *  \trcEvent       RKH_TE_SMA_RCALL
+             *
+             *  \param[in] actObj_   Active object
+             *  \param[in] evt_   Event
+             */
+            #define RKH_TR_SMA_RCALL(actObj_, evt_) \
+                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_RCALL) \
+                    RKH_TRC_SYM(actObj_); \
+                    RKH_TRC_SIG((evt_)->e); \
+                RKH_TRC_END_NOCRIT()
+
             /** @} doxygen end group definition */
             /** @} doxygen end group definition */
         #else
@@ -1935,6 +1969,10 @@
             #define RKH_TR_SMA_REG(actObj_, actObjPrio_) \
                 (void)0
             #define RKH_TR_SMA_UNREG(actObj_, actObjPrio_) \
+                (void)0
+            #define RKH_TR_SMA_DEFER(queue_, evt_) \
+                (void)0
+            #define RKH_TR_SMA_RCALL(actObj_, evt_) \
                 (void)0
         #endif
 
@@ -2009,8 +2047,8 @@
              *  \param[in] evt_     Dispatched event
              *  \param[in] state_   Current state
              */
-            #if RKH_CFG_TRC_SMA_DCH_EN == RKH_ENABLED
-                #define RKH_TR_SMA_DCH(actObj_, evt_, state_) \
+            #if RKH_CFG_TRC_SM_DCH_EN == RKH_ENABLED
+                #define RKH_TR_SM_DCH(actObj_, evt_, state_) \
                     RKH_TRC_BEGIN(RKH_TE_SMA_DCH, \
                                   RKH_SMA_ACCESS_CONST(actObj_, prio), \
                                   (evt_)->e) \
@@ -2019,7 +2057,7 @@
                     RKH_TRC_SYM(state_); \
                     RKH_TRC_END()
             #else
-                #define RKH_TR_SMA_DCH(actObj_, evt_, state_)   (void)0
+                #define RKH_TR_SM_DCH(actObj_, evt_, state_)   (void)0
             #endif
 
             /**
@@ -2352,7 +2390,7 @@
         #else
             #define RKH_TR_SM_INIT(actObj_, initState_)     (void)0
             #define RKH_TR_SM_CLRH(actObj_, history_)       (void)0
-            #define RKH_TR_SMA_DCH(actObj_, evt_, state_)   (void)0
+            #define RKH_TR_SM_DCH(actObj_, evt_, state_)   (void)0
             #define RKH_TR_SM_TRN(actObj_, sourceState_, targetState_) \
                 (void)0
             #define RKH_TR_SM_STATE(actObj_, state_)        (void)0
@@ -2619,40 +2657,6 @@
                     RKH_TRC_NBLK(nUsed_); \
                     RKH_TRC_MP_NMIN(nMin_); \
                     RKH_TRC_SYM(sender_); \
-                RKH_TRC_END_NOCRIT()
-
-            /**
-             *  \brief
-             *  \copybrief rkh_fwk_defer
-             *
-             *  \description    Defer an event
-             *  \trcGroup       RKH_TG_FWK
-             *  \trcEvent       RKH_TE_FWK_DEFER
-             *
-             *  \param[in] queue_    Target queue to store deferred event
-             *  \param[in] evt_   Event
-             */
-            #define RKH_TR_FWK_DEFER(queue_, evt_) \
-                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_DEFER) \
-                    RKH_TRC_SYM(queue_); \
-                    RKH_TRC_SIG((evt_)->e); \
-                RKH_TRC_END_NOCRIT()
-
-            /**
-             *  \brief
-             *  \copybrief rkh_fwk_recall
-             *
-             *  \description    Recall an event
-             *  \trcGroup       RKH_TG_FWK
-             *  \trcEvent       RKH_TE_FWK_RCALL
-             *
-             *  \param[in] actObj_   Active object
-             *  \param[in] evt_   Event
-             */
-            #define RKH_TR_FWK_RCALL(actObj_, evt_) \
-                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_RCALL) \
-                    RKH_TRC_SYM(actObj_); \
-                    RKH_TRC_SIG((evt_)->e); \
                 RKH_TRC_END_NOCRIT()
 
             /* --- Symbol entry table for objects -------------------------- */
@@ -3292,8 +3296,6 @@
             #define RKH_TR_FWK_AE(evtSize_, evt_, nUsed_, nMin_, sndr_) (void)0
             #define RKH_TR_FWK_GC(evt_, poolID_, refCnt_)               (void)0
             #define RKH_TR_FWK_GCR(evt_, nUsed_, nMin_, sndr_)          (void)0
-            #define RKH_TR_FWK_DEFER(queue_, evt_)                      (void)0
-            #define RKH_TR_FWK_RCALL(actObj_, evt_)                     (void)0
             #define RKH_TR_FWK_OBJ(obj_)                                (void)0
             #define RKH_TR_FWK_OBJ_NAME(obj_, name_)                    (void)0
             #define RKH_TR_FWK_SIG(stateObj_)                           (void)0
@@ -3337,11 +3339,13 @@
                                 nm)                       (void)0
         #define RKH_TR_SMA_REG(ao, actObjPrio_)           (void)0
         #define RKH_TR_SMA_UNREG(ao, actObjPrio_)         (void)0
+        #define RKH_TR_SMA_DEFER(queue_, evt_)            (void)0
+        #define RKH_TR_SMA_RCALL(actObj_, evt_)           (void)0
 
         /* --- State machine (SM) ------------------------------------------ */
         #define RKH_TR_SM_INIT(ao, ist)                   (void)0
         #define RKH_TR_SM_CLRH(ao, h)                     (void)0
-        #define RKH_TR_SMA_DCH(ao, ev, st)                (void)0
+        #define RKH_TR_SM_DCH(ao, ev, st)                 (void)0
         #define RKH_TR_SM_TRN(ao, sst, tst)               (void)0
         #define RKH_TR_SM_STATE(ao, st)                   (void)0
         #define RKH_TR_SM_ENSTATE(ao, st)                 (void)0
@@ -3373,8 +3377,6 @@
                               sndr_)                      (void)0
         #define RKH_TR_FWK_GC(ev, pid, rc)                (void)0
         #define RKH_TR_FWK_GCR(ev, nUsed_, nMin_, sndr_)  (void)0
-        #define RKH_TR_FWK_DEFER(q, ev)                   (void)0
-        #define RKH_TR_FWK_RCALL(ao, ev)                  (void)0
         #define RKH_TR_FWK_OBJ(__o)                       (void)0
         #define RKH_TR_FWK_OBJ_NAME(__o, __n)             (void)0
         #define RKH_TR_FWK_SIG(__s)                       (void)0

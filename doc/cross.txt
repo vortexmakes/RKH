@@ -917,7 +917,7 @@ server_end(Server *const me, RKH_EVT_T *pe)
     ReqEvt *e;
 
     (void)pe;
-    if ((e = (ReqEvt *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
+    if ((e = (ReqEvt *)rkh_sma_recall((RKH_SMA_T*)me, &queueReq))
         != (ReqEvt *)0)
     {
         bsp_svr_recall(e->clino);
@@ -930,7 +930,7 @@ static void
 server_defer(Server *const me, RKH_EVT_T *pe)
 {
     (void)me;
-    rkh_fwk_defer(&queueReq, pe);
+    rkh_sma_defer(&queueReq, pe);
 }
 
 static void
@@ -955,7 +955,7 @@ server_resume(Server *const me)
 {
     ReqEvt *e;
 
-    if ((e = (ReqEvt *)rkh_fwk_recall((RKH_SMA_T*)me, &queueReq))
+    if ((e = (ReqEvt *)rkh_sma_recall((RKH_SMA_T*)me, &queueReq))
         != (ReqEvt *)0)
     {
         bsp_svr_recall(e->clino);

@@ -57,6 +57,7 @@
 #include "unitrazer.h"
 #include "rkh.h"
 #include "smPolymorphism.h"
+#include "Mockrkhrq.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -148,7 +149,11 @@ TEST(polymorphism, defaultVirtualFunctions)
 TEST(polymorphism, callVirtualFunction)
 {
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
-    RKH_SMA_ACTIVATE(singleton, NULL, 0, NULL, 0);
+    const RKH_EVT_T *qs[1];
+
+    rkh_rq_init_Expect(&singleton->equeue, qs, 1, singleton);
+
+    RKH_SMA_ACTIVATE(singleton, qs, 1, 0, 0);
     RKH_SMA_POST_FIFO(singleton, NULL, NULL);
     RKH_SMA_POST_LIFO(singleton, NULL, NULL);
 #endif

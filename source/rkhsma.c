@@ -222,7 +222,7 @@ rkh_sma_get(RKH_SMA_T *sma)
 
 #if RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED
 void
-rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e)
+rkh_sma_defer(RKH_RQ_T *q, const RKH_EVT_T *e)
 {
     RKH_SR_ALLOC();
 
@@ -230,13 +230,13 @@ rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e)
 
     RKH_INC_REF(e);
     rkh_rq_put_fifo(q, e);
-    RKH_TR_FWK_DEFER(q, e);
+    RKH_TR_SMA_DEFER(q, e);
 
     RKH_EXIT_CRITICAL_();
 }
 
 RKH_EVT_T *
-rkh_fwk_recall(RKH_SMA_T *sma, RKH_RQ_T *q)
+rkh_sma_recall(RKH_SMA_T *sma, RKH_RQ_T *q)
 {
     RKH_EVT_T *e;
     RKH_SR_ALLOC();
@@ -247,7 +247,7 @@ rkh_fwk_recall(RKH_SMA_T *sma, RKH_RQ_T *q)
         /* post it to the front of the SMA's queue */
         RKH_SMA_POST_LIFO(sma, e, sma);
         RKH_ENTER_CRITICAL_();
-        RKH_TR_FWK_RCALL(sma, e);
+        RKH_TR_SMA_RCALL(sma, e);
 
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
         if (e->nref != 0)   /* is it a dynamic event? */

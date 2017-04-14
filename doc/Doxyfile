@@ -830,8 +830,8 @@ INPUT                  = ../source \
                          ../tests/sm/test_smTransition.c \
                          ../tests/sm/test_smPseudostate.c \
                          ../tests/sm/test_runners/test_smPseudostate_runner.c \
-                         ../tests/sm/test_smPolymorphism.c \
-                         ../tests/sm/test_runners/test_smPolymorphism_runner.c \
+                         ../tests/sma/test_smPolymorphism.c \
+                         ../tests/sma/test_runners/test_smPolymorphism_runner.c \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/twr_k60/cw_v10/readme.txt \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/twr_k60/iar_v7_2/readme.txt \
                          ../demo/cross/blinky/platform/arm-cortex/rkhs/arm_cm4f/frdm-k64f/kds/readme.txt \

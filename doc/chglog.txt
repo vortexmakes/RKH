@@ -200,10 +200,10 @@
 - Fixed a bug in rkhtim.c file. Complete the RKH_SET_THOOK() macro when 
   configuring RKH_CFG_TMR_HOOK_EN = 0.
 - Fixed a bug in RKH_SMA_BLOCK() macro.
-- Fixed a bug in rkh_rq_get() function, when invocking the rkh_fwk_recall() 
+- Fixed a bug in rkh_rq_get() function, when invocking the rkh_sma_recall() 
   function.
 - Fixed a bug in rkh_tmr_restart() function RKH_REQUIRE() args.
-- Fixed a bug in rkh_fwk_defer() function. Also, include an internal macro 
+- Fixed a bug in rkh_sma_defer() function. Also, include an internal macro 
   RKH_INC_REF() to avoid the dependence of dynamic event in deferral 
   mechanism.
 - Fixed a bug in rkh_add_tr_action() function.
@@ -297,7 +297,7 @@
   deriving state machine structures from RKH_T.
 - Added dynamic and defer event support. This facility is implemented by 
   means of rkh_fwk_ae(), rkh_fwk_gc(), rkh_put_fifo(), rkh_put_lifo(), 
-  rkh_fwk_defer() and rkh_fwk_recall() and added member dynamic_ to 
+  rkh_sma_defer() and rkh_sma_recall() and added member dynamic_ to 
   RKH_EVT_T structure.
 - Changed rkh.h file name to rkhitl.h.
 - Changed rkhsm.h file name to rkh.h.

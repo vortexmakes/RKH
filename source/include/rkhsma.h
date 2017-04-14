@@ -1093,7 +1093,7 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
  *  RKH correctly accounts for another outstanding reference to the event
  *  and will not recycle the event at the end of the RTC step.
  *  Later, the SMA might recall one event at a time from the
- *  event queue by means of rkh_fwk_recall() function.
+ *  event queue by means of rkh_sma_recall() function.
  *
  *  \param[in] q    pointer to previously created queue.
  *  \param[in] e    pointer to event.
@@ -1118,11 +1118,11 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
  *	ring( const struct rkh_t *me, RKH_EVT_T *pe )
  *	{
  *		(void)me;                  // argument not used
- *		rkh_fwk_defer( &qurc, pe );	// defer event
+ *		rkh_sma_defer( &qurc, pe );	// defer event
  *	}
  *	\endcode
  */
-void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
+void rkh_sma_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
 
 /**
  *  \brief
@@ -1146,12 +1146,12 @@ void rkh_fwk_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
  *	void
  *	exit_rx_manager( const struct rkh_t *me )
  *	{
- *		rkh_fwk_recall( me, &qurc );
+ *		rkh_sma_recall( me, &qurc );
  *	}
  *	\endcode
  *
  */
-RKH_EVT_T *rkh_fwk_recall(RKH_SMA_T *me, RKH_RQ_T *q);
+RKH_EVT_T *rkh_sma_recall(RKH_SMA_T *me, RKH_RQ_T *q);
 
 /**
  *  \brief

@@ -198,7 +198,7 @@ TEST(sma, Defer)
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_DEFER, RKH_FALSE);
     rkh_exit_critical_Expect();
 
-    rkh_fwk_defer(&receiver.equeue, &event);
+    rkh_sma_defer(&receiver.equeue, &event);
 }
 
 TEST(sma, Recall)
@@ -207,7 +207,7 @@ TEST(sma, Recall)
 
     rkh_rq_get_ExpectAndReturn(&receiver.equeue, NULL);
 
-    e = rkh_fwk_recall(&receiver, &receiver.equeue);
+    e = rkh_sma_recall(&receiver, &receiver.equeue);
     TEST_ASSERT_EQUAL(NULL, e);
 }
 
