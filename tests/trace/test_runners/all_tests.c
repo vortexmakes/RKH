@@ -52,7 +52,6 @@
 
 #include "rkh.h"
 #include "unity_fixture.h"
-#include "bsp.h"
 
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -90,7 +89,6 @@ main(int argc, char *argv[])
     nArgs = 1;
 #endif
 
-	bsp_init(argc, argv);
 	UnityMain(nArgs, args, runAllTests);
     getchar();
 }

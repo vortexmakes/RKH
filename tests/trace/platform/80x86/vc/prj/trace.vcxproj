@@ -49,7 +49,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\trace;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\trace\stub\mocks;$(ProjectDir)..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\trace;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\trace\stub\mocks;$(ProjectDir)..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -87,24 +87,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkh.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhdyn.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhmp.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhrq.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhs.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhsma.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtim.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\MockrkhportTest.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkh.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhport.c" />
     <ClCompile Include="..\..\..\..\test_trace_rec.c" />
-    <ClCompile Include="..\bsp.c" />
-    <ClCompile Include="..\rkhassert_stub.c" />
     <ClCompile Include="..\..\..\..\test_trace.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_trace_runner.c" />
@@ -112,7 +103,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\cmock\cmock.h" />
     <ClInclude Include="..\..\..\..\..\cmock\cmock_internals.h" />
-    <ClInclude Include="..\..\..\..\stub\mocks\MockrkhportTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

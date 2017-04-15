@@ -56,7 +56,7 @@
 
 #include "unity_fixture.h"
 #include "rkh.h"
-#include "rkhassert_stub.h"
+#include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -306,7 +306,6 @@ TEST_SETUP(trace)
     rkh_trc_filter_get(&filStatus);
     rkh_trc_filter_init();
     memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
-    rkh_assertStub_reset();
 }
 
 TEST_TEAR_DOWN(trace)
@@ -442,8 +441,11 @@ TEST(trace, setAllEventsFromOneGroup)
 
 TEST(trace, outOfBoundsProducesRuntimeError)
 {
+    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_IgnoreArg_line();
+
     rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
-    TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
+    //TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
 TEST(trace, turnOffOneGroup)
@@ -555,11 +557,15 @@ TEST(trace, upperAndLowerBoundsSymFil)
 
 TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
 {
+    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_IgnoreArg_line();
+
     rkh_trc_symFil(filStatus.ao, (filStatus.ao->size * 8) + 1, FILTER_OFF);
-    TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
+
+    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_IgnoreArg_line();
 
     rkh_trc_symFil(0, 0, FILTER_OFF);
-    TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
 /** @} doxygen end group definition */

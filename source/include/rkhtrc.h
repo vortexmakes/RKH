@@ -244,8 +244,7 @@
 #define __RKHTRC_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhplat.h"
-#include "rkhevt.h"
+#include "rkhitl.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus

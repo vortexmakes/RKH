@@ -528,7 +528,7 @@ rkh_trc_obj(RKH_TE_ID_T tre, rui8_t *obj, const char *obj_name)
     RKH_TRC_BEGIN_WOFIL(tre)
         RKH_TRC_SYM(obj);
         RKH_TRC_STR(obj_name);
-        RKH_TRC_END_WOFIL()
+    RKH_TRC_END_WOFIL()
     RKH_TRC_FLUSH();
 }
 
@@ -538,7 +538,7 @@ rkh_trc_sig(RKH_SIG_T sig, const char *sig_name)
     RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_SIG)
         RKH_TRC_SIG(sig);
         RKH_TRC_STR(sig_name);
-        RKH_TRC_END_WOFIL()
+    RKH_TRC_END_WOFIL()
     RKH_TRC_FLUSH();
 }
 
@@ -548,7 +548,7 @@ rkh_trc_ao(void *ao)
     RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_AO)
         RKH_TRC_SYM(ao);
         RKH_TRC_STR(RKH_GET_AO_NAME((RKH_SMA_T *)ao));
-        RKH_TRC_END_WOFIL()
+    RKH_TRC_END_WOFIL()
     RKH_TRC_FLUSH();
 }
 

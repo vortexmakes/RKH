@@ -55,7 +55,8 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "rkh.h"
-#include "rkhassert_stub.h"
+#include "Mockrkh.h"
+#include "Mockrkhport.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -361,6 +362,8 @@ TEST(trace_args, InsertRecordHeader)
 {
     rui8_t *output;
 
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+
     rkh_trc_begin(8);
 
     output = rkh_trc_get();
@@ -469,6 +472,11 @@ TEST(trace_args, InsertObject)
     rui8_t obj, evtId = 8;
     const char *objName = "obj";
 
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
+
     rkh_trc_obj(evtId, &obj, objName);
 
     checkHeader(evtId, 0, 0x1234567);
@@ -482,6 +490,11 @@ TEST(trace_args, InsertSignal)
 {
     rui8_t signalId = 8;
     const char *signalName = "buttonPressed";
+
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
 
     rkh_trc_sig(signalId, signalName);
 
@@ -507,6 +520,10 @@ TEST(trace_args, InsertState)
     RKH_ST_T state;
     
     state.base.name = "state";
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
 
     rkh_trc_state(&receiver, (rui8_t *)&state);
 
@@ -526,6 +543,11 @@ TEST(trace_args, InsertFwkEpoolRecord)
     rui8_t poolId = 2;
     const char *poolName = "ep0";
 
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
+
     RKH_TR_FWK_EPOOL(poolId, poolName);
 
     checkHeader(RKH_TE_FWK_EPOOL, 0, 0x1234567);
@@ -539,6 +561,11 @@ TEST(trace_args, InsertFwkActorRecord)
     rui8_t actor;
     const char *actorName = "Actor";
 
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
+
     RKH_TR_FWK_ACTOR(&actor, actorName);
 
     checkHeader(RKH_TE_FWK_ACTOR, 0, 0x1234567);
@@ -549,6 +576,10 @@ TEST(trace_args, InsertFwkActorRecord)
 
 TEST(trace_args, InsertSmaActivateRecord)
 {
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+
 	RKH_TR_SMA_ACT(&receiver, RKH_GET_PRIO(&receiver), 16);
 
     checkHeader(RKH_TE_SMA_ACT, 0, 0x1234567);
@@ -564,6 +595,9 @@ TEST(trace_args, InsertSmaGetRecord)
 
     nElem = 4;
     nMin = 2;
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
 
 	RKH_TR_SMA_GET(&receiver, &event, event.pool, event.nref, nElem, nMin);
 
@@ -583,6 +617,8 @@ TEST(trace_args, InsertSmaPostFifoRecord)
 
     nElem = 4;
     nMin = 2;
+
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
 
     RKH_TR_SMA_FIFO(&receiver, &event, &sender, event.pool, event.nref, nElem, 
                     nMin);
@@ -605,6 +641,8 @@ TEST(trace_args, InsertSmaPostLifoRecord)
     nElem = 4;
     nMin = 2;
 
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+
     RKH_TR_SMA_LIFO(&receiver, &event, &sender, event.pool, event.nref, nElem, 
                     nMin);
 
@@ -621,6 +659,10 @@ TEST(trace_args, InsertSmaPostLifoRecord)
 
 TEST(trace_args, InsertFwkAeRecord)
 {
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+
     RKH_TR_FWK_AE(16, &event, 5, 2, &receiver);
 
     checkHeader(RKH_TE_FWK_AE, 0, 0x1234567);
@@ -636,6 +678,8 @@ TEST(trace_args, InsertFwkAeRecord)
 
 TEST(trace_args, InsertFwkGcrRecord)
 {
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+
     RKH_TR_FWK_GCR(&event, 5, 2, &receiver);
 
     checkHeader(RKH_TE_FWK_GCR, 0, 0x1234567);
@@ -650,6 +694,10 @@ TEST(trace_args, InsertFwkGcrRecord)
 
 TEST(trace_args, InsertFwkEpregRecord)
 {
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+
     RKH_TR_FWK_EPREG(1, 128, 32, 4);
 
     checkHeader(RKH_TE_FWK_EPREG, 0, 0x1234567);
@@ -662,6 +710,11 @@ TEST(trace_args, InsertFwkEpregRecord)
 
 TEST(trace_args, InsertFwkStateRecord)
 {
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
+
     RKH_TR_FWK_STATE(&receiver, &state);
 
     checkHeader(RKH_TE_FWK_STATE, 0, 0x1234567);
@@ -673,6 +726,11 @@ TEST(trace_args, InsertFwkStateRecord)
 
 TEST(trace_args, InsertFwkPseudoStateRecord)
 {
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_trc_flush_Expect();
+
     RKH_TR_FWK_PSTATE(&receiver, &pseudoState);
 
     checkHeader(RKH_TE_FWK_PSTATE, 0, 0x1234567);
