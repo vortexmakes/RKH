@@ -1,2 +1,2 @@
 :cmock:
-  :plugins: [ignore_arg]
+  :plugins: [ignore_arg, ignore]

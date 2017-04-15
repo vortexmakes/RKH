@@ -58,6 +58,9 @@
 #include "rkh.h"
 #include "smPolymorphism.h"
 #include "Mockrkhrq.h"
+#include "Mockrkhsm.h"
+#include "Mockrkhtrc.h"
+#include "Mockrkhport.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -66,6 +69,8 @@
 TEST_GROUP(polymorphism);
 
 /* ---------------------------- Local variables ---------------------------- */
+static RKH_EVT_T event = {0, 0, 0};                                       
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
@@ -121,6 +126,7 @@ TEST_SETUP(polymorphism)
     /* Restore the default virtual table of RKH_SMA_T class */
     singleton->vptr = &rkhSmaVtbl;
 #endif
+    memset(rkh_sptbl, 0, sizeof(rkh_sptbl));
 }
 
 TEST_TEAR_DOWN(polymorphism)
@@ -151,11 +157,26 @@ TEST(polymorphism, callVirtualFunction)
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     const RKH_EVT_T *qs[1];
 
-    rkh_rq_init_Expect(&singleton->equeue, qs, 1, singleton);
+    rkh_rq_init_Ignore();   /* for RKH_SMA_ACTIVATE() */
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+    rkh_sm_init_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_FALSE);
+
+    rkh_enter_critical_Expect();
+    rkh_rq_put_fifo_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_enter_critical_Expect();
+    rkh_rq_put_lifo_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_FALSE);
+    rkh_exit_critical_Expect();
 
     RKH_SMA_ACTIVATE(singleton, qs, 1, 0, 0);
-    RKH_SMA_POST_FIFO(singleton, NULL, NULL);
-    RKH_SMA_POST_LIFO(singleton, NULL, NULL);
+    RKH_SMA_POST_FIFO(singleton, &event, NULL);
+    RKH_SMA_POST_LIFO(singleton, &event, NULL);
 #endif
 }
 
@@ -178,6 +199,8 @@ TEST(polymorphism, setVirtualTable)
 TEST(polymorphism, runtimeSingletonAOCtor)
 {
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Expect(&singleton->sm);
+
     Singleton_ctor(8);
     TEST_ASSERT_EQUAL(8, Singleton_getFoo());
 
@@ -189,6 +212,9 @@ TEST(polymorphism, runtimeSingletonAOCtor)
 TEST(polymorphism, runtimeMultipleAOCtorWithVtblForObj)
 {
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Ignore();
+    rkh_sm_ctor_Ignore();
+
     Multiple_ctor(multA, 2, Multiple_postFifoA);
     Multiple_ctor(multB, 4, Multiple_postFifoB);
 
