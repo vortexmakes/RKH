@@ -4672,11 +4672,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copybrief RKH_CFG_TRC_SM_INIT_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_TRC_SMA_DCH_EN </TD>
+		<TD align="left"> #RKH_CFG_TRC_SM_DCH_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_TRC_SMA_DCH_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_TRC_SM_DCH_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TRC_SM_CLRH_EN </TD>

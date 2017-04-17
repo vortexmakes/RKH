@@ -702,6 +702,17 @@ TEST(trace_args, InsertFwkRecallRecord)
     checkTrailer();
 }
 
+TEST(trace_args, InsertSmDchRecord)
+{
+    RKH_TR_SM_DCH(&receiver, &event, &state);
+
+    checkHeader(RKH_TE_SM_DCH, 0, 0x1234567);
+    checkObjectAddress(&receiver);
+    checkU8Value(event.e);
+    checkObjectAddress(&state);
+    checkTrailer();
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

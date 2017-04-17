@@ -561,11 +561,11 @@ extern "C" {
 #define RKH_CFG_TRC_SM_INIT_EN          RKH_ENABLED
 
 /**
- *  If the #RKH_CFG_TRC_SMA_DCH_EN and #RKH_CFG_TRC_SM_EN are set to 1 then
+ *  If the #RKH_CFG_TRC_SM_DCH_EN and #RKH_CFG_TRC_SM_EN are set to 1 then
  *  RKH will include the "start a state machine" trace record.
  */
 
-#define RKH_CFG_TRC_SMA_DCH_EN          RKH_ENABLED
+#define RKH_CFG_TRC_SM_DCH_EN          RKH_ENABLED
 
 /**
  *  If the #RKH_CFG_TRC_SM_CLRH_EN and #RKH_CFG_TRC_SM_EN are set to 1 then

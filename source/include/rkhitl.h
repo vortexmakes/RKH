@@ -1053,14 +1053,14 @@ extern "C" {
     #error "                                    [     ||  RKH_DISABLED]       "
     #endif
 
-    #ifndef RKH_CFG_TRC_SMA_DCH_EN
-    #error "RKH_CFG_TRC_SMA_DCH_EN                not #define'd in 'rkhcfg.h'"
+    #ifndef RKH_CFG_TRC_SM_DCH_EN
+    #error "RKH_CFG_TRC_SM_DCH_EN                not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]        "
     #error "                                    [     || RKH_DISABLED]        "
 
-    #elif   ((RKH_CFG_TRC_SMA_DCH_EN != RKH_ENABLED) && \
-    (RKH_CFG_TRC_SMA_DCH_EN != RKH_DISABLED))
-    #error "RKH_CFG_TRC_SMA_DCH_EN          illegally #define'd in 'rkhcfg.h'"
+    #elif   ((RKH_CFG_TRC_SM_DCH_EN != RKH_ENABLED) && \
+    (RKH_CFG_TRC_SM_DCH_EN != RKH_DISABLED))
+    #error "RKH_CFG_TRC_SM_DCH_EN          illegally #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be  RKH_ENABLED ]       "
     #error "                                    [     ||  RKH_DISABLED]       "
     #endif

@@ -2032,7 +2032,7 @@
              *  \param[in] evt_     Dispatched event
              *  \param[in] state_   Current state
              */
-            #if RKH_CFG_TRC_SMA_DCH_EN == RKH_ENABLED
+            #if RKH_CFG_TRC_SM_DCH_EN == RKH_ENABLED
                 #define RKH_TR_SM_DCH(actObj_, evt_, state_) \
                     RKH_TRC_BEGIN(RKH_TE_SM_DCH, \
                                   RKH_SMA_ACCESS_CONST(actObj_, prio), \
