@@ -585,7 +585,7 @@
  */
 #define RKH_MP_TTBL_RANGE           1
 #define RKH_RQ_TTBL_RANGE           1
-#define RKH_SMA_TTBL_RANGE          1
+#define RKH_SMA_TTBL_RANGE          2
 #define RKH_SM_TTBL_RANGE           3
 #define RKH_TIM_TTBL_RANGE          1
 #define RKH_FWK_TTBL_RANGE          3
@@ -763,9 +763,11 @@
 #define RKH_TE_SMA_REG          (RKH_TE_SMA_LIFO + 1)
 /** \copybrief RKH_TR_SMA_UNREG */
 #define RKH_TE_SMA_UNREG        (RKH_TE_SMA_REG + 1)
-/** \copybrief RKH_TR_SMA_DCH */
-#define RKH_TE_SMA_DCH          (RKH_TE_SMA_UNREG + 1)
-#define RKH_SMA_END             RKH_TE_SMA_DCH
+/** \copybrief RKH_TR_FWK_DEFER */
+#define RKH_TE_SMA_DEFER        (RKH_TE_SMA_UNREG + 1)
+/** \copybrief RKH_TR_FWK_RCALL */
+#define RKH_TE_SMA_RCALL        (RKH_TE_SMA_DEFER + 1)
+#define RKH_SMA_END             RKH_TE_SMA_RCALL
 
 /* --- State machine events (SM group) ------------------------------------- */
 /** \copybrief RKH_TR_SM_INIT */
@@ -802,7 +804,9 @@
 #define RKH_TE_SM_EX_TSEG       (RKH_TE_SM_EX_HLEVEL + 1)
 /** \copybrief RKH_TR_SM_EXE_ACT */
 #define RKH_TE_SM_EXE_ACT       (RKH_TE_SM_EX_TSEG + 1)
-#define RKH_SM_END              RKH_TE_SM_EXE_ACT
+/** \copybrief RKH_TR_SM_DCH */
+#define RKH_TE_SM_DCH           (RKH_TE_SM_EXE_ACT + 1)
+#define RKH_SM_END              RKH_TE_SM_DCH
 
 /* --- Timer events (TMR group) -------------------------------------------- */
 /** \copybrief RKH_TR_TMR_INIT */
@@ -830,12 +834,8 @@
 #define RKH_TE_FWK_GC           (RKH_TE_FWK_AE + 1)
 /** \copybrief RKH_TR_FWK_GCR */
 #define RKH_TE_FWK_GCR          (RKH_TE_FWK_GC + 1)
-/** \copybrief RKH_TR_FWK_DEFER */
-#define RKH_TE_FWK_DEFER        (RKH_TE_FWK_GCR + 1)
-/** \copybrief RKH_TR_FWK_RCALL */
-#define RKH_TE_FWK_RCALL        (RKH_TE_FWK_DEFER + 1)
 /** \copybrief RKH_TR_FWK_OBJ */
-#define RKH_TE_FWK_OBJ          (RKH_TE_FWK_RCALL + 1)
+#define RKH_TE_FWK_OBJ          (RKH_TE_FWK_GCR + 1)
 /** \copybrief RKH_TR_FWK_SIG */
 #define RKH_TE_FWK_SIG          (RKH_TE_FWK_OBJ + 1)
 /** \copybrief RKH_TR_FWK_FUN */
@@ -2033,8 +2033,8 @@
              *  \param[in] state_   Current state
              */
             #if RKH_CFG_TRC_SMA_DCH_EN == RKH_ENABLED
-                #define RKH_TR_SMA_DCH(actObj_, evt_, state_) \
-                    RKH_TRC_BEGIN(RKH_TE_SMA_DCH, \
+                #define RKH_TR_SM_DCH(actObj_, evt_, state_) \
+                    RKH_TRC_BEGIN(RKH_TE_SM_DCH, \
                                   RKH_SMA_ACCESS_CONST(actObj_, prio), \
                                   (evt_)->e) \
                     RKH_TRC_SYM(actObj_); \
@@ -2042,7 +2042,7 @@
                     RKH_TRC_SYM(state_); \
                     RKH_TRC_END()
             #else
-                #define RKH_TR_SMA_DCH(actObj_, evt_, state_)   (void)0
+                #define RKH_TR_SM_DCH(actObj_, evt_, state_)   (void)0
             #endif
 
             /**
@@ -2375,7 +2375,7 @@
         #else
             #define RKH_TR_SM_INIT(actObj_, initState_)     (void)0
             #define RKH_TR_SM_CLRH(actObj_, history_)       (void)0
-            #define RKH_TR_SMA_DCH(actObj_, evt_, state_)   (void)0
+            #define RKH_TR_SM_DCH(actObj_, evt_, state_)   (void)0
             #define RKH_TR_SM_TRN(actObj_, sourceState_, targetState_) \
                 (void)0
             #define RKH_TR_SM_STATE(actObj_, state_)        (void)0
@@ -2650,13 +2650,13 @@
              *
              *  \description    Defer an event
              *  \trcGroup       RKH_TG_FWK
-             *  \trcEvent       RKH_TE_FWK_DEFER
+             *  \trcEvent       RKH_TE_SMA_DEFER
              *
              *  \param[in] queue_    Target queue to store deferred event
              *  \param[in] evt_   Event
              */
             #define RKH_TR_FWK_DEFER(queue_, evt_) \
-                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_DEFER) \
+                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_SMA_DEFER) \
                     RKH_TRC_SYM(queue_); \
                     RKH_TRC_SIG((evt_)->e); \
                 RKH_TRC_END_NOCRIT()
@@ -2667,13 +2667,13 @@
              *
              *  \description    Recall an event
              *  \trcGroup       RKH_TG_FWK
-             *  \trcEvent       RKH_TE_FWK_RCALL
+             *  \trcEvent       RKH_TE_SMA_RCALL
              *
              *  \param[in] actObj_   Active object
              *  \param[in] evt_   Event
              */
             #define RKH_TR_FWK_RCALL(actObj_, evt_) \
-                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_RCALL) \
+                RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_SMA_RCALL) \
                     RKH_TRC_SYM(actObj_); \
                     RKH_TRC_SIG((evt_)->e); \
                 RKH_TRC_END_NOCRIT()
@@ -3367,7 +3367,7 @@
         /* --- State machine (SM) ------------------------------------------ */
         #define RKH_TR_SM_INIT(ao, ist)                   (void)0
         #define RKH_TR_SM_CLRH(ao, h)                     (void)0
-        #define RKH_TR_SMA_DCH(ao, ev, st)                (void)0
+        #define RKH_TR_SM_DCH(ao, ev, st)                (void)0
         #define RKH_TR_SM_TRN(ao, sst, tst)               (void)0
         #define RKH_TR_SM_STATE(ao, st)                   (void)0
         #define RKH_TR_SM_ENSTATE(ao, st)                 (void)0

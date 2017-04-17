@@ -136,6 +136,8 @@ TEST_GROUP_RUNNER(trace_args)
 	RUN_TEST_CASE(trace_args, InsertFwkEpregRecord);
 	RUN_TEST_CASE(trace_args, InsertFwkStateRecord);
 	RUN_TEST_CASE(trace_args, InsertFwkPseudoStateRecord);
+	RUN_TEST_CASE(trace_args, InsertFwkDeferRecord);
+	RUN_TEST_CASE(trace_args, InsertFwkRecallRecord);
 }
 
 /* ------------------------------ End of file ------------------------------ */

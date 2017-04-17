@@ -609,7 +609,7 @@ TEST(trace_args, InsertSmaPostLifoRecord)
                     nMin);
 
     checkHeader(RKH_TE_SMA_LIFO, 0, 0x1234567);
-    checkObjectAddress(&receiver);
+    checkObjectAddress(	&receiver);
     checkU8Value(event.e);
     checkObjectAddress(&sender);
     checkU8Value(event.pool);
@@ -679,6 +679,26 @@ TEST(trace_args, InsertFwkPseudoStateRecord)
     checkObjectAddress(&receiver);
     checkObjectAddress(&pseudoState);
     checkString(pseudoState.base.name);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkDeferRecord)
+{
+    RKH_TR_FWK_DEFER(&receiver.equeue, &event);
+
+    checkHeader(RKH_TE_SMA_DEFER, 0, 0x1234567);
+    checkObjectAddress(&receiver.equeue);
+    checkU8Value(event.e);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertFwkRecallRecord)
+{
+    RKH_TR_FWK_RCALL(&receiver, &event);
+
+    checkHeader(RKH_TE_SMA_RCALL, 0, 0x1234567);
+    checkObjectAddress(&receiver);
+    checkU8Value(event.e);
     checkTrailer();
 }
 

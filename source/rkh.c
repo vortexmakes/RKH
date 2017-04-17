@@ -490,9 +490,9 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     FIND_TRN(me, pe, tr, CBSC(stn)->trtbl, in);
 #endif
 
-    RKH_TR_SMA_DCH(me,                         /* this state machine object */
-                   pe,                                              /* event */
-                   cs);                                     /* current state */
+    RKH_TR_SM_DCH(me,                           /* this state machine object */
+                  pe,                                               /* event */
+                  cs);                                      /* current state */
     if (IS_NOT_FOUND_TRN(tr))                           /* transition taken? */
     {
         RKH_TR_SM_EVT_NFOUND(me,               /* this state machine object */
