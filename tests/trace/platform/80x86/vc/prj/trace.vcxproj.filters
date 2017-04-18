@@ -4,9 +4,6 @@
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
-      <Filter>rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test_trace.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -31,17 +28,17 @@
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhport.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
-      <Filter>rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkh.c">
       <Filter>test\stub</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="rkh">
-      <UniqueIdentifier>{e260d468-def4-4910-9b48-5afbd246b8f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="test">
       <UniqueIdentifier>{15f2147f-34d1-42e9-9bf7-a4ac79fce62d}</UniqueIdentifier>
     </Filter>
@@ -54,13 +51,8 @@
     <Filter Include="test\cmock">
       <UniqueIdentifier>{d41ba6eb-1e92-420e-aee1-6d89c17941d8}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\cmock\cmock.h">
-      <Filter>test\cmock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\cmock\cmock_internals.h">
-      <Filter>test\cmock</Filter>
-    </ClInclude>
+    <Filter Include="rkh">
+      <UniqueIdentifier>{25fb2efa-c785-4a38-8e6f-525408d72a35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
