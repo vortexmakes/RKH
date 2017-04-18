@@ -54,7 +54,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkh.h"
+#include "rkhtrc.h"
 #include "Mockrkh.h"
 #include "Mockrkhport.h"
 
@@ -72,7 +72,6 @@ static RKH_SMA_T sender;
 static RKH_EVT_T event;
 static RKH_ST_T state = {{RKH_BASIC, "state"}};
 static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
-
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */

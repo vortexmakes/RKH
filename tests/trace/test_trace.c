@@ -53,14 +53,12 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
 #include "unity_fixture.h"
-#include "rkh.h"
+#include "rkhtrc.h"
 #include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
-
 #define SIZEOF_BIT_TBL      RKH_TRC_MAX_EVENTS_IN_BYTES
 #define MAX_NUM_BITS        (SIZEOF_BIT_TBL * 8)
 #define FILTER_ON_BYTE      0
@@ -68,20 +66,20 @@
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-
 TEST_GROUP(trace_filter);
 TEST_GROUP(trace);
 
 /* ---------------------------- Local variables ---------------------------- */
-
 static RKH_FilterTbl filStatus;
 static rui8_t bitTbl[SIZEOF_BIT_TBL];
+static const rui8_t maptbl[] =
+{
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
+};
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-
-static
-void
+static void
 setBitTbl(rui8_t *bt, rui16_t bit, rui8_t value)
 {
     rui8_t bitPos;
@@ -95,13 +93,12 @@ setBitTbl(rui8_t *bt, rui16_t bit, rui8_t value)
     ix = (rui16_t)(bit >> 3);
 
     if (value == 1)
-        *(bt + ix) |= rkh_maptbl[bitPos];
+        *(bt + ix) |= maptbl[bitPos];
     else
-        *(bt + ix) &= ~rkh_maptbl[bitPos];
+        *(bt + ix) &= ~maptbl[bitPos];
 }
 
-static
-ruint
+static ruint
 getBitTbl(rui8_t *bt, rui16_t bit)
 {
     rui8_t bitPos;
@@ -114,20 +111,18 @@ getBitTbl(rui8_t *bt, rui16_t bit)
     bitPos = (rui8_t)(bit & 0x07);
     ix = (rui16_t)(bit >> 3);
 
-    bitVal = (*(bt + ix) & rkh_maptbl[bitPos]) != 0;
+    bitVal = (*(bt + ix) & maptbl[bitPos]) != 0;
     return bitVal;
 }
 
-static
-void
+static void
 setAllBitTbl(rui8_t *bt, ruint value, ruint size)
 {
     TEST_ASSERT_TRUE(bt != (rui8_t *)0);
     memset(bitTbl, value, size);
 }
 
-static
-rbool_t
+static rbool_t
 checkBitTblAreOn(rui8_t *bt, rui16_t size)
 {
     rui16_t i;
@@ -145,8 +140,7 @@ checkBitTblAreOn(rui8_t *bt, rui16_t size)
     return res;
 }
 
-static
-void
+static void
 setBlockBit(rui8_t *bt, ruint value, ruint to)
 {
     ruint bitPos;
@@ -158,8 +152,7 @@ setBlockBit(rui8_t *bt, ruint value, ruint to)
 }
 
 /* It could be added to rkhtrc module */
-static
-void
+static void
 rkh_trc_filterAllOn(rui8_t *ft, RKH_TE_ID_T ftSize)
 {
     RKH_TE_ID_T cnt;
@@ -186,9 +179,7 @@ rkh_trc_filter_init(void)
 }
 
 /* ---------------------------- Global functions --------------------------- */
-
 /* =========================== Filter test group =========================== */
-
 TEST_SETUP(trace_filter)
 {
 }
@@ -300,7 +291,6 @@ TEST(trace_filter, resetBitIndexX)
 /** @} doxygen end group definition */
 
 /* ============================ Trace test group =========================== */
-
 TEST_SETUP(trace)
 {
     rkh_trc_filter_get(&filStatus);
