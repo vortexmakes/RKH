@@ -187,7 +187,7 @@ TEST(transition, simpleToSimpleAtEqualLevel)
     setProfile(smTest, RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), 
                targetStates,
                entryStates, exitStates, RKH_STATE_CAST(&s1), 1,
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evA);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
 
@@ -220,7 +220,7 @@ TEST(transition, simpleToSimpleFromHighToLowLevel)
     setProfile(smTest, RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s21), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evB);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
 
@@ -253,7 +253,7 @@ TEST(transition, simpleToSimpleFromLowToHighLevel)
     setProfile(smTest, RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s21), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s0), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evB);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
 
@@ -287,7 +287,7 @@ TEST(transition, simpleToCompositeAtEqualLevel)
     setProfile(smTest, RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s21), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evC);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
 
@@ -325,7 +325,7 @@ TEST(transition, simpleToCompositeFromHighToLowLevel)
     setProfile(smTest, RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s2211), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evD);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
 
@@ -358,7 +358,7 @@ TEST(transition, simpleToCompositeFromLowToHighLevel)
     setProfile(smTest, RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s21), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s21), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evC);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
 
@@ -391,7 +391,7 @@ TEST(transition, compositeToSimpleAtEqualLevel)
     setProfile(smTest, RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s0), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evA);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
 
@@ -423,7 +423,7 @@ TEST(transition, compositeToSimpleFromHighToLowLevel)
     setProfile(smTest, RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s21), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evD);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
 
@@ -455,7 +455,7 @@ TEST(transition, loopSimpleStateOnTop)
     setProfile(smTest, RKH_STATE_CAST(&s1), RKH_STATE_CAST(&s1), 
                targetStates, 
                entryStates, exitStates, RKH_STATE_CAST(&s1), 1, 
-               TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               TRN_NOT_INTERNAL, INIT_STATE_MACHINE, &evA);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
 
@@ -486,7 +486,8 @@ TEST(transition, loopNestedSimpleState)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s31), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evD);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
 
@@ -518,7 +519,8 @@ TEST(transition, loopCompositeStateOnTop)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evA);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
 
@@ -554,7 +556,7 @@ TEST(transition, loopNestedCompositeState)
     setProfile(smTest, RKH_STATE_CAST(&s2211), RKH_STATE_CAST(&s22), 
                targetStates, entryStates, exitStates, 
                RKH_STATE_CAST(&s2211), 1, TRN_NOT_INTERNAL, 
-               INIT_STATE_MACHINE);
+               INIT_STATE_MACHINE, &evD);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
 
@@ -588,7 +590,8 @@ TEST(transition, compositeToSimpleFromLowToHighLevel)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s0), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s0), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evB);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
 
@@ -622,7 +625,8 @@ TEST(transition, compositeToCompositeAtEqualLevel)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s21), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s21), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evB);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
 
@@ -660,7 +664,8 @@ TEST(transition, compositeToCompositeFromHighToLowLevel)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s2211), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s2211), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE,
+               &evC);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
 
@@ -696,7 +701,8 @@ TEST(transition, compositeToCompositeFromLowToHighLevel)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s221), RKH_STATE_CAST(&s22), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evC);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
 
@@ -725,7 +731,7 @@ TEST(transition, internalInSimpleState)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     setProfile(smTest, RKH_STATE_CAST(&s1), RKH_STATE_CAST(&s1), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s1), 1, TRN_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s1), 1, TRN_INTERNAL, INIT_STATE_MACHINE, &evB);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
 
@@ -754,7 +760,8 @@ TEST(transition, internalInCompositeState)
 
     setProfile(smTest, RKH_STATE_CAST(&s31), RKH_STATE_CAST(&s3), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s31), 1, TRN_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s31), 1, TRN_INTERNAL, INIT_STATE_MACHINE, 
+               &evE);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
 
@@ -770,6 +777,7 @@ TEST(transition, fails_EventNotFound)
 
 	sm_init_expect(RKH_STATE_CAST(&waiting));
 	sm_enstate_expect(RKH_STATE_CAST(&waiting));
+    sm_dch_expect(evE.e, RKH_STATE_CAST(&s1));
 	sm_evtNotFound_expect(E);
 
     rkh_sm_init((RKH_SM_T *)smTest);
@@ -787,6 +795,7 @@ TEST(transition, fails_GuardFalse)
 	sm_init_expect(RKH_STATE_CAST(&waiting));
 	sm_enstate_expect(RKH_STATE_CAST(&waiting));
 	sm_grdFalse_expect();
+    sm_dch_expect(evC.e, RKH_STATE_CAST(&s1));
     sm_evtNotFound_expect(C);
 
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
@@ -807,6 +816,7 @@ TEST(transition, fails_ExceededHierarchicalLevel)
 
 	sm_init_expect(RKH_STATE_CAST(&waiting));
 	sm_enstate_expect(RKH_STATE_CAST(&waiting));
+    sm_dch_expect(evE.e, RKH_STATE_CAST(&s0));
 	sm_trn_expect(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s22211));
     sm_tsState_expect(RKH_STATE_CAST(&s22211));
 	sm_exHLevel_expect();
@@ -835,6 +845,7 @@ TEST(transition, multipleEnabledTrn_FiringFirstTrueGuard)
 	sm_trn_ignore();
 	sm_evtProc_ignore();
     sm_grdFalse_expect();
+    sm_dch_expect(evA.e, RKH_STATE_CAST(&s4));
 
     rkh_sm_init((RKH_SM_T *)smTest);
     setState(smTest, RKH_STATE_CAST(&s4));
@@ -862,6 +873,7 @@ TEST(transition, multipleEnabledTrn_FiringFirstEmptyGuard)
 	sm_trn_ignore();
     sm_nenex_ignore();
     sm_state_ignore();
+    sm_dch_expect(evB.e, RKH_STATE_CAST(&s4));
     sm_tsState_expect(RKH_STATE_CAST(&s4));
 
     rkh_sm_init((RKH_SM_T *)smTest);
@@ -897,7 +909,8 @@ TEST(transition, defaultTrnWithAssociatedEffect)
 
     setProfile(smTest, RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s0), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s31), 1, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evF);
 
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evF);
 
@@ -929,7 +942,8 @@ TEST(transition, generatedCompletionEventBySimpleState)
 
     setProfile(smTest, RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s2), 
                targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&s5), 0, TRN_NOT_INTERNAL, INIT_STATE_MACHINE);
+               RKH_STATE_CAST(&s5), 0, TRN_NOT_INTERNAL, INIT_STATE_MACHINE, 
+               &evE);
 
     /* Expectations for completion transition */
     targetStates[0] = RKH_STATE_CAST(&s4);
@@ -945,7 +959,7 @@ TEST(transition, generatedCompletionEventBySimpleState)
     setProfile(smTest, NULL, RKH_STATE_CAST(&s5), 
                targetStates, entryStates, exitStates, 
                RKH_STATE_CAST(&s4), 1, TRN_NOT_INTERNAL, 
-               NO_INIT_STATE_MACHINE);
+               NO_INIT_STATE_MACHINE, NULL);
 
     /* Exercices */
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
@@ -977,7 +991,7 @@ TEST(transition, generatedCompletionEventByFinalState)
     setProfile(smTest, RKH_STATE_CAST(&s21), RKH_STATE_CAST(&s21), 
                targetStates, entryStates, exitStates, 
                RKH_STATE_CAST(&s2Final), 0, TRN_NOT_INTERNAL, 
-               INIT_STATE_MACHINE);
+               INIT_STATE_MACHINE, &evF);
 
     /* Expectations for completion transition */
     targetStates[0] = RKH_STATE_CAST(&s4);
@@ -996,7 +1010,7 @@ TEST(transition, generatedCompletionEventByFinalState)
     setProfile(smTest, NULL, RKH_STATE_CAST(&s2), 
                targetStates, entryStates, exitStates, 
                RKH_STATE_CAST(&s4), 1, TRN_NOT_INTERNAL, 
-               NO_INIT_STATE_MACHINE);
+               NO_INIT_STATE_MACHINE, NULL);
 
     /* Exercices */
     rkh_sm_dispatch((RKH_SM_T *)smTest, &evF);

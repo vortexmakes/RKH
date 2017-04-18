@@ -117,7 +117,7 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
            const RKH_ST_T *sourceState, const RKH_ST_T **targetStates, 
            const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
            const RKH_ST_T *mainTargetState, int nExecEffectActions, 
-           int kindOfTrn, int initStateMachine)
+           int kindOfTrn, int initStateMachine, const RKH_EVT_T *event)
 {
     int nEntryStates, nExitStates;
 
@@ -125,6 +125,11 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
     {
         sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
         sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    }
+
+    if (event != NULL)
+    {
+        sm_dch_expect(((RKH_EVT_T *)event)->e, RKH_STATE_CAST(currentState));
     }
 	sm_trn_expect(RKH_STATE_CAST(sourceState), RKH_STATE_CAST(*targetStates));
 

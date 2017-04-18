@@ -175,7 +175,7 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s11), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s11), 0, TRN_NOT_INTERNAL, 1, &evB);
 
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evB);
 
@@ -204,7 +204,7 @@ TEST(pseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1, &evB);
 
     setHistory(&smPT_s1Hist, RKH_STATE_CAST(&smPT_s12));
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evB);
@@ -234,7 +234,7 @@ TEST(pseudostate, exitFromCompositeWithLoadedShallowHistory)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s121), 
                RKH_STATE_CAST(&smPT_s1), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s0), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s0), 0, TRN_NOT_INTERNAL, 1, &evA);
 
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evA);
     state = getHistory(&smPT_s1Hist);
@@ -265,7 +265,7 @@ TEST(pseudostate, trnToEmptyDeepHistoryWithoutDefaultTrn)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1, &evC);
 
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evC);
 
@@ -294,7 +294,7 @@ TEST(pseudostate, trnToLoadedDeepHistoryWithoutDefaultTrn)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s122), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s122), 0, TRN_NOT_INTERNAL, 1, &evC);
 
     setHistory(&smPT_s12Hist, RKH_STATE_CAST(&smPT_s122));
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evC);
@@ -324,7 +324,7 @@ TEST(pseudostate, exitFromCompositeWithLoadedDeepHistory)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s122), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s122), 0, TRN_NOT_INTERNAL, 1, &evD);
 
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evD);
     state = getHistory(&smPT_s12Hist);
@@ -354,7 +354,7 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithDefaultTrn)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s22), 1, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s22), 1, TRN_NOT_INTERNAL, 1, &evE);
 
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evE);
 
@@ -382,7 +382,7 @@ TEST(pseudostate, trnToLoadedShallowHistoryWithDefaultTrn)
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s21), 0, TRN_NOT_INTERNAL, 1);
+               RKH_STATE_CAST(&smPT_s21), 0, TRN_NOT_INTERNAL, 1, &evE);
 
     setHistory(&smPT_s2Hist, RKH_STATE_CAST(&smPT_s21));
     rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evE);

@@ -236,6 +236,12 @@ extern "C" {
 #define sm_exeAct_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_EXE_ACT)
 
+/* RKH_TE_SM_DCH */
+#define sm_dch_expect(signal, state) \
+    unitrazer_sm_dch_expect(__LINE__, signal, state)
+
+#define sm_dch_expectAnyArgs() \
+    unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_DCH)
 /* ============================= Ignore macros ============================= */
 
 /* RKH_TE_SM_INIT */
@@ -332,6 +338,16 @@ extern "C" {
 
 #define sm_exeAct_ignoreArg_action() \
     unitrazer_ignoreArg(__LINE__, RKH_TE_SM_EXE_ACT, UT_ARGNO_3)
+
+/* RKH_TE_SM_DCH */
+#define sm_dch_ignore() \
+    unitrazer_ignore(__LINE__, RKH_TE_SM_DCH)
+
+#define sm_dch_ignoreArg_signal() \
+    unitrazer_ignoreArg(__LINE__, RKH_TE_SM_DCH, UT_ARGNO_1)
+
+#define sm_dch_ignoreArg_state() \
+    unitrazer_ignoreArg(__LINE__, RKH_TE_SM_DCH, UT_ARGNO_2)
 
 /* -------------------------------- Ignore Groups--------------------------- */
 
@@ -498,6 +514,22 @@ void unitrazer_expectAnyArgs(UNITY_LINE_TYPE cmockLine, rui8_t trcEvt);
  */
 void unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
                                 rui8_t actType, RKH_ST_T *state, void * action);
+
+/**
+ *  \brief
+ *  Expect for RKH_TE_SM_DCH trace event.
+ *
+ *  \param[in] cmockLine    line number from which this function is called
+ *  \param[in] signal       argument of trace event with signal
+ *  \param[in] state        action execution context
+ *
+ *  \note
+ *  This function is internal to RKH and the user application should not call 
+ *  it. Instead, use the corresponding macro for the trace event to expect.
+ */
+void unitrazer_sm_dch_expect(UNITY_LINE_TYPE cmockLine, RKH_SIG_T signal,
+                                RKH_ST_T *state);
+
 
 /**
  *  \brief
