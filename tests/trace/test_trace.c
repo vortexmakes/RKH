@@ -182,10 +182,13 @@ rkh_trc_filter_init(void)
 /* =========================== Filter test group =========================== */
 TEST_SETUP(trace_filter)
 {
+    Mockrkhassert_Init();
 }
 
 TEST_TEAR_DOWN(trace_filter)
 {
+    Mockrkhassert_Verify();
+    Mockrkhassert_Destroy();
 }
 
 /**

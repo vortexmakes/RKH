@@ -81,9 +81,9 @@ main(int argc, char *argv[])
     int nArgs;
 
     args[0] = argv[0];
-#if 0
-    args[1] = "-g";
-    args[2] = "trace_args";
+#if 1
+    args[1] = "-r";
+    args[2] = "90";
     nArgs = 3;
 #else
     nArgs = 1;
