@@ -74,7 +74,7 @@ extern "C" {
  *  \brief
  *  Establish the preconditions to the tests.
  */
-#define sm_init() unitrazer_init()
+#define sm_init() unitrazer_start()
 
 /**
  *  \brief
@@ -246,6 +246,7 @@ extern "C" {
 
 #define sm_dch_expectAnyArgs() \
     unitrazer_expectAnyArgs(__LINE__, RKH_TE_SM_DCH)
+
 /* ============================= Ignore macros ============================= */
 
 /* RKH_TE_SM_INIT */
@@ -406,6 +407,7 @@ UtrzProcessOut * unitrazer_getLastOut(void);
 void unitrazer_resetOut(void);
 void unitrazer_log_start(void);
 
+
 /**
  *  \brief
  *  Establish the preconditions to the tests.
@@ -534,7 +536,6 @@ void unitrazer_sm_exeAct_expect(UNITY_LINE_TYPE cmockLine,
  */
 void unitrazer_sm_dch_expect(UNITY_LINE_TYPE cmockLine, RKH_SIG_T signal,
                                 RKH_ST_T *state);
-
 
 /**
  *  \brief

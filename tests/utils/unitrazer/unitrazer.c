@@ -144,11 +144,13 @@ void unitrazer_sm_dch_expect(UNITY_LINE_TYPE cmockLine, RKH_SIG_T signal,
     RKH_TRC_END_WOFIL();
 }
 
+#ifdef __UNITRAZER_LIB__
 void
 unitrazer_log_start(void)
 {
 	start_log("unitrazer.log");
 }
+#endif
 
 /* ============================ Init function ============================== */
 
