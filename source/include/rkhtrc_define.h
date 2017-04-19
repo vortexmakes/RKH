@@ -213,7 +213,7 @@ extern "C" {
  */
 #define RKH_MP_TTBL_RANGE           1
 #define RKH_RQ_TTBL_RANGE           1
-#define RKH_SMA_TTBL_RANGE          1
+#define RKH_SMA_TTBL_RANGE          2
 #define RKH_SM_TTBL_RANGE           3
 #define RKH_TIM_TTBL_RANGE          1
 #define RKH_FWK_TTBL_RANGE          3
@@ -370,9 +370,11 @@ extern "C" {
 #define RKH_TE_SMA_REG          (RKH_TE_SMA_LIFO + 1)
 /** \copybrief RKH_TR_SMA_UNREG */
 #define RKH_TE_SMA_UNREG        (RKH_TE_SMA_REG + 1)
-/** \copybrief RKH_TR_SM_DCH */
-#define RKH_TE_SMA_DCH          (RKH_TE_SMA_UNREG + 1)
-#define RKH_SMA_END             RKH_TE_SMA_DCH
+/** \copybrief RKH_TR_FWK_DEFER */
+#define RKH_TE_SMA_DEFER        (RKH_TE_SMA_UNREG + 1)
+/** \copybrief RKH_TR_FWK_RCALL */
+#define RKH_TE_SMA_RCALL        (RKH_TE_SMA_DEFER + 1)
+#define RKH_SMA_END             RKH_TE_SMA_RCALL
 
 /* --- State machine events (SM group) ------------------------------------- */
 /** \copybrief RKH_TR_SM_INIT */
@@ -409,7 +411,9 @@ extern "C" {
 #define RKH_TE_SM_EX_TSEG       (RKH_TE_SM_EX_HLEVEL + 1)
 /** \copybrief RKH_TR_SM_EXE_ACT */
 #define RKH_TE_SM_EXE_ACT       (RKH_TE_SM_EX_TSEG + 1)
-#define RKH_SM_END              RKH_TE_SM_EXE_ACT
+/** \copybrief RKH_TR_SM_DCH */
+#define RKH_TE_SM_DCH           (RKH_TE_SM_EXE_ACT + 1)
+#define RKH_SM_END              RKH_TE_SM_DCH
 
 /* --- Timer events (TMR group) -------------------------------------------- */
 /** \copybrief RKH_TR_TMR_INIT */
@@ -437,12 +441,8 @@ extern "C" {
 #define RKH_TE_FWK_GC           (RKH_TE_FWK_AE + 1)
 /** \copybrief RKH_TR_FWK_GCR */
 #define RKH_TE_FWK_GCR          (RKH_TE_FWK_GC + 1)
-/** \copybrief RKH_TR_SMA_DEFER */
-#define RKH_TE_FWK_DEFER        (RKH_TE_FWK_GCR + 1)
-/** \copybrief RKH_TR_SMA_RCALL */
-#define RKH_TE_FWK_RCALL        (RKH_TE_FWK_DEFER + 1)
 /** \copybrief RKH_TR_FWK_OBJ */
-#define RKH_TE_FWK_OBJ          (RKH_TE_FWK_RCALL + 1)
+#define RKH_TE_FWK_OBJ          (RKH_TE_FWK_GCR + 1)
 /** \copybrief RKH_TR_FWK_SIG */
 #define RKH_TE_FWK_SIG          (RKH_TE_FWK_OBJ + 1)
 /** \copybrief RKH_TR_FWK_FUN */

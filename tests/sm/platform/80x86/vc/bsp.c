@@ -53,6 +53,7 @@
 #include "unity.h"
 #include "bsp.h"
 #include "unitrazer.h"
+#include "tzparse.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
