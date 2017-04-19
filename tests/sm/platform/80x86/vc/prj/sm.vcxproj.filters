@@ -94,9 +94,6 @@
     <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h">
       <Filter>Source Files\tests\unity</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h">
-      <Filter>Source Files\tests\utils\unitrazer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\cmock\cmock.h">
       <Filter>Source Files\tests\cmock</Filter>
     </ClInclude>
@@ -112,14 +109,20 @@
     <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkht.h">
       <Filter>Source Files\rkh\port</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrzlib.h">
-      <Filter>Source Files\tests\utils\unitrazer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\unity\unity.h">
       <Filter>Source Files\tests\unity</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\unity\unity_internals.h">
       <Filter>Source Files\tests\unity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrzlib.h">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +192,6 @@
     <ClCompile Include="..\bsp.c">
       <Filter>Source Files\tests\utils\bsp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
-      <Filter>Source Files\tests\utils\unitrazer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
@@ -206,6 +206,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c">
       <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

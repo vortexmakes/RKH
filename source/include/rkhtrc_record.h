@@ -471,7 +471,7 @@ extern "C" {
          *  \param[in] evt_   Event
          */
         #define RKH_TR_SMA_DEFER(queue_, evt_) \
-            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_DEFER) \
+            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_SMA_DEFER) \
                 RKH_TRC_SYM(queue_); \
                 RKH_TRC_SIG((evt_)->e); \
             RKH_TRC_END_NOCRIT()
@@ -488,7 +488,7 @@ extern "C" {
          *  \param[in] evt_   Event
          */
         #define RKH_TR_SMA_RCALL(actObj_, evt_) \
-            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_FWK_RCALL) \
+            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_SMA_RCALL) \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_SIG((evt_)->e); \
             RKH_TRC_END_NOCRIT()
@@ -592,7 +592,7 @@ extern "C" {
          */
         #if RKH_CFG_TRC_SM_DCH_EN == RKH_ENABLED
             #define RKH_TR_SM_DCH(actObj_, evt_, state_) \
-                RKH_TRC_BEGIN(RKH_TE_SMA_DCH, \
+                RKH_TRC_BEGIN(RKH_TE_SM_DCH, \
                               RKH_SMA_ACCESS_CONST(actObj_, prio), \
                               (evt_)->e) \
                 RKH_TRC_SYM(actObj_); \

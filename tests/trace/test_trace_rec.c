@@ -183,10 +183,16 @@ checkU32Value(rui32_t value)
 TEST_SETUP(trace_stream)
 {
     rkh_trc_init();
+    Mockrkh_Init();
+    Mockrkhport_Init();
 }
 
 TEST_TEAR_DOWN(trace_stream)
 {
+    Mockrkh_Verify();
+    Mockrkhport_Verify();
+    Mockrkh_Destroy();
+    Mockrkhport_Destroy();
 }
 
 /**
@@ -341,6 +347,8 @@ TEST_SETUP(trace_args)
     RKH_FILTER_OFF_EVENT(RKH_TRC_ALL_EVENTS);
     RKH_FILTER_OFF_ALL_SMA();
     RKH_FILTER_OFF_ALL_SIGNALS();
+    Mockrkh_Init();
+    Mockrkhport_Init();
 }
 
 TEST_TEAR_DOWN(trace_args)
@@ -349,6 +357,10 @@ TEST_TEAR_DOWN(trace_args)
     event.e = 3;
     event.pool = 5;
     event.nref = 7;
+    Mockrkh_Verify();
+    Mockrkhport_Verify();
+    Mockrkh_Destroy();
+    Mockrkhport_Destroy();
 }
 
 /**

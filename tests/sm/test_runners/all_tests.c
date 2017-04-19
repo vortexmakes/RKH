@@ -77,8 +77,19 @@ runAllTests(void)
 int
 main(int argc, char *argv[])
 {
+    static char *args[8];
+    int nArgs;
+
+    args[0] = argv[0];
+#if 1
+    args[1] = "-r";
+    args[2] = "20";
+    nArgs = 3;
+#else
+    nArgs = 1;
+#endif
 	bsp_init(argc, argv);
-	UnityMain(argc, argv, runAllTests);
+	UnityMain(nArgs, args, runAllTests);
     getchar();
 }
 
