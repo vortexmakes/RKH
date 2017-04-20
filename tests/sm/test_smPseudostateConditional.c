@@ -170,6 +170,7 @@ TEST(pseudostateConditional, trnToChoiceWithTrueCondition)
     sm_enstate_expect(RKH_STATE_CAST(
         RKH_SMA_ACCESS_CONST(me, istate)));
     /* Expect first transition segment */
+	sm_dch_expect(evA.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
 	sm_ntrnact_expect(1, 1);
@@ -217,6 +218,7 @@ TEST(pseudostateConditional, trnToChoiceWithFalseCondition)
     sm_enstate_expect(RKH_STATE_CAST(
         RKH_SMA_ACCESS_CONST(me, istate)));
     /* Expect first transition segment */
+	sm_dch_expect(evB.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
 	sm_ntrnact_expect(1, 1);
@@ -257,6 +259,7 @@ TEST(pseudostateConditional, trnToChoiceWithoutElse)
     sm_enstate_expect(RKH_STATE_CAST(
         RKH_SMA_ACCESS_CONST(me, istate)));
     /* Expect first transition segment */
+	sm_dch_expect(evC.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice2));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice2));
 	sm_ntrnact_expect(0, 1);
@@ -287,6 +290,7 @@ TEST(pseudostateConditional, trnToChoiceReturnToSource)
     sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     /* Expect first transition segment */
+	sm_dch_expect(evD.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
 	sm_ntrnact_expect(0, 1);
@@ -334,6 +338,7 @@ TEST(pseudostateConditional, failsTrnSegmentsExceeded)
     sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     /* Expect first transition segment */
+	sm_dch_expect(evE.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice3));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice3));
 	sm_ntrnact_expect(1, 1);

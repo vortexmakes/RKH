@@ -106,6 +106,11 @@ extern "C" {
 #endif
 
 /**
+ */
+#define RKH_TRC_IS_RESERVED_SIG(sig) \
+    (sig == RKH_COMPLETION_EVENT) 
+    
+/**
  *  \brief
  *  Test the event signal filter condition.
  *
@@ -120,7 +125,8 @@ extern "C" {
  */
 #if RKH_CFG_TRC_RTFIL_SIGNAL_EN == RKH_ENABLED
     #define RKH_TRC_SIG_ISOFF(sig) \
-            && rkh_trc_symFil_isoff(&fsig, (RKH_TRC_FSLOT)(sig))
+            && (RKH_TRC_IS_RESERVED_SIG(sig) || \
+            rkh_trc_symFil_isoff(&fsig, (RKH_TRC_FSLOT)(sig)))
 #else
     #define RKH_TRC_SIG_ISOFF(sig)
 #endif
