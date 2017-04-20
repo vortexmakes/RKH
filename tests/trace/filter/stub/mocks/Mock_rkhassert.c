@@ -4,11 +4,7 @@
 #include <setjmp.h>
 #include "unity.h"
 #include "cmock.h"
-#include "Mockrkhassert.h"
-
-static const char* CMockString_file = "file";
-static const char* CMockString_line = "line";
-static const char* CMockString_rkh_assert = "rkh_assert";
+#include "Mock_rkhassert.h"
 
 typedef struct _CMOCK_rkh_assert_CALL_INSTANCE
 {
@@ -20,7 +16,7 @@ typedef struct _CMOCK_rkh_assert_CALL_INSTANCE
 
 } CMOCK_rkh_assert_CALL_INSTANCE;
 
-static struct MockrkhassertInstance
+static struct Mock_rkhassertInstance
 {
   int rkh_assert_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE rkh_assert_CallInstance;
@@ -28,21 +24,20 @@ static struct MockrkhassertInstance
 
 extern jmp_buf AbortFrame;
 
-void Mockrkhassert_Verify(void)
+void Mock_rkhassert_Verify(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   if (Mock.rkh_assert_IgnoreBool)
     Mock.rkh_assert_CallInstance = CMOCK_GUTS_NONE;
-  UNITY_SET_DETAIL(CMockString_rkh_assert);
-  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_assert_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_assert_CallInstance, cmock_line, "Function 'rkh_assert' called less times than expected.");
 }
 
-void Mockrkhassert_Init(void)
+void Mock_rkhassert_Init(void)
 {
-  Mockrkhassert_Destroy();
+  Mock_rkhassert_Destroy();
 }
 
-void Mockrkhassert_Destroy(void)
+void Mock_rkhassert_Destroy(void)
 {
   CMock_Guts_MemFreeAll();
   memset(&Mock, 0, sizeof(Mock));
@@ -51,28 +46,22 @@ void Mockrkhassert_Destroy(void)
 void rkh_assert(const char* const file, int line)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
-  CMOCK_rkh_assert_CALL_INSTANCE* cmock_call_instance;
-  UNITY_SET_DETAIL(CMockString_rkh_assert);
-  cmock_call_instance = (CMOCK_rkh_assert_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_assert_CallInstance);
+  CMOCK_rkh_assert_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_assert_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_assert_CallInstance);
   Mock.rkh_assert_CallInstance = CMock_Guts_MemNext(Mock.rkh_assert_CallInstance);
   if (Mock.rkh_assert_IgnoreBool)
   {
-    UNITY_CLR_DETAILS();
     return;
   }
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "Function 'rkh_assert' called more times than expected.");
   cmock_line = cmock_call_instance->LineNumber;
   if (!cmock_call_instance->IgnoreArg_file)
   {
-    UNITY_SET_DETAILS(CMockString_rkh_assert,CMockString_file);
-    UNITY_TEST_ASSERT_EQUAL_STRING(cmock_call_instance->Expected_file, file, cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_STRING(cmock_call_instance->Expected_file, file, cmock_line, "Function 'rkh_assert' called with unexpected value for argument 'file'.");
   }
   if (!cmock_call_instance->IgnoreArg_line)
   {
-    UNITY_SET_DETAILS(CMockString_rkh_assert,CMockString_line);
-    UNITY_TEST_ASSERT_EQUAL_INT(cmock_call_instance->Expected_line, line, cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_INT(cmock_call_instance->Expected_line, line, cmock_line, "Function 'rkh_assert' called with unexpected value for argument 'line'.");
   }
-  UNITY_CLR_DETAILS();
 }
 
 void CMockExpectParameters_rkh_assert(CMOCK_rkh_assert_CALL_INSTANCE* cmock_call_instance, const char* const file, int line)
@@ -92,26 +81,25 @@ void rkh_assert_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* const file, 
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_assert_CALL_INSTANCE));
   CMOCK_rkh_assert_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_assert_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "CMock has run out of memory. Please allocate more.");
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.rkh_assert_CallInstance = CMock_Guts_MemChain(Mock.rkh_assert_CallInstance, cmock_guts_index);
   Mock.rkh_assert_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_assert(cmock_call_instance, file, line);
-  UNITY_CLR_DETAILS();
 }
 
 void rkh_assert_CMockIgnoreArg_file(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_rkh_assert_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_assert_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_assert_CallInstance));
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "file IgnoreArg called before Expect on 'rkh_assert'.");
   cmock_call_instance->IgnoreArg_file = 1;
 }
 
 void rkh_assert_CMockIgnoreArg_line(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_rkh_assert_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_assert_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_assert_CallInstance));
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, "line IgnoreArg called before Expect on 'rkh_assert'.");
   cmock_call_instance->IgnoreArg_line = 1;
 }
 

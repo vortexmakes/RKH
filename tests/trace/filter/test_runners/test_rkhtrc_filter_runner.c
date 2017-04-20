@@ -30,15 +30,15 @@
  */
 
 /**
- *  \file       all_tests.c
+ *  \file       test_rkhtrc_filter_runner.c
  *  \ingroup    test_trace
  *
- *  \brief      Test runner of Trace module
+ *  \brief      Test runner of filter module
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.11.11  LeFr  v2.4.05  ---
+ *  2017.20.04  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -48,11 +48,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <stdio.h>
-
-#include "rkh.h"
 #include "unity_fixture.h"
-
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -61,32 +57,43 @@
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-static 
-void 
-runAllTests(void)
+/* ---------------------------- Global functions --------------------------- */
+TEST_GROUP_RUNNER(toolForTest)
 {
-	RUN_TEST_GROUP(toolForTest);
-	RUN_TEST_GROUP(filter);
+	RUN_TEST_CASE(toolForTest, getBitIndex0);
+	RUN_TEST_CASE(toolForTest, getBitIndexX);
+	RUN_TEST_CASE(toolForTest, setBitIndex0);
+	RUN_TEST_CASE(toolForTest, resetBitIndex0);
+	RUN_TEST_CASE(toolForTest, setBitIndexX);
+	RUN_TEST_CASE(toolForTest, resetBitIndexX);
 }
 
-/* ---------------------------- Global functions --------------------------- */
-int
-main(int argc, char *argv[])
+TEST_GROUP_RUNNER(filter)
 {
-    static char *args[8];
-    int nArgs;
+	RUN_TEST_CASE(filter, filEventsAreOnAfterInit);
+	RUN_TEST_CASE(filter, turnOffOneFilEvent);
+	RUN_TEST_CASE(filter, turnOnOneFilEvent);
+	RUN_TEST_CASE(filter, turnOffMultipleFilEvent);
+	RUN_TEST_CASE(filter, allOffFilEvent);
+	RUN_TEST_CASE(filter, allOnFilEvent);
+	RUN_TEST_CASE(filter, isOnOffFilEvent);
+    RUN_TEST_CASE(filter, setAllEventsFromOneGroup);
+	RUN_TEST_CASE(filter, upperAndLowerBoundsFilEvent);
+	RUN_TEST_CASE(filter, outOfBoundsProducesRuntimeError);
 
-    args[0] = argv[0];
-#if 0
-    args[1] = "-g";
-    args[2] = "trace_args";
-    nArgs = 3;
-#else
-    nArgs = 1;
-#endif
+	RUN_TEST_CASE(filter, turnOffOneGroup);
+	RUN_TEST_CASE(filter, turnOnOneGroup);
+	RUN_TEST_CASE(filter, allOnOffGroup);
+    RUN_TEST_CASE(filter, turnOnOffMultipleGroups);
+    RUN_TEST_CASE(filter, turnOffOneGroupChangedItsEventFilters);
 
-	UnityMain(nArgs, args, runAllTests);
-    getchar();
+	RUN_TEST_CASE(filter, turnOffOneSymFil);
+	RUN_TEST_CASE(filter, turnOnOneSymFil);
+	RUN_TEST_CASE(filter, turnOnOffMultipleSymFil);
+	RUN_TEST_CASE(filter, allOffOnSymFil);
+	RUN_TEST_CASE(filter, isOnOffSymFil);
+	RUN_TEST_CASE(filter, upperAndLowerBoundsSymFil);
+	RUN_TEST_CASE(filter, outOfBoundsProducesRuntimeErrorSymFil);
 }
 
 /* ------------------------------ End of file ------------------------------ */

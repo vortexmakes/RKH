@@ -16,13 +16,12 @@
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
-    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mockrkh.c" />
-    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mockrkhport.c" />
+    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhassert.c" />
+    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhport.c" />
+    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhtrc_out.c" />
+    <ClCompile Include="..\..\..\..\..\filter\test_rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\filter\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\..\filter\test_runners\test_trace_runner.c" />
-    <ClCompile Include="..\..\..\..\..\filter\test_trace.c" />
-    <ClCompile Include="..\..\..\..\..\filter\test_trace_rec.c" />
+    <ClCompile Include="..\..\..\..\..\filter\test_runners\test_rkhtrc_filter_runner.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{640F4222-12FE-461E-BE99-3DC0E3265130}</ProjectGuid>

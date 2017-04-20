@@ -1,4 +1,4 @@
- /*
+/*
  *  --------------------------------------------------------------------------
  *
  *                                Framework RKH
@@ -30,20 +30,20 @@
  */
 
 /**
- *  \file       test_trace.c
+ *  \file       test_rkhtrc_filter.c
  *  \ingroup    test_trace
- *  \brief      Unit test for trace module.
+ *  \brief      Unit test for filter module.
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_trace Trace
  *  @{
- *  \brief      Unit test for trace module.
+ *  \brief      Unit test for filter module.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.11.19  LeFr  v2.4.05  ---
+ *  2017.20.04  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -54,8 +54,9 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkhtrc.h"
-#include "Mockrkhassert.h"
+#include "rkhtrc_filter.h"
+#include "Mock_rkhassert.h"
+#include "Mock_rkhtrc_out.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -66,8 +67,8 @@
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-TEST_GROUP(trace_filter);
-TEST_GROUP(trace);
+TEST_GROUP(toolForTest);
+TEST_GROUP(filter);
 
 /* ---------------------------- Local variables ---------------------------- */
 static RKH_FilterTbl filStatus;
@@ -93,9 +94,13 @@ setBitTbl(rui8_t *bt, rui16_t bit, rui8_t value)
     ix = (rui16_t)(bit >> 3);
 
     if (value == 1)
+    {
         *(bt + ix) |= maptbl[bitPos];
+    }
     else
+    {
         *(bt + ix) &= ~maptbl[bitPos];
+    }
 }
 
 static ruint
@@ -180,22 +185,21 @@ rkh_trc_filter_init(void)
 
 /* ---------------------------- Global functions --------------------------- */
 /* =========================== Filter test group =========================== */
-TEST_SETUP(trace_filter)
+TEST_SETUP(toolForTest)
 {
 }
 
-TEST_TEAR_DOWN(trace_filter)
+TEST_TEAR_DOWN(toolForTest)
 {
 }
 
 /**
- *  \addtogroup test_trace_filter Filter test group
+ *  \addtogroup test_toolForTest Filter test group
  *  @{
  *  \name Test cases of filter group
  *  @{ 
  */
-
-TEST(trace_filter, getBitIndex0)
+TEST(toolForTest, getBitIndex0)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
     bitTbl[0] = 0x82;
@@ -205,7 +209,7 @@ TEST(trace_filter, getBitIndex0)
     TEST_ASSERT_EQUAL(1, getBitTbl(bitTbl, 7)); 
 }
 
-TEST(trace_filter, getBitIndexX)
+TEST(toolForTest, getBitIndexX)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
     bitTbl[0] = 0x80;
@@ -221,7 +225,7 @@ TEST(trace_filter, getBitIndexX)
     TEST_ASSERT_EQUAL(1, getBitTbl(bitTbl, 23)); 
 }
 
-TEST(trace_filter, setBitIndex0)
+TEST(toolForTest, setBitIndex0)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
 
@@ -238,7 +242,7 @@ TEST(trace_filter, setBitIndex0)
     TEST_ASSERT_EQUAL_HEX8(0x00, bitTbl[3]);
 }
 
-TEST(trace_filter, resetBitIndex0)
+TEST(toolForTest, resetBitIndex0)
 {
     setAllBitTbl(bitTbl, 0xff, SIZEOF_BIT_TBL);
 
@@ -255,7 +259,7 @@ TEST(trace_filter, resetBitIndex0)
     TEST_ASSERT_EQUAL_HEX8(0xff, bitTbl[3]);
 }
 
-TEST(trace_filter, setBitIndexX)
+TEST(toolForTest, setBitIndexX)
 {
     setAllBitTbl(bitTbl, 0, SIZEOF_BIT_TBL);
 
@@ -271,7 +275,7 @@ TEST(trace_filter, setBitIndexX)
     TEST_ASSERT_EQUAL_HEX8(0x00, bitTbl[3]);
 }
 
-TEST(trace_filter, resetBitIndexX)
+TEST(toolForTest, resetBitIndexX)
 {
     setAllBitTbl(bitTbl, 0xff, SIZEOF_BIT_TBL);
 
@@ -291,14 +295,14 @@ TEST(trace_filter, resetBitIndexX)
 /** @} doxygen end group definition */
 
 /* ============================ Trace test group =========================== */
-TEST_SETUP(trace)
+TEST_SETUP(filter)
 {
     rkh_trc_filter_get(&filStatus);
     rkh_trc_filter_init();
     memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST_TEAR_DOWN(trace)
+TEST_TEAR_DOWN(filter)
 {
 }
 
@@ -308,8 +312,7 @@ TEST_TEAR_DOWN(trace)
  *  \name Test cases of records group
  *  @{ 
  */
-
-TEST(trace, filEventsAreOnAfterInit)
+TEST(filter, filEventsAreOnAfterInit)
 {
     TEST_ASSERT_TRUE(checkBitTblAreOn(filStatus.signal->tbl, 
                                       filStatus.signal->size) == RKH_OK);
@@ -324,7 +327,7 @@ TEST(trace, filEventsAreOnAfterInit)
                                       sizeof(RKH_TG_T)) == RKH_OK);
 }
 
-TEST(trace, turnOffOneFilEvent)
+TEST(filter, turnOffOneFilEvent)
 {
     RKH_GM_OFFSET_T offset;
 
@@ -341,7 +344,7 @@ TEST(trace, turnOffOneFilEvent)
     TEST_ASSERT_EQUAL_HEX8(0x08, *filStatus.group);
 }
 
-TEST(trace, turnOnOneFilEvent)
+TEST(filter, turnOnOneFilEvent)
 {
     bitTbl[RKH_SM_TTBL_OFFSET + 0] = 0x02;
 
@@ -354,7 +357,7 @@ TEST(trace, turnOnOneFilEvent)
     TEST_ASSERT_EQUAL_HEX8(0x08, *filStatus.group);
 }
 
-TEST(trace, turnOffMultipleFilEvent)
+TEST(filter, turnOffMultipleFilEvent)
 {
     RKH_GM_OFFSET_T offset;
 
@@ -369,7 +372,7 @@ TEST(trace, turnOffMultipleFilEvent)
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST(trace, allOffFilEvent)
+TEST(filter, allOffFilEvent)
 {
     memset(bitTbl, FILTER_OFF_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
 
@@ -379,7 +382,7 @@ TEST(trace, allOffFilEvent)
     TEST_ASSERT_EQUAL_HEX8(0xff, *filStatus.group);
 }
 
-TEST(trace, allOnFilEvent)
+TEST(filter, allOnFilEvent)
 {
     rkh_trc_filter_event_(FILTER_ON, RKH_TRC_ALL_EVENTS);
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
@@ -387,7 +390,7 @@ TEST(trace, allOnFilEvent)
     TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
 }
 
-TEST(trace, isOnOffFilEvent)
+TEST(filter, isOnOffFilEvent)
 {
     TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_FWK_OBJ) == RKH_FALSE);
 
@@ -399,7 +402,7 @@ TEST(trace, isOnOffFilEvent)
     TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_MP_INIT) == RKH_FALSE);
 }
 
-TEST(trace, upperAndLowerBoundsFilEvent)
+TEST(filter, upperAndLowerBoundsFilEvent)
 {
     bitTbl[0] = 0x01;
     bitTbl[RKH_TRC_MAX_EVENTS_IN_BYTES - 2] = 0x80;
@@ -411,7 +414,7 @@ TEST(trace, upperAndLowerBoundsFilEvent)
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST(trace, setAllEventsFromOneGroup)
+TEST(filter, setAllEventsFromOneGroup)
 {
     RKH_TE_ID_T filter, filterFrom, filterTo, offset;
 
@@ -429,29 +432,28 @@ TEST(trace, setAllEventsFromOneGroup)
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST(trace, outOfBoundsProducesRuntimeError)
+TEST(filter, outOfBoundsProducesRuntimeError)
 {
     rkh_assert_Expect("rkhtrc", 0);
     rkh_assert_IgnoreArg_line();
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
-    //TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
-TEST(trace, turnOffOneGroup)
+TEST(filter, turnOffOneGroup)
 {
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
     TEST_ASSERT_EQUAL_HEX8(0x01, *filStatus.group);
 }
 
-TEST(trace, turnOnOneGroup)
+TEST(filter, turnOnOneGroup)
 {
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
     rkh_trc_filter_group_(FILTER_ON, RKH_TG_MP, EUNCHANGE);
     TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
 }
 
-TEST(trace, allOnOffGroup)
+TEST(filter, allOnOffGroup)
 {
     rkh_trc_filter_group_(FILTER_OFF, RKH_TRC_ALL_GROUPS, EUNCHANGE);
     TEST_ASSERT_EQUAL_HEX8(0xff, *filStatus.group);
@@ -459,7 +461,7 @@ TEST(trace, allOnOffGroup)
     TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
 }
 
-TEST(trace, turnOnOffMultipleGroups)
+TEST(filter, turnOnOffMultipleGroups)
 {
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_SM, EUNCHANGE);
@@ -472,7 +474,7 @@ TEST(trace, turnOnOffMultipleGroups)
     TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
 }
 
-TEST(trace, turnOffOneGroupChangedItsEventFilters)
+TEST(filter, turnOffOneGroupChangedItsEventFilters)
 {
     RKHROM RKH_GMTBL_T *pTrcMap;
 
@@ -486,14 +488,14 @@ TEST(trace, turnOffOneGroupChangedItsEventFilters)
                              RKH_TRC_MAX_EVENTS_IN_BYTES);
 }
 
-TEST(trace, turnOffOneSymFil)
+TEST(filter, turnOffOneSymFil)
 {
     bitTbl[0] = 0x01;
     rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, turnOnOneSymFil)
+TEST(filter, turnOnOneSymFil)
 {
     bitTbl[0] = 0x00;
     rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA - 1, FILTER_OFF);
@@ -501,7 +503,7 @@ TEST(trace, turnOnOneSymFil)
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, turnOnOffMultipleSymFil)
+TEST(filter, turnOnOffMultipleSymFil)
 {
     bitTbl[0] = 0x89;
     rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
@@ -510,7 +512,7 @@ TEST(trace, turnOnOffMultipleSymFil)
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, allOffOnSymFil)
+TEST(filter, allOffOnSymFil)
 {
     setAllBitTbl(bitTbl, FILTER_OFF_BYTE, RKH_TRC_MAX_SMA);
     rkh_trc_symFil(filStatus.ao, 0, RKH_TRC_SET_ALL(FILTER_OFF));
@@ -521,7 +523,7 @@ TEST(trace, allOffOnSymFil)
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, isOnOffSymFil)
+TEST(filter, isOnOffSymFil)
 {
     TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_FALSE);
 
@@ -534,7 +536,7 @@ TEST(trace, isOnOffSymFil)
     TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_FALSE);
 }
 
-TEST(trace, upperAndLowerBoundsSymFil)
+TEST(filter, upperAndLowerBoundsSymFil)
 {
     setBitTbl(bitTbl, 0, FILTER_OFF);
     setBitTbl(bitTbl, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
@@ -545,7 +547,7 @@ TEST(trace, upperAndLowerBoundsSymFil)
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
+TEST(filter, outOfBoundsProducesRuntimeErrorSymFil)
 {
     rkh_assert_Expect("rkhtrc", 0);
     rkh_assert_IgnoreArg_line();
@@ -562,4 +564,5 @@ TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+
 /* ------------------------------ End of file ------------------------------ */
