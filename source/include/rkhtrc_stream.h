@@ -65,6 +65,15 @@ extern "C" {
 /* -------------------------- Function prototypes -------------------------- */
 /**
  *  \brief
+ *  Initializes the RKH's trace stream.
+ *
+ *  \note
+ *  rkh_trcStream_init() is NOT protected with a critical section.
+ */
+void rkh_trcStream_init(void);
+
+/**
+ *  \brief
  *	Retrieves a pointer to oldest stored byte in the trace stream.
  *	Frequently, this function is used by the called trace analyzer.
  *

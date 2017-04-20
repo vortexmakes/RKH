@@ -56,7 +56,6 @@
 #include "unity_fixture.h"
 #include "rkhtrc_filter.h"
 #include "Mock_rkhassert.h"
-#include "Mock_rkhtrc_out.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */

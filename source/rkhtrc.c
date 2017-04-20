@@ -271,15 +271,20 @@ isOffFilter(rui8_t *filterTbl, RKH_TE_ID_T filter)
 }
 
 /* ---------------------------- Global functions --------------------------- */
-
 void
-rkh_trc_init(void)
+rkh_trcStream_init(void)
 {
     trcin = trcout = trcstm;
     trcqty = 0;
     nseq = 0;
     trcend = &trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
     RKH_TRC_U8_RAW(RKH_FLG);
+}
+
+void
+rkh_trc_init(void)
+{
+    rkh_trcStream_init();
 }
 
 void

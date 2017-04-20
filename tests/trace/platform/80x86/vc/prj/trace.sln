@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "trace", "trace.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filter", "filter\filter.vcxproj", "{640F4222-12FE-461E-BE99-3DC0E3265130}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stream", "stream\stream.vcxproj", "{6932FCBF-FF04-4FFB-969B-5694D3882813}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{640F4222-12FE-461E-BE99-3DC0E3265130}.Debug|Win32.Build.0 = Debug|Win32
 		{640F4222-12FE-461E-BE99-3DC0E3265130}.Release|Win32.ActiveCfg = Debug|Win32
 		{640F4222-12FE-461E-BE99-3DC0E3265130}.Release|Win32.Build.0 = Debug|Win32
+		{6932FCBF-FF04-4FFB-969B-5694D3882813}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6932FCBF-FF04-4FFB-969B-5694D3882813}.Debug|Win32.Build.0 = Debug|Win32
+		{6932FCBF-FF04-4FFB-969B-5694D3882813}.Release|Win32.ActiveCfg = Release|Win32
+		{6932FCBF-FF04-4FFB-969B-5694D3882813}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
