@@ -76,25 +76,40 @@ static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static rui8_t
+getData(void)
+{
+    rui8_t *output, d;
+
+    output = rkh_trc_get();
+    d = *output;
+    if (d == RKH_ESC)
+    {
+        output = rkh_trc_get();
+        d = (rui8_t)(*output ^ RKH_XOR);
+    }
+    return d;
+}
+
 static void
 checkHeader(rui8_t evtId, rui8_t nSeq, rui32_t tStamp)
 {
-    rui8_t *output;
+    rui8_t d;
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(evtId, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL(evtId, d);
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(nSeq, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL(nSeq, d);
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL((rui8_t)tStamp, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)(tStamp >> 8), *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)(tStamp >> 16), *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL((rui8_t)(tStamp >> 24), *output);
+    d = getData();
+    TEST_ASSERT_EQUAL((rui8_t)tStamp, d);
+    d = getData();
+    TEST_ASSERT_EQUAL_HEX8((rui8_t)(tStamp >> 8), d);
+    d = getData();
+    TEST_ASSERT_EQUAL_HEX8((rui8_t)(tStamp >> 16), d);
+    d = getData();
+    TEST_ASSERT_EQUAL((rui8_t)(tStamp >> 24), d);
 }
 
 static void
@@ -102,7 +117,7 @@ checkTrailer(void)
 {
     rui8_t *output;
 
-    output = rkh_trc_get();
+    getData();
     /* get checksum: TEST_ASSERT_EQUAL_HEX8(..., *output); */
     output = rkh_trc_get();
     TEST_ASSERT_EQUAL_HEX8(RKH_FLG, *output);
@@ -112,21 +127,21 @@ static void
 checkObjectAddress(void *obj)
 {
     rui32_t value;
-    rui8_t *output;
+    rui8_t d;
 
     value = (rui32_t)obj;
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
     value >>= 8;
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
     value >>= 8;
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
     value >>= 8;
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
 }
 
 static void
@@ -143,40 +158,40 @@ checkString(const char *str)
 static void
 checkU8Value(rui8_t value)
 {
-    rui8_t *output;
+    rui8_t d;
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(value, *output);
+    d = getData();
+    TEST_ASSERT_EQUAL(value, d);
 }
 
 static void
 checkU16Value(rui16_t value)
 {
-    rui8_t *low;
-    rui8_t *high;
+    rui8_t low;
+    rui8_t high;
 
-    low = rkh_trc_get();
-    high = rkh_trc_get();
-    TEST_ASSERT_EQUAL((rui8_t)value, *low);
-    TEST_ASSERT_EQUAL(value >> 8, *high);
+    low = getData();
+    high = getData();
+    TEST_ASSERT_EQUAL((rui8_t)value, low);
+    TEST_ASSERT_EQUAL(value >> 8, high);
 }
 
 static void
 checkU32Value(rui32_t value)
 {
-    rui8_t *byte;
+    rui8_t byte;
 
-    byte = rkh_trc_get();
-    TEST_ASSERT_EQUAL((rui8_t)value, *byte);
+    byte = getData();
+    TEST_ASSERT_EQUAL((rui8_t)value, byte);
 
-    byte = rkh_trc_get();
-    TEST_ASSERT_EQUAL(value >> 8, *byte);
+    byte = getData();
+    TEST_ASSERT_EQUAL(value >> 8, byte);
 
-    byte = rkh_trc_get();
-    TEST_ASSERT_EQUAL(value >> 16, *byte);
+    byte = getData();
+    TEST_ASSERT_EQUAL(value >> 16, byte);
 
-    byte = rkh_trc_get();
-    TEST_ASSERT_EQUAL(value >> 24, *byte);
+    byte = getData();
+    TEST_ASSERT_EQUAL(value >> 24, byte);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -762,8 +777,6 @@ TEST(trace_args, InsertDispatchRecordWithInvalidSignal)
     rkh_enter_critical_Expect();
     rkh_trc_getts_ExpectAndReturn(0x1234567);
     rkh_exit_critical_Expect();
-    rkh_assert_Expect("rkhtrc", 0);
-    rkh_assert_IgnoreArg_line();
 
     RKH_TR_SM_DCH(&receiver, &event, &state);
 
