@@ -427,6 +427,8 @@ rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt)
 rbool_t
 rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot)
 {
+    RKH_REQUIRE((filter != (const RKH_TRC_FIL_T *)0) && 
+                (slot < (filter->size << 3)));
     return isOffFilter(filter->tbl, (RKH_TE_ID_T)slot);
 }
 

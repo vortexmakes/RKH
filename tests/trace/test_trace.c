@@ -438,7 +438,6 @@ TEST(trace, outOfBoundsProducesRuntimeError)
     rkh_assert_IgnoreArg_line();
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
-    //TEST_ASSERT_EQUAL_STRING("RKH assertion", rkh_assertStub_getLastError());
 }
 
 TEST(trace, turnOffOneGroup)
@@ -548,7 +547,7 @@ TEST(trace, upperAndLowerBoundsSymFil)
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
-TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
+TEST(trace, Fails_outOfBoundsProducesRuntimeErrorInSetSymFil)
 {
     rkh_assert_Expect("rkhtrc", 0);
     rkh_assert_IgnoreArg_line();
@@ -559,6 +558,19 @@ TEST(trace, outOfBoundsProducesRuntimeErrorSymFil)
     rkh_assert_IgnoreArg_line();
 
     rkh_trc_symFil(0, 0, FILTER_OFF);
+}
+
+TEST(trace, Fails_outOfBoundsProducesRuntimeErrorInGetSymFil)
+{
+    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_IgnoreArg_line();
+
+    rkh_trc_symFil_isoff(filStatus.signal, (filStatus.signal->size * 8) + 1);
+
+    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_IgnoreArg_line();
+
+    rkh_trc_symFil_isoff(filStatus.signal, filStatus.signal->size * 8);
 }
 
 /** @} doxygen end group definition */

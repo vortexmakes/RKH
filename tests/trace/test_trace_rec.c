@@ -57,6 +57,7 @@
 #include "rkhtrc.h"
 #include "Mockrkh.h"
 #include "Mockrkhport.h"
+#include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -349,6 +350,7 @@ TEST_SETUP(trace_args)
     RKH_FILTER_OFF_ALL_SIGNALS();
     Mockrkh_Init();
     Mockrkhport_Init();
+    Mockrkhassert_Init();
 }
 
 TEST_TEAR_DOWN(trace_args)
@@ -359,8 +361,10 @@ TEST_TEAR_DOWN(trace_args)
     event.nref = 7;
     Mockrkh_Verify();
     Mockrkhport_Verify();
+    Mockrkhassert_Verify();
     Mockrkh_Destroy();
     Mockrkhport_Destroy();
+    Mockrkhassert_Destroy();
 }
 
 /**
@@ -748,6 +752,25 @@ TEST(trace_args, InsertFwkPseudoStateRecord)
     checkObjectAddress(&receiver);
     checkObjectAddress(&pseudoState);
     checkString(pseudoState.base.name);
+    checkTrailer();
+}
+
+TEST(trace_args, InsertDispatchRecordWithInvalidSignal)
+{
+    event.e = RKH_COMPLETION_EVENT;
+
+    rkh_enter_critical_Expect();
+    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_exit_critical_Expect();
+    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_IgnoreArg_line();
+
+    RKH_TR_SM_DCH(&receiver, &event, &state);
+
+    checkHeader(RKH_TE_SM_DCH, 0, 0x1234567);
+    checkObjectAddress(&receiver);
+    checkU8Value(event.e);
+    checkObjectAddress(&state);
     checkTrailer();
 }
 

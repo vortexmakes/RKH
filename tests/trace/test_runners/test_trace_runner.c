@@ -95,7 +95,8 @@ TEST_GROUP_RUNNER(trace)
 	RUN_TEST_CASE(trace, allOffOnSymFil);
 	RUN_TEST_CASE(trace, isOnOffSymFil);
 	RUN_TEST_CASE(trace, upperAndLowerBoundsSymFil);
-	RUN_TEST_CASE(trace, outOfBoundsProducesRuntimeErrorSymFil);
+	RUN_TEST_CASE(trace, Fails_outOfBoundsProducesRuntimeErrorInSetSymFil);
+	RUN_TEST_CASE(trace, Fails_outOfBoundsProducesRuntimeErrorInGetSymFil);
 }
 
 TEST_GROUP_RUNNER(trace_stream)
@@ -136,6 +137,7 @@ TEST_GROUP_RUNNER(trace_args)
 	RUN_TEST_CASE(trace_args, InsertFwkEpregRecord);
 	RUN_TEST_CASE(trace_args, InsertFwkStateRecord);
 	RUN_TEST_CASE(trace_args, InsertFwkPseudoStateRecord);
+	RUN_TEST_CASE(trace_args, InsertDispatchRecordWithInvalidSignal);
 }
 
 /* ------------------------------ End of file ------------------------------ */

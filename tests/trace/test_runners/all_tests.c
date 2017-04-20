@@ -83,7 +83,7 @@ main(int argc, char *argv[])
     args[0] = argv[0];
 #if 1
     args[1] = "-r";
-    args[2] = "90";
+    args[2] = "1";
     nArgs = 3;
 #else
     nArgs = 1;
