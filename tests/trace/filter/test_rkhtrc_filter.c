@@ -433,7 +433,7 @@ TEST(filter, setAllEventsFromOneGroup)
 
 TEST(filter, outOfBoundsProducesRuntimeError)
 {
-    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
@@ -548,12 +548,12 @@ TEST(filter, upperAndLowerBoundsSymFil)
 
 TEST(filter, outOfBoundsProducesRuntimeErrorSymFil)
 {
-    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
 
     rkh_trc_symFil(filStatus.ao, (filStatus.ao->size * 8) + 1, FILTER_OFF);
 
-    rkh_assert_Expect("rkhtrc", 0);
+    rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
 
     rkh_trc_symFil(0, 0, FILTER_OFF);

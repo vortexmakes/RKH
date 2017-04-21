@@ -518,20 +518,6 @@ extern RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];
 
 /**
  *  \brief
- *  rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a
- *  bit mask.
- */
-extern RKHROM rui8_t rkh_maptbl[8];
-
-/**
- *  \brief
- *  rkh_unmaptbl[] is a table in ROM, used to return the bit position of the
- *  highest priority bit set - a number between 0 and 7.
- */
-extern RKHROM rui8_t rkh_unmaptbl[256];
-
-/**
- *  \brief
  *  String describing the RKH version.
  */
 extern RKHROM char rkh_version[];

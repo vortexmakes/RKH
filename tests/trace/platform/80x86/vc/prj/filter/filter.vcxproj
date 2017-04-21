@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\source\rkhtbl.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
