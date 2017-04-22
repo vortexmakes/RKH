@@ -119,105 +119,13 @@ RKH_MODULE_NAME(rkhtrc)
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-static rui8_t *trcin, *trcout, *trcend;
-static rui8_t chk;
-static rui8_t nseq;
-static TRCQTY_T trcqty;
-
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
-rkh_trcStream_init(void)
-{
-    trcin = trcout = trcstm;
-    trcqty = 0;
-    nseq = 0;
-    trcend = &trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-    RKH_TRC_U8_RAW(RKH_FLG);
-}
-
-void
 rkh_trc_init(void)
 {
     rkh_trcStream_init();
-}
-
-void
-rkh_trc_put(rui8_t b)
-{
-    *trcin++ = b;
-    ++trcqty;
-
-    if (trcin == trcend)
-    {
-        trcin = trcstm;
-    }
-
-    if (trcqty >= RKH_CFG_TRC_SIZEOF_STREAM)
-    {
-        trcqty = RKH_CFG_TRC_SIZEOF_STREAM;
-        trcout = trcin;
-    }
-}
-
-rui8_t *
-rkh_trc_get(void)
-{
-    rui8_t *trByte = (rui8_t *)0;
-
-    if (trcqty == 0)
-    {
-        return trByte;
-    }
-
-    trByte = trcout++;
-    --trcqty;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
-}
-
-rui8_t *
-rkh_trc_get_block(TRCQTY_T *nget)
-{
-    rui8_t *trByte = (rui8_t *)0;
-    TRCQTY_T n;
-
-    if (trcqty == (TRCQTY_T)0)
-    {
-        *nget = (TRCQTY_T)0;
-        return trByte;
-    }
-
-    trByte = trcout;
-
-    /* Calculates the number of bytes to be retrieved */
-    n = (TRCQTY_T)(trcend - trcout);    /* bytes until the end */
-    if (n > trcqty)
-    {
-        n = trcqty;
-    }
-    if (n > *nget)
-    {
-        n = *nget;
-    }
-
-    *nget = n;
-    trcout += n;
-    trcqty -= n;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
 }
 
 void
