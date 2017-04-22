@@ -21,9 +21,6 @@
     <ClCompile Include="..\..\..\..\..\..\..\source\rkhtbl.c">
       <Filter>rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc.c">
-      <Filter>rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c">
       <Filter>test\tool</Filter>
     </ClCompile>
@@ -58,6 +55,15 @@
       <Filter>test\runner</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\record\stub\mocks\Mock_rkh.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc_record.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\record\stub\mocks\Mock_rkhtrc_stream.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\record\stub\mocks\Mock_rkhtrc_filter.c">
       <Filter>test\stub</Filter>
     </ClCompile>
   </ItemGroup>

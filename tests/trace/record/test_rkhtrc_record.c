@@ -32,13 +32,13 @@
 /**
  *  \file       test_rkhtrc_record.c
  *  \ingroup    test_trace
- *  \brief      Unit test for filter module.
+ *  \brief      Unit test for record module.
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_trace Trace
  *  @{
- *  \brief      Unit test for filter module.
+ *  \brief      Unit test for record module.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -62,6 +62,8 @@
 #include "Mock_rkhport.h"
 #include "Mock_rkhassert.h"
 #include "Mock_rkhtrc_out.h"
+#include "Mock_rkhtrc_stream.h"
+#include "Mock_rkhtrc_filter.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -77,137 +79,107 @@ static RKH_EVT_T event;
 static RKH_ST_T state = {{RKH_BASIC, "state"}};
 static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
 
+const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   NULL};
+const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       NULL};
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-static rui8_t
-getData(void)
+static void
+expectU8(rui8_t expectData)
 {
-    rui8_t *output, d;
-
-    output = rkh_trc_get();
-    d = *output;
-    if (d == RKH_ESC)
+    if ((expectData == RKH_ESC) || (expectData == RKH_FLG))
     {
-        output = rkh_trc_get();
-        d = (rui8_t)(*output ^ RKH_XOR);
+        rkh_trc_put_Expect(RKH_ESC);
+        rkh_trc_put_Expect((rui8_t)(expectData ^ RKH_XOR));
     }
-    return d;
+    else
+    {
+        rkh_trc_put_Expect(expectData);
+    }
 }
 
 static void
-checkHeader(rui8_t evtId, rui8_t nSeq, rui32_t tStamp)
+expectHeader(rui8_t evtId, rui8_t nSeq, rui32_t tStamp, int isCritical)
 {
-    rui8_t d;
-
-    d = getData();
-    TEST_ASSERT_EQUAL(evtId, d);
-
-    d = getData();
-    TEST_ASSERT_EQUAL(nSeq, d);
-
-    d = getData();
-    TEST_ASSERT_EQUAL((rui8_t)tStamp, d);
-    d = getData();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)(tStamp >> 8), d);
-    d = getData();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)(tStamp >> 16), d);
-    d = getData();
-    TEST_ASSERT_EQUAL((rui8_t)(tStamp >> 24), d);
+    if (isCritical)
+    {
+        rkh_enter_critical_Expect();
+    }
+    expectU8(evtId);
+    expectU8(nSeq);
+    rkh_trc_getts_ExpectAndReturn(tStamp);
+    expectU8((rui8_t)tStamp);
+    expectU8((rui8_t)(tStamp >> 8));
+    expectU8((rui8_t)(tStamp >> 16));
+    expectU8((rui8_t)(tStamp >> 24));
 }
 
 static void
-checkTrailer(void)
-{
-    rui8_t *output;
-
-    getData();
-    /* get checksum: TEST_ASSERT_EQUAL_HEX8(..., *output); */
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8(RKH_FLG, *output);
-}
-
-static void
-checkObjectAddress(void *obj)
+expectObjectAddress(void *obj)
 {
     rui32_t value;
-    rui8_t d;
 
     value = (rui32_t)obj;
-
-    d = getData();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
-    value >>= 8;
-    d = getData();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
-    value >>= 8;
-    d = getData();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
-    value >>= 8;
-    d = getData();
-    TEST_ASSERT_EQUAL_HEX8((rui8_t)value, d);
+    expectU8((rui8_t)value);
+    expectU8((rui8_t)(value >> 8));
+    expectU8((rui8_t)(value >> 16));
+    expectU8((rui8_t)(value >> 24));
 }
 
 static void
-checkString(const char *str)
+expectString(const char *str)
 {
-    rui8_t *output;
-    TRCQTY_T len;
+    const char *p;
 
-    len = strlen(str) + 1;
-    output = rkh_trc_get_block(&len);
-    TEST_ASSERT_EQUAL_STRING(str, output);
+    for (p = str; *p != '\0'; ++p)
+    {
+        rkh_trc_put_Expect(*p);
+    }
+    rkh_trc_put_Expect('\0');
 }
 
 static void
-checkU8Value(rui8_t value)
+expectTrailer(int isCritical)
 {
-    rui8_t d;
-
-    d = getData();
-    TEST_ASSERT_EQUAL(value, d);
+    rkh_trc_put_Expect(0);          /* insert checksum */
+    rkh_trc_put_IgnoreArg_b();
+    rkh_trc_put_Expect(RKH_FLG);    /* insert record flag */
+    if (isCritical)
+    {
+        rkh_exit_critical_Expect();
+    }
 }
 
 static void
-checkU16Value(rui16_t value)
+expectU32(rui32_t value)
 {
-    rui8_t low;
-    rui8_t high;
-
-    low = getData();
-    high = getData();
-    TEST_ASSERT_EQUAL((rui8_t)value, low);
-    TEST_ASSERT_EQUAL(value >> 8, high);
+    expectU8((rui8_t)value);
+    expectU8((rui8_t)(value >> 8));
+    expectU8((rui8_t)(value >> 16));
+    expectU8((rui8_t)(value >> 24));
 }
 
 static void
-checkU32Value(rui32_t value)
+expectU16(rui16_t value)
 {
-    rui8_t byte;
-
-    byte = getData();
-    TEST_ASSERT_EQUAL((rui8_t)value, byte);
-
-    byte = getData();
-    TEST_ASSERT_EQUAL(value >> 8, byte);
-
-    byte = getData();
-    TEST_ASSERT_EQUAL(value >> 16, byte);
-
-    byte = getData();
-    TEST_ASSERT_EQUAL(value >> 24, byte);
+    expectU8((rui8_t)value);
+    expectU8((rui8_t)(value >> 8));
 }
 
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(record)
 {
+    rkh_trcStream_init_Expect();
     rkh_trc_init();
-    rkh_trc_get();
-    RKH_FILTER_OFF_EVENT(RKH_TRC_ALL_EVENTS);
-    RKH_FILTER_OFF_ALL_SMA();
-    RKH_FILTER_OFF_ALL_SIGNALS();
+
+    Mock_rkhsm_Init();
+    Mock_rkhsma_Init();
     Mock_rkh_Init();
     Mock_rkhport_Init();
     Mock_rkhassert_Init();
+    Mock_rkhtrc_out_Init();
+    Mock_rkhtrc_stream_Init();
+    Mock_rkhtrc_filter_Init();
 }
 
 TEST_TEAR_DOWN(record)
@@ -216,12 +188,23 @@ TEST_TEAR_DOWN(record)
     event.e = 3;
     event.pool = 5;
     event.nref = 7;
+
+    Mock_rkhsm_Verify();
+    Mock_rkhsma_Verify();
     Mock_rkh_Verify();
     Mock_rkhport_Verify();
     Mock_rkhassert_Verify();
+    Mock_rkhtrc_out_Verify();
+    Mock_rkhtrc_stream_Verify();
+    Mock_rkhtrc_filter_Verify();
+    Mock_rkhsm_Destroy();
+    Mock_rkhsma_Destroy();
     Mock_rkh_Destroy();
     Mock_rkhport_Destroy();
     Mock_rkhassert_Destroy();
+    Mock_rkhtrc_out_Destroy();
+    Mock_rkhtrc_stream_Destroy();
+    Mock_rkhtrc_filter_Destroy();
 }
 
 /**
@@ -232,159 +215,127 @@ TEST_TEAR_DOWN(record)
  */
 TEST(record, InsertRecordHeader)
 {
-    rui8_t *output;
-
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_trc_put_Expect(8);  /* insert the event ID */
+    rkh_trc_put_Expect(0);  /* insert tne sequence number */
+                            /* insert tne time-stamp */
+    rkh_trc_getts_ExpectAndReturn(0x01234567);
+    rkh_trc_put_Expect(0x67);
+    rkh_trc_put_Expect(0x45);
+    rkh_trc_put_Expect(0x23);
+    rkh_trc_put_Expect(0x01);
 
     rkh_trc_begin(8);
-
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(8, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x67, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x45, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x23, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x01, *output);
 }
 
 TEST(record, InsertRecordEnd)
 {
-    rui8_t *output;
     rui8_t checksum;
 
-    rkh_trc_clear_chk();
     checksum = 0;
     checksum = (rui8_t)(~checksum + 1);
+    rkh_trc_put_Expect(checksum);   /* insert checksum */
+    rkh_trc_put_Expect(RKH_FLG);    /* insert record flag */
 
     rkh_trc_end();
-
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(checksum, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL_HEX8(RKH_FLG, *output);
 }
 
 TEST(record, InsertU8Value)
 {
-    rui8_t *output;
+    rui8_t value = 8;
 
-    rkh_trc_u8(9);
-
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(9, *output);
+    rkh_trc_put_Expect(value);
+    rkh_trc_u8(value);
 }
 
 TEST(record, InsertEscapedValues)
 {
-    rui8_t *output;
+    rui8_t value = RKH_FLG;
+    rkh_trc_put_Expect(RKH_ESC);
+    rkh_trc_put_Expect((rui8_t)(value ^ RKH_XOR));
 
     rkh_trc_u8(RKH_FLG);
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(RKH_ESC, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(RKH_FLG ^ RKH_XOR, *output);
+    value = RKH_ESC;
+    rkh_trc_put_Expect(RKH_ESC);
+    rkh_trc_put_Expect((rui8_t)(value ^ RKH_XOR));
 
     rkh_trc_u8(RKH_ESC);
-
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(RKH_ESC, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(RKH_ESC ^ RKH_XOR, *output);
 }
 
 TEST(record, InsertU16Value)
 {
-    rui8_t *output;
+    rui16_t value = 0x1234;
 
-    rkh_trc_u16(0x1234);
-
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x34, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x12, *output);
+    rkh_trc_put_Expect(0x34);
+    rkh_trc_put_Expect(0x12);
+    rkh_trc_u16(value);
 }
 
 TEST(record, InsertU32Value)
 {
-    rui8_t *output;
+    rui32_t value = 0x12345678;
 
-    rkh_trc_u32(0x12345678);
+    rkh_trc_put_Expect(0x78);
+    rkh_trc_put_Expect(0x56);
+    rkh_trc_put_Expect(0x34);
+    rkh_trc_put_Expect(0x12);
 
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x78, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x56, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x34, *output);
-    output = rkh_trc_get();
-    TEST_ASSERT_EQUAL(0x12, *output);
+    rkh_trc_u32(value);
+
 }
 
 TEST(record, InsertString)
 {
-    TRCQTY_T len;
     const char *expected = "Hello world!";
-    rui8_t *output;
+    const char *p;
 
-    len = strlen(expected) + 1;
+    for (p = expected; *p != '\0'; ++p)
+    {
+        rkh_trc_put_Expect(*p);
+    }
+    rkh_trc_put_Expect('\0');
+
     rkh_trc_str(expected);
-
-    output = rkh_trc_get_block(&len);
-    TEST_ASSERT_EQUAL_STRING(expected, output);
 }
 
 TEST(record, InsertObject)
 {
-    rui8_t obj, evtId = 8;
+    rui8_t obj, evtId = RKH_TE_FWK_OBJ;
     const char *objName = "obj";
 
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(evtId, 0, 0x1234567, 1);
+    expectObjectAddress(&obj);
+    expectString(objName);
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     rkh_trc_obj(evtId, &obj, objName);
-
-    checkHeader(evtId, 0, 0x1234567);
-    checkObjectAddress(&obj);
-    checkString(objName);
-
-    checkTrailer();
 }
 
 TEST(record, InsertSignal)
 {
     rui8_t signalId = 8;
+    rui8_t evtId = RKH_TE_FWK_SIG;
     const char *signalName = "buttonPressed";
 
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(evtId, 0, 0x1234567, 1);
+    expectU8(signalId);
+    expectString(signalName);
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     rkh_trc_sig(signalId, signalName);
-
-    checkHeader(RKH_TE_FWK_SIG, 0, 0x1234567);
-    checkU8Value(signalId);
-    checkString(signalName);
-
-    checkTrailer();
 }
 
 TEST(record, InsertAO)
 {
-    rkh_trc_ao(&receiver);
+    expectHeader(RKH_TE_FWK_AO, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectString("receiver");
+    expectTrailer(1);
+    rkh_trc_flush_Expect();
 
-    checkHeader(RKH_TE_FWK_AO, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkString("receiver");
-    checkTrailer();
+    rkh_trc_ao(&receiver);
 }
 
 TEST(record, InsertState)
@@ -392,18 +343,14 @@ TEST(record, InsertState)
     RKH_ST_T state;
     
     state.base.name = "state";
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(RKH_TE_FWK_STATE, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectObjectAddress(&state);
+    expectString("state");
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     rkh_trc_state(&receiver, (rui8_t *)&state);
-
-    checkHeader(RKH_TE_FWK_STATE, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkObjectAddress(&state);
-    checkString("state");
-    checkTrailer();
 }
 
 TEST(record, InsertRecord)
@@ -415,17 +362,13 @@ TEST(record, InsertFwkEpoolRecord)
     rui8_t poolId = 2;
     const char *poolName = "ep0";
 
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(RKH_TE_FWK_EPOOL, 0, 0x1234567, 1);
+    expectU8(poolId);
+    expectString(poolName);
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     RKH_TR_FWK_EPOOL(poolId, poolName);
-
-    checkHeader(RKH_TE_FWK_EPOOL, 0, 0x1234567);
-    checkU8Value(poolId);
-    checkString(poolName);
-    checkTrailer();
 }
 
 TEST(record, InsertFwkActorRecord)
@@ -433,200 +376,175 @@ TEST(record, InsertFwkActorRecord)
     rui8_t actor;
     const char *actorName = "Actor";
 
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(RKH_TE_FWK_ACTOR, 0, 0x1234567, 1);
+    expectObjectAddress(&actor);
+    expectString(actorName);
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     RKH_TR_FWK_ACTOR(&actor, actorName);
-
-    checkHeader(RKH_TE_FWK_ACTOR, 0, 0x1234567);
-    checkObjectAddress(&actor);
-    checkString(actorName);
-    checkTrailer();
 }
 
 TEST(record, InsertSmaActivateRecord)
 {
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+                                         RKH_TRUE);
+    expectHeader(RKH_TE_SMA_ACT, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectU8(RKH_GET_PRIO(&receiver));
+    expectU8(16);
+    expectTrailer(1);
 
 	RKH_TR_SMA_ACT(&receiver, RKH_GET_PRIO(&receiver), 16);
-
-    checkHeader(RKH_TE_SMA_ACT, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkU8Value(0);
-    checkU8Value(16);
-    checkTrailer();
 }
 
 TEST(record, InsertSmaGetRecord)
 {
-    rui8_t nElem, nMin;
+    rui8_t nElem = 4, nMin = 2;
 
-    nElem = 4;
-    nMin = 2;
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_GET, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+                                         RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsig, event.e, RKH_TRUE);
+    expectHeader(RKH_TE_SMA_GET, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectU8(event.e);
+    expectU8(event.pool);
+    expectU8(event.nref);
+    expectU8(nElem);
+    expectU8(nMin);
+    expectTrailer(1);
 
 	RKH_TR_SMA_GET(&receiver, &event, event.pool, event.nref, nElem, nMin);
-
-    checkHeader(RKH_TE_SMA_GET, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkU8Value(event.e);
-    checkU8Value(event.pool);
-    checkU8Value(event.nref);
-    checkU8Value(nElem);
-    checkU8Value(nMin);
-    checkTrailer();
 }
 
 TEST(record, InsertSmaPostFifoRecord)
 {
-    rui8_t nElem, nMin;
+    rui8_t nElem = 4, nMin = 2;
 
-    nElem = 4;
-    nMin = 2;
-
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+                                         RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsig, event.e, RKH_TRUE);
+    expectHeader(RKH_TE_SMA_FIFO, 0, 0x1234567, 0);
+    expectObjectAddress(&receiver);
+    expectU8(event.e);
+    expectObjectAddress(&sender);
+    expectU8(event.pool);
+    expectU8(event.nref);
+    expectU8(nElem);
+    expectU8(nMin);
+    expectTrailer(0);
 
     RKH_TR_SMA_FIFO(&receiver, &event, &sender, event.pool, event.nref, nElem, 
                     nMin);
-
-    checkHeader(RKH_TE_SMA_FIFO, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkU8Value(event.e);
-    checkObjectAddress(&sender);
-    checkU8Value(event.pool);
-    checkU8Value(event.nref);
-    checkU8Value(nElem);
-    checkU8Value(nMin);
-    checkTrailer();
 }
 
 TEST(record, InsertSmaPostLifoRecord)
 {
-    rui8_t nElem, nMin;
+    rui8_t nElem = 4, nMin = 2;
 
-    nElem = 4;
-    nMin = 2;
-
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+                                         RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsig, event.e, RKH_TRUE);
+    expectHeader(RKH_TE_SMA_LIFO, 0, 0x1234567, 0);
+    expectObjectAddress(&receiver);
+    expectU8(event.e);
+    expectObjectAddress(&sender);
+    expectU8(event.pool);
+    expectU8(event.nref);
+    expectU8(nElem);
+    expectU8(nMin);
+    expectTrailer(0);
 
     RKH_TR_SMA_LIFO(&receiver, &event, &sender, event.pool, event.nref, nElem, 
                     nMin);
-
-    checkHeader(RKH_TE_SMA_LIFO, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkU8Value(event.e);
-    checkObjectAddress(&sender);
-    checkU8Value(event.pool);
-    checkU8Value(event.nref);
-    checkU8Value(nElem);
-    checkU8Value(nMin);
-    checkTrailer();
 }
 
 TEST(record, InsertFwkAeRecord)
 {
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_AE, RKH_TRUE);
+    expectHeader(RKH_TE_FWK_AE, 0, 0x1234567, 1);
+    expectU16(16);
+    expectU8(event.e);
+    expectU8(event.pool - 1);
+    expectU8(event.nref);
+    expectU8(5);
+    expectU8(2);
+    expectObjectAddress(&receiver);
+    expectTrailer(1);
 
     RKH_TR_FWK_AE(16, &event, 5, 2, &receiver);
-
-    checkHeader(RKH_TE_FWK_AE, 0, 0x1234567);
-    checkU16Value(16);
-    checkU8Value(event.e);
-    checkU8Value(event.pool - 1);
-    checkU8Value(event.nref);
-    checkU8Value(5);
-    checkU8Value(2);
-    checkObjectAddress(&receiver);
-    checkTrailer();
 }
 
 TEST(record, InsertFwkGcrRecord)
 {
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_GCR, RKH_TRUE);
+    expectHeader(RKH_TE_FWK_GCR, 0, 0x1234567, 0);
+    expectU8(event.e);
+    expectU8(event.pool - 1);
+    expectU8(event.nref);
+    expectU8(5);
+    expectU8(2);
+    expectObjectAddress(&receiver);
+    expectTrailer(0);
 
     RKH_TR_FWK_GCR(&event, 5, 2, &receiver);
-
-    checkHeader(RKH_TE_FWK_GCR, 0, 0x1234567);
-    checkU8Value(event.e);
-    checkU8Value(event.pool - 1);
-    checkU8Value(event.nref);
-    checkU8Value(5);
-    checkU8Value(2);
-    checkObjectAddress(&receiver);
-    checkTrailer();
 }
 
 TEST(record, InsertFwkEpregRecord)
 {
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_EPREG, RKH_TRUE);
+    expectHeader(RKH_TE_FWK_EPREG, 0, 0x1234567, 1);
+    expectU8(1);
+    expectU32(128);
+    expectU16(32);
+    expectU8(4);
+    expectTrailer(1);
 
     RKH_TR_FWK_EPREG(1, 128, 32, 4);
-
-    checkHeader(RKH_TE_FWK_EPREG, 0, 0x1234567);
-    checkU8Value(1);
-    checkU32Value(128);
-    checkU16Value(32);
-    checkU8Value(4);
-    checkTrailer();
 }
 
 TEST(record, InsertFwkStateRecord)
 {
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(RKH_TE_FWK_STATE, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectObjectAddress(&state);
+    expectString(state.base.name);
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     RKH_TR_FWK_STATE(&receiver, &state);
-
-    checkHeader(RKH_TE_FWK_STATE, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkObjectAddress(&state);
-    checkString(state.base.name);
-    checkTrailer();
 }
 
 TEST(record, InsertFwkPseudoStateRecord)
 {
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    expectHeader(RKH_TE_FWK_PSTATE, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectObjectAddress(&pseudoState);
+    expectString(pseudoState.base.name);
+    expectTrailer(1);
     rkh_trc_flush_Expect();
 
     RKH_TR_FWK_PSTATE(&receiver, &pseudoState);
-
-    checkHeader(RKH_TE_FWK_PSTATE, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkObjectAddress(&pseudoState);
-    checkString(pseudoState.base.name);
-    checkTrailer();
 }
 
 TEST(record, InsertDispatchRecordWithInvalidSignal)
 {
     event.e = RKH_COMPLETION_EVENT;
 
-    rkh_enter_critical_Expect();
-    rkh_trc_getts_ExpectAndReturn(0x1234567);
-    rkh_exit_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SM_DCH, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+                                         RKH_TRUE);
+    expectHeader(RKH_TE_SM_DCH, 0, 0x1234567, 1);
+    expectObjectAddress(&receiver);
+    expectU8(event.e);
+    expectObjectAddress(&state);
+    expectTrailer(1);
 
     RKH_TR_SM_DCH(&receiver, &event, &state);
-
-    checkHeader(RKH_TE_SM_DCH, 0, 0x1234567);
-    checkObjectAddress(&receiver);
-    checkU8Value(event.e);
-    checkObjectAddress(&state);
-    checkTrailer();
 }
 
 /** @} doxygen end group definition */

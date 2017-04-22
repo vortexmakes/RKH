@@ -64,8 +64,6 @@ RKH_MODULE_NAME(rkhtrc_stream)
 /* ---------------------------- Local variables ---------------------------- */
 static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
 static rui8_t *trcin, *trcout, *trcend;
-static rui8_t chk;
-static rui8_t nseq;
 static TRCQTY_T trcqty;
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -76,7 +74,6 @@ rkh_trcStream_init(void)
 {
     trcin = trcout = trcstm;
     trcqty = 0;
-    nseq = 0;
     trcend = &trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
     RKH_TRC_U8_RAW(RKH_FLG);
 }
