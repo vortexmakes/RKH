@@ -51,6 +51,7 @@
 #include "rkhfwk_maptbl.h"
 #include "rkhassert.h"
 
+#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 /* ----------------------------- Local macros ------------------------------ */
 /*
  * This macro is needed only if the module requires to check expressions 
@@ -60,7 +61,8 @@ RKH_MODULE_NAME(rkhtrc_filter)
 
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
-#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
 /**
  *  \brief
  *  Filter table of trace events.
@@ -137,13 +139,6 @@ static rui8_t trcsmaftbl[RKH_TRC_MAX_SMA];
  */
 static rui8_t trcsigftbl[RKH_TRC_MAX_SIGNALS];
 
-/**
- *  \brief
- *  The tables to filter trace events related to signal and active objects.
- */
-const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   trcsigftbl};
-const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       trcsmaftbl};
-
 /** 
  *  \brief
  *  Map a trace event ID to its corresponding filter.
@@ -159,10 +154,14 @@ static RKHROM RKH_GMTBL_T trcgmtbl[] =
     {RKH_USR_TTBL_OFFSET,   RKH_USR_TTBL_RANGE},
     {RKH_UT_TTBL_OFFSET,    RKH_UT_TTBL_RANGE}
 };
-#endif
 
-/* ---------------------------- Global variables --------------------------- */
-/* ---------------------------- Local variables ---------------------------- */
+/**
+ *  \brief
+ *  The tables to filter trace events related to signal and active objects.
+ */
+const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   trcsigftbl};
+const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       trcsmaftbl};
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
@@ -203,7 +202,6 @@ isOffFilter(rui8_t *filterTbl, RKH_TE_ID_T filter)
 }
 
 /* ---------------------------- Global functions --------------------------- */
-#if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
 void 
 rkh_trc_filter_group_(rui8_t ctrl, RKH_TG_T grp, rui8_t mode)
 {
@@ -313,6 +311,7 @@ rkh_trc_filter_get(RKH_FilterTbl *outFilterTbl)
     outFilterTbl->group = &trcgfilter;
     outFilterTbl->grpFilMap = trcgmtbl;
 }
+
 #endif
 
 /* ------------------------------ End of file ------------------------------ */
