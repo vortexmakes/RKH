@@ -87,18 +87,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkh.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhport.c" />
-    <ClCompile Include="..\..\..\..\test_trace_rec.c" />
-    <ClCompile Include="..\..\..\..\test_trace.c" />
-    <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\test_runners\test_trace_runner.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
