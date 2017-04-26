@@ -30,14 +30,15 @@
  */
 
 /**
- *  \file       rkhfwk_maptbl.h
- *  \brief      
- *  \ingroup    fwk
+ *  \file       test_rkhfwk_bittbl_runner.c
+ *  \ingroup    test_fwk
+ *
+ *  \brief      Test runner of bit table module
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2017.26.04  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -46,43 +47,22 @@
  */
 
 /* --------------------------------- Notes --------------------------------- */
-/* --------------------------------- Module -------------------------------- */
-#ifndef __RKHFWK_MAPTBL_H__
-#define __RKHFWK_MAPTBL_H__
-
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhtype.h"
+#include "unity_fixture.h"
 
-/* ---------------------- External C language linkage ---------------------- */
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* --------------------------------- Macros -------------------------------- */
-/* -------------------------------- Constants ------------------------------ */
-/* ------------------------------- Data types ------------------------------ */
-/* -------------------------- External variables --------------------------- */
-/**
- *  \brief
- *  rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a
- *  bit mask.
- */
-extern RKHROM rui8_t rkh_maptbl[8];
-
-/**
- *  \brief
- *  rkh_unmaptbl[] is a table in ROM, used to return the bit position of the
- *  highest priority bit set - a number between 0 and 7.
- */
-extern RKHROM rui8_t rkh_unmaptbl[256];
-
-/* -------------------------- Function prototypes -------------------------- */
-/* -------------------- External C language linkage end -------------------- */
-#ifdef __cplusplus
+/* ----------------------------- Local macros ------------------------------ */
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
+TEST_GROUP_RUNNER(bittbl)
+{
+	RUN_TEST_CASE(bittbl, GetBitMask);
+	RUN_TEST_CASE(bittbl, GetLeastSignificantBitPost);
+	RUN_TEST_CASE(bittbl, InvalidBitPosition);
 }
-#endif
-
-/* ------------------------------ Module end ------------------------------- */
-#endif
 
 /* ------------------------------ End of file ------------------------------ */

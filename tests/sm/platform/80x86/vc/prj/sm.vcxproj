@@ -109,8 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_record.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_stream.c" />

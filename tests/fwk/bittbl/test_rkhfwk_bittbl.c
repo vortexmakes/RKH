@@ -30,14 +30,20 @@
  */
 
 /**
- *  \file       rkhtrc_stream.c
- *  \brief      Platform - independent interface for RKH trace facility.
- *  \ingroup    aptTrc
+ *  \file       test_rkhfwk_bittbl.c
+ *  \ingroup    test_fwk
+ *  \brief      Unit test for bit table of fwk module.
+ *
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_fwk Framework
+ *  @{
+ *  \brief      Unit test for framework module.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2017.26.04  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -47,111 +53,63 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhtrc_stream.h"
+#include "unity_fixture.h"
 #include "rkhfwk_bittbl.h"
-#include "rkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-/*
- * This macro is needed only if the module requires to check expressions 
- * that ought to be true as long as the program  is running.
- */
-RKH_MODULE_NAME(rkhtrc_stream)
-
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-/* ---------------------------- Local variables ---------------------------- */
-static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-static rui8_t *trcin, *trcout, *trcend;
-static TRCQTY_T trcqty;
+TEST_GROUP(bittbl);
 
+/* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-void 
-rkh_trcStream_init(void)
+/* =========================== Bittbl test group =========================== */
+TEST_SETUP(bittbl)
 {
-    trcin = trcout = trcstm;
-    trcqty = 0;
-    trcend = &trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-    RKH_TRC_U8_RAW(RKH_FLG);
 }
 
-rui8_t *
-rkh_trc_get(void)
+TEST_TEAR_DOWN(bittbl)
 {
-    rui8_t *trByte = (rui8_t *)0;
-
-    if (trcqty == 0)
-    {
-        return trByte;
-    }
-
-    trByte = trcout++;
-    --trcqty;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
 }
 
-rui8_t *
-rkh_trc_get_block(TRCQTY_T *nget)
+/**
+ *  \addtogroup test_bittbl for test bittbl group
+ *  @{
+ *  \name Test cases of bit table group
+ *  @{ 
+ */
+TEST(bittbl, GetBitMask)
 {
-    rui8_t *trByte = (rui8_t *)0;
-    TRCQTY_T n;
+    rui8_t bitPos = 5, result;
+    rui8_t expectedBitMask = (rui8_t)(1 << bitPos);
 
-    if (trcqty == (TRCQTY_T)0)
-    {
-        *nget = (TRCQTY_T)0;
-        return trByte;
-    }
-
-    trByte = trcout;
-
-    /* Calculates the number of bytes to be retrieved */
-    n = (TRCQTY_T)(trcend - trcout);    /* bytes until the end */
-    if (n > trcqty)
-    {
-        n = trcqty;
-    }
-    if (n > *nget)
-    {
-        n = *nget;
-    }
-
-    *nget = n;
-    trcout += n;
-    trcqty -= n;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
+    result = rkh_bittbl_getBitMask(5);
+    TEST_ASSERT_EQUAL_HEX8(expectedBitMask, result);
 }
 
-void 
-rkh_trc_put(rui8_t b)
+TEST(bittbl, GetLeastSignificantBitPost)
 {
-    *trcin++ = b;
-    ++trcqty;
+    rui8_t result, value;
 
-    if (trcin == trcend)
-    {
-        trcin = trcstm;
-    }
-
-    if (trcqty >= RKH_CFG_TRC_SIZEOF_STREAM)
-    {
-        trcqty = RKH_CFG_TRC_SIZEOF_STREAM;
-        trcout = trcin;
-    }
+    value = 0x38;
+    result = rkh_bittbl_getLeastBitSetPos(value);
+    TEST_ASSERT_EQUAL(3, result);
 }
+
+TEST(bittbl, InvalidBitPosition)
+{
+    rui8_t result;
+
+    result = rkh_bittbl_getBitMask(8);
+    TEST_ASSERT_EQUAL_HEX8(RKH_INVALID_BITPOS, result);
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 
 /* ------------------------------ End of file ------------------------------ */

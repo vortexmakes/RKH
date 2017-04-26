@@ -108,6 +108,7 @@
 #include "rkhtim.h"
 #include "rkhassert.h"
 #include "rkhfwk_hook.h"
+#include "rkhfwk_bittbl.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus

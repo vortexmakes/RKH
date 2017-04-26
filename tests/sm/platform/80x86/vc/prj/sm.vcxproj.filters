@@ -195,9 +195,6 @@
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\unity\unity.c">
       <Filter>Source Files\tests\unity</Filter>
     </ClCompile>
@@ -217,6 +214,9 @@
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_stream.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhfwk_bittbl.c">
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
   </ItemGroup>

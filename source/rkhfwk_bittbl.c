@@ -30,14 +30,15 @@
  */
 
 /**
- *  \file       rkhtrc_stream.c
- *  \brief      Platform - independent interface for RKH trace facility.
- *  \ingroup    aptTrc
+ *  \file       rkhfwk_bittbl.c
+ *  \ingroup    sch
+ *
+ *  \brief      Declares the mapping tables to deal with priority algorithm.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -46,112 +47,64 @@
  */
 
 /* --------------------------------- Notes --------------------------------- */
+
+/* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhtrc_stream.h"
-#include "rkhfwk_bittbl.h"
-#include "rkhassert.h"
+#include "rkh.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-/*
- * This macro is needed only if the module requires to check expressions 
- * that ought to be true as long as the program  is running.
- */
-RKH_MODULE_NAME(rkhtrc_stream)
-
 /* ------------------------------- Constants ------------------------------- */
+/**
+ *  \brief
+ *  bitMaskTbl[] is a table in ROM, used to equate an index from 0 to 7 to a
+ *  bit mask.
+ */
+static RKHROM rui8_t bitMaskTbl[] =
+{
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
+};
+
+/**
+ *  \brief
+ *  leastBitSetTbl[] is a table in ROM, used to return the bit position of the
+ *  highest priority bit set - a number between 0 and 7.
+ */
+static RKHROM rui8_t leastBitSetTbl[] =
+{
+    0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x00 to 0x0F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x10 to 0x1F */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x20 to 0x2F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x30 to 0x3F */
+    6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x40 to 0x4F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x50 to 0x5F */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x60 to 0x6F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x70 to 0x7F */
+    7, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x80 to 0x8F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x90 to 0x9F */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xA0 to 0xAF */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xB0 to 0xBF */
+    6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xC0 to 0xCF */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xD0 to 0xDF */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xE0 to 0xEF */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0      /* 0xF0 to 0xFF */
+};
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-static rui8_t *trcin, *trcout, *trcend;
-static TRCQTY_T trcqty;
-
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-void 
-rkh_trcStream_init(void)
+rui8_t 
+rkh_bittbl_getBitMask(rui8_t bitPos)
 {
-    trcin = trcout = trcstm;
-    trcqty = 0;
-    trcend = &trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-    RKH_TRC_U8_RAW(RKH_FLG);
+    return (bitPos < 8) ? bitMaskTbl[bitPos] : RKH_INVALID_BITPOS;
 }
 
-rui8_t *
-rkh_trc_get(void)
+rui8_t 
+rkh_bittbl_getLeastBitSetPos(rui8_t value)
 {
-    rui8_t *trByte = (rui8_t *)0;
-
-    if (trcqty == 0)
-    {
-        return trByte;
-    }
-
-    trByte = trcout++;
-    --trcqty;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
-}
-
-rui8_t *
-rkh_trc_get_block(TRCQTY_T *nget)
-{
-    rui8_t *trByte = (rui8_t *)0;
-    TRCQTY_T n;
-
-    if (trcqty == (TRCQTY_T)0)
-    {
-        *nget = (TRCQTY_T)0;
-        return trByte;
-    }
-
-    trByte = trcout;
-
-    /* Calculates the number of bytes to be retrieved */
-    n = (TRCQTY_T)(trcend - trcout);    /* bytes until the end */
-    if (n > trcqty)
-    {
-        n = trcqty;
-    }
-    if (n > *nget)
-    {
-        n = *nget;
-    }
-
-    *nget = n;
-    trcout += n;
-    trcqty -= n;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
-}
-
-void 
-rkh_trc_put(rui8_t b)
-{
-    *trcin++ = b;
-    ++trcqty;
-
-    if (trcin == trcend)
-    {
-        trcin = trcstm;
-    }
-
-    if (trcqty >= RKH_CFG_TRC_SIZEOF_STREAM)
-    {
-        trcqty = RKH_CFG_TRC_SIZEOF_STREAM;
-        trcout = trcin;
-    }
+    return leastBitSetTbl[value];
 }
 
 /* ------------------------------ End of file ------------------------------ */

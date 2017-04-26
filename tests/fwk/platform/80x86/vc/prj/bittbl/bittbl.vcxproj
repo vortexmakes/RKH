@@ -11,22 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc_stream.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\source\rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
-    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhassert.c" />
-    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhtrc_out.c" />
-    <ClCompile Include="..\..\..\..\..\stream\stub\mocks\Mock_rkhfwk_bittbl.c" />
-    <ClCompile Include="..\..\..\..\..\stream\stub\mocks\Mock_rkhport.c" />
-    <ClCompile Include="..\..\..\..\..\stream\stub\mocks\Mock_rkhsm.c" />
-    <ClCompile Include="..\..\..\..\..\stream\stub\mocks\Mock_rkhsma.c" />
-    <ClCompile Include="..\..\..\..\..\stream\test_rkhtrc_stream.c" />
-    <ClCompile Include="..\..\..\..\..\stream\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\..\stream\test_runners\test_rkhtrc_stream_runner.c" />
+    <ClCompile Include="..\..\..\..\..\bittbl\test_rkhfwk_bittbl.c" />
+    <ClCompile Include="..\..\..\..\..\bittbl\test_runners\all_tests.c" />
+    <ClCompile Include="..\..\..\..\..\bittbl\test_runners\test_rkhfwk_bittbl_runner.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6932FCBF-FF04-4FFB-969B-5694D3882813}</ProjectGuid>
+    <ProjectGuid>{640F4222-12FE-461E-BE99-3DC0E3265130}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>filter</RootNamespace>
   </PropertyGroup>
@@ -67,7 +61,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\..\trace\stream;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\trace\stream\stub\mocks;$(ProjectDir)..\..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\..\fwk\bittbl;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\fwk\bittbl\stub\mocks;$(ProjectDir)..\..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,7 +77,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\..\trace\stream;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\trace\stream\stub\mocks;$(ProjectDir)..\..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\..\trace;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\trace\stub\mocks;$(ProjectDir)..\..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

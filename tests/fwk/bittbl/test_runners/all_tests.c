@@ -30,14 +30,15 @@
  */
 
 /**
- *  \file       rkhtrc_stream.c
- *  \brief      Platform - independent interface for RKH trace facility.
- *  \ingroup    aptTrc
+ *  \file       all_tests.c
+ *  \ingroup    test_fwk
+ *
+ *  \brief      Test runner of framework module
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2017.26.04  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -47,111 +48,41 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhtrc_stream.h"
-#include "rkhfwk_bittbl.h"
-#include "rkhassert.h"
+#include <stdio.h>
+#include "rkh.h"
+#include "unity_fixture.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-/*
- * This macro is needed only if the module requires to check expressions 
- * that ought to be true as long as the program  is running.
- */
-RKH_MODULE_NAME(rkhtrc_stream)
-
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static rui8_t trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-static rui8_t *trcin, *trcout, *trcend;
-static TRCQTY_T trcqty;
-
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+runAllTests(void)
+{
+	RUN_TEST_GROUP(bittbl);
+}
+
 /* ---------------------------- Global functions --------------------------- */
-void 
-rkh_trcStream_init(void)
+int
+main(int argc, char *argv[])
 {
-    trcin = trcout = trcstm;
-    trcqty = 0;
-    trcend = &trcstm[RKH_CFG_TRC_SIZEOF_STREAM];
-    RKH_TRC_U8_RAW(RKH_FLG);
-}
+    static char *args[8];
+    int nArgs;
 
-rui8_t *
-rkh_trc_get(void)
-{
-    rui8_t *trByte = (rui8_t *)0;
+    args[0] = argv[0];
+#if 0
+    args[1] = "-g";
+    args[2] = "trace_args";
+    nArgs = 3;
+#else
+    nArgs = 1;
+#endif
 
-    if (trcqty == 0)
-    {
-        return trByte;
-    }
-
-    trByte = trcout++;
-    --trcqty;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
-}
-
-rui8_t *
-rkh_trc_get_block(TRCQTY_T *nget)
-{
-    rui8_t *trByte = (rui8_t *)0;
-    TRCQTY_T n;
-
-    if (trcqty == (TRCQTY_T)0)
-    {
-        *nget = (TRCQTY_T)0;
-        return trByte;
-    }
-
-    trByte = trcout;
-
-    /* Calculates the number of bytes to be retrieved */
-    n = (TRCQTY_T)(trcend - trcout);    /* bytes until the end */
-    if (n > trcqty)
-    {
-        n = trcqty;
-    }
-    if (n > *nget)
-    {
-        n = *nget;
-    }
-
-    *nget = n;
-    trcout += n;
-    trcqty -= n;
-
-    if (trcout >= trcend)
-    {
-        trcout = trcstm;
-    }
-
-    return trByte;
-}
-
-void 
-rkh_trc_put(rui8_t b)
-{
-    *trcin++ = b;
-    ++trcqty;
-
-    if (trcin == trcend)
-    {
-        trcin = trcstm;
-    }
-
-    if (trcqty >= RKH_CFG_TRC_SIZEOF_STREAM)
-    {
-        trcqty = RKH_CFG_TRC_SIZEOF_STREAM;
-        trcout = trcin;
-    }
+	UnityMain(nArgs, args, runAllTests);
+    getchar();
 }
 
 /* ------------------------------ End of file ------------------------------ */

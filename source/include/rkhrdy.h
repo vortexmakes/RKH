@@ -84,15 +84,14 @@ extern "C" {
  *
  *  The lower 3 bits of the SMA's priority are used to determine the bit
  *  position in rkhrg.tbl[], while the next three most significant bits are
- *  used to determine the index into rkhrg.tbl[]. Note that rkh_maptbl[] is
- *  a table in ROM, used to equate an index from 0 to 7 to a bit mask.
+ *  used to determine the index into rkhrg.tbl[].
  *
  *  \param[in] rg		ready group.
  *  \param[in] p		number of SMA's priotity.
  */
 #define RKH_RDY_INSERT(rg, p) \
-    (rg).grp |= rkh_maptbl[(p) >> 3]; \
-    (rg).tbl[(p) >> 3] |= rkh_maptbl[(p) & 0x07]
+    (rg).grp |= rkh_bittbl_getBitMask[(p) >> 3]; \
+    (rg).tbl[(p) >> 3] |= rkh_bittbl_getBitMask[(p) & 0x07]
 
 /**
  *  \brief
@@ -106,8 +105,8 @@ extern "C" {
  *  \param[in] p		number of SMA's priotity.
  */
 #define RKH_RDY_REM(rg, p) \
-    if (((rg).tbl[(p) >> 3] &= ~rkh_maptbl[(p) & 0x07]) == 0) \
-        (rg).grp &= ~rkh_maptbl[(p) >> 3]
+    if (((rg).tbl[(p) >> 3] &= ~rkh_bittbl_getBitMask[(p) & 0x07]) == 0) \
+        (rg).grp &= ~rkh_bittbl_getBitMask[(p) >> 3]
 
 /**
  *  \brief
@@ -115,18 +114,18 @@ extern "C" {
  *
  *	Another table lookup is performed, rather than scanning through the table
  *	starting with rkhrg.tbl[0] to find the highest priority task ready to
- *	run. rkh_unmaptbl[256] is a priority resolution table. Eight bits are used
- *	to represent when tasks are ready in a group. The least significant bit
- *	has the highest priority. Using this byte to index the table returns the
- *	bit position of the highest priority bit set, a number between 0 and 7.
+ *	run. Eight bits are used to represent when tasks are ready in a group. The 
+ *  least significant bit has the highest priority. Using this byte to index 
+ *  the table returns the bit position of the highest priority bit set, a 
+ *  number between 0 and 7.
  *
  *  \param[in] rg		ready group.
  *  \param[in] p		the found highest priority is assigned to \a p.
  */
 #define RKH_RDY_FIND_HIGHEST(rg, p) \
-    (p) = rkh_unmaptbl[(rg).grp]; \
+    (p) = rkh_bittbl_getLeastBitSetPos((rg).grp); \
     (p) = (rui8_t)(((p) << 3) + \
-                   (rui8_t)rkh_unmaptbl[(rg).tbl[(p)]])
+                   (rui8_t)rkh_bittbl_getLeastBitSetPos((rg).tbl[(p)]))
 
 /* -------------------------------- Constants ------------------------------ */
 #if RKH_CFG_FWK_MAX_SMA <= 8
@@ -170,9 +169,7 @@ extern "C" {
  *
  *  The lower 3 bits (X's) of the SMA's priority are used to determine the
  *  bit position in rkhrg.tbl[], while the next three most significant bits
- *  (Y's) are used to determine the index into rkhrg.tbl[]. Note that
- *  rkh_maptbl[] is a table in ROM, used to equate an index from 0 to 7 to a
- *  bit mask. \n\n
+ *  (Y's) are used to determine the index into rkhrg.tbl[].
  *
  *  To determine which priority (and thus which SMA) will run next, the
  *  scheduler determines the lowest priority number that has its bit set in

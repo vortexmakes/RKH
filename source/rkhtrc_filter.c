@@ -48,7 +48,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhtrc_filter.h"
-#include "rkhfwk_maptbl.h"
+#include "rkhfwk_bittbl.h"
 #include "rkhassert.h"
 
 #if RKH_CFG_TRC_RTFIL_EN == RKH_ENABLED
@@ -182,11 +182,11 @@ setOneFilter(rui8_t *filterByte, rui8_t value, rui8_t bitPos)
 {
     if (value == FILTER_OFF)
     {
-        *filterByte |= rkh_maptbl[bitPos];
+        *filterByte |= rkh_bittbl_getBitMask(bitPos);
     }
     else
     {
-        *filterByte &= ~rkh_maptbl[bitPos];
+        *filterByte &= ~rkh_bittbl_getBitMask(bitPos);
     }
 }
 
@@ -198,7 +198,7 @@ isOffFilter(rui8_t *filterTbl, RKH_TE_ID_T filter)
 
     y = filter >> 3;
     x = (rui8_t)(filter & 7);
-    return (*(filterTbl + y) & rkh_maptbl[x]) != 0;
+    return (*(filterTbl + y) & rkh_bittbl_getBitMask(x)) != 0;
 }
 
 static const RKH_TRC_FIL_T *
@@ -254,7 +254,7 @@ rkh_trc_filter_event_(rui8_t ctrl, RKH_TE_ID_T evt)
         setOneFilter(&trceftbl[offset], ctrl, e & 7);
         if (ctrl == FILTER_OFF)
         {
-            trcgfilter |= rkh_maptbl[grp];
+            trcgfilter |= rkh_bittbl_getBitMask(grp);
         }
     }
 }
@@ -270,7 +270,7 @@ rkh_trc_isoff_(RKH_TE_ID_T e)
     grp = GETGRP(e);
     offset = trcgmtbl[grp].offset;
 
-    return (((trcgfilter & rkh_maptbl[grp]) != 0) && 
+    return (((trcgfilter & rkh_bittbl_getBitMask(grp)) != 0) && 
               isOffFilter(&trceftbl[offset], evt));
 }
 

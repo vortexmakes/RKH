@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhtbl.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhassert.c" />
+    <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhport.c" />
     <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhtrc_out.c" />
     <ClCompile Include="..\..\..\..\..\filter\test_rkhtrc_filter.c" />
