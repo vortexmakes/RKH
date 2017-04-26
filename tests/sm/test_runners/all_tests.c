@@ -65,10 +65,8 @@ static
 void 
 runAllTests(void)
 {
-	/*RUN_TEST_GROUP(instance);*/
 	RUN_TEST_GROUP(transition);
 	RUN_TEST_GROUP(pseudostate);
-	/*RUN_TEST_GROUP(polymorphism);*/
 	RUN_TEST_GROUP(trnWoutUnitrazer);
 	RUN_TEST_GROUP(pseudostateConditional);
 }
@@ -83,7 +81,7 @@ main(int argc, char *argv[])
     args[0] = argv[0];
 #if 1
     args[1] = "-r";
-    args[2] = "99";
+    args[2] = "1";
     nArgs = 3;
 #else
     nArgs = 1;

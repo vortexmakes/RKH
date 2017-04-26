@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       test_rkhtrc_record.c
+ *  \file       rkhtrc_record.c
  *  \brief      Platform - independent interface for RKH trace facility.
  *  \ingroup    aptTrc
  */
@@ -52,6 +52,7 @@
 #include "rkhtrc_filter.h"
 #include "rkhassert.h"
 #include "rkhsma.h"
+#include "rkhfwk_hook.h"
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 

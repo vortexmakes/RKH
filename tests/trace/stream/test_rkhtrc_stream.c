@@ -32,13 +32,13 @@
 /**
  *  \file       test_rkhtrc_stream.c
  *  \ingroup    test_trace
- *  \brief      Unit test for filter module.
+ *  \brief      Unit test for trace stream module.
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_trace Trace
  *  @{
- *  \brief      Unit test for filter module.
+ *  \brief      Unit test for trace module.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -85,9 +85,9 @@ TEST_TEAR_DOWN(stream)
 }
 
 /**
- *  \addtogroup test_stream Trace record stream test group
+ *  \addtogroup test_stream Trace stream test group
  *  @{
- *  \name Test cases of trace record stream group
+ *  \name Test cases of trace stream group
  *  @{ 
  */
 TEST(stream, FlagAfterInit)

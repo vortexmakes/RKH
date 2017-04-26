@@ -3423,7 +3423,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 6 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_DEFER (SYM q, SIG sig) </TD>
+		<TD rowspan=2> #RKH_TE_SMA_DEFER (SYM q, SIG sig) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_DEFER </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
@@ -3434,7 +3434,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 7 </TD>
-		<TD rowspan=2> #RKH_TE_FWK_RCALL (SYM ao, SIG sig) </TD>
+		<TD rowspan=2> #RKH_TE_SMA_RCALL (SYM ao, SIG sig) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_RCALL </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
@@ -3641,7 +3641,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 2 </TD>
-		<TD rowspan=3> #RKH_TE_SMA_DCH (SYM ao, SIG sig, SYM st) </TD>
+		<TD rowspan=3> #RKH_TE_SM_DCH (SYM ao, SIG sig, SYM st) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SM_DCH </TD>
 		<TD><I> ao </I></TD>
 		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>

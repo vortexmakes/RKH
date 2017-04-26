@@ -195,9 +195,6 @@
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
       <Filter>Source Files\tests\sm\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c">
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
@@ -212,6 +209,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_filter.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_record.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_stream.c">
+      <Filter>Source Files\rkh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

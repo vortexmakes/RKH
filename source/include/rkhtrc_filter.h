@@ -134,7 +134,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_SMA(sma) \
-            rkh_trc_symFil(&fsma, RKH_SMA_ACCESS_CONST(sma, prio), \
+            rkh_trc_symFil(RKHFilterSma, RKH_SMA_ACCESS_CONST(sma, prio), \
                            FILTER_ON)
 
     /**
@@ -144,7 +144,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_ALL_SMA() \
-            rkh_trc_symFil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_ON))
+            rkh_trc_symFil(RKHFilterSma, 0, RKH_TRC_SET_ALL(FILTER_ON))
 
     /**
      *  \brief
@@ -154,7 +154,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_SMA(sma) \
-            rkh_trc_symFil(&fsma, RKH_SMA_ACCESS_CONST(sma, prio), \
+            rkh_trc_symFil(RKHFilterSma, RKH_SMA_ACCESS_CONST(sma, prio), \
                            FILTER_OFF)
 
     /**
@@ -164,7 +164,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_ALL_SMA() \
-            rkh_trc_symFil(&fsma, 0, RKH_TRC_SET_ALL(FILTER_OFF))
+            rkh_trc_symFil(RKHFilterSma, 0, RKH_TRC_SET_ALL(FILTER_OFF))
 
     #else
         #define RKH_FILTER_ON_SMA(sma)          (void)0
@@ -182,7 +182,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_SIGNAL(sig) \
-            rkh_trc_symFil(&fsig, (sig), FILTER_ON)
+            rkh_trc_symFil(RKHFilterSignal, (sig), FILTER_ON)
 
     /**
      *  \brief
@@ -191,7 +191,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_ON_ALL_SIGNALS() \
-            rkh_trc_symFil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_ON))
+            rkh_trc_symFil(RKHFilterSignal, 0, RKH_TRC_SET_ALL(FILTER_ON))
 
     /**
      *  \brief
@@ -201,7 +201,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_SIGNAL(sig) \
-            rkh_trc_symFil(&fsig, (sig), FILTER_OFF)
+            rkh_trc_symFil(RKHFilterSignal, (sig), FILTER_OFF)
 
     /**
      *  \brief
@@ -210,7 +210,7 @@ extern "C" {
      *  \ingroup apiTrc 
      */
         #define RKH_FILTER_OFF_ALL_SIGNALS() \
-            rkh_trc_symFil(&fsig, 0, RKH_TRC_SET_ALL(FILTER_OFF))
+            rkh_trc_symFil(RKHFilterSignal, 0, RKH_TRC_SET_ALL(FILTER_OFF))
     #else
         #define RKH_FILTER_ON_SIGNAL(sig)       (void)0
         #define RKH_FILTER_ON_ALL_SIGNALS()     (void)0
@@ -277,10 +277,11 @@ typedef enum
     FILTER_ON, FILTER_OFF
 } RKH_TRC_FOPT;
 
-typedef enum RKH_FIL_T
+typedef enum RKHFilter
 {
-    RKH_FIL_TRCE, RKH_FIL_SIG, RKH_FIL_SMA
-} RKH_FIL_T;
+    RKHFilterTrcEvt, RKHFilterSignal, RKHFilterSma,
+    RKHFilterNums
+} RKHFilter;
 
 typedef struct RKH_FilterTbl
 {
@@ -292,9 +293,6 @@ typedef struct RKH_FilterTbl
 } RKH_FilterTbl;
 
 /* -------------------------- External variables --------------------------- */
-extern const RKH_TRC_FIL_T fsig;
-extern const RKH_TRC_FIL_T fsma;
-
 /* -------------------------- Function prototypes -------------------------- */
 /**
  *  \brief
@@ -405,7 +403,7 @@ rbool_t rkh_trc_isoff_(RKH_TE_ID_T e);
  *  Emmit or suppresse trace events related to a particular active
  *  object or event signal.
  *
- *  \param[in] filter	filter type.
+ *  \param[in] fd    	filter type.
  *  \param[in] slot		indicates the filter slot to be applied.
  *  \param[in] mode		filter option, the available options are FILTER_ON or
  *                      FILTER_OFF.
@@ -415,14 +413,13 @@ rbool_t rkh_trc_isoff_(RKH_TE_ID_T e);
  *  it. Please use RKH_FILTER_ON_SMA()/RKH_FILTER_ON_SIGNAL(), or
  *  RKH_FILTER_OFF_SMA()/RKH_FILTER_OFF_SIGNAL() macros instead.
  */
-void rkh_trc_symFil(const RKH_TRC_FIL_T *filter,
-                    RKH_TRC_FSLOT slot, rui8_t mode);
+void rkh_trc_symFil(RKHFilter fd, RKH_TRC_FSLOT slot, rui8_t mode);
 
 /**
  *  \brief
  *  Test the active objecto or signal filter condition.
  *
- *  \param[in] filter	filter type.
+ *  \param[in] fd    	filter type.
  *  \param[in] slot		indicates the filter slot to be applied.
  *
  *	\return
@@ -433,8 +430,7 @@ void rkh_trc_symFil(const RKH_TRC_FIL_T *filter,
  *  This function is internal to RKH and the user application should not call
  *  it.
  */
-rbool_t rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter,
-                             RKH_TRC_FSLOT slot);
+rbool_t rkh_trc_symFil_isoff(RKHFilter fd, RKH_TRC_FSLOT slot);
 
 /**
  *  \brief

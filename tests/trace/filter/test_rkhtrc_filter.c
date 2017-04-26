@@ -32,13 +32,13 @@
 /**
  *  \file       test_rkhtrc_filter.c
  *  \ingroup    test_trace
- *  \brief      Unit test for filter module.
+ *  \brief      Unit test for runtime filter of trace module.
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_trace Trace
  *  @{
- *  \brief      Unit test for filter module.
+ *  \brief      Unit test for trace module.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -193,7 +193,7 @@ TEST_TEAR_DOWN(toolForTest)
 }
 
 /**
- *  \addtogroup test_toolForTest Filter test group
+ *  \addtogroup test_toolForTest Tool for test filter group
  *  @{
  *  \name Test cases of filter group
  *  @{ 
@@ -306,9 +306,9 @@ TEST_TEAR_DOWN(filter)
 }
 
 /**
- *  \addtogroup test_trace_rec Records test group
+ *  \addtogroup test_filter Runtime filter test group
  *  @{
- *  \name Test cases of records group
+ *  \name Test cases of runtime filter group
  *  @{ 
  */
 TEST(filter, filEventsAreOnAfterInit)
@@ -490,49 +490,49 @@ TEST(filter, turnOffOneGroupChangedItsEventFilters)
 TEST(filter, turnOffOneSymFil)
 {
     bitTbl[0] = 0x01;
-    rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, 0, FILTER_OFF);
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(filter, turnOnOneSymFil)
 {
     bitTbl[0] = 0x00;
-    rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA - 1, FILTER_OFF);
-    rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA - 1, FILTER_ON);
+    rkh_trc_symFil(RKHFilterSma, RKH_TRC_MAX_SMA - 1, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, RKH_TRC_MAX_SMA - 1, FILTER_ON);
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(filter, turnOnOffMultipleSymFil)
 {
     bitTbl[0] = 0x89;
-    rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
-    rkh_trc_symFil(filStatus.ao, 3, FILTER_OFF);
-    rkh_trc_symFil(filStatus.ao, 7, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, 0, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, 3, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, 7, FILTER_OFF);
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(filter, allOffOnSymFil)
 {
     setAllBitTbl(bitTbl, FILTER_OFF_BYTE, RKH_TRC_MAX_SMA);
-    rkh_trc_symFil(filStatus.ao, 0, RKH_TRC_SET_ALL(FILTER_OFF));
+    rkh_trc_symFil(RKHFilterSma, 0, RKH_TRC_SET_ALL(FILTER_OFF));
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 
     setAllBitTbl(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_SMA);
-    rkh_trc_symFil(filStatus.ao, 0, RKH_TRC_SET_ALL(FILTER_ON));
+    rkh_trc_symFil(RKHFilterSma, 0, RKH_TRC_SET_ALL(FILTER_ON));
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(filter, isOnOffSymFil)
 {
-    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_FALSE);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 0) == RKH_FALSE);
 
     setBitTbl(filStatus.ao->tbl, 0, FILTER_OFF);
     setBitTbl(filStatus.ao->tbl, 3, FILTER_OFF);
-    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_TRUE);
-    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 3) == RKH_TRUE);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 0) == RKH_TRUE);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 3) == RKH_TRUE);
 
     setBitTbl(filStatus.ao->tbl, 0, FILTER_ON);
-    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(filStatus.ao, 0) == RKH_FALSE);
+    TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 0) == RKH_FALSE);
 }
 
 TEST(filter, upperAndLowerBoundsSymFil)
@@ -540,8 +540,8 @@ TEST(filter, upperAndLowerBoundsSymFil)
     setBitTbl(bitTbl, 0, FILTER_OFF);
     setBitTbl(bitTbl, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
 
-    rkh_trc_symFil(filStatus.ao, 0, FILTER_OFF);
-    rkh_trc_symFil(filStatus.ao, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, 0, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
@@ -551,12 +551,12 @@ TEST(filter, outOfBoundsProducesRuntimeErrorSymFil)
     rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
 
-    rkh_trc_symFil(filStatus.ao, (filStatus.ao->size * 8) + 1, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma, (filStatus.ao->size * 8) + 1, FILTER_OFF);
 
     rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
 
-    rkh_trc_symFil(0, 0, FILTER_OFF);
+    rkh_trc_symFil(RKHFilterSma + 10, 0, FILTER_OFF);
 }
 
 /** @} doxygen end group definition */

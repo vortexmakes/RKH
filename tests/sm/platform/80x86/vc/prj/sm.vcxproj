@@ -111,7 +111,9 @@
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhtbl.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_filter.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_record.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_stream.c" />
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\unity\unity.c" />

@@ -5,7 +5,7 @@
 #include "rkhtrc_out.h"
 
 /* Ignore the following warnings, since we are copying code */
-#if defined(__GNUC__) && !defined(__ICC)
+#if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
 #if !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wpragmas"
 #endif

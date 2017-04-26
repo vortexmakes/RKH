@@ -30,9 +30,9 @@
                         RKH_CFG_TRC_SM_DCH_EN   RKH_ENABLED
 
   - if RKH_CFG_TRC_RTFIL_EN are RKH_ENABLED, set to OFF filters:
-                        RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
-                        RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
-                        RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
+                        RKH_FILTER_OFF_EVENT(RKH_TE_SMA_LIFO);
+                        RKH_FILTER_OFF_EVENT(RKH_TE_SMA_FIFO);
+                        RKH_FILTER_OFF_EVENT(RKH_TE_SM_DCH);
 - If enabled, show sender information on post fifo/lifo trace events.
 - Support of Seqdiag file generation.
 

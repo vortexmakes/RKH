@@ -32,7 +32,7 @@
 /**
  *  \file       rkhfwk_maptbl.h
  *  \brief      
- *  \ingroup    
+ *  \ingroup    fwk
  */
 
 /* -------------------------- Development history -------------------------- */

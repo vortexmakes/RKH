@@ -32,13 +32,13 @@
 /**
  *  \file       test_rkhtrc_record.c
  *  \ingroup    test_trace
- *  \brief      Unit test for record module.
+ *  \brief      Unit test for record of trace module.
  *
  *  \addtogroup test
  *  @{
  *  \addtogroup test_trace Trace
  *  @{
- *  \brief      Unit test for record module.
+ *  \brief      Unit test for trace module.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -78,9 +78,6 @@ static RKH_SMA_T sender;
 static RKH_EVT_T event;
 static RKH_ST_T state = {{RKH_BASIC, "state"}};
 static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
-
-const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   NULL};
-const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       NULL};
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -208,9 +205,9 @@ TEST_TEAR_DOWN(record)
 }
 
 /**
- *  \addtogroup test_record Trace record stream test group
+ *  \addtogroup test_record Trace record test group
  *  @{
- *  \name Test cases of trace record record group
+ *  \name Test cases of trace record group
  *  @{ 
  */
 TEST(record, InsertRecordHeader)
@@ -388,7 +385,7 @@ TEST(record, InsertFwkActorRecord)
 TEST(record, InsertSmaActivateRecord)
 {
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
     expectHeader(RKH_TE_SMA_ACT, 0, 0x1234567, 1);
     expectObjectAddress(&receiver);
@@ -404,9 +401,9 @@ TEST(record, InsertSmaGetRecord)
     rui8_t nElem = 4, nMin = 2;
 
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_GET, RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsig, event.e, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSignal, event.e, RKH_TRUE);
     expectHeader(RKH_TE_SMA_GET, 0, 0x1234567, 1);
     expectObjectAddress(&receiver);
     expectU8(event.e);
@@ -424,9 +421,9 @@ TEST(record, InsertSmaPostFifoRecord)
     rui8_t nElem = 4, nMin = 2;
 
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsig, event.e, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSignal, event.e, RKH_TRUE);
     expectHeader(RKH_TE_SMA_FIFO, 0, 0x1234567, 0);
     expectObjectAddress(&receiver);
     expectU8(event.e);
@@ -446,9 +443,9 @@ TEST(record, InsertSmaPostLifoRecord)
     rui8_t nElem = 4, nMin = 2;
 
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsig, event.e, RKH_TRUE);
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSignal, event.e, RKH_TRUE);
     expectHeader(RKH_TE_SMA_LIFO, 0, 0x1234567, 0);
     expectObjectAddress(&receiver);
     expectU8(event.e);
@@ -536,7 +533,7 @@ TEST(record, InsertDispatchRecordWithInvalidSignal)
     event.e = RKH_COMPLETION_EVENT;
 
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SM_DCH, RKH_TRUE);
-    rkh_trc_symFil_isoff_ExpectAndReturn(&fsma, RKH_GET_PRIO(&receiver), 
+    rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
     expectHeader(RKH_TE_SM_DCH, 0, 0x1234567, 1);
     expectObjectAddress(&receiver);

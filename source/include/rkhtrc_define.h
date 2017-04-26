@@ -100,7 +100,7 @@ extern "C" {
  */
 #if RKH_CFG_TRC_RTFIL_SMA_EN == RKH_ENABLED
     #define RKH_TRC_AO_ISOFF(prio) \
-            && rkh_trc_symFil_isoff(&fsma, (RKH_TRC_FSLOT)(prio))
+            && rkh_trc_symFil_isoff(RKHFilterSma, (RKH_TRC_FSLOT)(prio))
 #else
     #define RKH_TRC_AO_ISOFF(prio)
 #endif
@@ -126,7 +126,7 @@ extern "C" {
 #if RKH_CFG_TRC_RTFIL_SIGNAL_EN == RKH_ENABLED
     #define RKH_TRC_SIG_ISOFF(sig) \
             && (RKH_TRC_IS_RESERVED_SIG(sig) || \
-            rkh_trc_symFil_isoff(&fsig, (RKH_TRC_FSLOT)(sig)))
+            rkh_trc_symFil_isoff(RKHFilterSignal, (RKH_TRC_FSLOT)(sig)))
 #else
     #define RKH_TRC_SIG_ISOFF(sig)
 #endif
@@ -376,9 +376,9 @@ extern "C" {
 #define RKH_TE_SMA_REG          (RKH_TE_SMA_LIFO + 1)
 /** \copybrief RKH_TR_SMA_UNREG */
 #define RKH_TE_SMA_UNREG        (RKH_TE_SMA_REG + 1)
-/** \copybrief RKH_TR_FWK_DEFER */
+/** \copybrief RKH_TR_SMA_DEFER */
 #define RKH_TE_SMA_DEFER        (RKH_TE_SMA_UNREG + 1)
-/** \copybrief RKH_TR_FWK_RCALL */
+/** \copybrief RKH_TR_SMA_RCALL */
 #define RKH_TE_SMA_RCALL        (RKH_TE_SMA_DEFER + 1)
 #define RKH_SMA_END             RKH_TE_SMA_RCALL
 

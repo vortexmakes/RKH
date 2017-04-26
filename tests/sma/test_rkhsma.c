@@ -195,7 +195,7 @@ TEST(sma, Defer)
 {
     rkh_enter_critical_Expect();
     rkh_rq_put_fifo_Expect(&receiver.equeue, &event);
-    rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_DEFER, RKH_FALSE);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_DEFER, RKH_FALSE);
     rkh_exit_critical_Expect();
 
     rkh_sma_defer(&receiver.equeue, &event);

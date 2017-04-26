@@ -159,8 +159,8 @@ static RKHROM RKH_GMTBL_T trcgmtbl[] =
  *  \brief
  *  The tables to filter trace events related to signal and active objects.
  */
-const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   trcsigftbl};
-const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       trcsmaftbl};
+static const RKH_TRC_FIL_T fsig = {RKH_TRC_MAX_SIGNALS,   trcsigftbl};
+static const RKH_TRC_FIL_T fsma = {RKH_TRC_MAX_SMA,       trcsmaftbl};
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -199,6 +199,13 @@ isOffFilter(rui8_t *filterTbl, RKH_TE_ID_T filter)
     y = filter >> 3;
     x = (rui8_t)(filter & 7);
     return (*(filterTbl + y) & rkh_maptbl[x]) != 0;
+}
+
+static const RKH_TRC_FIL_T *
+getFilterTable(RKHFilter fd)
+{
+    RKH_REQUIRE(fd < RKHFilterNums);
+    return (fd == RKHFilterSignal) ? &fsig : &fsma;
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -268,18 +275,16 @@ rkh_trc_isoff_(RKH_TE_ID_T e)
 }
 
 void 
-rkh_trc_symFil(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot, rui8_t mode)
+rkh_trc_symFil(RKHFilter fd, RKH_TRC_FSLOT slot, rui8_t mode)
 {
     rui8_t x, onoff;
     RKH_TRC_FSLOT y;
+    const RKH_TRC_FIL_T *filter;
 
-    if ((filter == (const RKH_TRC_FIL_T *)0) || (slot > (filter->size << 3)))
-    {
-        RKH_ASSERT(0);
-        return;
-    }
-
+    filter = getFilterTable(fd);
+    RKH_REQUIRE(slot <= (filter->size << 3));
     onoff = (rui8_t)(mode & RKH_FILTER_MODE_MASK);
+
     if (mode & RKH_TRC_ALL_FILTERS)
     {
         setAllFilters(filter->tbl, onoff, filter->size);
@@ -293,10 +298,12 @@ rkh_trc_symFil(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot, rui8_t mode)
 }
 
 rbool_t 
-rkh_trc_symFil_isoff(const RKH_TRC_FIL_T *filter, RKH_TRC_FSLOT slot)
+rkh_trc_symFil_isoff(RKHFilter fd, RKH_TRC_FSLOT slot)
 {
-    RKH_REQUIRE((filter != (const RKH_TRC_FIL_T *)0) && 
-                (slot < (filter->size << 3)));
+    const RKH_TRC_FIL_T *filter;
+
+    filter = getFilterTable(fd);
+    RKH_REQUIRE(slot <= (filter->size << 3));
     return isOffFilter(filter->tbl, (RKH_TE_ID_T)slot);
 }
 

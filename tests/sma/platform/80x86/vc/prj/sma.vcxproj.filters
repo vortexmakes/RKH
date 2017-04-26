@@ -22,9 +22,6 @@
     <ClCompile Include="..\..\..\..\test_runners\test_rkhsma_runner.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhtrc.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhrq.c">
       <Filter>test\stub</Filter>
     </ClCompile>
@@ -62,6 +59,15 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsm.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_filter.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_record.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_stream.c">
       <Filter>test\stub</Filter>
     </ClCompile>
   </ItemGroup>
