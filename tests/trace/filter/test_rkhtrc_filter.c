@@ -56,6 +56,7 @@
 #include "unity_fixture.h"
 #include "rkhtrc_filter.h"
 #include "Mock_rkhassert.h"
+#include "Mock_rkhfwk_bittbl.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -79,6 +80,12 @@ static const rui8_t maptbl[] =
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+MockAssertCallback(const char* const file, int line, int cmock_num_calls)
+{
+    TEST_PASS();
+}
+
 static void
 setBitTbl(rui8_t *bt, rui16_t bit, rui8_t value)
 {
@@ -299,10 +306,13 @@ TEST_SETUP(filter)
     rkh_trc_filter_get(&filStatus);
     rkh_trc_filter_init();
     memset(bitTbl, FILTER_ON_BYTE, RKH_TRC_MAX_EVENTS_IN_BYTES);
+    Mock_rkhfwk_bittbl_Init();
 }
 
 TEST_TEAR_DOWN(filter)
 {
+    Mock_rkhfwk_bittbl_Verify();
+    Mock_rkhfwk_bittbl_Destroy();
 }
 
 /**
@@ -332,6 +342,8 @@ TEST(filter, turnOffOneFilEvent)
 
     offset = RKH_SM_TTBL_OFFSET;
     bitTbl[offset] = 0x01;
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_SM_INIT) & 7, 1);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_SM_INIT), 8);
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
 
@@ -347,8 +359,15 @@ TEST(filter, turnOnOneFilEvent)
 {
     bitTbl[RKH_SM_TTBL_OFFSET + 0] = 0x02;
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_SM_INIT) & 7, 1);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_SM_INIT), 8);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_SM_CLRH) & 7, 2);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_SM_CLRH), 8);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_CLRH);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_SM_INIT) & 7, 1);
     rkh_trc_filter_event_(FILTER_ON, RKH_TE_SM_INIT);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
@@ -364,7 +383,12 @@ TEST(filter, turnOffMultipleFilEvent)
     bitTbl[offset] = 0x01;
     bitTbl[offset + 1] = 0x01;
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_SM_INIT) & 7, 1);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_SM_INIT), 8);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_INIT);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_SM_TS_STATE) & 7, 1);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_SM_TS_STATE), 8);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_SM_TS_STATE);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
@@ -391,13 +415,18 @@ TEST(filter, allOnFilEvent)
 
 TEST(filter, isOnOffFilEvent)
 {
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_FWK_OBJ), 0x20);
     TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_FWK_OBJ) == RKH_FALSE);
 
     setBitTbl(filStatus.event, RKH_TE_MP_INIT, FILTER_OFF);
     setBitTbl(filStatus.group, RKH_TG_MP, FILTER_OFF);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_MP_INIT), 0x01);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_MP_INIT) & 7, 0x01);
     TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_MP_INIT) == RKH_TRUE);
 
     setBitTbl(filStatus.event, RKH_TE_MP_INIT, FILTER_ON);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_MP_INIT), 0x01);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_MP_INIT) & 7, 0x01);
     TEST_ASSERT_TRUE(rkh_trc_isoff_(RKH_TE_MP_INIT) == RKH_FALSE);
 }
 
@@ -406,7 +435,13 @@ TEST(filter, upperAndLowerBoundsFilEvent)
     bitTbl[0] = 0x01;
     bitTbl[RKH_TRC_MAX_EVENTS_IN_BYTES - 2] = 0x80;
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_MP_INIT), 0x01);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_MP_INIT) & 7, 0x01);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_MP_INIT);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETGRP(RKH_TE_UT_IGNORE_ARG), 0x80);
+    rkh_bittbl_getBitMask_ExpectAndReturn(GETEVT(RKH_TE_UT_IGNORE_ARG) & 7, 
+                                          0x80);
     rkh_trc_filter_event_(FILTER_OFF, RKH_TE_UT_IGNORE_ARG);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.event, 
@@ -416,6 +451,7 @@ TEST(filter, upperAndLowerBoundsFilEvent)
 TEST(filter, setAllEventsFromOneGroup)
 {
     RKH_TE_ID_T filter, filterFrom, filterTo, offset;
+    rui8_t evt;
 
     filterFrom = RKH_SM_START;
     filterTo = RKH_SM_END;
@@ -424,6 +460,9 @@ TEST(filter, setAllEventsFromOneGroup)
 
     for (filter = filterFrom; filter < filterTo; ++filter)
     {
+        evt = GETEVT(filter) & 7;
+        rkh_bittbl_getBitMask_ExpectAndReturn(evt, maptbl[evt]);
+        rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_SM, 8);
         rkh_trc_filter_event_(FILTER_OFF, filter);
     }
 
@@ -435,19 +474,24 @@ TEST(filter, outOfBoundsProducesRuntimeError)
 {
     rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
 
     rkh_trc_filter_event_(FILTER_OFF, RKH_TRC_ALL_EVENTS + 1);
 }
 
 TEST(filter, turnOffOneGroup)
 {
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_MP, maptbl[RKH_TG_MP]);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
     TEST_ASSERT_EQUAL_HEX8(0x01, *filStatus.group);
 }
 
 TEST(filter, turnOnOneGroup)
 {
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_MP, maptbl[RKH_TG_MP]);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_MP, maptbl[RKH_TG_MP]);
     rkh_trc_filter_group_(FILTER_ON, RKH_TG_MP, EUNCHANGE);
     TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
 }
@@ -462,14 +506,26 @@ TEST(filter, allOnOffGroup)
 
 TEST(filter, turnOnOffMultipleGroups)
 {
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_MP, maptbl[RKH_TG_MP]);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_MP, EUNCHANGE);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_SM, maptbl[RKH_TG_SM]);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_SM, EUNCHANGE);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_UT, maptbl[RKH_TG_UT]);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_UT, EUNCHANGE);
+
     TEST_ASSERT_EQUAL_HEX8(0x89, *filStatus.group);
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_MP, maptbl[RKH_TG_MP]);
     rkh_trc_filter_group_(FILTER_ON, RKH_TG_MP, EUNCHANGE);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_SM, maptbl[RKH_TG_SM]);
     rkh_trc_filter_group_(FILTER_ON, RKH_TG_SM, EUNCHANGE);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_UT, maptbl[RKH_TG_UT]);
     rkh_trc_filter_group_(FILTER_ON, RKH_TG_UT, EUNCHANGE);
+
     TEST_ASSERT_EQUAL_HEX8(0x00, *filStatus.group);
 }
 
@@ -477,6 +533,7 @@ TEST(filter, turnOffOneGroupChangedItsEventFilters)
 {
     RKHROM RKH_GMTBL_T *pTrcMap;
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TG_UT, maptbl[RKH_TG_UT]);
     rkh_trc_filter_group_(FILTER_OFF, RKH_TG_UT, ECHANGE);
     TEST_ASSERT_EQUAL_HEX8(0x80, *filStatus.group);
 
@@ -490,24 +547,41 @@ TEST(filter, turnOffOneGroupChangedItsEventFilters)
 TEST(filter, turnOffOneSymFil)
 {
     bitTbl[0] = 0x01;
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     rkh_trc_symFil(RKHFilterSma, 0, FILTER_OFF);
+
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(filter, turnOnOneSymFil)
 {
     bitTbl[0] = 0x00;
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TRC_MAX_SMA - 1, 
+                                          maptbl[RKH_TRC_MAX_SMA - 1]);
     rkh_trc_symFil(RKHFilterSma, RKH_TRC_MAX_SMA - 1, FILTER_OFF);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(RKH_TRC_MAX_SMA - 1, 
+                                          maptbl[RKH_TRC_MAX_SMA - 1]);
     rkh_trc_symFil(RKHFilterSma, RKH_TRC_MAX_SMA - 1, FILTER_ON);
+
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
 TEST(filter, turnOnOffMultipleSymFil)
 {
     bitTbl[0] = 0x89;
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     rkh_trc_symFil(RKHFilterSma, 0, FILTER_OFF);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(3, maptbl[3]);
     rkh_trc_symFil(RKHFilterSma, 3, FILTER_OFF);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(7, maptbl[7]);
     rkh_trc_symFil(RKHFilterSma, 7, FILTER_OFF);
+
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
 }
 
@@ -524,13 +598,17 @@ TEST(filter, allOffOnSymFil)
 
 TEST(filter, isOnOffSymFil)
 {
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 0) == RKH_FALSE);
 
     setBitTbl(filStatus.ao->tbl, 0, FILTER_OFF);
     setBitTbl(filStatus.ao->tbl, 3, FILTER_OFF);
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 0) == RKH_TRUE);
+    rkh_bittbl_getBitMask_ExpectAndReturn(3, maptbl[3]);
     TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 3) == RKH_TRUE);
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     setBitTbl(filStatus.ao->tbl, 0, FILTER_ON);
     TEST_ASSERT_TRUE(rkh_trc_symFil_isoff(RKHFilterSma, 0) == RKH_FALSE);
 }
@@ -540,7 +618,10 @@ TEST(filter, upperAndLowerBoundsSymFil)
     setBitTbl(bitTbl, 0, FILTER_OFF);
     setBitTbl(bitTbl, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
 
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     rkh_trc_symFil(RKHFilterSma, 0, FILTER_OFF);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(0, maptbl[0]);
     rkh_trc_symFil(RKHFilterSma, RKH_TRC_MAX_SMA * 8, FILTER_OFF);
 
     TEST_ASSERT_EQUAL_MEMORY(bitTbl, filStatus.ao->tbl, RKH_TRC_MAX_SMA);
@@ -550,13 +631,9 @@ TEST(filter, outOfBoundsProducesRuntimeErrorSymFil)
 {
     rkh_assert_Expect("rkhtrc_filter", 0);
     rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
 
     rkh_trc_symFil(RKHFilterSma, (filStatus.ao->size * 8) + 1, FILTER_OFF);
-
-    rkh_assert_Expect("rkhtrc_filter", 0);
-    rkh_assert_IgnoreArg_line();
-
-    rkh_trc_symFil(RKHFilterSma + 10, 0, FILTER_OFF);
 }
 
 /** @} doxygen end group definition */

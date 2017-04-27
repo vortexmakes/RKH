@@ -1,3 +1,4 @@
 :cmock:
-    :plugins: [ignore_arg, ignore]
+    :plugins: [ignore_arg, ignore, callback]
     :mock_prefix: Mock_
+    :callback_after_arg_check: true
