@@ -55,6 +55,10 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "rkhfwk_dynevt.h"
+#include "Mock_rkhassert.h"
+#include "Mock_rkhfwk_evtpool.h"
+#include "Mock_rkhtrc_record.h"
+#include "Mock_rkhtrc_filter.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -67,14 +71,28 @@ static rui8_t storage[32];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+MockAssertCallback(const char* const file, int line, int cmock_num_calls)
+{
+    TEST_PASS();
+}
+
 /* ---------------------------- Global functions --------------------------- */
 /* =========================== Bittbl test group =========================== */
 TEST_SETUP(dynevt)
 {
+    Mock_rkhassert_Init();
+    Mock_rkhfwk_evtpool_Init();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_dynEvt_init();
 }
 
 TEST_TEAR_DOWN(dynevt)
 {
+    Mock_rkhassert_Verify();
+    Mock_rkhfwk_evtpool_Verify();
+    Mock_rkhassert_Destroy();
+    Mock_rkhfwk_evtpool_Destroy();
 }
 
 /**
@@ -85,6 +103,50 @@ TEST_TEAR_DOWN(dynevt)
  */
 TEST(dynevt, RegisterOneEventPool)
 {
+    rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+                                     (RKHEvtPool *)1);
+    rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
+}
+
+TEST(dynevt, RegisterMultipleEventPool)
+{
+    int i;
+
+    for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
+    {
+        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+                                         (RKHEvtPool *)1);
+        rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
+    }
+}
+
+TEST(dynevt, Fails_ExceedsNumberOfAllowedEventPools)
+{
+    int i;
+
+    rkh_assert_Expect("rkhfwk_dynevt", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
+    {
+        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+                                         (RKHEvtPool *)1);
+    }
+    for (i = 0; i < (RKH_CFG_FWK_MAX_EVT_POOL + 1); ++i)
+    {
+        rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
+    }
+}
+
+TEST(dynevt, Fails_NoAssignedPool)
+{
+    rkh_assert_Expect("rkhfwk_dynevt", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+                                     (RKHEvtPool *)0);
     rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
 }
 

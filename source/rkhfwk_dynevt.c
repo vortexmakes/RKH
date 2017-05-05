@@ -48,7 +48,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhrq.h"
+#include "rkhtrc_record.h"
+#include "rkhtrc_filter.h"
 #include "rkhassert.h"
 #include "rkhfwk_dynevt.h"
 
@@ -65,9 +66,9 @@ static RKHEvtPoolMgr evtPools[RKH_CFG_FWK_MAX_EVT_POOL];
 /* ---------------------------- Local variables ---------------------------- */
 /**
  *  \brief
- *  Number of initialized event pools.
+ *  Number of registered event pools.
  */
-static rui8_t rkhnpool;
+static rui8_t nextFreeEvtPool;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -151,21 +152,29 @@ rkh_fwk_reserve(RKH_EVT_T *e)
 void
 rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
 {
-#if 0
-    RKH_DYNE_TYPE *ep;
+    RKHEvtPool *ep;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(((rui8_t)(rkhnpool + (rui8_t)1)) <=
-               RKH_CFG_FWK_MAX_EVT_POOL);
+    RKH_REQUIRE((nextFreeEvtPool + 1) <= RKH_CFG_FWK_MAX_EVT_POOL);
+    ep = rkh_evtPool_init(sstart, ssize, esize);
+    RKH_ENSURE(ep != (RKHEvtPool *)0);
+    evtPools[nextFreeEvtPool].evtPool = ep;
+    ++nextFreeEvtPool;
+    RKH_TR_FWK_EPREG(nextFreeEvtPool, ssize, esize, 
+                     rkh_evtPool_get_nblock(ep));
+}
 
-    ++rkhnpool;
-    ep = &rkh_eplist[rkhnpool - 1];
-    RKH_DYNE_INIT(ep, sstart, ssize, esize);
-    RKH_TR_FWK_EPREG(rkhnpool, ssize, esize, RKH_DYNE_GET_PSIZE(ep));
-#endif
-    /* Use nextFreeSlot variable to register a new event pool */
-    /* ASSERT(nextFreeSlot >= MAX...); */
-    /* eventPools[nextFreeSlot] = ..._getPool(...); ++nextFreeSlot; */
+void
+rkh_dynEvt_init(void)
+{
+    rint i;
+    RKHEvtPoolMgr *ep;
+
+    nextFreeEvtPool = 0;
+    for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
+    {
+        ep->evtPool = (RKHEvtPool *)0;
+    }
 }
 #endif
 

@@ -69,17 +69,18 @@ typedef struct RKHEvtPool RKHEvtPool;
  *  \brief
  *  Encapsulates the creation of an event pool.
  *
- *  \param[in] me	    pointer to previously allocated memory pool 
- *                      structure.
  *  \param[in] stoStart	storage start. Pointer to memory from which 
  *                      memory blocks are allocated.
- *  \param[in] stoSize:	storage size. Size of the memory pool storage in 
+ *  \param[in] stoSize 	storage size. Size of the memory pool storage in 
  *                      bytes.
  *  \param[in] evtSize	event size. This number determines the size of each
  *                      memory block in the pool.
+ *  
+ *  \return
+ *  A pointer to assigned event pool.
  */
-void rkh_evtPool_init(RKHEvtPool *me, void *stoStart, rui32_t stoSize, 
-                      RKH_ES_T evtSize);
+RKHEvtPool *rkh_evtPool_init(void *stoStart, rui32_t stoSize, 
+                             RKH_ES_T evtSize);
 
 /**
  *  \brief
@@ -143,7 +144,7 @@ rui8_t rkh_evtPool_get_nmin(RKHEvtPool *const me);
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
  */
-void rkh_evtPool_get_nblock(RKHEvtPool *const me);
+rui8_t rkh_evtPool_get_nblock(RKHEvtPool *const me);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

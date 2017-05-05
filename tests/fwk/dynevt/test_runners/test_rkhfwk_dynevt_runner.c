@@ -61,6 +61,9 @@
 TEST_GROUP_RUNNER(dynevt)
 {
 	RUN_TEST_CASE(dynevt, RegisterOneEventPool);
+	RUN_TEST_CASE(dynevt, RegisterMultipleEventPool);
+	RUN_TEST_CASE(dynevt, Fails_ExceedsNumberOfAllowedEventPools);
+	RUN_TEST_CASE(dynevt, Fails_NoAssignedPool);
 }
 
 /* ------------------------------ End of file ------------------------------ */

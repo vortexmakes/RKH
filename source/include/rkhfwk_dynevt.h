@@ -318,6 +318,12 @@ struct RKHEvtPoolMgr
 /* -------------------------- Function prototypes -------------------------- */
 /**
  *  \brief
+ *  Initializes the dynamic event manager.
+ */
+void rkh_dynEvt_init(void);
+
+/**
+ *  \brief
  *  Registers a new event pool into the event pool list.
  *
  *  Before using dynamic events (or event with arguments) the application
