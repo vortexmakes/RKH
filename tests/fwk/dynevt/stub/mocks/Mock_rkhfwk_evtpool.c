@@ -216,7 +216,7 @@ void rkh_evtPool_init(RKHEvtPool* me, void* stoStart, rui32_t stoSize, RKH_ES_T 
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_init,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (!cmock_call_instance->IgnoreArg_stoStart)
   {
@@ -327,7 +327,7 @@ rui8_t rkh_evtPool_get_esize(RKHEvtPool* const me)
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_get_esize,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (Mock.rkh_evtPool_get_esize_CallbackFunctionPointer != NULL)
   {
@@ -403,7 +403,7 @@ RKH_EVT_T* rkh_evtPool_get(RKHEvtPool* const me, RKH_EVT_T* evt)
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_get,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (!cmock_call_instance->IgnoreArg_evt)
   {
@@ -490,7 +490,7 @@ void rkh_evtPool_put(RKHEvtPool* const me, RKH_EVT_T* evt)
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_put,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (!cmock_call_instance->IgnoreArg_evt)
   {
@@ -570,7 +570,7 @@ rui8_t rkh_evtPool_get_nused(RKHEvtPool* const me)
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_get_nused,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (Mock.rkh_evtPool_get_nused_CallbackFunctionPointer != NULL)
   {
@@ -646,7 +646,7 @@ rui8_t rkh_evtPool_get_nmin(RKHEvtPool* const me)
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_get_nmin,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (Mock.rkh_evtPool_get_nmin_CallbackFunctionPointer != NULL)
   {
@@ -719,7 +719,7 @@ void rkh_evtPool_get_nblock(RKHEvtPool* const me)
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_get_nblock,CMockString_me);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(RKHEvtPool*), cmock_line, CMockStringMismatch);
   }
   if (Mock.rkh_evtPool_get_nblock_CallbackFunctionPointer != NULL)
   {

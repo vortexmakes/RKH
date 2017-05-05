@@ -163,6 +163,9 @@ rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
     RKH_DYNE_INIT(ep, sstart, ssize, esize);
     RKH_TR_FWK_EPREG(rkhnpool, ssize, esize, RKH_DYNE_GET_PSIZE(ep));
 #endif
+    /* Use nextFreeSlot variable to register a new event pool */
+    /* ASSERT(nextFreeSlot >= MAX...); */
+    /* eventPools[nextFreeSlot] = ..._getPool(...); ++nextFreeSlot; */
 }
 #endif
 
