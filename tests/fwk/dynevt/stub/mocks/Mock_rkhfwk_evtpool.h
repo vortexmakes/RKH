@@ -32,24 +32,22 @@ void rkh_evtPool_init_CMockIgnoreArg_stoStart(UNITY_LINE_TYPE cmock_line);
 void rkh_evtPool_init_CMockIgnoreArg_stoSize(UNITY_LINE_TYPE cmock_line);
 #define rkh_evtPool_init_IgnoreArg_evtSize() rkh_evtPool_init_CMockIgnoreArg_evtSize(__LINE__)
 void rkh_evtPool_init_CMockIgnoreArg_evtSize(UNITY_LINE_TYPE cmock_line);
-#define rkh_evtPool_get_esize_IgnoreAndReturn(cmock_retval) rkh_evtPool_get_esize_CMockIgnoreAndReturn(__LINE__, cmock_retval)
-void rkh_evtPool_get_esize_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
-#define rkh_evtPool_get_esize_ExpectAndReturn(me, cmock_retval) rkh_evtPool_get_esize_CMockExpectAndReturn(__LINE__, me, cmock_retval)
-void rkh_evtPool_get_esize_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
-typedef rui8_t (* CMOCK_rkh_evtPool_get_esize_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
-void rkh_evtPool_get_esize_StubWithCallback(CMOCK_rkh_evtPool_get_esize_CALLBACK Callback);
-#define rkh_evtPool_get_esize_IgnoreArg_me() rkh_evtPool_get_esize_CMockIgnoreArg_me(__LINE__)
-void rkh_evtPool_get_esize_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_evtPool_getBlockSize_IgnoreAndReturn(cmock_retval) rkh_evtPool_getBlockSize_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void rkh_evtPool_getBlockSize_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
+#define rkh_evtPool_getBlockSize_ExpectAndReturn(me, cmock_retval) rkh_evtPool_getBlockSize_CMockExpectAndReturn(__LINE__, me, cmock_retval)
+void rkh_evtPool_getBlockSize_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
+typedef rui8_t (* CMOCK_rkh_evtPool_getBlockSize_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
+void rkh_evtPool_getBlockSize_StubWithCallback(CMOCK_rkh_evtPool_getBlockSize_CALLBACK Callback);
+#define rkh_evtPool_getBlockSize_IgnoreArg_me() rkh_evtPool_getBlockSize_CMockIgnoreArg_me(__LINE__)
+void rkh_evtPool_getBlockSize_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define rkh_evtPool_get_IgnoreAndReturn(cmock_retval) rkh_evtPool_get_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void rkh_evtPool_get_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_EVT_T* cmock_to_return);
-#define rkh_evtPool_get_ExpectAndReturn(me, evt, cmock_retval) rkh_evtPool_get_CMockExpectAndReturn(__LINE__, me, evt, cmock_retval)
-void rkh_evtPool_get_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, RKH_EVT_T* evt, RKH_EVT_T* cmock_to_return);
-typedef RKH_EVT_T* (* CMOCK_rkh_evtPool_get_CALLBACK)(RKHEvtPool* const me, RKH_EVT_T* evt, int cmock_num_calls);
+#define rkh_evtPool_get_ExpectAndReturn(me, cmock_retval) rkh_evtPool_get_CMockExpectAndReturn(__LINE__, me, cmock_retval)
+void rkh_evtPool_get_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, RKH_EVT_T* cmock_to_return);
+typedef RKH_EVT_T* (* CMOCK_rkh_evtPool_get_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
 void rkh_evtPool_get_StubWithCallback(CMOCK_rkh_evtPool_get_CALLBACK Callback);
 #define rkh_evtPool_get_IgnoreArg_me() rkh_evtPool_get_CMockIgnoreArg_me(__LINE__)
 void rkh_evtPool_get_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
-#define rkh_evtPool_get_IgnoreArg_evt() rkh_evtPool_get_CMockIgnoreArg_evt(__LINE__)
-void rkh_evtPool_get_CMockIgnoreArg_evt(UNITY_LINE_TYPE cmock_line);
 #define rkh_evtPool_put_Ignore() rkh_evtPool_put_CMockIgnore()
 void rkh_evtPool_put_CMockIgnore(void);
 #define rkh_evtPool_put_Expect(me, evt) rkh_evtPool_put_CMockExpect(__LINE__, me, evt)
@@ -60,29 +58,29 @@ void rkh_evtPool_put_StubWithCallback(CMOCK_rkh_evtPool_put_CALLBACK Callback);
 void rkh_evtPool_put_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define rkh_evtPool_put_IgnoreArg_evt() rkh_evtPool_put_CMockIgnoreArg_evt(__LINE__)
 void rkh_evtPool_put_CMockIgnoreArg_evt(UNITY_LINE_TYPE cmock_line);
-#define rkh_evtPool_get_nused_IgnoreAndReturn(cmock_retval) rkh_evtPool_get_nused_CMockIgnoreAndReturn(__LINE__, cmock_retval)
-void rkh_evtPool_get_nused_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
-#define rkh_evtPool_get_nused_ExpectAndReturn(me, cmock_retval) rkh_evtPool_get_nused_CMockExpectAndReturn(__LINE__, me, cmock_retval)
-void rkh_evtPool_get_nused_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
-typedef rui8_t (* CMOCK_rkh_evtPool_get_nused_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
-void rkh_evtPool_get_nused_StubWithCallback(CMOCK_rkh_evtPool_get_nused_CALLBACK Callback);
-#define rkh_evtPool_get_nused_IgnoreArg_me() rkh_evtPool_get_nused_CMockIgnoreArg_me(__LINE__)
-void rkh_evtPool_get_nused_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
-#define rkh_evtPool_get_nmin_IgnoreAndReturn(cmock_retval) rkh_evtPool_get_nmin_CMockIgnoreAndReturn(__LINE__, cmock_retval)
-void rkh_evtPool_get_nmin_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
-#define rkh_evtPool_get_nmin_ExpectAndReturn(me, cmock_retval) rkh_evtPool_get_nmin_CMockExpectAndReturn(__LINE__, me, cmock_retval)
-void rkh_evtPool_get_nmin_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
-typedef rui8_t (* CMOCK_rkh_evtPool_get_nmin_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
-void rkh_evtPool_get_nmin_StubWithCallback(CMOCK_rkh_evtPool_get_nmin_CALLBACK Callback);
-#define rkh_evtPool_get_nmin_IgnoreArg_me() rkh_evtPool_get_nmin_CMockIgnoreArg_me(__LINE__)
-void rkh_evtPool_get_nmin_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
-#define rkh_evtPool_get_nblock_IgnoreAndReturn(cmock_retval) rkh_evtPool_get_nblock_CMockIgnoreAndReturn(__LINE__, cmock_retval)
-void rkh_evtPool_get_nblock_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
-#define rkh_evtPool_get_nblock_ExpectAndReturn(me, cmock_retval) rkh_evtPool_get_nblock_CMockExpectAndReturn(__LINE__, me, cmock_retval)
-void rkh_evtPool_get_nblock_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
-typedef rui8_t (* CMOCK_rkh_evtPool_get_nblock_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
-void rkh_evtPool_get_nblock_StubWithCallback(CMOCK_rkh_evtPool_get_nblock_CALLBACK Callback);
-#define rkh_evtPool_get_nblock_IgnoreArg_me() rkh_evtPool_get_nblock_CMockIgnoreArg_me(__LINE__)
-void rkh_evtPool_get_nblock_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_evtPool_getNumUsed_IgnoreAndReturn(cmock_retval) rkh_evtPool_getNumUsed_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void rkh_evtPool_getNumUsed_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
+#define rkh_evtPool_getNumUsed_ExpectAndReturn(me, cmock_retval) rkh_evtPool_getNumUsed_CMockExpectAndReturn(__LINE__, me, cmock_retval)
+void rkh_evtPool_getNumUsed_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
+typedef rui8_t (* CMOCK_rkh_evtPool_getNumUsed_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
+void rkh_evtPool_getNumUsed_StubWithCallback(CMOCK_rkh_evtPool_getNumUsed_CALLBACK Callback);
+#define rkh_evtPool_getNumUsed_IgnoreArg_me() rkh_evtPool_getNumUsed_CMockIgnoreArg_me(__LINE__)
+void rkh_evtPool_getNumUsed_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_evtPool_getNumMin_IgnoreAndReturn(cmock_retval) rkh_evtPool_getNumMin_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void rkh_evtPool_getNumMin_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
+#define rkh_evtPool_getNumMin_ExpectAndReturn(me, cmock_retval) rkh_evtPool_getNumMin_CMockExpectAndReturn(__LINE__, me, cmock_retval)
+void rkh_evtPool_getNumMin_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
+typedef rui8_t (* CMOCK_rkh_evtPool_getNumMin_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
+void rkh_evtPool_getNumMin_StubWithCallback(CMOCK_rkh_evtPool_getNumMin_CALLBACK Callback);
+#define rkh_evtPool_getNumMin_IgnoreArg_me() rkh_evtPool_getNumMin_CMockIgnoreArg_me(__LINE__)
+void rkh_evtPool_getNumMin_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_evtPool_getNumBlock_IgnoreAndReturn(cmock_retval) rkh_evtPool_getNumBlock_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void rkh_evtPool_getNumBlock_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
+#define rkh_evtPool_getNumBlock_ExpectAndReturn(me, cmock_retval) rkh_evtPool_getNumBlock_CMockExpectAndReturn(__LINE__, me, cmock_retval)
+void rkh_evtPool_getNumBlock_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* const me, rui8_t cmock_to_return);
+typedef rui8_t (* CMOCK_rkh_evtPool_getNumBlock_CALLBACK)(RKHEvtPool* const me, int cmock_num_calls);
+void rkh_evtPool_getNumBlock_StubWithCallback(CMOCK_rkh_evtPool_getNumBlock_CALLBACK Callback);
+#define rkh_evtPool_getNumBlock_IgnoreArg_me() rkh_evtPool_getNumBlock_CMockIgnoreArg_me(__LINE__)
+void rkh_evtPool_getNumBlock_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 
 #endif

@@ -430,7 +430,6 @@ void rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize);
  *  \sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(),
  *  rkh_set_static_event() and rkh_fwk_gc().
  */
-
 RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender);
 
 /**

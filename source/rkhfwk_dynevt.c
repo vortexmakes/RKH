@@ -74,40 +74,6 @@ static rui8_t nextFreeEvtPool;
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 #if 0
-RKH_EVT_T *
-rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender)
-{
-    RKH_EVT_T *evt;
-    rui8_t idx = 0;
-    RKH_DYNE_TYPE *ep = rkh_eplist;
-    RKH_SR_ALLOC();
-
-    /* find the pool index that fits the requested event size ... */
-    while (esize > RKH_DYNE_GET_ESIZE(ep))
-    {
-        ++idx;
-        ++ep;
-        /* cannot run out of registered pools */
-        RKH_ASSERT(idx < rkhnpool);
-    }
-
-    RKH_DYNE_GET(ep, evt);      /* get e -- platform-dependent */
-                                /* pool must not run out of events */
-    RKH_ASSERT(evt != RKH_EVT_CAST(0));
-    evt->e = e;                 /* set signal for this event */
-
-    /*
-     * Store the dynamic attributes of the event: the pool ID and the
-     * reference counter = 0
-     */
-    evt->nref = 0;
-    evt->pool = (rui8_t)(idx + (rui8_t)1);
-
-    RKH_TR_FWK_AE(esize, evt, RKH_DYNE_GET_NUSED(ep), RKH_DYNE_GET_NMIN(ep), 
-                  sender);
-    return evt;
-}
-
 void
 rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
 {
@@ -138,6 +104,37 @@ rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
         }
     }
 }
+#endif
+
+void
+rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
+{
+    RKHEvtPoolMgr * ep;
+
+    if (e->nref != 0)       /* is it a dynamic event? */
+    {
+        RKH_ENTER_CRITICAL_();
+
+        if (e->nref > 1)    /* isn't this the last ref? */
+        {
+            --e->nref;      /* decrement the reference counter */
+            RKH_TR_FWK_GC(e, e->pool, e->nref);
+            RKH_EXIT_CRITICAL_();
+        }
+        else    /* this is the last reference to this event, recycle it */
+        {
+            rui8_t evtPoolIdx = (rui8_t)(e->pool - 1);
+
+            RKH_REQUIRE(evtPoolIdx < nextFreeEvtPool); /* cannot wrap around */
+            RKH_EXIT_CRITICAL_();
+
+            ep = &evtPools[evtPoolIdx]; 
+            RKH_TR_FWK_GCR(e, rkh_evtPool_getNumUsed(ep->evtPool) - 1, 
+                           rkh_evtPool_getNumMin(ep->evtPool), sender);
+            rkh_evtPool_put(ep->evtPool, e);
+        }
+    }
+}
 
 void
 rkh_fwk_reserve(RKH_EVT_T *e)
@@ -148,7 +145,36 @@ rkh_fwk_reserve(RKH_EVT_T *e)
     RKH_INC_REF(e);
     RKH_EXIT_CRITICAL_();
 }
-#endif
+
+RKH_EVT_T *
+rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender)
+{
+    rint i;
+    RKHEvtPoolMgr *ep;
+    RKH_EVT_T *evt;
+
+    /* find the pool index that fits the requested event size ... */
+    for (i = 0, ep = evtPools; 
+         (i < nextFreeEvtPool) && 
+         (esize > rkh_evtPool_getBlockSize(ep->evtPool)); 
+         ++ep, ++i)
+    {
+        ;
+    }
+    RKH_ENSURE(i < nextFreeEvtPool);    /* cannot run out of registered pools */
+    evt = rkh_evtPool_get(ep->evtPool);
+    RKH_ENSURE(evt != RKH_EVT_CAST(0));  /* pool must not run out of events */
+
+    evt->e = e;                          /* set signal for this event */
+    evt->nref = (rui8_t)0;               /* Store the dynamic attributes of */
+                                         /* the event: the pool ID and the */
+    evt->pool = (rui8_t)(i + (rui8_t)1); /* reference counter = 0 */
+                                         
+    RKH_TR_FWK_AE(esize, evt, rkh_evtPool_getNumUsed(ep->evtPool), 
+                  rkh_evtPool_getNumMin(ep->evtPool), sender);
+    return evt;
+}
+
 void
 rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
 {
@@ -161,7 +187,7 @@ rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
     evtPools[nextFreeEvtPool].evtPool = ep;
     ++nextFreeEvtPool;
     RKH_TR_FWK_EPREG(nextFreeEvtPool, ssize, esize, 
-                     rkh_evtPool_get_nblock(ep));
+                     rkh_evtPool_getNumBlock(ep));
 }
 
 void

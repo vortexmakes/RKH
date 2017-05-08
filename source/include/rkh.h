@@ -224,14 +224,6 @@ extern "C" {
 
 /**
  *  \brief
- *  Perform cast to pointer to RKH event structure (RKH_EVT_T*).
- *
- *  \ingroup apiEvt
- */
-#define RKH_EVT_CAST(_e)      ((RKH_EVT_T *)(_e))
-
-/**
- *  \brief
  *  Perform downcast of a reference of a base class to one of its derived
  *  classes.
  *

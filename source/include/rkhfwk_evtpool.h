@@ -89,7 +89,7 @@ RKHEvtPool *rkh_evtPool_init(void *stoStart, rui32_t stoSize,
  * \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
  */
-rui8_t rkh_evtPool_get_esize(RKHEvtPool *const me);
+rui8_t rkh_evtPool_getBlockSize(RKHEvtPool *const me);
 
 /**
  *  \brief
@@ -101,7 +101,7 @@ rui8_t rkh_evtPool_get_esize(RKHEvtPool *const me);
  *  \param[in] evt      inter to a new event or NULL if the pool runs 
  *                      out of blocks.
  */
-RKH_EVT_T *rkh_evtPool_get(RKHEvtPool *const me, RKH_EVT_T *evt);
+RKH_EVT_T *rkh_evtPool_get(RKHEvtPool *const me);
 
 /**
  *  \brief
@@ -122,7 +122,7 @@ void rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt);
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
  */
-rui8_t rkh_evtPool_get_nused(RKHEvtPool *const me);
+rui8_t rkh_evtPool_getNumUsed(RKHEvtPool *const me);
 
 /**
  *  \brief
@@ -134,7 +134,7 @@ rui8_t rkh_evtPool_get_nused(RKHEvtPool *const me);
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
  */
-rui8_t rkh_evtPool_get_nmin(RKHEvtPool *const me);
+rui8_t rkh_evtPool_getNumMin(RKHEvtPool *const me);
 
 /**
  *  \brief
@@ -144,7 +144,7 @@ rui8_t rkh_evtPool_get_nmin(RKHEvtPool *const me);
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
  */
-rui8_t rkh_evtPool_get_nblock(RKHEvtPool *const me);
+rui8_t rkh_evtPool_getNumBlock(RKHEvtPool *const me);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

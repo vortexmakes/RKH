@@ -11,7 +11,7 @@
  *
  *
  *  RKH is free software: you can redistribute it and/or modify it under the
- *  terms of the GNU General Public License as published by the Free Software
+ *  terms of the GNU General Public License as published by the Recycle Software
  *  Foundation, either version 3 of the License, or (at your option) any
  *  later version.
  *
@@ -63,7 +63,16 @@ TEST_GROUP_RUNNER(dynevt)
 	RUN_TEST_CASE(dynevt, RegisterOneEventPool);
 	RUN_TEST_CASE(dynevt, RegisterMultipleEventPool);
 	RUN_TEST_CASE(dynevt, Fails_ExceedsNumberOfAllowedEventPools);
-	RUN_TEST_CASE(dynevt, Fails_NoAssignedPool);
+	RUN_TEST_CASE(dynevt, Fails_UnavailablePool);
+	RUN_TEST_CASE(dynevt, Fails_TriesAllocateOneEvtWithoutAssignedPool);
+	RUN_TEST_CASE(dynevt, AllocateOneEvt);
+	RUN_TEST_CASE(dynevt, Fails_UnavailableBlockFromPool);
+	RUN_TEST_CASE(dynevt, ReservesOneEvt);
+	RUN_TEST_CASE(dynevt, TriesRecycleNotReferencedEvt);
+	RUN_TEST_CASE(dynevt, TriesRecycleMultipleReferencedEvt);
+	RUN_TEST_CASE(dynevt, RecycleEvt);
+	RUN_TEST_CASE(dynevt, Fails_OnRecycleEvtNullPool);
+	RUN_TEST_CASE(dynevt, Fails_OnRecycleEvtWrongPool);
 }
 
 /* ------------------------------ End of file ------------------------------ */

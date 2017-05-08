@@ -68,6 +68,14 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+/**
+ *  \brief
+ *  Perform cast to pointer to RKH event structure (RKH_EVT_T*).
+ *
+ *  \ingroup apiEvt
+ */
+#define RKH_EVT_CAST(_e)      ((RKH_EVT_T *)(_e))
+
 #define RKH_CAST_EVT(e)       ((RKH_EVT_T *)(e))
 
 #if RKH_CFG_FWK_DYN_EVT_EN == RKH_ENABLED
