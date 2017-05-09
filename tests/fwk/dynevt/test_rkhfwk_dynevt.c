@@ -104,7 +104,7 @@ TEST_TEAR_DOWN(dynevt)
  */
 TEST(dynevt, RegisterOneEventPool)
 {
-    rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+    rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), 4, 
                                      (RKHEvtPool *)1);
     rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
 }
@@ -115,7 +115,7 @@ TEST(dynevt, RegisterMultipleEventPool)
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
     {
-        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+        rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), 4, 
                                          (RKHEvtPool *)1);
         rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
     }
@@ -131,7 +131,7 @@ TEST(dynevt, Fails_ExceedsNumberOfAllowedEventPools)
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
     {
-        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+        rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), 4, 
                                          (RKHEvtPool *)1);
     }
     for (i = 0; i < (RKH_CFG_FWK_MAX_EVT_POOL + 1); ++i)
@@ -146,7 +146,7 @@ TEST(dynevt, Fails_UnavailablePool)
     rkh_assert_IgnoreArg_line();
     rkh_assert_StubWithCallback(MockAssertCallback);
 
-    rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+    rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), 4, 
                                      (RKHEvtPool *)0);
     rkh_fwk_registerEvtPool(storage, sizeof(storage), 4);
 }
@@ -183,7 +183,7 @@ TEST(dynevt, AllocateOneEvt)
          i < RKH_CFG_FWK_MAX_EVT_POOL; 
          ++i, (blockSize *= 2), ++epAddress)
     {
-        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), blockSize, 
+        rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), blockSize, 
                                          (RKHEvtPool *)epAddress);
         rkh_fwk_registerEvtPool(storage, sizeof(storage), blockSize);
     }
@@ -214,7 +214,7 @@ TEST(dynevt, Fails_ExceededBlockSize)
          i < RKH_CFG_FWK_MAX_EVT_POOL; 
          ++i, (blockSize *= 2), ++epAddress)
     {
-        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), blockSize, 
+        rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), blockSize, 
                                          (RKHEvtPool *)epAddress);
         rkh_fwk_registerEvtPool(storage, sizeof(storage), blockSize);
     }
@@ -242,7 +242,7 @@ TEST(dynevt, Fails_UnavailableBlockFromPool)
          i < RKH_CFG_FWK_MAX_EVT_POOL; 
          ++i, (blockSize *= 2), ++epAddress)
     {
-        rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), blockSize, 
+        rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), blockSize, 
                                          (RKHEvtPool *)epAddress);
         rkh_fwk_registerEvtPool(storage, sizeof(storage), blockSize);
     }
@@ -300,7 +300,7 @@ TEST(dynevt, RecycleEvt)
 
     evt.nref = 1;
     evt.pool = 1;
-    rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+    rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), 4, 
                                      (RKHEvtPool *)1);
     rkh_evtPool_put_Expect((RKHEvtPool *)1, &evt);
     rkh_enter_critical_Expect();
@@ -331,7 +331,7 @@ TEST(dynevt, Fails_OnRecycleEvtWrongPool)
 
     evt.nref = 1;
     evt.pool = 2;
-    rkh_evtPool_init_ExpectAndReturn(storage, sizeof(storage), 4, 
+    rkh_evtPool_getPool_ExpectAndReturn(storage, sizeof(storage), 4, 
                                      (RKHEvtPool *)1);
     rkh_enter_critical_Expect();
     rkh_exit_critical_Expect();

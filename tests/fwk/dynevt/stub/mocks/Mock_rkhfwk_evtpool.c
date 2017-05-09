@@ -14,12 +14,19 @@ static const char* CMockString_rkh_evtPool_getBlockSize = "rkh_evtPool_getBlockS
 static const char* CMockString_rkh_evtPool_getNumBlock = "rkh_evtPool_getNumBlock";
 static const char* CMockString_rkh_evtPool_getNumMin = "rkh_evtPool_getNumMin";
 static const char* CMockString_rkh_evtPool_getNumUsed = "rkh_evtPool_getNumUsed";
+static const char* CMockString_rkh_evtPool_getPool = "rkh_evtPool_getPool";
 static const char* CMockString_rkh_evtPool_init = "rkh_evtPool_init";
 static const char* CMockString_rkh_evtPool_put = "rkh_evtPool_put";
 static const char* CMockString_stoSize = "stoSize";
 static const char* CMockString_stoStart = "stoStart";
 
 typedef struct _CMOCK_rkh_evtPool_init_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+
+} CMOCK_rkh_evtPool_init_CALL_INSTANCE;
+
+typedef struct _CMOCK_rkh_evtPool_getPool_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   RKHEvtPool* ReturnVal;
@@ -30,7 +37,7 @@ typedef struct _CMOCK_rkh_evtPool_init_CALL_INSTANCE
   int IgnoreArg_stoSize;
   int IgnoreArg_evtSize;
 
-} CMOCK_rkh_evtPool_init_CALL_INSTANCE;
+} CMOCK_rkh_evtPool_getPool_CALL_INSTANCE;
 
 typedef struct _CMOCK_rkh_evtPool_getBlockSize_CALL_INSTANCE
 {
@@ -90,10 +97,14 @@ typedef struct _CMOCK_rkh_evtPool_getNumBlock_CALL_INSTANCE
 static struct Mock_rkhfwk_evtpoolInstance
 {
   int rkh_evtPool_init_IgnoreBool;
-  RKHEvtPool* rkh_evtPool_init_FinalReturn;
   CMOCK_rkh_evtPool_init_CALLBACK rkh_evtPool_init_CallbackFunctionPointer;
   int rkh_evtPool_init_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE rkh_evtPool_init_CallInstance;
+  int rkh_evtPool_getPool_IgnoreBool;
+  RKHEvtPool* rkh_evtPool_getPool_FinalReturn;
+  CMOCK_rkh_evtPool_getPool_CALLBACK rkh_evtPool_getPool_CallbackFunctionPointer;
+  int rkh_evtPool_getPool_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE rkh_evtPool_getPool_CallInstance;
   int rkh_evtPool_getBlockSize_IgnoreBool;
   rui8_t rkh_evtPool_getBlockSize_FinalReturn;
   CMOCK_rkh_evtPool_getBlockSize_CALLBACK rkh_evtPool_getBlockSize_CallbackFunctionPointer;
@@ -136,6 +147,12 @@ void Mock_rkhfwk_evtpool_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_evtPool_init_CallInstance, cmock_line, CMockStringCalledLess);
   if (Mock.rkh_evtPool_init_CallbackFunctionPointer != NULL)
     Mock.rkh_evtPool_init_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.rkh_evtPool_getPool_IgnoreBool)
+    Mock.rkh_evtPool_getPool_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_rkh_evtPool_getPool);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_evtPool_getPool_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.rkh_evtPool_getPool_CallbackFunctionPointer != NULL)
+    Mock.rkh_evtPool_getPool_CallInstance = CMOCK_GUTS_NONE;
   if (Mock.rkh_evtPool_getBlockSize_IgnoreBool)
     Mock.rkh_evtPool_getBlockSize_CallInstance = CMOCK_GUTS_NONE;
   UNITY_SET_DETAIL(CMockString_rkh_evtPool_getBlockSize);
@@ -185,6 +202,8 @@ void Mock_rkhfwk_evtpool_Destroy(void)
   memset(&Mock, 0, sizeof(Mock));
   Mock.rkh_evtPool_init_CallbackFunctionPointer = NULL;
   Mock.rkh_evtPool_init_CallbackCalls = 0;
+  Mock.rkh_evtPool_getPool_CallbackFunctionPointer = NULL;
+  Mock.rkh_evtPool_getPool_CallbackCalls = 0;
   Mock.rkh_evtPool_getBlockSize_CallbackFunctionPointer = NULL;
   Mock.rkh_evtPool_getBlockSize_CallbackCalls = 0;
   Mock.rkh_evtPool_get_CallbackFunctionPointer = NULL;
@@ -199,7 +218,7 @@ void Mock_rkhfwk_evtpool_Destroy(void)
   Mock.rkh_evtPool_getNumBlock_CallbackCalls = 0;
 }
 
-RKHEvtPool* rkh_evtPool_init(void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
+void rkh_evtPool_init(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance;
@@ -209,60 +228,23 @@ RKHEvtPool* rkh_evtPool_init(void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
   if (Mock.rkh_evtPool_init_IgnoreBool)
   {
     UNITY_CLR_DETAILS();
-    if (cmock_call_instance == NULL)
-      return Mock.rkh_evtPool_init_FinalReturn;
-    Mock.rkh_evtPool_init_FinalReturn = cmock_call_instance->ReturnVal;
-    return cmock_call_instance->ReturnVal;
+    return;
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
-  if (!cmock_call_instance->IgnoreArg_stoStart)
-  {
-    UNITY_SET_DETAILS(CMockString_rkh_evtPool_init,CMockString_stoStart);
-    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_stoStart, stoStart, cmock_line, CMockStringMismatch);
-  }
-  if (!cmock_call_instance->IgnoreArg_stoSize)
-  {
-    UNITY_SET_DETAILS(CMockString_rkh_evtPool_init,CMockString_stoSize);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_stoSize), (void*)(&stoSize), sizeof(rui32_t), cmock_line, CMockStringMismatch);
-  }
-  if (!cmock_call_instance->IgnoreArg_evtSize)
-  {
-    UNITY_SET_DETAILS(CMockString_rkh_evtPool_init,CMockString_evtSize);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_evtSize), (void*)(&evtSize), sizeof(RKH_ES_T), cmock_line, CMockStringMismatch);
-  }
   if (Mock.rkh_evtPool_init_CallbackFunctionPointer != NULL)
   {
-    cmock_call_instance->ReturnVal = Mock.rkh_evtPool_init_CallbackFunctionPointer(stoStart, stoSize, evtSize, Mock.rkh_evtPool_init_CallbackCalls++);
+    Mock.rkh_evtPool_init_CallbackFunctionPointer(Mock.rkh_evtPool_init_CallbackCalls++);
   }
   UNITY_CLR_DETAILS();
-  return cmock_call_instance->ReturnVal;
 }
 
-void CMockExpectParameters_rkh_evtPool_init(CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
+void rkh_evtPool_init_CMockIgnore(void)
 {
-  cmock_call_instance->Expected_stoStart = stoStart;
-  cmock_call_instance->IgnoreArg_stoStart = 0;
-  memcpy(&cmock_call_instance->Expected_stoSize, &stoSize, sizeof(rui32_t));
-  cmock_call_instance->IgnoreArg_stoSize = 0;
-  memcpy(&cmock_call_instance->Expected_evtSize, &evtSize, sizeof(RKH_ES_T));
-  cmock_call_instance->IgnoreArg_evtSize = 0;
-}
-
-void rkh_evtPool_init_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* cmock_to_return)
-{
-  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_evtPool_init_CALL_INSTANCE));
-  CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
-  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
-  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
-  Mock.rkh_evtPool_init_CallInstance = CMock_Guts_MemChain(Mock.rkh_evtPool_init_CallInstance, cmock_guts_index);
-  Mock.rkh_evtPool_init_IgnoreBool = (int)0;
-  cmock_call_instance->LineNumber = cmock_line;
-  cmock_call_instance->ReturnVal = cmock_to_return;
   Mock.rkh_evtPool_init_IgnoreBool = (int)1;
 }
 
-void rkh_evtPool_init_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize, RKHEvtPool* cmock_to_return)
+void rkh_evtPool_init_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_evtPool_init_CALL_INSTANCE));
   CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -271,8 +253,6 @@ void rkh_evtPool_init_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* sto
   Mock.rkh_evtPool_init_CallInstance = CMock_Guts_MemChain(Mock.rkh_evtPool_init_CallInstance, cmock_guts_index);
   Mock.rkh_evtPool_init_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_rkh_evtPool_init(cmock_call_instance, stoStart, stoSize, evtSize);
-  cmock_call_instance->ReturnVal = cmock_to_return;
   UNITY_CLR_DETAILS();
 }
 
@@ -282,23 +262,106 @@ void rkh_evtPool_init_StubWithCallback(CMOCK_rkh_evtPool_init_CALLBACK Callback)
   Mock.rkh_evtPool_init_CallbackFunctionPointer = Callback;
 }
 
-void rkh_evtPool_init_CMockIgnoreArg_stoStart(UNITY_LINE_TYPE cmock_line)
+RKHEvtPool* rkh_evtPool_getPool(void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
 {
-  CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_evtPool_init_CallInstance));
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_evtPool_getPool);
+  cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_evtPool_getPool_CallInstance);
+  Mock.rkh_evtPool_getPool_CallInstance = CMock_Guts_MemNext(Mock.rkh_evtPool_getPool_CallInstance);
+  if (Mock.rkh_evtPool_getPool_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.rkh_evtPool_getPool_FinalReturn;
+    Mock.rkh_evtPool_getPool_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (!cmock_call_instance->IgnoreArg_stoStart)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_evtPool_getPool,CMockString_stoStart);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_stoStart, stoStart, cmock_line, CMockStringMismatch);
+  }
+  if (!cmock_call_instance->IgnoreArg_stoSize)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_evtPool_getPool,CMockString_stoSize);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_stoSize), (void*)(&stoSize), sizeof(rui32_t), cmock_line, CMockStringMismatch);
+  }
+  if (!cmock_call_instance->IgnoreArg_evtSize)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_evtPool_getPool,CMockString_evtSize);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_evtSize), (void*)(&evtSize), sizeof(RKH_ES_T), cmock_line, CMockStringMismatch);
+  }
+  if (Mock.rkh_evtPool_getPool_CallbackFunctionPointer != NULL)
+  {
+    cmock_call_instance->ReturnVal = Mock.rkh_evtPool_getPool_CallbackFunctionPointer(stoStart, stoSize, evtSize, Mock.rkh_evtPool_getPool_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+  return cmock_call_instance->ReturnVal;
+}
+
+void CMockExpectParameters_rkh_evtPool_getPool(CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
+{
+  cmock_call_instance->Expected_stoStart = stoStart;
+  cmock_call_instance->IgnoreArg_stoStart = 0;
+  memcpy(&cmock_call_instance->Expected_stoSize, &stoSize, sizeof(rui32_t));
+  cmock_call_instance->IgnoreArg_stoSize = 0;
+  memcpy(&cmock_call_instance->Expected_evtSize, &evtSize, sizeof(RKH_ES_T));
+  cmock_call_instance->IgnoreArg_evtSize = 0;
+}
+
+void rkh_evtPool_getPool_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_evtPool_getPool_CALL_INSTANCE));
+  CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.rkh_evtPool_getPool_CallInstance = CMock_Guts_MemChain(Mock.rkh_evtPool_getPool_CallInstance, cmock_guts_index);
+  Mock.rkh_evtPool_getPool_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.rkh_evtPool_getPool_IgnoreBool = (int)1;
+}
+
+void rkh_evtPool_getPool_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize, RKHEvtPool* cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_evtPool_getPool_CALL_INSTANCE));
+  CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.rkh_evtPool_getPool_CallInstance = CMock_Guts_MemChain(Mock.rkh_evtPool_getPool_CallInstance, cmock_guts_index);
+  Mock.rkh_evtPool_getPool_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_rkh_evtPool_getPool(cmock_call_instance, stoStart, stoSize, evtSize);
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  UNITY_CLR_DETAILS();
+}
+
+void rkh_evtPool_getPool_StubWithCallback(CMOCK_rkh_evtPool_getPool_CALLBACK Callback)
+{
+  Mock.rkh_evtPool_getPool_IgnoreBool = (int)0;
+  Mock.rkh_evtPool_getPool_CallbackFunctionPointer = Callback;
+}
+
+void rkh_evtPool_getPool_CMockIgnoreArg_stoStart(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_evtPool_getPool_CallInstance));
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
   cmock_call_instance->IgnoreArg_stoStart = 1;
 }
 
-void rkh_evtPool_init_CMockIgnoreArg_stoSize(UNITY_LINE_TYPE cmock_line)
+void rkh_evtPool_getPool_CMockIgnoreArg_stoSize(UNITY_LINE_TYPE cmock_line)
 {
-  CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_evtPool_init_CallInstance));
+  CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_evtPool_getPool_CallInstance));
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
   cmock_call_instance->IgnoreArg_stoSize = 1;
 }
 
-void rkh_evtPool_init_CMockIgnoreArg_evtSize(UNITY_LINE_TYPE cmock_line)
+void rkh_evtPool_getPool_CMockIgnoreArg_evtSize(UNITY_LINE_TYPE cmock_line)
 {
-  CMOCK_rkh_evtPool_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_evtPool_init_CallInstance));
+  CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_evtPool_getPool_CallInstance));
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
   cmock_call_instance->IgnoreArg_evtSize = 1;
 }

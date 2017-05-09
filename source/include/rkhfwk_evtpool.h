@@ -31,8 +31,13 @@
 
 /**
  *  \file       rkhfwk_evtpool.h
- *  \brief      
  *  \ingroup    fwk
+ *  \brief      Specificates the event pool interface.
+ *              Typically, these platform-dependent functions, must be define 
+ *              it in the specific implementation file to a particular 
+ *              platform. However, only the ports to the external OS/RTOS 
+ *              usually need some code to bolt the framework to the external 
+ *              OS/RTOS.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -67,10 +72,22 @@ typedef struct RKHEvtPool RKHEvtPool;
 /* -------------------------- Function prototypes -------------------------- */
 /**
  *  \brief
+ *  Encapsulates the initialization of event pool manager.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
+ */
+void rkh_evtPool_init();
+
+/**
+ *  \brief
  *  Encapsulates the creation of an event pool.
  *
  *  \param[in] stoStart	storage start. Pointer to memory from which 
- *                      memory blocks are allocated.
+ *                      memory blocks (events) are allocated.
  *  \param[in] stoSize 	storage size. Size of the memory pool storage in 
  *                      bytes.
  *  \param[in] evtSize	event size. This number determines the size of each
@@ -78,9 +95,15 @@ typedef struct RKHEvtPool RKHEvtPool;
  *  
  *  \return
  *  A pointer to assigned event pool.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
-RKHEvtPool *rkh_evtPool_init(void *stoStart, rui32_t stoSize, 
-                             RKH_ES_T evtSize);
+RKHEvtPool *rkh_evtPool_getPool(void *stoStart, rui32_t stoSize, 
+                                RKH_ES_T evtSize);
 
 /**
  *  \brief
@@ -88,6 +111,12 @@ RKHEvtPool *rkh_evtPool_init(void *stoStart, rui32_t stoSize,
  *
  * \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
 rui8_t rkh_evtPool_getBlockSize(RKHEvtPool *const me);
 
@@ -100,6 +129,12 @@ rui8_t rkh_evtPool_getBlockSize(RKHEvtPool *const me);
  *                      structure.
  *  \param[in] evt      inter to a new event or NULL if the pool runs 
  *                      out of blocks.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
 RKH_EVT_T *rkh_evtPool_get(RKHEvtPool *const me);
 
@@ -111,6 +146,12 @@ RKH_EVT_T *rkh_evtPool_get(RKHEvtPool *const me);
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
  *  \param[in] evt      pointer to the returned event.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
 void rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt);
 
@@ -121,6 +162,12 @@ void rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt);
  *
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
 rui8_t rkh_evtPool_getNumUsed(RKHEvtPool *const me);
 
@@ -133,6 +180,12 @@ rui8_t rkh_evtPool_getNumUsed(RKHEvtPool *const me);
  *
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
 rui8_t rkh_evtPool_getNumMin(RKHEvtPool *const me);
 
@@ -143,6 +196,12 @@ rui8_t rkh_evtPool_getNumMin(RKHEvtPool *const me);
  *
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
+ *
+ *  \note
+ *  Platform-dependent function. Typically, must be define it in the specific 
+ *  implementation file to a particular platform. However, only the ports to 
+ *  the external OS/RTOS usually need some code to bolt the framework to the
+ *	external OS/RTOS.
  */
 rui8_t rkh_evtPool_getNumBlock(RKHEvtPool *const me);
 

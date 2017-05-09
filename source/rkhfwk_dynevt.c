@@ -73,39 +73,6 @@ static rui8_t nextFreeEvtPool;
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-#if 0
-void
-rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
-{
-    RKH_DYNE_TYPE *ep;
-    RKH_SR_ALLOC();
-
-    if (e->nref != 0)       /* is it a dynamic event? */
-    {
-        RKH_ENTER_CRITICAL_();
-
-        if (e->nref > 1)    /* isn't this the last ref? */
-        {
-            --e->nref;      /* decrement the reference counter */
-            RKH_TR_FWK_GC(e, e->pool, e->nref);
-            RKH_EXIT_CRITICAL_();
-        }
-        else    /* this is the last reference to this event, recycle it */
-        {
-            /* cannot wrap around */
-            rui8_t idx = (rui8_t)(e->pool - 1);
-            ep = &rkh_eplist[idx]; 
-            RKH_TR_FWK_GCR(e, RKH_DYNE_GET_NUSED(ep) - 1, 
-                           RKH_DYNE_GET_NMIN(ep), sender);
-            RKH_EXIT_CRITICAL_();
-
-            RKH_ASSERT(idx < RKH_CFG_FWK_MAX_EVT_POOL);
-            RKH_DYNE_PUT(ep, e);
-        }
-    }
-}
-#endif
-
 void
 rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
 {
@@ -126,11 +93,11 @@ rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
             rui8_t evtPoolIdx = (rui8_t)(e->pool - 1);
 
             RKH_REQUIRE(evtPoolIdx < nextFreeEvtPool); /* cannot wrap around */
-            RKH_EXIT_CRITICAL_();
-
             ep = &evtPools[evtPoolIdx]; 
             RKH_TR_FWK_GCR(e, rkh_evtPool_getNumUsed(ep->evtPool) - 1, 
                            rkh_evtPool_getNumMin(ep->evtPool), sender);
+            RKH_EXIT_CRITICAL_();
+
             rkh_evtPool_put(ep->evtPool, e);
         }
     }
@@ -182,7 +149,7 @@ rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
     RKH_SR_ALLOC();
 
     RKH_REQUIRE((nextFreeEvtPool + 1) <= RKH_CFG_FWK_MAX_EVT_POOL);
-    ep = rkh_evtPool_init(sstart, ssize, esize);
+    ep = rkh_evtPool_getPool(sstart, ssize, esize);
     RKH_ENSURE(ep != (RKHEvtPool *)0);
     evtPools[nextFreeEvtPool].evtPool = ep;
     ++nextFreeEvtPool;
