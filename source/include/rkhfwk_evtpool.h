@@ -102,7 +102,7 @@ void rkh_evtPool_init();
  *  the external OS/RTOS usually need some code to bolt the framework to the
  *	external OS/RTOS.
  */
-RKHEvtPool *rkh_evtPool_getPool(void *stoStart, rui32_t stoSize, 
+RKHEvtPool *rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, 
                                 RKH_ES_T evtSize);
 
 /**

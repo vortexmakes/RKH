@@ -58,6 +58,8 @@
 #include "Mock_rkhtrc_record.h"
 #include "Mock_rkhtrc_filter.h"
 #include "Mock_rkhport.h"
+#include "Mock_rkhmp.h"
+#include "Mock_rkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -67,7 +69,7 @@ TEST_GROUP(evtpool);
 
 /* ---------------------------- Local variables ---------------------------- */
 static rui8_t *stoStart;
-static rui32_t stoSize;
+static rui16_t stoSize;
 static RKH_ES_T evtSize;
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -81,6 +83,7 @@ MockAssertCallback(const char* const file, int line, int cmock_num_calls)
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(evtpool)
 {
+    Mock_rkhmp_Init();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_evtPool_init();
 
@@ -91,6 +94,8 @@ TEST_SETUP(evtpool)
 
 TEST_TEAR_DOWN(evtpool)
 {
+    Mock_rkhmp_Verify();
+    Mock_rkhmp_Destroy();
 }
 
 /**
@@ -99,9 +104,28 @@ TEST_TEAR_DOWN(evtpool)
  *  \name Test cases of event pool group
  *  @{ 
  */
+TEST(evtpool, AfterInitAllEvtPoolAvailable)
+{
+    RKHEvtPool *ep;
+    int i;
+
+    for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
+    {
+        rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+        rkh_mp_init_IgnoreArg_mp();
+
+        ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+        TEST_ASSERT_NOT_NULL(ep);
+    } 
+    TEST_ASSERT_EQUAL(RKH_CFG_FWK_MAX_EVT_POOL, i);
+}
+
 TEST(evtpool, GetOneEvtPool)
 {
     RKHEvtPool *ep;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
 
     ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
     TEST_ASSERT_NOT_NULL(ep);
@@ -109,33 +133,107 @@ TEST(evtpool, GetOneEvtPool)
 
 TEST(evtpool, GetMultipleEvtPool)
 {
-    RKHEvtPool *ep1, *ep2, *ep3;
+    rint i;
+    RKHEvtPool *ep[RKH_CFG_FWK_MAX_EVT_POOL];
 
-    ep1 = rkh_evtPool_getPool(stoStart + (stoSize * 0), stoSize, evtSize * 1);
-    TEST_ASSERT_NOT_NULL(ep1);
+    for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
+    {
+        rkh_mp_init_Expect(0, stoStart + (stoSize * i), 
+                           stoSize, (RKH_MPBS_T)evtSize * (2 * (i + 1)));
+        rkh_mp_init_IgnoreArg_mp();
+        ep[i] = rkh_evtPool_getPool(stoStart + (stoSize * i), stoSize, 
+                                  evtSize * (2 * (i + 1)));
+        TEST_ASSERT_NOT_NULL(ep[i]);
+    }
 
-    ep2 = rkh_evtPool_getPool(stoStart + (stoSize * 1), stoSize, evtSize * 2);
-    TEST_ASSERT_NOT_NULL(ep2);
-
-    ep3 = rkh_evtPool_getPool(stoStart + (stoSize * 2), stoSize, evtSize * 4);
-    TEST_ASSERT_NOT_NULL(ep3);
-
-    TEST_ASSERT_TRUE((ep1 != ep2) && (ep1 != ep3));
-    TEST_ASSERT_TRUE(ep2 != ep3);
+    TEST_ASSERT_TRUE((ep[0] != ep[1]) && (ep[0] != ep[2]));
+    TEST_ASSERT_TRUE(ep[1] != ep[2]);
 }
 
-TEST(evtpool, Fails_ExceedsEvtPoolToAssign)
+TEST(evtpool, Fails_ExceedsMaxAvailableEvtPool)
 {
     rint i;
     RKHEvtPool *ep;
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
     {
+        rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+        rkh_mp_init_IgnoreArg_mp();
         ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
         TEST_ASSERT_NOT_NULL(ep);
     }
     ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
     TEST_ASSERT_NULL(ep);
+}
+
+TEST(evtpool, GetBlockSize)
+{
+    RKHEvtPool *ep;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
+
+    ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+    rkh_evtPool_getBlockSize(ep);
+}
+
+TEST(evtpool, Fails_GetBlockSizeInvalidInstance)
+{
+    rkh_assert_Expect("rkhfwk_evtpool", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_evtPool_getBlockSize((RKHEvtPool *)0);
+}
+
+TEST(evtpool, GetBlock)
+{
+    RKHEvtPool *ep;
+    RKH_EVT_T *evt;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
+    rkh_mp_get_ExpectAndReturn(0, (void *)0xdead);
+    rkh_mp_get_IgnoreArg_mp();
+
+    ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+    evt = rkh_evtPool_get(ep);
+
+    TEST_ASSERT_EQUAL_PTR((RKH_EVT_T *)0xdead, evt);
+}
+
+TEST(evtpool, Fails_GetBlockInvalidInstance)
+{
+    rkh_assert_Expect("rkhfwk_evtpool", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_evtPool_get((RKHEvtPool *)0);
+}
+
+TEST(evtpool, PutBlock)
+{
+    RKHEvtPool *ep;
+    RKH_EVT_T *evt = (RKH_EVT_T *)0xdead;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
+    rkh_mp_put_Expect(0, evt);
+    rkh_mp_put_IgnoreArg_mp();
+
+    ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+    rkh_evtPool_put(ep, evt);
+}
+
+TEST(evtpool, Fails_PutBlockInvalidInstance)
+{
+    RKH_EVT_T *evt = (RKH_EVT_T *)0xdead;
+
+    rkh_assert_Expect("rkhfwk_evtpool", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_evtPool_put((RKHEvtPool *)0, evt);
 }
 
 /** @} doxygen end group definition */

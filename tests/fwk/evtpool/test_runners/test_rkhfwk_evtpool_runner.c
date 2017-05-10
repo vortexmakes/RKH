@@ -60,9 +60,16 @@
 /* ---------------------------- Global functions --------------------------- */
 TEST_GROUP_RUNNER(evtpool)
 {
+	RUN_TEST_CASE(evtpool, AfterInitAllEvtPoolAvailable);
 	RUN_TEST_CASE(evtpool, GetOneEvtPool);
 	RUN_TEST_CASE(evtpool, GetMultipleEvtPool);
-	RUN_TEST_CASE(evtpool, Fails_ExceedsEvtPoolToAssign);
+	RUN_TEST_CASE(evtpool, Fails_ExceedsMaxAvailableEvtPool);
+	RUN_TEST_CASE(evtpool, GetBlockSize);
+	RUN_TEST_CASE(evtpool, Fails_GetBlockSizeInvalidInstance);
+	RUN_TEST_CASE(evtpool, GetBlock);
+	RUN_TEST_CASE(evtpool, Fails_GetBlockInvalidInstance);
+	RUN_TEST_CASE(evtpool, PutBlock);
+	RUN_TEST_CASE(evtpool, Fails_PutBlockInvalidInstance);
 }
 
 /* ------------------------------ End of file ------------------------------ */
