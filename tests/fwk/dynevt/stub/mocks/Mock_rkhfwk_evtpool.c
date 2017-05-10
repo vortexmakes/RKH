@@ -31,7 +31,7 @@ typedef struct _CMOCK_rkh_evtPool_getPool_CALL_INSTANCE
   UNITY_LINE_TYPE LineNumber;
   RKHEvtPool* ReturnVal;
   void* Expected_stoStart;
-  rui32_t Expected_stoSize;
+  rui16_t Expected_stoSize;
   RKH_ES_T Expected_evtSize;
   int IgnoreArg_stoStart;
   int IgnoreArg_stoSize;
@@ -262,7 +262,7 @@ void rkh_evtPool_init_StubWithCallback(CMOCK_rkh_evtPool_init_CALLBACK Callback)
   Mock.rkh_evtPool_init_CallbackFunctionPointer = Callback;
 }
 
-RKHEvtPool* rkh_evtPool_getPool(void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
+RKHEvtPool* rkh_evtPool_getPool(void* stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance;
@@ -287,7 +287,7 @@ RKHEvtPool* rkh_evtPool_getPool(void* stoStart, rui32_t stoSize, RKH_ES_T evtSiz
   if (!cmock_call_instance->IgnoreArg_stoSize)
   {
     UNITY_SET_DETAILS(CMockString_rkh_evtPool_getPool,CMockString_stoSize);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_stoSize), (void*)(&stoSize), sizeof(rui32_t), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_stoSize), (void*)(&stoSize), sizeof(rui16_t), cmock_line, CMockStringMismatch);
   }
   if (!cmock_call_instance->IgnoreArg_evtSize)
   {
@@ -302,11 +302,11 @@ RKHEvtPool* rkh_evtPool_getPool(void* stoStart, rui32_t stoSize, RKH_ES_T evtSiz
   return cmock_call_instance->ReturnVal;
 }
 
-void CMockExpectParameters_rkh_evtPool_getPool(CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize)
+void CMockExpectParameters_rkh_evtPool_getPool(CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance, void* stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 {
   cmock_call_instance->Expected_stoStart = stoStart;
   cmock_call_instance->IgnoreArg_stoStart = 0;
-  memcpy(&cmock_call_instance->Expected_stoSize, &stoSize, sizeof(rui32_t));
+  memcpy(&cmock_call_instance->Expected_stoSize, &stoSize, sizeof(rui16_t));
   cmock_call_instance->IgnoreArg_stoSize = 0;
   memcpy(&cmock_call_instance->Expected_evtSize, &evtSize, sizeof(RKH_ES_T));
   cmock_call_instance->IgnoreArg_evtSize = 0;
@@ -325,7 +325,7 @@ void rkh_evtPool_getPool_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvt
   Mock.rkh_evtPool_getPool_IgnoreBool = (int)1;
 }
 
-void rkh_evtPool_getPool_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize, RKHEvtPool* cmock_to_return)
+void rkh_evtPool_getPool_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* stoStart, rui16_t stoSize, RKH_ES_T evtSize, RKHEvtPool* cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_evtPool_getPool_CALL_INSTANCE));
   CMOCK_rkh_evtPool_getPool_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_evtPool_getPool_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);

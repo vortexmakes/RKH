@@ -2066,13 +2066,12 @@ extern "C" {
 
     /**
      *  \brief
-     *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native
-     *  fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN)
-     *  then RKH will include its own implementation of dynamic memory
-     *  management. When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH
-     *  also will automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
-     *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), 
-     *  RKH_DYNE_GET_NUSED(), RKH_DYNE_GET_NMIN(), RKH_DYNE_GET_PSIZE() macros.
+     *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native 
+     *  fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN) then 
+     *  RKH will include its own implementation of dynamic memory management.
+     *  When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will provide 
+     *  the event pool manager implementation based on its native memory pool 
+     *  module.
      *
      * \type       Boolean 
      * \range      
@@ -2318,118 +2317,6 @@ extern "C" {
      *  \param[in] sma		pointer to SMA.
      */
     #define RKH_SMA_UNREADY(rg, sma)
-
-    /**
-     *  \brief
-     *  Defines the data type of the fixed-size memory block for
-     *  dynamic event support.
-     *
-     *  The fixed-size memory block can be implemented with a RTOS/OS
-     *  service provided to that. But it's also possible to use the native
-     *  RKH fixed-size memory block RKH_MP_T type if the underlying RTOS/OS
-     *  does not provide an adequate support.
-     */
-    #define RKH_DYNE_TYPE
-
-    /**
-     *  \brief
-     *  Encapsulates the creation of a event pool.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp	    pointer to previously allocated memory pool 
-     *                      structure.
-     *  \param[in] sstart	storage start. Pointer to memory from which 
-     *                      memory blocks are allocated.
-     *  \param[in] ssize:	storage size. Size of the memory pool storage in 
-     *                      bytes.
-     *  \param[in] esize	event size. This number determines the size of each
-     *                      memory block in the pool.
-     */
-    #define RKH_DYNE_INIT(mp, sstart, ssize, esize)
-
-    /**
-     *  \brief
-     *  Encapsulates how RKH should obtain the block size of pool.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp		pointer to previously allocated memory pool 
-     *                      structure.
-     */
-    #define RKH_DYNE_GET_ESIZE(mp)
-
-    /**
-     *  \brief
-     *	Encapsulates how RKH should obtain an event \c e from the
-     *	event pool \c mp.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp		pointer to previously allocated memory pool 
-     *                      structure.
-     *  \param[in] e		pointer to a new event or NULL if the pool runs 
-     *                      out of blocks.
-     */
-    #define RKH_DYNE_GET(mp, e)
-
-    /**
-     *  \brief
-     *	Encapsulates how RKH should return an event \c e to the event
-     *	pool \c mp.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp		pointer to previously allocated memory pool 
-     *                      structure.
-     *  \param[in] e		pointer to the returned event.
-     */
-    #define RKH_DYNE_PUT(mp, e)
-
-    /**
-     *  \brief
-     *	Encapsulates how RKH should return the current number of memory 
-     *	blocks used in the pool \c mp.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp		pointer to previously allocated memory pool 
-     *                      structure.
-     */
-    #define RKH_DYNE_GET_NUSED(mp)
-
-    /**
-     *  \brief
-     *	Encapsulates how RKH should return the lowest number of free 
-     *	blocks ever present in the pool \c mp.
-     *  This number provides valuable empirical data for proper sizing of the
-     *  memory pool.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp		pointer to previously allocated memory pool 
-     *                      structure.
-     */
-    #define RKH_DYNE_GET_NMIN(mp)
-
-    /**
-     *  \brief
-     *	Encapsulates how RKH should return the total number of blocks in the 
-     *	pool \c mp.
-     *
-     *  Platform-dependent macro. Typically, must be define it in the
-     *  specific port file (rkhport.h).
-     *
-     *  \param[in] mp		pointer to previously allocated memory pool 
-     *                      structure.
-     */
-    #define RKH_DYNE_GET_PSIZE(mp)
 #endif
 
 #ifdef RKH_CPUSR_TYPE

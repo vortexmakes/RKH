@@ -152,33 +152,6 @@ extern "C" {
 #define RKH_MODULE_GET_DESC() \
     ((const char *)m_desc)
 
-#if RKH_CFGPORT_NATIVE_DYN_EVT_EN == RKH_ENABLED && \
-    RKH_EN_DOXYGEN == RKH_DISABLED
-    #define RKH_DYNE_TYPE           RKH_MP_T
-    #define RKH_DYNE_INIT(mp, sstart, ssize, esize) \
-        rkh_mp_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
-    #define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
-    #define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
-    #define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
-    #define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
-    #if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED
-        #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
-    #else
-        #define RKH_DYNE_GET_NMIN(mp)   (0)
-    #endif
-    #define RKH_DYNE_GET_PSIZE(mp)  ((mp)->nblocks)
-#else
-    #define RKH_DYNE_TYPE           rui8_t
-    #define RKH_DYNE_INIT(mp, sstart, ssize, esize)   (void)0
-    #define RKH_DYNE_GET_ESIZE(mp)  (void)0
-    #define RKH_DYNE_GET(mp, e)     (void)0
-    #define RKH_DYNE_PUT(mp, e)     (void)0
-    #define RKH_DYNE_GET_NBLOCK(mp) (void)0
-    #define RKH_DYNE_GET_NUSED(mp)  (void)0
-    #define RKH_DYNE_GET_NMIN(mp)   (void)0
-    #define RKH_DYNE_GET_PSIZE(mp)  (void)0
-#endif
-
 /**
  *  \brief
  *  Convert a pointer to a base-class. 

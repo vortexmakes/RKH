@@ -29,8 +29,8 @@ void rkh_evtPool_init_StubWithCallback(CMOCK_rkh_evtPool_init_CALLBACK Callback)
 #define rkh_evtPool_getPool_IgnoreAndReturn(cmock_retval) rkh_evtPool_getPool_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void rkh_evtPool_getPool_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKHEvtPool* cmock_to_return);
 #define rkh_evtPool_getPool_ExpectAndReturn(stoStart, stoSize, evtSize, cmock_retval) rkh_evtPool_getPool_CMockExpectAndReturn(__LINE__, stoStart, stoSize, evtSize, cmock_retval)
-void rkh_evtPool_getPool_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* stoStart, rui32_t stoSize, RKH_ES_T evtSize, RKHEvtPool* cmock_to_return);
-typedef RKHEvtPool* (* CMOCK_rkh_evtPool_getPool_CALLBACK)(void* stoStart, rui32_t stoSize, RKH_ES_T evtSize, int cmock_num_calls);
+void rkh_evtPool_getPool_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, void* stoStart, rui16_t stoSize, RKH_ES_T evtSize, RKHEvtPool* cmock_to_return);
+typedef RKHEvtPool* (* CMOCK_rkh_evtPool_getPool_CALLBACK)(void* stoStart, rui16_t stoSize, RKH_ES_T evtSize, int cmock_num_calls);
 void rkh_evtPool_getPool_StubWithCallback(CMOCK_rkh_evtPool_getPool_CALLBACK Callback);
 #define rkh_evtPool_getPool_IgnoreArg_stoStart() rkh_evtPool_getPool_CMockIgnoreArg_stoStart(__LINE__)
 void rkh_evtPool_getPool_CMockIgnoreArg_stoStart(UNITY_LINE_TYPE cmock_line);

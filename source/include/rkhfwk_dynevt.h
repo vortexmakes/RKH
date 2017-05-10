@@ -341,23 +341,19 @@ void rkh_dynEvt_init(void);
  *
  *  Many RTOSes provide fixed block-size heaps, a.k.a. memory pools that can
  *  be adapted for RKH event pools. In case such support is missing, RKH
- *  provides a native RKH event pool implementation. The macro
- *  #RKH_DYNE_TYPE determines the type of event pool used by a particular
- *  RKH port. See structure RKH_MP_T for more information.
+ *  provides a native RKH event pool manager implementation. See 
+ *  rkhfwk_evtpool.c.
  *
  *  For adapting RKH event pools to any fixed-size memory block service RTOS
- *  provided the application code must define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
- *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NUSED(),
- *  RKH_DYNE_GET_NMIN(), and RKH_DYNE_GET_PSIZE() macros.
+ *  provided the application code must provides the implementation of the 
+ *  rkhfwk_etpoo.h interface.
  *
  *  The dynamic allocation of events is optional then if the
  *  #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native fixed-size
  *  memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will
  *  include its own implementation of dynamic memory management.
- *  When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will
- *  automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(),
- *  RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NUSED(),
- *  RKH_DYNE_GET_NMIN(), and RKH_DYNE_GET_PSIZE() macros.
+ *  When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will provide the 
+ *  event pool manager implementation based on its native memory pool module.
  *
  *  \param[in] sstart   storage start. Pointer to memory from which memory 
  *                      blocks are allocated.
