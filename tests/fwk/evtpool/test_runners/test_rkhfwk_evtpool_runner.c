@@ -70,6 +70,12 @@ TEST_GROUP_RUNNER(evtpool)
 	RUN_TEST_CASE(evtpool, Fails_GetBlockInvalidInstance);
 	RUN_TEST_CASE(evtpool, PutBlock);
 	RUN_TEST_CASE(evtpool, Fails_PutBlockInvalidInstance);
+	RUN_TEST_CASE(evtpool, GetNumUsed);
+	RUN_TEST_CASE(evtpool, Fails_GetNumUsedInvalidInstance);
+	RUN_TEST_CASE(evtpool, GetNumMin);
+	RUN_TEST_CASE(evtpool, Fails_GetNumMinInvalidInstance);
+	RUN_TEST_CASE(evtpool, GetNumBlock);
+	RUN_TEST_CASE(evtpool, Fails_GetNumBlockInvalidInstance);
 }
 
 /* ------------------------------ End of file ------------------------------ */

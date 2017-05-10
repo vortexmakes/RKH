@@ -80,12 +80,22 @@ MockAssertCallback(const char* const file, int line, int cmock_num_calls)
     TEST_PASS();
 }
 
+static void 
+MockMemPoolInitCallback(RKH_MP_T *mp, void* sstart, rui16_t ssize, 
+                        RKH_MPBS_T bsize, int cmock_num_calls)
+{
+    mp->nblocks = 1;    /* this value is only used just for testing */
+}
+
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(evtpool)
 {
     Mock_rkhmp_Init();
+    Mock_rkhassert_Init();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_evtPool_init();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+    rkh_mp_init_StubWithCallback(MockMemPoolInitCallback);
 
     stoStart = (void *)0xdeadbeaf;
     stoSize = 128;
@@ -96,6 +106,8 @@ TEST_TEAR_DOWN(evtpool)
 {
     Mock_rkhmp_Verify();
     Mock_rkhmp_Destroy();
+    Mock_rkhassert_Verify();
+    Mock_rkhassert_Destroy();
 }
 
 /**
@@ -181,7 +193,6 @@ TEST(evtpool, Fails_GetBlockSizeInvalidInstance)
 {
     rkh_assert_Expect("rkhfwk_evtpool", 0);
     rkh_assert_IgnoreArg_line();
-    rkh_assert_StubWithCallback(MockAssertCallback);
 
     rkh_evtPool_getBlockSize((RKHEvtPool *)0);
 }
@@ -206,7 +217,6 @@ TEST(evtpool, Fails_GetBlockInvalidInstance)
 {
     rkh_assert_Expect("rkhfwk_evtpool", 0);
     rkh_assert_IgnoreArg_line();
-    rkh_assert_StubWithCallback(MockAssertCallback);
 
     rkh_evtPool_get((RKHEvtPool *)0);
 }
@@ -231,9 +241,65 @@ TEST(evtpool, Fails_PutBlockInvalidInstance)
 
     rkh_assert_Expect("rkhfwk_evtpool", 0);
     rkh_assert_IgnoreArg_line();
-    rkh_assert_StubWithCallback(MockAssertCallback);
 
     rkh_evtPool_put((RKHEvtPool *)0, evt);
+}
+
+TEST(evtpool, GetNumUsed)
+{
+    RKHEvtPool *ep;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
+
+    ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+    rkh_evtPool_getNumUsed(ep);
+}
+
+TEST(evtpool, Fails_GetNumUsedInvalidInstance)
+{
+    rkh_assert_Expect("rkhfwk_evtpool", 0);
+    rkh_assert_IgnoreArg_line();
+
+    rkh_evtPool_getNumUsed((RKHEvtPool *)0);
+}
+
+TEST(evtpool, GetNumMin)
+{
+    RKHEvtPool *ep;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
+
+    ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+    rkh_evtPool_getNumMin(ep);
+}
+
+TEST(evtpool, Fails_GetNumMinInvalidInstance)
+{
+    rkh_assert_Expect("rkhfwk_evtpool", 0);
+    rkh_assert_IgnoreArg_line();
+
+    rkh_evtPool_getNumMin((RKHEvtPool *)0);
+}
+
+TEST(evtpool, GetNumBlock)
+{
+    RKHEvtPool *ep;
+
+    rkh_mp_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
+    rkh_mp_init_IgnoreArg_mp();
+
+    ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
+    rkh_evtPool_getNumBlock(ep);
+}
+
+TEST(evtpool, Fails_GetNumBlockInvalidInstance)
+{
+    rkh_assert_Expect("rkhfwk_evtpool", 0);
+    rkh_assert_IgnoreArg_line();
+
+    rkh_evtPool_getNumBlock((RKHEvtPool *)0);
 }
 
 /** @} doxygen end group definition */

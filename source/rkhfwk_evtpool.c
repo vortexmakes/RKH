@@ -64,7 +64,6 @@ RKH_MODULE_NAME(rkhfwk_evtpool)
 struct RKHEvtPool
 {
     RKH_MP_T memPool;
-    rui8_t isUsed;
 };
 
 /* ---------------------------- Global variables --------------------------- */
@@ -82,7 +81,7 @@ rkh_evtPool_init(void)
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
     {
-        ep->isUsed = 0;
+        ((RKH_MP_T *)ep)->nblocks = 0;
     }
 }
 
@@ -94,11 +93,10 @@ rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
     {
-        if (ep->isUsed == 0)
+        if (((RKH_MP_T *)ep)->nblocks == 0)
         {
             rkh_mp_init((RKH_MP_T *)ep, stoStart, stoSize, 
                         (RKH_MPBS_T)evtSize);
-            ep->isUsed = 1;
             return ep;
         }
     }
@@ -110,6 +108,7 @@ rkh_evtPool_getBlockSize(RKHEvtPool *const me)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
     return (rui8_t)((RKH_MP_T *)me)->bsize;
+    /* return (rui8_t)rkh_mp_get_bsize((RKH_MP_T *)me); */
 }
 
 RKH_EVT_T *
@@ -129,19 +128,23 @@ rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt)
 rui8_t 
 rkh_evtPool_getNumUsed(RKHEvtPool *const me)
 {
-    return 0;
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)(((RKH_MP_T *)me)->nblocks - ((RKH_MP_T *)me)->nfree);
 }
 
 rui8_t 
 rkh_evtPool_getNumMin(RKHEvtPool *const me)
 {
-    return 0;
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)(((RKH_MP_T *)me)->nmin);
+    /* return (rui8_t)rkh_mp_get_low_wmark((RKH_MP_T *)me); */
 }
 
 rui8_t 
 rkh_evtPool_getNumBlock(RKHEvtPool *const me)
 {
-    return 0;
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)(((RKH_MP_T *)me)->nblocks);
 }
 #endif
 
