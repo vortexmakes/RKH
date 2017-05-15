@@ -37,7 +37,7 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.04.05  LeFr  v2.4.05  ---
+ *  2017.15.05  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -61,9 +61,7 @@
 static void 
 runAllTests(void)
 {
-	RUN_TEST_GROUP(sma);
-	RUN_TEST_GROUP(instance);
-	RUN_TEST_GROUP(polymorphism);
+	RUN_TEST_GROUP(sync);
 }
 
 /* ---------------------------- Global functions --------------------------- */

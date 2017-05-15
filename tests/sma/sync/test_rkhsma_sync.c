@@ -30,14 +30,20 @@
  */
 
 /**
- *  \file       test_rkhsma_sync_runner.c
+ *  \file       test_rkhsma_sync.c
  *  \ingroup    test_sma
- *  \brief      Test runner of synchronous active object module
+ *  \brief      Unit test for synchronous mechanism of sma module.
+ *
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_sma SMA
+ *  @{
+ *  \brief      Unit test for sma module.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.15.05  LeFr  v2.4.05  ---
+ *  2017.05.15  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -48,18 +54,39 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
+#include "rkhsma.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
+TEST_GROUP(sync);
+
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(sync)
+TEST_SETUP(sync)
 {
-	RUN_TEST_CASE(sync, First);
 }
 
+TEST_TEAR_DOWN(sync)
+{
+}
+
+/**
+ *  \addtogroup test_sync for test sync group
+ *  @{
+ *  \name Test cases of synchronous mechanism group
+ *  @{ 
+ */
+TEST(sync, First)
+{
+    TEST_IGNORE();
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

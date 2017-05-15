@@ -87,29 +87,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhsma.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\source\rkhsma_sync.c" />
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
-    <ClCompile Include="..\..\..\..\..\sma\smInstance.c" />
-    <ClCompile Include="..\..\..\..\..\sma\smPolymorphism.c" />
-    <ClCompile Include="..\..\..\..\..\sma\smTest.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhassert.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhmp.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhport.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhrq.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhsm.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_record.c" />
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_stream.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_rkhsma.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\test_rkhsma_runner.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\test_smInstance_runner.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\test_smPolymorphism_runner.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_smInstance.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_smPolymorphism.c" />
+    <ClCompile Include="..\..\..\..\..\sync\test_rkhsma_sync.c" />
+    <ClCompile Include="..\..\..\..\..\sync\test_runners\all_tests.c" />
+    <ClCompile Include="..\..\..\..\..\sync\test_runners\test_rkhsma_sync_runner.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

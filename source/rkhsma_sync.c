@@ -30,14 +30,14 @@
  */
 
 /**
- *  \file       test_rkhsma_sync_runner.c
- *  \ingroup    test_sma
- *  \brief      Test runner of synchronous active object module
+ *  \file       rkhsma_sync.c
+ *  \brief      ...
+ *  \ingroup    sma
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.15.05  LeFr  v2.4.05  ---
+ *  2017.05.15  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -46,8 +46,10 @@
  */
 
 /* --------------------------------- Notes --------------------------------- */
+
+/* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "unity_fixture.h"
+#include "rkh.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -57,9 +59,19 @@
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(sync)
+void 
+rkh_sma_block(RKH_SMA_T *const me)
 {
-	RUN_TEST_CASE(sync, First);
+}
+
+void 
+rkh_sma_setReady(RKH_SMA_T *const me)
+{
+}
+
+void 
+rkh_sma_setUnready(RKH_SMA_T *const me)
+{
 }
 
 /* ------------------------------ End of file ------------------------------ */

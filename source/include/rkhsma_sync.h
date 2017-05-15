@@ -30,14 +30,14 @@
  */
 
 /**
- *  \file       test_rkhsma_sync_runner.c
- *  \ingroup    test_sma
- *  \brief      Test runner of synchronous active object module
+ *  \file       rkhsma_sync.h
+ *  \brief      ...
+ *  \ingroup    sma
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.15.05  LeFr  v2.4.05  ---
+ *  2017.05.15  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -46,20 +46,56 @@
  */
 
 /* --------------------------------- Notes --------------------------------- */
-/* ----------------------------- Include files ----------------------------- */
-#include "unity_fixture.h"
+/* --------------------------------- Module -------------------------------- */
+#ifndef __RKHSMA_SYNC_H__
+#define __RKHSMA_SYNC_H__
 
-/* ----------------------------- Local macros ------------------------------ */
-/* ------------------------------- Constants ------------------------------- */
-/* ---------------------------- Local data types --------------------------- */
-/* ---------------------------- Global variables --------------------------- */
-/* ---------------------------- Local variables ---------------------------- */
-/* ----------------------- Local function prototypes ----------------------- */
-/* ---------------------------- Local functions ---------------------------- */
-/* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(sync)
-{
-	RUN_TEST_CASE(sync, First);
+/* ----------------------------- Include files ----------------------------- */
+#include "rkhitl.h"
+
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* --------------------------------- Macros -------------------------------- */
+/* -------------------------------- Constants ------------------------------ */
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/**
+ *  \brief
+ *  Encapsulates the mechanism of blocking the event queue.
+ *
+ *  \param[in] me 		pointer to active object
+ */
+void rkh_sma_block(RKH_SMA_T *const me);
+
+/**
+ *  \brief
+ *  Encapsulates the mechanism of signaling the thread waiting on the
+ *  used event queue. Thus, the SMA is inserted in the ready list as
+ *  ready-to-dispatch.
+ *
+ *  \param[in] me 		pointer to active object
+ */
+void rkh_sma_setReady(RKH_SMA_T *const me);
+
+/**
+ *  \brief
+ *  Informs the underlying kernel that the SMA event queue is becoming
+ *  empty. Thus, the SMA is removed from the ready list.
+ *
+ *  \param[in] me 		pointer to active object
+ */
+void rkh_sma_setUnready(RKH_SMA_T *const me);
+
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
 }
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
 
 /* ------------------------------ End of file ------------------------------ */

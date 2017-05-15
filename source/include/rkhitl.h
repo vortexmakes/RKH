@@ -2288,35 +2288,6 @@ extern "C" {
     #define RKH_ENTER_CRITICAL(dummy)
     #define RKH_EXIT_CRITICAL(dummy)
     /*@}*/
-
-    /**
-     *  \brief
-     *  Encapsulates the mechanism of blocking the event queue.
-     *
-     *  \param[in] sma		pointer to SMA.
-     */
-    #define RKH_SMA_BLOCK(sma)
-
-    /**
-     *  \brief
-     *  Encapsulates the mechanism of signaling the thread waiting on the
-     *  used event queue. Thus, the SMA is inserted in the ready list as
-     *  ready-to-dispatch.
-     *
-     *  \param[in] rg		ready group.
-     *  \param[in] sma		pointer to SMA.
-     */
-    #define RKH_SMA_READY(rg, sma)
-
-    /**
-     *  \brief
-     *  Informs the underlying kernel that the SMA event queue is becoming
-     *  empty. Thus, the SMA is removed from the ready list.
-     *
-     *  \param[in] rg		ready group.
-     *  \param[in] sma		pointer to SMA.
-     */
-    #define RKH_SMA_UNREADY(rg, sma)
 #endif
 
 #ifdef RKH_CPUSR_TYPE
