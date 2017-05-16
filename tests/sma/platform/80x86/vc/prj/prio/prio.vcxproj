@@ -91,6 +91,7 @@
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
+    <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhassert.c" />
     <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\prio\test_rkhsma_prio.c" />
     <ClCompile Include="..\..\..\..\..\prio\test_runners\all_tests.c" />

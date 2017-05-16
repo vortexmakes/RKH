@@ -51,6 +51,11 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhsma_prio.h"
 #include "rkhfwk_bittbl.h"
+#include "rkhassert.h"
+#include "rkh.h"
+#include "rkhassert.h"
+
+RKH_MODULE_NAME(rkhsma_prio)
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -140,7 +145,13 @@ static RKH_RG_T readyGroup;  /* ready group of active objects */
 void 
 rkh_smaPrio_init(void)
 {
+    unsigned char *pTbl, i;
+
     readyGroup.grp = 0;
+    for (pTbl = readyGroup.tbl, i = 0; i < RKH_NUM_RDYGRP; ++i, ++pTbl)
+    {
+        *pTbl = 0;
+    }
 }
 
 rbool_t 
@@ -152,12 +163,13 @@ rkh_smaPrio_isNotReady(void)
 rbool_t 
 rkh_smaPrio_isReady(void)
 {
-    return 0;
+    return readyGroup.grp != 0;
 }
 
 void 
 rkh_smaPrio_setReady(rui8_t prio)
 {
+    RKH_REQUIRE(prio < RKH_CFG_FWK_MAX_SMA);
     readyGroup.grp |= rkh_bittbl_getBitMask(prio >> 3);
     readyGroup.tbl[prio >> 3] |= rkh_bittbl_getBitMask(prio & 0x07);
 }
@@ -165,21 +177,22 @@ rkh_smaPrio_setReady(rui8_t prio)
 void 
 rkh_smaPrio_setUnready(rui8_t prio)
 {
+    RKH_REQUIRE(prio < RKH_CFG_FWK_MAX_SMA);
+    if ((readyGroup.tbl[prio >> 3] &= ~rkh_bittbl_getBitMask(prio & 0x07)) == 0)
+    {
+        readyGroup.grp &= ~rkh_bittbl_getBitMask(prio >> 3);
+    }
 }
 
 rui8_t 
 rkh_smaPrio_findHighest(void)
 {
-#if 1
     rui8_t prio;
 
     prio = rkh_bittbl_getLeastBitSetPos(readyGroup.grp);
     prio = (rui8_t)((prio << 3) +
-                   (rui8_t)rkh_bittbl_getLeastBitSetPos(readyGroup.tbl[prio]));
+                    (rui8_t)rkh_bittbl_getLeastBitSetPos(readyGroup.tbl[prio]));
     return prio;
-#else
-    return 0;
-#endif
 }
 
 /* ------------------------------ End of file ------------------------------ */

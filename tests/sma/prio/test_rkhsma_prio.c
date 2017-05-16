@@ -56,9 +56,35 @@
 #include "unity_fixture.h"
 #include "rkhsma_prio.h"
 #include "Mock_rkhfwk_bittbl.h"
+#include "Mock_rkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
+static const rui8_t bitMaskTbl[] =
+{
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
+};
+
+static const rui8_t leastBitSetTbl[] =
+{
+    0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x00 to 0x0F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x10 to 0x1F */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x20 to 0x2F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x30 to 0x3F */
+    6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x40 to 0x4F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x50 to 0x5F */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x60 to 0x6F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x70 to 0x7F */
+    7, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x80 to 0x8F */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0x90 to 0x9F */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xA0 to 0xAF */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xB0 to 0xBF */
+    6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xC0 to 0xCF */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xD0 to 0xDF */
+    5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,     /* 0xE0 to 0xEF */
+    4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0      /* 0xF0 to 0xFF */
+};
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(prio);
@@ -66,6 +92,12 @@ TEST_GROUP(prio);
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+MockAssertCallback(const char* const file, int line, int cmock_num_calls)
+{
+    TEST_PASS();
+}
+
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(prio)
 {
@@ -86,45 +118,135 @@ TEST(prio, ClearAfterInit)
 {
     rbool_t result;
 
-    result = rkh_smaPrio_isNotReady();
-    TEST_ASSERT_EQUAL(1, result);
+    result = rkh_smaPrio_isReady();
+    TEST_ASSERT_EQUAL(0, result);
 }
 
 TEST(prio, SetOneActiveObjectReadyToRun)
 {
     rbool_t result;
-    rui8_t prio = 1, resultPrio;
+    rui8_t prio = 1, resultPrio, column, row;
 
-    rkh_bittbl_getBitMask_ExpectAndReturn(prio >> 3, 1);
-    rkh_bittbl_getBitMask_ExpectAndReturn(prio & 7, 2);
+    column = prio >> 3;
+    row = prio & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
 
     rkh_smaPrio_setReady(prio);
-    result = rkh_smaPrio_isNotReady();
-    TEST_ASSERT_EQUAL(0, result);
+    result = rkh_smaPrio_isReady();
+    TEST_ASSERT_EQUAL(1, result);
 
-    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(1, 0);
-    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, 1);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(1, leastBitSetTbl[1]);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, leastBitSetTbl[2]);
     resultPrio = rkh_smaPrio_findHighest();
     TEST_ASSERT_EQUAL(prio, resultPrio);
 }
 
-TEST(prio, SetMultipleActiveObjectReadyToRun)
+TEST(prio, SetMultipleActiveObjectsReadyToRun)
 {
-    rbool_t result;
-    rui8_t prioA = 1, prioB = 15, resultPrio;
+    rui8_t prioA = 1, prioC = 0, prioB = 15, resultPrio, column, row;
 
-    rkh_bittbl_getBitMask_ExpectAndReturn(prioA >> 3, 1);
-    rkh_bittbl_getBitMask_ExpectAndReturn(prioA & 7, 2);
+    column = prioA >> 3;
+    row = prioA & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
     rkh_smaPrio_setReady(prioA);
 
-    rkh_bittbl_getBitMask_ExpectAndReturn(prioB >> 3, 2);
-    rkh_bittbl_getBitMask_ExpectAndReturn(prioB & 7, 0x80);
+    column = prioB >> 3;
+    row = prioB & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
     rkh_smaPrio_setReady(prioB);
 
-    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(3, 0);
-    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, 1);
+    column = prioC >> 3;
+    row = prioC & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_smaPrio_setReady(prioC);
+
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(3, leastBitSetTbl[3]);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(3, leastBitSetTbl[3]);
     resultPrio = rkh_smaPrio_findHighest();
-    TEST_ASSERT_EQUAL(prioA, resultPrio);
+    TEST_ASSERT_EQUAL(prioC, resultPrio);
+}
+
+TEST(prio, SetOneActiveObjectUnready)
+{
+    rbool_t result;
+    rui8_t prio = 1, resultPrio, column, row;
+
+    column = prio >> 3;
+    row = prio & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+
+    rkh_smaPrio_setReady(prio);
+
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(1, leastBitSetTbl[1]);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, leastBitSetTbl[2]);
+    resultPrio = rkh_smaPrio_findHighest();
+    TEST_ASSERT_EQUAL(prio, resultPrio);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_smaPrio_setUnready(prio);
+    result = rkh_smaPrio_isReady();
+    TEST_ASSERT_EQUAL(0, result);
+}
+
+TEST(prio, SetMultipleActiveObjectsUnready)
+{
+    rbool_t result;
+    rui8_t prioA = 1, prioC = 0, prioB = 15, column, row;
+
+    column = prioA >> 3;
+    row = prioA & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_smaPrio_setReady(prioA);
+
+    column = prioB >> 3;
+    row = prioB & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_smaPrio_setReady(prioB);
+
+    column = prioC >> 3;
+    row = prioC & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_smaPrio_setReady(prioC);
+
+    column = prioA >> 3;
+    row = prioA & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_smaPrio_setUnready(prioA);
+
+    column = prioB >> 3;
+    row = prioB & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_smaPrio_setUnready(prioB);
+
+    column = prioC >> 3;
+    row = prioC & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_smaPrio_setUnready(prioC);
+
+    result = rkh_smaPrio_isReady();
+    TEST_ASSERT_EQUAL(0, result);
+}
+
+TEST(prio, Fails_InvalidActiveObjectOnSet)
+{
+    rui8_t prio = RKH_CFG_FWK_MAX_SMA;
+
+    rkh_assert_Expect("rkhsma_prio", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_smaPrio_setReady(prio);
 }
 
 /** @} doxygen end group definition */

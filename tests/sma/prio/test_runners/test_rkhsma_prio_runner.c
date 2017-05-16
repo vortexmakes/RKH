@@ -61,7 +61,10 @@ TEST_GROUP_RUNNER(prio)
 {
 	RUN_TEST_CASE(prio, ClearAfterInit);
 	RUN_TEST_CASE(prio, SetOneActiveObjectReadyToRun);
-	RUN_TEST_CASE(prio, SetMultipleActiveObjectReadyToRun);
+	RUN_TEST_CASE(prio, SetMultipleActiveObjectsReadyToRun);
+	RUN_TEST_CASE(prio, SetOneActiveObjectUnready);
+	RUN_TEST_CASE(prio, SetMultipleActiveObjectsUnready);
+	RUN_TEST_CASE(prio, Fails_InvalidActiveObjectOnSet);
 }
 
 /* ------------------------------ End of file ------------------------------ */

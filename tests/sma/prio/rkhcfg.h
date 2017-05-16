@@ -59,7 +59,7 @@
  *	by the application (can be a number in the range [1..64]).
  */
 
-#define RKH_CFG_FWK_MAX_SMA				8u
+#define RKH_CFG_FWK_MAX_SMA				32u
 
 /**
  *	If the dynamic event support (see #RKH_CFG_FWK_DYN_EVT_EN) is set to 

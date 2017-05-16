@@ -25,6 +25,9 @@
     <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhfwk_bittbl.c">
       <Filter>test\stub</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhassert.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="rkh">
