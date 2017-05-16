@@ -30,14 +30,14 @@
  */
 
 /**
- *  \file       test_rkhsma_sync_runner.c
+ *  \file       test_rkhsma.c
  *  \ingroup    test_sma
- *  \brief      Test runner of synchronous active object module
+ *  \brief      Test runner of sma module
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.15.05  LeFr  v2.4.05  ---
+ *  2017.04.05  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -57,9 +57,11 @@
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(sync)
+TEST_GROUP_RUNNER(prio)
 {
-	RUN_TEST_CASE(sync, First);
+	RUN_TEST_CASE(prio, ClearAfterInit);
+	RUN_TEST_CASE(prio, SetOneActiveObjectReadyToRun);
+	RUN_TEST_CASE(prio, SetMultipleActiveObjectReadyToRun);
 }
 
 /* ------------------------------ End of file ------------------------------ */

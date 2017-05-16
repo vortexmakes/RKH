@@ -10,27 +10,6 @@
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c">
       <Filter>test\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_filter.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_record.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_stream.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhassert.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhmp.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhport.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhrq.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\sync\test_rkhsma_sync.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -42,6 +21,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\..\source\rkhsma_sync.c">
       <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhassert.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhfwk_bittbl.c">
+      <Filter>test\stub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

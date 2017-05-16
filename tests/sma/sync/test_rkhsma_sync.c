@@ -54,7 +54,9 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkhsma.h"
+#include "rkhsma_sync.h"
+#include "rkhrq.h"
+#include "Mock_rkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -63,15 +65,28 @@
 TEST_GROUP(sync);
 
 /* ---------------------------- Local variables ---------------------------- */
+static RKHROM RKH_ROM_T base = {0, 0, "ao"};
+static RKH_SMA_T ao;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+MockAssertCallback(const char* const file, int line, int cmock_num_calls)
+{
+    TEST_PASS();
+}
+
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(sync)
 {
+    Mock_rkhassert_Init();
+    ao.sm.romrkh = &base;
 }
 
 TEST_TEAR_DOWN(sync)
 {
+    Mock_rkhassert_Verify();
+    Mock_rkhassert_Destroy();
 }
 
 /**
@@ -80,9 +95,20 @@ TEST_TEAR_DOWN(sync)
  *  \name Test cases of synchronous mechanism group
  *  @{ 
  */
-TEST(sync, First)
+TEST(sync, BlockActiveObject)
 {
-    TEST_IGNORE();
+    ao.equeue.qty = 1;
+    rkh_sma_block(&ao);
+}
+
+TEST(sync, Fails_TriesBlockActiveObjectWithEmptyQueue)
+{
+    rkh_assert_Expect("rkhsma_sync", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+    ao.equeue.qty = 0;
+
+    rkh_sma_block(&ao);
 }
 
 /** @} doxygen end group definition */

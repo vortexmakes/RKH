@@ -30,15 +30,20 @@
  */
 
 /**
- *  \file       test_smPolymorphism_runner.c
- *  \ingroup    test_sm
+ *  \file       test_rkhsma_prio.c
+ *  \ingroup    test_sma
+ *  \brief      Unit test for priority mechanism of sma module.
  *
- *  \brief      Test runner of state machine module
+ *  \addtogroup test
+ *  @{
+ *  \addtogroup test_sma SMA
+ *  @{
+ *  \brief      Unit test for sma module.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2016.12.15  LeFr  v2.4.05  ---
+ *  2017.05.15  LeFr  v2.4.05  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -49,25 +54,81 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
+#include "rkhsma_prio.h"
+#include "Mock_rkhfwk_bittbl.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
+TEST_GROUP(prio);
+
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(polymorphism)
+TEST_SETUP(prio)
 {
-	RUN_TEST_CASE(polymorphism, defaultVirtualFunctions);
-	RUN_TEST_CASE(polymorphism, callVirtualFunction);
-	RUN_TEST_CASE(polymorphism, setVirtualTable);
-	RUN_TEST_CASE(polymorphism, runtimeSingletonAOCtor);
-	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorWithVtblForObj);
-	RUN_TEST_CASE(polymorphism, runtimeMultipleAOCtorWithVtblForType);
-	RUN_TEST_CASE(polymorphism, runtimeSubObjectCtorOfSMAAndSM);
-	RUN_TEST_CASE(polymorphism, runtimeSubObjectCtorOfSMAAndSMWithDefaultVtbl);
+    rkh_smaPrio_init();
 }
 
+TEST_TEAR_DOWN(prio)
+{
+}
+
+/**
+ *  \addtogroup test_prio for test priority group
+ *  @{
+ *  \name Test cases of priority mechanism group
+ *  @{ 
+ */
+TEST(prio, ClearAfterInit)
+{
+    rbool_t result;
+
+    result = rkh_smaPrio_isNotReady();
+    TEST_ASSERT_EQUAL(1, result);
+}
+
+TEST(prio, SetOneActiveObjectReadyToRun)
+{
+    rbool_t result;
+    rui8_t prio = 1, resultPrio;
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(prio >> 3, 1);
+    rkh_bittbl_getBitMask_ExpectAndReturn(prio & 7, 2);
+
+    rkh_smaPrio_setReady(prio);
+    result = rkh_smaPrio_isNotReady();
+    TEST_ASSERT_EQUAL(0, result);
+
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(1, 0);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, 1);
+    resultPrio = rkh_smaPrio_findHighest();
+    TEST_ASSERT_EQUAL(prio, resultPrio);
+}
+
+TEST(prio, SetMultipleActiveObjectReadyToRun)
+{
+    rbool_t result;
+    rui8_t prioA = 1, prioB = 15, resultPrio;
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(prioA >> 3, 1);
+    rkh_bittbl_getBitMask_ExpectAndReturn(prioA & 7, 2);
+    rkh_smaPrio_setReady(prioA);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(prioB >> 3, 2);
+    rkh_bittbl_getBitMask_ExpectAndReturn(prioB & 7, 0x80);
+    rkh_smaPrio_setReady(prioB);
+
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(3, 0);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, 1);
+    resultPrio = rkh_smaPrio_findHighest();
+    TEST_ASSERT_EQUAL(prioA, resultPrio);
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */

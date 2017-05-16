@@ -59,7 +59,8 @@
 /* ---------------------------- Global functions --------------------------- */
 TEST_GROUP_RUNNER(sync)
 {
-	RUN_TEST_CASE(sync, First);
+	RUN_TEST_CASE(sync, BlockActiveObject);
+	RUN_TEST_CASE(sync, Fails_TriesBlockActiveObjectWithEmptyQueue);
 }
 
 /* ------------------------------ End of file ------------------------------ */

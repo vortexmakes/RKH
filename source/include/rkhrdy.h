@@ -53,6 +53,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhcfg.h"
 #include "rkhtype.h"
+#include "rkhfwk_bittbl.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -90,8 +91,8 @@ extern "C" {
  *  \param[in] p		number of SMA's priotity.
  */
 #define RKH_RDY_INSERT(rg, p) \
-    (rg).grp |= rkh_bittbl_getBitMask[(p) >> 3]; \
-    (rg).tbl[(p) >> 3] |= rkh_bittbl_getBitMask[(p) & 0x07]
+    (rg).grp |= rkh_bittbl_getBitMask((p) >> 3); \
+    (rg).tbl[(p) >> 3] |= rkh_bittbl_getBitMask((p) & 0x07)
 
 /**
  *  \brief
@@ -105,8 +106,8 @@ extern "C" {
  *  \param[in] p		number of SMA's priotity.
  */
 #define RKH_RDY_REM(rg, p) \
-    if (((rg).tbl[(p) >> 3] &= ~rkh_bittbl_getBitMask[(p) & 0x07]) == 0) \
-        (rg).grp &= ~rkh_bittbl_getBitMask[(p) >> 3]
+    if (((rg).tbl[(p) >> 3] &= ~rkh_bittbl_getBitMask((p) & 0x07)) == 0) \
+        (rg).grp &= ~rkh_bittbl_getBitMask((p) >> 3)
 
 /**
  *  \brief

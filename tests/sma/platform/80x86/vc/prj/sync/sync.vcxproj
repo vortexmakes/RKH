@@ -91,13 +91,8 @@
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhmp.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhport.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhrq.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_filter.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_record.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_stream.c" />
+    <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhassert.c" />
+    <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\sync\test_rkhsma_sync.c" />
     <ClCompile Include="..\..\..\..\..\sync\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\..\sync\test_runners\test_rkhsma_sync_runner.c" />

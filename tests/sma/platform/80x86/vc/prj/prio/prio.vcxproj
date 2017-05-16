@@ -87,29 +87,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhsma.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\source\rkhsma_prio.c" />
     <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
-    <ClCompile Include="..\..\..\..\..\sma\smInstance.c" />
-    <ClCompile Include="..\..\..\..\..\sma\smPolymorphism.c" />
-    <ClCompile Include="..\..\..\..\..\sma\smTest.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhmp.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhport.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhrq.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhsm.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\MocksmTestAct.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_filter.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_record.c" />
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_stream.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_rkhsma.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\test_rkhsma_runner.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\test_smInstance_runner.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_runners\test_smPolymorphism_runner.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_smInstance.c" />
-    <ClCompile Include="..\..\..\..\..\sma\test_smPolymorphism.c" />
+    <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhfwk_bittbl.c" />
+    <ClCompile Include="..\..\..\..\..\prio\test_rkhsma_prio.c" />
+    <ClCompile Include="..\..\..\..\..\prio\test_runners\all_tests.c" />
+    <ClCompile Include="..\..\..\..\..\prio\test_runners\test_rkhsma_prio_runner.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -49,7 +49,11 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkh.h"
+#include "rkhsma_sync.h"
+#include "rkhassert.h"
+#include "rkhsma_prio.h"
+
+RKH_MODULE_NAME(rkhsma_sync)
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -62,16 +66,19 @@
 void 
 rkh_sma_block(RKH_SMA_T *const me)
 {
+    RKH_ASSERT(me->equeue.qty != 0);
 }
 
 void 
 rkh_sma_setReady(RKH_SMA_T *const me)
 {
+    /* RKH_RDY_INSERT(readyGroup, RKH_SMA_ACCESS_CONST(me, prio)); */
 }
 
 void 
 rkh_sma_setUnready(RKH_SMA_T *const me)
 {
+    /* RKH_RDY_REM(readyGroup, RKH_SMA_ACCESS_CONST(me, prio)); */
 }
 
 /* ------------------------------ End of file ------------------------------ */
