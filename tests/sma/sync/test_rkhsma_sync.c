@@ -57,6 +57,7 @@
 #include "rkhsma_sync.h"
 #include "rkhrq.h"
 #include "Mock_rkhassert.h"
+#include "Mock_rkhsma_prio.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -80,13 +81,16 @@ MockAssertCallback(const char* const file, int line, int cmock_num_calls)
 TEST_SETUP(sync)
 {
     Mock_rkhassert_Init();
+    Mock_rkhsma_prio_Init();
     ao.sm.romrkh = &base;
 }
 
 TEST_TEAR_DOWN(sync)
 {
     Mock_rkhassert_Verify();
+    Mock_rkhsma_prio_Verify();
     Mock_rkhassert_Destroy();
+    Mock_rkhsma_prio_Destroy();
 }
 
 /**
@@ -109,6 +113,18 @@ TEST(sync, Fails_TriesBlockActiveObjectWithEmptyQueue)
     ao.equeue.qty = 0;
 
     rkh_sma_block(&ao);
+}
+
+TEST(sync, SetActiveObjectReady)
+{
+    rkh_smaPrio_setReady_Expect(ao.sm.romrkh->prio);
+    rkh_sma_setReady(&ao);
+}
+
+TEST(sync, SetActiveObjectUnready)
+{
+    rkh_smaPrio_setUnready_Expect(ao.sm.romrkh->prio);
+    rkh_sma_setUnready(&ao);
 }
 
 /** @} doxygen end group definition */

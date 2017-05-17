@@ -166,7 +166,7 @@ rkh_rq_get(RKH_RQ_T *q)
 
     if (q->sma != CSMA(0))
     {
-        RKH_SMA_BLOCK(q->sma);
+        rkh_sma_block(q->sma);
     }
     else if (q->qty == 0)
     {
@@ -187,7 +187,7 @@ rkh_rq_get(RKH_RQ_T *q)
 
     if ((q->sma != CSMA(0)) && (q->qty == 0))
     {
-        RKH_SMA_UNREADY(rkhrg, (RKH_SMA_T *)(q->sma));
+        rkh_sma_setUnready((RKH_SMA_T *)(q->sma));
         RKH_TR_RQ_GET_LAST(q);
         RKH_EXIT_CRITICAL_();
     }
@@ -226,7 +226,7 @@ rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe)
 
     if (q->sma != CSMA(0))
     {
-        RKH_SMA_READY(rkhrg, (RKH_SMA_T *)(q->sma));
+        rkh_sma_setReady((RKH_SMA_T *)(q->sma));
     }
 
 #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
@@ -271,7 +271,7 @@ rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe)
 
     if (q->sma != CSMA(0))
     {
-        RKH_SMA_READY(rkhrg, (RKH_SMA_T *)(q->sma));
+        rkh_sma_setReady((RKH_SMA_T *)(q->sma));
     }
 
 #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
@@ -297,7 +297,7 @@ rkh_rq_deplete(RKH_RQ_T *q)
     q->pin = q->pout = (void * *)q->pstart;
     if (q->sma != CSMA(0))
     {
-        RKH_SMA_UNREADY(rkhrg, (RKH_SMA_T *)(q->sma));
+        rkh_sma_setUnready((RKH_SMA_T *)(q->sma));
     }
     RKH_TR_RQ_DPT(q);
     RKH_EXIT_CRITICAL_();

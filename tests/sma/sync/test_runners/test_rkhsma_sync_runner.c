@@ -61,6 +61,8 @@ TEST_GROUP_RUNNER(sync)
 {
 	RUN_TEST_CASE(sync, BlockActiveObject);
 	RUN_TEST_CASE(sync, Fails_TriesBlockActiveObjectWithEmptyQueue);
+	RUN_TEST_CASE(sync, SetActiveObjectReady);
+	RUN_TEST_CASE(sync, SetActiveObjectUnready);
 }
 
 /* ------------------------------ End of file ------------------------------ */

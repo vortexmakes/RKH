@@ -53,6 +53,9 @@
 #include "rkhassert.h"
 #include "rkhsma_prio.h"
 
+#if ((RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED) ||  \
+     (RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED))
+
 RKH_MODULE_NAME(rkhsma_sync)
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -72,13 +75,15 @@ rkh_sma_block(RKH_SMA_T *const me)
 void 
 rkh_sma_setReady(RKH_SMA_T *const me)
 {
-    /* RKH_RDY_INSERT(readyGroup, RKH_SMA_ACCESS_CONST(me, prio)); */
+    rkh_smaPrio_setReady(RKH_SMA_ACCESS_CONST(me, prio));
 }
 
 void 
 rkh_sma_setUnready(RKH_SMA_T *const me)
 {
-    /* RKH_RDY_REM(readyGroup, RKH_SMA_ACCESS_CONST(me, prio)); */
+    rkh_smaPrio_setUnready(RKH_SMA_ACCESS_CONST(me, prio));
 }
+
+#endif
 
 /* ------------------------------ End of file ------------------------------ */

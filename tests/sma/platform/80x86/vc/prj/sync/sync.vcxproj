@@ -93,6 +93,7 @@
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhassert.c" />
     <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhfwk_bittbl.c" />
+    <ClCompile Include="..\..\..\..\..\sync\stub\mocks\Mock_rkhsma_prio.c" />
     <ClCompile Include="..\..\..\..\..\sync\test_rkhsma_sync.c" />
     <ClCompile Include="..\..\..\..\..\sync\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\..\sync\test_runners\test_rkhsma_sync_runner.c" />
