@@ -30,14 +30,14 @@
  */
 
 /**
- *  \file       rkhfwk_bittbl.h
- *  \brief      Native priority management.
+ *  \file       rkhfwk_cast.h
+ *  \brief      ...
  *  \ingroup    fwk
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2017.17.05  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -47,11 +47,12 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-#ifndef __RKHFWK_BITTBL_H__
-#define __RKHFWK_BITTBL_H__
+#ifndef __RKHFWK_CAST_H__
+#define __RKHFWK_CAST_H__
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhtype.h"
+#include "rkhcfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -59,37 +60,54 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-/* -------------------------------- Constants ------------------------------ */
-#define RKH_INVALID_BITPOS      (rui8_t)0xff
+/**
+ *  \brief
+ *  Convert a pointer to a base-class. 
+ *
+ *  In other words, upcasting allows us to treat a derived type as though 
+ *  it were its base type.
+ *
+ *  \ingroup apiAO
+ */
+#define RKH_UPCAST(BaseType_, me_)          ((BaseType_ *)me_)
 
+/**
+ *  \brief
+ *  Converts a base-class pointer to a derived-class pointer.
+ *
+ *  \ingroup apiAO
+ */
+#define RKH_DOWNCAST(DerivedType_, me_)     ((DerivedType_ *)me_)
+
+/**
+ *  \brief
+ *  Perform downcast of a reference of a base class to one of its derived
+ *  classes.
+ *
+ *	\sa
+ *	\link RKH_EVT_T single inheritance in C \endlink, and
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ *
+ *  \usage
+ *  \code
+ *  void
+ *  svr_start( const struct RKH_SMA_T *me, RKH_EVT_T *pe )
+ *  {
+ *      START_EVT_T *e_start;
+ *
+ *      e_start = RKH_ALLOC_EVT( START_EVT_T, START, me );
+ *      e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
+ *      RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ),
+ *												RKH_EVT_CAST(e_start), me );
+ *  }
+ *  \endcode
+ */
+#define RKH_CAST(_type, _obj)     ((_type *)(_obj))
+
+/* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-/**
- *  \brief
- *  Get the bit mask from a bit position (from an 8-bit value).
- *
- *  \param[in] bitPos   bit position.
- *
- *	\return
- *  The bit mask from a bit position (from an 8-bit value) if bitPos is less 
- *  than 8, otherwise RKH_INVALID_BITPOS.
- */
-rui8_t rkh_bittbl_getBitMask(rui8_t bitPos);
-
-/**
- *  \brief
- *  Used to return the bit position of the least significant bit set - a 
- *  number between 0 and 7 (from an 8-bit value).
- *
- *  \param[in] value    data value to retrieve the least significant bit set.
- *
- *	\return
- *  The bit position of the least significant bit set - a number between 0 
- *  and 7 (from an 8-bit value).
- */
-rui8_t rkh_bittbl_getLeastBitSetPos(rui8_t value);
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

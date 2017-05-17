@@ -1682,56 +1682,6 @@ extern "C" {
     #define RKH_CHOICE_OR_CONDITIONAL_ENABLED
 #endif
 
-#if RKH_CFG_HOOK_DISPATCH_EN == RKH_ENABLED
-    #define RKH_HOOK_DISPATCH(sma, e) \
-    rkh_hook_dispatch((sma), (RKH_EVT_T *)(e))
-
-#else
-    #define RKH_HOOK_DISPATCH(sma, e)     (void)0
-#endif
-
-#if (RKH_CFG_HOOK_TIMEOUT_EN == RKH_ENABLED)
-    #define RKH_HOOK_TIMEOUT(t)   \
-        rkh_hook_timeout((t))
-#else
-    #define RKH_HOOK_TIMEOUT(t)           (void)0
-#endif
-
-#if (RKH_CFG_HOOK_SIGNAL_EN == RKH_ENABLED)
-    #define RKH_HOOK_SIGNAL(e)    \
-        rkh_hook_signal((RKH_EVT_T *)(e))
-#else
-    #define RKH_HOOK_SIGNAL(e)            (void)0
-#endif
-
-#if (RKH_CFG_HOOK_START_EN == RKH_ENABLED)
-    #define RKH_HOOK_START()    \
-        rkh_hook_start()
-#else
-    #define RKH_HOOK_START()                (void)0
-#endif
-
-#if (RKH_CFG_HOOK_EXIT_EN == RKH_ENABLED)
-    #define RKH_HOOK_EXIT() \
-        rkh_hook_exit()
-#else
-    #define RKH_HOOK_EXIT()                 (void)0
-#endif
-
-#if (RKH_CFG_HOOK_TIMETICK_EN == RKH_ENABLED)
-    #define RKH_HOOK_TIMETICK() \
-        rkh_hook_timetick()
-#else
-    #define RKH_HOOK_TIMETICK()             (void)0
-#endif
-
-#if (RKH_CFG_HOOK_PUT_TRCEVT_EN == RKH_ENABLED)
-    #define RKH_HOOK_PUT_TRCEVT() \
-        rkh_hook_putTrcEvt()
-#else
-    #define RKH_HOOK_PUT_TRCEVT()           (void)0
-#endif
-
 #if (RKH_CFG_TRC_EN == RKH_ENABLED  && \
      (RKH_CFG_TRC_ALL_EN == RKH_ENABLED || \
       RKH_CFG_TRC_SMA_EN == RKH_ENABLED || \
@@ -2515,6 +2465,10 @@ extern "C" {
 #endif
 
 /* -------------------------------- Constants ------------------------------ */
+#ifndef NULL
+#define NULL    (void *)0
+#endif
+
 /* ------------------------------- Data types ------------------------------ */
 typedef struct RKH_ROM_T RKH_ROM_T;
 typedef struct RKHSmaVtbl RKHSmaVtbl;
@@ -2537,6 +2491,18 @@ typedef struct RKH_SCOND_T RKH_SCOND_T;
 typedef struct RKH_SCHOICE_T RKH_SCHOICE_T;
 
 /* -------------------------- External variables --------------------------- */
+/**
+ *  \brief
+ *  String describing the RKH version.
+ */
+extern RKHROM char rkh_version[];
+
+/**
+ *  \brief
+ *  String representing the name of undefined object name.
+ */
+extern RKHROM char noname[];
+
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

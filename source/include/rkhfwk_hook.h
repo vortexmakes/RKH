@@ -60,6 +60,49 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+#if (RKH_CFG_HOOK_DISPATCH_EN == RKH_ENABLED)
+    #define RKH_HOOK_DISPATCH(sma, e) \
+        rkh_hook_dispatch((sma), (RKH_EVT_T *)(e))
+#else
+    #define RKH_HOOK_DISPATCH(sma, e)   (void)0
+#endif
+
+#if (RKH_CFG_HOOK_TIMEOUT_EN == RKH_ENABLED)
+    #define RKH_HOOK_TIMEOUT(t)     rkh_hook_timeout((t))
+#else
+    #define RKH_HOOK_TIMEOUT(t)     (void)0
+#endif
+
+#if (RKH_CFG_HOOK_SIGNAL_EN == RKH_ENABLED)
+    #define RKH_HOOK_SIGNAL(e)      rkh_hook_signal((RKH_EVT_T *)(e))
+#else
+    #define RKH_HOOK_SIGNAL(e)      (void)0
+#endif
+
+#if (RKH_CFG_HOOK_START_EN == RKH_ENABLED)
+    #define RKH_HOOK_START()        rkh_hook_start()
+#else
+    #define RKH_HOOK_START()        (void)0
+#endif
+
+#if (RKH_CFG_HOOK_EXIT_EN == RKH_ENABLED)
+    #define RKH_HOOK_EXIT()         rkh_hook_exit()
+#else
+    #define RKH_HOOK_EXIT()         (void)0
+#endif
+
+#if (RKH_CFG_HOOK_TIMETICK_EN == RKH_ENABLED)
+    #define RKH_HOOK_TIMETICK()     rkh_hook_timetick()
+#else
+    #define RKH_HOOK_TIMETICK()     (void)0
+#endif
+
+#if (RKH_CFG_HOOK_PUT_TRCEVT_EN == RKH_ENABLED)
+    #define RKH_HOOK_PUT_TRCEVT()   rkh_hook_putTrcEvt()
+#else
+    #define RKH_HOOK_PUT_TRCEVT()   (void)0
+#endif
+
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */

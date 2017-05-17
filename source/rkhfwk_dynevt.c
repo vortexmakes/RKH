@@ -149,7 +149,7 @@ rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
     RKH_SR_ALLOC();
 
     RKH_REQUIRE((nextFreeEvtPool + 1) <= RKH_CFG_FWK_MAX_EVT_POOL);
-    ep = rkh_evtPool_getPool(sstart, ssize, esize);
+    ep = rkh_evtPool_getPool(sstart, (rui16_t)ssize, esize);
     RKH_ENSURE(ep != (RKHEvtPool *)0);
     evtPools[nextFreeEvtPool].evtPool = ep;
     ++nextFreeEvtPool;

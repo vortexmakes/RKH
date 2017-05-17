@@ -880,6 +880,17 @@ struct RKHSmaVtbl
 /** Default virtual table for the RKH_SMA_T structure */
 extern const RKHSmaVtbl rkhSmaVtbl;
 
+/**
+ *  \brief
+ *  Priority arranged table of registered SMA.
+ *
+ *  Register a state machine application into the framework implies to store
+ *  a pointer to the SMA in the priority table. A unique priority number must
+ *  be assigned to each SMA from 0 to RKH_LOWEST_PRIO. The lower the number,
+ *  the higher the priority.
+ */
+extern RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];
+
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
 /**

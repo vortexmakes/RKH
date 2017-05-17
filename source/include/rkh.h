@@ -83,7 +83,7 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24  LeFr  v2.4.05  Initial version
+ *  2017.17.05  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -109,6 +109,8 @@
 #include "rkhassert.h"
 #include "rkhfwk_hook.h"
 #include "rkhfwk_bittbl.h"
+#include "rkhfwk_module.h"
+#include "rkhfwk_cast.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -116,61 +118,6 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-/**
- *	\brief
- *	This macro appears at the top of each C/C++ source file defining
- *	the version string for that file (module).
- *
- *  \param[in] __fname		file (module) name.
- *  \param[in] __version    file (module) version.
- */
-#define RKH_MODULE_VERSION(__fname, __version) \
-    static RKHROM char *const m_version = # __version;
-
-/**
- *	\brief
- *	Get the module version.
- */
-#define RKH_MODULE_GET_VERSION() \
-    ((const char *)m_version);
-
-/**
- *	\brief
- *	This macro appears at the top of each C/C++ source file defining
- *	the description string for that file (module).
- *
- *  \param[in] __fname		file (module) name.
- *  \param[in] __desc	    file (module) description.
- */
-#define RKH_MODULE_DESC(__fname, __desc) \
-    static RKHROM char *const m_desc = __desc;
-
-/**
- *	\brief
- *	Get the module description.
- */
-#define RKH_MODULE_GET_DESC() \
-    ((const char *)m_desc)
-
-/**
- *  \brief
- *  Convert a pointer to a base-class. 
- *
- *  In other words, upcasting allows us to treat a derived type as though 
- *  it were its base type.
- *
- *  \ingroup apiAO
- */
-#define RKH_UPCAST(BaseType_, me_)          ((BaseType_ *)me_)
-
-/**
- *  \brief
- *  Converts a base-class pointer to a derived-class pointer.
- *
- *  \ingroup apiAO
- */
-#define RKH_DOWNCAST(DerivedType_, me_)     ((DerivedType_ *)me_)
-
 #if defined(RKH_USE_TRC_SENDER)
 /**
  *  \brief
@@ -195,144 +142,10 @@ extern "C" {
     #define RKH_TIM_TICK(dummy_)      rkh_tmr_tick()
 #endif
 
-/**
- *  \brief
- *  Perform downcast of a reference of a base class to one of its derived
- *  classes.
- *
- *	\sa
- *	\link RKH_EVT_T single inheritance in C \endlink, and
- *	\link RKH_CREATE_BASIC_STATE another example \endlink.
- *
- *  \usage
- *  \code
- *  void
- *  svr_start( const struct RKH_SMA_T *me, RKH_EVT_T *pe )
- *  {
- *      START_EVT_T *e_start;
- *
- *      e_start = RKH_ALLOC_EVT( START_EVT_T, START, me );
- *      e_start->clino = RKH_CAST(REQ_EVT_T, pe)->clino;
- *      RKH_SMA_POST_FIFO( RKH_GET_SMA( RKH_CAST(REQ_EVT_T, pe)->clino ),
- *												RKH_EVT_CAST(e_start), me );
- *  }
- *  \endcode
- */
-#define RKH_CAST(_type, _obj)     ((_type *)(_obj))
-
 /* -------------------------------- Constants ------------------------------ */
-#ifndef NULL
-#define NULL    (void *)0
-#endif
-
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
-/**
- *  \brief
- *  Priority arranged table of registered SMA.
- *
- *  Register a state machine application into the framework implies to store
- *  a pointer to the SMA in the priority table. A unique priority number must
- *  be assigned to each SMA from 0 to RKH_LOWEST_PRIO. The lower the number,
- *  the higher the priority.
- */
-extern RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];
-
-/**
- *  \brief
- *  String describing the RKH version.
- */
-extern RKHROM char rkh_version[];
-
-/**
- *  \brief
- *  String representing the name of undefined object name.
- */
-extern RKHROM char noname[];
-
 /* -------------------------- Function prototypes -------------------------- */
-/**
- *  \brief
- *  Initializes the RKH framework.
- *
- *  A requirement of RKH is that must be called rkh_fwk_init() before call any
- *  of its other services. This function initializes all of RKH's variables
- *  and data structures.
- *
- *  \note
- *	Platform-dependent function. All RKH ports must be define it in the RKH
- *	port file to a particular platform. However, only the ports to the
- *	external OS/RTOS usually need some code to bolt the framework to the
- *	external OS/RTOS.
- *
- *  \usage
- *	Implementation example for x86, linux emulator of simple cooperative 
- *	scheduler non-preemptive.
- *  \snippet linux_st_rkhport.c Initializes the RKH framework
- *
- *  \ingroup apiPortMisc
- */
-void rkh_fwk_init(void);
-
-/**
- *  \brief
- *  RKH framework is started.
- *
- *  This entry function turns over control to RKH (and does not return!).
- *  This function runs the highest priority state machine application (SMA)
- *  that is ready to run in run-to-completation model.
- *
- *  \note
- *  The call to this function does not return. Hence, any code after it will
- *  never be executed.
- *
- *  \note
- *	Platform-dependent function. All RKH ports must be define it in the RKH
- *	port file to a particular platform. However, only the ports to the
- *	external OS/RTOS usually need some code to bolt the framework to the
- *	external OS/RTOS.
- *
- *  \usage
- *	Implementation example for x86, linux emulator of simple cooperative 
- *	scheduler non-preemptive.
- *  \snippet linux_st_rkhport.c Run RKH framework
- *
- *	Here is the basic algorithm for interpreting the listing shown above.
- *	A pseudocode description of the procedure is:
- *  \include pseudo_cooperative_emulator.c
- *
- *  \ingroup apiPortMisc
- */
-void rkh_fwk_enter(void);
-
-/**
- *  \brief
- *  Exit the RKH framework.
- *
- *  Function invoked by the application layer to exit the RKH application and
- *  return control to the underlying OS/Kernel.
- *
- *  \note
- *	This function is strongly platform-dependent. All RKH ports and must be
- *	defined in the RKH port to a particular platform.
- *	Some RKH ports might not require implementing this function at all,
- *	because many embedded applications don't have anything to exit to.
- *
- *  \note
- *	Platform-dependent function. All RKH ports must be defined in the RKH
- *	port file to a particular platform. However, only the ports to the
- *	external OS/RTOS usually need some code to bolt the framework to the
- *	external OS/RTOS.
- *
- *  \usage
- *	Implementation example for x86, linux emulator of simple cooperative 
- *	scheduler non-preemptive.
- *  \snippet linux_st_rkhport.c Exit the RKH framework
- *
- *  \ingroup apiPortMisc
- */
-void rkh_fwk_exit(void);
-
 #if defined(RKH_USE_TRC_SENDER)
 /**
  *  \brief

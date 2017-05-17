@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynevt", "dynevt\dynevt.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "evtpool", "evtpool\evtpool.vcxproj", "{32BCAB73-AAEB-4691-9E92-FDD87CBD99F9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sched", "sched\sched.vcxproj", "{A891D2A0-ADB4-4C9E-A4E5-E33BF389055B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,10 @@ Global
 		{32BCAB73-AAEB-4691-9E92-FDD87CBD99F9}.Debug|Win32.Build.0 = Debug|Win32
 		{32BCAB73-AAEB-4691-9E92-FDD87CBD99F9}.Release|Win32.ActiveCfg = Release|Win32
 		{32BCAB73-AAEB-4691-9E92-FDD87CBD99F9}.Release|Win32.Build.0 = Release|Win32
+		{A891D2A0-ADB4-4C9E-A4E5-E33BF389055B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A891D2A0-ADB4-4C9E-A4E5-E33BF389055B}.Debug|Win32.Build.0 = Debug|Win32
+		{A891D2A0-ADB4-4C9E-A4E5-E33BF389055B}.Release|Win32.ActiveCfg = Release|Win32
+		{A891D2A0-ADB4-4C9E-A4E5-E33BF389055B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

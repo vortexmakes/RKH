@@ -30,14 +30,14 @@
  */
 
 /**
- *  \file       rkhfwk_bittbl.h
- *  \brief      Native priority management.
+ *  \file       rkhfwk_module.h
+ *  \brief      ...
  *  \ingroup    fwk
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2017.17.05  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -47,11 +47,12 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-#ifndef __RKHFWK_BITTBL_H__
-#define __RKHFWK_BITTBL_H__
+#ifndef __RKHFWK_MODULE_H__
+#define __RKHFWK_MODULE_H__
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhtype.h"
+#include "rkhcfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -59,37 +60,74 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-/* -------------------------------- Constants ------------------------------ */
-#define RKH_INVALID_BITPOS      (rui8_t)0xff
+/**
+ *	\brief
+ *	This macro appears at the top of each C/C++ source file defining
+ *	the version string for that file (module).
+ *
+ *  \param[in] __fname		file (module) name.
+ *  \param[in] __version    file (module) version.
+ */
+#define RKH_MODULE_VERSION(__fname, __version) \
+    static RKHROM char *const m_version = # __version;
 
+/**
+ *	\brief
+ *	Get the module version.
+ */
+#define RKH_MODULE_GET_VERSION() \
+    ((const char *)m_version);
+
+/**
+ *	\brief
+ *	This macro appears at the top of each C/C++ source file defining
+ *	the description string for that file (module).
+ *
+ *  \param[in] __fname		file (module) name.
+ *  \param[in] __desc	    file (module) description.
+ */
+#define RKH_MODULE_DESC(__fname, __desc) \
+    static RKHROM char *const m_desc = __desc;
+
+/**
+ *	\brief
+ *	Get the module description.
+ */
+#define RKH_MODULE_GET_DESC() \
+    ((const char *)m_desc)
+
+#if RKH_CFG_FWK_ASSERT_EN == RKH_ENABLED
+    /**
+     *	\brief
+     *	This macro appears at the top of each C/C++ source file defining
+     *	a name for that file.
+     *
+     *  \param[in] __fname		file name where the assertion failed
+     *
+     *  \ingroup apiAssert
+     */
+    #define RKH_MODULE_NAME(__fname) \
+        static RKHROM char *const m_name = # __fname;
+
+    /**
+     *	\brief
+     *	This macro appears at the top of each C/C++ source file defining
+     *	a name for that file, by means of __FILE__ compiler directive.
+     *
+     *  \ingroup apiAssert
+     */
+    #define RKH_THIS_MODULE \
+        static RKHROM char *const m_name = __FILE__;
+
+#else
+    #define RKH_MODULE_NAME(__fname)
+    #define RKH_THIS_MODULE
+#endif
+
+/* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-/**
- *  \brief
- *  Get the bit mask from a bit position (from an 8-bit value).
- *
- *  \param[in] bitPos   bit position.
- *
- *	\return
- *  The bit mask from a bit position (from an 8-bit value) if bitPos is less 
- *  than 8, otherwise RKH_INVALID_BITPOS.
- */
-rui8_t rkh_bittbl_getBitMask(rui8_t bitPos);
-
-/**
- *  \brief
- *  Used to return the bit position of the least significant bit set - a 
- *  number between 0 and 7 (from an 8-bit value).
- *
- *  \param[in] value    data value to retrieve the least significant bit set.
- *
- *	\return
- *  The bit position of the least significant bit set - a number between 0 
- *  and 7 (from an 8-bit value).
- */
-rui8_t rkh_bittbl_getLeastBitSetPos(rui8_t value);
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

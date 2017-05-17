@@ -72,6 +72,7 @@ rkh_get_port_desc(void)
     return RKH_MODULE_GET_DESC();
 }
 
+#if (RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_DISABLED)
 void
 rkh_fwk_init(void)
 {
@@ -86,4 +87,5 @@ void
 rkh_fwk_exit(void)
 {
 }
+#endif
 /* ------------------------------ End of file ------------------------------ */

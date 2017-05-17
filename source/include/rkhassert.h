@@ -71,6 +71,7 @@
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhcfg.h"
+#include "rkhfwk_module.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -79,28 +80,6 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 #if RKH_CFG_FWK_ASSERT_EN == RKH_ENABLED
-    /**
-     *	\brief
-     *	This macro appears at the top of each C/C++ source file defining
-     *	a name for that file.
-     *
-     *  \param[in] __fname		file name where the assertion failed
-     *
-     *  \ingroup apiAssert
-     */
-    #define RKH_MODULE_NAME(__fname) \
-        static RKHROM char *const m_name = # __fname;
-
-    /**
-     *	\brief
-     *	This macro appears at the top of each C/C++ source file defining
-     *	a name for that file, by means of __FILE__ compiler directive.
-     *
-     *  \ingroup apiAssert
-     */
-    #define RKH_THIS_MODULE \
-        static RKHROM char *const m_name = __FILE__;
-
     /**
      *  \brief
      *  The RKH_ASSERT() macro is used to check expressions that ought to
@@ -181,8 +160,6 @@ extern "C" {
     #define RKH_ERROR()         rkh_assert(m_name, __LINE__)
 
 #else
-    #define RKH_MODULE_NAME(__fname)
-    #define RKH_THIS_MODULE
     #define RKH_ASSERT(exp)     ((void)0)
     #define RKH_ALLEGE(exp)     ((void)(exp))
     #define RKH_ERROR()         ((void)0)
