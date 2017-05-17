@@ -2493,12 +2493,6 @@ typedef struct RKH_SCHOICE_T RKH_SCHOICE_T;
 /* -------------------------- External variables --------------------------- */
 /**
  *  \brief
- *  String describing the RKH version.
- */
-extern RKHROM char rkh_version[];
-
-/**
- *  \brief
  *  String representing the name of undefined object name.
  */
 extern RKHROM char noname[];

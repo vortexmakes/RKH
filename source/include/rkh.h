@@ -111,6 +111,7 @@
 #include "rkhfwk_bittbl.h"
 #include "rkhfwk_module.h"
 #include "rkhfwk_cast.h"
+#include "rkhfwk_version.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
