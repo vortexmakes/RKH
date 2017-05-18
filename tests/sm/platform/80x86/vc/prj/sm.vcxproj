@@ -79,35 +79,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkh.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhassert.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhdef.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhevt.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhitl.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhmp.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhplat.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrdy.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhrq.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhs.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtim.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtrc.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\include\rkhtype.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkhport.h" />
-    <ClInclude Include="..\..\..\..\..\..\source\portable\test\rkht.h" />
-    <ClInclude Include="..\..\..\..\..\cmock\cmock.h" />
-    <ClInclude Include="..\..\..\..\..\cmock\cmock_internals.h" />
-    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture.h" />
-    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_internals.h" />
-    <ClInclude Include="..\..\..\..\..\unity\fixture\unity_fixture_malloc_overrides.h" />
-    <ClInclude Include="..\..\..\..\..\unity\unity.h" />
-    <ClInclude Include="..\..\..\..\..\unity\unity_config.h" />
-    <ClInclude Include="..\..\..\..\..\unity\unity_internals.h" />
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\tzparse.h" />
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrazer.h" />
-    <ClInclude Include="..\..\..\..\..\utils\unitrazer\unitrzlib.h" />
-    <ClInclude Include="..\..\..\..\stub\mocks\MocksmTestAct.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c" />
@@ -125,10 +96,10 @@
     <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhrq.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsma.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhqueue.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostateConditional_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />

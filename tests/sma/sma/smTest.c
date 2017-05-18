@@ -18,7 +18,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 
-#include "rkh.h"
+#include "rkhsma.h"
 #include "smTest.h"
 #include "smTestAct.h"
 

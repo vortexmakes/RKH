@@ -48,7 +48,7 @@
     <ClCompile Include="..\..\..\..\..\..\..\source\rkhfwk_evtpool.c">
       <Filter>rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhmp.c">
+    <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhmempool.c">
       <Filter>test\stub</Filter>
     </ClCompile>
   </ItemGroup>

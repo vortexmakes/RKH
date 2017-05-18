@@ -58,7 +58,7 @@
 #include "Mock_rkhtrc_record.h"
 #include "Mock_rkhtrc_filter.h"
 #include "Mock_rkhport.h"
-#include "Mock_rkhmp.h"
+#include "Mock_rkhmempool.h"
 #include "Mock_rkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -90,7 +90,7 @@ MockMemPoolInitCallback(RKH_MP_T *mp, void* sstart, rui16_t ssize,
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(evtpool)
 {
-    Mock_rkhmp_Init();
+    Mock_rkhmempool_Init();
     Mock_rkhassert_Init();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_evtPool_init();
@@ -104,8 +104,8 @@ TEST_SETUP(evtpool)
 
 TEST_TEAR_DOWN(evtpool)
 {
-    Mock_rkhmp_Verify();
-    Mock_rkhmp_Destroy();
+    Mock_rkhmempool_Verify();
+    Mock_rkhmempool_Destroy();
     Mock_rkhassert_Verify();
     Mock_rkhassert_Destroy();
 }

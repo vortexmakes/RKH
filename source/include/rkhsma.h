@@ -60,6 +60,7 @@
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhsm.h"
+#include "rkhqueue.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus

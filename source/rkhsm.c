@@ -48,7 +48,13 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkh.h"
+#include "rkhitl.h"
+#include "rkhsm.h"
+#include "rkhassert.h"
+#include "rkhfwk_hook.h"
+#include "rkhtrc_record.h"
+#include "rkhtrc_filter.h"
+#include "rkhfwk_dynevt.h"
 
 RKH_MODULE_NAME(rkhsm)
 

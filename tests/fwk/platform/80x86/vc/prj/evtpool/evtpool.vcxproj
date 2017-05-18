@@ -16,7 +16,7 @@
     <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
     <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhassert.c" />
-    <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhmp.c" />
+    <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhmempool.c" />
     <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\evtpool\stub\mocks\Mock_rkhtrc_record.c" />
     <ClCompile Include="..\..\..\..\..\evtpool\test_rkhfwk_evtpool.c" />

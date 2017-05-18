@@ -54,7 +54,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkh.h"
+#include "rkhsma.h"
 #include "smTest.h"
 #include "smInstance.h"
 

@@ -53,10 +53,9 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
 #include "unity_fixture.h"
 #include "unitrazer.h"
-#include "rkh.h"
+#include "rkhfwk_dynevt.h"
 #include "common.h"
 #include "smTest.h"
 #include "smTestAct.h"
@@ -64,7 +63,6 @@
 #include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-
 /* ------------------------------- Constants ------------------------------- */
 static RKH_STATIC_EVENT(evA, A);
 static RKH_STATIC_EVENT(evB, B);

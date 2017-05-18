@@ -55,7 +55,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "unitrazer.h"
-#include "rkh.h"
+#include "rkhfwk_dynevt.h"
 #include "common.h"
 #include "smPseudoConditionalTest.h"
 #include "MocksmPseudoConditionalTestAct.h"

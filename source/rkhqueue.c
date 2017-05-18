@@ -166,7 +166,7 @@ rkh_rq_get(RKH_RQ_T *q)
 
     if (q->sma != CSMA(0))
     {
-        rkh_sma_block(q->sma);
+        rkh_sma_block((RKH_SMA_T *)(q->sma));
     }
     else if (q->qty == 0)
     {

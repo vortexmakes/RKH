@@ -4,7 +4,7 @@
 #include <setjmp.h>
 #include "unity.h"
 #include "cmock.h"
-#include "Mock_rkhmp.h"
+#include "Mock_rkhmempool.h"
 
 static const char* CMockString_blk = "blk";
 static const char* CMockString_bsize = "bsize";
@@ -99,7 +99,7 @@ typedef struct _CMOCK_rkh_mp_clear_info_CALL_INSTANCE
 
 } CMOCK_rkh_mp_clear_info_CALL_INSTANCE;
 
-static struct Mock_rkhmpInstance
+static struct Mock_rkhmempoolInstance
 {
   int rkh_mp_init_IgnoreBool;
   CMOCK_rkh_mp_init_CALLBACK rkh_mp_init_CallbackFunctionPointer;
@@ -141,7 +141,7 @@ static struct Mock_rkhmpInstance
 
 extern jmp_buf AbortFrame;
 
-void Mock_rkhmp_Verify(void)
+void Mock_rkhmempool_Verify(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   if (Mock.rkh_mp_init_IgnoreBool)
@@ -194,12 +194,12 @@ void Mock_rkhmp_Verify(void)
     Mock.rkh_mp_clear_info_CallInstance = CMOCK_GUTS_NONE;
 }
 
-void Mock_rkhmp_Init(void)
+void Mock_rkhmempool_Init(void)
 {
-  Mock_rkhmp_Destroy();
+  Mock_rkhmempool_Destroy();
 }
 
-void Mock_rkhmp_Destroy(void)
+void Mock_rkhmempool_Destroy(void)
 {
   CMock_Guts_MemFreeAll();
   memset(&Mock, 0, sizeof(Mock));

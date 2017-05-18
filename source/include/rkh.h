@@ -103,8 +103,8 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhtrc.h"
 #include "rkhsma.h"
-#include "rkhrq.h"
-#include "rkhmp.h"
+#include "rkhqueue.h"
+#include "rkhmempool.h"
 #include "rkhtmr.h"
 #include "rkhassert.h"
 #include "rkhfwk_hook.h"

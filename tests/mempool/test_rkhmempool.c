@@ -32,13 +32,13 @@
 /**
  *  \file       test_rkhmempool.c
  *  \ingroup    test_mempool
- *  \brief      Unit test for fixed memory pool module.
+ *  \brief      Unit test for fixed-size memory block pool module.
  *
  *  \addtogroup test
  *  @{
- *  \addtogroup test_mempool fixed memory pool module
+ *  \addtogroup test_mempool fixed-size memory block pool module
  *  @{
- *  \brief      Unit test for fixed memory pool module.
+ *  \brief      Unit test for fixed-size memory block pool module.
  */
 
 /* -------------------------- Development history -------------------------- */

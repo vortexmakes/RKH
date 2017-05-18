@@ -55,7 +55,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "rkhsma_sync.h"
-#include "rkhrq.h"
+#include "Mock_rkhqueue.h"
 #include "Mock_rkhassert.h"
 #include "Mock_rkhsma_prio.h"
 

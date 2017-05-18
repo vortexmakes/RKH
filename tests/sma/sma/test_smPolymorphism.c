@@ -55,9 +55,9 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "unitrazer.h"
-#include "rkh.h"
+#include "rkhsma.h"
 #include "smPolymorphism.h"
-#include "Mockrkhrq.h"
+#include "Mock_rkhqueue.h"
 #include "Mockrkhsm.h"
 #include "Mockrkhtrc.h"
 #include "Mockrkhport.h"

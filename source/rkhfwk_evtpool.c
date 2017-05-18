@@ -33,7 +33,7 @@
  *  \file       rkhfwk_evtpool.c
  *  \ingroup    fwk
  *  \brief      Implements the event pool manager for supporting dynamic 
- *              events based on native memory pool module (rkhmp).
+ *              events based on native memory pool module (rkhmempool).
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -52,7 +52,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhassert.h"
 #include "rkhfwk_dynevt.h"
-#include "rkhmp.h"
+#include "rkhmempool.h"
 
 RKH_MODULE_NAME(rkhfwk_evtpool)
 

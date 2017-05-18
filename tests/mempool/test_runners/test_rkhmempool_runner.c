@@ -33,7 +33,7 @@
  *  \file       test_rkhmempool_runner.c
  *  \ingroup    test_mempool
  *
- *  \brief      Test runner of fixed memory pool module
+ *  \brief      Test runner of fixed-size memory block pool module
  */
 
 /* -------------------------- Development history -------------------------- */

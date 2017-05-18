@@ -45,8 +45,9 @@
 #define __RKHPORT_H__
 
 #include <windows.h>
-#include "rkhrq.h"
-#include "rkhmp.h"
+//#include "rkhqueue.h"
+//#include "rkhmempool.h"
+#include "rkhtype.h"
 
 void rkh_enter_critical(void);
 void rkh_exit_critical(void);

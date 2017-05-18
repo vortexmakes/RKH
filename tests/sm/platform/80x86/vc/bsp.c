@@ -54,6 +54,7 @@
 #include "bsp.h"
 #include "unitrazer.h"
 #include "tzparse.h"
+#include "rkhfwk_sched.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -165,7 +166,6 @@ bsp_init(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    rkh_fwk_init();
     RKH_TRC_OPEN();
     unitrazer_log_start();
 }

@@ -56,7 +56,7 @@
 
 #include "unity_fixture.h"
 #include "unitrazer.h"
-#include "rkh.h"
+#include "rkhfwk_dynevt.h"
 #include "common.h"
 #include "smPseudoTest.h"
 #include "smPseudoTestAct.h"
