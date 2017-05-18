@@ -105,7 +105,7 @@
 #include "rkhsma.h"
 #include "rkhrq.h"
 #include "rkhmp.h"
-#include "rkhtim.h"
+#include "rkhtmr.h"
 #include "rkhassert.h"
 #include "rkhfwk_hook.h"
 #include "rkhfwk_bittbl.h"
@@ -119,59 +119,10 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-#if defined(RKH_USE_TRC_SENDER)
-/**
- *  \brief
- *  Invoke the system clock tick processing rkh_tmr_tick().
- *
- *  This macro is the recommended way of invoke the clock tick processing,
- *  because it provides the vital information for software tracing and
- *  avoids any overhead when the tracing is disabled.
- *
- *  \param[in] _sender	pointer to the sender object. Typically
- *                      RKH_TIM_TICK() will be called from an interrupt,
- *                      in which case it would create a unique object
- *                      just to unambiguously identify the ISR as the
- *                      sender of the time events.
- *	\sa
- *	rkh_tmr_tick().
- *
- *	\ingroup apiBSPHook
- */
-    #define RKH_TIM_TICK(_sender)     rkh_tmr_tick(_sender)
-#else
-    #define RKH_TIM_TICK(dummy_)      rkh_tmr_tick()
-#endif
-
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-#if defined(RKH_USE_TRC_SENDER)
-/**
- *  \brief
- *  Keep tracks and updates the started timers.
- *
- *	Time intervals are measured by periodic timer interrupts. Each timer
- *	interrupt is called a timer-tick. The actual time between timer-ticks
- *	is specified by the application.
- *  This function must be placed where will be incrementing the system
- *  tick. Normally this function is placed in a timer ISR routine.
- *  If one or more timers expires the assigned event is directly posted
- *  into the state machine application (SMA) queue and associated hook
- *  function is executed (if it's used). The expiration events of timers
- *  that expire at the same time are executed in the order they were
- *  started.
- *
- *  \note
- *  This function is internal to RKH and the user application should
- *  not call it. Instead, use #RKH_TIM_TICK() macro.
- */
-void rkh_tmr_tick(const void *const sender);
-#else
-void rkh_tmr_tick(void);
-#endif
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }
