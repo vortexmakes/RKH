@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       rkhmp.c
+ *  \file       rkhmempool.c
  *  \ingroup    mp
  *
  *  \brief      Implements a pool of fixed-size memory blocks.
@@ -50,12 +50,12 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include "rkhassert.h"
-#include "rkhmp.h"
+#include "rkhmempool.h"
 #include "rkh.h"
 
 #if RKH_CFG_MP_EN == RKH_ENABLED
 
-RKH_MODULE_NAME(rkhmp)
+RKH_MODULE_NAME(rkhmempool)
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */

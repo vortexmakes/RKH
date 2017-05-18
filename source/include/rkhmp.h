@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       rkhmp.h
+ *  \file       rkhmempool.h
  *  \brief      Platform - independent interface for supporting fixed - size
  *              memory blocks facility.
  *
@@ -55,8 +55,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-#ifndef __RKHMP_H__
-#define __RKHMP_H__
+#ifndef __RKHMEMPOOL_H__
+#define __RKHMEMPOOL_H__
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhtype.h"
