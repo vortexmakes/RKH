@@ -780,35 +780,35 @@ extern "C" {
 
 /**
  *  If the #RKH_CFG_MP_GET_BSIZE_EN is set to 1 then RKH will include the
- *  rkh_mp_get_bsize() function that returns the size of memory block in
- *  bytes. See rkh_mp_get_bsize() function.
+ *  rkh_memPool_get_bsize() function that returns the size of memory block in
+ *  bytes. See rkh_memPool_get_bsize() function.
  */
 
 #define RKH_CFG_MP_GET_BSIZE_EN         RKH_DISABLED
 
 /**
  *  If the #RKH_CFG_MP_GET_NFREE_EN is set to 1 then RKH will include the
- *  rkh_mp_get_nfree() function that returns the current number of free
+ *  rkh_memPool_get_nfree() function that returns the current number of free
  *  memory blocks in the pool.
- *  See rkh_mp_get_nfree() function.
+ *  See rkh_memPool_get_nfree() function.
  */
 
 #define RKH_CFG_MP_GET_NFREE_EN         RKH_DISABLED
 
 /**
  *  If the #RKH_CFG_MP_GET_LWM_EN is set to 1 then RKH will include the
- *  rkh_mp_get_low_wmark() function that returns the lowest number of free
+ *  rkh_memPool_get_low_wmark() function that returns the lowest number of free
  *  blocks ever present in the pool. This number provides valuable empirical
  *  data for proper sizing of the memory pool.
- *  See rkh_mp_get_low_wmark() function.
+ *  See rkh_memPool_get_low_wmark() function.
  */
 
 #define RKH_CFG_MP_GET_LWM_EN           RKH_DISABLED
 
 /**
  *  If the #RKH_CFG_MP_GET_INFO_EN is set to 1 then RKH will include the
- *  rkh_mp_get_info() function that retrieves performance information for
- *  a particular memory pool. See rkh_mp_get_info() function.
+ *  rkh_memPool_get_info() function that retrieves performance information for
+ *  a particular memory pool. See rkh_memPool_get_info() function.
  */
 
 #define RKH_CFG_MP_GET_INFO_EN          RKH_DISABLED

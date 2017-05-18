@@ -173,20 +173,21 @@ typedef struct
  *  feature because of the considerable flexibility it gives the application.
  *
  *	\note
- *  RKH prohibits an application from explicitly modifying the RKH_MP_T
+ *  RKH prohibits an application from explicitly modifying the RKH_MEMPOOL_T
  *  structure. The RKH's memory block pool structures can be located anywhere
  *  in memory, but it is most common to make it a global structure by
  *  defining it outside the scope of any function.
  *  An RKH memory pool is created when an memory pool is declared with the
- *  RKH_MP_T data type. The following listing declares "my_pool" memory pool:
+ *  RKH_MEMPOOL_T data type. The following listing declares "my_pool" memory 
+ *  pool:
  *
  *  \code
- *  RKH_MP_T my_pool;
+ *  RKH_MEMPOOL_T my_pool;
  *  \endcode
  *
  *  \ingroup apiMemPool
  */
-typedef struct RKH_MP_T
+typedef struct RKH_MEMPOOL_T
 {
     /**
      *  \brief
@@ -264,16 +265,17 @@ typedef struct RKH_MP_T
 #if RKH_CFG_MP_GET_INFO_EN == RKH_ENABLED
     RKH_MPI_T mpi;
 #endif
-} RKH_MP_T;
+} RKH_MEMPOOL_T;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /**
  *  \brief
- *	Initializes the previously allocated memory pool data strcuture RKH_MP_T.
+ *	Initializes the previously allocated memory pool data strcuture 
+ *	RKH_MEMPOOL_T.
  *
- *  A memory block pool is declared with the RKH_MP_T data type and is
- *  defined with the rkh_mp_init() service.
+ *  A memory block pool is declared with the RKH_MEMPOOL_T data type and is
+ *  defined with the rkh_memPool_init() service.
  *
  *  A general challenge in writing this function is portability,
  *  because storage allocation is intrinsically machine-dependent. Perhaps
@@ -287,7 +289,7 @@ typedef struct RKH_MP_T
  *	actual capacity of the pool might be less than (pool_size/blk_size).
  *	[MS]
  *
- *	Check the capacity of the pool by calling the rkh_mp_get_nfree()
+ *	Check the capacity of the pool by calling the rkh_memPool_get_nfree()
  *	function.
  *
  *  \param[in] mp		pointer to previously allocated memory pool structure.
@@ -298,11 +300,11 @@ typedef struct RKH_MP_T
  *                      memory block in the pool.
  *
  *	\note
- *	See RKH_MP_T structure for more information.
+ *	See RKH_MEMPOOL_T structure for more information.
  *
  *  \ingroup apiMemPool
  */
-void rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
+void rkh_memPool_init(RKH_MEMPOOL_T *mp, void *sstart, rui16_t ssize,
                  RKH_MPBS_T bsize);
 
 /**
@@ -316,7 +318,7 @@ void rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
  *
  *  \ingroup apiMemPool
  */
-void *rkh_mp_get(RKH_MP_T *mp);
+void *rkh_memPool_get(RKH_MEMPOOL_T *mp);
 
 /**
  *  \brief
@@ -329,7 +331,7 @@ void *rkh_mp_get(RKH_MP_T *mp);
  *
  *  \ingroup apiMemPool
  */
-void rkh_mp_put(RKH_MP_T *mp, void *blk);
+void rkh_memPool_put(RKH_MEMPOOL_T *mp, void *blk);
 
 /**
  *  \brief
@@ -346,7 +348,7 @@ void rkh_mp_put(RKH_MP_T *mp, void *blk);
  *
  *  \ingroup apiMemPool
  */
-RKH_MPBS_T rkh_mp_get_bsize(RKH_MP_T *mp);
+RKH_MPBS_T rkh_memPool_get_bsize(RKH_MEMPOOL_T *mp);
 
 /**
  *  \brief
@@ -363,7 +365,7 @@ RKH_MPBS_T rkh_mp_get_bsize(RKH_MP_T *mp);
  *
  *  \ingroup apiMemPool
  */
-RKH_MPNB_T rkh_mp_get_nfree(RKH_MP_T *mp);
+RKH_MPNB_T rkh_memPool_get_nfree(RKH_MEMPOOL_T *mp);
 
 /**
  *  \brief
@@ -382,7 +384,7 @@ RKH_MPNB_T rkh_mp_get_nfree(RKH_MP_T *mp);
  *
  *  \ingroup apiMemPool
  */
-RKH_MPNB_T rkh_mp_get_low_wmark(RKH_MP_T *mp);
+RKH_MPNB_T rkh_memPool_get_low_wmark(RKH_MEMPOOL_T *mp);
 
 /**
  *  \brief
@@ -403,7 +405,7 @@ RKH_MPNB_T rkh_mp_get_low_wmark(RKH_MP_T *mp);
  *
  *  \ingroup apiMemPool
  */
-void rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi);
+void rkh_memPool_get_info(RKH_MEMPOOL_T *mp, RKH_MPI_T *mpi);
 
 /**
  *  \brief
@@ -417,7 +419,7 @@ void rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi);
  *
  *  \ingroup apiMemPool
  */
-void rkh_mp_clear_info(RKH_MP_T *mp);
+void rkh_memPool_clear_info(RKH_MEMPOOL_T *mp);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

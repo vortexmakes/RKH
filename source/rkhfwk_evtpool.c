@@ -63,7 +63,7 @@ RKH_MODULE_NAME(rkhfwk_evtpool)
 /* ---------------------------- Local data types --------------------------- */
 struct RKHEvtPool
 {
-    RKH_MP_T memPool;
+    RKH_MEMPOOL_T memPool;
 };
 
 /* ---------------------------- Global variables --------------------------- */
@@ -81,7 +81,7 @@ rkh_evtPool_init(void)
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
     {
-        ((RKH_MP_T *)ep)->nblocks = 0;
+        ((RKH_MEMPOOL_T *)ep)->nblocks = 0;
     }
 }
 
@@ -93,9 +93,9 @@ rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
     {
-        if (((RKH_MP_T *)ep)->nblocks == 0)
+        if (((RKH_MEMPOOL_T *)ep)->nblocks == 0)
         {
-            rkh_mp_init((RKH_MP_T *)ep, stoStart, stoSize, 
+            rkh_memPool_init((RKH_MEMPOOL_T *)ep, stoStart, stoSize, 
                         (RKH_MPBS_T)evtSize);
             return ep;
         }
@@ -107,44 +107,44 @@ rui8_t
 rkh_evtPool_getBlockSize(RKHEvtPool *const me)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
-    return (rui8_t)((RKH_MP_T *)me)->bsize;
-    /* return (rui8_t)rkh_mp_get_bsize((RKH_MP_T *)me); */
+    return (rui8_t)((RKH_MEMPOOL_T *)me)->bsize;
+    /* return (rui8_t)rkh_memPool_get_bsize((RKH_MEMPOOL_T *)me); */
 }
 
 RKH_EVT_T *
 rkh_evtPool_get(RKHEvtPool *const me)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
-    return (RKH_EVT_T *)rkh_mp_get((RKH_MP_T *)me);
+    return (RKH_EVT_T *)rkh_memPool_get((RKH_MEMPOOL_T *)me);
 }
 
 void 
 rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
-    rkh_mp_put((RKH_MP_T *)me, evt);
+    rkh_memPool_put((RKH_MEMPOOL_T *)me, evt);
 }
 
 rui8_t 
 rkh_evtPool_getNumUsed(RKHEvtPool *const me)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
-    return (rui8_t)(((RKH_MP_T *)me)->nblocks - ((RKH_MP_T *)me)->nfree);
+    return (rui8_t)(((RKH_MEMPOOL_T *)me)->nblocks - ((RKH_MEMPOOL_T *)me)->nfree);
 }
 
 rui8_t 
 rkh_evtPool_getNumMin(RKHEvtPool *const me)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
-    return (rui8_t)(((RKH_MP_T *)me)->nmin);
-    /* return (rui8_t)rkh_mp_get_low_wmark((RKH_MP_T *)me); */
+    return (rui8_t)(((RKH_MEMPOOL_T *)me)->nmin);
+    /* return (rui8_t)rkh_memPool_get_low_wmark((RKH_MEMPOOL_T *)me); */
 }
 
 rui8_t 
 rkh_evtPool_getNumBlock(RKHEvtPool *const me)
 {
     RKH_REQUIRE(me != (RKHEvtPool *)0);
-    return (rui8_t)(((RKH_MP_T *)me)->nblocks);
+    return (rui8_t)(((RKH_MEMPOOL_T *)me)->nblocks);
 }
 #endif
 

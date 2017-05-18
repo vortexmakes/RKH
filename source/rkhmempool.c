@@ -75,7 +75,7 @@ typedef struct rkh_free_blk_t
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
-rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
+rkh_memPool_init(RKH_MEMPOOL_T *mp, void *sstart, rui16_t ssize,
             RKH_MPBS_T bsize)
 {
     RKH_FREE_BLK_T *fb;
@@ -137,12 +137,12 @@ rkh_mp_init(RKH_MP_T *mp, void *sstart, rui16_t ssize,
 }
 
 void *
-rkh_mp_get(RKH_MP_T *mp)
+rkh_memPool_get(RKH_MEMPOOL_T *mp)
 {
     RKH_FREE_BLK_T *fb;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0 && mp->bsize != 0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0 && mp->bsize != 0);
 
     RKH_ENTER_CRITICAL_();
 
@@ -172,11 +172,11 @@ rkh_mp_get(RKH_MP_T *mp)
 }
 
 void
-rkh_mp_put(RKH_MP_T *mp, void *blk)
+rkh_memPool_put(RKH_MEMPOOL_T *mp, void *blk)
 {
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0);
     RKH_ASSERT(mp->bsize != 0);
 
 #if RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
@@ -200,12 +200,12 @@ rkh_mp_put(RKH_MP_T *mp, void *blk)
 
 #if RKH_CFG_MP_GET_BSIZE_EN == RKH_ENABLED
 RKH_MPBS_T
-rkh_mp_get_bsize(RKH_MP_T *mp)
+rkh_memPool_get_bsize(RKH_MEMPOOL_T *mp)
 {
     RKH_MPBS_T bs;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0);
 
     RKH_ENTER_CRITICAL_();
     bs = mp->bsize;
@@ -217,12 +217,12 @@ rkh_mp_get_bsize(RKH_MP_T *mp)
 
 #if RKH_CFG_MP_GET_NFREE_EN == RKH_ENABLED
 RKH_MPNB_T
-rkh_mp_get_nfree(RKH_MP_T *mp)
+rkh_memPool_get_nfree(RKH_MEMPOOL_T *mp)
 {
     RKH_MPNB_T nfree;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0);
 
     RKH_ENTER_CRITICAL_();
     nfree = mp->nfree;
@@ -235,12 +235,12 @@ rkh_mp_get_nfree(RKH_MP_T *mp)
 #if RKH_CFG_MP_GET_LWM_EN == RKH_ENABLED && \
     RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
 RKH_MPNB_T
-rkh_mp_get_low_wmark(RKH_MP_T *mp)
+rkh_memPool_get_low_wmark(RKH_MEMPOOL_T *mp)
 {
     RKH_MPNB_T nmin;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0);
 
     RKH_ENTER_CRITICAL_();
     nmin = mp->nmin;
@@ -253,11 +253,11 @@ rkh_mp_get_low_wmark(RKH_MP_T *mp)
 #if RKH_CFG_MP_GET_INFO_EN == RKH_ENABLED && \
     RKH_CFG_MP_REDUCED_EN == RKH_DISABLED
 void
-rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi)
+rkh_memPool_get_info(RKH_MEMPOOL_T *mp, RKH_MPI_T *mpi)
 {
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0 && mpi != (RKH_MPI_T *)0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0 && mpi != (RKH_MPI_T *)0);
 
     RKH_ENTER_CRITICAL_();
     *mpi = mp->mpi;
@@ -265,12 +265,12 @@ rkh_mp_get_info(RKH_MP_T *mp, RKH_MPI_T *mpi)
 }
 
 void
-rkh_mp_clear_info(RKH_MP_T *mp)
+rkh_memPool_clear_info(RKH_MEMPOOL_T *mp)
 {
     RKH_MPI_T *pmpi;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(mp != (RKH_MP_T *)0);
+    RKH_ASSERT(mp != (RKH_MEMPOOL_T *)0);
     pmpi = &mp->mpi;
 
     RKH_ENTER_CRITICAL_();

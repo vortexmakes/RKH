@@ -73,7 +73,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_mp_init
+         *  \copybrief rkh_memPool_init
          *
          *  \description    Initialize a memory block pool
          *  \trcGroup       RKH_TG_MP
@@ -92,7 +92,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_mp_get
+         *  \copybrief rkh_memPool_get
          *
          *  \description    Get a block from the pool
          *  \trcGroup       RKH_TG_MP
@@ -114,7 +114,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_mp_put
+         *  \copybrief rkh_memPool_put
          *
          *  \description    Put the block to the pool
          *  \trcGroup       RKH_TG_MP

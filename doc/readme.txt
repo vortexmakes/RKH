@@ -717,12 +717,12 @@ underlying OS/RTOS.
 
 <EM>Generic example</EM>
 \code
-#define RKH_DYNE_TYPE           RKH_MP_T
+#define RKH_DYNE_TYPE           RKH_MEMPOOL_T
 #define RKH_DYNE_INIT(mp, sstart, ssize, esize) \
-            rkh_mp_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
+            rkh_memPool_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
 #define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
-#define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_mp_get((mp)))
-#define RKH_DYNE_PUT(mp, e)     (rkh_mp_put((mp), e))
+#define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_memPool_get((mp)))
+#define RKH_DYNE_PUT(mp, e)     (rkh_memPool_put((mp), e))
 #define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
 #define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
 #define RKH_DYNE_GET_PSIZE(mp)  ((mp)->nblocks)
@@ -734,7 +734,7 @@ underlying OS/RTOS.
 
 <EM>If the application code uses the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
-RKH_MP_T?</EM>
+RKH_MEMPOOL_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1 and 
@@ -3145,11 +3145,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nblock </I></TD>
-		<TD><I> \copybrief RKH_MP_T::nblocks </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::nblocks </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> bsize </I></TD>
-		<TD><I> \copybrief RKH_MP_T::bsize </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::bsize </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 1 </TD>
@@ -3160,11 +3160,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nfree </I></TD>
-		<TD><I> \copybrief RKH_MP_T::nfree </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::nfree </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nmin </I></TD>
-		<TD><I> \copybrief RKH_MP_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 2 </TD>
@@ -3175,7 +3175,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nfree </I></TD>
-		<TD><I> \copybrief RKH_MP_T::nfree </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::nfree </I></TD>
 	</TR>
 
 	<TR bgColor="#c0c0c0">
@@ -3802,7 +3802,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nMin </I></TD>
-		<TD><I> \copybrief RKH_MP_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sender </I></TD>
@@ -3844,7 +3844,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nMin </I></TD>
-		<TD><I> \copybrief RKH_MP_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_MEMPOOL_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sender </I></TD>
