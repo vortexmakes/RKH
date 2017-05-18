@@ -52,8 +52,8 @@
 #include "rkhsma_prio.h"
 #include "rkhfwk_bittbl.h"
 #include "rkhassert.h"
-#include "rkh.h"
-#include "rkhassert.h"
+#include "rkhfwk_module.h"
+#include "rkhitl.h"
 
 RKH_MODULE_NAME(rkhsma_prio)
 

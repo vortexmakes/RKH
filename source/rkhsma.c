@@ -49,7 +49,11 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhassert.h"
-#include "rkh.h"
+#include "rkhitl.h"
+#include "rkhsma.h"
+#include "rkhtrc_record.h"
+#include "rkhtrc_filter.h"
+#include "rkhfwk_hook.h"
 
 RKH_MODULE_NAME(rkhsma)
 
