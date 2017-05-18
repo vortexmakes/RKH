@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       rkhrq.c
+ *  \file       rkhqueue.c
  *  \ingroup    apiQueue
  *
  *  \brief      Implements a queue (by reference) services.
@@ -38,7 +38,7 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24  LeFr  v2.4.05  Initial version
+ *  2017.17.05  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -50,13 +50,13 @@
 /* ----------------------------- Include files ----------------------------- */
 
 #include "rkhassert.h"
-#include "rkhrq.h"
+#include "rkhqueue.h"
 #include "rkhrdy.h"
 #include "rkh.h"
 
 #if RKH_CFG_RQ_EN == RKH_ENABLED
 
-RKH_MODULE_NAME(rkhrq)
+RKH_MODULE_NAME(rkhqueue)
 
 /* ----------------------------- Local macros ------------------------------ */
 

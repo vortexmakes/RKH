@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       rkhrq.h
+ *  \file       rkhqueue.h
  *  \brief      Platform - independent interface for supporting queue services.
  *
  *  \ingroup    apiQueue
@@ -54,8 +54,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-#ifndef __RKHRQ_H__
-#define __RKHRQ_H__
+#ifndef __RKHQUEUE_H__
+#define __RKHQUEUE_H__
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhcfg.h"
