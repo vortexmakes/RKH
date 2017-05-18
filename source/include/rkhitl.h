@@ -202,7 +202,7 @@ extern "C" {
 #define CCE(p)          ((const RKH_EVT_T *)(p))
 #define CV(p)           ((void *)(p))
 #define CSMA(p)         ((const RKH_SMA_T *)(p))
-#define CQ(p)           ((RKH_RQ_T *)(p))
+#define CQ(p)           ((RKH_QUEUE_T *)(p))
 #define CIA(s)          ((RKH_INIT_ACT_T)(RKH_SMA_ACCESS_CONST(sma, iaction)))
 #define CTA(ta)         ((RKH_TRN_ACT_T)(ta))
 
@@ -2106,13 +2106,13 @@ extern "C" {
      *  Defines the data type of the event queue for active objects.
      *  The event queue can be implemented with a message queue of
      *  the RTOS/OS. But it is also possible to use the native RKH
-     *  queue RKH_RQ_T type if the underlying RTOS/OS does not provide
+     *  queue RKH_QUEUE_T type if the underlying RTOS/OS does not provide
      *  an adequate queue.
      *
      *  <EM>Example for using the native queue</EM>
      *  \code
      *	// RKH's native queue
-     *  #define RKH_EQ_TYPE			RKH_RQ_T
+     *  #define RKH_EQ_TYPE			RKH_QUEUE_T
      *	// Message queue of ucos/II
      *  #define RKH_EQ_TYPE			OS_EVENT
      *	// Message queue of FreeRTOS
@@ -2151,7 +2151,7 @@ extern "C" {
      *  \brief
      *  The \c os_signal member of RKH_SMA_T is necessary when the underlying
      *  OS does not provide an adequate queue facility, so the native RKH
-     *  queue RKH_RQ_T must be used. In this case the RKH_OSSIGNAL_TYPE
+     *  queue RKH_QUEUE_T must be used. In this case the RKH_OSSIGNAL_TYPE
      *  indicates an operating system specific primitive to efficiently
      *  block the native RKH event queue when the queue is empty.
      *  Frequently, the active object has its own task processing loop that

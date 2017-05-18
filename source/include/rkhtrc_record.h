@@ -149,7 +149,7 @@ extern "C" {
 
         /**
          *  \brief
-         *	\copybrief rkh_rq_init
+         *	\copybrief rkh_queue_init
          *
          *  \description    Initialize a event queue
          *  \trcGroup       RKH_TG_RQ
@@ -169,7 +169,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_rq_get
+         *  \copybrief rkh_queue_get
          *
          *  \description    Get and remove an element from a queue
          *  \trcGroup       RKH_TG_RQ
@@ -186,7 +186,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_rq_put_fifo
+         *  \copybrief rkh_queue_put_fifo
          *
          *  \description    Puts an element on a queue in a FIFO manner
          *  \trcGroup       RKH_TG_RQ
@@ -206,7 +206,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_rq_put_lifo
+         *  \copybrief rkh_queue_put_lifo
          *
          *  \description    Puts an element on a queue in a LIFO manner
          *  \trcGroup       RKH_TG_RQ
@@ -241,7 +241,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_rq_deplete
+         *  \copybrief rkh_queue_deplete
          *
          *  \description    Depletes a queue
          *  \trcGroup       RKH_TG_RQ

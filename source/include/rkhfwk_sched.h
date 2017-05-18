@@ -60,7 +60,7 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 #if ((RKH_CFGPORT_NATIVE_SCHEDULER_EN == 1) && (RKH_EN_DOXYGEN == 0))
-    #define RKH_EQ_TYPE     RKH_RQ_T
+    #define RKH_EQ_TYPE     RKH_QUEUE_T
 #endif
 
 /* -------------------------------- Constants ------------------------------ */

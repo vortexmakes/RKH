@@ -678,7 +678,7 @@
  *	If the #RKH_CFG_RQ_GET_LWMARK_EN is set to 1 then RKH allows to known the 
  * 	minimum number of free elements ever in the queue (low-watermark ). 
  * 	This provides valuable empirical data for proper sizing of the queue.
- * 	See rkh_rq_get_lwm() function.
+ * 	See rkh_queue_get_lwm() function.
  */
 
 #define RKH_CFG_RQ_GET_LWMARK_EN		RKH_DISABLED
@@ -686,50 +686,50 @@
 /**
  *	If the #RKH_CFG_RQ_GET_INFO_EN is set to 1 then RKH allows to collect and 
  *	retrives performance information for a particular queue.
- *	See rkh_rq_get_info() and rkh_rq_clear_info() functions.
+ *	See rkh_queue_get_info() and rkh_queue_clear_info() functions.
  */
 
 #define RKH_CFG_RQ_GET_INFO_EN			RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_RQ_READ_EN is set to 1 then RKH will include the 
- *	rkh_rq_read() function that allows read an element from a queue without 
- *	remove it. See rkh_rq_read() function.
+ *	rkh_queue_read() function that allows read an element from a queue without 
+ *	remove it. See rkh_queue_read() function.
  */
 
 #define	RKH_CFG_RQ_READ_EN				RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_RQ_DEPLETE_EN is set to 1 then RKH will include the 
- *	rkh_rq_deplete() function that empties the contents of the queue and 
+ *	rkh_queue_deplete() function that empties the contents of the queue and 
  *	eliminates all stored elements.
- *	See rkh_rq_deplete() function.
+ *	See rkh_queue_deplete() function.
  */
 
 #define	RKH_CFG_RQ_DEPLETE_EN			RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_RQ_IS_FULL_EN is set to 1 then RKH will include the 
- *	rkh_rq_is_full() function that allows to known if a queue is full.
- *	See rkh_rq_is_full() function.
+ *	rkh_queue_is_full() function that allows to known if a queue is full.
+ *	See rkh_queue_is_full() function.
  */
 
 #define	RKH_CFG_RQ_IS_FULL_EN			RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_RQ_GET_NELEMS_EN is set to 1 then RKH will include the 
- *	rkh_rq_get_num() function that returns the number of elements currently 
+ *	rkh_queue_get_num() function that returns the number of elements currently 
  *	in the queue.
- *	See rkh_rq_get_num() function.
+ *	See rkh_queue_get_num() function.
  */
 
 #define	RKH_CFG_RQ_GET_NELEMS_EN		RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_RQ_PUT_LIFO_EN is set to 1 then RKH will include the 
- *	rkh_rq_put_lifo() function that puts an element on a queue in a LIFO 
+ *	rkh_queue_put_lifo() function that puts an element on a queue in a LIFO 
  *	manner.
- *	See rkh_rq_put_lifo() function.
+ *	See rkh_queue_put_lifo() function.
  */
 
 #define	RKH_CFG_RQ_PUT_LIFO_EN			RKH_ENABLED

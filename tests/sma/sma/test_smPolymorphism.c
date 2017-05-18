@@ -157,7 +157,7 @@ TEST(polymorphism, callVirtualFunction)
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     const RKH_EVT_T *qs[1];
 
-    rkh_rq_init_Ignore();   /* for RKH_SMA_ACTIVATE() */
+    rkh_queue_init_Ignore();   /* for RKH_SMA_ACTIVATE() */
     rkh_enter_critical_Expect();
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
     rkh_exit_critical_Expect();
@@ -165,12 +165,12 @@ TEST(polymorphism, callVirtualFunction)
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_FALSE);
 
     rkh_enter_critical_Expect();
-    rkh_rq_put_fifo_Ignore();
+    rkh_queue_put_fifo_Ignore();
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_FALSE);
     rkh_exit_critical_Expect();
 
     rkh_enter_critical_Expect();
-    rkh_rq_put_lifo_Ignore();
+    rkh_queue_put_lifo_Ignore();
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_FALSE);
     rkh_exit_critical_Expect();
 

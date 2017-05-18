@@ -83,7 +83,7 @@ RKH_MODULE_NAME(rkhqueue)
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
-rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
+rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_RQNE_T ssize,
             void *sma)
 {
     RKH_SR_ALLOC();
@@ -106,12 +106,12 @@ rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
 
 #if RKH_CFG_RQ_IS_FULL_EN == RKH_ENABLED
 rbool_t
-rkh_rq_is_full(RKH_RQ_T *q)
+rkh_queue_is_full(RKH_QUEUE_T *q)
 {
     RKH_RQNE_T qty;
     RKH_SR_ALLOC();
 
-    RKH_ASSERT(q != (RKH_RQ_T *)0);
+    RKH_ASSERT(q != (RKH_QUEUE_T *)0);
 
     RKH_ENTER_CRITICAL_();
     qty = q->qty;
@@ -123,7 +123,7 @@ rkh_rq_is_full(RKH_RQ_T *q)
 
 #if RKH_CFG_RQ_GET_NELEMS_EN == RKH_ENABLED
 RKH_RQNE_T
-rkh_rq_get_num(RKH_RQ_T *q)
+rkh_queue_get_num(RKH_QUEUE_T *q)
 {
     RKH_RQNE_T qty;
     RKH_SR_ALLOC();
@@ -140,7 +140,7 @@ rkh_rq_get_num(RKH_RQ_T *q)
 
 #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
 RKH_RQNE_T
-rkh_rq_get_lwm(RKH_RQ_T *q)
+rkh_queue_get_lwm(RKH_QUEUE_T *q)
 {
     RKH_RQNE_T nmin;
     RKH_SR_ALLOC();
@@ -156,7 +156,7 @@ rkh_rq_get_lwm(RKH_RQ_T *q)
 #endif
 
 void *
-rkh_rq_get(RKH_RQ_T *q)
+rkh_queue_get(RKH_QUEUE_T *q)
 {
     void *e = CV(0);
     RKH_SR_ALLOC();
@@ -200,7 +200,7 @@ rkh_rq_get(RKH_RQ_T *q)
 }
 
 void
-rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe)
+rkh_queue_put_fifo(RKH_QUEUE_T *q, const void *pe)
 {
     RKH_SR_ALLOC();
 
@@ -242,7 +242,7 @@ rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe)
 
 #if RKH_CFG_RQ_PUT_LIFO_EN == RKH_ENABLED
 void
-rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe)
+rkh_queue_put_lifo(RKH_QUEUE_T *q, const void *pe)
 {
     RKH_SR_ALLOC();
 
@@ -287,7 +287,7 @@ rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe)
 
 #if RKH_CFG_RQ_DEPLETE_EN == RKH_ENABLED
 void
-rkh_rq_deplete(RKH_RQ_T *q)
+rkh_queue_deplete(RKH_QUEUE_T *q)
 {
     RKH_SR_ALLOC();
 
@@ -306,7 +306,7 @@ rkh_rq_deplete(RKH_RQ_T *q)
 
 #if RKH_CFG_RQ_READ_EN == RKH_ENABLED
 ruint
-rkh_rq_read(RKH_RQ_T *q, void *pe)
+rkh_queue_read(RKH_QUEUE_T *q, void *pe)
 {
     RKH_SR_ALLOC();
 
@@ -330,7 +330,7 @@ rkh_rq_read(RKH_RQ_T *q, void *pe)
 
 #if RKH_CFG_RQ_GET_INFO_EN == RKH_ENABLED
 void
-rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi)
+rkh_queue_get_info(RKH_QUEUE_T *q, RKH_RQI_T *pqi)
 {
     RKH_SR_ALLOC();
 
@@ -340,7 +340,7 @@ rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi)
 }
 
 void
-rkh_rq_clear_info(RKH_RQ_T *q)
+rkh_queue_clear_info(RKH_QUEUE_T *q)
 {
     RKH_RQI_T *prqi;
     RKH_SR_ALLOC();

@@ -78,8 +78,8 @@ extern "C" {
  *
  *  \ingroup apiQueue 
  */
-#define RKH_RQ_IS_EMPTY(q) \
-    (rbool_t)(rkh_rq_get_num((RKH_RQ_T *)(q)) == 0)
+#define RKH_QUEUE_IS_EMPTY(q) \
+    (rbool_t)(rkh_queue_get_num((RKH_QUEUE_T *)(q)) == 0)
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
@@ -150,21 +150,21 @@ typedef struct RKH_QINFO_T
  *  considerable flexibility.
  *
  *  \note
- *  RKH prohibits an application from explicitly modifying the RKH_RQ_T
+ *  RKH prohibits an application from explicitly modifying the RKH_QUEUE_T
  *  structure. The RKH's queue structures can be located anywhere in memory,
  *  but it is most common to make it a global structure by defining it
  *  outside the scope of any function.
  *  An RKH queue is created when an queue (copy by reference) is declared
- *  with the RKH_RQ_T data type. The following listing declares "gsmque"
+ *  with the RKH_QUEUE_T data type. The following listing declares "gsmque"
  *  timer:
  *
  *  \code
- *  RKH_RQ_T gsmque;
+ *  RKH_QUEUE_T gsmque;
  *  \endcode
  *
  *  \ingroup apiQueue 
  */
-typedef struct RKH_RQ_T
+typedef struct RKH_QUEUE_T
 {
     /**
      *  \brief
@@ -230,16 +230,16 @@ typedef struct RKH_RQ_T
 #if RKH_CFG_RQ_GET_INFO_EN == RKH_ENABLED
     RKH_RQI_T rqi;
 #endif
-} RKH_RQ_T;
+} RKH_QUEUE_T;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /**
  * \brief
- *	Initializes the previously allocated queue data structure RKH_RQ_T.
+ *	Initializes the previously allocated queue data structure RKH_QUEUE_T.
  *
- *  A queue is declared with the RKH_RQ_T data type and is defined with the
- *  rkh_rq_init() service. The total number of messages is calculated from
+ *  A queue is declared with the RKH_QUEUE_T data type and is defined with the
+ *  rkh_queue_init() service. The total number of messages is calculated from
  *  the specified message size (pointer size) and the total number of bytes
  *  in the queue. Note that if the total number of bytes specified in the
  *  queue's memory area is not evenly divisible by the specified message
@@ -256,11 +256,11 @@ typedef struct RKH_RQ_T
  *                      parameter must be set to NULL.
  *
  *	\sa
- *	RKH_RQ_T structure for more information.
+ *	RKH_QUEUE_T structure for more information.
  *
  *  \ingroup apiQueue 
  */
-void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
+void rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_RQNE_T ssize,
                  void *sma);
 
 /**
@@ -278,7 +278,7 @@ void rkh_rq_init(RKH_RQ_T *q, const void * *sstart, RKH_RQNE_T ssize,
  *
  *  \ingroup apiQueue 
  */
-rbool_t rkh_rq_is_full(RKH_RQ_T *q);
+rbool_t rkh_queue_is_full(RKH_QUEUE_T *q);
 
 /**
  *  \brief
@@ -292,7 +292,7 @@ rbool_t rkh_rq_is_full(RKH_RQ_T *q);
  *
  *  \ingroup apiQueue 
  */
-RKH_RQNE_T rkh_rq_get_num(RKH_RQ_T *q);
+RKH_RQNE_T rkh_queue_get_num(RKH_QUEUE_T *q);
 
 /**
  *	\brief
@@ -312,7 +312,7 @@ RKH_RQNE_T rkh_rq_get_num(RKH_RQ_T *q);
  *
  *  \ingroup apiQueue 
  */
-RKH_RQNE_T rkh_rq_get_lwm(RKH_RQ_T *q);
+RKH_RQNE_T rkh_queue_get_lwm(RKH_QUEUE_T *q);
 
 /**
  *  \brief
@@ -323,7 +323,7 @@ RKH_RQNE_T rkh_rq_get_lwm(RKH_RQ_T *q);
  *
  *  \ingroup apiQueue 
  */
-void *rkh_rq_get(RKH_RQ_T *q);
+void *rkh_queue_get(RKH_QUEUE_T *q);
 
 /**
  *  \brief
@@ -342,7 +342,7 @@ void *rkh_rq_get(RKH_RQ_T *q);
  *
  *  \ingroup apiQueue 
  */
-void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
+void rkh_queue_put_fifo(RKH_QUEUE_T *q, const void *pe);
 
 /**
  *  \brief
@@ -364,7 +364,7 @@ void rkh_rq_put_fifo(RKH_RQ_T *q, const void *pe);
  *
  *  \ingroup apiQueue 
  */
-void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
+void rkh_queue_put_lifo(RKH_QUEUE_T *q, const void *pe);
 
 /**
  *  \brief
@@ -379,7 +379,7 @@ void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
  *	to and thus, could cause 'memory leaks'. In other words, the data
  *	pointing to that's being referenced by the queue entries should, most
  *	likely, need to be deallocated. To flush a queue that contains entries,
- *	is much safer instead repeateadly use rkh_rq_get().
+ *	is much safer instead repeateadly use rkh_queue_get().
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
@@ -387,7 +387,7 @@ void rkh_rq_put_lifo(RKH_RQ_T *q, const void *pe);
  *
  *  \ingroup apiQueue 
  */
-void rkh_rq_deplete(RKH_RQ_T *q);
+void rkh_queue_deplete(RKH_QUEUE_T *q);
 
 /**
  *  \brief
@@ -408,7 +408,7 @@ void rkh_rq_deplete(RKH_RQ_T *q);
  *
  *  \ingroup apiQueue 
  */
-ruint rkh_rq_read(RKH_RQ_T *q, void *pe);
+ruint rkh_queue_read(RKH_QUEUE_T *q, void *pe);
 
 /**
  *  \brief
@@ -433,7 +433,7 @@ ruint rkh_rq_read(RKH_RQ_T *q, void *pe);
  *
  *  \ingroup apiQueue 
  */
-void rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi);
+void rkh_queue_get_info(RKH_QUEUE_T *q, RKH_RQI_T *pqi);
 
 /**
  *  \brief
@@ -447,7 +447,7 @@ void rkh_rq_get_info(RKH_RQ_T *q, RKH_RQI_T *pqi);
  *
  *  \ingroup apiQueue 
  */
-void rkh_rq_clear_info(RKH_RQ_T *q);
+void rkh_queue_clear_info(RKH_QUEUE_T *q);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

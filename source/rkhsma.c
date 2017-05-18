@@ -152,7 +152,7 @@ rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs, RKH_RQNE_T qsize,
 
     RKH_REQUIRE((qs != (const RKH_EVT_T * *)0) && (qsize != (RKH_RQNE_T)0));
 
-    rkh_rq_init(&sma->equeue, (const void * *)qs, qsize, sma);
+    rkh_queue_init(&sma->equeue, (const void * *)qs, qsize, sma);
     rkh_sma_register(sma);
     rkh_sm_init((RKH_SM_T *)sma);
     RKH_TR_SMA_ACT(sma, RKH_GET_PRIO(sma), qsize);
@@ -174,7 +174,7 @@ rkh_sma_post_fifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
     RKH_ENTER_CRITICAL_();
 
     RKH_INC_REF(e);
-    rkh_rq_put_fifo(&sma->equeue, e);
+    rkh_queue_put_fifo(&sma->equeue, e);
     RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref, sma->equeue.qty, 
                     RKH_SMA_GET_NMIN(sma));
 
@@ -198,7 +198,7 @@ rkh_sma_post_lifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
     RKH_ENTER_CRITICAL_();
 
     RKH_INC_REF(e);
-    rkh_rq_put_lifo(&sma->equeue, e);
+    rkh_queue_put_lifo(&sma->equeue, e);
     RKH_TR_SMA_LIFO(sma, e, sender, e->pool, e->nref, sma->equeue.qty, 
                     RKH_SMA_GET_NMIN(sma));
 
@@ -213,7 +213,7 @@ rkh_sma_get(RKH_SMA_T *sma)
     RKH_EVT_T *e;
     RKH_SR_ALLOC();
 
-    e = rkh_rq_get(&sma->equeue);
+    e = rkh_queue_get(&sma->equeue);
 
     RKH_ASSERT(e != (RKH_EVT_T *)0);
     /* Because the variables are obtained outside critical section could be */
@@ -226,26 +226,26 @@ rkh_sma_get(RKH_SMA_T *sma)
 
 #if RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED
 void
-rkh_sma_defer(RKH_RQ_T *q, const RKH_EVT_T *e)
+rkh_sma_defer(RKH_QUEUE_T *q, const RKH_EVT_T *e)
 {
     RKH_SR_ALLOC();
 
     RKH_ENTER_CRITICAL_();
 
     RKH_INC_REF(e);
-    rkh_rq_put_fifo(q, e);
+    rkh_queue_put_fifo(q, e);
     RKH_TR_SMA_DEFER(q, e);
 
     RKH_EXIT_CRITICAL_();
 }
 
 RKH_EVT_T *
-rkh_sma_recall(RKH_SMA_T *sma, RKH_RQ_T *q)
+rkh_sma_recall(RKH_SMA_T *sma, RKH_QUEUE_T *q)
 {
     RKH_EVT_T *e;
     RKH_SR_ALLOC();
 
-    e = rkh_rq_get(q);          /* get an event from deferred queue */
+    e = rkh_queue_get(q);          /* get an event from deferred queue */
     if (e != RKH_EVT_CAST(0))   /* event available? */
     {
         /* post it to the front of the SMA's queue */

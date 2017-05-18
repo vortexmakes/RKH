@@ -73,9 +73,6 @@
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhqueue.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>

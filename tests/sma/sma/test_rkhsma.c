@@ -142,7 +142,7 @@ TEST(sma, ActivateOneAO)
 {
     char *buff;
 
-    rkh_rq_init_Expect(&receiver.equeue, &buff, 16, &receiver);
+    rkh_queue_init_Expect(&receiver.equeue, &buff, 16, &receiver);
 
     rkh_enter_critical_Expect();
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
@@ -160,7 +160,7 @@ TEST(sma, ActivateOneAO)
 TEST(sma, PostFifo)
 {
     rkh_enter_critical_Expect();
-    rkh_rq_put_fifo_Expect(&receiver.equeue, &event);
+    rkh_queue_put_fifo_Expect(&receiver.equeue, &event);
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_FALSE);
     rkh_exit_critical_Expect();
 
@@ -170,7 +170,7 @@ TEST(sma, PostFifo)
 TEST(sma, PostLifo)
 {
     rkh_enter_critical_Expect();
-    rkh_rq_put_lifo_Expect(&receiver.equeue, &event);
+    rkh_queue_put_lifo_Expect(&receiver.equeue, &event);
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_FALSE);
     rkh_exit_critical_Expect();
 
@@ -181,7 +181,7 @@ TEST(sma, Get)
 {
     RKH_EVT_T *e;
 
-    rkh_rq_get_ExpectAndReturn(&receiver.equeue, &event);
+    rkh_queue_get_ExpectAndReturn(&receiver.equeue, &event);
     rkh_enter_critical_Expect();
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_GET, RKH_FALSE);
     rkh_exit_critical_Expect();
@@ -193,7 +193,7 @@ TEST(sma, Get)
 TEST(sma, Defer)
 {
     rkh_enter_critical_Expect();
-    rkh_rq_put_fifo_Expect(&receiver.equeue, &event);
+    rkh_queue_put_fifo_Expect(&receiver.equeue, &event);
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_DEFER, RKH_FALSE);
     rkh_exit_critical_Expect();
 
@@ -204,7 +204,7 @@ TEST(sma, Recall)
 {
     RKH_EVT_T *e;
 
-    rkh_rq_get_ExpectAndReturn(&receiver.equeue, NULL);
+    rkh_queue_get_ExpectAndReturn(&receiver.equeue, NULL);
 
     e = rkh_sma_recall(&receiver, &receiver.equeue);
     TEST_ASSERT_EQUAL(NULL, e);

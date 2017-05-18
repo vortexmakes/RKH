@@ -105,8 +105,8 @@ void rkh_sma_get_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define rkh_sma_defer_Ignore() rkh_sma_defer_CMockIgnore()
 void rkh_sma_defer_CMockIgnore(void);
 #define rkh_sma_defer_Expect(q, e) rkh_sma_defer_CMockExpect(__LINE__, q, e)
-void rkh_sma_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_RQ_T* q, const RKH_EVT_T* e);
-typedef void (* CMOCK_rkh_sma_defer_CALLBACK)(RKH_RQ_T* q, const RKH_EVT_T* e, int cmock_num_calls);
+void rkh_sma_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, const RKH_EVT_T* e);
+typedef void (* CMOCK_rkh_sma_defer_CALLBACK)(RKH_QUEUE_T* q, const RKH_EVT_T* e, int cmock_num_calls);
 void rkh_sma_defer_StubWithCallback(CMOCK_rkh_sma_defer_CALLBACK Callback);
 #define rkh_sma_defer_IgnoreArg_q() rkh_sma_defer_CMockIgnoreArg_q(__LINE__)
 void rkh_sma_defer_CMockIgnoreArg_q(UNITY_LINE_TYPE cmock_line);
@@ -115,8 +115,8 @@ void rkh_sma_defer_CMockIgnoreArg_e(UNITY_LINE_TYPE cmock_line);
 #define rkh_sma_recall_IgnoreAndReturn(cmock_retval) rkh_sma_recall_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void rkh_sma_recall_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_EVT_T* cmock_to_return);
 #define rkh_sma_recall_ExpectAndReturn(me, q, cmock_retval) rkh_sma_recall_CMockExpectAndReturn(__LINE__, me, q, cmock_retval)
-void rkh_sma_recall_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_RQ_T* q, RKH_EVT_T* cmock_to_return);
-typedef RKH_EVT_T* (* CMOCK_rkh_sma_recall_CALLBACK)(RKH_SMA_T* me, RKH_RQ_T* q, int cmock_num_calls);
+void rkh_sma_recall_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH_QUEUE_T* q, RKH_EVT_T* cmock_to_return);
+typedef RKH_EVT_T* (* CMOCK_rkh_sma_recall_CALLBACK)(RKH_SMA_T* me, RKH_QUEUE_T* q, int cmock_num_calls);
 void rkh_sma_recall_StubWithCallback(CMOCK_rkh_sma_recall_CALLBACK Callback);
 #define rkh_sma_recall_IgnoreArg_me() rkh_sma_recall_CMockIgnoreArg_me(__LINE__)
 void rkh_sma_recall_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);

@@ -45,8 +45,6 @@
 #define __RKHPORT_H__
 
 #include <windows.h>
-//#include "rkhqueue.h"
-//#include "rkhmempool.h"
 #include "rkhtype.h"
 
 void rkh_enter_critical(void);
@@ -147,7 +145,7 @@ const char *rkh_get_port_desc(void);
 #define RKH_ENTER_CRITICAL(dummy)     rkh_enter_critical()
 #define RKH_EXIT_CRITICAL(dummy)      rkh_exit_critical()
 
-#define RKH_EQ_TYPE                     RKH_RQ_T
+#define RKH_EQ_TYPE                     RKH_QUEUE_T
 #define RKH_OSSIGNAL_TYPE               void*
 #define RKH_THREAD_TYPE                 void*
 

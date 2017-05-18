@@ -1120,10 +1120,10 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
  *
  *  \usage
  *	\code
- *	static RKH_RQ_T qurc;
+ *	static RKH_QUEUE_T qurc;
  *	static RKH_EVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
  *
- *	rkh_rq_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
+ *	rkh_queue_init( &qurc, qurc_sto, MAX_SIZEOF_QURC, NULL );
  *	...
  *
  *	void
@@ -1134,7 +1134,7 @@ RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
  *	}
  *	\endcode
  */
-void rkh_sma_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
+void rkh_sma_defer(RKH_QUEUE_T *q, const RKH_EVT_T *e);
 
 /**
  *  \brief
@@ -1163,7 +1163,7 @@ void rkh_sma_defer(RKH_RQ_T *q, const RKH_EVT_T *e);
  *	\endcode
  *
  */
-RKH_EVT_T *rkh_sma_recall(RKH_SMA_T *me, RKH_RQ_T *q);
+RKH_EVT_T *rkh_sma_recall(RKH_SMA_T *me, RKH_QUEUE_T *q);
 
 /**
  *  \brief

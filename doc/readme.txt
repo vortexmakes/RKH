@@ -490,7 +490,7 @@ are placed in \c rkhport.c.
 
 <EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
 \code
-#define RKH_EQ_TYPE              		RKH_RQ_T
+#define RKH_EQ_TYPE              		RKH_QUEUE_T
 #define RKH_OSSIGNAL_TYPE          		HANDLE
 #define RKH_THREAD_TYPE             	HANDLE
 
@@ -563,7 +563,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     ( void )stks;
     ( void )stksize;
 
-	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
+	rkh_queue_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_sm_init( (RKH_SM_T *)sma );
 	RKH_TR_SMA_ACT( sma );
@@ -581,7 +581,7 @@ rkh_sma_terminate( RKH_SMA_T *sma )
 \li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = 1, 
 #RKH_CFGPORT_SMA_THREAD_EN = 0, and #RKH_CFGPORT_SMA_THREAD_DATA_EN = 0, within the 
 \c rkhcfg.h file.
-\li (2) Define the macros #RKH_EQ_TYPE = RKH_RQ_T, RKH_SMA_BLOCK(), 
+\li (2) Define the macros #RKH_EQ_TYPE = RKH_QUEUE_T, RKH_SMA_BLOCK(), 
 RKH_SMA_READY(), RKH_SMA_UNREADY() in \c rkhport.h. 
 \li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
 functions rkh_fwk_init(), rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), and 
@@ -673,17 +673,17 @@ rkh_sma_get(RKH_SMA_T *sma)
 \c rkhport.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define #RKH_EQ_TYPE = RKH_RQ_T in \c rkhport.h.
+\li (3) Define #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h.
 		
 <EM>If the application code uses the RKH native scheduler, are implemented 
-the event queues with the native queues RKH_RQ_T?</EM>
+the event queues with the native queues RKH_QUEUE_T?</EM>
 
 \b YES: \n
 \li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_RQ_EN = 1 in 
 \c rkhport.h and \c rkhcfg.h respectively.
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define #RKH_EQ_TYPE = RKH_RQ_T in \c rkhport.h.
+\li (3) Define #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h.
 		
 \b NO: \n
 \li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 0 in \c rkhport.h
@@ -986,7 +986,7 @@ const char *rkh_get_port_desc( void );
 #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
 
 
-#define RKH_EQ_TYPE              		RKH_RQ_T
+#define RKH_EQ_TYPE              		RKH_QUEUE_T
 #define RKH_OSSIGNAL_TYPE          		HANDLE
 #define RKH_THREAD_TYPE             	HANDLE
 
@@ -1166,7 +1166,7 @@ rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize,
     ( void )stks;
     ( void )stksize;
 
-	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
+	rkh_queue_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_sm_init( (RKH_SM_T *)sma );
 	RKH_TR_SMA_ACT( sma );
@@ -2707,10 +2707,10 @@ This section includes:
 \subsection qref8_1 Deferring an event
 
 \code
-static RKH_RQ_T qurc;
+static RKH_QUEUE_T qurc;
 static RKH_EVT_T *qurc_sto[ MAX_SIZEOF_QURC ];
 
-(1) rkh_rq_init( &qurc, (const void **)qurc_sto, MAX_SIZEOF_QURC, NULL );
+(1) rkh_queue_init( &qurc, (const void **)qurc_sto, MAX_SIZEOF_QURC, NULL );
 ...
 
 void 
@@ -3198,11 +3198,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nelems </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
@@ -3213,7 +3213,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nelems </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 2 </TD>
@@ -3224,11 +3224,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nelems </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nmin </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 3 </TD>
@@ -3239,11 +3239,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nelem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nelems </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nmin </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 4 </TD>
@@ -3284,7 +3284,7 @@ the data included for each.
 		<TD rowspan=3> #RKH_TE_SMA_ACT (SYM ao, UI8 prio, NE msgQueueSize) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SMA_ACT </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
@@ -3292,14 +3292,14 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> msgQueueSize </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nelems </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nelems </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
 		<TD rowspan=2> #RKH_TE_SMA_TERM (SYM ao, UI8 prio) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_TERM </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
@@ -3311,7 +3311,7 @@ the data included for each.
 										UI8 refc, NE nElem, NE nMin) </TD>
 		<TD rowspan=6> \copybrief RKH_TR_SMA_GET </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3327,11 +3327,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nElem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::qty </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::qty </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nMin </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=7 align="center"> 3 </TD>
@@ -3340,7 +3340,7 @@ the data included for each.
                                         NE nElem, Ne nMin) </TD>
 		<TD rowspan=7> \copybrief RKH_TR_SMA_FIFO </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3360,11 +3360,11 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nElem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::qty </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::qty </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nMin </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=7 align="center"> 4 </TD>
@@ -3373,7 +3373,7 @@ the data included for each.
                                         NE nElem, NE nMin) </TD>
 		<TD rowspan=7> \copybrief RKH_TR_SMA_LIFO </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3393,18 +3393,18 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nElem </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::qty </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::qty </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nMin </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::nmin </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::nmin </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 5 </TD>
 		<TD rowspan=2> #RKH_TE_SMA_REG (SYM ao, UI8 prio) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_REG </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
@@ -3415,7 +3415,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SMA_UNREG (SYM ao, UI8 prio) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_UNREG </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> prio </I></TD>
@@ -3437,7 +3437,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SMA_RCALL (SYM ao, SIG sig) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SMA_RCALL </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3460,7 +3460,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SM_INIT (SYM ao, SYM ist) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_INIT </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> ist </I></TD>
@@ -3471,7 +3471,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SM_CLRH (SYM ao, SYM h) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_CLRH </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> h </I></TD>
@@ -3482,7 +3482,7 @@ the data included for each.
 		<TD rowspan=3> #RKH_TE_SM_TRN (SYM ao, SYM sst, SYM tst) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SM_TRN </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sst </I></TD>
@@ -3497,7 +3497,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SM_STATE (SYM ao, SYM st) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_STATE </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nxtst </I></TD>
@@ -3508,7 +3508,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SM_ENSTATE (SYM ao, SYM st) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_ENSTATE </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> st </I></TD>
@@ -3519,7 +3519,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SM_EXSTATE (SYM ao, SYM st) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_EXSTATE </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> st </I></TD>
@@ -3530,7 +3530,7 @@ the data included for each.
 		<TD rowspan=3> #RKH_TE_SM_NENEX (SYM ao, UI8 nen, UI8 nex) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SM_NENEX </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nen </I></TD>
@@ -3545,7 +3545,7 @@ the data included for each.
 		<TD rowspan=3> #RKH_TE_SM_NTRNACT (SYM ao, UI8 nta, UI8 nts) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SM_NTRNACT </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> nta </I></TD>
@@ -3560,7 +3560,7 @@ the data included for each.
 		<TD rowspan=2> #RKH_TE_SM_TS_STATE (SYM ao, SYM st) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_TS_STATE </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> st </I></TD>
@@ -3571,14 +3571,14 @@ the data included for each.
 		<TD rowspan=1> #RKH_TE_SM_EVT_PROC (SYM ao) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_SM_EVT_PROC </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 2 </TD>
 		<TD rowspan=2> #RKH_TE_SM_EVT_NFOUND (SYM ao, SIG sig) </TD>
 		<TD rowspan=2> \copybrief RKH_TR_SM_EVT_NFOUND </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
@@ -3589,35 +3589,35 @@ the data included for each.
 		<TD rowspan=1> #RKH_TE_SM_CND_NFOUND (SYM ao) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_SM_CND_NFOUND </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 13 </TD>
 		<TD rowspan=1> #RKH_TE_SM_GRD_FALSE (SYM ao) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_SM_GRD_FALSE </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 14 </TD>
 		<TD rowspan=1> #RKH_TE_SM_UNKN_STATE (SYM ao) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_SM_UNKN_STATE </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 15 </TD>
 		<TD rowspan=1> #RKH_TE_SM_EX_HLEVEL (SYM ao) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_SM_EX_HLEVEL </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 16 </TD>
 		<TD rowspan=1> #RKH_TE_SM_EX_TSEG (SYM ao) </TD>
 		<TD rowspan=1> \copybrief RKH_TR_SM_EX_TSEG </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=4 align="center"> 8 </TD>
@@ -3629,7 +3629,7 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> st </I></TD>
@@ -3644,7 +3644,7 @@ the data included for each.
 		<TD rowspan=3> #RKH_TE_SM_DCH (SYM ao, SIG sig, SYM st) </TD>
 		<TD rowspan=3> \copybrief RKH_TR_SM_DCH </TD>
 		<TD><I> ao </I></TD>
-		<TD><I> \copybrief RKH_RQ_T::sma </I></TD>
+		<TD><I> \copybrief RKH_QUEUE_T::sma </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD><I> sig </I></TD>
