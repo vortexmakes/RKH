@@ -48,9 +48,12 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhassert.h"
 #include "rkhtmr.h"
-#include "rkh.h"
+#include "rkhassert.h"
+#include "rkhfwk_hook.h"
+#include "rkhsma.h"
+#include "rkhtrc_record.h"
+#include "rkhtrc_filter.h"
 
 #if RKH_CFG_TMR_EN == RKH_ENABLED
 
