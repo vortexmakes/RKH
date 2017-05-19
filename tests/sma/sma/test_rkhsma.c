@@ -55,7 +55,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "rkhsma.h"
-#include "Mockrkhport.h"
+#include "Mock_rkhport.h"
 #include "Mockrkhtrc.h"
 #include "Mockrkhsm.h"
 #include "Mock_rkhqueue.h"

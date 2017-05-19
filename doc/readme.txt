@@ -557,7 +557,7 @@ rkh_fwk_exit( void )
 }
 
 void 
-rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize, 
 						void *stks, rui32_t stksize )
 {
     ( void )stks;
@@ -669,7 +669,7 @@ rkh_sma_get(RKH_SMA_T *sma)
 \endcode
 
 \b NO: \n
-\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_RQ_EN = 1 in 
+\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_QUE_EN = 1 in 
 \c rkhport.h
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
@@ -679,7 +679,7 @@ the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 the event queues with the native queues RKH_QUEUE_T?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_RQ_EN = 1 in 
+\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_QUE_EN = 1 in 
 \c rkhport.h and \c rkhcfg.h respectively.
 \li (2) When using the native event queues is NOT necessary provides neither 
 the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
@@ -908,7 +908,7 @@ const char *rkh_get_port_desc( void );
 
 /**
  * 	If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native event queue is 
- *	enabled (see #RKH_CFG_RQ_EN) then RKH will include its own implementation of 
+ *	enabled (see #RKH_CFG_QUE_EN) then RKH will include its own implementation of 
  *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
  */
 
@@ -1160,7 +1160,7 @@ rkh_fwk_exit( void )
 
 
 void 
-rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize, 
 						void *stks, rui32_t stksize )
 {
     ( void )stks;
@@ -3179,7 +3179,7 @@ the data included for each.
 	</TR>
 
 	<TR bgColor="#c0c0c0">
-		<TH colspan=6 align="left"><B> Related with queue module (RQ)</B></TH>
+		<TH colspan=6 align="left"><B> Related with queue module (QUE)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Group </I></B></TH>
@@ -3189,10 +3189,10 @@ the data included for each.
 		<TH colspan=2><B><I> Parameters </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
-		<TD rowspan=14 align="center"> #RKH_TG_RQ </TD>
+		<TD rowspan=14 align="center"> #RKH_TG_QUE </TD>
 		<TD rowspan=3 align="center"> 0 </TD>
-		<TD rowspan=3> #RKH_TE_RQ_INIT (SYM q, SYM ao, NE nelem) </TD>
-		<TD rowspan=3> \copybrief RKH_TR_RQ_INIT </TD>
+		<TD rowspan=3> #RKH_TE_QUE_INIT (SYM q, SYM ao, NE nelem) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_QUE_INIT </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
@@ -3206,8 +3206,8 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=2 align="center"> 1 </TD>
-		<TD rowspan=2> #RKH_TE_RQ_GET (SYM q, NE nelem) </TD>
-		<TD rowspan=2> \copybrief RKH_TR_RQ_GET </TD>
+		<TD rowspan=2> #RKH_TE_QUE_GET (SYM q, NE nelem) </TD>
+		<TD rowspan=2> \copybrief RKH_TR_QUE_GET </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
@@ -3217,8 +3217,8 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 2 </TD>
-		<TD rowspan=3> #RKH_TE_RQ_FIFO (SYM q, NE nelem, NE nmin) </TD>
-		<TD rowspan=3> \copybrief RKH_TR_RQ_FIFO </TD>
+		<TD rowspan=3> #RKH_TE_QUE_FIFO (SYM q, NE nelem, NE nmin) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_QUE_FIFO </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
@@ -3232,8 +3232,8 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=3 align="center"> 3 </TD>
-		<TD rowspan=3> #RKH_TE_RQ_LIFO (SYM q, NE nelem, NE nmin) </TD>
-		<TD rowspan=3> \copybrief RKH_TR_RQ_LIFO </TD>
+		<TD rowspan=3> #RKH_TE_QUE_LIFO (SYM q, NE nelem, NE nmin) </TD>
+		<TD rowspan=3> \copybrief RKH_TR_QUE_LIFO </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
@@ -3247,22 +3247,22 @@ the data included for each.
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 4 </TD>
-		<TD rowspan=1> #RKH_TE_RQ_FULL (SYM q) </TD>
-		<TD rowspan=1> \copybrief RKH_TR_RQ_FULL </TD>
+		<TD rowspan=1> #RKH_TE_QUE_FULL (SYM q) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_QUE_FULL </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 5 </TD>
-		<TD rowspan=1> #RKH_TE_RQ_DPT (SYM q) </TD>
-		<TD rowspan=1> \copybrief RKH_TR_RQ_DPT </TD>
+		<TD rowspan=1> #RKH_TE_QUE_DPT (SYM q) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_QUE_DPT </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="left" valign="middle" >
 		<TD rowspan=1 align="center"> 6 </TD>
-		<TD rowspan=1> #RKH_TE_RQ_GET_LAST (SYM q) </TD>
-		<TD rowspan=1> \copybrief RKH_TR_RQ_GET_LAST </TD>
+		<TD rowspan=1> #RKH_TE_QUE_GET_LAST (SYM q) </TD>
+		<TD rowspan=1> \copybrief RKH_TR_QUE_GET_LAST </TD>
 		<TD><I> q </I></TD>
 		<TD><I> \copybrief RKH_SMA_T::equeue </I></TD>
 	</TR>
@@ -4623,11 +4623,11 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD align="left"> \copybrief RKH_CFG_TRC_MP_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_TRC_RQ_EN </TD>
+		<TD align="left"> #RKH_CFG_TRC_QUE_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_TRC_RQ_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_TRC_QUE_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_TRC_SMA_EN </TD>
@@ -4786,7 +4786,7 @@ Back: \ref cfg "Configuring framework RKH"
 <TABLE	align="center" valign="middle" width=80% cellspacing=2 
 		cellpadding=4 border=0>
 	<TR bgColor="#c0c0c0">
-		<TH colspan=5 align="left"><B> Related with queue module (RQ)</B></TH>
+		<TH colspan=5 align="left"><B> Related with queue module (QUE)</B></TH>
 	</TR>
 	<TR bgColor="#c0c0c0">
 		<TH><B><I> Option </I></B></TH>
@@ -4796,67 +4796,67 @@ Back: \ref cfg "Configuring framework RKH"
 		<TH><B><I> Description </I></B></TH> 
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_SIZEOF_NELEM </TD>
+		<TD align="left"> #RKH_CFG_QUE_SIZEOF_NELEM </TD>
 		<TD> integer </TD>
 		<TD> [8,16,32] </TD>
 		<TD> 8 </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_SIZEOF_NELEM </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_SIZEOF_NELEM </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_GET_LWMARK_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_GET_LWMARK_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_GET_LWMARK_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_GET_LWMARK_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_READ_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_READ_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_READ_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_READ_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_DEPLETE_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_DEPLETE_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_DEPLETE_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_DEPLETE_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_IS_FULL_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_IS_FULL_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_IS_FULL_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_IS_FULL_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_GET_NELEMS_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_GET_NELEMS_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_GET_NELEMS_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_GET_NELEMS_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_PUT_LIFO_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_PUT_LIFO_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_PUT_LIFO_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_PUT_LIFO_EN </TD>
 	</TR>
 	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_RQ_GET_INFO_EN </TD>
+		<TD align="left"> #RKH_CFG_QUE_GET_INFO_EN </TD>
 		<TD> boolean </TD>
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_RQ_GET_INFO_EN </TD>
+		<TD align="left"> \copybrief RKH_CFG_QUE_GET_INFO_EN </TD>
 	</TR>
 </TABLE>
 

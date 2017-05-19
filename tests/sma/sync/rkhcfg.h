@@ -497,11 +497,11 @@
 #define RKH_CFG_TRC_MP_EN				RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_TRC_RQ_EN is set to 1 then RKH will include all trace 
+ *	If the #RKH_CFG_TRC_QUE_EN is set to 1 then RKH will include all trace 
  *	records related to the native queues.
  */
 
-#define RKH_CFG_TRC_RQ_EN				RKH_DISABLED
+#define RKH_CFG_TRC_QUE_EN				RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_TRC_SMA_EN is set to 1 then RKH will include all trace 
@@ -660,79 +660,79 @@
 /* --- Configuration options related to queue (by reference) facility ----- */
 
 /**
- *	If the #RKH_CFG_RQ_EN is set to 1 then RKH will include the native queue 
+ *	If the #RKH_CFG_QUE_EN is set to 1 then RKH will include the native queue 
  *	facility.
  */
 
-#define RKH_CFG_RQ_EN					RKH_ENABLED
+#define RKH_CFG_QUE_EN					RKH_ENABLED
 
 /**
  * 	Specify the maximum number of elements that any queue can contain. 
  * 	The valid values [in bits] are 8, 16 or 32. Default is 8. 
- *	See #RKH_RQNE_T type.
+ *	See #RKH_QUENE_T type.
  */
 
-#define RKH_CFG_RQ_SIZEOF_NELEM			8u
+#define RKH_CFG_QUE_SIZEOF_NELEM			8u
 
 /**
- *	If the #RKH_CFG_RQ_GET_LWMARK_EN is set to 1 then RKH allows to known the 
+ *	If the #RKH_CFG_QUE_GET_LWMARK_EN is set to 1 then RKH allows to known the 
  * 	minimum number of free elements ever in the queue (low-watermark ). 
  * 	This provides valuable empirical data for proper sizing of the queue.
  * 	See rkh_queue_get_lwm() function.
  */
 
-#define RKH_CFG_RQ_GET_LWMARK_EN		RKH_ENABLED
+#define RKH_CFG_QUE_GET_LWMARK_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_RQ_GET_INFO_EN is set to 1 then RKH allows to collect and 
+ *	If the #RKH_CFG_QUE_GET_INFO_EN is set to 1 then RKH allows to collect and 
  *	retrives performance information for a particular queue.
  *	See rkh_queue_get_info() and rkh_queue_clear_info() functions.
  */
 
-#define RKH_CFG_RQ_GET_INFO_EN			RKH_DISABLED
+#define RKH_CFG_QUE_GET_INFO_EN			RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_RQ_READ_EN is set to 1 then RKH will include the 
+ *	If the #RKH_CFG_QUE_READ_EN is set to 1 then RKH will include the 
  *	rkh_queue_read() function that allows read an element from a queue without 
  *	remove it. See rkh_queue_read() function.
  */
 
-#define	RKH_CFG_RQ_READ_EN				RKH_DISABLED
+#define	RKH_CFG_QUE_READ_EN				RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_RQ_DEPLETE_EN is set to 1 then RKH will include the 
+ *	If the #RKH_CFG_QUE_DEPLETE_EN is set to 1 then RKH will include the 
  *	rkh_queue_deplete() function that empties the contents of the queue and 
  *	eliminates all stored elements.
  *	See rkh_queue_deplete() function.
  */
 
-#define	RKH_CFG_RQ_DEPLETE_EN			RKH_DISABLED
+#define	RKH_CFG_QUE_DEPLETE_EN			RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_RQ_IS_FULL_EN is set to 1 then RKH will include the 
+ *	If the #RKH_CFG_QUE_IS_FULL_EN is set to 1 then RKH will include the 
  *	rkh_queue_is_full() function that allows to known if a queue is full.
  *	See rkh_queue_is_full() function.
  */
 
-#define	RKH_CFG_RQ_IS_FULL_EN			RKH_DISABLED
+#define	RKH_CFG_QUE_IS_FULL_EN			RKH_DISABLED
 
 /**
- *	If the #RKH_CFG_RQ_GET_NELEMS_EN is set to 1 then RKH will include the 
+ *	If the #RKH_CFG_QUE_GET_NELEMS_EN is set to 1 then RKH will include the 
  *	rkh_queue_get_num() function that returns the number of elements currently 
  *	in the queue.
  *	See rkh_queue_get_num() function.
  */
 
-#define	RKH_CFG_RQ_GET_NELEMS_EN		RKH_ENABLED
+#define	RKH_CFG_QUE_GET_NELEMS_EN		RKH_ENABLED
 
 /**
- *	If the #RKH_CFG_RQ_PUT_LIFO_EN is set to 1 then RKH will include the 
+ *	If the #RKH_CFG_QUE_PUT_LIFO_EN is set to 1 then RKH will include the 
  *	rkh_queue_put_lifo() function that puts an element on a queue in a LIFO 
  *	manner.
  *	See rkh_queue_put_lifo() function.
  */
 
-#define	RKH_CFG_RQ_PUT_LIFO_EN			RKH_ENABLED
+#define	RKH_CFG_QUE_PUT_LIFO_EN			RKH_ENABLED
 
 
 /* --- Configuration options related to fixed-sized memory block facility - */
@@ -804,7 +804,7 @@
 /* --- Configuration options related to software timer facility ----------- */
 
 /**
- *	If the #RKH_CFG_RQ_EN is set to 1 then RKH will include the native software 
+ *	If the #RKH_CFG_QUE_EN is set to 1 then RKH will include the native software 
  *	timer facility.
  */
 

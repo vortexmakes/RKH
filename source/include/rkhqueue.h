@@ -89,16 +89,16 @@ extern "C" {
  *	can contain.
  *
  *	The valid values [in bits] are 8, 16 or 32. Default is 8. This type is
- *	configurable via the preprocessor switch RKH_CFG_RQ_SIZEOF_NELEM.
+ *	configurable via the preprocessor switch RKH_CFG_QUE_SIZEOF_NELEM.
  */
-#if RKH_CFG_RQ_SIZEOF_NELEM == 8
-typedef rui8_t RKH_RQNE_T;
-#elif RKH_CFG_RQ_SIZEOF_NELEM == 16
-typedef rui16_t RKH_RQNE_T;
-#elif RKH_CFG_RQ_SIZEOF_NELEM == 32
-typedef rui32_t RKH_RQNE_T;
+#if RKH_CFG_QUE_SIZEOF_NELEM == 8
+typedef rui8_t RKH_QUENE_T;
+#elif RKH_CFG_QUE_SIZEOF_NELEM == 16
+typedef rui16_t RKH_QUENE_T;
+#elif RKH_CFG_QUE_SIZEOF_NELEM == 32
+typedef rui32_t RKH_QUENE_T;
 #else
-typedef rui8_t RKH_RQNE_T;
+typedef rui8_t RKH_QUENE_T;
 #endif
 
 /**
@@ -107,15 +107,15 @@ typedef rui8_t RKH_RQNE_T;
  */
 typedef enum
 {
-    RKH_RQ_OK, RKH_RQ_EMPTY, RKH_RQ_FULL
-} RKH_RQCODE_T;
+    RKH_QUE_OK, RKH_QUE_EMPTY, RKH_QUE_FULL
+} RKH_QUECODE_T;
 
 /**
  *  \brief
  *  Defines the data structure into which the performance information for
  *  queues is stored.
  *
- *	The application must allocate an RKH_RQI_T data structure used to
+ *	The application must allocate an RKH_QUEI_T data structure used to
  *	receive information. The performance information is available during
  *	run-time for each of the RKH services. This can be useful in determining
  *	whether the application is performing properly, as well as helping to
@@ -128,7 +128,7 @@ typedef struct RKH_QINFO_T
     rui16_t nreads;     /*	# of queue read requests */
     rui16_t nempty;     /*	# of queue empty retrieves */
     rui16_t nfull;      /*	# of queue full retrieves */
-} RKH_RQI_T;
+} RKH_QUEI_T;
 
 /**
  *  \brief
@@ -170,13 +170,13 @@ typedef struct RKH_QUEUE_T
      *  \brief
      *  Number of elements.
      */
-    RKH_RQNE_T nelems;
+    RKH_QUENE_T nelems;
 
     /**
      *  \brief
      *  Number of elements currently in the queue.
      */
-    RKH_RQNE_T qty;
+    RKH_QUENE_T qty;
 
     /**
      *  \brief
@@ -218,17 +218,17 @@ typedef struct RKH_QUEUE_T
      *	The nmin low-watermark provides valuable empirical data for
      *	proper sizing of the queue.
      */
-#if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
-    RKH_RQNE_T nmin;
+#if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
+    RKH_QUENE_T nmin;
 #endif
 
     /**
      *  \brief
      *  Performance information. This member is optional, thus it could be
-     *  eliminated in compile-time with RKH_CFG_RQ_GET_INFO_EN.
+     *  eliminated in compile-time with RKH_CFG_QUE_GET_INFO_EN.
      */
-#if RKH_CFG_RQ_GET_INFO_EN == RKH_ENABLED
-    RKH_RQI_T rqi;
+#if RKH_CFG_QUE_GET_INFO_EN == RKH_ENABLED
+    RKH_QUEI_T rqi;
 #endif
 } RKH_QUEUE_T;
 
@@ -260,7 +260,7 @@ typedef struct RKH_QUEUE_T
  *
  *  \ingroup apiQueue 
  */
-void rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_RQNE_T ssize,
+void rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_QUENE_T ssize,
                  void *sma);
 
 /**
@@ -274,7 +274,7 @@ void rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_RQNE_T ssize,
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_IS_FULL_EN.
+ *  with RKH_CFG_QUE_IS_FULL_EN.
  *
  *  \ingroup apiQueue 
  */
@@ -288,11 +288,11 @@ rbool_t rkh_queue_is_full(RKH_QUEUE_T *q);
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_GET_NELEMS_EN.
+ *  with RKH_CFG_QUE_GET_NELEMS_EN.
  *
  *  \ingroup apiQueue 
  */
-RKH_RQNE_T rkh_queue_get_num(RKH_QUEUE_T *q);
+RKH_QUENE_T rkh_queue_get_num(RKH_QUEUE_T *q);
 
 /**
  *	\brief
@@ -308,11 +308,11 @@ RKH_RQNE_T rkh_queue_get_num(RKH_QUEUE_T *q);
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_GET_LWMARK_EN.
+ *  with RKH_CFG_QUE_GET_LWMARK_EN.
  *
  *  \ingroup apiQueue 
  */
-RKH_RQNE_T rkh_queue_get_lwm(RKH_QUEUE_T *q);
+RKH_QUENE_T rkh_queue_get_lwm(RKH_QUEUE_T *q);
 
 /**
  *  \brief
@@ -360,7 +360,7 @@ void rkh_queue_put_fifo(RKH_QUEUE_T *q, const void *pe);
  *  accept the element.
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_PUT_LIFO_EN.
+ *  with RKH_CFG_QUE_PUT_LIFO_EN.
  *
  *  \ingroup apiQueue 
  */
@@ -383,7 +383,7 @@ void rkh_queue_put_lifo(RKH_QUEUE_T *q, const void *pe);
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_DEPLETE_EN.
+ *  with RKH_CFG_QUE_DEPLETE_EN.
  *
  *  \ingroup apiQueue 
  */
@@ -399,12 +399,12 @@ void rkh_queue_deplete(RKH_QUEUE_T *q);
  *                  copied.
  *
  *  \return
- *  RKH_RQ_OK if an element was successfully readed from the queue, otherwise
+ *  RKH_QUE_OK if an element was successfully readed from the queue, otherwise
  *  error code.
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_READ_EN.
+ *  with RKH_CFG_QUE_READ_EN.
  *
  *  \ingroup apiQueue 
  */
@@ -414,7 +414,7 @@ ruint rkh_queue_read(RKH_QUEUE_T *q, void *pe);
  *  \brief
  *  Retrieves performance information for a particular queue.
  *
- *	The user application must allocate an RKH_RQI_T data structure used to
+ *	The user application must allocate an RKH_QUEI_T data structure used to
  *	receive data. The performance information is available during run-time
  *	for each of the RKH services. This can be useful in determining whether
  *	the application is performing properly, as well as helping to optimize the
@@ -427,13 +427,13 @@ ruint rkh_queue_read(RKH_QUEUE_T *q, void *pe);
  *                  information will be copied.
  *
  *  \note
- *  See RKH_RQI_T structure for more information. This function is
+ *  See RKH_QUEI_T structure for more information. This function is
  *  optional, thus it could be eliminated in compile-time with
- *  RKH_CFG_RQ_GET_INFO_EN.
+ *  RKH_CFG_QUE_GET_INFO_EN.
  *
  *  \ingroup apiQueue 
  */
-void rkh_queue_get_info(RKH_QUEUE_T *q, RKH_RQI_T *pqi);
+void rkh_queue_get_info(RKH_QUEUE_T *q, RKH_QUEI_T *pqi);
 
 /**
  *  \brief
@@ -443,7 +443,7 @@ void rkh_queue_get_info(RKH_QUEUE_T *q, RKH_RQI_T *pqi);
  *
  *  \note
  *  This function is optional, thus it could be eliminated in compile-time
- *  with RKH_CFG_RQ_GET_INFO_EN.
+ *  with RKH_CFG_QUE_GET_INFO_EN.
  *
  *  \ingroup apiQueue 
  */

@@ -137,8 +137,8 @@ extern "C" {
         #define RKH_TR_MP_PUT(memPool_, nFree_)                 (void)0
     #endif
 
-    /* --- Queue (RQ) ------------------------------------------------------ */
-    #if RKH_CFG_TRC_ALL_EN == RKH_ENABLED || RKH_CFG_TRC_RQ_EN == RKH_ENABLED
+    /* --- Queue (QUE) ------------------------------------------------------ */
+    #if RKH_CFG_TRC_ALL_EN == RKH_ENABLED || RKH_CFG_TRC_QUE_EN == RKH_ENABLED
         /**
          *  \addtogroup trc
          *  @{
@@ -152,16 +152,16 @@ extern "C" {
          *	\copybrief rkh_queue_init
          *
          *  \description    Initialize a event queue
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_INIT
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_INIT
          *
          *  \param[in] queue_   Event queue
          *  \param[in] actObj_  Associated active object that receives the 
          *                      equeued events.
          *  \param[in] nElem_   Storage size [in the units of void pointers]
          */
-        #define RKH_TR_RQ_INIT(queue_, actObj_, nElem_) \
-            RKH_TRC_BEGIN_WOAOSIG(RKH_TE_RQ_INIT) \
+        #define RKH_TR_QUE_INIT(queue_, actObj_, nElem_) \
+            RKH_TRC_BEGIN_WOAOSIG(RKH_TE_QUE_INIT) \
                 RKH_TRC_SYM(queue_); \
                 RKH_TRC_SYM(actObj_); \
                 RKH_TRC_NE(nElem_); \
@@ -172,14 +172,14 @@ extern "C" {
          *  \copybrief rkh_queue_get
          *
          *  \description    Get and remove an element from a queue
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_GET
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_GET
          *
          *  \param[in] queue_   Event queue
          *  \param[in] nElem_   Number of elements currently in the queue
          */
-        #define RKH_TR_RQ_GET(queue_, nElem_) \
-            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_RQ_GET) \
+        #define RKH_TR_QUE_GET(queue_, nElem_) \
+            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_QUE_GET) \
                 RKH_TRC_SYM(queue_); \
                 RKH_TRC_NE(nElem_); \
             RKH_TRC_END_NOCRIT()
@@ -189,19 +189,19 @@ extern "C" {
          *  \copybrief rkh_queue_put_fifo
          *
          *  \description    Puts an element on a queue in a FIFO manner
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_FIFO
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_FIFO
          *
          *  \param[in] queue_   Event queue
          *  \param[in] nElem_   Number of elements currently in the queue
          *  \param[in] nMin_    Minimum number of free elements ever in 
          *                      this queue
          */
-        #define RKH_TR_RQ_FIFO(queue_, nElem_, nMin_) \
-            RKH_TRC_BEGIN_WOAOSIG(RKH_TE_RQ_FIFO) \
+        #define RKH_TR_QUE_FIFO(queue_, nElem_, nMin_) \
+            RKH_TRC_BEGIN_WOAOSIG(RKH_TE_QUE_FIFO) \
                 RKH_TRC_SYM(queue_); \
                 RKH_TRC_NE(nElem_); \
-                RKH_TRC_RQ_NMIN(nMin_); \
+                RKH_TRC_QUE_NMIN(nMin_); \
             RKH_TRC_END()
 
         /**
@@ -209,19 +209,19 @@ extern "C" {
          *  \copybrief rkh_queue_put_lifo
          *
          *  \description    Puts an element on a queue in a LIFO manner
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_LIFO
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_LIFO
          *
          *  \param[in] queue_   Event queue
          *  \param[in] nElem_   Number of elements currently in the queue
          *  \param[in] nMin_    Minimum number of free elements ever in 
          *                      this queue
          */
-        #define RKH_TR_RQ_LIFO(queue_, nElem_, nMin_) \
-            RKH_TRC_BEGIN_WOAOSIG(RKH_TE_RQ_LIFO) \
+        #define RKH_TR_QUE_LIFO(queue_, nElem_, nMin_) \
+            RKH_TRC_BEGIN_WOAOSIG(RKH_TE_QUE_LIFO) \
                 RKH_TRC_SYM(queue_); \
                 RKH_TRC_NE(nElem_); \
-                RKH_TRC_RQ_NMIN(nMin_); \
+                RKH_TRC_QUE_NMIN(nMin_); \
             RKH_TRC_END()
 
         /**
@@ -229,13 +229,13 @@ extern "C" {
          *  Queue is full.
          *
          *  \description    Queue is full
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_FULL
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_FULL
          *
          *  \param[in] queue_   Event queue
          */
-        #define RKH_TR_RQ_FULL(queue_) \
-            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_RQ_FULL) \
+        #define RKH_TR_QUE_FULL(queue_) \
+            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_QUE_FULL) \
                 RKH_TRC_SYM(queue_); \
             RKH_TRC_END_NOCRIT()
 
@@ -244,13 +244,13 @@ extern "C" {
          *  \copybrief rkh_queue_deplete
          *
          *  \description    Depletes a queue
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_DPT
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_DPT
          *
          *  \param[in] queue_   Event queue
          */
-        #define RKH_TR_RQ_DPT(queue_) \
-            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_RQ_DPT) \
+        #define RKH_TR_QUE_DPT(queue_) \
+            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_QUE_DPT) \
                 RKH_TRC_SYM(queue_); \
             RKH_TRC_END_NOCRIT()
 
@@ -259,26 +259,26 @@ extern "C" {
          *  Get the last element from the queue
          *
          *  \description    Get the last element from the queue
-         *  \trcGroup       RKH_TG_RQ
-         *  \trcEvent       RKH_TE_RQ_GET_LAST
+         *  \trcGroup       RKH_TG_QUE
+         *  \trcEvent       RKH_TE_QUE_GET_LAST
          *
          *  \param[in] queue_   Event queue
          */
-        #define RKH_TR_RQ_GET_LAST(queue_) \
-            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_RQ_GET_LAST)  \
+        #define RKH_TR_QUE_GET_LAST(queue_) \
+            RKH_TRC_BEGIN_WOAOSIG_NOCRIT(RKH_TE_QUE_GET_LAST)  \
                 RKH_TRC_SYM(queue_); \
             RKH_TRC_END_NOCRIT()
 
         /** @} doxygen end group definition */
         /** @} doxygen end group definition */
     #else
-        #define RKH_TR_RQ_INIT(queue_, actObj_, nElem_)     (void)0
-        #define RKH_TR_RQ_GET(queue_, nElem_)               (void)0
-        #define RKH_TR_RQ_FIFO(queue_, nElem_, nMin_)       (void)0
-        #define RKH_TR_RQ_LIFO(queue_, nElem_, nMin_)       (void)0
-        #define RKH_TR_RQ_FULL(queue_)                      (void)0
-        #define RKH_TR_RQ_DPT(queue_)                       (void)0
-        #define RKH_TR_RQ_GET_LAST(queue_)                  (void)0
+        #define RKH_TR_QUE_INIT(queue_, actObj_, nElem_)     (void)0
+        #define RKH_TR_QUE_GET(queue_, nElem_)               (void)0
+        #define RKH_TR_QUE_FIFO(queue_, nElem_, nMin_)       (void)0
+        #define RKH_TR_QUE_LIFO(queue_, nElem_, nMin_)       (void)0
+        #define RKH_TR_QUE_FULL(queue_)                      (void)0
+        #define RKH_TR_QUE_DPT(queue_)                       (void)0
+        #define RKH_TR_QUE_GET_LAST(queue_)                  (void)0
     #endif
 
     /* --- State Machine Application (SMA) --------------------------------- */
@@ -356,7 +356,7 @@ extern "C" {
                 RKH_TRC_UI8(poolID_); \
                 RKH_TRC_UI8(refCntr_); \
                 RKH_TRC_NE(nElem_); \
-                RKH_TRC_RQ_NMIN(nMin_); \
+                RKH_TRC_QUE_NMIN(nMin_); \
             RKH_TRC_END()
 
         /**
@@ -388,7 +388,7 @@ extern "C" {
                 RKH_TRC_UI8(poolID_); \
                 RKH_TRC_UI8(refCntr_); \
                 RKH_TRC_NE(nElem_); \
-                RKH_TRC_RQ_NMIN(nMin_); \
+                RKH_TRC_QUE_NMIN(nMin_); \
             RKH_TRC_END_NOCRIT()
 
         /**
@@ -420,7 +420,7 @@ extern "C" {
                 RKH_TRC_UI8(poolID_); \
                 RKH_TRC_UI8(refCntr_); \
                 RKH_TRC_NE(nElem_); \
-                RKH_TRC_RQ_NMIN(nMin_); \
+                RKH_TRC_QUE_NMIN(nMin_); \
             RKH_TRC_END_NOCRIT()
 
         /**
@@ -1487,13 +1487,13 @@ extern "C" {
          *  [ 2, 2: 1] - RKH_CFG_TRC_USER_TRACE_EN \n
          *  [ 2, 3: 1] - RKH_CFG_TRC_ALL_EN \n
          *  [ 2, 4: 1] - RKH_CFG_TRC_MP_EN \n
-         *  [ 2, 5: 1] - RKH_CFG_TRC_RQ_EN \n
+         *  [ 2, 5: 1] - RKH_CFG_TRC_QUE_EN \n
          *  [ 2, 6: 1] - RKH_CFG_TRC_SMA_EN \n
          *  [ 2, 7: 1] - RKH_CFG_TRC_TMR_EN \n
          *  [ 3, 8: 1] - RKH_CFG_TRC_SM_EN \n
          *  [ 3, 9: 1] - RKH_CFG_TRC_FWK_EN \n
          *  [ 3,10: 1] - RKH_CFG_TRC_ASSERT_EN \n
-         *  [ 3,11: 1] - RKH_CFG_RQ_GET_LWMARK_EN \n
+         *  [ 3,11: 1] - RKH_CFG_QUE_GET_LWMARK_EN \n
          *  [ 3,12: 1] - RKH_CFG_MP_GET_LWM_EN \n
          *  [ 3,13: 1] - RKH_CFG_TRC_RTFIL_SMA_EN \n
          *  [ 3,14: 1] - RKH_CFG_TRC_RTFIL_SIGNAL_EN \n
@@ -1506,7 +1506,7 @@ extern "C" {
          *  [ 7, 0: 4] - RKH_CFGPORT_TRC_SIZEOF_PTR \n
          *  [ 7, 4: 4] - RKH_CFG_TMR_SIZEOF_NTIMER \n
          *  [ 8, 0: 4] - RKH_CFG_MP_SIZEOF_NBLOCK \n
-         *  [ 8, 4: 4] - RKH_CFG_RQ_SIZEOF_NELEM \n
+         *  [ 8, 4: 4] - RKH_CFG_QUE_SIZEOF_NELEM \n
          *  [ 9, 0: 4] - RKH_CFG_FWK_SIZEOF_EVT_SIZE \n
          *  [ 9, 4: 4] - 0 (Reserved) \n
          *  [10, 0: 4] - RKH_CFG_MP_SIZEOF_BSIZE \n
@@ -1523,13 +1523,13 @@ extern "C" {
                         ((rui32_t)RKH_CFG_TRC_USER_TRACE_EN << 2) | \
                         ((rui32_t)RKH_CFG_TRC_ALL_EN << 3) | \
                         ((rui32_t)RKH_CFG_TRC_MP_EN << 4) | \
-                        ((rui32_t)RKH_CFG_TRC_RQ_EN << 5) | \
+                        ((rui32_t)RKH_CFG_TRC_QUE_EN << 5) | \
                         ((rui32_t)RKH_CFG_TRC_SMA_EN << 6) | \
                         ((rui32_t)RKH_CFG_TRC_TMR_EN << 7) | \
                         ((rui32_t)RKH_CFG_TRC_SM_EN << 8) | \
                         ((rui32_t)RKH_CFG_TRC_FWK_EN << 9) | \
                         ((rui32_t)RKH_CFG_TRC_ASSERT_EN << 10) | \
-                        ((rui32_t)RKH_CFG_RQ_GET_LWMARK_EN << 11) | \
+                        ((rui32_t)RKH_CFG_QUE_GET_LWMARK_EN << 11) | \
                         ((rui32_t)RKH_CFG_MP_GET_LWM_EN << 12) | \
                         ((rui32_t)RKH_CFG_TRC_RTFIL_SMA_EN << 13) | \
                         ((rui32_t)RKH_CFG_TRC_RTFIL_SIGNAL_EN << 14) | \
@@ -1544,7 +1544,7 @@ extern "C" {
                              RKH_CFG_TMR_SIZEOF_NTIMER / 8)); \
                 RKH_TRC_UI8( \
                     (rui8_t)((RKH_CFG_MP_SIZEOF_NBLOCK / 8 << 4) | \
-                             RKH_CFG_RQ_SIZEOF_NELEM / 8)); \
+                             RKH_CFG_QUE_SIZEOF_NELEM / 8)); \
                 RKH_TRC_UI8( \
                     (rui8_t)(RKH_CFG_FWK_SIZEOF_EVT_SIZE / 8)); \
                 RKH_TRC_UI8( \
@@ -1863,14 +1863,14 @@ extern "C" {
     #define RKH_TR_MP_GET(mp, nfree, nmin)            (void)0
     #define RKH_TR_MP_PUT(mp, nfree)                  (void)0
 
-    /* --- Queue (RQ) -------------------------------------------------- */
-    #define RKH_TR_RQ_INIT(q, ao, nelem)              (void)0
-    #define RKH_TR_RQ_GET(q, nelem)                   (void)0
-    #define RKH_TR_RQ_FIFO(q, nelem, nmin)            (void)0
-    #define RKH_TR_RQ_LIFO(q, nelem, nmin)            (void)0
-    #define RKH_TR_RQ_FULL(q)                         (void)0
-    #define RKH_TR_RQ_DPT(q)                          (void)0
-    #define RKH_TR_RQ_GET_LAST(q)                     (void)0
+    /* --- Queue (QUE) -------------------------------------------------- */
+    #define RKH_TR_QUE_INIT(q, ao, nelem)              (void)0
+    #define RKH_TR_QUE_GET(q, nelem)                   (void)0
+    #define RKH_TR_QUE_FIFO(q, nelem, nmin)            (void)0
+    #define RKH_TR_QUE_LIFO(q, nelem, nmin)            (void)0
+    #define RKH_TR_QUE_FULL(q)                         (void)0
+    #define RKH_TR_QUE_DPT(q)                          (void)0
+    #define RKH_TR_QUE_GET_LAST(q)                     (void)0
 
     /* --- State Machine Application (SMA) ----------------------------- */
     #define RKH_TR_SMA_ACT(ao, p, s)                  (void)0

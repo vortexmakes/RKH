@@ -154,9 +154,9 @@ ALIGN="center" VALIGN="middle">
   </TR>
 
   <TR bgColor="#f0f0f0">
-    <TD>\c TRAZER_EN_RQ</TD>
+    <TD>\c TRAZER_EN_QUE</TD>
     <TD>0, 1</TD>
-    <TD>\c #RKH_CFG_TRC_RQ_EN</TD>
+    <TD>\c #RKH_CFG_TRC_QUE_EN</TD>
     <TD>If 1 enables RKH trace records related to native native queues.</TD>
   </TR>
 
@@ -233,7 +233,7 @@ ALIGN="center" VALIGN="middle">
   <TR bgColor="#c0c0c0">
     <TD>\c TRAZER_SIZEOF_NELEM</TD>
     <TD>1, 2, 4</TD>
-    <TD>\c #RKH_CFG_RQ_SIZEOF_NELEM</TD>
+    <TD>\c #RKH_CFG_QUE_SIZEOF_NELEM</TD>
     <TD>Maximum number of elements in bytes that any queue can contain.</TD>
   </TR>
 
@@ -339,20 +339,20 @@ Using local RKH configuration
    RKH_CFG_TRC_USER_TRACE_EN  		= 1
    RKH_CFG_TRC_ALL_EN          	  	= 1
    RKH_CFG_TRC_MP_EN          		= 0
-   RKH_CFG_TRC_RQ_EN          		= 0
+   RKH_CFG_TRC_QUE_EN          		= 0
    RKH_CFG_TRC_SMA_EN         		= 0
    RKH_CFG_TRC_TMR_EN         		= 0
    RKH_CFG_TRC_SM_EN          		= 0
    RKH_CFG_TRC_FWK_EN         		= 1
    RKH_CFG_TRC_ASSERT_EN      		= 1
-   RKH_CFG_RQ_GET_LWMARK_EN   		= 0
+   RKH_CFG_QUE_GET_LWMARK_EN   		= 0
    RKH_CFG_MP_GET_LWM_EN      		= 0
    RKH_CFG_FWK_SIZEOF_EVT   		= 8
    RKH_CFGPORT_TRC_SIZEOF_TSTAMP 	= 32
    RKH_CFGPORT_TRC_SIZEOF_PTR 		= 32
    RKH_CFG_TMR_SIZEOF_NTIMER  		= 16
    RKH_CFG_MP_SIZEOF_NBLOCK   		= 8
-   RKH_CFG_RQ_SIZEOF_NELEM    		= 8
+   RKH_CFG_QUE_SIZEOF_NELEM    		= 8
    RKH_CFG_FWK_SIZEOF_EVT_SIZE   	= 16
    RKH_CFG_TRC_NSEQ_EN        		= 1
    RKH_CFG_TRC_CHK_EN         		= 1
@@ -371,20 +371,20 @@ Accepted connection from 127.0.0.1, port 61574
                                   | RKH_CFG_TRC_USER_TRACE_EN  		= 1
                                   | RKH_CFG_TRC_ALL_EN     			= 1
                                   | RKH_CFG_TRC_MP_EN      			= 0
-                                  | RKH_CFG_TRC_RQ_EN      			= 0
+                                  | RKH_CFG_TRC_QUE_EN      			= 0
                                   | RKH_CFG_TRC_SMA_EN     			= 0
                                   | RKH_CFG_TRC_TMR_EN     			= 0
                                   | RKH_CFG_TRC_SM_EN      			= 0
                                   | RKH_CFG_TRC_FWK_EN         		= 1
                                   | RKH_CFG_TRC_ASSERT_EN  			= 1
-                                  | RKH_CFG_RQ_GET_LWMARK_EN   		= 1
+                                  | RKH_CFG_QUE_GET_LWMARK_EN   		= 1
                                   | RKH_CFG_MP_GET_LWM_EN      		= 1
                                   | RKH_CFG_FWK_SIZEOF_EVT   		= 8
                                   | RKH_CFGPORT_TRC_SIZEOF_TSTAMP	= 32
                                   | RKH_CFGPORT_TRC_SIZEOF_PTR 		= 32
                                   | RKH_CFG_TMR_SIZEOF_NTIMER  		= 16
                                   | RKH_CFG_MP_SIZEOF_NBLOCK   		= 8
-                                  | RKH_CFG_RQ_SIZEOF_NELEM    		= 8
+                                  | RKH_CFG_QUE_SIZEOF_NELEM    		= 8
                                   | RKH_CFG_FWK_SIZEOF_EVT_SIZE   	= 16
                                   | RKH_CFG_TRC_NSEQ_EN    			= 1
                                   | RKH_CFG_TRC_CHK_EN         		= 1
@@ -429,18 +429,18 @@ Accepted connection from 127.0.0.1, port 61574
                                   | func=0X1712DA
                                   | event=REQ
       4167 [ 24] SMA | FIFO       : ao=CLI2, sig=TOUT_REQ, snr=l_isr_tick, pid=0, rc=0
-      4167 [ 25] RQ  | FIFO       : q=0X180060, nelem=1, nmin=0
+      4167 [ 25] QUE  | FIFO       : q=0X180060, nelem=1, nmin=0
       4167 [ 26] SMA | FIFO       : ao=CLI1, sig=TOUT_REQ, snr=l_isr_tick, pid=0, rc=0
-      4167 [ 27] RQ  | FIFO       : q=0X1801A4, nelem=1, nmin=0
+      4167 [ 27] QUE  | FIFO       : q=0X1801A4, nelem=1, nmin=0
       4167 [ 28] SMA | FIFO       : ao=svr, sig=REQ, snr=CLI1, pid=1, rc=1
-      4167 [ 29] RQ  | FIFO       : q=0X180060, nelem=1, nmin=0
+      4167 [ 29] QUE  | FIFO       : q=0X180060, nelem=1, nmin=0
       4167 [ 30] SMA | FIFO       : ao=CLI1, sig=START, snr=svr, pid=1, rc=1
       4167 [ 31] MP  | PUT        : mp=0X180B80, nfree=7
       4167 [ 32] TIM | START      : t=0X180080, ao=CLI1, nt=200, per=0
       4168 [ 33] MP  | PUT        : mp=0X180B80, nfree=8
-      4168 [ 34] RQ  | FIFO       : q=0X1801A4, nelem=1, nmin=0
+      4168 [ 34] QUE  | FIFO       : q=0X1801A4, nelem=1, nmin=0
       4168 [ 35] SMA | FIFO       : ao=svr, sig=REQ, snr=CLI2, pid=1, rc=1
-      4169 [ 36] RQ  | FIFO       : q=0X180470, nelem=1, nmin=0
+      4169 [ 36] QUE  | FIFO       : q=0X180470, nelem=1, nmin=0
 
 
 \endverbatim

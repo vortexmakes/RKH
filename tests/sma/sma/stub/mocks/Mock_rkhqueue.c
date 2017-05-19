@@ -29,7 +29,7 @@ typedef struct _CMOCK_rkh_queue_init_CALL_INSTANCE
   UNITY_LINE_TYPE LineNumber;
   RKH_QUEUE_T* Expected_q;
   void** Expected_sstart;
-  RKH_RQNE_T Expected_ssize;
+  RKH_QUENE_T Expected_ssize;
   void* Expected_sma;
   int IgnoreArg_q;
   int IgnoreArg_sstart;
@@ -50,7 +50,7 @@ typedef struct _CMOCK_rkh_queue_is_full_CALL_INSTANCE
 typedef struct _CMOCK_rkh_queue_get_num_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
-  RKH_RQNE_T ReturnVal;
+  RKH_QUENE_T ReturnVal;
   RKH_QUEUE_T* Expected_q;
   int IgnoreArg_q;
 
@@ -59,7 +59,7 @@ typedef struct _CMOCK_rkh_queue_get_num_CALL_INSTANCE
 typedef struct _CMOCK_rkh_queue_get_lwm_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
-  RKH_RQNE_T ReturnVal;
+  RKH_QUENE_T ReturnVal;
   RKH_QUEUE_T* Expected_q;
   int IgnoreArg_q;
 
@@ -117,7 +117,7 @@ typedef struct _CMOCK_rkh_queue_get_info_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   RKH_QUEUE_T* Expected_q;
-  RKH_RQI_T* Expected_pqi;
+  RKH_QUEI_T* Expected_pqi;
   int IgnoreArg_q;
   int IgnoreArg_pqi;
 
@@ -143,12 +143,12 @@ static struct Mock_rkhqueueInstance
   int rkh_queue_is_full_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE rkh_queue_is_full_CallInstance;
   int rkh_queue_get_num_IgnoreBool;
-  RKH_RQNE_T rkh_queue_get_num_FinalReturn;
+  RKH_QUENE_T rkh_queue_get_num_FinalReturn;
   CMOCK_rkh_queue_get_num_CALLBACK rkh_queue_get_num_CallbackFunctionPointer;
   int rkh_queue_get_num_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE rkh_queue_get_num_CallInstance;
   int rkh_queue_get_lwm_IgnoreBool;
-  RKH_RQNE_T rkh_queue_get_lwm_FinalReturn;
+  RKH_QUENE_T rkh_queue_get_lwm_FinalReturn;
   CMOCK_rkh_queue_get_lwm_CALLBACK rkh_queue_get_lwm_CallbackFunctionPointer;
   int rkh_queue_get_lwm_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE rkh_queue_get_lwm_CallInstance;
@@ -290,7 +290,7 @@ void Mock_rkhqueue_Destroy(void)
   Mock.rkh_queue_clear_info_CallbackCalls = 0;
 }
 
-void rkh_queue_init(RKH_QUEUE_T* q, const void** sstart, RKH_RQNE_T ssize, void* sma)
+void rkh_queue_init(RKH_QUEUE_T* q, const void** sstart, RKH_QUENE_T ssize, void* sma)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_queue_init_CALL_INSTANCE* cmock_call_instance;
@@ -317,7 +317,7 @@ void rkh_queue_init(RKH_QUEUE_T* q, const void** sstart, RKH_RQNE_T ssize, void*
   if (!cmock_call_instance->IgnoreArg_ssize)
   {
     UNITY_SET_DETAILS(CMockString_rkh_queue_init,CMockString_ssize);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_ssize), (void*)(&ssize), sizeof(RKH_RQNE_T), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_ssize), (void*)(&ssize), sizeof(RKH_QUENE_T), cmock_line, CMockStringMismatch);
   }
   if (!cmock_call_instance->IgnoreArg_sma)
   {
@@ -331,13 +331,13 @@ void rkh_queue_init(RKH_QUEUE_T* q, const void** sstart, RKH_RQNE_T ssize, void*
   UNITY_CLR_DETAILS();
 }
 
-void CMockExpectParameters_rkh_queue_init(CMOCK_rkh_queue_init_CALL_INSTANCE* cmock_call_instance, RKH_QUEUE_T* q, const void** sstart, RKH_RQNE_T ssize, void* sma)
+void CMockExpectParameters_rkh_queue_init(CMOCK_rkh_queue_init_CALL_INSTANCE* cmock_call_instance, RKH_QUEUE_T* q, const void** sstart, RKH_QUENE_T ssize, void* sma)
 {
   cmock_call_instance->Expected_q = q;
   cmock_call_instance->IgnoreArg_q = 0;
   cmock_call_instance->Expected_sstart = (void**)sstart;
   cmock_call_instance->IgnoreArg_sstart = 0;
-  memcpy(&cmock_call_instance->Expected_ssize, &ssize, sizeof(RKH_RQNE_T));
+  memcpy(&cmock_call_instance->Expected_ssize, &ssize, sizeof(RKH_QUENE_T));
   cmock_call_instance->IgnoreArg_ssize = 0;
   cmock_call_instance->Expected_sma = sma;
   cmock_call_instance->IgnoreArg_sma = 0;
@@ -348,7 +348,7 @@ void rkh_queue_init_CMockIgnore(void)
   Mock.rkh_queue_init_IgnoreBool = (int)1;
 }
 
-void rkh_queue_init_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, const void** sstart, RKH_RQNE_T ssize, void* sma)
+void rkh_queue_init_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, const void** sstart, RKH_QUENE_T ssize, void* sma)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_queue_init_CALL_INSTANCE));
   CMOCK_rkh_queue_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_queue_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -471,7 +471,7 @@ void rkh_queue_is_full_CMockIgnoreArg_q(UNITY_LINE_TYPE cmock_line)
   cmock_call_instance->IgnoreArg_q = 1;
 }
 
-RKH_RQNE_T rkh_queue_get_num(RKH_QUEUE_T* q)
+RKH_QUENE_T rkh_queue_get_num(RKH_QUEUE_T* q)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_queue_get_num_CALL_INSTANCE* cmock_call_instance;
@@ -483,7 +483,7 @@ RKH_RQNE_T rkh_queue_get_num(RKH_QUEUE_T* q)
     UNITY_CLR_DETAILS();
     if (cmock_call_instance == NULL)
       return Mock.rkh_queue_get_num_FinalReturn;
-    memcpy(&Mock.rkh_queue_get_num_FinalReturn, &cmock_call_instance->ReturnVal, sizeof(RKH_RQNE_T));
+    memcpy(&Mock.rkh_queue_get_num_FinalReturn, &cmock_call_instance->ReturnVal, sizeof(RKH_QUENE_T));
     return cmock_call_instance->ReturnVal;
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
@@ -507,7 +507,7 @@ void CMockExpectParameters_rkh_queue_get_num(CMOCK_rkh_queue_get_num_CALL_INSTAN
   cmock_call_instance->IgnoreArg_q = 0;
 }
 
-void rkh_queue_get_num_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_RQNE_T cmock_to_return)
+void rkh_queue_get_num_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUENE_T cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_queue_get_num_CALL_INSTANCE));
   CMOCK_rkh_queue_get_num_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_queue_get_num_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -520,7 +520,7 @@ void rkh_queue_get_num_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_RQNE
   Mock.rkh_queue_get_num_IgnoreBool = (int)1;
 }
 
-void rkh_queue_get_num_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, RKH_RQNE_T cmock_to_return)
+void rkh_queue_get_num_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, RKH_QUENE_T cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_queue_get_num_CALL_INSTANCE));
   CMOCK_rkh_queue_get_num_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_queue_get_num_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -530,7 +530,7 @@ void rkh_queue_get_num_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUEU
   Mock.rkh_queue_get_num_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_queue_get_num(cmock_call_instance, q);
-  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(RKH_RQNE_T));
+  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(RKH_QUENE_T));
   UNITY_CLR_DETAILS();
 }
 
@@ -547,7 +547,7 @@ void rkh_queue_get_num_CMockIgnoreArg_q(UNITY_LINE_TYPE cmock_line)
   cmock_call_instance->IgnoreArg_q = 1;
 }
 
-RKH_RQNE_T rkh_queue_get_lwm(RKH_QUEUE_T* q)
+RKH_QUENE_T rkh_queue_get_lwm(RKH_QUEUE_T* q)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_queue_get_lwm_CALL_INSTANCE* cmock_call_instance;
@@ -559,7 +559,7 @@ RKH_RQNE_T rkh_queue_get_lwm(RKH_QUEUE_T* q)
     UNITY_CLR_DETAILS();
     if (cmock_call_instance == NULL)
       return Mock.rkh_queue_get_lwm_FinalReturn;
-    memcpy(&Mock.rkh_queue_get_lwm_FinalReturn, &cmock_call_instance->ReturnVal, sizeof(RKH_RQNE_T));
+    memcpy(&Mock.rkh_queue_get_lwm_FinalReturn, &cmock_call_instance->ReturnVal, sizeof(RKH_QUENE_T));
     return cmock_call_instance->ReturnVal;
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
@@ -583,7 +583,7 @@ void CMockExpectParameters_rkh_queue_get_lwm(CMOCK_rkh_queue_get_lwm_CALL_INSTAN
   cmock_call_instance->IgnoreArg_q = 0;
 }
 
-void rkh_queue_get_lwm_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_RQNE_T cmock_to_return)
+void rkh_queue_get_lwm_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUENE_T cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_queue_get_lwm_CALL_INSTANCE));
   CMOCK_rkh_queue_get_lwm_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_queue_get_lwm_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -596,7 +596,7 @@ void rkh_queue_get_lwm_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, RKH_RQNE
   Mock.rkh_queue_get_lwm_IgnoreBool = (int)1;
 }
 
-void rkh_queue_get_lwm_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, RKH_RQNE_T cmock_to_return)
+void rkh_queue_get_lwm_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, RKH_QUENE_T cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_queue_get_lwm_CALL_INSTANCE));
   CMOCK_rkh_queue_get_lwm_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_queue_get_lwm_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -606,7 +606,7 @@ void rkh_queue_get_lwm_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_QUEU
   Mock.rkh_queue_get_lwm_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_rkh_queue_get_lwm(cmock_call_instance, q);
-  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(RKH_RQNE_T));
+  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(RKH_QUENE_T));
   UNITY_CLR_DETAILS();
 }
 
@@ -1006,7 +1006,7 @@ void rkh_queue_read_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line)
   cmock_call_instance->IgnoreArg_pe = 1;
 }
 
-void rkh_queue_get_info(RKH_QUEUE_T* q, RKH_RQI_T* pqi)
+void rkh_queue_get_info(RKH_QUEUE_T* q, RKH_QUEI_T* pqi)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_queue_get_info_CALL_INSTANCE* cmock_call_instance;
@@ -1037,7 +1037,7 @@ void rkh_queue_get_info(RKH_QUEUE_T* q, RKH_RQI_T* pqi)
   UNITY_CLR_DETAILS();
 }
 
-void CMockExpectParameters_rkh_queue_get_info(CMOCK_rkh_queue_get_info_CALL_INSTANCE* cmock_call_instance, RKH_QUEUE_T* q, RKH_RQI_T* pqi)
+void CMockExpectParameters_rkh_queue_get_info(CMOCK_rkh_queue_get_info_CALL_INSTANCE* cmock_call_instance, RKH_QUEUE_T* q, RKH_QUEI_T* pqi)
 {
   cmock_call_instance->Expected_q = q;
   cmock_call_instance->IgnoreArg_q = 0;
@@ -1050,7 +1050,7 @@ void rkh_queue_get_info_CMockIgnore(void)
   Mock.rkh_queue_get_info_IgnoreBool = (int)1;
 }
 
-void rkh_queue_get_info_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, RKH_RQI_T* pqi)
+void rkh_queue_get_info_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, RKH_QUEI_T* pqi)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_queue_get_info_CALL_INSTANCE));
   CMOCK_rkh_queue_get_info_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_queue_get_info_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);

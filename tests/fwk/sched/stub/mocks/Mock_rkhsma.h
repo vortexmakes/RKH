@@ -49,8 +49,8 @@ void rkh_sma_ctor_CMockIgnoreArg_vtbl(UNITY_LINE_TYPE cmock_line);
 #define rkh_sma_activate_Ignore() rkh_sma_activate_CMockIgnore()
 void rkh_sma_activate_CMockIgnore(void);
 #define rkh_sma_activate_Expect(me, qSto, qSize, stkSto, stkSize) rkh_sma_activate_CMockExpect(__LINE__, me, qSto, qSize, stkSto, stkSize)
-void rkh_sma_activate_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, void* stkSto, rui32_t stkSize);
-typedef void (* CMOCK_rkh_sma_activate_CALLBACK)(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, void* stkSto, rui32_t stkSize, int cmock_num_calls);
+void rkh_sma_activate_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_QUENE_T qSize, void* stkSto, rui32_t stkSize);
+typedef void (* CMOCK_rkh_sma_activate_CALLBACK)(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_QUENE_T qSize, void* stkSto, rui32_t stkSize, int cmock_num_calls);
 void rkh_sma_activate_StubWithCallback(CMOCK_rkh_sma_activate_CALLBACK Callback);
 #define rkh_sma_activate_IgnoreArg_me() rkh_sma_activate_CMockIgnoreArg_me(__LINE__)
 void rkh_sma_activate_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);

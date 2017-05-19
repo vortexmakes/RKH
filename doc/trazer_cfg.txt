@@ -39,10 +39,10 @@ TRAZER_ALL=1
 TRAZER_EN_MP=0
 
 # 
-# - TRAZER_EN_RQ:
+# - TRAZER_EN_QUE:
 #		Enable(1) / Disable(0) 
 #
-TRAZER_EN_RQ=0
+TRAZER_EN_QUE=0
 
 # 
 # - TRAZER_EN_SMA:

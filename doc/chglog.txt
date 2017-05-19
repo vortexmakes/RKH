@@ -130,7 +130,7 @@
 
 \new
 - Added cross-platform demo 'shared' for s08 and x86 platforms. 
-- Adds RKH_TR_RQ_FULL macro from rkh_queue_put_fifo() and rkh_queue_put_lifo() 
+- Adds RKH_TR_QUE_FULL macro from rkh_queue_put_fifo() and rkh_queue_put_lifo() 
   functions.
 - Added RKH_VERSION_CODE to RKH_TR_FWK_TCFG.
 - Updated comments.

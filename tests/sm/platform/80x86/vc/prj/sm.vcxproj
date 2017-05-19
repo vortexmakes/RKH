@@ -96,9 +96,9 @@
     <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
     <ClCompile Include="..\..\..\..\smTest.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsma.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
+    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhsma.c" />
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostateConditional_runner.c" />
     <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />

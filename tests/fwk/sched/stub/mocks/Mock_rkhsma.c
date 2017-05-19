@@ -60,7 +60,7 @@ typedef struct _CMOCK_rkh_sma_activate_CALL_INSTANCE
   UNITY_LINE_TYPE LineNumber;
   RKH_SMA_T* Expected_me;
   RKH_EVT_T** Expected_qSto;
-  RKH_RQNE_T Expected_qSize;
+  RKH_QUENE_T Expected_qSize;
   void* Expected_stkSto;
   rui32_t Expected_stkSize;
   int IgnoreArg_me;
@@ -522,7 +522,7 @@ void rkh_sma_ctor_CMockIgnoreArg_vtbl(UNITY_LINE_TYPE cmock_line)
   cmock_call_instance->IgnoreArg_vtbl = 1;
 }
 
-void rkh_sma_activate(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, void* stkSto, rui32_t stkSize)
+void rkh_sma_activate(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_QUENE_T qSize, void* stkSto, rui32_t stkSize)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_rkh_sma_activate_CALL_INSTANCE* cmock_call_instance;
@@ -549,7 +549,7 @@ void rkh_sma_activate(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, v
   if (!cmock_call_instance->IgnoreArg_qSize)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_activate,CMockString_qSize);
-    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_qSize), (void*)(&qSize), sizeof(RKH_RQNE_T), cmock_line, CMockStringMismatch);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_qSize), (void*)(&qSize), sizeof(RKH_QUENE_T), cmock_line, CMockStringMismatch);
   }
   if (!cmock_call_instance->IgnoreArg_stkSto)
   {
@@ -568,13 +568,13 @@ void rkh_sma_activate(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, v
   UNITY_CLR_DETAILS();
 }
 
-void CMockExpectParameters_rkh_sma_activate(CMOCK_rkh_sma_activate_CALL_INSTANCE* cmock_call_instance, RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, void* stkSto, rui32_t stkSize)
+void CMockExpectParameters_rkh_sma_activate(CMOCK_rkh_sma_activate_CALL_INSTANCE* cmock_call_instance, RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_QUENE_T qSize, void* stkSto, rui32_t stkSize)
 {
   cmock_call_instance->Expected_me = me;
   cmock_call_instance->IgnoreArg_me = 0;
   cmock_call_instance->Expected_qSto = (RKH_EVT_T**)qSto;
   cmock_call_instance->IgnoreArg_qSto = 0;
-  memcpy(&cmock_call_instance->Expected_qSize, &qSize, sizeof(RKH_RQNE_T));
+  memcpy(&cmock_call_instance->Expected_qSize, &qSize, sizeof(RKH_QUENE_T));
   cmock_call_instance->IgnoreArg_qSize = 0;
   cmock_call_instance->Expected_stkSto = stkSto;
   cmock_call_instance->IgnoreArg_stkSto = 0;
@@ -587,7 +587,7 @@ void rkh_sma_activate_CMockIgnore(void)
   Mock.rkh_sma_activate_IgnoreBool = (int)1;
 }
 
-void rkh_sma_activate_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_RQNE_T qSize, void* stkSto, rui32_t stkSize)
+void rkh_sma_activate_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_QUENE_T qSize, void* stkSto, rui32_t stkSize)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sma_activate_CALL_INSTANCE));
   CMOCK_rkh_sma_activate_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sma_activate_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);

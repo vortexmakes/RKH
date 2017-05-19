@@ -60,7 +60,7 @@
 #include "Mock_rkhqueue.h"
 #include "Mockrkhsm.h"
 #include "Mockrkhtrc.h"
-#include "Mockrkhport.h"
+#include "Mock_rkhport.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -85,7 +85,7 @@ checkVtbl(RKH_SMA_T *me, RKHActivate activate, RKHTask task,
 }
 
 static void
-testActivate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
+testActivate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_QUENE_T qSize,
              void *stkSto, rui32_t stkSize)
 {
     (void)me;

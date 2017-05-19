@@ -76,9 +76,6 @@
     <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhsma.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
@@ -123,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c">
       <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhsma.c">
+      <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

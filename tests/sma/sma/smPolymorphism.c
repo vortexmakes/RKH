@@ -102,7 +102,7 @@ RKH_SMA_DEF_PTR_TYPE(CallControl, theCallControl);
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
-Singleton_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
+Singleton_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_QUENE_T qSize,
                    void *stkSto, rui32_t stkSize)
 {
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
@@ -285,7 +285,7 @@ Command_ctor(Command *const me, int bar)
 }
 
 void
-CallControl_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_RQNE_T qSize,
+CallControl_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_QUENE_T qSize,
                      void *stkSto, rui32_t stkSize)
 {
     (void)me;

@@ -63,8 +63,8 @@
  *  Example:
  *
  *	\code
- *	#define RKH_TR_RQ_INIT(q, ao, nelem) \
- *				RKH_TRC_BEGIN_WOAOSIG(RKH_TE_RQ_INITS) \
+ *	#define RKH_TR_QUE_INIT(q, ao, nelem) \
+ *				RKH_TRC_BEGIN_WOAOSIG(RKH_TE_QUE_INITS) \
  *					RKH_TRC_SYM(q); \
  *					RKH_TRC_SYM(ao); \
  *					RKH_TRC_NE(nelem); \
@@ -81,7 +81,7 @@
  *          RKH_TRC_UI8(poolID_); \
  *          RKH_TRC_UI8(refCntr_); \
  *          RKH_TRC_NE(nElem_); \
- *          RKH_TRC_RQ_NMIN(nMin_); \
+ *          RKH_TRC_QUE_NMIN(nMin_); \
  *      RKH_TRC_END_NOCRIT()
  *	\endcode
  *

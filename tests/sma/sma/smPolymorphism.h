@@ -75,7 +75,7 @@ void Command_postLifo(RKH_SMA_T *me, const RKH_EVT_T *e,
 void Command_ctor(Command *const me, int bar);
 
 void CallControl_activate(RKH_SMA_T *me, const RKH_EVT_T **qSto, 
-                          RKH_RQNE_T qSize, void *stkSto, rui32_t stkSize);
+                          RKH_QUENE_T qSize, void *stkSto, rui32_t stkSize);
 void CallControl_task(RKH_SMA_T *me, void *arg);
 void CallControl_ctorA(int foo);
 void CallControl_ctorB(int foo);

@@ -95,7 +95,7 @@ static rui8_t trceftbl[RKH_TRC_MAX_EVENTS_IN_BYTES];
  *  bit position =   7   6   5   4   3   2   1   0   -- Groups
  *  trcgfilter   = | Y | Y | Y | Y | Y | Y | Y | Y |
  *                           |		         |   |___ RKH_TG_MP
- *						     |			     |_______ RKH_TG_RQ
+ *						     |			     |_______ RKH_TG_QUE
  *                           |				          ...
  *                           |_______________________ RKH_TG_FWK
  *	\endcode
@@ -146,7 +146,7 @@ static rui8_t trcsigftbl[RKH_TRC_MAX_SIGNALS];
 static RKHROM RKH_GMTBL_T trcgmtbl[] =
 {
     {RKH_MP_TTBL_OFFSET,    RKH_MP_TTBL_RANGE},
-    {RKH_RQ_TTBL_OFFSET,    RKH_RQ_TTBL_RANGE},
+    {RKH_QUE_TTBL_OFFSET,    RKH_QUE_TTBL_RANGE},
     {RKH_SMA_TTBL_OFFSET,   RKH_SMA_TTBL_RANGE},
     {RKH_SM_TTBL_OFFSET,    RKH_SM_TTBL_RANGE},
     {RKH_TIM_TTBL_OFFSET,   RKH_TIM_TTBL_RANGE},

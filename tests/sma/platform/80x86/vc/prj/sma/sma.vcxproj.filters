@@ -55,16 +55,16 @@
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhassert.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhport.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mockrkhsm.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\MocksmTestAct.c">
+    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhqueue.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhqueue.c">
+    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhport.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\sma\stub\mocks\MocksmTestAct.c">
       <Filter>test\stub</Filter>
     </ClCompile>
   </ItemGroup>

@@ -825,7 +825,7 @@ struct RKH_SMA_T
 
 /** \copydetails RKHSmaVtbl::activate */
 typedef void (*RKHActivate)(RKH_SMA_T *me, 
-                         const RKH_EVT_T **qSto, RKH_RQNE_T qSize, 
+                         const RKH_EVT_T **qSto, RKH_QUENE_T qSize, 
                          void *stkSto, rui32_t stkSize);
 
 /** \copydetails RKHSmaVtbl::task */
@@ -960,7 +960,7 @@ void rkh_sma_ctor(RKH_SMA_T *me, const RKHSmaVtbl *vtbl);
  *  \ingroup apiPortAO
  */
 void rkh_sma_activate(RKH_SMA_T *me, const RKH_EVT_T * *qSto,
-                      RKH_RQNE_T qSize, void *stkSto, rui32_t stkSize);
+                      RKH_QUENE_T qSize, void *stkSto, rui32_t stkSize);
 
 /**
  *  \brief

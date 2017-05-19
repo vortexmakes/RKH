@@ -202,7 +202,7 @@ extern "C" {
  *  Therefore, is able to define 8 groups and 32 events per group.
  */
 #define RKH_MP_START                GRPLSH(RKH_TG_MP)
-#define RKH_RQ_START                GRPLSH(RKH_TG_RQ)
+#define RKH_QUE_START                GRPLSH(RKH_TG_QUE)
 #define RKH_SMA_START               GRPLSH(RKH_TG_SMA)
 #define RKH_SM_START                GRPLSH(RKH_TG_SM)
 #define RKH_TMR_START               GRPLSH(RKH_TG_TMR)
@@ -218,7 +218,7 @@ extern "C" {
  *  Must be less than or equal to RKH_MAX_NUM_TE_PER_GROUP/8.
  */
 #define RKH_MP_TTBL_RANGE           1
-#define RKH_RQ_TTBL_RANGE           1
+#define RKH_QUE_TTBL_RANGE           1
 #define RKH_SMA_TTBL_RANGE          2
 #define RKH_SM_TTBL_RANGE           3
 #define RKH_TIM_TTBL_RANGE          1
@@ -232,7 +232,7 @@ extern "C" {
  */
 #define RKH_TOT_NUM_TRC_EVTS \
         (RKH_MP_TTBL_RANGE   + \
-         RKH_RQ_TTBL_RANGE   + \
+         RKH_QUE_TTBL_RANGE   + \
          RKH_SMA_TTBL_RANGE  + \
          RKH_SM_TTBL_RANGE   + \
          RKH_TIM_TTBL_RANGE  + \
@@ -253,8 +253,8 @@ extern "C" {
 #endif
 
 #define RKH_MP_TTBL_OFFSET          0
-#define RKH_RQ_TTBL_OFFSET          (RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
-#define RKH_SMA_TTBL_OFFSET         (RKH_RQ_TTBL_OFFSET + RKH_RQ_TTBL_RANGE)
+#define RKH_QUE_TTBL_OFFSET          (RKH_MP_TTBL_OFFSET + RKH_MP_TTBL_RANGE)
+#define RKH_SMA_TTBL_OFFSET         (RKH_QUE_TTBL_OFFSET + RKH_QUE_TTBL_RANGE)
 #define RKH_SM_TTBL_OFFSET          (RKH_SMA_TTBL_OFFSET + RKH_SMA_TTBL_RANGE)
 #define RKH_TIM_TTBL_OFFSET         (RKH_SM_TTBL_OFFSET + RKH_SM_TTBL_RANGE)
 #define RKH_FWK_TTBL_OFFSET         (RKH_TIM_TTBL_OFFSET + RKH_TIM_TTBL_RANGE)
@@ -311,8 +311,8 @@ extern "C" {
 /** \brief  Memory Pool group (MP) */
 #define RKH_TG_MP           0
 
-/** \brief  Reference Queue group (RQ) */
-#define RKH_TG_RQ           1
+/** \brief  Reference Queue group (QUE) */
+#define RKH_TG_QUE           1
 
 /** \brief  State Machine Application group (SMA) */
 #define RKH_TG_SMA          2
@@ -344,22 +344,22 @@ extern "C" {
 #define RKH_TE_MP_PUT           (RKH_TE_MP_GET + 1)
 #define RKH_MP_END              RKH_TE_MP_PUT
 
-/* --- Queue events (RQ group) --------------------------------------------- */
-/** \copybrief RKH_TR_RQ_INIT */
-#define RKH_TE_RQ_INIT          RKH_RQ_START         
-/** \copybrief RKH_TR_RQ_GET */
-#define RKH_TE_RQ_GET           (RKH_TE_RQ_INIT + 1)
-/** \copybrief RKH_TR_RQ_FIFO */
-#define RKH_TE_RQ_FIFO          (RKH_TE_RQ_GET + 1)
-/** \copybrief RKH_TR_RQ_LIFO */
-#define RKH_TE_RQ_LIFO          (RKH_TE_RQ_FIFO + 1)
-/** \copybrief RKH_TR_RQ_FULL */
-#define RKH_TE_RQ_FULL          (RKH_TE_RQ_LIFO + 1)
-/** \copybrief RKH_TR_RQ_DPT */
-#define RKH_TE_RQ_DPT           (RKH_TE_RQ_FULL + 1)
-/** \copybrief RKH_TR_RQ_GET_LAST */
-#define RKH_TE_RQ_GET_LAST      (RKH_TE_RQ_DPT +1 )
-#define RKH_RQ_END              RKH_TE_RQ_GET_LAST
+/* --- Queue events (QUE group) --------------------------------------------- */
+/** \copybrief RKH_TR_QUE_INIT */
+#define RKH_TE_QUE_INIT          RKH_QUE_START         
+/** \copybrief RKH_TR_QUE_GET */
+#define RKH_TE_QUE_GET           (RKH_TE_QUE_INIT + 1)
+/** \copybrief RKH_TR_QUE_FIFO */
+#define RKH_TE_QUE_FIFO          (RKH_TE_QUE_GET + 1)
+/** \copybrief RKH_TR_QUE_LIFO */
+#define RKH_TE_QUE_LIFO          (RKH_TE_QUE_FIFO + 1)
+/** \copybrief RKH_TR_QUE_FULL */
+#define RKH_TE_QUE_FULL          (RKH_TE_QUE_LIFO + 1)
+/** \copybrief RKH_TR_QUE_DPT */
+#define RKH_TE_QUE_DPT           (RKH_TE_QUE_FULL + 1)
+/** \copybrief RKH_TR_QUE_GET_LAST */
+#define RKH_TE_QUE_GET_LAST      (RKH_TE_QUE_DPT +1 )
+#define RKH_QUE_END              RKH_TE_QUE_GET_LAST
 
 /* --- State Machine Application events (SMA group) ------------------------ */
 /** \copybrief RKH_TR_SMA_ACT */
@@ -514,7 +514,7 @@ extern "C" {
     #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
 #endif
 
-#if ((RKH_RQ_END - RKH_RQ_START) > ((RKH_RQ_TTBL_RANGE * 8) - 1))
+#if ((RKH_QUE_END - RKH_QUE_START) > ((RKH_QUE_TTBL_RANGE * 8) - 1))
     #error  "rkhtrc.h, the total number of trace events represented"
     #error  "by RKH_TOT_NUM_TRC_EVTS must be <= RKH_TRC_MAX_EVENTS"
 #endif
@@ -1080,41 +1080,41 @@ extern "C" {
 /**
  *  Insert a nelem value as trace record argument.
  */
-#if RKH_CFG_RQ_SIZEOF_NELEM == 8
+#if RKH_CFG_QUE_SIZEOF_NELEM == 8
         #define RKH_TRC_NE(ne) \
             RKH_TRC_UI8(ne)
-        #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
-            #define RKH_TRC_RQ_NMIN(nm) \
+        #if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
+            #define RKH_TRC_QUE_NMIN(nm) \
                 RKH_TRC_UI8(nm)
         #else
-            #define RKH_TRC_RQ_NMIN(nm)
+            #define RKH_TRC_QUE_NMIN(nm)
         #endif
-#elif RKH_CFG_RQ_SIZEOF_NELEM == 16
+#elif RKH_CFG_QUE_SIZEOF_NELEM == 16
         #define RKH_TRC_NE(ne) \
             RKH_TRC_UI16(ne)
-        #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
-            #define RKH_TRC_RQ_NMIN(nm) \
+        #if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
+            #define RKH_TRC_QUE_NMIN(nm) \
                 RKH_TRC_UI16(nm)
         #else
-            #define RKH_TRC_RQ_NMIN(nm)
+            #define RKH_TRC_QUE_NMIN(nm)
         #endif
-#elif RKH_CFG_RQ_SIZEOF_NELEM == 32
+#elif RKH_CFG_QUE_SIZEOF_NELEM == 32
         #define RKH_TRC_NE(ne) \
             RKH_TRC_UI32(ne)
-        #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
-            #define RKH_TRC_RQ_NMIN(nm) \
+        #if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
+            #define RKH_TRC_QUE_NMIN(nm) \
                 RKH_TRC_UI32(nm)
         #else
-            #define RKH_TRC_RQ_NMIN(nm)
+            #define RKH_TRC_QUE_NMIN(nm)
         #endif
 #else
         #define RKH_TRC_NE(ne) \
             RKH_TRC_UI8(ne)
-        #if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
-            #define RKH_TRC_RQ_NMIN(nm) \
+        #if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
+            #define RKH_TRC_QUE_NMIN(nm) \
                 RKH_TRC_UI8(nm)
         #else
-            #define RKH_TRC_RQ_NMIN(nm)
+            #define RKH_TRC_QUE_NMIN(nm)
         #endif
 #endif
 

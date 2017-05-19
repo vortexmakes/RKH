@@ -58,7 +58,7 @@
 RKH_MODULE_NAME(rkhsma)
 
 /* ----------------------------- Local macros ------------------------------ */
-#if RKH_CFG_RQ_GET_LWMARK_EN == RKH_ENABLED
+#if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
     #define RKH_SMA_GET_NMIN(ao)    (ao)->equeue.nmin
 #else
     #define RKH_SMA_GET_NMIN(ao)    0
@@ -143,14 +143,14 @@ rkh_sma_terminate(RKH_SMA_T *sma)
 }
 
 void
-rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs, RKH_RQNE_T qsize,
+rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T * *qs, RKH_QUENE_T qsize,
                  void *stks, rui32_t stksize)
 {
     (void)stks;
     (void)stksize;
     RKH_SR_ALLOC();
 
-    RKH_REQUIRE((qs != (const RKH_EVT_T * *)0) && (qsize != (RKH_RQNE_T)0));
+    RKH_REQUIRE((qs != (const RKH_EVT_T * *)0) && (qsize != (RKH_QUENE_T)0));
 
     rkh_queue_init(&sma->equeue, (const void * *)qs, qsize, sma);
     rkh_sma_register(sma);
@@ -183,7 +183,7 @@ rkh_sma_post_fifo(RKH_SMA_T * sma, const RKH_EVT_T * e)
 #endif
 
 #if RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED && \
-    RKH_CFG_RQ_PUT_LIFO_EN == RKH_ENABLED
+    RKH_CFG_QUE_PUT_LIFO_EN == RKH_ENABLED
 void
 #if defined(RKH_USE_TRC_SENDER)
 rkh_sma_post_lifo(RKH_SMA_T *sma, const RKH_EVT_T *e,
