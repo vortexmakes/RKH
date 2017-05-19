@@ -273,10 +273,10 @@ behavior of a system in a substantial manner.
 - The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
 - Flexible and \ref cfg "user-configurable code generation".
 - Very small footprint.
-- Include a \link rkhs.h dispatching event mechanism \endlink based on active object's priority.
-- Include a \link rkhrq.h queue module \endlink
-- Include a \link rkhtim.h software timer module \endlink.
-- Include a \link rkhmp.h fixed-size memory block module \endlink.
+- Include a \link rkhfwk_sched.h dispatching event mechanism \endlink based on active object's priority.
+- Include a \link rkhqueue.h queue module \endlink
+- Include a \link rkhtmr.h software timer module \endlink.
+- Include a \link rkhmempool.h fixed-size memory block module \endlink.
 - Include a native \ref dbg.
 - Support hierarchically nested states, and flat state machine.
 - Support multiple state machines.
@@ -1308,7 +1308,7 @@ of event \b B in a RTC manner.
 <B>Dealing with RTC model in a nonpreemtive manner</B>
 
 Here is the basic algorithm for interpreting the native kernel. 
-The rkh_fwk_enter() function implemented in \b \\source\\rkhs.c source 
+The rkh_fwk_enter() function implemented in \b \\source\\rkhfwk_sched.c source 
 file is self-explanatory.
 
 \code

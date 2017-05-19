@@ -137,7 +137,7 @@
 - Changed RKH_TRC_EN_SM_CSTATE by RKH_CFG_TRC_SM_TS_STATE_EN.
 - Changed RKH_TE_SM_CSTATE by RKH_TE_SM_TS_STATE.
 - Added assert in rkh_queue_put_fifo()/lifo() when queue is full.
-- Added little code in favor of defensive programming (rkhmp.c).
+- Added little code in favor of defensive programming (rkhmempool.c).
 - Added new arguments to trace event macros. See "trace event table".
 - Updated configuration table and preprocessor checking in rkhitl.h.
 
@@ -197,7 +197,7 @@
 \bugfix
 - Fixed name of the deplete queue, function rkh_queue_deplete().
 - Fixed  RKH_TRC_CLOSE() macro.
-- Fixed a bug in rkhtim.c file. Complete the RKH_SET_THOOK() macro when 
+- Fixed a bug in rkhtmr.c file. Complete the RKH_SET_THOOK() macro when 
   configuring RKH_CFG_TMR_HOOK_EN = 0.
 - Fixed a bug in RKH_SMA_BLOCK() macro.
 - Fixed a bug in rkh_queue_get() function, when invocking the rkh_sma_recall() 

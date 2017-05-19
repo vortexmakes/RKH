@@ -112,8 +112,6 @@ void rkh_smaPrio_setUnready(rui8_t prio);
  *  least significant bit has the highest priority. Using this byte to index 
  *  the table returns the bit position of the highest priority bit set, a 
  *  number between 0 and 7.
- *
- *  \param[in] prio     the found highest priority is assigned to \a p.
  */
 rui8_t rkh_smaPrio_findHighest(void);
 

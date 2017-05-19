@@ -51,12 +51,12 @@ The following figure shows the \c \\source directory.
   | |   rkhassert.h			- Assert definitions
   | |   rkhevt.h			- Event data type and other related macros 
   | |   rkhitl.h			- Internal use only 
-  | |   rkhmp.h				- Fixed-size memory block services interface 
+  | |   rkhmempool.h				- Fixed-size memory block services interface 
   | |   rkhplat.h			- Supported and portable platforms 
   | |   rkhrdy.h			- Native priority management 
-  | |   rkhrq.h				- Queue services interface 
+  | |   rkhqueue.h				- Queue services interface 
   | |   rkhs.h				- Simple and cooperative scheduler interface 
-  | |   rkhtim.h			- Timer services interface 
+  | |   rkhtmr.h			- Timer services interface 
   | |   rkhtrc.h			- Trace facility 
   | |   rkhtype.h			- Defines the data types that uses RKH 
   | |       
@@ -64,12 +64,12 @@ The following figure shows the \c \\source directory.
   | |
   | | rkh.c					- State machine engine 
   | | rkhdyn.c				- Dynamic event management, and event framework services 
-  | | rkhmp.c				- Fixed-size memory block 
-  | | rkhrq.c				- Queue (copy by reference)
+  | | rkhmempool.c				- Fixed-size memory block 
+  | | rkhqueue.c				- Queue (copy by reference)
   | | rkhs.c				- Simple and cooperative scheduler
   | | rkhsma.c				- State machine application (SMA) registration.
   | | rkhtbl.c				- Binary map tables.
-  | | rkhtim.c				- Software timer.
+  | | rkhtmr.c				- Software timer.
   | | rkhtrc.c				- Platform-independent source code of runtime tracing.
   |
   | copying.txt				- Licence file
@@ -589,7 +589,7 @@ rkh_sma_terminate().
 \li (4) Also, the macros RKH_EQ_TYPE, RKH_SMA_BLOCK(), 
 \li (5) RKH_SMA_READY(), RKH_SMA_UNREADY() are RKH provided. 
 In this mode of operation, RKH assumes the use of native priority scheme. 
-See \c rkhs.h, \c rkhs.c, and \c rkhrdy.h files for more information.
+See \c rkhfwk_sched.h, \c rkhfwk_sched.c, and \c rkhsma_prio.h files for more information.
 
 \n <HR>
 \section prio Priority mechanism
@@ -867,8 +867,8 @@ in the board support package (\c bsp.c).
 #include <windows.h>
 
 #include "rkhtype.h"
-#include "rkhrq.h"
-#include "rkhmp.h"
+#include "rkhqueue.h"
+#include "rkhmempool.h"
 #include "rkhrdy.h"
 
 
@@ -2842,7 +2842,7 @@ for more information about this.
 
 \n Prev: \ref qref "Quick reference" \n
 
-\copydetails rkhtim.h
+\copydetails rkhtmr.h
 
 This section includes:
 

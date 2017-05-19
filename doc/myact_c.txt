@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include "rkh.h"
 #include "my.h"
-#include "rkhtim.h"
+#include "rkhtmr.h"
 
 
 #define CMY( s )		(( MYSM_T* )(s))

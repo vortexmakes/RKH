@@ -85,10 +85,10 @@ platform-independent modules which is shown in the following figure.
 - The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
 - Flexible and \ref cfg "user-configurable code generation".
 - Very small footprint.
-- Include a \link rkhs.h dispatching event mechanism \endlink based on active object's priority.
-- Include a \link rkhrq.h queue module \endlink
-- Include a \link rkhtim.h software timer module \endlink.
-- Include a \link rkhmp.h fixed-size memory block module \endlink.
+- Include a \link rkhfwk_sched.h dispatching event mechanism \endlink based on active object's priority.
+- Include a \link rkhqueue.h queue module \endlink
+- Include a \link rkhtmr.h software timer module \endlink.
+- Include a \link rkhmempool.h fixed-size memory block module \endlink.
 - Include a native \ref dbg.
 - Support hierarchically nested states, and flat state machine.
 - Support multiple state machines.

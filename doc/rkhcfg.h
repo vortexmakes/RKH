@@ -726,14 +726,14 @@ extern "C" {
 
 /**
  *  \brief
- *  If the #RKH_CFG_TRC_RQ_EN is set to 1 then RKH will include all trace
+ *  If the #RKH_CFG_TRC_QUE_EN is set to 1 then RKH will include all trace
  *  records related to the native queues.
  *
  *  \type       Boolean
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_TRC_RQ_EN               RKH_ENABLED
+#define RKH_CFG_TRC_QUE_EN               RKH_ENABLED
 
 /**
  *  \brief
@@ -978,35 +978,35 @@ extern "C" {
 /**
  *  \addtogroup configQueue Related to event queue module
  *  @{
- *  \brief Configuration options related to queue facility (RQ)
+ *  \brief Configuration options related to queue facility (QUE)
  */
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_EN is set to 1 then RKH will include the native queue
+ *  If the #RKH_CFG_QUE_EN is set to 1 then RKH will include the native queue
  *  facility.
  *
  *  \type       Boolean
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_EN                   RKH_ENABLED
+#define RKH_CFG_QUE_EN                   RKH_ENABLED
 
 /**
  *  \brief
  *  Specify the maximum number of elements that any queue can contain.
  *  The valid values [in bits] are 8, 16 or 32. Default is 8.
- *  See #RKH_RQNE_T type.
+ *  See #RKH_QUENE_T type.
  *
  *  \type       Integer
  *  \range      [8, 16, 32]
  *  \default    8
  */
-#define RKH_CFG_RQ_SIZEOF_NELEM         8u
+#define RKH_CFG_QUE_SIZEOF_NELEM         8u
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_GET_LWMARK_EN is set to 1 then RKH allows to known the
+ *  If the #RKH_CFG_QUE_GET_LWMARK_EN is set to 1 then RKH allows to known the
  *  minimum number of free elements ever in the queue (low-watermark ).
  *  This provides valuable empirical data for proper sizing of the queue.
  *  See rkh_rq_get_lwm() function.
@@ -1015,11 +1015,11 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_GET_LWMARK_EN        RKH_ENABLED
+#define RKH_CFG_QUE_GET_LWMARK_EN        RKH_ENABLED
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_GET_INFO_EN is set to 1 then RKH allows to collect and
+ *  If the #RKH_CFG_QUE_GET_INFO_EN is set to 1 then RKH allows to collect and
  *  retrives performance information for a particular queue.
  *  See rkh_rq_get_info() and rkh_rq_clear_info() functions.
  *
@@ -1027,11 +1027,11 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_GET_INFO_EN          RKH_ENABLED
+#define RKH_CFG_QUE_GET_INFO_EN          RKH_ENABLED
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_READ_EN is set to 1 then RKH will include the
+ *  If the #RKH_CFG_QUE_READ_EN is set to 1 then RKH will include the
  *  rkh_rq_read() function that allows read an element from a queue without
  *  remove it. See rkh_rq_read() function.
  *
@@ -1039,11 +1039,11 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_READ_EN              RKH_ENABLED
+#define RKH_CFG_QUE_READ_EN              RKH_ENABLED
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_DEPLETE_EN is set to 1 then RKH will include the
+ *  If the #RKH_CFG_QUE_DEPLETE_EN is set to 1 then RKH will include the
  *  rkh_rq_deplete() function that empties the contents of the queue and
  *  eliminates all stored elements.
  *  See rkh_rq_deplete() function.
@@ -1052,11 +1052,11 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_DEPLETE_EN           RKH_ENABLED
+#define RKH_CFG_QUE_DEPLETE_EN           RKH_ENABLED
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_IS_FULL_EN is set to 1 then RKH will include the
+ *  If the #RKH_CFG_QUE_IS_FULL_EN is set to 1 then RKH will include the
  *  rkh_rq_is_full() function that allows to known if a queue is full.
  *  See rkh_rq_is_full() function.
  *
@@ -1064,11 +1064,11 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_IS_FULL_EN           RKH_ENABLED
+#define RKH_CFG_QUE_IS_FULL_EN           RKH_ENABLED
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_GET_NELEMS_EN is set to 1 then RKH will include the
+ *  If the #RKH_CFG_QUE_GET_NELEMS_EN is set to 1 then RKH will include the
  *  rkh_rq_get_num() function that returns the number of elements currently
  *  in the queue.
  *  See rkh_rq_get_num() function.
@@ -1077,11 +1077,11 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_GET_NELEMS_EN        RKH_ENABLED
+#define RKH_CFG_QUE_GET_NELEMS_EN        RKH_ENABLED
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_PUT_LIFO_EN is set to 1 then RKH will include the
+ *  If the #RKH_CFG_QUE_PUT_LIFO_EN is set to 1 then RKH will include the
  *  rkh_rq_put_lifo() function that puts an element on a queue in a LIFO
  *  manner.
  *  See rkh_rq_put_lifo() function.
@@ -1090,7 +1090,7 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_RQ_PUT_LIFO_EN          RKH_ENABLED
+#define RKH_CFG_QUE_PUT_LIFO_EN          RKH_ENABLED
 
 /** @} doxygen end group definition */
 
@@ -1205,7 +1205,7 @@ extern "C" {
 
 /**
  *  \brief
- *  If the #RKH_CFG_RQ_EN is set to 1 then RKH will include the native software
+ *  If the #RKH_CFG_QUE_EN is set to 1 then RKH will include the native software
  *  timer facility.
  *
  *  \type       Boolean

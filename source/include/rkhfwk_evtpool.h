@@ -127,8 +127,6 @@ rui8_t rkh_evtPool_getBlockSize(RKHEvtPool *const me);
  *
  *  \param[in] me		pointer to previously allocated memory pool 
  *                      structure.
- *  \param[in] evt      inter to a new event or NULL if the pool runs 
- *                      out of blocks.
  *
  *  \note
  *  Platform-dependent function. Typically, must be define it in the specific 
