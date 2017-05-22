@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\unity\unity.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\cmock\cmock.c">
       <Filter>test\cmock</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
       <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

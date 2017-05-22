@@ -25,15 +25,6 @@
     <ClCompile Include="..\..\..\..\..\..\source\rkhtmr.c">
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\cmock\cmock.c">
-      <Filter>Source Files\tests\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\unity\unity.c">
-      <Filter>Source Files\tests\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\unity\fixture\unity_fixture.c">
-      <Filter>Source Files\tests\tool</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
       <Filter>Source Files\tests\runner</Filter>
     </ClCompile>
@@ -60,6 +51,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_record.c">
       <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

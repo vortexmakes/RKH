@@ -18,15 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\unity\unity.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\dynevt\test_rkhfwk_dynevt.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -53,6 +44,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\dynevt\stub\mocks\Mock_rkhfwk_evtpool.c">
       <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

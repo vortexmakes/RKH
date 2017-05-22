@@ -34,15 +34,6 @@
     <ClCompile Include="..\..\..\..\..\sma\test_smPolymorphism.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\unity\unity.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c">
-      <Filter>test\tool</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\Mock_rkhtrc_filter.c">
       <Filter>test\stub</Filter>
     </ClCompile>
@@ -66,6 +57,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\sma\stub\mocks\MocksmTestAct.c">
       <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

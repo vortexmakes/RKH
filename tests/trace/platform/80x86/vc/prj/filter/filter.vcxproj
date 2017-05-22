@@ -12,9 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\source\rkhtrc_filter.c" />
-    <ClCompile Include="..\..\..\..\..\..\cmock\cmock.c" />
-    <ClCompile Include="..\..\..\..\..\..\unity\fixture\unity_fixture.c" />
-    <ClCompile Include="..\..\..\..\..\..\unity\unity.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
     <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhassert.c" />
     <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\filter\stub\mocks\Mock_rkhport.c" />
@@ -65,7 +65,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\unity\fixture;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\unity;$(ProjectDir)..\..\..\..\..\..\trace\filter;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\trace\filter\stub\mocks;$(ProjectDir)..\..\..\..\..\..\cmock;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\..\..\trace\filter;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\trace\filter\stub\mocks;$(ProjectDir)..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
