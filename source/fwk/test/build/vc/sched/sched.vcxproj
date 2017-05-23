@@ -11,21 +11,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhfwk_sched.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhfwk_dynevt.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhfwk_hook.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhport.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhsm.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhsma.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhsma_prio.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhtrc_filter.c" />
-    <ClCompile Include="..\..\..\..\..\sched\stub\mocks\Mock_rkhtrc_record.c" />
-    <ClCompile Include="..\..\..\..\..\sched\test_rkhfwk_sched.c" />
-    <ClCompile Include="..\..\..\..\..\sched\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\..\sched\test_runners\test_rkhfwk_sched_runner.c" />
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
+    <ClCompile Include="..\..\..\..\src\rkhfwk_sched.c" />
+    <ClCompile Include="..\..\..\sched\runner\all_tests.c" />
+    <ClCompile Include="..\..\..\sched\runner\test_rkhfwk_sched_runner.c" />
+    <ClCompile Include="..\..\..\sched\src\test_rkhfwk_sched.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhfwk_dynevt.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhfwk_hook.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhport.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhsm.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhsma.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhsma_prio.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhtrc_filter.c" />
+    <ClCompile Include="..\..\..\sched\stub\mocks\Mock_rkhtrc_record.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A891D2A0-ADB4-4C9E-A4E5-E33BF389055B}</ProjectGuid>
@@ -69,7 +69,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\portable\test;$(ProjectDir)..\..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\..\..\fwk\sched;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\fwk\sched\stub\mocks;$(ProjectDir)..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\fwk\inc;$(ProjectDir)..\..\..\..\..\mempool\inc;$(ProjectDir)..\..\..\..\..\queue\inc;$(ProjectDir)..\..\..\..\..\sm\inc;$(ProjectDir)..\..\..\..\..\sma\inc;$(ProjectDir)..\..\..\..\..\tmr\inc;$(ProjectDir)..\..\..\..\..\trc\inc;$(ProjectDir)..\..\..\..\..\portable\test;$(ProjectDir)..\..\..\..\..\..\..\..\source\include;$(ProjectDir)..\..\..\..\..\..\third-party\unitrazer;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\..\sched\inc;$(ProjectDir)..\..\..\sched\stub\mocks</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

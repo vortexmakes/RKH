@@ -18,40 +18,46 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\dynevt\test_rkhfwk_dynevt.c">
+    <ClCompile Include="..\..\..\dynevt\runner\all_tests.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\runner\test_rkhfwk_dynevt_runner.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhassert.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhfwk_bittbl.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhfwk_evtpool.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhport.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhtrc_filter.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhtrc_out.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\stub\mocks\Mock_rkhtrc_record.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dynevt\src\test_rkhfwk_dynevt.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\test_runners\all_tests.c">
-      <Filter>test\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\test_runners\test_rkhfwk_dynevt_runner.c">
-      <Filter>test\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhfwk_dynevt.c">
+    <ClCompile Include="..\..\..\..\src\rkhfwk_dynevt.c">
       <Filter>rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\stub\mocks\Mock_rkhassert.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\stub\mocks\Mock_rkhport.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\stub\mocks\Mock_rkhtrc_filter.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\stub\mocks\Mock_rkhtrc_record.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\dynevt\stub\mocks\Mock_rkhfwk_evtpool.c">
-      <Filter>test\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
       <Filter>test\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
       <Filter>test\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
       <Filter>test\tool</Filter>
     </ClCompile>
   </ItemGroup>

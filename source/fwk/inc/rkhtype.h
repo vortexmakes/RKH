@@ -101,7 +101,7 @@
 #endif
 
 #ifdef __TEST__
-    #include "..\portable\test\rkht.h"
+    #include "..\..\portable\test\rkht.h"
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */

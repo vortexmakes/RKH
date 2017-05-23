@@ -57,7 +57,6 @@
 #include "rkhfwk_evtpool.h"
 #include "Mock_rkhtrc_record.h"
 #include "Mock_rkhtrc_filter.h"
-#include "Mock_rkhport.h"
 #include "Mock_rkhmempool.h"
 #include "Mock_rkhassert.h"
 
