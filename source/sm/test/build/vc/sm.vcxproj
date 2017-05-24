@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);RKH_CFG_SMA_SM_CONST=RKH_ENABLED;__UNITRAZER_LIB__</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\..\..\..\stub\mocks;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\..\..\..\..\source\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\fwk\inc;$(ProjectDir)..\..\..\..\mempool\inc;$(ProjectDir)..\..\..\..\queue\inc;$(ProjectDir)..\..\..\..\sm\inc;$(ProjectDir)..\..\..\..\sma\inc;$(ProjectDir)..\..\..\..\tmr\inc;$(ProjectDir)..\..\..\..\trc\inc;$(ProjectDir)..\..\..\..\portable\test;$(ProjectDir)..\..\..\..\..\..\..\source\include;$(ProjectDir)..\..\..\..\..\third-party\unitrazer;$(ProjectDir)..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\inc;$(ProjectDir)..\..\stub\mocks</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -79,39 +79,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhfwk_bittbl.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_filter.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_record.c" />
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_stream.c" />
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c" />
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c" />
-    <ClCompile Include="..\..\..\..\common.c" />
-    <ClCompile Include="..\..\..\..\smPseudoConditionalTest.c" />
-    <ClCompile Include="..\..\..\..\smPseudoTest.c" />
-    <ClCompile Include="..\..\..\..\smPseudoTestAct.c" />
-    <ClCompile Include="..\..\..\..\smTest.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhsma.c" />
-    <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostateConditional_runner.c" />
-    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c" />
-    <ClCompile Include="..\..\..\..\test_runners\test_smTransitionWoutUnitrazer_runner.c" />
-    <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c" />
-    <ClCompile Include="..\..\..\..\test_smPseudostate.c" />
-    <ClCompile Include="..\..\..\..\test_smPseudostateConditional.c" />
-    <ClCompile Include="..\..\..\..\test_smTransition.c" />
-    <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c" />
-    <ClCompile Include="..\bsp.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\unitrazer\tzlink.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\unitrazer\tzparse.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\unitrazer\unitrazer.c" />
+    <ClCompile Include="..\..\..\..\fwk\src\rkhfwk_bittbl.c" />
+    <ClCompile Include="..\..\..\..\portable\test\rkhport.c" />
+    <ClCompile Include="..\..\..\..\trc\src\rkhtrc_filter.c" />
+    <ClCompile Include="..\..\..\..\trc\src\rkhtrc_record.c" />
+    <ClCompile Include="..\..\..\..\trc\src\rkhtrc_stream.c" />
+    <ClCompile Include="..\..\..\src\rkhsm.c" />
+    <ClCompile Include="..\..\runner\all_tests.c" />
+    <ClCompile Include="..\..\runner\test_smPseudostateConditional_runner.c" />
+    <ClCompile Include="..\..\runner\test_smPseudostate_runner.c" />
+    <ClCompile Include="..\..\runner\test_smTransitionWoutUnitrazer_runner.c" />
+    <ClCompile Include="..\..\runner\test_smTransition_runner.c" />
+    <ClCompile Include="..\..\src\common.c" />
+    <ClCompile Include="..\..\src\smPseudoConditionalTest.c" />
+    <ClCompile Include="..\..\src\smPseudoTest.c" />
+    <ClCompile Include="..\..\src\smPseudoTestAct.c" />
+    <ClCompile Include="..\..\src\smTest.c" />
+    <ClCompile Include="..\..\src\test_smPseudostate.c" />
+    <ClCompile Include="..\..\src\test_smPseudostateConditional.c" />
+    <ClCompile Include="..\..\src\test_smTransition.c" />
+    <ClCompile Include="..\..\src\test_smTransitionWoutUnitrazer.c" />
+    <ClCompile Include="..\..\stub\mocks\Mockrkhassert.c" />
+    <ClCompile Include="..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
+    <ClCompile Include="..\..\stub\mocks\MocksmTestAct.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhsma.c" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\..\..\utils\unitrazer\unitrazer.lib" />
+    <Library Include="..\..\..\..\..\third-party\unitrazer\unitrazer.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

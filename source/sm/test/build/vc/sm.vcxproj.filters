@@ -17,9 +17,6 @@
     <Filter Include="Source Files\tests\utils">
       <UniqueIdentifier>{c7443001-d76f-4ed1-8681-768fa28aa2b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\tests\utils\bsp">
-      <UniqueIdentifier>{12503d36-45e5-4343-b7bb-5908aaff77f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\tests\utils\unitrazer">
       <UniqueIdentifier>{2581b21b-1888-468c-987c-4db2f47cf0b9}</UniqueIdentifier>
     </Filter>
@@ -34,99 +31,99 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\portable\test\rkhport.c">
+    <ClCompile Include="..\..\src\common.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\smPseudoConditionalTest.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\smPseudoTest.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\smPseudoTestAct.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\smTest.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_smPseudostate.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_smPseudostateConditional.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_smTransition.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_smTransitionWoutUnitrazer.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhsma.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mockrkhassert.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\MocksmPseudoConditionalTestAct.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\all_tests.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_smPseudostate_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_smPseudostateConditional_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_smTransition_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_smTransitionWoutUnitrazer_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\rkhsm.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\trc\src\rkhtrc_filter.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\trc\src\rkhtrc_record.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\trc\src\rkhtrc_stream.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\fwk\src\rkhfwk_bittbl.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\portable\test\rkhport.c">
       <Filter>Source Files\rkh\port</Filter>
     </ClCompile>
-    <ClCompile Include="..\bsp.c">
-      <Filter>Source Files\tests\utils\bsp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhsm.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\tzparse.c">
+    <ClCompile Include="..\..\..\..\..\third-party\unitrazer\tzparse.c">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\utils\unitrazer\unitrazer.c">
+    <ClCompile Include="..\..\..\..\..\third-party\unitrazer\unitrazer.c">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_filter.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_record.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc_stream.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhfwk_bittbl.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\MocksmTestAct.c">
+    <ClCompile Include="..\..\stub\mocks\MocksmTestAct.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mockrkhassert.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\MocksmPseudoConditionalTestAct.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostate_runner.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smPseudostateConditional_runner.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smTransition_runner.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_smTransitionWoutUnitrazer_runner.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\common.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\smPseudoConditionalTest.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\smPseudoTest.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\smPseudoTestAct.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\smTest.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_smPseudostate.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_smPseudostateConditional.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_smTransition.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_smTransitionWoutUnitrazer.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhsma.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
-      <Filter>Source Files\tests\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
-      <Filter>Source Files\tests\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
-      <Filter>Source Files\tests\tool</Filter>
+    <ClCompile Include="..\..\..\..\..\third-party\unitrazer\tzlink.c">
+      <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\..\..\utils\unitrazer\unitrazer.lib">
+    <Library Include="..\..\..\..\..\third-party\unitrazer\unitrazer.lib">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
     </Library>
   </ItemGroup>

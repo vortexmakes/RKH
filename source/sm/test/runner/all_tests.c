@@ -52,7 +52,7 @@
 
 #include "rkh.h"
 #include "unity_fixture.h"
-#include "bsp.h"
+#include "tzlink.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -86,7 +86,7 @@ main(int argc, char *argv[])
 #else
     nArgs = 1;
 #endif
-	bsp_init(argc, argv);
+	tzlink_open(argc, argv);
 	UnityMain(nArgs, args, runAllTests);
     getchar();
 }

@@ -22,37 +22,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\test_rkhmempool.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\all_tests.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test_runners\test_rkhmempool_runner.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhmempool.c">
+    <ClCompile Include="..\..\..\src\rkhmempool.c">
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhassert.c">
+    <ClCompile Include="..\..\runner\test_rkhmempool_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\all_tests.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhassert.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhport.c">
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhport.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_filter.c">
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhtrc_filter.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_record.c">
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhtrc_record.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+    <ClCompile Include="..\..\src\test_rkhmempool.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
       <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
       <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
       <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
   </ItemGroup>

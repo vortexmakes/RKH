@@ -30,10 +30,10 @@
  */
 
 /**
- *  \file       bsp.c
+ *  \file       tzlink.c
  *  \ingroup    Test
  *
- *  \brief      BSP for 80x86 OS win32
+ *  \brief      RKH trace & Trazer comunication link.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -43,7 +43,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Darío Baliña  dariosb@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -51,7 +51,7 @@
 #include <conio.h>
 #include "rkh.h"
 #include "unity.h"
-#include "bsp.h"
+#include "tzlink.h"
 #include "unitrazer.h"
 #include "tzparse.h"
 #include "rkhfwk_sched.h"
@@ -149,7 +149,6 @@ rkh_trc_flush(void)
             {
                 tzparser_exec(*blk++);
             }
-
             break;
         }
         else
@@ -161,7 +160,7 @@ rkh_trc_flush(void)
 #endif
 
 void
-bsp_init(int argc, char *argv[])
+tzlink_open(int argc, char *argv[])
 {
     (void)argc;
     (void)argv;

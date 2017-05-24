@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__TEST__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);RKH_CFG_SMA_SM_CONST=RKH_ENABLED;__UNITRAZER_LIB__</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\utils\bsp\platform\80x86\vc;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\utils\unitrazer;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\utrazer;$(ProjectDir)..\..\..\..\stub\mocks;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\..\..\..\..\source\include;$(ProjectDir)..\..\..\..\..\..\source\portable\test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\fwk\inc;$(ProjectDir)..\..\..\..\mempool\inc;$(ProjectDir)..\..\..\..\queue\inc;$(ProjectDir)..\..\..\..\sm\inc;$(ProjectDir)..\..\..\..\sma\inc;$(ProjectDir)..\..\..\..\tmr\inc;$(ProjectDir)..\..\..\..\trc\inc;$(ProjectDir)..\..\..\..\portable\test;$(ProjectDir)..\..\..\..\..\..\..\source\include;$(ProjectDir)..\..\..\..\..\third-party\unitrazer;$(ProjectDir)..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src;$(ProjectDir)..\..\..\..\..\third-party\ceedling\vendor\unity\src;$(ProjectDir)..\..\..\..\..\third-party\ceedling\vendor\cmock\src;$(ProjectDir)..\..\inc;$(ProjectDir)..\..\stub\mocks</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -79,19 +79,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\source\rkhqueue.c" />
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
-    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhassert.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhport.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhsma_prio.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhsma_sync.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_filter.c" />
-    <ClCompile Include="..\..\..\..\stub\mocks\Mock_rkhtrc_record.c" />
-    <ClCompile Include="..\..\..\..\test_rkhqueue.c" />
-    <ClCompile Include="..\..\..\..\test_runners\all_tests.c" />
-    <ClCompile Include="..\..\..\..\test_runners\test_rkhqueue_runner.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
+    <ClCompile Include="..\..\..\src\rkhqueue.c" />
+    <ClCompile Include="..\..\runner\all_tests.c" />
+    <ClCompile Include="..\..\runner\test_rkhqueue_runner.c" />
+    <ClCompile Include="..\..\src\test_rkhqueue.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhassert.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhport.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhsma_prio.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhsma_sync.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhtrc_filter.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhtrc_record.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

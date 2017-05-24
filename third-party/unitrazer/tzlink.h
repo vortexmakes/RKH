@@ -41,10 +41,10 @@
  *  \brief      BSP for 80x86 win32
  */
 
-#ifndef __BSP_H__
-#define __BSP_H__
+#ifndef __TZLINK_H__
+#define __TZLINK_H__
 
-void bsp_init(int argc, char *argv[]);
+void tzlink_open(int argc, char *argv[]);
 
 #endif
 /* ------------------------------ End of file ------------------------------ */

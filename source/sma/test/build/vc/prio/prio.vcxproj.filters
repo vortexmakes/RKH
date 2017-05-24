@@ -1,31 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\prio\test_rkhsma_prio.c">
-      <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\source\rkhsma_prio.c">
+    <ClCompile Include="..\..\..\..\src\rkhsma_prio.c">
       <Filter>rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\prio\test_runners\all_tests.c">
+    <ClCompile Include="..\..\..\prio\runner\all_tests.c">
       <Filter>test\runner</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\prio\test_runners\test_rkhsma_prio_runner.c">
+    <ClCompile Include="..\..\..\prio\runner\test_rkhsma_prio_runner.c">
       <Filter>test\runner</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhfwk_bittbl.c">
+    <ClCompile Include="..\..\..\prio\src\test_rkhsma_prio.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\prio\stub\mocks\Mock_rkhassert.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\prio\stub\mocks\Mock_rkhassert.c">
+    <ClCompile Include="..\..\..\prio\stub\mocks\Mock_rkhfwk_bittbl.c">
       <Filter>test\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
       <Filter>test\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
       <Filter>test\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
       <Filter>test\tool</Filter>
     </ClCompile>
   </ItemGroup>
