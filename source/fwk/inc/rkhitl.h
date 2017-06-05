@@ -92,19 +92,6 @@ extern "C" {
 
 /**
  *  \brief
- *	This macro expands to the binary representation of the RKH version.
- *
- *	The version number is composed as 0xABCC, where:
- *	the number A (1-digit) denoted the major revision, the number B (1-digit)
- *	denoted the minor revision, and the number C (2-digit) indicated the
- *	release number. For example, the code for 2.2.04 is 0x2204.
- *
- *  \releasedate 12/14/2016
- */
-#define RKH_VERSION_CODE            0x2406u
-
-/**
- *  \brief
  *  This macro retrieves a pointer to string describing the RKH version.
  *  For example, "2.2.04".
  */
