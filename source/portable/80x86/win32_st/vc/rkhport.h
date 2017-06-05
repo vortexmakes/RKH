@@ -49,14 +49,12 @@
 #include <windows.h>
 
 #include "rkhtype.h"
-#include "rkhrq.h"
-#include "rkhmp.h"
-#include "rkhrdy.h"
-
+#include "rkhqueue.h"
+#include "rkhmempool.h"
+#include "rkhsma_prio.h"
 
 extern CRITICAL_SECTION csection;
 extern HANDLE sma_is_rdy;
-extern RKH_RG_T rkhrg;
 
 
 const char *rkh_get_port_version( void );
@@ -169,11 +167,11 @@ const char *rkh_get_port_desc( void );
 #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
 
 
-#define RKH_EQ_TYPE              		RKH_RQ_T
+#define RKH_EQ_TYPE              		RKH_QUEUE_T
 #define RKH_OSSIGNAL_TYPE
 #define RKH_THREAD_TYPE
 
-
+#if 0
 #define RKH_SMA_BLOCK( sma ) 									\
 				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
 
@@ -186,6 +184,7 @@ const char *rkh_get_port_desc( void );
 
 #define RKH_WAIT_FOR_EVENTS() 								\
 			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
+#endif
 
 
 #if (defined _MSC_VER)

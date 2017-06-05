@@ -43,6 +43,7 @@
 
 
 #include "rkh.h"
+#include "rkhfwk_dynevt.h"
 
 
 RKH_MODULE_NAME( rkhport )
@@ -52,7 +53,6 @@ RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" )
 
 CRITICAL_SECTION csection;		/* Win32 critical section */
 HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
-RKH_RG_T rkhrg;					/* ready group of SMAs */
 
 extern rui8_t running;
 
@@ -72,6 +72,25 @@ rkh_get_port_desc( void )
 	return RKH_MODULE_GET_DESC();
 }
 
+void 
+rkh_sma_block(RKH_SMA_T *const me)
+{
+    RKH_ASSERT(me->equeue.qty != 0);
+    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE));
+}
+
+void 
+rkh_sma_setReady(RKH_SMA_T *const me)
+{
+    rkh_smaPrio_setReady(RKH_SMA_ACCESS_CONST(me, prio));
+    SetEvent( sma_is_rdy );
+}
+
+void 
+rkh_sma_setUnready(RKH_SMA_T *const me)
+{
+    rkh_smaPrio_setUnready(RKH_SMA_ACCESS_CONST(me, prio));
+}
 
 void 
 rkh_fwk_init( void )
@@ -96,9 +115,9 @@ rkh_fwk_enter( void )
     while( running )
 	{
         RKH_ENTER_CRITICAL( dummy );
-        if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
+        if( rkh_smaPrio_isReady() ) 
 		{
-			RKH_RDY_FIND_HIGHEST( rkhrg, prio );
+			prio = rkh_smaPrio_findHighest();
             RKH_EXIT_CRITICAL( dummy );
 
             sma = rkh_sptbl[ prio ];
@@ -126,14 +145,14 @@ rkh_fwk_exit( void )
 
 
 void 
-rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_RQNE_T qsize, 
+rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize, 
 						void *stks, rui32_t stksize )
 {
     ( void )stks;
     ( void )stksize;
 	RKH_SR_ALLOC();
 
-	rkh_rq_init( &sma->equeue, (const void **)qs, qsize, sma );
+	rkh_queue_init( &sma->equeue, (const void **)qs, qsize, sma );
 	rkh_sma_register( sma );
     rkh_sm_init( (RKH_SM_T *)sma );
 	RKH_TR_SMA_ACT( sma, RKH_GET_PRIO(sma), qsize );
