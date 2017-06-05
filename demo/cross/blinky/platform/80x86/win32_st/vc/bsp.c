@@ -45,6 +45,8 @@
 #include "bsp.h"
 #include "blinky.h"
 #include "rkh.h"
+#include "rkhfwk_dynevt.h"
+#include "rkhfwk_sched.h"
 
 #include <conio.h>
 #include <stdlib.h>
@@ -206,7 +208,7 @@ rkh_hook_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
 	RKH_TRC_FLUSH();
-    RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
+//    RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
 }
 
 

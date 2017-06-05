@@ -53,8 +53,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\;$(ProjectDir)..\..\..\..\..\..\..\..\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC08__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\..\source\fwk\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\mempool\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\queue\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\sm\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\sma\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\tmr\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\trc\inc;$(ProjectDir)..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\;$(ProjectDir)..\;$(ProjectDir)..\..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -90,36 +90,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\fwk\src\rkhfwk_bittbl.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\fwk\src\rkhfwk_dynevt.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\fwk\src\rkhfwk_evtpool.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\fwk\src\rkhfwk_sched.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\fwk\src\rkhfwk_version.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\mempool\src\rkhmempool.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\rkhport.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\queue\src\rkhqueue.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\sma\src\rkhsma.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\sma\src\rkhsma_prio.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\sm\src\rkhsm.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\tmr\src\rkhtmr.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\trc\src\rkhtrc_filter.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\trc\src\rkhtrc_record.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\source\trc\src\rkhtrc_stream.c" />
     <ClCompile Include="..\..\..\..\..\blinky.c" />
     <ClCompile Include="..\..\..\..\..\main.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkh.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhdyn.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhmp.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc08\rkhport.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhrq.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhs.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhsma.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtbl.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtim.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\source\rkhtrc.c" />
     <ClCompile Include="..\bsp.c" />
     <ClCompile Include="..\tcptrc.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhassert.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhdef.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhevt.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhmp.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhplat.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrdy.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhrq.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhs.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtim.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtrc.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhtype.h" />
     <ClInclude Include="..\..\..\..\..\blinky.h" />
-    <ClInclude Include="..\..\..\..\..\rkhcfg.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\source\include\rkhitl.h" />
     <ClInclude Include="..\bsp.h" />
     <ClInclude Include="..\tcptrc.h" />
   </ItemGroup>
