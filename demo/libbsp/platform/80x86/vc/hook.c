@@ -51,7 +51,7 @@
 #include <conio.h>
 
 #include "rkh.h"
-#include "bsp.h"
+#include "bsp_common.h"
 
 RKH_THIS_MODULE
 
@@ -60,7 +60,7 @@ RKH_THIS_MODULE
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static DWORD tick_msec;
+static DWORD tickMsec;
 
 /* ----------------------- Local function prototypes ----------------------- */
 static DWORD WINAPI isr_tmr_thread(LPVOID par);
@@ -69,26 +69,26 @@ static DWORD WINAPI isr_kbd_thread(LPVOID par);
 /* ---------------------------- Local functions ---------------------------- */
 static
 DWORD WINAPI
-isr_tmr_thread(LPVOID par)      /* Win32 thread to emulate timer ISR */
+isr_tmrThread(LPVOID par)      /* Win32 thread to emulate timer ISR */
 {
     (void)par;
     while (rkhport_fwk_is_running())
     {
         RKH_TIM_TICK(0);
-        Sleep(tick_msec);
+        Sleep(tickMsec);
     }
     return 0;
 }
 
 static
 DWORD WINAPI
-isr_kbd_thread(LPVOID par)      /* Win32 thread to emulate keyboard ISR */
+isr_kbdThread(LPVOID par)      /* Win32 thread to emulate keyboard ISR */
 {
     (void)par;
 
     while (rkhport_fwk_is_running())
     {
-        bsp_key_parser( _getch() );
+        bsp_keyParser(_getch());
     }
     return 0;
 }
@@ -97,21 +97,21 @@ isr_kbd_thread(LPVOID par)      /* Win32 thread to emulate keyboard ISR */
 void
 rkh_hook_start(void)
 {
-    DWORD thtmr_id, thkbd_id;
-    HANDLE hth_tmr, hth_kbd;
+    DWORD thtmrId, thkbdId;
+    HANDLE hthTmr, hthKbd;
 
     /* set the desired tick rate */
-    tick_msec = RKH_TICK_RATE_MS;
+    tickMsec = RKH_TICK_RATE_MS;
 
     /* create the ISR timer thread */
-    hth_tmr = CreateThread(NULL, 1024, &isr_tmr_thread, 0, 0, &thtmr_id);
-    RKH_ASSERT(hth_tmr != (HANDLE)0);
-    SetThreadPriority(hth_tmr, THREAD_PRIORITY_TIME_CRITICAL);
+    hthTmr = CreateThread(NULL, 1024, &isr_tmrThread, 0, 0, &thtmrId);
+    RKH_ASSERT(hthTmr != (HANDLE)0);
+    SetThreadPriority(hthTmr, THREAD_PRIORITY_TIME_CRITICAL);
 
     /* create the ISR keyboard thread */
-    hth_kbd = CreateThread(NULL, 1024, &isr_kbd_thread, 0, 0, &thkbd_id);
-    RKH_ASSERT(hth_kbd != (HANDLE)0);
-    SetThreadPriority(hth_kbd, THREAD_PRIORITY_NORMAL);
+    hthKbd = CreateThread(NULL, 1024, &isr_kbdThread, 0, 0, &thkbdId);
+    RKH_ASSERT(hthKbd != (HANDLE)0);
+    SetThreadPriority(hthKbd, THREAD_PRIORITY_NORMAL);
 }
 
 void
@@ -123,11 +123,11 @@ rkh_hook_exit(void)
 void
 rkh_hook_timetick(void)
 {
-    bsp_time_tick();
+    bsp_timeTick();
 }
 
 void
-rkh_hook_idle(void)                 /* called within critical section */
+rkh_hook_idle(void)             /* called within critical section */
 {
     RKH_EXIT_CRITICAL(dummy);
     RKH_TRC_FLUSH();

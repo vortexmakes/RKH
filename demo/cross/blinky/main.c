@@ -18,7 +18,7 @@
 #include "rkh.h"
 #include "rkhfwk_sched.h"
 #include "blinky.h"
-#include "blinky_bsp.h"
+#include "bsp.h"
 
 
 /* ----------------------------- Local macros ------------------------------ */

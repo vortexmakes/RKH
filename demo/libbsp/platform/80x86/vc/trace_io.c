@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       trace.c
+ *  \file       trace_io.c
  *  \brief      Socket TCP/IP support for 80x86 OS win32
  *
  *  \ingroup    bsp
@@ -54,8 +54,8 @@
 #include <stdio.h>
 #include <time.h>
 #include "getopt.h"
-#include "trace_cfg.h"
-#include "trace_tcp.h"
+#include "trace_io_cfg.h"
+#include "trace_io_tcp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -67,13 +67,13 @@
  */
 #define BSP_TS_RATE_HZ              CLOCKS_PER_SEC
 
-#define TRACE_CFG_CONSOLE_OPTIONS "t:f:p:h"
+#define TRACE_CFG_CONSOLE_OPTIONS   "t:f:p:h"
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static char *opts = (char *)TRACE_CFG_CONSOLE_OPTIONS;
-static const char *help_message =
+static const char *helpMessage =
 {
     "\nOption usage:\n"
     "\t -f File name for binary trace output\n"
@@ -82,7 +82,7 @@ static const char *help_message =
     "\t -h (help)\n"
 };
 
-static TRACE_CFG_ST trace_cfg =
+static TRACE_CFG_ST config =
 {
     "", TCP_TRC_IP_ADDR_DFT, TCP_TRC_PORT_DFT
 };
@@ -94,7 +94,7 @@ static SOCKET tsock;
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
-set_trace_config(int argc, char **argv)
+trace_io_setConfig(int argc, char **argv)
 {
     int c;
 
@@ -102,20 +102,20 @@ set_trace_config(int argc, char **argv)
         switch (c)
         {
             case 'f':
-                strncpy(trace_cfg.ftbin_name, optarg, FTBIN_NAME_STR_LEN);
+                strncpy(config.ftbinName, optarg, FTBIN_NAME_STR_LEN);
                 break;
 
             case 't':
-                strncpy(trace_cfg.tcp_ipaddr, optarg, TCP_IPADDR_STR_LEN);
+                strncpy(config.tcpIpAddr, optarg, TCP_IPADDR_STR_LEN);
                 break;
 
             case 'p':
-                trace_cfg.tcp_port= (short)atoi(optarg);
+                config.tcpPort= (short)atoi(optarg);
                 break;
 
             case '?':
             case 'h':
-                printf(help_message);
+                printf(helpMessage);
                 break;
         }
 }
@@ -125,19 +125,19 @@ rkh_trc_open(void)
 {
     rkh_trc_init();
 
-    if (strlen(trace_cfg.ftbin_name) != 0)
+    if (strlen(config.ftbinName) != 0)
     {
-        if ((ftbin = fopen(trace_cfg.ftbin_name, "w+b")) == NULL)
+        if ((ftbin = fopen(config.ftbinName, "w+b")) == NULL)
         {
-            printf("Can't open trace file %s\n", trace_cfg.ftbin_name);
+            printf("Can't open trace file %s\n", config.ftbinName);
             exit(EXIT_FAILURE);
         }
     }
 
-    if (trace_tcp_open(trace_cfg.tcp_port, trace_cfg.tcp_ipaddr, &tsock) < 0)
+    if (trace_io_tcp_open(config.tcpPort, config.tcpIpAddr, &tsock) < 0)
     {
         printf("Can't open socket %s:%u\n",
-               trace_cfg.tcp_ipaddr, trace_cfg.tcp_port);
+               config.tcpIpAddr, config.tcpPort);
         exit(EXIT_FAILURE);
     }
 
@@ -152,7 +152,7 @@ rkh_trc_close(void)
         fclose(ftbin);
     }
 
-    trace_tcp_close(tsock);
+    trace_io_tcp_close(tsock);
 }
 
 RKH_TS_T
@@ -183,7 +183,7 @@ rkh_trc_flush(void)
                 fwrite(blk, 1, nbytes, ftbin);
             }
 
-            trace_tcp_send(tsock, (char *)blk, nbytes);
+            trace_io_tcp_send(tsock, (char *)blk, nbytes);
         }
         else
         {

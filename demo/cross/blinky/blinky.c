@@ -18,7 +18,7 @@
 #include "rkh.h"
 #include "rkhfwk_dynevt.h"
 #include "blinky.h"
-#include "blinky_bsp.h"
+#include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 #define LED_OFF_TIME            RKH_TIME_SEC(2)
@@ -99,7 +99,7 @@ blinky_ledOn(Blinky *const me, RKH_EVT_T *pe)
     (void)pe;
 
     RKH_TMR_ONESHOT(&me->timer, RKH_UPCAST(RKH_SMA_T, me), LED_ON_TIME);
-    bsp_led_on();
+    bsp_ledOn();
     ++me->cnt;
 }
 
@@ -110,7 +110,7 @@ blinky_ledOff(Blinky *const me, RKH_EVT_T *pe)
     (void)pe;
 
     RKH_TMR_ONESHOT(&me->timer, RKH_UPCAST(RKH_SMA_T, me), LED_OFF_TIME);
-    bsp_led_off();
+    bsp_ledOff();
 }
 
 /* ............................. Entry actions ............................. */

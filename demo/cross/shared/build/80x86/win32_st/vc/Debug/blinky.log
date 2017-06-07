@@ -1,0 +1,40 @@
+﻿Compilación iniciada a las 07/06/2017 14:42:08.
+     1>Proyecto "h:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\blinky.vcxproj" en el nodo 2 (Build destinos).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\fwk\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\mempool\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\queue\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\sm\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\sma\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\tmr\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\trc\inc /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\ /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\ /Ih:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\..\..\..\..\..\..\libbsp\platform\80x86\vc /ZI /nologo /W4 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D __W32STVC__ /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /wd4127 /analyze- /errorReport:prompt ..\..\..\..\..\..\..\source\fwk\src\rkhfwk_bittbl.c ..\..\..\..\..\..\..\source\fwk\src\rkhfwk_dynevt.c ..\..\..\..\..\..\..\source\fwk\src\rkhfwk_evtpool.c ..\..\..\..\..\..\..\source\fwk\src\rkhfwk_sched.c ..\..\..\..\..\..\..\source\fwk\src\rkhfwk_version.c ..\..\..\..\..\..\..\source\mempool\src\rkhmempool.c ..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\rkhport.c ..\..\..\..\..\..\..\source\queue\src\rkhqueue.c ..\..\..\..\..\..\..\source\sma\src\rkhsma.c ..\..\..\..\..\..\..\source\sma\src\rkhsma_prio.c ..\..\..\..\..\..\..\source\sm\src\rkhsm.c ..\..\..\..\..\..\..\source\tmr\src\rkhtmr.c ..\..\..\..\..\..\..\source\trc\src\rkhtrc_filter.c ..\..\..\..\..\..\..\source\trc\src\rkhtrc_record.c ..\..\..\..\..\..\..\source\trc\src\rkhtrc_stream.c ..\..\..\..\..\..\libbsp\platform\80x86\vc\assert.c ..\..\..\..\..\..\libbsp\platform\80x86\vc\bsp_blinky.c ..\..\..\..\..\..\libbsp\platform\80x86\vc\getopt.c ..\..\..\..\..\..\libbsp\platform\80x86\vc\hook.c ..\..\..\..\..\..\libbsp\platform\80x86\vc\trace_io.c ..\..\..\..\..\..\libbsp\platform\80x86\vc\trace_io_tcp.c ..\..\..\..\blinky.c ..\..\..\..\main.c
+         main.c
+     1>h:\vortex\rkh\demo\cross\shared\main.c(71): warning C4013: 'rkh_fwk_enter' sin definir; se supone que extern devuelve como resultado int
+         blinky.c
+     1>c1 : fatal error C1083: No se puede abrir el archivo código fuente: '..\..\..\..\blinky.c': No such file or directory
+         trace_io_tcp.c
+         trace_io.c
+         hook.c
+     1>h:\vortex\rkh\demo\libbsp\platform\80x86\vc\hook.c(91): warning C4013: 'bsp_keyParser' sin definir; se supone que extern devuelve como resultado int
+     1>h:\vortex\rkh\demo\libbsp\platform\80x86\vc\hook.c(126): warning C4013: 'bsp_timeTick' sin definir; se supone que extern devuelve como resultado int
+         getopt.c
+         bsp_blinky.c
+     1>h:\vortex\rkh\demo\libbsp\platform\80x86\vc\bsp_blinky.c(54): fatal error C1083: No se puede abrir el archivo incluir: 'blinky.h': No such file or directory
+         assert.c
+         rkhtrc_stream.c
+         rkhtrc_record.c
+         rkhtrc_filter.c
+         rkhtmr.c
+         rkhsm.c
+         rkhsma_prio.c
+         rkhsma.c
+         rkhqueue.c
+         rkhport.c
+         rkhmempool.c
+         rkhfwk_version.c
+         rkhfwk_sched.c
+         Generando código...
+         Compilando...
+         rkhfwk_evtpool.c
+         rkhfwk_dynevt.c
+         rkhfwk_bittbl.c
+         Generando código...
+     1>Compilación del proyecto terminada "h:\vortex\rkh\demo\cross\shared\build\80x86\win32_st\vc\blinky.vcxproj" (Build destinos) -- ERROR.
+
+ERROR al compilar.
+
+Tiempo transcurrido 00:00:09.99
