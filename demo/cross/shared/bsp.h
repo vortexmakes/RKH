@@ -31,7 +31,7 @@
 
 /**
  *  \file       bsp.h
- *  \brief      BSP for 80x86 OS win32 Blinky Demo
+ *  \brief      BSP for 80x86 OS win32 Shared Demo
  *
  *  \ingroup    bsp
  */
@@ -52,6 +52,7 @@
 #define __BSP_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
 #include "bsp_common.h"
 
 /* ---------------------- External C language linkage ---------------------- */

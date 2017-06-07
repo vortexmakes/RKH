@@ -16,6 +16,8 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "rkhfwk_dynevt.h"
+#include "rkhfwk_sched.h"
 #include "bsp.h"
 #include "shared.h"
 #include "server.h"
@@ -86,7 +88,7 @@ RKH_SMA_DEF_PTR(server);
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static RKH_RQ_T queueReq;
+static RKH_QUEUE_T queueReq;
 static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -109,8 +111,8 @@ server_init(Server *const me)
     RKH_TR_FWK_SIG(PAUSE);
     RKH_TR_FWK_SIG(TERM);
 
-    rkh_rq_init(&queueReq, (const void **)queueReqSto, MAX_SIZEOF_QREQ, 
-                CSMA(0));
+    rkh_queue_init(&queueReq, (const void **)queueReqSto, MAX_SIZEOF_QREQ, 
+                CV(0));
 
     RKH_CAST(Server, me)->ntot = 0;
     for (cn = 0; cn < NUM_CLIENTS; ++cn)

@@ -31,7 +31,7 @@
 
 /**
  *  \file       bsp.h
- *  \brief      BSP for 80x86 OS win32
+ *  \brief      BSP for 80x86 OS win32 Blinky Demo
  *
  *  \ingroup    bsp
  */
@@ -52,6 +52,8 @@
 #define __BSP_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include "bsp_common.h"
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
@@ -62,7 +64,6 @@ extern "C" {
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-void bsp_init(int argc, char *argv[]);
 void bsp_ledOn(void);
 void bsp_ledOff(void);
 

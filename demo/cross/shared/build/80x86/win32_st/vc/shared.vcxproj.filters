@@ -64,7 +64,7 @@
     <ClCompile Include="..\..\..\..\server.c" />
     <ClCompile Include="..\..\..\..\main.c" />
     <ClCompile Include="..\..\..\..\client.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\bsp_blinky.c">
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\bsp_shared.c">
       <Filter>bsp</Filter>
     </ClCompile>
   </ItemGroup>
