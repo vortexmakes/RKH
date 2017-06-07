@@ -1,5 +1,4 @@
-/**
- * \cond
+/*
  *  --------------------------------------------------------------------------
  *
  *                                Framework RKH
@@ -25,30 +24,44 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : tcptrc.c
- *	Last updated for version : v2.4.04
- *	By                       : DB
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- *  \file
- *  \ingroup    prt
- *
- *  \brief      Socket TCP/IP support for 80x86 OS win32
+ *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail:         francuccilea@gmail.com
+ *  ---------------------------------------------------------------------------
  */
 
-#include "tcptrc.h"
-#include "rkh.h"
+/**
+ *  \file       tcptrc.c
+ *  \brief      Socket TCP/IP support for 80x86 OS win32
+ *
+ *  \ingroup    bsp
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2017.04.14  DaBa  v2.4.05  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
+ */
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include <stdio.h>
+#include "trace_tcp.h"
+#include "rkh.h"
 
-#if RKH_CFG_TRC_EN == 1
-
+/* ----------------------------- Local macros ------------------------------ */
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
 int
-tcp_trace_open(unsigned short port, char *srv_ip, SOCKET *ps)
+trace_tcp_open(unsigned short port, char *srv_ip, SOCKET *ps)
 {
     WORD wVersionRequested;
     WSADATA wsaData;
@@ -97,23 +110,24 @@ tcp_trace_open(unsigned short port, char *srv_ip, SOCKET *ps)
 }
 
 void
-tcp_trace_send(SOCKET s, const char *buf, int len)
+trace_tcp_send(SOCKET s, const char *buf, int len)
 {
     send(s, buf, len, 0);
 }
 
 int
-tcp_trace_recv(SOCKET s, char *buf, int len)
+trace_tcp_recv(SOCKET s, char *buf, int len)
 {
     return recv(s, buf, len, 0);
 }
 
 void
-tcp_trace_close(SOCKET s)
+trace_tcp_close(SOCKET s)
 {
     closesocket(s);
     WSACleanup();
 }
 
-#endif
+/* ------------------------------ File footer ------------------------------ */
+
 /* ------------------------------ End of file ------------------------------ */

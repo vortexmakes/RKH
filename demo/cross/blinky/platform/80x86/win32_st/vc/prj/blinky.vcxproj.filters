@@ -3,8 +3,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\blinky.c" />
     <ClCompile Include="..\..\..\..\..\main.c" />
-    <ClCompile Include="..\bsp.c" />
-    <ClCompile Include="..\tcptrc.c" />
     <ClCompile Include="..\..\..\..\..\..\..\..\source\fwk\src\rkhfwk_bittbl.c">
       <Filter>rkh</Filter>
     </ClCompile>
@@ -50,15 +48,31 @@
     <ClCompile Include="..\..\..\..\..\..\..\..\source\sma\src\rkhsma_prio.c">
       <Filter>rkh</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\blinky.h" />
-    <ClInclude Include="..\bsp.h" />
-    <ClInclude Include="..\tcptrc.h" />
+    <ClCompile Include="..\..\..\..\..\..\..\libbsp\platform\80x86\vc\trace_io.c">
+      <Filter>bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\libbsp\platform\80x86\vc\trace_tcp.c">
+      <Filter>bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\libbsp\platform\80x86\vc\hook.c">
+      <Filter>bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\libbsp\platform\80x86\vc\assert.c">
+      <Filter>bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\libbsp\platform\80x86\vc\blinky_bsp.c">
+      <Filter>bsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\libbsp\platform\80x86\vc\getopt.c">
+      <Filter>bsp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="rkh">
       <UniqueIdentifier>{da2fd889-7548-4bad-8240-8c34034e9a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bsp">
+      <UniqueIdentifier>{d13793e5-b7aa-446b-aff6-ffe09fcdbce0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

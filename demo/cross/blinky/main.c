@@ -17,8 +17,9 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "rkhfwk_sched.h"
-#include "bsp.h"
 #include "blinky.h"
+#include "blinky_bsp.h"
+
 
 /* ----------------------------- Local macros ------------------------------ */
 #define QSTO_SIZE           4

@@ -18,7 +18,7 @@
 #include "rkh.h"
 #include "rkhfwk_dynevt.h"
 #include "blinky.h"
-#include "bsp.h"
+#include "blinky_bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 #define LED_OFF_TIME            RKH_TIME_SEC(2)
