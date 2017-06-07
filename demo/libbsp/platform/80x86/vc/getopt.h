@@ -31,7 +31,7 @@
 
 /**
  *  \file       getopt.h
- *  \brief      
+ *  \brief
  *
  *  \ingroup    bsp
  */
@@ -64,8 +64,8 @@ extern int optind;
 extern char *optarg;
 
 /* -------------------------- Function prototypes -------------------------- */
-int getopt( int argc, char **argv, char *opts );
-char * get_next( char **argv );
+int getopt(int argc, char **argv, char *opts);
+char * get_next(char **argv);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

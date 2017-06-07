@@ -120,7 +120,6 @@ set_trace_config(int argc, char **argv)
         }
 }
 
-
 void
 rkh_trc_open(void)
 {
