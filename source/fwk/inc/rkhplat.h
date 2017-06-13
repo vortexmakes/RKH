@@ -63,12 +63,12 @@
     #include "../../portable/80x86/linux_st/gnu/rkhport.h"
 #endif
 
-#ifdef __CFV1CW63__
-    #include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
+#ifdef __S08CW63__
+    #include "..\..\portable\s08\rkhs\cw6_3\rkhport.h"
 #endif
 
-#ifdef __S08CW63__
-    #include "..\portable\s08\rkhs\cw6_3\rkhport.h"
+#ifdef __CFV1CW63__
+    #include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
 #endif
 
 #ifdef __ARM_CM3CRED__

@@ -53,7 +53,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\fwk\inc;$(ProjectDir)..\..\..\..\..\..\..\source\mempool\inc;$(ProjectDir)..\..\..\..\..\..\..\source\queue\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sm\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sma\inc;$(ProjectDir)..\..\..\..\..\..\..\source\tmr\inc;$(ProjectDir)..\..\..\..\..\..\..\source\trc\inc;$(ProjectDir)..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\..\libbsp\platform\80x86\win\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\fwk\inc;$(ProjectDir)..\..\..\..\..\..\..\source\mempool\inc;$(ProjectDir)..\..\..\..\..\..\..\source\queue\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sm\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sma\inc;$(ProjectDir)..\..\..\..\..\..\..\source\tmr\inc;$(ProjectDir)..\..\..\..\..\..\..\source\trc\inc;$(ProjectDir)..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\..\libbsp\common;$(ProjectDir)..\..\..\..\..\..\libbsp\platform\80x86\win\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
