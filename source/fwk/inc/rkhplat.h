@@ -59,6 +59,10 @@
     #include "..\..\portable\80x86\win32_st\vc\rkhport.h"
 #endif
 
+#ifdef __W32MTVC__
+    #include "..\..\portable\80x86\win32_mt\vc\rkhport.h"
+#endif
+
 #ifdef __S08CW63__
     #include "..\portable\s08\rkhs\cw6_3\rkhport.h"
 #endif
@@ -81,10 +85,6 @@
 
 #ifdef __ARM_CM0CW10__
     #include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkhport.h"
-#endif
-
-#ifdef __W32MTVC__
-    #include "..\..\portable\80x86\win32_mt\vc\rkhport.h"
 #endif
 
 #ifdef __UCOS_V3_03_01__
