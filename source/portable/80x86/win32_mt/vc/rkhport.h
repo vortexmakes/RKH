@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhport.c
- *  \brief      Visual Studio Single-Thread port (win32)
+ *  \brief      Visual Studio Multi-Thread port (win32)
  *
  *  \ingroup    port
  */

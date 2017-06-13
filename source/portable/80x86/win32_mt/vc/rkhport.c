@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhport.c
- *  \brief      Visual Studio Single-Thread port (win32)
+ *  \brief      Visual Studio Multi-Thread port (win32)
  *
  *  \ingroup    port
  */
@@ -60,7 +60,7 @@
 /* ------------------------------- Constants ------------------------------- */
 RKH_MODULE_NAME(rkhport)
 RKH_MODULE_VERSION(rkhport, 1.00)
-RKH_MODULE_DESC(rkhport, "Windows 32-bits (single thread)")
+RKH_MODULE_DESC(rkhport, "Windows 32-bits (multi thread)")
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
