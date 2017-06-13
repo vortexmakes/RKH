@@ -1,80 +1,92 @@
-/**
- * \cond
+/*
  *  --------------------------------------------------------------------------
  *
  *                                Framework RKH
  *                                -------------
  *
- * 	          State-machine framework for reactive embedded systems            
- * 	        
- * 	                    Copyright (C) 2010 Leandro Francucci.
- * 	        All rights reserved. Protected by international copyright laws.
+ *            State-machine framework for reactive embedded systems
+ *
+ *                      Copyright (C) 2010 Leandro Francucci.
+ *          All rights reserved. Protected by international copyright laws.
  *
  *
- * 	RKH is free software: you can redistribute it and/or modify it under the 
- * 	terms of the GNU General Public License as published by the Free Software 
- * 	Foundation, either version 3 of the License, or (at your option) any 
- * 	later version.
+ *  RKH is free software: you can redistribute it and/or modify it under the
+ *  terms of the GNU General Public License as published by the Free Software
+ *  Foundation, either version 3 of the License, or (at your option) any
+ *  later version.
  *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  *  more details.
  *
- *  You should have received a copy of the GNU General Public License along 
+ *  You should have received a copy of the GNU General Public License along
  *  with RKH, see copying.txt file.
  *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : rkhport.c
- *	Last updated for version : v2.4.04
- *	By                       : DB
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- * 	\file
- * 	\ingroup 	prt
- *
- * 	\brief 		Freescale S08 MCU's, CodeWarrior v6.3 port
+ *  Contact information:
+ *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail:         francuccilea@gmail.com
+ *  ---------------------------------------------------------------------------
  */
 
+/**
+ *  \file       rkhport.c
+ *  \brief      Freescale CFV1 MCU's, CodeWarrior v6.3 port
+ *
+ *  \ingroup    port
+ */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2017.04.14  DaBa  v2.4.05  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "rkhfwk_dynevt.h"
 
+/* ----------------------------- Local macros ------------------------------ */
+/* (1) Function macro defines */
 
-RKH_MODULE_NAME( rkhport )
-RKH_MODULE_VERSION( rkhport, 1.00 )
-RKH_MODULE_DESC( rkhport, "Freescale Coldfire V1, CodeWarrior" )
-
-
-const 
-char *
-rkh_get_port_version( void )
-{
-	return RKH_MODULE_GET_VERSION();
-}
-
-
-const 
-char *
-rkh_get_port_desc( void )
-{
-	return RKH_MODULE_GET_DESC();
-}
-
+/* ------------------------------- Constants ------------------------------- */
+RKH_MODULE_NAME(rkhport)
+RKH_MODULE_VERSION(rkhport, 1.00)
+RKH_MODULE_DESC(rkhport, "Freescale ColdFire V1, CodeWarrior")
 
 #define CFV1_INTERRUPT_MASK	0x2700
 
-
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
 static unsigned short crit_cnt = 0;
 static unsigned short sr_mem;
 
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
+const
+char *
+rkhport_get_version(void)
+{
+    return RKH_MODULE_GET_VERSION();
+}
 
-void 
-rkh_enter_critical( void )
+const
+char *
+rkhport_get_desc(void)
+{
+    return RKH_MODULE_GET_DESC();
+}
+
+void
+rkhport_enter_critical(void)
 {
 	asm
 	{
@@ -93,9 +105,8 @@ rkh_enter_critical( void )
 	}
 }
 
-
-void 
-rkh_exit_critical( void )
+void
+rkhport_exit_critical(void)
 {
 	asm
 	{
@@ -113,4 +124,4 @@ rkh_exit_critical( void )
 	}
 }
 
-
+/* ------------------------------ File footer ------------------------------ */

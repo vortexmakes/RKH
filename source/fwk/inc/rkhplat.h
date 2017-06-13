@@ -68,7 +68,7 @@
 #endif
 
 #ifdef __CFV1CW63__
-    #include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
+    #include "..\..\portable\cfv1\rkhs\cw6_3\rkhport.h"
 #endif
 
 #ifdef __ARM_CM3CRED__
