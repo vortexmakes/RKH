@@ -51,10 +51,6 @@
 #define __RKHPLAT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#ifdef __CFV1CW63__
-    #include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
-#endif
-
 #ifdef __W32STVC__
     #include "..\..\portable\80x86\win32_st\vc\rkhport.h"
 #endif
@@ -63,12 +59,16 @@
     #include "..\..\portable\80x86\win32_mt\vc\rkhport.h"
 #endif
 
-#ifdef __S08CW63__
-    #include "..\portable\s08\rkhs\cw6_3\rkhport.h"
+#ifdef __LNXGNU__
+    #include "../../portable/80x86/linux_st/gnu/rkhport.h"
 #endif
 
-#ifdef __LNXGNU__
-    #include "../portable/80x86/linux_st/gnu/rkhport.h"
+#ifdef __CFV1CW63__
+    #include "..\portable\cfv1\rkhs\cw6_3\rkhport.h"
+#endif
+
+#ifdef __S08CW63__
+    #include "..\portable\s08\rkhs\cw6_3\rkhport.h"
 #endif
 
 #ifdef __ARM_CM3CRED__

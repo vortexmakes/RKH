@@ -1,70 +1,77 @@
-/**
- * \cond
+/*
  *  --------------------------------------------------------------------------
  *
  *                                Framework RKH
  *                                -------------
  *
- * 	          State-machine framework for reactive embedded systems            
- * 	        
- * 	                    Copyright (C) 2010 Leandro Francucci.
- * 	        All rights reserved. Protected by international copyright laws.
+ *            State-machine framework for reactive embedded systems
+ *
+ *                      Copyright (C) 2010 Leandro Francucci.
+ *          All rights reserved. Protected by international copyright laws.
  *
  *
- * 	RKH is free software: you can redistribute it and/or modify it under the 
- * 	terms of the GNU General Public License as published by the Free Software 
- * 	Foundation, either version 3 of the License, or (at your option) any 
- * 	later version.
+ *  RKH is free software: you can redistribute it and/or modify it under the
+ *  terms of the GNU General Public License as published by the Free Software
+ *  Foundation, either version 3 of the License, or (at your option) any
+ *  later version.
  *
- *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *  RKH is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  *  more details.
  *
- *  You should have received a copy of the GNU General Public License along 
+ *  You should have received a copy of the GNU General Public License along
  *  with RKH, see copying.txt file.
  *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
- *  --------------------------------------------------------------------------
- *  File                     : rkhport.h
- *	Last updated for version : v2.4.04
- *	By                       : JC
- *  --------------------------------------------------------------------------
- *  \endcond
- *
- * 	\file
- * 	\ingroup 	prt
- *
- * 	\brief 		Eclipse Cygwin port.
+ *  Contact information:
+ *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail:         francuccilea@gmail.com
+ *  ---------------------------------------------------------------------------
  */
 
+/**
+ *  \file       rkhport.c
+ * 	\brief 		Linux Single-Thread (32bit) port
+ *
+ *  \ingroup    port
+ */
 
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2017.04.14  LeFr  v2.4.05  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
+ */
+
+/* --------------------------------- Module -------------------------------- */
 #ifndef __RKHPORT_H__
 #define __RKHPORT_H__
 
-
+/* ----------------------------- Include files ----------------------------- */
 #include <pthread.h>
 #include <semaphore.h>
 
 #include "rkhtype.h"
-#include "rkhrq.h"
-#include "rkhmp.h"
-#include "rkhrdy.h"
+#include "rkhqueue.h"
+#include "rkhmempool.h"
+#include "rkhsma_prio.h"
 
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-extern pthread_mutex_t csection;
+/* --------------------------------- Macros -------------------------------- */
+#define RKH_DIS_INTERRUPT()
+#define RKH_ENA_INTERRUPT()
+#define RKH_ENTER_CRITICAL(dummy)         rkhport_enter_critical()
+#define RKH_EXIT_CRITICAL(dummy)          rkhport_exit_critical()
 
-extern sem_t sma_is_rdy;
-extern RKH_RG_T rkhrg;
-
-
-const char *rkh_get_port_version( void );
-const char *rkh_get_port_desc( void );
-
-
+/* ------------------------------- Constants ------------------------------- */
 /**
  *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) 
  *	has its own thread of execution.
@@ -163,31 +170,38 @@ const char *rkh_get_port_desc( void );
 
 #define RKHROM								const	
 
+/**
+ * Native event queue data type
+ */
+#define RKH_EQ_TYPE              		    RKH_QUEUE_T
 
-#define RKH_DIS_INTERRUPT()
-#define RKH_ENA_INTERRUPT()
-/*#define RKH_CPUSR_TYPE*/
-#define RKH_ENTER_CRITICAL( dummy )		pthread_mutex_trylock( &csection )
-#define RKH_EXIT_CRITICAL( dummy )		pthread_mutex_unlock( &csection )
+/**
+ * Operating system blocking primitive.
+ */
+#define RKH_OSSIGNAL_TYPE				    pthread_cond_t
 
-
-#define RKH_EQ_TYPE              		RKH_RQ_T
-#define RKH_OSSIGNAL_TYPE				pthread_cond_t
-#define RKH_THREAD_TYPE					pthread_t
-
-
-#define RKH_SMA_BLOCK( sma ) \
-				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
-
-#define RKH_SMA_READY( rg, sma ) \
-			    RKH_RDY_INSERT( (rg), RKH_SMA_ACCESS_CONST(sma, prio)); \
-			    (void)sem_post( &sma_is_rdy ); \
-
-#define RKH_SMA_UNREADY( rg, sma ) \
-			    RKH_RDY_REM( (rg), RKH_SMA_ACCESS_CONST(sma, prio))
-
-#define RKH_WAIT_FOR_EVENTS() \
-			    ((void)sem_wait( &sma_is_rdy ))
+/**
+ * Thread handle type for definition
+ */
+#define RKH_THREAD_TYPE					    pthread_t
 
 
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+const char *rkhport_get_version(void);
+const char *rkhport_get_desc(void);
+rui8_t rkhport_fwk_is_running(void);
+void rkhport_fwk_stop(void);
+void rkhport_enter_critical(void);
+void rkhport_exit_critical(void);
+void rkhport_wait_for_events(void);
+
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
 #endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+/* ------------------------------ End of file ------------------------------ */

@@ -52,10 +52,6 @@
 #define __RKHTYPE_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#ifdef __CFV1CW63__
-    #include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
-#endif
-
 #ifdef __W32STVC__
     #include "..\..\portable\80x86\win32_st\vc\rkht.h"
 #endif
@@ -64,12 +60,16 @@
     #include "..\..\portable\80x86\win32_mt\vc\rkht.h"
 #endif
 
-#ifdef __S08CW63__
-    #include "..\portable\s08\rkhs\cw6_3\rkht.h"
+#ifdef __LNXGNU__
+    #include "../../portable/80x86/linux_st/gnu/rkht.h"
 #endif
 
-#ifdef __LNXGNU__
-    #include "../portable/80x86/linux_st/gnu/rkht.h"
+#ifdef __CFV1CW63__
+    #include "..\portable\cfv1\rkhs\cw6_3\rkht.h"
+#endif
+
+#ifdef __S08CW63__
+    #include "..\portable\s08\rkhs\cw6_3\rkht.h"
 #endif
 
 #ifdef __ARM_CM3CRED__

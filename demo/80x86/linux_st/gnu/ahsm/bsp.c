@@ -21,6 +21,9 @@
 #include "bsp.h"
 #include "my.h"
 #include "rkh.h"
+#include "rkhfwk_dynevt.h"
+#include "rkhfwk_sched.h"
+
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -61,7 +64,7 @@ static FILE *ftbin;
 	#include "tcptrc.h"
 
 	/* Trazer Tool IP Address */
-	#define TRC_IP_ADDR					"127.0.0.1"
+	#define TRC_IP_ADDR					"192.168.1.122"
 
 	/* Trazer Tool TCP Port Address */
 	#define TRC_TCP_PORT				6602
@@ -166,8 +169,8 @@ print_banner( void )
 {
 	printf(	"Abstract Hierarchical State Machine (AHSM) example\n\n" );
 	printf(	"RKH version      = %s\n", RKH_RELEASE );
-	printf(	"Port version     = %s\n", rkh_get_port_version() );
-	printf(	"Port description = %s\n\n", rkh_get_port_desc() );
+	printf(	"Port version     = %s\n", rkhport_get_version() );
+	printf(	"Port description = %s\n\n", rkhport_get_desc() );
 	printf(	"Description: \n\n"
 			"The goal of this demo application is to explain how to \n"
 			"represent a state machine using the RKH framework. To do \n"
@@ -203,8 +206,9 @@ rkh_hook_start( void )
 	/* Destroy the thread attributes */
 	pthread_attr_destroy(&threadAttr);
 	
-	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+    rkh_fwk_registerEvtPool( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_registerEvtPool( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+
 }
 
 void 
@@ -220,7 +224,7 @@ rkh_hook_idle( void )				/* called within critical section */
 {
     RKH_EXIT_CRITICAL( dummy );
 	RKH_TRC_FLUSH();
-    RKH_WAIT_FOR_EVENTS();		/* yield the CPU until new event(s) arrive */
+    rkhport_wait_for_events();  /* yield the CPU until new event(s) arrive */ 
 }
 
 void 

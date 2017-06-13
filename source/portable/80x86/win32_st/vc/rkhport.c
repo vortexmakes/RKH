@@ -62,7 +62,6 @@ RKH_MODULE_DESC(rkhport, "Windows 32-bits (single thread)")
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-
 /* ---------------------------- Local variables ---------------------------- */
 static CRITICAL_SECTION csection;
 static HANDLE sma_is_rdy;
