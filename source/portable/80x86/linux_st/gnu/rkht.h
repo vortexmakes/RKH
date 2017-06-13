@@ -61,35 +61,35 @@ extern "C" {
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /*
- * 	The RKH uses a set of integer quantities. That maybe machine or 
- * 	compiler dependent.
+ *  The RKH uses a set of integer quantities. That maybe machine or
+ *  compiler dependent.
  */
 
-typedef signed char 	ri8_t;
-typedef signed short 	ri16_t;
-typedef signed long		ri32_t;
-typedef unsigned char 	rui8_t;
-typedef unsigned short 	rui16_t;
-typedef unsigned long	rui32_t;
+typedef signed char ri8_t;
+typedef signed short ri16_t;
+typedef signed long ri32_t;
+typedef unsigned char rui8_t;
+typedef unsigned short rui16_t;
+typedef unsigned long rui32_t;
 
 /*
- * 	The 'ruint' and 'rint' will normally be the natural size for a 
- * 	particular machine. These types designates an integer type that is 
- * 	usually fastest to operate with among all integer types.
+ *  The 'ruint' and 'rint' will normally be the natural size for a
+ *  particular machine. These types designates an integer type that is
+ *  usually fastest to operate with among all integer types.
  */
 
-typedef unsigned int	ruint;
-typedef signed int		rint;
+typedef unsigned int ruint;
+typedef signed int rint;
 
 /*
- * 	Boolean data type and constants.
+ *  Boolean data type and constants.
  *
- * 	\note
- * 	The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
- * 	definitions in \c rkhdef.h file.
+ *  \note
+ *  The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro
+ *  definitions in \c rkhdef.h file.
  */
 
-typedef unsigned int	rbool_t;
+typedef unsigned int rbool_t;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

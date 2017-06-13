@@ -222,7 +222,7 @@ rkh_fwk_enter(void)
         Sleep(tick_msec);               /* wait for the tick interval */
         RKH_TIM_TICK(&l_isr_tick);      /* tick handler */
     }
-    RKH_HOOK_EXIT();                        /* cleanup callback */
+    RKH_HOOK_EXIT();                    /* cleanup callback */
     RKH_TRC_CLOSE();                    /* cleanup the trace session */
     DeleteCriticalSection(&csection);
 }

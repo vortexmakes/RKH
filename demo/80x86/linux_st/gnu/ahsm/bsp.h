@@ -27,21 +27,21 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
-#define BSP_TICKS_PER_SEC   		100
+#define BSP_TICKS_PER_SEC           100
 
 /**
- * 	\brief
- * 	This macro represents the number of timestamp clock ticks per second. 
- * 	Dividing a count of timestamp ticks by this macro yields the number 
- * 	of seconds.
+ *  \brief
+ *  This macro represents the number of timestamp clock ticks per second.
+ *  Dividing a count of timestamp ticks by this macro yields the number
+ *  of seconds.
  */
 
-#define BSP_TS_RATE_HZ		   		1u
+#define BSP_TS_RATE_HZ              1u
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-void bsp_init( int argc, char *argv[] );
+void bsp_init(int argc, char *argv[]);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
