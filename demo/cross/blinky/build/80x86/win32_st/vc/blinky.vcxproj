@@ -53,7 +53,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\fwk\inc;$(ProjectDir)..\..\..\..\..\..\..\source\mempool\inc;$(ProjectDir)..\..\..\..\..\..\..\source\queue\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sm\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sma\inc;$(ProjectDir)..\..\..\..\..\..\..\source\tmr\inc;$(ProjectDir)..\..\..\..\..\..\..\source\trc\inc;$(ProjectDir)..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\..\libbsp\platform\80x86\vc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\..\source\fwk\inc;$(ProjectDir)..\..\..\..\..\..\..\source\mempool\inc;$(ProjectDir)..\..\..\..\..\..\..\source\queue\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sm\inc;$(ProjectDir)..\..\..\..\..\..\..\source\sma\inc;$(ProjectDir)..\..\..\..\..\..\..\source\tmr\inc;$(ProjectDir)..\..\..\..\..\..\..\source\trc\inc;$(ProjectDir)..\..\..\..\..\..\..\source\portable\80x86\win32_st\vc\;$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\..\..\libbsp\platform\80x86\win\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;__W32STVC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -105,12 +105,12 @@
     <ClCompile Include="..\..\..\..\..\..\..\source\trc\src\rkhtrc_filter.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\trc\src\rkhtrc_record.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\trc\src\rkhtrc_stream.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\assert.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\bsp_blinky.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\getopt.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\hook.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\trace_io.c" />
-    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\vc\trace_io_tcp.c" />
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\win\assert.c" />
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\win\bsp_blinky.c" />
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\win\getopt.c" />
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\win\hook.c" />
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\win\trace_io.c" />
+    <ClCompile Include="..\..\..\..\..\..\libbsp\platform\80x86\win\trace_io_tcp.c" />
     <ClCompile Include="..\..\..\..\blinky.c" />
     <ClCompile Include="..\..\..\..\main.c" />
   </ItemGroup>
