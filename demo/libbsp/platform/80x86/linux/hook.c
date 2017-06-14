@@ -48,7 +48,14 @@
  */
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <conio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <termios.h>
+#include <pthread.h>
+#include <sys/time.h>
+
+#define _BSD_SOURCE
+#include <unistd.h>
 
 #include "rkh.h"
 #include "bsp_common.h"
@@ -57,10 +64,13 @@ RKH_THIS_MODULE
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
+#define BSP_TICKS_PER_SEC   		100
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static DWORD tickMsec;
+static unsigned short tick_msec;
+static struct termios orgt;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -80,30 +90,29 @@ mygetch(void)
 }
 
 static void *
-isr_tmrThread(LPVOID par)
+isr_tmrThread(void *d)
 {
-    (void)par;
+    (void)d;
 
     while (rkhport_fwk_is_running())
     {
         RKH_TIM_TICK(0);
         usleep(tick_msec);
     }
-    return 0;
     pthread_exit(NULL);
     return NULL;    
 }
 
 static void *
-isr_kbdThread(LPVOID par) 
+isr_kbdThread(void *d) 
 {
-    (void)par;
+    (void)d;
 
     while (rkhport_fwk_is_running())
     {
         bsp_keyParser(mygetch());
     }
-    return 0;
+    return NULL;
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -115,7 +124,6 @@ rkh_hook_start(void)
 
     /* set the desired tick rate */
     tick_msec = 1000UL / BSP_TICKS_PER_SEC;
-    running = (rui8_t)1;
 
     /* initialize the thread attribute */
     pthread_attr_init(&threadAttr);
@@ -124,8 +132,8 @@ rkh_hook_start(void)
     pthread_attr_setstacksize(&threadAttr, 1024);
 
     /* Create the threads */
-    pthread_create(&thtmr_id, &threadAttr, isr_tmr_thread, NULL);
-    pthread_create(&thkbd_id, &threadAttr, isr_kbd_thread, NULL);
+    pthread_create(&thtmr_id, &threadAttr, isr_tmrThread, NULL);
+    pthread_create(&thkbd_id, &threadAttr, isr_kbdThread, NULL);
 
     /* Destroy the thread attributes */
     pthread_attr_destroy(&threadAttr);

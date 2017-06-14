@@ -52,6 +52,8 @@
 
 #if RKH_CFG_TRC_EN == 1
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "getopt.h"
 #include "trace_io_cfg.h"
@@ -164,32 +166,16 @@ rkh_trc_getts(void)
 void
 rkh_trc_flush(void)
 {
-    rui8_t *blk;
-    TRCQTY_T nbytes;
-    RKH_SR_ALLOC();
+	rui8_t *d;
 
-    FOREVER
-    {
-        nbytes = 128;
-
-        RKH_ENTER_CRITICAL_();
-        blk = rkh_trc_get_block(&nbytes);
-        RKH_EXIT_CRITICAL_();
-
-        if ((blk != (rui8_t *)0))
+	while( ( d = rkh_trc_get() ) != ( rui8_t* )0 )
+	{
+        if (ftbin != NULL)
         {
-            if (ftbin != NULL)
-            {
-                fwrite(blk, 1, nbytes, ftbin);
-            }
-
-            trace_io_tcp_send(tsock, (char *)blk, nbytes);
+            fwrite(d, 1, 1, ftbin);
         }
-        else
-        {
-            break;
-        }
-    }
+        trace_io_tcp_send(tsock, *d);
+	}
 }
 #endif
 

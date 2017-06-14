@@ -52,8 +52,6 @@
 #define __TRACE_IO_TCP_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include <winsock.h>
-
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
