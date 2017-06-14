@@ -45,6 +45,8 @@ app:=$(patsubst $(APPSRCPATH)/%, %,$(app_objs))
 fwk:=$(patsubst $(RKHMOD_FWK)/src/%, %,$(rkhfwk_objs)) 
 mempool:=$(patsubst $(RKHMOD_MEMPOOL)/src/%, %,$(rkhmempool_objs)) 
 queue:=$(patsubst $(RKHMOD_QUEUE)/src/%, %,$(rkhqueue_objs)) 
+:q
+:q
 sm:=$(patsubst $(RKHMOD_SM)/src/%, %,$(rkhsm_objs)) 
 sma:=$(patsubst $(RKHMOD_SMA)/src/%, %,$(rkhsma_objs)) 
 tmr:=$(patsubst $(RKHMOD_TMR)/src/%, %,$(rkhtmr_objs)) 
@@ -54,8 +56,13 @@ rkhbsp:=$(patsubst $(RKHBSP)/%, %,$(rkhbsp_obj))
 
 objects:=$(patsubst %.c,%.o,$(wildcard *.c))
 
-$(PROGNAME): $(objects) $(app_objs) $(rkhobjects) $(rkhfwk_objs) $(rkhmempool_objs) $(rkhqueue_objs) $(rkhsm_objs) $(rkhsma_objs) $(rkhtmr_objs) $(rkhtrc_objs) $(rkhport_obj) $(rkhbsp_obj)
-	@$(CC) -o $@ $(objects) $(app) $(rkh) $(fwk) $(mempool) $(queue) $(sm) $(sma) $(tmr) $(trc) $(port) $(rkhbsp) $(LDFLAGS)
+$(PROGNAME): $(objects) $(app_objs) $(rkhobjects) $(rkhfwk_objs) \
+			 $(rkhmempool_objs) $(rkhqueue_objs) $(rkhsm_objs) \
+			 $(rkhsma_objs) $(rkhtmr_objs) $(rkhtrc_objs) \
+			 $(rkhport_obj) $(rkhbsp_obj)
+	@$(CC) -o $@ $(objects) $(app) $(rkh) $(fwk) $(mempool) \
+			  $(queue) $(sm) $(sma) $(tmr) $(trc) $(port) $(rkhbsp) \
+			  $(LDFLAGS)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $(DEFINE) $<
