@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		ARM Cortex-M MCU's, Eclipse CW10 port
+ *  \brief      Freescale Cortex M4F MCU's, CW10 port
  */
 
 

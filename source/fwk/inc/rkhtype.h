@@ -76,8 +76,8 @@
     #include "../../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
 #endif
 
-#ifdef __ARM_CM4FKDS3_0__
-    #include "../../portable/arm-cortex/rkhs/arm_cm4f/kds_v3_0/rkht.h"
+#ifdef __ARM_CM4FCW10__
+    #include "../../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkht.h"
 #endif
 
 #ifdef __KSDK_KDS__

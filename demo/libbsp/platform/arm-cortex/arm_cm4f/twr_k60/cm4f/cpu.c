@@ -60,9 +60,9 @@ systick_init( uint32_t tick_hz )
   SYST_CSR = (uint32_t)0x07UL;                  
 
   /* SCB_SHPR3: PRI_15=0x30 */
-  SCB_SHPR3 |= ( ( BSP_KERNEL_IRQ_PRIO << 4 ) << 24 );
+  SCB_SHPR3 |= ( ( KERNEL_IRQ_PRIO << 4 ) << 24 );
   
-  Cpu_SetBASEPRI(BSP_KERNEL_IRQ_PRIO);
+  Cpu_SetBASEPRI(KERNEL_IRQ_PRIO);
 }
 
 

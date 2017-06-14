@@ -42,10 +42,11 @@
  */
 
 
-#include "bsp.h"
-#include "bky.h"
 #include "rkh.h"
+#include "rkhfwk_sched.h"
 
+#include "bsp.h"
+#include "blinky.h"
 #include "cpu.h"
 #include "kuart.h"
 #include "gpio.h"
@@ -200,14 +201,14 @@ bsp_init( int argc, char *argv[]  )
 
 
 void 
-bsp_led_on( void )
+bsp_ledOn( void )
 {
 	set_led( LED1 );
 }
 
 
 void 
-bsp_led_off( void )
+bsp_ledOff( void )
 {
 	clr_led( LED1 );
 }

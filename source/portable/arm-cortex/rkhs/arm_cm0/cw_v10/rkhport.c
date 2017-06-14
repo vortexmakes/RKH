@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhport.c
- *  \brief      Freescale S08 MCU's, KDS_V3.0 port
+ *  \brief      Freescale Cortex M0+ MCU's, CW10 port
  *
  *  \ingroup    port
  */
@@ -58,7 +58,7 @@
 /* ------------------------------- Constants ------------------------------- */
 RKH_MODULE_NAME(rkhport)
 RKH_MODULE_VERSION(rkhport, 1.00)
-RKH_MODULE_DESC(rkhport, "ARM Cortex-M0+, Eclipse KDS3.0")
+RKH_MODULE_DESC(rkhport, "ARM Cortex-M0+, Eclipse CW10")
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -89,7 +89,7 @@ rkhport_enter_critical(void)
     (
         "	mov r0, %0		\n"
         "	msr basepri, r0	\n"
-        ::"i" (((KERNEL_IRQ_PRIO << (8 - ARM_INTERRUPT_LEVEL_BITS)) & 0xFF)) : "r0"
+        ::"i" (((HIGHEST_IRQ_PRI << (8 - ARM_INTERRUPT_LEVEL_BITS)) & 0xFF)) : "r0"
     );
     critical_nesting++;
 }

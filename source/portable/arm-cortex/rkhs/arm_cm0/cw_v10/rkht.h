@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhport.c
- * 	\brief 		ARM Cortex-M0 MCU's, Eclipse KDS_V3.0 port
+ * 	\brief 		ARM Cortex-M0 MCU's, Eclipse CW10 port
  *
  *  \ingroup    port
  */
