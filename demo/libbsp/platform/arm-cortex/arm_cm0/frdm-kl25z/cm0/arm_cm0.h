@@ -8,6 +8,8 @@
 #ifndef _CPU_ARM_CM0_H
 #define _CPU_ARM_CM0_H
 
+#include "stdint.h"
+
 /*ARM Cortex M0 implementation for interrupt priority shift*/
 #define ARM_INTERRUPT_LEVEL_BITS          2
 

@@ -72,6 +72,10 @@
     #include "..\..\portable\cfv1\rkhs\cw6_3\rkht.h"
 #endif
 
+#ifdef __ARM_CM0CW10__
+    #include "../../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
+#endif
+
 #ifdef __ARM_CM3CRED__
     #include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
 #endif
@@ -84,9 +88,6 @@
     #include "../portable/arm-cortex/rkhs/arm_cm4f/iar_v7_2/rkht.h"
 #endif
 
-#ifdef __ARM_CM0CW10__
-    #include "../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
-#endif
 
 #ifdef __UCOS_V3_03_01__
     #include "..\portable\ucos\v3.03.01\rkht.h"

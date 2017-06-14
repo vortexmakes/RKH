@@ -41,10 +41,10 @@
  * 	\brief 		BSP for Freedom KL25Z CW10
  */
 
-
-#include "bsp.h"
-#include "bky.h"
 #include "rkh.h"
+#include "rkhfwk_sched.h"
+#include "bsp.h"
+#include "blinky.h"
 #include "cpu.h"
 #include "gpio.h"
 #include "uart.h"
@@ -200,7 +200,7 @@ bsp_init( int argc, char *argv[]  )
 static rui8_t led_cnt = 0;
 
 void 
-bsp_led_on( void )
+bsp_ledOn( void )
 {
 	++led_cnt;
 
@@ -211,7 +211,7 @@ bsp_led_on( void )
 
 
 void 
-bsp_led_off( void )
+bsp_ledOff( void )
 {
 	++led_cnt;
 
