@@ -75,12 +75,16 @@
     #include "../../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkhport.h"
 #endif
 
-#ifdef __ARM_CM3CRED__
-    #include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.h"
+#ifdef __ARM_CM4FKDS3_0__
+    #include "../../portable/arm-cortex/rkhs/arm_cm4f/kds_v3_0/rkhport.h"
 #endif
 
-#ifdef __ARM_CM4FCW10__
-    #include "../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkhport.h"
+#ifdef __KSDK_KDS__
+    #include "..\..\portable\arm-cortex\rkhs\ksdk\kds\rkhport.h"
+#endif
+
+#ifdef __ARM_CM3CRED__
+    #include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.h"
 #endif
 
 #ifdef __ARM_CM4FIAR7_2__
@@ -90,10 +94,6 @@
 
 #ifdef __UCOS_V3_03_01__
     #include "..\portable\ucos\v3.03.01\rkhport.h"
-#endif
-
-#ifdef __KSDK_KDS__
-    #include "..\portable\arm-cortex\rkhs\ksdk\kds\rkhport.h"
 #endif
 
 #ifdef __KSDK_OS_KDS__

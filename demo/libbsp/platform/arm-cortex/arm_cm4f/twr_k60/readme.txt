@@ -16,7 +16,6 @@ environment.
 \code
 \-cw_v10
   \-prj	
-  | +-blinky_twr_k60        - Blinky demo CW10.x directory.
   | +-cm4f                  - CPU inicialization.
   | bsp.c					- Board support package source file.
   | bsp.h					- Board support package header file.

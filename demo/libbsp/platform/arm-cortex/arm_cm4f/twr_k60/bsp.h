@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for TWR-K60D100M CW10
+ * 	\brief 		BSP for TWR-K60D100M
  */
 
 

@@ -41,14 +41,11 @@
  * 	\brief 		BSP for TWR-K60D100M CWV10
  */
 
-
-#include "bsp.h"
-#include "bky.h"
 #include "rkh.h"
-
-#include "cpu.h"
-#include "kuart.h"
-#include "gpio.h"
+#include "rkhfwk_sched.h"
+#include "bsp.h"
+#include "blinky.h"
+#include "fsl_hwtimer_systick.h"
 
 
 #define SERIAL_TRACE			1
@@ -56,25 +53,19 @@
 
 RKH_THIS_MODULE
 
+
+static hwtimer_t hwtimer;			/* Systick hardware timer */
+
+
 /*
  * 	For serial trace feature.
  */
 
 #if SERIAL_TRACE == 1
-
-	static const KUARTPP_ST trz_uart = 
-	{
-		115200, 0, 1, KUART_HFC_DISABLE, NULL
-	};
-
-	/* Trazer Tool COM Port */
-	#define SERIAL_TRACE_OPEN()		kuart_init( UART3_BASE_PTR, &trz_uart )
-	#define SERIAL_TRACE_CLOSE() 	(void)0
-	#define SERIAL_TRACE_SEND( d ) 	kuart_putchar( UART3_BASE_PTR, d )
-	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ ) 		\
-					kuart_putnchar( UART3_BASE_PTR,		\
-								(char *)(buf_), 		\
-								(rui16_t)(len_))
+	#define SERIAL_TRACE_OPEN()		rkhtrc_uart_init()
+	#define SERIAL_TRACE_CLOSE() 	rkhtrc_uart_deinit()
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	\
+									rkhtrc_send_block( buf_, len_ )
 #else
 	#define SERIAL_TRACE_OPEN()						(void)0
 	#define SERIAL_TRACE_CLOSE()					(void)0
@@ -82,6 +73,12 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
+
+void
+rkh_isr_tick( void* data )
+{
+	RKH_TIM_TICK((const void *)(rkh_isr_tick));
+}
 
 void 
 rkh_hook_timetick( void ) 
@@ -143,7 +140,7 @@ rkh_trc_close( void )
 RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKH_TS_T )get_ts();
+	return ( RKH_TS_T )rkhtrc_lptmr_read();
 }
 
 
@@ -178,11 +175,23 @@ bsp_init( int argc, char *argv[]  )
 {
 	(void)argc;
 	(void)argv;
-	
-	cpu_init();
-	systick_init( RKH_CFG_FWK_TICK_RATE_HZ );
-	cpu_tstmr_init();
-	init_led( LED1 );
+
+    hardware_init();
+
+    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_Init
+							(&hwtimer, &kSystickDevif, 0, NULL) );
+
+    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_SetPeriod
+							(&hwtimer, (1000*1000)/RKH_CFG_FWK_TICK_RATE_HZ) );
+
+    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_RegisterCallback
+							(&hwtimer, rkh_isr_tick, NULL) );
+
+    RKH_ASSERT( kHwtimerSuccess == HWTIMER_SYS_Start(&hwtimer) );
+
+    GPIO_DRV_Init( switchPins, ledPins );
+
+    rkhtrc_lptmr_init();
 
 	rkh_fwk_init();
 
@@ -200,16 +209,16 @@ bsp_init( int argc, char *argv[]  )
 
 
 void 
-bsp_led_on( void )
+bsp_ledOn( void )
 {
-	set_led( LED1 );
+	GPIO_DRV_SetPinOutput( BOARD_GPIO_LED_RED );
 }
 
 
 void 
-bsp_led_off( void )
+bsp_ledOff( void )
 {
-	clr_led( LED1 );
+	GPIO_DRV_ClearPinOutput( BOARD_GPIO_LED_RED );
 }
 
 

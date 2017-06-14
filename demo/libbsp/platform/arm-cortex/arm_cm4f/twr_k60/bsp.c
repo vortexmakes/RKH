@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for TWR-K60D100M IAR V7.2
+ * 	\brief 		BSP for TWR-K60D100M
  */
 
 
@@ -157,6 +157,7 @@ rkh_trc_flush( void )
 	FOREVER
 	{
 		nbytes = 128;
+
 		RKH_ENTER_CRITICAL_();
 		blk = rkh_trc_get_block( &nbytes );
 		RKH_EXIT_CRITICAL_();
@@ -186,7 +187,7 @@ bsp_init( int argc, char *argv[]  )
 	rkh_fwk_init();
 
 	RKH_ENA_INTERRUPT();
-
+	
 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
 	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_TOUT );
