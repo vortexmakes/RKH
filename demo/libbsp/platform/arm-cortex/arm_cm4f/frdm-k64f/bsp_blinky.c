@@ -38,7 +38,7 @@
  * 	\file
  * 	\ingroup 	prt
  *
- * 	\brief 		BSP for TWR-K60D100M CWV10
+ * 	\brief 		BSP for FRDK64F120 using Freescale OSA from KSDK
  */
 
 #include "rkh.h"

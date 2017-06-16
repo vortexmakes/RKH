@@ -1,23 +1,24 @@
 /*
- * telybrd.h
- * board.h BSP extension for tely project
+ * boardext.h
+ * board.h BSP extension
  */
 
-#ifndef __TELYBRD_H__
-#define __TELYBRD_H__
+#ifndef __BOARDEXT_H__
+#define __BOARDEXT_H__
 
 #include "rkh.h"
+
 
 /* The UART to use for RKH trace . */
 
 #include "fsl_uart_driver.h"
 
-#ifndef TELYBRD_TRACE_UART_INSTANCE
-    #define TELYBRD_RKHTRC_UART_INSTANCE	0
-    #define TELYBRD_RKHTRC_UART_BASEADDR	UART0
+#ifndef BRD_TRACE_UART_INSTANCE
+    #define BRD_RKHTRC_UART_INSTANCE	0
+    #define BRD_RKHTRC_UART_BASEADDR	UART0
 #endif
-#ifndef TELYBRD_RKHTRC_UART_BAUD
-    #define TELYBRD_RKHTRC_UART_BAUD		115200
+#ifndef BRD_RKHTRC_UART_BAUD
+    #define BRD_RKHTRC_UART_BAUD		115200
 #endif
 
 
@@ -34,6 +35,28 @@ void rkhtrc_send_block( rui8_t *buf, TRCQTY_T len );
 
 void rkhtrc_lptmr_init(void );
 uint32_t rkhtrc_lptmr_read( void );
+
+
+/* RGB Led control */
+
+typedef enum
+{
+	RGB_BLACK,
+	RGB_WHITE,
+	RGB_RED,
+	RGB_LIME,
+	RGB_BLUE,
+	RGB_YELLOW,
+	RGB_CYAN,
+	RGB_MAGENTA
+} RGB_COLOR_IDX;
+
+void set_rgb_led( RGB_COLOR_IDX idx );
+
+
+/* board low level initilization */
+
+void board_init( void );
 
 #endif
 

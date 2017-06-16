@@ -81,7 +81,9 @@ lptmr_user_config_t lptmr_tstamp =
 
 void  CPU_TS_TmrInit (void)
 {
+#ifdef __KSDK_OS_KDS__
     CPU_INT32U  cpu_clk_freq_hz;
+#endif
 
     /* Initialize LPTMR */
 	LPTMR_DRV_Init(TSTAMP_LPTMR_INSTANCE, &tstamp_state, &lptmr_tstamp);
@@ -91,16 +93,18 @@ void  CPU_TS_TmrInit (void)
 
 	/* Start counting */
     LPTMR_DRV_Start(TSTAMP_LPTMR_INSTANCE);
-
+#ifdef __KSDK_OS_KDS__
     cpu_clk_freq_hz = CLOCK_SYS_GetCoreClockFreq();
     CPU_TS_TmrFreqSet(cpu_clk_freq_hz);
+#endif
 }
 
-
+#ifdef __KSDK_OS_KDS__
 CPU_TS  CPU_TS_TmrRd (void)
 {
 	return LPTMR_DRV_GetCurrentTimeUs(TSTAMP_LPTMR_INSTANCE);
 }
+#endif
 
 #endif
 
