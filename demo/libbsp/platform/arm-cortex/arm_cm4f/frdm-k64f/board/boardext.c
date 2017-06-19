@@ -100,6 +100,36 @@ rkhtrc_lptmr_read( void )
 
 #endif
 
+/* LPTMR0 config for uCos and RKH trace time stamp */
+
+#if (CPU_CFG_TS_TMR_EN == DEF_ENABLED)
+
+
+void  CPU_TS_TmrInit (void)
+{
+    CPU_INT32U  cpu_clk_freq_hz;
+
+    /* Initialize LPTMR */
+	LPTMR_DRV_Init(TSTAMP_LPTMR_INSTANCE, &tstamp_state, &lptmr_tstamp);
+
+    /* Set the timer period for 1 second */
+    LPTMR_DRV_SetTimerPeriodUs(TSTAMP_LPTMR_INSTANCE,1000000);
+
+	/* Start counting */
+    LPTMR_DRV_Start(TSTAMP_LPTMR_INSTANCE);
+
+    cpu_clk_freq_hz = CLOCK_SYS_GetCoreClockFreq();
+    CPU_TS_TmrFreqSet(cpu_clk_freq_hz);
+}
+
+
+CPU_TS  CPU_TS_TmrRd (void)
+{
+	return LPTMR_DRV_GetCurrentTimeUs(TSTAMP_LPTMR_INSTANCE);
+}
+
+#endif
+
 
 /* RGB Led control */
 

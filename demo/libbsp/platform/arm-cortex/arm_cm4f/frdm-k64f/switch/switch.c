@@ -6,6 +6,8 @@
  *
  */
 
+#include "rkh.h"
+#include "rkhfwk_dynevt.h"
 #include "switch.h"
 #include "swhdl.h"
 #include "bsp.h"
@@ -19,6 +21,7 @@ static SWITCH_ST switchs[SWITCHS_NUM] =
 	{ 0, rawsw2,	SW_RELEASED },
 };
 
+void bsp_publish( const RKH_EVT_T *e );
 
 #define SWITCH_EVT(s__, st__)					\
 			do {								\

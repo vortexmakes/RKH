@@ -85,7 +85,7 @@
 #endif
 
 #ifdef __KSDK_OS_KDS__
-    #include "..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkht.h"
+    #include "..\..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkht.h"
 #endif
 
 #ifdef __UCOS_V3_03_01__

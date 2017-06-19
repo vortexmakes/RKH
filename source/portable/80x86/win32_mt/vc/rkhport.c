@@ -55,8 +55,6 @@
 #include "rkhfwk_dynevt.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-/* (1) Function macro defines */
-
 /* ------------------------------- Constants ------------------------------- */
 RKH_MODULE_NAME(rkhport)
 RKH_MODULE_VERSION(rkhport, 1.00)
@@ -64,7 +62,6 @@ RKH_MODULE_DESC(rkhport, "Windows 32-bits (multi thread)")
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-
 /* ---------------------------- Local variables ---------------------------- */
 static CRITICAL_SECTION csection;
 static DWORD tick_msec = 10u;
