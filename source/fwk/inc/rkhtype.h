@@ -96,8 +96,6 @@
     #include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
 #endif
 
-
-
 #ifdef __TEST__
     #include "..\..\portable\test\rkht.h"
 #endif
