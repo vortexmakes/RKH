@@ -100,6 +100,9 @@ rkhtrc_lptmr_read( void )
 
 #endif
 
+
+#ifdef FSL_RTOS_UCOSIII
+
 /* LPTMR0 config for uCos and RKH trace time stamp */
 
 #if (CPU_CFG_TS_TMR_EN == DEF_ENABLED)
@@ -130,6 +133,7 @@ CPU_TS  CPU_TS_TmrRd (void)
 
 #endif
 
+#endif
 
 /* RGB Led control */
 

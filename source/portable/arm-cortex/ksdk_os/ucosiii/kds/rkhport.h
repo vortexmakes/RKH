@@ -184,8 +184,8 @@ extern "C" {
 /* -------------------------- Function prototypes -------------------------- */
 void rkh_enter_critical(void);
 void rkh_exit_critical(void);
-const char *rkh_get_port_version(void);
-const char *rkh_get_port_desc(void);
+const char *rkhport_get_version(void);
+const char *rkhport_get_desc(void);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

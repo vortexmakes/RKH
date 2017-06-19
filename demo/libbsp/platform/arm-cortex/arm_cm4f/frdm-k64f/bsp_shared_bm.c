@@ -41,12 +41,14 @@
  * 	\brief 		BSP for FRDK64F120 using Freescale KSDK Bare Metal
  */
 
-
+#include "rkh.h"
+#include "rkhfwk_dynevt.h"
+#include "rkhfwk_sched.h"
 #include "bsp.h"
+#include "boardext.h"
 #include "server.h"
 #include "client.h"
 #include "shared.h"
-#include "rkh.h"
 #include "fsl_debug_console.h"
 #include "fsl_hwtimer_systick.h"
 #include "switch.h"
@@ -94,6 +96,11 @@ static rui8_t l_isr_kbd;
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
+#ifdef RKH_DEBUG
+#define reset_now()		__asm volatile	("	bkpt 0x00FF\n" )
+#else
+#define reset_now()		cpu_reset()
+#endif
 
 void
 bsp_publish( const RKH_EVT_T *e )
@@ -124,8 +131,8 @@ rkh_hook_timetick( void )
 void 
 rkh_hook_start( void ) 
 {
-	rkh_fwk_epool_register( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
-	rkh_fwk_epool_register( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+	rkh_fwk_registerEvtPool( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_registerEvtPool( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
 }
 
 
@@ -162,8 +169,8 @@ print_banner( void )
 {
 	PRINTF(	"\"Shared\" example\n\n" );
 	PRINTF(	"RKH version      = %s\n", RKH_RELEASE );
-	PRINTF(	"Port version     = %s\n", rkh_get_port_version() );
-	PRINTF(	"Port description = %s\n\n", rkh_get_port_desc() );
+	PRINTF(	"Port version     = %s\n", rkhport_get_version() );
+	PRINTF(	"Port description = %s\n\n", rkhport_get_desc() );
 	PRINTF(	"Description: \n\n" );
 	PRINTF(	"This application deals with the shared resource problem \n" );
 	PRINTF(	"in active object systems. Showing one of the biggest \n" );
@@ -197,7 +204,7 @@ rkh_trc_open( void )
 	rkh_trc_init();
 
 	SERIAL_TRACE_OPEN();
-	RKH_TRC_SEND_CFG( BSP_TS_RATE_HZ );
+	RKH_TRC_SEND_CFG( RKH_CFG_FWK_TICK_RATE_HZ );
 	RKH_TR_FWK_OBJ( &rkh_isr_tick );
 }
 
@@ -395,7 +402,7 @@ bsp_init( int argc, char *argv[]  )
 
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_FIFO );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_LIFO );
-	RKH_FILTER_OFF_EVENT( RKH_TE_SMA_DCH );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_DCH );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
 	/*RKH_FILTER_OFF_ALL_SIGNALS();*/
 	RKH_FILTER_OFF_SIGNAL( REQ );

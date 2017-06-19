@@ -154,8 +154,8 @@ print_banner( void )
 {
 	PRINTF(	"\"Shared\" example\n\n" );
 	PRINTF(	"RKH version      = %s\n", RKH_RELEASE );
-	PRINTF(	"Port version     = %s\n", rkh_get_port_version() );
-	PRINTF(	"Port description = %s\n\n", rkh_get_port_desc() );
+	PRINTF(	"Port version     = %s\n", rkhport_get_version() );
+	PRINTF(	"Port description = %s\n\n", rkhport_get_desc() );
 	PRINTF(	"Description: \n\n" );
 	PRINTF(	"This application deals with the shared resource problem \n" );
 	PRINTF(	"in active object systems. Showing one of the biggest \n" );
