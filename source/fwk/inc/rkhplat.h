@@ -87,9 +87,8 @@
     #include "..\..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkhport.h"
 #endif
 
-
 #ifdef __UCOS_V3_03_01__
-    #include "..\portable\ucos\v3.03.01\rkhport.h"
+    #include "..\..\portable\ucos\v3.03.01\rkhport.h"
 #endif
 
 #ifdef __ARM_CM3CRED__

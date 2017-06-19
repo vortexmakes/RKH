@@ -168,6 +168,7 @@ OSA_MsgQPutLifo(msg_queue_handler_t handler, void* pMessage)
 #else
     #define OSA_MsgQPutLifo(h, pm)      (void)0
 #endif
+
 /* ---------------------------- Global functions --------------------------- */
 const
 char *

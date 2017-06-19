@@ -89,7 +89,7 @@
 #endif
 
 #ifdef __UCOS_V3_03_01__
-    #include "..\portable\ucos\v3.03.01\rkht.h"
+    #include "..\..\portable\ucos\v3.03.01\rkht.h"
 #endif
 
 #ifdef __ARM_CM3CRED__

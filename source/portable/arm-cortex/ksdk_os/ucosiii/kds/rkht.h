@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       rkhport.c
+ *  \file       rkht.h
  *	\brief      uC/OS-III for Freescale KSDK and KDS
  *
  *  \ingroup    port
