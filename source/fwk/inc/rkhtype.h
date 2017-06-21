@@ -92,8 +92,8 @@
     #include "..\..\portable\ucos\v3.03.01\rkht.h"
 #endif
 
-#ifdef __ARM_CM3CRED__
-    #include "../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
+#ifdef __ARM_CM3XPRESSO___
+    #include "../../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
 #endif
 
 #ifdef __TEST__

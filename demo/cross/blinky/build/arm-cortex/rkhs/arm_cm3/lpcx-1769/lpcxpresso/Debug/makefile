@@ -10,7 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include src/rkh/subdir.mk
 -include src/bsp/subdir.mk
--include src/subdir.mk
+-include src/blinky/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -31,7 +31,7 @@ all: blinky.axf
 blinky.axf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU Linker'
-	arm-none-eabi-gcc -nostdlib -L"H:\vortex\ftf_rkh\rkh\demo\cross\blinky\platform\arm-cortex\rkhs\arm_cm3\lpcx-1769\codered\prj\blinky\Debug" -Xlinker -Map="blinky.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m3 -mthumb -T "blinky_Debug.ld" -o "blinky.axf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -nostdlib -Xlinker -Map="blinky.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m3 -mthumb -T "blinky_Debug.ld" -o "blinky.axf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
