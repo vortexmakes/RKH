@@ -227,7 +227,7 @@ uint32_t UARTInit( uint32_t PortNum, uint32_t baudrate )
 	LPC_UART0->LCR = 0x03;		/* DLAB = 0 */
     LPC_UART0->FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
 
-    *(portIP1) |= ( ( ( unsigned long ) BSP_KERNEL_IRQ_PRIO ) << 11 );
+    *(portIP1) |= ( ( ( unsigned long ) KERNEL_IRQ_PRIO ) << 11 );
    	NVIC_EnableIRQ(UART0_IRQn);
 
     LPC_UART0->IER = IER_RBR | IER_THRE | IER_RLS;	/* Enable UART0 interrupt */
@@ -266,7 +266,7 @@ uint32_t UARTInit( uint32_t PortNum, uint32_t baudrate )
 	LPC_UART1->LCR = 0x03;		/* DLAB = 0 */
     LPC_UART1->FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
 
-    *(portIP1) |= ( ( ( unsigned long ) BSP_KERNEL_IRQ_PRIO ) << 19 );
+    *(portIP1) |= ( ( ( unsigned long ) KERNEL_IRQ_PRIO ) << 19 );
    	NVIC_EnableIRQ(UART1_IRQn);
 
     LPC_UART1->IER = IER_RBR | IER_THRE | IER_RLS;	/* Enable UART1 interrupt */

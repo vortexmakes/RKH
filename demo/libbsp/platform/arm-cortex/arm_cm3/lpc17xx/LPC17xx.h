@@ -996,6 +996,7 @@ typedef struct
  * @}
  */
 #define configCPU_CLOCK_HZ			( ( unsigned long ) SystemFrequency )
+#define configTICK_RATE_HZ			( ( unsigned short ) RKH_CFG_FWK_TICK_RATE_HZ )
 
 #define portNVIC_SYSTICK_CTRL		( ( volatile unsigned long *) 0xe000e010 )
 #define portNVIC_SYSTICK_LOAD		( ( volatile unsigned long *) 0xe000e014 )

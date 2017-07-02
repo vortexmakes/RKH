@@ -18,13 +18,13 @@ __CRP const unsigned int CRP_WORD = CRP_NO_CRP;
  */
 
 void
-systick_init( uint32_t tick_hz )
+systick_init(  )
 {
 	/* Make PendSV, CallSV and SysTick the same priroity as the kernel. */
-	*(portNVIC_SYSPRI2) |= ( ( ( unsigned long ) BSP_KERNEL_IRQ_PRIO ) << 24 );
+	*(portNVIC_SYSPRI2) |= ( ( ( unsigned long ) KERNEL_IRQ_PRIO ) << 24 );
 
 	/* Configure SysTick to interrupt at the requested rate. */
-	*(portNVIC_SYSTICK_LOAD) = ( configCPU_CLOCK_HZ / tick_hz ) - 1UL;
+	*(portNVIC_SYSTICK_LOAD) = ( configCPU_CLOCK_HZ / configTICK_RATE_HZ ) - 1UL;
 	*(portNVIC_SYSTICK_CTRL) = portNVIC_SYSTICK_CLK | portNVIC_SYSTICK_INT | portNVIC_SYSTICK_ENABLE;
 
 }
@@ -37,7 +37,7 @@ systick_init( uint32_t tick_hz )
 void 
 SysTick_Handler( void )
 {
-	RKH_TIM_TICK( 0 );
+	RKH_TIM_TICK(0);
 }
 
 
@@ -81,7 +81,7 @@ init_ts_timer ( void )
   LPC_RIT->RICOMPVAL = 0;
   LPC_RIT->RICTRL |= 0x03;
 
-  *(portIP7) |= ( ( ( unsigned long ) BSP_KERNEL_IRQ_PRIO ) << 11 );
+  *(portIP7) |= ( ( ( unsigned long ) KERNEL_IRQ_PRIO ) << 11 );
 
   NVIC_EnableIRQ(RIT_IRQn);
   return;
@@ -115,6 +115,6 @@ void
 cpu_init( void )
 {
 	SystemClockUpdate();
-	systick_init( RKH_CFG_FWK_TICK_RATE_HZ );
+	systick_init();
 	init_ts_timer();
 }

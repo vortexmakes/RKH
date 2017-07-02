@@ -50,7 +50,6 @@
 #include "LPC17xx.h"
 
 
-#define BSP_KERNEL_IRQ_PRIO		255
 #define BSP_HIGHEST_IRQ_PRI		5
 
 #define BSP_TICKS_PER_SEC   	RKH_CFG_FWK_TICK_RATE_HZ
