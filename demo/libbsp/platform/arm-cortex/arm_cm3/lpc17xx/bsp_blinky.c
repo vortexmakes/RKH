@@ -79,6 +79,7 @@ RKH_THIS_MODULE
 	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
 #endif
 
+static RKH_TS_T tstamp;
 
 void 
 rkh_hook_timetick( void ) 
@@ -88,12 +89,14 @@ rkh_hook_timetick( void )
 void
 SysTick_Handler( void )
 {
+	++tstamp;
 	RKH_TIM_TICK(&rkh_tick);
 }
 
 void 
 rkh_hook_start( void ) 
 {
+	tstamp = 0;
 	systick_init();    
 }
 
@@ -146,7 +149,7 @@ rkh_trc_close( void )
 RKH_TS_T 
 rkh_trc_getts( void )
 {
-	return ( RKH_TS_T )get_ts();
+	return ( RKH_TS_T )tstamp;
 }
 
 

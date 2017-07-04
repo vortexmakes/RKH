@@ -1022,7 +1022,6 @@ typedef struct
  * Time stamp read function
  */
 
-unsigned long get_ts( void );
 void systick_init(void);
 
 
