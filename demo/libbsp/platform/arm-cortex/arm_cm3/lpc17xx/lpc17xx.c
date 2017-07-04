@@ -18,7 +18,7 @@ __CRP const unsigned int CRP_WORD = CRP_NO_CRP;
  */
 
 void
-systick_init(  )
+systick_init(void)
 {
 	/* Make PendSV, CallSV and SysTick the same priroity as the kernel. */
 	*(portNVIC_SYSPRI2) |= ( ( ( unsigned long ) KERNEL_IRQ_PRIO ) << 24 );
@@ -26,18 +26,6 @@ systick_init(  )
 	/* Configure SysTick to interrupt at the requested rate. */
 	*(portNVIC_SYSTICK_LOAD) = ( configCPU_CLOCK_HZ / configTICK_RATE_HZ ) - 1UL;
 	*(portNVIC_SYSTICK_CTRL) = portNVIC_SYSTICK_CLK | portNVIC_SYSTICK_INT | portNVIC_SYSTICK_ENABLE;
-
-}
-
-
-/*
- * Systick ISR
- */
-
-void 
-SysTick_Handler( void )
-{
-	RKH_TIM_TICK(0);
 }
 
 

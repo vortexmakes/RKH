@@ -1023,6 +1023,7 @@ typedef struct
  */
 
 unsigned long get_ts( void );
+void systick_init(void);
 
 
 void cpu_init( void );

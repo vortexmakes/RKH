@@ -47,6 +47,7 @@
 #include "blinky.h"
 #include "uart.h"
 #include "gpio.h"
+#include "lpc17xx.h"
 
 
 #define SERIAL_TRACE			1
@@ -84,10 +85,16 @@ rkh_hook_timetick( void )
 {
 }
 
+void
+SysTick_Handler( void )
+{
+	RKH_TIM_TICK(&rkh_tick);
+}
 
 void 
 rkh_hook_start( void ) 
 {
+	systick_init();    
 }
 
 
@@ -182,8 +189,13 @@ bsp_init( int argc, char *argv[]  )
 
 	RKH_FILTER_ON_GROUP( RKH_TRC_ALL_GROUPS );
 	RKH_FILTER_ON_EVENT( RKH_TRC_ALL_EVENTS );
-	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_TOUT );
 	RKH_FILTER_OFF_EVENT( RKH_TE_SM_STATE );
+	RKH_FILTER_OFF_EVENT( RKH_TE_SM_EXE_ACT );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_TOUT );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_INIT );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_STOP );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_START );
+	RKH_FILTER_OFF_EVENT( RKH_TE_TMR_REM );
 	RKH_FILTER_OFF_SMA( blinky );
 	RKH_FILTER_OFF_ALL_SIGNALS();
 
