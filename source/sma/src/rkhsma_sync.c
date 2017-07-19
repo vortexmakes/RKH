@@ -53,8 +53,7 @@
 #include "rkhassert.h"
 #include "rkhsma_prio.h"
 
-#if ((RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED) ||  \
-     (RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED))
+#if (RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED)
 
 RKH_MODULE_NAME(rkhsma_sync)
 
