@@ -104,13 +104,12 @@ extern "C" {
 #define RKH_CFGPORT_NATIVE_EQUEUE_EN		RKH_ENABLED
 
 /**
- * 	If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native 
- * 	fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN) then 
- * 	RKH will include its own implementation of dynamic memory management.
- * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will 
- * 	automatically define RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
- * 	RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), 
- * 	RKH_DYNE_GET_NUSED(), RKH_DYNE_GET_NMIN(), and RKH_DYNE_GET_PSIZE() macros.
+ *  If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native 
+ *  fixed-size memory block facility is enabled (see #RKH_CFG_MP_EN) then 
+ *  RKH will include its own implementation of dynamic memory management.
+ *  When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will provide 
+ *  the event pool manager implementation based on its native memory pool 
+ *  module.
  */
 #define RKH_CFGPORT_NATIVE_DYN_EVT_EN		RKH_ENABLED
 
