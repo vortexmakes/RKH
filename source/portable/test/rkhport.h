@@ -70,8 +70,9 @@ const char *rkh_get_port_desc(void);
  *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
  *  include the simple, cooperative, and nonpreemptive scheduler RKHS.
  *  When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will
- *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
- *  RKH_SMA_UNREADY(), and assume the native priority scheme.
+ *  automatically define #RKH_EQ_TYPE, and include rkh_sma_block(), 
+ *  rkh_sma_setReady(), rkh_sma_setUnready(), and assume the native 
+ *  priority scheme.
  */
 #define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_ENABLED
 
@@ -148,20 +149,6 @@ const char *rkh_get_port_desc(void);
 #define RKH_EQ_TYPE                     RKH_QUEUE_T
 #define RKH_OSSIGNAL_TYPE               void*
 #define RKH_THREAD_TYPE                 void*
-
-#define RKH_SMA_BLOCK(sma)            \
-    while (((RKH_SMA_T*)(sma))->equeue.qty == (RKH_RQNE_T)0) \
-    { \
-        RKH_EXIT_CRITICAL_(); \
-        (void)WaitForSingleObject(((RKH_SMA_T*)(sma))->os_signal, \
-                                  (DWORD)INFINITE); \
-        RKH_ENTER_CRITICAL_(); \
-    }
-
-#define RKH_SMA_READY(rg, sma)        \
-    (void)SetEvent(((RKH_SMA_T*)(sma))->os_signal)
-
-#define RKH_SMA_UNREADY(rg, sma)      (void)0
 
 #define WIN32_LEAN_AND_MEAN
 

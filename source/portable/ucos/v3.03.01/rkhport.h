@@ -77,10 +77,6 @@
     } \
     while (0)
 
-#define RKH_SMA_BLOCK(sma)                (void)0
-#define RKH_SMA_READY(rg, sma)            (void)0
-#define RKH_SMA_UNREADY(rg, sma)          (void)0
-
 /* ------------------------------- Constants ------------------------------- */
 /**
  *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) has
@@ -100,8 +96,9 @@
  *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
  *  include the simple, cooperative, and nonpreemptive scheduler RKHS.
  *  When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will
- *  automatically define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(),
- *  RKH_SMA_UNREADY(), and assume the native priority scheme.
+ *  automatically define #RKH_EQ_TYPE, and include rkh_sma_block(), 
+ *  rkh_sma_setReady(), rkh_sma_setUnready(), and assume the native 
+ *  priority scheme.
  */
 #define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_DISABLED
 
