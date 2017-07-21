@@ -60,6 +60,13 @@ RKH_MODULE_NAME(rkhfwk_dynevt)
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
+typedef struct RKHEvtPoolMgr RKHEvtPoolMgr;
+struct RKHEvtPoolMgr
+{
+    RKH_ES_T blockSize;
+    RKHEvtPool *evtPool;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 static RKHEvtPoolMgr evtPools[RKH_CFG_FWK_MAX_EVT_POOL];
 

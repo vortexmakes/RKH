@@ -33,6 +33,7 @@
  *  \file       rkhfwk_dynevt.h
  *  \brief      
  *  \ingroup    fwk
+ *  \ingroup    apiEvt
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -307,18 +308,13 @@ extern "C" {
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-typedef struct RKHEvtPoolMgr RKHEvtPoolMgr;
-struct RKHEvtPoolMgr
-{
-    RKH_ES_T blockSize;
-    RKHEvtPool *evtPool;
-};
-
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /**
  *  \brief
  *  Initializes the dynamic event manager.
+ *
+ *  \ingroup apiEvt
  */
 void rkh_dynEvt_init(void);
 
@@ -404,6 +400,8 @@ void rkh_dynEvt_init(void);
  *  rkh_fwk_registerEvtPool( ep2sto, SIZEOF_EP2STO, SIZEOF_EP2_BLOCK  );
  *  ...
  *	\endcode
+ *
+ *  \ingroup apiEvt
  */
 void rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize);
 
@@ -425,6 +423,8 @@ void rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize);
  *
  *  \sa rkh_put_fifo(), rkh_put_lifo(), rkh_alloc_event(),
  *  rkh_set_static_event() and rkh_fwk_gc().
+ *
+ *  \ingroup apiEvt
  */
 RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender);
 
@@ -439,6 +439,8 @@ RKH_EVT_T *rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender);
  *                      an interrupt or other context, it can create a 
  *                      unique object just to unambiguously identify the 
  *                      publisher of the event.
+ *
+ *  \ingroup apiEvt
  */
 void rkh_fwk_gc(RKH_EVT_T *e, const void *const sender);
 
@@ -447,6 +449,8 @@ void rkh_fwk_gc(RKH_EVT_T *e, const void *const sender);
  *  Reserve the dynamic event to be recycled.
  *
  *  \param[in] e    event signal.
+ *
+ *  \ingroup apiEvt
  */
 void rkh_fwk_reserve(RKH_EVT_T *e);
 
