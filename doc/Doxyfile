@@ -802,7 +802,13 @@ INPUT                  = ../source/fwk/inc \
                          chglog.txt \
                          test.txt \
                          ../demo/cross/blinky/build/arm-cortex/rkhs/arm_cm3/lpcx-1769/lpcxpresso/readme.txt \
+                         ../demo/cross/blinky/build/arm-cortex/rkhs/arm_cm4f/frdm-k64f/kds/readme.txt \
+                         ../demo/cross/blinky/build/arm-cortex/rkhs/arm_cm4f/twr_k60/readme.txt \
+                         ../demo/cross/blinky/build/arm-cortex/rkhs/arm_cm0/frdm-kl25z/cw_v10/readme.txt \
+                         ../demo/cross/blinky/build/cfv1/rkhs/cw6_3/readme.txt \
+                         ../demo/cross/blinky/build/s08/rkhs/cw6_3/readme.txt \
                          ../demo/cross/shared/build/arm-cortex/ksdk_os/ucosiii/frdm-k64f/kds/readme.txt \
+                         ../demo/cross/shared/build/arm-cortex/rkhs/ksdk_bm/frdmk64f/kds/readme.txt \
                          ../third-party/utrazer/test_utrzsm.c \
                          ../third-party/utrazer/test_utrzexecact.c \
                          ../third-party/utrazer/test_utrzexpect.c \
