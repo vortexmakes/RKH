@@ -19,19 +19,6 @@ environment.
 - J17: EXTAL close, XTAL close.
 - J18: RESET_EN close, STLED_EN close.
 
-<STRONG>Project organization</STRONG>
-
-\code
-\-DEMOQE128
-    +-gpio			- Routines to handle GPIO's.
-    +-mcu			- Peripherals inicialization, ISR's and time stamp.
-    +-prj			- Blinky CW63 Project, run "blinky.mcp" to start demo.
-    +-serial		- Routines to handle serial port.
-    |   bsp.c		- Board support package source file.
-    |   bsp.h		- Board support package header file.
-    |   readme.txt	- This guide file.
-\endcode
-
 <STRONG>Blinky demo BSP</STRONG>
 	
 - Blink state is shown through PTC0 Led.

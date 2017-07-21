@@ -16,34 +16,10 @@ environment.
 On this demo, multithreading is reach through RKH uCosIII port defined by 
 the Freescale KSDK OSA interface.
 
-<STRONG>Folder tree</STRONG>
-
-\code
-\-frdm-k64f\kds\
-    +-board			- Low level KSDK access.
-    +-switch		- Minimal debouncing switch handler.
-    +-prj			- KDS "shared_frdmk64f_ucosiii_ksdk" project.
-    |  bsp.c		- Board support package source file.
-    |  bsp.h		- Board support package header file.
-    |  os_cfg.h		- uCosIII configuration file.
-    |  os_cfg_app.h	- Application specific uCosIII configuration file.
-    |  cpu_cfg.h	- CPU specific uCosIII configuration file.
-    |  readme.txt	- This guide file.
-\endcode
-
-<STRONG>Eclipse project organization</STRONG>
+<STRONG>Eclipse setup </STRONG>
 
 This project use KSDK_1.2.0, you must set it's installation path to the 
 PROJECT_KSDK_PATH variable, before to build.
-\code
-\-shared_frdmk64f_ucosiii_ksdk\
-	+- bsp			- Board support package files.
-	+- osa			- uCosIII OSA abstraction.
-	+- rkh			- RKH source files.
-	+- SDK			- KSDK platform library for FRDMK64F.
-	+- shared		- Shared demo aplication.
-	+- ucosiii		- uCosIII source files.
-\endcode
 
 <STRONG>Shared demo BSP</STRONG>
 	

@@ -12,21 +12,6 @@ This is a guide to how to setup and use the demo board to evaluate the RKH
 framework. It assumes a prior knowledge on board features and development 
 environment.
 
-<STRONG>Project organization</STRONG>
-
-\code
-\-cw_v10
-  \-prj	
-  | +-blinky_frdm_kl25      - Blinky demo CW10.x directory.
-  | +-cm0                   - CPU inicialization.
-  | bsp.c					- Board support package source file.
-  | bsp.h					- Board support package header file.
-  | gpio.h					- Routines to handle GPIO's.
-  | readme.txt				- This guide file.
-  | uart.c					- Routines to handle serial port.
-  | uart.h					- Serial driver prototipes.
-\endcode
-
 <STRONG>Blinky demo BSP</STRONG>
 
 - Blink state is shown through target board D3 RGB led on PA[4].

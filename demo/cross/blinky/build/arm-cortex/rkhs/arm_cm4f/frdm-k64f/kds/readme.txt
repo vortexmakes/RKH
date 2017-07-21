@@ -15,18 +15,6 @@ This is a guide to how to setup and use the demo board to evaluate the RKH
 framework. It assumes a prior knowledge on board features and development 
 environment.
 
-<STRONG>Project organization</STRONG>
-
-\code
-\-kds
-   \-board                  - CPU inicialization and drivers
-   \-prj	                - Blinky demo KDS directory.
-   | bsp.c					- Board support package source file.c.
-   | bsp.h					- Board support package header file.
-   | readme.h				- This guide file.
-\endcode
-
-
 <STRONG>Blinky demo BSP</STRONG>
 
 - Blink state is shown through RGB LED.
