@@ -1375,9 +1375,10 @@ extern "C" {
             (RKHROM struct RKH_ST_T *) \
                 ((RKH_SM_GET_CONST_OBJ(nameSMConst_))->istate)
 #else
-    #define RKH_SM_INIT(sm, name, prio, ppty, initialState, \
-                        initialAction, initialEvt) \
-        MKRT_SM(sm, name, prio, ppty, initialState, initialAction, initialEvt)
+    #define RKH_SM_INIT(me_, nameSMConst_, prio_, ppty_, initialState_, \
+                        initialAction_, initialEvt_) \
+        MKRT_SM(me_, nameSMConst_, prio_, ppty_, initialState_, \
+                initialAction_, initialEvt_)
 #endif
 
 /**
@@ -2339,7 +2340,7 @@ struct RKH_ENPCN_T
  *
  *	\anchor fig_sbm2
  *	\image html sbm2.png "State machine with two exit points and one entry
- *point"
+ *  point"
  *
  *	In the following figure the state machine shown above is referenced twice in
  *	a submachine state \c S12 and \c S2.
