@@ -925,7 +925,7 @@ extern "C" {
  *  \range      
  *  \default    RKH_ENABLED
  */
-#define RKH_CFG_TRC_SM_EXE_ACT_EN       RKH_DISABLED
+#define RKH_CFG_TRC_SM_EXE_ACT_EN       RKH_ENABLED
 
 /**
  *  \brief
