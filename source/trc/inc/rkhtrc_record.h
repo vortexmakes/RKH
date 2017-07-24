@@ -1103,7 +1103,7 @@ extern "C" {
 
         /**
          *  \brief
-         *  \copybrief rkh_fwk_epool_register
+         *  \copybrief rkh_fwk_registerEvtPool
          *
          *  \description    Register an event pool
          *  \trcGroup       RKH_TG_FWK
@@ -1740,12 +1740,12 @@ extern "C" {
          *
          *  \code
          *	...
-         *	rkh_fwk_epool_register(ep0_sto,	SIZEOF_EP0STO,
-         *						   SIZEOF_EP0_BLOCK);
-         *	rkh_fwk_epool_register(ep1_sto, SIZEOF_EP1STO,
-         *						   SIZEOF_EP1_BLOCK);
-         *	rkh_fwk_epool_register(ep2_sto, SIZEOF_EP2STO,
-         *						   SIZEOF_EP2_BLOCK);
+         *	rkh_fwk_registerEvtPool(ep0_sto,	SIZEOF_EP0STO,
+         *						    SIZEOF_EP0_BLOCK);
+         *	rkh_fwk_registerEvtPool(ep1_sto, SIZEOF_EP1STO,
+         *						    SIZEOF_EP1_BLOCK);
+         *	rkh_fwk_registerEvtPool(ep2_sto, SIZEOF_EP2STO,
+         *						    SIZEOF_EP2_BLOCK);
          *
          *  RKH_TR_FWK_EPOOL(0, "ep0");
          *  RKH_TR_FWK_EPOOL(1, "ep1");
