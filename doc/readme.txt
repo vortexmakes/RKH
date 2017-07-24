@@ -16,13 +16,16 @@ structure in more detail.
 \anchor top_dir
 \code
 <RKH-root>					- RKH-root directory
-  |
-  +-demo					- RKH demo applications
-  +-doc						- RKH documentation
-  \-source					- RKH source files
-  | copying.txt				- licence file
-  | README					- change log file
-  | rkh.chm					- reference manual
+|   copying.txt				- Licence file
+|   README					- Change log file
+|   rkh.chm					- Reference manual
+|   
++---demo					- Demostrative applications
++---doc						- Documentation
++---source					- Source and test code files of RKH
++---template			    - Templates for source code files
++---third-party             - Third-party software components
+\---tools                   - Used tools.  
 \endcode
 <STRONG> Figure 1 Top level directories </STRONG>
 
