@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc_stream.c
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Trace stream implementation
  *  \ingroup    aptTrc
  */
 

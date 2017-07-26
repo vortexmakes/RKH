@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc_record.c
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Trace record implementation
  *  \ingroup    aptTrc
  */
 

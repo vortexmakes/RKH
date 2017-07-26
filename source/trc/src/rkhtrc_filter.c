@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc_filter.c
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Runtime trace filter implementation.
  *  \ingroup    aptTrc
  */
 
