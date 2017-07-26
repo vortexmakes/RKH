@@ -16,16 +16,15 @@ structure in more detail.
 \anchor top_dir
 \code
 <RKH-root>					- RKH-root directory
-|   copying.txt				- Licence file
-|   README					- Change log file
-|   rkh.chm					- Reference manual
-|   
-+---demo					- Demostrative applications
-+---doc						- Documentation
-+---source					- Source and test code files of RKH
-+---template			    - Templates for source code files
-+---third-party             - Third-party software components
-\---tools                   - Used tools.  
+|-- demo                    - Demostrative and example applications
+|-- doc                     - Documentation
+|-- source                  - Source and test code files of RKH
+|-- template                - Templates for source code files
+|-- third-party             - Third-party software components
+|-- tools                   - Used tools
+|-- copying.txt             - Licence file
+|-- README                  - Change log file
+\-- rkh.chm                 - Reference manual
 \endcode
 <STRONG> Figure 1 Top level directories </STRONG>
 
@@ -40,44 +39,52 @@ structure in more detail.
 <HR>
 \section source_dir RKH source files
 
-The following figure shows the \c \\source directory.
+The following figure shows the upper level of \c /source directory. Every 
+module has been structured to be testable and maintainable, using \c /inc, 
+\c /src, and \c /test directories. Every implementation file of any module 
+have its own test cases, which are included in corresponding directory within 
+\c /test.
 
 \anchor source_dir_fig
 \code
-<RKH-root> 					- RKH-root directory
-  |   
-  +-demo					- Demo applications
-  +-doc						- Documentation
-  \-source					- RKH source code files
-  | +-include				- Contains platform-independent header files
-  | |   rkh.h				- Framework interface 
-  | |   rkhassert.h			- Assert definitions
-  | |   rkhevt.h			- Event data type and other related macros 
-  | |   rkhitl.h			- Internal use only 
-  | |   rkhmempool.h				- Fixed-size memory block services interface 
-  | |   rkhplat.h			- Supported and portable platforms 
-  | |   rkhrdy.h			- Native priority management 
-  | |   rkhqueue.h				- Queue services interface 
-  | |   rkhs.h				- Simple and cooperative scheduler interface 
-  | |   rkhtmr.h			- Timer services interface 
-  | |   rkhtrc.h			- Trace facility 
-  | |   rkhtype.h			- Defines the data types that uses RKH 
-  | |       
-  | \-portable				- Contains platform-dependent files
-  | |
-  | | rkh.c					- State machine engine 
-  | | rkhdyn.c				- Dynamic event management, and event framework services 
-  | | rkhmempool.c				- Fixed-size memory block 
-  | | rkhqueue.c				- Queue (copy by reference)
-  | | rkhs.c				- Simple and cooperative scheduler
-  | | rkhsma.c				- State machine application (SMA) registration.
-  | | rkhtbl.c				- Binary map tables.
-  | | rkhtmr.c				- Software timer.
-  | | rkhtrc.c				- Platform-independent source code of runtime tracing.
-  |
-  | copying.txt				- Licence file
-  | README					- Change log file
-  | rkh.chm					- Reference manual
+<RKH-root>					        - RKH-root directory
+|-- demo
+|-- doc
+|-- source
+|   |-- fwk
+|   |-- mempool
+|   |-- portable
+|   |-- queue
+|   |-- sm
+|   |-- sma
+|   |-- tmr
+|   \-- trc
+|       |-- inc                     - Contains specification files of module
+|       |   |-- rkhtrc_define.h
+|       |   |-- rkhtrc_filter.h
+|       |   |-- rkhtrc.h
+|       |   |-- rkhtrc_out.h
+|       |   |-- rkhtrc_record.h
+|       |   \-- rkhtrc_stream.h
+|       |-- src                     - Contains implementation files of module
+|       |   |-- rkhtrc_filter.c
+|       |   |-- rkhtrc_record.c
+|       |   \-- rkhtrc_stream.c
+|       \-- test                    - Contains unit test files of module
+|           |-- build
+|           |-- filter              - Unit test for rkhtrc_filter.c file
+|           |   |-- inc             - Include files of test cases
+|           |   |-- runner          - Run the test cases
+|           |   |-- src             - Test cases
+|           |   \-- stub            - Test-doubles
+|           |-- record              - Unit test for rkhtrc_record.c file
+|           \-- stream              - Unit test for rkhtrc_stream.c file
+|-- template
+|-- third-party
+|-- tools
+|-- copying.txt
+|-- README
+\-- rkh.chm
 \endcode
 <STRONG> Figure 2 RKH source directory </STRONG>
 
@@ -189,6 +196,62 @@ See the \ref Porting section for more information.
 The following figure shows the \c \\portable directory.
 
 \anchor portable_dir_fig
+\code
+    <RKH-root>					        - RKH-root directory
+    |-- demo
+    |-- doc
+    |-- source
+    |   |-- fwk
+    |   |-- mempool
+    |   |-- portable                    - Platform-specific RKH ports
+    |   |   |-- 80x86                   - Ports to the 80x86 processor
+    |   |   |   |-- linux_st            - Ports to Linux with scheduler emulation
+    |   |   |   |   \-- gnu             - Ports with the GNU compiler
+    |   |   |   |       |-- rkhport.c   - RKH port to Linux source file
+    |   |   |   |       |-- rkhport.h   - RKH platform-dependent include file
+    |   |   |   |       \-- rkht.h      - RKH platform-dependent include file
+    |   |   |   |-- win32_mt
+    |   |   |   |   \-- vc
+    |   |   |   |       |-- rkhport.c
+    |   |   |   |       |-- rkhport.h
+    |   |   |   |       \-- rkht.h
+    |   |   |   \-- win32_st            - Ports to Win32 with scheduler emulation
+    |   |   |       \-- vc              - Ports with the Visual Studio C++ IDE
+    |   |   |-- arm-cortex              - Ports to the ARM Cortex processor
+    |   |   |   |-- ksdk_os             - ...
+    |   |   |   |   \-- ucosiii         - Ports to uCOS-III RTOS
+    |   |   |   |       \-- kds         - Ports with KDS IDE
+    |   |   |   \-- rkhs                - Ports to the native cooperative scheduler
+    |   |   |       |-- arm_cm0         - Ports to the ARM Cortex-M0 processor
+    |   |   |       |   \-- cw_v10      - Ports with the Codewarrior v10 compiler
+    |   |   |       |-- arm_cm3
+    |   |   |       |   \-- codered     - Ports with the code_red compiler
+    |   |   |       |-- arm_cm4f
+    |   |   |       |   \-- cw_v10
+    |   |   |       \-- ksdk
+    |   |   |           \-- kds
+    |   |   |-- cfv1
+    |   |   |   \-- rkhs
+    |   |   |       \-- cw6_3
+    |   |   |-- s08
+    |   |   |   \-- rkhs
+    |   |   |       \-- cw6_3
+    |   |   |-- test
+    |   |   \-- ucos
+    |   |       \-- v3.03.01
+    |   |-- queue
+    |   |-- sm
+    |   |-- sma
+    |   |-- tmr
+    |   \-- trc
+    |-- template
+    |-- third-party
+    |-- tools
+    |-- copying.txt
+    |-- README
+    \-- rkh.chm
+\endcode
+
 \code
 	 <RKH-root>	
 	   |
