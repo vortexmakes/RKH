@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhqueue.h
- *  \brief      Platform - independent interface for supporting queue services.
+ *  \brief      Specifies the interface of the queue services.
  *
  *  \ingroup    apiQueue
  *

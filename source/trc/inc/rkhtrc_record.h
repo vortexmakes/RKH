@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc_record.h
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Defines the trace records.
  *  \ingroup    apiTrc
  */
 

@@ -31,7 +31,8 @@
 
 /**
  *  \file       rkhsma_sync.h
- *  \brief      ...
+ *  \brief      Specifies the interface of the blocking mechanism (synchro) 
+ *              for active object scheduling.
  *  \ingroup    sma
  */
 

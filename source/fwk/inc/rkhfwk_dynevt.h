@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhfwk_dynevt.h
- *  \brief      
+ *  \brief      Specifies the interface of dynamic event support
  *  \ingroup    fwk
  *  \ingroup    apiEvt
  */

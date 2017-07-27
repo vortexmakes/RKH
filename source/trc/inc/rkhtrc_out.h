@@ -31,7 +31,8 @@
 
 /**
  *  \file       rkhtrc_out.h
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Specifies the interface to get out the trace records from the 
+ *              instrumented application.
  *  \ingroup    apiTrc
  */
 

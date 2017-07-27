@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhfwk_version.h
- *  \brief      RKH version
+ *  \brief      Defines the RKH version
  *  \ingroup    fwk
  */
 

@@ -33,7 +33,8 @@
  *  \file       rkhfwk_bittbl.c
  *  \ingroup    sch
  *
- *  \brief      Declares the mapping tables to deal with priority algorithm.
+ *  \brief      Manages the mapping tables (bit access) to deal with priority 
+ *              algorithm.
  */
 
 /* -------------------------- Development history -------------------------- */

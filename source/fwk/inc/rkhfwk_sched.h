@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhfwk_sched.h
- *  \brief      ...
+ *  \brief      Specifies the interface of RKH control operations.
  *  \ingroup    fwk
  */
 

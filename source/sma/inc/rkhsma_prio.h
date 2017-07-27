@@ -31,7 +31,8 @@
 
 /**
  *  \file       rkhsma_prio.h
- *  \brief      Native priority mechanism for active object scheduling
+ *  \brief      Specifies the native priority mechanism for active object 
+ *              scheduling
  *  \ingroup    sma
  */
 

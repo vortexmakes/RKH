@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhfwk_cast.h
- *  \brief      ...
+ *  \brief      Defines casting operations which are internally used by RKH
  *  \ingroup    fwk
  */
 

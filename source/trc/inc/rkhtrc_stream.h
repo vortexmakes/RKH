@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc_stream.h
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Specifies the trace stream manager (circular buffer).
  *  \ingroup    apiTrc
  */
 

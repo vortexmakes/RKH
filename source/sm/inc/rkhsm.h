@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhsm.h
- *  \brief      Platform - independent interface for supporting state-machines. 
+ *  \brief      Specifies the interface of the state-machine manager. 
  *
  *  \ingroup    apiSM
  *  \ingroup    apiAO

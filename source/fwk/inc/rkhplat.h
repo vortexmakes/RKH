@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhplat.h
- *  \brief      RKH platform - dependent interface.
+ *  \brief      RKH platform abstraction layer.
  *  \ingroup    apiPortMisc
  */
 

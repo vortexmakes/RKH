@@ -31,7 +31,8 @@
 
 /**
  *  \file       rkhassert.h
- *  \brief
+ *  \brief      Specifies the assertion macros.
+ *
  *	The assertions (\c RKH_ASSERT() macro) are used to check expressions
  *	that ought to be true as long as the program is running correctly. It
  *	is a convenient way to insert sanity checks.

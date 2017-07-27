@@ -32,8 +32,8 @@
 /**
  *  \file       rkhfwk_evtpool.h
  *  \ingroup    fwk
- *  \brief      Specificates the event pool interface.
- *              Typically, these platform-dependent functions, must be define 
+ *  \brief      Specifies the event pool interface.
+ *  \details    Typically, these platform-dependent functions, must be define 
  *              it in the specific implementation file to a particular 
  *              platform. However, only the ports to the external OS/RTOS 
  *              usually need some code to bolt the framework to the external 

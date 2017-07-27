@@ -31,7 +31,8 @@
 
 /**
  *  \file       rkhtrc_define.h
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Defines constants and macros which are internally used by RKH 
+ *              trace facility.
  *  \ingroup    apiTrc
  */
 

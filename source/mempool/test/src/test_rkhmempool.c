@@ -36,7 +36,7 @@
  *
  *  \addtogroup test
  *  @{
- *  \addtogroup test_mempool fixed-size memory block pool module
+ *  \addtogroup test_mempool Fixed-size memory block pool module
  *  @{
  *  \brief      Unit test for fixed-size memory block pool module.
  */
@@ -79,7 +79,7 @@ TEST_TEAR_DOWN(mempool)
 }
 
 /**
- *  \addtogroup test_smTransition Transition test group
+ *  \addtogroup test_rkhmempool Fixed-size memory block pool test group
  *  @{
  *  \name Test cases of mempool group
  *  @{ 

@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc.h
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Specifies the interface of trace facility.
  *
  *  <EM>RKH trace event structure</EM>
  *

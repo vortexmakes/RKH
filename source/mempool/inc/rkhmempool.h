@@ -31,9 +31,8 @@
 
 /**
  *  \file       rkhmempool.h
- *  \brief      Platform - independent interface for supporting fixed - size
- *              memory blocks facility.
- *
+ *  \brief      Specifies the interface of the fixed-size memory blocks 
+ *              facility.
  *  \ingroup    apiMemPool
  *
  *  \addtogroup api

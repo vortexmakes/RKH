@@ -31,9 +31,8 @@
 
 /**
  *  \file       rkhsma.h
- *  \brief      Platform - independent interface for supporting acive objects 
- *              (SMA state machine applications)
- *
+ *  \brief      Specifies the interface of the acive object (SMA state machine 
+ *              applications) manager.
  *  \ingroup    apiAO
  *
  *  \addtogroup api

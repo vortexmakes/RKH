@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhfwk_hook.h
- *  \brief      ...
+ *  \brief      Specifies the interface of hook functions.
  *  \ingroup    fwk
  */
 

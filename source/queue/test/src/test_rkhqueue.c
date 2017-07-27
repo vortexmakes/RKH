@@ -31,12 +31,12 @@
 
 /**
  *  \file       test_rkhqueue.c
- *  \ingroup    test_tmr
+ *  \ingroup    test_queue
  *  \brief      Unit test for queue module.
  *
  *  \addtogroup test
  *  @{
- *  \addtogroup test_queue queue module
+ *  \addtogroup test_queue Queue module
  *  @{
  *  \brief      Unit test for queue module.
  */
@@ -81,7 +81,7 @@ TEST_TEAR_DOWN(queue)
 }
 
 /**
- *  \addtogroup test_smTransition Transition test group
+ *  \addtogroup test_rkhqueue Queue test group
  *  @{
  *  \name Test cases of queue group
  *  @{ 

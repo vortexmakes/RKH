@@ -31,9 +31,7 @@
 
 /**
  *  \file       rkhtmr.h
- *  \brief      Platform - independent interface for supporting software timer
- *              services.
- *
+ *  \brief      Specifies the interface of software timer services.
  *  \ingroup    apiTmr
  *
  *  \addtogroup api

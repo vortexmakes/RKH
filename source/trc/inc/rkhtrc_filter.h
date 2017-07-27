@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhtrc_filter.h
- *  \brief      Platform - independent interface for RKH trace facility.
+ *  \brief      Specifies the runtime filter operations for the trace facility.
  *  \ingroup    apiTrc
  */
 

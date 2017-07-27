@@ -81,7 +81,7 @@ TEST_TEAR_DOWN(timer)
 }
 
 /**
- *  \addtogroup test_smTransition Transition test group
+ *  \addtogroup test_rkhtimer Software timer test group
  *  @{
  *  \name Test cases of timer group
  *  @{ 

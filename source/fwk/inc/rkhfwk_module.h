@@ -31,7 +31,7 @@
 
 /**
  *  \file       rkhfwk_module.h
- *  \brief      ...
+ *  \brief      Specifies the macros to identify file modules.
  *  \ingroup    fwk
  */
 

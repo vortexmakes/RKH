@@ -31,8 +31,7 @@
 
 /**
  *  \file       rkhdef.h
- *  \brief      Platform - independent file that contains standard constants 
- *              and macros.
+ *  \brief      Defines constants and macros.
  *
  *  All constants and macros are prefixed with RKH_ to provide a consistent 
  *  naming convention and to avoid namespace conflicts with other constants 

@@ -31,7 +31,8 @@
 
 /**
  *  \file       rkhfwk_bittbl.h
- *  \brief      Native priority management.
+ *  \brief      Specifies the interface of the mapping table manager to deal 
+ *              with native priority algorithm.
  *  \ingroup    fwk
  */
 
