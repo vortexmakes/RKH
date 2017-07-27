@@ -13,7 +13,7 @@ machine and one timer, which is shown and itself explained in the
 RKH programming. 
 
 The platform-independent Blinky source code (in C) is located in the 
-\c \<rkh\>\\demo\\cross\\blinky\\ directory, where \c \<rkh\> stands for the 
+\c \<rkh\>/demo/cross/blinky/ directory, where \c \<rkh\> stands for the 
 installation directory chosed to install the accompanying software and 
 \c blinky.c, \c blinky.h and \c main.c are the platform-independent files. 
 Thus, the code is actually identical in all Blinky versions, such as the 
@@ -278,7 +278,7 @@ As said before, the only platform-dependent file is the board support package
 \c bsp.h files, which are contained in the proper directory, for example, the 
 BSP for the Blinky application on Windows 32 (Visual Studio 2008) with a 
 simple cooperative scheduler is located in 
-\c \<rkh\>\\demo\\cross\\blinky\\platform\\80x86\\win32_st\\vc08\\
+\c \<rkh\>/demo/cross/blinky/build/80x86/win32_st/vc/
 
 <TABLE	align="center" valign="middle" width=70% cellSpacing=2 
 		cellPadding=4 border=0>
@@ -426,7 +426,7 @@ could be used in either preemptive or cooperative enviroment.
 Aditionally, the Shared could be used to verify a new RKH port.
 
 The platform-independent Shared source code (in C) is located in the 
-\c \<rkh\>\\demo\\cross\\shared\\ directory, where \c \<rkh\> stands for the 
+\c \<rkh\>/demo/cross/shared/ directory, where \c \<rkh\> stands for the 
 installation directory chosed to install the accompanying software and 
 \c client.h, \c server.h, \c shared.h, \c client.c, \c main.c and 
 \c server.c are the platform-independent files. Thus, the code is actually 
@@ -1204,7 +1204,7 @@ As said before, the only platform-dependent file is the board support package
 \c bsp.h files, which are contained in the proper directory, for example, the 
 BSP for the Shared application on Windows 32 (Visual Studio 2008) with a 
 simple cooperative scheduler is located in 
-\c \<rkh\>\\demo\\cross\\shared\\platform\\80x86\\win32_st\\vc08\\ 
+\c \<rkh\>/demo/cross/shared/build/80x86/win32_st/vc/ 
 
 <TABLE	align="center" valign="middle" width=70% cellSpacing=2 
 		cellPadding=4 border=0>

@@ -7,8 +7,8 @@ Prev: \ref basics "Basics"\n
 Next: \ref identify_events "Identifying, generating and sending events"\n\n
 
 The sample code for the example presented above ported to x86 is located 
-in the directory \c \\demo\\80x86\\vc08\\win32_st\\vc08\\ahsm. It contains 
-the Visual C++ 2008 project files to build the application. Also, emulates 
+in the directory \c demo/80x86/ahsm/. It contains 
+the Visual Studio project files to build the application. Also, emulates 
 a ISR and a simple event-loop like a cooperative scheduler 
 using the native priority scheme among other RKH services. 
 See \ref Installation section about RKH files. The application files 
@@ -33,7 +33,7 @@ are listed below:
 					See the \subpage main_c file.
 
 - \b "rkhcfg.h":	adapts and configures RKH. See \ref cfg section. 
-					In the \\demo directory there are other \b rkhcfg.h files
+					In the \c demo/ directory there are other \b rkhcfg.h files
 					already in existence and it's suggested that these 
 					are used as a reference.
 
@@ -1308,7 +1308,7 @@ of event \b B in a RTC manner.
 <B>Dealing with RTC model in a nonpreemtive manner</B>
 
 Here is the basic algorithm for interpreting the native kernel. 
-The rkh_fwk_enter() function implemented in \b \\source\\rkhfwk_sched.c source 
+The rkh_fwk_enter() function implemented in \c source/fwk/src/rkhfwk_sched.c source 
 file is self-explanatory.
 
 \code
@@ -1331,16 +1331,16 @@ infinite loop
 
 First of all, pay special attention to \ref Porting and 
 \ref Installation sections and then following the win32 single thread demo 
-and its own port from the directories \\demo\\80x86\\win32_st\\vc08 and 
-\\source\\portable\\80x86\\win32_st\\vc08 respectively.
+and its own port from the directories \c demo/80x86/\<example\>/build/win32_st/vc and 
+/source/portable/80x86/win32_st/vc/ respectively.
 <EM>The main goal to this is to make it easy to understand the 
 event-driven code and experiment with it.</EM>
 
 <b>Main function</b>
 
 As said above, following the win32 single thread demo and its own port 
-from the directories \\demo\\80x86\\win32_st\\vc08 and 
-\\source\\portable\\80x86\\win32_st\\vc08 respectively. 
+from the directories \c demo/80x86/\<example\>/build/win32_st/vc and 
+\c source/portable/80x86/win32_st/vc respectively. 
 However, the \c main() function is shown below to illustrate the RKH concept.
 
 \code
