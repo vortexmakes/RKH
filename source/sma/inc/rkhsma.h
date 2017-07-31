@@ -67,7 +67,14 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-#define RKH_SMA_NAME(smaName_)       s_##smaName_
+#if ((RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_ENABLED) && \
+     (RKH_EN_DOXYGEN == RKH_DISABLED))
+    #ifndef RKH_EQ_TYPE
+        #define RKH_EQ_TYPE         RKH_QUEUE_T
+    #endif
+#endif
+
+#define RKH_SMA_NAME(smaName_)      s_##smaName_
 
 /**
  *  \brief
