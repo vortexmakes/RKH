@@ -94,7 +94,7 @@ TEST_TEAR_DOWN(sync)
 }
 
 /**
- *  \addtogroup test_sync for test sync group
+ *  \addtogroup test_sync Test cases of synchronous mechanism group
  *  @{
  *  \name Test cases of synchronous mechanism group
  *  @{ 

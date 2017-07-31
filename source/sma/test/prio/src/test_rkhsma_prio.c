@@ -109,7 +109,7 @@ TEST_TEAR_DOWN(prio)
 }
 
 /**
- *  \addtogroup test_prio for test priority group
+ *  \addtogroup test_prio Test cases of priority mechanism group
  *  @{
  *  \name Test cases of priority mechanism group
  *  @{ 

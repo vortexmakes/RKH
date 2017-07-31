@@ -832,7 +832,31 @@ INPUT                  = ../source/fwk/inc \
                          ../source/trc/test/filter/src/test_rkhtrc_filter.c \
                          ../source/trc/test/record/runner/test_rkhtrc_record_runner.c \
                          ../source/trc/test/record/src/test_rkhtrc_record.c \
-                         ../source/trc/test/stream/runner/test_rkhtrc_stream_runner.c
+                         ../source/trc/test/stream/runner/test_rkhtrc_stream_runner.c \
+                         ../source/fwk/test/bittbl/src/test_rkhfwk_bittbl.c \
+                         ../source/fwk/test/bittbl/runner/test_rkhfwk_bittbl_runner.c \
+                         ../source/fwk/test/dynevt/src/test_rkhfwk_dynevt.c \
+                         ../source/fwk/test/dynevt/runner/test_rkhfwk_dynevt_runner.c \
+                         ../source/fwk/test/evtpool/src/test_rkhfwk_evtpool.c \
+                         ../source/fwk/test/evtpool/runner/test_rkhfwk_evtpool_runner.c \
+                         ../source/fwk/test/sched/src/test_rkhfwk_sched.c \
+                         ../source/fwk/test/sched/runner/test_rkhfwk_sched_runner.c \
+                         ../source/mempool/test/src/test_rkhmempool.c \
+                         ../source/mempool/test/runner/test_rkhmempool_runner.c \
+                         ../source/queue/test/src/test_rkhqueue.c \
+                         ../source/queue/test/runner/test_rkhqueue_runner.c \
+                         ../source/sma/test/prio/src/test_rkhsma_prio.c \
+                         ../source/sma/test/prio/runner/test_rkhsma_prio_runner.c \
+                         ../source/sma/test/sma/src/test_rkhsma.c \
+                         ../source/sma/test/sma/src/test_smInstance.c \
+                         ../source/sma/test/sma/src/test_smPolymorphism.c \
+                         ../source/sma/test/sma/runner/test_rkhsma_runner.c \
+                         ../source/sma/test/sma/runner/test_smInstance_runner.c \
+                         ../source/sma/test/sma/runner/test_smPolymorphism_runner.c \
+                         ../source/sma/test/sync/src/test_rkhsma_sync.c \
+                         ../source/sma/test/sync/runner/test_rkhsma_sync_runner.c \
+                         ../source/tmr/test/src/test_rkhtmr.c \
+                         ../source/tmr/test/runner/test_rkhtmr_runner.c
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

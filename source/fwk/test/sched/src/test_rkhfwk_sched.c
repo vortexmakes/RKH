@@ -78,7 +78,7 @@ TEST_TEAR_DOWN(sched)
 }
 
 /**
- *  \addtogroup test_sched for test native scheduler group
+ *  \addtogroup test_sched Test cases of native scheduler group
  *  @{
  *  \name Test cases of native scheduler group
  *  @{ 

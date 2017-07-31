@@ -97,7 +97,7 @@ TEST_TEAR_DOWN(dynevt)
 }
 
 /**
- *  \addtogroup test_dynevt for test dynevt group
+ *  \addtogroup test_dynevt Test cases of dynamic event group
  *  @{
  *  \name Test cases of dynamic event group
  *  @{ 

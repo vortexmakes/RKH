@@ -76,7 +76,7 @@ TEST_TEAR_DOWN(bittbl)
 }
 
 /**
- *  \addtogroup test_bittbl for test bittbl group
+ *  \addtogroup test_bittbl Test cases of bit table group
  *  @{
  *  \name Test cases of bit table group
  *  @{ 

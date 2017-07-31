@@ -110,7 +110,7 @@ TEST_TEAR_DOWN(evtpool)
 }
 
 /**
- *  \addtogroup test_evtpool for test event pool group
+ *  \addtogroup test_evtpool Test cases of event pool group
  *  @{
  *  \name Test cases of event pool group
  *  @{ 
