@@ -16,7 +16,6 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhfwk_sched.h"
 #include "bsp.h"
 #include "server.h"
 #include "client.h"

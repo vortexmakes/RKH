@@ -42,7 +42,6 @@
  */
 
 #include "rkh.h"
-#include "rkhfwk_sched.h"
 #include "bsp.h"
 #include "blinky.h"
 #include "uart.h"

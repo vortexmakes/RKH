@@ -51,7 +51,6 @@
 #include <stdio.h>
 
 #include "rkh.h"
-#include "rkhfwk_sched.h"
 
 RKH_THIS_MODULE
 

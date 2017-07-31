@@ -16,7 +16,6 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhfwk_dynevt.h"
 #include "shared.h"
 #include "server.h"
 #include "client.h"

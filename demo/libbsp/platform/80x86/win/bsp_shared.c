@@ -56,8 +56,6 @@
 #include "client.h"
 #include "bsp.h"
 #include "rkh.h"
-#include "rkhfwk_dynevt.h"
-#include "rkhfwk_sched.h"
 #include "trace_io_cfg.h"
 
 RKH_THIS_MODULE

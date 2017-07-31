@@ -49,7 +49,6 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "rkhfwk_sched.h"
 #include "mcu.h"
 
 RKH_THIS_MODULE

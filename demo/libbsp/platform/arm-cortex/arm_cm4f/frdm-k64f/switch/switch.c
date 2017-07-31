@@ -7,7 +7,6 @@
  */
 
 #include "rkh.h"
-#include "rkhfwk_dynevt.h"
 #include "switch.h"
 #include "swhdl.h"
 #include "bsp.h"

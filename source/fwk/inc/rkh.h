@@ -112,6 +112,8 @@
 #include "rkhfwk_module.h"
 #include "rkhfwk_cast.h"
 #include "rkhfwk_version.h"
+#include "rkhfwk_dynevt.h"
+#include "rkhfwk_sched.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus

@@ -50,8 +50,6 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "blinky.h"
 #include "rkh.h"
-#include "rkhfwk_sched.h"
-
 #include "bsp.h"
 #include "mcu.h"
 #include "gpio.h"
