@@ -44,7 +44,6 @@
 #ifndef __RKHPORT_H__
 #define __RKHPORT_H__
 
-#include <windows.h>
 #include "rkhtype.h"
 
 void rkh_enter_critical(void);

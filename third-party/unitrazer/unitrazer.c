@@ -48,7 +48,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-
+#include <stdarg.h>
 #include "rkh.h"
 #include "unity_fixture.h"
 #include "unitrazer.h"

@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include "rkh.h"
-#include "bsp.h"
 #include "smPseudoTest.h"
 #include "smPseudoTestAct.h"
 

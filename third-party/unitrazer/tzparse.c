@@ -2,10 +2,11 @@
  *	file: trazer.c
  */
 
+#include <stdio.h>
+#include <string.h>
 #include "rkhtype.h"
 #include "rkhtrc.h"
 #include "tzparse.h"
-#include <stdio.h>
 
 static rui32_t lastnseq;
 rui16_t TSTAMP_TICK_HZ;
