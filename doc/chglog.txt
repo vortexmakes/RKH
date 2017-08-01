@@ -3,6 +3,18 @@
 
 \tableofcontents
 
+\section rkhVer_3_0_0 Version 3.0.0
+\releasedate 2017-08-01
+
+\new
+- Added unit test cases of trace, sma and fwk modules.
+- Added test harness of framework's modules to test for.
+- Added Ceedling submodule
+- Rearranged files and directories (modules, ports and demo apps).
+- Improved trace module
+- Improved doc files (doxygen) and comments.
+
+<HR>
 \section rkhVer_2_4_6 Version 2.4.6
 \releasedate 2016-12-14
 
