@@ -139,7 +139,6 @@ RKH download: http://sourceforge.net/projects/rkh-reactivesys/
 Open-source frameworks that support Statecharts.
 
 - Quantum Leap	- http://www.state-machine.com/
-- Intelliwizard	- http://www.intelliwizard.com/
 
 <HR>
 \section Resources Resources
@@ -179,8 +178,9 @@ See \ref contact section.</em>
 <HR>
 \section contact Contact information
 
-RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
-\n e-mail:		francuccilea@gmail.com
+RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
+\n e-mail: lf@vortexmakes.com
+\n e-mail: francuccilea@gmail.com
 
 <HR>
 \section ack Acknowlegments
