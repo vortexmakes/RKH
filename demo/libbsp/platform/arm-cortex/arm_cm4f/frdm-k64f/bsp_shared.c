@@ -102,7 +102,7 @@ static rui8_t l_isr_kbd;
 void
 bsp_publish( const RKH_EVT_T *e )
 {
-	rint cn;
+	rInt cn;
 
 	RKH_SMA_POST_FIFO( server, e, &l_isr_kbd );			/* to server */
 
@@ -322,7 +322,7 @@ bsp_svr_recall( rui8_t clino )
 void 
 bsp_svr_paused(rui32_t ntot, rui32_t *ncr)
 {
-	rint cn;
+	rInt cn;
     rui32_t *pNcr;
 
 	PRINTF( "Server paused | ");
@@ -357,7 +357,7 @@ bsp_svr_resume( void )
 void 
 bsp_init( int argc, char *argv[]  )
 {
-	rint cn;
+	rInt cn;
 
 	(void)argc;
 	(void)argv;

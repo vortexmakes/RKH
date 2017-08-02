@@ -57,7 +57,7 @@ static RKH_THREAD_STK_TYPE cli_stk[NUM_CLIENTS][CLI_STK_SIZE];
 int
 main(int argc, char *argv[])
 {
-    rint cn;
+    rInt cn;
 
     bsp_init(argc, argv);
 

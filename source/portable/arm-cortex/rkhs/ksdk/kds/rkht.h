@@ -72,12 +72,12 @@ typedef unsigned short rui16_t;
 typedef unsigned long rui32_t;
 
 /*
- *  The 'ruint' and 'rint' will normally be the natural size for a
+ *  The 'ruint' and 'rInt' will normally be the natural size for a
  *  particular machine. These types designates an integer type that is
  *  usually fastest to operate with among all integer types.
  */
 typedef unsigned char ruint;
-typedef signed char rint;
+typedef signed char rInt;
 
 /*
  *  Boolean data type and constants.

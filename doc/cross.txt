@@ -874,7 +874,7 @@ static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
 static void
 server_init(Server *const me)
 {
-    rint cn;
+    rInt cn;
 
     RKH_TR_FWK_AO(server);
     RKH_TR_FWK_STATE(server, &server_idle);
@@ -1177,7 +1177,7 @@ static RKH_THREAD_STK_TYPE cli_stk[NUM_CLIENTS][CLI_STK_SIZE];
 int
 main(int argc, char *argv[])
 {
-    rint cn;
+    rInt cn;
 
     bsp_init(argc, argv);
 

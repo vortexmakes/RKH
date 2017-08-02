@@ -95,7 +95,7 @@ static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
 static void
 server_init(Server *const me)
 {
-    rint cn;
+    rInt cn;
 
     RKH_TR_FWK_AO(server);
     RKH_TR_FWK_STATE(server, &server_idle);

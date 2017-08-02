@@ -123,7 +123,7 @@ rkh_fwk_reserve(RKH_EVT_T *e)
 RKH_EVT_T *
 rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender)
 {
-    rint i;
+    rInt i;
     RKHEvtPoolMgr *ep;
     RKH_EVT_T *evt;
 
@@ -167,7 +167,7 @@ rkh_fwk_registerEvtPool(void *sstart, rui32_t ssize, RKH_ES_T esize)
 void
 rkh_dynEvt_init(void)
 {
-    rint i;
+    rInt i;
     RKHEvtPoolMgr *ep;
 
     nextFreeEvtPool = 0;

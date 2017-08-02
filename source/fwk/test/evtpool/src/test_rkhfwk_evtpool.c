@@ -144,7 +144,7 @@ TEST(evtpool, GetOneEvtPool)
 
 TEST(evtpool, GetMultipleEvtPool)
 {
-    rint i;
+    rInt i;
     RKHEvtPool *ep[RKH_CFG_FWK_MAX_EVT_POOL];
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
@@ -163,7 +163,7 @@ TEST(evtpool, GetMultipleEvtPool)
 
 TEST(evtpool, Fails_ExceedsMaxAvailableEvtPool)
 {
-    rint i;
+    rInt i;
     RKHEvtPool *ep;
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)

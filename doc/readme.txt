@@ -157,7 +157,7 @@ typedef unsigned int	ruint;
 
 // Denotes a signed integer type that is usually fastest to operate with 
 // among all integer types.
-typedef signed int		rint;
+typedef signed int		rInt;
 
 // Denotes a boolean type.
 // The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
@@ -1061,7 +1061,7 @@ const char *rkh_get_port_desc( void );
  *
  * 	Note:
  *
- * 	The 'ruint' and 'rint' will normally be the natural size 
+ * 	The 'ruint' and 'rInt' will normally be the natural size 
  * 	for a particular machine. These types designates an integer 
  * 	type that is usually fastest to operate with among all integer 
  * 	types.
@@ -1075,7 +1075,7 @@ typedef unsigned short 	rui16_t;
 typedef unsigned long	rui32_t;
 
 typedef unsigned int	ruint;
-typedef signed int		rint;
+typedef signed int		rInt;
 
 
 #endif

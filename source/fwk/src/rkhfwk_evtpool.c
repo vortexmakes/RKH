@@ -76,7 +76,7 @@ static RKHEvtPool evtPools[RKH_CFG_FWK_MAX_EVT_POOL];
 void
 rkh_evtPool_init(void)
 {
-    rint i;
+    rInt i;
     RKHEvtPool *ep;
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
@@ -88,7 +88,7 @@ rkh_evtPool_init(void)
 RKHEvtPool *
 rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 {
-    rint i;
+    rInt i;
     RKHEvtPool *ep;
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
