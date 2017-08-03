@@ -96,7 +96,7 @@
 #endif
 
 #ifdef __TEST__
-    #include "..\..\portable\test\rkhport.h"
+    #include "../../portable/test/rkhport.h"
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
