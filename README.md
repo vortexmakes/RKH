@@ -84,7 +84,8 @@ You should have received a copy of the GNU General Public License along with
 RKH package. If not, see <http://www.gnu.org/licenses/>.
 
 (*)  Observe that, the GPLv3 can be used for research & development and 
-     educational purposes (academic purposes). 
+     educational purposes (academic purposes).
+
 (**) When the source code of your application should not be published under 
      the GNU GPLv3 license (closed source code), please, contact contact me. 
      See Contact information section.
@@ -93,7 +94,9 @@ Contact information
 ===================
 
 RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
+
 e-mail: lf@vortexmakes.com
+
 e-mail: francuccilea@gmail.com
 
 RKH Release notes
