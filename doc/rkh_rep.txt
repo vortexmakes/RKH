@@ -1311,21 +1311,7 @@ Here is the basic algorithm for interpreting the native kernel.
 The rkh_fwk_enter() function implemented in \c source/fwk/src/rkhfwk_sched.c source 
 file is self-explanatory.
 
-\code
-infinite loop
-{
-	disable interrupts;
-	if(is_not_active_object_ready_to_run)
-	{
-		find the active object with highest priority;
-		enable interrupts;
-		e = get the event from the active object's queue;
-		dispatch the 'e' event to the active object's state machine;
-	}
-	else
-		execute the idle processing;
-}
-\endcode
+\include pseudo_cooperative_emulator.c
 
 <b>Application-specific and port dependencies</b>
 

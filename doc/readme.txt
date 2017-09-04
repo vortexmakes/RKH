@@ -91,7 +91,7 @@ have its own test cases, which are included in corresponding directory within
 
 All software components of the RKH, contain a platform abstraction 
 layer. It is an indirection layer that hides the differences in 
-hardware and software environments in which RKH operates so that the RKH 
+hardware and software environments in which RKH operates, so that the RKH 
 source code does not need to be changed to run in a different 
 environment. Instead, all the changes required to adapt RKH are confined 
 to this layer. It's basically composed by a few files, \b rkhplat.h and 
@@ -104,12 +104,12 @@ As said above, each platform, compiler or processor supported by RKH must
 have its own platform-dependent file, called \b rkhport.h by RKH 
 convention. 
 Next, each \b rkhport.h file must be referenced from rkhplat.h header 
-file, located in \c source/fwk/include directory.  The next listing shows an example 
-of \b rkhplat.h, where __CFV1CW63__, and __W32STVC08__ are used to 
-nstruct the C/C++ compiler to include header files from the specific 
-KH port directory. The key point of the design is that all 
-latform-independent RKH source files include the same \b rkhplat.h 
-eader file as the application source files.
+file, located in \c source/fwk/inc directory.  The next listing shows an 
+example of \b rkhplat.h, where \c "__CFV1CW63__", and \c "__W32STVC08__" are 
+used to instruct the C/C++ compiler to include header files from the specific 
+RKH port directory, which must be created if not exists. The key point of the 
+design is that all platform-independent RKH source files includes the same 
+\b rkhplat.h header file as the application source files.
 
 \code
 #ifdef __CFV1CW63__
@@ -129,46 +129,11 @@ efined.
 \note The path of platform-dependent file must be relative.
 
 The RKH uses a set of integer quantities. That maybe machine or compiler 
-dependent. These types must be defined in \b rkht.h file. The following 
-listing shows the required data type definitions:
-
-\code
-// Denotes a signed integer type with a width of exactly 8 bits
-typedef signed char 	ri8_t;
-
-// Denotes a signed integer type with a width of exactly 16 bits
-typedef signed short 	ri16_t;
-
-// Denotes a signed integer type with a width of exactly 32 bits
-typedef signed long		ri32_t;
-
-// Denotes an unsigned integer type with a width of exactly 8 bits
-typedef unsigned char 	rui8_t;
-
-// Denotes an unsigned integer type with a width of exactly 16 bits
-typedef unsigned short 	rui16_t;
-
-// Denotes an unsigned integer type with a width of exactly 32 bits
-typedef unsigned long	rui32_t;
-
-// Denotes an unsigned integer type that is usually fastest to operate with 
-// among all integer types.
-typedef unsigned int	ruint;
-
-// Denotes a signed integer type that is usually fastest to operate with 
-// among all integer types.
-typedef signed int		rInt;
-
-// Denotes a boolean type.
-// The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
-// definitions in \c rkhdef.h file.
-typedef unsigned int	rbool_t;
-\endcode
-
-Next, each \b rkht.h file must be referenced from \b rkhtype.h header 
-file, located in \c source/fwk/include directory.  The next listing shows an example 
-of \b rkhtype.h, where __CFV1CW63__, and __W32STVC08__ are used to 
-instruct the C/C++ compiler to include header files from the specific 
+dependent. These types must be defined in \b rkht.h file.  
+Each \b rkht.h file must be referenced from \b rkhtype.h header 
+file, located in \c source/fwk/inc directory.  The next listing shows an 
+example of \b rkhtype.h, where \c "__CFV1CW63__", and \c "__W32STVC08__" are 
+used to instruct the C/C++ compiler to include header files from the specific 
 RKH port directory. The key point of the design is that all 
 platform-independent RKH source files include the same \b rkhtype.h 
 header file as the application source files.
@@ -460,50 +425,89 @@ separates it from platform-neutral code.
 Porting RKH implies to create the a few platform-dependent files, 
 \c rhhport.h, \c rkhport.c, which frequently defines the interrupt 
 locking method, the critical section management, among other things.
+\note
+It is recommended to start from a similar and existing port, properly copying 
+and modifying its files (\c rkhport.c, \c rkhport.h and \c rkht.h) according 
+to your needs and platform in question.
+
 The RKH directories and files are described in detail in 
 \ref Installation section. The next sections listed below describes 
-the aspects to be considered to port RKH:
+the aspects to be considered to port RKH.
 
-\n This section includes:
-
-- \ref files
-- \ref data
-- \ref rom
-- \ref blk 
-- \ref prio
-- \ref eque
-- \ref dyn
-- \ref hk
-- \ref ilock
-- \ref crt
-- \ref trc
-- \ref rkhp
+-# \ref files
+-# \ref data
+-# \ref rom
+-# \ref blk 
+-# \ref prio
+-# \ref eque
+-# \ref dyn
+-# \ref hk
+-# \ref ilock
+-# \ref crt
+-# \ref trc
+-# \ref rkhp
 
 \tableofcontents
 
-\n <HR>
+<HR>
 \section files Platform-dependent files
 
+Create a directory into source/fwk/portable within its platform 
+dependent-files (\c rkhport.c, \c rkhport.h).
 Please, see \ref portable_dir section.
 
-\n <HR>
+<HR>
 \section data Data types definitions
 
+Create the data type file \c rkht.h. The RKH uses a set of integer quantities. 
+That maybe machine or compiler dependent. These types must be defined in 
+\c rkht.h file. The following listing shows the required data type definitions:
+
+\code
+// Denotes a signed integer type with a width of exactly 8 bits
+typedef signed char 	ri8_t;
+
+// Denotes a signed integer type with a width of exactly 16 bits
+typedef signed short 	ri16_t;
+
+// Denotes a signed integer type with a width of exactly 32 bits
+typedef signed long		ri32_t;
+
+// Denotes an unsigned integer type with a width of exactly 8 bits
+typedef unsigned char 	rui8_t;
+
+// Denotes an unsigned integer type with a width of exactly 16 bits
+typedef unsigned short 	rui16_t;
+
+// Denotes an unsigned integer type with a width of exactly 32 bits
+typedef unsigned long	rui32_t;
+
+// Denotes an unsigned integer type that is usually fastest to operate with 
+// among all integer types.
+typedef unsigned int	ruint;
+
+// Denotes a signed integer type that is usually fastest to operate with 
+// among all integer types.
+typedef signed int		rInt;
+
+// Denotes a boolean type.
+// The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
+// definitions in \c rkhdef.h file.
+typedef unsigned int	rbool_t;
+\endcode
 Please, see \ref portable_dir section.
 
-\n <HR>
+<HR>
 \section rom ROM allocator
 
 For declaring an object that its value will not be changed and that
-will be stored in ROM, must be defined in \c rkhport.h the RKHROM macro.
-
+will be stored in ROM, must be defined in \c rkhport.h the \c RKHROM macro.
 Example:
-
 \code
 #define RKHROM			const
 \endcode
 
-\n <HR>
+<HR>
 \section blk Blocking mechanism
 
 <EM>RKH works in conjunction with a traditional OS/RTOS?</EM>
@@ -628,7 +632,7 @@ rkh_sma_terminate().
 In this mode of operation, RKH assumes the use of native priority scheme. 
 See \c rkhfwk_sched.h, \c rkhfwk_sched.c, and \c rkhsma_prio.h files for more information.
 
-\n <HR>
+<HR>
 \section prio Priority mechanism
 
 <EM>If RKH works in conjunction with a traditional OS/RTOS, RKH provides its own 
@@ -645,7 +649,7 @@ RKH_SMA_UNREADY() use the macros provided by \c rkhrdy.h.
 \b NO: \n
 Nothing to do.
 
-\n <HR>
+<HR>
 \section eque Event queue
 
 <EM>If RKH works in conjunction with a traditional OS/RTOS, are implemented 
@@ -729,7 +733,7 @@ the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
 rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
 \c rkhport.c file.
 
-\n <HR>
+<HR>
 \section dyn Dynamic event support
 
 <EM>Is required events with arguments?</EM>
@@ -781,7 +785,7 @@ RKH_MEMPOOL_T?</EM>
 \li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1,  
 #RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
 
-\n <HR>
+<HR>
 \section hk Hook functions
 A RKH port cannot and should not define all the functions that it calls, 
 because this would render the port too inflexible. The functions that RKH 
@@ -812,18 +816,18 @@ options from the \c rkhcfg.h.\n
 \code void rkh_hook_idle( void )\endcode
 \copydetails rkh_hook_idle
 
-\n <HR>
+<HR>
 \section ilock Interrupt locking mechanism
 
 \copydetails RKH_DIS_INTERRUPT()
 Please, see \ref Installation section about RKH port directory and files.
 
-\n <HR>
+<HR>
 \section crt Critical section
 
 \copydetails RKH_SR_ALLOC()
 
-\n <HR>
+<HR>
 \section trc Trace facility
 
 When using the trace facility must be defined in \c rkhport.h the following 
