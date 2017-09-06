@@ -2159,6 +2159,25 @@ extern "C" {
      */
     #define RKH_OSSIGNAL_TYPE
 
+    /**
+     *  \brief
+     *  Data type to declare thread stacks, which is only used when the 
+     *  underlying OS does not internally allocate the RAM storage to its 
+     *  threads, in this case must be enabled RKH_CFGPORT_SMA_STK_EN option in 
+     *  \c rkhport.h file.
+
+     *  <EM>Example</EM>
+     *  \code
+     *  // In rkhport.h
+     *  #define RKH_THREAD_STK_TYPE     rui8_t
+     *
+     *  // In application code
+     *  // Defines the task's stack for active object 'server'
+     *  static RKH_THREAD_STK_TYPE serverStk[SERVER_STK_SIZE];
+     *  \endcode
+     */
+    #define RKH_THREAD_STK_TYPE 
+
     /**@{
      *  \brief
      *  RKH need to disable interrupts in order to access critical sections

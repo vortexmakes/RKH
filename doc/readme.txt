@@ -423,16 +423,16 @@ layer, which encapsulates all the platform-specific code and cleanly
 separates it from platform-neutral code.
 
 Porting RKH implies to create the a few platform-dependent files, 
-\c rhhport.h, \c rkhport.c, which frequently defines the interrupt 
-locking method, the critical section management, among other things.
+\c rhhport.h, \c rkhport.c, \c rkht.h, which frequently defines the interrupt 
+locking method, the critical section management, data types, among other things.
 \note
 It is recommended to start from a similar and existing port, properly copying 
 and modifying its files (\c rkhport.c, \c rkhport.h and \c rkht.h) according 
 to your needs and platform in question.
 
-The RKH directories and files are described in detail in 
-\ref Installation section. The next sections listed below describes 
-the aspects to be considered to port RKH.
+The RKH directories and files are described in detail in \ref Installation 
+section. The next sections listed below describes the aspects to be considered 
+to port RKH.
 
 -# \ref files
 -# \ref data
@@ -452,49 +452,19 @@ the aspects to be considered to port RKH.
 <HR>
 \section files Platform-dependent files
 
-Create a directory into source/fwk/portable within its platform 
-dependent-files (\c rkhport.c, \c rkhport.h).
+Create a directory into \c source/fwk/portable within its platform 
+dependent-files (\c rkhport.c, \c rkhport.h and \c rkht.h).
 Please, see \ref portable_dir section.
 
 <HR>
 \section data Data types definitions
 
-Create the data type file \c rkht.h. The RKH uses a set of integer quantities. 
+Create the data type file. The RKH uses a set of integer quantities. 
 That maybe machine or compiler dependent. These types must be defined in 
 \c rkht.h file. The following listing shows the required data type definitions:
 
-\code
-// Denotes a signed integer type with a width of exactly 8 bits
-typedef signed char 	ri8_t;
+\include rkht.h
 
-// Denotes a signed integer type with a width of exactly 16 bits
-typedef signed short 	ri16_t;
-
-// Denotes a signed integer type with a width of exactly 32 bits
-typedef signed long		ri32_t;
-
-// Denotes an unsigned integer type with a width of exactly 8 bits
-typedef unsigned char 	rui8_t;
-
-// Denotes an unsigned integer type with a width of exactly 16 bits
-typedef unsigned short 	rui16_t;
-
-// Denotes an unsigned integer type with a width of exactly 32 bits
-typedef unsigned long	rui32_t;
-
-// Denotes an unsigned integer type that is usually fastest to operate with 
-// among all integer types.
-typedef unsigned int	ruint;
-
-// Denotes a signed integer type that is usually fastest to operate with 
-// among all integer types.
-typedef signed int		rInt;
-
-// Denotes a boolean type.
-// The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro 
-// definitions in \c rkhdef.h file.
-typedef unsigned int	rbool_t;
-\endcode
 Please, see \ref portable_dir section.
 
 <HR>
@@ -518,16 +488,23 @@ Combined with a conventional RTOS, RKH takes full advantage of the
 multitasking capabilities of the RTOS by executing each active object (SMA) 
 in a separate task or thread.
 
-\li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = 0, 
-#RKH_CFGPORT_SMA_THREAD_EN = 1, and #RKH_CFGPORT_SMA_THREAD_DATA_EN, within the 
-\c rkhport.h file.
-\li (2) Define the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
-RKH_SMA_UNREADY() in \c rkhport.h according to underlying OS or RTOS.
-\li (3) Define the macros #RKH_OSSIGNAL_TYPE, and #RKH_THREAD_TYPE in 
-\c rkhport.h according to underlying OS or RTOS. 
-\li (4) Then, implement the platform-specific functions rkh_fwk_init(), rkh_fwk_enter(), 
-rkh_fwk_exit(), rkh_sma_activate(), and rkh_sma_terminate(). All these functions 
-are placed in \c rkhport.c.
+-# Define the macros 
+   #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_DISABLED,
+   #RKH_CFGPORT_SMA_THREAD_EN = #RKH_ENABLED, and 
+   #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_ENABLED, within the 
+   \c rkhport.h file.
+-# Only if the application code uses the RKH native queue (module 
+   \c source/queue/inc/rkhqueue.h), then must be implemented the 
+   platform-specific functions rkh_sma_block(), rkh_sma_setReady(), and 
+   rkh_sma_setUnready() in \c rkhport.c according to underlying OS/RTOS, 
+   which are specified in \c source/sma/rkhsma_sinc.h file.
+-# Define the macros #RKH_OSSIGNAL_TYPE, #RKH_THREAD_TYPE and 
+   #RKH_THREAD_STK_TYPE in \c rkhport.h according to underlying OS/RTOS. 
+-# Then, implement the platform-specific functions rkh_fwk_init(), 
+   rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), and 
+   rkh_sma_terminate() in \c rkhport.c, which are specified in 
+   \c source/fwk/inc/rkhfwk_sched.h and \c source/sma/inc/rkhsma.h
+   respectively.
 
 <EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
 \code
@@ -619,16 +596,15 @@ rkh_sma_terminate( RKH_SMA_T *sma )
 \endcode
 
 \b NO: \n
-\li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = 1, 
-#RKH_CFGPORT_SMA_THREAD_EN = 0, and #RKH_CFGPORT_SMA_THREAD_DATA_EN = 0, within the 
-\c rkhcfg.h file.
+\li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = RKH_ENABLED, 
+#RKH_CFGPORT_SMA_THREAD_EN = RKH_DISABLED, and #RKH_CFGPORT_SMA_THREAD_DATA_EN = RKH_DISABLED, within the \c rkhcfg.h file.
 \li (2) Define the macros #RKH_EQ_TYPE = RKH_QUEUE_T, RKH_SMA_BLOCK(), 
 RKH_SMA_READY(), RKH_SMA_UNREADY() in \c rkhport.h. 
 \li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
-functions rkh_fwk_init(), rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), and 
-rkh_sma_terminate(). 
-\li (4) Also, the macros RKH_EQ_TYPE, RKH_SMA_BLOCK(), 
-\li (5) RKH_SMA_READY(), RKH_SMA_UNREADY() are RKH provided. 
+functions rkh_fwk_init(), rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), 
+and rkh_sma_terminate(). 
+\li (4) Also, the macros RKH_EQ_TYPE, rkh_sma_block(), 
+\li (5) rkh_sma_setReady(), rkh_sma_setUnready() are RKH provided. 
 In this mode of operation, RKH assumes the use of native priority scheme. 
 See \c rkhfwk_sched.h, \c rkhfwk_sched.c, and \c rkhsma_prio.h files for more information.
 
