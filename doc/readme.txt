@@ -507,20 +507,20 @@ in a separate task or thread.
    respectively.
 
 <EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM>
+Fragment of \c rkhport.h
+See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h
 \code
-/* Fragment of rkhport.h */
-/* See source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h */
-...
+/* ... */
 #define RKH_EQ_TYPE              		msg_queue_t
 #define RKH_OSSIGNAL_TYPE          		void *
 #define RKH_THREAD_TYPE             	OS_TCB
 #define RKH_THREAD_STK_TYPE             rui8_t
 \endcode
 
+Fragment of \c rkhport.c. 
+See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.c
 \code
-/* Fragment of rkhport.c */
-/* See source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.c */
-...
+/* ... */
 void 
 rkh_fwk_init(void)
 {
@@ -613,18 +613,17 @@ rkh_sma_terminate(RKH_SMA_T *sma)
 <HR>
 \section prio Priority mechanism
 
-<EM>If RKH works in conjunction with a traditional OS/RTOS, RKH provides its own 
-priority mechanism?</EM>
+<EM>If RKH works in conjunction with a traditional OS/RTOS, RKH provides its 
+own priority mechanism?</EM>
 
-\b YES: \n
-\li (1) Declare an RKH_RG_T variable.
-\li (2) Include the \c rkhrdy.h in \c rkhport.h.
-\li (3) Then, the RKH port could be use the macros RKH_RDY_IS_EMPTY(), 
+\b YES:
+-# Include the \c rkhrdy.h in \c rkhport.h.
+-# Then, the RKH port could be use the macros RKH_RDY_IS_EMPTY(), 
 RKH_RDY_ISNOT_EMPTY(), RKH_RDY_INSERT(), RKH_RDY_REM(), and RKH_RDY_FIND_HIGHEST(). 
 Frequently, the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
 RKH_SMA_UNREADY() use the macros provided by \c rkhrdy.h.
 
-\b NO: \n
+\b NO:
 Nothing to do.
 
 <HR>
