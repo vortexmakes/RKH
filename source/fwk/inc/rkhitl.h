@@ -2161,7 +2161,7 @@ extern "C" {
 
     /**
      *  \brief
-     *  Data type to declare thread stacks, which is only used when the 
+     *  Data type to declare thread stack, which is only used when the 
      *  underlying OS does not internally allocate the RAM storage to its 
      *  threads, in this case must be enabled RKH_CFGPORT_SMA_STK_EN option in 
      *  \c rkhport.h file.

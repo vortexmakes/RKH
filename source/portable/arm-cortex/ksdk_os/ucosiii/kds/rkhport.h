@@ -173,6 +173,9 @@ extern "C" {
  */
 #define RKH_THREAD_TYPE                     OS_TCB
 
+/**
+ *  Data type to declare thread stack 
+ */
 #define RKH_THREAD_STK_TYPE                 rui8_t
 
 /* ------------------------------- Data types ------------------------------ */

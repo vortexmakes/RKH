@@ -506,107 +506,109 @@ in a separate task or thread.
    \c source/fwk/inc/rkhfwk_sched.h and \c source/sma/inc/rkhsma.h
    respectively.
 
-<EM>Example for x86, VC08, and win32 with scheduler emulation</EM>
+<EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM>
 \code
-#define RKH_EQ_TYPE              		RKH_QUEUE_T
-#define RKH_OSSIGNAL_TYPE          		HANDLE
-#define RKH_THREAD_TYPE             	HANDLE
-
-
-#define RKH_SMA_BLOCK( sma ) 								\
-				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
-
-#define RKH_SMA_READY( rg, sma ) 							\
-			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); 	\
-			    (void)SetEvent( sma_is_rdy )
-
-#define RKH_SMA_UNREADY( rg, sma ) 							\
-			    RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
-
-#define RKH_WAIT_FOR_EVENTS() 								\
-			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
-\endcode
-\code
-void 
-rkh_fwk_init( void )
-{
-	InitializeCriticalSection( &csection );
-	sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );
-}
-
-void 
-rkh_fwk_enter( void )
-{
-	rui8_t prio;
-	RKH_SMA_T *sma;
-	RKH_EVT_T *e;
-
-    RKH_HOOK_START();
-	RKH_TR_FWK_EN();
-    running = 1;
-
-    while( running )
-	{
-        RKH_ENTER_CRITICAL( dummy );
-        if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
-		{
-			RKH_RDY_FIND_HIGHEST( rkhrg, prio );
-            RKH_EXIT_CRITICAL( dummy );
-
-            sma = rkh_sptbl[ prio ];
-            e = rkh_sma_get( sma );
-            rkh_sm_dispatch( (RKH_SM_T *)sma, e );
-            RKH_FWK_GC( e );
-        }
-        else
-            rkh_hook_idle();
-    }
-
-    rkh_hook_exit();
-    CloseHandle( sma_is_rdy );
-    DeleteCriticalSection( &csection );	
-}
-
-void 
-rkh_fwk_exit( void )
-{
-	rkh_hook_exit();
-	RKH_TR_FWK_EX();
-}
-
-void 
-rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize, 
-						void *stks, rui32_t stksize )
-{
-    ( void )stks;
-    ( void )stksize;
-
-	rkh_queue_init( &sma->equeue, (const void **)qs, qsize, sma );
-	rkh_sma_register( sma );
-    rkh_sm_init( (RKH_SM_T *)sma );
-	RKH_TR_SMA_ACT( sma );
-}
-
-void 
-rkh_sma_terminate( RKH_SMA_T *sma )
-{
-	rkh_sma_unregister( sma );
-	RKH_TR_SMA_TERM( sma );
-}
+/* Fragment of rkhport.h */
+/* See source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h */
+...
+#define RKH_EQ_TYPE              		msg_queue_t
+#define RKH_OSSIGNAL_TYPE          		void *
+#define RKH_THREAD_TYPE             	OS_TCB
+#define RKH_THREAD_STK_TYPE             rui8_t
 \endcode
 
-\b NO: \n
-\li (1) Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = RKH_ENABLED, 
-#RKH_CFGPORT_SMA_THREAD_EN = RKH_DISABLED, and #RKH_CFGPORT_SMA_THREAD_DATA_EN = RKH_DISABLED, within the \c rkhcfg.h file.
-\li (2) Define the macros #RKH_EQ_TYPE = RKH_QUEUE_T, RKH_SMA_BLOCK(), 
-RKH_SMA_READY(), RKH_SMA_UNREADY() in \c rkhport.h. 
-\li (3) When using the native shceduler (RKHS) is NOT necessary provides the 
-functions rkh_fwk_init(), rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), 
-and rkh_sma_terminate(). 
-\li (4) Also, the macros RKH_EQ_TYPE, rkh_sma_block(), 
-\li (5) rkh_sma_setReady(), rkh_sma_setUnready() are RKH provided. 
-In this mode of operation, RKH assumes the use of native priority scheme. 
-See \c rkhfwk_sched.h, \c rkhfwk_sched.c, and \c rkhsma_prio.h files for more information.
+\code
+/* Fragment of rkhport.c */
+/* See source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.c */
+...
+void 
+rkh_fwk_init(void)
+{
+    osa_status_t status;
+
+    tick_cnt = RKH_TICKS_RATE;
+    status = OSA_Init();
+
+    OS_AppTimeTickHookPtr = rkh_isr_tick;
+    OS_AppIdleTaskHookPtr = idle_thread_function;
+
+    RKH_ENSURE(status == kStatus_OSA_Success);
+}
+
+void 
+rkh_fwk_enter(void)
+{
+    osa_status_t status;
+    RKH_SR_ALLOC();
+
+    RKH_HOOK_START();                               /* RKH start-up callback */
+    RKH_TR_FWK_EN();
+    RKH_TR_FWK_OBJ(&rkh_isr_tick);
+
+    status = OSA_Start();                /* uC/OS-III start the multitasking */
+    RKH_TRC_CLOSE();                            /* cleanup the trace session */
+    RKH_ENSURE(status == kStatus_OSA_Success);     /* NEVER supposed to come */
+                                                       /* back to this point */
+}
+
+void 
+rkh_fwk_exit(void)
+{
+    RKH_SR_ALLOC();
+    RKH_TR_FWK_EX();
+    RKH_HOOK_EXIT();                                 /* RKH cleanup callback */
+}
+
+void 
+rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize, 
+				 void *stks, rui32_t stksize)
+{
+    msg_queue_handler_t qh;
+    osa_status_t status;
+    task_handler_t th;
+
+    RKH_REQUIRE(qs != (const RKH_EVT_T **)0);
+
+    sma->equeue.msgs = (void *)qs;
+    qh = OSA_MsgQCreate(&sma->equeue,          /* event message queue object */
+                        (uint16_t)qsize,       /* max. size of message queue */
+                        /* allocate pointers */
+                        (uint16_t)(sizeof(RKH_EVT_T *) / sizeof(uint32_t)));
+    RKH_ENSURE(qh != (msg_queue_handler_t)0);
+
+    rkh_sma_register(sma);
+    rkh_sm_init((RKH_SM_T *)sma);
+
+    th = &sma->thread;
+    status = OSA_TaskCreate(thread_function,                     /* function */
+                            "uc_task",                               /* name */
+                            (uint16_t)stksize,                 /* stack size */
+                            (task_stack_t *)stks, /* stack base (low memory) */
+                            (uint16_t)RKH_GET_PRIO(sma),         /* priority */
+                            sma,                        /* function argument */
+                            false,                /* usage of float register */
+                            &th);    /* task object */
+
+    RKH_ENSURE(status == kStatus_OSA_Success);
+    sma->running = (rbool_t)1;
+}
+
+void 
+rkh_sma_terminate(RKH_SMA_T *sma)
+{
+    osa_status_t status;
+
+    sma->running = (rbool_t)0;
+    status = OSA_MsgQDestroy(&sma->equeue);
+    RKH_ENSURE(status == kStatus_OSA_Success);
+}
+\endcode
+
+\b NO:
+-#  Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_ENABLED,
+    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, and 
+    #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED in \c rkhport.h file.
+-#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h. 
 
 <HR>
 \section prio Priority mechanism

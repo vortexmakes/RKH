@@ -170,15 +170,13 @@ OSA_MsgQPutLifo(msg_queue_handler_t handler, void* pMessage)
 #endif
 
 /* ---------------------------- Global functions --------------------------- */
-const
-char *
+const char *
 rkhport_get_version(void)
 {
     return RKH_MODULE_GET_VERSION();
 }
 
-const
-char *
+const char *
 rkhport_get_desc(void)
 {
     return RKH_MODULE_GET_DESC();
