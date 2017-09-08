@@ -617,11 +617,35 @@ rkh_sma_terminate(RKH_SMA_T *sma)
 own priority mechanism?</EM>
 
 \b YES:
--# Include the \c rkhrdy.h in \c rkhport.h.
--# Then, the RKH port could be use the macros RKH_RDY_IS_EMPTY(), 
-RKH_RDY_ISNOT_EMPTY(), RKH_RDY_INSERT(), RKH_RDY_REM(), and RKH_RDY_FIND_HIGHEST(). 
-Frequently, the macros RKH_SMA_BLOCK(), RKH_SMA_READY(), and 
-RKH_SMA_UNREADY() use the macros provided by \c rkhrdy.h.
+-# Include the \c source/sma/inc/rkhsma_prio.h in \c rkhport.c. 
+-# Implement the functions rkh_sma_block(), rkh_sma_setReady(), and 
+   rkh_sma_setUnready(), which are specified in 
+   \c source/sma/inc/rkhsma_sync.h, using the functions provided by 
+   \c source/sma/inc/rkhsma_prio.h
+
+<EM>Example for Windows single-thread scheduleing</EM> \n
+Fragment of \c rkhport.c. 
+See \c source/portable/80x86/win32_st/vc/rkhport.c
+\code
+void
+rkh_sma_block(RKH_SMA_T *const me)
+{
+    RKH_ASSERT(me->equeue.qty != 0);
+}
+
+void
+rkh_sma_setReady(RKH_SMA_T *const me)
+{
+    rkh_smaPrio_setReady(RKH_SMA_ACCESS_CONST(me, prio));
+    SetEvent(sma_is_rdy);
+}
+
+void
+rkh_sma_setUnready(RKH_SMA_T *const me)
+{
+    rkh_smaPrio_setUnready(RKH_SMA_ACCESS_CONST(me, prio));
+}
+\endcode
 
 \b NO:
 Nothing to do.
@@ -633,117 +657,204 @@ Nothing to do.
 the event queues with a message queue of the underlying OS/RTOS?</EM>
 
 \b YES: \n
-\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 0 in \c rkhport.h
-\li (2) Define the macro #RKH_EQ_TYPE = 0 in \c rkhport.h according to OS/RTOS.
-\li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
-rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
-\c rkhport.c file.
+-# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
+   \c rkhport.h
+-# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to OS/RTOS.
+-# Then, implement the platform-specific functions rkh_sma_post_fifo(), 
+   rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
+   \c source/sma/inc/rkhsma.h. All these functions are placed in
+   \c rkhport.c file.
 
-<EM>Generic example</EM>
+<EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM> \n
+Fragment of \c rkhport.c
+See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.c
 \code
 void 
 rkh_sma_post_fifo(RKH_SMA_T *sma, const RKH_EVT_T *e)
 {
-	RKH_SR_ALLOC();
-	
-	RKH_HOOK_SIGNAL(e);
+    osa_status_t status;
+    RKH_SR_ALLOC();
+
+    RKH_HOOK_SIGNAL(e);
     RKH_ENTER_CRITICAL_();
 
     RKH_INC_REF(e);
-    os_post_fifo_message(&sma->equeue, e);
-    RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref, &sma->equeue.qty, 
-                    &sma->equeue.nmin);
+    status = OSA_MsgQPut(&sma->equeue,                 /* event queue object */
+                         (void *)&e);                 /* actual event posted */
+    RKH_ALLEGE(status == kStatus_OSA_Success);
+    RKH_TR_SMA_FIFO(sma, e, sender, e->pool, e->nref, 
+                        &sma->equeue.queue.MsgQ.NbrEntries, 0);
+
     RKH_EXIT_CRITICAL_();
 }
 
 void 
 rkh_sma_post_lifo( RKH_SMA_T *sma, const RKH_EVT_T *e )
 {
-	RKH_SR_ALLOC();
+    osa_status_t status;
+    RKH_SR_ALLOC();
 
-	RKH_HOOK_SIGNAL( e );
+    RKH_HOOK_SIGNAL(e);
     RKH_ENTER_CRITICAL_();
-    if( RKH_CAST_EVT( e )->pool != 0 ) 
-        ++RKH_CAST_EVT( e )->nref;
-    RKH_EXIT_CRITICAL_();
 
-    os_post_lifo_message( &sma->equeue, e );
-	RKH_TR_SMA_LIFO( sma, e );
+    RKH_INC_REF(e);
+    status = OSA_MsgQPutLifo(&sma->equeue,             /* event queue object */
+                             (void *)&e);             /* actual event posted */
+    RKH_ALLEGE(status == kStatus_OSA_Success);
+    RKH_TR_SMA_LIFO(sma, e, sender, e->pool, e->nref, 
+                        &sma->equeue.queue.MsgQ.NbrEntries, 0);
+
+    RKH_EXIT_CRITICAL_();
 }
 
 RKH_EVT_T *
 rkh_sma_get(RKH_SMA_T *sma)
 {
-	RKH_EVT_T *e;
-	RKH_SR_ALLOC();
+    osa_status_t status;
+    RKH_EVT_T *e;
+    RKH_SR_ALLOC();
 
-	e = os_get_message(&sma->equeue);
-
-	RKH_ASSERT(e != (RKH_EVT_T *)0);
-    RKH_TR_SMA_GET(sma, e, e->pool, e->nref, 
-                   &sma->equeue.qty, &sma->equeue.nmin);
-	return e;
+    status = OSA_MsgQGet(&sma->equeue,                 /* event queue object */
+                         &e,                       /* received event message */
+                         OSA_WAIT_FOREVER);             /* wait indefinitely */
+    RKH_ENSURE(status == kStatus_OSA_Success);
+    /* To get the number of message currently in the queue and its */
+    /* minimum number of free elements is not a reliable manner in OSA */
+    /* Because the variables are obtained outside critical section could be */
+    /* a race condition */
+    /* Morever, OSA abstraction layer not implements the water mark in */
+    /* the queue */
+    RKH_TR_SMA_GET(sma, e, e->pool, e->nref,
+                        &sma->equeue.queue.MsgQ.NbrEntries, 0);
+    return e;
 }
 \endcode
 
-\b NO: \n
-\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_QUE_EN = 1 in 
-\c rkhport.h
-\li (2) When using the native event queues is NOT necessary provides neither 
-the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h.
+\b NO:
+-# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED in 
+   \c rkhport.h
+-# Define the macro #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhcfg.h
 		
 <EM>If the application code uses the RKH native scheduler, are implemented 
 the event queues with the native queues RKH_QUEUE_T?</EM>
 
-\b YES: \n
-\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 1 y #RKH_CFG_QUE_EN = 1 in 
-\c rkhport.h and \c rkhcfg.h respectively.
-\li (2) When using the native event queues is NOT necessary provides neither 
-the functions rkh_sma_post_fifo(), rkh_sma_post_lifo() nor rkh_sma_get().
-\li (3) Define #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h.
+\b YES:
+-# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED and 
+   #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhport.h and \c rkhcfg.h respectively.
 		
-\b NO: \n
-\li (1) Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = 0 in \c rkhport.h
-\li (2) Define the macro #RKH_EQ_TYPE = 0 in \c rkhport.h according to OS/RTOS.
-\li (3) Then, implement the platform-specific functions rkh_sma_post_fifo(), 
-rkh_sma_post_lifo() y rkh_sma_get(). All these functions are placed in 
-\c rkhport.c file.
+\b NO:
+-# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
+   \c rkhport.h
+-# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to external queue 
+   module.
+-# Then, implement the platform-specific functions rkh_sma_post_fifo(), 
+   rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
+   \c source/sma/inc/rkhsma.h. All these functions are placed in
+   \c rkhport.c file.
 
 <HR>
 \section dyn Dynamic event support
 
 <EM>Is required events with arguments?</EM>
+\b NO:
+-# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_DISABLED in \c rkhcfg.h
+-# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
+   \c rkhport.h
 
-\b NO: \n
-\li (1) Define the macros #RKH_CFG_FWK_DYN_EVT_EN = 0 and 
-#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h.
-
-\b YES: \n
-
+\b YES:
 <EM>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
 the dynamic memory support with a internal module of the underlying 
 OS/RTOS?</EM>
 
-\b YES: \n
-\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1 and 
-#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhport.h
-\li (2) Define the macros RKH_DYNE_TYPE, RKH_DYNE_INIT(), 
-RKH_DYNE_GET_ESIZE(), RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(),
-RKH_DYNE_GET_NMIN(), and  RKH_DYNE_GET_PSIZE() in \c rkhport.h according to 
-underlying OS/RTOS.
+\b YES:
+-# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED in \c rkhcfg.h
+-# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
+   \c rkhport.h
+-# Then, implement the platform-specific functions rkh_evtPool_init(), 
+   evtPool_getPool(), rkh_evtPool_getBlockSize(), rkh_evtPool_get(), 
+   rkh_evtPool_put(), rkh_evtPool_getNumUsed(), rkh_evtPool_getNumMin() and 
+   rkh_evtPool_getNumBlock(), which are specified in 
+   \c source/fwk/inc/rkhfwk_evtpool.h. All these functions are placed in
+   \c rkhport.c file.
 
-<EM>Generic example</EM>
+<EM>Example for memory partitions of uC/OS-III</EM> \n
 \code
-#define RKH_DYNE_TYPE           RKH_MEMPOOL_T
-#define RKH_DYNE_INIT(mp, sstart, ssize, esize) \
-            rkh_memPool_init((mp),sstart,(rui16_t)ssize,(RKH_MPBS_T)esize)
-#define RKH_DYNE_GET_ESIZE(mp)  ((mp)->bsize)
-#define RKH_DYNE_GET(mp, e)     ((e) = (RKH_EVT_T *)rkh_memPool_get((mp)))
-#define RKH_DYNE_PUT(mp, e)     (rkh_memPool_put((mp), e))
-#define RKH_DYNE_GET_NUSED(mp)  ((mp)->nblocks - (mp)->nfree)
-#define RKH_DYNE_GET_NMIN(mp)   ((mp)->nmin)
-#define RKH_DYNE_GET_PSIZE(mp)  ((mp)->nblocks)
+/* ---------------------------- Local data types --------------------------- */
+struct RKHEvtPool
+{
+    OS_MEM memPool;
+    rui8_t used;
+};
+
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKHEvtPool evtPools[RKH_CFG_FWK_MAX_EVT_POOL];
+
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
+void 
+rkh_evtPool_init(void)
+{
+    rInt i;
+    RKHEvtPool *ep;
+
+    for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
+    {
+        ep->used = 0;
+    }
+}
+
+RKHEvtPool *
+rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
+{
+    rInt i;
+    RKHEvtPool *ep;
+    OS_ERR err;
+
+    for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
+    {
+        if (ep->used == 0)
+        {
+            rkh_memPool_init((RKH_MEMPOOL_T *)ep, stoStart, stoSize, 
+                        (RKH_MPBS_T)evtSize);
+            OSMemCreate(...);
+            /* Check 'err' */
+            return ep;
+        }
+    }
+    return (RKHEvtPool *)0;
+}
+
+rui8_t 
+rkh_evtPool_getBlockSize(RKHEvtPool *const me)
+{
+}
+
+RKH_EVT_T *
+rkh_evtPool_get(RKHEvtPool *const me)
+{
+}
+
+void 
+rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt)
+{
+}
+
+rui8_t 
+rkh_evtPool_getNumUsed(RKHEvtPool *const me)
+{
+}
+
+rui8_t 
+rkh_evtPool_getNumMin(RKHEvtPool *const me)
+{
+}
+
+rui8_t 
+rkh_evtPool_getNumBlock(RKHEvtPool *const me)
+{
+}
 \endcode
 
 \b NO: \n
