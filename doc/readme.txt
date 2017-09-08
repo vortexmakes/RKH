@@ -662,7 +662,7 @@ the event queues with a message queue of the underlying OS/RTOS?</EM>
 -# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to OS/RTOS.
 -# Then, implement the platform-specific functions rkh_sma_post_fifo(), 
    rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
-   \c source/sma/inc/rkhsma.h. All these functions are placed in
+   \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
    \c rkhport.c file.
 
 <EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM> \n
@@ -749,19 +749,19 @@ the event queues with the native queues RKH_QUEUE_T?</EM>
    module.
 -# Then, implement the platform-specific functions rkh_sma_post_fifo(), 
    rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
-   \c source/sma/inc/rkhsma.h. All these functions are placed in
+   \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
    \c rkhport.c file.
 
 <HR>
 \section dyn Dynamic event support
 
-<EM>Is required events with arguments?</EM>
+<EM>Is required events with arguments?</EM> \n
 \b NO:
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_DISABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
    \c rkhport.h
 
-\b YES:
+\b YES: \n
 <EM>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
 the dynamic memory support with a internal module of the underlying 
 OS/RTOS?</EM>
@@ -771,11 +771,11 @@ OS/RTOS?</EM>
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
    \c rkhport.h
 -# Then, implement the platform-specific functions rkh_evtPool_init(), 
-   evtPool_getPool(), rkh_evtPool_getBlockSize(), rkh_evtPool_get(), 
+   rkh_evtPool_getPool(), rkh_evtPool_getBlockSize(), rkh_evtPool_get(), 
    rkh_evtPool_put(), rkh_evtPool_getNumUsed(), rkh_evtPool_getNumMin() and 
    rkh_evtPool_getNumBlock(), which are specified in 
-   \c source/fwk/inc/rkhfwk_evtpool.h. All these functions are placed in
-   \c rkhport.c file.
+   \c source/fwk/inc/rkhfwk_evtpool.h. All these functions are frequently 
+   placed in \c rkhport.c file.
 
 <EM>Example for memory partitions of uC/OS-III</EM> \n
 \code
@@ -816,9 +816,12 @@ rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
     {
         if (ep->used == 0)
         {
-            rkh_memPool_init((RKH_MEMPOOL_T *)ep, stoStart, stoSize, 
-                        (RKH_MPBS_T)evtSize);
-            OSMemCreate(...);
+            OSMemCreate((OS_MEM *)ep,
+                        (CPU_CHAR *)"ep",
+                        stoStart,
+                        (OS_MEM_QTY )(stoSize / evtSize),
+                        (OS_MEM_SIZE)evtSize,
+                        &err);
             /* Check 'err' */
             return ep;
         }
@@ -829,49 +832,76 @@ rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 rui8_t 
 rkh_evtPool_getBlockSize(RKHEvtPool *const me)
 {
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)((OS_MEM *)me)->BlkSize;
 }
 
 RKH_EVT_T *
 rkh_evtPool_get(RKHEvtPool *const me)
 {
+    OS_ERR err;
+
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (RKH_EVT_T *)OSMemGet((OS_MEM *)me, &err);
 }
 
 void 
 rkh_evtPool_put(RKHEvtPool *const me, RKH_EVT_T *evt)
 {
+    OS_ERR err;
+
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    rkh_memPool_put((OS_MEM *)me, (void *)evt, &err);
 }
 
 rui8_t 
 rkh_evtPool_getNumUsed(RKHEvtPool *const me)
 {
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)(((OS_MEM *)me)->NbrMax - ((OS_MEM *)me)->NbrFree);
 }
 
 rui8_t 
 rkh_evtPool_getNumMin(RKHEvtPool *const me)
 {
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)0;   /* This operation is not supported for Micrium */
 }
 
 rui8_t 
 rkh_evtPool_getNumBlock(RKHEvtPool *const me)
 {
+    RKH_REQUIRE(me != (RKHEvtPool *)0);
+    return (rui8_t)((OS_MEM *)me)->NbrMax;
 }
 \endcode
 
-\b NO: \n
-\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1,  
-#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
+\b NO:
+-# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED and 
+   #RKH_CFG_MP_EN = #RKH_ENABLED in \c rkhcfg.h
+-# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_ENABLED in 
+   \c rkhport.h
 
 <EM>If the application code uses the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
 RKH_MEMPOOL_T?</EM>
 
-\b YES: \n
-\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1 and 
-#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0 in \c rkhcfg.h and \c rkhport.h respectively.
+\b YES:
+-# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED and 
+   #RKH_CFG_MP_EN = #RKH_ENABLED in \c rkhcfg.h
+-# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_ENABLED in 
+   \c rkhport.h
 
-\b NO: \n
-\li (1) Define the macro #RKH_CFG_FWK_DYN_EVT_EN = 1,  
-#RKH_CFGPORT_NATIVE_DYN_EVT_EN = 0, and #RKH_CFG_MP_EN = 1 in \c rkhcfg.h
+\b NO:
+-# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED in \c rkhcfg.h
+-# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
+   \c rkhport.h
+-# Then, implement the platform-specific functions rkh_evtPool_init(), 
+   rkh_evtPool_getPool() and rkh_evtPool_getBlockSize(), rkh_evtPool_get(), 
+   rkh_evtPool_put(), rkh_evtPool_getNumUsed(), rkh_evtPool_getNumMin() and 
+   rkh_evtPool_getNumBlock() which are specified in 
+   \c source/fwk/inc/rkhfwk_evtpool.h. All these functions are frequently 
+   placed in \c rkhport.c file.
 
 <HR>
 \section hk Hook functions
@@ -882,27 +912,28 @@ functions. All these functions in RKH are easily indentifiable by the
 \b "_hook_" key word used in the function name, rkh_hook_dispatch(), 
 rkh_hook_signal(), rkh_hook_timeout(), rkh_hook_start(), rkh_hook_exit(), 
 and rkh_hook_idle(). 
-Please, see RKH_CFG_HOOK_DISPATCH_EN, RKH_CFG_HOOK_SIGNAL_EN, 
-RKH_CFG_HOOK_TIMEOUT_EN, RKH_CFG_HOOK_START_EN, and RKH_CFG_HOOK_EXIT_EN 
-options from the \c rkhcfg.h.\n
+Please, see #RKH_CFG_HOOK_DISPATCH_EN, #RKH_CFG_HOOK_SIGNAL_EN, #RKH_CFG_HOOK_TIMEOUT_EN, #RKH_CFG_HOOK_START_EN, #RKH_CFG_HOOK_EXIT_EN, #RKH_CFG_HOOK_TIMETICK_EN, and #RKH_CFG_HOOK_PUT_TRCEVT_EN options from the \c rkhcfg.h.\n
 
-\code void rkh_hook_dispatch( RKH_SMA_T *sma, RKH_EVT_T *e )\endcode
+\code void rkh_hook_dispatch(RKH_SMA_T *sma, RKH_EVT_T *e)\endcode
 \copydetails RKH_CFG_HOOK_DISPATCH_EN
 
-\code void rkh_hook_signal( RKH_EVT_T *e )\endcode
+\code void rkh_hook_signal(RKH_EVT_T *e)\endcode
 \copydetails RKH_CFG_HOOK_SIGNAL_EN
 
-\code void rkh_hook_timeout( const void *t )\endcode
+\code void rkh_hook_timeout(const void *t)\endcode
 \copydetails RKH_CFG_HOOK_TIMEOUT_EN
 
-\code void rkh_hook_start( void )\endcode
+\code void rkh_hook_start(void)\endcode
 \copydetails RKH_CFG_HOOK_START_EN
 
-\code void rkh_hook_exit( void )\endcode
+\code void rkh_hook_exit(void)\endcode
 \copydetails RKH_CFG_HOOK_EXIT_EN
 
-\code void rkh_hook_idle( void )\endcode
+\code void rkh_hook_idle(void)\endcode
 \copydetails rkh_hook_idle
+
+\code void rkh_hook_timetick(void)\endcode
+\copydetails RKH_CFG_HOOK_TIMETICK_EN
 
 <HR>
 \section ilock Interrupt locking mechanism
