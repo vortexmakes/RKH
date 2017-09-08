@@ -938,13 +938,14 @@ Please, see #RKH_CFG_HOOK_DISPATCH_EN, #RKH_CFG_HOOK_SIGNAL_EN, #RKH_CFG_HOOK_TI
 <HR>
 \section ilock Interrupt locking mechanism
 
-\copydetails RKH_DIS_INTERRUPT()
-Please, see \ref Installation section about RKH port directory and files.
+\copybrief RKH_DIS_INTERRUPT()
+\copydoc RKH_DIS_INTERRUPT()
 
 <HR>
 \section crt Critical section
 
-\copydetails RKH_SR_ALLOC()
+\copybrief RKH_CPUSR_TYPE()
+\copydoc RKH_CPUSR_TYPE()
 
 <HR>
 \section trc Trace facility

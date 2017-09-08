@@ -1943,6 +1943,74 @@ extern "C" {
 #endif
 
 #if RKH_EN_DOXYGEN == RKH_ENABLED
+    /** @{
+     *  \brief
+     *  RKH need to disable interrupts in order to access critical sections
+     *  of code, and re-enable interrupts when done. This allows RKH to
+     *  protect critical code from being entered simultaneously. To hide the
+     *  implementation method chosen by the processor, compiler, etc, RKH
+     *  defines two macros to unconditionally disable and enable interrupts:
+     *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
+     *  they resides in \b rkhport.h file, which the user always need to
+     *  provide.
+     *
+     *  <EM>Example for HCS08 CW6.3 from C:</EM>
+     *  \code
+     *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
+     *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
+     *  \endcode
+     */
+    #define RKH_DIS_INTERRUPT()
+    #define RKH_ENA_INTERRUPT()
+    /*@}*/
+
+    /** @{
+     *  \brief
+     *  RKH need to disable interrupts in order to access critical sections of
+     *  code, and re-enable interrupts when done.
+     *
+     *  This allows RKH to protect
+     *  critical code from being entered simultaneously from either multiple
+     *  SMAs or ISRs. Every processor generally provide instructions to
+     *  disable/enable interrupts and the C compiler must have a mechanism to
+     *  perform these operations directly from C. Some compilers will allows
+     *  to insert in-line assembly language statements in the C source code.
+     *  This makes it quite easy to insert processor instructions to enable and
+     *  disable interrupts. Other compilers will actually contain language
+     *  extensions to enable and disable interrupts directly from C. To hide
+     *  the implementation method chosen by the compiler manufacturer, RKH
+     *  defines two macros to disable and enable interrupts:
+     *  RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
+     *
+     *  The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto
+     *  the stack and then, disable interrupts.
+     *  RKH_EXIT_CRITICAL() would simply be implemented by restoring the
+     *  interrupt status from the stack. Using this scheme, if it's called a
+     *  RKH service with either interrupts enabled or disabled then, the
+     *  status would be preserved across the call. If calls a RKH service with
+     *  interrupts disabled, is potentially extending the interrupt latency of
+     *  application. The application can use RKH_ENTER_CRITICAL() and
+     *  RKH_EXIT_CRITICAL() to also protect critical sections of code. As a
+     *  general rule, should always call RKH services with interrupts enabled!.
+     *
+     *  \note
+     *  These macros are internal to RKH and the user application should
+     *  not call it.
+     *
+     *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
+     *  \code
+     *  //#define RKH_CPUSR_TYPE
+     *  #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
+     *  #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
+     *  \endcode
+     */
+    #define RKH_CPUSR_TYPE
+    #define RKH_SR_ALLOC() \
+        RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
+    #define RKH_ENTER_CRITICAL(dummy)
+    #define RKH_EXIT_CRITICAL(dummy)
+    /*@}*/
+
     /**
      *  \addtogroup config
      *  @{
@@ -2178,73 +2246,6 @@ extern "C" {
      */
     #define RKH_THREAD_STK_TYPE 
 
-    /**@{
-     *  \brief
-     *  RKH need to disable interrupts in order to access critical sections
-     *  of code, and re-enable interrupts when done. This allows RKH to
-     *  protect critical code from being entered simultaneously. To hide the
-     *  implementation method chosen by the processor, compiler, etc, RKH
-     *  defines two macros to unconditionally disable and enable interrupts:
-     *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
-     *  they resides in \b rkhport.h file, which the user always need to
-     *  provide.
-     *
-     *  <EM>Example for HCS08 CW6.3 from C:</EM>
-     *  \code
-     *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
-     *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
-     *  \endcode
-     */
-    #define RKH_DIS_INTERRUPT()
-    #define RKH_ENA_INTERRUPT()
-    /*@}*/
-
-    /**@{
-     *  \brief
-     *  RKH need to disable interrupts in order to access critical sections of
-     *  code, and re-enable interrupts when done.
-     *
-     *  This allows RKH to protect
-     *  critical code from being entered simultaneously from either multiple
-     *  SMAs or ISRs. Every processor generally provide instructions to
-     *  disable/enable interrupts and the C compiler must have a mechanism to
-     *  perform these operations directly from C. Some compilers will allows
-     *  to insert in-line assembly language statements in the C source code.
-     *  This makes it quite easy to insert processor instructions to enable and
-     *  disable interrupts. Other compilers will actually contain language
-     *  extensions to enable and disable interrupts directly from C. To hide
-     *  the implementation method chosen by the compiler manufacturer, RKH
-     *  defines two macros to disable and enable interrupts:
-     *  RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
-     *
-     *  The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto
-     *  the stack and then, disable interrupts.
-     *  RKH_EXIT_CRITICAL() would simply be implemented by restoring the
-     *  interrupt status from the stack. Using this scheme, if it's called a
-     *  RKH service with either interrupts enabled or disabled then, the
-     *  status would be preserved across the call. If calls a RKH service with
-     *  interrupts disabled, is potentially extending the interrupt latency of
-     *  application. The application can use RKH_ENTER_CRITICAL() and
-     *  RKH_EXIT_CRITICAL() to also protect critical sections of code. As a
-     *  general rule, should always call RKH services with interrupts enabled!.
-     *
-     *  \note
-     *  These macros are internal to RKH and the user application should
-     *  not call it.
-     *
-     *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
-     *  \code
-     *  //#define RKH_CPUSR_TYPE
-     *  #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
-     *  #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
-     *  \endcode
-     */
-    #define RKH_CPUSR_TYPE
-    #define RKH_SR_ALLOC() \
-        RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
-    #define RKH_ENTER_CRITICAL(dummy)
-    #define RKH_EXIT_CRITICAL(dummy)
-    /*@}*/
 #endif
 
 #ifdef RKH_CPUSR_TYPE
