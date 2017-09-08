@@ -1951,13 +1951,18 @@ extern "C" {
      *  implementation method chosen by the processor, compiler, etc, RKH
      *  defines two macros to unconditionally disable and enable interrupts:
      *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
-     *  they resides in \b rkhport.h file, which the user always need to
+     *  they resides in \c rkhport.h file, which the user always need to
      *  provide.
      *
-     *  <EM>Example for HCS08 CW6.3 from C:</EM>
+     *  \n <EM>Example for HCS08 CW6.3</EM>
      *  \code
      *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
      *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
+     *  \endcode
+     *  <EM>Example for uC/OS-III and KSDK</EM>
+     *  \code
+     *  #define RKH_DIS_INTERRUPT()         INT_SYS_DisableIRQGlobal()
+     *  #define RKH_ENA_INTERRUPT()         INT_SYS_EnableIRQGlobal()
      *  \endcode
      */
     #define RKH_DIS_INTERRUPT()
@@ -2000,8 +2005,16 @@ extern "C" {
      *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
      *  \code
      *  //#define RKH_CPUSR_TYPE
-     *  #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
-     *  #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
+     *  #define RKH_ENTER_CRITICAL(dummy)		EnterCriticalSection(&csection)
+     *  #define RKH_EXIT_CRITICAL(dummy)		LeaveCriticalSection(&csection)
+     *  \endcode
+     *  <EM>Example for uC/OS-III and KSDK</EM>
+     *  \code
+     *  //#define RKH_CPUSR_TYPE
+     *  #define RKH_ENTER_CRITICAL(dummy)         \
+     *              OSA_EnterCritical(kCriticalDisableInt)
+     *  #define RKH_EXIT_CRITICAL(dummy)          \
+     *              OSA_ExitCritical(kCriticalDisableInt)
      *  \endcode
      */
     #define RKH_CPUSR_TYPE

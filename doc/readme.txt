@@ -425,6 +425,7 @@ separates it from platform-neutral code.
 Porting RKH implies to create the a few platform-dependent files, 
 \c rhhport.h, \c rkhport.c, \c rkht.h, which frequently defines the interrupt 
 locking method, the critical section management, data types, among other things.
+
 \note
 It is recommended to start from a similar and existing port, properly copying 
 and modifying its files (\c rkhport.c, \c rkhport.h and \c rkht.h) according 
@@ -446,6 +447,7 @@ to port RKH.
 -# \ref crt
 -# \ref trc
 -# \ref rkhp
+-# \ref extra
 
 \tableofcontents
 
@@ -463,7 +465,7 @@ Create the data type file. The RKH uses a set of integer quantities.
 That maybe machine or compiler dependent. These types must be defined in 
 \c rkht.h file. The following listing shows the required data type definitions:
 
-\include rkht.h
+\include types.h
 
 Please, see \ref portable_dir section.
 
@@ -938,14 +940,14 @@ Please, see #RKH_CFG_HOOK_DISPATCH_EN, #RKH_CFG_HOOK_SIGNAL_EN, #RKH_CFG_HOOK_TI
 <HR>
 \section ilock Interrupt locking mechanism
 
-\copybrief RKH_DIS_INTERRUPT()
-\copydoc RKH_DIS_INTERRUPT()
+\copybrief RKH_ENA_INTERRUPT()
+\copydetails RKH_ENA_INTERRUPT()
 
 <HR>
 \section crt Critical section
 
 \copybrief RKH_CPUSR_TYPE()
-\copydoc RKH_CPUSR_TYPE()
+\copydetails RKH_CPUSR_TYPE()
 
 <HR>
 \section trc Trace facility
@@ -953,392 +955,95 @@ Please, see #RKH_CFG_HOOK_DISPATCH_EN, #RKH_CFG_HOOK_SIGNAL_EN, #RKH_CFG_HOOK_TI
 When using the trace facility must be defined in \c rkhport.h the following 
 configurations:
 
-\li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_CFGPORT_TRC_SIZEOF_PTR  
-\li #RKH_CFGPORT_TRC_SIZEOF_PTR \copydetails #RKH_CFGPORT_TRC_SIZEOF_FUN_PTR 
-\li #RKH_CFGPORT_TRC_SIZEOF_TSTAMP \copydetails #RKH_CFGPORT_TRC_SIZEOF_TSTAMP 
+-# #RKH_CFGPORT_TRC_SIZEOF_PTR \n
+   \copybrief #RKH_CFGPORT_TRC_SIZEOF_PTR
+   \copydetails #RKH_CFGPORT_TRC_SIZEOF_PTR  
+-# #RKH_CFGPORT_TRC_SIZEOF_PTR \n
+   \copybrief #RKH_CFGPORT_TRC_SIZEOF_FUN_PTR 
+   \copydetails #RKH_CFGPORT_TRC_SIZEOF_FUN_PTR 
+-# #RKH_CFGPORT_TRC_SIZEOF_TSTAMP \n 
+   \copybrief #RKH_CFGPORT_TRC_SIZEOF_TSTAMP 
+   \copydetails #RKH_CFGPORT_TRC_SIZEOF_TSTAMP
 
-Example:
-
+\n
+<EM>Example for ARM Cortex</EM>\n
 \code 
 #define RKH_CFGPORT_TRC_SIZEOF_PTR			32u
 #define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32u
 #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
 \endcode
 
+<EM>Example for S08 of NXP</EM> \n
+\code 
+#define RKH_CFGPORT_TRC_SIZEOF_PTR			16u
+#define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		16u
+#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		16u
+\endcode
+
 A RKH port cannot and should not define all the functions that it calls, 
 because this would render the port too inflexible. Therefore, the 
 application-specific functions \c rkh_trc_open(), \c rkh_trc_close(), 
-\c rkh_trc_flush(), and \c rkh_trc_getts() are application provided typically 
-in the board support package (\c bsp.c).
-
+\c rkh_trc_flush(), and \c rkh_trc_getts() are application provided, which 
+are specified in \c source/trc/inc/rkhtrc_out.h, typically in the board 
+support package (\c bsp.c).
 \n
-\code void rkh_trc_open( void )\endcode
+\code void rkh_trc_open(void)\endcode
 \copydetails RKH_TRC_OPEN \n
 
-\code void rkh_trc_close( void )\endcode
+\code void rkh_trc_close(void)\endcode
 \copydetails RKH_TRC_CLOSE \n
 
-\code void rkh_trc_flush( void )\endcode
+\code void rkh_trc_flush(void)\endcode
 \copydetails RKH_TRC_FLUSH \n
 
-\code void rkh_trc_getts( void )\endcode
+\code void rkh_trc_getts(void)\endcode
 \copydetails rkh_trc_getts \n
 
 <HR>
-\section rkhp A port file example.
+\section rkhp A port file example
 
-<EM>\c "rkhport.h" for x86, VC08, and win32 with scheduler emulation</EM>
-<EM> (source/portable/80x86/win32_st/vc)</EM>
+<EM>\b rkhport.h for ARM Cortex-M3 and LPCXpresso, with native scheduler</EM> \n
+See \c source/portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.h file
 
+\include rkhport.h
+
+<EM>\b rkht.h for ARM Cortex-M3 and LPCXpresso</EM> \n
+See \c source/portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h file
+
+\include rkht.h
+
+<EM>\b rkhport.c for ARM Cortex-M3 and LPCXpresso</EM> \n
+See \c source/portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.c file
+
+\include rkhport.c
+
+<HR>
+\section extra Extras
+
+<EM>In \c rkhport.h</EM> \n
+See \c source/portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.h file
 \code
-/*
- *	file: rkhport.h - Visual Studio 2008 port
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 27, 2012
- *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
- *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
- *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
- *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
- */
-
-/*
- * 	rkhport.h
- */
-
-
-#ifndef __RKHPORT_H__
-#define __RKHPORT_H__
-
-
-#include <windows.h>
-
-#include "rkhtype.h"
-#include "rkhqueue.h"
-#include "rkhmempool.h"
-#include "rkhrdy.h"
-
-
-extern CRITICAL_SECTION csection;
-extern HANDLE sma_is_rdy;
-extern RKH_RG_T rkhrg;
-
-
-const char *rkh_get_port_version( void );
-const char *rkh_get_port_desc( void );
-
-
-/**
- *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object) has its own 
- *	thread of execution.
- */
-
-#define RKH_CFGPORT_SMA_THREAD_EN 				0
-
-/**
- *	If the #RKH_CFGPORT_SMA_THREAD_EN and #RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each 
- *	SMA (active object) has its own thread of execution and its own object 
- *	data.
- */
-
-#define RKH_CFGPORT_SMA_THREAD_DATA_EN			0
-
-/**
- * 	If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will include the 
- * 	simple, cooperative, and nonpreemptive scheduler RKHS.
- * 	When #RKH_CFGPORT_NATIVE_SCHEDULER_EN is enabled RKH also will automatically 
- * 	define #RKH_EQ_TYPE, RKH_SMA_BLOCK(), RKH_SMA_READY(), RKH_SMA_UNREADY(), 
- * 	and assume the native priority scheme.
- */
-
-#define RKH_CFGPORT_NATIVE_SCHEDULER_EN			0
-
-/**
- * 	If the #RKH_CFGPORT_NATIVE_EQUEUE_EN is set to 1 and the native event queue is 
- *	enabled (see #RKH_CFG_QUE_EN) then RKH will include its own implementation of 
- *	rkh_sma_post_fifo(), rkh_sma_post_lifo(), and rkh_sma_get() functions.
- */
-
-#define RKH_CFGPORT_NATIVE_EQUEUE_EN			1
-
-/**
- * 	If the #RKH_CFGPORT_NATIVE_DYN_EVT_EN is set to 1 and the native fixed-size 
- * 	memory block facility is enabled (see #RKH_CFG_MP_EN) then RKH will include 
- * 	its own implementation of dynamic memory management.
- * 	When #RKH_CFGPORT_NATIVE_DYN_EVT_EN is enabled RKH also will automatically 
- * 	define RKH_DYNE_TYPE, RKH_DYNE_INIT(), RKH_DYNE_GET_ESIZE(), 
- * 	RKH_DYNE_GET(), RKH_DYNE_PUT(), RKH_DYNE_GET_NFREE(), RKH_DYNE_GET_NMIN(),
- *  and RKH_DYNE_GET_PSIZE() macros.
- */
-
-#define RKH_CFGPORT_NATIVE_DYN_EVT_EN			1
-
-/**
- *	If the #RKH_CFGPORT_REENTRANT_EN is set to 1, the RKH event dispatch allows to be 
- *	invoked from several threads of executions. Enable this only if the 
- *	application is based on a multi-thread architecture.
- */
-
-#define RKH_CFGPORT_REENTRANT_EN				0
-
-/**
- * 	Specify the size of void pointer. The valid values [in bits] are 
- * 	16 or 32. Default is 32. See RKH_TRC_SYM() macro.
- */
-
-#define RKH_CFGPORT_TRC_SIZEOF_PTR			32
-
-/**
- * 	Specify the size of function pointer. The valid values [in bits] are 
- * 	16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
- */
-
-#define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR		32
-
-/** 
- * 	Specify the number of bytes (size) used by the trace record timestamp. 
- * 	The valid values [in bits] are 8, 16 or 32. Default is 16.
- */
-
-#define RKH_CFGPORT_TRC_SIZEOF_TSTAMP		32u
-
-/** 
- * 	If the #RKH_CFGPORT_SMA_QSTO_EN is set to 1 then RKH_SMA_ACTIVATE() 
- * 	macro invokes the rkh_sma_activate() function ignoring the external 
- * 	event queue storage argument, \c qs.
- */
-
-#define RKH_CFGPORT_SMA_QSTO_EN				RKH_ENABLED
-
-/** 
- * 	If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE() 
- * 	macro invokes the rkh_sma_activate() function ignoring the thread's 
- * 	stack related arguments, \c stks and \c stksize.
- */
-
-#define RKH_CFGPORT_SMA_STK_EN				RKH_ENABLED
-
-/*
- * 	Declaring an object RKHROM announces that its value will
- * 	not be changed and it will be stored in ROM.
- */
-
-#define RKHROM								const
-
-
-#define RKH_DIS_INTERRUPT()
-#define RKH_ENA_INTERRUPT()
-//#define RKH_CPUSR_TYPE
-#define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection( &csection )
-#define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection( &csection )
-
-
-#define RKH_EQ_TYPE              		RKH_QUEUE_T
-#define RKH_OSSIGNAL_TYPE          		HANDLE
-#define RKH_THREAD_TYPE             	HANDLE
-
-
-#define RKH_SMA_BLOCK( sma ) 									\
-				RKH_ASSERT( ((RKH_SMA_T*)(sma))->equeue.qty != 0 )
-
-#define RKH_SMA_READY( rg, sma ) 								\
-			    RKH_RDY_INSERT( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio ); \
-			    (void)SetEvent( sma_is_rdy ); \
-
-#define RKH_SMA_UNREADY( rg, sma ) 							\
-			    RKH_RDY_REM( (rg), ((RKH_SMA_T*)(sma))->romrkh->prio )
-
-#define RKH_WAIT_FOR_EVENTS() 								\
-			    ((void)WaitForSingleObject( sma_is_rdy, (DWORD)INFINITE))
-
-
-#endif
+const char *rkhport_get_version(void);
+const char *rkhport_get_desc(void);
 \endcode
 
-<EM>\c "rkht.h" for x86, VC08, and win32 scheduler emulation</EM>
-<EM> (source/portable/80x86/win32_st/vc)</EM>
-
+<EM>In \c rkhport.c</EM> \n
+See \c source/portable/arm-cortex/rkhs/arm_cm3/codered/rkhport.c file
 \code
-#ifndef __RKHT_H__
-#define __RKHT_H__
+RKH_MODULE_NAME(rkhport)
+RKH_MODULE_VERSION(rkhport, 1.00)
+RKH_MODULE_DESC(rkhport, "ARM Cortex-M, LPCXpresso")
 
-
-/*
- * 	Portable data types.
- *
- * 	The RKH uses a set of integer quantities. That maybe 
- * 	machine or compiler	dependent.
- *
- * 	Note:
- *
- * 	The 'ruint' and 'rInt' will normally be the natural size 
- * 	for a particular machine. These types designates an integer 
- * 	type that is usually fastest to operate with among all integer 
- * 	types.
- */
-
-typedef signed char 	ri8_t;
-typedef signed short 	ri16_t;
-typedef signed long		ri32_t;
-typedef unsigned char 	rui8_t;
-typedef unsigned short 	rui16_t;
-typedef unsigned long	rui32_t;
-
-typedef unsigned int	ruint;
-typedef signed int		rInt;
-
-
-#endif
-\endcode
-
-<EM>\c "rkhport.c" for x86, VC08, and win32 with scheduler emulation</EM>
-<EM> (source/portable/80x86/win32_st/vc08)</EM>
-
-\code
-/*
- *	file: rkhport.c - Visual Studio 2008 port
- *	Last updated for version: 1.0.00
- *	Date of the last update:  Feb 22, 2012
- *
- * 	Copyright (C) 2010 Leandro Francucci. All rights reserved.
- *
- * 	RKH is free software: you can redistribute it and/or modify
- * 	it under the terms of the GNU General Public License as published by
- * 	the Free Software Foundation, either version 3 of the License, or
- * 	(at your option) any later version.
- *
- *  RKH is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with RKH, see copying.txt file.
- *
- * Contact information:
- * RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * e-mail:			francuccilea@gmail.com
- */
-
-/*
- * 	rkhport.c
- */
-
-
-#include "rkh.h"
-
-
-RKH_MODULE_NAME( rkhport )
-RKH_MODULE_VERSION( rkhport, 1.00 )
-RKH_MODULE_DESC( rkhport, "Windows 32-bits (single thread)" )
-
-
-CRITICAL_SECTION csection;		/* Win32 critical section */
-HANDLE sma_is_rdy;          	/* Win32 event to signal when SMAs are ready */
-RKH_RG_T rkhrg;					/* ready group of SMAs */
-
-extern rui8_t running;
-
-
-const 
-char *
-rkh_get_port_version( void )
+const char *
+rkhport_get_version(void)
 {
-	return RKH_MODULE_GET_VERSION();
+    return RKH_MODULE_GET_VERSION();
 }
 
-
-const 
-char *
-rkh_get_port_desc( void )
+const char *
+rkhport_get_desc(void)
 {
-	return RKH_MODULE_GET_DESC();
-}
-
-
-void 
-rkh_fwk_init( void )
-{
-    InitializeCriticalSection( &csection );
-    sma_is_rdy = CreateEvent( NULL, FALSE, FALSE, NULL );	
-}
-
-
-void 
-rkh_fwk_enter( void )
-{
-	rui8_t prio;
-	RKH_SMA_T *sma;
-	RKH_EVT_T *e;
-
-    RKH_HOOK_START();
-	RKH_TR_FWK_EN();
-    running = 1;
-
-    while( running )
-	{
-        RKH_ENTER_CRITICAL( dummy );
-        if( RKH_RDY_ISNOT_EMPTY( rkhrg ) ) 
-		{
-			RKH_RDY_FIND_HIGHEST( rkhrg, prio );
-            RKH_EXIT_CRITICAL( dummy );
-
-            sma = rkh_sptbl[ prio ];
-            e = rkh_sma_get( sma );
-            rkh_sm_dispatch( (RKH_SM_T *)sma, e );
-            RKH_FWK_GC( e );
-        }
-        else
-            rkh_hook_idle();
-    }
-
-    RKH_HOOK_EXIT();
-    CloseHandle( sma_is_rdy );
-    DeleteCriticalSection( &csection );	
-}
-
-
-void 
-rkh_fwk_exit( void )
-{
-	RKH_TR_FWK_EX();
-	running = 0;
-}
-
-
-void 
-rkh_sma_activate(	RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize, 
-						void *stks, rui32_t stksize )
-{
-    ( void )stks;
-    ( void )stksize;
-
-	rkh_queue_init( &sma->equeue, (const void **)qs, qsize, sma );
-	rkh_sma_register( sma );
-    rkh_sm_init( (RKH_SM_T *)sma );
-	RKH_TR_SMA_ACT( sma );
-}
-
-
-void 
-rkh_sma_terminate( RKH_SMA_T *sma )
-{
-	rkh_sma_unregister( sma );
-	RKH_TR_SMA_TERM( sma );
+    return RKH_MODULE_GET_DESC();
 }
 \endcode
 
