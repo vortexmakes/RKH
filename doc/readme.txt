@@ -439,8 +439,6 @@ to port RKH.
 -# \ref data
 -# \ref rom
 -# \ref blk 
--# \ref prio
--# \ref eque
 -# \ref dyn
 -# \ref hk
 -# \ref ilock
@@ -480,11 +478,14 @@ Example:
 \endcode
 
 <HR>
-\section blk Blocking mechanism
+\section blk Active Object execution
 
-<EM>RKH works in conjunction with a traditional OS/RTOS?</EM>
+\subsection q1 Q1 - RKH works in conjunction with a traditional OS/RTOS?
 
-\b YES: \n
+Q1 - YES: \n
+\subsubsection q1yq2 Q1YQ2 - Is a multithreaded application?
+
+Q1YQ2 - YES: \n
 The RKH framework can work with virtually any traditional OS/RTOS. 
 Combined with a conventional RTOS, RKH takes full advantage of the 
 multitasking capabilities of the RTOS by executing each active object (SMA) 
@@ -494,13 +495,6 @@ in a separate task or thread.
    #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_DISABLED,
    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_ENABLED,
    #RKH_CFGPORT_REENTRANT_EN = #RKH_ENABLED, within the \c rkhport.h file.
--# Only if the application code uses the RKH native queue (module 
-   \c source/queue/inc/rkhqueue.h), then must be implemented the 
-   platform-specific functions rkh_sma_block(), rkh_sma_setReady(), and 
-   rkh_sma_setUnready() in \c rkhport.c according to underlying OS/RTOS, 
-   which are specified in \c source/sma/rkhsma_sync.h file.
-   Define #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_ENABLED and 
-   #RKH_OSSIGNAL_TYPE,
 -# Define the macros #RKH_THREAD_TYPE and #RKH_THREAD_STK_TYPE in 
    \c rkhport.h according to underlying OS/RTOS. 
 -# Then, implement the platform-specific functions rkh_fwk_init(), 
@@ -513,7 +507,6 @@ in a separate task or thread.
 Fragment of \c rkhport.h
 See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h
 \code
-/* ... */
 #define RKH_EQ_TYPE              		msg_queue_t
 #define RKH_OSSIGNAL_TYPE          		void *
 #define RKH_THREAD_TYPE             	OS_TCB
@@ -523,7 +516,6 @@ See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h
 Fragment of \c rkhport.c. 
 See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.c
 \code
-/* ... */
 void 
 rkh_fwk_init(void)
 {
@@ -607,22 +599,10 @@ rkh_sma_terminate(RKH_SMA_T *sma)
 }
 \endcode
 
-\b NO:
--#  Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_ENABLED,
-    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, 
-    #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED, 
-    #RKH_CFGPORT_REENTRANT_EN = #RKH_DISABLED in the \c rkhport.h file.
--#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h. 
-
-<HR>
-\section prio Priority mechanism
-
-<EM>If RKH works in conjunction with a traditional OS/RTOS, RKH provides its 
-own priority mechanism?</EM>
-
-\b YES:
+Q1YQ2 - NO: \n
 It's frequently used for single thread applications that uses its own 
-cooperative and non-preemptive scheduler.
+cooperative and non-preemptive scheduler, where RKH provides its own priority 
+mechanism.
 
 -# Include the \c source/sma/inc/rkhsma_prio.h in \c rkhport.c. 
 -# Implement the functions rkh_sma_block(), rkh_sma_setReady(), and 
@@ -654,16 +634,9 @@ rkh_sma_setUnready(RKH_SMA_T *const me)
 }
 \endcode
 
-\b NO:
-Nothing to do.
+\subsubsection q1yq3 Q1YQ3 - Are implemented the event queues with a message queue of the underlying OS/RTOS?
 
-<HR>
-\section eque Event queue
-
-<EM>If RKH works in conjunction with a traditional OS/RTOS, are implemented 
-the event queues with a message queue of the underlying OS/RTOS?</EM>
-
-\b YES: \n
+Q1YQ3 - YES: \n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
    \c rkhport.h
 -# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to OS/RTOS.
@@ -737,19 +710,66 @@ rkh_sma_get(RKH_SMA_T *sma)
 }
 \endcode
 
-\b NO:
+Q1YQ3 - NO: \n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED in 
    \c rkhport.h
 -# Define the macro #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhcfg.h
-		
-<EM>If the application code uses the RKH native scheduler, are implemented 
-the event queues with the native queues RKH_QUEUE_T?</EM>
+-# Implement the platform-specific functions rkh_sma_block(), 
+   rkh_sma_setReady(), and rkh_sma_setUnready() in \c rkhport.c according to 
+   underlying OS/RTOS, which are specified in \c source/sma/inc/rkhsma_sync.h 
+   file.
+-# Define #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_ENABLED and #RKH_OSSIGNAL_TYPE
+   according to underlying OS/RTOS
 
-\b YES:
+<EM>Example for Windows multithreaded application</EM> \n
+Fragment of \c rkhport.h. 
+See \c source/portable/80x86/win32_mt/vc/rkhport.h
+\code
+/* Operating system blocking primitive */
+#define RKH_OSSIGNAL_TYPE                   void*
+\endcode
+
+Fragment of \c rkhport.c. 
+See \c source/portable/80x86/win32_mt/vc/rkhport.c
+\code
+void
+rkh_sma_block(RKH_SMA_T *const me)
+{
+    while (me->equeue.qty == 0)
+    {
+        rkhport_exit_critical();
+        (void)WaitForSingleObject(me->os_signal, (DWORD)INFINITE);
+        rkhport_enter_critical();
+    }
+}
+
+void
+rkh_sma_setReady(RKH_SMA_T *const me)
+{
+    (void)SetEvent(me->os_signal);
+}
+
+void
+rkh_sma_setUnready(RKH_SMA_T *const me)
+{
+    (void)me;
+}
+\endcode
+
+Q1 - NO: \n
+-#  Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_ENABLED,
+    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, 
+    #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED, 
+    #RKH_CFGPORT_REENTRANT_EN = #RKH_DISABLED in the \c rkhport.h file.
+-#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h. 
+
+\subsubsection q1nq4 Q1NQ4 - Are implemented the event queues with the native queues?
+
+Q1NQ4 - YES: \n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED and 
    #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhport.h and \c rkhcfg.h respectively.
 		
-\b NO:
+Q1NQ4 - NO: \n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
    \c rkhport.h
 -# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to external queue 
@@ -757,7 +777,7 @@ the event queues with the native queues RKH_QUEUE_T?</EM>
 -# Then, implement the platform-specific functions rkh_sma_post_fifo(), 
    rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
    \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
-   \c rkhport.c file.
+   \c rkhport.c file. See section YES of \ref q1yq3.
 
 <HR>
 \section dyn Dynamic event support
