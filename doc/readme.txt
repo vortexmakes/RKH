@@ -492,23 +492,24 @@ in a separate task or thread.
 
 -# Define the macros 
    #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_DISABLED,
-   #RKH_CFGPORT_SMA_THREAD_EN = #RKH_ENABLED, and 
-   #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_ENABLED, within the 
-   \c rkhport.h file.
+   #RKH_CFGPORT_SMA_THREAD_EN = #RKH_ENABLED,
+   #RKH_CFGPORT_REENTRANT_EN = #RKH_ENABLED, within the \c rkhport.h file.
 -# Only if the application code uses the RKH native queue (module 
    \c source/queue/inc/rkhqueue.h), then must be implemented the 
    platform-specific functions rkh_sma_block(), rkh_sma_setReady(), and 
    rkh_sma_setUnready() in \c rkhport.c according to underlying OS/RTOS, 
-   which are specified in \c source/sma/rkhsma_sinc.h file.
--# Define the macros #RKH_OSSIGNAL_TYPE, #RKH_THREAD_TYPE and 
-   #RKH_THREAD_STK_TYPE in \c rkhport.h according to underlying OS/RTOS. 
+   which are specified in \c source/sma/rkhsma_sync.h file.
+   Define #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_ENABLED and 
+   #RKH_OSSIGNAL_TYPE,
+-# Define the macros #RKH_THREAD_TYPE and #RKH_THREAD_STK_TYPE in 
+   \c rkhport.h according to underlying OS/RTOS. 
 -# Then, implement the platform-specific functions rkh_fwk_init(), 
    rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), and 
    rkh_sma_terminate() in \c rkhport.c, which are specified in 
    \c source/fwk/inc/rkhfwk_sched.h and \c source/sma/inc/rkhsma.h
    respectively.
 
-<EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM>
+<EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM> \n
 Fragment of \c rkhport.h
 See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h
 \code
@@ -608,8 +609,9 @@ rkh_sma_terminate(RKH_SMA_T *sma)
 
 \b NO:
 -#  Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_ENABLED,
-    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, and 
-    #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED in \c rkhport.h file.
+    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, 
+    #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED, 
+    #RKH_CFGPORT_REENTRANT_EN = #RKH_DISABLED in the \c rkhport.h file.
 -#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h. 
 
 <HR>
@@ -619,13 +621,16 @@ rkh_sma_terminate(RKH_SMA_T *sma)
 own priority mechanism?</EM>
 
 \b YES:
+It's frequently used for single thread applications that uses its own 
+cooperative and non-preemptive scheduler.
+
 -# Include the \c source/sma/inc/rkhsma_prio.h in \c rkhport.c. 
 -# Implement the functions rkh_sma_block(), rkh_sma_setReady(), and 
    rkh_sma_setUnready(), which are specified in 
    \c source/sma/inc/rkhsma_sync.h, using the functions provided by 
    \c source/sma/inc/rkhsma_prio.h
 
-<EM>Example for Windows single-thread scheduleing</EM> \n
+<EM>Example for Windows single-thread scheduling</EM> \n
 Fragment of \c rkhport.c. 
 See \c source/portable/80x86/win32_st/vc/rkhport.c
 \code

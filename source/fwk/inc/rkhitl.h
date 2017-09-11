@@ -2048,6 +2048,9 @@ extern "C" {
      *	If the #RKH_CFGPORT_SMA_THREAD_EN and
      *	#RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each SMA (active
      *	object) has its own thread of execution and its own object data.
+     *  When enabling it, the option RKH_OSSIGNAL_TYPE must be defined. 
+     *
+     *  \copybrief RKH_OSSIGNAL_TYPE
      *
      * \type       Boolean 
      * \range      
