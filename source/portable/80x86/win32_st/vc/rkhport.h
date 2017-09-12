@@ -146,7 +146,7 @@ extern "C" {
  *  macro invokes the rkh_sma_activate() function ignoring the external
  *  event queue storage argument, \c qs.
  */
-#define RKH_CFGPORT_SMA_QSTO_EN             RKH_ENABLED
+#define RKH_CFGPORT_SMA_QSTO_EN             RKH_DISABLED
 
 /**
  *  If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE()
@@ -164,17 +164,17 @@ extern "C" {
 /**
  * Native event queue data type
  */
-#define RKH_EQ_TYPE                         RKH_QUEUE_T
+/* #define RKH_EQ_TYPE */
 
 /**
  * Operating system blocking primitive.
  */
-#define RKH_OSSIGNAL_TYPE                   void*
+/* #define RKH_OSSIGNAL_TYPE */
 
 /**
  * Thread handle type for definition
  */
-#define RKH_THREAD_TYPE                     void*
+/* #define RKH_THREAD_TYPE */
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
