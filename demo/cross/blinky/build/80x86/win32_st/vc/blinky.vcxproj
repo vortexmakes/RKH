@@ -100,6 +100,7 @@
     <ClCompile Include="..\..\..\..\..\..\..\source\queue\src\rkhqueue.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\sma\src\rkhsma.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\sma\src\rkhsma_prio.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\source\sma\src\rkhsma_sync.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\sm\src\rkhsm.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\tmr\src\rkhtmr.c" />
     <ClCompile Include="..\..\..\..\..\..\..\source\trc\src\rkhtrc_filter.c" />

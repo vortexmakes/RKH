@@ -79,12 +79,24 @@ RKH_MODULE_NAME(rkhqueue)
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+#if ((RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_DISABLED) && \
+     (RKH_CFGPORT_NATIVE_EQUEUE_EN == RKH_DISABLED) && \
+     (RKH_CFG_QUE_EN == RKH_ENABLED))
+static void (*cbRKHSmaBlock)(RKH_SMA_T *const me) = (void *)0;
+static void (*cbRKHSmaSetReady)(RKH_SMA_T *const me) = (void *)0;
+static void (*cbRKHSmaSetUnready)(RKH_SMA_T *const me) = (void *)0;
+#else
+static void (*cbRKHSmaBlock)(RKH_SMA_T *const me) = &rkh_sma_block;
+static void (*cbRKHSmaSetReady)(RKH_SMA_T *const me) = &rkh_sma_setReady;
+static void (*cbRKHSmaSetUnready)(RKH_SMA_T *const me) = &rkh_sma_setUnready;
+#endif
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
 rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_QUENE_T ssize,
-            void *sma)
+               void *sma)
 {
     RKH_SR_ALLOC();
 
@@ -166,7 +178,7 @@ rkh_queue_get(RKH_QUEUE_T *q)
 
     if (q->sma != CSMA(0))
     {
-        rkh_sma_block((RKH_SMA_T *)(q->sma));
+        cbRKHSmaBlock((RKH_SMA_T *)(q->sma));
     }
     else if (q->qty == 0)
     {
@@ -187,7 +199,7 @@ rkh_queue_get(RKH_QUEUE_T *q)
 
     if ((q->sma != CSMA(0)) && (q->qty == 0))
     {
-        rkh_sma_setUnready((RKH_SMA_T *)(q->sma));
+        cbRKHSmaSetUnready((RKH_SMA_T *)(q->sma));
         RKH_TR_QUE_GET_LAST(q);
         RKH_EXIT_CRITICAL_();
     }
@@ -226,7 +238,7 @@ rkh_queue_put_fifo(RKH_QUEUE_T *q, const void *pe)
 
     if (q->sma != CSMA(0))
     {
-        rkh_sma_setReady((RKH_SMA_T *)(q->sma));
+        cbRKHSmaSetReady((RKH_SMA_T *)(q->sma));
     }
 
 #if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
@@ -271,7 +283,7 @@ rkh_queue_put_lifo(RKH_QUEUE_T *q, const void *pe)
 
     if (q->sma != CSMA(0))
     {
-        rkh_sma_setReady((RKH_SMA_T *)(q->sma));
+        cbRKHSmaSetReady((RKH_SMA_T *)(q->sma));
     }
 
 #if RKH_CFG_QUE_GET_LWMARK_EN == RKH_ENABLED
@@ -297,7 +309,7 @@ rkh_queue_deplete(RKH_QUEUE_T *q)
     q->pin = q->pout = (void * *)q->pstart;
     if (q->sma != CSMA(0))
     {
-        rkh_sma_setUnready((RKH_SMA_T *)(q->sma));
+        cbRKHSmaSetUnready((RKH_SMA_T *)(q->sma));
     }
     RKH_TR_QUE_DPT(q);
     RKH_EXIT_CRITICAL_();
