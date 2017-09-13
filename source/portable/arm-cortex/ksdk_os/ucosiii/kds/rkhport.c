@@ -183,24 +183,6 @@ rkhport_get_desc(void)
 }
 
 void
-rkh_sma_block(RKH_SMA_T *const me)
-{
-    (void)me;
-}
-
-void
-rkh_sma_setReady(RKH_SMA_T *const me)
-{
-    (void)me;
-}
-
-void
-rkh_sma_setUnready(RKH_SMA_T *const me)
-{
-    (void)me;
-}
-
-void
 rkh_fwk_init(void)
 {
     osa_status_t status;
