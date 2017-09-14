@@ -495,8 +495,12 @@ in a separate task or thread.
    #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_DISABLED,
    #RKH_CFGPORT_SMA_THREAD_EN = #RKH_ENABLED,
    #RKH_CFGPORT_REENTRANT_EN = #RKH_ENABLED, within the \c rkhport.h file.
--# Define the macros #RKH_THREAD_TYPE and #RKH_THREAD_STK_TYPE in 
-   \c rkhport.h according to underlying OS/RTOS. 
+-# Define the macros 
+   #RKH_THREAD_TYPE, 
+   #RKH_CFGPORT_SMA_STK_EN and 
+   #RKH_THREAD_STK_TYPE in \c rkhport.h according to underlying OS/RTOS. 
+-# Define the macro #RKH_CFGPORT_SMA_STK_EN in \c rkhport.h according to 
+   OS/RTOS.
 -# Then, implement the platform-specific functions rkh_fwk_init(), 
    rkh_fwk_enter(), rkh_fwk_exit(), rkh_sma_activate(), and 
    rkh_sma_terminate() in \c rkhport.c, which are specified in 
@@ -652,6 +656,8 @@ Q1YQ3 - YES: \n
    \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
    \c rkhport.c file.
 -# Define #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED 
+-# Define the macro #RKH_CFGPORT_SMA_QSTO_EN in \c rkhport.h according to 
+   OS/RTOS.
 
 <EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM> \n
 Fragment of \c rkhport.h
@@ -735,6 +741,7 @@ Q1YQ3 - NO: \n
    file.
 -# Define #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_ENABLED and #RKH_OSSIGNAL_TYPE
    according to underlying OS/RTOS
+-# Define the macro #RKH_CFGPORT_SMA_QSTO_EN = #RKH_ENABLED in \c rkhport.h
 
 <EM>Example for Windows multithreaded application</EM> \n
 Fragment of \c rkhport.h. 
@@ -774,6 +781,7 @@ Q1 - NO: \n
 -#  Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_ENABLED,
     #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, 
     #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED, 
+    #RKH_CFGPORT_SMA_STK_EN = #RKH_DISABLED, 
     #RKH_CFGPORT_REENTRANT_EN = #RKH_DISABLED in the \c rkhport.h file.
 -#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h. 
 
@@ -782,6 +790,7 @@ Q1 - NO: \n
 Q1NQ4 - YES: \n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED and 
    #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhport.h and \c rkhcfg.h respectively.
+-# Define the macro #RKH_CFGPORT_SMA_QSTO_EN = #RKH_ENABLED in \c rkhport.h
 		
 Q1NQ4 - NO: \n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
@@ -792,6 +801,8 @@ Q1NQ4 - NO: \n
    rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
    \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
    \c rkhport.c file. See section YES of \ref q1yq3.
+-# Define the macro #RKH_CFGPORT_SMA_QSTO_EN in \c rkhport.h according to 
+   external queue module..
 
 <HR>
 \section dyn Dynamic event support

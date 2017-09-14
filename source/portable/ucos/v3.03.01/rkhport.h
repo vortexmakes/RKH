@@ -180,6 +180,11 @@
  */
 #define RKH_THREAD_TYPE                 OS_TCB
 
+/**
+ *  Data type to declare thread stack 
+ */
+/* #define RKH_THREAD_STK_TYPE */
+
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

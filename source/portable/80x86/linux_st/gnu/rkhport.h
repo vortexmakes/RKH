@@ -173,6 +173,11 @@ extern "C" {
  */
 #define RKH_THREAD_TYPE
 
+/**
+ *  Data type to declare thread stack 
+ */
+/* #define RKH_THREAD_STK_TYPE */
+
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

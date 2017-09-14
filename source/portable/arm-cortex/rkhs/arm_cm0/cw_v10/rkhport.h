@@ -166,6 +166,21 @@ extern "C" {
  */
 /* #define RKH_EQ_TYPE */
 
+/**
+ * Operating system blocking primitive.
+ */
+/* #define RKH_OSSIGNAL_TYPE */
+
+/**
+ * Thread handle type for definition
+ */
+/* #define RKH_THREAD_TYPE */
+
+/**
+ *  Data type to declare thread stack 
+ */
+/* #define RKH_THREAD_STK_TYPE */
+
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

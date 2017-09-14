@@ -176,6 +176,11 @@ extern "C" {
  */
 #define RKH_THREAD_TYPE                     void*
 
+/**
+ *  Data type to declare thread stack 
+ */
+/* #define RKH_THREAD_STK_TYPE */
+
 #define WIN32_LEAN_AND_MEAN
 
 /* ------------------------------- Data types ------------------------------ */
