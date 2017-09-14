@@ -76,7 +76,6 @@ extern "C" {
  *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1, each SMA (active object)
  *	has its own thread of execution.
  */
-
 #define RKH_CFGPORT_SMA_THREAD_EN           RKH_DISABLED
 
 /**
@@ -84,7 +83,6 @@ extern "C" {
  *	are set to 1, each SMA (active object) has its own thread of execution
  *	and its own object data.
  */
-
 #define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_DISABLED
 
 /**
@@ -95,7 +93,6 @@ extern "C" {
  *  rkh_sma_setReady(), rkh_sma_setUnready(), and assume the native 
  *  priority scheme.
  */
-
 #define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_DISABLED
 
 /**
@@ -104,7 +101,6 @@ extern "C" {
  *  implementation of rkh_sma_post_fifo(), rkh_sma_post_lifo(), and
  *  rkh_sma_get() functions.
  */
-
 #define RKH_CFGPORT_NATIVE_EQUEUE_EN        RKH_ENABLED
 
 /**
@@ -115,7 +111,6 @@ extern "C" {
  *  the event pool manager implementation based on its native memory pool 
  *  module.
  */
-
 #define RKH_CFGPORT_NATIVE_DYN_EVT_EN       RKH_ENABLED
 
 /**
@@ -123,28 +118,24 @@ extern "C" {
  *	allows to be invoked from several threads of executions. Enable this
  *	only if the application is based on a multi-thread architecture.
  */
-
 #define RKH_CFGPORT_REENTRANT_EN            RKH_DISABLED
 
 /**
  *  Specify the size of void pointer. The valid values [in bits] are
  *  16 or 32. Default is 32. See RKH_TRC_SYM() macro.
  */
-
 #define RKH_CFGPORT_TRC_SIZEOF_PTR          32u
 
 /**
  *  Specify the size of function pointer. The valid values [in bits] are
  *  16 or 32. Default is 32. See RKH_TUSR_FUN() and RKH_TRC_FUN() macros.
  */
-
 #define RKH_CFGPORT_TRC_SIZEOF_FUN_PTR      32u
 
 /**
  *  Specify the number of bytes (size) used by the trace record timestamp.
  *  The valid values [in bits] are 8, 16 or 32. Default is 16.
  */
-
 #define RKH_CFGPORT_TRC_SIZEOF_TSTAMP       32u
 
 /**
@@ -152,7 +143,6 @@ extern "C" {
  *  macro invokes the rkh_sma_activate() function ignoring the external
  *  event queue storage argument, \c qs.
  */
-
 #define RKH_CFGPORT_SMA_QSTO_EN             RKH_ENABLED
 
 /**
@@ -160,30 +150,28 @@ extern "C" {
  *  macro invokes the rkh_sma_activate() function ignoring the thread's
  *  stack related arguments, \c stks and \c stksize.
  */
-
 #define RKH_CFGPORT_SMA_STK_EN              RKH_DISABLED
 
 /*
  *  Declaring an object RKHROM announces that its value will
  *  not be changed and it will be stored in ROM.
  */
-
 #define RKHROM                              const
 
 /**
  * Native event queue data type
  */
-#define RKH_EQ_TYPE                         RKH_QUEUE_T
+/* #define RKH_EQ_TYPE */
 
 /**
  * Operating system blocking primitive.
  */
-#define RKH_OSSIGNAL_TYPE                   pthread_cond_t
+#define RKH_OSSIGNAL_TYPE
 
 /**
  * Thread handle type for definition
  */
-#define RKH_THREAD_TYPE                     pthread_t
+#define RKH_THREAD_TYPE
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */

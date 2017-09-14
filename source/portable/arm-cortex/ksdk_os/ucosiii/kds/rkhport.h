@@ -83,7 +83,7 @@ extern "C" {
  *	are set to 1, each SMA (active object) has its own thread of execution
  *	and its own object data.
  */
-#define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_ENABLED
+#define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_DISABLED
 
 /**
  *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
@@ -166,7 +166,7 @@ extern "C" {
 /**
  * Operating system blocking primitive.
  */
-#define RKH_OSSIGNAL_TYPE                   void*
+#define RKH_OSSIGNAL_TYPE
 
 /**
  * Thread handle type for definition

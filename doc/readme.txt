@@ -507,10 +507,11 @@ in a separate task or thread.
 Fragment of \c rkhport.h
 See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h
 \code
-#define RKH_EQ_TYPE              		msg_queue_t
-#define RKH_OSSIGNAL_TYPE          		void *
-#define RKH_THREAD_TYPE             	OS_TCB
-#define RKH_THREAD_STK_TYPE             rui8_t
+#define RKH_CFGPORT_NATIVE_SCHEDULER_EN     RKH_DISABLED
+#define RKH_CFGPORT_SMA_THREAD_EN           RKH_ENABLED
+#define RKH_CFGPORT_REENTRANT_EN            RKH_ENABLED
+#define RKH_THREAD_TYPE             	    OS_TCB
+#define RKH_THREAD_STK_TYPE                 rui8_t
 \endcode
 
 Fragment of \c rkhport.c. 
@@ -604,6 +605,12 @@ It's frequently used for single thread applications that uses its own
 cooperative and non-preemptive scheduler, where RKH provides its own priority 
 mechanism.
 
+-# Define the macros 
+   #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_DISABLED,
+   #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED,
+   #RKH_CFGPORT_REENTRANT_EN = #RKH_DISABLED, 
+   #RKH_CFGPORT_SMA_STK_EN = #RKH_DISABLED, 
+   within the \c rkhport.h file.
 -# Include the \c source/sma/inc/rkhsma_prio.h in \c rkhport.c. 
 -# Implement the functions rkh_sma_block(), rkh_sma_setReady(), and 
    rkh_sma_setUnready(), which are specified in 
@@ -644,6 +651,14 @@ Q1YQ3 - YES: \n
    rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
    \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
    \c rkhport.c file.
+-# Define #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED 
+
+<EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM> \n
+Fragment of \c rkhport.h
+See \c source/portable/arm-cortex/ksdk_os/ucosiii/kds/rkhport.h
+\code
+#define RKH_EQ_TYPE                         msg_queue_t
+\endcode
 
 <EM>Example for ARM Cortex-M4 Kinetis, KDS, KSDK and uC/OS-III</EM> \n
 Fragment of \c rkhport.c
@@ -725,7 +740,6 @@ Q1YQ3 - NO: \n
 Fragment of \c rkhport.h. 
 See \c source/portable/80x86/win32_mt/vc/rkhport.h
 \code
-/* Operating system blocking primitive */
 #define RKH_OSSIGNAL_TYPE                   void*
 \endcode
 
