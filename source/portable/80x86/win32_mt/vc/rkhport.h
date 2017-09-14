@@ -164,7 +164,7 @@ extern "C" {
 /**
  * Native event queue data type
  */
-#define RKH_EQ_TYPE                         RKH_QUEUE_T
+/* #define RKH_EQ_TYPE */
 
 /**
  * Operating system blocking primitive.
