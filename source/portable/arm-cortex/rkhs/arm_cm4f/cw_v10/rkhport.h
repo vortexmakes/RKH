@@ -169,17 +169,17 @@ extern "C" {
 /**
  * Operating system blocking primitive.
  */
-/* #define RKH_OSSIGNAL_TYPE */
+#define RKH_OSSIGNAL_TYPE
 
 /**
  * Thread handle type for definition
  */
-/* #define RKH_THREAD_TYPE */
+#define RKH_THREAD_TYPE
 
 /**
  *  Data type to declare thread stack 
  */
-/* #define RKH_THREAD_STK_TYPE */
+#define RKH_THREAD_STK_TYPE
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
