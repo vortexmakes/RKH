@@ -967,7 +967,7 @@ rkh_evtPool_getNumBlock(RKHEvtPool *const me)
     return (rui8_t)((OS_MEM *)me)->NbrMax;
 }
 \endcode
-[ \ref dynq3 "NEXT" ]
+[ \ref hk "NEXT" ]
 <HR>
 
 \anchor dynq1n
@@ -992,16 +992,14 @@ OS/RTOS?: \b NO </I>\n
 <HR>
 
 \anchor dynq3
-If the application code uses the RKH native scheduler, is implemented 
-the dynamic memory support with the native fixed-size memory block pool 
-RKH_MEMPOOL_T?
+If the application code uses dynamic memory allocation, it's implemented 
+with the native fixed-size memory block pool?
 [ \ref dynq3y "YES" ] - [ \ref dynq3n "NO" ]
 <HR>
 
 \anchor dynq3y
-<I>If the application code uses the RKH native scheduler, is implemented 
-the dynamic memory support with the native fixed-size memory block pool 
-RKH_MEMPOOL_T?: \b YES </I>\n
+<I>If the application code uses dynamic memory allocation, it's implemented 
+with the native fixed-size memory block pool?: \b YES </I>\n
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED and 
    #RKH_CFG_MP_EN = #RKH_ENABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_ENABLED in 
@@ -1011,9 +1009,8 @@ RKH_MEMPOOL_T?: \b YES </I>\n
 <HR>
 
 \anchor dynq3n
-<I>If the application code uses the RKH native scheduler, is implemented 
-the dynamic memory support with the native fixed-size memory block pool 
-RKH_MEMPOOL_T?: \b NO </I>\n
+<I>If the application code uses dynamic memory allocation, it's implemented 
+with the native fixed-size memory block pool?: \b NO </I>\n
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
    \c rkhport.h
