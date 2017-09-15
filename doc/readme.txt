@@ -480,12 +480,19 @@ Example:
 <HR>
 \section blk Active Object execution
 
-\subsection q1 Q1 - RKH works in conjunction with a traditional OS/RTOS?
+RKH works in conjunction with a traditional OS/RTOS?
+[ \ref q1y "YES" ] - [ \ref q1n "NO" ]
+<HR>
 
-Q1 - YES: \n
-\subsubsection q1yq2 Q1YQ2 - Is a multithreaded application?
+\anchor q1y
+<I>RKH works in conjunction with a traditional OS/RTOS?: \b YES </I>\n
+Is a multithreaded application?
+[ \ref q2y "YES" ] - [ \ref q2n "NO" ]
 
-Q1YQ2 - YES: \n
+<HR>
+
+\anchor q2y
+<I>Is a multithreaded application?: \b YES </I>\n
 The RKH framework can work with virtually any traditional OS/RTOS. 
 Combined with a conventional RTOS, RKH takes full advantage of the 
 multitasking capabilities of the RTOS by executing each active object (SMA) 
@@ -603,8 +610,11 @@ rkh_sma_terminate(RKH_SMA_T *sma)
     RKH_ENSURE(status == kStatus_OSA_Success);
 }
 \endcode
+[ \ref q3 "NEXT" ]
+<HR>
 
-Q1YQ2 - NO: \n
+\anchor q2n
+<I>Is a multithreaded application?: \b NO </I>\n
 It's frequently used for single thread applications that uses its own 
 cooperative and non-preemptive scheduler, where RKH provides its own priority 
 mechanism.
@@ -644,10 +654,17 @@ rkh_sma_setUnready(RKH_SMA_T *const me)
     rkh_smaPrio_setUnready(RKH_SMA_ACCESS_CONST(me, prio));
 }
 \endcode
+[ \ref q3 "NEXT" ]
+<HR>
 
-\subsubsection q1yq3 Q1YQ3 - Are implemented the event queues with a message queue of the underlying OS/RTOS?
+\anchor q3
+Are implemented the event queues with a message queue of the underlying OS/RTOS?
+[ \ref q3y "YES" ] - [ \ref q3n "NO" ]
+<HR>
 
-Q1YQ3 - YES: \n
+\anchor q3y
+<I>Are implemented the event queues with a message queue of the underlying 
+OS/RTOS?: \b YES </I>\n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
    \c rkhport.h
 -# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to OS/RTOS.
@@ -730,8 +747,12 @@ rkh_sma_get(RKH_SMA_T *sma)
     return e;
 }
 \endcode
+[ \ref dyn "NEXT" ]
+<HR>
 
-Q1YQ3 - NO: \n
+\anchor q3n
+<I>Are implemented the event queues with a message queue of the underlying 
+OS/RTOS?: \b NO </I>\n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED in 
    \c rkhport.h
 -# Define the macro #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhcfg.h
@@ -776,23 +797,37 @@ rkh_sma_setUnready(RKH_SMA_T *const me)
     (void)me;
 }
 \endcode
+[ \ref dyn "NEXT" ]
+<HR>
 
-Q1 - NO: \n
+\anchor q1n
+<I>RKH works in conjunction with a traditional OS/RTOS?: \b NO </I>\n
 -#  Define the macros #RKH_CFGPORT_NATIVE_SCHEDULER_EN = #RKH_ENABLED,
     #RKH_CFGPORT_SMA_THREAD_EN = #RKH_DISABLED, 
     #RKH_CFGPORT_SMA_THREAD_DATA_EN = #RKH_DISABLED, 
     #RKH_CFGPORT_SMA_STK_EN = #RKH_DISABLED, 
     #RKH_CFGPORT_REENTRANT_EN = #RKH_DISABLED in the \c rkhport.h file.
--#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h. 
+-#  Define the macro #RKH_EQ_TYPE = RKH_QUEUE_T in \c rkhport.h
 
-\subsubsection q1nq4 Q1NQ4 - Are implemented the event queues with the native queues?
+[ \ref q4 "NEXT" ]
+<HR>
 
-Q1NQ4 - YES: \n
+\anchor q4
+Are implemented the event queues with the native queues?
+[ \ref q4y "YES" ] - [ \ref q4n "NO" ]
+<HR>
+
+\anchor q4y
+<I>Are implemented the event queues with the native queues?: \b YES </I>\n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_ENABLED and 
    #RKH_CFG_QUE_EN = #RKH_ENABLED in \c rkhport.h and \c rkhcfg.h respectively.
 -# Define the macro #RKH_CFGPORT_SMA_QSTO_EN = #RKH_ENABLED in \c rkhport.h
-		
-Q1NQ4 - NO: \n
+
+[ \ref dyn "NEXT" ]
+<HR>
+
+\anchor q4n
+<I>Are implemented the event queues with the native queues?: \b NO </I>\n
 -# Define the macro #RKH_CFGPORT_NATIVE_EQUEUE_EN = #RKH_DISABLED in 
    \c rkhport.h
 -# Define the macro #RKH_EQ_TYPE in \c rkhport.h according to external queue 
@@ -800,10 +835,11 @@ Q1NQ4 - NO: \n
 -# Then, implement the platform-specific functions rkh_sma_post_fifo(), 
    rkh_sma_post_lifo() and rkh_sma_get(), which are specified in 
    \c source/sma/inc/rkhsma.h. All these functions are frequently placed in
-   \c rkhport.c file. See section YES of \ref q1yq3.
+   \c rkhport.c file. See section YES of \ref q3.
 -# Define the macro #RKH_CFGPORT_SMA_QSTO_EN in \c rkhport.h according to 
    external queue module..
 
+[ \ref dyn "NEXT" ]
 <HR>
 \section dyn Dynamic event support
 
