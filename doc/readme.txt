@@ -843,18 +843,22 @@ Are implemented the event queues with the native queues?
 <HR>
 \section dyn Dynamic event support
 
-<EM>Is required events with arguments?</EM> \n
-\b NO:
--# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_DISABLED in \c rkhcfg.h
--# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
-   \c rkhport.h
+Is required events with arguments?
+[ \ref dynq1y "YES" ] - [ \ref dynq1n "NO" ]
+<HR>
 
-\b YES: \n
-<EM>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
+\anchor dynq1y
+<I>Is required events with arguments?: \b YES </I>\n
+If RKH works in conjunction with a traditional OS/RTOS, is implemented 
 the dynamic memory support with a internal module of the underlying 
-OS/RTOS?</EM>
+OS/RTOS?
+[ \ref dynq2y "YES" ] - [ \ref dynq2n "NO" ]
+<HR>
 
-\b YES:
+\anchor dynq2y
+<I>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
+the dynamic memory support with a internal module of the underlying 
+OS/RTOS?: \b YES </I>\n
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
    \c rkhport.h
@@ -963,24 +967,53 @@ rkh_evtPool_getNumBlock(RKHEvtPool *const me)
     return (rui8_t)((OS_MEM *)me)->NbrMax;
 }
 \endcode
+[ \ref dynq3 "NEXT" ]
+<HR>
 
-\b NO:
+\anchor dynq1n
+<I>Is required events with arguments?: \b NO </I>\n
+-# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_DISABLED in \c rkhcfg.h
+-# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
+   \c rkhport.h
+
+[ \ref dynq3 "NEXT" ]
+<HR>
+
+\anchor dynq2n
+<I>If RKH works in conjunction with a traditional OS/RTOS, is implemented 
+the dynamic memory support with a internal module of the underlying 
+OS/RTOS?: \b NO </I>\n
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED and 
    #RKH_CFG_MP_EN = #RKH_ENABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_ENABLED in 
    \c rkhport.h
 
-<EM>If the application code uses the RKH native scheduler, is implemented 
+[ \ref dynq3 "NEXT" ]
+<HR>
+
+\anchor dynq3
+If the application code uses the RKH native scheduler, is implemented 
 the dynamic memory support with the native fixed-size memory block pool 
-RKH_MEMPOOL_T?</EM>
+RKH_MEMPOOL_T?
+[ \ref dynq3y "YES" ] - [ \ref dynq3n "NO" ]
+<HR>
 
-\b YES:
+\anchor dynq3y
+<I>If the application code uses the RKH native scheduler, is implemented 
+the dynamic memory support with the native fixed-size memory block pool 
+RKH_MEMPOOL_T?: \b YES </I>\n
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED and 
    #RKH_CFG_MP_EN = #RKH_ENABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_ENABLED in 
    \c rkhport.h
 
-\b NO:
+[ \ref hk "NEXT" ]
+<HR>
+
+\anchor dynq3n
+<I>If the application code uses the RKH native scheduler, is implemented 
+the dynamic memory support with the native fixed-size memory block pool 
+RKH_MEMPOOL_T?: \b NO </I>\n
 -# Define the macro #RKH_CFG_FWK_DYN_EVT_EN = #RKH_ENABLED in \c rkhcfg.h
 -# Define the macro #RKH_CFGPORT_NATIVE_DYN_EVT_EN = #RKH_DISABLED in 
    \c rkhport.h
@@ -990,6 +1023,8 @@ RKH_MEMPOOL_T?</EM>
    rkh_evtPool_getNumBlock() which are specified in 
    \c source/fwk/inc/rkhfwk_evtpool.h. All these functions are frequently 
    placed in \c rkhport.c file.
+
+[ \ref hk "NEXT" ]
 
 <HR>
 \section hk Hook functions
