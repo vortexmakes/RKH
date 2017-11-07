@@ -25,30 +25,6 @@
     <ClCompile Include="..\..\..\..\src\rkhtmr.c">
       <Filter>Source Files\rkh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\runner\all_tests.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\runner\test_rkhtmr_runner.c">
-      <Filter>Source Files\tests\runner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\stub\mocks\Mock_rkhassert.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\stub\mocks\Mock_rkhfwk_hook.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\stub\mocks\Mock_rkhport.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\stub\mocks\Mock_rkhsma.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\stub\mocks\Mock_rkhtrc_filter.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\stub\mocks\Mock_rkhtrc_record.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
       <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
@@ -58,8 +34,32 @@
     <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
       <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\test_rkhtmr.c">
+    <ClCompile Include="..\..\..\mgr\runner\all_tests.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\stub\mocks\Mock_rkhassert.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\stub\mocks\Mock_rkhfwk_hook.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\stub\mocks\Mock_rkhport.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\stub\mocks\Mock_rkhsma.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\stub\mocks\Mock_rkhtrc_filter.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\stub\mocks\Mock_rkhtrc_record.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\src\test_rkhtmr_mgr.c">
       <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mgr\runner\test_rkhtmr_mgr_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

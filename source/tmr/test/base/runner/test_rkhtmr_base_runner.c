@@ -30,15 +30,10 @@
  */
 
 /**
- *  \file       test_rkhtmrbase.c
+ *  \file       test_rkhtmrbase_runner.c
  *  \ingroup    test_tmr
- *  \brief      Unit test for software timer module.
  *
- *  \addtogroup test
- *  @{
- *  \addtogroup test_tmr Software timer module
- *  @{
- *  \brief      Unit test for software timer module.
+ *  \brief      Test runner of software timer module
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -54,45 +49,18 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkhtmr.h"
-#include "Mock_rkhassert.h"
-#include "Mock_rkhfwk_hook.h"
-#include "Mock_rkhport.h"
-#include "Mock_rkhsma.h"
-#include "Mock_rkhtrc_record.h"
-#include "Mock_rkhtrc_filter.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-TEST_GROUP(timer);
-
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_SETUP(timer)
+TEST_GROUP_RUNNER(base)
 {
+	RUN_TEST_CASE(base, First);
 }
 
-TEST_TEAR_DOWN(timer)
-{
-}
-
-/**
- *  \addtogroup test_rkhtimer Software timer test group
- *  @{
- *  \name Test cases of timer group
- *  @{ 
- */
-TEST(timer, First)
-{
-    TEST_IGNORE();
-}
-
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /* ------------------------------ End of file ------------------------------ */
