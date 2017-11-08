@@ -54,13 +54,8 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkhtmr.h"
-#include "Mock_rkhassert.h"
-#include "Mock_rkhfwk_hook.h"
-#include "Mock_rkhport.h"
+#include "rkhtmr_base.h"
 #include "Mock_rkhsma.h"
-#include "Mock_rkhtrc_record.h"
-#include "Mock_rkhtrc_filter.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -86,9 +81,13 @@ TEST_TEAR_DOWN(base)
  *  \name Test cases of timer group
  *  @{ 
  */
-TEST(base, First)
+TEST(base, SetBaseTimerToPost)
 {
-    TEST_IGNORE();
+    RKHTmrBase tmrEvt;
+    RKH_SMA_T ao;
+
+    ((RKH_EVT_T *)&tmrEvt)->e = 55;
+    tmrEvt.ao = &ao;
 }
 
 /** @} doxygen end group definition */

@@ -30,10 +30,15 @@
  */
 
 /**
- *  \file       test_rkhtmrbase_runner.c
- *  \ingroup    test_tmr
+ *  \file       rkhtmr_base.h
+ *  \brief      Specifies the software timer base.
+ *  \ingroup    apiTmr
  *
- *  \brief      Test runner of software timer module
+ *  \addtogroup api
+ *  @{
+ *  \addtogroup apiTmr Timer
+ *  @{@}
+ *  @}
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -47,20 +52,53 @@
  */
 
 /* --------------------------------- Notes --------------------------------- */
-/* ----------------------------- Include files ----------------------------- */
-#include "unity_fixture.h"
+/* --------------------------------- Module -------------------------------- */
+#ifndef __RKHTMR_BASE_H__
+#define __RKHTMR_BASE_H__
 
-/* ----------------------------- Local macros ------------------------------ */
-/* ------------------------------- Constants ------------------------------- */
-/* ---------------------------- Local data types --------------------------- */
-/* ---------------------------- Global variables --------------------------- */
-/* ---------------------------- Local variables ---------------------------- */
-/* ----------------------- Local function prototypes ----------------------- */
-/* ---------------------------- Local functions ---------------------------- */
-/* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(base)
+/* ----------------------------- Include files ----------------------------- */
+#include "rkhitl.h"
+
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* --------------------------------- Macros -------------------------------- */
+/* -------------------------------- Constants ------------------------------ */
+/* ------------------------------- Data types ------------------------------ */
+typedef struct RKHTmrBase RKHTmrBase;
+
+/**
+ *  \brief
+ *  Defines the data structure used to maintain information that allows the
+ *  timer-handling facility to send an event to active object when a timer 
+ *  expires.
+ *
+ *  \ingroup apiTmr
+ */
+struct RKHTmrBase
 {
-	RUN_TEST_CASE(base, SetBaseTimerToPost);
+    /**
+     *  Timer event.
+     */
+    RKH_EVT_T evt;
+
+    /**
+     *  \brief
+     *  Active object that receives the timer event.
+     */
+    RKH_SMA_T *ao;
+};
+
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
 }
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
 
 /* ------------------------------ End of file ------------------------------ */
