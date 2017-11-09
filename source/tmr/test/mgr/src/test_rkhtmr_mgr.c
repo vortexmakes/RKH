@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       test_rkhtmr.c
+ *  \file       test_rkhtmr_mgr.c
  *  \ingroup    test_tmr
  *  \brief      Unit test for software timer module.
  *
@@ -43,7 +43,7 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.17.05  LeFr  v2.4.05  ---
+ *  2017.07.11  LeFr  v3.0.01  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -54,7 +54,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
-#include "rkhtmr.h"
+#include "rkhtmr_mgr.h"
 #include "Mock_rkhassert.h"
 #include "Mock_rkhfwk_hook.h"
 #include "Mock_rkhport.h"
@@ -66,27 +66,27 @@
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-TEST_GROUP(timer);
+TEST_GROUP(mgr);
 
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_SETUP(timer)
+TEST_SETUP(mgr)
 {
 }
 
-TEST_TEAR_DOWN(timer)
+TEST_TEAR_DOWN(mgr)
 {
 }
 
 /**
- *  \addtogroup test_rkhtimer Software timer test group
+ *  \addtogroup test_rkhtimer_mgr Software timer test group
  *  @{
  *  \name Test cases of timer group
  *  @{ 
  */
-TEST(timer, First)
+TEST(mgr, GetOneTmr)
 {
     TEST_IGNORE();
 }

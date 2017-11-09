@@ -61,7 +61,7 @@
 static void 
 runAllTests(void)
 {
-	RUN_TEST_GROUP(timer);
+	RUN_TEST_GROUP(mgr);
 }
 
 /* ---------------------------- Global functions --------------------------- */

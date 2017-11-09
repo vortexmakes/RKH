@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       test_rkhtmrbase.c
+ *  \file       test_rkhtmr_base.c
  *  \ingroup    test_tmr
  *  \brief      Unit test for software timer module.
  *
