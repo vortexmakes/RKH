@@ -69,11 +69,15 @@
 TEST_GROUP(mgr);
 
 /* ---------------------------- Local variables ---------------------------- */
+static rInt nAvailableTmr;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(mgr)
 {
+    nAvailableTmr = 0;
+    nAvailableTmr = rkh_tmrMgr_init();
 }
 
 TEST_TEAR_DOWN(mgr)
@@ -83,12 +87,36 @@ TEST_TEAR_DOWN(mgr)
 /**
  *  \addtogroup test_rkhtimer_mgr Software timer test group
  *  @{
- *  \name Test cases of timer group
- *  @{ 
- */
+ *  \e Test cases of timer group
+ *  @{  */
+TEST(mgr, GetAllAvailableTimersAfterInit)
+{
+    TEST_ASSERT_EQUAL(nAvailableTmr, RKH_CFG_TMR_MAX_TIMERS);
+}
+
 TEST(mgr, GetOneTmr)
 {
-    TEST_IGNORE();
+    RKHTmrMgr *tmr;
+    RKH_SMA_T ao;
+
+    tmr = rkh_tmrMgr_ctor("myTmr", 0, &ao, 0, 0);
+    TEST_ASSERT_NOT_NULL(tmr);
+}
+
+TEST(mgr, GetAllTimers)
+{
+    rInt i;
+    RKHTmrMgr *currTmr, *prevTmr;
+    RKH_SMA_T ao;
+
+    for (i = 0, currTmr = prevTmr = (RKHTmrMgr *)0; 
+         i < RKH_CFG_TMR_MAX_TIMERS; 
+         ++i)
+    {
+        currTmr = rkh_tmrMgr_ctor("myTmr", 0, &ao, 0, 0);
+        TEST_ASSERT_NOT_NULL(currTmr);
+        TEST_ASSERT_NOT_EQUAL(currTmr, prevTmr);
+    }
 }
 
 /** @} doxygen end group definition */

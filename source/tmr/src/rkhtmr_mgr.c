@@ -30,15 +30,15 @@
  */
 
 /**
- *  \file       test_rkhtmr_mgr_runner.c
- *  \ingroup    test_tmr
+ *  \file       rkhtmr_mgr.c
+ *  \ingroup    apiTmr
  *
- *  \brief      Test runner of software timer module
+ *  \brief      Implements the software timer.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2017.07.11  LeFr  v3.0.01  ---
+ *  2015.10.24  LeFr  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -48,21 +48,67 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "unity_fixture.h"
+#include "rkhtmr_mgr.h"
+#include "rkhtmr_base.h"
+#include "rkhassert.h"
+#include "rkhfwk_hook.h"
+#include "rkhsma.h"
+#include "rkhtrc_record.h"
+#include "rkhtrc_filter.h"
+#include "rkhtmr.h"
+
+#if RKH_CFG_TMR_EN == RKH_ENABLED
+/*#if RKH_CFGPORT_NATIVE_TMR_EN == RKH_ENABLED*/
+
+RKH_MODULE_NAME(rkhtmr_mgr)
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
+struct RKHTmrMgr
+{
+
+	RKHTmrBase base;
+    RKH_TMR_T osTmr;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static RKHTmrMgr tmrObjs[RKH_CFG_TMR_MAX_TIMERS];
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_GROUP_RUNNER(mgr)
+rInt 
+rkh_tmrMgr_init(void)
 {
-	RUN_TEST_CASE(mgr, GetAllAvailableTimersAfterInit);
-	RUN_TEST_CASE(mgr, GetOneTmr);
-	RUN_TEST_CASE(mgr, GetAllTimers);
+    rInt i;
+    RKHTmrMgr *tmr;
+
+    for (i = 0, tmr = tmrObjs; i < RKH_CFG_TMR_MAX_TIMERS; ++i, ++tmr)
+    {
+        ((RKHTmrBase *)tmr)->ao = 0;
+    }
+    return i;
 }
 
+RKHTmrMgr *
+rkh_tmrMgr_ctor(char *name, RKH_SIG_T signal, RKH_SMA_T *ao, 
+                RKHTick nTick, RKHTick period)
+{
+    rInt i;
+    RKHTmrMgr *tmr;
+
+    for (i = 0, tmr = tmrObjs; i < RKH_CFG_TMR_MAX_TIMERS; ++i, ++tmr)
+    {
+        if (((RKHTmrBase *)tmr)->ao == (RKH_SMA_T *)0)
+        {
+            ((RKHTmrBase *)tmr)->ao = ao;
+            return tmr;
+        }
+    }
+    return (RKHTmrMgr *)0;
+}
+
+#endif
 /* ------------------------------ End of file ------------------------------ */

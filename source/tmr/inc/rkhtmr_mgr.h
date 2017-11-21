@@ -65,10 +65,19 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+#define RKH_CFG_TMR_MAX_TIMERS             4u  /* Locate in rkhcfg.h */
+
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
+typedef rui16_t RKHTick;
+typedef struct RKHTmrMgr RKHTmrMgr;
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+rInt rkh_tmrMgr_init(void);
+RKHTmrMgr *rkh_tmrMgr_ctor(char *name, RKH_SIG_T signal, RKH_SMA_T *ao, 
+                           RKHTick nTick, RKHTick period);
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

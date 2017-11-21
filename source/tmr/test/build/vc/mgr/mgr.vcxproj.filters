@@ -22,9 +22,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\src\rkhtmr.c">
-      <Filter>Source Files\rkh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
       <Filter>Source Files\tests\tool</Filter>
     </ClCompile>
@@ -60,6 +57,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\mgr\runner\test_rkhtmr_mgr_runner.c">
       <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\rkhtmr_mgr.c">
+      <Filter>Source Files\rkh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

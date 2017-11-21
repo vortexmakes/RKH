@@ -14,7 +14,7 @@
     <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c" />
     <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c" />
     <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c" />
-    <ClCompile Include="..\..\..\..\src\rkhtmr.c" />
+    <ClCompile Include="..\..\..\..\src\rkhtmr_mgr.c" />
     <ClCompile Include="..\..\..\mgr\runner\all_tests.c" />
     <ClCompile Include="..\..\..\mgr\runner\test_rkhtmr_mgr_runner.c" />
     <ClCompile Include="..\..\..\mgr\src\test_rkhtmr_mgr.c" />
