@@ -248,23 +248,26 @@ RKH_MODULE_NAME(rkhsm)
     } \
     else \
     { \
-        for (ix_n = nen, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
+        for (ix_n = nen, snl = &sentry[ix_n], enByDft = 0; ix_n != 0; --ix_n) \
         { \
+            if (ix_n == nen && CST(*snl) == CST(tr->target)) \
+            { \
+                RKH_EXEC_STATE_INIT(sma, CCMP(*snl)->initialAction); \
+            } \
             --snl; \
             RKH_EXEC_ENTRY(*snl, CM(sma)); \
             isCompletionEvent  = isCompletionTrn(*snl); \
+            if (IS_COMPOSITE(*snl)) \
+            { \
+                if (enByDft || (CST(*snl) == CST(tr->target))) \
+                { \
+                    RKH_EXEC_STATE_INIT(sma, CCMP(*snl)->initialAction); \
+                    enByDft = 1; \
+                } \
+            } \
             RKH_TR_SM_ENSTATE(sma, *snl); \
         } \
         stn = *snl; \
-        while (IS_COMPOSITE(stn)) \
-        { \
-            stn = CCMP(stn)->defchild; \
-            RKH_EXEC_ENTRY(stn, CM(sma)); \
-            isCompletionEvent = isCompletionTrn(stn); \
-            RKH_EXEC_STATE_INIT(sma, CCMP(stn->parent)->initialAction); \
-            RKH_TR_SM_ENSTATE(sma, stn); \
-            ++nen; \
-        } \
     }
 #else
     #define RKH_EXEC_ENTRY_ACTION(nen, sma, stn, snl, ix_n) \
@@ -406,7 +409,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKHROM RKH_ST_T *cs, *ts;
     RKHROM void *ets;
     RKHROM RKH_TR_T *tr;
-    rbool_t inttr, isCompletionEvent;
+    rbool_t inttr, isCompletionEvent, enByDft;
     RKH_SIG_T in;
 #if RKH_CFG_TRC_EN == RKH_ENABLED
     rui8_t step;
@@ -518,10 +521,13 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
         /* ... traverses the taken transition until */
         /* the segment target state (ets) == simple state */
 #if RKH_PSEUDOSTATE == RKH_ENABLED
-        while (IS_PSEUDO(ets) || IS_SUBMACHINE(ets))
+        while (IS_PSEUDO(ets) || IS_SUBMACHINE(ets) || IS_COMPOSITE(ets))
         {
             switch (CB(ets)->type)
             {
+                case RKH_COMPOSITE:
+                    ets = CCMP(ets)->defchild;
+                    break;
 #if defined(RKH_CHOICE_ENABLED)
                 case RKH_CHOICE:
                     /* perform the actions on the transition sequentially */
@@ -554,6 +560,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     /* another transition segment */
                     RKH_INC_STEP();
                     ets = tr->target;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
 #if defined(RKH_HISTORY_ENABLED)
@@ -596,6 +603,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     {
                         ets = *(CH(ets))->target;
                     }
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
 #if defined(RKH_SUBMACHINE_ENABLED)
@@ -610,6 +618,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         return RKH_EX_TSEG;
                     }
                     ets = CSBM(ets)->sbm->defchild;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
                 case RKH_ENPOINT:
                     /* found an entry point pseudostate */
@@ -623,6 +632,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         return RKH_EX_TSEG;
                     }
                     ets = CENP(ets)->enpcn->target;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
                 case RKH_EXPOINT:
                     /* found an exit point pseudostate */
@@ -636,6 +646,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         return RKH_EX_TSEG;
                     }
                     ets = CEXPCN(ets)->target;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
                 default:
@@ -644,7 +655,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     RKH_ERROR();
                     return RKH_UNKN_STATE;
             }
-            RKH_TR_SM_TS_STATE(me, ets);
         }
 #endif
     }

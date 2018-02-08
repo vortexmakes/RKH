@@ -90,6 +90,8 @@ TEST_GROUP_RUNNER(transition)
 	RUN_TEST_CASE(transition, generatedCompletionEventBySimpleState);
 	RUN_TEST_CASE(transition, generatedCompletionEventByFinalState);
 	RUN_TEST_CASE(transition, syncDispatchingToStateMachine);
+#if 0
+#endif
 }
 
 /* ------------------------------ End of file ------------------------------ */
