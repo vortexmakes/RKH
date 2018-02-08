@@ -115,11 +115,11 @@
     <ClCompile Include="..\..\..\..\..\third-party\unitrazer\unitrazer.c">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\stub\mocks\MocksmTestAct.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\third-party\unitrazer\tzlink.c">
       <Filter>Source Files\tests\utils\unitrazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_smTestAct.c">
+      <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

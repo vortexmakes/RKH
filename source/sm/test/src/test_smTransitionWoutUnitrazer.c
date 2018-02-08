@@ -59,7 +59,7 @@
 #include "common.h"
 #include "smTest.h"
 #include "smTestAct.h"
-#include "MocksmTestAct.h"
+#include "Mock_smTestAct.h"
 #include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -91,6 +91,10 @@ typedef struct Composite
 } Composite;
 
 /* ---------------------------- Global variables --------------------------- */
+int GlobalExpectCount;
+int GlobalVerifyOrder;
+char* GlobalOrderError;
+
 TEST_GROUP(trnWoutUnitrazer);
 static RKH_ST_T *expectedState;
 static RKH_RCODE_T result;
@@ -101,14 +105,14 @@ static RKH_RCODE_T result;
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(trnWoutUnitrazer)
 {
-    MocksmTestAct_Init();
+    Mock_smTestAct_Init();
     sm_ignore();
 }
 
 TEST_TEAR_DOWN(trnWoutUnitrazer)
 {
-    MocksmTestAct_Verify();
-    MocksmTestAct_Destroy();
+    Mock_smTestAct_Verify();
+    Mock_smTestAct_Destroy();
 }
 
 /**
