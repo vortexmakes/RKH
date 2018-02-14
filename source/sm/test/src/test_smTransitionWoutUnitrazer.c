@@ -73,8 +73,8 @@ static RKH_STATIC_EVENT(evF, F);
 static RKH_STATIC_EVENT(evG, G);
 static RKH_STATIC_EVENT(evH, H);
 static RKH_STATIC_EVENT(evI, I);
-static RKH_STATIC_EVENT(evCompletion, RKH_COMPLETION_EVENT);
 static RKH_STATIC_EVENT(evTerminate, TERMINATE);
+extern const RKH_EVT_T evCompletion;
 
 /* ---------------------------- Local data types --------------------------- */
 typedef struct StateMachine
@@ -202,8 +202,8 @@ TEST(trnWoutUnitrazer, simpleToCompositeAtEqualLevel)
     smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr21_Expect(RKH_CAST(SmTest, smTest), &evC);
     smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS2_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s0),
                             RKH_STATE_CAST(&s0),
@@ -225,10 +225,10 @@ TEST(trnWoutUnitrazer, simpleToCompositeFromHighToLowLevel)
     smTest_tr22_Expect(RKH_CAST(SmTest, smTest), &evD);
     smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS22_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS22_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS221_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS22_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS2211_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS221_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s0),
                             RKH_STATE_CAST(&s0),
@@ -248,8 +248,8 @@ TEST(trnWoutUnitrazer, simpleToCompositeFromLowToHighLevel)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr23_Expect(RKH_CAST(SmTest, smTest), &evC);
-    smTest_iS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS2_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s21),
                             RKH_STATE_CAST(&s21),
@@ -350,8 +350,8 @@ TEST(trnWoutUnitrazer, loopCompositeStateOnTop)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     smTest_xS31_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr51_Expect(RKH_CAST(SmTest, smTest), &evA);
-    smTest_iS3_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS3_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s31),
                             RKH_STATE_CAST(&s3),
@@ -372,10 +372,10 @@ TEST(trnWoutUnitrazer, loopNestedCompositeState)
     smTest_xS2211_Expect(RKH_CAST(SmTest, smTest));
     smTest_xS221_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr54_Expect(RKH_CAST(SmTest, smTest), &evD);
-    smTest_iS22_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS221_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS22_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS2211_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS221_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s2211),
                             RKH_STATE_CAST(&s22),
@@ -420,8 +420,8 @@ TEST(trnWoutUnitrazer, compositeToCompositeAtEqualLevel)
     smTest_xS3_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr41_Expect(RKH_CAST(SmTest, smTest), &evB);
     smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS2_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s31),
                             RKH_STATE_CAST(&s3),
@@ -444,10 +444,10 @@ TEST(trnWoutUnitrazer, compositeToCompositeFromHighToLowLevel)
     smTest_tr42_Expect(RKH_CAST(SmTest, smTest), &evC);
     smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS22_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS22_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS221_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS22_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS2211_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS221_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s31),
                             RKH_STATE_CAST(&s3),
@@ -471,8 +471,8 @@ TEST(trnWoutUnitrazer, compositeToCompositeFromLowToHighLevel)
     smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr43_Expect(RKH_CAST(SmTest, smTest), &evC);
     smTest_nS3_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS3_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS3_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s2211),
                             RKH_STATE_CAST(&s3),
@@ -640,8 +640,8 @@ TEST(trnWoutUnitrazer, defaultTrnWithAssociatedEffect)
     smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr55_Expect(RKH_CAST(SmTest, smTest), &evF);
     smTest_nS3_Expect(RKH_CAST(SmTest, smTest));
-    smTest_iS3_Expect(RKH_CAST(SmTest, smTest));
     smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS3_Expect(RKH_CAST(SmTest, smTest));
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s0),
                             RKH_STATE_CAST(&s0),
@@ -686,9 +686,9 @@ TEST(trnWoutUnitrazer, generatedCompletionEventByFinalState)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
     /* Expectations for completion transition */
-    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evCompletion, 
                                    RKH_TRUE);
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr60_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s21),
