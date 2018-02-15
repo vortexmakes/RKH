@@ -248,6 +248,24 @@ RKH_MODULE_NAME(rkhsm)
     } \
     else \
     { \
+        for (ix_n = nen + nDftSt, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
+        { \
+            --snl; \
+            RKH_EXEC_ENTRY(*snl, CM(sma)); \
+            isCompletionEvent  = isCompletionTrn(*snl); \
+            if (nDftSt != 0     /* are there dft states to enter? */ \
+                && (nen == 0    /* is only dft states? */ || \
+                    (ix_n - nen) <= 0)) /* only execute dft actions for */ \
+                                        /* dft states */ \
+            { \
+                RKH_EXEC_STATE_INIT(sma, \
+                                    CCMP(CST(*snl)->parent)->initialAction); \
+            } \
+            RKH_TR_SM_ENSTATE(sma, *snl); \
+        } \
+        nen += nDftSt; \
+        stn = *snl; \
+        /* \
         for (ix_n = nen, snl = &sentry[nDftSt + ix_n]; ix_n != 0; --ix_n) \
         { \
             --snl; \
@@ -265,6 +283,7 @@ RKH_MODULE_NAME(rkhsm)
             RKH_EXEC_STATE_INIT(sma, CCMP(stn->parent)->initialAction); \
             RKH_TR_SM_ENSTATE(sma, stn); \
         } \
+        */ \
     }
 #else
     #define RKH_EXEC_ENTRY_ACTION(nen, sma, stn, snl, ix_n) \
@@ -409,7 +428,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     rbool_t inttr, isCompletionEvent;
     RKH_SIG_T in;
     RKH_RAM rui8_t j, i;
-    RKH_RAM RKHROM RKH_ST_T **tmpSt;
+    RKH_RAM RKHROM RKH_ST_T *tmpSt;
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
     rui8_t step;
@@ -431,7 +450,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     /* set of entered states */
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     RKH_RAM RKHROM RKH_ST_T *sentry[RKH_CFG_SMA_MAX_HCAL_DEPTH];
-    RKH_RAM RKHROM RKH_ST_T *_sentry[RKH_CFG_SMA_MAX_HCAL_DEPTH];
     RKH_RAM rui8_t nDftSt;
 #endif
     /* set of executed transition actions */
@@ -538,9 +556,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     ets = CCMP(ets)->defchild;
                     if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
                     {
-                        sentry[nDftSt] = ets;
-                        _sentry[nDftSt] = ets;
-                        ++nDftSt;
+                        sentry[nDftSt++] = ets;
                     }
                     break;
 #if defined(RKH_CHOICE_ENABLED)
@@ -681,9 +697,9 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             ts = firstCmpSt;
             for (j = 0, i = (nDftSt - 1); j < i;)
             {
-                tmpSt = _sentry[j];
-                _sentry[j++] = _sentry[i];
-                _sentry[i--] = tmpSt;
+                tmpSt = sentry[j];
+                sentry[j++] = sentry[i];
+                sentry[i--] = tmpSt;
             }
         }
         else
