@@ -191,7 +191,7 @@ RKH_MODULE_NAME(rkhsm)
     for (ix_n = 0, ix_x = islca = 0, stx = src; \
          stx != CST(0); ++ix_x) \
     { \
-        for (ix_n = 0, snl = sentry, stn = tgt; \
+        for (ix_n = 0, snl = &sentry[nDftSt], stn = tgt; \
              stn != CST(0); ++snl, ++ix_n) \
         { \
             if (stx == stn) \
@@ -248,7 +248,7 @@ RKH_MODULE_NAME(rkhsm)
     } \
     else \
     { \
-        for (ix_n = nen, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
+        for (ix_n = nen, snl = &sentry[nDftSt + ix_n]; ix_n != 0; --ix_n) \
         { \
             --snl; \
             RKH_EXEC_ENTRY(*snl, CM(sma)); \
@@ -256,14 +256,14 @@ RKH_MODULE_NAME(rkhsm)
             RKH_TR_SM_ENSTATE(sma, *snl); \
         } \
         stn = *snl; \
-        while (IS_COMPOSITE(stn)) \
+        nen += nDftSt; \
+        for (snl = sentry; nDftSt != 0; ++snl, --nDftSt) \
         { \
-            stn = CCMP(stn)->defchild; \
+            stn = *snl; \
             RKH_EXEC_ENTRY(stn, CM(sma)); \
             isCompletionEvent = isCompletionTrn(stn); \
             RKH_EXEC_STATE_INIT(sma, CCMP(stn->parent)->initialAction); \
             RKH_TR_SM_ENSTATE(sma, stn); \
-            ++nen; \
         } \
     }
 #else
@@ -408,6 +408,9 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKHROM RKH_TR_T *tr;
     rbool_t inttr, isCompletionEvent;
     RKH_SIG_T in;
+    RKH_RAM rui8_t j, i;
+    RKH_RAM RKHROM RKH_ST_T **tmpSt;
+
 #if RKH_CFG_TRC_EN == RKH_ENABLED
     rui8_t step;
 #endif
@@ -422,11 +425,14 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     RKH_RAM RKHROM RKH_ST_T * *snl;
     RKH_RAM rui8_t islca;
+    RKH_RAM RKHROM RKH_ST_T *firstCmpSt;
 #endif
     RKH_RAM rui8_t ix_n, ix_x, nn;
     /* set of entered states */
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     RKH_RAM RKHROM RKH_ST_T *sentry[RKH_CFG_SMA_MAX_HCAL_DEPTH];
+    RKH_RAM RKHROM RKH_ST_T *_sentry[RKH_CFG_SMA_MAX_HCAL_DEPTH];
+    RKH_RAM rui8_t nDftSt;
 #endif
     /* set of executed transition actions */
     RKH_RAM RKH_TRN_ACT_T al[RKH_CFG_SMA_MAX_TRC_SEGS];
@@ -517,11 +523,26 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 
         /* ... traverses the taken transition until */
         /* the segment target state (ets) == simple state */
+        firstCmpSt = CST(0);
+        nDftSt = 0;
 #if RKH_PSEUDOSTATE == RKH_ENABLED
-        while (IS_PSEUDO(ets) || IS_SUBMACHINE(ets))
+        while (IS_PSEUDO(ets) || IS_SUBMACHINE(ets) || IS_COMPOSITE(ets))
         {
             switch (CB(ets)->type)
             {
+                case RKH_COMPOSITE:
+                    if (firstCmpSt == CST(0))
+                    {
+                        firstCmpSt = ets;
+                    }
+                    ets = CCMP(ets)->defchild;
+                    if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
+                    {
+                        sentry[nDftSt] = ets;
+                        _sentry[nDftSt] = ets;
+                        ++nDftSt;
+                    }
+                    break;
 #if defined(RKH_CHOICE_ENABLED)
                 case RKH_CHOICE:
                     /* perform the actions on the transition sequentially */
@@ -554,6 +575,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     /* another transition segment */
                     RKH_INC_STEP();
                     ets = tr->target;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
 #if defined(RKH_HISTORY_ENABLED)
@@ -596,6 +618,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     {
                         ets = *(CH(ets))->target;
                     }
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
 #if defined(RKH_SUBMACHINE_ENABLED)
@@ -610,6 +633,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         return RKH_EX_TSEG;
                     }
                     ets = CSBM(ets)->sbm->defchild;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
                 case RKH_ENPOINT:
                     /* found an entry point pseudostate */
@@ -623,6 +647,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         return RKH_EX_TSEG;
                     }
                     ets = CENP(ets)->enpcn->target;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
                 case RKH_EXPOINT:
                     /* found an exit point pseudostate */
@@ -636,6 +661,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         return RKH_EX_TSEG;
                     }
                     ets = CEXPCN(ets)->target;
+                    RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
                 default:
@@ -644,14 +670,26 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     RKH_ERROR();
                     return RKH_UNKN_STATE;
             }
-            RKH_TR_SM_TS_STATE(me, ets);
         }
 #endif
     }
 
     if (IS_NOT_INTERNAL_TRANSITION())
     {
-        ts = CST(ets);                 /* finally, set the main target state */
+        if (firstCmpSt != CST(0))   /* finally, set the main target state and */
+        {                           /* reverse list of default entry states */
+            ts = firstCmpSt;
+            for (j = 0, i = (nDftSt - 1); j < i;)
+            {
+                tmpSt = _sentry[j];
+                _sentry[j++] = _sentry[i];
+                _sentry[i--] = tmpSt;
+            }
+        }
+        else
+        {
+            ts = CST(ets);
+        }
     }
     if (IS_NOT_INTERNAL_TRANSITION())
     {
