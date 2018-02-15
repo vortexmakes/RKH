@@ -97,7 +97,7 @@ char* GlobalOrderError;
 
 TEST_GROUP(trnWoutUnitrazer);
 static RKH_ST_T *expectedState;
-static RKH_RCODE_T result;
+static ruint result;
 
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
@@ -665,7 +665,7 @@ TEST(trnWoutUnitrazer, generatedCompletionEventBySimpleState)
     smTest_nS5_Expect(RKH_CAST(SmTest, smTest));
     /* Expectations for completion transition */
     smTest_xS5_Expect(RKH_CAST(SmTest, smTest));
-    smTest_tr61_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
+    smTest_tr61_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCompletion);
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s21),
                             RKH_STATE_CAST(&s2),
@@ -686,10 +686,11 @@ TEST(trnWoutUnitrazer, generatedCompletionEventByFinalState)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
     /* Expectations for completion transition */
-    smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evCompletion, 
+    smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), 
+                                   (RKH_EVT_T *)&evCompletion, 
                                    RKH_TRUE);
     smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
-    smTest_tr60_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
+    smTest_tr60_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCompletion);
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s21),
                             RKH_STATE_CAST(&s21),

@@ -969,7 +969,7 @@ TEST(transition, generatedCompletionEventBySimpleState)
     exitStates[1] = RKH_STATE_CAST(0);
 
     smTest_xS5_Expect(RKH_CAST(SmTest, smTest));
-    smTest_tr61_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
+    smTest_tr61_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)(&evCompletion));
 
     setProfile(smTest, NULL, RKH_STATE_CAST(&s5), 
                targetStates, entryStates, exitStates, 
@@ -1017,10 +1017,11 @@ TEST(transition, generatedCompletionEventByFinalState)
     exitStates[1] = RKH_STATE_CAST(&s2);
     exitStates[2] = RKH_STATE_CAST(0);
 
-    smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evCompletion, 
+    smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), 
+                                   (RKH_EVT_T *)(&evCompletion), 
                                    RKH_TRUE);
     smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
-    smTest_tr60_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
+    smTest_tr60_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)(&evCompletion));
 
     setProfile(smTest, NULL, RKH_STATE_CAST(&s2), 
                targetStates, entryStates, exitStates, 
