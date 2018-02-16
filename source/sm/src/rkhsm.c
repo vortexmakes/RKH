@@ -243,48 +243,21 @@ RKH_MODULE_NAME(rkhsm)
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     #define RKH_EXEC_ENTRY_ACTION(nen, sma, stn, snl, ix_n) \
-    if (ix_n == ix_x && ix_x == 0)      /* local transition */ \
+    for (ix_n = nen + nDftSt, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
     { \
+        --snl; \
+        RKH_EXEC_ENTRY(*snl, CM(sma)); \
+        isCompletionEvent  = isCompletionTrn(*snl); \
+        /* Only executes default actions for entered states by default */ \
+        if (nDftSt != 0 && (nen == 0 || ix_n <= nen)) \
+        { \
+            RKH_EXEC_STATE_INIT(sma, \
+                                CCMP(CST(*snl)->parent)->initialAction); \
+        } \
+        RKH_TR_SM_ENSTATE(sma, *snl); \
     } \
-    else \
-    { \
-        for (ix_n = nen + nDftSt, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
-        { \
-            --snl; \
-            RKH_EXEC_ENTRY(*snl, CM(sma)); \
-            isCompletionEvent  = isCompletionTrn(*snl); \
-            if (nDftSt != 0     /* are there dft states to enter? */ \
-                && (nen == 0    /* is only dft states? */ || \
-                    (ix_n - nen) <= 0)) /* only execute dft actions for */ \
-                                        /* dft states */ \
-            { \
-                RKH_EXEC_STATE_INIT(sma, \
-                                    CCMP(CST(*snl)->parent)->initialAction); \
-            } \
-            RKH_TR_SM_ENSTATE(sma, *snl); \
-        } \
-        nen += nDftSt; \
-        stn = *snl; \
-        /* \
-        for (ix_n = nen, snl = &sentry[nDftSt + ix_n]; ix_n != 0; --ix_n) \
-        { \
-            --snl; \
-            RKH_EXEC_ENTRY(*snl, CM(sma)); \
-            isCompletionEvent  = isCompletionTrn(*snl); \
-            RKH_TR_SM_ENSTATE(sma, *snl); \
-        } \
-        stn = *snl; \
-        nen += nDftSt; \
-        for (snl = sentry; nDftSt != 0; ++snl, --nDftSt) \
-        { \
-            stn = *snl; \
-            RKH_EXEC_ENTRY(stn, CM(sma)); \
-            isCompletionEvent = isCompletionTrn(stn); \
-            RKH_EXEC_STATE_INIT(sma, CCMP(stn->parent)->initialAction); \
-            RKH_TR_SM_ENSTATE(sma, stn); \
-        } \
-        */ \
-    }
+    nen += nDftSt;  /* output */ \
+    stn = *snl;     /* output */
 #else
     #define RKH_EXEC_ENTRY_ACTION(nen, sma, stn, snl, ix_n) \
     nen = 0; \
@@ -427,7 +400,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKHROM RKH_TR_T *tr;
     rbool_t inttr, isCompletionEvent;
     RKH_SIG_T in;
-    RKH_RAM rui8_t j, i;
+    RKH_RAM rui8_t from, to;
     RKH_RAM RKHROM RKH_ST_T *tmpSt;
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
@@ -549,14 +522,18 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             switch (CB(ets)->type)
             {
                 case RKH_COMPOSITE:
-                    if (firstCmpSt == CST(0))
+                    if (firstCmpSt == CST(0))   /* is the first composite */
+                                                /* state? */
                     {
-                        firstCmpSt = ets;
+                        firstCmpSt = ets;       /* remember it */
                     }
-                    ets = CCMP(ets)->defchild;
+                    ets = CCMP(ets)->defchild;  /* take default vertex */
                     if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
                     {
-                        sentry[nDftSt++] = ets;
+                        sentry[nDftSt++] = ets; /* fill entry state list */
+                                                /* with default states which */
+                                                /* are target of the initial */
+                                                /* pseudostate of a region */
                     }
                     break;
 #if defined(RKH_CHOICE_ENABLED)
@@ -695,11 +672,11 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
         if (firstCmpSt != CST(0))   /* finally, set the main target state and */
         {                           /* reverse list of default entry states */
             ts = firstCmpSt;
-            for (j = 0, i = (nDftSt - 1); j < i;)
+            for (from = 0, to = (nDftSt - 1); from < to;)
             {
-                tmpSt = sentry[j];
-                sentry[j++] = sentry[i];
-                sentry[i--] = tmpSt;
+                tmpSt = sentry[from];
+                sentry[from++] = sentry[to];
+                sentry[to--] = tmpSt;
             }
         }
         else
