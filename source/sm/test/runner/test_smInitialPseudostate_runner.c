@@ -60,11 +60,16 @@
 /* ---------------------------- Global functions --------------------------- */
 TEST_GROUP_RUNNER(InitPseudostate)
 {
+	RUN_TEST_CASE(InitPseudostate, firstStateAfterInit);
+	RUN_TEST_CASE(InitPseudostate, 
+                  trnToEmptyShHistoryWithDftTrnToSimpleState);
+#if 0
+	RUN_TEST_CASE(InitPseudostate, 
+                  trnToLoadedShHistoryWithDftTrnToCmpState);
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn);
 	RUN_TEST_CASE(InitPseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn);
-	RUN_TEST_CASE(InitPseudostate, exitFromCompositeWithLoadedShallowHistory);
-	RUN_TEST_CASE(InitPseudostate, trnToEmptyShallowHistoryWithDefaultTrn);
-	RUN_TEST_CASE(InitPseudostate, trnToLoadedShallowHistoryWithDefaultTrn);
+#endif
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedShHistoryWithDefaultTrn);
 }
 
 /* ------------------------------ End of file ------------------------------ */

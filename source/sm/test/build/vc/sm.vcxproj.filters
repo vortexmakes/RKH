@@ -121,6 +121,18 @@
     <ClCompile Include="..\..\stub\mocks\Mock_smTestAct.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\smInitialPseudoTest.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_smInitialPseudostate.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_smInitialPseudostate_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\MocksmInitialPseudoTestAct.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\..\..\..\third-party\unitrazer\unitrazer.lib">

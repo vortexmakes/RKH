@@ -35,22 +35,22 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* ........................ Declares initial action ........................ */
-void smTest_init(SmTest *const me);
+void smIPT_init(SmInitialPseudoTest *const me);
 
 /* ........................ Declares effect actions ........................ */
-void smTest_tr1(SmTest *const me, RKH_EVT_T *pe);
+void smIPT_tr1(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
-void smTest_nS0(SmTest *const me);
-void smTest_nS1(SmTest *const me);
-void smTest_nS11(SmTest *const me);
-void smTest_nS12(SmTest *const me);
+void smIPT_nS0(SmInitialPseudoTest *const me);
+void smIPT_nS1(SmInitialPseudoTest *const me);
+void smIPT_nS11(SmInitialPseudoTest *const me);
+void smIPT_nS12(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
-void smTest_xS0(SmTest *const me);
-void smTest_xS1(SmTest *const me);
-void smTest_xS11(SmTest *const me);
-void smTest_xS12(SmTest *const me);
+void smIPT_xS0(SmInitialPseudoTest *const me);
+void smIPT_xS1(SmInitialPseudoTest *const me);
+void smIPT_xS11(SmInitialPseudoTest *const me);
+void smIPT_xS12(SmInitialPseudoTest *const me);
 
 /* ............................ Declares guards ............................ */
 /* -------------------- External C language linkage end -------------------- */

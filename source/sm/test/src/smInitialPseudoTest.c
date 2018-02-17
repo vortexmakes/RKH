@@ -18,13 +18,13 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
-#include "smPseudoTest.h"
-#include "smPseudoTestAct.h"
+#include "smInitialPseudoTest.h"
+#include "smInitialPseudoTestAct.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ......................... Declares active object ........................ */
 RKH_SMA_CREATE(SmInitialPseudoTest, smInitialPseudoTest, 0, HCAL, 
-               &smIPT_waiting, NULL, NULL);
+               &smIPT_s0, smIPT_init, NULL);
 RKH_SMA_DEF_PTR(smInitialPseudoTest);
 
 /* ................... Declares states and pseudostates .................... */
@@ -35,8 +35,9 @@ RKH_CREATE_TRANS_TABLE(smIPT_s0)
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_HISTORY_STORAGE(smIPT_s1);
-RKH_CREATE_COMP_REGION_STATE(smIPT_s1, NULL, NULL, RKH_ROOT, &smIPT_s11Hist, 
-                             NULL, RKH_SHISTORY, NULL, smIPT_tr1, smIPT_s11, 
+RKH_CREATE_COMP_REGION_STATE(smIPT_s1, smIPT_nS1, smIPT_xS1, RKH_ROOT, 
+                             &smIPT_s1Hist, 
+                             NULL, RKH_SHISTORY, NULL, smIPT_tr1, &smIPT_s11, 
                              RKH_GET_HISTORY_STORAGE(smIPT_s1));
 RKH_CREATE_TRANS_TABLE(smIPT_s1)
     RKH_TRREG(C, NULL, NULL, &smIPT_s0),

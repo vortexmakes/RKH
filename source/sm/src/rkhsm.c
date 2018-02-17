@@ -611,6 +611,11 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     {
                         ets = *(CH(ets))->target;
                     }
+                    if (firstCmpSt != CST(0) && (IS_COMPOSITE(ets) || 
+                                                 IS_SIMPLE(ets)))
+                    {
+                        sentry[nDftSt++] = ets;
+                    }
                     RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
@@ -669,14 +674,18 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 
     if (IS_NOT_INTERNAL_TRANSITION())
     {
-        if (firstCmpSt != CST(0))   /* finally, set the main target state and */
-        {                           /* reverse list of default entry states */
-            ts = firstCmpSt;
-            for (from = 0, to = (nDftSt - 1); from < to;)
+        if (firstCmpSt != CST(0))    
+        {                           
+            ts = firstCmpSt;    /* finally, set the main target state and */
+                                /* reverse list of default entry states */
+            if (nDftSt != 0)
             {
-                tmpSt = sentry[from];
-                sentry[from++] = sentry[to];
-                sentry[to--] = tmpSt;
+                for (from = 0, to = (nDftSt - 1); from < to;)   
+                {
+                    tmpSt = sentry[from];
+                    sentry[from++] = sentry[to];
+                    sentry[to--] = tmpSt;
+                }
             }
         }
         else

@@ -70,6 +70,7 @@ runAllTests(void)
 	RUN_TEST_GROUP(pseudostate);
 	RUN_TEST_GROUP(trnWoutUnitrazer);
 	RUN_TEST_GROUP(pseudostateConditional);
+	RUN_TEST_GROUP(InitPseudostate);
 #endif
 }
 
