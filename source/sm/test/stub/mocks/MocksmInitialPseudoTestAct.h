@@ -32,6 +32,12 @@ void smIPT_nS1_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* cons
 void smIPT_nS11_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
 #define smIPT_nS12_Expect(me) smIPT_nS12_CMockExpect(__LINE__, me)
 void smIPT_nS12_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+#define smIPT_nS2_Expect(me) smIPT_nS2_CMockExpect(__LINE__, me)
+void smIPT_nS2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+#define smIPT_nS21_Expect(me) smIPT_nS21_CMockExpect(__LINE__, me)
+void smIPT_nS21_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+#define smIPT_nS211_Expect(me) smIPT_nS211_CMockExpect(__LINE__, me)
+void smIPT_nS211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
 #define smIPT_xS0_Expect(me) smIPT_xS0_CMockExpect(__LINE__, me)
 void smIPT_xS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
 #define smIPT_xS1_Expect(me) smIPT_xS1_CMockExpect(__LINE__, me)
@@ -40,5 +46,11 @@ void smIPT_xS1_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* cons
 void smIPT_xS11_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
 #define smIPT_xS12_Expect(me) smIPT_xS12_CMockExpect(__LINE__, me)
 void smIPT_xS12_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+#define smIPT_xS2_Expect(me) smIPT_xS2_CMockExpect(__LINE__, me)
+void smIPT_xS2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+#define smIPT_xS21_Expect(me) smIPT_xS21_CMockExpect(__LINE__, me)
+void smIPT_xS21_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+#define smIPT_xS211_Expect(me) smIPT_xS211_CMockExpect(__LINE__, me)
+void smIPT_xS211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
 
 #endif

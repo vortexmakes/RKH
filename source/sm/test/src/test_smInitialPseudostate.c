@@ -65,6 +65,7 @@
 static RKH_STATIC_EVENT(evA, A);
 static RKH_STATIC_EVENT(evB, B);
 static RKH_STATIC_EVENT(evC, C);
+static RKH_STATIC_EVENT(evD, D);
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -81,10 +82,15 @@ loadStateMachineSymbols(void)
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s1);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s11);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s12);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s2);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s21);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s211);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s1Hist);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s2Hist);
     RKH_TR_FWK_SIG(A);
     RKH_TR_FWK_SIG(B);
     RKH_TR_FWK_SIG(C);
+    RKH_TR_FWK_SIG(D);
 }
 
 static void
@@ -277,6 +283,44 @@ TEST(InitPseudostate, trnToLoadedShHistoryWithDefaultTrn)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
+TEST(InitPseudostate, trnToEmptyShHistoryWithDftTrnToCmpState)
+{
+    UtrzProcessOut *p;
+    const RKH_ST_T *targetStates[] = 
+    {
+        RKH_STATE_CAST(&smIPT_s2), RKH_STATE_CAST(&smIPT_s21), 
+        RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *exitStates[] = 
+    {
+        RKH_STATE_CAST(&smIPT_s0), 
+        RKH_STATE_CAST(0)
+    };
+    const RKH_ST_T *entryStates[] = 
+    {
+       RKH_STATE_CAST(&smIPT_s2), RKH_STATE_CAST(&smIPT_s21), 
+       RKH_STATE_CAST(&smIPT_s211),
+       RKH_STATE_CAST(0)
+    };
+
+    smIPT_init_Expect(smInitialPseudoTest);
+    smIPT_nS0_Expect(smInitialPseudoTest);
+    smIPT_xS0_Expect(smInitialPseudoTest);
+    smIPT_nS2_Expect(smInitialPseudoTest);
+    smIPT_nS21_Expect(smInitialPseudoTest);
+    smIPT_nS211_Expect(smInitialPseudoTest);
+
+    setProfile(smInitialPseudoTest, RKH_STATE_CAST(&smIPT_s0), 
+               RKH_STATE_CAST(&smIPT_s0), 
+               targetStates, entryStates, exitStates, 
+               RKH_STATE_CAST(&smIPT_s211), 0, TRN_NOT_INTERNAL, 1, &evD,
+               RKH_STATE_CAST(&smIPT_s0));
+
+    rkh_sm_dispatch((RKH_SM_T *)smInitialPseudoTest, &evD);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

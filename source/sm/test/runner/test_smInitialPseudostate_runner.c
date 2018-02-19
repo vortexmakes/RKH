@@ -63,13 +63,13 @@ TEST_GROUP_RUNNER(InitPseudostate)
 	RUN_TEST_CASE(InitPseudostate, firstStateAfterInit);
 	RUN_TEST_CASE(InitPseudostate, 
                   trnToEmptyShHistoryWithDftTrnToSimpleState);
-#if 0
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedShHistoryWithDefaultTrn);
 	RUN_TEST_CASE(InitPseudostate, 
-                  trnToLoadedShHistoryWithDftTrnToCmpState);
+                  trnToEmptyShHistoryWithDftTrnToCmpState);
+#if 0
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn);
 	RUN_TEST_CASE(InitPseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn);
 #endif
-	RUN_TEST_CASE(InitPseudostate, trnToLoadedShHistoryWithDefaultTrn);
 }
 
 /* ------------------------------ End of file ------------------------------ */

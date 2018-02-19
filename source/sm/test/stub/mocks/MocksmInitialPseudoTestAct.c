@@ -13,11 +13,17 @@ static const char* CMockString_smIPT_nS0 = "smIPT_nS0";
 static const char* CMockString_smIPT_nS1 = "smIPT_nS1";
 static const char* CMockString_smIPT_nS11 = "smIPT_nS11";
 static const char* CMockString_smIPT_nS12 = "smIPT_nS12";
+static const char* CMockString_smIPT_nS2 = "smIPT_nS2";
+static const char* CMockString_smIPT_nS21 = "smIPT_nS21";
+static const char* CMockString_smIPT_nS211 = "smIPT_nS211";
 static const char* CMockString_smIPT_tr1 = "smIPT_tr1";
 static const char* CMockString_smIPT_xS0 = "smIPT_xS0";
 static const char* CMockString_smIPT_xS1 = "smIPT_xS1";
 static const char* CMockString_smIPT_xS11 = "smIPT_xS11";
 static const char* CMockString_smIPT_xS12 = "smIPT_xS12";
+static const char* CMockString_smIPT_xS2 = "smIPT_xS2";
+static const char* CMockString_smIPT_xS21 = "smIPT_xS21";
+static const char* CMockString_smIPT_xS211 = "smIPT_xS211";
 
 typedef struct _CMOCK_smIPT_init_CALL_INSTANCE
 {
@@ -62,6 +68,27 @@ typedef struct _CMOCK_smIPT_nS12_CALL_INSTANCE
 
 } CMOCK_smIPT_nS12_CALL_INSTANCE;
 
+typedef struct _CMOCK_smIPT_nS2_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmInitialPseudoTest* Expected_me;
+
+} CMOCK_smIPT_nS2_CALL_INSTANCE;
+
+typedef struct _CMOCK_smIPT_nS21_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmInitialPseudoTest* Expected_me;
+
+} CMOCK_smIPT_nS21_CALL_INSTANCE;
+
+typedef struct _CMOCK_smIPT_nS211_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmInitialPseudoTest* Expected_me;
+
+} CMOCK_smIPT_nS211_CALL_INSTANCE;
+
 typedef struct _CMOCK_smIPT_xS0_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
@@ -90,6 +117,27 @@ typedef struct _CMOCK_smIPT_xS12_CALL_INSTANCE
 
 } CMOCK_smIPT_xS12_CALL_INSTANCE;
 
+typedef struct _CMOCK_smIPT_xS2_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmInitialPseudoTest* Expected_me;
+
+} CMOCK_smIPT_xS2_CALL_INSTANCE;
+
+typedef struct _CMOCK_smIPT_xS21_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmInitialPseudoTest* Expected_me;
+
+} CMOCK_smIPT_xS21_CALL_INSTANCE;
+
+typedef struct _CMOCK_smIPT_xS211_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  SmInitialPseudoTest* Expected_me;
+
+} CMOCK_smIPT_xS211_CALL_INSTANCE;
+
 static struct MocksmInitialPseudoTestActInstance
 {
   CMOCK_MEM_INDEX_TYPE smIPT_init_CallInstance;
@@ -98,10 +146,16 @@ static struct MocksmInitialPseudoTestActInstance
   CMOCK_MEM_INDEX_TYPE smIPT_nS1_CallInstance;
   CMOCK_MEM_INDEX_TYPE smIPT_nS11_CallInstance;
   CMOCK_MEM_INDEX_TYPE smIPT_nS12_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smIPT_nS2_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smIPT_nS21_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smIPT_nS211_CallInstance;
   CMOCK_MEM_INDEX_TYPE smIPT_xS0_CallInstance;
   CMOCK_MEM_INDEX_TYPE smIPT_xS1_CallInstance;
   CMOCK_MEM_INDEX_TYPE smIPT_xS11_CallInstance;
   CMOCK_MEM_INDEX_TYPE smIPT_xS12_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smIPT_xS2_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smIPT_xS21_CallInstance;
+  CMOCK_MEM_INDEX_TYPE smIPT_xS211_CallInstance;
 } Mock;
 
 extern jmp_buf AbortFrame;
@@ -121,6 +175,12 @@ void MocksmInitialPseudoTestAct_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_nS11_CallInstance, cmock_line, CMockStringCalledLess);
   UNITY_SET_DETAIL(CMockString_smIPT_nS12);
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_nS12_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_smIPT_nS2);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_nS2_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_smIPT_nS21);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_nS21_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_smIPT_nS211);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_nS211_CallInstance, cmock_line, CMockStringCalledLess);
   UNITY_SET_DETAIL(CMockString_smIPT_xS0);
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_xS0_CallInstance, cmock_line, CMockStringCalledLess);
   UNITY_SET_DETAIL(CMockString_smIPT_xS1);
@@ -129,6 +189,12 @@ void MocksmInitialPseudoTestAct_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_xS11_CallInstance, cmock_line, CMockStringCalledLess);
   UNITY_SET_DETAIL(CMockString_smIPT_xS12);
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_xS12_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_smIPT_xS2);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_xS2_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_smIPT_xS21);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_xS21_CallInstance, cmock_line, CMockStringCalledLess);
+  UNITY_SET_DETAIL(CMockString_smIPT_xS211);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_xS211_CallInstance, cmock_line, CMockStringCalledLess);
 }
 
 void MocksmInitialPseudoTestAct_Init(void)
@@ -345,6 +411,105 @@ void smIPT_nS12_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* con
   UNITY_CLR_DETAILS();
 }
 
+void smIPT_nS2(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smIPT_nS2_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smIPT_nS2);
+  cmock_call_instance = (CMOCK_smIPT_nS2_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smIPT_nS2_CallInstance);
+  Mock.smIPT_nS2_CallInstance = CMock_Guts_MemNext(Mock.smIPT_nS2_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_nS2,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmInitialPseudoTest), cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smIPT_nS2(CMOCK_smIPT_nS2_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+}
+
+void smIPT_nS2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_nS2_CALL_INSTANCE));
+  CMOCK_smIPT_nS2_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_nS2_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smIPT_nS2_CallInstance = CMock_Guts_MemChain(Mock.smIPT_nS2_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smIPT_nS2(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smIPT_nS21(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smIPT_nS21_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smIPT_nS21);
+  cmock_call_instance = (CMOCK_smIPT_nS21_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smIPT_nS21_CallInstance);
+  Mock.smIPT_nS21_CallInstance = CMock_Guts_MemNext(Mock.smIPT_nS21_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_nS21,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmInitialPseudoTest), cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smIPT_nS21(CMOCK_smIPT_nS21_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+}
+
+void smIPT_nS21_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_nS21_CALL_INSTANCE));
+  CMOCK_smIPT_nS21_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_nS21_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smIPT_nS21_CallInstance = CMock_Guts_MemChain(Mock.smIPT_nS21_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smIPT_nS21(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smIPT_nS211(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smIPT_nS211_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smIPT_nS211);
+  cmock_call_instance = (CMOCK_smIPT_nS211_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smIPT_nS211_CallInstance);
+  Mock.smIPT_nS211_CallInstance = CMock_Guts_MemNext(Mock.smIPT_nS211_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_nS211,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmInitialPseudoTest), cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smIPT_nS211(CMOCK_smIPT_nS211_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+}
+
+void smIPT_nS211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_nS211_CALL_INSTANCE));
+  CMOCK_smIPT_nS211_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_nS211_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smIPT_nS211_CallInstance = CMock_Guts_MemChain(Mock.smIPT_nS211_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smIPT_nS211(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
 void smIPT_xS0(SmInitialPseudoTest* const me)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
@@ -474,6 +639,105 @@ void smIPT_xS12_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* con
   Mock.smIPT_xS12_CallInstance = CMock_Guts_MemChain(Mock.smIPT_xS12_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_smIPT_xS12(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smIPT_xS2(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smIPT_xS2_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smIPT_xS2);
+  cmock_call_instance = (CMOCK_smIPT_xS2_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smIPT_xS2_CallInstance);
+  Mock.smIPT_xS2_CallInstance = CMock_Guts_MemNext(Mock.smIPT_xS2_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_xS2,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmInitialPseudoTest), cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smIPT_xS2(CMOCK_smIPT_xS2_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+}
+
+void smIPT_xS2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_xS2_CALL_INSTANCE));
+  CMOCK_smIPT_xS2_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_xS2_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smIPT_xS2_CallInstance = CMock_Guts_MemChain(Mock.smIPT_xS2_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smIPT_xS2(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smIPT_xS21(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smIPT_xS21_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smIPT_xS21);
+  cmock_call_instance = (CMOCK_smIPT_xS21_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smIPT_xS21_CallInstance);
+  Mock.smIPT_xS21_CallInstance = CMock_Guts_MemNext(Mock.smIPT_xS21_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_xS21,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmInitialPseudoTest), cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smIPT_xS21(CMOCK_smIPT_xS21_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+}
+
+void smIPT_xS21_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_xS21_CALL_INSTANCE));
+  CMOCK_smIPT_xS21_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_xS21_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smIPT_xS21_CallInstance = CMock_Guts_MemChain(Mock.smIPT_xS21_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smIPT_xS21(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smIPT_xS211(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smIPT_xS211_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smIPT_xS211);
+  cmock_call_instance = (CMOCK_smIPT_xS211_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smIPT_xS211_CallInstance);
+  Mock.smIPT_xS211_CallInstance = CMock_Guts_MemNext(Mock.smIPT_xS211_CallInstance);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_xS211,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_me), (void*)(me), sizeof(SmInitialPseudoTest), cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smIPT_xS211(CMOCK_smIPT_xS211_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+}
+
+void smIPT_xS211_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_xS211_CALL_INSTANCE));
+  CMOCK_smIPT_xS211_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_xS211_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smIPT_xS211_CallInstance = CMock_Guts_MemChain(Mock.smIPT_xS211_CallInstance, cmock_guts_index);
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_smIPT_xS211(cmock_call_instance, me);
   UNITY_CLR_DETAILS();
 }
 

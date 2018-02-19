@@ -33,7 +33,7 @@ extern "C" {
 /* ................................ Signals ................................ */
 enum
 {
-    A, B, C, TERMINATE,
+    A, B, C, D, TERMINATE,
     SMIPT_NUM_EVENTS
 };
 
@@ -42,9 +42,9 @@ enum
 RKH_SMA_DCLR(smInitialPseudoTest);
 
 /* ............................ Declares vertex ............................ */
-RKH_DCLR_BASIC_STATE smIPT_s0, smIPT_s11, smIPT_s12;
-RKH_DCLR_COMP_STATE smIPT_s1;
-RKH_DCLR_SHIST_STATE smIPT_s1Hist;
+RKH_DCLR_BASIC_STATE smIPT_s0, smIPT_s11, smIPT_s12, smIPT_s211;
+RKH_DCLR_COMP_STATE smIPT_s1, smIPT_s2, smIPT_s21;
+RKH_DCLR_SHIST_STATE smIPT_s1Hist, smIPT_s2Hist;
 
 /* ------------------------------- Data types ------------------------------ */
 typedef struct SmInitialPseudoTest SmInitialPseudoTest;

@@ -32,6 +32,7 @@ RKH_CREATE_BASIC_STATE(smIPT_s0, smIPT_nS0, smIPT_xS0, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(smIPT_s0)
     RKH_TRREG(A, NULL, NULL, &smIPT_s1),
     RKH_TRREG(B, NULL, NULL, &smIPT_s12),
+    RKH_TRREG(D, NULL, NULL, &smIPT_s2),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_HISTORY_STORAGE(smIPT_s1);
@@ -49,6 +50,26 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(smIPT_s12, smIPT_nS12, smIPT_xS12, &smIPT_s1, NULL);
 RKH_CREATE_TRANS_TABLE(smIPT_s12)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_HISTORY_STORAGE(smIPT_s2);
+RKH_CREATE_COMP_REGION_STATE(smIPT_s2, smIPT_nS2, smIPT_xS2, RKH_ROOT, 
+                             &smIPT_s2Hist, 
+                             NULL, RKH_SHISTORY, NULL, NULL, &smIPT_s21, 
+                             RKH_GET_HISTORY_STORAGE(smIPT_s2));
+RKH_CREATE_TRANS_TABLE(smIPT_s2)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_HISTORY_STORAGE(smIPT_s21);
+RKH_CREATE_COMP_REGION_STATE(smIPT_s21, smIPT_nS21, smIPT_xS21, &smIPT_s2, 
+                             &smIPT_s211, 
+                             NULL, RKH_NO_HISTORY, NULL, NULL, 
+                             NULL, NULL);
+RKH_CREATE_TRANS_TABLE(smIPT_s21)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(smIPT_s211, smIPT_nS211, smIPT_xS211, &smIPT_s21, NULL);
+RKH_CREATE_TRANS_TABLE(smIPT_s211)
 RKH_END_TRANS_TABLE
 
 /* ------------------------------- Constants ------------------------------- */
