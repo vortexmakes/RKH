@@ -48,6 +48,11 @@ void smIPT_nS12(SmInitialPseudoTest *const me);
 void smIPT_nS2(SmInitialPseudoTest *const me);
 void smIPT_nS21(SmInitialPseudoTest *const me);
 void smIPT_nS211(SmInitialPseudoTest *const me);
+void smIPT_nS3(SmInitialPseudoTest *const me);
+void smIPT_nS31(SmInitialPseudoTest *const me);
+void smIPT_nS32(SmInitialPseudoTest *const me);
+void smIPT_nS33(SmInitialPseudoTest *const me);
+void smIPT_nS331(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
 void smIPT_xS0(SmInitialPseudoTest *const me);
@@ -57,6 +62,11 @@ void smIPT_xS12(SmInitialPseudoTest *const me);
 void smIPT_xS2(SmInitialPseudoTest *const me);
 void smIPT_xS21(SmInitialPseudoTest *const me);
 void smIPT_xS211(SmInitialPseudoTest *const me);
+void smIPT_xS3(SmInitialPseudoTest *const me);
+void smIPT_xS31(SmInitialPseudoTest *const me);
+void smIPT_xS32(SmInitialPseudoTest *const me);
+void smIPT_xS33(SmInitialPseudoTest *const me);
+void smIPT_xS331(SmInitialPseudoTest *const me);
 
 /* ............................ Declares guards ............................ */
 /* -------------------- External C language linkage end -------------------- */

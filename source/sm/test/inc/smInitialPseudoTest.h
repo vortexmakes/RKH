@@ -42,9 +42,11 @@ enum
 RKH_SMA_DCLR(smInitialPseudoTest);
 
 /* ............................ Declares vertex ............................ */
-RKH_DCLR_BASIC_STATE smIPT_s0, smIPT_s11, smIPT_s12, smIPT_s211;
-RKH_DCLR_COMP_STATE smIPT_s1, smIPT_s2, smIPT_s21;
+RKH_DCLR_BASIC_STATE smIPT_s0, smIPT_s11, smIPT_s12, smIPT_s211, smIPT_s31,
+                     smIPT_s32, smIPT_s331;
+RKH_DCLR_COMP_STATE smIPT_s1, smIPT_s2, smIPT_s21, smIPT_s3, smIPT_s33;
 RKH_DCLR_SHIST_STATE smIPT_s1Hist, smIPT_s2Hist;
+RKH_DCLR_DHIST_STATE smIPT_s3Hist;
 
 /* ------------------------------- Data types ------------------------------ */
 typedef struct SmInitialPseudoTest SmInitialPseudoTest;

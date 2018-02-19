@@ -130,7 +130,7 @@
     <ClCompile Include="..\..\runner\test_smInitialPseudostate_runner.c">
       <Filter>Source Files\tests\runner</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\stub\mocks\MocksmInitialPseudoTestAct.c">
+    <ClCompile Include="..\..\stub\mocks\Mock_smInitialPseudoTestAct.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
   </ItemGroup>

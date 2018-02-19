@@ -350,6 +350,29 @@ rkh_update_deep_hist(RKHROM RKH_ST_T *from)
     #define rkh_update_deep_hist(f)       ((void)0)
 #endif
 
+static void
+verifyMissingCmpSt(RKHROM RKH_ST_T **stList, RKHROM RKH_ST_T *cmpSt, 
+                   rui8_t *nDftSt)
+{
+    RKHROM RKH_ST_T *endSt, **missSt, *st;
+
+    if (*nDftSt != 0)
+    {
+        missSt = &stList[*nDftSt - 1];
+        st = endSt = *missSt;
+        while (st->parent != cmpSt)
+        {
+            *missSt++ = st->parent;
+            (*nDftSt)++;
+            st = st->parent;
+        }
+        if (endSt != *missSt)
+        {
+            *missSt = endSt;
+        }
+    }
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void
 rkh_sm_init(RKH_SM_T *me)
@@ -579,6 +602,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0) &&
                                 (CCMP(CH(ets)->parent)->history !=
                                 (RKHROM RKH_SHIST_T *)0));
+                    stn = CH(ets)->parent;
                     if (IS_EMPTY_HISTORY(ets))
                     {
                         if (CH(ets)->trn.target)
@@ -615,6 +639,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                                                  IS_SIMPLE(ets)))
                     {
                         sentry[nDftSt++] = ets;
+                        verifyMissingCmpSt(sentry, stn, &nDftSt);
                     }
                     RKH_TR_SM_TS_STATE(me, ets);
                     break;
