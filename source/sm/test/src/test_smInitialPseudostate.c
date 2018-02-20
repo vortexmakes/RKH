@@ -67,6 +67,8 @@ static RKH_STATIC_EVENT(evA, A);
 static RKH_STATIC_EVENT(evB, B);
 static RKH_STATIC_EVENT(evC, C);
 static RKH_STATIC_EVENT(evD, D);
+static RKH_STATIC_EVENT(evE, E);
+static RKH_STATIC_EVENT(evF, F);
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -93,6 +95,13 @@ loadStateMachineSymbols(void)
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s32);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s33);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s331);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s5);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s51);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s511);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s52);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s6);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s61);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s62);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s1Hist);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s2Hist);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s3Hist);
@@ -323,7 +332,7 @@ TEST(InitPseudostate, trnToLoadedDeepHistoryToNestedState)
     nTrnActs = 0;
     stateList_create(targetStates, 2, &smIPT_s3, &smIPT_s331);
     stateList_create(exitStates, 1, &smIPT_s0);
-    stateList_create(entryStates, 2, &smIPT_s3, &smIPT_s331);
+    stateList_create(entryStates, 3, &smIPT_s3, &smIPT_s33, &smIPT_s331);
 
     smIPT_init_Expect(smInitialPseudoTest);
     smIPT_nS0_Expect(smInitialPseudoTest);
@@ -344,6 +353,201 @@ TEST(InitPseudostate, trnToLoadedDeepHistoryToNestedState)
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
+
+TEST(InitPseudostate, trnToEmptyShHistoryToNestedSimpleState)
+{
+    UtrzProcessOut *p;
+    int nTrnActs;
+
+    nTrnActs = 0;
+    stateList_create(targetStates, 2, &smIPT_s4, &smIPT_s411);
+    stateList_create(exitStates, 1, &smIPT_s0);
+    stateList_create(entryStates, 3, &smIPT_s4, &smIPT_s41, &smIPT_s411);
+
+    smIPT_init_Expect(smInitialPseudoTest);
+    smIPT_nS0_Expect(smInitialPseudoTest);
+    smIPT_xS0_Expect(smInitialPseudoTest);
+    smIPT_nS4_Expect(smInitialPseudoTest);
+    smIPT_nS41_Expect(smInitialPseudoTest);
+    smIPT_nS411_Expect(smInitialPseudoTest);
+
+    setProfile(smInitialPseudoTest, RKH_STATE_CAST(&smIPT_s0), 
+               RKH_STATE_CAST(&smIPT_s0), 
+               targetStates, entryStates, exitStates, 
+               RKH_STATE_CAST(&smIPT_s411), nTrnActs, TRN_NOT_INTERNAL, 1, 
+               &evC, RKH_STATE_CAST(&smIPT_s0));
+
+    rkh_sm_dispatch((RKH_SM_T *)smInitialPseudoTest, &evC);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, trnToBranchToSimpleState)
+{
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = RKH_CAST(SmInitialPseudoTest, 
+                                       smInitialPseudoTest);
+
+    /* Expect call actions */
+    smIPT_init_Expect(me);
+    smIPT_nS0_Expect(me);
+    smIPT_isC1_ExpectAndReturn(me, &evE, RKH_TRUE);
+    smIPT_xS0_Expect(me);
+    smIPT_nS5_Expect(me);
+    smIPT_nS52_Expect(me);
+    /* Expect init state machine */
+    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    /* Expect first transition segment */
+	sm_dch_expect(evE.e, RKH_STATE_CAST(&smIPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smIPT_s0), RKH_STATE_CAST(&smIPT_s5));
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s5));
+	sm_ntrnact_expect(0, 1);
+    /* Expect target state of last (second) transition */
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s52));
+    /* Expect solve compoused transition */
+    sm_exstate_expect(RKH_STATE_CAST(&smIPT_s0));
+	sm_ntrnact_expect(0, 2);
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s5));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s52));
+    sm_nenex_expect(2, 1);
+    /* Expect main target state */
+    sm_state_expect(RKH_STATE_CAST(&smIPT_s52));
+	sm_evtProc_expect();
+
+    rkh_sm_init((RKH_SM_T *)me);
+    rkh_sm_dispatch((RKH_SM_T *)me, &evE);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, trnToBranchToCmpState)
+{
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = RKH_CAST(SmInitialPseudoTest, 
+                                       smInitialPseudoTest);
+
+    /* Expect call actions */
+    smIPT_init_Expect(me);
+    smIPT_nS0_Expect(me);
+    smIPT_isC1_ExpectAndReturn(me, &evE, RKH_FALSE);
+    smIPT_isC2_ExpectAndReturn(me, &evE, RKH_FALSE);
+    smIPT_xS0_Expect(me);
+    smIPT_nS5_Expect(me);
+    smIPT_nS51_Expect(me);
+    smIPT_nS511_Expect(me);
+    /* Expect init state machine */
+    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    /* Expect first transition segment */
+	sm_dch_expect(evE.e, RKH_STATE_CAST(&smIPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smIPT_s0), RKH_STATE_CAST(&smIPT_s5));
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s5));
+	sm_ntrnact_expect(0, 1);
+    /* Expect target state of last (second) transition */
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s51));
+    /* Expect solve compoused transition */
+    sm_exstate_expect(RKH_STATE_CAST(&smIPT_s0));
+	sm_ntrnact_expect(0, 2);
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s5));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s51));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s511));
+    sm_nenex_expect(3, 1);
+    /* Expect main target state */
+    sm_state_expect(RKH_STATE_CAST(&smIPT_s511));
+	sm_evtProc_expect();
+
+    rkh_sm_init((RKH_SM_T *)me);
+    rkh_sm_dispatch((RKH_SM_T *)me, &evE);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, trnToBranchToNestedSimpleState)
+{
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = RKH_CAST(SmInitialPseudoTest, 
+                                       smInitialPseudoTest);
+
+    /* Expect call actions */
+    smIPT_init_Expect(me);
+    smIPT_nS0_Expect(me);
+    smIPT_isC1_ExpectAndReturn(me, &evE, RKH_FALSE);
+    smIPT_isC2_ExpectAndReturn(me, &evE, RKH_TRUE);
+    smIPT_xS0_Expect(me);
+    smIPT_nS5_Expect(me);
+    smIPT_nS51_Expect(me);
+    smIPT_nS511_Expect(me);
+    /* Expect init state machine */
+    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    /* Expect first transition segment */
+	sm_dch_expect(evE.e, RKH_STATE_CAST(&smIPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smIPT_s0), RKH_STATE_CAST(&smIPT_s5));
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s5));
+	sm_ntrnact_expect(0, 1);
+    /* Expect target state of last (second) transition */
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s511));
+    /* Expect solve compoused transition */
+    sm_exstate_expect(RKH_STATE_CAST(&smIPT_s0));
+	sm_ntrnact_expect(0, 2);
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s5));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s51));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s511));
+    sm_nenex_expect(3, 1);
+    /* Expect main target state */
+    sm_state_expect(RKH_STATE_CAST(&smIPT_s511));
+	sm_evtProc_expect();
+
+    rkh_sm_init((RKH_SM_T *)me);
+    rkh_sm_dispatch((RKH_SM_T *)me, &evE);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, trnToJunctionToSimpleState)
+{
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = RKH_CAST(SmInitialPseudoTest, 
+                                       smInitialPseudoTest);
+
+    /* Expect call actions */
+    smIPT_init_Expect(me);
+    smIPT_nS0_Expect(me);
+    smIPT_isC1_ExpectAndReturn(me, &evF, RKH_TRUE);
+    smIPT_xS0_Expect(me);
+    smIPT_nS6_Expect(me);
+    smIPT_nS61_Expect(me);
+    /* Expect init state machine */
+    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    /* Expect first transition segment */
+	sm_dch_expect(evF.e, RKH_STATE_CAST(&smIPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smIPT_s0), RKH_STATE_CAST(&smIPT_s6));
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s6));
+    /* Expect target state of last (second) transition */
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s61));
+    /* Expect solve compoused transition */
+    sm_exstate_expect(RKH_STATE_CAST(&smIPT_s0));
+	sm_ntrnact_expect(0, 2);
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s6));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s61));
+    sm_nenex_expect(2, 1);
+    /* Expect main target state */
+    sm_state_expect(RKH_STATE_CAST(&smIPT_s61));
+	sm_evtProc_expect();
+
+    rkh_sm_init((RKH_SM_T *)me);
+    rkh_sm_dispatch((RKH_SM_T *)me, &evF);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -350,27 +350,28 @@ rkh_update_deep_hist(RKHROM RKH_ST_T *from)
     #define rkh_update_deep_hist(f)       ((void)0)
 #endif
 
-static void
+static rui8_t
 verifyMissingCmpSt(RKHROM RKH_ST_T **stList, RKHROM RKH_ST_T *cmpSt, 
-                   rui8_t *nDftSt)
+                   rui8_t nDftSt)
 {
     RKHROM RKH_ST_T *endSt, **missSt, *st;
 
-    if (*nDftSt != 0)
+    if (nDftSt != 0)
     {
-        missSt = &stList[*nDftSt - 1];
+        missSt = &stList[nDftSt - 1];
         st = endSt = *missSt;
         while (st->parent != cmpSt)
         {
             *missSt++ = st->parent;
-            (*nDftSt)++;
+            ++nDftSt;
             st = st->parent;
         }
-        if (endSt != *missSt)
+        if (endSt != st)
         {
             *missSt = endSt;
         }
     }
+    return nDftSt;
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -550,6 +551,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     {
                         firstCmpSt = ets;       /* remember it */
                     }
+                    stn = CST(ets);             /* tracking containing state */
                     ets = CCMP(ets)->defchild;  /* take default vertex */
                     if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
                     {
@@ -591,6 +593,12 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     /* another transition segment */
                     RKH_INC_STEP();
                     ets = tr->target;
+                    if (firstCmpSt != CST(0) && (IS_COMPOSITE(ets) || 
+                                                 IS_SIMPLE(ets)))
+                    {
+                        sentry[nDftSt++] = CST(ets);
+                        nDftSt = verifyMissingCmpSt(sentry, stn, nDftSt);
+                    }
                     RKH_TR_SM_TS_STATE(me, ets);
                     break;
 #endif
@@ -602,7 +610,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0) &&
                                 (CCMP(CH(ets)->parent)->history !=
                                 (RKHROM RKH_SHIST_T *)0));
-                    stn = CH(ets)->parent;
                     if (IS_EMPTY_HISTORY(ets))
                     {
                         if (CH(ets)->trn.target)
@@ -638,8 +645,8 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     if (firstCmpSt != CST(0) && (IS_COMPOSITE(ets) || 
                                                  IS_SIMPLE(ets)))
                     {
-                        sentry[nDftSt++] = ets;
-                        verifyMissingCmpSt(sentry, stn, &nDftSt);
+                        sentry[nDftSt++] = CST(ets);
+                        nDftSt = verifyMissingCmpSt(sentry, stn, nDftSt);
                     }
                     RKH_TR_SM_TS_STATE(me, ets);
                     break;

@@ -53,6 +53,16 @@ void smIPT_nS31(SmInitialPseudoTest *const me);
 void smIPT_nS32(SmInitialPseudoTest *const me);
 void smIPT_nS33(SmInitialPseudoTest *const me);
 void smIPT_nS331(SmInitialPseudoTest *const me);
+void smIPT_nS4(SmInitialPseudoTest *const me);
+void smIPT_nS41(SmInitialPseudoTest *const me);
+void smIPT_nS411(SmInitialPseudoTest *const me);
+void smIPT_nS5(SmInitialPseudoTest *const me);
+void smIPT_nS51(SmInitialPseudoTest *const me);
+void smIPT_nS511(SmInitialPseudoTest *const me);
+void smIPT_nS52(SmInitialPseudoTest *const me);
+void smIPT_nS6(SmInitialPseudoTest *const me);
+void smIPT_nS61(SmInitialPseudoTest *const me);
+void smIPT_nS62(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
 void smIPT_xS0(SmInitialPseudoTest *const me);
@@ -67,8 +77,21 @@ void smIPT_xS31(SmInitialPseudoTest *const me);
 void smIPT_xS32(SmInitialPseudoTest *const me);
 void smIPT_xS33(SmInitialPseudoTest *const me);
 void smIPT_xS331(SmInitialPseudoTest *const me);
+void smIPT_xS4(SmInitialPseudoTest *const me);
+void smIPT_xS41(SmInitialPseudoTest *const me);
+void smIPT_xS411(SmInitialPseudoTest *const me);
+void smIPT_xS5(SmInitialPseudoTest *const me);
+void smIPT_xS51(SmInitialPseudoTest *const me);
+void smIPT_xS511(SmInitialPseudoTest *const me);
+void smIPT_xS52(SmInitialPseudoTest *const me);
+void smIPT_xS6(SmInitialPseudoTest *const me);
+void smIPT_xS61(SmInitialPseudoTest *const me);
+void smIPT_xS62(SmInitialPseudoTest *const me);
 
 /* ............................ Declares guards ............................ */
+rbool_t smIPT_isC1(const RKH_SM_T *sma, RKH_EVT_T *pe);
+rbool_t smIPT_isC2(const RKH_SM_T *sma, RKH_EVT_T *pe);
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }
