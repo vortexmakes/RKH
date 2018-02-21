@@ -58,6 +58,7 @@
 #include "rkh.h"
 #include "common.h"
 #include "MocksmTestAct.h"
+#include <stdarg.h>
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -136,7 +137,7 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
         nExitStates = executeExpectOnList(exitStates, EXPECT_EXSTATE);
     }
 
-	sm_ntrnact_expect(nExecEffectActions, 1);
+	/*sm_ntrnact_expect(nExecEffectActions, 1);*/
 
     if (kindOfTrn == TRN_NOT_INTERNAL)
     {
@@ -175,6 +176,23 @@ const RKH_ST_T *
 getState(RKH_SMA_T *const me)
 {
     return ((RKH_SM_T *)me)->state;
+}
+
+void
+stateList_create(const RKH_ST_T **list, int nElems, ...)
+{
+    int i;
+    va_list args;
+    RKH_ST_T *state;
+
+    va_start(args, nElems);
+    for (i = 0; i < nElems; i++)
+    {
+        state = va_arg(args, RKH_ST_T *);
+        *list++ = state;
+    }
+    va_end(args);
+    *list = (RKH_ST_T *)0;
 }
 
 /** @} doxygen end group definition */

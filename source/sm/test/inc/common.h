@@ -68,6 +68,7 @@ void setProfileWoutUnitrazer(RKH_SMA_T *const me,
                              int initStateMachine);
 void setState(RKH_SMA_T *const me, const RKH_ST_T *state);
 const RKH_ST_T *getState(RKH_SMA_T *const me);
+void stateList_create(const RKH_ST_T **list, int nElems, ...);
 
 /* -------------------- External C language linkage end -------------------- */
 

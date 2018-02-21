@@ -107,8 +107,8 @@
     <ClCompile Include="..\..\src\test_smTransitionWoutUnitrazer.c" />
     <ClCompile Include="..\..\stub\mocks\Mockrkhassert.c" />
     <ClCompile Include="..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
-    <ClCompile Include="..\..\stub\mocks\MocksmTestAct.c" />
     <ClCompile Include="..\..\stub\mocks\Mock_rkhsma.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_smTestAct.c" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\..\..\..\third-party\unitrazer\unitrazer.lib" />

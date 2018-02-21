@@ -59,7 +59,7 @@
 #include "common.h"
 #include "smTest.h"
 #include "smTestAct.h"
-#include "MocksmTestAct.h"
+#include "Mock_smTestAct.h"
 #include "Mockrkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -73,8 +73,8 @@ static RKH_STATIC_EVENT(evF, F);
 static RKH_STATIC_EVENT(evG, G);
 static RKH_STATIC_EVENT(evH, H);
 static RKH_STATIC_EVENT(evI, I);
-static RKH_STATIC_EVENT(evCompletion, RKH_COMPLETION_EVENT);
 static RKH_STATIC_EVENT(evTerminate, TERMINATE);
+extern const RKH_EVT_T evCompletion;
 
 /* ---------------------------- Local data types --------------------------- */
 typedef struct StateMachine
@@ -101,14 +101,14 @@ static RKH_RCODE_T result;
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(trnWoutUnitrazer)
 {
-    MocksmTestAct_Init();
+    Mock_smTestAct_Init();
     sm_ignore();
 }
 
 TEST_TEAR_DOWN(trnWoutUnitrazer)
 {
-    MocksmTestAct_Verify();
-    MocksmTestAct_Destroy();
+    Mock_smTestAct_Verify();
+    Mock_smTestAct_Destroy();
 }
 
 /**
