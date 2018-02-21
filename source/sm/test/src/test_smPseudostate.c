@@ -120,6 +120,7 @@ setRKHTraceFilters(void)
 TEST_SETUP(pseudostate)
 {
     sm_init();
+    sm_ntrnact_ignore();
     rkh_sm_clear_history(&smPT_s1Hist);
     rkh_sm_clear_history(&smPT_s12Hist);
     rkh_sm_clear_history(&smPT_s2Hist);
