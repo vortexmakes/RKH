@@ -185,6 +185,7 @@ TEST(InitPseudostate, trnToEmptyShHistoryToSimpleState)
                RKH_STATE_CAST(&smIPT_s11), nTrnActs, TRN_NOT_INTERNAL, 1, &evA,
                RKH_STATE_CAST(&smIPT_s0));*/
 
+#if 0
     sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     /* Start transition */
@@ -201,6 +202,11 @@ TEST(InitPseudostate, trnToEmptyShHistoryToSimpleState)
     sm_nenex_expect(2, 1);
     sm_state_expect(RKH_STATE_CAST(entryStates[1]));
 	sm_evtProc_expect();
+#endif
+
+    trnStepExpect(me, &smIPT_s0, &smIPT_s0, 
+                  targetStates, entryStates, exitStates, 
+                  &evA);
 
     rkh_sm_init((RKH_SM_T *)me);
     rkh_sm_dispatch((RKH_SM_T *)smInitialPseudoTest, &evA);
@@ -271,29 +277,9 @@ TEST(InitPseudostate, trnToEmptyShHistoryToCmpState)
     smIPT_nS21_Expect(smInitialPseudoTest);
     smIPT_nS211_Expect(smInitialPseudoTest);
 
-    /*setProfile(smInitialPseudoTest, RKH_STATE_CAST(&smIPT_s0), 
-               RKH_STATE_CAST(&smIPT_s0), 
-               targetStates, entryStates, exitStates, 
-               RKH_STATE_CAST(&smIPT_s211), nTrnActs, TRN_NOT_INTERNAL, 1, &evD,
-               RKH_STATE_CAST(&smIPT_s0));*/
-
-    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
-    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
-    /* Start transition */
-	sm_dch_expect(evD.e, RKH_STATE_CAST(&smIPT_s0));
-	sm_trn_expect(RKH_STATE_CAST(&smIPT_s0), RKH_STATE_CAST(targetStates[0]));
-    /* First step */
-    sm_tsState_expect(RKH_STATE_CAST(targetStates[0]));
-    sm_exstate_expect(RKH_STATE_CAST(exitStates[0]));
-    sm_enstate_expect(RKH_STATE_CAST(entryStates[0]));
-    /* Micro step */
-    sm_tsState_expect(RKH_STATE_CAST(targetStates[1]));
-    sm_enstate_expect(RKH_STATE_CAST(entryStates[1]));
-    sm_enstate_expect(RKH_STATE_CAST(entryStates[2]));
-    /* End transition */
-    sm_nenex_expect(3, 1);
-    sm_state_expect(RKH_STATE_CAST(entryStates[2]));
-	sm_evtProc_expect();
+    trnStepExpect(me, &smIPT_s0, &smIPT_s0, 
+                  targetStates, entryStates, exitStates, 
+                  &evD);
 
     rkh_sm_init((RKH_SM_T *)me);
     rkh_sm_dispatch((RKH_SM_T *)smInitialPseudoTest, &evD);

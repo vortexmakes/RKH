@@ -174,11 +174,38 @@ setProfileWoutUnitrazer(RKH_SMA_T *const me,
 
 void 
 trnStepExpect(RKH_SMA_T *const me, const RKH_ST_T *currentState, 
-              const RKH_ST_T *sourceState, const RKH_ST_T **targetState, 
+              const RKH_ST_T *sourceState, const RKH_ST_T **targetStates, 
               const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
-              const RKH_ST_T *mainTargetState, const RKH_EVT_T *event,
-              const RKH_ST_T *dispatchCurrentState)
+              const RKH_EVT_T *event)
 {
+    const RKH_ST_T **st;
+    int nEnSt;
+
+    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+
+    /* Start transition */
+	sm_dch_expect(event->e, RKH_STATE_CAST(currentState));
+	sm_trn_expect(RKH_STATE_CAST(sourceState), RKH_STATE_CAST(targetStates[0]));
+
+    /* First step */
+    sm_tsState_expect(RKH_STATE_CAST(targetStates[0]));
+    sm_exstate_expect(RKH_STATE_CAST(exitStates[0]));
+    sm_enstate_expect(RKH_STATE_CAST(entryStates[0]));
+    nEnSt = 1;
+
+    /* Micro step */
+    sm_tsState_expect(RKH_STATE_CAST(targetStates[1]));
+    for (st = &entryStates[1]; *st; ++st)
+    {
+        sm_enstate_expect(RKH_STATE_CAST(*st));
+        ++nEnSt;
+    }
+
+    /* End transition */
+    sm_nenex_expect(nEnSt, 1);
+    sm_state_expect(RKH_STATE_CAST(entryStates[nEnSt - 1]));
+	sm_evtProc_expect();
 }
 
 const RKH_ST_T *
