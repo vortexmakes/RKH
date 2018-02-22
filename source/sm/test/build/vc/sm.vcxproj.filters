@@ -73,9 +73,6 @@
     <ClCompile Include="..\..\stub\mocks\Mockrkhassert.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\stub\mocks\MocksmPseudoConditionalTestAct.c">
-      <Filter>Source Files\tests\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\runner\all_tests.c">
       <Filter>Source Files\tests\runner</Filter>
     </ClCompile>
@@ -119,6 +116,9 @@
       <Filter>Source Files\tests\utils\unitrazer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\stub\mocks\Mock_smTestAct.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_smPseudoConditionalTestAct.c">
       <Filter>Source Files\tests\stub</Filter>
     </ClCompile>
   </ItemGroup>

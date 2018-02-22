@@ -106,8 +106,8 @@
     <ClCompile Include="..\..\src\test_smTransition.c" />
     <ClCompile Include="..\..\src\test_smTransitionWoutUnitrazer.c" />
     <ClCompile Include="..\..\stub\mocks\Mockrkhassert.c" />
-    <ClCompile Include="..\..\stub\mocks\MocksmPseudoConditionalTestAct.c" />
     <ClCompile Include="..\..\stub\mocks\Mock_rkhsma.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_smPseudoConditionalTestAct.c" />
     <ClCompile Include="..\..\stub\mocks\Mock_smTestAct.c" />
   </ItemGroup>
   <ItemGroup>

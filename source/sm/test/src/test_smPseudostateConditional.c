@@ -58,7 +58,7 @@
 #include "rkhfwk_dynevt.h"
 #include "common.h"
 #include "smPseudoConditionalTest.h"
-#include "MocksmPseudoConditionalTestAct.h"
+#include "Mock_smPseudoConditionalTestAct.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -118,7 +118,7 @@ TEST_SETUP(pseudostateConditional)
 {
     sm_init();
     sm_ntrnact_ignore();
-    MocksmPseudoConditionalTestAct_Init();
+    Mock_smPseudoConditionalTestAct_Init();
     loadStateMachineSymbols();
     setRKHTraceFilters();
 }
@@ -128,8 +128,8 @@ TEST_TEAR_DOWN(pseudostateConditional)
     sm_verify(); /* Makes sure there are no unused expectations, if */
                  /* there are, this function causes the test to fail. */
     sm_cleanup();
-    MocksmPseudoConditionalTestAct_Verify();
-    MocksmPseudoConditionalTestAct_Destroy();
+    Mock_smPseudoConditionalTestAct_Verify();
+    Mock_smPseudoConditionalTestAct_Destroy();
 }
 
 /**
