@@ -66,6 +66,11 @@ void setProfileWoutUnitrazer(RKH_SMA_T *const me,
                              const RKH_ST_T *sourceState, 
                              const RKH_ST_T *mainTargetState, 
                              int initStateMachine);
+void trnStepExpect(RKH_SMA_T *const me, const RKH_ST_T *currentState, 
+                const RKH_ST_T *sourceState, const RKH_ST_T **targetState, 
+                const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
+                const RKH_ST_T *mainTargetState, const RKH_EVT_T *event,
+                const RKH_ST_T *dispatchCurrentState);
 void setState(RKH_SMA_T *const me, const RKH_ST_T *state);
 const RKH_ST_T *getState(RKH_SMA_T *const me);
 void stateList_create(const RKH_ST_T **list, int nElems, ...);

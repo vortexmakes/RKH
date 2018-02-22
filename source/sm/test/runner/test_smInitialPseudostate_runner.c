@@ -30,7 +30,7 @@
  */
 
 /**
- *  \file       all_tests.c
+ *  \file       test_smInitialPseudostate_runner.c
  *  \ingroup    test_sm
  *
  *  \brief      Test runner of state machine module
@@ -38,7 +38,7 @@
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2016.12.15  LeFr  v2.4.05  ---
+ *  2018.02.16  LeFr  v1.0.00  ---
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -48,11 +48,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <stdio.h>
-
-#include "rkh.h"
 #include "unity_fixture.h"
-#include "tzlink.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -61,35 +57,27 @@
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-static 
-void 
-runAllTests(void)
-{
-	RUN_TEST_GROUP(transition);
-	RUN_TEST_GROUP(trnWoutUnitrazer);
-	RUN_TEST_GROUP(pseudostate);
-	RUN_TEST_GROUP(pseudostateConditional);
-	RUN_TEST_GROUP(InitPseudostate);
-}
-
 /* ---------------------------- Global functions --------------------------- */
-int
-main(int argc, char *argv[])
+TEST_GROUP_RUNNER(InitPseudostate)
 {
-    static char *args[8];
-    int nArgs;
-
-    args[0] = argv[0];
-#if 1
-    args[1] = "-r";
-    args[2] = "1";
-    nArgs = 3;
-#else
-    nArgs = 1;
+	RUN_TEST_CASE(InitPseudostate, firstStateAfterInit);
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedShHistory);
+	RUN_TEST_CASE(InitPseudostate, trnToEmptyShHistoryToSimpleState);
+	RUN_TEST_CASE(InitPseudostate, trnToEmptyShHistoryToCmpState);
+#if 0
+	RUN_TEST_CASE(InitPseudostate, trnToEmptyDeepHistoryToSimpleState);
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedDeepHistory);
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedDeepHistoryToNestedState);
+	RUN_TEST_CASE(InitPseudostate, trnToEmptyShHistoryToNestedSimpleState);
+	RUN_TEST_CASE(InitPseudostate, trnToBranchToSimpleState);
+	RUN_TEST_CASE(InitPseudostate, trnToBranchToCmpState);
+	RUN_TEST_CASE(InitPseudostate, trnToBranchToNestedSimpleState);
+	RUN_TEST_CASE(InitPseudostate, trnToJunctionToSimpleState);
 #endif
-	tzlink_open(argc, argv);
-	UnityMain(nArgs, args, runAllTests);
-    getchar();
+#if 0
+	RUN_TEST_CASE(InitPseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn);
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn);
+#endif
 }
 
 /* ------------------------------ End of file ------------------------------ */

@@ -604,6 +604,11 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         {
                             ets = *(CH(ets))->target;
                         }
+                        if (isMicroStep && 
+                            (IS_COMPOSITE(ets) || IS_SIMPLE(ets)))
+                        {
+                            sentry[0] = CST(ets);
+                        }
                         break;
 #endif
 #if defined(RKH_SUBMACHINE_ENABLED)
@@ -708,7 +713,10 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 }
                 ets = CCMP(ts)->defchild;
                 nn = 1;        /* after execute transition first step always */
-                sentry[0] = CST(ets);
+                if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
+                {
+                    sentry[0] = CST(ets);
+                }
             }
             else
             {

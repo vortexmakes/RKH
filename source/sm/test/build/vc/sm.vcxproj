@@ -92,21 +92,25 @@
     <ClCompile Include="..\..\..\..\trc\src\rkhtrc_stream.c" />
     <ClCompile Include="..\..\..\src\rkhsm.c" />
     <ClCompile Include="..\..\runner\all_tests.c" />
+    <ClCompile Include="..\..\runner\test_smInitialPseudostate_runner.c" />
     <ClCompile Include="..\..\runner\test_smPseudostateConditional_runner.c" />
     <ClCompile Include="..\..\runner\test_smPseudostate_runner.c" />
     <ClCompile Include="..\..\runner\test_smTransitionWoutUnitrazer_runner.c" />
     <ClCompile Include="..\..\runner\test_smTransition_runner.c" />
     <ClCompile Include="..\..\src\common.c" />
+    <ClCompile Include="..\..\src\smInitialPseudoTest.c" />
     <ClCompile Include="..\..\src\smPseudoConditionalTest.c" />
     <ClCompile Include="..\..\src\smPseudoTest.c" />
     <ClCompile Include="..\..\src\smPseudoTestAct.c" />
     <ClCompile Include="..\..\src\smTest.c" />
+    <ClCompile Include="..\..\src\test_smInitialPseudostate.c" />
     <ClCompile Include="..\..\src\test_smPseudostate.c" />
     <ClCompile Include="..\..\src\test_smPseudostateConditional.c" />
     <ClCompile Include="..\..\src\test_smTransition.c" />
     <ClCompile Include="..\..\src\test_smTransitionWoutUnitrazer.c" />
     <ClCompile Include="..\..\stub\mocks\Mockrkhassert.c" />
     <ClCompile Include="..\..\stub\mocks\Mock_rkhsma.c" />
+    <ClCompile Include="..\..\stub\mocks\Mock_smInitialPseudoTestAct.c" />
     <ClCompile Include="..\..\stub\mocks\Mock_smPseudoConditionalTestAct.c" />
     <ClCompile Include="..\..\stub\mocks\Mock_smTestAct.c" />
   </ItemGroup>
