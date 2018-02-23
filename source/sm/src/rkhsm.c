@@ -359,6 +359,45 @@ rkh_update_deep_hist(RKHROM RKH_ST_T *from)
     #define rkh_update_deep_hist(f)       ((void)0)
 #endif
 
+static rui8_t
+addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList, 
+            RKHROM RKH_ST_T *cmpSt)
+{
+    RKHROM RKH_ST_T **missSt, *st;
+    rui8_t nEnSt;
+
+    if (IS_COMPOSITE(target) || IS_SIMPLE(target))
+    {
+#if 0
+        *stList = target;               /* add target vertex */
+        missSt = stList + 1;
+        st = target;
+        nEnSt = 1;
+        while (st->parent != cmpSt)
+        {
+            st = st->parent;
+            *missSt++ = st;
+            ++nEnSt;
+        }
+        if (target != st)
+        {
+            *missSt = target;
+        }
+#else
+        missSt = stList;
+        st = target;
+        nEnSt = 0;
+        while (st != cmpSt)
+        {
+            *missSt++ = st;
+            st = st->parent;
+            ++nEnSt;
+        }
+#endif
+    }
+    return nEnSt;
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void
 rkh_sm_init(RKH_SM_T *me)
@@ -572,6 +611,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0) 
                                     && (CCMP(CH(ets)->parent)->history !=
                                     (RKHROM RKH_SHIST_T *)0));
+                        stn = CH(ets)->parent;
                         if (IS_EMPTY_HISTORY(ets))
                         {
                             if (CH(ets)->trn.target)
@@ -604,10 +644,9 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         {
                             ets = *(CH(ets))->target;
                         }
-                        if (isMicroStep && 
-                            (IS_COMPOSITE(ets) || IS_SIMPLE(ets)))
+                        if (isMicroStep)
                         {
-                            sentry[0] = CST(ets);
+                            nn = addTargetSt(CST(ets), sentry, stn);
                         }
                         break;
 #endif
