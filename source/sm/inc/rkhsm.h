@@ -2212,7 +2212,7 @@ struct RKH_SCMP_T
      *  \brief
      *  Points to state's initial action.
      */
-    RKH_INIT_ACT_T initialAction;
+    RKH_TRN_ACT_T initialAction;
 
     /**
      *  \brief

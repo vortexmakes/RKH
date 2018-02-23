@@ -1823,7 +1823,7 @@ extern "C" {
         #if defined(RKH_HISTORY_ENABLED)
             #define MKBASIC(n,pp)               n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, NULL, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_, h
+                                                (RKH_TRN_ACT_T)dftTrn_, h
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name##Hist = \
                 { \
@@ -1845,7 +1845,7 @@ extern "C" {
         #else
             #define MKBASIC(n,pp)               n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, NULL, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_
+                                                (RKH_TRN_ACT_T)dftTrn_
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
             #define MKFINAL(name_) \
@@ -1857,7 +1857,7 @@ extern "C" {
         #if defined(RKH_HISTORY_ENABLED)
             #define MKBASIC(n,pp)               n##_trtbl
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_, h
+                                                (RKH_TRN_ACT_T)dftTrn_, h
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name##Hist = \
                 { \
@@ -1879,7 +1879,7 @@ extern "C" {
         #else
             #define MKBASIC(n,pp)               n##_trtbl
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_
+                                                (RKH_TRN_ACT_T)dftTrn_
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
             #define MKFINAL(name_) \
@@ -2288,8 +2288,6 @@ extern "C" {
                               0, \
                               CM(me_)); \
         }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
     #define RKH_EXEC_INIT(me_, action_) \
@@ -2301,8 +2299,6 @@ extern "C" {
                               0, \
                               CM(me_)); \
         }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
 #elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
        RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
     #define RKH_EXEC_INIT(me_, action_) \
@@ -2314,8 +2310,6 @@ extern "C" {
                               0, \
                               CM(me_)); \
         }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
 #else
     #define RKH_EXEC_INIT(me_, action_) \
         if ((RKH_INIT_ACT_T)action_) \
@@ -2326,8 +2320,6 @@ extern "C" {
                               0, \
                               CM(me_)); \
         }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
 #endif
 
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED
