@@ -243,30 +243,14 @@ RKH_MODULE_NAME(rkhsm)
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
     #define RKH_EXEC_ENTRY_ACTION(nen, sma, stn, snl, ix_n) \
-    if (ix_n == ix_x && ix_x == 0)      /* local transition */ \
+    for (ix_n = nen, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
     { \
+        --snl; \
+        RKH_EXEC_ENTRY(*snl, CM(sma)); \
+        isCompletionEvent  = isCompletionTrn(*snl); \
+        RKH_TR_SM_ENSTATE(sma, *snl); \
     } \
-    else \
-    { \
-        for (ix_n = nen, snl = &sentry[ix_n]; ix_n != 0; --ix_n) \
-        { \
-            --snl; \
-            RKH_EXEC_ENTRY(*snl, CM(sma)); \
-            isCompletionEvent  = isCompletionTrn(*snl); \
-            RKH_TR_SM_ENSTATE(sma, *snl); \
-        } \
-        stn = *snl; \
-        /* \
-        while (IS_COMPOSITE(stn)) \
-        { \
-            RKH_EXEC_STATE_INIT(sma, CCMP(stn)->initialAction); \
-            stn = CCMP(stn)->defchild; \
-            RKH_EXEC_ENTRY(stn, CM(sma)); \
-            isCompletionEvent = isCompletionTrn(stn); \
-            RKH_TR_SM_ENSTATE(sma, stn); \
-            ++nen; \
-        } \*/\
-    }
+    stn = *snl;
 #else
     #define RKH_EXEC_ENTRY_ACTION(nen, sma, stn, snl, ix_n) \
     nen = 0; \
@@ -446,7 +430,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKHROM RKH_ST_T *cs, *ts;
     RKHROM void *ets;
     RKHROM RKH_TR_T *tr;
-    rbool_t inttr, isCompletionEvent, isFirstStep, isMicroStep;
+    rbool_t inttr, isCompletionEvent, isMicroStep;
     RKH_SIG_T in;
 #if RKH_CFG_TRC_EN == RKH_ENABLED
     rui8_t step;
@@ -479,7 +463,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKH_ASSERT(me && pe);
 
     isCompletionEvent = inttr = isMicroStep = RKH_FALSE;
-    isFirstStep = RKH_TRUE;
 
     INFO_RCV_EVENTS(me);
     RKH_HOOK_DISPATCH(me, pe);
@@ -601,6 +584,10 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         /* another transition segment */
                         RKH_INC_STEP();
                         ets = tr->target;
+                        if (isMicroStep)
+                        {
+                            nn = addTargetSt(CST(ets), sentry, stn);
+                        }
                         break;
 #endif
 #if defined(RKH_HISTORY_ENABLED)
@@ -702,7 +689,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             ts = CST(ets);             /* finally, set the main target state */
         }
 
-        if (IS_NOT_INTERNAL_TRANSITION() && isFirstStep)
+        if (IS_NOT_INTERNAL_TRANSITION() && isMicroStep == RKH_FALSE)
         {
             /* ---- Stage 4 ------------------------------------------------ */
             /* first of all, find the LCA then */
@@ -742,7 +729,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 nal = 0;                /* initialize transition action list */
                 pal = al;
 
-                isFirstStep = RKH_FALSE;
                 isMicroStep = RKH_TRUE;
                 if (rkh_add_tr_action(&pal, CCMP(ts)->initialAction, &nal))
                 {
@@ -756,6 +742,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 {
                     sentry[0] = CST(ets);
                 }
+                stn = ts;
             }
             else
             {

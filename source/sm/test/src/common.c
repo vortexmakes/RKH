@@ -181,6 +181,7 @@ trnStepExpect(RKH_SMA_T *const me, const RKH_ST_T *currentState,
     const RKH_ST_T **st;
     int nEnSt;
 
+    /* Init state machine */
     sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
     sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
 

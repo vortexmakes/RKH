@@ -20,6 +20,7 @@ static const char* CMockString_smPCT_tr4 = "smPCT_tr4";
 typedef struct _CMOCK_smPCT_tr1_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -30,6 +31,7 @@ typedef struct _CMOCK_smPCT_tr1_CALL_INSTANCE
 typedef struct _CMOCK_smPCT_tr2_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -40,6 +42,7 @@ typedef struct _CMOCK_smPCT_tr2_CALL_INSTANCE
 typedef struct _CMOCK_smPCT_tr3_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -50,6 +53,7 @@ typedef struct _CMOCK_smPCT_tr3_CALL_INSTANCE
 typedef struct _CMOCK_smPCT_tr4_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -60,6 +64,7 @@ typedef struct _CMOCK_smPCT_tr4_CALL_INSTANCE
 typedef struct _CMOCK_smPCT_setCondition_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -71,6 +76,7 @@ typedef struct _CMOCK_smPCT_onEventA_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   rbool_t ReturnVal;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -82,6 +88,7 @@ typedef struct _CMOCK_smPCT_onEventD_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   rbool_t ReturnVal;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -93,6 +100,7 @@ typedef struct _CMOCK_smPCT_guardTrue_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   rbool_t ReturnVal;
+  int CallOrder;
   SmPseudoConditionalTest* Expected_me;
   RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
@@ -140,6 +148,8 @@ static struct Mock_smPseudoConditionalTestActInstance
 } Mock;
 
 extern jmp_buf AbortFrame;
+extern int GlobalExpectCount;
+extern int GlobalVerifyOrder;
 
 void Mock_smPseudoConditionalTestAct_Verify(void)
 {
@@ -219,6 +229,8 @@ void Mock_smPseudoConditionalTestAct_Destroy(void)
   Mock.smPCT_onEventD_CallbackCalls = 0;
   Mock.smPCT_guardTrue_CallbackFunctionPointer = NULL;
   Mock.smPCT_guardTrue_CallbackCalls = 0;
+  GlobalExpectCount = 0;
+  GlobalVerifyOrder = 0;
 }
 
 void smPCT_tr1(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
@@ -235,6 +247,10 @@ void smPCT_tr1(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_tr1,CMockString_me);
@@ -274,6 +290,7 @@ void smPCT_tr1_CMockExpect(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* 
   Mock.smPCT_tr1_CallInstance = CMock_Guts_MemChain(Mock.smPCT_tr1_CallInstance, cmock_guts_index);
   Mock.smPCT_tr1_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_tr1(cmock_call_instance, me, pe);
   UNITY_CLR_DETAILS();
 }
@@ -312,6 +329,10 @@ void smPCT_tr2(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_tr2,CMockString_me);
@@ -351,6 +372,7 @@ void smPCT_tr2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* 
   Mock.smPCT_tr2_CallInstance = CMock_Guts_MemChain(Mock.smPCT_tr2_CallInstance, cmock_guts_index);
   Mock.smPCT_tr2_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_tr2(cmock_call_instance, me, pe);
   UNITY_CLR_DETAILS();
 }
@@ -389,6 +411,10 @@ void smPCT_tr3(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_tr3,CMockString_me);
@@ -428,6 +454,7 @@ void smPCT_tr3_CMockExpect(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* 
   Mock.smPCT_tr3_CallInstance = CMock_Guts_MemChain(Mock.smPCT_tr3_CallInstance, cmock_guts_index);
   Mock.smPCT_tr3_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_tr3(cmock_call_instance, me, pe);
   UNITY_CLR_DETAILS();
 }
@@ -466,6 +493,10 @@ void smPCT_tr4(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_tr4,CMockString_me);
@@ -505,6 +536,7 @@ void smPCT_tr4_CMockExpect(UNITY_LINE_TYPE cmock_line, SmPseudoConditionalTest* 
   Mock.smPCT_tr4_CallInstance = CMock_Guts_MemChain(Mock.smPCT_tr4_CallInstance, cmock_guts_index);
   Mock.smPCT_tr4_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_tr4(cmock_call_instance, me, pe);
   UNITY_CLR_DETAILS();
 }
@@ -543,6 +575,10 @@ void smPCT_setCondition(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_setCondition,CMockString_me);
@@ -582,6 +618,7 @@ void smPCT_setCondition_CMockExpect(UNITY_LINE_TYPE cmock_line, SmPseudoConditio
   Mock.smPCT_setCondition_CallInstance = CMock_Guts_MemChain(Mock.smPCT_setCondition_CallInstance, cmock_guts_index);
   Mock.smPCT_setCondition_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_setCondition(cmock_call_instance, me, pe);
   UNITY_CLR_DETAILS();
 }
@@ -623,6 +660,10 @@ rbool_t smPCT_onEventA(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_onEventA,CMockString_me);
@@ -671,6 +712,7 @@ void smPCT_onEventA_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmPseudoCon
   Mock.smPCT_onEventA_CallInstance = CMock_Guts_MemChain(Mock.smPCT_onEventA_CallInstance, cmock_guts_index);
   Mock.smPCT_onEventA_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_onEventA(cmock_call_instance, me, pe);
   memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(rbool_t));
   UNITY_CLR_DETAILS();
@@ -713,6 +755,10 @@ rbool_t smPCT_onEventD(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_onEventD,CMockString_me);
@@ -761,6 +807,7 @@ void smPCT_onEventD_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmPseudoCon
   Mock.smPCT_onEventD_CallInstance = CMock_Guts_MemChain(Mock.smPCT_onEventD_CallInstance, cmock_guts_index);
   Mock.smPCT_onEventD_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_onEventD(cmock_call_instance, me, pe);
   memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(rbool_t));
   UNITY_CLR_DETAILS();
@@ -803,6 +850,10 @@ rbool_t smPCT_guardTrue(SmPseudoConditionalTest* const me, RKH_EVT_T* pe)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_smPCT_guardTrue,CMockString_me);
@@ -851,6 +902,7 @@ void smPCT_guardTrue_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, SmPseudoCo
   Mock.smPCT_guardTrue_CallInstance = CMock_Guts_MemChain(Mock.smPCT_guardTrue_CallInstance, cmock_guts_index);
   Mock.smPCT_guardTrue_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_smPCT_guardTrue(cmock_call_instance, me, pe);
   memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(rbool_t));
   UNITY_CLR_DETAILS();

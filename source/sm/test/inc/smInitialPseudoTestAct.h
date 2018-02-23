@@ -39,6 +39,8 @@ void smIPT_init(SmInitialPseudoTest *const me);
 
 /* ........................ Declares effect actions ........................ */
 void smIPT_tr1(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
+void smIPT_tr2(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
+void smIPT_tr3(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 void smIPT_nS0(SmInitialPseudoTest *const me);
@@ -59,9 +61,14 @@ void smIPT_nS411(SmInitialPseudoTest *const me);
 void smIPT_nS5(SmInitialPseudoTest *const me);
 void smIPT_nS51(SmInitialPseudoTest *const me);
 void smIPT_nS511(SmInitialPseudoTest *const me);
+void smIPT_nS512(SmInitialPseudoTest *const me);
+void smIPT_nS5121(SmInitialPseudoTest *const me);
 void smIPT_nS52(SmInitialPseudoTest *const me);
 void smIPT_nS6(SmInitialPseudoTest *const me);
 void smIPT_nS61(SmInitialPseudoTest *const me);
+void smIPT_nS611(SmInitialPseudoTest *const me);
+void smIPT_nS612(SmInitialPseudoTest *const me);
+void smIPT_nS6121(SmInitialPseudoTest *const me);
 void smIPT_nS62(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
@@ -83,14 +90,20 @@ void smIPT_xS411(SmInitialPseudoTest *const me);
 void smIPT_xS5(SmInitialPseudoTest *const me);
 void smIPT_xS51(SmInitialPseudoTest *const me);
 void smIPT_xS511(SmInitialPseudoTest *const me);
+void smIPT_xS512(SmInitialPseudoTest *const me);
+void smIPT_xS5121(SmInitialPseudoTest *const me);
 void smIPT_xS52(SmInitialPseudoTest *const me);
 void smIPT_xS6(SmInitialPseudoTest *const me);
 void smIPT_xS61(SmInitialPseudoTest *const me);
+void smIPT_xS611(SmInitialPseudoTest *const me);
+void smIPT_xS612(SmInitialPseudoTest *const me);
+void smIPT_xS6121(SmInitialPseudoTest *const me);
 void smIPT_xS62(SmInitialPseudoTest *const me);
 
 /* ............................ Declares guards ............................ */
 rbool_t smIPT_isC1(const RKH_SM_T *sma, RKH_EVT_T *pe);
 rbool_t smIPT_isC2(const RKH_SM_T *sma, RKH_EVT_T *pe);
+rbool_t smIPT_isC3(const RKH_SM_T *sma, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

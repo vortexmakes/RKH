@@ -38,6 +38,26 @@ void smIPT_tr1_StubWithCallback(CMOCK_smIPT_tr1_CALLBACK Callback);
 void smIPT_tr1_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define smIPT_tr1_IgnoreArg_pe() smIPT_tr1_CMockIgnoreArg_pe(__LINE__)
 void smIPT_tr1_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line);
+#define smIPT_tr2_Ignore() smIPT_tr2_CMockIgnore()
+void smIPT_tr2_CMockIgnore(void);
+#define smIPT_tr2_Expect(me, pe) smIPT_tr2_CMockExpect(__LINE__, me, pe)
+void smIPT_tr2_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me, RKH_EVT_T* pe);
+typedef void (* CMOCK_smIPT_tr2_CALLBACK)(SmInitialPseudoTest* const me, RKH_EVT_T* pe, int cmock_num_calls);
+void smIPT_tr2_StubWithCallback(CMOCK_smIPT_tr2_CALLBACK Callback);
+#define smIPT_tr2_IgnoreArg_me() smIPT_tr2_CMockIgnoreArg_me(__LINE__)
+void smIPT_tr2_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_tr2_IgnoreArg_pe() smIPT_tr2_CMockIgnoreArg_pe(__LINE__)
+void smIPT_tr2_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line);
+#define smIPT_tr3_Ignore() smIPT_tr3_CMockIgnore()
+void smIPT_tr3_CMockIgnore(void);
+#define smIPT_tr3_Expect(me, pe) smIPT_tr3_CMockExpect(__LINE__, me, pe)
+void smIPT_tr3_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me, RKH_EVT_T* pe);
+typedef void (* CMOCK_smIPT_tr3_CALLBACK)(SmInitialPseudoTest* const me, RKH_EVT_T* pe, int cmock_num_calls);
+void smIPT_tr3_StubWithCallback(CMOCK_smIPT_tr3_CALLBACK Callback);
+#define smIPT_tr3_IgnoreArg_me() smIPT_tr3_CMockIgnoreArg_me(__LINE__)
+void smIPT_tr3_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_tr3_IgnoreArg_pe() smIPT_tr3_CMockIgnoreArg_pe(__LINE__)
+void smIPT_tr3_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line);
 #define smIPT_nS0_Ignore() smIPT_nS0_CMockIgnore()
 void smIPT_nS0_CMockIgnore(void);
 #define smIPT_nS0_Expect(me) smIPT_nS0_CMockExpect(__LINE__, me)
@@ -182,6 +202,22 @@ typedef void (* CMOCK_smIPT_nS511_CALLBACK)(SmInitialPseudoTest* const me, int c
 void smIPT_nS511_StubWithCallback(CMOCK_smIPT_nS511_CALLBACK Callback);
 #define smIPT_nS511_IgnoreArg_me() smIPT_nS511_CMockIgnoreArg_me(__LINE__)
 void smIPT_nS511_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_nS512_Ignore() smIPT_nS512_CMockIgnore()
+void smIPT_nS512_CMockIgnore(void);
+#define smIPT_nS512_Expect(me) smIPT_nS512_CMockExpect(__LINE__, me)
+void smIPT_nS512_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_nS512_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_nS512_StubWithCallback(CMOCK_smIPT_nS512_CALLBACK Callback);
+#define smIPT_nS512_IgnoreArg_me() smIPT_nS512_CMockIgnoreArg_me(__LINE__)
+void smIPT_nS512_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_nS5121_Ignore() smIPT_nS5121_CMockIgnore()
+void smIPT_nS5121_CMockIgnore(void);
+#define smIPT_nS5121_Expect(me) smIPT_nS5121_CMockExpect(__LINE__, me)
+void smIPT_nS5121_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_nS5121_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_nS5121_StubWithCallback(CMOCK_smIPT_nS5121_CALLBACK Callback);
+#define smIPT_nS5121_IgnoreArg_me() smIPT_nS5121_CMockIgnoreArg_me(__LINE__)
+void smIPT_nS5121_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define smIPT_nS52_Ignore() smIPT_nS52_CMockIgnore()
 void smIPT_nS52_CMockIgnore(void);
 #define smIPT_nS52_Expect(me) smIPT_nS52_CMockExpect(__LINE__, me)
@@ -206,6 +242,30 @@ typedef void (* CMOCK_smIPT_nS61_CALLBACK)(SmInitialPseudoTest* const me, int cm
 void smIPT_nS61_StubWithCallback(CMOCK_smIPT_nS61_CALLBACK Callback);
 #define smIPT_nS61_IgnoreArg_me() smIPT_nS61_CMockIgnoreArg_me(__LINE__)
 void smIPT_nS61_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_nS611_Ignore() smIPT_nS611_CMockIgnore()
+void smIPT_nS611_CMockIgnore(void);
+#define smIPT_nS611_Expect(me) smIPT_nS611_CMockExpect(__LINE__, me)
+void smIPT_nS611_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_nS611_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_nS611_StubWithCallback(CMOCK_smIPT_nS611_CALLBACK Callback);
+#define smIPT_nS611_IgnoreArg_me() smIPT_nS611_CMockIgnoreArg_me(__LINE__)
+void smIPT_nS611_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_nS612_Ignore() smIPT_nS612_CMockIgnore()
+void smIPT_nS612_CMockIgnore(void);
+#define smIPT_nS612_Expect(me) smIPT_nS612_CMockExpect(__LINE__, me)
+void smIPT_nS612_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_nS612_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_nS612_StubWithCallback(CMOCK_smIPT_nS612_CALLBACK Callback);
+#define smIPT_nS612_IgnoreArg_me() smIPT_nS612_CMockIgnoreArg_me(__LINE__)
+void smIPT_nS612_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_nS6121_Ignore() smIPT_nS6121_CMockIgnore()
+void smIPT_nS6121_CMockIgnore(void);
+#define smIPT_nS6121_Expect(me) smIPT_nS6121_CMockExpect(__LINE__, me)
+void smIPT_nS6121_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_nS6121_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_nS6121_StubWithCallback(CMOCK_smIPT_nS6121_CALLBACK Callback);
+#define smIPT_nS6121_IgnoreArg_me() smIPT_nS6121_CMockIgnoreArg_me(__LINE__)
+void smIPT_nS6121_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define smIPT_nS62_Ignore() smIPT_nS62_CMockIgnore()
 void smIPT_nS62_CMockIgnore(void);
 #define smIPT_nS62_Expect(me) smIPT_nS62_CMockExpect(__LINE__, me)
@@ -358,6 +418,22 @@ typedef void (* CMOCK_smIPT_xS511_CALLBACK)(SmInitialPseudoTest* const me, int c
 void smIPT_xS511_StubWithCallback(CMOCK_smIPT_xS511_CALLBACK Callback);
 #define smIPT_xS511_IgnoreArg_me() smIPT_xS511_CMockIgnoreArg_me(__LINE__)
 void smIPT_xS511_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_xS512_Ignore() smIPT_xS512_CMockIgnore()
+void smIPT_xS512_CMockIgnore(void);
+#define smIPT_xS512_Expect(me) smIPT_xS512_CMockExpect(__LINE__, me)
+void smIPT_xS512_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_xS512_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_xS512_StubWithCallback(CMOCK_smIPT_xS512_CALLBACK Callback);
+#define smIPT_xS512_IgnoreArg_me() smIPT_xS512_CMockIgnoreArg_me(__LINE__)
+void smIPT_xS512_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_xS5121_Ignore() smIPT_xS5121_CMockIgnore()
+void smIPT_xS5121_CMockIgnore(void);
+#define smIPT_xS5121_Expect(me) smIPT_xS5121_CMockExpect(__LINE__, me)
+void smIPT_xS5121_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_xS5121_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_xS5121_StubWithCallback(CMOCK_smIPT_xS5121_CALLBACK Callback);
+#define smIPT_xS5121_IgnoreArg_me() smIPT_xS5121_CMockIgnoreArg_me(__LINE__)
+void smIPT_xS5121_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define smIPT_xS52_Ignore() smIPT_xS52_CMockIgnore()
 void smIPT_xS52_CMockIgnore(void);
 #define smIPT_xS52_Expect(me) smIPT_xS52_CMockExpect(__LINE__, me)
@@ -382,6 +458,30 @@ typedef void (* CMOCK_smIPT_xS61_CALLBACK)(SmInitialPseudoTest* const me, int cm
 void smIPT_xS61_StubWithCallback(CMOCK_smIPT_xS61_CALLBACK Callback);
 #define smIPT_xS61_IgnoreArg_me() smIPT_xS61_CMockIgnoreArg_me(__LINE__)
 void smIPT_xS61_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_xS611_Ignore() smIPT_xS611_CMockIgnore()
+void smIPT_xS611_CMockIgnore(void);
+#define smIPT_xS611_Expect(me) smIPT_xS611_CMockExpect(__LINE__, me)
+void smIPT_xS611_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_xS611_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_xS611_StubWithCallback(CMOCK_smIPT_xS611_CALLBACK Callback);
+#define smIPT_xS611_IgnoreArg_me() smIPT_xS611_CMockIgnoreArg_me(__LINE__)
+void smIPT_xS611_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_xS612_Ignore() smIPT_xS612_CMockIgnore()
+void smIPT_xS612_CMockIgnore(void);
+#define smIPT_xS612_Expect(me) smIPT_xS612_CMockExpect(__LINE__, me)
+void smIPT_xS612_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_xS612_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_xS612_StubWithCallback(CMOCK_smIPT_xS612_CALLBACK Callback);
+#define smIPT_xS612_IgnoreArg_me() smIPT_xS612_CMockIgnoreArg_me(__LINE__)
+void smIPT_xS612_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define smIPT_xS6121_Ignore() smIPT_xS6121_CMockIgnore()
+void smIPT_xS6121_CMockIgnore(void);
+#define smIPT_xS6121_Expect(me) smIPT_xS6121_CMockExpect(__LINE__, me)
+void smIPT_xS6121_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me);
+typedef void (* CMOCK_smIPT_xS6121_CALLBACK)(SmInitialPseudoTest* const me, int cmock_num_calls);
+void smIPT_xS6121_StubWithCallback(CMOCK_smIPT_xS6121_CALLBACK Callback);
+#define smIPT_xS6121_IgnoreArg_me() smIPT_xS6121_CMockIgnoreArg_me(__LINE__)
+void smIPT_xS6121_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define smIPT_xS62_Ignore() smIPT_xS62_CMockIgnore()
 void smIPT_xS62_CMockIgnore(void);
 #define smIPT_xS62_Expect(me) smIPT_xS62_CMockExpect(__LINE__, me)
@@ -410,5 +510,15 @@ void smIPT_isC2_StubWithCallback(CMOCK_smIPT_isC2_CALLBACK Callback);
 void smIPT_isC2_CMockIgnoreArg_sma(UNITY_LINE_TYPE cmock_line);
 #define smIPT_isC2_IgnoreArg_pe() smIPT_isC2_CMockIgnoreArg_pe(__LINE__)
 void smIPT_isC2_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line);
+#define smIPT_isC3_IgnoreAndReturn(cmock_retval) smIPT_isC3_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void smIPT_isC3_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rbool_t cmock_to_return);
+#define smIPT_isC3_ExpectAndReturn(sma, pe, cmock_retval) smIPT_isC3_CMockExpectAndReturn(__LINE__, sma, pe, cmock_retval)
+void smIPT_isC3_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const RKH_SM_T* sma, RKH_EVT_T* pe, rbool_t cmock_to_return);
+typedef rbool_t (* CMOCK_smIPT_isC3_CALLBACK)(const RKH_SM_T* sma, RKH_EVT_T* pe, int cmock_num_calls);
+void smIPT_isC3_StubWithCallback(CMOCK_smIPT_isC3_CALLBACK Callback);
+#define smIPT_isC3_IgnoreArg_sma() smIPT_isC3_CMockIgnoreArg_sma(__LINE__)
+void smIPT_isC3_CMockIgnoreArg_sma(UNITY_LINE_TYPE cmock_line);
+#define smIPT_isC3_IgnoreArg_pe() smIPT_isC3_CMockIgnoreArg_pe(__LINE__)
+void smIPT_isC3_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line);
 
 #endif

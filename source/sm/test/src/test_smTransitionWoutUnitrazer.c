@@ -682,9 +682,9 @@ TEST(trnWoutUnitrazer, generatedCompletionEventByFinalState)
     smTest_init_Expect(RKH_CAST(SmTest, smTest));
     smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
     /* Expectations for completion transition */
-    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evCompletion, 
                                    RKH_TRUE);
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
     smTest_tr60_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
     setProfileWoutUnitrazer(smTest,
                             RKH_STATE_CAST(&s21),

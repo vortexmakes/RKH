@@ -68,16 +68,12 @@ TEST_GROUP_RUNNER(InitPseudostate)
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyDeepHistoryToSimpleState);
 	RUN_TEST_CASE(InitPseudostate, trnToLoadedDeepHistory);
 	RUN_TEST_CASE(InitPseudostate, trnToLoadedDeepHistoryToNestedState);
-#if 0
 	RUN_TEST_CASE(InitPseudostate, trnToBranchToSimpleState);
 	RUN_TEST_CASE(InitPseudostate, trnToBranchToCmpState);
+	RUN_TEST_CASE(InitPseudostate, trnToBranchToNestedCmpState);
 	RUN_TEST_CASE(InitPseudostate, trnToBranchToNestedSimpleState);
 	RUN_TEST_CASE(InitPseudostate, trnToJunctionToSimpleState);
-#endif
-#if 0
-	RUN_TEST_CASE(InitPseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn);
-	RUN_TEST_CASE(InitPseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn);
-#endif
+	RUN_TEST_CASE(InitPseudostate, trnToJunctionToCmpState);
 }
 
 /* ------------------------------ End of file ------------------------------ */
