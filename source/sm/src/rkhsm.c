@@ -420,7 +420,7 @@ rkh_sm_init(RKH_SM_T *me)
 void
 rkh_sm_clear_history(RKHROM RKH_SHIST_T *h)
 {
-    *h->target = (RKHROM void *)0;
+    *(h->target) = (RKHROM RKH_ST_T *)0;
 }
 #endif
 
