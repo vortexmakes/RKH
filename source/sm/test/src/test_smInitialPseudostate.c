@@ -68,6 +68,7 @@ static RKH_STATIC_EVENT(evC, C);
 static RKH_STATIC_EVENT(evD, D);
 static RKH_STATIC_EVENT(evE, E);
 static RKH_STATIC_EVENT(evF, F);
+extern const RKH_EVT_T evCreation;
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -156,14 +157,15 @@ TEST_TEAR_DOWN(InitPseudostate)
 TEST(InitPseudostate, firstStateAfterInit)
 {
     UtrzProcessOut *p;
+    SmInitialPseudoTest *me = smInitialPseudoTest;
 
-    smIPT_init_Expect(smInitialPseudoTest);
-    smIPT_nS0_Expect(smInitialPseudoTest);
+    smIPT_init_Expect(me);
+    smIPT_nS0_Expect(me);
 
-	sm_init_expect(RKH_STATE_CAST(&smIPT_s0));
-	sm_enstate_expect(RKH_STATE_CAST(&smIPT_s0));
-
-    rkh_sm_init((RKH_SM_T *)smInitialPseudoTest);
+    trnStepExpect(me, &smIPT_s0, NULL, 
+                  NULL, NULL, NULL, 
+                  &evCreation);
+    rkh_sm_init((RKH_SM_T *)me);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);

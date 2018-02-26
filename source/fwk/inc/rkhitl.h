@@ -143,6 +143,18 @@ extern "C" {
 
 /**
  *  \brief
+ *	This macro is used to indicate the State Machine creation event.
+ *  
+ *  Upon creation, a State Machine will perform its initialization during 
+ *  which it executes an initial compound transition prompted by the 
+ *  creation, after which it enters a wait point, which is represented by 
+ *  a stable state configuration. It remains thus until an Event stored in 
+ *  its event pool is dispatched.
+ */
+#define RKH_SM_CREATION_EVENT       (RKH_ANY - 2)
+
+/**
+ *  \brief
  *  RKH allows up to RKH_CFG_FWK_MAX_SMA different priority levels
  *  (see rkhcfg.h).
  *

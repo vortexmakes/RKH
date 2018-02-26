@@ -74,6 +74,8 @@ TEST_GROUP_RUNNER(InitPseudostate)
 	RUN_TEST_CASE(InitPseudostate, trnToBranchToNestedSimpleState);
 	RUN_TEST_CASE(InitPseudostate, trnToJunctionToSimpleState);
 	RUN_TEST_CASE(InitPseudostate, trnToJunctionToCmpState);
+#if 0
+#endif
 }
 
 /* ------------------------------ End of file ------------------------------ */
