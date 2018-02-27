@@ -35,7 +35,7 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* ........................ Declares initial action ........................ */
-void smIPT_init(SmInitialPseudoTest *const me);
+void smIPT_init(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 void smIPT_tr1(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
@@ -70,6 +70,14 @@ void smIPT_nS611(SmInitialPseudoTest *const me);
 void smIPT_nS612(SmInitialPseudoTest *const me);
 void smIPT_nS6121(SmInitialPseudoTest *const me);
 void smIPT_nS62(SmInitialPseudoTest *const me);
+void smI0_nS0(SmInitialPseudoTest *const me);
+void smI1_nS0(SmInitialPseudoTest *const me);
+void smI1_nS01(SmInitialPseudoTest *const me);
+void smI2_nS0(SmInitialPseudoTest *const me);
+void smI2_nS01(SmInitialPseudoTest *const me);
+void smI3_nS0(SmInitialPseudoTest *const me);
+void smI3_nS01(SmInitialPseudoTest *const me);
+void smI3_nS011(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
 void smIPT_xS0(SmInitialPseudoTest *const me);

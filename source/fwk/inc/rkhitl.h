@@ -1799,13 +1799,13 @@ extern "C" {
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), # name, (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia), (ie) \
+                (RKH_TRN_ACT_T)(ia), (ie) \
             }
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia), (ie) \
+                (RKH_TRN_ACT_T)(ia), (ie) \
             }
     #endif
 #else
@@ -1813,13 +1813,13 @@ extern "C" {
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), # name, (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia) \
+                (RKH_TRN_ACT_T)(ia) \
             }
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia) \
+                (RKH_TRN_ACT_T)(ia) \
             }
     #endif
 #endif

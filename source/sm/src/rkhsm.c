@@ -543,8 +543,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     {
         stn = ets = cs;
         trnAct = RKH_SMA_ACCESS_CONST(me, iaction);
-        nn = 1;
-        sentry[0] = CST(ets);
+        nn = 0;
         ix_x = 0;
     }
 
@@ -723,16 +722,22 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             ts = CST(ets);             /* finally, set the main target state */
         }
 
-        if (isIntTrn == RKH_FALSE && isMicroStep == RKH_FALSE && 
-            isCreationEvent == RKH_FALSE)
+        if (isIntTrn == RKH_FALSE && isMicroStep == RKH_FALSE)
         {
-            /* ---- Stage 4 ------------------------------------------------ */
-            /* first of all, find the LCA then */
-            /* perform the exit actions of the exited states according */
-            /* to the order states are exited, from low state to high state, */
-            /* update histories of exited states, */
-            /* and, generate the set of entered states */
-            RKH_EXEC_EXIT_ACTION(cs, ts, me, nn);
+            if (isCreationEvent == RKH_FALSE)
+            {
+                /* ---- Stage 4 -------------------------------------------- */
+                /* first of all, find the LCA then */
+                /* perform the exit actions of the exited states according */
+                /* to the order states are exited, from low state to high */ 
+                /* state, update histories of exited states, and, generate */ 
+                /* the set of entered states */
+                RKH_EXEC_EXIT_ACTION(cs, ts, me, nn);
+            }
+            else
+            {
+                nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
+            }
         }
         /* ---- Stage 5 ---------------------------------------------------- */
         /* perform the actions on the transition sequentially */

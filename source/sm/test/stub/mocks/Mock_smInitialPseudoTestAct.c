@@ -8,6 +8,14 @@
 
 static const char* CMockString_me = "me";
 static const char* CMockString_pe = "pe";
+static const char* CMockString_smI0_nS0 = "smI0_nS0";
+static const char* CMockString_smI1_nS0 = "smI1_nS0";
+static const char* CMockString_smI1_nS01 = "smI1_nS01";
+static const char* CMockString_smI2_nS0 = "smI2_nS0";
+static const char* CMockString_smI2_nS01 = "smI2_nS01";
+static const char* CMockString_smI3_nS0 = "smI3_nS0";
+static const char* CMockString_smI3_nS01 = "smI3_nS01";
+static const char* CMockString_smI3_nS011 = "smI3_nS011";
 static const char* CMockString_smIPT_init = "smIPT_init";
 static const char* CMockString_smIPT_isC1 = "smIPT_isC1";
 static const char* CMockString_smIPT_isC2 = "smIPT_isC2";
@@ -76,7 +84,9 @@ typedef struct _CMOCK_smIPT_init_CALL_INSTANCE
   UNITY_LINE_TYPE LineNumber;
   int CallOrder;
   SmInitialPseudoTest* Expected_me;
+  RKH_EVT_T* Expected_pe;
   int IgnoreArg_me;
+  int IgnoreArg_pe;
 
 } CMOCK_smIPT_init_CALL_INSTANCE;
 
@@ -355,6 +365,78 @@ typedef struct _CMOCK_smIPT_nS62_CALL_INSTANCE
   int IgnoreArg_me;
 
 } CMOCK_smIPT_nS62_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI0_nS0_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI0_nS0_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI1_nS0_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI1_nS0_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI1_nS01_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI1_nS01_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI2_nS0_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI2_nS0_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI2_nS01_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI2_nS01_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI3_nS0_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI3_nS0_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI3_nS01_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI3_nS01_CALL_INSTANCE;
+
+typedef struct _CMOCK_smI3_nS011_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  SmInitialPseudoTest* Expected_me;
+  int IgnoreArg_me;
+
+} CMOCK_smI3_nS011_CALL_INSTANCE;
 
 typedef struct _CMOCK_smIPT_xS0_CALL_INSTANCE
 {
@@ -761,6 +843,38 @@ static struct Mock_smInitialPseudoTestActInstance
   CMOCK_smIPT_nS62_CALLBACK smIPT_nS62_CallbackFunctionPointer;
   int smIPT_nS62_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE smIPT_nS62_CallInstance;
+  int smI0_nS0_IgnoreBool;
+  CMOCK_smI0_nS0_CALLBACK smI0_nS0_CallbackFunctionPointer;
+  int smI0_nS0_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI0_nS0_CallInstance;
+  int smI1_nS0_IgnoreBool;
+  CMOCK_smI1_nS0_CALLBACK smI1_nS0_CallbackFunctionPointer;
+  int smI1_nS0_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI1_nS0_CallInstance;
+  int smI1_nS01_IgnoreBool;
+  CMOCK_smI1_nS01_CALLBACK smI1_nS01_CallbackFunctionPointer;
+  int smI1_nS01_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI1_nS01_CallInstance;
+  int smI2_nS0_IgnoreBool;
+  CMOCK_smI2_nS0_CALLBACK smI2_nS0_CallbackFunctionPointer;
+  int smI2_nS0_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI2_nS0_CallInstance;
+  int smI2_nS01_IgnoreBool;
+  CMOCK_smI2_nS01_CALLBACK smI2_nS01_CallbackFunctionPointer;
+  int smI2_nS01_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI2_nS01_CallInstance;
+  int smI3_nS0_IgnoreBool;
+  CMOCK_smI3_nS0_CALLBACK smI3_nS0_CallbackFunctionPointer;
+  int smI3_nS0_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI3_nS0_CallInstance;
+  int smI3_nS01_IgnoreBool;
+  CMOCK_smI3_nS01_CALLBACK smI3_nS01_CallbackFunctionPointer;
+  int smI3_nS01_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI3_nS01_CallInstance;
+  int smI3_nS011_IgnoreBool;
+  CMOCK_smI3_nS011_CALLBACK smI3_nS011_CallbackFunctionPointer;
+  int smI3_nS011_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE smI3_nS011_CallInstance;
   int smIPT_xS0_IgnoreBool;
   CMOCK_smIPT_xS0_CALLBACK smIPT_xS0_CallbackFunctionPointer;
   int smIPT_xS0_CallbackCalls;
@@ -1079,6 +1193,54 @@ void Mock_smInitialPseudoTestAct_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smIPT_nS62_CallInstance, cmock_line, CMockStringCalledLess);
   if (Mock.smIPT_nS62_CallbackFunctionPointer != NULL)
     Mock.smIPT_nS62_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI0_nS0_IgnoreBool)
+    Mock.smI0_nS0_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI0_nS0);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI0_nS0_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI0_nS0_CallbackFunctionPointer != NULL)
+    Mock.smI0_nS0_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI1_nS0_IgnoreBool)
+    Mock.smI1_nS0_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI1_nS0);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI1_nS0_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI1_nS0_CallbackFunctionPointer != NULL)
+    Mock.smI1_nS0_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI1_nS01_IgnoreBool)
+    Mock.smI1_nS01_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI1_nS01);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI1_nS01_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI1_nS01_CallbackFunctionPointer != NULL)
+    Mock.smI1_nS01_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI2_nS0_IgnoreBool)
+    Mock.smI2_nS0_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI2_nS0);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI2_nS0_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI2_nS0_CallbackFunctionPointer != NULL)
+    Mock.smI2_nS0_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI2_nS01_IgnoreBool)
+    Mock.smI2_nS01_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI2_nS01);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI2_nS01_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI2_nS01_CallbackFunctionPointer != NULL)
+    Mock.smI2_nS01_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI3_nS0_IgnoreBool)
+    Mock.smI3_nS0_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI3_nS0);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI3_nS0_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI3_nS0_CallbackFunctionPointer != NULL)
+    Mock.smI3_nS0_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI3_nS01_IgnoreBool)
+    Mock.smI3_nS01_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI3_nS01);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI3_nS01_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI3_nS01_CallbackFunctionPointer != NULL)
+    Mock.smI3_nS01_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.smI3_nS011_IgnoreBool)
+    Mock.smI3_nS011_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_smI3_nS011);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.smI3_nS011_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.smI3_nS011_CallbackFunctionPointer != NULL)
+    Mock.smI3_nS011_CallInstance = CMOCK_GUTS_NONE;
   if (Mock.smIPT_xS0_IgnoreBool)
     Mock.smIPT_xS0_CallInstance = CMOCK_GUTS_NONE;
   UNITY_SET_DETAIL(CMockString_smIPT_xS0);
@@ -1332,6 +1494,22 @@ void Mock_smInitialPseudoTestAct_Destroy(void)
   Mock.smIPT_nS6121_CallbackCalls = 0;
   Mock.smIPT_nS62_CallbackFunctionPointer = NULL;
   Mock.smIPT_nS62_CallbackCalls = 0;
+  Mock.smI0_nS0_CallbackFunctionPointer = NULL;
+  Mock.smI0_nS0_CallbackCalls = 0;
+  Mock.smI1_nS0_CallbackFunctionPointer = NULL;
+  Mock.smI1_nS0_CallbackCalls = 0;
+  Mock.smI1_nS01_CallbackFunctionPointer = NULL;
+  Mock.smI1_nS01_CallbackCalls = 0;
+  Mock.smI2_nS0_CallbackFunctionPointer = NULL;
+  Mock.smI2_nS0_CallbackCalls = 0;
+  Mock.smI2_nS01_CallbackFunctionPointer = NULL;
+  Mock.smI2_nS01_CallbackCalls = 0;
+  Mock.smI3_nS0_CallbackFunctionPointer = NULL;
+  Mock.smI3_nS0_CallbackCalls = 0;
+  Mock.smI3_nS01_CallbackFunctionPointer = NULL;
+  Mock.smI3_nS01_CallbackCalls = 0;
+  Mock.smI3_nS011_CallbackFunctionPointer = NULL;
+  Mock.smI3_nS011_CallbackCalls = 0;
   Mock.smIPT_xS0_CallbackFunctionPointer = NULL;
   Mock.smIPT_xS0_CallbackCalls = 0;
   Mock.smIPT_xS1_CallbackFunctionPointer = NULL;
@@ -1396,7 +1574,7 @@ void Mock_smInitialPseudoTestAct_Destroy(void)
   GlobalVerifyOrder = 0;
 }
 
-void smIPT_init(SmInitialPseudoTest* const me)
+void smIPT_init(SmInitialPseudoTest* const me, RKH_EVT_T* pe)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_smIPT_init_CALL_INSTANCE* cmock_call_instance;
@@ -1419,17 +1597,24 @@ void smIPT_init(SmInitialPseudoTest* const me)
     UNITY_SET_DETAILS(CMockString_smIPT_init,CMockString_me);
     UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
   }
+  if (!cmock_call_instance->IgnoreArg_pe)
+  {
+    UNITY_SET_DETAILS(CMockString_smIPT_init,CMockString_pe);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_pe, pe, cmock_line, CMockStringMismatch);
+  }
   if (Mock.smIPT_init_CallbackFunctionPointer != NULL)
   {
-    Mock.smIPT_init_CallbackFunctionPointer(me, Mock.smIPT_init_CallbackCalls++);
+    Mock.smIPT_init_CallbackFunctionPointer(me, pe, Mock.smIPT_init_CallbackCalls++);
   }
   UNITY_CLR_DETAILS();
 }
 
-void CMockExpectParameters_smIPT_init(CMOCK_smIPT_init_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+void CMockExpectParameters_smIPT_init(CMOCK_smIPT_init_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me, RKH_EVT_T* pe)
 {
   cmock_call_instance->Expected_me = me;
   cmock_call_instance->IgnoreArg_me = 0;
+  cmock_call_instance->Expected_pe = pe;
+  cmock_call_instance->IgnoreArg_pe = 0;
 }
 
 void smIPT_init_CMockIgnore(void)
@@ -1437,7 +1622,7 @@ void smIPT_init_CMockIgnore(void)
   Mock.smIPT_init_IgnoreBool = (int)1;
 }
 
-void smIPT_init_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+void smIPT_init_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me, RKH_EVT_T* pe)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smIPT_init_CALL_INSTANCE));
   CMOCK_smIPT_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -1447,7 +1632,7 @@ void smIPT_init_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* con
   Mock.smIPT_init_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
   cmock_call_instance->CallOrder = ++GlobalExpectCount;
-  CMockExpectParameters_smIPT_init(cmock_call_instance, me);
+  CMockExpectParameters_smIPT_init(cmock_call_instance, me, pe);
   UNITY_CLR_DETAILS();
 }
 
@@ -1462,6 +1647,13 @@ void smIPT_init_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
   CMOCK_smIPT_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smIPT_init_CallInstance));
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
   cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smIPT_init_CMockIgnoreArg_pe(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smIPT_init_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smIPT_init_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_pe = 1;
 }
 
 void smIPT_tr1(SmInitialPseudoTest* const me, RKH_EVT_T* pe)
@@ -3542,6 +3734,550 @@ void smIPT_nS62_StubWithCallback(CMOCK_smIPT_nS62_CALLBACK Callback)
 void smIPT_nS62_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_smIPT_nS62_CALL_INSTANCE* cmock_call_instance = (CMOCK_smIPT_nS62_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smIPT_nS62_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI0_nS0(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI0_nS0_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI0_nS0);
+  cmock_call_instance = (CMOCK_smI0_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI0_nS0_CallInstance);
+  Mock.smI0_nS0_CallInstance = CMock_Guts_MemNext(Mock.smI0_nS0_CallInstance);
+  if (Mock.smI0_nS0_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI0_nS0,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI0_nS0_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI0_nS0_CallbackFunctionPointer(me, Mock.smI0_nS0_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI0_nS0(CMOCK_smI0_nS0_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI0_nS0_CMockIgnore(void)
+{
+  Mock.smI0_nS0_IgnoreBool = (int)1;
+}
+
+void smI0_nS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI0_nS0_CALL_INSTANCE));
+  CMOCK_smI0_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI0_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI0_nS0_CallInstance = CMock_Guts_MemChain(Mock.smI0_nS0_CallInstance, cmock_guts_index);
+  Mock.smI0_nS0_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI0_nS0(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI0_nS0_StubWithCallback(CMOCK_smI0_nS0_CALLBACK Callback)
+{
+  Mock.smI0_nS0_IgnoreBool = (int)0;
+  Mock.smI0_nS0_CallbackFunctionPointer = Callback;
+}
+
+void smI0_nS0_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI0_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI0_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI0_nS0_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI1_nS0(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI1_nS0_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI1_nS0);
+  cmock_call_instance = (CMOCK_smI1_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI1_nS0_CallInstance);
+  Mock.smI1_nS0_CallInstance = CMock_Guts_MemNext(Mock.smI1_nS0_CallInstance);
+  if (Mock.smI1_nS0_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI1_nS0,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI1_nS0_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI1_nS0_CallbackFunctionPointer(me, Mock.smI1_nS0_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI1_nS0(CMOCK_smI1_nS0_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI1_nS0_CMockIgnore(void)
+{
+  Mock.smI1_nS0_IgnoreBool = (int)1;
+}
+
+void smI1_nS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI1_nS0_CALL_INSTANCE));
+  CMOCK_smI1_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI1_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI1_nS0_CallInstance = CMock_Guts_MemChain(Mock.smI1_nS0_CallInstance, cmock_guts_index);
+  Mock.smI1_nS0_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI1_nS0(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI1_nS0_StubWithCallback(CMOCK_smI1_nS0_CALLBACK Callback)
+{
+  Mock.smI1_nS0_IgnoreBool = (int)0;
+  Mock.smI1_nS0_CallbackFunctionPointer = Callback;
+}
+
+void smI1_nS0_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI1_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI1_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI1_nS0_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI1_nS01(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI1_nS01_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI1_nS01);
+  cmock_call_instance = (CMOCK_smI1_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI1_nS01_CallInstance);
+  Mock.smI1_nS01_CallInstance = CMock_Guts_MemNext(Mock.smI1_nS01_CallInstance);
+  if (Mock.smI1_nS01_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI1_nS01,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI1_nS01_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI1_nS01_CallbackFunctionPointer(me, Mock.smI1_nS01_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI1_nS01(CMOCK_smI1_nS01_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI1_nS01_CMockIgnore(void)
+{
+  Mock.smI1_nS01_IgnoreBool = (int)1;
+}
+
+void smI1_nS01_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI1_nS01_CALL_INSTANCE));
+  CMOCK_smI1_nS01_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI1_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI1_nS01_CallInstance = CMock_Guts_MemChain(Mock.smI1_nS01_CallInstance, cmock_guts_index);
+  Mock.smI1_nS01_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI1_nS01(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI1_nS01_StubWithCallback(CMOCK_smI1_nS01_CALLBACK Callback)
+{
+  Mock.smI1_nS01_IgnoreBool = (int)0;
+  Mock.smI1_nS01_CallbackFunctionPointer = Callback;
+}
+
+void smI1_nS01_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI1_nS01_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI1_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI1_nS01_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI2_nS0(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI2_nS0_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI2_nS0);
+  cmock_call_instance = (CMOCK_smI2_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI2_nS0_CallInstance);
+  Mock.smI2_nS0_CallInstance = CMock_Guts_MemNext(Mock.smI2_nS0_CallInstance);
+  if (Mock.smI2_nS0_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI2_nS0,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI2_nS0_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI2_nS0_CallbackFunctionPointer(me, Mock.smI2_nS0_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI2_nS0(CMOCK_smI2_nS0_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI2_nS0_CMockIgnore(void)
+{
+  Mock.smI2_nS0_IgnoreBool = (int)1;
+}
+
+void smI2_nS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI2_nS0_CALL_INSTANCE));
+  CMOCK_smI2_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI2_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI2_nS0_CallInstance = CMock_Guts_MemChain(Mock.smI2_nS0_CallInstance, cmock_guts_index);
+  Mock.smI2_nS0_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI2_nS0(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI2_nS0_StubWithCallback(CMOCK_smI2_nS0_CALLBACK Callback)
+{
+  Mock.smI2_nS0_IgnoreBool = (int)0;
+  Mock.smI2_nS0_CallbackFunctionPointer = Callback;
+}
+
+void smI2_nS0_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI2_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI2_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI2_nS0_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI2_nS01(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI2_nS01_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI2_nS01);
+  cmock_call_instance = (CMOCK_smI2_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI2_nS01_CallInstance);
+  Mock.smI2_nS01_CallInstance = CMock_Guts_MemNext(Mock.smI2_nS01_CallInstance);
+  if (Mock.smI2_nS01_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI2_nS01,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI2_nS01_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI2_nS01_CallbackFunctionPointer(me, Mock.smI2_nS01_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI2_nS01(CMOCK_smI2_nS01_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI2_nS01_CMockIgnore(void)
+{
+  Mock.smI2_nS01_IgnoreBool = (int)1;
+}
+
+void smI2_nS01_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI2_nS01_CALL_INSTANCE));
+  CMOCK_smI2_nS01_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI2_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI2_nS01_CallInstance = CMock_Guts_MemChain(Mock.smI2_nS01_CallInstance, cmock_guts_index);
+  Mock.smI2_nS01_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI2_nS01(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI2_nS01_StubWithCallback(CMOCK_smI2_nS01_CALLBACK Callback)
+{
+  Mock.smI2_nS01_IgnoreBool = (int)0;
+  Mock.smI2_nS01_CallbackFunctionPointer = Callback;
+}
+
+void smI2_nS01_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI2_nS01_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI2_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI2_nS01_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI3_nS0(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI3_nS0_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI3_nS0);
+  cmock_call_instance = (CMOCK_smI3_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI3_nS0_CallInstance);
+  Mock.smI3_nS0_CallInstance = CMock_Guts_MemNext(Mock.smI3_nS0_CallInstance);
+  if (Mock.smI3_nS0_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI3_nS0,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI3_nS0_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI3_nS0_CallbackFunctionPointer(me, Mock.smI3_nS0_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI3_nS0(CMOCK_smI3_nS0_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI3_nS0_CMockIgnore(void)
+{
+  Mock.smI3_nS0_IgnoreBool = (int)1;
+}
+
+void smI3_nS0_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI3_nS0_CALL_INSTANCE));
+  CMOCK_smI3_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI3_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI3_nS0_CallInstance = CMock_Guts_MemChain(Mock.smI3_nS0_CallInstance, cmock_guts_index);
+  Mock.smI3_nS0_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI3_nS0(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI3_nS0_StubWithCallback(CMOCK_smI3_nS0_CALLBACK Callback)
+{
+  Mock.smI3_nS0_IgnoreBool = (int)0;
+  Mock.smI3_nS0_CallbackFunctionPointer = Callback;
+}
+
+void smI3_nS0_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI3_nS0_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI3_nS0_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI3_nS0_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI3_nS01(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI3_nS01_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI3_nS01);
+  cmock_call_instance = (CMOCK_smI3_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI3_nS01_CallInstance);
+  Mock.smI3_nS01_CallInstance = CMock_Guts_MemNext(Mock.smI3_nS01_CallInstance);
+  if (Mock.smI3_nS01_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI3_nS01,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI3_nS01_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI3_nS01_CallbackFunctionPointer(me, Mock.smI3_nS01_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI3_nS01(CMOCK_smI3_nS01_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI3_nS01_CMockIgnore(void)
+{
+  Mock.smI3_nS01_IgnoreBool = (int)1;
+}
+
+void smI3_nS01_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI3_nS01_CALL_INSTANCE));
+  CMOCK_smI3_nS01_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI3_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI3_nS01_CallInstance = CMock_Guts_MemChain(Mock.smI3_nS01_CallInstance, cmock_guts_index);
+  Mock.smI3_nS01_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI3_nS01(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI3_nS01_StubWithCallback(CMOCK_smI3_nS01_CALLBACK Callback)
+{
+  Mock.smI3_nS01_IgnoreBool = (int)0;
+  Mock.smI3_nS01_CallbackFunctionPointer = Callback;
+}
+
+void smI3_nS01_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI3_nS01_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI3_nS01_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI3_nS01_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void smI3_nS011(SmInitialPseudoTest* const me)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_smI3_nS011_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_smI3_nS011);
+  cmock_call_instance = (CMOCK_smI3_nS011_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.smI3_nS011_CallInstance);
+  Mock.smI3_nS011_CallInstance = CMock_Guts_MemNext(Mock.smI3_nS011_CallInstance);
+  if (Mock.smI3_nS011_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_smI3_nS011,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.smI3_nS011_CallbackFunctionPointer != NULL)
+  {
+    Mock.smI3_nS011_CallbackFunctionPointer(me, Mock.smI3_nS011_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_smI3_nS011(CMOCK_smI3_nS011_CALL_INSTANCE* cmock_call_instance, SmInitialPseudoTest* const me)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+}
+
+void smI3_nS011_CMockIgnore(void)
+{
+  Mock.smI3_nS011_IgnoreBool = (int)1;
+}
+
+void smI3_nS011_CMockExpect(UNITY_LINE_TYPE cmock_line, SmInitialPseudoTest* const me)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_smI3_nS011_CALL_INSTANCE));
+  CMOCK_smI3_nS011_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI3_nS011_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.smI3_nS011_CallInstance = CMock_Guts_MemChain(Mock.smI3_nS011_CallInstance, cmock_guts_index);
+  Mock.smI3_nS011_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_smI3_nS011(cmock_call_instance, me);
+  UNITY_CLR_DETAILS();
+}
+
+void smI3_nS011_StubWithCallback(CMOCK_smI3_nS011_CALLBACK Callback)
+{
+  Mock.smI3_nS011_IgnoreBool = (int)0;
+  Mock.smI3_nS011_CallbackFunctionPointer = Callback;
+}
+
+void smI3_nS011_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_smI3_nS011_CALL_INSTANCE* cmock_call_instance = (CMOCK_smI3_nS011_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.smI3_nS011_CallInstance));
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
   cmock_call_instance->IgnoreArg_me = 1;
 }

@@ -53,6 +53,25 @@ RKH_DCLR_DHIST_STATE smIPT_s3Hist;
 RKH_DCLR_CHOICE_STATE smIPT_choice1;
 RKH_DCLR_COND_STATE smIPT_junction1;
 
+/* ........................ Declares state machines ........................ */
+RKH_SM_DCLR(smInitial0);
+RKH_DCLR_BASIC_STATE smI0_s0;
+
+/* ........................ Declares state machines ........................ */
+RKH_SM_DCLR(smInitial1);
+RKH_DCLR_BASIC_STATE smI1_s01;
+RKH_DCLR_COMP_STATE smI1_s0;
+
+/* ........................ Declares state machines ........................ */
+RKH_SM_DCLR(smInitial2);
+RKH_DCLR_BASIC_STATE smI2_s01;
+RKH_DCLR_COMP_STATE smI2_s0;
+
+/* ........................ Declares state machines ........................ */
+RKH_SM_DCLR(smInitial3);
+RKH_DCLR_BASIC_STATE smI3_s011;
+RKH_DCLR_COMP_STATE smI3_s0, smI3_s01;
+
 /* ------------------------------- Data types ------------------------------ */
 typedef struct SmInitialPseudoTest SmInitialPseudoTest;
 struct SmInitialPseudoTest      /* SMA derived from RKH_SMA_T structure */
