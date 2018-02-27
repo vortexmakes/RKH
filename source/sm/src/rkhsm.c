@@ -348,7 +348,7 @@ addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
             RKHROM RKH_ST_T *cmpSt)
 {
     RKHROM RKH_ST_T **missSt, *st;
-    rui8_t nEnSt;
+    rui8_t nEnSt = 0;
 
     if (IS_COMPOSITE(target) || IS_SIMPLE(target))
     {
@@ -442,7 +442,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     }
     else
     {
-        cs = CST(RKH_SMA_ACCESS_CONST(me, istate));
+        cs = CST(RKH_SMA_ACCESS_CONST(me, istate));   /* get dft state of SM */
     }
 
     /* ---- Stage 2 -------------------------------------------------------- */
@@ -498,33 +498,33 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
         ix_x = 0;
     }
 
-    ts = CST(ets);
-    nEntrySt = 0;
-    nal = 0;                            /* initialize transition action list */
-    pal = al;
     RKH_CLR_STEP();
+    nEntrySt = 0;
+    ts = CST(ets);
+    isIntTrn = IS_INTERNAL_TRANSITION(ts);     /* is an internal transition? */
     RKH_TR_SM_TRN(me,                           /* this state machine object */
                   stn,                            /* transition source state */
                   ts);                            /* transition target state */
 
-    /* Add action of the transition segment in the list */
-    if (rkh_add_tr_action(&pal, trnAct, &nal))
-    {
-        RKH_TR_SM_EX_TSEG(me);
-        RKH_ERROR();
-        return RKH_EX_TSEG;
-    }
-
-    RKH_INC_STEP();            /* increment the number of transition segment */
-    isIntTrn = IS_INTERNAL_TRANSITION(ets);    /* is an internal transition? */
-
-    if (isIntTrn == RKH_FALSE)
-    {
-        RKH_TR_SM_TS_STATE(me,                  /* this state machine object */
-                           ets);   /* target state of the transition segment */
-    }
     do
     {
+        nal = 0;                        /* initialize transition action list */
+        pal = al;
+        if (rkh_add_tr_action(&pal, trnAct, &nal))
+        {
+            RKH_TR_SM_EX_TSEG(me);
+            RKH_ERROR();
+            return RKH_EX_TSEG;
+        }
+
+        RKH_INC_STEP();        /* increment the number of transition segment */
+
+        if (isIntTrn == RKH_FALSE && isMicroStep == RKH_FALSE)
+        {
+            RKH_TR_SM_TS_STATE(me,              /* this state machine object */
+                               ets);       /* target state of the transition */
+                                                                   /*segment */
+        }
         if (isIntTrn == RKH_FALSE)
         {
             /* ---- Stage 3 ------------------------------------------------ */
@@ -673,23 +673,30 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             ts = CST(ets);             /* finally, set the main target state */
         }
 
-        if (isIntTrn == RKH_FALSE && isMicroStep == RKH_FALSE)
+        if (isIntTrn == RKH_FALSE)
         {
-            if (isCreationEvent == RKH_FALSE)
+            if (isMicroStep == RKH_FALSE)
             {
-                /* ---- Stage 4 -------------------------------------------- */
-                /* first of all, find the LCA then */
-                /* perform the exit actions of the exited states according */
-                /* to the order states are exited, from low state to high */ 
-                /* state, update histories of exited states, and, generate */ 
-                /* the set of entered states */
-                RKH_EXEC_EXIT_ACTION(cs, ts, me, nn);
+                if (isCreationEvent == RKH_FALSE)
+                {
+                    /* ---- Stage 4 -------------------------------------------- */
+                    /* first of all, find the LCA then */
+                    /* perform the exit actions of the exited states according */
+                    /* to the order states are exited, from low state to high */ 
+                    /* state, update histories of exited states, and, generate */ 
+                    /* the set of entered states */
+                    RKH_EXEC_EXIT_ACTION(cs, ts, me, nn);
+                }
+                else
+                {
+                    /* Upon state machine creation adds states to entry from dft */
+                    /* transition target to root */
+                    nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
+                }
             }
             else
             {
-                /* Upon state machine creation adds states from target to */
-                /* root */
-                nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
+                nn = addTargetSt(CST(ets), sentry, stn);
             }
         }
         /* ---- Stage 5 ---------------------------------------------------- */
@@ -719,23 +726,20 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 
             if (IS_COMPOSITE(ts))
             {
-                nal = 0;                /* initialize transition action list */
-                pal = al;
-
                 isMicroStep = RKH_TRUE;
-                if (rkh_add_tr_action(&pal, CCMP(ts)->initialAction, &nal))
-                {
-                    RKH_TR_SM_EX_TSEG(me);
-                    RKH_ERROR();
-                    return RKH_EX_TSEG;
-                }
+                trnAct = CCMP(ts)->initialAction;
                 ets = CCMP(ts)->defchild;
-                nn = 1;        /* after execute transition first step always */
+                stn = ts;                           /* tracking parent state */
+#if 0
+                nn = 1;
                 if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
                 {
                     sentry[0] = CST(ets);
                 }
-                stn = ts;
+#else
+                //addTargetSt(CST(ets), sentry, ts);
+                //nn = 1;
+#endif
             }
             else
             {
