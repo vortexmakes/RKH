@@ -352,22 +352,6 @@ addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
 
     if (IS_COMPOSITE(target) || IS_SIMPLE(target))
     {
-#if 0
-        *stList = target;               /* add target vertex */
-        missSt = stList + 1;
-        st = target;
-        nEnSt = 1;
-        while (st->parent != cmpSt)
-        {
-            st = st->parent;
-            *missSt++ = st;
-            ++nEnSt;
-        }
-        if (target != st)
-        {
-            *missSt = target;
-        }
-#else
         missSt = stList;
         st = target;
         nEnSt = 0;
@@ -377,7 +361,6 @@ addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
             st = st->parent;
             ++nEnSt;
         }
-#endif
     }
     return nEnSt;
 }
@@ -386,38 +369,7 @@ addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
 void
 rkh_sm_init(RKH_SM_T *me)
 {
-#if 0
-#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
-    RKHROM RKH_ST_T *s;
-#endif
-    RKH_SR_ALLOC();
-
-    RKH_ASSERT(me &&
-               RKH_SMA_ACCESS_CONST(me, istate) != (RKHROM RKH_ST_T *)0);
-    RKH_EXEC_INIT(me, RKH_SMA_ACCESS_CONST(me, iaction));
-    RKH_TR_SM_INIT(me, RKH_SMA_ACCESS_CONST(me, istate));
-
-#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
-    for (s = CST(RKH_SMA_ACCESS_CONST(me, istate));; )
-    {
-        RKH_EXEC_ENTRY(s, CM(me));
-        RKH_TR_SM_ENSTATE(me, s);
-
-        if (IS_COMPOSITE(s))
-        {
-            s = CST(CCMP(s)->defchild);
-        }
-        else
-        {
-            break;
-        }
-    }
-    ((RKH_SM_T *)me)->state = s;
-    rkh_update_deep_hist(((RKH_SM_T *)me)->state);
-#endif
-#else
     rkh_sm_dispatch((RKH_SM_T *)me, (RKH_EVT_T *)&evCreation);
-#endif
 }
 
 #if defined(RKH_HISTORY_ENABLED)
@@ -518,7 +470,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             {
                 break;
             }
-            /* UPDATE_IN_PARENT(stn); */
         }
 #else
         stn = cs;
@@ -795,11 +746,9 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 
     if (isIntTrn == RKH_FALSE)
     {
-#if 1
         RKH_TR_SM_NENEX(me,                     /* this state machine object */
                         nEntrySt,                        /* # entered states */
                         ix_x);                            /* # exited states */
-#endif
         /* ---- Stage 7 ---------------------------------------------------- */
         /* update deep history */
         rkh_update_deep_hist(CST(stn));

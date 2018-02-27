@@ -147,8 +147,14 @@ TEST(pseudostate, firstStateAfterInit)
 {
     UtrzProcessOut *p;
 
-	sm_init_expect(RKH_STATE_CAST(&smPT_waiting));
-	sm_enstate_expect(RKH_STATE_CAST(&smPT_waiting));
+    sm_init_expect(RKH_STATE_CAST(&smPT_waiting));
+    sm_trn_expect(RKH_STATE_CAST(&smPT_waiting), 
+                                 RKH_STATE_CAST(&smPT_waiting));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_waiting));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_waiting));
+    sm_nenex_expect(1, 0);
+    sm_state_expect(RKH_STATE_CAST(&smPT_waiting));
+    sm_evtProc_expect();
 
     rkh_sm_init((RKH_SM_T *)smPseudoTest);
 
@@ -173,7 +179,8 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn)
        RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s11), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s11), 0, TRN_NOT_INTERNAL, 1, &evB,
@@ -203,7 +210,8 @@ TEST(pseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn)
        RKH_STATE_CAST(&smPT_s121), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1, &evB,
@@ -234,7 +242,8 @@ TEST(pseudostate, exitFromCompositeWithLoadedShallowHistory)
        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s121), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s121), 
                RKH_STATE_CAST(&smPT_s1), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s0), 0, TRN_NOT_INTERNAL, 1, &evA,
@@ -266,7 +275,8 @@ TEST(pseudostate, trnToEmptyDeepHistoryWithoutDefaultTrn)
        RKH_STATE_CAST(&smPT_s121), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1, &evC,
@@ -296,7 +306,8 @@ TEST(pseudostate, trnToLoadedDeepHistoryWithoutDefaultTrn)
        RKH_STATE_CAST(&smPT_s122), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s122), 0, TRN_NOT_INTERNAL, 1, &evC,
@@ -327,7 +338,8 @@ TEST(pseudostate, exitFromCompositeWithLoadedDeepHistory)
        RKH_STATE_CAST(&smPT_s122), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s122), 0, TRN_NOT_INTERNAL, 1, &evD,
@@ -358,7 +370,8 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithDefaultTrn)
        RKH_STATE_CAST(&smPT_s2), RKH_STATE_CAST(&smPT_s22), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s22), 1, TRN_NOT_INTERNAL, 1, &evE,
@@ -387,7 +400,8 @@ TEST(pseudostate, trnToLoadedShallowHistoryWithDefaultTrn)
        RKH_STATE_CAST(&smPT_s2), RKH_STATE_CAST(&smPT_s21), RKH_STATE_CAST(0)
     };
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_s0), 
+    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
+               RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
                entryStates, exitStates, 
                RKH_STATE_CAST(&smPT_s21), 0, TRN_NOT_INTERNAL, 1, &evE,

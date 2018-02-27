@@ -114,7 +114,8 @@ setState(RKH_SMA_T *const me, const RKH_ST_T *state)
 }
 
 void
-setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState, 
+setProfile(RKH_SMA_T *const me, const RKH_ST_T *dftSt, 
+           const RKH_ST_T *currentState, 
            const RKH_ST_T *sourceState, const RKH_ST_T **targetStates, 
            const RKH_ST_T **entryStates, const RKH_ST_T **exitStates, 
            const RKH_ST_T *mainTargetState, int nExecEffectActions, 
@@ -125,8 +126,10 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *currentState,
 
     if (initStateMachine)
     {
-        sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
-        sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+        if (CB(RKH_SMA_ACCESS_CONST(me, istate))->type == RKH_BASIC)
+        {
+            expInitSm(me, RKH_STATE_CAST(dftSt));
+        }
     }
 	sm_dch_expect(event->e, RKH_STATE_CAST(dispatchCurrentState));
 	sm_trn_expect(RKH_STATE_CAST(sourceState), RKH_STATE_CAST(*targetStates));
@@ -184,14 +187,7 @@ trnStepExpect(RKH_SM_T *const me, const RKH_ST_T *currentState,
     /* Init state machine */
     if (CB(RKH_SMA_ACCESS_CONST(me, istate))->type == RKH_BASIC)
     {
-        sm_init_expect(RKH_STATE_CAST(currentState));
-        sm_trn_expect(RKH_STATE_CAST(currentState), 
-                      RKH_STATE_CAST(currentState));
-        sm_tsState_expect(RKH_STATE_CAST(currentState));
-        sm_enstate_expect(RKH_STATE_CAST(currentState));
-        sm_nenex_expect(1, 0);
-        sm_state_expect(RKH_STATE_CAST(currentState));
-        sm_evtProc_expect();
+        expInitSm(me, RKH_STATE_CAST(currentState));
     }
 
     if (sourceState != (const RKH_ST_T *)0)
@@ -243,6 +239,21 @@ stateList_create(const RKH_ST_T **list, int nElems, ...)
     }
     va_end(args);
     *list = (RKH_ST_T *)0;
+}
+
+void
+expInitSm(RKH_SMA_T *const me, const RKH_ST_T *dftSt)
+{
+    if (CB(RKH_SMA_ACCESS_CONST(me, istate))->type == RKH_BASIC)
+    {
+        sm_init_expect(RKH_STATE_CAST(dftSt));
+        sm_trn_expect(RKH_STATE_CAST(dftSt), RKH_STATE_CAST(dftSt));
+        sm_tsState_expect(RKH_STATE_CAST(dftSt));
+        sm_enstate_expect(RKH_STATE_CAST(dftSt));
+        sm_nenex_expect(1, 0);
+        sm_state_expect(RKH_STATE_CAST(dftSt));
+        sm_evtProc_expect();
+    }
 }
 
 /** @} doxygen end group definition */
