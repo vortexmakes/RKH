@@ -736,6 +736,8 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             }
             else
             {
+                /* Upon state machine creation adds states from target to */
+                /* root */
                 nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
             }
         }

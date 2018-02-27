@@ -568,6 +568,7 @@ TEST(InitPseudostate, SMInitialToCmpState)
 
     smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
     smI1_nS0_Expect(me);
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
     smI1_nS01_Expect(me);
     sm_init_expect(RKH_STATE_CAST(&smI1_s0));
     sm_trn_expect(RKH_STATE_CAST(&smI1_s0), RKH_STATE_CAST(&smI1_s0));
@@ -615,6 +616,7 @@ TEST(InitPseudostate, SMInitialToNestedCmpState)
     smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
     smI3_nS0_Expect(me);
     smI3_nS01_Expect(me);
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
     smI3_nS011_Expect(me);
     sm_init_expect(RKH_STATE_CAST(&smI3_s01));
     sm_trn_expect(RKH_STATE_CAST(&smI3_s01), RKH_STATE_CAST(&smI3_s01));
