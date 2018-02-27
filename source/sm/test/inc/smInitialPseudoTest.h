@@ -74,8 +74,15 @@ RKH_DCLR_COMP_STATE smI3_s0, smI3_s01;
 
 /* ........................ Declares state machines ........................ */
 RKH_SM_DCLR(smInitial4);
-RKH_DCLR_BASIC_STATE smI4_s0, smI4_s1;
+RKH_DCLR_BASIC_STATE smI4_s0, smI4_s11;
+RKH_DCLR_COMP_STATE smI4_s1;
 RKH_DCLR_COND_STATE smI4_junction1;
+
+/* ........................ Declares state machines ........................ */
+RKH_SM_DCLR(smInitial5);
+RKH_DCLR_BASIC_STATE smI5_s0, smI5_s11;
+RKH_DCLR_COMP_STATE smI5_s1;
+RKH_DCLR_CHOICE_STATE smI5_branch1;
 
 /* ------------------------------- Data types ------------------------------ */
 typedef struct SmInitialPseudoTest SmInitialPseudoTest;

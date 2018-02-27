@@ -80,6 +80,10 @@ void smI3_nS01(SmInitialPseudoTest *const me);
 void smI3_nS011(SmInitialPseudoTest *const me);
 void smI4_nS0(SmInitialPseudoTest *const me);
 void smI4_nS1(SmInitialPseudoTest *const me);
+void smI4_nS11(SmInitialPseudoTest *const me);
+void smI5_nS0(SmInitialPseudoTest *const me);
+void smI5_nS1(SmInitialPseudoTest *const me);
+void smI5_nS11(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
 void smIPT_xS0(SmInitialPseudoTest *const me);

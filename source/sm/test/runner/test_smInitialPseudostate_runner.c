@@ -78,6 +78,10 @@ TEST_GROUP_RUNNER(InitPseudostate)
 	RUN_TEST_CASE(InitPseudostate, SMInitialToCmpState);
 	RUN_TEST_CASE(InitPseudostate, SMInitialToNestedSimpleState);
 	RUN_TEST_CASE(InitPseudostate, SMInitialToNestedCmpState);
+	RUN_TEST_CASE(InitPseudostate, SMInitialToJunctionToSimpleState);
+	RUN_TEST_CASE(InitPseudostate, SMInitialToJunctionToCmpState);
+	RUN_TEST_CASE(InitPseudostate, SMInitialToBranchToSimpleState);
+	RUN_TEST_CASE(InitPseudostate, SMInitialToBranchToCmpState);
 }
 
 /* ------------------------------ End of file ------------------------------ */

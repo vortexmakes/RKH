@@ -634,6 +634,114 @@ TEST(InitPseudostate, SMInitialToNestedCmpState)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
+TEST(InitPseudostate, SMInitialToJunctionToSimpleState)
+{
+    UtrzProcessOut *p;
+    RKH_SM_T *me = smInitial4;
+
+    smIPT_isC1_ExpectAndReturn(me, &evCreation, RKH_TRUE);
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smIPT_tr1_Expect(me, &evCreation);
+    smI4_nS0_Expect(me);
+    sm_init_expect(RKH_STATE_CAST(&smI4_junction1));
+    sm_trn_expect(RKH_STATE_CAST(&smI4_junction1), 
+                  RKH_STATE_CAST(&smI4_junction1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI4_junction1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI4_s0));
+    sm_enstate_expect(RKH_STATE_CAST(&smI4_s0));
+    sm_nenex_expect(1, 0);
+    sm_state_expect(RKH_STATE_CAST(&smI4_s0));
+    sm_evtProc_expect();
+
+    rkh_sm_init(me);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, SMInitialToJunctionToCmpState)
+{
+    UtrzProcessOut *p;
+    RKH_SM_T *me = smInitial4;
+
+    smIPT_isC1_ExpectAndReturn(me, &evCreation, RKH_FALSE);
+    smIPT_isC2_ExpectAndReturn(me, &evCreation, RKH_TRUE);
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smIPT_tr2_Expect(me, &evCreation);
+    smI4_nS1_Expect(me);
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smI4_nS11_Expect(me);
+    sm_init_expect(RKH_STATE_CAST(&smI4_junction1));
+    sm_trn_expect(RKH_STATE_CAST(&smI4_junction1), 
+                  RKH_STATE_CAST(&smI4_junction1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI4_junction1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI4_s1));
+    sm_enstate_expect(RKH_STATE_CAST(&smI4_s1));
+    sm_enstate_expect(RKH_STATE_CAST(&smI4_s11));
+    sm_nenex_expect(2, 0);
+    sm_state_expect(RKH_STATE_CAST(&smI4_s11));
+    sm_evtProc_expect();
+
+    rkh_sm_init(me);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, SMInitialToBranchToSimpleState)
+{
+    UtrzProcessOut *p;
+    RKH_SM_T *me = smInitial5;
+
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smIPT_isC1_ExpectAndReturn(me, &evCreation, RKH_TRUE);
+    smIPT_tr1_Expect(me, &evCreation);
+    smI5_nS0_Expect(me);
+    sm_init_expect(RKH_STATE_CAST(&smI5_branch1));
+    sm_trn_expect(RKH_STATE_CAST(&smI5_branch1), 
+                  RKH_STATE_CAST(&smI5_branch1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI5_branch1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI5_s0));
+    sm_enstate_expect(RKH_STATE_CAST(&smI5_s0));
+    sm_nenex_expect(1, 0);
+    sm_state_expect(RKH_STATE_CAST(&smI5_s0));
+    sm_evtProc_expect();
+
+    rkh_sm_init(me);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, SMInitialToBranchToCmpState)
+{
+    UtrzProcessOut *p;
+    RKH_SM_T *me = smInitial5;
+
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smIPT_isC1_ExpectAndReturn(me, &evCreation, RKH_FALSE);
+    smIPT_isC2_ExpectAndReturn(me, &evCreation, RKH_TRUE);
+    smIPT_tr2_Expect(me, &evCreation);
+    smI5_nS1_Expect(me);
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smI5_nS11_Expect(me);
+    sm_init_expect(RKH_STATE_CAST(&smI5_branch1));
+    sm_trn_expect(RKH_STATE_CAST(&smI5_branch1), 
+                  RKH_STATE_CAST(&smI5_branch1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI5_branch1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI5_s1));
+    sm_enstate_expect(RKH_STATE_CAST(&smI5_s1));
+    sm_enstate_expect(RKH_STATE_CAST(&smI5_s11));
+    sm_nenex_expect(2, 0);
+    sm_state_expect(RKH_STATE_CAST(&smI5_s11));
+    sm_evtProc_expect();
+
+    rkh_sm_init(me);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

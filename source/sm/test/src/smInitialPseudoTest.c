@@ -267,16 +267,49 @@ RKH_SM_DEF_PTR(smInitial4);
 
 RKH_CREATE_COND_STATE(smI4_junction1);
 RKH_CREATE_BRANCH_TABLE(smI4_junction1)
-    RKH_BRANCH(smIPT_isC1,  NULL,	&smI4_s0),
-	RKH_BRANCH(ELSE,        NULL,   &smI4_s1),
+    RKH_BRANCH(smIPT_isC1,  smIPT_tr1,	&smI4_s0),
+    RKH_BRANCH(smIPT_isC2,  smIPT_tr2,	&smI4_s1),
+	RKH_BRANCH(ELSE,        NULL,       &smI4_s0),
 RKH_END_BRANCH_TABLE
 
 RKH_CREATE_BASIC_STATE(smI4_s0, smI4_nS0, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(smI4_s0)
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(smI4_s1, smI4_nS1, NULL, RKH_ROOT, NULL);
+RKH_CREATE_COMP_REGION_STATE(smI4_s1, smI4_nS1, NULL, RKH_ROOT, 
+                             &smI4_s11, smIPT_init, 
+                             RKH_NO_HISTORY, NULL, NULL, NULL, NULL);
 RKH_CREATE_TRANS_TABLE(smI4_s1)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(smI4_s11, smI4_nS11, NULL, &smI4_s1, NULL);
+RKH_CREATE_TRANS_TABLE(smI4_s11)
+RKH_END_TRANS_TABLE
+
+/* ........................ Declares state machine ......................... */
+RKH_SM_CREATE(SmInitialPseudoTest, smInitial5, 0, HCAL, 
+              &smI5_branch1, smIPT_init, NULL);
+RKH_SM_DEF_PTR(smInitial5);
+
+RKH_CREATE_CHOICE_STATE(smI5_branch1);
+RKH_CREATE_BRANCH_TABLE(smI5_branch1)
+    RKH_BRANCH(smIPT_isC1,  smIPT_tr1,	&smI5_s0),
+    RKH_BRANCH(smIPT_isC2,  smIPT_tr2,	&smI5_s1),
+	RKH_BRANCH(ELSE,        NULL,       &smI5_s1),
+RKH_END_BRANCH_TABLE
+
+RKH_CREATE_BASIC_STATE(smI5_s0, smI5_nS0, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(smI5_s0)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_COMP_REGION_STATE(smI5_s1, smI5_nS1, NULL, RKH_ROOT, 
+                             &smI5_s11, smIPT_init, 
+                             RKH_NO_HISTORY, NULL, NULL, NULL, NULL);
+RKH_CREATE_TRANS_TABLE(smI5_s1)
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(smI5_s11, smI5_nS11, NULL, &smI5_s1, NULL);
+RKH_CREATE_TRANS_TABLE(smI5_s11)
 RKH_END_TRANS_TABLE
 
 /* ................... Declares states and pseudostates .................... */
