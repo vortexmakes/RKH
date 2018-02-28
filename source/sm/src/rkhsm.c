@@ -519,7 +519,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 
         RKH_INC_STEP();        /* increment the number of transition segment */
 
-        if (isIntTrn == RKH_FALSE && isMicroStep == RKH_FALSE)
+        if (isIntTrn == RKH_FALSE /*&& isMicroStep == RKH_FALSE*/)
         {
             RKH_TR_SM_TS_STATE(me,              /* this state machine object */
                                ets);       /* target state of the transition */
@@ -679,18 +679,18 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             {
                 if (isCreationEvent == RKH_FALSE)
                 {
-                    /* ---- Stage 4 -------------------------------------------- */
+                    /* ---- Stage 4 ---------------------------------------- */
                     /* first of all, find the LCA then */
-                    /* perform the exit actions of the exited states according */
-                    /* to the order states are exited, from low state to high */ 
-                    /* state, update histories of exited states, and, generate */ 
-                    /* the set of entered states */
+                    /* perform the exit actions of the exited states */
+                    /* according to the order states are exited, from low */
+                    /* state to high state, update histories of exited */
+                    /* states, and, generate the set of entered states */
                     RKH_EXEC_EXIT_ACTION(cs, ts, me, nn);
                 }
                 else
                 {
-                    /* Upon state machine creation adds states to entry from dft */
-                    /* transition target to root */
+                    /* Upon state machine creation adds states to entry from */
+                    /* dft transition target to root */
                     nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
                 }
             }
@@ -730,16 +730,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 trnAct = CCMP(ts)->initialAction;
                 ets = CCMP(ts)->defchild;
                 stn = ts;                           /* tracking parent state */
-#if 0
-                nn = 1;
-                if (IS_COMPOSITE(ets) || IS_SIMPLE(ets))
-                {
-                    sentry[0] = CST(ets);
-                }
-#else
-                //addTargetSt(CST(ets), sentry, ts);
-                //nn = 1;
-#endif
             }
             else
             {

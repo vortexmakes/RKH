@@ -61,8 +61,8 @@
 TEST_GROUP_RUNNER(InitPseudostate)
 {
 	RUN_TEST_CASE(InitPseudostate, firstStateAfterInit);
-	RUN_TEST_CASE(InitPseudostate, trnToLoadedShHistory);
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyShHistoryToSimpleState);
+	RUN_TEST_CASE(InitPseudostate, trnToLoadedShHistory);
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyShHistoryToCmpState);
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyShHistoryToNestedSimpleState);
 	RUN_TEST_CASE(InitPseudostate, trnToEmptyDeepHistoryToSimpleState);
