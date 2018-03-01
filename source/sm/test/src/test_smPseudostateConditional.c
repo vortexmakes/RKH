@@ -184,6 +184,7 @@ TEST(pseudostateConditional, trnToChoiceWithTrueCondition)
     sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
 	//sm_ntrnact_expect(1, 2);
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s1));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_nenex_expect(2, 1);
     /* Expect main target state */
@@ -351,6 +352,7 @@ TEST(pseudostateConditional, failsTrnSegmentsExceeded)
     sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
 	//sm_ntrnact_expect(1, 5);
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s1));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_nenex_expect(2, 1);
     /* Expect main target state */

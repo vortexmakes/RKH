@@ -79,6 +79,8 @@ static RKH_STATIC_EVENT(evTerminate, TERMINATE);
 TEST_GROUP(pseudostate);
 
 /* ---------------------------- Local variables ---------------------------- */
+static const RKH_ST_T *targetStates[16], *exitStates[16], *entryStates[16];
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static
@@ -165,19 +167,10 @@ TEST(pseudostate, firstStateAfterInit)
 TEST(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn)
 {
     UtrzProcessOut *p;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s1Hist), RKH_STATE_CAST(&smPT_s1), 
-        RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s11), RKH_STATE_CAST(0)
-    };
+
+    stateList_create(targetStates, 3, &smPT_s1Hist, &smPT_s1, &smPT_s11);
+    stateList_create(exitStates, 1, &smPT_s0);
+    stateList_create(entryStates, 2, &smPT_s1, &smPT_s11);
 
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s0), 
@@ -195,20 +188,10 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn)
 TEST(pseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn)
 {
     UtrzProcessOut *p;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s1Hist), RKH_STATE_CAST(&smPT_s12), 
-        RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s12), 
-       RKH_STATE_CAST(&smPT_s121), RKH_STATE_CAST(0)
-    };
+
+    stateList_create(targetStates, 3, &smPT_s1Hist, &smPT_s12, &smPT_s121);
+    stateList_create(exitStates, 1, &smPT_s0);
+    stateList_create(entryStates, 3, &smPT_s1, &smPT_s12, &smPT_s121);
 
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s0), 
