@@ -65,9 +65,7 @@ static
 void 
 runAllTests(void)
 {
-#if 0
 	RUN_TEST_GROUP(transition);
-#endif
 	RUN_TEST_GROUP(trnWoutUnitrazer);
 	RUN_TEST_GROUP(pseudostateConditional);
 	RUN_TEST_GROUP(pseudostate);

@@ -202,7 +202,6 @@ extern "C" {
 #define CV(p)           ((void *)(p))
 #define CSMA(p)         ((const RKH_SMA_T *)(p))
 #define CQ(p)           ((RKH_QUEUE_T *)(p))
-#define CIA(s)          ((RKH_INIT_ACT_T)(RKH_SMA_ACCESS_CONST(sma, iaction)))
 #define CTA(ta)         ((RKH_TRN_ACT_T)(ta))
 
 /**
@@ -1720,13 +1719,13 @@ extern "C" {
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), #name, (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
+                ((RKH_TRN_ACT_T)initialAction), (initialEvt), \
                 (RKHROM RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
+                ((RKH_TRN_ACT_T)initialAction), (initialEvt), \
                 (RKHROM RKH_ST_T*)initialState
         #endif
     #else
@@ -1734,13 +1733,13 @@ extern "C" {
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), #name, (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), \
+                ((RKH_TRN_ACT_T)initialAction), \
                 (RKHROM RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), \
+                ((RKH_TRN_ACT_T)initialAction), \
                 (RKHROM RKH_ST_T*)initialState
         #endif
     #endif
@@ -1767,7 +1766,7 @@ extern "C" {
         ((RKH_SM_T *)(sm_))->ppty = ppty_; \
         MKSM_NAME(sm_, name_); \
         ((RKH_SM_T *)(sm_))->istate = (RKHROM RKH_ST_T*)initialState_; \
-        ((RKH_SM_T *)(sm_))->iaction = (RKH_INIT_ACT_T)initialAction_; \
+        ((RKH_SM_T *)(sm_))->iaction = (RKH_TRN_ACT_T)initialAction_; \
         MKSM_IEVENT(sm_, initialEvt_); \
         ((RKH_SM_T *)(sm_))->state = (RKHROM RKH_ST_T*)initialState_
 

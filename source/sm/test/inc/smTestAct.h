@@ -39,11 +39,11 @@ extern "C" {
 /* -------------------------- Function prototypes -------------------------- */
 
 /* ============================ Initial actions ============================ */
-void smTest_init(SmTest *const me);
-void smTest_iS3(SmTest *const me);
-void smTest_iS2(SmTest *const me);
-void smTest_iS22(SmTest *const me);
-void smTest_iS221(SmTest *const me);
+void smTest_init(SmTest *const me, RKH_EVT_T *pe);
+void smTest_iS3(SmTest *const me, RKH_EVT_T *pe);
+void smTest_iS2(SmTest *const me, RKH_EVT_T *pe);
+void smTest_iS22(SmTest *const me, RKH_EVT_T *pe);
+void smTest_iS221(SmTest *const me, RKH_EVT_T *pe);
 
 /* ============================ Effect actions ============================= */
 void smTest_tr11(SmTest *const me, RKH_EVT_T *pe);

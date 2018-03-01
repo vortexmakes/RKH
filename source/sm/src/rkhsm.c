@@ -542,10 +542,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         /* are written on the transition, from the action /* 
                         /* closest to source state to the action closest to */
                         /* target state. */
-                        RKH_TR_SM_NTRNACT(me,   /* this state machine object */
-                                          nal,         /* # executed actions */
-                                                    /* # transition segments */
-                                           RKH_GET_STEP());
                         RKH_EXEC_TRANSITION(me, pe);
 #endif
 #if defined(RKH_CHOICE_OR_CONDITIONAL_ENABLED)
@@ -704,11 +700,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
         /* according to the order in which they are written on */
         /* the transition, from the action closest to source */
         /* state to the action closest to target state. */
-#if 0
-        RKH_TR_SM_NTRNACT(me,                   /* this state machine object */
-                          nal,                         /* # executed actions */
-                          RKH_GET_STEP());          /* # transition segments */
-#endif
         RKH_EXEC_TRANSITION(me, pe);
 
         if (isIntTrn == RKH_FALSE)

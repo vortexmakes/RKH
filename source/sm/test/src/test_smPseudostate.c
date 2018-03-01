@@ -167,19 +167,28 @@ TEST(pseudostate, firstStateAfterInit)
 TEST(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn)
 {
     UtrzProcessOut *p;
+    int nExSt, nEnSt;
+    RKH_EVT_T event;
 
-    stateList_create(targetStates, 3, &smPT_s1Hist, &smPT_s1, &smPT_s11);
-    stateList_create(exitStates, 1, &smPT_s0);
-    stateList_create(entryStates, 2, &smPT_s1, &smPT_s11);
+    nEnSt = 2;
+    nExSt = 1;
+    event = evB;
+    expInitSm((RKH_SM_T *)smPseudoTest, RKH_STATE_CAST(&smPT_waiting));
+	sm_dch_expect(event.e, RKH_STATE_CAST(&smPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(&smPT_s1Hist));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s1Hist));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s1));
+    sm_exstate_expect(RKH_STATE_CAST(&smPT_s0));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s1));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s11));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s11));
+    sm_nenex_expect(nEnSt, nExSt);
+    sm_state_expect(RKH_STATE_CAST(&smPT_s11));
+	sm_evtProc_expect();
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
-               RKH_STATE_CAST(&smPT_s0), 
-               RKH_STATE_CAST(&smPT_s0), targetStates, 
-               entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s11), 0, TRN_NOT_INTERNAL, 1, &evB,
-               RKH_STATE_CAST(&smPT_s0));
-
-    rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evB);
+    rkh_sm_init((RKH_SM_T *)smPseudoTest);
+    setState((RKH_SM_T *)smPseudoTest, RKH_STATE_CAST(&smPT_s0));
+    rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &event);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
@@ -188,20 +197,30 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithoutDefaultTrn)
 TEST(pseudostate, trnToLoadedShallowHistoryWithoutDefaultTrn)
 {
     UtrzProcessOut *p;
+    int nExSt, nEnSt;
+    RKH_EVT_T event;
 
-    stateList_create(targetStates, 3, &smPT_s1Hist, &smPT_s12, &smPT_s121);
-    stateList_create(exitStates, 1, &smPT_s0);
-    stateList_create(entryStates, 3, &smPT_s1, &smPT_s12, &smPT_s121);
+    nEnSt = 3;
+    nExSt = 1;
+    event = evB;
+    expInitSm((RKH_SM_T *)smPseudoTest, RKH_STATE_CAST(&smPT_waiting));
+	sm_dch_expect(event.e, RKH_STATE_CAST(&smPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(&smPT_s1Hist));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s1Hist));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s12));
+    sm_exstate_expect(RKH_STATE_CAST(&smPT_s0));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s1));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s12));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s121));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s121));
+    sm_nenex_expect(nEnSt, nExSt);
+    sm_state_expect(RKH_STATE_CAST(&smPT_s121));
+	sm_evtProc_expect();
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
-               RKH_STATE_CAST(&smPT_s0), 
-               RKH_STATE_CAST(&smPT_s0), targetStates, 
-               entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1, &evB,
-               RKH_STATE_CAST(&smPT_s0));
-
+    rkh_sm_init((RKH_SM_T *)smPseudoTest);
+    setState((RKH_SM_T *)smPseudoTest, RKH_STATE_CAST(&smPT_s0));
     setHistory(&smPT_s1Hist, RKH_STATE_CAST(&smPT_s12));
-    rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evB);
+    rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &event);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
@@ -211,20 +230,10 @@ TEST(pseudostate, exitFromCompositeWithLoadedShallowHistory)
 {
     UtrzProcessOut *p;
     const RKH_ST_T *state;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s121), RKH_STATE_CAST(&smPT_s12), 
-       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
 
+    stateList_create(targetStates, 1, &smPT_s0);
+    stateList_create(exitStates, 3, &smPT_s121, &smPT_s12, &smPT_s1);
+    stateList_create(entryStates, 1, &smPT_s0);
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s121), 
                RKH_STATE_CAST(&smPT_s1), targetStates, 
@@ -243,29 +252,29 @@ TEST(pseudostate, exitFromCompositeWithLoadedShallowHistory)
 TEST(pseudostate, trnToEmptyDeepHistoryWithoutDefaultTrn)
 {
     UtrzProcessOut *p;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s12Hist), RKH_STATE_CAST(&smPT_s12), 
-        RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s12), 
-       RKH_STATE_CAST(&smPT_s121), RKH_STATE_CAST(0)
-    };
+    int nExSt, nEnSt;
+    RKH_EVT_T event;
 
-    setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
-               RKH_STATE_CAST(&smPT_s0), 
-               RKH_STATE_CAST(&smPT_s0), targetStates, 
-               entryStates, exitStates, 
-               RKH_STATE_CAST(&smPT_s121), 0, TRN_NOT_INTERNAL, 1, &evC,
-               RKH_STATE_CAST(&smPT_s0));
+    nEnSt = 3;
+    nExSt = 1;
+    event = evC;
+    expInitSm((RKH_SM_T *)smPseudoTest, RKH_STATE_CAST(&smPT_waiting));
+	sm_dch_expect(event.e, RKH_STATE_CAST(&smPT_s0));
+	sm_trn_expect(RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(&smPT_s12Hist));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s12Hist));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s12));
+    sm_exstate_expect(RKH_STATE_CAST(&smPT_s0));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s1));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s12));
+    sm_tsState_expect(RKH_STATE_CAST(&smPT_s121));
+    sm_enstate_expect(RKH_STATE_CAST(&smPT_s121));
+    sm_nenex_expect(nEnSt, nExSt);
+    sm_state_expect(RKH_STATE_CAST(&smPT_s121));
+	sm_evtProc_expect();
 
-    rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &evC);
+    rkh_sm_init((RKH_SM_T *)smPseudoTest);
+    setState((RKH_SM_T *)smPseudoTest, RKH_STATE_CAST(&smPT_s0));
+    rkh_sm_dispatch((RKH_SM_T *)smPseudoTest, &event);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
@@ -274,21 +283,10 @@ TEST(pseudostate, trnToEmptyDeepHistoryWithoutDefaultTrn)
 TEST(pseudostate, trnToLoadedDeepHistoryWithoutDefaultTrn)
 {
     UtrzProcessOut *p;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s12Hist), RKH_STATE_CAST(&smPT_s122), 
-        RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s12), 
-       RKH_STATE_CAST(&smPT_s122), RKH_STATE_CAST(0)
-    };
 
+    stateList_create(targetStates, 2, &smPT_s12Hist, &smPT_s122);
+    stateList_create(exitStates, 1, &smPT_s0);
+    stateList_create(entryStates, 3, &smPT_s1, &smPT_s12, &smPT_s122);
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
@@ -307,20 +305,10 @@ TEST(pseudostate, exitFromCompositeWithLoadedDeepHistory)
 {
     UtrzProcessOut *p;
     const RKH_ST_T *state;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s122), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s1), RKH_STATE_CAST(&smPT_s12), 
-       RKH_STATE_CAST(&smPT_s122), RKH_STATE_CAST(0)
-    };
 
+    stateList_create(targetStates, 1, &smPT_s122);
+    stateList_create(exitStates, 1, &smPT_s0);
+    stateList_create(entryStates, 3, &smPT_s1, &smPT_s12, &smPT_s122);
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
@@ -339,20 +327,10 @@ TEST(pseudostate, exitFromCompositeWithLoadedDeepHistory)
 TEST(pseudostate, trnToEmptyShallowHistoryWithDefaultTrn)
 {
     UtrzProcessOut *p;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s2Hist), RKH_STATE_CAST(&smPT_s22), 
-        RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s2), RKH_STATE_CAST(&smPT_s22), RKH_STATE_CAST(0)
-    };
 
+    stateList_create(targetStates, 2, &smPT_s2Hist, &smPT_s22);
+    stateList_create(exitStates, 1, &smPT_s0);
+    stateList_create(entryStates, 2, &smPT_s2, &smPT_s22);
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 
@@ -369,20 +347,10 @@ TEST(pseudostate, trnToEmptyShallowHistoryWithDefaultTrn)
 TEST(pseudostate, trnToLoadedShallowHistoryWithDefaultTrn)
 {
     UtrzProcessOut *p;
-    const RKH_ST_T *targetStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s2Hist), RKH_STATE_CAST(&smPT_s21), 
-        RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *exitStates[] = 
-    {
-        RKH_STATE_CAST(&smPT_s0), RKH_STATE_CAST(0)
-    };
-    const RKH_ST_T *entryStates[] = 
-    {
-       RKH_STATE_CAST(&smPT_s2), RKH_STATE_CAST(&smPT_s21), RKH_STATE_CAST(0)
-    };
 
+    stateList_create(targetStates, 2, &smPT_s2Hist, &smPT_s21);
+    stateList_create(exitStates, 1, &smPT_s0);
+    stateList_create(entryStates, 2, &smPT_s2, &smPT_s21);
     setProfile(smPseudoTest, RKH_STATE_CAST(&smPT_waiting), 
                RKH_STATE_CAST(&smPT_s0), 
                RKH_STATE_CAST(&smPT_s0), targetStates, 

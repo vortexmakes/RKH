@@ -121,8 +121,7 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *dftSt,
            int kindOfTrn, int initStateMachine, const RKH_EVT_T *event,
            const RKH_ST_T *dispatchCurrentState)
 {
-    int nExitStates, nEnSt, done;
-    const RKH_ST_T **tSt, **enSt;
+    int nExitStates, nEntryStates;
 
     if (initStateMachine)
     {
@@ -136,14 +135,7 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *dftSt,
 
     if (kindOfTrn == TRN_NOT_INTERNAL)
     {
-        for (done = 0, tSt = targetStates; *tSt && (done == 0); ++tSt)
-        {
-            sm_tsState_expect(RKH_STATE_CAST(*tSt));
-            if (RKH_STATE_CAST(*tSt)->base.type == RKH_COMPOSITE)
-            {
-                done = 1;
-            }
-        }
+        executeExpectOnList(targetStates, EXPECT_TS_STATE);
         nExitStates = executeExpectOnList(exitStates, EXPECT_EXSTATE);
     }
 
@@ -151,15 +143,8 @@ setProfile(RKH_SMA_T *const me, const RKH_ST_T *dftSt,
 
     if (kindOfTrn == TRN_NOT_INTERNAL)
     {
-        for (nEnSt = 0, enSt = entryStates; *enSt; ++enSt, ++nEnSt)
-        {
-            sm_enstate_expect(RKH_STATE_CAST(*enSt));
-            if (RKH_STATE_CAST(*enSt)->base.type == RKH_COMPOSITE)
-            {
-                sm_tsState_expect(RKH_STATE_CAST(*tSt++));
-            }
-        }
-        sm_nenex_expect(nEnSt, nExitStates);
+        nEntryStates = executeExpectOnList(entryStates, EXPECT_ENSTATE);
+        sm_nenex_expect(nEntryStates, nExitStates);
         sm_state_expect(RKH_STATE_CAST(mainTargetState));
     }
 	sm_evtProc_expect();
