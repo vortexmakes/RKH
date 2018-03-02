@@ -32,7 +32,7 @@ RKH_DCLR_REF_ENPNT		ENPNT;
 RKH_DCLR_ENPNT			ENS12,ENS2;
 
 /* ........................ Declares initial action ........................ */
-void my_init(const RKH_SMA_T *me);
+void my_init(const RKH_SMA_T *me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 void act1( const struct RKH_SMA_T *sma, RKH_EVT_T *pe );
@@ -146,7 +146,7 @@ RKH_SMA_DEF_PTR(my);
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 void
-my_init(const RKH_SMA_T *me)
+my_init(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
     MySm *realMe = ((MySm *)(me));
 

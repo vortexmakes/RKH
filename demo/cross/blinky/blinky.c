@@ -30,7 +30,7 @@ typedef struct Blinky Blinky;
 RKH_DCLR_BASIC_STATE ledOff, ledOn;
 
 /* ........................ Declares initial action ........................ */
-static void blinky_init(Blinky *const me);
+static void blinky_init(Blinky *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 static void blinky_ledOn(Blinky *const me, RKH_EVT_T *pe);
@@ -78,7 +78,7 @@ static RKH_ROM_STATIC_EVENT(e_tout, TIMEOUT);
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 static void
-blinky_init(Blinky *const me)
+blinky_init(Blinky *const me, RKH_EVT_T *pe)
 {
     RKH_TR_FWK_AO(me);
     RKH_TR_FWK_QUEUE(&RKH_UPCAST(RKH_SMA_T, me)->equeue);

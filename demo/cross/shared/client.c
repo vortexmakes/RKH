@@ -34,7 +34,7 @@ typedef struct Client Client;
 RKH_DCLR_BASIC_STATE client_idle, client_waiting, client_using, client_paused;
 
 /* ........................ Declares initial action ........................ */
-static void client_init(Client *const me);
+static void client_init(Client *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 static void client_req(Client *const me, RKH_EVT_T *pe);
@@ -109,7 +109,7 @@ static RKH_ROM_STATIC_EVENT(evDone, DONE);
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 static void
-client_init(Client *const me)
+client_init(Client *const me, RKH_EVT_T *pe)
 {
     RKH_TR_FWK_AO(CLI0);
     RKH_TR_FWK_AO(CLI1);

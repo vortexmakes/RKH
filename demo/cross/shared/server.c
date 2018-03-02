@@ -30,7 +30,7 @@ typedef struct Server Server;
 RKH_DCLR_BASIC_STATE server_idle, server_busy, server_paused;
 
 /* ........................ Declares initial action ........................ */
-static void server_init(Server *const me);
+static void server_init(Server *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 static void server_start(Server *const me, RKH_EVT_T *pe);
@@ -93,7 +93,7 @@ static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 static void
-server_init(Server *const me)
+server_init(Server *const me, RKH_EVT_T *pe)
 {
     rInt cn;
 

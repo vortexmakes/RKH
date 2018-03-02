@@ -1284,7 +1284,7 @@ Explanation
 \li (9)	\c S1 is the initial state.
 \li (10) \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
-		The function prototype is defined as RKH_INIT_ACT_T. This argument is 
+		The function prototype is defined as RKH_TRN_ACT_T. This argument is 
 		(optional), thus it could be declared as NULL. The application code 
 		must trigger the initial transition explicitly by invoking 
 		rkh_sma_activate() function.
@@ -2204,7 +2204,7 @@ is mandatory to known for properly using the framework.
 
 <b>Initialization action</b>
 
-\copydetails RKH_INIT_ACT_T
+\copydetails RKH_TRN_ACT_T
 
 As said above, the application must explicitly trigger initial transitions 
 in all state machines. The following listing shows the use of 
@@ -2228,7 +2228,7 @@ The next listing shows an example of the initial action implementation.
 
 \code
 void 
-manager_init( const struct rkh_t *sma )
+manager_init( const struct rkh_t *sma, RKH_EVT_T *pe )
 {
 	dprint( "Init \"manager\" state machine\n" );
 	manager_turnon();	
@@ -4446,13 +4446,6 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD></TD>
 		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copybrief RKH_CFG_SMA_INIT_EVT_EN </TD>
-	</TR>
-	<TR bgColor="#f0f0f0" align="center" valign="middle" >
-		<TD align="left"> #RKH_CFG_SMA_INIT_ARG_SMA_EN </TD>
-		<TD> boolean </TD>
-		<TD></TD>
-		<TD> RKH_ENABLED </TD>
-		<TD align="left"> \copybrief RKH_CFG_SMA_INIT_ARG_SMA_EN </TD>
 	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_SMA_ENT_ARG_SMA_EN </TD>

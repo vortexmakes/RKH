@@ -245,13 +245,6 @@
 /* --- Configuration options related to SMA action featues ---------------- */
 
 /**
- *	If the #RKH_CFG_SMA_INIT_ARG_SMA_EN is set to 1 then the initial action
- *	prototype will add as argument a pointer to state machine structure
- *	#RKH_SMA_T. See #RKH_INIT_ACT_T definition.
- */
-#define RKH_CFG_SMA_INIT_ARG_SMA_EN     RKH_ENABLED
-
-/**
  *	If the #RKH_CFG_SMA_ENT_ARG_SMA_EN is set to 1 then the entry action
  *	prototype will add as argument a pointer to state machine structure
  *	#RKH_SMA_T. See #RKH_ENT_ACT_T definition.

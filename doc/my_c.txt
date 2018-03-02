@@ -34,7 +34,7 @@ RKH_DCLR_DHIST_STATE	DH;
 RKH_DCLR_SHIST_STATE	H;
 
 /* ........................ Declares initial action ........................ */
-void my_init(const RKH_SMA_T *me);
+void my_init(const RKH_SMA_T *me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 void set_x1(const RKH_SMA_T *me, RKH_EVT_T *pe);
@@ -164,7 +164,7 @@ RKH_SMA_DEF_PTR(my);
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 void
-my_init(const RKH_SMA_T *me)
+my_init(const RKH_SMA_T *me, RKH_EVT_T *pe)
 {
     MySm *realMe = ((MySm *)(me));
 

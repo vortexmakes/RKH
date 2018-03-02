@@ -316,7 +316,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt

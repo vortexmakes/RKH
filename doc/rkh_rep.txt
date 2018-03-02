@@ -400,7 +400,7 @@ Explanation
 \li (7)	\c S1 is the initial state.
 \li (8)	the \c my_init() function defines the topmost initial transition in 
 		the \c my state machine. 
-		The function prototype is defined as RKH_INIT_ACT_T. This argument is 
+		The function prototype is defined as RKH_TRN_ACT_T. This argument is 
 		(optional), thus it could be declared as NULL.
 \li (9) not used.
 \li (10)The \c MySm defines the SMA object structure \c my.

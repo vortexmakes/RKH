@@ -678,19 +678,6 @@ extern "C" {
 
 #endif
 
-#ifndef RKH_CFG_SMA_INIT_ARG_SMA_EN
-    #error "RKH_CFG_SMA_INIT_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
-    #error "                                    [MUST be RKH_ENABLED ]       "
-    #error "                                    [     || RKH_DISABLED]       "
-
-#elif   ((RKH_CFG_SMA_INIT_ARG_SMA_EN != RKH_ENABLED) && \
-    (RKH_CFG_SMA_INIT_ARG_SMA_EN != RKH_DISABLED))
-    #error "RKH_CFG_SMA_INIT_ARG_SMA_EN     illegally #define'd in 'rkhcfg.h'"
-    #error "                                    [MUST be  RKH_ENABLED ]      "
-    #error "                                    [     ||  RKH_DISABLED]      "
-
-#endif
-
 #ifndef RKH_CFG_SMA_ENT_ARG_SMA_EN
     #error "RKH_CFG_SMA_ENT_ARG_SMA_EN            not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]       "
@@ -2285,52 +2272,6 @@ extern "C" {
     #define RKH_SR_ALLOC()
     #define RKH_ENTER_CRITICAL_()       RKH_ENTER_CRITICAL(dummy)
     #define RKH_EXIT_CRITICAL_()        RKH_EXIT_CRITICAL(dummy)
-#endif
-
-#if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-     RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)((me_), \
-                                      RKH_SMA_ACCESS_CONST(CM(me_), ievent)); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)((me_)); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)(RKH_SMA_ACCESS_CONST(CM(me_), ievent)); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-#else
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)(); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
 #endif
 
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED

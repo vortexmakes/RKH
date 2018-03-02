@@ -628,7 +628,7 @@ extern "C" {
  *  \param[in] name		submachine name. Represents a submachine structure.
  *  \param[in] defchild	pointer to default child state.
  *  \param[in] iact		pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *
@@ -1309,7 +1309,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt
@@ -1355,7 +1355,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction_ 
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt_ 
@@ -1400,7 +1400,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt
@@ -1595,31 +1595,6 @@ typedef enum
     /** Number of state machines properties */
     RKH_NUM_HPPTY
 } RKH_HPPTY_T;
-
-/**
- *  \brief
- *  Initialization action.
- *
- *  Frequently, the state transition originating at the black ball is called
- *  the initial transition. Such transition designates the first active state
- *  after the state machine object is created. An initial transition can have
- *  associated actions, which in the UML notation are enlisted after the
- *  forward slash (/). In RKH framework, the application code must trigger
- *  the initial transition explicitly by invoking rkh_sma_activate() function.
- */
-#if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-     RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    typedef void (*RKH_INIT_ACT_T)(const RKH_SM_T *me,
-                                   const struct RKH_EVT_T *e);
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    typedef void (*RKH_INIT_ACT_T)(const RKH_SM_T *me);
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    typedef void (*RKH_INIT_ACT_T)(const struct RKH_EVT_T *e);
-#else
-    typedef void (*RKH_INIT_ACT_T)(void);
-#endif
 
 /**
  *  \brief
@@ -1868,7 +1843,7 @@ struct RKH_ROM_T
      *  \brief
      *  Points to initializing action (optional).
      *
-     *  The function prototype is defined as RKH_INIT_ACT_T. This argument is
+     *  The function prototype is defined as RKH_TRN_ACT_T. This argument is
      *  optional, thus it could be declared as NULL.
      */
     RKH_TRN_ACT_T iaction;
@@ -1959,7 +1934,7 @@ struct RKH_SM_T
      *  \brief
      *  Points to initializing action (optional).
      *
-     *  The function prototype is defined as RKH_INIT_ACT_T. This argument is
+     *  The function prototype is defined as RKH_TRN_ACT_T. This argument is
      *  optional, thus it could be declared as NULL.
      */
     RKH_TRN_ACT_T iaction;
