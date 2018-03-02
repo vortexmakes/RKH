@@ -115,21 +115,27 @@ extern "C" {
  *                      (RKH_DHISTORY) or without history (RKH_NO_HISTORY).
  *                      When it is defined as RKH_NO_HISTORY each of 
  *                      parameters related to history default transition are 
- *                      ignored.
+ *                      ignored. The name of this history pseudostate is 
+ *                      automatically generated from the name of composite 
+ *                      state parent as "<composite_state_name>Hist".
  *  \param[in] hDftTrnGuard	
- *                      pointer to guard function. This argument is
- *					    optional, thus it could be declared as NULL.
+ *                      Pointer to guard function associated to history default 
+ *                      transition. 
+ *                      This argument is optional, thus it could be declared 
+ *                      as NULL.
  *  \param[in] hDftTrnAction
- *                      pointer to action function. This argument is
- *					    optional, thus it could be declared as NULL.
+ *                      Pointer to effect action function associated to 
+ *                      history default transition. 
+ *                      This argument is optional, thus it could be declared 
+ *                      as NULL.
  *  \param[in] hDftTarget
- *                      pointer to target state. If a default history 
- *                      Transition is defined (the target parameter is not 
- *                      NULL) originating from the History Pseudostate, it 
- *                      will be taken. Otherwise, default State entry is 
- *                      applied. 
+ *                      Pointer to target vertex of history default transition.
+ *                      If a default history transition is defined 
+ *                      (the target parameter is not NULL) originating from 
+ *                      the History Pseudostate, it will be taken. Otherwise, 
+ *                      default State entry is applied. 
  *  \param[in] hRamMem
- *                      pointer to a RAM location which maintains the last 
+ *                      Pointer to a RAM location which maintains the last 
  *                      visited state of this region. If composite state don't 
  *                      include the history pseudostate then this parameter 
  *                      should be passed as NULL.
