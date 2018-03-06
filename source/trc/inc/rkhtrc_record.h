@@ -720,6 +720,7 @@ extern "C" {
         #endif
 
         /**
+         * 	\deprecated 
          *  \brief
          *	Number of executed actions and segments of the transition.
          *

@@ -404,22 +404,19 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKH_RAM rui8_t islca;
 #endif
     RKH_RAM rui8_t ix_n, ix_x, nn, nEntrySt;
-    /* set of entered states */
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
+    /* set of entered states */
     RKH_RAM RKHROM RKH_ST_T *sentry[RKH_CFG_SMA_MAX_HCAL_DEPTH];
 #endif
     /* set of executed transition actions */
     RKH_RAM RKH_TRN_ACT_T al[RKH_CFG_SMA_MAX_TRC_SEGS];
-    /* pointer to transition action set */
-    RKH_RAM RKH_TRN_ACT_T *pal;
-    /* # of executed transition actions */
-    RKH_RAM rui8_t nal;
-    /**/
+    
+    RKH_RAM RKH_TRN_ACT_T *pal;          /* pointer to transition action set */
+    RKH_RAM rui8_t nal;                  /* # of executed transition actions */
     RKH_RAM RKH_TRN_ACT_T trnAct;
     RKH_SR_ALLOC();
 
     RKH_ASSERT(me && pe);
-
     isCompletionEvent = isIntTrn = isMicroStep = RKH_FALSE;
     isCreationEvent = (pe->e == RKH_SM_CREATION_EVENT);
 
@@ -442,9 +439,9 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     }
     else
     {
-        cs = CST(RKH_SMA_ACCESS_CONST(me, istate));   /* get dft state of SM */
+        cs = CST(RKH_SMA_ACCESS_CONST(me, istate));  /* get dft vertex of SM */
+                                                            /* (root region) */ 
     }
-
     /* ---- Stage 2 -------------------------------------------------------- */
     /* Determine the (compound) transition (CT) that will fire in response */
     /* to the event: traverse the states in the active configuration from */
@@ -492,6 +489,11 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     }
     else
     {
+              /* After invoking the SM initialization method is dispatched a */
+              /* special event, evCreation, initializing the behavior of the */
+            /* reactive object and causing its statechart to enter an active */
+        /* configuration according to the default transitions taken from the */
+                                                                    /* root. */
         stn = ets = cs;
         trnAct = RKH_SMA_ACCESS_CONST(me, iaction);
         nn = 0;
@@ -505,7 +507,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     RKH_TR_SM_TRN(me,                           /* this state machine object */
                   stn,                            /* transition source state */
                   ts);                            /* transition target state */
-
     do
     {
         nal = 0;                        /* initialize transition action list */
@@ -516,10 +517,8 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             RKH_ERROR();
             return RKH_EX_TSEG;
         }
-
         RKH_INC_STEP();        /* increment the number of transition segment */
-
-        if (isIntTrn == RKH_FALSE /*&& isMicroStep == RKH_FALSE*/)
+        if (isIntTrn == RKH_FALSE)
         {
             RKH_TR_SM_TS_STATE(me,              /* this state machine object */
                                ets);       /* target state of the transition */
@@ -686,7 +685,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 else
                 {
                     /* Upon state machine creation adds states to entry from */
-                    /* dft transition target to root */
+                                            /* dft transition target to root */
                     nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
                 }
             }
@@ -708,9 +707,6 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
             /* perform the entry actions of the entered states */
             /* according to the order states are entered, */
             /* from high state to low state. */
-            /* For lowest level states that were entered, which are not */
-            /* basic states, perform default transitions (recursively) */
-            /* until the statechart reaches basic states. */
             /* Also, update 'stn' with the target state */
             RKH_EXEC_ENTRY_ACTION(nn, me, stn, snl, ix_n);
             nEntrySt += nn;

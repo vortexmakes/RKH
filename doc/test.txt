@@ -17,7 +17,7 @@ out of RKH features. For more information see section \ref test_sm "Module, unit
 \image html smTest.png "Figure - Used state machine for transition unit tests"
 
 \anchor fig_smPseudoTest
-\image html smPseudoTest.png "Figure - Used state machine for pseudostate unit tests"
+\image html smPseudoTest.PNG "Figure - Used state machine for pseudostate unit tests"
 
 \anchor fig_smInitialPseudoTest
 \image html smInitialPseudoTest.PNG "Figure - Used state machine for testing initial pseudostate of a composite state"

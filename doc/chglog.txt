@@ -3,6 +3,20 @@
 
 \tableofcontents
 
+\section rkhVer_3_1_0 Version 3.1.0
+\releasedate 2018-05-03
+
+\new
+- Added support for using any kind of vertex as target of a default transition 
+  in both composite state region or root region, according to UML 2.x.
+\par Deprecated features
+- The RKH_TE_SM_NTRNACT trace record is now deprecated and not recommended 
+  for new designs. It remains supported for backwards compatibility.
+- Deleted RKH_INIT_ACT_T type and deprecated its config option 
+  RKH_CFG_SMA_INIT_ARG_SMA_EN. Therefore, was replaced RKH_INIT_ACT_T by 
+  RKH_TRN_ACT_T and was fixed every demo application according to that.
+
+<HR>
 \section rkhVer_3_0_0 Version 3.0.0
 \releasedate 2017-08-01
 

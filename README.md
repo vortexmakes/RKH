@@ -34,6 +34,8 @@ The main features of RKH
 - Support submachine state.
 - Support local, internal and completion transitions.
 - Support entry and exit actions.
+- Support any kind of vertex as target of a default transition 
+  in both composite state region or root region, according to UML 2.x.
 - Implement the traditional transition sequence.
 - Include mechanism for deferring events.
 - Support event dispatching with parameters.
@@ -102,11 +104,9 @@ e-mail: francuccilea@gmail.com
 RKH Release notes
 =================
 
-Changes between V2.4.6 and V3.0.0 released 08/01/2017
+Changes between V3.0.0 and V3.1.0 released 03/05/2018
 
-- Added unit test cases of trace, sma and fwk modules.
-- Added test harness of framework's modules to test for.
-- Added Ceedling submodule
-- Rearranged files and directories (modules, ports and demo apps).
-- Improved trace module
-- Improved doc files (doxygen) and comments.
+- Added support for using any kind of vertex as target of a default transition 
+  in both composite state region or root region, according to UML 2.x.
+- The RKH_TE_SM_NTRNACT trace record is now deprecated and not recommended 
+  for new designs. It remains supported for backwards compatibility.

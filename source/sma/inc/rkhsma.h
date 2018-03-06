@@ -320,12 +320,9 @@ extern "C" {
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt
- *                      Pointer to an event that will be passed to state
- *                      machine application when it starts. Could be used to
- *                      pass arguments to the state machine like an argc/argv.
- *                      This argument is optional, thus it could be declared
- *                      as NULL or eliminated in compile-time with
- *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ *                      This parameter is now deprecated and not recommended 
+ *                      for new designs. It remains supported for backwards 
+ *                      compatibility.
  *
  *  \sa RKH_SM_CONST_CREATE(), RKH_SM_GET_CONST(), RKH_SM_GET_CONST(),
  *      RKH_SMA_DEF_PTR(), RKH_SMA_DEF_PTR_TYPE()
