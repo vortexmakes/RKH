@@ -84,7 +84,9 @@ idle_thread_function(LPVOID par)
 
     while (running)
     {
-        rkh_hook_idle();
+        RKH_TRC_FLUSH();
+        rkhport_wait_for_events();                /* yield the CPU until new */
+                                                          /* event(s) arrive */
         Sleep(10);
     }
     return 0;
