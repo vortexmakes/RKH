@@ -146,7 +146,7 @@ extern "C" {
  *  macro invokes the rkh_sma_activate() function ignoring the external
  *  event queue storage argument, \c qs.
  */
-#define RKH_CFGPORT_SMA_QSTO_EN             RKH_DISABLED
+#define RKH_CFGPORT_SMA_QSTO_EN             RKH_ENABLED
 
 /**
  *  If the #RKH_CFGPORT_SMA_STK_EN is set to 0 then RKH_SMA_ACTIVATE()

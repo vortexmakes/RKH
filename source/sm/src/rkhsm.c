@@ -343,6 +343,7 @@ rkh_update_deep_hist(RKHROM RKH_ST_T *from)
     #define rkh_update_deep_hist(f)       ((void)0)
 #endif
 
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
 static rui8_t
 addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList, 
             RKHROM RKH_ST_T *cmpSt)
@@ -364,6 +365,7 @@ addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
     }
     return nEnSt;
 }
+#endif
 
 /* ---------------------------- Global functions --------------------------- */
 void
@@ -686,12 +688,16 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 {
                     /* Upon state machine creation adds states to entry from */
                                             /* dft transition target to root */
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
                     nn += addTargetSt(CST(ts), sentry, RKH_ROOT);
+#endif
                 }
             }
             else
             {
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
                 nn = addTargetSt(CST(ets), sentry, stn);
+#endif
             }
         }
         /* ---- Stage 5 ---------------------------------------------------- */
@@ -713,10 +719,12 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 
             if (IS_COMPOSITE(ts))
             {
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
                 isMicroStep = RKH_TRUE;
                 trnAct = CCMP(ts)->initialAction;
                 ets = CCMP(ts)->defchild;
                 stn = ts;                           /* tracking parent state */
+#endif
             }
             else
             {
