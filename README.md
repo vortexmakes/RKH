@@ -96,8 +96,11 @@ Contact information
 ===================
 
 RKH site: http://vortexmakes.com/que-es/
+
 RKH GitHub: https://github.com/vortexmakes/RKH
+
 RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+
 e-mail: lf@vortexmakes.com
 
 RKH Release notes
