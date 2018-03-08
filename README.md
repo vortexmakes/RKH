@@ -95,11 +95,10 @@ RKH package. If not, see <http://www.gnu.org/licenses/>.
 Contact information
 ===================
 
-RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
-
+RKH site: http://vortexmakes.com/que-es/
+RKH GitHub: https://github.com/vortexmakes/RKH
+RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
 e-mail: lf@vortexmakes.com
-
-e-mail: francuccilea@gmail.com
 
 RKH Release notes
 =================

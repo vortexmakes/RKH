@@ -18,9 +18,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with RKH, see copying.txt file.
  *
- * Contact information:
- * RKH web site:	http://
- * e-mail:			francuccilea@gmail.com
+ *  Contact information:
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  */
 #ifndef __TZPARSE_H__
 #define __TZPARSE_H__

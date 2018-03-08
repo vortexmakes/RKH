@@ -178,9 +178,10 @@ See \ref contact section.</em>
 <HR>
 \section contact Contact information
 
-RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
+RKH site: http://vortexmakes.com/que-es/
+RKH GitHub: https://github.com/vortexmakes/RKH
+RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
 \n e-mail: lf@vortexmakes.com
-\n e-mail: francuccilea@gmail.com
 
 <HR>
 \section ack Acknowlegments
