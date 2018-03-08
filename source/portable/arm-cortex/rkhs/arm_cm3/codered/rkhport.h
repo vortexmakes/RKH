@@ -44,7 +44,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  *  DaBa  Dario Bali�a       dariosb@gmail.com
  */
 
