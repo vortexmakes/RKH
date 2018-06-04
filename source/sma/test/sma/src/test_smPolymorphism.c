@@ -148,7 +148,8 @@ TEST(polymorphism, defaultVirtualFunctions)
 {
 #if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
     checkVtbl(singleton, 
-              rkh_sma_activate, NULL, rkh_sma_post_fifo, rkh_sma_post_lifo);
+              rkh_sma_activate, rkh_sma_dispatch, rkh_sma_post_fifo, 
+              rkh_sma_post_lifo);
 
     TEST_ASSERT_EQUAL_PTR(&rkhSmaVtbl, singleton->vptr);
 #endif
@@ -221,7 +222,8 @@ TEST(polymorphism, runtimeMultipleAOCtorWithVtblForObj)
     Multiple_ctor(multB, 4, Multiple_postFifoB);
 
     checkVtbl((RKH_SMA_T *)multA, 
-              rkh_sma_activate, NULL, Multiple_postFifoA, rkh_sma_post_lifo);
+              rkh_sma_activate, rkh_sma_dispatch, Multiple_postFifoA, 
+              rkh_sma_post_lifo);
 
     TEST_ASSERT_EQUAL(2, Multiple_getFoobar(multA));
     TEST_ASSERT_EQUAL(4, Multiple_getFoobar(multB));
@@ -269,7 +271,7 @@ TEST(polymorphism, runtimeSubObjectCtorOfSMAAndSMWithDefaultVtbl)
 
     TEST_ASSERT_EQUAL(8, CallControl_getFoo());
     checkVtbl((RKH_SMA_T *)theCallControl, 
-              rkh_sma_activate, NULL, 
+              rkh_sma_activate, rkh_sma_dispatch, 
               rkh_sma_post_fifo, rkh_sma_post_lifo);
 #endif
 }

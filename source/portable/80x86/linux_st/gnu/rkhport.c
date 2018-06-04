@@ -166,7 +166,7 @@ rkh_fwk_enter(void)
 
             sma = rkh_sptbl[prio];
             e = rkh_sma_get(sma);
-            rkh_sm_dispatch((RKH_SM_T *)sma, e);
+            RKH_SMA_DISPATCH(sma, e);
             RKH_FWK_GC(e, sma);
         }
         else

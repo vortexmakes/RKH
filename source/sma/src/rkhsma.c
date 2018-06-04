@@ -76,7 +76,7 @@ RKHROM char noname[] = "null";
 const RKHSmaVtbl rkhSmaVtbl = 
 {
     rkh_sma_activate,
-    NULL,
+    rkh_sma_dispatch,
     rkh_sma_post_fifo,
     rkh_sma_post_lifo
 };
@@ -225,6 +225,12 @@ rkh_sma_get(RKH_SMA_T *sma)
     return e;
 }
 #endif
+
+void
+rkh_sma_dispatch(RKH_SMA_T *me, void *arg)
+{
+    rkh_sm_dispatch((RKH_SM_T *)me, (RKH_EVT_T *)arg);
+}
 
 #if RKH_CFG_FWK_DEFER_EVT_EN == RKH_ENABLED
 void

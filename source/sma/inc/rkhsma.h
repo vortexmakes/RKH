@@ -505,6 +505,30 @@ extern "C" {
 
 /**
  *  \brief
+ *  For cooperative scheduling policy, this function is used 
+ *  to dispatch the event to the active object behavior (single or 
+ *  multiple state machines).
+ *
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the target active object. 
+ *
+ *  \param[in] me_	    pointer to previously created state machine
+ *                      application.
+ *  \param[in] arg_	    optional and general purpose argument.
+ *
+ *  \ingroup apiAO
+ */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    #define RKH_SMA_DISPATCH(me_, arg_) \
+        ((RKH_SMA_T *)(me_))->vptr->task((me_), (arg_))
+#else
+    #define RKH_SMA_DISPATCH(me_, arg_) \
+        rkh_sma_dispatch((me_), (arg_))
+#endif
+
+/**
+ *  \brief
  *  Declares a opaque pointer to previously created array of state machine
  *  applications SMA (a.k.a Active Object) to be used as a global object.
  *
@@ -870,6 +894,10 @@ struct RKHSmaVtbl
      *  as known as thread of control, that waits for the signal to be posted,
      *  and when it is, loops to remove and process all events that are 
      *  currently queued.
+     *  
+     *  For cooperative scheduling policy, this function is used 
+     *  to dispatch the event to the active object behavior (single or 
+     *  multiple state machines).
      */
     RKHTask task;
 
@@ -1096,6 +1124,24 @@ void rkh_sma_post_lifo(RKH_SMA_T *me, const RKH_EVT_T *e);
  *  \ingroup apiPortAO
  */
 RKH_EVT_T *rkh_sma_get(RKH_SMA_T *me);
+
+/**
+ *  \brief
+ *  For cooperative scheduling policy, this function is used 
+ *  to dispatch the event to the active object behavior (single or 
+ *  multiple state machines).
+ *
+ *  If RKH_CFG_SMA_VFUNCT_EN is set RKH_ENABLED, this operation is 
+ *  polymorphic, where its implementation is defined by the virtual table of 
+ *  the target active object. 
+ *
+ *  \param[in] me	    pointer to previously created state machine
+ *                      application.
+ *  \param[in] arg	    optional and general purpose argument.
+ *
+ *  \ingroup apiAO
+ */
+void rkh_sma_dispatch(RKH_SMA_T *me, void *arg);
 
 /**
  *  \brief
