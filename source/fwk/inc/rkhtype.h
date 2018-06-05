@@ -102,6 +102,10 @@
     #include "../../portable/test/rkht.h"
 #endif
 
+#ifdef __CIAANXP__
+    #include "../../portable/arm-cortex/rkhs/arm_cm4f/ciaa_nxp/rkht.h"
+#endif
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
