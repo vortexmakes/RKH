@@ -41,6 +41,7 @@ void smIPT_init(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 void smIPT_tr1(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 void smIPT_tr2(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 void smIPT_tr3(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
+void smIPT_tr4(SmInitialPseudoTest *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 void smIPT_nS0(SmInitialPseudoTest *const me);
@@ -84,6 +85,9 @@ void smI4_nS11(SmInitialPseudoTest *const me);
 void smI5_nS0(SmInitialPseudoTest *const me);
 void smI5_nS1(SmInitialPseudoTest *const me);
 void smI5_nS11(SmInitialPseudoTest *const me);
+void smIPT_nS7(SmInitialPseudoTest *const me);
+void smIPT_nS71(SmInitialPseudoTest *const me);
+void smIPT_nS72(SmInitialPseudoTest *const me);
 
 /* ......................... Declares exit actions ......................... */
 void smIPT_xS0(SmInitialPseudoTest *const me);
@@ -113,6 +117,12 @@ void smIPT_xS611(SmInitialPseudoTest *const me);
 void smIPT_xS612(SmInitialPseudoTest *const me);
 void smIPT_xS6121(SmInitialPseudoTest *const me);
 void smIPT_xS62(SmInitialPseudoTest *const me);
+void smI5_nS7(SmInitialPseudoTest *const me);
+void smI5_nS71(SmInitialPseudoTest *const me);
+void smI5_nS72(SmInitialPseudoTest *const me);
+void smIPT_xS7(SmInitialPseudoTest *const me);
+void smIPT_xS71(SmInitialPseudoTest *const me);
+void smIPT_xS72(SmInitialPseudoTest *const me);
 
 /* ............................ Declares guards ............................ */
 rbool_t smIPT_isC1(const RKH_SM_T *sma, RKH_EVT_T *pe);

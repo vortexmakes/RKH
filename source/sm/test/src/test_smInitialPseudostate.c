@@ -70,7 +70,9 @@ static RKH_STATIC_EVENT(evC, C);
 static RKH_STATIC_EVENT(evD, D);
 static RKH_STATIC_EVENT(evE, E);
 static RKH_STATIC_EVENT(evF, F);
+static RKH_STATIC_EVENT(evG, G);
 extern const RKH_EVT_T evCreation;
+extern const RKH_EVT_T evCompletion;
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -113,10 +115,14 @@ loadStateMachineSymbols(void)
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s1Hist);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s2Hist);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s3Hist);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s7);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s71);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s72);
     RKH_TR_FWK_SIG(A);
     RKH_TR_FWK_SIG(B);
     RKH_TR_FWK_SIG(C);
     RKH_TR_FWK_SIG(D);
+    RKH_TR_FWK_SIG(G);
 }
 
 static void
@@ -755,6 +761,44 @@ TEST(InitPseudostate, SMInitialToBranchToCmpState)
     sm_evtProc_expect();
 
     rkh_sm_init(me);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+TEST(InitPseudostate, trnToInitialToSimpleStateWithNullTrn)
+{
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = smInitialPseudoTest;
+    TargetEntrySt tgEnSt[3] =   {{&smIPT_s7,    &smIPT_s7    },
+                                 {&smIPT_s71,   &smIPT_s71   },
+                                 {NULL,         NULL         }};
+
+    stateList_create(exitStates, 1, &smIPT_s0);
+
+    smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
+    smIPT_nS0_Expect(me);
+    smIPT_xS0_Expect(me);
+    smIPT_nS7_Expect(me);
+    smIPT_nS71_Expect(me);
+    smIPT_xS71_Expect(me);
+    smIPT_tr4_Expect(me, &evCompletion);
+    smIPT_nS72_Expect(me);
+
+    trnStepExpect(me, &smIPT_s0, &smIPT_s0, tgEnSt, exitStates, &evG);
+
+    /* Transition (null or completion) from s71 to s72 */
+    sm_dch_expect(evCompletion.e, RKH_STATE_CAST(&smIPT_s71));
+    sm_trn_expect(RKH_STATE_CAST(&smIPT_s71), RKH_STATE_CAST(&smIPT_s72));
+    sm_tsState_expect(RKH_STATE_CAST(&smIPT_s72));
+    sm_exstate_expect(RKH_STATE_CAST(&smIPT_s71));
+    sm_enstate_expect(RKH_STATE_CAST(&smIPT_s72));
+    sm_nenex_expect(1, 1);
+    sm_state_expect(RKH_STATE_CAST(&smIPT_s72));
+    sm_evtProc_expect();
+
+    rkh_sm_init((RKH_SM_T *)me);
+    rkh_sm_dispatch((RKH_SM_T *)me, &evG);
 
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
