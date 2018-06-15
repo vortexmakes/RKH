@@ -73,14 +73,14 @@ RKH_MODULE_NAME(rkhsm)
 #define IS_SIMPLE(s)                    (CB((s))->type == RKH_BASIC)
 #define IS_FINAL(s)                     (CB((s))->type == RKH_FINAL)
 
-#if RKH_CFGPORT_NATIVE_SCHEDULER_EN == RKH_ENABLED || \
-    RKH_CFGPORT_REENTRANT_EN == RKH_DISABLED
-    #define RKH_RAM     static
-#else
+#if (RKH_CFG_SMA_ORTHREG_EN == RKH_ENABLED || \
+     RKH_CFGPORT_REENTRANT_EN == RKH_ENABLED)
     /* allocate the automatic variables of rkh_sm_dispatch() */
     /* function on the stack. */
     /* Therefore, the code is reentrant. */
     #define RKH_RAM
+#else
+    #define RKH_RAM     static
 #endif
 
 #define FIND_TRN(me_, evt_, trn_, trnTbl_, signal_) \

@@ -836,6 +836,19 @@ extern "C" {
 
 #endif
 
+#ifndef RKH_CFG_SMA_ORTHREG_EN
+    #error "RKH_CFG_SMA_ORTHREG_EN                not #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be RKH_ENABLED ]       "
+    #error "                                    [     || RKH_DISABLED]       "
+
+#elif   ((RKH_CFG_SMA_ORTHREG_EN != RKH_ENABLED) && \
+    (RKH_CFG_SMA_ORTHREG_EN != RKH_DISABLED))
+    #error "RKH_CFG_SMA_ORTHREG_EN          illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be  RKH_ENABLED ]      "
+    #error "                                    [     ||  RKH_DISABLED]      "
+
+#endif
+
 /*  TRACE         --------------------------------------------------------- */
 #ifndef RKH_CFG_TRC_EN
     #error "RKH_CFG_TRC_EN                        not #define'd in 'rkhcfg.h'"

@@ -4531,6 +4531,13 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_DISABLED </TD>
 		<TD align="left"> \copybrief RKH_CFG_SMA_VFUNCT_EN </TD>
 	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_SMA_ORTHREG_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_DISABLED </TD>
+		<TD align="left"> \copybrief RKH_CFG_SMA_ORTHREG_EN </TD>
+	</TR>
 </TABLE>
 
 Back: \ref cfg "Configuring framework RKH"
