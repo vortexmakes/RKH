@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="test">
+      <UniqueIdentifier>{15f2147f-34d1-42e9-9bf7-a4ac79fce62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\stub">
+      <UniqueIdentifier>{60cb9a32-0678-4c04-8b3d-5b8fddd36bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\tool">
+      <UniqueIdentifier>{07df18fa-ca3c-4c1d-93f1-e9fb5ff95f3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{25fb2efa-c785-4a38-8e6f-525408d72a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\src">
+      <UniqueIdentifier>{3265d6c1-e1b9-4f60-b315-f8b5497e0de2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\all_tests.c">
+      <Filter>test\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_Epoch_runner.c">
+      <Filter>test\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_Epoch.c">
+      <Filter>test\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\epoch.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rtime.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
