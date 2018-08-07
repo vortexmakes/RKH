@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sched", "sched\sched.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pubsub", "pubsub\pubsub.vcxproj", "{AA570415-FBB0-4136-A638-47DC38E2E89E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdygrp", "rdygrp\rdygrp.vcxproj", "{4ABFB6C9-E4EB-452F-AAF7-32950365436E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -43,6 +45,10 @@ Global
 		{AA570415-FBB0-4136-A638-47DC38E2E89E}.Debug|Win32.Build.0 = Debug|Win32
 		{AA570415-FBB0-4136-A638-47DC38E2E89E}.Release|Win32.ActiveCfg = Release|Win32
 		{AA570415-FBB0-4136-A638-47DC38E2E89E}.Release|Win32.Build.0 = Release|Win32
+		{4ABFB6C9-E4EB-452F-AAF7-32950365436E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4ABFB6C9-E4EB-452F-AAF7-32950365436E}.Debug|Win32.Build.0 = Debug|Win32
+		{4ABFB6C9-E4EB-452F-AAF7-32950365436E}.Release|Win32.ActiveCfg = Release|Win32
+		{4ABFB6C9-E4EB-452F-AAF7-32950365436E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
