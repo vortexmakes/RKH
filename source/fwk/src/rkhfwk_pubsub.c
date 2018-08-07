@@ -37,14 +37,14 @@
  *  \brief      Implements the publish-subscribe interface.
  *  \details    This module addresses the specific issue of how to notify a 
  *              set of interested active objects (clients) in a timely way 
- *              that a value that they care about has changed, especially when 
+ *              that a value that they care about has nChanged, especially when 
  *              the notification process is to be repeated for a relatively 
  *              long period of time. It does this without requiring the data
  *              server to have any a priori knowledge about its clients. 
  *              The basic solution offered by PubSub module is to have the 
  *              clients "subscribe" to the server to be notified about the 
  *              value in question according to the policy: "when the value 
- *              changes", receiving a proper event carrying the value of 
+ *              nChanges", receiving a proper event carrying the value of 
  *              interest.
  *              This means, for example, that sensor data can be easily shared 
  *              to elements that may not even exist when the sensor proxies 
@@ -69,6 +69,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhfwk_pubsub.h"
+#include "rkhsma_prio.h"
 #include "rkhitl.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -79,7 +80,7 @@
 typedef struct PubSub PubSub;
 struct PubSub
 {
-    RKH_RG_T channels[RKH_CFG_FWK_MAX_SUBS_CHANNELS];
+    RKHRdyGrp channels[RKH_CFG_FWK_MAX_SUBS_CHANNELS];
 };
 
 /* ---------------------------- Global variables --------------------------- */
@@ -92,10 +93,14 @@ static PubSub abstractObserver;     /* Singleton */
 void 
 rkh_pubsub_init(void)
 {
-    rui8_t ch;
+    RKHRdyGrp *pCh;
+    rui8_t nCh;
 
-    for (ch = 0; ch <  RKH_CFG_FWK_MAX_SUBS_CHANNELS; ++ch)
+    for (pCh = abstractObserver.channels, nCh = 0; 
+         nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; 
+         ++nCh, ++pCh)
     {
+        pCh->grp = 0;
     }
 }
 
