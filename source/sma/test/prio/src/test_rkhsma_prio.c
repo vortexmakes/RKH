@@ -104,11 +104,14 @@ TEST(prio, ClearAfterInit)
     rkh_rdygrp_init_IgnoreArg_me();
     rkh_rdygrp_isReady_ExpectAndReturn(0, 0);
     rkh_rdygrp_isReady_IgnoreArg_me();
+    rkh_rdygrp_isReady_ExpectAndReturn(0, 0);
+    rkh_rdygrp_isReady_IgnoreArg_me();
 
     rkh_smaPrio_init();
     result = rkh_smaPrio_isReady();
-
     TEST_ASSERT_EQUAL(0, result);
+    result = rkh_smaPrio_isNotReady();
+    TEST_ASSERT_EQUAL(1, result);
 }
 
 TEST(prio, SetOneActiveObjectReadyToRun)

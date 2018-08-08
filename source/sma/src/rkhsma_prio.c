@@ -77,7 +77,7 @@ rkh_smaPrio_init(void)
 rbool_t 
 rkh_smaPrio_isNotReady(void)
 {
-    return readyGroup.grp == 0;
+    return rkh_rdygrp_isReady(&readyGroup) == 0;
 }
 
 rbool_t 
