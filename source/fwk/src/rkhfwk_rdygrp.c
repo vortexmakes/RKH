@@ -94,6 +94,16 @@ rkh_rdygrp_setReady(RKHRdyGrp *const me, rui8_t prio)
     me->tbl[prio >> 3] |= rkh_bittbl_getBitMask(prio & 0x07);
 }
 
+void 
+rkh_rdygrp_setUnready(RKHRdyGrp *const me, rui8_t prio)
+{
+    RKH_REQUIRE(prio < RKH_CFG_FWK_MAX_SMA);
+    if ((me->tbl[prio >> 3] &= ~rkh_bittbl_getBitMask(prio & 0x07)) == 0)
+    {
+        me->grp &= ~rkh_bittbl_getBitMask(prio >> 3);
+    }
+}
+
 rui8_t 
 rkh_rdygrp_findHighest(RKHRdyGrp *const me)
 {

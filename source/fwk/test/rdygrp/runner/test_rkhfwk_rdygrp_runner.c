@@ -63,8 +63,11 @@
 TEST_GROUP_RUNNER(rdygrp)
 {
 	RUN_TEST_CASE(rdygrp, ClearAfterInit);
-	RUN_TEST_CASE(rdygrp, SetOneActiveObjectReadyToRun);
-	RUN_TEST_CASE(rdygrp, SetMultipleActiveObjectsReadyToRun);
+	RUN_TEST_CASE(rdygrp, SetOneActiveObjectReady);
+	RUN_TEST_CASE(rdygrp, SetMultipleActiveObjectsReady);
+	RUN_TEST_CASE(rdygrp, SetOneActiveObjectUnready);
+	RUN_TEST_CASE(rdygrp, SetMultipleActiveObjectsUnready);
+	RUN_TEST_CASE(rdygrp, Fails_InvalidActiveObjectOnSet);
 }
 
 /* ------------------------------ End of file ------------------------------ */

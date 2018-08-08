@@ -128,7 +128,7 @@ TEST(rdygrp, ClearAfterInit)
     TEST_ASSERT_EQUAL(0, result);
 }
 
-TEST(rdygrp, SetOneActiveObjectReadyToRun)
+TEST(rdygrp, SetOneActiveObjectReady)
 {
     rbool_t result;
     rui8_t prio = 1, resultPrio, column, row;
@@ -148,7 +148,7 @@ TEST(rdygrp, SetOneActiveObjectReadyToRun)
     TEST_ASSERT_EQUAL(prio, resultPrio);
 }
 
-TEST(rdygrp, SetMultipleActiveObjectsReadyToRun)
+TEST(rdygrp, SetMultipleActiveObjectsReady)
 {
     rui8_t prioA = 1, prioC = 0, prioB = 15, resultPrio, column, row;
 
@@ -174,6 +174,85 @@ TEST(rdygrp, SetMultipleActiveObjectsReadyToRun)
     rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(3, leastBitSetTbl[3]);
     resultPrio = rkh_rdygrp_findHighest(&rdyTbl);
     TEST_ASSERT_EQUAL(prioC, resultPrio);
+}
+
+TEST(rdygrp, SetOneActiveObjectUnready)
+{
+    rbool_t result;
+    rui8_t prio = 1, resultPrio, column, row;
+
+    column = prio >> 3;
+    row = prio & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+
+    rkh_rdygrp_setReady(&rdyTbl, prio);
+
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(1, leastBitSetTbl[1]);
+    rkh_bittbl_getLeastBitSetPos_ExpectAndReturn(2, leastBitSetTbl[2]);
+    resultPrio = rkh_rdygrp_findHighest(&rdyTbl);
+    TEST_ASSERT_EQUAL(prio, resultPrio);
+
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_rdygrp_setUnready(&rdyTbl, prio);
+    result = rkh_rdygrp_isReady(&rdyTbl);
+    TEST_ASSERT_EQUAL(0, result);
+}
+
+TEST(rdygrp, SetMultipleActiveObjectsUnready)
+{
+    rbool_t result;
+    rui8_t prioA = 1, prioC = 0, prioB = 15, column, row;
+
+    column = prioA >> 3;
+    row = prioA & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_rdygrp_setReady(&rdyTbl, prioA);
+
+    column = prioB >> 3;
+    row = prioB & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_rdygrp_setReady(&rdyTbl, prioB);
+
+    column = prioC >> 3;
+    row = prioC & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_rdygrp_setReady(&rdyTbl, prioC);
+
+    column = prioA >> 3;
+    row = prioA & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_rdygrp_setUnready(&rdyTbl, prioA);
+
+    column = prioB >> 3;
+    row = prioB & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_rdygrp_setUnready(&rdyTbl, prioB);
+
+    column = prioC >> 3;
+    row = prioC & 7;
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_rdygrp_setUnready(&rdyTbl, prioC);
+
+    result = rkh_rdygrp_isReady(&rdyTbl);
+    TEST_ASSERT_EQUAL(0, result);
+}
+
+TEST(rdygrp, Fails_InvalidActiveObjectOnSet)
+{
+    rui8_t prio = RKH_CFG_FWK_MAX_SMA;
+
+    rkh_assert_Expect("rkhfwk_rdygrp", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_rdygrp_setReady(&rdyTbl, prio);
 }
 
 /** @} doxygen end group definition */

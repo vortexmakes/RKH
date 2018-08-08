@@ -167,6 +167,18 @@ void rkh_rdygrp_setReady(RKHRdyGrp *const me, rui8_t prio);
 
 /**
  *  \brief
+ *  Removing an active object from the ready list.
+ *
+ *  Clears the ready bit of the active object in rkhrg.tbl[] and clears the 
+ *  bit in rkhrg.grp only if all active objects in a group are not ready to 
+ *  run, i.e. all bits in rkhrg.tbl[prio >> 3] are 0.
+ *
+ *  \param[in] prio		number of active object's priority.
+ */
+void rkh_rdygrp_setUnready(RKHRdyGrp *const me, rui8_t prio);
+
+/**
+ *  \brief
  *	Finding the highest priority active object ready.
  *
  *	Another table lookup is performed, rather than scanning through the table

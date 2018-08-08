@@ -54,7 +54,6 @@
 #define __RKHSMA_PRIO_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "rkhcfg.h"
 #include "rkhtype.h"
 
 /* ---------------------- External C language linkage ---------------------- */
