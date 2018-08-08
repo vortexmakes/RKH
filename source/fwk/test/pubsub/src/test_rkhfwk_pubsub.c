@@ -57,27 +57,30 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity_fixture.h"
 #include "rkhfwk_pubsub.h"
+#include "Mock_rkhfwk_rdygrp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(pubsub);
+int GlobalExpectCount;
+int GlobalVerifyOrder;
+char *GlobalOrderError;
 
 /* ---------------------------- Local variables ---------------------------- */
-static rui8_t *stoStart;
-static rui16_t stoSize;
-static RKH_ES_T evtSize;
-
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(pubsub)
 {
+    Mock_rkhfwk_rdygrp_Init();
 }
 
 TEST_TEAR_DOWN(pubsub)
 {
+    Mock_rkhfwk_rdygrp_Verify();
+    Mock_rkhfwk_rdygrp_Destroy();
 }
 
 /**
@@ -88,6 +91,14 @@ TEST_TEAR_DOWN(pubsub)
  */
 TEST(pubsub, AfterInitAllChannelsAreAvailable)
 {
+    rui8_t nCh;
+
+    for (nCh = 0; nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; ++nCh)
+    {
+        rkh_rdygrp_init_Expect(0);
+        rkh_rdygrp_init_IgnoreArg_me();
+    }
+
     rkh_pubsub_init();
 }
 

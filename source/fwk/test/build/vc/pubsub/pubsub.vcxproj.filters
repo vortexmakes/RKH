@@ -39,5 +39,8 @@
     <ClCompile Include="..\..\..\..\src\rkhfwk_pubsub.c">
       <Filter>rkh</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhfwk_rdygrp.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

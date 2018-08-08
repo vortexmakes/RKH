@@ -69,13 +69,10 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhfwk_pubsub.h"
-#include "rkhsma_prio.h"
-#include "rkhitl.h"
+#include "rkhfwk_rdygrp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
-#define RKH_CFG_FWK_MAX_SUBS_CHANNELS   32
-
 /* ---------------------------- Local data types --------------------------- */
 typedef struct PubSub PubSub;
 struct PubSub
@@ -100,7 +97,7 @@ rkh_pubsub_init(void)
          nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; 
          ++nCh, ++pCh)
     {
-        pCh->grp = 0;
+        rkh_rdygrp_init(pCh);
     }
 }
 

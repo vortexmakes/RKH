@@ -79,6 +79,8 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
+#define RKH_CFG_FWK_MAX_SUBS_CHANNELS   8
+
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
@@ -88,9 +90,15 @@ extern "C" {
  */
 void rkh_pubsub_init(void);
 
-int rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *me);
-int rkh_pubsub_unsubcribe(rui8_t channel, const RKH_SMA_T *me);
-int rkh_pubsub_unsubscribeAll(const RKH_SMA_T *me);
+/**
+ *  \brief
+ *  Adds the pointer to the active object to the notification list of 
+ *  an event channel.
+ */
+int rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao);
+
+int rkh_pubsub_unsubcribe(rui8_t channel, const RKH_SMA_T *ao);
+int rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao);
 int rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event, 
                        const void *const sender);
 
