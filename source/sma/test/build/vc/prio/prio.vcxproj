@@ -95,7 +95,7 @@
     <ClCompile Include="..\..\..\prio\runner\test_rkhsma_prio_runner.c" />
     <ClCompile Include="..\..\..\prio\src\test_rkhsma_prio.c" />
     <ClCompile Include="..\..\..\prio\stub\mocks\Mock_rkhassert.c" />
-    <ClCompile Include="..\..\..\prio\stub\mocks\Mock_rkhfwk_bittbl.c" />
+    <ClCompile Include="..\..\..\prio\stub\mocks\Mock_rkhfwk_rdygrp.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
