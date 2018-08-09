@@ -94,6 +94,13 @@ void rkh_pubsub_init(void);
  *  \brief
  *  Adds the pointer to the active object to the notification list of 
  *  an event channel.
+ *  Each subscription registers a client’s interest in one event channel 
+ *  (topic). This module posts published events to the registered clients in 
+ *  order to forward events that were published to channel that match this 
+ *  subscription.
+ *
+ *  \param channel  ...
+ *  \param ao       ...
  */
 int rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao);
 
