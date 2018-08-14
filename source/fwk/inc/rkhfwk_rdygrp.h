@@ -139,6 +139,12 @@ typedef struct
     rui8_t tbl[RKH_NUM_RDYGRP];
 } RKHRdyGrp;
 
+typedef struct RdyCbArg RdyCbArg;
+struct RdyCbArg
+{
+    rui8_t aoRdyPrio;
+};
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /**
@@ -189,6 +195,19 @@ void rkh_rdygrp_setUnready(RKHRdyGrp *const me, rui8_t prio);
  *  number between 0 and 7.
  */
 rui8_t rkh_rdygrp_findHighest(RKHRdyGrp *const me);
+
+/**
+ *  \brief
+ *  Traverse a ready list to find the ready active objects and thus invoking 
+ *  a callback function.
+ *
+ *  \param[in] me
+ *  \param[in] rdyCb    invoked callback function to every found ready 
+ *                      active object.
+ *  \param[in] rdyCbArg argument of callback function \c rdyCb
+ */
+rui8_t rkh_rdygrp_traverse(RKHRdyGrp *const me, void (*rdyCb)(RdyCbArg *), 
+                           RdyCbArg *rdyCbArg);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
