@@ -115,4 +115,11 @@ rkh_rdygrp_findHighest(RKHRdyGrp *const me)
     return prio;
 }
 
+rui8_t 
+rkh_rdygrp_traverse(RKHRdyGrp *const me, void (*rdyCb)(RdyCbArg *), 
+                    RdyCbArg *rdyCbArg)
+{
+    return 0;
+}
+
 /* ------------------------------ End of file ------------------------------ */

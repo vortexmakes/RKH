@@ -150,12 +150,16 @@ struct RdyCbArg
 /**
  *  \brief
  *  Initializes the ready mechanism for active objects.
+ *
+ *  \param[in] me
  */
 void rkh_rdygrp_init(RKHRdyGrp *const me);
 
 /**
  *  \brief
  *	Evaluates to true if any active object is ready.
+ *
+ *  \param[in] me
  */
 rbool_t rkh_rdygrp_isReady(RKHRdyGrp *const me);
 
@@ -167,6 +171,7 @@ rbool_t rkh_rdygrp_isReady(RKHRdyGrp *const me);
  *  position in rkhrg.tbl[], while the next three most significant bits are
  *  used to determine the index into rkhrg.tbl[].
  *
+ *  \param[in] me
  *  \param[in] prio     number of active object's priority.
  */
 void rkh_rdygrp_setReady(RKHRdyGrp *const me, rui8_t prio);
@@ -179,6 +184,7 @@ void rkh_rdygrp_setReady(RKHRdyGrp *const me, rui8_t prio);
  *  bit in rkhrg.grp only if all active objects in a group are not ready to 
  *  run, i.e. all bits in rkhrg.tbl[prio >> 3] are 0.
  *
+ *  \param[in] me
  *  \param[in] prio		number of active object's priority.
  */
 void rkh_rdygrp_setUnready(RKHRdyGrp *const me, rui8_t prio);
@@ -193,6 +199,8 @@ void rkh_rdygrp_setUnready(RKHRdyGrp *const me, rui8_t prio);
  *  least significant bit has the highest priority. Using this byte to index 
  *  the table returns the bit position of the highest priority bit set, a 
  *  number between 0 and 7.
+ *
+ *  \param[in] me
  */
 rui8_t rkh_rdygrp_findHighest(RKHRdyGrp *const me);
 

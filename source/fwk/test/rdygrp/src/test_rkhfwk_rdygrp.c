@@ -88,17 +88,32 @@ static const rui8_t leastBitSetTbl[] =
 };
 
 /* ---------------------------- Local data types --------------------------- */
+typedef struct DerivedRdyCbArg DerivedRdyCbArg;
+struct DerivedRdyCbArg
+{
+    RdyCbArg base;
+    int cnt;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(rdygrp);
 static RKHRdyGrp rdyTbl;
 
 /* ---------------------------- Local variables ---------------------------- */
+static DerivedRdyCbArg rdyCbArg;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void 
 MockAssertCallback(const char* const file, int line, int cmock_num_calls)
 {
     TEST_PASS();
+}
+
+static void
+rdyCb(RdyCbArg *arg)
+{
+    ++((DerivedRdyCbArg *)arg)->cnt;
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -253,6 +268,23 @@ TEST(rdygrp, Fails_InvalidActiveObjectOnSet)
     rkh_assert_StubWithCallback(MockAssertCallback);
 
     rkh_rdygrp_setReady(&rdyTbl, prio);
+}
+
+TEST(rdygrp, TraverseWithOneReadyActiveObject)
+{
+    rbool_t result;
+    rui8_t prio = 1, nRdyAo, column, row;
+
+    column = prio >> 3;
+    row = prio & 7;
+    rdyCbArg.cnt = 0;
+    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
+    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+
+    rkh_rdygrp_setReady(&rdyTbl, prio);
+    nRdyAo = rkh_rdygrp_traverse(&rdyTbl, rdyCb, (RdyCbArg *)&rdyCbArg);
+    TEST_ASSERT_EQUAL(1, nRdyAo);
+    TEST_ASSERT_EQUAL(1, rdyCbArg.cnt);
 }
 
 /** @} doxygen end group definition */

@@ -68,6 +68,7 @@ TEST_GROUP_RUNNER(rdygrp)
 	RUN_TEST_CASE(rdygrp, SetOneActiveObjectUnready);
 	RUN_TEST_CASE(rdygrp, SetMultipleActiveObjectsUnready);
 	RUN_TEST_CASE(rdygrp, Fails_InvalidActiveObjectOnSet);
+	RUN_TEST_CASE(rdygrp, TraverseWithOneReadyActiveObject);
 }
 
 /* ------------------------------ End of file ------------------------------ */
