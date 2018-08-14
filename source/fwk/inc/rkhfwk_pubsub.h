@@ -52,6 +52,7 @@
  *              Also, minimizes computational effort for notification of 
  *              clients and across a communications bus and minimizes the bus 
  *              bandwidth required for notification of the appropriate clients.
+ *
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -92,20 +93,51 @@ void rkh_pubsub_init(void);
 
 /**
  *  \brief
- *  Adds the pointer to the active object to the notification list of 
- *  an event channel.
+ *  Adds an active object to the notification list of an event channel.
  *  Each subscription registers a client’s interest in one event channel 
  *  (topic). This module posts published events to the registered clients in 
  *  order to forward events that were published to channel that match this 
  *  subscription.
  *
- *  \param channel  ...
- *  \param ao       ...
+ *  \param[in] channel  indicates the topic to which the active object 
+ *                      (client) wants to subscribe.
+ *  \param[in] ao       pointer to previously created active object to
+ *                      subscribe.
  */
 int rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao);
 
+/**
+ *  \brief
+ *  Unsubscribes an active object from topic.
+ *
+ *  \param[in] channel  indicates the topic that the active object wishes
+ *                      to unsubscribe from.
+ *  \param[in] ao       pointer to previously created active object to 
+ *                      unsubscribe.
+ */
 int rkh_pubsub_unsubcribe(rui8_t channel, const RKH_SMA_T *ao);
+
+/**
+ *  \brief
+ *  Unsubscribes an active object from all topics.
+ *
+ *  \param[in] ao       pointer to previously created active object to 
+ *                      unsubscribe.
+ */
 int rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao);
+
+/**
+ *  \brief
+ *
+ *  \param[in] channel  identifies the information channel to which event is
+ *                      published.
+ *  \param[in] event    pointer to event to publish
+ *  \param[in] sender	pointer to the sender object. It is not necessarily a 
+ *                      pointer to an active object. In fact, if 
+ *                      rkh_pubsub_publish() is called from an interrupt or 
+ *                      other context, it can create a unique object just to 
+ *                      unambiguously identify the publisher of the event.
+ */
 int rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event, 
                        const void *const sender);
 
