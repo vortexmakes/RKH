@@ -97,10 +97,11 @@ struct DerivedRdyCbArg
 
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(rdygrp);
-static RKHRdyGrp rdyTbl;
 
 /* ---------------------------- Local variables ---------------------------- */
+static RKHRdyGrp rdyTbl;
 static DerivedRdyCbArg rdyCbArg;
+static rui8_t prio[] = {0, 3, 9, 17, 27, 33, 41, 55, 63};
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -113,7 +114,7 @@ MockAssertCallback(const char* const file, int line, int cmock_num_calls)
 static void
 rdyCb(RdyCbArg *arg)
 {
-    ++((DerivedRdyCbArg *)arg)->cnt;
+    TEST_ASSERT_EQUAL(prio[((DerivedRdyCbArg *)arg)->cnt++], arg->aoRdyPrio);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -272,19 +273,46 @@ TEST(rdygrp, Fails_InvalidActiveObjectOnSet)
 
 TEST(rdygrp, TraverseWithOneReadyActiveObject)
 {
-    rbool_t result;
-    rui8_t prio = 1, nRdyAo, column, row;
+    rui8_t nRdyAo, resultNRdyAo;
 
-    column = prio >> 3;
-    row = prio & 7;
+    rkh_bittbl_getBitMask_IgnoreAndReturn(bitMaskTbl[prio[0] >> 3]);
+    rkh_bittbl_getBitMask_IgnoreAndReturn(bitMaskTbl[prio[0] & 7]);
+
     rdyCbArg.cnt = 0;
-    rkh_bittbl_getBitMask_ExpectAndReturn(column, bitMaskTbl[column]);
-    rkh_bittbl_getBitMask_ExpectAndReturn(row, bitMaskTbl[row]);
+    nRdyAo = 1;
+    rkh_rdygrp_setReady(&rdyTbl, prio[0]);
+    resultNRdyAo = rkh_rdygrp_traverse(&rdyTbl, rdyCb, (RdyCbArg *)&rdyCbArg);
+    TEST_ASSERT_EQUAL(nRdyAo, resultNRdyAo);
+    TEST_ASSERT_EQUAL(nRdyAo, rdyCbArg.cnt);
+}
 
-    rkh_rdygrp_setReady(&rdyTbl, prio);
-    nRdyAo = rkh_rdygrp_traverse(&rdyTbl, rdyCb, (RdyCbArg *)&rdyCbArg);
-    TEST_ASSERT_EQUAL(1, nRdyAo);
-    TEST_ASSERT_EQUAL(1, rdyCbArg.cnt);
+TEST(rdygrp, TraverseWithMultipleReadyActiveObject)
+{
+    rui8_t nRdyAo, resultNRdyAo, ix;
+
+    nRdyAo = 9;
+    for (ix = 0; ix < nRdyAo; ++ix)
+    {
+        rkh_bittbl_getBitMask_IgnoreAndReturn(bitMaskTbl[prio[ix] >> 3]);
+        rkh_bittbl_getBitMask_IgnoreAndReturn(bitMaskTbl[prio[ix] & 7]);
+        rkh_rdygrp_setReady(&rdyTbl, prio[ix]);
+    }
+
+    rdyCbArg.cnt = 0;
+    resultNRdyAo = rkh_rdygrp_traverse(&rdyTbl, rdyCb, (RdyCbArg *)&rdyCbArg);
+    TEST_ASSERT_EQUAL(nRdyAo, resultNRdyAo);
+    TEST_ASSERT_EQUAL(nRdyAo, rdyCbArg.cnt);
+}
+
+TEST(rdygrp, TraverseWithWithoutReadyActiveObject)
+{
+    rui8_t nRdyAo, resultNRdyAo;
+
+    rdyCbArg.cnt = 0;
+    nRdyAo = 0;
+    resultNRdyAo = rkh_rdygrp_traverse(&rdyTbl, rdyCb, (RdyCbArg *)&rdyCbArg);
+    TEST_ASSERT_EQUAL(nRdyAo, resultNRdyAo);
+    TEST_ASSERT_EQUAL(nRdyAo, rdyCbArg.cnt);
 }
 
 /** @} doxygen end group definition */

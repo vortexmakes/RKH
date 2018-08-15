@@ -213,6 +213,9 @@ rui8_t rkh_rdygrp_findHighest(RKHRdyGrp *const me);
  *  \param[in] rdyCb    invoked callback function to every found ready 
  *                      active object.
  *  \param[in] rdyCbArg argument of callback function \c rdyCb
+ *
+ *	\return
+ *  The number of found ready active objects
  */
 rui8_t rkh_rdygrp_traverse(RKHRdyGrp *const me, void (*rdyCb)(RdyCbArg *), 
                            RdyCbArg *rdyCbArg);

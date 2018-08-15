@@ -119,7 +119,25 @@ rui8_t
 rkh_rdygrp_traverse(RKHRdyGrp *const me, void (*rdyCb)(RdyCbArg *), 
                     RdyCbArg *rdyCbArg)
 {
-    return 0;
+    rui8_t row, column, *pTbl, nBit, nRdyAO;
+
+    for (nRdyAO = row = 0, pTbl = me->tbl; 
+         row < RKH_NUM_RDYGRP; 
+         ++pTbl, ++row)
+    {
+        for (column = *pTbl, nBit = 0;
+             (column != 0) && (nBit < 8); 
+             ++nBit, column >>= 1)
+        {
+            if ((column & 1) != 0)
+            {
+                ++nRdyAO;
+                rdyCbArg->aoRdyPrio = (row << 3) | nBit;
+                (*rdyCb)(rdyCbArg);
+            }
+        }
+    }
+    return nRdyAO;
 }
 
 /* ------------------------------ End of file ------------------------------ */
