@@ -70,6 +70,10 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhfwk_pubsub.h"
 #include "rkhfwk_rdygrp.h"
+#include "rkhsma.h"
+#include "rkhassert.h"
+
+RKH_MODULE_NAME(rkhfwk_pubsub)
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -80,12 +84,30 @@ struct PubSub
     RKHRdyGrp channels[RKH_CFG_FWK_MAX_SUBS_CHANNELS];
 };
 
+typedef struct PubArg PubArg;
+struct PubArg
+{
+    RdyCbArg base;
+    RKH_EVT_T *event;
+    const void *sender;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static PubSub abstractObserver;     /* Singleton */
+static PubSub observer;     /* Singleton */
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void
+publish(RdyCbArg *arg)
+{
+    PubArg *realArg;
+
+    realArg = (PubArg *)arg;
+    RKH_SMA_POST_FIFO(RKH_GET_SMA(arg->aoRdyPrio), 
+                      realArg->event, realArg->sender);
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void 
 rkh_pubsub_init(void)
@@ -93,12 +115,59 @@ rkh_pubsub_init(void)
     RKHRdyGrp *pCh;
     rui8_t nCh;
 
-    for (pCh = abstractObserver.channels, nCh = 0; 
+    for (pCh = observer.channels, nCh = 0; 
          nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; 
          ++nCh, ++pCh)
     {
         rkh_rdygrp_init(pCh);
     }
+}
+
+void
+rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao)
+{
+    RKH_REQUIRE((ao != (const RKH_SMA_T *)0) && 
+                (channel < RKH_CFG_FWK_MAX_SUBS_CHANNELS));
+    rkh_rdygrp_setReady(&observer.channels[channel], RKH_GET_PRIO(ao));
+}
+
+void
+rkh_pubsub_unsubscribe(rui8_t channel, const RKH_SMA_T *ao)
+{
+    RKH_REQUIRE((ao != (const RKH_SMA_T *)0) && 
+                (channel < RKH_CFG_FWK_MAX_SUBS_CHANNELS));
+    rkh_rdygrp_setUnready(&observer.channels[channel], RKH_GET_PRIO(ao));
+}
+
+void 
+rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao)
+{
+    RKHRdyGrp *pCh;
+    rui8_t nCh;
+
+    RKH_REQUIRE(ao != (const RKH_SMA_T *)0);
+    for (pCh = observer.channels, nCh = 0; 
+         nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; 
+         ++nCh, ++pCh)
+    {
+        rkh_rdygrp_setUnready(pCh, RKH_GET_PRIO(ao));
+    }
+}
+
+rui8_t 
+rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event, 
+                   const void *const sender)
+{
+    rui8_t nRdyAo;
+    PubArg publishArg;
+
+    publishArg.event = event;
+    publishArg.sender = sender;
+    /* enter critical section */
+    nRdyAo = rkh_rdygrp_traverse(&observer.channels[channel], 
+                                 publish, (RdyCbArg *)&publishArg);
+    /* exit critical section */
+    return nRdyAo;
 }
 
 /* ------------------------------ End of file ------------------------------ */

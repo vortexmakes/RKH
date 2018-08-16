@@ -18,6 +18,7 @@ void Mock_rkhfwk_rdygrp_Destroy(void);
 void Mock_rkhfwk_rdygrp_Verify(void);
 
 
+typedef void(*cmock_rkhfwk_rdygrp_func_ptr1)(RdyCbArg*);
 
 
 #define rkh_rdygrp_init_Ignore() rkh_rdygrp_init_CMockIgnore()
@@ -64,5 +65,17 @@ typedef rui8_t (* CMOCK_rkh_rdygrp_findHighest_CALLBACK)(RKHRdyGrp* const me, in
 void rkh_rdygrp_findHighest_StubWithCallback(CMOCK_rkh_rdygrp_findHighest_CALLBACK Callback);
 #define rkh_rdygrp_findHighest_IgnoreArg_me() rkh_rdygrp_findHighest_CMockIgnoreArg_me(__LINE__)
 void rkh_rdygrp_findHighest_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_rdygrp_traverse_IgnoreAndReturn(cmock_retval) rkh_rdygrp_traverse_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void rkh_rdygrp_traverse_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return);
+#define rkh_rdygrp_traverse_ExpectAndReturn(me, rdyCb, rdyCbArg, cmock_retval) rkh_rdygrp_traverse_CMockExpectAndReturn(__LINE__, me, rdyCb, rdyCbArg, cmock_retval)
+void rkh_rdygrp_traverse_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHRdyGrp* const me, cmock_rkhfwk_rdygrp_func_ptr1 rdyCb, RdyCbArg* rdyCbArg, rui8_t cmock_to_return);
+typedef rui8_t (* CMOCK_rkh_rdygrp_traverse_CALLBACK)(RKHRdyGrp* const me, cmock_rkhfwk_rdygrp_func_ptr1 rdyCb, RdyCbArg* rdyCbArg, int cmock_num_calls);
+void rkh_rdygrp_traverse_StubWithCallback(CMOCK_rkh_rdygrp_traverse_CALLBACK Callback);
+#define rkh_rdygrp_traverse_IgnoreArg_me() rkh_rdygrp_traverse_CMockIgnoreArg_me(__LINE__)
+void rkh_rdygrp_traverse_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_rdygrp_traverse_IgnoreArg_rdyCb() rkh_rdygrp_traverse_CMockIgnoreArg_rdyCb(__LINE__)
+void rkh_rdygrp_traverse_CMockIgnoreArg_rdyCb(UNITY_LINE_TYPE cmock_line);
+#define rkh_rdygrp_traverse_IgnoreArg_rdyCbArg() rkh_rdygrp_traverse_CMockIgnoreArg_rdyCbArg(__LINE__)
+void rkh_rdygrp_traverse_CMockIgnoreArg_rdyCbArg(UNITY_LINE_TYPE cmock_line);
 
 #endif

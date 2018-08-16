@@ -8,11 +8,14 @@
 
 static const char* CMockString_me = "me";
 static const char* CMockString_prio = "prio";
+static const char* CMockString_rdyCb = "rdyCb";
+static const char* CMockString_rdyCbArg = "rdyCbArg";
 static const char* CMockString_rkh_rdygrp_findHighest = "rkh_rdygrp_findHighest";
 static const char* CMockString_rkh_rdygrp_init = "rkh_rdygrp_init";
 static const char* CMockString_rkh_rdygrp_isReady = "rkh_rdygrp_isReady";
 static const char* CMockString_rkh_rdygrp_setReady = "rkh_rdygrp_setReady";
 static const char* CMockString_rkh_rdygrp_setUnready = "rkh_rdygrp_setUnready";
+static const char* CMockString_rkh_rdygrp_traverse = "rkh_rdygrp_traverse";
 
 typedef struct _CMOCK_rkh_rdygrp_init_CALL_INSTANCE
 {
@@ -65,6 +68,20 @@ typedef struct _CMOCK_rkh_rdygrp_findHighest_CALL_INSTANCE
 
 } CMOCK_rkh_rdygrp_findHighest_CALL_INSTANCE;
 
+typedef struct _CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  rui8_t ReturnVal;
+  int CallOrder;
+  RKHRdyGrp* Expected_me;
+  cmock_rkhfwk_rdygrp_func_ptr1 Expected_rdyCb;
+  RdyCbArg* Expected_rdyCbArg;
+  int IgnoreArg_me;
+  int IgnoreArg_rdyCb;
+  int IgnoreArg_rdyCbArg;
+
+} CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE;
+
 static struct Mock_rkhfwk_rdygrpInstance
 {
   int rkh_rdygrp_init_IgnoreBool;
@@ -89,6 +106,11 @@ static struct Mock_rkhfwk_rdygrpInstance
   CMOCK_rkh_rdygrp_findHighest_CALLBACK rkh_rdygrp_findHighest_CallbackFunctionPointer;
   int rkh_rdygrp_findHighest_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE rkh_rdygrp_findHighest_CallInstance;
+  int rkh_rdygrp_traverse_IgnoreBool;
+  rui8_t rkh_rdygrp_traverse_FinalReturn;
+  CMOCK_rkh_rdygrp_traverse_CALLBACK rkh_rdygrp_traverse_CallbackFunctionPointer;
+  int rkh_rdygrp_traverse_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE rkh_rdygrp_traverse_CallInstance;
 } Mock;
 
 extern jmp_buf AbortFrame;
@@ -128,6 +150,12 @@ void Mock_rkhfwk_rdygrp_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_rdygrp_findHighest_CallInstance, cmock_line, CMockStringCalledLess);
   if (Mock.rkh_rdygrp_findHighest_CallbackFunctionPointer != NULL)
     Mock.rkh_rdygrp_findHighest_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.rkh_rdygrp_traverse_IgnoreBool)
+    Mock.rkh_rdygrp_traverse_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_rkh_rdygrp_traverse);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_rdygrp_traverse_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.rkh_rdygrp_traverse_CallbackFunctionPointer != NULL)
+    Mock.rkh_rdygrp_traverse_CallInstance = CMOCK_GUTS_NONE;
 }
 
 void Mock_rkhfwk_rdygrp_Init(void)
@@ -149,6 +177,8 @@ void Mock_rkhfwk_rdygrp_Destroy(void)
   Mock.rkh_rdygrp_setUnready_CallbackCalls = 0;
   Mock.rkh_rdygrp_findHighest_CallbackFunctionPointer = NULL;
   Mock.rkh_rdygrp_findHighest_CallbackCalls = 0;
+  Mock.rkh_rdygrp_traverse_CallbackFunctionPointer = NULL;
+  Mock.rkh_rdygrp_traverse_CallbackCalls = 0;
   GlobalExpectCount = 0;
   GlobalVerifyOrder = 0;
 }
@@ -545,5 +575,114 @@ void rkh_rdygrp_findHighest_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
   CMOCK_rkh_rdygrp_findHighest_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_rdygrp_findHighest_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_rdygrp_findHighest_CallInstance));
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
   cmock_call_instance->IgnoreArg_me = 1;
+}
+
+rui8_t rkh_rdygrp_traverse(RKHRdyGrp* const me, cmock_rkhfwk_rdygrp_func_ptr1 rdyCb, RdyCbArg* rdyCbArg)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_rdygrp_traverse);
+  cmock_call_instance = (CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_rdygrp_traverse_CallInstance);
+  Mock.rkh_rdygrp_traverse_CallInstance = CMock_Guts_MemNext(Mock.rkh_rdygrp_traverse_CallInstance);
+  if (Mock.rkh_rdygrp_traverse_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.rkh_rdygrp_traverse_FinalReturn;
+    memcpy(&Mock.rkh_rdygrp_traverse_FinalReturn, &cmock_call_instance->ReturnVal, sizeof(rui8_t));
+    return cmock_call_instance->ReturnVal;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_rdygrp_traverse,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (!cmock_call_instance->IgnoreArg_rdyCb)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_rdygrp_traverse,CMockString_rdyCb);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_rdyCb, rdyCb, cmock_line, CMockStringMismatch);
+  }
+  if (!cmock_call_instance->IgnoreArg_rdyCbArg)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_rdygrp_traverse,CMockString_rdyCbArg);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_rdyCbArg, rdyCbArg, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.rkh_rdygrp_traverse_CallbackFunctionPointer != NULL)
+  {
+    cmock_call_instance->ReturnVal = Mock.rkh_rdygrp_traverse_CallbackFunctionPointer(me, rdyCb, rdyCbArg, Mock.rkh_rdygrp_traverse_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+  return cmock_call_instance->ReturnVal;
+}
+
+void CMockExpectParameters_rkh_rdygrp_traverse(CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance, RKHRdyGrp* const me, cmock_rkhfwk_rdygrp_func_ptr1 rdyCb, RdyCbArg* rdyCbArg)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+  memcpy(&cmock_call_instance->Expected_rdyCb, &rdyCb, sizeof(cmock_rkhfwk_rdygrp_func_ptr1));
+  cmock_call_instance->IgnoreArg_rdyCb = 0;
+  cmock_call_instance->Expected_rdyCbArg = rdyCbArg;
+  cmock_call_instance->IgnoreArg_rdyCbArg = 0;
+}
+
+void rkh_rdygrp_traverse_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, rui8_t cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE));
+  CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.rkh_rdygrp_traverse_CallInstance = CMock_Guts_MemChain(Mock.rkh_rdygrp_traverse_CallInstance, cmock_guts_index);
+  Mock.rkh_rdygrp_traverse_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.rkh_rdygrp_traverse_IgnoreBool = (int)1;
+}
+
+void rkh_rdygrp_traverse_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKHRdyGrp* const me, cmock_rkhfwk_rdygrp_func_ptr1 rdyCb, RdyCbArg* rdyCbArg, rui8_t cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE));
+  CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.rkh_rdygrp_traverse_CallInstance = CMock_Guts_MemChain(Mock.rkh_rdygrp_traverse_CallInstance, cmock_guts_index);
+  Mock.rkh_rdygrp_traverse_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_rkh_rdygrp_traverse(cmock_call_instance, me, rdyCb, rdyCbArg);
+  memcpy(&cmock_call_instance->ReturnVal, &cmock_to_return, sizeof(rui8_t));
+  UNITY_CLR_DETAILS();
+}
+
+void rkh_rdygrp_traverse_StubWithCallback(CMOCK_rkh_rdygrp_traverse_CALLBACK Callback)
+{
+  Mock.rkh_rdygrp_traverse_IgnoreBool = (int)0;
+  Mock.rkh_rdygrp_traverse_CallbackFunctionPointer = Callback;
+}
+
+void rkh_rdygrp_traverse_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_rdygrp_traverse_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void rkh_rdygrp_traverse_CMockIgnoreArg_rdyCb(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_rdygrp_traverse_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_rdyCb = 1;
+}
+
+void rkh_rdygrp_traverse_CMockIgnoreArg_rdyCbArg(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_rdygrp_traverse_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_rdygrp_traverse_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_rdyCbArg = 1;
 }
 

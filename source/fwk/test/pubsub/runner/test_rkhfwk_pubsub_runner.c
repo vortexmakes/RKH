@@ -63,6 +63,12 @@
 TEST_GROUP_RUNNER(pubsub)
 {
 	RUN_TEST_CASE(pubsub, AfterInitAllChannelsAreAvailable);
+	RUN_TEST_CASE(pubsub, SubscribeOneActiveObject);
+	RUN_TEST_CASE(pubsub, UnsubscribeOneActiveObject);
+	RUN_TEST_CASE(pubsub, UnsubscribeAllActiveObjects);
+	RUN_TEST_CASE(pubsub, PublishOneActiveObject);
+	RUN_TEST_CASE(pubsub, Fails_SubscribeWithWrongArgs);
+	RUN_TEST_CASE(pubsub, Fails_UnsubscribeWithWrongArgs);
 }
 
 /* ------------------------------ End of file ------------------------------ */

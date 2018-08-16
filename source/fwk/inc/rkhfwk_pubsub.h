@@ -80,7 +80,7 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
-#define RKH_CFG_FWK_MAX_SUBS_CHANNELS   8
+#define RKH_CFG_FWK_MAX_SUBS_CHANNELS   16
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
@@ -104,7 +104,7 @@ void rkh_pubsub_init(void);
  *  \param[in] ao       pointer to previously created active object to
  *                      subscribe.
  */
-int rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao);
+void rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao);
 
 /**
  *  \brief
@@ -115,7 +115,7 @@ int rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao);
  *  \param[in] ao       pointer to previously created active object to 
  *                      unsubscribe.
  */
-int rkh_pubsub_unsubcribe(rui8_t channel, const RKH_SMA_T *ao);
+void rkh_pubsub_unsubscribe(rui8_t channel, const RKH_SMA_T *ao);
 
 /**
  *  \brief
@@ -124,7 +124,7 @@ int rkh_pubsub_unsubcribe(rui8_t channel, const RKH_SMA_T *ao);
  *  \param[in] ao       pointer to previously created active object to 
  *                      unsubscribe.
  */
-int rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao);
+void rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao);
 
 /**
  *  \brief
@@ -137,9 +137,12 @@ int rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao);
  *                      rkh_pubsub_publish() is called from an interrupt or 
  *                      other context, it can create a unique object just to 
  *                      unambiguously identify the publisher of the event.
+ *
+ *  \return
+ *  The number of found ready active objects.
  */
-int rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event, 
-                       const void *const sender);
+rui8_t rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event, 
+                          const void *const sender);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

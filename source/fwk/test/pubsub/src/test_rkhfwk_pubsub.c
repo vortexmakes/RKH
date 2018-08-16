@@ -34,7 +34,7 @@
 /**
  *  \file       test_rkhfwk_pubsub.c
  *  \ingroup    test_fwk
- *  \brief      Unit test for publishing/subscribing mechanism of fwk module.
+ *  \brief      Unit test for publish/subscribe mechanism of fwk module.
  *
  *  \addtogroup test
  *  @{
@@ -58,6 +58,8 @@
 #include "unity_fixture.h"
 #include "rkhfwk_pubsub.h"
 #include "Mock_rkhfwk_rdygrp.h"
+#include "Mock_rkhsma.h"
+#include "Mock_rkhassert.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -67,10 +69,20 @@ TEST_GROUP(pubsub);
 int GlobalExpectCount;
 int GlobalVerifyOrder;
 char *GlobalOrderError;
+RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];  /* Just for compiling */
 
 /* ---------------------------- Local variables ---------------------------- */
+RKH_SMA_CREATE(RKH_SMA_T, ao, 0, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR(ao);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+MockAssertCallback(const char* const file, int line, int cmock_num_calls)
+{
+    TEST_PASS();
+}
+
 /* ---------------------------- Global functions --------------------------- */
 TEST_SETUP(pubsub)
 {
@@ -84,9 +96,9 @@ TEST_TEAR_DOWN(pubsub)
 }
 
 /**
- *  \addtogroup test_pubsub Test cases of publishing/subscribing group
+ *  \addtogroup test_pubsub Test cases of publish/subscribe group
  *  @{
- *  \name Test cases of publishing/subscribing group
+ *  \name Test cases of publish/subscribe group
  *  @{ 
  */
 TEST(pubsub, AfterInitAllChannelsAreAvailable)
@@ -100,6 +112,97 @@ TEST(pubsub, AfterInitAllChannelsAreAvailable)
     }
 
     rkh_pubsub_init();
+}
+
+TEST(pubsub, SubscribeOneActiveObject)
+{
+    rkh_rdygrp_init_Ignore();
+    rkh_rdygrp_setReady_Expect(0, RKH_GET_PRIO(ao));
+    rkh_rdygrp_setReady_IgnoreArg_me();
+
+    rkh_pubsub_init();
+    rkh_pubsub_subscribe(0, ao);
+}
+
+TEST(pubsub, UnsubscribeOneActiveObject)
+{
+    rkh_rdygrp_init_Ignore();
+    rkh_rdygrp_setUnready_Expect(0, RKH_GET_PRIO(ao));
+    rkh_rdygrp_setUnready_IgnoreArg_me();
+
+    rkh_pubsub_init();
+    rkh_pubsub_unsubscribe(0, ao);
+}
+
+TEST(pubsub, UnsubscribeAllActiveObjects)
+{
+    rui8_t nCh;
+
+    rkh_rdygrp_init_Ignore();
+    rkh_pubsub_init();
+
+    for (nCh = 0; nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; ++nCh)
+    {
+        rkh_rdygrp_setReady_Expect(0, RKH_GET_PRIO(ao));
+        rkh_rdygrp_setReady_IgnoreArg_me();
+
+        rkh_pubsub_subscribe(nCh, ao);
+    }
+
+    for (nCh = 0; nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; ++nCh)
+    {
+        rkh_rdygrp_setUnready_Expect(0, RKH_GET_PRIO(ao));
+        rkh_rdygrp_setUnready_IgnoreArg_me();
+    }
+
+    rkh_pubsub_unsubscribeAll(ao);
+}
+
+TEST(pubsub, PublishOneActiveObject)
+{
+    int me;
+    RKH_EVT_T evt;
+    rui8_t nRdyAo;
+
+    rkh_rdygrp_init_Ignore();
+    rkh_rdygrp_traverse_ExpectAndReturn(0, 0, 0, 1);
+    rkh_rdygrp_traverse_IgnoreArg_me();
+    rkh_rdygrp_traverse_IgnoreArg_rdyCb();
+    rkh_rdygrp_traverse_IgnoreArg_rdyCbArg();
+
+    rkh_pubsub_init();
+    nRdyAo = rkh_pubsub_publish(0, &evt, &me);
+    TEST_ASSERT_EQUAL(1, nRdyAo);
+}
+
+TEST(pubsub, Fails_SubscribeWithWrongArgs)
+{
+    rui8_t prio = RKH_CFG_FWK_MAX_SMA;
+
+    rkh_assert_Expect("rkhfwk_pubsub", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+    rkh_pubsub_subscribe(RKH_CFG_FWK_MAX_SUBS_CHANNELS, ao);
+
+    rkh_assert_Expect("rkhfwk_pubsub", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+    rkh_pubsub_subscribe(0, NULL);
+}
+
+TEST(pubsub, Fails_UnsubscribeWithWrongArgs)
+{
+    rui8_t prio = RKH_CFG_FWK_MAX_SMA;
+
+    rkh_assert_Expect("rkhfwk_pubsub", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+    rkh_pubsub_unsubscribe(RKH_CFG_FWK_MAX_SUBS_CHANNELS, ao);
+
+    rkh_assert_Expect("rkhfwk_pubsub", 0);
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+    rkh_pubsub_unsubscribe(0, NULL);
 }
 
 /** @} doxygen end group definition */

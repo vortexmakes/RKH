@@ -18,7 +18,9 @@
     <ClCompile Include="..\..\..\pubsub\runner\all_tests.c" />
     <ClCompile Include="..\..\..\pubsub\runner\test_rkhfwk_pubsub_runner.c" />
     <ClCompile Include="..\..\..\pubsub\src\test_rkhfwk_pubsub.c" />
+    <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhassert.c" />
     <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhfwk_rdygrp.c" />
+    <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhsma.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AA570415-FBB0-4136-A638-47DC38E2E89E}</ProjectGuid>
