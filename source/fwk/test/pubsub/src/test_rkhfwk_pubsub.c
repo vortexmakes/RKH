@@ -60,6 +60,8 @@
 #include "Mock_rkhfwk_rdygrp.h"
 #include "Mock_rkhsma.h"
 #include "Mock_rkhassert.h"
+#include "Mock_rkhport.h"
+#include "Mock_rkhfwk_dynevt.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -87,12 +89,21 @@ MockAssertCallback(const char* const file, int line, int cmock_num_calls)
 TEST_SETUP(pubsub)
 {
     Mock_rkhfwk_rdygrp_Init();
+    Mock_rkhsma_Init();
+    Mock_rkhassert_Init();
+    Mock_rkhport_Init();
 }
 
 TEST_TEAR_DOWN(pubsub)
 {
     Mock_rkhfwk_rdygrp_Verify();
+    Mock_rkhsma_Verify();
+    Mock_rkhassert_Verify();
+    Mock_rkhport_Verify();
     Mock_rkhfwk_rdygrp_Destroy();
+    Mock_rkhsma_Destroy();
+    Mock_rkhassert_Destroy();
+    Mock_rkhport_Destroy();
 }
 
 /**
@@ -117,8 +128,10 @@ TEST(pubsub, AfterInitAllChannelsAreAvailable)
 TEST(pubsub, SubscribeOneActiveObject)
 {
     rkh_rdygrp_init_Ignore();
+    rkh_enter_critical_Expect();
     rkh_rdygrp_setReady_Expect(0, RKH_GET_PRIO(ao));
     rkh_rdygrp_setReady_IgnoreArg_me();
+    rkh_exit_critical_Expect();
 
     rkh_pubsub_init();
     rkh_pubsub_subscribe(0, ao);
@@ -127,8 +140,10 @@ TEST(pubsub, SubscribeOneActiveObject)
 TEST(pubsub, UnsubscribeOneActiveObject)
 {
     rkh_rdygrp_init_Ignore();
+    rkh_enter_critical_Expect();
     rkh_rdygrp_setUnready_Expect(0, RKH_GET_PRIO(ao));
     rkh_rdygrp_setUnready_IgnoreArg_me();
+    rkh_exit_critical_Expect();
 
     rkh_pubsub_init();
     rkh_pubsub_unsubscribe(0, ao);
@@ -143,17 +158,20 @@ TEST(pubsub, UnsubscribeAllActiveObjects)
 
     for (nCh = 0; nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; ++nCh)
     {
+        rkh_enter_critical_Expect();
         rkh_rdygrp_setReady_Expect(0, RKH_GET_PRIO(ao));
+        rkh_exit_critical_Expect();
         rkh_rdygrp_setReady_IgnoreArg_me();
-
         rkh_pubsub_subscribe(nCh, ao);
     }
 
+    rkh_enter_critical_Expect();
     for (nCh = 0; nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; ++nCh)
     {
         rkh_rdygrp_setUnready_Expect(0, RKH_GET_PRIO(ao));
         rkh_rdygrp_setUnready_IgnoreArg_me();
     }
+    rkh_exit_critical_Expect();
 
     rkh_pubsub_unsubscribeAll(ao);
 }
@@ -165,7 +183,10 @@ TEST(pubsub, PublishOneActiveObject)
     rui8_t nRdyAo;
 
     rkh_rdygrp_init_Ignore();
+    rkh_enter_critical_Expect();
     rkh_rdygrp_traverse_ExpectAndReturn(0, 0, 0, 1);
+    rkh_exit_critical_Expect();
+    rkh_fwk_gc_Expect(&evt, &me);
     rkh_rdygrp_traverse_IgnoreArg_me();
     rkh_rdygrp_traverse_IgnoreArg_rdyCb();
     rkh_rdygrp_traverse_IgnoreArg_rdyCbArg();

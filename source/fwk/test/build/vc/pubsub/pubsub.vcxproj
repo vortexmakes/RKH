@@ -19,7 +19,9 @@
     <ClCompile Include="..\..\..\pubsub\runner\test_rkhfwk_pubsub_runner.c" />
     <ClCompile Include="..\..\..\pubsub\src\test_rkhfwk_pubsub.c" />
     <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhassert.c" />
+    <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhfwk_dynevt.c" />
     <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhfwk_rdygrp.c" />
+    <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhport.c" />
     <ClCompile Include="..\..\..\pubsub\stub\mocks\Mock_rkhsma.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

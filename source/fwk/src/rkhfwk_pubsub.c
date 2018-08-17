@@ -72,6 +72,8 @@
 #include "rkhfwk_rdygrp.h"
 #include "rkhsma.h"
 #include "rkhassert.h"
+#include "rkhevt.h"
+#include "rkhfwk_dynevt.h"
 
 RKH_MODULE_NAME(rkhfwk_pubsub)
 
@@ -103,6 +105,7 @@ publish(RdyCbArg *arg)
 {
     PubArg *realArg;
 
+    RKH_REQUIRE(RKH_GET_SMA(arg->aoRdyPrio) != (const RKH_SMA_T *)0); 
     realArg = (PubArg *)arg;
     RKH_SMA_POST_FIFO(RKH_GET_SMA(arg->aoRdyPrio), 
                       realArg->event, realArg->sender);
@@ -126,17 +129,25 @@ rkh_pubsub_init(void)
 void
 rkh_pubsub_subscribe(rui8_t channel, const RKH_SMA_T *ao)
 {
+    RKH_SR_ALLOC();
+
     RKH_REQUIRE((ao != (const RKH_SMA_T *)0) && 
                 (channel < RKH_CFG_FWK_MAX_SUBS_CHANNELS));
+    RKH_ENTER_CRITICAL_();
     rkh_rdygrp_setReady(&observer.channels[channel], RKH_GET_PRIO(ao));
+    RKH_EXIT_CRITICAL_();
 }
 
 void
 rkh_pubsub_unsubscribe(rui8_t channel, const RKH_SMA_T *ao)
 {
+    RKH_SR_ALLOC();
+
     RKH_REQUIRE((ao != (const RKH_SMA_T *)0) && 
                 (channel < RKH_CFG_FWK_MAX_SUBS_CHANNELS));
+    RKH_ENTER_CRITICAL_();
     rkh_rdygrp_setUnready(&observer.channels[channel], RKH_GET_PRIO(ao));
+    RKH_EXIT_CRITICAL_();
 }
 
 void 
@@ -145,13 +156,17 @@ rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao)
     RKHRdyGrp *pCh;
     rui8_t nCh;
 
+    RKH_SR_ALLOC();
+
     RKH_REQUIRE(ao != (const RKH_SMA_T *)0);
+    RKH_ENTER_CRITICAL_();
     for (pCh = observer.channels, nCh = 0; 
          nCh < RKH_CFG_FWK_MAX_SUBS_CHANNELS; 
          ++nCh, ++pCh)
     {
         rkh_rdygrp_setUnready(pCh, RKH_GET_PRIO(ao));
     }
+    RKH_EXIT_CRITICAL_();
 }
 
 rui8_t 
@@ -160,13 +175,16 @@ rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event,
 {
     rui8_t nRdyAo;
     PubArg publishArg;
+    RKH_SR_ALLOC();
 
     publishArg.event = event;
     publishArg.sender = sender;
-    /* enter critical section */
+    RKH_ENTER_CRITICAL_();
+    RKH_INC_REF(event);
     nRdyAo = rkh_rdygrp_traverse(&observer.channels[channel], 
                                  publish, (RdyCbArg *)&publishArg);
-    /* exit critical section */
+    RKH_EXIT_CRITICAL_();
+    RKH_FWK_GC(event, sender);
     return nRdyAo;
 }
 
