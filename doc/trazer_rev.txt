@@ -1,0 +1,81 @@
+/**
+\page rev_page_trazer Trazer revision history
+
+\tableofcontents
+
+\section trazer_2_4 Version 2.4
+\releasedate 2016-28-04
+
+\new
+- Compatibility with RKH V2.4.05
+- Sequence diagram online generation in msc lenguage 
+  compatible with MSC-generator-v4.5.
+- UnitTrazer. TDD harness framework with RKH and Trazer.
+
+<HR>
+\section trazer_2_3 Version 2.3
+\releasedate 2014-07-07
+
+\new
+- Compatibility with RKH V2.4.04
+- Changes in trace config event (RKH_TR_FWK_TCFG) format.
+- Timestamp and sequence number visibility according 
+  to current configuration.
+- Sync with lates RKH trace events ordering.
+- Signal Responce Time measurement functionality Added.
+  To run properly, RKH Application must:
+  - define in rkhcfg.h:
+                        RKH_CFG_TRC_TSTAMP_EN	RKH_ENABLED
+                        RKH_CFG_TRC_SMA_EN		RKH_ENABLED
+                        RKH_CFG_TRC_SM_DCH_EN   RKH_ENABLED
+
+  - if RKH_CFG_TRC_RTFIL_EN are RKH_ENABLED, set to OFF filters:
+                        RKH_FILTER_OFF_EVENT(RKH_TE_SMA_LIFO);
+                        RKH_FILTER_OFF_EVENT(RKH_TE_SMA_FIFO);
+                        RKH_FILTER_OFF_EVENT(RKH_TE_SM_DCH);
+- If enabled, show sender information on post fifo/lifo trace events.
+- Support of Seqdiag file generation.
+
+<HR>
+
+\section trazerVer_2_2 Version 2.2
+\releasedate 2013-06-02
+
+\new
+- Compatibility with RKH V2.4.03
+- If enabled, show sender information on post fifo/lifo trace events.
+- Seqdiag file generation is now supported.
+
+<HR>
+\section trazerVer_2_1 Version 2.1
+\releasedate 2013-03-18
+
+\new
+- Removeed '&' prefix from symbols objects visualization.
+
+<HR>
+\section trazerVer_2_0 Version 2.0 
+\releasedate 2013-02-01
+
+\new
+- Compatibility with RKH V2.3
+- Set default RKH configuration when no config file found.
+- Accepted configuration transmited by the target aplication.
+- Supported user trace events.
+
+\par Deprecated features
+- Removed event format definition file. From this version Event Trace 
+  format is wired to RKH implementation.
+
+\ports
+- Added Linux port.
+
+<HR>
+\section trazerVer_1_0 Version 1.0 
+\releasedate 2012-04-07
+
+\new
+- This is the intial release of the Trazer visualization tool.
+- This version is compatible to use with RKH V2.0
+
+*/

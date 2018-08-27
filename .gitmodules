@@ -1,0 +1,3 @@
+[submodule "third-party/ceedling"]
+	path = third-party/ceedling
+	url = https://github.com/ThrowTheSwitch/Ceedling.git

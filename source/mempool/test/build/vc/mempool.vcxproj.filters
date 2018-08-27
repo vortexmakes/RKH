@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\rkh">
+      <UniqueIdentifier>{265c332f-6f5d-4d5b-b4fe-725cee2d1315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests">
+      <UniqueIdentifier>{df22510c-9ead-4754-b973-77ff939d4853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\runner">
+      <UniqueIdentifier>{7e0cac3b-a708-4c6d-8ebc-2e7a7c1d8f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\tool">
+      <UniqueIdentifier>{ab51c335-45ea-44ec-a3c1-2d8b64f0dea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\stub">
+      <UniqueIdentifier>{a37312cb-d347-4ec7-ad41-cb313bae42d2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\rkhmempool.c">
+      <Filter>Source Files\rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\test_rkhmempool_runner.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\runner\all_tests.c">
+      <Filter>Source Files\tests\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhassert.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhport.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhtrc_filter.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stub\mocks\Mock_rkhtrc_record.c">
+      <Filter>Source Files\tests\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test_rkhmempool.c">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>Source Files\tests\tool</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

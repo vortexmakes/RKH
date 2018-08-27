@@ -1,0 +1,469 @@
+/**
+\page trazer Trazer Reference Manual
+
+\image html trazer.png
+
+\n
+Trazer is a visualization tool that works in conjuntion with the RKH
+framework built in trace facility. Trazer gives the possibility to display
+selectively the recording of all events of your system, state machines,
+queues, timers, etc.
+Trazer helps you to faster troubleshooting especially on complex problems
+where a debugger is not sufficient, by providing a simple consolidated,
+human-readable textual output. Given the RKH cross plataform portability,
+trace data may come from 8, 16, or 32-bits platforms.
+In order to that Trazer need to be configured to support this diversity of
+plataform and the wide range of RKH framework configurations.
+The following figure shows the relationship between framework RKH
+and host-application Trazer.
+
+\image html rkh_trazer.jpg
+
+This manual includes:
+
+- \ref trazer_cfg
+- \ref trazer_human_format
+- \ref seq_diag
+- \subpage rev_page_trazer
+
+\tableofcontents
+
+<HR>
+\section trazer_cfg Configuration
+
+Before using %Trazer you must provides the listed configurations:
+
+- \ref trazer_command to configure comunication link and general options.
+- \ref trazer_config (\subpage trazer_cfg_) to setup all target dependencies, 
+  such as pointer sizes, signal sizes, etc.
+
+<HR>
+\section trazer_command Command-line parameters
+
+<TABLE SUMMARY="Trazer Command Line" cellSpacing=4 cellPadding=1 border=0
+ALIGN="center" VALIGN="middle">
+  <TR bgColor="#c8cedc">
+    <TD><B>&nbsp;Option</B></TD>
+    <TD><B>&nbsp;Example</B></TD>
+    <TD><B>&nbsp;Description</B></TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>-h</TD>
+    <TD>-h</TD>
+    <TD>Help. Prints the summary of options</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>-q</TD>
+    <TD>-q</TD>
+    <TD>Quiet mode (no stdout output)</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>-v</TD>
+    <TD>-v</TD>
+    <TD>Visualize Traze version and compatibility with RKH framework</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>-o</TD>
+    <TD>-o trazer.txt</TD>
+    <TD>Produce output to the specified file</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>-c</TD>
+    <TD>-c COM1 115200 8N1</TD>
+    <TD>COM port and baudrate selection. Not compatible with -t, -f</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>-t</TD>
+    <TD>-t 6602</TD>
+    <TD>TCP/IP server and port number. Not compatible with -c, -f</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>-f</TD>
+    <TD>-f trace.bin</TD>
+    <TD>File input selection. Not compatible with -c, -t</TD>
+  </TR>
+
+</TABLE>
+
+
+<HR>
+\section trazer_config Configuration file
+
+%Trazer is designed to work with all possible target CPU, which requires a
+wide range of configurability. For example, for any given target CPU, 
+Trazer must "know" the size of object pointers, event size, timestamp size 
+and so on. You can provide this information by two ways: 
+  - include \ref trazer_cfg_ configuration file in 
+the same trazer.exe directory.
+  - setup the target aplication to call to RKH_TR_FWK_TCFG and perform the 
+  streaming the RKH configuration at startup.
+
+If \ref trazer_cfg_ is not found, assuming default settings, 
+any configuration streaming received overwrite settings. 
+The following table summarizes the \ref trazer_cfg_ content.
+
+<TABLE SUMMARY="Trazer config" cellSpacing=4 cellPadding=1 border=0
+ALIGN="center" VALIGN="middle">
+  <TR bgColor="#c8cedc">
+    <TD><B>&nbsp;Parameter</B></TD>
+    <TD><B>&nbsp;Valid Values</B></TD>
+    <TD><B>&nbsp;Must match RKH config (rkhcfg.h)</B></TD>
+    <TD><B>&nbsp;Description</B></TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_SENDER</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_SMA_TRC_SNDR_EN</TD>
+    <TD>Enable/Disable pointer to sender object insertion when posting event.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_RUNTIME_FILTER</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_RTFIL_EN</TD>
+    <TD>Enable/Disable runtime filter facility.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_USER_TRACE</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_USER_TRACE_EN</TD>
+    <TD>Enable/Disable user trace facility.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_ALL</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_ALL_EN</TD>
+    <TD>If 1 enables all RKH trace records.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_MP</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_MP_EN</TD>
+    <TD>If 1 enables RKH trace records related to native fixed-size memory block.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_QUE</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_QUE_EN</TD>
+    <TD>If 1 enables RKH trace records related to native native queues.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_SMA</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_SMA_EN</TD>
+    <TD>If 1 enables RKH trace records related to the state machine applications.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_TIM</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_TMR_EN</TD>
+    <TD>If 1 enables RKH trace records related to the native software timer.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_SM</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_SM_EN</TD>
+    <TD>If 1 enables RKH trace records related to the state machine (hierarchical and "flat").</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_FWK</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_FWK_EN</TD>
+    <TD>If 1 enables RKH trace records related to the nativenative  event framework.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_ASSERT</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_ASSERT_EN</TD>
+    <TD>If 1 enables RKH "assertion" trace record.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_SIZEOF_SIG</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFG_FWK_SIZEOF_EVT</TD>
+    <TD>Event Signal size in bytes.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_SIZEOF_TSTAMP</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFGPORT_TRC_SIZEOF_TSTAMP</TD>
+    <TD>Bytes quantity used by the trace record timestamp.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_SIZEOF_POINTER</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFGPORT_TRC_SIZEOF_PTR</TD>
+    <TD>Size in bytes of void pointer.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_SIZEOF_NTIMER</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFG_TMR_SIZEOF_NTIMER</TD>
+    <TD>Dynamic range of time delays measured in ticks and expresed in bytes.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_SIZEOF_NBLOCK</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFG_MP_SIZEOF_NBLOCK</TD>
+    <TD>Size in bytes of number of memory block size.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_SIZEOF_NELEM</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFG_QUE_SIZEOF_NELEM</TD>
+    <TD>Maximum number of elements in bytes that any queue can contain.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_SIZEOF_ESIZE</TD>
+    <TD>1, 2, 4</TD>
+    <TD>\c #RKH_CFG_FWK_SIZEOF_EVT_SIZE</TD>
+    <TD>Data type of event size, in bytes.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_NSEQ</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_NSEQ_EN</TD>
+    <TD> Enable/Disable Number of Sequence use in trace stream.</TD>
+  </TR>
+
+  <TR bgColor="#f0f0f0">
+    <TD>\c TRAZER_EN_CHK</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_CHK_EN</TD>
+    <TD> Enable/Disable Checksum use in trace stream.</TD>
+  </TR>
+
+  <TR bgColor="#c0c0c0">
+    <TD>\c TRAZER_EN_TSTAMP</TD>
+    <TD>0, 1</TD>
+    <TD>\c #RKH_CFG_TRC_TSTAMP_EN</TD>
+    <TD> Enable/Disable Time stamp use in trace stream.</TD>
+  </TR>
+
+</TABLE>
+
+Your must ensure that Trazer configuration, match exactly with the target
+system under test, otherwise will be unable to parse the trace stream, 
+and these errors would be shown:
+<TABLE SUMMARY="Trazer errors" cellSpacing=4 cellPadding=1 border=0
+ALIGN="center" VALIGN="middle">
+  <TR bgColor="#f0f0f0">
+    <TD>***** Stream Checksum Error</TD>
+  </TR>
+  <TR bgColor="#c0c0c0">
+    <TD>***** May be have lost trace info, sequence are not correlatives</TD>
+  </TR>
+</TABLE>
+
+<HR>
+
+In the instrumented application a set of particular trace events 
+could be used to better trace visualization, 
+#RKH_TE_FWK_OBJ, #RKH_TE_FWK_AO, #RKH_TE_FWK_STATE, #RKH_TE_FWK_PSTATE,
+#RKH_TE_FWK_TIMER, #RKH_TE_FWK_EPOOL, RKH_TE_FWK_QUEUE and #RKH_TE_FWK_SIG.
+
+<HR>
+\section trazer_human_format Human readable output
+
+Trazer is a console program that converts the trace stream data in a
+human-readable format. Following is shown how its output looks like.\n
+Trazer start showing version and compatibility with RKH framework, 
+below are displayed the current Trazer configuration. 
+For this example the trace.bin is used as trace data source.\n 
+Each identified trace show:\n
+
+- \b Timestamp, in CPU ticks. The number of bytes used by the timestamp is 
+configurable by the macro TRAZER_SIZEOF_TSTAMP. See the 
+TRAZER_EN_TSTAMP option.
+
+- <b>Sequence number</b>, the target component increments this number for 
+every frame inserted into the stream. The sequence number allows the trazer 
+tool to detect any data discontinuities. See the \b TRAZER_EN_NSEQ option.
+
+- <b>System service group name</b>.
+
+- <b>Trace event alias</b>, which is one of the predefined RKH records or an 
+application-specific record.
+
+- \b Args, data asociated with the event.
+
+At startup, RKH configuration is loaded from trazer.cfg file and dumped 
+to screen.\n
+As shown in sequence 0, if target is configurated to sent 
+RKH configuration, when RKH_TE_FWK_TCFG trace event is received,
+Trazer parameters are updated.\n
+Sequences 1 to 21 are examples of symbolic memory address association events. 
+After, sequences 24, 30, 30 and 32, show how Trazer identify object address 
+and signal number replacing them by its symbolic representation. 
+In case that no symbolic representation has been defined for a particular 
+object, the memory address of  will be shown, and in same manner 
+the numeric value for signals.
+Sequcence 23 is and example of RKH_TE_USER.
+
+\verbatim
+
+--- TRAZER V2.2 --- RKH trace event interpreter ---
+
+          build date:   Jul  2 2013
+          tested with:  RKH V2.4.03
+
+Using local RKH configuration
+
+   RKH_CFG_SMA_TRC_SNDR_EN     		= 0
+   RKH_CFG_TRC_RTFIL_EN 			= 1
+   RKH_CFG_TRC_USER_TRACE_EN  		= 1
+   RKH_CFG_TRC_ALL_EN          	  	= 1
+   RKH_CFG_TRC_MP_EN          		= 0
+   RKH_CFG_TRC_QUE_EN          		= 0
+   RKH_CFG_TRC_SMA_EN         		= 0
+   RKH_CFG_TRC_TMR_EN         		= 0
+   RKH_CFG_TRC_SM_EN          		= 0
+   RKH_CFG_TRC_FWK_EN         		= 1
+   RKH_CFG_TRC_ASSERT_EN      		= 1
+   RKH_CFG_QUE_GET_LWMARK_EN   		= 0
+   RKH_CFG_MP_GET_LWM_EN      		= 0
+   RKH_CFG_FWK_SIZEOF_EVT   		= 8
+   RKH_CFGPORT_TRC_SIZEOF_TSTAMP 	= 32
+   RKH_CFGPORT_TRC_SIZEOF_PTR 		= 32
+   RKH_CFG_TMR_SIZEOF_NTIMER  		= 16
+   RKH_CFG_MP_SIZEOF_NBLOCK   		= 8
+   RKH_CFG_QUE_SIZEOF_NELEM    		= 8
+   RKH_CFG_FWK_SIZEOF_EVT_SIZE   	= 16
+   RKH_CFG_TRC_NSEQ_EN        		= 1
+   RKH_CFG_TRC_CHK_EN         		= 1
+   RKH_CFG_TRC_TSTAMP_EN      		= 1
+   RKH_CFG_MP_SIZEOF_BSIZE    		= 1
+   RKH_CFG_FWK_MAX_EVT_POOL      	= 4
+
+
+-------- Parsing trace stream from TCP Port 6602 --------
+
+Accepted connection from 127.0.0.1, port 61574
+       121 [  0] FWK | TCFG       : Update RKH Configuration from client
+                                  | RKH_VERSION            			= 2.4.03
+                                  | RKH_CFG_SMA_TRC_SNDR_EN  		= 1
+                                  | RKH_CFG_TRC_RTFIL_EN 			= 1
+                                  | RKH_CFG_TRC_USER_TRACE_EN  		= 1
+                                  | RKH_CFG_TRC_ALL_EN     			= 1
+                                  | RKH_CFG_TRC_MP_EN      			= 0
+                                  | RKH_CFG_TRC_QUE_EN      			= 0
+                                  | RKH_CFG_TRC_SMA_EN     			= 0
+                                  | RKH_CFG_TRC_TMR_EN     			= 0
+                                  | RKH_CFG_TRC_SM_EN      			= 0
+                                  | RKH_CFG_TRC_FWK_EN         		= 1
+                                  | RKH_CFG_TRC_ASSERT_EN  			= 1
+                                  | RKH_CFG_QUE_GET_LWMARK_EN   		= 1
+                                  | RKH_CFG_MP_GET_LWM_EN      		= 1
+                                  | RKH_CFG_FWK_SIZEOF_EVT   		= 8
+                                  | RKH_CFGPORT_TRC_SIZEOF_TSTAMP	= 32
+                                  | RKH_CFGPORT_TRC_SIZEOF_PTR 		= 32
+                                  | RKH_CFG_TMR_SIZEOF_NTIMER  		= 16
+                                  | RKH_CFG_MP_SIZEOF_NBLOCK   		= 8
+                                  | RKH_CFG_QUE_SIZEOF_NELEM    		= 8
+                                  | RKH_CFG_FWK_SIZEOF_EVT_SIZE   	= 16
+                                  | RKH_CFG_TRC_NSEQ_EN    			= 1
+                                  | RKH_CFG_TRC_CHK_EN         		= 1
+                                  | RKH_CFG_TRC_TSTAMP_EN      		= 1
+                                  | RKH_CFG_MP_SIZEOF_BSIZE    		= 1
+                                  | RKH_CFG_FWK_MAX_EVT_POOL      	= 4
+
+
+       123 [  1] FWK | OBJ        : obj=0x00180B01, nm=l_isr_kbd
+       126 [  2] FWK | OBJ        : obj=0x00180B00, nm=l_isr_tick
+       129 [  3] FWK | AO         : obj=0x0018019C, nm=svr
+       131 [  4] FWK | AO         : obj=0x00180008, nm=CLI0
+       134 [  5] FWK | AO         : obj=0x00180058, nm=CLI1
+       136 [  6] FWK | AO         : obj=0x001800A8, nm=CLI2
+       138 [  7] FWK | AO         : obj=0x001800F8, nm=CLI3
+       140 [  8] FWK | STATE      : ao=svr, obj=0x0017E238, nm=svr_idle
+       143 [  9] FWK | STATE      : ao=svr, obj=0x0017E194, nm=svr_busy
+       146 [ 10] FWK | STATE      : ao=svr, obj=0x0017E180, nm=svr_paused
+       149 [ 11] FWK | STATE      : ao=CLI0, obj=0x0017DF18, nm=cli_idle
+       152 [ 12] FWK | STATE      : ao=CLI0, obj=0x0017DED4, nm=cli_waiting
+       155 [ 13] FWK | STATE      : ao=CLI0, obj=0x0017DEA0, nm=cli_using
+       158 [ 14] FWK | STATE      : ao=CLI0, obj=0x0017DE5C, nm=cli_paused
+       161 [ 15] FWK | SIG        : sig=0, nm=REQ
+       162 [ 16] FWK | SIG        : sig=1, nm=START
+       164 [ 17] FWK | SIG        : sig=2, nm=DONE
+       166 [ 18] FWK | SIG        : sig=4, nm=TOUT_USING
+       168 [ 19] FWK | SIG        : sig=3, nm=TOUT_REQ
+       169 [ 20] FWK | SIG        : sig=5, nm=PAUSE
+       171 [ 21] FWK | SIG        : sig=6, nm=TERM
+       172 [ 22] FWK | TUSR       : ut=0, nm=MY_TRACE
+       174 [ 23] USR | MY_TRACE   : User trace information
+                                  | -01
+                                  | 255
+                                  | -001
+                                  | 65535
+                                  | 65535
+                                  | 65535
+                                  | 0xFFFF
+                                  | hello
+                                  | [ FF FF 00 00 ]
+                                  | obj=CLI0
+                                  | func=0X1712DA
+                                  | event=REQ
+      4167 [ 24] SMA | FIFO       : ao=CLI2, sig=TOUT_REQ, snr=l_isr_tick, pid=0, rc=0
+      4167 [ 25] QUE  | FIFO       : q=0X180060, nelem=1, nmin=0
+      4167 [ 26] SMA | FIFO       : ao=CLI1, sig=TOUT_REQ, snr=l_isr_tick, pid=0, rc=0
+      4167 [ 27] QUE  | FIFO       : q=0X1801A4, nelem=1, nmin=0
+      4167 [ 28] SMA | FIFO       : ao=svr, sig=REQ, snr=CLI1, pid=1, rc=1
+      4167 [ 29] QUE  | FIFO       : q=0X180060, nelem=1, nmin=0
+      4167 [ 30] SMA | FIFO       : ao=CLI1, sig=START, snr=svr, pid=1, rc=1
+      4167 [ 31] MP  | PUT        : mp=0X180B80, nfree=7
+      4167 [ 32] TIM | START      : t=0X180080, ao=CLI1, nt=200, per=0
+      4168 [ 33] MP  | PUT        : mp=0X180B80, nfree=8
+      4168 [ 34] QUE  | FIFO       : q=0X1801A4, nelem=1, nmin=0
+      4168 [ 35] SMA | FIFO       : ao=svr, sig=REQ, snr=CLI2, pid=1, rc=1
+      4169 [ 36] QUE  | FIFO       : q=0X180470, nelem=1, nmin=0
+
+
+\endverbatim
+
+\section seq_diag Sequence Diagram Generator 
+
+In order to enhancing the capacity of the system behavior analysis, 
+Trazer can recreate a sequence diagram that shown chronologically the 
+interaction between active objects.\n
+To enable this capability, RKH configuration must enable to send the pointer
+to the sender object when posting an event (RKH_CFG_SMA_TRC_SNDR_EN = 1). 
+If so, for each RKH_TE_SMA_FIFO / RKH_TE_SMA_LIFO trace event received,
+Trazer catch the arguments ao (destination), sig (event), snr (sender) 
+to add to the diagram.
+Trazer generates two files types as output:
+ - <B>"YYMMDDHHMMSS.diag"</B>: require post process with seqdiag 
+Python Package that generates sequence-diagram image file from .diag file.\n
+Consult <http://blockdiag.com/en/seqdiag/> for detailed information.\n
+ - <B>"sdYYMMDDHHMMSS.html"</B>: require SVG seqdiag.js and parser.js 
+scripts located at /seqdiag directory. Web browser supported are 
+IE and Chrome, not yet working on Firefox.
+
+\image html seqdiag.png
+
+*/
+

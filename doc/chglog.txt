@@ -1,0 +1,393 @@
+/**
+\page changelog Release Notes
+
+\tableofcontents
+
+\section rkhVer_3_1_0 Version 3.1.0
+\releasedate 2018-05-03
+
+\new
+- Added support for using any kind of vertex as target of a default transition 
+  in both composite state region or root region, according to UML 2.x.
+\par Deprecated features
+- The RKH_TE_SM_NTRNACT trace record is now deprecated and not recommended 
+  for new designs. It remains supported for backwards compatibility.
+- Deleted RKH_INIT_ACT_T type and deprecated its config option 
+  RKH_CFG_SMA_INIT_ARG_SMA_EN. Therefore, was replaced RKH_INIT_ACT_T by 
+  RKH_TRN_ACT_T and was fixed every demo application according to that.
+
+<HR>
+\section rkhVer_3_0_0 Version 3.0.0
+\releasedate 2017-08-01
+
+\new
+- Added unit test cases of trace, sma and fwk modules.
+- Added test harness of framework's modules to test for.
+- Added Ceedling submodule
+- Rearranged files and directories (modules, ports and demo apps).
+- Improved trace module
+- Improved doc files (doxygen) and comments.
+
+<HR>
+\section rkhVer_2_4_6 Version 2.4.6
+\releasedate 2016-12-14
+
+\new
+- Improved doc files (doxygen) and comments.
+- Improved template of C implementation file.
+- Deleted template_aoAct.c/.h
+- Changed the template files for active object definition.
+- Rearranged the blinky.c and blinky.h files.
+
+\bugfix
+- After executing the SM's initial action the trace event RKH_TE_SM_INIT is 
+  sent to trazer, to avoid trace events without symbols which are frequently 
+  sent within initial action.
+
+<HR>
+\section rkhVer_2_4_5 Version 2.4.5
+\releasedate 2016-04-25
+
+\apichg
+- The API for RKH_CREATE_DEEP_HISTORY_STATE() and 
+  RKH_CREATE_SHALLOW_HISTORY_STATE() changed. Added arguments to set 
+  (optional) the history default transition. However, those macros are now 
+  deprecated and not recommended for new designs. It remains supported for 
+  backwards compatibility.
+
+\bugfix
+- Fixed a old bug at rkh_sm_dispatch() function in rkh.c file related with 
+  entry and exited states on a loop transition. The implemented solution have 
+  adopted the UML's local transition feature. 
+
+\new
+- Added support for code beautifier Uncrustify in /tools/uncrustify, to be 
+  used as a code formatting tool according to RKH rules. Also, included source 
+  and header file templates.
+- Reformatted source and header files in /sources and /sources/include.
+- Added support for TDD with Unity + Cmock + Trazer. The directory /tests 
+  includes the related files.
+- Added #RKH_CFG_HOOK_PUT_TRCEVT_EN configuration option to include the new bsp 
+  dependent function rkh_hook_putTrcEvt().
+- Refactored trace module (/tests/trace), state machine module (/tests/sm) 
+  and trazer (/tests/utrazer) through the test harness. It implies various 
+  performance improvements, memory usage reduction, better documentation, and 
+  learning tests.
+- Removed NULL macro usage from rkh.h file, and thus <stdlib.h> inclusion.
+- Improved doc files (doxygen) and comments.
+    - Added deprecated list.
+    - Enhanced module section by including the configuration, trace, test,
+      and API referecen manual sections.
+- Added test suite of state machine module.
+- Multiple enabled transitions (same trigger) with mutually exclusive guards 
+  according to UML is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Completion transition (also as known as null transition) and completion 
+  event in simple and composite states is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Final state in composite states is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- The default transition (also as known as initial transition) in a composite 
+  state can have its own associated behavior (effect) is now supported.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Added macro RKH_CREATE_COMP_REGION_STATE() to instantiate a composite state 
+  with a single region, including its own initial pseudostate, history 
+  (shallow or deep type) pseudostate, as well as its own final state.
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Multiple enabled transitions (same trigger) with mutually exclusive guards 
+  according to UML is now supported. This usage of this feature is 
+  demonstrated through various and provided learning tests.
+- A state machine is now allowed to be instantiated regardless of an active 
+  object instance. It is very useful to create reactive parts (or orthogonal 
+  regions) of composite active objects. Also, by means of 
+  RKH_CFG_SMA_SM_CONST_EN option a state machine instance could be allocated 
+  into ROM or RAM. It is useful to dynamic allocation. This usage of this 
+  feature is demonstrated through various and provided learning tests.
+- Polimorphic active objects with "virtual" table (in C) is now supported. It 
+  is composed as activate, task, post_fifo, and post_lifo operations. 
+  This usage of this feature is demonstrated through various and provided 
+  learning tests.
+- Added runtime constructors for active object and state machine classes for 
+  multiple and single instances. This usage of this feature is demonstrated 
+  through various and provided learning tests.
+- Added RKH_CFG_SMA_VFUNCT_EN and RKH_CFG_SMA_RT_CTOR_EN options to set the 
+  active object as polymorphic and to use the runtime constructors of 
+  RKH_SMA_T/RKH_SM_T classes. This usage of this feature is demonstrated 
+  through various and provided learning tests.
+- Template files for dealing with implementation and specification of active 
+  objects is now added to /template.
+- Added RKH_DECLARE_TR_TBL(), RKH_INIT_BASIC_STATE(), and 
+  RKH_INIT_COMPOSITE_STATE() macros to derive a state (basic or composite) 
+  class to any other using single inheritance in C by literally embedding 
+  the base type (or super-class), RKHSBSC_T or RKHSCMP_T, as the first 
+  member of the derived structure.
+
+\par Deprecated features
+- The RKH_CREATE_DEEP_HISTORY_STATE() and RKH_CREATE_SHALLOW_HISTORY_STATE() 
+  macros are now deprecated and not recommended for new designs. It remains 
+  supported for backwards compatibility.
+
+\ports
+- Added a port to be exclusively used in the x86 test harness in 
+  /source/portable/test directory, tagged as "__TEST__".
+
+<HR>
+\section rkhVer_2_4_3 Version 2.4.3
+\releasedate 2013-07-15
+
+\apichg
+- Added sender object (and macro RKH_CFG_SMA_TRC_SNDR_EN to rkhcfg.h) to 
+  rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(). 
+- Added RKH_TIM_TICK(), RKH_SMA_POST_FIFO()/_LIFO() macros to invoke functions 
+  rkh_tmr_tick(), and rkh_sma_post_fifo(), and rkh_sma_post_lifo(), 
+  respectively.
+- Added choice pseudostate.
+- Added macros RKH_GET_PRIO() and RKH_GET_SMA().
+- Added macros RKH_ARRAY_SMA_CREATE() and RKH_ARRAY_SMA_DCLR().
+- Added macros RKH_EVT_CAST() and RKH_CAST().
+- Added to RKH_ST_T structure (base structure for basic, composite and 
+  submachine states) the "trtbl" member (pointer to transition table), as 
+  new basic attribute.
+
+\new
+- Added cross-platform demo 'shared' for s08 and x86 platforms. 
+- Adds RKH_TR_QUE_FULL macro from rkh_queue_put_fifo() and rkh_queue_put_lifo() 
+  functions.
+- Added RKH_VERSION_CODE to RKH_TR_FWK_TCFG.
+- Updated comments.
+- Changed RKH_TRC_EN_SM_CSTATE by RKH_CFG_TRC_SM_TS_STATE_EN.
+- Changed RKH_TE_SM_CSTATE by RKH_TE_SM_TS_STATE.
+- Added assert in rkh_queue_put_fifo()/lifo() when queue is full.
+- Added little code in favor of defensive programming (rkhmempool.c).
+- Added new arguments to trace event macros. See "trace event table".
+- Updated configuration table and preprocessor checking in rkhitl.h.
+
+\par Deprecated features
+- Removed RKH_TRC_MAX_EVENTS from rkhcfg.h file.
+
+<HR>
+\section rkhVer_2_4_0 Version 2.4.0
+\releasedate 2013-05-03
+
+\new
+- Added cross-platform demo 'blinky' for arm-cortex, s08 and coldfire v1.
+- Added arm-cortex port.
+- Added RKH_CFG_FWK_TICK_RATE_HZ and RKH_TICK_RATE_MS constants. 
+- Fixed RKH_FILTER_OFF_GROUP_ALL_EVENTS() and RKH_FILTER_ON_GROUP_ALL_EVENTS() 
+  macros. 
+
+\par Deprecated features
+- Eliminated rkhdata.h file from demos. 
+
+<HR>
+\section rkhVer_2_3_0 Version 2.3.0
+\releasedate 2013-02-05
+
+\bugfix
+- Fixed the linux port.
+
+\new
+- Enhanced runtime trace filter.
+- Enhanced software timer module.
+- Added arbitrary trace records to be used in the application space.
+- Added RKH_CFG_TRC_USER_TRACE_EN configuration option for enabling/disabling 
+  the user trace records.
+- Added RKH_TR_FWK_TUSR() macro for sending to Trazer a symbolic name of 
+  the user-defined trace event.
+- Moved configurations RKH_CFGPORT_SMA_THREAD_EN, 
+  RKH_CFGPORT_SMA_THREAD_DATA_EN, RKH_CFGPORT_NATIVE_SCHEDULER_EN, 
+  RKH_CFGPORT_NATIVE_EQUEUE_EN, RKH_CFGPORT_NATIVE_DYN_EVT_EN, and 
+  RKH_CFGPORT_REENTRANT_EN from rkhcfg.h to rkhport.h file to achieve the 
+  platform independence in rkhcfg.h file.
+- Added macro RKH_TR_FWK_TCFG() to send the trace configuration parameters to 
+  Trazer.
+- Added RKH_CFG_TRC_ASSERT_EN configuration option to rkhcfg.h file, 
+  RKH_TE_FWK_ASSERT trace record and RKH_TR_FWK_ASSERT() macro to RKH_ASSERT() 
+  macro.
+
+\par Deprecated features
+- Eliminated RKH_TIM_EN_RESTART from rkhcfg.h.
+
+<HR>
+\section rkhVer_2_2_0 Version 2.2.0
+\releasedate 2013-08-13
+
+\apichg
+- Changed args of RKH_REQUIRE() macro in rkh_sma_register() function.
+
+\bugfix
+- Fixed name of the deplete queue, function rkh_queue_deplete().
+- Fixed  RKH_TRC_CLOSE() macro.
+- Fixed a bug in rkhtmr.c file. Complete the RKH_SET_THOOK() macro when 
+  configuring RKH_CFG_TMR_HOOK_EN = 0.
+- Fixed a bug in RKH_SMA_BLOCK() macro.
+- Fixed a bug in rkh_queue_get() function, when invocking the rkh_sma_recall() 
+  function.
+- Fixed a bug in rkh_tmr_restart() function RKH_REQUIRE() args.
+- Fixed a bug in rkh_sma_defer() function. Also, include an internal macro 
+  RKH_INC_REF() to avoid the dependence of dynamic event in deferral 
+  mechanism.
+- Fixed a bug in rkh_add_tr_action() function.
+
+\new
+- Added runtime filter of active objects to emmit or suppress all events 
+  from a specified AO, by means of RKH_FILTER_ON_SMA() and 
+  RKH_FILTER_OFF_SMA() macros. See the main.c demo file. Used to clean 
+  up the trazer output.
+- Added RKH_TRC_FLUSH() macro in RKH_TRCR_RKH_OBJ() and RKH_TRCR_RKH_SIG().
+- Added CCE() macro.
+- Added RKH_RESERVE() macro.
+- Added dtcptrc.c and tcptrc.h files to demo projects.
+- Added support to trazer program in ahsm and subm projects.
+- Added RKH_TRC_OPEN, RKH_TRC_CLOSE, and RKH_TRC_FLUSH.
+- Added CV() macro.
+
+\par Deprecated features
+- Elimate RKH_MP_QUERY definition and change RKH_MP_GET_BLKSIZE to 
+  RKH_MP_GET_BSIZE.
+- Delete the CRR() macro.
+- Delete trazer.c and trazer.h files.
+
+\ports
+- Added S08 port files.
+- Changed 80x86 port files. Relocate the event pool from rkhport.c to 
+  bsp.c file, in rkh_hook_start() hook function. Now, the usage of event 
+  pools is resposability of the application.
+
+<HR>
+\section rkhVer_2_1_0 Version 2.1.0
+\releasedate 2012-05-09
+
+\new
+- Added a submachine state and demo application "subm" to illustrate 
+  the submachine usage.
+\par Deprecated features
+
+<HR>
+\section rkhVer_2_0_0 Version 2.0.0
+\releasedate 2012-04-13
+
+\new
+- Added a platform abstraction layer.
+- Added queue, software timer and dynamic memory modules.
+- Added a dispatching event mechanism based on active object's priority.
+- Because of applied drastic changes this release is not compatible 
+  with previous releases.
+
+<HR>
+\section rkhVer_1_1_6 Version 1.1.6
+\releasedate 2012-02-13
+
+\bugfix
+- Fixed bug in call rkhallege() macro.
+- Fixed bug in rkhallege(), rkhrequire(), rkhensure(), and rkhinvariant() 
+  macros.
+
+<HR>
+\section rkhVer_1_1_5 Version 1.1.5
+\releasedate 2012-01-02
+
+\apichg
+\bugfix
+- Fixed rkh_tropen, rkh_trclose, rkh_trflush and rkh_trgetts macro definitions.
+- Fixed rkh_tropen, rkh_trclose, rkh_trflush and rkh_trgetts macro definitions.
+
+\new
+- Added RKH_ROM_STATIC_EVENT macro to declare and initialize a event object 
+  as one static event.
+- Added a new configuration option RKH_EN_STATE_ID to reduce the state 
+  structure.
+- Added RKH_DCLR_SM_GLOBAL macro to declare a state machine object as global 
+  pointer.
+- Added assertions within rkh.c module.
+- Added assertion events in rkhtrace.h.
+- Added definition of rkh_trace_getts() in rkhtrace.h.
+- Added condition \#if RKH_CFG_FWK_DYN_EVT_EN == 1 to include rkh_put_fifo() 
+  and rkh_put_lifo() functions.
+- Added checks every config. options from rkhcfg.h in rkhitl.h.
+- Enhanced tested version of rkh_engine() function with TEST_GUARD option, 
+  see code.
+- Tested version of rkh_engine() function with TEST_GUARD option, see code.
+- Changed internal RKH_T structure definition to reduce the use of precious 
+  RAM when instantiating a state machine.
+- Added if is not defined RKH_EN_DOXYGEN then RKH_EN_DOXYGEN = 0
+- Added RKH_EN_RT_INIT_HSM_OBJ preprocessor option to include 
+  rkh_init_hsm_obj() function. Frequently, this function is not used.
+- Added rkh_init_hsm_obj() function to initialize a RKH_T structure in runtime.
+- Changed RKH_CREATE_HSM and RKH_DCLR_HSM macros to implement a easy way for 
+  deriving state machine structures from RKH_T.
+- Added dynamic and defer event support. This facility is implemented by 
+  means of rkh_fwk_ae(), rkh_fwk_gc(), rkh_put_fifo(), rkh_put_lifo(), 
+  rkh_sma_defer() and rkh_sma_recall() and added member dynamic_ to 
+  RKH_EVT_T structure.
+- Changed rkh.h file name to rkhitl.h.
+- Changed rkhsm.h file name to rkh.h.
+- Added rkh_enter_critical() and rkh_exit_critical() to be defined within 
+  rkhport.h file.
+- Added assert feature. This facility is defined in rkhassert.h file.
+- Added RKH_NUM_STATE_MACHINES directive in rkhcfg.h and rkhtrace.c files.
+- Added checks to platform-dependent functions within rkhtrace.h.
+- Added mksevt() macro.
+
+\par Deprecated features
+- Eliminated rkhdata.h dependence from rkhtrace.c and rkh.c files.
+
+\ports
+- Added support for Codewarrior Coldfire V1.
+
+<HR>
+\section rkhVer_1_1_4 Version 1.1.4
+\releasedate 2011-06-10
+
+\new
+- Changed RKH_PPRO_T type to support pointer to HSM as argument.
+- Added RKH_EN_PPRO_HSM_ARG configuration.
+- Added RKH_HPPTY_T enumeration to be used in RKH_CREATE_HSM() macro.
+- Update demo and doc files.
+
+<HR>
+\section rkhVer_1_1_3 Version 1.1.3
+\releasedate 2012-05-19
+
+\new
+- Changed RKH_EVT_T data type.
+- Added rkh_get_sdata() macro to rkhsm.h file.
+- Added state's abstract data by means of single inheritance.
+- Update demo and doc files.
+
+<HR>
+\section rkhVer_1_1_2 Version 1.1.2
+\releasedate 2011-05-05
+
+\bugfix
+- Fixed and update doc files.
+
+\new
+- Changed external transition to local transition support. Therefore, just 
+  modified rkh_define_ex_en_states() macro to support this feature according 
+  to UML 2.0.
+- Modified demo directory to test local transition feature and added some 
+  improvements to main.c file.
+
+<HR>
+\section rkhVer_1_0_0 Version 1.0.0
+\releasedate 2011-05-03
+
+\bugfix
+- Fixed VC08 project settings.
+
+\new
+- Added rkh_sm_else function to be used when if all the guards on the other 
+  branches are false.
+- Changed conditional (branch) pseudostate related macros. Therefore, the 
+  demo and doc files too.
+- Changed macros RKH_CREATE_*_STATE, RKH_CREATE_TRANS_TABLE and 
+  RKH_END_TRANS_TABLE. 
+- Changed demo files.
+
+*/

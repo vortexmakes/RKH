@@ -1,0 +1,45 @@
+/**
+\page utest Tests
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref cross "Examples"
+
+\n The goal in this section is to explain how to test a state machine 
+using the RKH framework and its recommended test fixture. To do that is 
+proposed a lot of complete state machines, which are shown in the 
+following figures. 
+
+Also, this section summarizes the main rules and concepts for making the most 
+out of RKH features. For more information see section \ref test_sm "Module, unit tests and tools for TDD"
+
+\anchor fig_smTest
+\image html smTest.png "Figure - Used state machine for transition unit tests"
+
+\anchor fig_smPseudoTest
+\image html smPseudoTest.PNG "Figure - Used state machine for pseudostate unit tests"
+
+\anchor fig_smInitialPseudoTest
+\image html smInitialPseudoTest.PNG "Figure - Used state machine for testing initial pseudostate of a composite state"
+
+\anchor fig_smInitial0
+\image html smInitial0.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a simple state"
+
+\anchor fig_smInitial1
+\image html smInitial1.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a composite state"
+
+\anchor fig_smInitial2
+\image html smInitial2.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a nested simple state"
+
+\anchor fig_smInitial3
+\image html smInitial3.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a nested composite state"
+
+\anchor fig_smInitial4
+\image html smInitial4.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a junction pseudostate"
+
+\anchor fig_smInitial5
+\image html smInitial5.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a choice pseudostate"
+
+Prev: \ref main_page "Home" \n
+Next: \ref cross "Examples"
+*/

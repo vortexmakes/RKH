@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\sma\runner\all_tests.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\runner\test_rkhsma_runner.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\runner\test_smInstance_runner.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\runner\test_smPolymorphism_runner.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mock_rkhport.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mock_rkhqueue.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mock_rkhtrc_filter.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mock_rkhtrc_record.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mock_rkhtrc_stream.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mockrkhassert.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\Mockrkhsm.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\stub\mocks\MocksmTestAct.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\src\smInstance.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\src\smPolymorphism.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\src\smTest.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\src\test_rkhsma.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\src\test_smInstance.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sma\src\test_smPolymorphism.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\rkhsma.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="rkh">
+      <UniqueIdentifier>{e260d468-def4-4910-9b48-5afbd246b8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{15f2147f-34d1-42e9-9bf7-a4ac79fce62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\stub">
+      <UniqueIdentifier>{60cb9a32-0678-4c04-8b3d-5b8fddd36bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\tool">
+      <UniqueIdentifier>{07df18fa-ca3c-4c1d-93f1-e9fb5ff95f3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\runner">
+      <UniqueIdentifier>{b6e3254b-da58-4e1c-bfc8-f2380800a827}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

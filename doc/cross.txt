@@ -1,0 +1,1286 @@
+/**
+\page cross_blinky Blinky
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref cross "Cross-platform examples"\n\n
+
+The goal of "Blinky" demo application is to explain how to represent a "flat" 
+state machine, how to use the timer services, and trace facility from RKH 
+framework. To do that is proposed a very simple demo that use one state 
+machine and one timer, which is shown and itself explained in the 
+\ref blinky_fig1 "Blink a LED state diagram". This is the 'hello world' of 
+RKH programming. 
+
+The platform-independent Blinky source code (in C) is located in the 
+\c \<rkh\>/demo/cross/blinky/ directory, where \c \<rkh\> stands for the 
+installation directory chosed to install the accompanying software and 
+\c blinky.c, \c blinky.h and \c main.c are the platform-independent files. 
+Thus, the code is actually identical in all Blinky versions, such as the 
+Windows version, Linux version, arm-cortex version, and so on.
+
+- \ref blinky_sm
+- \ref blinky_ao
+- \ref blinky_init
+- \ref blinky_run
+
+\tableofcontents
+
+<HR>
+\section blinky_sm State machine
+
+The following figure shows the state machine associated with Blinky 
+active object, which clearly shows the life cycle consisting of states 
+\c "led_on", and \c "led_off".
+
+\anchor blinky_fig1
+\image html rkh_blinky.png "Blinky state machine"
+
+\li ( 1) 	The \c blinky_init() function defines the topmost initial 
+			transition in the blinky state machine. The function prototype is 
+			defined as RKH_TRN_ACT_T. This argument is (optional), thus it 
+            could be declared as NULL. 
+\li ( 2) 	The timer is declared with the RKH_TMR_T data type 
+			and is defined with the RKH_TMR_INIT() RKH service. The timer is 
+			initialized in a non-active state (stopped). In this case, a 
+			subsequent start service call is necessary to get the timer 
+			actually started.
+\li ( 3) 	Turn on the LED and trigger the timer as oneshot to expire in 
+            \c LED_ON_TIME milliseconds.
+\li ( 4-8) 	Upon receiving the TIMEOUT event, the Blinky re-trigger the 
+			timer to expire in \c LED_OFF_TIME milliseconds, turn off the 
+            LED, and increments the counter.	
+\li ( 9-10)	Turn off the LED and trigger the timer as oneshot to expire in 
+            \c LED_OFF_TIME milliseconds.
+
+\note
+The notation of UML Statecharts is not purely visual. Any nontrivial state 
+machine requires a large amount of textual information (e.g., the 
+specification of actions and guards). The exact syntax of action and guard 
+expressions isnt defined in the UML specification, so many people use 
+either structured English or, more formally, expressions in an implementation 
+language such as C [Douglass]. In practice, this means that UML Statechart 
+notation depends heavily on the specific programming language.
+
+The \ref bky_c "blinky.c" file implements the state machine of Blinky active 
+object, which illustrates some aspects of implementing state machines with 
+RKH framework. Please correlate this implementation with the state diagram 
+shown above. On the other hand, the header file \ref bky_h "blinky.h" contains 
+the definitions of object structures related to the state machine. \n \n
+
+\anchor bky_c 
+<STRONG> \"blinky.c\" - State machine representation </STRONG>
+\code
+/* ........................ States and pseudostates ........................ */
+RKH_CREATE_BASIC_STATE(ledOn, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(ledOn)
+    RKH_TRREG(TIMEOUT, NULL, blinky_ledOff, &ledOff),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(ledOff, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(ledOff)
+    RKH_TRREG(TIMEOUT, NULL, blinky_ledOn, &ledOn),
+RKH_END_TRANS_TABLE
+\endcode
+
+\n The related actions (entry, exit, guard, and state transition) to be 
+executed by the state machine are implemented and declared in the 
+\ref bkyact_c "blinky.c". 
+Note that the \c rkhcfg.h file defines the prototypes of them. \n \n
+
+\anchor bkyact_c 
+<STRONG> \"blinky.c\" - Actions </STRONG>
+\code
+/* ............................ Initial action ............................. */
+static void
+blinky_init(Blinky *const me, RKH_EVT_T *pe)
+{
+    RKH_TR_FWK_AO(me);
+    RKH_TR_FWK_QUEUE(&RKH_UPCAST(RKH_SMA_T, me)->equeue);
+    RKH_TR_FWK_STATE(me, &ledOn);
+    RKH_TR_FWK_STATE(me, &ledOff);
+    RKH_TR_FWK_TIMER(&me->timer);
+    RKH_TR_FWK_SIG(TIMEOUT);
+
+    RKH_TMR_INIT(&me->timer, &e_tout, NULL);
+    blinky_ledOn(me, NULL);
+}
+
+/* ............................ Effect actions ............................. */
+static void
+blinky_ledOn(Blinky *const me, RKH_EVT_T *pe)
+{
+    (void)pe;
+
+    RKH_TMR_ONESHOT(&me->timer, RKH_UPCAST(RKH_SMA_T, me), LED_ON_TIME);
+    bsp_led_on();
+    ++me->cnt;
+}
+
+static void
+blinky_ledOff(Blinky *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+
+    RKH_TMR_ONESHOT(&me->timer, RKH_UPCAST(RKH_SMA_T, me), LED_OFF_TIME);
+    bsp_led_off();
+}
+
+/* ............................. Entry actions ............................. */
+/* ............................. Exit actions .............................. */
+/* ................................ Guards ................................. */
+\endcode
+
+\anchor bkyact_h 
+\n <STRONG> \"blinky.h\" - Action declarations </STRONG>
+\code
+/* ........................ Declares initial action ........................ */
+static void blinky_init(Blinky *const me, RKH_EVT_T *pe);
+
+/* ........................ Declares effect actions ........................ */
+static void blinky_ledOn(Blinky *const me, RKH_EVT_T *pe);
+static void blinky_ledOff(Blinky *const me, RKH_EVT_T *pe);
+
+/* ......................... Declares entry actions ........................ */
+/* ......................... Declares exit actions ......................... */
+/* ............................ Declares guards ............................ */
+\endcode
+
+<HR>
+\section blinky_ao Signals, events, and active objects
+
+\n In RKH, signals are typically enumerated constants and events with 
+parameters are structures derived from the RKH_EVT_T base structure. The next 
+listing shows signals and events used in the Blinky application 
+(\ref bky_h "blinky.h"). \n \n
+
+\anchor bky_h 
+<STRONG> \"blinky.h\" - Signals, events, and active objects </STRONG>
+\code
+/**
+ *  \file       bkliny.h
+ *  \brief      Example application.
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __BLINKY_H__
+#define __BLINKY_H__
+
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* --------------------------------- Macros -------------------------------- */
+/* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
+{
+	TIMEOUT,		/* timeout */
+	TERMINATE,		/* press the key escape on the keyboard */
+	BLINKY_NUM_EVENTS
+};
+
+/* ........................ Declares active object ......................... */
+RKH_SMA_DCLR(blinky);
+
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+\n <HR>
+\section blinky_init Initializing and starting the application
+
+Most of the system initialization and application startup can be written 
+in a platform-independent way. \n
+
+<STRONG> \"main.c\" - main() function </STRONG>
+\code
+/**
+ *  \file       main.c
+ *  \brief      Example application.
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+#include "bsp.h"
+#include "blinky.h"
+
+/* ----------------------------- Local macros ------------------------------ */
+#define QSTO_SIZE           4
+
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKH_EVT_T *qsto[QSTO_SIZE];
+
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
+int
+main(int argc, char *argv[])
+{
+    bsp_init(argc, argv);
+
+    RKH_SMA_ACTIVATE(blinky, qsto, QSTO_SIZE, 0, 0);
+    rkh_fwk_enter();
+
+    RKH_TRC_CLOSE();
+    return 0;
+}
+
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+\n <HR>
+\section blinky_run Running on various platforms
+
+As said before, the only platform-dependent file is the board support package 
+(BSP) definition. Each of supported platforms defines its own \c bsp.c and 
+\c bsp.h files, which are contained in the proper directory, for example, the 
+BSP for the Blinky application on Windows 32 (Visual Studio 2008) with a 
+simple cooperative scheduler is located in 
+\c \<rkh\>/demo/cross/blinky/build/80x86/win32_st/vc/
+
+<TABLE	align="center" valign="middle" width=70% cellSpacing=2 
+		cellPadding=4 border=0>
+
+	<TR bgColor="#c0c0c0">
+		<TH><B> CPU Architecture </B></TH>
+		<TH><B> Manufacturer </B></TH>
+		<TH><B> MCU </B></TH>
+		<TH><B> Evaluation Board </B></TH> 
+		<TH><B> Toolchain </B></TH> 
+		<TH><B> Comments </B></TH> 
+		<TH><B> Notes </B></TH> 
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD rowspan="6"> ARM - Cortex </TD>
+		<TD> NXP </TD>
+		<TD> <A HREF="http://www.nxp.com/products/microcontrollers/cortex_m3/
+		LPC1769FBD100.html">LPC1769</A> </TD>
+		<TD> <A HREF="http://www.embeddedartists.com/products/lpcxpresso/
+		lpc1769_xpr.php">LPCXpresso</A> </TD>
+		<TD> Codered </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_lpcx1769 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD rowspan="2"> Freescale </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/
+        arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k60-100-mhz-mixed-signal-integration-microcontrollers-mcus-based-on-arm-cortex-m4-core:K60_100">Kinetis K60</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/
+        arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/
+        kinetis-k60-100-mhz-mcu-tower-system-module:TWR-K60D100M">TWR-K60D100M</A> </TD>
+		<TD> Codewarrior v10.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_twr_K60 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> IAR v7.2 </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \a Deprecated </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=KL2">Kinetis KL2</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=FRDM-KL25Z">FRDM-KL25Z</A> </TD>
+		<TD> Codewarrior v10.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_frdm_kl25 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=
+		K40_100&nodeId=01624698C9DE2DDDAB">Kinetis K40</A> </TD>
+		<TD> <A HREF="https://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=KWIKSTIK-K40">KWIKSTIK-K40</A> </TD>
+		<TD> Codewarrior v10.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \a Deprecated </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k64-120-mhz-256kb-sram-microcontrollers-mcus-based-on-arm-cortex-m4-core:K64_120">Kinetis K64</A> </TD>
+		<TD> <A HREF="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</A></TD>
+		<TD> KDS </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_frdm_k64f_kds "readme" </TD>
+	</TR>
+
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> Coldfire V1 </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=MCF51QE">MCF51QE128</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
+		<TD> Codewarrior v6.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_demoqe128_cfv1 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Freescale </TD>
+		<TD> S08 </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/
+		site/prod_summary.jsp?code=S08QE">S08QE128</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
+		<TD> Codewarrior v6.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_demoqe128_s08 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD rowspan="2"> 80x86 </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> <A HREF="http://www.microsoft.com/en-us/download/
+		details.aspx?id=5555">Visual Studio C++ 2010 </A> </TD>
+		<TD> Win32 cooperative scheduler simulation </TD>
+		<TD>  </TD>
+	</TR>
+
+	<TR bgColor="#c8cedc" align="center" valign="middle">
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> GNU </TD>
+		<TD> Linux cooperative scheduler simulation </TD>
+		<TD>  </TD>
+	</TR>
+</TABLE>
+
+Prev: \ref cross "Cross-platform examples"\n
+*/
+
+
+/**
+\page cross_shared Shared
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref cross "Cross-platform examples"\n\n
+
+\tableofcontents
+
+This application deals with the shared resource problem in active object 
+systems. Showing one of the biggest benefit of using active objects: resource 
+encapsulation. The encapsulation naturally designates the owner of the 
+resource as the ultimate arbiter in resolving any contention and potential 
+conflicts for the resource. The shared application is relatively simple and 
+can be tested only with a couple of LEDs on your target board.
+Still, Shared contains five (5) concurrent active objects that exchange 
+events via direct event posting mechanism. The application uses four timers, 
+as well as dynamic and static events. On the other hand, this application 
+could be used in either preemptive or cooperative enviroment.
+Aditionally, the Shared could be used to verify a new RKH port.
+
+The platform-independent Shared source code (in C) is located in the 
+\c \<rkh\>/demo/cross/shared/ directory, where \c \<rkh\> stands for the 
+installation directory chosed to install the accompanying software and 
+\c client.h, \c server.h, \c shared.h, \c client.c, \c main.c and 
+\c server.c are the platform-independent files. Thus, the code is actually 
+identical in all Shared versions, such as the Windows version, S08 version, 
+and so on.
+
+- \ref shared_sd
+- \ref shared_sm
+- \ref shared_ao
+- \ref shared_init
+- \ref shared_run
+
+<HR>
+\section shared_sd Sequence diagram
+
+The sequence diagram in \ref shared_sd_fig1 "Figure 1" shows the most 
+representative event exchanges among three Clients (cli0, cli1, cli2) and the 
+Server (svr) active objects.
+
+The server shares their resource with clients. A client does not share any of 
+its resources, but requests a server's content or service function. Clients 
+therefore initiate communication sessions with the server which await incoming 
+requests.
+The server selectively shares its resource; and a client initiates contact 
+with the server in order to make use of the resource.
+Clients and server exchange messages in a request-response messaging pattern: 
+The client sends a request, and the server returns a response.
+
+As an additional feature, the Clients  can be paused for an arbitrary period 
+of time. During this paused period, the Clients don't get permissions to 
+request. After the pause period, the Clients should resume normal operation.
+
+\anchor shared_sd_fig1
+\image html rkh_shared_sd.png "Figure 1 - Sequence diagram of the Shared application"
+
+<HR>
+\section shared_sm State machines
+
+Figure 2(a) shows the state machine associated with Client active object, 
+which clearly shows the life cycle consisting of states \c "cli_idle", \c "svr_paused", 
+\c "svr_waiting", and \c "cli_using". See \ref shared_sm_cli section.
+
+\anchor shared_svr_fig2a
+\image html rkh_shared_svr.png "Figure 2(a) - Server (svr) state machine"
+
+Figure 2(b) shows the state machine associated with the Server active object, 
+with  \c "svr_idle", \c "svr_paused", and \c "svr_busy" states. See 
+\ref shared_sm_svr section.
+
+\anchor shared_cli_fig2b
+\image html rkh_shared_cli.png "Figure 2b - Client (cli) state machine"
+
+\note
+The notation of UML Statecharts is not purely visual. Any nontrivial state 
+machine requires a large amount of textual information (e.g., the 
+specification of actions and guards). The exact syntax of action and guard 
+expressions isnt defined in the UML specification, so many people use 
+either structured English or, more formally, expressions in an implementation 
+language such as C [Douglass]. In practice, this means that UML Statechart 
+notation depends heavily on the specific programming language.
+
+\subsection shared_sm_cli Client state-machine implementation
+
+The \ref cli_c "client.c" file implements the state machine of Client active 
+object, which illustrates some aspects of implementing state machines with 
+RKH framework. Please correlate this implementation with the state diagram 
+shown above. On the other hand, the header file \ref cli_h "client.h" contains 
+the definitions of object structures related to the state machine. 
+See the following sections:
+
+- \ref cli_c "Client active object implementation - \"client.c\""
+- \ref cli_h "Client active object specification - \"client.h\""
+
+\anchor cli_c 
+<STRONG> \"client.c\" - Client active object implementation </STRONG> \n
+\code
+/**
+ *  \file       client.c
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+#include "shared.h"
+#include "server.h"
+#include "client.h"
+#include "bsp.h"
+
+/* ----------------------------- Local macros ------------------------------ */
+#define CLI_REQ_TIME \
+    (RKH_TNT_T)RKH_TIME_SEC((bsp_rand() % 5) + 2)
+#define CLI_USING_TIME \
+    (RKH_TNT_T)RKH_TIME_SEC((bsp_rand() % 5) + 1)
+
+/* ......................... Declares active object ........................ */
+typedef struct Client Client;
+
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE client_idle, client_waiting, client_using, client_paused;
+
+/* ........................ Declares initial action ........................ */
+static void client_init(Client *const me, RKH_EVT_T *pe);
+
+/* ........................ Declares effect actions ........................ */
+static void client_req(Client *const me, RKH_EVT_T *pe);
+static void client_start(Client *const me, RKH_EVT_T *pe);
+static void client_end(Client *const me, RKH_EVT_T *pe);
+
+/* ......................... Declares entry actions ........................ */
+static void client_delay_req(Client *const me);
+static void client_pause(Client *const me);
+
+/* ......................... Declares exit actions ......................... */
+static void client_resume(Client *const me);
+
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
+RKH_CREATE_BASIC_STATE(client_idle,
+                       client_delay_req, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_idle)
+    RKH_TRREG(TOUT_REQ,    NULL,   client_req,      &client_waiting),
+    RKH_TRREG(PAUSE,       NULL,   NULL,            &client_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(client_waiting, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_waiting)
+    RKH_TRREG(START,       NULL,   client_start,    &client_using),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(client_using, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_using)
+    RKH_TRREG(TOUT_USING,  NULL,   client_end,      &client_idle),
+    RKH_TRREG(PAUSE,       NULL,   NULL,            &client_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(client_paused,
+                       client_pause, client_resume, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(client_paused)
+    RKH_TRINT(TOUT_USING,  NULL,   client_end),
+    RKH_TRREG(PAUSE,       NULL,   NULL,            &client_idle),
+RKH_END_TRANS_TABLE
+
+/* ............................. Active object ............................. */
+struct Client
+{
+    RKH_SMA_T sma;          /* base structure */
+    RKH_TMR_T usageTmr;     /* usage time */
+    RKH_TMR_T waitReqTmr;   /* waiting request time */
+};
+
+RKH_SMA_CREATE(Client, cli0, CLI_PRIO_0, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli0);
+RKH_SMA_CREATE(Client, cli1, CLI_PRIO_1, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli1);
+RKH_SMA_CREATE(Client, cli2, CLI_PRIO_2, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli2);
+RKH_SMA_CREATE(Client, cli3, CLI_PRIO_3, HCAL, &client_idle, client_init, NULL);
+RKH_SMA_DEF_PTR(cli3);
+
+RKH_ARRAY_SMA_CREATE(clis, NUM_CLIENTS)
+{
+    &cli0, &cli1, &cli2, &cli3
+};
+
+/* ------------------------------- Constants ------------------------------- */
+static RKH_ROM_STATIC_EVENT(evToUse, TOUT_USING);
+static RKH_ROM_STATIC_EVENT(evToReq, TOUT_REQ);
+static RKH_ROM_STATIC_EVENT(evDone, DONE);
+
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ............................ Initial action ............................. */
+static void
+client_init(Client *const me, RKH_EVT_T *pe)
+{
+    RKH_TR_FWK_AO(CLI0);
+    RKH_TR_FWK_AO(CLI1);
+    RKH_TR_FWK_AO(CLI2);
+    RKH_TR_FWK_AO(CLI3);
+    RKH_TR_FWK_STATE(CLI0, &client_idle);
+    RKH_TR_FWK_STATE(CLI0, &client_waiting);
+    RKH_TR_FWK_STATE(CLI0, &client_using);
+    RKH_TR_FWK_STATE(CLI0, &client_paused);
+
+    RKH_TMR_INIT(&me->usageTmr, &evToUse, NULL);
+    RKH_TMR_INIT(&me->waitReqTmr, &evToReq, NULL);
+}
+
+/* ............................ Effect actions ............................. */
+static void
+client_req(Client *const me, RKH_EVT_T *pe)
+{
+    ReqEvt *e_req;
+
+    (void)pe;
+    e_req = RKH_ALLOC_EVT(ReqEvt, REQ, me);
+    e_req->clino = RKH_GET_PRIO(me);
+    RKH_SMA_POST_FIFO(server, RKH_EVT_CAST(e_req), me);
+    bsp_cli_req(e_req->clino);
+}
+
+static void
+client_start(Client *const me, RKH_EVT_T *pe)
+{
+    RKH_TNT_T time;
+
+    time = CLI_USING_TIME;
+    RKH_TMR_ONESHOT(&me->usageTmr, RKH_UPCAST(RKH_SMA_T, me), time);
+    bsp_cli_using(RKH_CAST(StartEvt, pe)->clino,
+                  time / RKH_CFG_FWK_TICK_RATE_HZ);
+}
+
+static void
+client_end(Client *const me, RKH_EVT_T *pe)
+{
+    (void)pe;
+
+	RKH_SMA_POST_FIFO(server, &evDone, me);
+    bsp_cli_done(RKH_GET_PRIO(me));
+}
+
+/* ............................. Entry actions ............................. */
+static void
+client_pause(Client *const me)
+{
+    rkh_tmr_stop(&me->waitReqTmr);
+    bsp_cli_paused(RKH_GET_PRIO(me));
+}
+
+static void
+client_delay_req(Client *const me)
+{
+    RKH_TNT_T time;
+
+    time = CLI_REQ_TIME;
+    RKH_TMR_ONESHOT(&me->waitReqTmr, RKH_UPCAST(RKH_SMA_T, me), time);
+    bsp_cli_wait_req(RKH_GET_PRIO(me), time / RKH_CFG_FWK_TICK_RATE_HZ);
+}
+
+/* ............................. Exit actions .............................. */
+static void
+client_resume(Client *const me)
+{
+    bsp_cli_resumed(RKH_GET_PRIO(me));
+}
+
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+Prev: \ref shared_sm_cli \n \n
+
+\anchor cli_h
+\n <STRONG> \"client.h\" - Client active object specification </STRONG>
+\code
+/**
+ *  \file       client.h
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __CLIENT_H__
+#define __CLIENT_H__
+
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+#include "shared.h"
+
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* --------------------------------- Macros -------------------------------- */
+#define CLI(clino_)     RKH_ARRAY_SMA(clis, clino_)
+#define CLI0            CLI(0)
+#define CLI1            CLI(1)
+#define CLI2            CLI(2)
+#define CLI3            CLI(3)
+#define CLI_STK_SIZE    (512 / sizeof(RKH_THREAD_STK_TYPE))
+
+/* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+/* ........................ Declares active object ......................... */
+enum
+{
+    CLI_PRIO_0 = 1, CLI_PRIO_1, CLI_PRIO_2, CLI_PRIO_3,
+    MAX_CLI_PRIO,
+    NUM_CLIENTS = MAX_CLI_PRIO - 1,
+};
+
+RKH_ARRAY_SMA_DCLR(clis, NUM_CLIENTS);
+
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+Prev: \ref shared_sm_cli \n
+
+\subsection shared_sm_svr Server state-machine implementation
+
+The \ref svr_c "server.c" file implements the state machine of Server active 
+object, which illustrates some aspects of implementing state machines with 
+RKH framework. Please correlate this implementation with the state diagram 
+shown above. On the other hand, the header file \ref svr_h "svr.h" contains 
+the definitions of object structures related to the state machine. 
+See following sections:
+
+- \ref svr_c "Server active object implementation - \"server.c\""
+- \ref svr_h "Server active object specification - \"server.h\""
+ \n \n
+\anchor svr_c 
+<STRONG> \"server.c\" - Server active object implementation </STRONG> \n
+\code
+/**
+ *  \file       server.c
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+#include "bsp.h"
+#include "shared.h"
+#include "server.h"
+
+/* ----------------------------- Local macros ------------------------------ */
+#define MAX_SIZEOF_QREQ         (2 * NUM_CLIENTS)
+
+/* ......................... Declares active object ........................ */
+typedef struct Server Server;
+
+/* ................... Declares states and pseudostates .................... */
+RKH_DCLR_BASIC_STATE server_idle, server_busy, server_paused;
+
+/* ........................ Declares initial action ........................ */
+static void server_init(Server *const me, RKH_EVT_T *pe);
+
+/* ........................ Declares effect actions ........................ */
+static void server_start(Server *const me, RKH_EVT_T *pe);
+static void server_end(Server *const me, RKH_EVT_T *pe);
+static void server_defer(Server *const me, RKH_EVT_T *pe);
+static void server_terminate(Server *const me, RKH_EVT_T *pe);
+
+/* ......................... Declares entry actions ........................ */
+static void server_pause(Server *const me);
+
+/* ......................... Declares exit actions ......................... */
+static void server_resume(Server *const me);
+
+/* ............................ Declares guards ............................ */
+/* ........................ States and pseudostates ........................ */
+RKH_CREATE_BASIC_STATE(server_idle, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(server_idle)
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(REQ,     NULL,   server_start,    &server_busy),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(server_busy, NULL, NULL,  RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(server_busy)
+    RKH_TRINT(REQ,     NULL,   server_defer),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(DONE,    NULL,   server_end,      &server_idle),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_paused),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(server_paused,
+                       server_pause, server_resume, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(server_paused)
+    RKH_TRINT(REQ,     NULL,   server_defer),
+    RKH_TRINT(DONE,    NULL,   NULL),
+    RKH_TRINT(TERM,    NULL,   server_terminate),
+    RKH_TRREG(PAUSE,   NULL,   NULL,            &server_idle),
+RKH_END_TRANS_TABLE
+
+/* ............................. Active object ............................. */
+struct Server
+{
+    RKH_SMA_T sma;      /* base structure */
+    rui32_t ntot;       /* total number of attended requests */
+                        /* number of attended requests of every client */
+    rui32_t ncr[NUM_CLIENTS];
+};
+
+RKH_SMA_CREATE(Server, server, 0, HCAL, &server_idle, server_init, NULL);
+RKH_SMA_DEF_PTR(server);
+
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+static RKH_QUEUE_T queueReq;
+static RKH_EVT_T *queueReqSto[MAX_SIZEOF_QREQ];
+
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ............................ Initial action ............................. */
+static void
+server_init(Server *const me, RKH_EVT_T *pe)
+{
+    rInt cn;
+
+    RKH_TR_FWK_AO(server);
+    RKH_TR_FWK_STATE(server, &server_idle);
+    RKH_TR_FWK_STATE(server, &server_busy);
+    RKH_TR_FWK_STATE(server, &server_paused);
+    RKH_TR_FWK_SIG(REQ);
+    RKH_TR_FWK_SIG(START);
+    RKH_TR_FWK_SIG(DONE);
+    RKH_TR_FWK_SIG(TOUT_USING);
+    RKH_TR_FWK_SIG(TOUT_REQ);
+    RKH_TR_FWK_SIG(PAUSE);
+    RKH_TR_FWK_SIG(TERM);
+
+    rkh_queue_init(&queueReq, (const void **)queueReqSto, MAX_SIZEOF_QREQ, 
+                CSMA(0));
+
+    RKH_CAST(Server, me)->ntot = 0;
+    for (cn = 0; cn < NUM_CLIENTS; ++cn)
+        RKH_CAST(Server, me)->ncr[cn] = 0;
+}
+
+/* ............................ Effect actions ............................. */
+static void
+server_start(Server *const me, RKH_EVT_T *pe)
+{
+    StartEvt *e_start;
+
+    e_start = RKH_ALLOC_EVT(StartEvt, START, me);
+    e_start->clino = RKH_CAST(ReqEvt, pe)->clino;
+    RKH_SMA_POST_FIFO(RKH_GET_SMA(RKH_CAST(ReqEvt, pe)->clino),
+                      RKH_EVT_CAST(e_start), me);
+    bsp_svr_start(e_start->clino);
+    ++RKH_CAST(Server, me)->ntot;
+    ++RKH_CAST(Server, me)->ncr[CLI_ID(e_start->clino)];
+}
+
+static void
+server_end(Server *const me, RKH_EVT_T *pe)
+{
+    ReqEvt *e;
+
+    (void)pe;
+    if ((e = (ReqEvt *)rkh_sma_recall((RKH_SMA_T*)me, &queueReq))
+        != (ReqEvt *)0)
+    {
+        bsp_svr_recall(e->clino);
+    }
+
+    bsp_svr_end();
+}
+
+static void
+server_defer(Server *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    rkh_sma_defer(&queueReq, pe);
+}
+
+static void
+server_terminate(Server *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+
+    rkh_fwk_exit();
+}
+
+/* ............................. Entry actions ............................. */
+static void
+server_pause(Server *const me)
+{
+    bsp_svr_paused(me->ntot, me->ncr);
+}
+
+/* ............................. Exit actions .............................. */
+static void
+server_resume(Server *const me)
+{
+    ReqEvt *e;
+
+    if ((e = (ReqEvt *)rkh_sma_recall((RKH_SMA_T*)me, &queueReq))
+        != (ReqEvt *)0)
+    {
+        bsp_svr_recall(e->clino);
+    }
+
+    bsp_svr_resume();
+}
+
+/* ................................ Guards ................................. */
+/* ---------------------------- Global functions --------------------------- */
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+Prev: \ref shared_sm_svr \n
+
+\anchor svr_h 
+\n <STRONG> \"server.h\" - Server active object specification </STRONG>
+\code
+/**
+ *  \file       server.h
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __SERVER_H__
+#define __SERVER_H__
+
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+#include "client.h"
+
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* --------------------------------- Macros -------------------------------- */
+#define CLI_ID(cp_)     ((cp_) - RKH_GET_PRIO(CLI(0)))
+#define SVR_STK_SIZE    (512 / sizeof(RKH_THREAD_STK_TYPE))
+
+/* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+/* ........................ Declares active object ......................... */
+RKH_SMA_DCLR(server);
+
+/* ------------------------------- Data types ------------------------------ */
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+Prev: \ref shared_sm_svr \n
+
+<HR>
+\section shared_ao Signals, events, and active objects
+
+In RKH, signals are typically enumerated constants and events with 
+parameters are structures derived from the RKH_EVT_T base structure. The next 
+listing shows signals and events used in the Shared application 
+(\ref shared_h "shared.h"). \n \n
+
+\anchor shared_h 
+<STRONG> \"shared.h\" - Signals and events</STRONG>
+\code
+/**
+ *  \file       shared.h
+ *  \brief      Server and client event definitions.
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.12.15  LeFr  v2.4.05  ---
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __SHARED_H__
+#define __SHARED_H__
+
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+
+/* ---------------------- External C language linkage ---------------------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* --------------------------------- Macros -------------------------------- */
+/* -------------------------------- Constants ------------------------------ */
+/* ------------------------------- Data types ------------------------------ */
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
+{
+    REQ,        /* client request */
+    START,      /* use server */
+    DONE,       /* release server  */
+    TOUT_REQ,   /* timer expired */
+    TOUT_USING, /* timer expired */
+    PAUSE,      /* press the key 'p' on the keyboard */
+    TERM        /* press the key escape on the keyboard */
+};
+
+/* ................................. Events ................................ */
+typedef struct
+{
+    RKH_EVT_T e;    /** base structure */
+    rui8_t clino;   /** client number (ID) */
+} ReqEvt;
+
+typedef struct
+{
+    RKH_EVT_T e;    /** base structure */
+    rui8_t clino;   /** client number (ID) */
+} StartEvt;
+
+/* -------------------------- External variables --------------------------- */
+/* -------------------------- Function prototypes -------------------------- */
+/* -------------------- External C language linkage end -------------------- */
+#ifdef __cplusplus
+}
+#endif
+
+/* ------------------------------ Module end ------------------------------- */
+#endif
+
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+\n <HR>
+\section shared_init Initializing and starting the application
+
+Most of the system initialization and application startup can be written 
+in a platform-independent way. \n \n
+
+\anchor shared_main_c 
+<STRONG> \"main.c\" - main() function </STRONG>
+\code
+/**
+ *  \file       main.c
+ *  \brief      Example application
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.03.17  LeFr  v1.0.00  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+#include "bsp.h"
+#include "server.h"
+#include "client.h"
+
+/* ----------------------------- Local macros ------------------------------ */
+#define QSTO_SIZE           4
+
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+#if RKH_CFGPORT_SMA_QSTO_EN == RKH_ENABLED
+/* Defines the event queue storage for active object 'server' */
+static RKH_EVT_T *svr_qsto[QSTO_SIZE];
+
+/* Defines the event queue storage for active object 'client' */
+static RKH_EVT_T *cli_qsto[NUM_CLIENTS][QSTO_SIZE];
+
+#else
+    #define svr_qsto
+    #define cli_qsto
+#endif
+
+#if RKH_CFGPORT_SMA_STK_EN == RKH_ENABLED
+/* Defines the task's stack for active object 'server' */
+static RKH_THREAD_STK_TYPE svr_stk[SVR_STK_SIZE];
+
+/* Defines the task's stack for active object 'client' */
+static RKH_THREAD_STK_TYPE cli_stk[NUM_CLIENTS][CLI_STK_SIZE];
+
+#else
+    #define svr_stk
+    #define cli_stk
+#endif
+
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
+int
+main(int argc, char *argv[])
+{
+    rInt cn;
+
+    bsp_init(argc, argv);
+
+    RKH_SMA_ACTIVATE(server, svr_qsto, QSTO_SIZE, svr_stk, SVR_STK_SIZE);
+    for (cn = 0; cn < NUM_CLIENTS; ++cn)
+    {
+        RKH_SMA_ACTIVATE(CLI(cn), cli_qsto[cn], QSTO_SIZE, cli_stk[cn],
+                         CLI_STK_SIZE);
+    }
+
+    rkh_fwk_enter();
+    RKH_TRC_CLOSE();
+    return 0;
+}
+
+/* ------------------------------ End of file ------------------------------ */
+\endcode
+
+\n <HR>
+\section shared_run Running on various platforms
+
+As said before, the only platform-dependent file is the board support package 
+(BSP) definition. Each of supported platforms defines its own \c bsp.c and 
+\c bsp.h files, which are contained in the proper directory, for example, the 
+BSP for the Shared application on Windows 32 (Visual Studio 2008) with a 
+simple cooperative scheduler is located in 
+\c \<rkh\>/demo/cross/shared/build/80x86/win32_st/vc/ 
+
+<TABLE	align="center" valign="middle" width=70% cellSpacing=2 
+		cellPadding=4 border=0>
+
+	<TR bgColor="#c0c0c0">
+		<TH><B> CPU Architecture </B></TH>
+		<TH><B> Manufacturer </B></TH>
+		<TH><B> MCU </B></TH>
+		<TH><B> Evaluation Board </B></TH> 
+		<TH><B> Toolchain </B></TH> 
+		<TH><B> Comments </B></TH> 
+		<TH><B> Notes </B></TH> 
+	</TR>
+
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD> S08 </TD>
+		<TD> Freescale </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/
+		site/prod_summary.jsp?code=S08QE">S08QE128</A> </TD>
+		<TD> <A HREF="http://www.freescale.com/webapp/sps/site/
+		prod_summary.jsp?code=DEMOQE128">DEMOQE128</A> </TD>
+		<TD> Codewarrior v10.x </TD>
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_demoqe128_s08 "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD rowspan="4"> ARM-Cortex </TD>
+		<TD rowspan="4"> Freescale </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k64-120-mhz-256kb-sram-microcontrollers-mcus-based-on-arm-cortex-m4-core:K64_120">Kinetis K64</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</A> </TD>
+		<TD rowspan="2"> KDS </TD>
+		<TD> uC/OS-III on KSDK </TD>
+		<TD> \subpage cross_frdmk64f_ucosiii "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Native cooperative scheduler </TD>
+		<TD> \subpage cross_frdmk64f_rkhs "readme" </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/kinetis-k60-100-mhz-mixed-signal-integration-microcontrollers-mcus-based-on-arm-cortex-m4-core:K60_100">Kinetis K60</A> </TD>
+		<TD rowspan="2"> <A HREF="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/kinetis-cortex-m-mcus/k-series-performance-m4/k6x-ethernet/iar-kickstart-kinetis-k60-tower-system-kit:TWR-K60N512-IAR">TWR-K60N512</A> </TD>
+		<TD rowspan="2"> IAR v7.2 </TD>
+		<TD> uC/OS-III </TD>
+		<TD> \a Deprecated </TD>
+	</TR>
+
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD> Native cooperative scheduler </TD>
+		<TD> \a Deprecated </TD>
+	</TR>
+
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD rowspan="2"> 80x86 </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> <A HREF="http://www.microsoft.com/en-us/download/
+		details.aspx?id=5555">Visual Studio C++ 2010 </A> </TD>
+		<TD> Win32 cooperative scheduler simulation </TD>
+		<TD>  </TD>
+	</TR>
+
+	<TR bgColor="#c8cedc" align="center" valign="middle">
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD> --- </TD>
+		<TD>  <A HREF="http://www.microsoft.com/en-us/download/
+		details.aspx?id=5555">Visual Studio C++ 2010 </A> </TD>
+		<TD> Win32 multithread </TD>
+		<TD>  </TD>
+	</TR>
+
+</TABLE>
+
+Prev: \ref cross "Cross-platform examples"\n
+*/

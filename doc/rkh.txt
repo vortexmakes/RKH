@@ -1,0 +1,195 @@
+#
+#	RKH doc file.
+#
+#
+
+/**
+
+\defgroup config Configuration
+    \brief RKH user configurations
+    \details See the \ref cfg section for more information. 
+\defgroup trc Trace
+    \brief Sophisticated tracing mechanism in run-time
+    \details See the \ref dbg section for more information. 
+\defgroup sch Native scheduler
+    \brief Native, cooperative, simple and non-preemtive scheduler
+    \details See the \ref running section for more information. 
+\defgroup test Test
+    \brief Unit tests
+\defgroup api API Reference Manual
+    \brief Provides a reference to RKH services
+
+\anchor main_page
+\mainpage RKH Reference Manual
+\image html rkh_super_bunner.jpg
+
+
+\n
+<EM> "A behavioral description of a system specifies dynamic aspects of the
+entire system or of a particular function, including control and timming.
+It specifies the states and modes that the system might reside in and
+the transitions between them. It also describes what causes activities
+to start and stop, and the way the system reacts to various events.
+A natural technique for describing the dynamic of a system is to use
+a finite state machine. The described system of function is always
+in one of a finite set of states. When an event occurrs, the system
+reacts by performing actions. The events causing the reaction are called
+triggers."
+
+David Harel</EM>
+
+\tableofcontents
+
+\image html rkh_framework_1.png
+\n This manual includes:
+
+- \ref Overview
+- \ref Purpose
+- \ref Usage
+- \ref cross
+- \ref qref
+- \ref Installation
+- \ref Porting
+- \ref cfg
+- \ref dbg
+- \ref utest
+- \ref Download
+- \ref changelog
+- \ref deprecated
+- \ref Others
+- \ref Resources
+- \ref Licensing
+- \ref contact
+- \ref ack
+
+<HR>
+\section Overview Overview
+
+RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
+and open-source development tool for implementing hierarchical 
+state machines based on modern state machine concepts. This modern 
+techniques are used to give an abstract description of the dynamic 
+behavior of a system in a substantial manner. RKH is built based on 
+platform-independent modules which is shown in the following figure.
+
+\image html rkh_framework_2.png
+
+<STRONG> The key features of the RKH framework: </STRONG>
+
+- State machines representation is based on state tables.
+- Representing a state machine with RKH is intuitive, and easy.
+- Reflects the state diagram without obfuscation.
+- The RKH application are highly maintainable.
+- Easy to integrate with any event queuing and dispatching mechanism.
+- Useful in embedded systems.
+- The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
+- Flexible and \ref cfg "user-configurable code generation".
+- Very small footprint.
+- Include a \link rkhfwk_sched.h dispatching event mechanism \endlink based on active object's priority.
+- Include a \link rkhqueue.h queue module \endlink
+- Include a \link rkhtmr.h software timer module \endlink.
+- Include a \link rkhmempool.h fixed-size memory block module \endlink.
+- Include a native \ref dbg.
+- Support hierarchically nested states, and flat state machine.
+- Support multiple state machines.
+- Support conditional, choice, and history pseudostates.
+- Support compound transitions with guards.
+- Support \link RKH_SSBM_T submachine state\endlink.
+- Support local transitions.
+- Support the entry and exit actions.
+- Implement the traditional transition sequence.
+- Include mechanism for \link rkh_sma_defer() deferring events\endlink.
+- Support \link RKH_EVT_T event dispatching with parameters\endlink.
+- Include \link RKH_EVT_T dynamic events\endlink.
+- Support a easy way to use \link RKH_EVT_T events with arguments\endlink.
+- Support systems-friendly \link RKH_ASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
+
+<STRONG> Structure </STRONG>
+
+As shown in the diagram below, the RKH framework has a layered structure.
+
+\image html rkh_structure.png
+
+<HR>
+\section Purpose Purpose and inspiration
+
+For many years, I had been used the traditional state machine concepts
+based on state table strategy for modeling the dynamic behavior of several 
+reactive-systems, in many industries. Over the years, this implementation
+was expanding its abilities to support system requirements increasingly 
+complex, achieving hierarchically nested states, pseudostates, compound
+transitions, and more, proposed by Harel Statecharts.
+
+The RKH not implements neither entire UML specs. nor entire Statechart specs.
+Instead, the RKH intention is to support just enough basic concepts of that
+powerful tools to facilitate the reactive-system modeling holding a solid,
+and efficient implementation. Broadly speaking, the RKH implementation has
+been designed from the ground up to be used in 8-bits platforms but can be
+easily adapted to 16 or 32-bits platforms.
+
+
+<HR>
+\section Download Download
+
+RKH download: http://sourceforge.net/projects/rkh-reactivesys/ 
+
+<HR>
+\section Others Other implementations
+
+Open-source frameworks that support Statecharts.
+
+- Quantum Leap	- http://www.state-machine.com/
+
+<HR>
+\section Resources Resources
+
+- M. Samek - "Practical UML Statecharts in C/C++, Second Edition: Event-Driven Programming for Embedded Systems", http://www.state-machine.com/psicc2/
+- M. Samek and P. Montgomery - "State-Oriented Programming", http://www.embedded.com/2000/0008/0008feat1.htm
+- D. Harel - "Statecharts: A Visual Formalism for Complex Systems", Sci. Comput. Programming 8 (1987), 231-274.
+- D. Harel and A. Pnueli - "On the Development of Reactive Systems", in Logics and Models of Concurrent Systems (K. R. Apt, ed.), NATO ASI Series, Vol. F-13, Springer-Verlag, New York, 1985, pp. 477-498.
+- D. Harel - "On Visual Formalisms", Comm. Assoc. Comput. Mach. 31:5 (1988), 514-530.
+- D. Harel and A. Naamad - "The STATEMATE Semantics of Statecharts", ACM Trans. on Software Engineering Method. 5:4 (October 1996), 293-333. 
+- D. Harel and H. Kugler - "The Rhapsody Semantics of Statecharts", Lecture Notes in Computer Science, Vol. 3147, Springer-Verlag, 2004, pp. 325-354
+
+<HR>
+\section Licensing Licensing
+
+Copyright (C) 2010 Leandro Francucci. All rights reserved.
+
+RKH is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+RKH is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with RKH package. If not, see <http://www.gnu.org/licenses/>.
+
+<em>(*) Observe that, the GPLv3 can be used for research & development and 
+educational purposes (academic purposes).</em> \n
+<em>(**) When the source code of your application should not be published 
+under the GNU GPLv3 license (closed source code), please, contact contact me. 
+See \ref contact section.</em>
+
+<HR>
+\section contact Contact information
+
+RKH site: http://vortexmakes.com/que-es/
+RKH GitHub: https://github.com/vortexmakes/RKH
+RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+\n e-mail: lf@vortexmakes.com
+
+<HR>
+\section ack Acknowlegments
+
+I would like to thank to Eduardo Martinez for introducing me to the reactive
+systems problems and Dario Balina for they suggestions, they time, and 
+constructive criticism during lengthy period in which the RKH project 
+was being developed.
+
+*/
+

@@ -1,0 +1,150 @@
+/**
+\page trazer_cfg_ trazer.cfg
+
+\code
+#
+# Trazer Config File
+#	It must match with definitions in
+#	application dependant rkhcfg.h
+#
+
+# 
+# - TRAZER_EN_SENDER:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_SENDER=0
+
+# 
+# - TRAZER_RUNTIME_FILTER:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_RUNTIME_FILTER=1
+
+# 
+# - TRAZER_EN_USER_TRACE:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_USER_TRACE=1
+
+# 
+# - TRAZER_ALL:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_ALL=1
+
+# 
+# - TRAZER_EN_MP:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_MP=0
+
+# 
+# - TRAZER_EN_QUE:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_QUE=0
+
+# 
+# - TRAZER_EN_SMA:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_SMA=0
+
+# 
+# - TRAZER_EN_TIM:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_TIM=0
+
+# 
+# - TRAZER_EN_SM:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_SM=0
+
+# 
+# - TRAZER_EN_FWK:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_FWK=1
+
+# 
+# - TRAZER_EN_ASSERT:
+#		Enable(1) / Disable(0) 
+#
+TRAZER_EN_ASSERT=1
+
+# 
+# - TRAZER_SIZEOF_SIG:
+#		Specify the size of the event signal.
+#		Valid values: 1, 2, 4. Default is 1.
+#
+TRAZER_SIZEOF_SIG=1
+
+# 
+# - TRAZER_SIZEOF_TSTAMP:
+#		Specify the number of bytes (size) used by 
+#		the trace record timestamp.
+#		Valid values: 1, 2, 4. Default is 2.
+#
+TRAZER_SIZEOF_TSTAMP=4
+
+#
+# - TRAZER_SIZEOF_POINTER:
+#		Specify the size of void pointer. 
+#		Valid values: 2, 4. Default 4.
+#
+TRAZER_SIZEOF_POINTER=4
+
+#
+# - TRAZER_SIZEOF_NTIMER:
+#		Dynamic range of time delays measured in ticks
+#		and expresed in bytes.
+#		Valid values: 1, 2, 4. Default is 1.
+#
+TRAZER_SIZEOF_NTIMER=2
+
+#
+# - TRAZER_SIZEOF_NBLOCK:
+#		Size in bytes of number of memory block size. 
+#		Valid values: 1, 2, 4. Default is 1.
+#
+TRAZER_SIZEOF_NBLOCK=1
+
+#
+# - TRAZER_SIZEOF_NELEM:
+#		Maximum number of elements in bytes that any 
+#		queue can contain.
+#		Valid values: 1, 2, 4. Default is 1.
+#
+TRAZER_SIZEOF_NELEM=1
+
+#
+# - TRAZER_SIZEOF_ESIZE:
+#		Data type of event size, in bytes.
+#		Valid values: 1, 2, 4. Default is 1.
+#
+TRAZER_SIZEOF_ESIZE=2
+
+#
+# - TRAZER_EN_NSEQ:
+#		Enable(1) / Disable(0) 
+#		Number of Sequence use in trace frame. Default is 1.
+#
+TRAZER_EN_NSEQ=1
+
+#
+# - TRAZER_EN_CHK:
+#		Enable(1) / Disable(0) 
+#		Checksum use in trace stream. Default is 1.
+#
+TRAZER_EN_CHK=1
+
+#
+# - TRAZER_EN_TSTAMP:
+#		Enable(1) / Disable(0) 
+#		Time stamp use in trace stream. Default is 1.
+#
+TRAZER_EN_TSTAMP=1
+\endcode
+*/

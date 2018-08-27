@@ -1,0 +1,1376 @@
+/**
+\page preparing Preparing the application files
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref basics "Basics"\n
+Next: \ref identify_events "Identifying, generating and sending events"\n\n
+
+The sample code for the example presented above ported to x86 is located 
+in the directory \c demo/80x86/ahsm/. It contains 
+the Visual Studio project files to build the application. Also, emulates 
+a ISR and a simple event-loop like a cooperative scheduler 
+using the native priority scheme among other RKH services. 
+See \ref Installation section about RKH files. The application files 
+are listed below: 
+
+- \b "my.h": 		contains the declaration of active object structure, 
+                    signals, and other facilities shared among the components 
+                    of the application. 
+					See the \subpage my_h file.
+
+- \b "my.c": 		this module implements the \c my state machine, which 
+					illustrates all aspects of implementing state machines 
+					with RKH framework. Please correlate this implementation 
+					with the \c my state diagram in \ref fig1 "Figure 1".
+					Note that the \b rkhcfg.h file defines the function
+					prototype of actions. See \ref cfg section about of 
+					available options.
+					See the \subpage my_c file.
+
+- \b "main.c": 		contains the \c main() function along with 
+					an example for using the RKH trace facility.
+					See the \subpage main_c file.
+
+- \b "rkhcfg.h":	adapts and configures RKH. See \ref cfg section. 
+					In the \c demo/ directory there are other \b rkhcfg.h files
+					already in existence and it's suggested that these 
+					are used as a reference.
+
+- \b "bsp.h":		contains the interface to the board support package and 
+					is located in the application directory.
+					See the \subpage bsp_h file.
+
+- \b "bsp.c":		contains the implementation of the board-specific 
+					functions. 
+					See the \subpage bsp_c file.
+
+\n
+Prev: \ref basics "Basics"\n
+Next: \ref identify_events "Identifying, generating and sending events"\n\n
+*/
+
+
+/**
+\page identify_events Identifying, generating and sending events
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref preparing "Preparing the application files"\n
+Next: \ref identify "Identifying and classifying states and pseudostates"\n
+
+The events in the \c my state machine have been identified in the state 
+diagram in \ref fig1 "Figure 1". Note that events consist really of two 
+parts. The part of the event called the signal conveys the type of the 
+occurrence (what happened). For example, the ONE signal conveys the 
+arrival of a press key '1'. An event can also contain additional 
+quantitative information about the occurrence in form of event parameters. 
+In \c my state machine, all signals are accompanied by the parameter (ts) 
+that contain the quantitative information as to timestamp. In RKH, events 
+are represented as instances of the RKH_EVT_T structure provided by the 
+framework. Specifically, the RKH_EVT_T structure contains the member \c e, 
+to represent the signal of that event. Event parameters are added in the 
+process of \link RKH_EVT_T inheritance \endlink.
+
+- \ref ide_e
+- \ref gen_e
+
+<HR>
+\section ide_e Identifying events
+
+Because events are explicitly shared among most of the application 
+components, it is convenient to declare them in the separate header file 
+\subpage my_h, which is shown below.
+
+\code
+/**
+ *  \file       my.h
+ *  \brief      Example application.
+ */
+
+/* -------------------------- Development history -------------------------- */
+/*
+ *  2016.12.06  LeFr  v2.4.05  Initial version
+ */
+
+/* -------------------------------- Authors -------------------------------- */
+/*
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ */
+
+/* --------------------------------- Notes --------------------------------- */
+/* --------------------------------- Module -------------------------------- */
+#ifndef __MY_H__
+#define __MY_H__
+
+/* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+...
+
+/* ................................ Signals ................................ */
+typedef enum Signals Signals;
+enum Signals
+{
+    ZERO,       /* press the key '0' on the keyboard */
+    ONE,        /* press the key '1' on the keyboard */
+    TWO,        /* press the key '2' on the keyboard */
+    THREE,      /* press the key '3' on the keyboard */
+    FOUR,       /* press the key '4' on the keyboard */
+    FIVE,       /* press the key '5' on the keyboard */
+    SIX,        /* press the key '6' on the keyboard */
+    TERM        /* press the key escape on the keyboard */
+};
+
+/* ................................. Events ................................ */
+typedef struct
+{
+    RKH_EVT_T event;
+    rui16_t ts;
+} MyEvt;
+
+...
+\endcode
+
+<HR>
+\section gen_e Generating and posting events
+
+RKH supports the simple mechanism of direct event posting supported through 
+the functions rkh_sma_post_fifo() and rkh_sma_post_lifo(), where the producer 
+of an event directly posts the event to the event queue of the consumer active 
+object (SMA).
+In RKH, any part of the system can produce events, not necessarily only the 
+SMAs. For example, interrupt service routines (ISRs) or device drivers can 
+also produce events. On the other hand, only SMAs can consume events, 
+because only SMAs have event queues. The following listing provides examples 
+of posting dynamic and static events from the interrupt service routines 
+(ISRs) of the \c ahsm demo application version for the win32 single thread, 
+\subpage bsp_c file. 
+
+\code
+
+	#define ESC				0x1B
+	#define kbmap(c)		((c) - '0')
+
+(1)	static RKH_ROM_STATIC_EVENT(eterm, TERM);
+
+	...
+
+	static DWORD WINAPI 
+(2)	isr_kbd_thread(LPVOID par)	/* Win32 thread to emulate keyboard ISR */
+	{
+		int c;
+		MYEVT_T *mye;
+
+		(void)par;
+		while (running) 
+		{
+			c = _getch();
+			
+			if (c == ESC)
+            {
+(3)				RKH_SMA_POST_FIFO(my, &eterm, 0);
+            }
+			else
+			{
+(4)				mye = RKH_ALLOC_EVT(MYEVT_T, kbmap(c), 0);
+(5)				mye->ts = (rui16_t)rand();
+(6)				RKH_SMA_POST_FIFO(my, RKH_EVT_CAST(mye), 0);
+			}
+		}
+		return 0;
+	}
+\endcode
+
+
+\li (1) The TERM event never changes, so it can be statically allocated just 
+		once. The RKH_ROM_STATIC_EVENT() macro declares and initializes the 
+		event structure \e eterm with \a TERM signal and establishes it as 
+		one static event. The created event object is explicitly placed in ROM.
+\li (2)	Win32 thread to emulate keyboard ISR.
+\li (3) The static event is posted directly to the \c my SMA.
+\li (4) The macro RKH_ALLOC_EVT() dinamically allocates an instance of 
+		MYEVT_T event from an event pool. The macro also performs the 
+		association between the signal and the allocated event.
+		The signals are generated from the key strokes by means of 
+		\c kbmap() macro.
+\li (5) The \c ts parameter of the event is assigned.
+\li (6) The dynamic event is posted directly to the \c my SMA..
+
+\n
+Prev: \ref preparing "Preparing the application files"\n
+Next: \ref identify "Identifying and classifying states and pseudostates"\n
+*/
+
+
+/**
+\page identify Identifying and classifying states and pseudostates
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref identify_events "Identifying, generating and sending events"\n
+Next: \ref representing "Getting started with RKH"\n\n
+
+The \ref fig2 "Figure 2" shows the states and pseudostates from the diagram
+presented above, sorted by state nesting level.
+
+\n
+\anchor fig2
+\image html sttbl.jpg "Figure 2 - State nesting"
+
+\n
+Prev: \ref identify_events "Identifying, generating and sending events"\n
+Next: \ref representing "Getting started with RKH"\n\n
+*/
+
+
+/**
+\page representing Getting started with RKH
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref identify "Identifying and classifying states and pseudostates"\n
+Next: \ref running "Running"\n\n
+
+Now, this section explains how to implement the \c my state machine 
+using the RKH framework, which is shown in \ref fig1 "Figure 1".
+
+- \subpage rep_sm
+- \subpage rep_cs
+- \subpage rep_bs
+- \subpage rep_cjh
+- \subpage rep_def
+- \subpage rep_act
+- \subpage rep_inc
+
+\n
+Prev: \ref identify "Identifying and classifying states and pseudostates"\n
+Next: \ref running "Running"\n\n
+
+*/
+
+/**
+\page basics Basics
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref Usage "Representing a state machine"\n
+Next: \ref preparing "Preparing the application files"\n\n
+
+As mentioned previously, RKH is a generic, flexible, modular, highly portable, 
+ANSI-C compliant, and open-source development tool for implementing 
+hierarchical state machines based on modern state machine concepts. This 
+modern techniques are used to give an abstract description of the dynamic 
+behavior of a system in a substantial manner.
+
+<STRONG> The key features of the RKH framework: </STRONG>
+
+- State machines representation is based on state tables.
+- Representing a state machine with RKH is intuitive, and easy.
+- Reflects the state diagram without obfuscation.
+- The RKH application are highly maintainable.
+- Easy to integrate with any event queuing and dispatching mechanism.
+- Useful in embedded systems.
+- The most of the RKH implementation is \ref Porting "independent of any particular CPU, operating system, or compiler".
+- Flexible and \ref cfg "user-configurable code generation".
+- Very small footprint.
+- Include a \link rkhfwk_sched.h dispatching event mechanism \endlink based on active object's priority.
+- Include a \link rkhqueue.h queue module \endlink
+- Include a \link rkhtmr.h software timer module \endlink.
+- Include a \link rkhmempool.h fixed-size memory block module \endlink.
+- Include a native \ref dbg.
+- Support hierarchically nested states, and flat state machine.
+- Support multiple state machines.
+- Support conditional, choice, and history pseudostates.
+- Support compound transitions with guards.
+- Support local transitions.
+- Support the entry and exit actions.
+- Implement the traditional transition sequence.
+- Include mechanism for \link rkh_sma_defer() deferring events\endlink.
+- Support \link RKH_EVT_T event dispatching with parameters\endlink.
+- Include \link RKH_EVT_T dynamic events\endlink.
+- Support a easy way to use \link RKH_EVT_T events with arguments\endlink.
+- Support systems-friendly \link RKH_ASSERT() assertion\endlink macros like assert, allege, error, require, and ensure.
+
+
+The RKH not implements neither entire UML specs. nor entire Statechart specs. 
+Instead, the RKH intention is to support just enough basic concepts of that 
+powerful tools to facilitate the reactive-system modeling holding a solid, 
+and efficient implementation. Broadly speaking, the RKH implementation has 
+been designed from the ground up to be used in 8-bits platforms but can be 
+easily adapted to 16 or 32-bits platforms.
+
+Prev: \ref Usage "Representing a state machine"\n
+Next: \ref preparing "Preparing the application files"
+*/
+
+
+/**
+\page rep_sm 1. Instantiating the state machine (and defining the top state)
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref representing "Getting started with RKH"\n
+Next: \ref rep_cs "Instantiating the composite states"\n\n
+
+A state machine application (SMA) a.k.a active object, is defined with the 
+RKH_SMA_CREATE() macro and declared with the RKH_SMA_DCLR() macro. Frequently, 
+each state machine application is encapsulated inside a dedicated source 
+file (.c file), from which the RKH_SMA_CREATE() macro is used, thus the 
+structure definition is in fact entirely encapsulated in its module and is 
+inaccessible to the rest of the application. However, as a general rule, 
+the SMA must be declared inside a header file (.h file) by means of 
+RKH_SMA_DCLR() macro. This macro declares a opaque pointer to SMA to be 
+used as a global object. This global pointer represent the state machine 
+in the application. The state machine pointers are "opaque" because they 
+cannot access the whole state machine structure, but only the part inherited 
+from the RKH_SMA_T structure. The power of an "opaque" pointer is that it 
+allows to completely hide the definition of the state machine structure and 
+make it inaccessible to the rest of the application. 
+
+In the UML specification, every state machine has a top state 
+(the abstract root of every state machine hierarchy), which contains 
+all the other elements of the entire state machine. RKH provides the 
+top state using the macro RKH_SMA_CREATE().
+requently, RKH_SMA_CREATE() is used within state-machine's module 
+(.c file), thus the structure definition is in fact entirely encapsulated 
+in its module and is inaccessible to the rest of the application. 
+However, use the RKH_SMA_DCLR() macro to declare a "opaque" pointer 
+to that state machine application structure to be used in the rest of the 
+application but hiding the proper definition.
+RKH_SMA_T is not intended to be instantiated directly, but rather
+serves as the base structure for derivation of state machines in the
+application code.
+
+The \ref its "Figure 2" highlights the top state and its relevant aspects. 
+Also, shows its implementation using the RKH framework.
+
+\n
+\anchor its
+\image html its.png "Figure 2 - Top state of state machine \c my"
+\n
+
+<b>Defining the state machine</b>
+\n
+\code
+	/*	In my.c: active object implementation file */
+(1) RKH_SMA_CREATE( 
+(2)					MySm, 
+(4)					my, 
+(5)					0, 
+(6)					HCAL, 
+(7)					&S1, 
+(8)					my_init, 
+(9)					NULL);
+\endcode
+
+<b>Declaring the state machine</b>
+\n
+\code
+	/* In my.c: active object implementation file */
+    typedef struct MySm MySm;
+    ...
+
+    struct MySm
+    {
+        RKH_SMA_T sma;  /* base structure */
+        rui8_t x;       /* private member */
+        rui8_t y;       /* private member */
+(10)};			        /* SMA derived from RKH_SMA_T structure */
+\endcode
+
+\n
+\code
+	/* In my.h: active object implementation file */
+(11)RKH_SMA_DCLR(my);
+\endcode
+
+Explanation
+
+\li (1)	Declares and allocates a SMA (a.k.a active object) derived from 
+		RKH_SMA_T.
+\li (2)	As said before, \c MySm represents the SMA object struture.
+\li (4)	\c my is the name of SMA. Also, it represents the top state of state 
+		diagram. 
+\li (5)	\c 0 is the SMA priority. A unique priority number must be assigned 
+		to each SMA from 0 to RKH_LOWEST_PRIO. The lower the number, the 
+		higher the priority. 
+\li (6)	the \c my state machine is defined as a hierarchical state machine. 
+		The available property options are enumerated in RKH_HPPTY_T 
+		enumeration in the \b rkh.h file.
+\li (7)	\c S1 is the initial state.
+\li (8)	the \c my_init() function defines the topmost initial transition in 
+		the \c my state machine. 
+		The function prototype is defined as RKH_TRN_ACT_T. This argument is 
+		(optional), thus it could be declared as NULL.
+\li (9) not used.
+\li (10)The \c MySm defines the SMA object structure \c my.
+		On the other hand, almost every SMA must also store other 
+		"extended-state" information. You supply this additional information 
+		by means of data members enlisted after the base structure member
+		\c sm. Please note that the RKH_SMA_T member \c sm is defined as the 
+		\b FIRST member of the derived struct.
+		RKH_SMA_T is not intended to be instantiated directly, but rather 
+		serves as the base structure for derivation of state machines in the 
+		application code.
+\li (11)Declares a opaque pointer to \c my SMA to be used as a global object.
+
+\n
+Prev: \ref representing "Getting started with RKH"\n
+Next: \ref rep_cs "Instantiating the composite states"\n\n
+*/
+
+
+/**
+\page rep_cs 2. Instantiating the composite states
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref rep_sm "Instantiating the state machine"\n
+Next: \ref rep_bs "Declaring the basic states"\n\n
+
+A superstate or composite state is defined with the RKH_CREATE_COMP_STATE()
+macro and declared with the RKH_DCLR_COMP_STATE() macro. Frequently, each 
+state machine and its states (superstates and substates) are encapsulated 
+inside a dedicated source file (.c file), from which the 
+RKH_CREATE_COMP_STATE() macro is used.
+
+The \ref is1 "Figure 3" highlights the state "S1" and its relevant aspects. 
+Also, shows its implementation using the RKH framework.
+
+\n
+\anchor is1
+\image html is1.png "Figure 3 - composite state \"S1\""
+
+\n
+<b>Defining the composite state "S1"</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_COMP_STATE( 	S1, 
+(4)							set_y_0, 
+(5)							dummy_exit, 
+(6)							RKH_ROOT, 
+(7)							&S11, 
+(8)							&DH);
+\endcode
+
+<b>Declaring the composite state "S1"</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_COMP_STATE(S1);
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_COMP_STATE() macro is used.
+\li (2)	\c S1 is the state name. Represents a composite state structure.
+\li (4)	\c set_y_0() defines the entry action to be executed unconditionally 
+		upon the entry to the \c S1 state. This argument is optional, 
+		thus it could be declared as NULL. The RKH_ENT_ACT_T defines the 
+        function prototype.
+\li (5)	\c dummy_exit() defines the exit action, which is executed upon exit 
+		from the \c S1 state. This argument is optional, thus it could be 
+		declared as NULL. The RKH_EXT_ACT_T defines the function prototype.
+\li (6)	\c RKH_ROOT is the parent state of \c S1. If a state has no 
+		explicit superstate means that it is implicitly nested in 
+		the "top" state, and the parent state is defined by means of RKH_ROOT
+		macro.  The "top" state is a UML concept that denotes 
+		the ultimate root of the state hierarchy in a hierarchical state 
+		machine.
+\li (7)	\c S11 is the default state of \c S1 state machine. At each level 
+		of nesting, a superstate can have a private initial transition that
+		designates the active substate after the superstate is entered 
+		directly. Here the initial transition of state \c S1 designates the 
+		state \c S11 as the initial active substate.
+\li (8)	\c DH is the deep history pseudostate. This argument is optional, thus 
+		it could be declared as NULL. See RKH_CREATE_SHALLOW_HISTORY_STATE() 
+		macro and RKH_CREATE_DEEP_HISTORY_STATE().
+
+In RKH every state is associated with a transition table, which is composed 
+of a well-defined set of transitions.
+The general syntax of an expression labelling a transition in a statechart is
+\e "i[c]/a" where \e i is the input that triggers the transition, \e c is a 
+condition that guards the transition from being taken unless it is true when 
+\e i occurs, and \e a is an action that is carried out if and when the 
+transition is taken. All of these parts are optional. 
+Thus, in RKH each row in a table represents a transition, which is 
+well-defined by an \e event, a \e guard, an \e action, and \e target state 
+(or pseudostate). The \ref is1 "Figure 3" shows the transition table of "S1".
+
+The following figures, \ref is3 "Figure 5", and 
+\ref is11 "Figure 6" highlights the composite states "S3", and "S11". 
+Also, shows its implementation using the RKH framework.
+
+\n
+\anchor is3
+\image html is3.png "Figure 5 - composite state \"S3\""
+
+\n
+\anchor is11
+\image html is11.png "Figure 6 - composite state \"S11\""
+
+\n
+
+\n
+Prev: \ref rep_sm "Instantiating the state machine"\n
+Next: \ref rep_bs "Declaring the basic states"\n\n
+
+*/
+
+
+/**
+\page rep_bs 3. Declaring the basic states
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref rep_cs "Instantiating the composite states"\n
+Next: \ref rep_cjh "Declaring the pseudostates"\n\n
+
+A basic state (also called substate) is defined with the 
+RKH_CREATE_BASIC_STATE() macro and declared with the RKH_DCLR_BASIC_STATE() 
+macro. Frequently, each state machine and its states (superstates and 
+substates) are encapsulated inside a dedicated source file (.c file), from 
+which the RKH_CREATE_BASIC_STATE() macro is used.
+As will demostrates the use of RKH_CREATE_BASIC_STATE() macro and its
+arguments is very similar to RKH_CREATE_COMP_STATE() macro.
+
+The \ref is2 "Figure 7" highlights the basic states "S2". Also, shows its 
+implementation using the RKH framework.
+
+\n
+\anchor is2
+\image html is2.png "Figure 7 - basic state \"S2\""
+
+<b>Defining the basic state "S2"</b>
+\n
+\code
+(1)	//	my.c: state-machine's module
+
+(2)	RKH_CREATE_BASIC_STATE( S2, 
+(4)							NULL, 
+(5)							NULL, 
+(6)							RKH_ROOT, 
+(7)							NULL);
+\endcode
+
+<b>Declaring the basic state "S2"</b>
+\n
+\code
+//	my.h: state-machine's header file
+
+RKH_DCLR_BASIC_STATE(S2);
+\endcode
+
+Explanation
+
+\li (1)	Frequently, each state machine and its states are encapsulated 
+		inside a dedicated source file (.c file), from which the 
+		RKH_CREATE_BASIC_STATE() macro is used.
+\li (2)	\c S2 is the state name. Represents a substate structure.
+\li (4)	the entry action is unused, therefore it is declared as NULL.
+\li (5)	the exit action is unused, therefore it is declared as NULL.
+\li (6)	\c RKH_ROOT is the parent state of \c S2. If a state has no 
+		explicit superstate means that it is implicitly nested in 
+		the "top" state, and the parent state is defined by means of RKH_ROOT
+		macro.  The "top" state is a UML concept that denotes 
+		the ultimate root of the state hierarchy in a hierarchical state 
+		machine.
+\li (7)	\c the event preprocessor action is unused, therefore it is 
+		declared as NULL. 
+		Before sending the arrived event to state machine, it can be 
+		previously processed using the event preprocessor function. An 
+		action function takes the state 
+		machine pointer and the event pointer as arguments. The first 
+		parameter is optional in compile-time according to 
+		RKH_CFG_SMA_PPRO_ARG_SMA_EN macro.
+		Example:
+\code
+static RKH_SIG_T
+in_keyb(RKH_EVT_T *pe)
+{
+	if (pe->e >= 0 && pe->e <= 9)
+    {
+		return DECIMAL;
+    }
+	if (pe->e == '.')
+    {
+		return POINT;
+    }
+	else
+    {
+		return pe->e;
+    }
+}
+\endcode
+
+\li (7)	\copydetails RKH_SBSC_T::prepro
+
+\n
+The following figures, \ref is111_s112 "Figure 8", 
+\ref is12 "Figure 9", and \ref is31_s32 "Figure 10" highlights the 
+basic states "S111", "S112", "S31", "S32", and "S12" respectively. 
+Also, shows its implementation using the RKH framework.
+
+\n
+\anchor is111_s112
+\image html is111_s112.png "Figure 8 - basic states \"S111\", and \"S112\""
+
+\n
+\anchor is12
+\image html is12.png "Figure 9 - basic state \"S12\""
+
+\n
+\anchor is31_s32
+\image html is31_s32.png "Figure 10 - basic states \"S31\", and \"S32\""
+
+\n
+Prev: \ref rep_cs "Instantiating the composite states"\n
+Next: \ref rep_cjh "Declaring the pseudostates"\n\n
+*/
+
+
+/**
+\page rep_cjh 4. Declaring the pseudostates
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref rep_bs "Declaring the basic states"\n
+Next: \ref rep_def "Defining the state machine's objects"\n\n
+
+The conditional, choice, shallow history, and deep history pseudostates 
+are created using RKH_CREATE_COND_STATE(), RKH_CREATE_CHOICE_STATE(), 
+RKH_CREATE_SHALLOW_HISTORY_STATE(), and RKH_CREATE_DEEP_HISTORY_STATE() 
+macros respectively, which are defined in \b rkh.h file. Also, these macros
+are broadly explained in the \ref qref section. 
+
+The following figures, \ref ic1 "Figure 11", \ref ic2 "Figure 12", 
+\ref ich "Figure 13", and \ref ih "Figure 14" highlights the 
+pseudostates "C1", "C2", "CH", "H", and "DH" respectively. 
+Also, shows its implementation using the RKH framework.
+
+\n
+\anchor ic1
+\image html ic1.png "Figure 11 - conditional pseudostate \"C1\""
+
+\n
+\anchor ic2
+\image html ic2.png "Figure 12 - conditional pseudostate \"C2\""
+
+A condition connector has one incoming transition and can have several 
+outgoing transition segments called branches. Branches are labeled with 
+guards that determine which one is to be actually taken. 
+Since the condition connector is an OR connector, only one of the branches 
+can be taken. Each condition connector can have one special branch with 
+a guard labeled rkh_sm_else, which is taken if all the guards on the other 
+branches are false. 
+Branches cannot contain triggers, but in addition to a guard they may 
+contain actions. A branch can enter another condition connector, thus 
+providing for the nesting of branches.
+In RKH branches are defined by the macro RKH_BRANCH().
+The general syntax of an expression labelling a branch in a statechart is
+\e "[c]/a" where \e c is a condition that guards the transition from being 
+taken unless it is true, and \e a is an action that is carried out if and 
+when the transition is taken. All of these parts are optional. 
+The following listing shows the C2's branch table:
+
+\code
+(1)	RKH_CREATE_BRANCH_TABLE(C2)
+(2)		RKH_BRANCH( x1, 		dummy_act,		&S3		),
+		RKH_BRANCH( x2_or_x3, 	NULL,			&S32 	),
+(3)		RKH_BRANCH( ELSE, 		NULL,			&S2 	),
+(4)	RKH_END_BRANCH_TABLE
+\endcode
+
+Explanation
+
+\li (1)	The RKH_CREATE_BRANCH_TABLE() macro creates the "C2"'s 
+branch table. Each table type always begins with the macro 
+RKH_CREATE_BRANCH_TABLE() and ends with the macro RKH_END_BRANCH_TABLE().
+As noted above, sandwiched between these macros are the segment macros 
+that actually comprise the condition connector.
+
+\li (2)	The RKH_BRANCH() macro defines a branch segment, where 
+\c x1() is the guard function, \c dummy_act() is the action function 
+to be taken, and "S3" is the target state.
+
+\li (3)	If all the guards on the other branches are false \c abort function 
+will be invoked, and "S2" will be the next state.
+
+\li (4)	The RKH_END_BRANCH_TABLE() macro ends branch table.
+
+As said above, the actions and guards in RKH framework are represented by 
+functions.
+
+\n
+\anchor ich
+\image html ich.png "Figure 13 - choice pseudostate \"CH\""
+
+\n
+\anchor ih
+\image html ih.png "Figure 14 - history pseudostates \"H\" and \"DH\""
+
+\n
+Prev: \ref rep_bs "Declaring the basic states"\n
+Next: \ref rep_def "Defining the state machine's objects"\n\n
+*/
+
+
+/**
+\page rep_def 5. Declaring the state machine's objects 
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref rep_cjh "Declaring the pseudostates"\n
+Next: \ref rep_act "Declaring the actions"\n\n
+
+The \subpage my_h file contains the definitions of objet structures (state 
+machine, states, and pseudostates) and other facilities shared among 
+the components of the application. See the \subpage my_h file.
+The following listing shows the \subpage my_h header file, which illuminates 
+some important aspects of implementing state machines with RKH.
+
+In my.h: active object specification file.
+\code
+    ...
+    /* --------------------------- Include files --------------------------- */
+(1)	#include "rkh.h"
+    ...
+
+    /* .............................. Signals .............................. */
+    typedef enum Signals Signals;
+(2) enum Signals
+	{
+		ZERO,		/* press the key '0' on the keyboard */
+		ONE,		/* press the key '1' on the keyboard */
+		TWO,		/* press the key '2' on the keyboard */
+		THREE,		/* press the key '3' on the keyboard */
+		FOUR,		/* press the key '4' on the keyboard */
+		FIVE,		/* press the key '5' on the keyboard */
+		SIX,		/* press the key '6' on the keyboard */
+		TERM		/* press the key escape on the keyboard */
+	};
+
+
+	typedef struct
+	{
+(3)		RKH_EVT_T event;    /* base structure */
+(4)		rkhuint16 ts;	    /* parameter 'ts'. Private member */
+	} MyEvt;			    /* derived from RKH_EVT_T structure */
+    ...
+
+    /* ...................... Declares active object ....................... */
+(5) RKH_SMA_DCLR(my);
+\endcode
+
+In my.c: active object implementation file.
+\code
+    ...
+    /* ........................... Active object ........................... */
+(6) struct MySm
+	{
+		RKH_SMA_T sma;	/* base structure */
+		rui8_t x;		/* private member */
+		rui8_t y;		/* private member */
+    };			        /* SMA derived from RKH_SMA_T structure */
+    ...
+
+    /* ...................... States and pseudostates ...................... */
+(7)	RKH_DCLR_COMP_STATE		S1,S3,S11;
+	RKH_DCLR_BASIC_STATE	S2,S31,S32,S111,S112,S12;
+	RKH_DCLR_COND_STATE		C1,C2;
+	RKH_DCLR_CHOICE_STATE	CH;
+	RKH_DCLR_DHIST_STATE	DH;
+	RKH_DCLR_SHIST_STATE	H;
+#endif
+\endcode
+
+\li (1) RKH interfaces.
+
+\li (2) The events in the \c my state machine have been identified in the 
+state diagram in \ref fig1 Figure 1. Note that events consist really of two 
+parts. The part of the event called the signal conveys the type of the 
+occurrence (what happened). For example, the ONE signal conveys the arrival 
+of a press key '1'. An event can also contain additional quantitative 
+information about the occurrence in form of event parameters. In \c my state 
+machine, all signals are accompanied by the parameter (ts) that contain the 
+quantitative information as to timestamp. In RKH, events are represented as 
+instances of the RKH_EVT_T structure provided by the framework. Specifically, 
+the RKH_EVT_T structure contains the member e, to represent the signal of that 
+event. Event parameters are added in the process of inheritance. Because events 
+are explicitly shared among most of the application components, 
+it is convenient to declare them in the separate header file \subpage my_h.
+
+\li (3-4) The MYEVT_T structure declares an event with the parameter "ts".
+		Such nesting of structures always aligns the data member 
+		#RKH_EVT_T at the beginning of every instance of the derived 
+		structure. In particular, this alignment lets treat a pointer to 
+		the derived MYEVT_T structure as a pointer to the #RKH_EVT_T 
+		base structure. Consequently, can always safely pass a pointer 
+		to MYEVT_T to any C function that expects a pointer to #RKH_EVT_T.
+
+\li (5) Declares a opaque pointer to \c my SMA to be used as a global object.
+
+\li (6) The MySm defines the SMA object structure \c my. On the other hand, 
+		almost every SMA must also store other "extended-state" information. 
+		You supply this additional information by means of data members 
+		enlisted after the base structure member sm. Please note that the 
+		RKH_SMA_T member sm is defined as the FIRST member of the derived 
+		struct. RKH_SMA_T is not intended to be instantiated directly, but 
+		rather serves as the base structure for derivation of state machines 
+		in the application code.
+
+\li (7) Defines the states and pseudostates using the corresponding macros
+		listed above:
+		\n
+		\n
+		- #RKH_DCLR_COMP_STATE: 	composite state.
+		- #RKH_DCLR_BASIC_STATE: 	basic state.
+		- #RKH_DCLR_COND_STATE: 	conditional pseudostate.
+		- #RKH_DCLR_CHOICE_STATE: 	choice pseudostate.
+		- #RKH_DCLR_DHIST_STATE: 	deep history pseudostate.
+		- #RKH_DCLR_SHIST_STATE: 	shallow history pseudostate.
+
+\n
+Prev: \ref rep_cjh "Declaring the pseudostates"\n
+Next: \ref rep_act "Declaring the actions"\n\n
+*/
+
+
+/**
+\page rep_act 6. Declaring the actions
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref rep_def "Defining the state machine's objects"\n
+Next: \ref rep_inc "Include files"\n\n
+
+All init, entry, exit, and transition actions of \c my state machine 
+are implemented in \subpage myact_c file and declaring in 
+\subpage myact_h file. These files also includes transition guard 
+and branch selection functions.
+
+- \ref in_a
+- \ref tr_a
+- \ref en_a
+- \ref ex_a
+- \ref gu_a
+- \ref br_a
+
+<HR>
+\section in_a Initial action of "my" state machine
+
+\code
+void
+my_init(const RKH_SMA_T *me)
+{
+    MySm *realMe = ((MySm *)(me));
+
+    RKH_TR_FWK_OBJ(&S1);
+    RKH_TR_FWK_OBJ(my);
+    RKH_TR_FWK_OBJ(&my->equeue);
+    RKH_TR_FWK_OBJ(&S1);
+    RKH_TR_FWK_OBJ(&S11);
+    RKH_TR_FWK_OBJ(&S111);
+    RKH_TR_FWK_OBJ(&S112);
+    RKH_TR_FWK_OBJ(&S12);
+    RKH_TR_FWK_OBJ(&S2);
+    RKH_TR_FWK_OBJ(&S3);
+    RKH_TR_FWK_OBJ(&S31);
+    RKH_TR_FWK_OBJ(&S32);
+    RKH_TR_FWK_OBJ(&C1);
+    RKH_TR_FWK_OBJ(&C2);
+    RKH_TR_FWK_OBJ(&CH);
+    RKH_TR_FWK_OBJ(&DH);
+    RKH_TR_FWK_OBJ(&H);
+
+    RKH_TR_FWK_SIG(ZERO);
+    RKH_TR_FWK_SIG(ONE);
+    RKH_TR_FWK_SIG(TWO);
+    RKH_TR_FWK_SIG(THREE);
+    RKH_TR_FWK_SIG(FOUR);
+    RKH_TR_FWK_SIG(FIVE);
+    RKH_TR_FWK_SIG(SIX);
+    RKH_TR_FWK_SIG(TERM);
+
+    realMe->x = realMe->y = 0;
+}
+\endcode
+
+<HR>
+\section tr_a Effect actions of "my" state machine
+
+\code
+void
+set_x1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    ((MySm *)(me))->x = 1;
+}
+
+void
+set_y_2(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    ((MySm *)(me))->y = 2;
+}
+
+void
+set_y_1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    ((MySm *)(me))->y = 1;
+}
+
+void
+dummy_act(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void
+show_data(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+}
+
+void
+terminate(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+    rkh_fwk_exit();
+}
+\endcode
+
+<HR>
+\section en_a Entry actions of "my" state machine
+
+\code
+void
+set_x_1(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->x = 1;
+}
+
+void
+set_x_2(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->x = 2;
+}
+
+void
+set_x_3(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->x = 3;
+}
+
+void
+set_y_0(const RKH_SMA_T *me)
+{
+    ((MySm *)(me))->y = 0;
+}
+\endcode
+
+<HR>
+\section ex_a Exit actions of "my" state machine
+
+\code
+void
+dummy_exit(const RKH_SMA_T *me)
+{
+    (void)me;
+}
+\endcode
+
+<HR>
+\section gu_a Transition guard functions of "my" state machine
+
+\code
+\endcode
+
+<HR>
+\section br_a Branch selection functions of "my" state machine
+
+\code
+rbool_t
+y_0(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->y == 0 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+y_1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->y == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+y_2(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->y == 2 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+x1(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return ((MySm *)(me))->x == 1 ? RKH_GTRUE : RKH_GFALSE;
+}
+
+rbool_t
+x2_or_x3(const RKH_SMA_T *me, RKH_EVT_T *pe)
+{
+    (void)pe;
+    return (((MySm *)(me))->x == 2 || ((MySm *)(me))->x == 3) ? 
+           RKH_GTRUE : RKH_GFALSE;
+}
+\endcode
+
+\n
+Prev: \ref rep_def "Defining the state machine's objects"\n
+Next: \ref rep_inc "Include files"\n\n
+*/
+
+/**
+\page rep_inc 7. Include files
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref rep_act "Declaring the actions"\n
+Next: \ref representing "Getting started with RKH"\n\n
+
+The application C-file \subpage my_c that uses RKH must include a few 
+header files. 
+
+\code
+(1) #include "rkh.h"
+(2) #include "my.h"
+\endcode
+
+\li (1) Every application C-file that uses RKH must include the \b rkh.h 
+		header file. This header file contains the specific adaptation 
+		of RKH to the given processor and compiler, also includes the
+		RKH interface to implement state machines. The port file is located
+		in the application directory.
+
+\li (2) The \subpage my_h header file contains the definitions of object 
+		structures (state machine, states, and pseudostates), event 
+		declaration, and other facilities shared among the components of 
+		the application.
+
+\n
+Prev: \ref rep_act "Declaring the actions"\n
+Next: \ref representing "Getting started with RKH"\n\n
+*/
+
+
+/**
+\page running Running
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref representing "Getting started with RKH"\n
+Next: \ref submachine "Using submachine states"\n\n
+
+<b>Run-to-completation execution model</b>
+	
+Event occurrences are detected, dispatched, and then processed by the 
+state machine, one at a time. The order of dequeuing is not defined, 
+leaving open the possibility of modeling different priority-based schemes.
+The semantics of event occurrence processing is based on the 
+run-to-completion assumption, interpreted as run-to-completion (RTC) 
+processing. Run-to-completion processing means that an event occurrence 
+can only be taken from the pool and dispatched if the processing of the 
+previous current occurrence is fully completed.
+
+The processing of a single event occurrence by a state machine is known 
+as a run-to-completion step. An RTC step is the period of time in which 
+events are accepted and acted upon. Processing an event always completes 
+within a single model step, including exiting the source state, executing 
+any associated actions, and entering the target state. Before commencing 
+on a run-to-completion step, a state machine is in a stable state 
+configuration with all entry/exit/internal activities (but not 
+necessarily state (do) activities) completed. The same conditions apply 
+after the run-to-completion step is completed. Thus, an event occurrence 
+will never be processed while the state machine is in some intermediate 
+and inconsistent situation. 
+The run-to-completion step is the passage between two state 
+configurations of the state machine. The run-to-completion assumption 
+simplifies the transition function of the state machine, since 
+concurrency conflicts are avoided during the processing of event, 
+allowing the state machine to safely complete its run-to-completion step.
+
+When an event occurrence is detected and dispatched, it may result in one 
+or more transitions being enabled for firing. If no transition is enabled 
+and the event (type) is not in the deferred event list of the current 
+state configuration, the event occurrence is discarded and the 
+run-to-completion step is completed.
+During a transition, a number of actions may be executed. If such an 
+action is a synchronous operation invocation on an object executing a 
+state machine, then the transition step is not completed until the invoked 
+object completes its run-to-completion step.
+
+The RKH implementation preserves the transition sequence imposed by 
+Harel's Statechart and UML. Specifically, the implemented transition 
+sequence is as follows:
+
+- Execute exit actions of the source state.
+- Execute the transition actions.
+- Execute entry actions of the target state.
+
+Run-to-completion may be implemented in various ways. The most common way 
+to do that is by an event-loop running in its own thread, and that reads 
+event occurrences from a pool as sketched in the following figure.
+
+\image html rkh_rtc.png "Run-to-completion model"
+
+In case of active objects or SMA <EM>(State Machine Application)</EM>, 
+where each object has its own thread of execution, 
+it is very important to clearly distinguish the notion of 
+run-to-completion from the concept of thread pre-emption. Namely, 
+run-to-completion event handling is performed by a thread that, in 
+principle, can be pre-empted and its execution suspended in favor of 
+another thread executing on the same processing node. 
+(This is determined by the scheduling policy of the underlying thread 
+environment, no assumptions are made about this policy.). When the 
+suspended thread is assigned processor time again, it resumes its event 
+processing from the point of pre-emption and, eventually, completes its 
+event processing.
+
+<EM>
+An active object is an object that, as a direct consequence of its 
+creation, commences to execute its behavior, and does not cease until 
+either the complete behavior is executed or the object is 
+terminated by some external object. (This is sometimes referred to as 
+"the object having its own thread of control"). An active object 
+encapsulates a thread of control (event loop), a private event queue, 
+and a state machine. 
+So, Active object = thread of control + event queue + state machine.</EM>
+
+<b>Preemptive Kernel</b>
+
+In the most common and traditional implementations of the active object 
+computing model, active objects map to threads of a traditional preemptive 
+RTOS or OS. In this standard configuration the active object computing 
+model can take full advantage of the underlying RTOS capabilities. In 
+particular, if the kernel is preemptive, the active object system 
+achieves exactly the same optimal task-level response as traditional 
+tasks.
+
+In this approach, RTC semantics of state machine execution do not mean 
+that a state machine has to monopolize the CPU for the duration of the 
+RTC step. A preemptive kernel can perform a context switch in the middle 
+of the long RTC step to allow a higher-priority active object to run. 
+As long as the active objects don't share resources, they can run 
+concurrently and complete their RTC steps independently.
+
+The \ref fig15 "Figure 15" shows the events flow in a interval of time 
+to state machines A, B, and C, which have priority 2, 1 and 3, 
+respectively. 
+Note that, the lower the number the higher the priority. Moreover, the 
+\ref fig16 "Figure 16" and \ref fig17 "Figure 17" are considered to 
+illustrate how the preemptive kernel and cooperative kernel plays out in 
+an active object system like \ref fig15 "Figure 15". \n \n
+	
+\anchor fig15
+\image html rkhex.png "Figure 15 - A multi-automata application"
+
+\n \ref fig16 "Figure 16" demonstrates how the active objects defined 
+on the \ref fig15 "Figure 15" would be scheduled by a underlying 
+preemptive kernel for executing event-driven system despicted in 
+\ref fig15 "Figure 15". \n \n
+
+\anchor fig16
+\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed 
+priority preemptive scheduling"
+
+\n The following explanation section illuminates the interesting 
+points:\n
+
+\li (0) When all event queues run out of events, neither of three active 
+objects are able to run, the underlying kernel executes the idle task to 
+give the application a chance to switch the MCU to a low-power sleep mode.
+\li (1) The ISR executes and, among other things, posts event \b A to the 
+active object \b A, which is now able to execute. It has a higher 
+priority than the OS/RTOS idle task so is given processor time.
+\li (2) The preemptive kernel switches context to the active object 
+\b A to process the event to completation.
+\li (3) While active object \b A is still executing, the ISR posts the 
+event \b E to active object \b C, which is now able to execute, but as it 
+has a lower priority than active object \b A it is not scheduled any 
+processor time.
+\li (4) Once again, while active object \b A is still executing, the ISR 
+posts the event \b D to active object \b A, but it is already running the 
+event is not processed, thus respecting the RTC execution model.
+\li (5-6) The ISR executes and posts event \b B to the active object 
+\b B, which is now able to execute. Now it is able to execute. As \b B has 
+the higher priority \b A is suspended before it has completed processing 
+the event, and \b B is scheduled processor time.
+\li (7) Idem (3).
+\li (8) The active object \b B has been completed the event processing. 
+It cannot continue until another event has been received so suspends 
+itself and the active object \b A is again the highest priority active 
+object that is able to run so is scheduled processor time so the event 
+\b A processing can be resumed.
+\li (9) The active object \b A has been completed the event processing, 
+and \b A is again the highest priority active object that is able to run 
+so is scheduled processor time so the event \b D processing can be 
+completed.
+
+\li (10) Idem (5) and (6).
+\li (11) Idem (8).
+\li (12) Idem (9).
+\li (13) Idem (11).
+\li (14) Idem (0).
+
+<b>Simple cooperative kernel</b>
+
+The active object computing model can also work with nonpreemptive 
+kernels. In fact, one particular cooperative kernel matches the active 
+object computing model exceptionally well and can be implemented in 
+an absolutely portable manner.
+
+The simple nonpreemptive native kernel executes one active object at a 
+time in the infinite loop (similar to the "superloop"). 
+The native kernel is engaged after each event is processed in the 
+RTC fashion to choose the next highest-priority active 
+object ready to process the next event. The native scheduler is 
+cooperative, which means that all active objects cooperate to share a 
+single CPU and implicitly yield to each other after every RTC step. 
+The kernel is nonpreemptive, meaning that every active object must 
+completely process an event before any other active object can start 
+processing another event.
+
+The ISRs can preempt the execution of active objects at any time, but due 
+to the simplistic nature of the native kernel, every ISR returns to 
+exactly the preemption point. If the ISR posts an event to any active 
+object, the processing of this event won't start until the current RTC 
+step completes. The maximum time an event for the highest-priority active 
+object can be delayed this way is called the task-level response. With 
+the nonpreemptive native kernel, the task-level response is equal to the 
+longest RTC step of all active objects in the system. Note that the 
+task-level response of the native kernel is still a lot better than the 
+traditional "superloop" (a.k.a. main+ISRs) architecture.
+
+The task-level response of the simple native kernel turns out to be 
+adequate for surprisingly many applications because state machines by 
+nature handle events quickly without a need to busy-wait for events. 
+(A state machine simply runs to completion and becomes dormant until 
+another event arrives.) Also note that often you can make the task-level 
+response as fast as you need by breaking up longer RTC steps into shorter 
+ones.
+[MS]
+
+\n \ref fig16 "Figure 17" demonstrates how the active objects defined 
+on the \ref fig15 "Figure 15" would be scheduled by a simple, 
+cooperative, and non-preemptive kernel for executing event-driven 
+system despicted in \ref fig15 "Figure 15". \n \n
+
+\anchor fig17
+\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed 
+priority cooperative scheduling"
+
+\n The following explanation section illuminates the interesting 
+points:\n
+
+\li (0) When all event queues run out of events, neither of three active 
+objects are able to run, the underlying kernel executes the idle task to 
+give the application a chance to switch the MCU to a low-power sleep mode.
+\li (1) The ISR executes and, among other things, posts event \b A to the 
+active object \b A, which is now able to execute. It has a higher 
+priority than the OS/RTOS idle task so is given processor time.
+\li (2) The preemptive kernel switches context to the active object 
+\b A to process the event to completation.
+\li (3,4,5) While active object \b A is still executing, the ISR posts the 
+events \b E, \b D and \b B to active objects \b C and \b B, which are now 
+able to execute, but as the underlying kernel is non-preemtive one active 
+object \b A it is not scheduled any processor time until it has completed 
+the current execution.
+\li (6) The active object \b A has been completed the event processing. 
+The active object \b B is the highest priority active object that is able 
+to run so is scheduled processor time until is has completed the processing 
+of event \b B in a RTC manner.
+\li (7) Idem (3,4,5).
+\li (8) Idem (6).
+\li (9) Idem (3,4,5).
+\li (10,11,12,13) Idem (6).
+
+<B>Dealing with RTC model in a nonpreemtive manner</B>
+
+Here is the basic algorithm for interpreting the native kernel. 
+The rkh_fwk_enter() function implemented in \c source/fwk/src/rkhfwk_sched.c source 
+file is self-explanatory.
+
+\include pseudo_cooperative_emulator.c
+
+<b>Application-specific and port dependencies</b>
+
+First of all, pay special attention to \ref Porting and 
+\ref Installation sections and then following the win32 single thread demo 
+and its own port from the directories \c demo/80x86/\<example\>/build/win32_st/vc and 
+/source/portable/80x86/win32_st/vc/ respectively.
+<EM>The main goal to this is to make it easy to understand the 
+event-driven code and experiment with it.</EM>
+
+<b>Main function</b>
+
+As said above, following the win32 single thread demo and its own port 
+from the directories \c demo/80x86/\<example\>/build/win32_st/vc and 
+\c source/portable/80x86/win32_st/vc respectively. 
+However, the \c main() function is shown below to illustrate the RKH concept.
+
+\code
+int
+main(int argc, char *argv[])
+{
+    bsp_init(argc, argv);
+
+    RKH_SMA_ACTIVATE(my, qsto, QSTO_SIZE, 0, 0);
+    rkh_fwk_enter();
+
+    RKH_TRC_CLOSE();
+    return 0;
+}
+\endcode
+
+\n
+Prev: \ref representing "Getting started with RKH"\n
+Next: \ref submachine "Using submachine states"\n\n
+*/
+
+
+/**
+\page submachine Using submachine states
+\image html rkh_bunner.jpg
+
+\n
+Prev: \ref running "Running"\n
+Next: \ref Usage "Getting started with RKH"\n\n
+
+\copydetails RKH_SSBM_T
+
+The following figure highlights the submachine states \c S12 and \c S2. 
+Also, shows its implementation using the RKH framework.
+
+\anchor sbm4
+\image html sbm4.jpg "Submachine states"
+
+The following figure highlights the submachine state machine \c SB. 
+Also, shows its implementation using the RKH framework.
+
+\anchor sbm5
+\image html sbm5.jpg "Referenced state machine"
+
+Prev: \ref running "Running"\n
+Next: \ref Usage "Getting started with RKH"\n\n
+*/

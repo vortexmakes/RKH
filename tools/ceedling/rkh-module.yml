@@ -1,0 +1,13 @@
+#
+# Load and merge configuration settings into the main project configuration. 
+# Each task is named after a *.yml file found in the configured options 
+# directory. 
+#
+# Command line: ceedling options:rkh-module <task> ...
+#
+
+:tools:
+    :test_compiler:
+        :arguments:
+        - "-DMORE"
+

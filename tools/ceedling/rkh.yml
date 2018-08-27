@@ -1,0 +1,7 @@
+:cmock:
+    :plugins: [ignore_arg, ignore, callback]
+    :mock_prefix: Mock_
+    :callback_after_arg_check: true
+    :when_ptr: :compare_ptr
+    :enforce_strict_ordering: true
+

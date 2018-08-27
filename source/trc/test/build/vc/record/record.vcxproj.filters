@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="rkh">
+      <UniqueIdentifier>{cae3db09-483c-4045-a606-91b10e367cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{3a282379-7da0-4959-8b5e-e3b90c65e27a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\stub">
+      <UniqueIdentifier>{6c21d888-11a0-4b16-8c35-7d7cbe8691b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\tool">
+      <UniqueIdentifier>{83248ff4-305d-4290-b6a0-bc39ae737895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\runner">
+      <UniqueIdentifier>{a7862c3d-f2aa-4c4d-9e76-0def3da183ed}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\rkhtrc_record.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\runner\all_tests.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\runner\test_rkhtrc_record_runner.c">
+      <Filter>test\runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkh.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhassert.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhfwk_bittbl.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhport.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhsm.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhsma.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhtrc_filter.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhtrc_out.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\stub\mocks\Mock_rkhtrc_stream.c">
+      <Filter>test\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\record\src\test_rkhtrc_record.c">
+      <Filter>test</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\cmock\cmock.c">
+      <Filter>test\cmock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\rkhtrc.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\cmock\src\cmock.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\src\unity.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\third-party\ceedling\vendor\unity\extras\fixture\src\unity_fixture.c">
+      <Filter>test\tool</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="test">
+      <UniqueIdentifier>{15f2147f-34d1-42e9-9bf7-a4ac79fce62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\stub">
+      <UniqueIdentifier>{60cb9a32-0678-4c04-8b3d-5b8fddd36bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\tool">
+      <UniqueIdentifier>{07df18fa-ca3c-4c1d-93f1-e9fb5ff95f3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\cmock">
+      <UniqueIdentifier>{d41ba6eb-1e92-420e-aee1-6d89c17941d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rkh">
+      <UniqueIdentifier>{25fb2efa-c785-4a38-8e6f-525408d72a35}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
