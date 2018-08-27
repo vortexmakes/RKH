@@ -1,0 +1,85 @@
+---
+#
+# RKH project YAML for ceedling test in module level
+#
+
+:project:
+  :use_exceptions: FALSE
+  :use_test_preprocessor: TRUE
+  :use_auxiliary_dependencies: TRUE
+  :build_root: build
+  :which_ceedling: ../../third-party/ceedling
+  :test_file_prefix: test_
+  :options_paths: 
+    - ../../tools/ceedling
+
+:environment: []
+
+:extension:
+  :executable: .out
+
+:paths:
+  :test:
+    - +:test
+    - -:test/support
+  :source:
+    - src
+  :include:
+    - inc
+    - ../mempool/inc
+    - ../queue/inc
+    - ../sm/inc
+    - ../sma/inc
+    - ../tmr/inc
+    - ../trc/inc
+    - ../portable/test
+  :support:
+    - test/support
+
+:defines:
+  :common: &common_defines [__TEST__]
+  :test:
+    - *common_defines
+    - TEST
+  :test_preprocess:
+    - *common_defines
+    - TEST
+
+:cmock:
+  :when_no_prototypes: :warn
+  :plugins: [ignore_arg, ignore, callback]
+  :mock_prefix: Mock_
+  :callback_after_arg_check: TRUE
+  :when_ptr: :compare_ptr
+  :enforce_strict_ordering: TRUE
+  :treat_as:
+    uint8:    HEX8
+    uint16:   HEX16
+    uint32:   UINT32
+    int8:     INT8
+    bool:     UINT8
+
+#:tools:
+# Ceedling defaults to using gcc for compiling, linking, etc.
+# As [:tools] is blank, gcc will be used (so long as it's in your system path)
+# See documentation to configure a given toolchain for use
+
+:tools_test_linker:
+  :arguments:
+    - -lm
+:tools_gcov_linker:
+  :arguments:
+    - -lm
+
+:gcov:
+  :html_report_type: detailed
+
+:module_generator:
+  :inc_root: inc/
+
+:plugins:
+  :enabled:
+    - stdout_pretty_tests_report
+    - module_generator
+    - gcov
+
