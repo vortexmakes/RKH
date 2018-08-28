@@ -86,6 +86,11 @@
 			<locationURI>PARENT-9-PROJECT_LOC/source/fwk/src/rkhfwk_evtpool.c</locationURI>
 		</link>
 		<link>
+			<name>Sources/rkh/rkhfwk_rdygrp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-9-PROJECT_LOC/source/fwk/src/rkhfwk_rdygrp.c</locationURI>
+		</link>
+		<link>
 			<name>Sources/rkh/rkhfwk_sched.c</name>
 			<type>1</type>
 			<locationURI>PARENT-9-PROJECT_LOC/source/fwk/src/rkhfwk_sched.c</locationURI>

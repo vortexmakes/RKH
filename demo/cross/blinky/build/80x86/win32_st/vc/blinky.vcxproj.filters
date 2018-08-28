@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\..\..\..\..\..\source\sma\src\rkhsma_sync.c">
       <Filter>rkh</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\source\fwk\src\rkhfwk_rdygrp.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="rkh">

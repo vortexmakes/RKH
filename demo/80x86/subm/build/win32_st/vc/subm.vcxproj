@@ -93,6 +93,7 @@
     <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_bittbl.c" />
     <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_dynevt.c" />
     <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_evtpool.c" />
+    <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_rdygrp.c" />
     <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_sched.c" />
     <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_version.c" />
     <ClCompile Include="..\..\..\..\..\..\source\mempool\src\rkhmempool.c" />

@@ -7,6 +7,7 @@
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<triggers>clean,full,incremental,</triggers>
 			<arguments>
 				<dictionary>
 					<key>?name?</key>
@@ -141,6 +142,11 @@
 			<name>Sources/rkh/rkhfwk_evtpool.c</name>
 			<type>1</type>
 			<locationURI>PARENT-10-PROJECT_LOC/source/fwk/src/rkhfwk_evtpool.c</locationURI>
+		</link>
+		<link>
+			<name>Sources/rkh/rkhfwk_rdygrp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-10-PROJECT_LOC/source/fwk/src/rkhfwk_rdygrp.c</locationURI>
 		</link>
 		<link>
 			<name>Sources/rkh/rkhfwk_sched.c</name>
