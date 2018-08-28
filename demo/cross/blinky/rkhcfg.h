@@ -76,6 +76,28 @@
 #define RKH_CFG_FWK_ASSERT_EN           RKH_ENABLED
 
 /**
+ *  \brief
+ *  If the #RKH_CFG_FWK_PUBSUB_EN is set to 1 then RKH will include the native
+ *  publish-subscriber module.
+ *
+ *  \type       Boolean
+ *  \range      
+ *  \default    RKH_ENABLED
+ */
+#define RKH_CFG_FWK_PUBSUB_EN           RKH_ENABLED
+
+/**
+ *  \brief
+ *  Specify the maximum number of channels (topics) to which an active 
+ *  object wants to subscribe (can be a number in the range [1..128]).
+ *
+ *  \type       Integer
+ *  \range      [1..128]
+ *  \default    16
+ */
+#define RKH_CFG_FWK_MAX_SUBS_CHANNELS   16
+
+/**
  *	If the #RKH_CFG_HOOK_DISPATCH_EN is set to 1, RKH will invoke the
  *	dispatch hook function rkh_hook_dispatch() when dispatching an event to
  *	a SMA. When this is set the application must provide the hook function.

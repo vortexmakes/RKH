@@ -4280,6 +4280,20 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> RKH_ENABLED </TD>
 		<TD align="left"> \copybrief RKH_CFG_FWK_ASSERT_EN </TD>
 	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_FWK_PUBSUB_EN </TD>
+		<TD> boolean </TD>
+		<TD></TD>
+		<TD> RKH_ENABLED </TD>
+		<TD align="left"> \copybrief RKH_CFG_FWK_PUBSUB_EN </TD>
+	</TR>
+	<TR bgColor="#f0f0f0" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_FWK_MAX_SUBS_CHANNELS </TD>
+		<TD> integer </TD>
+		<TD> [1..128] </TD>
+		<TD> 16 </TD>
+		<TD align="left"> \copybrief RKH_CFG_FWK_MAX_SUBS_CHANNELS </TD>
+	</TR>
 	<TR bgColor="#c8cedc" align="center" valign="middle" >
 		<TD align="left"> #RKH_CFG_HOOK_DISPATCH_EN </TD>
 		<TD> boolean </TD>
