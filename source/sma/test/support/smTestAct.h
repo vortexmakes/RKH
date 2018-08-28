@@ -17,17 +17,14 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-
 #ifndef __SMTESTACT_H__
 #define __SMTESTACT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-
 #include "rkh.h"
 #include "smTest.h"
 
 /* ---------------------- External C language linkage ---------------------- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -37,7 +34,6 @@ extern "C" {
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-
 /* ============================ Initial actions ============================ */
 void smTest_init(SmTest *const me);
 void smTest_iS3(SmTest *const me);
@@ -100,13 +96,11 @@ rbool_t smTest_guard4c(SmTest *const me, RKH_EVT_T *pe);
 rbool_t smTest_guardS2(SmTest *const me, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
-
 #ifdef __cplusplus
 }
 #endif
 
 /* ------------------------------ Module end ------------------------------- */
-
 #endif
 
 /* ------------------------------ End of file ------------------------------ */
