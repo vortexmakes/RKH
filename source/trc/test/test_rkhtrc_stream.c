@@ -55,7 +55,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "unity_fixture.h"
+#include "unity.h"
 #include "rkhtrc_stream.h"
 #include "Mock_rkhsm.h"
 #include "Mock_rkhsma.h"
@@ -64,8 +64,6 @@
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-TEST_GROUP(stream);
-
 /* ---------------------------- Local variables ---------------------------- */
 static RKHROM RKH_ROM_T base = {0, 0, "receiver"};
 static RKH_SMA_T receiver;
@@ -77,12 +75,14 @@ static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-TEST_SETUP(stream)
+void
+setUp(void)
 {
     rkh_trcStream_init();
 }
 
-TEST_TEAR_DOWN(stream)
+void
+tearDown(void)
 {
 }
 
@@ -92,7 +92,8 @@ TEST_TEAR_DOWN(stream)
  *  \name Test cases of trace stream group
  *  @{ 
  */
-TEST(stream, FlagAfterInit)
+void
+test_FlagAfterInit(void)
 {
     rui8_t *output;
 
@@ -101,7 +102,8 @@ TEST(stream, FlagAfterInit)
     TEST_ASSERT_EQUAL(RKH_FLG, *output);
 }
 
-TEST(stream, NotFullAfterInit)
+void
+test_NotFullAfterInit(void)
 {
     TRCQTY_T nData;
 
@@ -109,7 +111,8 @@ TEST(stream, NotFullAfterInit)
     TEST_ASSERT_TRUE(RKH_CFG_TRC_SIZEOF_STREAM != nData);
 }
 
-TEST(stream, NotEmptyThenEmpty)
+void
+test_NotEmptyThenEmpty(void)
 {
     TRCQTY_T nData;
 
@@ -118,7 +121,8 @@ TEST(stream, NotEmptyThenEmpty)
     TEST_ASSERT_EQUAL(0, nData);
 }
 
-TEST(stream, GetPutOneValue)
+void
+test_GetPutOneValue(void)
 {
     rui8_t expected;
     rui8_t *output;
@@ -133,7 +137,8 @@ TEST(stream, GetPutOneValue)
     TEST_ASSERT_EQUAL(expected, *output);
 }
 
-TEST(stream, GetPutAFew)
+void
+test_GetPutAFew(void)
 {
     rui8_t *output;
 
@@ -155,7 +160,8 @@ TEST(stream, GetPutAFew)
     TEST_ASSERT_EQUAL(3, *output);
 }
 
-TEST(stream, IsFull)
+void
+test_IsFull(void)
 {
     int i;
     TRCQTY_T nData = RKH_CFG_TRC_SIZEOF_STREAM + 1;
@@ -167,7 +173,8 @@ TEST(stream, IsFull)
     TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM, nData);    
 }
 
-TEST(stream, EmptyToFullToEmpty)
+void
+test_EmptyToFullToEmpty(void)
 {
     int i;
     TRCQTY_T nData = RKH_CFG_TRC_SIZEOF_STREAM + 1;
@@ -185,7 +192,8 @@ TEST(stream, EmptyToFullToEmpty)
     TEST_ASSERT_EQUAL(0, nData);
 }
 
-TEST(stream, WrapAround)
+void
+test_WrapAround(void)
 {
     int i;
     rui8_t *output;
@@ -205,13 +213,15 @@ TEST(stream, WrapAround)
     TEST_ASSERT_EQUAL(128, *output);    
 }
 
-TEST(stream, GetFromEmptyReturnsNull)
+void
+test_GetFromEmptyReturnsNull(void)
 {
     rkh_trc_get();
     TEST_ASSERT_NULL(rkh_trc_get());
 }
 
-TEST(stream, GetContinuousBlock)
+void
+test_GetContinuousBlock(void)
 {
     int i;
     TRCQTY_T nData;

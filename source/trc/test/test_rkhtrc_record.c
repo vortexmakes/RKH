@@ -55,9 +55,8 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "unity_fixture.h"
+#include "unity.h"
 #include "rkhtrc_record.h"
-#include "rkhtrc_filter.h"
 #include "Mock_rkhsm.h"
 #include "Mock_rkhsma.h"
 #include "Mock_rkh.h"
@@ -71,8 +70,6 @@
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-TEST_GROUP(record);
-
 /* ---------------------------- Local variables ---------------------------- */
 static RKHROM RKH_ROM_T base = {0, 0, "receiver"};
 static RKH_SMA_T receiver;
@@ -166,7 +163,8 @@ expectU16(rui16_t value)
 }
 
 /* ---------------------------- Global functions --------------------------- */
-TEST_SETUP(record)
+void
+setUp(void)
 {
     rkh_trcStream_init_Expect();
     rkh_trc_init();
@@ -181,7 +179,8 @@ TEST_SETUP(record)
     Mock_rkhtrc_filter_Init();
 }
 
-TEST_TEAR_DOWN(record)
+void
+tearDown(void)
 {
     receiver.sm.romrkh = &base;
     event.e = 3;
@@ -212,7 +211,8 @@ TEST_TEAR_DOWN(record)
  *  \name Test cases of trace record group
  *  @{ 
  */
-TEST(record, InsertRecordHeader)
+void
+test_InsertRecordHeader(void)
 {
     rkh_trc_put_Expect(8);  /* insert the event ID */
     rkh_trc_put_Expect(0);  /* insert tne sequence number */
@@ -226,7 +226,8 @@ TEST(record, InsertRecordHeader)
     rkh_trc_begin(8);
 }
 
-TEST(record, InsertRecordEnd)
+void
+test_InsertRecordEnd(void)
 {
     rui8_t checksum;
 
@@ -238,7 +239,8 @@ TEST(record, InsertRecordEnd)
     rkh_trc_end();
 }
 
-TEST(record, InsertU8Value)
+void
+test_InsertU8Value(void)
 {
     rui8_t value = 8;
 
@@ -246,7 +248,8 @@ TEST(record, InsertU8Value)
     rkh_trc_u8(value);
 }
 
-TEST(record, InsertEscapedValues)
+void
+test_InsertEscapedValues(void)
 {
     rui8_t value = RKH_FLG;
     rkh_trc_put_Expect(RKH_ESC);
@@ -261,7 +264,8 @@ TEST(record, InsertEscapedValues)
     rkh_trc_u8(RKH_ESC);
 }
 
-TEST(record, InsertU16Value)
+void
+test_InsertU16Value(void)
 {
     rui16_t value = 0x1234;
 
@@ -270,7 +274,8 @@ TEST(record, InsertU16Value)
     rkh_trc_u16(value);
 }
 
-TEST(record, InsertU32Value)
+void
+test_InsertU32Value(void)
 {
     rui32_t value = 0x12345678;
 
@@ -283,7 +288,8 @@ TEST(record, InsertU32Value)
 
 }
 
-TEST(record, InsertString)
+void
+test_InsertString(void)
 {
     const char *expected = "Hello world!";
     const char *p;
@@ -297,12 +303,13 @@ TEST(record, InsertString)
     rkh_trc_str(expected);
 }
 
-TEST(record, InsertObject)
+void
+test_InsertObject(void)
 {
     rui8_t obj, evtId = RKH_TE_FWK_OBJ;
     const char *objName = "obj";
 
-    expectHeader(evtId, 0, 0x1234567, 1);
+    expectHeader(evtId, 0, 0x12345678, 1);
     expectObjectAddress(&obj);
     expectString(objName);
     expectTrailer(1);
@@ -311,13 +318,14 @@ TEST(record, InsertObject)
     rkh_trc_obj(evtId, &obj, objName);
 }
 
-TEST(record, InsertSignal)
+void
+test_InsertSignal(void)
 {
     rui8_t signalId = 8;
     rui8_t evtId = RKH_TE_FWK_SIG;
     const char *signalName = "buttonPressed";
 
-    expectHeader(evtId, 0, 0x1234567, 1);
+    expectHeader(evtId, 0, 0x12345678, 1);
     expectU8(signalId);
     expectString(signalName);
     expectTrailer(1);
@@ -326,9 +334,10 @@ TEST(record, InsertSignal)
     rkh_trc_sig(signalId, signalName);
 }
 
-TEST(record, InsertAO)
+void
+test_InsertAO(void)
 {
-    expectHeader(RKH_TE_FWK_AO, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_AO, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectString("receiver");
     expectTrailer(1);
@@ -337,12 +346,14 @@ TEST(record, InsertAO)
     rkh_trc_ao(&receiver);
 }
 
-TEST(record, InsertState)
+void
+test_InsertState(void)
 {
     RKH_ST_T state;
     
     state.base.name = "state";
-    expectHeader(RKH_TE_FWK_STATE, 0, 0x1234567, 1);
+    state.base.type = RKH_BASIC;
+    expectHeader(RKH_TE_FWK_STATE, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectObjectAddress(&state);
     expectString("state");
@@ -352,16 +363,18 @@ TEST(record, InsertState)
     rkh_trc_state(&receiver, (rui8_t *)&state);
 }
 
-TEST(record, InsertRecord)
+void
+test_InsertRecord(void)
 {
 }
 
-TEST(record, InsertFwkEpoolRecord)
+void
+test_InsertFwkEpoolRecord(void)
 {
     rui8_t poolId = 2;
     const char *poolName = "ep0";
 
-    expectHeader(RKH_TE_FWK_EPOOL, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_EPOOL, 0, 0x12345678, 1);
     expectU8(poolId);
     expectString(poolName);
     expectTrailer(1);
@@ -370,12 +383,13 @@ TEST(record, InsertFwkEpoolRecord)
     RKH_TR_FWK_EPOOL(poolId, poolName);
 }
 
-TEST(record, InsertFwkActorRecord)
+void
+test_InsertFwkActorRecord(void)
 {
     rui8_t actor;
     const char *actorName = "Actor";
 
-    expectHeader(RKH_TE_FWK_ACTOR, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_ACTOR, 0, 0x12345678, 1);
     expectObjectAddress(&actor);
     expectString(actorName);
     expectTrailer(1);
@@ -384,12 +398,13 @@ TEST(record, InsertFwkActorRecord)
     RKH_TR_FWK_ACTOR(&actor, actorName);
 }
 
-TEST(record, InsertSmaActivateRecord)
+void
+test_InsertSmaActivateRecord(void)
 {
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_TRUE);
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
-    expectHeader(RKH_TE_SMA_ACT, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_SMA_ACT, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectU8(RKH_GET_PRIO(&receiver));
     expectU8(16);
@@ -398,7 +413,8 @@ TEST(record, InsertSmaActivateRecord)
 	RKH_TR_SMA_ACT(&receiver, RKH_GET_PRIO(&receiver), 16);
 }
 
-TEST(record, InsertSmaGetRecord)
+void
+test_InsertSmaGetRecord(void)
 {
     rui8_t nElem = 4, nMin = 2;
 
@@ -406,7 +422,7 @@ TEST(record, InsertSmaGetRecord)
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSignal, event.e, RKH_TRUE);
-    expectHeader(RKH_TE_SMA_GET, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_SMA_GET, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectU8(event.e);
     expectU8(event.pool);
@@ -418,7 +434,8 @@ TEST(record, InsertSmaGetRecord)
 	RKH_TR_SMA_GET(&receiver, &event, event.pool, event.nref, nElem, nMin);
 }
 
-TEST(record, InsertSmaPostFifoRecord)
+void
+test_InsertSmaPostFifoRecord(void)
 {
     rui8_t nElem = 4, nMin = 2;
 
@@ -426,7 +443,7 @@ TEST(record, InsertSmaPostFifoRecord)
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSignal, event.e, RKH_TRUE);
-    expectHeader(RKH_TE_SMA_FIFO, 0, 0x1234567, 0);
+    expectHeader(RKH_TE_SMA_FIFO, 0, 0x12345678, 0);
     expectObjectAddress(&receiver);
     expectU8(event.e);
     expectObjectAddress(&sender);
@@ -440,7 +457,8 @@ TEST(record, InsertSmaPostFifoRecord)
                     nMin);
 }
 
-TEST(record, InsertSmaPostLifoRecord)
+void
+test_InsertSmaPostLifoRecord(void)
 {
     rui8_t nElem = 4, nMin = 2;
 
@@ -448,7 +466,7 @@ TEST(record, InsertSmaPostLifoRecord)
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSignal, event.e, RKH_TRUE);
-    expectHeader(RKH_TE_SMA_LIFO, 0, 0x1234567, 0);
+    expectHeader(RKH_TE_SMA_LIFO, 0, 0x12345678, 0);
     expectObjectAddress(&receiver);
     expectU8(event.e);
     expectObjectAddress(&sender);
@@ -462,10 +480,11 @@ TEST(record, InsertSmaPostLifoRecord)
                     nMin);
 }
 
-TEST(record, InsertFwkAeRecord)
+void
+test_InsertFwkAeRecord(void)
 {
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_AE, RKH_TRUE);
-    expectHeader(RKH_TE_FWK_AE, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_AE, 0, 0x12345678, 1);
     expectU16(16);
     expectU8(event.e);
     expectU8(event.pool - 1);
@@ -478,10 +497,11 @@ TEST(record, InsertFwkAeRecord)
     RKH_TR_FWK_AE(16, &event, 5, 2, &receiver);
 }
 
-TEST(record, InsertFwkGcrRecord)
+void
+test_InsertFwkGcrRecord(void)
 {
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_GCR, RKH_TRUE);
-    expectHeader(RKH_TE_FWK_GCR, 0, 0x1234567, 0);
+    expectHeader(RKH_TE_FWK_GCR, 0, 0x12345678, 0);
     expectU8(event.e);
     expectU8(event.pool - 1);
     expectU8(event.nref);
@@ -493,10 +513,11 @@ TEST(record, InsertFwkGcrRecord)
     RKH_TR_FWK_GCR(&event, 5, 2, &receiver);
 }
 
-TEST(record, InsertFwkEpregRecord)
+void
+test_InsertFwkEpregRecord(void)
 {
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_FWK_EPREG, RKH_TRUE);
-    expectHeader(RKH_TE_FWK_EPREG, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_EPREG, 0, 0x12345678, 1);
     expectU8(1);
     expectU32(128);
     expectU16(32);
@@ -506,9 +527,10 @@ TEST(record, InsertFwkEpregRecord)
     RKH_TR_FWK_EPREG(1, 128, 32, 4);
 }
 
-TEST(record, InsertFwkStateRecord)
+void
+test_InsertFwkStateRecord(void)
 {
-    expectHeader(RKH_TE_FWK_STATE, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_STATE, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectObjectAddress(&state);
     expectString(state.base.name);
@@ -518,9 +540,10 @@ TEST(record, InsertFwkStateRecord)
     RKH_TR_FWK_STATE(&receiver, &state);
 }
 
-TEST(record, InsertFwkPseudoStateRecord)
+void
+test_InsertFwkPseudoStateRecord(void)
 {
-    expectHeader(RKH_TE_FWK_PSTATE, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_FWK_PSTATE, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectObjectAddress(&pseudoState);
     expectString(pseudoState.base.name);
@@ -530,14 +553,15 @@ TEST(record, InsertFwkPseudoStateRecord)
     RKH_TR_FWK_PSTATE(&receiver, &pseudoState);
 }
 
-TEST(record, InsertDispatchRecordWithInvalidSignal)
+void
+test_InsertDispatchRecordWithInvalidSignal(void)
 {
     event.e = RKH_COMPLETION_EVENT;
 
     rkh_trc_isoff__ExpectAndReturn(RKH_TE_SM_DCH, RKH_TRUE);
     rkh_trc_symFil_isoff_ExpectAndReturn(RKHFilterSma, RKH_GET_PRIO(&receiver), 
                                          RKH_TRUE);
-    expectHeader(RKH_TE_SM_DCH, 0, 0x1234567, 1);
+    expectHeader(RKH_TE_SM_DCH, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
     expectU8(event.e);
     expectObjectAddress(&state);
