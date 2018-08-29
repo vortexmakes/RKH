@@ -66,6 +66,9 @@
     <ClCompile Include="..\..\..\..\..\libbsp\platform\80x86\win\trace_io_tcp.c">
       <Filter>bsp</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\fwk\src\rkhfwk_rdygrp.c">
+      <Filter>rkh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="rkh">

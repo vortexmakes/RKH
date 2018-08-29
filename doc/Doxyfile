@@ -845,22 +845,17 @@ INPUT                  = ../source/fwk/inc \
                          ../third-party/utrazer/test_runners/test_utrzignore_runner.c \
                          ../third-party/utrazer/test_runners/test_utrzsm_runner.c \
                          ../third-party/unitrazer/unitrazer.h \
-                         ../source/sm/test/runner/test_smTransition_runner.c \
-                         ../source/sm/test/runner/test_smPseudostate_runner.c \
-                         ../source/sm/test/runner/test_smTransitionWoutUnitrazer_runner.c \
-                         ../source/sm/test/src/test_smTransition.c \
-                         ../source/sm/test/src/test_smPseudostate.c \
-                         ../source/sm/test/src/test_smTransitionWoutUnitrazer.c \
-                         ../source/sma/test/sma/runner/test_smPolymorphism_runner.c \
-                         ../source/sma/test/sma/src/test_smPolymorphism.c \
-                         ../source/sma/test/sma/src/test_rkhsma.c \
-                         ../source/trc/test/filter/runner/test_rkhtrc_filter_runner.c \
-                         ../source/trc/test/filter/src/test_rkhtrc_filter.c \
-                         ../source/trc/test/record/runner/test_rkhtrc_record_runner.c \
-                         ../source/trc/test/record/src/test_rkhtrc_record.c \
-                         ../source/trc/test/stream/runner/test_rkhtrc_stream_runner.c \
-                         ../source/sm/test/runner/test_smInitialPseudostate_runner.c \
-                         ../source/sm/test/src/test_smInitialPseudostate.c
+                         ../source/fwk/test/test_rkhfwk_bittbl.c \
+                         ../source/fwk/test/test_rkhfwk_dynevt.c \
+                         ../source/fwk/test/test_rkhfwk_evtpool.c \
+                         ../source/fwk/test/test_rkhfwk_pubsub.c \
+                         ../source/fwk/test/test_rkhfwk_rdygrp.c \
+                         ../source/sma/test/test_rkhsma.c \
+                         ../source/sma/test/test_rkhsma_prio.c \
+                         ../source/sma/test/test_rkhsma_sync.c \
+                         ../source/trc/test/test_rkhtrc_filter.c \
+                         ../source/trc/test/test_rkhtrc_record.c \
+                         ../source/trc/test/test_rkhtrc_stream.c
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

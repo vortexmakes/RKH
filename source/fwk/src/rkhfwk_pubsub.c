@@ -75,6 +75,8 @@
 #include "rkhevt.h"
 #include "rkhfwk_dynevt.h"
 
+#if RKH_CFG_FWK_PUBSUB_EN == RKH_ENABLED
+
 RKH_MODULE_NAME(rkhfwk_pubsub)
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -188,4 +190,5 @@ rkh_pubsub_publish(rui8_t channel, RKH_EVT_T *event,
     return nRdyAo;
 }
 
+#endif
 /* ------------------------------ End of file ------------------------------ */

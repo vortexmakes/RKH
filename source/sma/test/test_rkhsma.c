@@ -57,8 +57,8 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity.h"
 #include "rkhsma.h"
-#include "smTest.h"
-#include "smInstance.h"
+#include "smInstance.h"     /* support files */
+#include "smPolymorphism.h"
 #include "Mock_rkhport.h"
 #include "Mock_rkhtrc.h"
 #include "Mock_rkhtrc_record.h"
@@ -66,6 +66,7 @@
 #include "Mock_rkhsm.h"
 #include "Mock_rkhqueue.h"
 #include "Mock_rkhassert.h"
+#include <string.h>
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -81,8 +82,63 @@ static RKH_EVT_T event = {0, 0, 0};
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+static void
+checkVtbl(RKH_SMA_T *me, RKHActivate activate, RKHTask task, 
+          RKHPostFifo postFifo, RKHPostLifo postLifo)
+{
+    TEST_ASSERT_EQUAL_PTR(activate, me->vptr->activate);
+    TEST_ASSERT_EQUAL_PTR(task, me->vptr->task);
+    TEST_ASSERT_EQUAL_PTR(postFifo, me->vptr->post_fifo);
+    TEST_ASSERT_EQUAL_PTR(postLifo, me->vptr->post_lifo);
+}
+
+static void
+testActivate(RKH_SMA_T *me, const RKH_EVT_T **qSto, RKH_QUENE_T qSize,
+             void *stkSto, rui32_t stkSize)
+{
+    (void)me;
+    (void)qSto;
+    (void)qSize;
+    (void)stkSto;
+    (void)stkSize;
+}
+
+static void
+testTask(RKH_SMA_T *me, void *arg)
+{
+    (void)me;
+    (void)arg;
+}
+
+static void
+testPostFifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
+{
+    (void)me;
+    (void)e;
+    (void)sender;
+}
+
+static void
+testPostLifo(RKH_SMA_T *me, const RKH_EVT_T *e, const void *const sender)
+{
+    (void)me;
+    (void)e;
+    (void)sender;
+}
+#endif
+
+static void
+setUp_polymorphism(void)
+{
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    /* Restore the default virtual table of RKH_SMA_T class */
+    singleton->vptr = &rkhSmaVtbl;
+#endif
+    memset(rkh_sptbl, 0, sizeof(rkh_sptbl));
+}
+
 /* ---------------------------- Global functions --------------------------- */
-/* ============================= SMA test group ============================ */
 void
 setUp(void)
 {
@@ -225,6 +281,301 @@ test_Recall(void)
 
     e = rkh_sma_recall(&receiver, &receiver.equeue);
     TEST_ASSERT_EQUAL(NULL, e);
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+
+/**
+ *  \addtogroup test_smInstance Instance test group
+ *  @{
+ *  \name Test cases of instance group
+ *  @{ 
+ */
+void
+test_ctorOfStaticPrivateAO(void)
+{
+    Single_ctor(4);
+
+    TEST_ASSERT_EQUAL_STRING("single", RKH_SMA_ACCESS_CONST(single, name));
+    TEST_ASSERT_EQUAL(4, Single_getFoo());
+}
+
+void
+test_staticPublicAOWithoutRuntimeCtor(void)
+{
+    publicSingle->foo = 8;
+    TEST_ASSERT_EQUAL_STRING("publicSingle", 
+                             RKH_SMA_ACCESS_CONST(publicSingle, name));
+}
+
+void
+test_ctorOfStaticPublicAO(void)
+{
+    PublicSingle_ctor(8);
+
+    TEST_ASSERT_EQUAL_STRING("publicSingle", 
+                             RKH_SMA_ACCESS_CONST(publicSingle, name));
+    TEST_ASSERT_EQUAL(8, publicSingle->foo);
+}
+
+void
+test_ctorOfStaticOpaqueAO(void)
+{
+    Opaque_ctor(opaque, 4);
+
+    TEST_ASSERT_EQUAL(4, Opaque_getFoo(opaque));
+}
+
+void
+test_ctorOfStaticMultipleAO(void)
+{
+    MultiplePublicSingle_ctor(single0, 8);
+
+    TEST_ASSERT_EQUAL_STRING("single0", 
+                             RKH_SMA_ACCESS_CONST(single0, name));
+    TEST_ASSERT_EQUAL(8, single0->foo);
+}
+
+void
+test_ctorOfStaticArrayOfAO(void)
+{
+    PublicSingle *pSingle = RKH_ARRAY_SMA(arrayOfSingles, 2);
+    MultiplePublicSingle_ctor(pSingle, 8);
+
+    TEST_ASSERT_EQUAL_STRING("single2", 
+                             RKH_SMA_ACCESS_CONST(pSingle, name));
+    TEST_ASSERT_EQUAL(8, pSingle->foo);
+}
+
+void
+test_staticPrivateSMWithoutRuntimeCtor(void)
+{
+    TEST_ASSERT_EQUAL_STRING("stateMachine", 
+                             RKH_SMA_ACCESS_CONST(stateMachine, name));
+    TEST_ASSERT_EQUAL_PTR(NULL, stateMachine->state);
+}
+
+void
+test_staticPublicSMWithoutRuntimeCtor(void)
+{
+    TEST_ASSERT_EQUAL_STRING("publicStateMachine", 
+                             RKH_SMA_ACCESS_CONST(publicStateMachine, name));
+    TEST_ASSERT_EQUAL(8, publicSingle->foo);
+}
+
+void
+test_ctorOfStaticCompositePrivateSingletonAO(void)
+{
+    Composite_ctor(16);
+
+    TEST_ASSERT_EQUAL_STRING("composite", 
+                             RKH_SMA_ACCESS_CONST(composite, name));
+    TEST_ASSERT_EQUAL_STRING("region", 
+                 RKH_SMA_ACCESS_CONST(Composite_getItsReactivePart(), name));
+    TEST_ASSERT_EQUAL(16, Composite_getFoo());
+}
+
+void
+test_ctorOfStaticCompositePublicAO(void)
+{
+    PublicComposite_ctor(publicComposite, 16);
+
+    TEST_ASSERT_EQUAL_STRING("publicComposite", 
+                             RKH_SMA_ACCESS_CONST(publicComposite, name));
+    TEST_ASSERT_EQUAL_STRING("publicRegion", 
+             RKH_SMA_ACCESS_CONST(&publicComposite->itsReactivePart, name));
+    TEST_ASSERT_EQUAL(16, publicComposite->foo);
+}
+
+void
+test_ctorOfStaticCompositeAOWithDerivedPublicSM(void)
+{
+    PublicCompositeA_ctor(publicCompositeA, 16, 8);
+
+    TEST_ASSERT_EQUAL_STRING("publicCompositeA", 
+                             RKH_SMA_ACCESS_CONST(publicCompositeA, name));
+    TEST_ASSERT_EQUAL_STRING("publicRegionA", 
+             RKH_SMA_ACCESS_CONST(&publicCompositeA->itsReactivePart, name));
+    TEST_ASSERT_EQUAL(16, publicCompositeA->foo);
+    TEST_ASSERT_EQUAL(8, publicCompositeA->itsReactivePart.foo);
+}
+
+void
+test_ctorOfDynamicCompositeAO(void)
+{
+    PublicSingle *actObj;
+
+    actObj = PublicSingle_dynCtor(8);
+    TEST_ASSERT_NOT_NULL(actObj);
+    TEST_ASSERT_EQUAL(8, actObj->foo);
+
+    TEST_ASSERT_EQUAL_STRING("publicSingleDyn", 
+                             RKH_SMA_ACCESS_CONST(actObj, name));
+
+    PublicSingle_dynDtor(actObj);
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+
+/**
+ *  \addtogroup test_smPolymorphism Polymorphism test group
+ *  @{
+ *  \name Test cases of polimorphism group
+ *  @{
+ */
+void
+test_defaultVirtualFunctions(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    checkVtbl(singleton, 
+              rkh_sma_activate, rkh_sma_dispatch, rkh_sma_post_fifo, 
+              rkh_sma_post_lifo);
+
+    TEST_ASSERT_EQUAL_PTR(&rkhSmaVtbl, singleton->vptr);
+#endif
+}
+
+void
+test_callVirtualFunction(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    const RKH_EVT_T *qs[1];
+
+    rkh_queue_init_Ignore();   /* for RKH_SMA_ACTIVATE() */
+    rkh_enter_critical_Expect();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_REG, RKH_FALSE);
+    rkh_exit_critical_Expect();
+    rkh_sm_init_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_ACT, RKH_FALSE);
+
+    rkh_enter_critical_Expect();
+    rkh_queue_put_fifo_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_FIFO, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    rkh_enter_critical_Expect();
+    rkh_queue_put_lifo_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_SMA_LIFO, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    RKH_SMA_ACTIVATE(singleton, qs, 1, 0, 0);
+    RKH_SMA_POST_FIFO(singleton, &event, NULL);
+    RKH_SMA_POST_LIFO(singleton, &event, NULL);
+#endif
+}
+
+void
+test_setVirtualTable(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    const RKHSmaVtbl *vptr;
+    static const RKHSmaVtbl vtbl =
+    {
+        testActivate, testTask, testPostFifo, testPostLifo
+    };
+
+    vptr = singleton->vptr = &vtbl;
+
+    checkVtbl(singleton, 
+              testActivate, testTask, testPostFifo, testPostLifo);
+#endif
+}
+
+void
+test_runtimeSingletonAOCtor(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Expect(&singleton->sm);
+
+    Singleton_ctor(8);
+    TEST_ASSERT_EQUAL(8, Singleton_getFoo());
+
+    RKH_SMA_ACTIVATE(singleton, NULL, 0, NULL, 0);
+    TEST_ASSERT_EQUAL(0, Singleton_getFoo());
+#endif
+}
+
+void
+test_runtimeMultipleAOCtorWithVtblForObj(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Ignore();
+    rkh_sm_ctor_Ignore();
+
+    Multiple_ctor(multA, 2, Multiple_postFifoA);
+    Multiple_ctor(multB, 4, Multiple_postFifoB);
+
+    checkVtbl((RKH_SMA_T *)multA, 
+              rkh_sma_activate, rkh_sma_dispatch, Multiple_postFifoA, 
+              rkh_sma_post_lifo);
+
+    TEST_ASSERT_EQUAL(2, Multiple_getFoobar(multA));
+    TEST_ASSERT_EQUAL(4, Multiple_getFoobar(multB));
+
+    RKH_SMA_POST_FIFO((RKH_SMA_T *)multA, NULL, NULL);
+    RKH_SMA_POST_FIFO((RKH_SMA_T *)multB, NULL, NULL);
+
+    TEST_ASSERT_EQUAL(0, Multiple_getFoobar(multA));
+    TEST_ASSERT_EQUAL(8, Multiple_getFoobar(multB));
+#endif
+}
+
+void
+test_runtimeMultipleAOCtorWithVtblForType(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Expect((RKH_SM_T *)cmdSignal);
+    rkh_sm_ctor_Expect((RKH_SM_T *)cmdRegister);
+
+    Command_ctor(cmdSignal, 128); 
+    Command_ctor(cmdRegister, 64); 
+
+    checkVtbl((RKH_SMA_T *)cmdSignal, 
+              rkh_sma_activate, Command_task, 
+              Command_postFifo, Command_postLifo);
+
+    checkVtbl((RKH_SMA_T *)cmdRegister, 
+              rkh_sma_activate, Command_task, 
+              Command_postFifo, Command_postLifo);
+#endif
+}
+
+void
+test_runtimeSubObjectCtorOfSMAAndSM(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Expect((RKH_SM_T *)theCallControl);
+    CallControl_ctorA(16);
+
+    TEST_ASSERT_EQUAL(16, CallControl_getFoo());
+    checkVtbl((RKH_SMA_T *)theCallControl, 
+              CallControl_activate, CallControl_task, 
+              rkh_sma_post_fifo, rkh_sma_post_lifo);
+#endif
+}
+
+void
+test_runtimeSubObjectCtorOfSMAAndSMWithDefaultVtbl(void)
+{
+    setUp_polymorphism();
+#if RKH_CFG_SMA_VFUNCT_EN == RKH_ENABLED
+    rkh_sm_ctor_Expect((RKH_SM_T *)theCallControl);
+    CallControl_ctorB(8);
+
+    TEST_ASSERT_EQUAL(8, CallControl_getFoo());
+    checkVtbl((RKH_SMA_T *)theCallControl, 
+              rkh_sma_activate, rkh_sma_dispatch, 
+              rkh_sma_post_fifo, rkh_sma_post_lifo);
+#endif
 }
 
 /** @} doxygen end group definition */
