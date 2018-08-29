@@ -3,7 +3,7 @@
 
 source_dir="../../source"
 ceedling_dir="tools/ceedling"
-modules="fwk mempool queue sm sma tmr trc"
+modules="fwk sm sma trc"
 
 if [ ! -d $source_dir ]; then
     echo "[ERROR] This script must be invoked from "$ceedling_dir
