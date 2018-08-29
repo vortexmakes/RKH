@@ -112,6 +112,7 @@ void
 test_Fails_TriesBlockActiveObjectWithEmptyQueue(void)
 {
     rkh_assert_Expect("rkhsma_sync", 0);
+    rkh_assert_IgnoreArg_file();
     rkh_assert_IgnoreArg_line();
     rkh_assert_StubWithCallback(MockAssertCallback);
     ao.equeue.qty = 0;
