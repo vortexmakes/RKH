@@ -52,7 +52,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include <stdarg.h>
 #include "rkh.h"
-#include "unity_fixture.h"
+#include "unity.h"
 #include "unitrazer.h"
 
 
@@ -96,7 +96,7 @@ unitrazer_expect_wNumArg(UNITY_LINE_TYPE cmockLine, RKH_TE_ID_T trcEvt,
     va_start(args, nArgs);
     while (nArgs--)
     {
-        RKH_TRC_UI8(va_arg(args, rui8_t));
+        RKH_TRC_UI8(va_arg(args, int));
     }
     va_end(args);
     RKH_TRC_END_WOFIL();

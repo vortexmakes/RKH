@@ -50,7 +50,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <conio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "rkh.h"
 #include "unity.h"
