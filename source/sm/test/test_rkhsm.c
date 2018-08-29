@@ -115,6 +115,9 @@ typedef struct Composite
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static const RKH_ST_T *targetStates[16], *exitStates[16], *entryStates[16];
+static RKH_ST_T *expectedState;
+static RKH_RCODE_T result;
+static int first = 1;
 int GlobalExpectCount;
 int GlobalVerifyOrder;
 char *GlobalOrderError;
@@ -123,11 +126,36 @@ char *GlobalOrderError;
 /* ---------------------------- Local functions ---------------------------- */
 static
 void
-setUpTransition(void)
+setUpUnitrazer(void)
 {
+    if(first)
+    {
+        tzlink_open(0, NULL);
+    }
+
+    first = 0;
+
     sm_init();
     sm_ntrnact_ignore();
-    Mock_smTestAct_Init();
+}
+
+static
+void
+setUpWoutUnitrazer(void)
+{
+    sm_ignore();
+}
+
+static
+void
+loadStateMachineSymbols(void)
+{
+    RKH_TR_FWK_SIG(A);
+    RKH_TR_FWK_SIG(B);
+    RKH_TR_FWK_SIG(C);
+    RKH_TR_FWK_SIG(D);
+    RKH_TR_FWK_SIG(E);
+    RKH_TR_FWK_SIG(F);
 
     RKH_TR_FWK_AO(smTest);
     RKH_TR_FWK_STATE(smTest, &waiting);
@@ -146,26 +174,6 @@ setUpTransition(void)
     RKH_TR_FWK_STATE(smTest, &s4);
     RKH_TR_FWK_STATE(smTest, &s5);
     RKH_TR_FWK_STATE(smTest, &s2Final);
-    RKH_TR_FWK_SIG(A);
-    RKH_TR_FWK_SIG(B);
-    RKH_TR_FWK_SIG(C);
-    RKH_TR_FWK_SIG(D);
-    RKH_TR_FWK_SIG(E);
-    RKH_TR_FWK_SIG(F);
-
-    RKH_FILTER_OFF_ALL_SIGNALS();
-    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
-    RKH_FILTER_OFF_SMA(smTest);
-    RKH_FILTER_OFF_EVENT(RKH_TE_FWK_ASSERT);
-}
-
-static
-void
-setUpPseudostateConditional(void)
-{
-    sm_init();
-    sm_ntrnact_ignore();
-    Mock_smPseudoConditionalTestAct_Init();
 
     RKH_TR_FWK_AO(smPseudoConditionalTest);
     RKH_TR_FWK_STATE(smPseudoConditionalTest, &smPCT_waiting);
@@ -179,27 +187,6 @@ setUpPseudostateConditional(void)
     RKH_TR_FWK_STATE(smPseudoConditionalTest, &smPCT_s1);
     RKH_TR_FWK_STATE(smPseudoConditionalTest, &smPCT_s11);
     RKH_TR_FWK_STATE(smPseudoConditionalTest, &smPCT_s12);
-    RKH_TR_FWK_SIG(A);
-    RKH_TR_FWK_SIG(B);
-    RKH_TR_FWK_SIG(C);
-    RKH_TR_FWK_SIG(D);
-    RKH_TR_FWK_SIG(E);
-
-    RKH_FILTER_OFF_ALL_SIGNALS();
-    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
-    RKH_FILTER_OFF_SMA(smPseudoConditionalTest);
-    RKH_FILTER_OFF_EVENT(RKH_TE_FWK_ASSERT);
-}
-
-static
-void
-setUpPseudostate(void)
-{
-    sm_init();
-    sm_ntrnact_ignore();
-    rkh_sm_clear_history(&smPT_s1Hist);
-    rkh_sm_clear_history(&smPT_s12Hist);
-    rkh_sm_clear_history(&smPT_s2Hist);
 
     RKH_TR_FWK_AO(smPseudoTest);
     RKH_TR_FWK_STATE(smPseudoTest, &smPT_waiting);
@@ -215,25 +202,6 @@ setUpPseudostate(void)
     RKH_TR_FWK_STATE(smPseudoTest, &smPT_s21);
     RKH_TR_FWK_STATE(smPseudoTest, &smPT_s22);
     RKH_TR_FWK_STATE(smPseudoTest, &smPT_s2Hist);
-    RKH_TR_FWK_SIG(A);
-    RKH_TR_FWK_SIG(B);
-    RKH_TR_FWK_SIG(C);
-    RKH_TR_FWK_SIG(D);
-    RKH_TR_FWK_SIG(E);
-
-    RKH_FILTER_OFF_ALL_SIGNALS();
-    RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
-    RKH_FILTER_OFF_SMA(smPseudoTest);
-    RKH_FILTER_OFF_EVENT(RKH_TE_FWK_ASSERT);
-}
-
-static
-void
-setUpInitPseudostate(void)
-{
-    sm_init();
-    sm_ntrnact_ignore();
-    rkh_sm_clear_history(&smIPT_s1Hist);
 
     RKH_TR_FWK_AO(smInitialPseudoTest);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s0);
@@ -264,30 +232,38 @@ setUpInitPseudostate(void)
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s7);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s71);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s72);
-    RKH_TR_FWK_SIG(A);
-    RKH_TR_FWK_SIG(B);
-    RKH_TR_FWK_SIG(C);
-    RKH_TR_FWK_SIG(D);
-    RKH_TR_FWK_SIG(G);
+}
 
+static
+void
+setRKHTraceFilters(void)
+{
     RKH_FILTER_OFF_ALL_SIGNALS();
     RKH_FILTER_OFF_GROUP_ALL_EVENTS(RKH_TG_SM);
+    RKH_FILTER_OFF_SMA(smTest);
+    RKH_FILTER_OFF_SMA(smPseudoConditionalTest);
+    RKH_FILTER_OFF_SMA(smPseudoTest);
     RKH_FILTER_OFF_SMA(smInitialPseudoTest);
     RKH_FILTER_OFF_EVENT(RKH_TE_FWK_ASSERT);
-
-    Mock_smInitialPseudoTestAct_Init();
 }
 
 /* ---------------------------- Global functions --------------------------- */
 void 
 setUp(void)
 {
-    tzlink_open(0, NULL);
+    setUpUnitrazer();
+    
+    Mock_smTestAct_Init();
+    Mock_smPseudoConditionalTestAct_Init();
+    Mock_smInitialPseudoTestAct_Init();
 
-    setUpTransition();
-    setUpPseudostateConditional();
-    setUpPseudostate();
-    setUpInitPseudostate();
+    loadStateMachineSymbols();
+    setRKHTraceFilters();
+
+    rkh_sm_clear_history(&smPT_s1Hist);
+    rkh_sm_clear_history(&smPT_s12Hist);
+    rkh_sm_clear_history(&smPT_s2Hist);
+    rkh_sm_clear_history(&smIPT_s1Hist);
 }
 
 void 
@@ -296,6 +272,7 @@ tearDown(void)
     sm_verify(); /* Makes sure there are no unused expectations, if */
                  /* there are, this function causes the test to fail. */
     sm_cleanup();
+
     Mock_smTestAct_Verify();
     Mock_smTestAct_Destroy();
 
@@ -776,7 +753,7 @@ test_transitionCompositeToCompositeAtEqualLevel(void)
     sm_tsState_expect(RKH_STATE_CAST(&s21));
     sm_enstate_expect(RKH_STATE_CAST(&s21));
     sm_nenex_expect(nEnSt, nExSt);
-    sm_state_expect(RKH_STATE_CAST(&s2211));
+    sm_state_expect(RKH_STATE_CAST(&s21));
 	sm_evtProc_expect();
 
     rkh_sm_init((RKH_SM_T *)smTest);
@@ -972,14 +949,13 @@ test_transitionFails_ExceededHierarchicalLevel(void)
     UtrzProcessOut *p;
 
     expInitSm(smTest, RKH_STATE_CAST(&waiting));
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
 	sm_dch_expect(evE.e, RKH_STATE_CAST(&s0));
 	sm_trn_expect(RKH_STATE_CAST(&s0), RKH_STATE_CAST(&s22211));
     sm_tsState_expect(RKH_STATE_CAST(&s22211));
 	sm_exHLevel_expect();
     rkh_assert_Expect("rkhsm", 0);
     rkh_assert_IgnoreArg_line();
-
-    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
 
     rkh_sm_init((RKH_SM_T *)smTest);
     setState(smTest, RKH_STATE_CAST(&s0));
@@ -1177,7 +1153,690 @@ test_transitionSyncDispatchingToStateMachine(void)
 {
     TEST_IGNORE();
 }
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 
+/**
+ *  \addtogroup test_smTransitionWoutUnitrazer Transition test group (wout Ut)
+ *  @{
+ *  \name Test cases of trnWoutUnitrazer group
+ *  @{ 
+ */
+
+void
+test_trnWoutUnitrazerFirstStateAfterInit(void)
+{
+    setUpWoutUnitrazer();
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    expectedState = RKH_STATE_CAST(&waiting);
+
+    rkh_sm_init((RKH_SM_T *)smTest);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+}
+
+void
+test_trnWoutUnitrazerSimpleToSimpleAtEqualLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s1);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr11_Expect(RKH_CAST(SmTest, smTest), &evA);
+    smTest_nS1_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s0),
+                            RKH_STATE_CAST(&s0),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerSimpleToSimpleFromHighToLowLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s21);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr12_Expect(RKH_CAST(SmTest, smTest), &evB);
+    smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s0),
+                            RKH_STATE_CAST(&s0),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerSimpleToSimpleFromLowToHighLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s0);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr13_Expect(RKH_CAST(SmTest, smTest), &evB);
+    smTest_nS0_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s21),
+                            RKH_STATE_CAST(&s21),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerSimpleToCompositeAtEqualLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s21);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr21_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS2_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s0),
+                            RKH_STATE_CAST(&s0),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerSimpleToCompositeFromHighToLowLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s2211);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr22_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_nS22_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS22_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS221_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS2211_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s0),
+                            RKH_STATE_CAST(&s0),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerSimpleToCompositeFromLowToHighLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s21);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr23_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_iS2_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s21),
+                            RKH_STATE_CAST(&s21),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerCompositeToSimpleAtEqualLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s0);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr31_Expect(RKH_CAST(SmTest, smTest), &evA);
+    smTest_nS0_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s21),
+                            RKH_STATE_CAST(&s2),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerCompositeToSimpleFromHighToLowLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s21);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr32_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s21),
+                            RKH_STATE_CAST(&s2),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerLoopSimpleStateOnTop(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s1);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS1_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr53_Expect(RKH_CAST(SmTest, smTest), &evA);
+    smTest_nS1_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s1),
+                            RKH_STATE_CAST(&s1),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerLoopNestedSimpleState(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s31);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr52_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s31),
+                            RKH_STATE_CAST(&s31),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerLoopCompositeStateOnTop(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s31);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr51_Expect(RKH_CAST(SmTest, smTest), &evA);
+    smTest_iS3_Expect(RKH_CAST(SmTest, smTest), &evA);
+    smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s31),
+                            RKH_STATE_CAST(&s3),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerLoopNestedCompositeState(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s2211);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS2211_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr54_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_iS22_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS221_Expect(RKH_CAST(SmTest, smTest), &evD);
+    smTest_nS2211_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s2211),
+                            RKH_STATE_CAST(&s22),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerCompositeToSimpleFromLowToHighLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s0);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS2211_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS22_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr33_Expect(RKH_CAST(SmTest, smTest), &evB);
+    smTest_nS0_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s2211),
+                            RKH_STATE_CAST(&s22),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerCompositeToCompositeAtEqualLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s21);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS3_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr41_Expect(RKH_CAST(SmTest, smTest), &evB);
+    smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS2_Expect(RKH_CAST(SmTest, smTest), &evB);
+    smTest_nS21_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s31),
+                            RKH_STATE_CAST(&s3),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerCompositeToCompositeFromHighToLowLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s2211);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS31_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS3_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr42_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_nS22_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS22_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS221_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS2211_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s31),
+                            RKH_STATE_CAST(&s3),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerCompositeToCompositeFromLowToHighLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s31);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS2211_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS221_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS22_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr43_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS3_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS3_Expect(RKH_CAST(SmTest, smTest), &evC);
+    smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s2211),
+                            RKH_STATE_CAST(&s3),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerInternalInSimpleState(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s1);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_tr14_Expect(RKH_CAST(SmTest, smTest), &evB);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s1),
+                            RKH_STATE_CAST(&s1),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerInternalInCompositeState(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s31);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_tr15_Expect(RKH_CAST(SmTest, smTest), &evE);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s31),
+                            RKH_STATE_CAST(&s3),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+}
+
+void
+test_trnWoutUnitrazerFails_EventNotFound(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s1);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s1),
+                            RKH_STATE_CAST(&s1),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_NFOUND, result);
+}
+
+void
+test_trnWoutUnitrazerFails_GuardFalseOnInternalTrn(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s1);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_falseGuard_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evC, 
+                                      RKH_FALSE);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s1),
+                            RKH_STATE_CAST(&s1),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evC);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_NFOUND, result);
+}
+
+void
+test_trnWoutUnitrazerFails_GuardFalseOnExternalTrn(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s1);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_falseGuard_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evD, 
+                                      RKH_FALSE);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s1),
+                            RKH_STATE_CAST(&s1),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evD);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_NFOUND, result);
+}
+
+void
+test_trnWoutUnitrazerFails_ExceededHierarchicalLevel(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s0);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s0),
+                            RKH_STATE_CAST(&s0),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+    rkh_assert_Expect("rkhsm", 0);
+    rkh_assert_IgnoreArg_line();
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EX_HLEVEL, result);
+}
+
+void
+test_trnWoutUnitrazerMultipleEnabledTrn_FiringFirstTrueGuard(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s4);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_guard4a_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evA, RKH_FALSE);
+    smTest_guard4b_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evA, RKH_TRUE);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s4),
+                            RKH_STATE_CAST(&s4),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evA);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerMultipleEnabledTrn_FiringFirstEmptyGuard(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s4);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_guard4a_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evB, RKH_FALSE);
+    smTest_guard4b_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evB, RKH_FALSE);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s4),
+                            RKH_STATE_CAST(&s4),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerDefaultTrnWithAssociatedEffect(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s31);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS0_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr55_Expect(RKH_CAST(SmTest, smTest), &evF);
+    smTest_nS3_Expect(RKH_CAST(SmTest, smTest));
+    smTest_iS3_Expect(RKH_CAST(SmTest, smTest), &evF);
+    smTest_nS31_Expect(RKH_CAST(SmTest, smTest));
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s0),
+                            RKH_STATE_CAST(&s0),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evF);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerGeneratedCompletionEventBySimpleState(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s4);
+
+    /* Expectations for transition to s5 */
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_nS5_Expect(RKH_CAST(SmTest, smTest));
+    /* Expectations for completion transition */
+    smTest_xS5_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr61_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s21),
+                            RKH_STATE_CAST(&s2),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evE);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerGeneratedCompletionEventByFinalState(void)
+{
+    setUpWoutUnitrazer();
+
+    expectedState = RKH_STATE_CAST(&s4);
+
+    /* Expectations for transition to S2's FinalState */
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+    smTest_xS21_Expect(RKH_CAST(SmTest, smTest));
+    /* Expectations for completion transition */
+    smTest_guardS2_ExpectAndReturn(RKH_CAST(SmTest, smTest), &evCompletion, 
+                                   RKH_TRUE);
+    smTest_xS2_Expect(RKH_CAST(SmTest, smTest));
+    smTest_tr60_Expect(RKH_CAST(SmTest, smTest), &evCompletion);
+    setProfileWoutUnitrazer(smTest,
+                            RKH_STATE_CAST(&s21),
+                            RKH_STATE_CAST(&s21),
+                            expectedState,
+                            INIT_STATE_MACHINE);
+
+    result = rkh_sm_dispatch((RKH_SM_T *)smTest, &evF);
+
+    TEST_ASSERT_TRUE(expectedState == getState(smTest));
+    TEST_ASSERT_EQUAL(RKH_EVT_PROC, result);
+}
+
+void
+test_trnWoutUnitrazerSyncDispatchingToStateMachine(void)
+{
+    TEST_IGNORE();
+
+    setUpWoutUnitrazer();
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /**
  *  \addtogroup test_smPseudostate Pseudostate test group
  *  @{
@@ -1419,6 +2078,8 @@ test_pseudostateConditionalFailsTrnSegmentsExceeded(void)
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 
 /**
  *  \addtogroup test_smPseudostate Pseudostate test group
@@ -1617,6 +2278,9 @@ test_pseudostateTrnToEmptyShallowHistoryWithDefaultTrn(void)
 {
     UtrzProcessOut *p;
 
+    smPT_trueGuard_ExpectAndReturn(RKH_CAST(SmPseudoTest, smPseudoTest), &evE, RKH_TRUE);
+    smPT_trS2History_Expect(smPseudoTest, &evE);
+
     stateList_create(targetStates, 2, &smPT_s2Hist, &smPT_s22);
     stateList_create(exitStates, 1, &smPT_s0);
     stateList_create(entryStates, 2, &smPT_s2, &smPT_s22);
@@ -1655,6 +2319,9 @@ test_pseudostateTrnToLoadedShallowHistoryWithDefaultTrn(void)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+
 /**
  *  \addtogroup test_smInitialPseudostate Initial pseudostate test group
  *  @{
@@ -1677,7 +2344,6 @@ test_InitPseudostateFirstStateAfterInit(void)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
-#if 0
 void
 test_InitPseudostateTrnToEmptyShHistoryToSimpleState(void)
 {
@@ -1948,7 +2614,7 @@ test_InitPseudostateTrnToBranchToCmpState(void)
 }
 
 void
-test_InitPseudostateTrnToBranchToNestedSimpleState)
+test_InitPseudostateTrnToBranchToNestedSimpleState(void)
 {
     UtrzProcessOut *p;
     SmInitialPseudoTest *me = RKH_CAST(SmInitialPseudoTest, 
@@ -2088,7 +2754,7 @@ test_InitPseudostateSMInitialToSimpleState(void)
 
     smIPT_init_Expect(me, (RKH_EVT_T *)&evCreation);
     smI0_nS0_Expect(me);
-    trnStepExpect(me, &smI0_s0, NULL, NULL, NULL, NULL, &evCreation);
+    trnStepExpect(me, &smI0_s0, NULL, NULL, NULL, &evCreation);
 
     rkh_sm_init(me);
 
@@ -2326,9 +2992,10 @@ test_InitPseudostateTrnToInitialToSimpleStateWithNullTrn(void)
     p = unitrazer_getLastOut();
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
-#endif
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+
 /* ------------------------------ End of file ------------------------------ */
