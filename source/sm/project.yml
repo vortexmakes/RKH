@@ -35,6 +35,10 @@
     - ../portable/test
   :support:
     - test/support
+    - test/support/stub/mocks
+    - ../../third-party/unitrazer
+    - ../fwk/src
+    - ../trc/src
 
 :defines:
   :common: &common_defines [__TEST__]
@@ -67,12 +71,29 @@
 :tools_test_linker:
   :arguments:
     - -lm
+
+:tools_test_compiler:
+  :arguments:
+    - -D__UNITRAZER_LIB__
+
 :tools_gcov_linker:
   :arguments:
     - -lm
 
 :gcov:
   :html_report_type: detailed
+
+# LIBRARIES
+# These libraries are automatically injected into the build process. Those specified as
+# common will be used in all types of builds. Otherwise, libraries can be injected in just
+# tests or releases. These options are MERGED with the options in supplemental yaml files.
+:libraries:
+  :placement: :end
+  :flag: "${1}"
+  :common: &common_libraries []
+  :system:
+    - ../../third-party/unitrazer/unitrzlib.a
+    - -lstdc++
 
 :module_generator:
   :inc_root: inc/

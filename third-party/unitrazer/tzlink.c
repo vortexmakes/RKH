@@ -50,7 +50,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include <conio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "rkh.h"
 #include "unity.h"
@@ -74,7 +74,9 @@ execTrazerParser(rui8_t *p, TRCQTY_T n)
 {
 	while (n--)
     {
+#ifdef __UNITRAZER_LIB__
 		tzparser_exec(*p++);
+#endif
     }
 }
 
@@ -83,12 +85,18 @@ execTrazerParser(rui8_t *p, TRCQTY_T n)
 UtrzProcessOut *
 unitrazer_getLastOut(void)
 {
+#ifdef __UNITRAZER_LIB__
     UTRZ_RESP_T *p;
 
     p = unitrazer_get_resp();
     out.status = (p->e == RKH_TE_UT_FAIL) ? UT_PROC_FAIL : UT_PROC_SUCCESS;
     out.line = p->line;
-    strcpy(out.msg, p->msg);
+    strncpy(out.msg, p->msg, UT_SIZEOF_MSG);
+#else
+    out.status = UT_PROC_SUCCESS;
+    out.line = 0;
+    strcpy(out.msg, "");
+#endif
     return &out;
 }
 
@@ -103,12 +111,14 @@ unitrazer_resetOut(void)
 void
 rkh_hook_putTrcEvt(void)
 {
+#ifdef __UNITRAZER_LIB__
    UTRZ_RESP_T *p;
 
-    RKH_TRC_FLUSH();
+   RKH_TRC_FLUSH();
    p = unitrazer_get_resp();
 
    UNITY_TEST_ASSERT(p->e != RKH_TE_UT_FAIL, p->line, p->msg);
+#endif
 }
 
 #if RKH_CFG_TRC_EN == RKH_ENABLED
@@ -150,7 +160,9 @@ rkh_trc_flush(void)
         {
             while(nbytes--)
             {
+#ifdef __UNITRAZER_LIB__
                 tzparser_exec(*blk++);
+#endif
             }
             break;
         }
@@ -169,7 +181,9 @@ tzlink_open(int argc, char *argv[])
     (void)argv;
 
     RKH_TRC_OPEN();
+#ifdef __UNITRAZER_LIB__
     unitrazer_log_start();
+#endif
 }
 
 /* ------------------------------ End of file ------------------------------ */

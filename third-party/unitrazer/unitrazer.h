@@ -56,7 +56,7 @@
 
 /* ----------------------------- Include files ----------------------------- */
 
-#include "unity_fixture.h"
+#include "unity.h"
 #include "rkh.h"
 
 #ifdef __UNITRAZER_LIB__
