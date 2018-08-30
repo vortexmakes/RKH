@@ -188,7 +188,7 @@ trnStepExpect(RKH_SM_T *const me, const RKH_ST_T *currentState,
     /* Init state machine */
     if (CB(RKH_SMA_ACCESS_CONST(me, istate))->type == RKH_BASIC)
     {
-        expInitSm(me, RKH_STATE_CAST(currentState));
+        expInitSm((RKH_SMA_T *)me, RKH_STATE_CAST(currentState));
     }
 
     if (sourceState != (const RKH_ST_T *)0)
