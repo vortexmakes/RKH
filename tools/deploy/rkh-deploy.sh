@@ -1,7 +1,8 @@
-#!/bin/bash
+# !/bin/bash -e
+#
 # Usage: 
-# lf@razor:~/rkh$ .././rkh-deploy.sh 3.0.0 ../rkh-release
-# lf@razor:~/rkh$ .././rkh-deploy.sh clean ../rkh-release
+#     <rkh-root>/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/
+#
 
 version=$1
 outdir_path=$2
@@ -10,6 +11,11 @@ format="zip"
 outfile=$outdir_prefix"$2""."$format
 outdir_name=$outdir_path"/"$outfile
 res=0
+
+usage() {
+    echo "    "$0" deploy <release-version> <working-dir-path> <output-dir-path>"
+    echo "    "$0" clean <output-dir-path>"
+}
 
 check_repo() {
     curr_dir=$PWD
@@ -25,7 +31,7 @@ check_repo() {
                 git status
                 res=0
             else
-                echo "[WARNING] Must be realeasing only for master branch"
+                echo "[WARNING] Must be realeased only from master branch"
                 res=0
             fi
         fi
@@ -33,12 +39,6 @@ check_repo() {
         echo "[ERROR] <working-dir-path> ($1) is not a RKH repository"
         res=1
     fi
-}
-
-usage() {
-    echo "      "$0" deploy <release-version> <working-dir-path> <output-dir-path> [<html-dir-path>]"
-    echo "      "$0" clean <working-dir-path>"
-    echo "      "$0" check <working-dir-path>"
 }
 
 case "$1" in
@@ -51,6 +51,8 @@ case "$1" in
         [ -z $4 -o ! -d $4 ] && echo "[ERROR] Please, supplies a valid deploy output directory" && exit 1
         check_repo $3
         [ $res = 1 ] && exit 1
+        echo "Testing all modules..."
+        echo "Done"
         if [ ! -d doc ]; then
             echo "[ERROR] RKH's doc directory not found"
             exit 1
@@ -62,39 +64,33 @@ case "$1" in
         doc="html"
         doxygen Doxyfile
         cd ..
-        cp -r doc/html $curr_dir/$4/html/
+        cp -r doc/html $4/html/
         echo
         echo "Exporting Git repository"
         echo "------------------------"
-        echo "Archiving repository into "$curr_dir/$4/tmp_rkh_rel.zip"..."
-        git archive --worktree-attributes -o $curr_dir/$4/tmp_rkh_rel.zip master
-        echo "Unpacketing archive file into "$curr_dir/$4/tmp_rkh_rel/"..."
-        unzip -qo $curr_dir/$4/tmp_rkh_rel.zip -d $curr_dir/$4/tmp_rkh_rel/
-        echo "Copying doc (html) into "$curr_dir/$4/tmp_rkh_rel/"..."
-        cp -rf $curr_dir/$4/html $curr_dir/$4/tmp_rkh_rel/doc
-        echo "Preparing "$curr_dir/$4"/$outdir_prefix"$2""."$format file to release for..."
-        [ ! -d $curr_dir/$4/$outdir_prefix"$2" ] && mv $curr_dir/$4/tmp_rkh_rel $curr_dir/$4/$outdir_prefix"$2"
-        cd $curr_dir/$4/$outdir_prefix"$2"
+        echo "Exporting repository into "tmp_rkh_rel.zip"..."
+        git archive --worktree-attributes -o $4/tmp_rkh_rel.zip master
+        echo "Extracting into "tmp_rkh_rel/"..."
+        unzip -qo $4/tmp_rkh_rel.zip -d $4/tmp_rkh_rel/
+        echo "Copying doc (html) into "tmp_rkh_rel/"..."
+        cp -rf $4/html $4/tmp_rkh_rel/doc
+        echo "Preparing ""$outdir_prefix"$2""."$format file to release for..."
+        [ ! -d $4/$outdir_prefix"$2" ] && mv $4/tmp_rkh_rel $4/$outdir_prefix"$2"
+        cd $4/$outdir_prefix"$2"
         zip -qr ../$outfile .
-        cd $curr_dir
+        echo "Done"
         exit 0
-
-        ;;
-	check)
-        if [ -z $2 ]; then
-            echo "[ERROR] Please, supplies a valid RKH working directory"
-            usage
-        else
-            check_repo $2
-            [ $? = 1 ] && exit 1
-        fi
         ;;
 	clean)
-        check_repo $3
-        [ $res == 1 ] && exit 1
-        echo "Cleaning output directory "$outdir_path
-        rm -r $outdir_path/tmp_*/ $outdir_path/$outdir_prefix*
-        rm $outdir_path/*.zip
+        echo
+        echo "Cleaning output directory"
+        echo "-------------------------"
+        [ -z $2 -o ! -d $2 ] && echo "[ERROR] Please, supplies a valid deploy output directory" && exit 1
+        [ $res = 1 ] && exit 1
+        echo "Removing output files..."
+        rm -rf $2/tmp_*/ $2/$outdir_prefix*
+        rm -f $2/*.zip -r $2/html
+        echo "Done"
         ;;
   	*)
         usage
