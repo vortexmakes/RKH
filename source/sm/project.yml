@@ -45,7 +45,6 @@
   :test:
     - *common_defines
     - TEST
-    - __UNITRAZER_LIB__
   :test_preprocess:
     - *common_defines
     - TEST
@@ -72,6 +71,11 @@
 :tools_test_linker:
   :arguments:
     - -lm
+
+:tools_test_compiler:
+  :arguments:
+    - -D__UNITRAZER_LIB__
+
 :tools_gcov_linker:
   :arguments:
     - -lm
