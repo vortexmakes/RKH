@@ -10,6 +10,7 @@ if [ ! -d $source_dir ]; then
     exit 1
 fi
 
+currdir=$PWD
 for module in $modules;
 do
     echo "Run all test of "$module "module"
@@ -21,6 +22,10 @@ do
         ceedling clean gcov:all utils:gcov
     fi
 done
+
+cd ..
+cp fwk/build/artifacts/gcov/GcovCoverageResults.src_* ../tools/ceedling/gcov/
+! sudo gcovr -p -b -e "^vendor.*|^build.*|^test.*|^lib.*" --html --html-details -r . -o "../tools/ceedling/gcov/GcovCoverageResults.html"
 
 exit 0
 
