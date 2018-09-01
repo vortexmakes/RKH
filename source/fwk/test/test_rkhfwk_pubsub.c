@@ -57,6 +57,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "unity.h"
 #include "rkhfwk_pubsub.h"
+#include "rkhfwk_pubsubSpy.h"
 #include "Mock_rkhfwk_rdygrp.h"
 #include "Mock_rkhsma.h"
 #include "Mock_rkhassert.h"
@@ -66,15 +67,26 @@
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
+typedef struct PubArg PubArg;
+struct PubArg
+{
+    RdyCbArg base;
+    RKH_EVT_T *event;
+    const void *sender;
+};
+
 /* ---------------------------- Global variables --------------------------- */
 int GlobalExpectCount;
 int GlobalVerifyOrder;
 char *GlobalOrderError;
 RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];  /* Just for compiling */
+static RKH_EVT_T event;
 
 /* ---------------------------- Local variables ---------------------------- */
 RKH_SMA_CREATE(RKH_SMA_T, ao, 0, HCAL, NULL, NULL, NULL);
 RKH_SMA_DEF_PTR(ao);
+RKH_SMA_CREATE(RKH_SMA_T, aoSender, 1, HCAL, NULL, NULL, NULL);
+RKH_SMA_DEF_PTR(aoSender);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -200,6 +212,36 @@ test_PublishOneActiveObject(void)
     rkh_pubsub_init();
     nRdyAo = rkh_pubsub_publish(0, &evt, &me);
     TEST_ASSERT_EQUAL(1, nRdyAo);
+}
+
+void
+test_InvokePublishCallbackOnPublish(void)
+{
+    rui8_t nRdyAo;
+    PubArg publishArg;
+
+    rkh_sptbl[RKH_GET_PRIO(ao)] = ao;
+    rkh_sptbl[RKH_GET_PRIO(aoSender)] = aoSender;
+    publishArg.base.aoRdyPrio = RKH_GET_PRIO(ao);   /* subscriber */
+    publishArg.event = &event;
+    publishArg.sender = aoSender;
+    rkh_sma_post_fifo_Expect(ao, &event, aoSender);
+
+    publish((RdyCbArg *)&publishArg);
+}
+
+void
+test_IgnoreSelfPublishing(void)
+{
+    rui8_t nRdyAo;
+    PubArg publishArg;
+
+    rkh_sptbl[RKH_GET_PRIO(ao)] = ao;
+    publishArg.base.aoRdyPrio = RKH_GET_PRIO(ao);   /* subscriber */
+    publishArg.event = &event;
+    publishArg.sender = ao;
+
+    publish((RdyCbArg *)&publishArg);
 }
 
 void

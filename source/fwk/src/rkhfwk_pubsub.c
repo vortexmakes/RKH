@@ -102,17 +102,6 @@ static PubSub observer;     /* Singleton */
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
-static void
-publish(RdyCbArg *arg)
-{
-    PubArg *realArg;
-
-    RKH_REQUIRE(RKH_GET_SMA(arg->aoRdyPrio) != (const RKH_SMA_T *)0); 
-    realArg = (PubArg *)arg;
-    RKH_SMA_POST_FIFO(RKH_GET_SMA(arg->aoRdyPrio), 
-                      realArg->event, realArg->sender);
-}
-
 /* ---------------------------- Global functions --------------------------- */
 void 
 rkh_pubsub_init(void)
@@ -169,6 +158,20 @@ rkh_pubsub_unsubscribeAll(const RKH_SMA_T *ao)
         rkh_rdygrp_setUnready(pCh, RKH_GET_PRIO(ao));
     }
     RKH_EXIT_CRITICAL_();
+}
+
+void
+publish(RdyCbArg *arg)
+{
+    PubArg *realArg;
+
+    RKH_REQUIRE(RKH_GET_SMA(arg->aoRdyPrio) != (const RKH_SMA_T *)0); 
+    realArg = (PubArg *)arg;
+    if (RKH_GET_SMA(arg->aoRdyPrio) != realArg->sender)
+    {
+        RKH_SMA_POST_FIFO(RKH_GET_SMA(arg->aoRdyPrio), 
+                          realArg->event, realArg->sender);
+    }
 }
 
 rui8_t 
