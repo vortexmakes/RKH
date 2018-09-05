@@ -37,8 +37,10 @@ do
 done
 
 cd ..
-sudo lcov -c -d . -o ../$ceedling_dir/gcov/rkh-module.info
-sudo genhtml ../$ceedling_dir/gcov/rkh-module.info -o ../$ceedling_dir/gcov/
+sudo lcov -c -d . -o ../$ceedling_dir/gcov/rkh-coverage.info
+#sudo lcov -e ../$ceedling_dir/gcov/rkh-coverage.info "$(pwd)/src/*" -o ../$ceedling_dir/gcov/rkh-coverage-filtered.info
+#sudo lcov -e ../$ceedling_dir/gcov/rkh-coverage.info "$(pwd)/src/rkh$module*.gc*" -o ../$ceedling_dir/gcov/rkh-coverage-filtered.info
+sudo genhtml ../$ceedling_dir/gcov/rkh-coverage.info -o ../$ceedling_dir/gcov/
 
 exit 0
 
