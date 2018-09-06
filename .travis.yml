@@ -1,4 +1,6 @@
-language: c
+language: 
+    - c
+    - ruby
 
 compiler: gcc
 
