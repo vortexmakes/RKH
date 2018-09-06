@@ -1,3 +1,4 @@
+sudo: required
 language: 
     - c
     - ruby
@@ -17,8 +18,7 @@ install:
     - sudo gem install ceedling
 
 script:
-    - cd source/trc && ceedling version
-    #- cd tools/ceedling && sudo ./test-all.sh
+    - cd tools/ceedling && sudo ./test-all.sh
     #- codecov
 
 after_success:
