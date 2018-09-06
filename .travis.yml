@@ -17,10 +17,11 @@ install:
     - sudo gem install ceedling
 
 after_install:
-    - ceedling
+    #- ceedling
 
 script:
-    - cd tools/ceedling && ./test-all.sh
+    #- cd tools/ceedling && ./test-all.sh
+    - ceedling
     #- codecov
 
 after_success:
