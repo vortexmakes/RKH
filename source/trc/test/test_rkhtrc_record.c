@@ -77,12 +77,14 @@ static RKH_SMA_T sender;
 static RKH_EVT_T event;
 static RKH_ST_T state = {{RKH_BASIC, "state"}};
 static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
+static rui8_t chk;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
 expectU8(rui8_t expectData)
 {
+    chk = (rui8_t)(chk + expectData);
     if ((expectData == RKH_ESC) || (expectData == RKH_FLG))
     {
         rkh_trc_put_Expect(RKH_ESC);
@@ -129,17 +131,18 @@ expectString(const char *str)
 
     for (p = str; *p != '\0'; ++p)
     {
-        rkh_trc_put_Expect(*p);
+        expectU8((rui8_t)*p);
     }
-    rkh_trc_put_Expect('\0');
+    expectU8((rui8_t)'\0');
 }
 
 static void
 expectTrailer(int isCritical)
 {
-    rkh_trc_put_Expect(0);          /* insert checksum */
-    rkh_trc_put_IgnoreArg_b();
+    chk = (rui8_t)(~chk + 1);
+    expectU8(chk);
     rkh_trc_put_Expect(RKH_FLG);    /* insert record flag */
+    rkh_trc_put_IgnoreArg_b();
     if (isCritical)
     {
         rkh_exit_critical_Expect();
@@ -177,16 +180,17 @@ setUp(void)
     Mock_rkhtrc_out_Init();
     Mock_rkhtrc_stream_Init();
     Mock_rkhtrc_filter_Init();
+
+    receiver.sm.romrkh = &base;
+    event.e = 3;
+    event.pool = 5;
+    event.nref = 7;
+    chk = 0;
 }
 
 void
 tearDown(void)
 {
-    receiver.sm.romrkh = &base;
-    event.e = 3;
-    event.pool = 5;
-    event.nref = 7;
-
     Mock_rkhsm_Verify();
     Mock_rkhsma_Verify();
     Mock_rkh_Verify();
@@ -339,7 +343,7 @@ test_InsertAO(void)
 {
     expectHeader(RKH_TE_FWK_AO, 0, 0x12345678, 1);
     expectObjectAddress(&receiver);
-    expectString("receiver");
+    expectString(receiver.sm.romrkh->name);
     expectTrailer(1);
     rkh_trc_flush_Expect();
 
