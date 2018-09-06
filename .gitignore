@@ -41,6 +41,7 @@
 !.gitignore
 !.gitattributes
 !.mailmap
+!.travis.yml
 !unitrzlib.a
 
 #
