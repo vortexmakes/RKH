@@ -4,18 +4,19 @@ compiler: gcc
 
 branches: # safelist
     only:
-    - master
+    - pubsub
 
 os:
     - linux
 
 before_install:
-    - sudo pip install codecov
-    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update -qq && sudo apt-get install --assume-yes --quiet gcc-multilib; fi
+    #- sudo pip install codecov
+    #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update -qq && sudo apt-get install --assume-yes --quiet gcc-multilib; fi
+    - sudo apt-get install -qq ceedling && sudo apt-get install -qq gcov
 
 script:
     - cd tools/ceedling && ./test-all.sh
-    - codecov
+    #- codecov
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
