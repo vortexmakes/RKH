@@ -1,7 +1,5 @@
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
-![RKH architecture](https://github.com/vortexmakes/RKH/tree/pubsub/doc/images/rkh_arch.png)
-
 Overview
 ========
 
@@ -10,6 +8,8 @@ and open-source development tool for implementing hierarchical
 state machines based on modern state machine concepts. This modern 
 techniques are used to give an abstract description of the dynamic 
 behavior of a system in a substantial manner.
+
+[![RKH architecture](rkh_arch.png)](https://vortexmakes.com/rkh/)
 
 The main features of RKH
 ========================
