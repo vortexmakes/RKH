@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
+![RKH architecture](https://github.com/vortexmakes/RKH/tree/pubsub/doc/images/rkh_arch.png)
+
 Overview
 ========
 
