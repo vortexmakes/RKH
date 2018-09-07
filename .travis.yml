@@ -15,9 +15,10 @@ install:
     #- sudo pip install codecov
     #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update -qq && sudo apt-get install --assume-yes --quiet gcc-multilib; fi
     - sudo gem install ceedling
+    - sudo apt-get install lcov
 
 script:
-    - echo $PATH && which ceedling
+    #- echo $PATH && which ceedling
     - cd tools/ceedling && sudo ./test-all.sh
     #- codecov
 
