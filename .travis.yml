@@ -1,7 +1,6 @@
 sudo: required
 language: 
     - c
-    - ruby
 
 compiler: gcc
 

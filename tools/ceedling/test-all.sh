@@ -6,7 +6,6 @@ ceedling_dir="tools/ceedling"
 modules="fwk sm sma trc"
 
 echo $PATH
-which ceedling
 exit 0
 
 if [ ! -d $source_dir ]; then
