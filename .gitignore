@@ -42,6 +42,7 @@
 !.gitattributes
 !.mailmap
 !.travis.yml
+!codecov.yml
 !unitrzlib.a
 
 #

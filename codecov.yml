@@ -1,0 +1,8 @@
+codecov:
+    branch: pubsub
+
+ignore:
+    - "third-party"
+    - "source/portable"
+    - "test_*.c"
+
