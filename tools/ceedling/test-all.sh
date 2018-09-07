@@ -34,6 +34,7 @@ do
     cd $source_dir/$module
      if [ ! -e "project.yml" ]; then
          echo "[ERROR] Ceedling project not found"
+         exit 1
      else
          if [ $clobber == 0 ]; then
              ceedling clean gcov:all
