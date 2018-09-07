@@ -4,5 +4,5 @@ codecov:
 ignore:
     - "third-party"
     - "source/portable"
-    - "source/*/test"
+    - "source/**/test"
 
