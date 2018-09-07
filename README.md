@@ -9,7 +9,7 @@ state machines based on modern state machine concepts. This modern
 techniques are used to give an abstract description of the dynamic 
 behavior of a system in a substantial manner.
 
-[![RKH architecture](rkh_arch.png)](https://vortexmakes.com/rkh/)
+[![RKH architecture](doc/images/rkh_arch_small.png)](https://vortexmakes.com/rkh/)
 
 The main features of RKH
 ========================
