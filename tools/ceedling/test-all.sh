@@ -5,8 +5,8 @@ source_dir="../../source"
 ceedling_dir="tools/ceedling"
 modules="fwk sm sma trc"
 
-cd $source_dir/trc
-ceedling version
+which ceedling
+echo $PATH
 exit 0
 
 if [ ! -d $source_dir ]; then

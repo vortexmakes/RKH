@@ -18,6 +18,8 @@ install:
     - sudo gem install ceedling
 
 script:
+    - which ceedling
+    - echo $PATH
     - cd tools/ceedling && sudo ./test-all.sh
     #- codecov
 
