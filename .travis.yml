@@ -12,13 +12,12 @@ os:
     - linux
 
 install:
-    - sudo gem install -qq ceedling
-    - sudo apt-get install -qq lcov
-    - sudo apt-get install -qq cppcheck
+    - sudo gem install ceedling
+    - sudo apt-get install lcov
+    - sudo apt-get install cppcheck
 
 script:
     - cd tools/ceedling && sudo ./test-all.sh
-    - cd tools/analyzer && ./ccpcheck.sh
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
