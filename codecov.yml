@@ -3,6 +3,9 @@ codecov:
 
 ignore:
     - "third-party"
+    - "third-party/ceedling"
+    - "third-party/unitrazer"
+    - "third-party/utrazer"
     - "source/portable"
     - "source/**/test"
 
