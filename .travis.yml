@@ -18,7 +18,7 @@ install:
 
 script:
     - cd tools/ceedling && sudo ./test-all.sh
-    - cd tools/analyzer && sudo ./cppcheck.sh
+    - cd ../analyzer && sudo ./cppcheck.sh
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
