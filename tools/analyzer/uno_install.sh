@@ -12,16 +12,24 @@ uno_dir="tools/analyzer"
 #which ceedling
 #exit 0
 
-if [ ! -d $source_dir ]; then
-    echo "[ERROR] This script must be invoked from "$uno_dir
-    exit 1
-fi
-
-currdir=$PWD
+cd ~
 # Download
-# Extract
-# Build
-# Install
+wget http://www.spinroot.com/uno/uno_v214.tar.gz
 
-exit 0
+# Extract
+tar xvf uno_v214.tar.gz
+
+# Build
+cd uno/src
+cf='-DPC -ansi -Wall -ggdb -DCPP="\\"gcc -E\\"" -DBINDIR=\\"$(BINDIR)\\"'
+sed -i "s/^CFLAGS=.*/CFLAGS=${new_cf}/" makefile
+make
+
+# Install
+sudo make install
+
+# Test
+uno -V | grep -q "Version 2.14"
+
+exit $?
 

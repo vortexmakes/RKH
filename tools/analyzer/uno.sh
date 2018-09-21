@@ -23,6 +23,9 @@ if [ ! -d $source_dir ]; then
     exit 1
 fi
 
+# Build and install
+cf='-DPC -ansi -Wall -ggdb -DCPP="\\"gcc -E\\"" -DBINDIR=\\"$(BINDIR)\\"'
+
 currdir=$PWD
 includes=()
 sources=()
