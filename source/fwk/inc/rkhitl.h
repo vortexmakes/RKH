@@ -1306,7 +1306,7 @@ extern "C" {
     #error  "                        [MUST be <  2^RKH_CFG_FWK_SIZEOF_EVT    "
 
 #elif ((RKH_CFG_FWK_MAX_SIGNALS == 0u) || \
-    (RKH_CFG_FWK_MAX_SIGNALS >= RKH_BIT(RKH_CFG_FWK_SIZEOF_EVT)))
+    (RKH_CFG_FWK_MAX_SIGNALS > (1u << RKH_CFG_FWK_SIZEOF_EVT)))
     #error "RKH_CFG_FWK_MAX_SIGNALS         illegally #define'd in 'rkhcfg.h'"
     #error  "                               [MUST be >  0]                    "
     #error  "                        [MUST be <  2^RKH_CFG_FWK_SIZEOF_EVT    "
