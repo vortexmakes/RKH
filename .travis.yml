@@ -19,6 +19,8 @@ install:
 script:
     - cd tools/ceedling && sudo ./test-all.sh
     - cd ../analyzer && sudo ./cppcheck.sh
+    - ./uno-install.sh
+    - ./uno.sh
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
