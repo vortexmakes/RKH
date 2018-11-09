@@ -22,7 +22,7 @@ tar xvf uno_v214.tar.gz
 # Build
 cd uno/src
 cf='-DPC -ansi -Wall -ggdb -DCPP="\\"gcc -E\\"" -DBINDIR=\\"$(BINDIR)\\"'
-sed -i "s/^CFLAGS=.*/CFLAGS=${new_cf}/" makefile
+sed -i "s/^CFLAGS=.*/CFLAGS=${cf}/" makefile
 make
 
 # Install
