@@ -6,6 +6,9 @@
 
 /* Ignore the following warnings, since we are copying code */
 #if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 6 || (__GNUC_MINOR__ == 6 && __GNUC_PATCHLEVEL__ > 0)))
+#pragma GCC diagnostic push
+#endif
 #if !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wpragmas"
 #endif
@@ -102,6 +105,16 @@ typedef RKH_EVT_T* (* CMOCK_rkh_sma_get_CALLBACK)(RKH_SMA_T* me, int cmock_num_c
 void rkh_sma_get_StubWithCallback(CMOCK_rkh_sma_get_CALLBACK Callback);
 #define rkh_sma_get_IgnoreArg_me() rkh_sma_get_CMockIgnoreArg_me(__LINE__)
 void rkh_sma_get_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_sma_dispatch_Ignore() rkh_sma_dispatch_CMockIgnore()
+void rkh_sma_dispatch_CMockIgnore(void);
+#define rkh_sma_dispatch_Expect(me, arg) rkh_sma_dispatch_CMockExpect(__LINE__, me, arg)
+void rkh_sma_dispatch_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, void* arg);
+typedef void (* CMOCK_rkh_sma_dispatch_CALLBACK)(RKH_SMA_T* me, void* arg, int cmock_num_calls);
+void rkh_sma_dispatch_StubWithCallback(CMOCK_rkh_sma_dispatch_CALLBACK Callback);
+#define rkh_sma_dispatch_IgnoreArg_me() rkh_sma_dispatch_CMockIgnoreArg_me(__LINE__)
+void rkh_sma_dispatch_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
+#define rkh_sma_dispatch_IgnoreArg_arg() rkh_sma_dispatch_CMockIgnoreArg_arg(__LINE__)
+void rkh_sma_dispatch_CMockIgnoreArg_arg(UNITY_LINE_TYPE cmock_line);
 #define rkh_sma_defer_Ignore() rkh_sma_defer_CMockIgnore()
 void rkh_sma_defer_CMockIgnore(void);
 #define rkh_sma_defer_Expect(q, e) rkh_sma_defer_CMockExpect(__LINE__, q, e)
@@ -140,5 +153,11 @@ void rkh_sma_get_info_StubWithCallback(CMOCK_rkh_sma_get_info_CALLBACK Callback)
 void rkh_sma_get_info_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line);
 #define rkh_sma_get_info_IgnoreArg_psi() rkh_sma_get_info_CMockIgnoreArg_psi(__LINE__)
 void rkh_sma_get_info_CMockIgnoreArg_psi(UNITY_LINE_TYPE cmock_line);
+
+#if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 6 || (__GNUC_MINOR__ == 6 && __GNUC_PATCHLEVEL__ > 0)))
+#pragma GCC diagnostic pop
+#endif
+#endif
 
 #endif

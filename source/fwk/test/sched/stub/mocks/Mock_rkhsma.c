@@ -6,6 +6,7 @@
 #include "cmock.h"
 #include "Mock_rkhsma.h"
 
+static const char* CMockString_arg = "arg";
 static const char* CMockString_e = "e";
 static const char* CMockString_me = "me";
 static const char* CMockString_psi = "psi";
@@ -16,6 +17,7 @@ static const char* CMockString_rkh_sma_activate = "rkh_sma_activate";
 static const char* CMockString_rkh_sma_clear_info = "rkh_sma_clear_info";
 static const char* CMockString_rkh_sma_ctor = "rkh_sma_ctor";
 static const char* CMockString_rkh_sma_defer = "rkh_sma_defer";
+static const char* CMockString_rkh_sma_dispatch = "rkh_sma_dispatch";
 static const char* CMockString_rkh_sma_get = "rkh_sma_get";
 static const char* CMockString_rkh_sma_get_info = "rkh_sma_get_info";
 static const char* CMockString_rkh_sma_post_fifo = "rkh_sma_post_fifo";
@@ -32,6 +34,7 @@ static const char* CMockString_vtbl = "vtbl";
 typedef struct _CMOCK_rkh_sma_register_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   int IgnoreArg_me;
 
@@ -40,6 +43,7 @@ typedef struct _CMOCK_rkh_sma_register_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_unregister_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   int IgnoreArg_me;
 
@@ -48,8 +52,9 @@ typedef struct _CMOCK_rkh_sma_unregister_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_ctor_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
-  RKHSmaVtbl* Expected_vtbl;
+  const RKHSmaVtbl* Expected_vtbl;
   int IgnoreArg_me;
   int IgnoreArg_vtbl;
 
@@ -58,8 +63,9 @@ typedef struct _CMOCK_rkh_sma_ctor_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_activate_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
-  RKH_EVT_T** Expected_qSto;
+  const RKH_EVT_T** Expected_qSto;
   RKH_QUENE_T Expected_qSize;
   void* Expected_stkSto;
   rui32_t Expected_stkSize;
@@ -74,6 +80,7 @@ typedef struct _CMOCK_rkh_sma_activate_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_terminate_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   int IgnoreArg_me;
 
@@ -82,9 +89,10 @@ typedef struct _CMOCK_rkh_sma_terminate_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_post_fifo_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
-  RKH_EVT_T* Expected_e;
-  void* Expected_sender;
+  const RKH_EVT_T* Expected_e;
+  const void* Expected_sender;
   int IgnoreArg_me;
   int IgnoreArg_e;
   int IgnoreArg_sender;
@@ -94,9 +102,10 @@ typedef struct _CMOCK_rkh_sma_post_fifo_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_post_lifo_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
-  RKH_EVT_T* Expected_e;
-  void* Expected_sender;
+  const RKH_EVT_T* Expected_e;
+  const void* Expected_sender;
   int IgnoreArg_me;
   int IgnoreArg_e;
   int IgnoreArg_sender;
@@ -107,16 +116,29 @@ typedef struct _CMOCK_rkh_sma_get_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   RKH_EVT_T* ReturnVal;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   int IgnoreArg_me;
 
 } CMOCK_rkh_sma_get_CALL_INSTANCE;
 
+typedef struct _CMOCK_rkh_sma_dispatch_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  RKH_SMA_T* Expected_me;
+  void* Expected_arg;
+  int IgnoreArg_me;
+  int IgnoreArg_arg;
+
+} CMOCK_rkh_sma_dispatch_CALL_INSTANCE;
+
 typedef struct _CMOCK_rkh_sma_defer_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_QUEUE_T* Expected_q;
-  RKH_EVT_T* Expected_e;
+  const RKH_EVT_T* Expected_e;
   int IgnoreArg_q;
   int IgnoreArg_e;
 
@@ -126,6 +148,7 @@ typedef struct _CMOCK_rkh_sma_recall_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
   RKH_EVT_T* ReturnVal;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   RKH_QUEUE_T* Expected_q;
   int IgnoreArg_me;
@@ -136,6 +159,7 @@ typedef struct _CMOCK_rkh_sma_recall_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_clear_info_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   int IgnoreArg_me;
 
@@ -144,6 +168,7 @@ typedef struct _CMOCK_rkh_sma_clear_info_CALL_INSTANCE
 typedef struct _CMOCK_rkh_sma_get_info_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
   RKH_SMA_T* Expected_me;
   RKH_SMAI_T* Expected_psi;
   int IgnoreArg_me;
@@ -186,6 +211,10 @@ static struct Mock_rkhsmaInstance
   CMOCK_rkh_sma_get_CALLBACK rkh_sma_get_CallbackFunctionPointer;
   int rkh_sma_get_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE rkh_sma_get_CallInstance;
+  int rkh_sma_dispatch_IgnoreBool;
+  CMOCK_rkh_sma_dispatch_CALLBACK rkh_sma_dispatch_CallbackFunctionPointer;
+  int rkh_sma_dispatch_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE rkh_sma_dispatch_CallInstance;
   int rkh_sma_defer_IgnoreBool;
   CMOCK_rkh_sma_defer_CALLBACK rkh_sma_defer_CallbackFunctionPointer;
   int rkh_sma_defer_CallbackCalls;
@@ -206,6 +235,8 @@ static struct Mock_rkhsmaInstance
 } Mock;
 
 extern jmp_buf AbortFrame;
+extern int GlobalExpectCount;
+extern int GlobalVerifyOrder;
 
 void Mock_rkhsma_Verify(void)
 {
@@ -258,6 +289,12 @@ void Mock_rkhsma_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sma_get_CallInstance, cmock_line, CMockStringCalledLess);
   if (Mock.rkh_sma_get_CallbackFunctionPointer != NULL)
     Mock.rkh_sma_get_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.rkh_sma_dispatch_IgnoreBool)
+    Mock.rkh_sma_dispatch_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_rkh_sma_dispatch);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.rkh_sma_dispatch_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.rkh_sma_dispatch_CallbackFunctionPointer != NULL)
+    Mock.rkh_sma_dispatch_CallInstance = CMOCK_GUTS_NONE;
   if (Mock.rkh_sma_defer_IgnoreBool)
     Mock.rkh_sma_defer_CallInstance = CMOCK_GUTS_NONE;
   UNITY_SET_DETAIL(CMockString_rkh_sma_defer);
@@ -309,6 +346,8 @@ void Mock_rkhsma_Destroy(void)
   Mock.rkh_sma_post_lifo_CallbackCalls = 0;
   Mock.rkh_sma_get_CallbackFunctionPointer = NULL;
   Mock.rkh_sma_get_CallbackCalls = 0;
+  Mock.rkh_sma_dispatch_CallbackFunctionPointer = NULL;
+  Mock.rkh_sma_dispatch_CallbackCalls = 0;
   Mock.rkh_sma_defer_CallbackFunctionPointer = NULL;
   Mock.rkh_sma_defer_CallbackCalls = 0;
   Mock.rkh_sma_recall_CallbackFunctionPointer = NULL;
@@ -317,6 +356,8 @@ void Mock_rkhsma_Destroy(void)
   Mock.rkh_sma_clear_info_CallbackCalls = 0;
   Mock.rkh_sma_get_info_CallbackFunctionPointer = NULL;
   Mock.rkh_sma_get_info_CallbackCalls = 0;
+  GlobalExpectCount = 0;
+  GlobalVerifyOrder = 0;
 }
 
 void rkh_sma_register(RKH_SMA_T* me)
@@ -333,6 +374,10 @@ void rkh_sma_register(RKH_SMA_T* me)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_register,CMockString_me);
@@ -365,6 +410,7 @@ void rkh_sma_register_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me)
   Mock.rkh_sma_register_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_register_CallInstance, cmock_guts_index);
   Mock.rkh_sma_register_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_register(cmock_call_instance, me);
   UNITY_CLR_DETAILS();
 }
@@ -396,6 +442,10 @@ void rkh_sma_unregister(RKH_SMA_T* me)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_unregister,CMockString_me);
@@ -428,6 +478,7 @@ void rkh_sma_unregister_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me)
   Mock.rkh_sma_unregister_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_unregister_CallInstance, cmock_guts_index);
   Mock.rkh_sma_unregister_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_unregister(cmock_call_instance, me);
   UNITY_CLR_DETAILS();
 }
@@ -459,6 +510,10 @@ void rkh_sma_ctor(RKH_SMA_T* me, const RKHSmaVtbl* vtbl)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_ctor,CMockString_me);
@@ -480,7 +535,7 @@ void CMockExpectParameters_rkh_sma_ctor(CMOCK_rkh_sma_ctor_CALL_INSTANCE* cmock_
 {
   cmock_call_instance->Expected_me = me;
   cmock_call_instance->IgnoreArg_me = 0;
-  cmock_call_instance->Expected_vtbl = (RKHSmaVtbl*)vtbl;
+  cmock_call_instance->Expected_vtbl = vtbl;
   cmock_call_instance->IgnoreArg_vtbl = 0;
 }
 
@@ -498,6 +553,7 @@ void rkh_sma_ctor_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, const R
   Mock.rkh_sma_ctor_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_ctor_CallInstance, cmock_guts_index);
   Mock.rkh_sma_ctor_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_ctor(cmock_call_instance, me, vtbl);
   UNITY_CLR_DETAILS();
 }
@@ -536,6 +592,10 @@ void rkh_sma_activate(RKH_SMA_T* me, const RKH_EVT_T** qSto, RKH_QUENE_T qSize, 
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_activate,CMockString_me);
@@ -572,7 +632,7 @@ void CMockExpectParameters_rkh_sma_activate(CMOCK_rkh_sma_activate_CALL_INSTANCE
 {
   cmock_call_instance->Expected_me = me;
   cmock_call_instance->IgnoreArg_me = 0;
-  cmock_call_instance->Expected_qSto = (RKH_EVT_T**)qSto;
+  cmock_call_instance->Expected_qSto = qSto;
   cmock_call_instance->IgnoreArg_qSto = 0;
   memcpy(&cmock_call_instance->Expected_qSize, &qSize, sizeof(RKH_QUENE_T));
   cmock_call_instance->IgnoreArg_qSize = 0;
@@ -596,6 +656,7 @@ void rkh_sma_activate_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, con
   Mock.rkh_sma_activate_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_activate_CallInstance, cmock_guts_index);
   Mock.rkh_sma_activate_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_activate(cmock_call_instance, me, qSto, qSize, stkSto, stkSize);
   UNITY_CLR_DETAILS();
 }
@@ -655,6 +716,10 @@ void rkh_sma_terminate(RKH_SMA_T* me)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_terminate,CMockString_me);
@@ -687,6 +752,7 @@ void rkh_sma_terminate_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me)
   Mock.rkh_sma_terminate_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_terminate_CallInstance, cmock_guts_index);
   Mock.rkh_sma_terminate_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_terminate(cmock_call_instance, me);
   UNITY_CLR_DETAILS();
 }
@@ -718,6 +784,10 @@ void rkh_sma_post_fifo(RKH_SMA_T* me, const RKH_EVT_T* e, const void* const send
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_post_fifo,CMockString_me);
@@ -744,9 +814,9 @@ void CMockExpectParameters_rkh_sma_post_fifo(CMOCK_rkh_sma_post_fifo_CALL_INSTAN
 {
   cmock_call_instance->Expected_me = me;
   cmock_call_instance->IgnoreArg_me = 0;
-  cmock_call_instance->Expected_e = (RKH_EVT_T*)e;
+  cmock_call_instance->Expected_e = e;
   cmock_call_instance->IgnoreArg_e = 0;
-  cmock_call_instance->Expected_sender = (void*)sender;
+  cmock_call_instance->Expected_sender = sender;
   cmock_call_instance->IgnoreArg_sender = 0;
 }
 
@@ -764,6 +834,7 @@ void rkh_sma_post_fifo_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, co
   Mock.rkh_sma_post_fifo_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_post_fifo_CallInstance, cmock_guts_index);
   Mock.rkh_sma_post_fifo_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_post_fifo(cmock_call_instance, me, e, sender);
   UNITY_CLR_DETAILS();
 }
@@ -809,6 +880,10 @@ void rkh_sma_post_lifo(RKH_SMA_T* me, const RKH_EVT_T* e, const void* const send
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_post_lifo,CMockString_me);
@@ -835,9 +910,9 @@ void CMockExpectParameters_rkh_sma_post_lifo(CMOCK_rkh_sma_post_lifo_CALL_INSTAN
 {
   cmock_call_instance->Expected_me = me;
   cmock_call_instance->IgnoreArg_me = 0;
-  cmock_call_instance->Expected_e = (RKH_EVT_T*)e;
+  cmock_call_instance->Expected_e = e;
   cmock_call_instance->IgnoreArg_e = 0;
-  cmock_call_instance->Expected_sender = (void*)sender;
+  cmock_call_instance->Expected_sender = sender;
   cmock_call_instance->IgnoreArg_sender = 0;
 }
 
@@ -855,6 +930,7 @@ void rkh_sma_post_lifo_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, co
   Mock.rkh_sma_post_lifo_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_post_lifo_CallInstance, cmock_guts_index);
   Mock.rkh_sma_post_lifo_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_post_lifo(cmock_call_instance, me, e, sender);
   UNITY_CLR_DETAILS();
 }
@@ -903,6 +979,10 @@ RKH_EVT_T* rkh_sma_get(RKH_SMA_T* me)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_get,CMockString_me);
@@ -944,6 +1024,7 @@ void rkh_sma_get_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me,
   Mock.rkh_sma_get_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_get_CallInstance, cmock_guts_index);
   Mock.rkh_sma_get_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_get(cmock_call_instance, me);
   cmock_call_instance->ReturnVal = cmock_to_return;
   UNITY_CLR_DETAILS();
@@ -962,6 +1043,88 @@ void rkh_sma_get_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
   cmock_call_instance->IgnoreArg_me = 1;
 }
 
+void rkh_sma_dispatch(RKH_SMA_T* me, void* arg)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_rkh_sma_dispatch_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_rkh_sma_dispatch);
+  cmock_call_instance = (CMOCK_rkh_sma_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.rkh_sma_dispatch_CallInstance);
+  Mock.rkh_sma_dispatch_CallInstance = CMock_Guts_MemNext(Mock.rkh_sma_dispatch_CallInstance);
+  if (Mock.rkh_sma_dispatch_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  if (!cmock_call_instance->IgnoreArg_me)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_sma_dispatch,CMockString_me);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_me, me, cmock_line, CMockStringMismatch);
+  }
+  if (!cmock_call_instance->IgnoreArg_arg)
+  {
+    UNITY_SET_DETAILS(CMockString_rkh_sma_dispatch,CMockString_arg);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_arg, arg, cmock_line, CMockStringMismatch);
+  }
+  if (Mock.rkh_sma_dispatch_CallbackFunctionPointer != NULL)
+  {
+    Mock.rkh_sma_dispatch_CallbackFunctionPointer(me, arg, Mock.rkh_sma_dispatch_CallbackCalls++);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_rkh_sma_dispatch(CMOCK_rkh_sma_dispatch_CALL_INSTANCE* cmock_call_instance, RKH_SMA_T* me, void* arg)
+{
+  cmock_call_instance->Expected_me = me;
+  cmock_call_instance->IgnoreArg_me = 0;
+  cmock_call_instance->Expected_arg = arg;
+  cmock_call_instance->IgnoreArg_arg = 0;
+}
+
+void rkh_sma_dispatch_CMockIgnore(void)
+{
+  Mock.rkh_sma_dispatch_IgnoreBool = (int)1;
+}
+
+void rkh_sma_dispatch_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, void* arg)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_rkh_sma_dispatch_CALL_INSTANCE));
+  CMOCK_rkh_sma_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sma_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.rkh_sma_dispatch_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_dispatch_CallInstance, cmock_guts_index);
+  Mock.rkh_sma_dispatch_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  CMockExpectParameters_rkh_sma_dispatch(cmock_call_instance, me, arg);
+  UNITY_CLR_DETAILS();
+}
+
+void rkh_sma_dispatch_StubWithCallback(CMOCK_rkh_sma_dispatch_CALLBACK Callback)
+{
+  Mock.rkh_sma_dispatch_IgnoreBool = (int)0;
+  Mock.rkh_sma_dispatch_CallbackFunctionPointer = Callback;
+}
+
+void rkh_sma_dispatch_CMockIgnoreArg_me(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_rkh_sma_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sma_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_sma_dispatch_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_me = 1;
+}
+
+void rkh_sma_dispatch_CMockIgnoreArg_arg(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_rkh_sma_dispatch_CALL_INSTANCE* cmock_call_instance = (CMOCK_rkh_sma_dispatch_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.rkh_sma_dispatch_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringIgnPreExp);
+  cmock_call_instance->IgnoreArg_arg = 1;
+}
+
 void rkh_sma_defer(RKH_QUEUE_T* q, const RKH_EVT_T* e)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
@@ -976,6 +1139,10 @@ void rkh_sma_defer(RKH_QUEUE_T* q, const RKH_EVT_T* e)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_q)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_defer,CMockString_q);
@@ -997,7 +1164,7 @@ void CMockExpectParameters_rkh_sma_defer(CMOCK_rkh_sma_defer_CALL_INSTANCE* cmoc
 {
   cmock_call_instance->Expected_q = q;
   cmock_call_instance->IgnoreArg_q = 0;
-  cmock_call_instance->Expected_e = (RKH_EVT_T*)e;
+  cmock_call_instance->Expected_e = e;
   cmock_call_instance->IgnoreArg_e = 0;
 }
 
@@ -1015,6 +1182,7 @@ void rkh_sma_defer_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_QUEUE_T* q, const
   Mock.rkh_sma_defer_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_defer_CallInstance, cmock_guts_index);
   Mock.rkh_sma_defer_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_defer(cmock_call_instance, q, e);
   UNITY_CLR_DETAILS();
 }
@@ -1056,6 +1224,10 @@ RKH_EVT_T* rkh_sma_recall(RKH_SMA_T* me, RKH_QUEUE_T* q)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_recall,CMockString_me);
@@ -1104,6 +1276,7 @@ void rkh_sma_recall_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* 
   Mock.rkh_sma_recall_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_recall_CallInstance, cmock_guts_index);
   Mock.rkh_sma_recall_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_recall(cmock_call_instance, me, q);
   cmock_call_instance->ReturnVal = cmock_to_return;
   UNITY_CLR_DETAILS();
@@ -1143,6 +1316,10 @@ void rkh_sma_clear_info(RKH_SMA_T* me)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_clear_info,CMockString_me);
@@ -1175,6 +1352,7 @@ void rkh_sma_clear_info_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me)
   Mock.rkh_sma_clear_info_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_clear_info_CallInstance, cmock_guts_index);
   Mock.rkh_sma_clear_info_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_clear_info(cmock_call_instance, me);
   UNITY_CLR_DETAILS();
 }
@@ -1206,6 +1384,10 @@ void rkh_sma_get_info(RKH_SMA_T* me, RKH_SMAI_T* psi)
   }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
   if (!cmock_call_instance->IgnoreArg_me)
   {
     UNITY_SET_DETAILS(CMockString_rkh_sma_get_info,CMockString_me);
@@ -1245,6 +1427,7 @@ void rkh_sma_get_info_CMockExpect(UNITY_LINE_TYPE cmock_line, RKH_SMA_T* me, RKH
   Mock.rkh_sma_get_info_CallInstance = CMock_Guts_MemChain(Mock.rkh_sma_get_info_CallInstance, cmock_guts_index);
   Mock.rkh_sma_get_info_IgnoreBool = (int)0;
   cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
   CMockExpectParameters_rkh_sma_get_info(cmock_call_instance, me, psi);
   UNITY_CLR_DETAILS();
 }

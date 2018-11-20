@@ -66,6 +66,9 @@
 /* ---------------------------- Global variables --------------------------- */
 TEST_GROUP(sched);
 RKH_SMA_T *rkh_sptbl[RKH_CFG_FWK_MAX_SMA];  /* fake */
+int GlobalExpectCount;
+int GlobalVerifyOrder;
+char *GlobalOrderError;
 
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
