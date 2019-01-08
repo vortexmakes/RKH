@@ -123,7 +123,7 @@ rkh_fwk_enter(void)
             RKH_ENA_INTERRUPT();
 
             e = rkh_sma_get(sma);
-            (void)rkh_sm_dispatch((RKH_SM_T *)sma, e);
+            (void)RKH_SMA_DISPATCH(sma, e);
             RKH_FWK_GC(e, sma);
         }
         else
