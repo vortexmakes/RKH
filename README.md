@@ -1,7 +1,4 @@
-RKH
-===
-
-# A framework to build software for reactive and real-time embedded systems
+# RKH - A framework to build software for reactive and real-time embedded systems
 
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
@@ -14,7 +11,7 @@ tracing, time management, dynamic memory mechanism to deal with fragmentation,
 unit test harness, among others. These elements make up the needed 
 infrastructure to build apps in embedded systems. 
 
-![RKH architecture](doc/images/rkh_arch_small.png)](https://vortexmakes.com/rkh/)
+![RKH architecture](doc/images/rkh_arch_small.png)
 
 Frequently, real-time embedded system’s development is slow, error-prone, and 
 hard. Thanks to the use of RKH, this has been greatly improved. RKH enables 
@@ -69,8 +66,7 @@ reusable software.
 And finally, RKH improves embedded softwares by increasing their quality and 
 functionality and decreased their development time. 
 
-Examples
-========
+## Examples
 
 Repo [rkh-examples](https://github.com/vortexmakes/rkh-examples) contains a 
 collection of open source examples based on RKH framework to develop embedded 
@@ -79,21 +75,19 @@ CPU architecture, compiler or IDE, and operating system. Also, rkh-examples
 includes some demostrative and cross-platform applications running under 
 Windows and Linux to improve and fast development cycle.
 
-# Other embedded applications based on RKH framework
+### Other embedded applications based on RKH framework
 - [DIMBA](https://github.com/vortexmakes/dimba): IoT application, using MQTT 
 protocol over GSM network.
 - [YipiesAgro](https://github.com/vortexmakes/AgroIoT): IoT application, for 
 precision agriculture.
 
-Documentation
-=============
+## Documentation
 
 Documentation exists in the [reference manual](https://vortexmakes.com/rkh/). 
 Also, additional information is located in the  official site 
 https://www.vortexmakes.com/. For now, it is in Spanish.
 
-How to collaborate on RKH?
-==========================
+## How to collaborate on RKH?
 
 Would you like to collaborate with RKH? Great, go ahead!. First of all, you 
 must get the project from its official repository: 
@@ -111,15 +105,12 @@ If you are interested in collaborating with the project but you have not made
 any specific contribution yet, there is a list of desirable features available. In this way, you will be able to be part of the framework. By using a feature 
 from the list, you can both develop and include it to the project. That is why, our goal is that you can easily join the RKH’s developer community.
 
-Other implementations
-=====================
+## Other implementations
 
 Open-source frameworks that support Statecharts.
-
 Quantum Leap - [http://www.state-machine.com/](http://www.state-machine.com/)
 
-Licensing
-=========
+## Licensing
 
 RKH is distributed under the terms of the GNU General Public License v3.0 with 
 the following clarification and special exception.
@@ -140,7 +131,7 @@ the following clarification and special exception.
 
 See GPL license copy in copying.txt file.
 
-##Why does RKH use the GPL?
+### Why does RKH use the GPL?
 
 RKH is licensed under terms of GPL, since its main goal is to grant everyone 
 the freedom to copy, redistribute, understand, and modify a program. A crucial 
@@ -150,14 +141,14 @@ fixes and improvements with other users. For this reason, RKH’s goal is to be
 a free software; as FSF says, ‘Free software is a matter of liberty, not of 
 price’.
 
-##Licensing scheme
+### Licensing scheme
 - GPLv3 + linking exception license, which will allow a customer to link 
 proprietary source code. Observe that, the GPLv3 can be used for research & 
 development and educational purposes (academic purposes).
 - Commercial license, when the source code of your application should not be 
 published under the GNU GPLv3 license (closed source code), please, contact us. See Contact information section.
 
-##Some important references about GPL
+### Some important references about GPL
 - https://www.gnu.org/philosophy/free-sw.en.html
 - https://www.gnu.org/licenses/licenses.en.html#WhatIsCopyleft
 - https://www.gnu.org/licenses/gpl-faq.en.html#WhyDoesTheGPLPermitUsersToPublishTheirModifiedVersions
@@ -170,16 +161,14 @@ published under the GNU GPLv3 license (closed source code), please, contact us. 
 - https://www.fsf.org/blogs/rms/selling-exceptions
 - http://www.erika-enterprise.com/index.php/erika3/licensing.html
 
-Contact information
-===================
+## Contact information
 
 Official site: http://vortexmakes.com/que-es/
 RKH GitHub: https://github.com/vortexmakes/RKH
 RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
 e-mail: lf@vortexmakes.com
 
-RKH Release notes
-=================
+## RKH Release notes
 
 Changes between V3.1.0 and V3.2.0 released 08/01/2019
 
