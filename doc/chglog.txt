@@ -3,6 +3,30 @@
 
 \tableofcontents
 
+\section rkhVer_3_2_0 Version 3.2.0
+\releasedate 2019-09-01
+
+\new
+- Added Ceedling, LCOV, Codecov, Cppcheck, Uno and Travis CI support!.
+  The main purpose of this is to improve the quality of source code, 
+  by means of Continuous Integration process.
+- Added Publish-Subscriber module. It addresses the specific issue 
+  of how to notify a set of interested active objects (clients) in a timely 
+  way that a value that they care about has changed. The basic solution 
+  offered by this module is to have the clients "subscribe" to the server 
+  to be notified about the value in question according to the policy: 
+  "when the value changes, receiving a proper event carrying the value of
+  interest".
+- Added RKH_SMA_DISPATCH() polymorphic function in native scheduler.
+- Added a deploy script to release new versions.
+- Enhanced README file.
+
+\warning
+- From this version on, you must include the files rkhfwk_rdygrp.h and 
+  rkhfwk_rdygrp.c located in <rkh>/source/fwk/inc and <rkh>/source/fwk/src 
+  respectively, to maintain the backward-compatiblity with the existing 
+  application projects.
+
 \section rkhVer_3_1_0 Version 3.1.0
 \releasedate 2018-05-03
 
