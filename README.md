@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
+RKH - A framework to build software for reactive and real-time embedded systems
+===============================================================================
 
-Description
-===========
+[![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
 RKH (Reactive frameworK for Hierarchical state machines) is a framework used 
 to build softwares for reactive and real-time embedded systems in a safely and 
