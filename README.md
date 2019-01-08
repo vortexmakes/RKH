@@ -1,5 +1,7 @@
-RKH - A framework to build software for reactive and real-time embedded systems
-===============================================================================
+RKH
+===
+
+###A framework to build software for reactive and real-time embedded systems
 
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
