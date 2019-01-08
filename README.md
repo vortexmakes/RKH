@@ -171,7 +171,7 @@ published under the GNU GPLv3 license (closed source code), please, contact us. 
 
 ## RKH Release notes
 
-Changes between [V3.1.0](2e5eae81e37ec347c3c939f296b26ae9167d6c42) and V3.2.0 released 08/01/2019
+Changes between [V3.1.0](https://github.com/vortexmakes/RKH/releases/tag/v3.1.0) and V3.2.0 released 08/01/2019
 
 - Added Ceedling, LCOV, Codecov, Cppcheck, Uno and Travis CI support!.
   The main purpose of this is to improve the quality of source code, 
