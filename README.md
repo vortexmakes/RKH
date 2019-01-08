@@ -2,6 +2,15 @@
 
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
+## List of contents
+- [Examples]
+- [Documentation]
+- [How to collaborate on RKH?]
+- [Other implementations]
+- [Licensing]
+- [Contact information]
+- [RKH Release notes]
+
 RKH (Reactive frameworK for Hierarchical state machines) is a framework used 
 to build softwares for reactive and real-time embedded systems in a safely and 
 timely way. It’s composed of modules, procedures and supporting tools; such as 
@@ -163,10 +172,10 @@ published under the GNU GPLv3 license (closed source code), please, contact us. 
 
 ## Contact information
 
-Official site: http://vortexmakes.com/que-es/
-RKH GitHub: https://github.com/vortexmakes/RKH
-RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
-e-mail: lf@vortexmakes.com
+- Official site: http://vortexmakes.com/que-es/
+- RKH GitHub: https://github.com/vortexmakes/RKH
+- RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+- e-mail: lf@vortexmakes.com
 
 ## RKH Release notes
 
