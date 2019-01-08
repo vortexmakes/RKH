@@ -1,7 +1,5 @@
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
-![RKH architecture](doc/images/rkh_arch_small.png)](https://vortexmakes.com/rkh/)
-
 Description
 ===========
 
@@ -13,6 +11,8 @@ asynchronous and synchronous messaging, cross-platform abstraction, runtime
 tracing, time management, dynamic memory mechanism to deal with fragmentation, 
 unit test harness, among others. These elements make up the needed 
 infrastructure to build apps in embedded systems. 
+
+![RKH architecture](doc/images/rkh_arch_small.png)](https://vortexmakes.com/rkh/)
 
 Frequently, real-time embedded system’s development is slow, error-prone, and 
 hard. Thanks to the use of RKH, this has been greatly improved. RKH enables 
@@ -77,7 +77,7 @@ CPU architecture, compiler or IDE, and operating system. Also, rkh-examples
 includes some demostrative and cross-platform applications running under 
 Windows and Linux to improve and fast development cycle.
 
-# Other embedded applications based on RKH framework
+## Other embedded applications based on RKH framework
 - [DIMBA](https://github.com/vortexmakes/dimba): IoT application, using MQTT 
 protocol over GSM network.
 - [YipiesAgro](https://github.com/vortexmakes/AgroIoT): IoT application, for 
@@ -138,7 +138,7 @@ the following clarification and special exception.
 
 See GPL license copy in copying.txt file.
 
-#Why does RKH use the GPL?
+##Why does RKH use the GPL?
 
 RKH is licensed under terms of GPL, since its main goal is to grant everyone 
 the freedom to copy, redistribute, understand, and modify a program. A crucial 
@@ -148,14 +148,14 @@ fixes and improvements with other users. For this reason, RKH’s goal is to be
 a free software; as FSF says, ‘Free software is a matter of liberty, not of 
 price’.
 
-#Licensing scheme
+##Licensing scheme
 - GPLv3 + linking exception license, which will allow a customer to link 
 proprietary source code. Observe that, the GPLv3 can be used for research & 
 development and educational purposes (academic purposes).
 - Commercial license, when the source code of your application should not be 
 published under the GNU GPLv3 license (closed source code), please, contact us. See Contact information section.
 
-#Some important references about GPL
+##Some important references about GPL
 - https://www.gnu.org/philosophy/free-sw.en.html
 - https://www.gnu.org/licenses/licenses.en.html#WhatIsCopyleft
 - https://www.gnu.org/licenses/gpl-faq.en.html#WhyDoesTheGPLPermitUsersToPublishTheirModifiedVersions
