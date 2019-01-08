@@ -1,7 +1,7 @@
 RKH
 ===
 
-###A framework to build software for reactive and real-time embedded systems
+# A framework to build software for reactive and real-time embedded systems
 
 [![Build Status](https://travis-ci.com/vortexmakes/RKH.svg?branch=pubsub)](https://travis-ci.com/vortexmakes/RKH) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/pubsub/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
 
@@ -79,7 +79,7 @@ CPU architecture, compiler or IDE, and operating system. Also, rkh-examples
 includes some demostrative and cross-platform applications running under 
 Windows and Linux to improve and fast development cycle.
 
-## Other embedded applications based on RKH framework
+# Other embedded applications based on RKH framework
 - [DIMBA](https://github.com/vortexmakes/dimba): IoT application, using MQTT 
 protocol over GSM network.
 - [YipiesAgro](https://github.com/vortexmakes/AgroIoT): IoT application, for 
