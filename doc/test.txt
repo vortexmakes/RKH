@@ -11,7 +11,7 @@ proposed a lot of complete state machines, which are shown in the
 following figures. 
 
 Also, this section summarizes the main rules and concepts for making the most 
-out of RKH features. For more information see section \ref test_sm "Module, unit tests and tools for TDD"
+out of RKH features.
 
 \anchor fig_smTest
 \image html smTest.png "Figure - Used state machine for transition unit tests"
