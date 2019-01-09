@@ -74,10 +74,11 @@ case "$1" in
         unzip -qo $4/tmp_rkh_rel.zip -d $4/tmp_rkh_rel/
         echo "Copying doc (html) into "tmp_rkh_rel/"..."
         cp -rf $4/html $4/tmp_rkh_rel/doc
-        echo "Preparing ""$outdir_prefix"$2""."$format file to release for..."
+        echo "Preparing ""$outdir_prefix"$2""."$format and "$outdir_prefix"$2"."tar.gz files to release for..."
         [ ! -d $4/$outdir_prefix"$2" ] && mv $4/tmp_rkh_rel $4/$outdir_prefix"$2"
         cd $4/$outdir_prefix"$2"
         zip -qr ../$outfile .
+        tar czf ../$outdir_prefix"$2".tar.gz .
         echo "Done"
         exit 0
         ;;
