@@ -23,8 +23,7 @@ structure in more detail.
 |-- third-party             - Third-party software components
 |-- tools                   - Used tools
 |-- copying.txt             - Licence file
-|-- README                  - Change log file
-\-- rkh.chm                 - Reference manual
+\-- README                  - Change log file
 \endcode
 <STRONG> Figure 1 Top level directories </STRONG>
 
@@ -81,8 +80,7 @@ have its own test cases, which are included in corresponding directory within
 |-- third-party                     - Third-party software components
 |-- tools                           - Used tools
 |-- copying.txt                     - Licence file
-|-- README                          - Change log file
-\-- rkh.chm                         - Reference manual
+\-- README                          - Change log file
 \endcode
 <STRONG> Figure 2 RKH source directory </STRONG>
 
@@ -214,8 +212,7 @@ The following figure shows the \c source/portable/ directory.
     |-- third-party
     |-- tools
     |-- copying.txt
-    |-- README
-    \-- rkh.chm
+    \-- README
 \endcode
 <STRONG> Figure 3 RKH portable directory </STRONG>
 
@@ -363,8 +360,7 @@ performance in a substantial manner.
     |-- third-party
     |-- tools
     |-- copying.txt
-    |-- README
-    \-- rkh.chm
+    \-- README
 \endcode
 <STRONG> Figure 4 Demo application directories </STRONG>
 
