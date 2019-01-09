@@ -108,7 +108,7 @@ from the list, you can both develop and include it to the project. That is why, 
 ## Other implementations
 
 Open-source frameworks that support Statecharts.
-Quantum Leap - [http://www.state-machine.com/](http://www.state-machine.com/)
+- Quantum Leap - [http://www.state-machine.com/](http://www.state-machine.com/)
 
 ## Licensing
 
