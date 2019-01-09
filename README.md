@@ -186,7 +186,7 @@ Changes between [V3.1.0](https://github.com/vortexmakes/RKH/releases/tag/v3.1.0)
 - Added RKH_SMA_DISPATCH() polymorphic function in native scheduler.
 - Added a deploy script to release new versions.
 - Enhanced README file.
-- From this version on, you must include the files rkhfwk_rdygrp.h and 
+- From this version, you must include the files rkhfwk_rdygrp.h and 
   rkhfwk_rdygrp.c located in source/fwk/inc and source/fwk/src 
   respectively, to maintain the backward-compatiblity with the existing 
   application projects.
