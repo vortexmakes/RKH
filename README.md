@@ -176,6 +176,7 @@ Changes between [V3.1.0](https://github.com/vortexmakes/RKH/releases/tag/v3.1.0)
 - Added Ceedling, LCOV, Codecov, Cppcheck, Uno and Travis CI support!.
   The main purpose of this is to improve the quality of source code, 
   by means of Continuous Integration process.
+- Included a new alternative in the license scheme: GPLv3 + linking exception.
 - Added Publish-Subscriber module. It addresses the specific issue 
   of how to notify a set of interested active objects (clients) in a timely 
   way that a value that they care about has changed. The basic solution 
