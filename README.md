@@ -76,6 +76,7 @@ includes some demostrative and cross-platform applications running under
 Windows and Linux to improve and fast development cycle.
 
 ### Other embedded applications based on RKH framework
+- [Spora](https://sporaio.com/): open source project to build wearables.
 - [DIMBA](https://github.com/vortexmakes/dimba): IoT application, using MQTT 
 protocol over GSM network.
 - [YipiesAgro](https://github.com/vortexmakes/AgroIoT): IoT application, for 
