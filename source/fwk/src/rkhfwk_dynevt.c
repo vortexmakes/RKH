@@ -86,6 +86,7 @@ void
 rkh_fwk_gc(RKH_EVT_T *e, const void *const sender)
 {
     RKHEvtPoolMgr * ep;
+    RKH_SR_ALLOC();
 
     if (e->nref != 0)       /* is it a dynamic event? */
     {
