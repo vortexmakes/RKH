@@ -143,6 +143,8 @@ rkh_fwk_enter(void)
 void 
 rkh_fwk_exit(void)
 {
+    RKH_SR_ALLOC();
+
     RKH_TR_FWK_EX();
 }
 

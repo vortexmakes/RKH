@@ -148,6 +148,7 @@ void
 rkh_fwk_exit(void)
 {
     RKH_SR_ALLOC();
+
     RKH_TR_FWK_EX();
     RKH_HOOK_EXIT();    /* RKH cleanup callback */
 }

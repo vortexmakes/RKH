@@ -192,6 +192,7 @@ rkh_fwk_init(void)
 void
 rkh_fwk_enter(void)
 {
+    RKH_SR_ALLOC();
     tick_msec = 1000UL / RKH_CFG_FWK_TICK_RATE_HZ;
     running = (rui8_t)1;
 
@@ -231,6 +232,8 @@ rkh_fwk_enter(void)
 void
 rkh_fwk_exit(void)
 {
+    RKH_SR_ALLOC();
+
     RKH_TR_FWK_EX();
     RKH_HOOK_EXIT();
     running = (rui8_t)0;

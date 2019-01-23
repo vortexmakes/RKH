@@ -129,6 +129,7 @@ rkh_fwk_ae(RKH_ES_T esize, RKH_SIG_T e, const void *const sender)
     rInt i;
     RKHEvtPoolMgr *ep;
     RKH_EVT_T *evt;
+    RKH_SR_ALLOC();
 
     /* find the pool index that fits the requested event size ... */
     for (i = 0, ep = evtPools; 
