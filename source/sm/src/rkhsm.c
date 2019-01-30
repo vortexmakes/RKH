@@ -542,7 +542,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     case RKH_CHOICE:
                         /* perform the actions on the transition */ 
                         /* sequentially according to the order in which they */
-                        /* are written on the transition, from the action /* 
+                        /* are written on the transition, from the action */
                         /* closest to source state to the action closest to */
                         /* target state. */
                         RKH_EXEC_TRANSITION(me, pe);
