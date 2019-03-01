@@ -40,11 +40,13 @@
 /* -------------------------- Development history -------------------------- */
 /*
  *  2015.10.24  LeFr  v2.4.05  Initial version
+ *  2019.02.1   Daba  v2.4.05  STM32 Port
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  lf@vortexmakes.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -103,6 +105,10 @@
 
 #ifdef __CIAANXP__
     #include "../../portable/arm-cortex/rkhs/arm_cm4f/ciaa_nxp/rkhport.h"
+#endif
+
+#ifdef __STM32__
+    #include "../../portable/arm-cortex/rkhs/arm_cm4f/stm32/rkhport.h"
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
