@@ -46,6 +46,8 @@
 #ifndef __RKHT_H__
 #define __RKHT_H__
 
+#include <stdint.h>
+#include <stdbool.h>
 
 /* ---- Portable data types ---------------------------------------------- */
 
