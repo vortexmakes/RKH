@@ -6,7 +6,6 @@ compiler: gcc
 
 branches: # safelist
     only:
-    - pubsub
     - master
 
 os:
