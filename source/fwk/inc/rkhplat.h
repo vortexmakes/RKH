@@ -55,6 +55,10 @@
 #define __RKHPLAT_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#ifdef __NO_OFICIAL_PORT__
+    #include "rkhport.h"
+#endif
+
 #ifdef __W32STVC__
     #include "..\..\portable\80x86\win32_st\vc\rkhport.h"
 #endif
