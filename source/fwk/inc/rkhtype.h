@@ -56,6 +56,10 @@
 #define __RKHTYPE_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#ifdef __NO_OFICIAL_PORT__
+    #include "rkht.h"
+#endif
+
 #ifdef __W32STVC__
     #include "..\..\portable\80x86\win32_st\vc\rkht.h"
 #endif
