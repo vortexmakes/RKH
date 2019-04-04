@@ -55,7 +55,7 @@
 #define __RKHPLAT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#ifdef __NO_OFICIAL_PORT__
+#ifdef __NO_OFFICIAL_PORT__
     #include "rkhport.h"
 #endif
 
