@@ -55,7 +55,6 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "unity.h"
 #include "unitrazer.h"
 #include "rkh.h"
 #include "common.h"
