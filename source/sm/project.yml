@@ -35,7 +35,6 @@
     - ../portable/test
   :support:
     - test/support
-    - test/support/stub/mocks
     - ../../third-party/unitrazer
     - ../fwk/src
     - ../trc/src
