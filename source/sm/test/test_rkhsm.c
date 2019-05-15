@@ -55,7 +55,6 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "unity.h"
 #include <unitrazer.h>
 #include <tzlink.h>
 #include <tzparse.h>
