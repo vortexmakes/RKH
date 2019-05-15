@@ -294,7 +294,7 @@ static rbool_t
 isCompletionTrn(RKHROM RKH_ST_T *state)
 {
     if ((IS_SIMPLE(state) && findCompletionTrn(CBSC(state)->trtbl)) ||
-        IS_FINAL(state))
+        (IS_FINAL(state) && (CST(state)->parent != CST(0))))
         return RKH_TRUE;
     else
         return RKH_FALSE;

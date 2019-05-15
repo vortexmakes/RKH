@@ -173,6 +173,7 @@ loadStateMachineSymbols(void)
     RKH_TR_FWK_STATE(smTest, &s4);
     RKH_TR_FWK_STATE(smTest, &s5);
     RKH_TR_FWK_STATE(smTest, &s2Final);
+    RKH_TR_FWK_STATE(smTest, &SmTest_Final);
 
     RKH_TR_FWK_AO(smPseudoConditionalTest);
     RKH_TR_FWK_STATE(smPseudoConditionalTest, &smPCT_waiting);
@@ -1154,6 +1155,31 @@ test_transitionSyncDispatchingToStateMachine(void)
 {
     TEST_IGNORE();
 }
+
+void
+test_transitionToStateMachineFinalState(void)
+{
+    UtrzProcessOut *p;
+
+    stateList_create(targetStates, 1, &SmTest_Final);
+    stateList_create(entryStates, 1, &SmTest_Final);
+    stateList_create(exitStates, 1, &waiting);
+
+    smTest_init_Expect(RKH_CAST(SmTest, smTest), (RKH_EVT_T *)&evCreation);
+
+    setProfile(smTest, RKH_STATE_CAST(&waiting),
+               RKH_STATE_CAST(&waiting), RKH_STATE_CAST(&waiting), 
+               targetStates, entryStates, exitStates, 
+               RKH_STATE_CAST(&SmTest_Final), 1, TRN_NOT_INTERNAL, 
+               INIT_STATE_MACHINE,
+               &evB, RKH_STATE_CAST(&waiting));
+
+    rkh_sm_dispatch((RKH_SM_T *)smTest, &evB);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 

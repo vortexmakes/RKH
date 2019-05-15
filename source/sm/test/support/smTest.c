@@ -37,6 +37,7 @@ RKH_SMA_DEF_PTR(smTest);
 RKH_CREATE_BASIC_STATE(waiting, NULL, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(waiting)
     RKH_TRREG(A, NULL, NULL, &s0),
+    RKH_TRREG(B, NULL, NULL, &SmTest_Final),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(s0, smTest_nS0, smTest_xS0, RKH_ROOT, NULL);
@@ -152,6 +153,8 @@ RKH_CREATE_TRANS_TABLE(s5)
     RKH_TRCOMPLETION(NULL, smTest_tr61, &s4),
 
 RKH_END_TRANS_TABLE
+
+RKH_CREATE_FINAL_STATE(SmTest_Final, RKH_ROOT);
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */

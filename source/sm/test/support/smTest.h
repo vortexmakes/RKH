@@ -43,7 +43,7 @@ RKH_SMA_DCLR(smTest);
 /* Declare states and pseudostates */
 RKH_DCLR_COMP_STATE s2, s22, s3, s221, s222, s2221;
 RKH_DCLR_BASIC_STATE waiting, s0, s1, s21, s2211, s22211, s31, s4, s5;
-RKH_DCLR_FINAL_STATE s2Final;
+RKH_DCLR_FINAL_STATE s2Final, SmTest_Final;
 
 /* ------------------------------- Data types ------------------------------ */
 
