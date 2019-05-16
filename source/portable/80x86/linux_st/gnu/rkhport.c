@@ -46,7 +46,7 @@
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  lf@vortexmakes.com
- *  DaBa  Dario Baliña       dariosb@gmail.com
+ *  DaBa  Dario Baliña       db@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -68,7 +68,7 @@ RKH_MODULE_DESC(rkhport, "Linux 32-bits (single thread)")
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-pthread_mutex_t csection = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t csection;
 static sem_t sma_is_rdy;
 static rui8_t running;
 
@@ -104,7 +104,7 @@ rkhport_fwk_stop(void)
 void
 rkhport_enter_critical(void)
 {
-    pthread_mutex_trylock(&csection);
+    pthread_mutex_lock(&csection);
 }
 
 void
@@ -141,6 +141,12 @@ rkh_sma_setUnready(RKH_SMA_T *const me)
 void
 rkh_fwk_init(void)
 {
+    pthread_mutexattr_t attr;
+
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(&csection, &attr);
+
     sem_init(&sma_is_rdy, 0, 0);
 }
 
@@ -152,9 +158,9 @@ rkh_fwk_enter(void)
     RKH_EVT_T *e;
     RKH_SR_ALLOC();
 
+    running = 1;
     RKH_HOOK_START();
     RKH_TR_FWK_EN();
-    running = 1;
 
     while (running)
     {
