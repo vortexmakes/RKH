@@ -158,9 +158,9 @@ rkh_fwk_enter(void)
     RKH_EVT_T *e;
     RKH_SR_ALLOC();
 
+    running = 1;
     RKH_HOOK_START();
     RKH_TR_FWK_EN();
-    running = 1;
 
     while (running)
     {
