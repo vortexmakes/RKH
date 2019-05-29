@@ -75,11 +75,6 @@ RKH_MODULE_NAME(rkhtmr)
     #define RKH_SET_THOOK(t, hk)      (void)0
 #endif
 
-#define add_to_list(t) \
-    (t)->tnext = thead; \
-    thead = (t); \
-    (t)->used = 1
-
 #if defined(RKH_USE_TRC_SENDER)
     #define RKH_TICK_POST(t_, sender_) \
     RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, \
@@ -188,15 +183,18 @@ rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, RKH_TNT_T itick)
 {
     RKH_SR_ALLOC();
 
-    RKH_REQUIRE(t != CPTIM(
-                    0) && sma != (const struct RKH_SMA_T *)0 && itick != 0);
+    RKH_REQUIRE((t != CPTIM(0)) && 
+                (sma != (const struct RKH_SMA_T *)0) && 
+                (itick != 0));
     RKH_ENTER_CRITICAL_();
 
     t->sma = sma;
     t->ntick = itick;
     if (t->used == 0)
     {
-        add_to_list(t);
+        t->tnext = thead;
+        thead = t;
+        t->used = 1;
     }
 
     RKH_TR_TMR_START(t, sma, itick, t->period);

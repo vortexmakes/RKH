@@ -346,6 +346,40 @@ struct RKH_TMR_T
 #endif
 };
 
+typedef struct RKHTmEvt RKHTmEvt;
+
+/**
+ *  \brief
+ *  It defines a time event that occurs at a specific duration. 
+ *
+ *  \code
+ *  #define SYNC_TIME   50  // Number of ticks
+ *  RKHTmEvt myTmEvt;       // instantiate a timed event object
+ *  ...
+ *
+ *  void
+ *  someFunction(ActiveObject *const me)
+ *  {
+ *      RKH_SET_STATIC_EVENT(&myTmEvt, Sync); // 'Sync' is a signal and it
+ *                                            // should be used as a 
+ *                                            // transition's trigger
+ *      RKH_TMR_INIT(&myTmEvt.tmr, 
+ *                   RKH_UPCAST(RKH_EVT_T, &myTmEvt), 
+ *                   NULL);
+ *      RKH_TMR_ONESHOT(&myTmEvt.tmr, 
+ *                      RKH_UPCAST(RKH_SMA_T, me), 
+ *                      SYNC_TIME);
+ *  }
+ *  \endcode
+ *
+ *  \ingroup apiTmr
+ */
+struct RKHTmEvt
+{
+    RKH_EVT_T evt;  /** Base structure */
+    RKH_TMR_T tmr;  /** Timer */
+};
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 #if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
