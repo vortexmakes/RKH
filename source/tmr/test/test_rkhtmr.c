@@ -113,9 +113,7 @@ test_InitializeATimer(void)
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_exit_critical_Ignore();
 
-    RKH_TMR_INIT(&tmr, 
-                 RKH_UPCAST(RKH_EVT_T, &evt), 
-                 NULL);
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
 
     TEST_ASSERT_EQUAL(&evt, tmr.evt);
     TEST_ASSERT_EQUAL(0, tmr.ntick);
@@ -125,25 +123,118 @@ test_InitializeATimer(void)
 void
 test_startTheFirstTimerInTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    RKH_TMR_T tmr;
+    RKH_SMA_T *ao;
+    RKH_TNT_T nTicks;
+    RKH_EVT_T evt;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    nTicks = 4;
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, ao, nTicks);
+
+    TEST_ASSERT_EQUAL(1, tmr.used);
+    TEST_ASSERT_EQUAL(nTicks, tmr.ntick);
+    TEST_ASSERT_EQUAL(ao, tmr.sma);
+    TEST_ASSERT_EQUAL(0, tmr.tnext);    /* the first timer in the list */
 }
 
 void
-test_startMultipleTimers(void)
+test_startTheSameTimerManyTimes(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    RKH_TMR_T tmr;
+    RKH_SMA_T *ao;
+    RKH_EVT_T evt;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, ao, 1);
+    rkh_tmr_start(&tmr, ao, 2);
+    rkh_tmr_start(&tmr, ao, 4);
+    rkh_tmr_start(&tmr, ao + 1, 8);
+
+    TEST_ASSERT_EQUAL(1, tmr.used);
+    TEST_ASSERT_EQUAL(8, tmr.ntick);
+    TEST_ASSERT_EQUAL(ao + 1, tmr.sma);
+    TEST_ASSERT_EQUAL(0, tmr.tnext);    /* the first timer in the list */
+}
+
+void
+test_startManyTimers(void)
+{
+    RKH_TMR_T tmr0, tmr1, tmr2;
+    RKH_SMA_T *ao;
+    RKH_EVT_T evt;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, ao, 1);
+    TEST_ASSERT_EQUAL(0, tmr0.tnext);
+
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, ao, 2);
+    TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
+
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, ao, 4);
+    TEST_ASSERT_EQUAL(&tmr1, tmr2.tnext);
 }
 
 void
 test_stopTheOnlyOneTimer(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    RKH_TMR_T tmr;
+    RKH_SMA_T *ao;
+    RKH_EVT_T evt;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, ao, 1);
+    rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(0, tmr.ntick);
 }
 
 void
 test_stopATimerAtTheBeginningOfTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    RKH_TMR_T tmr0, tmr1, tmr2;
+    RKH_SMA_T *ao;
+    RKH_EVT_T evt;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, ao, 2);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, ao, 4);
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, ao, 8);
+
+    rkh_tmr_stop(&tmr2);    /* it is the first timer in the list */
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr2.ntick);
+    TEST_ASSERT_EQUAL(0, tmr2.used);
 }
 
 void
@@ -154,6 +245,24 @@ test_stopATimerAtTheMiddleOfTheList(void)
 
 void
 test_stopATimerAtTheEndOfTheList(void)
+{
+    TEST_IGNORE_MESSAGE("To be implemented");
+}
+
+void
+test_expireTheFirstTimerInTheList(void)
+{
+    TEST_IGNORE_MESSAGE("To be implemented");
+}
+
+void
+test_expireOneTimerAtTheMiddleOfTheList(void)
+{
+    TEST_IGNORE_MESSAGE("To be implemented");
+}
+
+void
+test_expireOneTimerAtTheEndOfTheList(void)
 {
     TEST_IGNORE_MESSAGE("To be implemented");
 }

@@ -426,6 +426,14 @@ void rkh_tmr_stop(RKH_TMR_T *t);
 
 /**
  *  \brief
+ *	Initializes the timer module.
+ *
+ *  \ingroup apiTmr
+ */
+void rkh_tmr_init(void);
+
+/**
+ *  \brief
  *  Retrieves performance information for a particular software timer.
  *
  *	The user application must allocate an RKH_TINFO_T data structure used

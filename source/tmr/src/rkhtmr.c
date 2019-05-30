@@ -215,6 +215,12 @@ rkh_tmr_stop(RKH_TMR_T *t)
 
 }
 
+void 
+rkh_tmr_init(void)
+{
+    thead = 0;
+}
+
 #if RKH_CFG_TMR_GET_INFO_EN == RKH_ENABLED
 void
 rkh_tmr_get_info(RKH_TMR_T *t, RKH_TINFO_T *info)
