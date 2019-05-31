@@ -74,8 +74,29 @@ static RKHTmEvt myTmEvt;
 
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static RKH_TMR_T tmr0, tmr1, tmr2;
+static RKH_SMA_T ao;
+static RKH_EVT_T evt;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void
+createMultipleTimers(void)
+{
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, 8);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, 4);
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, 2);
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void 
 setUp(void)
@@ -107,7 +128,6 @@ void
 test_InitializeATimer(void)
 {
     RKH_TMR_T tmr;
-    RKH_EVT_T evt;
 
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
@@ -121,12 +141,10 @@ test_InitializeATimer(void)
 }
 
 void
-test_startTheFirstTimerInTheList(void)
+test_StartTheFirstTimerInTheList(void)
 {
     RKH_TMR_T tmr;
-    RKH_SMA_T *ao;
     RKH_TNT_T nTicks;
-    RKH_EVT_T evt;
 
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
@@ -135,20 +153,18 @@ test_startTheFirstTimerInTheList(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, ao, nTicks);
+    rkh_tmr_start(&tmr, &ao, nTicks);
 
     TEST_ASSERT_EQUAL(1, tmr.used);
     TEST_ASSERT_EQUAL(nTicks, tmr.ntick);
-    TEST_ASSERT_EQUAL(ao, tmr.sma);
+    TEST_ASSERT_EQUAL(&ao, tmr.sma);
     TEST_ASSERT_EQUAL(0, tmr.tnext);    /* the first timer in the list */
 }
 
 void
-test_startTheSameTimerManyTimes(void)
+test_StartTheSameTimerManyTimes(void)
 {
     RKH_TMR_T tmr;
-    RKH_SMA_T *ao;
-    RKH_EVT_T evt;
 
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
@@ -156,48 +172,42 @@ test_startTheSameTimerManyTimes(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, ao, 1);
-    rkh_tmr_start(&tmr, ao, 2);
-    rkh_tmr_start(&tmr, ao, 4);
-    rkh_tmr_start(&tmr, ao + 1, 8);
+    rkh_tmr_start(&tmr, &ao, 1);
+    rkh_tmr_start(&tmr, &ao, 2);
+    rkh_tmr_start(&tmr, &ao, 4);
+    rkh_tmr_start(&tmr, &ao + 1, 8);
 
     TEST_ASSERT_EQUAL(1, tmr.used);
     TEST_ASSERT_EQUAL(8, tmr.ntick);
-    TEST_ASSERT_EQUAL(ao + 1, tmr.sma);
+    TEST_ASSERT_EQUAL(&ao + 1, tmr.sma);
     TEST_ASSERT_EQUAL(0, tmr.tnext);    /* the first timer in the list */
 }
 
 void
-test_startManyTimers(void)
+test_StartManyTimers(void)
 {
-    RKH_TMR_T tmr0, tmr1, tmr2;
-    RKH_SMA_T *ao;
-    RKH_EVT_T evt;
-
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_exit_critical_Ignore();
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, ao, 1);
+    rkh_tmr_start(&tmr0, &ao, 1);
     TEST_ASSERT_EQUAL(0, tmr0.tnext);
 
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, ao, 2);
+    rkh_tmr_start(&tmr1, &ao, 2);
     TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
 
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, ao, 4);
+    rkh_tmr_start(&tmr2, &ao, 4);
     TEST_ASSERT_EQUAL(&tmr1, tmr2.tnext);
 }
 
 void
-test_stopTheOnlyOneTimer(void)
+test_StopTheOnlyOneTimer(void)
 {
     RKH_TMR_T tmr;
-    RKH_SMA_T *ao;
-    RKH_EVT_T evt;
 
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
@@ -205,66 +215,134 @@ test_stopTheOnlyOneTimer(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, ao, 1);
+    rkh_tmr_start(&tmr, &ao, 1);
     rkh_tmr_stop(&tmr);
 
     TEST_ASSERT_EQUAL(0, tmr.ntick);
 }
 
 void
-test_stopATimerAtTheBeginningOfTheList(void)
+test_StopATimerAtTheBeginningOfTheList(void)
 {
-    RKH_TMR_T tmr0, tmr1, tmr2;
-    RKH_SMA_T *ao;
-    RKH_EVT_T evt;
+    createMultipleTimers();
 
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_hook_timetick_Ignore();
-    rkh_exit_critical_Ignore();
-
-    rkh_tmr_init();
-    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, ao, 2);
-    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, ao, 4);
-    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, ao, 8);
-
-    rkh_tmr_stop(&tmr2);    /* it is the first timer in the list */
+    rkh_tmr_stop(&tmr2);
     rkh_tmr_tick(0);
+
     TEST_ASSERT_EQUAL(0, tmr2.ntick);
     TEST_ASSERT_EQUAL(0, tmr2.used);
 }
 
 void
-test_stopATimerAtTheMiddleOfTheList(void)
+test_StopATimerAtTheMiddleOfTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    createMultipleTimers();
+
+    rkh_tmr_stop(&tmr1);
+    rkh_tmr_tick(0);
+
+    TEST_ASSERT_EQUAL(0, tmr1.ntick);
+    TEST_ASSERT_EQUAL(0, tmr1.used);
+    TEST_ASSERT_EQUAL(tmr1.tnext, tmr2.tnext);
 }
 
 void
-test_stopATimerAtTheEndOfTheList(void)
+test_StopATimerAtTheEndOfTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    createMultipleTimers();
+
+    rkh_tmr_stop(&tmr0);
+    rkh_tmr_tick(0);
+
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+    TEST_ASSERT_EQUAL(0, tmr0.used);
+    TEST_ASSERT_EQUAL(0, tmr1.tnext);
 }
 
 void
-test_expireTheFirstTimerInTheList(void)
+test_ExpireTheFirstTimerInTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    int i;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_sma_post_fifo_Expect((RKH_SMA_T *)tmr2.sma, tmr2.evt, &tmr2);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, 8);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, 4);
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, 2);
+
+    for (i = 2; i > 0; --i)
+    {
+        rkh_tmr_tick(0);
+    }
+
+    TEST_ASSERT_EQUAL(0, tmr2.ntick);
+    TEST_ASSERT_EQUAL(0, tmr2.used);
 }
 
 void
-test_expireOneTimerAtTheMiddleOfTheList(void)
+test_ExpireOneTimerAtTheMiddleOfTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    int i;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_sma_post_fifo_Expect((RKH_SMA_T *)tmr1.sma, tmr1.evt, &tmr1);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, 8);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, 2);
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, 4);
+
+    for (i = 2; i > 0; --i)
+    {
+        rkh_tmr_tick(0);
+    }
+
+    TEST_ASSERT_EQUAL(0, tmr1.ntick);
+    TEST_ASSERT_EQUAL(0, tmr1.used);
+    TEST_ASSERT_EQUAL(&tmr0, tmr2.tnext);
 }
 
 void
-test_expireOneTimerAtTheEndOfTheList(void)
+test_ExpireOneTimerAtTheEndOfTheList(void)
 {
-    TEST_IGNORE_MESSAGE("To be implemented");
+    int i;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_sma_post_fifo_Expect((RKH_SMA_T *)tmr0.sma, tmr0.evt, &tmr0);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, 2);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, 4);
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, 8);
+
+    for (i = 2; i > 0; --i)
+    {
+        rkh_tmr_tick(0);
+    }
+
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+    TEST_ASSERT_EQUAL(0, tmr0.used);
+    TEST_ASSERT_EQUAL(0, tmr1.tnext);
 }
 
 /** @} doxygen end group definition */

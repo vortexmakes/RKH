@@ -66,10 +66,12 @@ RKH_MODULE_NAME(rkhtmr)
 
 #if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
     #define RKH_EXEC_THOOK() \
-    if (t->timhk != (RKH_THK_T)0) \
-        (*t->timhk)(t)
+        if (t->timhk != (RKH_THK_T)0) \
+        { \
+            (*t->timhk)(t); \
+        }
     #define RKH_SET_THOOK(t, hk) \
-    (t)->timhk = (hk)
+        (t)->timhk = (hk)
 #else
     #define RKH_EXEC_THOOK()          (void)0
     #define RKH_SET_THOOK(t, hk)      (void)0
@@ -77,11 +79,11 @@ RKH_MODULE_NAME(rkhtmr)
 
 #if defined(RKH_USE_TRC_SENDER)
     #define RKH_TICK_POST(t_, sender_) \
-    RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, \
-                      sender_ != (const void *)0 ? sender_ : t_)
+        RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, \
+                          sender_ != (const void *)0 ? sender_ : t_)
 #else
     #define RKH_TICK_POST(t_, sender_) \
-    RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, sender_)
+        RKH_SMA_POST_FIFO((RKH_SMA_T *)t_->sma, t_->evt, sender_)
 #endif
 
 /* ------------------------------- Constants ------------------------------- */
@@ -118,16 +120,17 @@ rkh_tmr_tick(void)
     RKH_TMR_T *t, *tprev;
     RKH_SR_ALLOC();
 
-    RKH_HOOK_TIMETICK();            /* call user definable hook */
+    RKH_HOOK_TIMETICK();    /* call user definable hook */
 
     RKH_ENTER_CRITICAL_();
-    if (thead == CPTIM(0))      /* is empty list? */
+    if (thead == CPTIM(0))  /* is empty list? */
     {
         RKH_EXIT_CRITICAL_();
         return;
     }
 
     for (tprev = CPTIM(0), t = thead; t != CPTIM(0); t = t->tnext)
+    {
         if (t->ntick == 0)
         {
             rem_from_list(t, tprev);
@@ -155,6 +158,7 @@ rkh_tmr_tick(void)
                 tprev = t;
             }
         }
+    }
     RKH_EXIT_CRITICAL_();
 }
 
