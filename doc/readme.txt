@@ -2818,7 +2818,7 @@ for more information about this.
 \li (11-12) Close the trace session and terminates the program.
 
 <HR>
-\section qref18 Using RKH software timers
+\section qref18 Using software timers
 
 \n Prev: \ref qref "Quick reference" \n
 
@@ -2833,10 +2833,12 @@ This section includes:
 \subsection qref18_1 Declaring, and initializing a timer
 
 \code
+    #define SYNC_TIME    RKH_TIME_MS(100)
+    ...
 (1) static RKHTmEvt tmSync;
-...
+    ...
     void
-    foo(ActiveObject *const me)
+    powerOn(ActiveObject *const me)
     {
 (2)     RKH_SET_STATIC_EVENT(&tmSync, Sync);
         RKH_TMR_INIT(&tmSync.tmr, 
@@ -2851,8 +2853,8 @@ This section includes:
 Explanation
 
 \li (1)	Declares and allocates the \c tmSync time event. 
-\li (2)	Initializes \c tmSync as a static time event with signal \c Sync. 
-        It should be used as a transition's trigger.
+\li (2)	Initializes \c tmSync like a static time event with signal \c Sync. 
+        It should be used like a transition's trigger.
 \li (3)	Initializes the \c tmSync timer as oneshot. When it expires the 
         \c me active object will receive an event with \c Sync signal.
         The \c tmSync will expire after SYNC_TIME ticks.
@@ -2863,10 +2865,10 @@ Explanation
 (1)	#define TPWROFF_TIME    RKH_TIME_MS(100)
 (2)	#define TKEY_TIME		RKH_TIME_MS(100)
    	#define TKEYSTART_TIME	RKH_TIME_MS(300)
-...
+    ...
 (3) static RKHTmEvt tPwrOff,
 (4) 			    tKey;
-...
+    ...
     void
     start(PowerMonitor *const me)
     {
@@ -2874,7 +2876,7 @@ Explanation
                         RKH_UPCAST(RKH_SMA_T, me), 
                         TPWROFF_TIME);
     }
-...
+    ...
     void
     close(PowerMonitor *const me)
     {
@@ -2883,7 +2885,7 @@ Explanation
                          TKEYSTART_TIME,
                          TKEY_TIME);
     }
-...
+    ...
     void
     detect(PowerMonitor *const me)
     {
@@ -2915,8 +2917,8 @@ Adjusting this definitions allows to reduce the ROM and RAM consumption,
 and to enhance the system performance in a substantial manner. The 
 \c rkhcfg.h shows the general layout of the configuration file.
 Use the following macros to reduce the memory taken by state machine 
-structure: RKH_CFG_TMR_EN, RKH_CFG_TMR_SIZEOF_NTIMER, RKH_CFG_TMR_HOOK_EN, 
-RKH_CFG_TMR_GET_INFO_EN.
+structure: #RKH_CFG_TMR_EN, #RKH_CFG_TMR_SIZEOF_NTIMER, #RKH_CFG_TMR_HOOK_EN, 
+#RKH_CFG_TMR_GET_INFO_EN.
 See \ref cfg section for more information. 
 
 Prev: \ref main_page "Home"

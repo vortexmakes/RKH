@@ -81,7 +81,7 @@ static RKH_EVT_T evt;
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
-createMultipleTimers(void)
+createMultipleTimers(RKH_TNT_T nTick0, RKH_TNT_T nTick1, RKH_TNT_T nTick2)
 {
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
@@ -90,11 +90,11 @@ createMultipleTimers(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, 8);
+    rkh_tmr_start(&tmr0, &ao, nTick0);
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, 4);
+    rkh_tmr_start(&tmr1, &ao, nTick1);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, 2);
+    rkh_tmr_start(&tmr2, &ao, nTick2);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -186,22 +186,10 @@ test_StartTheSameTimerManyTimes(void)
 void
 test_StartManyTimers(void)
 {
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
-
-    rkh_tmr_init();
-    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, 1);
-    TEST_ASSERT_EQUAL(0, tmr0.tnext);
-
-    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, 2);
-    TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
-
-    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, 4);
+    createMultipleTimers(8, 4, 2);
     TEST_ASSERT_EQUAL(&tmr1, tmr2.tnext);
+    TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
+    TEST_ASSERT_EQUAL(0, tmr0.tnext);
 }
 
 void
@@ -222,9 +210,36 @@ test_StopTheOnlyOneTimer(void)
 }
 
 void
+test_StopAndImmediatelyStartTheSameTimer(void)
+{
+#if 0
+    RKH_TNT_T nTick = 4;
+
+    createMultipleTimers(8, 6, nTick);
+    rkh_sma_post_fifo_Expect((RKH_SMA_T *)tmr2.sma, tmr2.evt, &tmr2);
+
+    rkh_tmr_tick(0);
+    rkh_tmr_stop(&tmr2);
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, nTick);
+    rkh_tmr_tick(0);
+    rkh_tmr_tick(0);
+
+    TEST_ASSERT_EQUAL(5, tmr0.ntick);
+    TEST_ASSERT_EQUAL(3, tmr1.ntick);
+    TEST_ASSERT_EQUAL(2, tmr2.ntick);
+    TEST_ASSERT_EQUAL(1, tmr2.used);
+    TEST_ASSERT_EQUAL(&tmr1, tmr2.tnext);
+    TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
+#else
+    TEST_ASSERT_IGNORE_MESSAGE("To be implemented");
+#endif
+}
+
+void
 test_StopATimerAtTheBeginningOfTheList(void)
 {
-    createMultipleTimers();
+    createMultipleTimers(8, 4, 2);
 
     rkh_tmr_stop(&tmr2);
     rkh_tmr_tick(0);
@@ -236,7 +251,7 @@ test_StopATimerAtTheBeginningOfTheList(void)
 void
 test_StopATimerAtTheMiddleOfTheList(void)
 {
-    createMultipleTimers();
+    createMultipleTimers(8, 4, 2);
 
     rkh_tmr_stop(&tmr1);
     rkh_tmr_tick(0);
@@ -249,7 +264,7 @@ test_StopATimerAtTheMiddleOfTheList(void)
 void
 test_StopATimerAtTheEndOfTheList(void)
 {
-    createMultipleTimers();
+    createMultipleTimers(8, 4, 2);
 
     rkh_tmr_stop(&tmr0);
     rkh_tmr_tick(0);
