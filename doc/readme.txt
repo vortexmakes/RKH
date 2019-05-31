@@ -2833,75 +2833,78 @@ This section includes:
 \subsection qref18_1 Declaring, and initializing a timer
 
 \code
+(1) static RKHTmEvt tmSync;
 ...
-(1) static RKH_TMR_T tlayer;
-(2)	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
-
-	void
-(3)	tlayer_tout( void *t )
-	{
-		(void)t;
-		close_layer();
-	}
-
-(4)	RKH_TMR_INIT( 	&tlayer, 
-(5)					&e_timer, 
-(6)					tlayer_tout );
-...
+    void
+    foo(ActiveObject *const me)
+    {
+(2)     RKH_SET_STATIC_EVENT(&tmSync, Sync);
+        RKH_TMR_INIT(&tmSync.tmr, 
+                     RKH_UPCAST(RKH_EVT_T, &tmSync), 
+                     NULL);
+(3)     RKH_TMR_ONESHOT(&tmSync.tmr, 
+                        RKH_UPCAST(RKH_SMA_T, me), 
+                        SYNC_TIME);
+    }
 \endcode
 
 Explanation
 
-\li (1)	Declares and allocates the \c tlayer timer. 
-\li (1)	Declares and allocates the static event \c e_timer timer with the 
-		signal \c TOUT. 
-\li (3)	Defines \c tlayer_tout() hook function, which is calls at the 
-		\c tlayer expiration.
-\li (4)	Initializes the \c tlayer timer. 
-\li (5)	Event to be directly posted (using the FIFO policy) into the event 
-		queue of the target agreed state machine application at the timer 
-		expiration.
-\li (6) Registers \c tlayer_tout() hook function.
+\li (1)	Declares and allocates the \c tmSync time event. 
+\li (2)	Initializes \c tmSync as a static time event with signal \c Sync. 
+        It should be used as a transition's trigger.
+\li (3)	Initializes the \c tmSync timer as oneshot. When it expires the 
+        \c me active object will receive an event with \c Sync signal.
+        The \c tmSync will expire after SYNC_TIME ticks.
 
 \subsection qref18_2 Start and stop timers
 
 \code
-(1)	#define TPWR_TIME			RKH_TIME_MS( 100 )
-(2)	#define TKEY_TIME			RKH_TIME_MS( 100 )
+(1)	#define TPWROFF_TIME    RKH_TIME_MS(100)
+(2)	#define TKEY_TIME		RKH_TIME_MS(100)
+   	#define TKEYSTART_TIME	RKH_TIME_MS(300)
 ...
-(3) static RKH_TMR_T tpwr,
-(4) 				 tkey;
-
-(5)	static RKH_ROM_STATIC_EVENT( e_tpwr, TPWR );
-(6)	static RKH_ROM_STATIC_EVENT( e_tkey, TKEY );
-
-(7)	RKH_TMR_INIT( &tpwr, e_tpwr, NULL );
-(8)	RKH_TMR_INIT( &tkey, e_tkey, NULL );
+(3) static RKHTmEvt tPwrOff,
+(4) 			    tKey;
 ...
-(9) RKH_TMR_ONESHOT( &tpwr, pwr, TPWR_TIME );
-(10)RKH_TMR_PERIODIC( &tkey, pwr, TKEY_TIME, TKEY_TIME/4 );
+    void
+    start(PowerMonitor *const me)
+    {
+(5)     RKH_TMR_ONESHOT(&tPwrOff.tmr, 
+                        RKH_UPCAST(RKH_SMA_T, me), 
+                        TPWROFF_TIME);
+    }
 ...
-(11)rkh_tmr_stop( &tkey );
+    void
+    close(PowerMonitor *const me)
+    {
+(6)     RKH_TMR_PERIODIC(&tKey.tmr, 
+                         RKH_UPCAST(RKH_SMA_T, me), 
+                         TKEYSTART_TIME,
+                         TKEY_TIME);
+    }
 ...
-(12)rkh_tmr_restart( &tpwr, TPWR_TIME * 2 );
+    void
+    detect(PowerMonitor *const me)
+    {
+(7)     rkh_tmr_stop(&tKey);
+(8)     rkh_tmr_stop(&tPwrOff);
+    }
 \endcode
 
 Explanation
 
-\li (1-2)	Defines the number of millisencods for timer expiration using 
-			the macro RKH_TIME_MS() that converts the ticks to time. 
-\li (3-4)	Declares and allocates the \c tpwr, and \c tkey timers. 
-\li (5-6)	Declares and allocates the static events \c e_tpwr, and 
-			\c e_tkey. 
-\li (7-8)	Initializes the \c tpwr, and \c tkey timers. 
-\li (9)	Starts \c tpwr timer as one-shot timer, which posts the signal 
-		\c TPWR to 	\c pwr state machine application after TPWR_TICK 
-		timer-ticks.
-\li (10)Starts \c tkey timer as periodic timer, which posts the signal 
-		\c TKEY to \c pwr state machine application after TKEY_TICK 
-		timer-ticks initially and then after every TKEY_TICK/4 timer-ticks.
-\li (11) Stops \c tkey timer. 
-\li (12) Restarts \c tpwr timer with a new number of ticks. 
+\li (1-2) Defines the number of millisencods for timer expiration using 
+		  the macro RKH_TIME_MS(), which converts ticks to time. 
+\li (3-4) Declares and allocates the \c tPwrOff, and \c tKey event timers. 
+\li (5)	Starts the previously initialized \c tPwrOff event timer as oneshot 
+        timer, which posts the \c evPwrOff signal to \c PowerMonitor active 
+        object after \c TPWROFF_TIME ticks.
+\li (6) Starts the previously initialized \c tKey event timer as periodic 
+        timer, which posts the \c evKey signal to \c PowerMonitor active 
+        object after \c TKEYSTART_TIME ticks initially and then after 
+        every \c TKEY_TIME ticks.
+\li (7-8) Stops both event timers. 
 
 \subsection qref18_3 Customization
 
