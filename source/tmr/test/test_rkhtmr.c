@@ -212,11 +212,9 @@ test_StopTheOnlyOneTimer(void)
 void
 test_StopAndImmediatelyStartTheSameTimer(void)
 {
-#if 0
     RKH_TNT_T nTick = 4;
 
     createMultipleTimers(8, 6, nTick);
-    rkh_sma_post_fifo_Expect((RKH_SMA_T *)tmr2.sma, tmr2.evt, &tmr2);
 
     rkh_tmr_tick(0);
     rkh_tmr_stop(&tmr2);
@@ -227,13 +225,11 @@ test_StopAndImmediatelyStartTheSameTimer(void)
 
     TEST_ASSERT_EQUAL(5, tmr0.ntick);
     TEST_ASSERT_EQUAL(3, tmr1.ntick);
-    TEST_ASSERT_EQUAL(2, tmr2.ntick);
+    TEST_ASSERT_EQUAL(nTick - 2, tmr2.ntick);
     TEST_ASSERT_EQUAL(1, tmr2.used);
     TEST_ASSERT_EQUAL(&tmr1, tmr2.tnext);
     TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
-#else
-    TEST_ASSERT_IGNORE_MESSAGE("To be implemented");
-#endif
+    TEST_ASSERT_EQUAL(0, tmr0.tnext);
 }
 
 void
@@ -258,7 +254,7 @@ test_StopATimerAtTheMiddleOfTheList(void)
 
     TEST_ASSERT_EQUAL(0, tmr1.ntick);
     TEST_ASSERT_EQUAL(0, tmr1.used);
-    TEST_ASSERT_EQUAL(tmr1.tnext, tmr2.tnext);
+    TEST_ASSERT_EQUAL(&tmr0, tmr2.tnext);
 }
 
 void
@@ -272,6 +268,67 @@ test_StopATimerAtTheEndOfTheList(void)
     TEST_ASSERT_EQUAL(0, tmr0.ntick);
     TEST_ASSERT_EQUAL(0, tmr0.used);
     TEST_ASSERT_EQUAL(0, tmr1.tnext);
+}
+
+void
+test_StopANotStartedTimer(void)
+{
+    RKH_TMR_T tmr;
+
+    tmr.used = 88;
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(88, tmr.used);
+}
+
+void
+test_StopTheSameTimerMoreThanOnce(void)
+{
+    RKH_TMR_T tmr;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, &ao, 1);
+    rkh_tmr_stop(&tmr);
+    rkh_tmr_stop(&tmr);
+    rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(0, tmr.ntick);
+    TEST_ASSERT_EQUAL(0, tmr.used);
+}
+
+void
+test_StopATimerInAnEmptyList(void)
+{
+    RKH_TMR_T tmr;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    rkh_tmr_stop(&tmr);
+}
+
+void
+test_StopAllTimers(void)
+{
+    createMultipleTimers(8, 4, 2);
+    rkh_tmr_init();
+    rkh_tmr_tick(0);
+
+    TEST_ASSERT_EQUAL(8, tmr0.ntick);
+    TEST_ASSERT_EQUAL(4, tmr1.ntick);
+    TEST_ASSERT_EQUAL(2, tmr2.ntick);
 }
 
 void
@@ -358,6 +415,17 @@ test_ExpireOneTimerAtTheEndOfTheList(void)
     TEST_ASSERT_EQUAL(0, tmr0.ntick);
     TEST_ASSERT_EQUAL(0, tmr0.used);
     TEST_ASSERT_EQUAL(0, tmr1.tnext);
+}
+
+void
+test_CallTickWithoutStartedTimers(void)
+{
+    rkh_enter_critical_Ignore();
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    rkh_tmr_tick(0);
 }
 
 /** @} doxygen end group definition */

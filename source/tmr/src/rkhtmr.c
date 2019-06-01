@@ -109,6 +109,20 @@ rem_from_list(RKH_TMR_T *t, RKH_TMR_T *tprev)
     RKH_TR_TMR_REM(t);
 }
 
+static void
+searchAndRemove(RKH_TMR_T *t)
+{
+    RKH_TMR_T *telem, *tprev;
+
+    for (tprev = CPTIM(0), telem = thead; 
+         (telem != CPTIM(0)) && (telem != t); 
+         tprev = telem, telem = telem->tnext);
+    if (telem != CPTIM(0))
+    {
+        rem_from_list(telem, tprev);
+    }
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void
 #if defined(RKH_USE_TRC_SENDER)
@@ -131,32 +145,25 @@ rkh_tmr_tick(void)
 
     for (tprev = CPTIM(0), t = thead; t != CPTIM(0); t = t->tnext)
     {
-        if (t->ntick == 0)
+        if (!--t->ntick)
         {
-            rem_from_list(t, tprev);
-        }
-        else
-        {
-            if (!--t->ntick)
+            RKH_TR_TMR_TOUT(t, t->evt->e, t->sma);
+            if (t->period == 0)
             {
-                RKH_TR_TMR_TOUT(t, t->evt->e, t->sma);
-                if (t->period == 0)
-                {
-                    rem_from_list(t, tprev);
-                }
-                else
-                {
-                    t->ntick = t->period;
-                    tprev = t;
-                }
-                RKH_HOOK_TIMEOUT(t);
-                RKH_EXEC_THOOK();
-                RKH_TICK_POST(t, sender);
+                rem_from_list(t, tprev);
             }
             else
             {
+                t->ntick = t->period;
                 tprev = t;
             }
+            RKH_HOOK_TIMEOUT(t);
+            RKH_EXEC_THOOK();
+            RKH_TICK_POST(t, sender);
+        }
+        else
+        {
+            tprev = t;
         }
     }
     RKH_EXIT_CRITICAL_();
@@ -211,12 +218,11 @@ rkh_tmr_stop(RKH_TMR_T *t)
     RKH_SR_ALLOC();
 
     RKH_REQUIRE(t != CPTIM(0));
-
     RKH_ENTER_CRITICAL_();
     t->ntick = 0;
+    searchAndRemove(t);
     RKH_TR_TMR_STOP(t, t->ntick, t->period);
     RKH_EXIT_CRITICAL_();
-
 }
 
 void 
