@@ -190,7 +190,8 @@ rkh_tmr_init_(RKH_TMR_T * t, const RKH_EVT_T * e, RKH_THK_T thk)
 }
 
 void
-rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, RKH_TNT_T itick)
+rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, 
+              RKH_TNT_T itick, RKH_TNT_T per)
 {
     RKH_SR_ALLOC();
 
@@ -201,6 +202,7 @@ rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, RKH_TNT_T itick)
 
     t->sma = sma;
     t->ntick = itick;
+    t->period = per;
     if (t->used == 0)
     {
         t->tnext = thead;
@@ -212,17 +214,27 @@ rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, RKH_TNT_T itick)
     RKH_EXIT_CRITICAL_();
 }
 
-void
+rbool_t 
 rkh_tmr_stop(RKH_TMR_T *t)
 {
+    rbool_t wasStarted;
     RKH_SR_ALLOC();
 
     RKH_REQUIRE(t != CPTIM(0));
     RKH_ENTER_CRITICAL_();
-    t->ntick = 0;
-    searchAndRemove(t);
     RKH_TR_TMR_STOP(t, t->ntick, t->period);
+    if (t->ntick != (RKH_TNT_T)0)
+    {
+        t->ntick = 0;
+        searchAndRemove(t);
+        wasStarted = true;
+    }
+    else
+    {
+        wasStarted = false;
+    }
     RKH_EXIT_CRITICAL_();
+    return wasStarted;
 }
 
 void 

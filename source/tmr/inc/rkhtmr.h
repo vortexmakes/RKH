@@ -185,8 +185,7 @@ extern "C" {
  *  \ingroup apiTmr
  */
 #define RKH_TMR_ONESHOT(t, sma, itick) \
-    (t)->period = 0; \
-    rkh_tmr_start(t, sma, itick)
+    rkh_tmr_start(t, sma, itick, 0)
 
 /**
  *  \brief
@@ -233,8 +232,7 @@ extern "C" {
  *  \ingroup apiTmr
  */
 #define RKH_TMR_PERIODIC(t, sma, itick, per) \
-    (t)->period = (per); \
-    rkh_tmr_start((t), (sma), (itick))
+    rkh_tmr_start((t), (sma), (itick), (per))
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
@@ -393,6 +391,18 @@ typedef struct RKHTmEvt RKHTmEvt;
  *  }
  *  \endcode
  *
+ *  The 'tmSync' should be used like a transition's trigger to support the 
+ *  UML's time event \c 'after \c SYNC_TIME':
+ *  \code
+ *  RKH_CREATE_BASIC_STATE(s1, powerOn, powerOff, RKH_ROOT, NULL);
+ *  RKH_CREATE_TRANS_TABLE(s1)
+ *  RKH_TRREG(Sync, NULL, NULL, &s0),   // 'Sync' signal enables this
+ *                                      // transition to 's0' state
+ *                                      // It is equivalent to
+ *                                      // 'after SYNC_TIME' UML's TimeEvent
+ *  RKH_END_TRANS_TABLE
+ *  \endcode
+ *
  *  \ingroup apiTmr
  */
 struct RKHTmEvt
@@ -425,11 +435,15 @@ struct RKHTmEvt
  *	\param[in] sma		state machine application (SMA) that receives the 
  *	                    timer event.
  *  \param[in] itick    number of ticks for timer expiration.
+ *  \param[in] per	    number of ticks for all timer expirations after the 
+ *                      first (expiration period). A zero for this parameter 
+ *                      makes the timer an one-shot timer, otherwise, for 
+ *                      periodic timers, any value in range.
  *
  *  \ingroup apiTmr
  */
-void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
-                   RKH_TNT_T itick);
+void rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, 
+                   RKH_TNT_T itick, RKH_TNT_T per);
 
 /**
  *  \brief
@@ -441,9 +455,15 @@ void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
  *
  *	\param[in] t		pointer to previously created timer structure.
  *
+ *  \return
+ *  'true' if the timer was running. The 'false' return is only possible for 
+ *  one-shot timers that have been automatically stopped upon expiration. 
+ *  In this case the 'false' return means that the time event has already been 
+ *  posted and should be expected in the active object's state machine.
+ *
  *  \ingroup apiTmr
  */
-void rkh_tmr_stop(RKH_TMR_T *t);
+rbool_t rkh_tmr_stop(RKH_TMR_T *t);
 
 /**
  *  \brief

@@ -90,11 +90,11 @@ createMultipleTimers(RKH_TNT_T nTick0, RKH_TNT_T nTick1, RKH_TNT_T nTick2)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, nTick0);
+    rkh_tmr_start(&tmr0, &ao, nTick0, 0);
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, nTick1);
+    rkh_tmr_start(&tmr1, &ao, nTick1, 0);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, nTick2);
+    rkh_tmr_start(&tmr2, &ao, nTick2, 0);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -153,12 +153,30 @@ test_StartTheFirstTimerInTheList(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, &ao, nTicks);
+    rkh_tmr_start(&tmr, &ao, nTicks, 0);
 
     TEST_ASSERT_EQUAL(1, tmr.used);
     TEST_ASSERT_EQUAL(nTicks, tmr.ntick);
     TEST_ASSERT_EQUAL(&ao, tmr.sma);
     TEST_ASSERT_EQUAL(0, tmr.tnext);    /* the first timer in the list */
+}
+
+void
+test_StartAPeriodicTimer(void)
+{
+    RKH_TMR_T tmr;
+    RKH_TNT_T period;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    period = 4;
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, &ao, 6, period);
+
+    TEST_ASSERT_EQUAL(period, tmr.period);
 }
 
 void
@@ -172,10 +190,10 @@ test_StartTheSameTimerManyTimes(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, &ao, 1);
-    rkh_tmr_start(&tmr, &ao, 2);
-    rkh_tmr_start(&tmr, &ao, 4);
-    rkh_tmr_start(&tmr, &ao + 1, 8);
+    rkh_tmr_start(&tmr, &ao, 1, 0);
+    rkh_tmr_start(&tmr, &ao, 2, 0);
+    rkh_tmr_start(&tmr, &ao, 4, 0);
+    rkh_tmr_start(&tmr, &ao + 1, 8, 0);
 
     TEST_ASSERT_EQUAL(1, tmr.used);
     TEST_ASSERT_EQUAL(8, tmr.ntick);
@@ -193,36 +211,21 @@ test_StartManyTimers(void)
 }
 
 void
-test_StopTheOnlyOneTimer(void)
-{
-    RKH_TMR_T tmr;
-
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
-
-    rkh_tmr_init();
-    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, &ao, 1);
-    rkh_tmr_stop(&tmr);
-
-    TEST_ASSERT_EQUAL(0, tmr.ntick);
-}
-
-void
 test_StopAndImmediatelyStartTheSameTimer(void)
 {
+    rbool_t wasStarted;
     RKH_TNT_T nTick = 4;
 
     createMultipleTimers(8, 6, nTick);
 
     rkh_tmr_tick(0);
-    rkh_tmr_stop(&tmr2);
+    wasStarted = rkh_tmr_stop(&tmr2);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, nTick);
+    rkh_tmr_start(&tmr2, &ao, nTick, 0);
     rkh_tmr_tick(0);
     rkh_tmr_tick(0);
 
+    TEST_ASSERT_EQUAL(true, wasStarted);
     TEST_ASSERT_EQUAL(5, tmr0.ntick);
     TEST_ASSERT_EQUAL(3, tmr1.ntick);
     TEST_ASSERT_EQUAL(nTick - 2, tmr2.ntick);
@@ -235,11 +238,13 @@ test_StopAndImmediatelyStartTheSameTimer(void)
 void
 test_StopATimerAtTheBeginningOfTheList(void)
 {
+    rbool_t wasStarted;
     createMultipleTimers(8, 4, 2);
 
-    rkh_tmr_stop(&tmr2);
+    wasStarted = rkh_tmr_stop(&tmr2);
     rkh_tmr_tick(0);
 
+    TEST_ASSERT_EQUAL(true, wasStarted);
     TEST_ASSERT_EQUAL(0, tmr2.ntick);
     TEST_ASSERT_EQUAL(0, tmr2.used);
 }
@@ -247,11 +252,13 @@ test_StopATimerAtTheBeginningOfTheList(void)
 void
 test_StopATimerAtTheMiddleOfTheList(void)
 {
+    rbool_t wasStarted;
     createMultipleTimers(8, 4, 2);
 
-    rkh_tmr_stop(&tmr1);
+    wasStarted = rkh_tmr_stop(&tmr1);
     rkh_tmr_tick(0);
 
+    TEST_ASSERT_EQUAL(true, wasStarted);
     TEST_ASSERT_EQUAL(0, tmr1.ntick);
     TEST_ASSERT_EQUAL(0, tmr1.used);
     TEST_ASSERT_EQUAL(&tmr0, tmr2.tnext);
@@ -260,35 +267,22 @@ test_StopATimerAtTheMiddleOfTheList(void)
 void
 test_StopATimerAtTheEndOfTheList(void)
 {
+    rbool_t wasStarted;
     createMultipleTimers(8, 4, 2);
 
-    rkh_tmr_stop(&tmr0);
+    wasStarted = rkh_tmr_stop(&tmr0);
     rkh_tmr_tick(0);
 
+    TEST_ASSERT_EQUAL(true, wasStarted);
     TEST_ASSERT_EQUAL(0, tmr0.ntick);
     TEST_ASSERT_EQUAL(0, tmr0.used);
     TEST_ASSERT_EQUAL(0, tmr1.tnext);
 }
 
 void
-test_StopANotStartedTimer(void)
-{
-    RKH_TMR_T tmr;
-
-    tmr.used = 88;
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
-
-    rkh_tmr_init();
-    rkh_tmr_stop(&tmr);
-
-    TEST_ASSERT_EQUAL(88, tmr.used);
-}
-
-void
 test_StopTheSameTimerMoreThanOnce(void)
 {
+    rbool_t wasStarted;
     RKH_TMR_T tmr;
 
     rkh_enter_critical_Ignore();
@@ -297,10 +291,13 @@ test_StopTheSameTimerMoreThanOnce(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr, &ao, 1);
-    rkh_tmr_stop(&tmr);
-    rkh_tmr_stop(&tmr);
-    rkh_tmr_stop(&tmr);
+    rkh_tmr_start(&tmr, &ao, 1, 0);
+    wasStarted = rkh_tmr_stop(&tmr);
+    TEST_ASSERT_EQUAL(true, wasStarted);
+    wasStarted = rkh_tmr_stop(&tmr);
+    TEST_ASSERT_EQUAL(false, wasStarted);
+    wasStarted = rkh_tmr_stop(&tmr);
+    TEST_ASSERT_EQUAL(false, wasStarted);
 
     TEST_ASSERT_EQUAL(0, tmr.ntick);
     TEST_ASSERT_EQUAL(0, tmr.used);
@@ -309,14 +306,18 @@ test_StopTheSameTimerMoreThanOnce(void)
 void
 test_StopATimerInAnEmptyList(void)
 {
+    rbool_t wasStarted;
     RKH_TMR_T tmr;
 
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_exit_critical_Ignore();
 
+    tmr.ntick = 0;
     rkh_tmr_init();
-    rkh_tmr_stop(&tmr);
+    wasStarted = rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(false, wasStarted);
 }
 
 void
@@ -332,6 +333,71 @@ test_StopAllTimers(void)
 }
 
 void
+test_StopAStartedTimer(void)
+{
+    RKH_TMR_T tmr;
+    rbool_t wasStarted;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, &ao, 4, 0);
+    rkh_tmr_tick(0);
+    wasStarted = rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(0, tmr.ntick);
+    TEST_ASSERT_EQUAL(true, wasStarted);
+}
+
+void
+test_StopANotStartedTimer(void)
+{
+    rbool_t wasStarted;
+    RKH_TMR_T tmr;
+
+    tmr.used = 88;
+    tmr.ntick = 0;
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    wasStarted = rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(false, wasStarted);
+    TEST_ASSERT_EQUAL(88, tmr.used);
+}
+
+void
+test_StopAnExpiredOneShotTimer(void)
+{
+    RKH_TMR_T tmr;
+    rbool_t wasStarted;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr);
+    rkh_exit_critical_Ignore();
+
+    tmr.period = 0;
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, &ao, 2, 0);
+    rkh_tmr_tick(0);
+    rkh_tmr_tick(0);
+    rkh_tmr_tick(0);
+    wasStarted = rkh_tmr_stop(&tmr);
+
+    TEST_ASSERT_EQUAL(0, tmr.ntick);
+    TEST_ASSERT_EQUAL(false, wasStarted);
+}
+
+void
 test_ExpireTheFirstTimerInTheList(void)
 {
     int i;
@@ -344,11 +410,11 @@ test_ExpireTheFirstTimerInTheList(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, 8);
+    rkh_tmr_start(&tmr0, &ao, 8, 0);
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, 4);
+    rkh_tmr_start(&tmr1, &ao, 4, 0);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, 2);
+    rkh_tmr_start(&tmr2, &ao, 2, 0);
 
     for (i = 2; i > 0; --i)
     {
@@ -372,11 +438,11 @@ test_ExpireOneTimerAtTheMiddleOfTheList(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, 8);
+    rkh_tmr_start(&tmr0, &ao, 8, 0);
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, 2);
+    rkh_tmr_start(&tmr1, &ao, 2, 0);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, 4);
+    rkh_tmr_start(&tmr2, &ao, 4, 0);
 
     for (i = 2; i > 0; --i)
     {
@@ -401,11 +467,11 @@ test_ExpireOneTimerAtTheEndOfTheList(void)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, 2);
+    rkh_tmr_start(&tmr0, &ao, 2, 0);
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, 4);
+    rkh_tmr_start(&tmr1, &ao, 4, 0);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, 8);
+    rkh_tmr_start(&tmr2, &ao, 8, 0);
 
     for (i = 2; i > 0; --i)
     {
@@ -415,6 +481,29 @@ test_ExpireOneTimerAtTheEndOfTheList(void)
     TEST_ASSERT_EQUAL(0, tmr0.ntick);
     TEST_ASSERT_EQUAL(0, tmr0.used);
     TEST_ASSERT_EQUAL(0, tmr1.tnext);
+}
+
+void
+test_ExpiredAPeridicTimer(void)
+{
+    RKH_TMR_T tmr;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr);
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr, &ao, 4, 4);
+    rkh_tmr_tick(0);
+    rkh_tmr_tick(0);
+    rkh_tmr_tick(0);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(4, tmr.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(3, tmr.ntick);
 }
 
 void
