@@ -2854,10 +2854,20 @@ Explanation
 
 \li (1)	Declares and allocates the \c tmSync time event. 
 \li (2)	Initializes \c tmSync like a static time event with signal \c Sync. 
-        It should be used like a transition's trigger.
+        It should be used like a transition's trigger to support the UML's
+        time event \c 'after \c SYNC_TIME':
+        \code
+        RKH_CREATE_BASIC_STATE(s1, powerOn, powerOff, RKH_ROOT, NULL);
+        RKH_CREATE_TRANS_TABLE(s1)
+            RKH_TRREG(Sync, NULL, NULL, &s0), /* 'Sync' signal enables this */
+                                              /* transition to 's0' state */
+                                              /* It is equivalent to */
+                                              /* 'after SYNC_TIME' UML's TimeEvent */
+        RKH_END_TRANS_TABLE
+        \endcode
 \li (3)	Initializes the \c tmSync timer as oneshot. When it expires the 
         \c me active object will receive an event with \c Sync signal.
-        The \c tmSync will expire after SYNC_TIME ticks.
+        The \c tmSync will expire after \c SYNC_TIME ticks.
 
 \subsection qref18_2 Start and stop timers
 
