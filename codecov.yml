@@ -1,5 +1,5 @@
 codecov:
-    branch: pubsub
+    branch: develop
 
 ignore:
     - "third-party"
