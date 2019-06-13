@@ -120,14 +120,21 @@ extern "C" {
  *
  *  \usage
  *  \code
- *	#define MY_TICK				100
- *
- *	static RKH_TMR_T my_timer;
- *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
- *
+ *  #define SYNC_TIME    RKH_TIME_MS(100)
  *  ...
- *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
- *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
+ *  static RKHTmEvt tmSync;
+ *  ...
+ *  void
+ *  powerOn(ActiveObject *const me)
+ *  {
+ *      RKH_SET_STATIC_EVENT(&tmSync, Sync);
+ *      RKH_TMR_INIT(&tmSync.tmr, 
+ *                   RKH_UPCAST(RKH_EVT_T, &tmSync), 
+ *                   NULL);
+ *      RKH_TMR_ONESHOT(&tmSync.tmr, 
+ *                      RKH_UPCAST(RKH_SMA_T, me), 
+ *                      SYNC_TIME);
+ *  }
  *  \endcode
  *
  *  \ingroup apiTmr
@@ -158,21 +165,27 @@ extern "C" {
  *
  *  \usage
  *  \code
- *	#define MY_TICK				100
- *
- *	static RKH_TMR_T my_timer;
- *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
- *
+ *  #define SYNC_TIME    RKH_TIME_MS(100)
  *  ...
- *  RKH_TMR_INIT( &my_timer, e_timer, my_timer_hook );
- *  RKH_TMR_ONESHOT( &my_timer, pwr, MY_TICK );
+ *  static RKHTmEvt tmSync;
+ *  ...
+ *  void
+ *  powerOn(ActiveObject *const me)
+ *  {
+ *      RKH_SET_STATIC_EVENT(&tmSync, Sync);
+ *      RKH_TMR_INIT(&tmSync.tmr, 
+ *                   RKH_UPCAST(RKH_EVT_T, &tmSync), 
+ *                   NULL);
+ *      RKH_TMR_ONESHOT(&tmSync.tmr, 
+ *                      RKH_UPCAST(RKH_SMA_T, me), 
+ *                      SYNC_TIME);
+ *  }
  *  \endcode
  *
  *  \ingroup apiTmr
  */
 #define RKH_TMR_ONESHOT(t, sma, itick) \
-    (t)->period = 0; \
-    rkh_tmr_start(t, sma, itick)
+    rkh_tmr_start(t, sma, itick, 0)
 
 /**
  *  \brief
@@ -197,21 +210,29 @@ extern "C" {
  *
  *  \usage
  *  \code
- *	#define MY_TICK			100
- *
- *	static RKH_TMR_T my_timer;
- *	static RKH_ROM_STATIC_EVENT( e_timer, TOUT );
- *
+ *  #define TKEY_TIME		RKH_TIME_MS(100)
+ *  #define TKEYSTART_TIME	RKH_TIME_MS(300)
  *  ...
- *  RKH_TMR_INIT( &my_timer, &e_timer, my_timer_hook );
- *  RKH_TMR_PERIODIC( &my_timer, pwr, MY_TICK, MY_TICK/4 );
+ *  static RKHTmEvt tKey;
+ *  ...
+ *  void
+ *  close(PowerMonitor *const me)
+ *  {
+ *      RKH_SET_STATIC_EVENT(&tKey, evKey);
+ *      RKH_TMR_INIT(&tKey.tmr, 
+ *                   RKH_UPCAST(RKH_EVT_T, &tKey), 
+ *                   NULL);
+ *      RKH_TMR_PERIODIC(&tKey.tmr, 
+ *                       RKH_UPCAST(RKH_SMA_T, me), 
+ *                       TKEYSTART_TIME,
+ *                       TKEY_TIME);
+ *  }
  *  \endcode
  *
  *  \ingroup apiTmr
  */
 #define RKH_TMR_PERIODIC(t, sma, itick, per) \
-    (t)->period = (per); \
-    rkh_tmr_start((t), (sma), (itick))
+    rkh_tmr_start((t), (sma), (itick), (per))
 
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
@@ -346,6 +367,50 @@ struct RKH_TMR_T
 #endif
 };
 
+typedef struct RKHTmEvt RKHTmEvt;
+
+/**
+ *  \brief
+ *  It defines a time event that occurs at a specific duration. 
+ *
+ *  \code
+ *  #define SYNC_TIME    RKH_TIME_MS(100)
+ *  ...
+ *  static RKHTmEvt tmSync;
+ *  ...
+ *  void
+ *  powerOn(ActiveObject *const me)
+ *  {
+ *      RKH_SET_STATIC_EVENT(&tmSync, Sync);
+ *      RKH_TMR_INIT(&tmSync.tmr, 
+ *                   RKH_UPCAST(RKH_EVT_T, &tmSync), 
+ *                   NULL);
+ *      RKH_TMR_ONESHOT(&tmSync.tmr, 
+ *                      RKH_UPCAST(RKH_SMA_T, me), 
+ *                      SYNC_TIME);
+ *  }
+ *  \endcode
+ *
+ *  The 'tmSync' should be used like a transition's trigger to support the 
+ *  UML's time event \c 'after \c SYNC_TIME':
+ *  \code
+ *  RKH_CREATE_BASIC_STATE(s1, powerOn, powerOff, RKH_ROOT, NULL);
+ *  RKH_CREATE_TRANS_TABLE(s1)
+ *  RKH_TRREG(Sync, NULL, NULL, &s0),   // 'Sync' signal enables this
+ *                                      // transition to 's0' state
+ *                                      // It is equivalent to
+ *                                      // 'after SYNC_TIME' UML's TimeEvent
+ *  RKH_END_TRANS_TABLE
+ *  \endcode
+ *
+ *  \ingroup apiTmr
+ */
+struct RKHTmEvt
+{
+    RKH_EVT_T evt;  /** Base structure */
+    RKH_TMR_T tmr;  /** Timer */
+};
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 #if RKH_CFG_TMR_HOOK_EN == RKH_ENABLED
@@ -370,11 +435,15 @@ struct RKH_TMR_T
  *	\param[in] sma		state machine application (SMA) that receives the 
  *	                    timer event.
  *  \param[in] itick    number of ticks for timer expiration.
+ *  \param[in] per	    number of ticks for all timer expirations after the 
+ *                      first (expiration period). A zero for this parameter 
+ *                      makes the timer an one-shot timer, otherwise, for 
+ *                      periodic timers, any value in range.
  *
  *  \ingroup apiTmr
  */
-void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
-                   RKH_TNT_T itick);
+void rkh_tmr_start(RKH_TMR_T *t, const struct RKH_SMA_T *sma, 
+                   RKH_TNT_T itick, RKH_TNT_T per);
 
 /**
  *  \brief
@@ -386,9 +455,26 @@ void rkh_tmr_start(RKH_TMR_T *t,   const struct RKH_SMA_T *sma,
  *
  *	\param[in] t		pointer to previously created timer structure.
  *
+ *  \return
+ *  'true' if the timer was running. The 'false' return is only possible for 
+ *  one-shot timers that have been automatically stopped upon expiration. 
+ *  In this case the 'false' return means that the time event has already been 
+ *  posted and should be expected in the active object's state machine.
+ *
  *  \ingroup apiTmr
  */
-void rkh_tmr_stop(RKH_TMR_T *t);
+rbool_t rkh_tmr_stop(RKH_TMR_T *t);
+
+/**
+ *  \brief
+ *	Initializes the timer module.
+ *
+ *  \note
+ *  It should be invoked before using any timer.
+ *
+ *  \ingroup apiTmr
+ */
+void rkh_tmr_init(void);
 
 /**
  *  \brief

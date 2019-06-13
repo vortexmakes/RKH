@@ -3,7 +3,7 @@
 
 source_dir="../../source"
 ceedling_dir="tools/ceedling"
-modules="fwk sm sma trc"
+modules="fwk sm sma tmr trc"
 
 #echo $PATH
 export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.4.1/bin"

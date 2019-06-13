@@ -86,6 +86,9 @@ extern "C" {
 /**
  *  \brief
  *  Encapsulates the initialization of publish-subscribe module.
+ *
+ *  \note
+ *  It should be invoked before using any publish-subscribe method.
  */
 void rkh_pubsub_init(void);
 
