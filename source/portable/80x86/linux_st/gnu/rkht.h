@@ -46,7 +46,8 @@
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  lf@vortexmakes.com
- *  DaBa  Dario Bali�a       dariosb@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
+ *  CaMa  Carlos Mancón      manconci@gmail.com
  */
 
 /* --------------------------------- Module -------------------------------- */
@@ -54,6 +55,9 @@
 #define __RKHT_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include <stdint.h>
+#include <stdbool.h>
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
