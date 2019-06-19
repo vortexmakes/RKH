@@ -54,6 +54,9 @@
 #define __RKHT_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include <stdint.h>
+#include <stdbool.h>
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
