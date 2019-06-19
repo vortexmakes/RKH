@@ -227,11 +227,11 @@ rkh_tmr_stop(RKH_TMR_T *t)
     {
         t->ntick = 0;
         searchAndRemove(t);
-        wasStarted = true;
+        wasStarted = RKH_TRUE;
     }
     else
     {
-        wasStarted = false;
+        wasStarted = RKH_FALSE;
     }
     RKH_EXIT_CRITICAL_();
     return wasStarted;
