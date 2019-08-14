@@ -29,7 +29,7 @@
  *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
  *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
- *
+ */
 
 /**
  *  \file       test_rkhfwk_evtpool.c

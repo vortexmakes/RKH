@@ -750,6 +750,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     }
 
     RKH_TR_SM_EVT_PROC(me);
+    isCreationEvent = RKH_FALSE;
     } while (isCompletionEvent);
 
     INFO_EXEC_TRS(me);

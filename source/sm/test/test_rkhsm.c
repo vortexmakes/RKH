@@ -32,7 +32,7 @@
  */
 
 /**
- *  \file       test_smTransition.c
+ *  \file       test_rkhsm.c
  *  \ingroup    test_sm
  *  \brief      Unit test for state machine module.
  *
@@ -232,6 +232,10 @@ loadStateMachineSymbols(void)
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s7);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s71);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s72);
+
+    RKH_TR_FWK_AO(smInitial6);
+    RKH_TR_FWK_STATE(smInitial6, &smI6_s0);
+    RKH_TR_FWK_STATE(smInitial6, &smI6_s1);
 }
 
 static
@@ -3044,9 +3048,30 @@ test_InitPseudostateTrnToInitialToSimpleStateWithNullTrn(void)
 }
 
 void
-test_InitPseudostateDftToSimpleStateWithNullTrn(void)
+test_InitPseudostateSMInitialToSimpleStateWithNullTrn(void)
 {
-    TEST_IGNORE();
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = (SmInitialPseudoTest *)smInitial6;
+
+    smIPT_init_Expect((SmInitialPseudoTest *)me, (RKH_EVT_T *)&evCreation);
+    smIPT_tr4_Expect((SmInitialPseudoTest *)me, (RKH_EVT_T *)&evCompletion);
+    trnStepExpect((RKH_SM_T *)me, (RKH_ST_T *)&smI6_s0, NULL, NULL, 
+                  NULL, &evCreation);
+
+    /* Transition (null or completion) from s0 to s1 */
+    sm_dch_expect(evCompletion.e, RKH_STATE_CAST(&smI6_s0));
+    sm_trn_expect(RKH_STATE_CAST(&smI6_s0), RKH_STATE_CAST(&smI6_s1));
+    sm_tsState_expect(RKH_STATE_CAST(&smI6_s1));
+    sm_exstate_expect(RKH_STATE_CAST(&smI6_s0));
+    sm_enstate_expect(RKH_STATE_CAST(&smI6_s1));
+    sm_nenex_expect(1, 1);
+    sm_state_expect(RKH_STATE_CAST(&smI6_s1));
+    sm_evtProc_expect();
+
+    rkh_sm_init((RKH_SM_T *)me);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
 /** @} doxygen end group definition */

@@ -40,6 +40,9 @@ out of RKH features.
 \anchor fig_smInitial5
 \image html smInitial5.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a choice pseudostate"
 
+\anchor fig_smInitial6
+\image html smInitial6.PNG "Figure - Used state machine for testing initial pseudostate of root region with default transition to a simple state with completion transition"
+
 Prev: \ref main_page "Home" \n
 Next: \ref cross "Examples"
 */
