@@ -6,11 +6,11 @@ ceedling_dir="tools/ceedling"
 modules="fwk sm sma tmr trc"
 
 ruby_dir=$(sudo gem env | grep ".*EXECUTABLE\sDIRECTORY" | sed 's/.*:\s\(.*\)/\1/')
-echo $ruby_dir
+#echo $ruby_dir
 export PATH="$PATH:$ruby_dir"
-echo $PATH
-which ceedling
-exit 0
+#echo $PATH
+#which ceedling
+#exit 0
 
 if [ ! -d $source_dir ]; then
     echo "[ERROR] This script must be invoked from "$ceedling_dir
