@@ -5,14 +5,11 @@ source_dir="../../source"
 ceedling_dir="tools/ceedling"
 modules="fwk sm sma tmr trc"
 
-#echo $PATH
-gem env
-#ruby_version=$(ruby -v | sed 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/')
-#echo $ruby_version
-#export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.5.3/bin"
-#export PATH="$PATH:/home/travis/.rvm/gems/ruby-$ruby_version/bin"
-#echo $PATH
-#which ceedling
+ruby_dir=$(sudo gem env | grep ".*EXECUTABLE\sDIRECTORY" | sed 's/.*:\s\(.*\)/\1/')
+echo $ruby_dir
+export PATH="$PATH:$ruby_dir"
+echo $PATH
+which ceedling
 exit 0
 
 if [ ! -d $source_dir ]; then
