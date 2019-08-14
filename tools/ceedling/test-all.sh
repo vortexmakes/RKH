@@ -10,7 +10,7 @@ ruby_version=$(ruby -v | sed 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/')
 #export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.5.3/bin"
 export PATH="$PATH:/home/travis/.rvm/gems/ruby-$ruby_version/bin"
 echo $PATH
-#which ceedling
+which ceedling
 exit 0
 
 if [ ! -d $source_dir ]; then
