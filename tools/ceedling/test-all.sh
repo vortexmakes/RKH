@@ -6,10 +6,9 @@ ceedling_dir="tools/ceedling"
 modules="fwk sm sma tmr trc"
 
 #echo $PATH
-ruby -v
-gem -v
-ruby_version=$(ruby -v | sed 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/')
-echo $ruby_version
+gem env
+#ruby_version=$(ruby -v | sed 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/')
+#echo $ruby_version
 #export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.5.3/bin"
 #export PATH="$PATH:/home/travis/.rvm/gems/ruby-$ruby_version/bin"
 #echo $PATH
