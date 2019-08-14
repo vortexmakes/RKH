@@ -6,10 +6,12 @@ ceedling_dir="tools/ceedling"
 modules="fwk sm sma tmr trc"
 
 #echo $PATH
-export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.5.3/bin"
-#echo $PATH
+ruby_version=$(ruby -v | sed 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/')
+#export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.5.3/bin"
+export PATH="$PATH:/home/travis/.rvm/gems/ruby-$ruby_version/bin"
+echo $PATH
 #which ceedling
-#exit 0
+exit 0
 
 if [ ! -d $source_dir ]; then
     echo "[ERROR] This script must be invoked from "$ceedling_dir
