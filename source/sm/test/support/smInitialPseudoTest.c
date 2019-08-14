@@ -335,6 +335,21 @@ RKH_CREATE_BASIC_STATE(smI5_s11, smI5_nS11, NULL, &smI5_s1, NULL);
 RKH_CREATE_TRANS_TABLE(smI5_s11)
 RKH_END_TRANS_TABLE
 
+/* ........................ Declares state machine ......................... */
+RKH_SM_CREATE(SmInitialPseudoTest, smInitial6, 0, HCAL, 
+              &smI6_s0, smIPT_init, NULL);
+RKH_SM_DEF_PTR(smInitial6);
+
+/* ................... Declares states and pseudostates .................... */
+RKH_CREATE_BASIC_STATE(smI6_s0, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(smI6_s0)
+    RKH_TRCOMPLETION(NULL, smIPT_tr4, &smI6_s1),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(smI6_s1, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(smI6_s1)
+RKH_END_TRANS_TABLE
+
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */

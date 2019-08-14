@@ -81,6 +81,10 @@ RKH_DCLR_BASIC_STATE smI5_s0, smI5_s11;
 RKH_DCLR_COMP_STATE smI5_s1;
 RKH_DCLR_CHOICE_STATE smI5_branch1;
 
+/* ........................ Declares state machines ........................ */
+RKH_SM_DCLR(smInitial6);
+RKH_DCLR_BASIC_STATE smI6_s0, smI6_s1;
+
 /* ------------------------------- Data types ------------------------------ */
 typedef struct SmInitialPseudoTest SmInitialPseudoTest;
 struct SmInitialPseudoTest      /* SMA derived from RKH_SMA_T structure */

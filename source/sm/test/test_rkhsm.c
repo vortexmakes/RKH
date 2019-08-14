@@ -3043,6 +3043,12 @@ test_InitPseudostateTrnToInitialToSimpleStateWithNullTrn(void)
     TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
 }
 
+void
+test_InitPseudostateDftToSimpleStateWithNullTrn(void)
+{
+    TEST_IGNORE();
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
