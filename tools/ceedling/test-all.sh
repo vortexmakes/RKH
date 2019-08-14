@@ -6,7 +6,7 @@ ceedling_dir="tools/ceedling"
 modules="fwk sm sma tmr trc"
 
 echo $PATH
-export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.4.1/bin"
+export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.5.3/bin"
 echo $PATH
 which ceedling
 exit 0
