@@ -125,7 +125,7 @@ rkh_hook_start(void)
     pthread_attr_t threadAttr;
 
     /* set the desired tick rate */
-    tick_msec = 1000UL / BSP_TICKS_PER_SEC;
+    tick_msec = 1000000UL / BSP_TICKS_PER_SEC;
 
     /* initialize the thread attribute */
     pthread_attr_init(&threadAttr);
