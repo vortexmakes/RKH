@@ -4,17 +4,22 @@
 #     <rkh-root>/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/
 #
 
-version=$1
+version=$2
 outdir_path=$2
 outdir_prefix="rkh_v"
 format="zip"
-outfile=$outdir_prefix"$2""."$format
+outfile=$outdir_prefix"$outdir_path""."$format
 outdir_name=$outdir_path"/"$outfile
+argWorkDir=$(echo ${3%/})
+argOutDir=$(echo ${4%/})
 res=0
 
 usage() {
+    echo "Usage:"
     echo "    "$0" deploy <release-version> <working-dir-path> <output-dir-path>"
     echo "    "$0" clean <output-dir-path>"
+    echo "Example:"
+    echo "    <rkh-root>/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/"
 }
 
 check_repo() {
@@ -47,9 +52,9 @@ case "$1" in
         echo "Verifying directories and files"
         echo "-------------------------------"
         [ -z $2 ] && echo "[ERROR] Please, supplies a valid release version number" && exit 1
-        [ -z $3 -o ! -d $3 ] && echo "[ERROR] Please, supplies a valid working directory" && exit 1
-        [ -z $4 -o ! -d $4 ] && echo "[ERROR] Please, supplies a valid deploy output directory" && exit 1
-        check_repo $3
+        [ -z $argWorkDir -o ! -d $argWorkDir ] && echo "[ERROR] Please, supplies a valid working directory" && exit 1
+        [ -z $argOutDir -o ! -d $argOutDir ] && echo "[ERROR] Please, supplies a valid deploy output directory" && exit 1
+        check_repo $argWorkDir
         [ $res = 1 ] && exit 1
         echo "Testing all modules..."
         echo "Done"
@@ -61,22 +66,24 @@ case "$1" in
         echo
         echo "Generating doc (html) using doxygen"
         echo "-----------------------------------"
-        doc="html"
         doxygen Doxyfile
         cd ..
-        cp -r doc/html $4/html/
+        if [ ! -d $argOutDir/html ]; then
+            mkdir $argOutDir/html
+        fi
+        cp -r doc/html $argOutDir/html/
         echo
         echo "Exporting Git repository"
         echo "------------------------"
         echo "Exporting repository into "tmp_rkh_rel.zip"..."
-        git archive --worktree-attributes -o $4/tmp_rkh_rel.zip master
+        git archive --worktree-attributes -o $argOutDir/tmp_rkh_rel.zip master
         echo "Extracting into "tmp_rkh_rel/"..."
-        unzip -qo $4/tmp_rkh_rel.zip -d $4/tmp_rkh_rel/
+        unzip -qo $argOutDir/tmp_rkh_rel.zip -d $argOutDir/tmp_rkh_rel/
         echo "Copying doc (html) into "tmp_rkh_rel/"..."
-        cp -rf $4/html $4/tmp_rkh_rel/doc
+        cp -rf $argOutDir/html $argOutDir/tmp_rkh_rel/doc
         echo "Preparing ""$outdir_prefix"$2""."$format and "$outdir_prefix"$2"."tar.gz files to release for..."
-        [ ! -d $4/$outdir_prefix"$2" ] && mv $4/tmp_rkh_rel $4/$outdir_prefix"$2"
-        cd $4/$outdir_prefix"$2"
+        [ ! -d $argOutDir/$outdir_prefix"$2" ] && mv $argOutDir/tmp_rkh_rel $argOutDir/$outdir_prefix"$2"
+        cd $argOutDir/$outdir_prefix"$2"
         zip -qr ../$outfile .
         tar czf ../$outdir_prefix"$2".tar.gz .
         echo "Done"
