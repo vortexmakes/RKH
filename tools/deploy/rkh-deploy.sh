@@ -1,8 +1,5 @@
 # !/bin/bash -e
 #
-# Usage: 
-#     <rkh-root>/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/
-#
 
 version=$2
 outdir_path=$2
@@ -15,9 +12,13 @@ argOutDir=$(echo ${4%/})
 res=0
 
 usage() {
+    echo "Creates artifacts in order to be released"
     echo "Usage:"
-    echo "    "$0" deploy <release-version> <working-dir-path> <output-dir-path>"
-    echo "    "$0" clean <output-dir-path>"
+    echo "    rkh-deploy.sh deploy <release-version> <working-dir-path> <output-dir-path>"
+    echo "    rkh-deploy.sh clean <output-dir-path>"
+    echo "Warning:"
+    echo "Use an absolute path for <output-dir-path> argument"
+    echo ""
     echo "Example:"
     echo "    <rkh-root>/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/"
 }
@@ -68,10 +69,7 @@ case "$1" in
         echo "-----------------------------------"
         doxygen Doxyfile
         cd ..
-        if [ ! -d $argOutDir/html ]; then
-            mkdir $argOutDir/html
-        fi
-        cp -r doc/html $argOutDir/html/
+        cp -r doc/html $argOutDir
         echo
         echo "Exporting Git repository"
         echo "------------------------"
