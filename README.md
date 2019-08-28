@@ -172,23 +172,14 @@ published under the GNU GPLv3 license (closed source code), please, contact us. 
 
 ## RKH Release notes
 
-Changes between [V3.1.0](https://github.com/vortexmakes/RKH/releases/tag/v3.1.0) and V3.2.0 released 08/01/2019
+Changes between [V3.2.0](https://github.com/vortexmakes/RKH/releases/tag/v3.2.0) and V3.2.3 released 08/28/2019
 
-- Added Ceedling, LCOV, Codecov, Cppcheck, Uno and Travis CI support!.
-  The main purpose of this is to improve the quality of source code, 
-  by means of Continuous Integration process.
-- Included a new alternative in the license scheme: GPLv3 + linking exception.
-- Added Publish-Subscriber module. It addresses the specific issue 
-  of how to notify a set of interested active objects (clients) in a timely 
-  way that a value that they care about has changed. The basic solution 
-  offered by this module is to have the clients "subscribe" to the server 
-  to be notified about the value in question according to the policy: 
-  "when the value changes, receiving a proper event carrying the value of
-  interest".
-- Added RKH_SMA_DISPATCH() polymorphic function in native scheduler.
-- Added a deploy script to release new versions.
-- Enhanced README file.
-- From this version, you must include the files rkhfwk_rdygrp.h and 
-  rkhfwk_rdygrp.c located in source/fwk/inc and source/fwk/src 
-  respectively, to maintain the backward-compatiblity with the existing 
-  application projects.
+- Added support for null transitions on init a state machine
+- Added bsp for blinky project on Linux platform 
+- Added TimeEvt type for declaring time events
+- Added support for final state in state machine's region
+- Enhanced quick reference and doc related to timers
+- Fixed tick rate for Linux bsp
+- Fixed stop method of timer module 
+- Fixed a race condition in Linux port
+- Added period to timer start method and a return flag to stop method

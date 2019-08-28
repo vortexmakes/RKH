@@ -42,6 +42,7 @@
  *  2017.21.04  LeFr  v2.4.05  Initial version
  *  2018.03.05  LeFr  v3.1.00  ...
  *  2019.08.01  LeFr  v3.2.00
+ *  2019.28.08  LeFr  v3.2.03
  */
 
 /* -------------------------------- Authors -------------------------------- */
@@ -73,9 +74,9 @@ extern "C" {
  *	denoted the minor revision, and the number C (2-digit) indicated the
  *	release number. For example, the code for 2.2.04 is 0x2204.
  *
- *  \releasedate 08/01/2019
+ *  \releasedate 08/28/2019
  */
-#define RKH_VERSION_CODE            0x3200u
+#define RKH_VERSION_CODE            0x3203u
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
