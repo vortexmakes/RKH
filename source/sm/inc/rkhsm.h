@@ -91,7 +91,7 @@ extern "C" {
  *	respectively. Thus, use these names as target vertex in a transition. 
  *
  *	Shallow history means that history applies to the current nesting context
- *	only – states nested more deeply are not affected by the presence of a
+ *	only states nested more deeply are not affected by the presence of a
  *	history pseudostates in a higher context.
  *	Deep history applies downwards to all levels of nesting.
  *
@@ -403,7 +403,7 @@ extern "C" {
  *	RKH_CREATE_COMP_REGION_STATE() macro.
  *
  *	Shallow history means that history applies to the current nesting context 
- *	only – states nested more deeply are not affected by the presence of a 
+ *	only states nested more deeply are not affected by the presence of a 
  *	history pseudostates in a higher context.
  *	
  *	\note
