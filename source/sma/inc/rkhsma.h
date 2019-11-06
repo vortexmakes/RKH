@@ -347,8 +347,8 @@ extern "C" {
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SMA_CREATE(type, name, prio, ppty, initialState, \
                            initialAction, initialEvt) \
-        RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
-                            initialEvt); \
+        static RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
+                                   initialAction, initialEvt); \
         static type RKH_SMA_NAME(name) = MKSMA(&RKH_SM_CONST_NAME(name), \
                                                initialState)
 #else

@@ -1107,28 +1107,47 @@ extern "C" {
 
 /**
  *  \brief
- *  Declares a previously created SMA to be used as a global object.
+ *  Declares a previously created SM to be used as a global object.
  *
- *  \param[in] sma_t		data type of SMA.
- *  \param[in] sm			name of previously created SMA.
+ *  \param[in] sm_t		    data type of SM.
+ *  \param[in] sm			name of previously created SM.
  *  \param[in] gob			name of global object.
  *
  *  \note
  *  Generally, this macro is used in the state-machine's module.
  *
  *	\sa
- *	RKH_SMA_T structure definition for more information. Also,
+ *	RKH_SM_T structure definition for more information. Also,
  *	\link RKH_EVT_T single inheritance in C \endlink, and
  *	\link RKH_CREATE_BASIC_STATE another example \endlink.
  *
  *  \usage
  *	\code
- *	//	g_my: global pointer to SMA "my".
- *	RKH_DCLR_SM_GLOBAL( MYSM_T, my, g_my );
+ *	// syncRegion: global pointer to sync state machine of 
+ *  // type Sync.
+ *	RKH_DCLR_SM_GLOBAL(Sync, sync, syncRegion);
  *	\endcode
  */
-#define RKH_DCLR_SM_GLOBAL(sma_t, sm, gob) \
-    sma_t * const gob = &s_##sm;
+#define RKH_DCLR_SM_GLOBAL(sm_t, sm, gob) \
+    sm_t * const gob = &s_##sm;
+
+/**
+ *  \brief
+ *  Declares a previously created constant part (in ROM) of a state machine 
+ *  to be used as a global object.
+ *
+ *  \param[in] smName			name of previously created SM.
+ *
+ *  \note
+ *  Generally, this macro is used in the state-machine's module.
+ *
+ *	\sa
+ *	RKH_SM_T structure definition for more information. Also,
+ *	\link RKH_EVT_T single inheritance in C \endlink, and
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ */
+#define RKH_DCLR_SM_CONST_GLOBAL(smName) \
+    extern RKHROM RKH_ROM_T RKH_SM_CONST_NAME(smName)
 
 /**
  *  \brief
@@ -1333,8 +1352,8 @@ extern "C" {
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
                           initialAction, initialEvt) \
-        RKH_SM_CONST_CREATE(name, prio, ppty, initialState, initialAction, \
-                            initialEvt); \
+        static RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
+                                   initialAction, initialEvt); \
         static type s_##name = {MKSM(&RKH_SM_CONST_NAME(name), initialState)}
 #else
     #define RKH_SM_CREATE(type, name, prio, ppty, initialState, \
@@ -1422,7 +1441,7 @@ extern "C" {
 #if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
     #define RKH_SM_CONST_CREATE(name, prio, ppty, initialState, \
                                 initialAction, initialEvt) \
-       static RKHROM RKH_ROM_T RKH_SM_CONST_NAME(name) = \
+        RKHROM RKH_ROM_T RKH_SM_CONST_NAME(name) = \
                                                 MKRRKH(name, \
                                                        prio, \
                                                        ppty, \
