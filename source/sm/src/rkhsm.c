@@ -353,7 +353,7 @@ addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
     RKHROM RKH_ST_T **missSt, *st;
     rui8_t nEnSt = 0;
 
-    if (IS_COMPOSITE(target) || IS_SIMPLE(target))
+    if (IS_COMPOSITE(target) || IS_SIMPLE(target) || IS_FINAL(target))
     {
         missSt = stList;
         st = target;

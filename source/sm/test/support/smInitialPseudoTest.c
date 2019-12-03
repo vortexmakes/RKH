@@ -127,6 +127,7 @@ RKH_CREATE_COMP_REGION_STATE(smIPT_s5, smIPT_nS5, smIPT_xS5, RKH_ROOT,
                              &smIPT_choice1, smIPT_tr2, 
                              RKH_NO_HISTORY, NULL, NULL, NULL, NULL);
 RKH_CREATE_TRANS_TABLE(smIPT_s5)
+    RKH_TRCOMPLETION(NULL,  NULL,	&smIPT_s0),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_CHOICE_STATE(smIPT_choice1);
@@ -134,6 +135,7 @@ RKH_CREATE_BRANCH_TABLE(smIPT_choice1)
     RKH_BRANCH(smIPT_isC1,  NULL,	&smIPT_s52),
     RKH_BRANCH(smIPT_isC2,  NULL,	&smIPT_s511),
     RKH_BRANCH(smIPT_isC3,  NULL,	&smIPT_s512),
+    RKH_BRANCH(smIPT_isC4,  NULL,	&smIPT_s5Final),
 	RKH_BRANCH(ELSE,        NULL,   &smIPT_s51),
 RKH_END_BRANCH_TABLE
 

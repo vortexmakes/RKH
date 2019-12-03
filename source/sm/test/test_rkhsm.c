@@ -232,6 +232,8 @@ loadStateMachineSymbols(void)
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s7);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s71);
     RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s72);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_choice1);
+    RKH_TR_FWK_STATE(smInitialPseudoTest, &smIPT_s5Final);
 
     RKH_TR_FWK_AO(smInitial6);
     RKH_TR_FWK_STATE(smInitial6, &smI6_s0);
@@ -2642,6 +2644,7 @@ test_InitPseudostateTrnToBranchToCmpState(void)
     smIPT_isC1_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
     smIPT_isC2_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
     smIPT_isC3_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
+    smIPT_isC4_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
     smIPT_nS51_Expect((SmInitialPseudoTest *)me);
     smIPT_nS511_Expect((SmInitialPseudoTest *)me);
 
@@ -2718,6 +2721,57 @@ test_InitPseudostateTrnToBranchToNestedCmpState(void)
 
     trnStepExpect((RKH_SM_T *)me, (RKH_ST_T *)&smIPT_s0, 
                   (RKH_ST_T *)&smIPT_s0, tgEnSt, exitStates, &evE);
+
+    rkh_sm_init((RKH_SM_T *)me);
+    rkh_sm_dispatch((RKH_SM_T *)me, &evE);
+
+    p = unitrazer_getLastOut();
+    TEST_ASSERT_EQUAL(UT_PROC_SUCCESS, p->status);
+}
+
+void
+test_InitPseudostateTrnToBranchToFinalState(void)
+{
+    UtrzProcessOut *p;
+    SmInitialPseudoTest *me = (SmInitialPseudoTest *)smInitialPseudoTest;
+    TargetEntrySt tgEnSt[4] = 
+            {{(RKH_ST_T *)&smIPT_s5, (RKH_ST_T *)&smIPT_s5},
+            {(RKH_ST_T *)&smIPT_choice1, NULL},
+            {(RKH_ST_T *)&smIPT_s5Final, (RKH_ST_T *)&smIPT_s5Final},
+            {NULL, NULL}};
+
+    //stateList_create(targetStates, 3, &smIPT_s5, &smIPT_choice1, &smIPT_s52);
+    stateList_create(exitStates, 1, &smIPT_s0);
+    //stateList_create(entryStates, 2, &smIPT_s5, &smIPT_s52);
+
+    /* Expect call actions */
+    smIPT_init_Expect((SmInitialPseudoTest *)me, (RKH_EVT_T *)&evCreation);
+    smIPT_nS0_Expect((SmInitialPseudoTest *)me);
+    smIPT_xS0_Expect((SmInitialPseudoTest *)me);
+    smIPT_nS5_Expect((SmInitialPseudoTest *)me);
+    smIPT_tr2_Expect((SmInitialPseudoTest *)me, &evE);
+    smIPT_isC1_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
+    smIPT_isC2_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
+    smIPT_isC3_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_FALSE);
+    smIPT_isC4_ExpectAndReturn((RKH_SM_T *)me, &evE, RKH_TRUE);
+
+    trnStepExpect((RKH_SM_T *)me, (RKH_ST_T *)&smIPT_s0, 
+                  (RKH_ST_T *)&smIPT_s0, tgEnSt, exitStates, &evE);
+
+    /* Expectations for completion transition */
+    stateList_create(targetStates, 1, &smIPT_s0);
+    stateList_create(entryStates, 1, &smIPT_s0);
+    stateList_create(exitStates, 2, &smIPT_s5Final, &smIPT_s5);
+
+    smIPT_xS5_Expect((SmInitialPseudoTest *)me);
+    smIPT_nS0_Expect((SmInitialPseudoTest *)me);
+
+    setProfile(smInitialPseudoTest, RKH_STATE_CAST(&smIPT_s5), 
+               NULL, RKH_STATE_CAST(&smIPT_s5), 
+               targetStates, entryStates, exitStates, 
+               RKH_STATE_CAST(&smIPT_s0), 1, TRN_NOT_INTERNAL, 
+               NO_INIT_STATE_MACHINE, &evCompletion, 
+               RKH_STATE_CAST(&smIPT_s5Final));
 
     rkh_sm_init((RKH_SM_T *)me);
     rkh_sm_dispatch((RKH_SM_T *)me, &evE);
