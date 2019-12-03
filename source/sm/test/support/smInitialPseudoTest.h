@@ -49,6 +49,7 @@ RKH_DCLR_SHIST_STATE smIPT_s1Hist, smIPT_s2Hist, smIPT_s4Hist;
 RKH_DCLR_DHIST_STATE smIPT_s3Hist;
 RKH_DCLR_CHOICE_STATE smIPT_choice1;
 RKH_DCLR_COND_STATE smIPT_junction1;
+RKH_DCLR_FINAL_STATE smIPT_s5Final;
 
 /* ........................ Declares state machines ........................ */
 RKH_SM_DCLR(smInitial0);

@@ -128,6 +128,7 @@ void smIPT_xS72(SmInitialPseudoTest *const me);
 rbool_t smIPT_isC1(const RKH_SM_T *sma, RKH_EVT_T *pe);
 rbool_t smIPT_isC2(const RKH_SM_T *sma, RKH_EVT_T *pe);
 rbool_t smIPT_isC3(const RKH_SM_T *sma, RKH_EVT_T *pe);
+rbool_t smIPT_isC4(const RKH_SM_T *sma, RKH_EVT_T *pe);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
