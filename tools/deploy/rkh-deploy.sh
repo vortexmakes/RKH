@@ -1,12 +1,12 @@
 # !/bin/bash -e
 #
 
-version=$2
 outdir_path=$2
 outdir_prefix="rkh_v"
 format="zip"
 outfile=$outdir_prefix"$outdir_path""."$format
 outdir_name=$outdir_path"/"$outfile
+argVersion=$(echo ${2%/})
 argWorkDir=$(echo ${3%/})
 argOutDir=$(echo ${4%/})
 res=0
@@ -16,11 +16,12 @@ usage() {
     echo "Usage:"
     echo "    rkh-deploy.sh deploy <release-version> <working-dir-path> <output-dir-path>"
     echo "    rkh-deploy.sh clean <output-dir-path>"
+    echo ""
     echo "Warning:"
-    echo "Use an absolute path for <output-dir-path> argument"
+    echo "    Use an absolute path for <output-dir-path> argument"
     echo ""
     echo "Example:"
-    echo "    <rkh-root>/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/"
+    echo "    path/to/rkh/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/"
 }
 
 check_repo() {
@@ -37,7 +38,7 @@ check_repo() {
                 git status
                 res=0
             else
-                echo "[WARNING] Must be realeased only from master branch"
+                echo "[WARNING] It has to be realeased only from master branch"
                 res=0
             fi
         fi
@@ -47,40 +48,72 @@ check_repo() {
     fi
 }
 
+check_version() {
+    version=$(grep "RKH_VERSION_CODE" source/fwk/inc/rkhfwk_version.h | awk '{print $3}')
+    version=$(echo $version | sed -e 's/0x\(.*\)u/\1/')
+    major=$(echo $version | sed -e 's/\([0-9]\{1\}\)[0-9]\{3\}/\1/')
+    minor=$(echo $version | sed -e 's/.\([0-9]\{1\}\)[0-9]\{2\}/\1/')
+    patch=$(echo $version | sed -e 's/..\([0-9]\{1\}\)/\1/')
+    #patch=$(echo $version | sed -e 's/\([0-9]\{2\}\{1\}\)/\1/')
+    echo "Code version:    v"$major"."$minor"."$patch
+    echo "Release version: v"$argVersion
+}
+
 case "$1" in
 	deploy)
         echo
         echo "Verifying directories and files"
         echo "-------------------------------"
-        [ -z $2 ] && echo "[ERROR] Please, supplies a valid release version number" && exit 1
-        [ -z $argWorkDir -o ! -d $argWorkDir ] && echo "[ERROR] Please, supplies a valid working directory" && exit 1
-        [ -z $argOutDir -o ! -d $argOutDir ] && echo "[ERROR] Please, supplies a valid deploy output directory" && exit 1
+        if [ -z $2 ]; then
+            echo "[ERROR] Please, supply a valid release version number"
+            exit 1
+        fi
+        if [ -z $argWorkDir -o ! -d $argWorkDir ]; then
+            echo "[ERROR] Please, supply a valid working directory"
+            exit 1
+        fi
+        if [ -z $argOutDir -o ! -d $argOutDir ]; then
+            echo "[ERROR] Please, supply a valid deploy output directory"
+            exit 1
+        fi
         check_repo $argWorkDir
-        [ $res = 1 ] && exit 1
-        echo "Testing all modules..."
-        echo "Done"
+        if [ $res = 1 ]; then
+            exit 1
+        fi
         if [ ! -d doc ]; then
             echo "[ERROR] RKH's doc directory not found"
             exit 1
         fi
+        echo "Done"
         cd doc/
         echo
         echo "Generating doc (html) using doxygen"
         echo "-----------------------------------"
         doxygen Doxyfile
+        if [ $? = 1 ]; then
+            echo "[ERROR]: doxygen raised an error"
+            exit 1
+        fi
         cd ..
         cp -r doc/html $argOutDir
         echo
         echo "Exporting Git repository"
         echo "------------------------"
-        echo "Exporting repository into "tmp_rkh_rel.zip"..."
+        check_version
+        echo "Exporting repository..."
         git archive --worktree-attributes -o $argOutDir/tmp_rkh_rel.zip master
-        echo "Extracting into "tmp_rkh_rel/"..."
+        echo "Extracting repository's package..."
         unzip -qo $argOutDir/tmp_rkh_rel.zip -d $argOutDir/tmp_rkh_rel/
-        echo "Copying doc (html) into "tmp_rkh_rel/"..."
+        echo "Copying doc (html) into package..."
         cp -rf $argOutDir/html $argOutDir/tmp_rkh_rel/doc
-        echo "Preparing ""$outdir_prefix"$2""."$format and "$outdir_prefix"$2"."tar.gz files to release for..."
-        [ ! -d $argOutDir/$outdir_prefix"$2" ] && mv $argOutDir/tmp_rkh_rel $argOutDir/$outdir_prefix"$2"
+        echo -n "Preparing "$outdir_prefix$2"."$format" and " 
+        echo $outdir_prefix$2".tar.gz files to release..."
+        if [ -d $argOutDir/$outdir_prefix"$2" ]; then
+            rm -rf $argOutDir/$outdir_prefix$2
+        fi
+        mv $argOutDir/tmp_rkh_rel $argOutDir/$outdir_prefix"$2"
+        rm $argOutDir/tmp_rkh_rel.zip
+        rm -rf $argOutDir/html
         cd $argOutDir/$outdir_prefix"$2"
         zip -qr ../$outfile .
         tar czf ../$outdir_prefix"$2".tar.gz .
@@ -91,7 +124,7 @@ case "$1" in
         echo
         echo "Cleaning output directory"
         echo "-------------------------"
-        [ -z $2 -o ! -d $2 ] && echo "[ERROR] Please, supplies a valid deploy output directory" && exit 1
+        [ -z $2 -o ! -d $2 ] && echo "[ERROR] Please, supply a valid deploy output directory" && exit 1
         [ $res = 1 ] && exit 1
         echo "Removing output files..."
         rm -rf $2/tmp_*/ $2/$outdir_prefix*
