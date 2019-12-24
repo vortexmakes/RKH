@@ -1,27 +1,26 @@
 # !/bin/bash -e
 #
 
-outdir_path=$2
-outdir_prefix="rkh_v"
-format="zip"
-outfile=$outdir_prefix"$outdir_path""."$format
-outdir_name=$outdir_path"/"$outfile
 argVersion=$(echo ${2%/})
 argWorkDir=$(echo ${3%/})
 argOutDir=$(echo ${4%/})
+outdir_prefix="rkh_v"
+format="zip"
+outfile=$outdir_prefix"$argVersion""."$format
+outdir_name=$argVersion"/"$outfile
 res=0
 
 usage() {
     echo "Creates artifacts in order to be released"
     echo "Usage:"
-    echo "    rkh-deploy.sh deploy <release-version> <working-dir-path> <output-dir-path>"
-    echo "    rkh-deploy.sh clean <output-dir-path>"
+    echo "    ./rkh-deploy.sh deploy <release-version> <working-dir-path> <output-dir-path>"
+    echo "    ./rkh-deploy.sh clean <output-dir-path>"
     echo ""
     echo "Warning:"
     echo "    Use an absolute path for <output-dir-path> argument"
     echo ""
     echo "Example:"
-    echo "    path/to/rkh/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../rkh-git/ ~/out/"
+    echo "    path/to/rkh/tools/deploy$ ./rkh-deploy.sh deploy 1.0 ../../../RKH/ ~/out/"
 }
 
 check_repo() {
@@ -94,11 +93,12 @@ case "$1" in
             echo "[ERROR]: doxygen raised an error"
             exit 1
         fi
+        echo "Done"
         cd ..
         cp -r doc/html $argOutDir
         echo
-        echo "Exporting Git repository"
-        echo "------------------------"
+        echo "Exporting Git repository and creating package"
+        echo "---------------------------------------------"
         check_version
         echo "Exporting repository..."
         git archive --worktree-attributes -o $argOutDir/tmp_rkh_rel.zip master
@@ -107,7 +107,7 @@ case "$1" in
         echo "Copying doc (html) into package..."
         cp -rf $argOutDir/html $argOutDir/tmp_rkh_rel/doc
         echo -n "Preparing "$outdir_prefix$2"."$format" and " 
-        echo $outdir_prefix$2".tar.gz files to release..."
+        echo $outdir_prefix$2".tar.gz files to be released..."
         if [ -d $argOutDir/$outdir_prefix"$2" ]; then
             rm -rf $argOutDir/$outdir_prefix$2
         fi
