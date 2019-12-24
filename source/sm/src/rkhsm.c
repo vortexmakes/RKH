@@ -33,7 +33,7 @@
 
 /**
  *  \file       rkhsm.c
- *  \brief      Platform - independent interface for supporting state-machines. 
+ *  \brief      Platform - independent interface for supporting state-machines.
  *
  *  \ingroup    sm
  */
@@ -277,7 +277,7 @@ static rbool_t
 findCompletionTrn(RKHROM RKH_TR_T *trnTable)
 {
     RKHROM RKH_TR_T *trn;
-    rbool_t res; 
+    rbool_t res;
 
     for (res = RKH_FALSE, trn = trnTable; trn->event != RKH_ANY; ++trn)
     {
@@ -290,6 +290,7 @@ findCompletionTrn(RKHROM RKH_TR_T *trnTable)
     return res;
 }
 
+#if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
 static rbool_t
 isCompletionTrn(RKHROM RKH_ST_T *state)
 {
@@ -299,6 +300,7 @@ isCompletionTrn(RKHROM RKH_ST_T *state)
     else
         return RKH_FALSE;
 }
+#endif
 
 static rbool_t
 rkh_add_tr_action(RKH_TRN_ACT_T * *list, RKH_TRN_ACT_T act, rui8_t *num)
@@ -347,7 +349,7 @@ rkh_update_deep_hist(RKHROM RKH_ST_T *from)
 
 #if RKH_CFG_SMA_HCAL_EN == RKH_ENABLED
 static rui8_t
-addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList, 
+addTargetSt(RKHROM RKH_ST_T *target, RKHROM RKH_ST_T **stList,
             RKHROM RKH_ST_T *cmpSt)
 {
     RKHROM RKH_ST_T **missSt, *st;
@@ -414,7 +416,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 #endif
     /* set of executed transition actions */
     RKH_RAM RKH_TRN_ACT_T al[RKH_CFG_SMA_MAX_TRC_SEGS];
-    
+
     RKH_RAM RKH_TRN_ACT_T *pal;          /* pointer to transition action set */
     RKH_RAM rui8_t nal;                  /* # of executed transition actions */
     RKH_RAM RKH_TRN_ACT_T trnAct;
@@ -444,7 +446,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
     else
     {
         cs = CST(RKH_SMA_ACCESS_CONST(me, istate));  /* get dft vertex of SM */
-                                                            /* (root region) */ 
+                                                            /* (root region) */
     }
     /* ---- Stage 2 -------------------------------------------------------- */
     /* Determine the (compound) transition (CT) that will fire in response */
@@ -540,7 +542,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                 {
 #if defined(RKH_CHOICE_ENABLED)
                     case RKH_CHOICE:
-                        /* perform the actions on the transition */ 
+                        /* perform the actions on the transition */
                         /* sequentially according to the order in which they */
                         /* are written on the transition, from the action */
                         /* closest to source state to the action closest to */
@@ -578,7 +580,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                     case RKH_DHISTORY:
                         /* found a shallow or deep history pseudostate */
                         /* in the compound transition */
-                        RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0) 
+                        RKH_REQUIRE((CH(ets)->parent != (RKHROM RKH_ST_T *)0)
                                     && (CCMP(CH(ets)->parent)->history !=
                                     (RKHROM RKH_SHIST_T *)0));
                         stn = CH(ets)->parent;
@@ -586,8 +588,8 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                         {
                             if (CH(ets)->trn.target)
                             {
-                                if (IS_VALID_GUARD(&(CH(ets)->trn)) && 
-                                    (RKH_EXEC_GUARD(&(CH(ets)->trn), me, pe) 
+                                if (IS_VALID_GUARD(&(CH(ets)->trn)) &&
+                                    (RKH_EXEC_GUARD(&(CH(ets)->trn), me, pe)
                                      == RKH_GFALSE))
                                 {
                                     RKH_TR_SM_GRD_FALSE(me);
@@ -595,7 +597,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
                                 }
                                 /* Add action of transition segment into the */
                                 /* list */
-                                if (rkh_add_tr_action(&pal, 
+                                if (rkh_add_tr_action(&pal,
                                                       CH(ets)->trn.action,
                                                       &nal))
                                 {
@@ -758,7 +760,7 @@ rkh_sm_dispatch(RKH_SM_T *me, RKH_EVT_T *pe)
 }
 
 #if RKH_CFG_SMA_RT_CTOR_EN == RKH_ENABLED
-void 
+void
 rkh_sm_ctor(RKH_SM_T *me)
 {
     (void)me;
