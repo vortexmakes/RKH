@@ -49,13 +49,15 @@ check_repo() {
 
 check_version() {
     version=$(grep "RKH_VERSION_CODE" source/fwk/inc/rkhfwk_version.h | awk '{print $3}')
-    version=$(echo $version | sed -e 's/0x\(.*\)u/\1/')
-    major=$(echo $version | sed -e 's/\([0-9]\{1\}\)[0-9]\{3\}/\1/')
-    minor=$(echo $version | sed -e 's/.\([0-9]\{1\}\)[0-9]\{2\}/\1/')
-    patch=$(echo $version | sed -e 's/..\([0-9]\{1\}\)/\1/')
-    #patch=$(echo $version | sed -e 's/\([0-9]\{2\}\{1\}\)/\1/')
+    major=$(echo $version | sed -e 's/0x\([0-9]\{1\}\)[0-9]\{3\}u/\1/')
+    minor=$(echo $version | sed -e 's/0x.\([0-9]\{1\}\)[0-9]\{2\}u/\1/')
+    patch=$(echo $version | sed -e 's/0x..\([0-9]\{2\}\)u/\1/')
+    codeVersion=$major"."$minor"."$patch
     echo "Code version:    v"$major"."$minor"."$patch
     echo "Release version: v"$argVersion
+    if [ $codeVersion != $argVersion ]; then
+        echo "[WARNING] Code and release versions differ"
+    fi
 }
 
 case "$1" in
@@ -63,7 +65,7 @@ case "$1" in
         echo
         echo "Verifying directories and files"
         echo "-------------------------------"
-        if [ -z $2 ]; then
+        if [ -z $argVersion ]; then
             echo "[ERROR] Please, supply a valid release version number"
             exit 1
         fi
@@ -75,6 +77,10 @@ case "$1" in
             echo "[ERROR] Please, supply a valid deploy output directory"
             exit 1
         fi
+        if [ "${argOutDir%%/*}" ]; then # is it an absolut path?
+            echo "[ERROR] Use an absolute path for <output-dir-path> argument"
+            exit 1
+        fi
         check_repo $argWorkDir
         if [ $res = 1 ]; then
             exit 1
@@ -83,6 +89,7 @@ case "$1" in
             echo "[ERROR] RKH's doc directory not found"
             exit 1
         fi
+        check_version
         echo "Done"
         cd doc/
         echo
@@ -93,9 +100,9 @@ case "$1" in
             echo "[ERROR]: doxygen raised an error"
             exit 1
         fi
-        echo "Done"
         cd ..
         cp -r doc/html $argOutDir
+        echo "Done"
         echo
         echo "Exporting Git repository and creating package"
         echo "---------------------------------------------"
@@ -106,17 +113,17 @@ case "$1" in
         unzip -qo $argOutDir/tmp_rkh_rel.zip -d $argOutDir/tmp_rkh_rel/
         echo "Copying doc (html) into package..."
         cp -rf $argOutDir/html $argOutDir/tmp_rkh_rel/doc
-        echo -n "Preparing "$outdir_prefix$2"."$format" and " 
-        echo $outdir_prefix$2".tar.gz files to be released..."
-        if [ -d $argOutDir/$outdir_prefix"$2" ]; then
-            rm -rf $argOutDir/$outdir_prefix$2
+        echo -n "Preparing "$outdir_prefix$argVersion"."$format" and " 
+        echo $outdir_prefix$argVersion".tar.gz files to release..."
+        if [ -d $argOutDir/$outdir_prefix$argVersion ]; then
+            rm -rf $argOutDir/$outdir_prefix$argVersion
         fi
-        mv $argOutDir/tmp_rkh_rel $argOutDir/$outdir_prefix"$2"
+        mv $argOutDir/tmp_rkh_rel $argOutDir/$outdir_prefix$argVersion
         rm $argOutDir/tmp_rkh_rel.zip
         rm -rf $argOutDir/html
-        cd $argOutDir/$outdir_prefix"$2"
+        cd $argOutDir/$outdir_prefix$argVersion
         zip -qr ../$outfile .
-        tar czf ../$outdir_prefix"$2".tar.gz .
+        tar czf ../$outdir_prefix$argVersion.tar.gz .
         echo "Done"
         exit 0
         ;;

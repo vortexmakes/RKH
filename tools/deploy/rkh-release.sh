@@ -19,7 +19,7 @@ usage()
     echo "Options:"
     echo "    -v: desired version (i.e. x.y.z or x.y.z-beta)"
     echo "    -r: specifies the repository info \"owner/name\". "
-    echo "        For example, \"itdelsat/CIM-ARM\""
+    echo "        For example, \"vortexmakes/RKH\""
     echo "    -s: specifies the directory or tar.gz package in order to "
     echo "        publish it."
     echo "        If this option is not supplied, the repository's tarball "
@@ -32,13 +32,8 @@ usage()
     echo "    -t: personal access token"
     echo ""
     echo "Example:"
-    echo "- Release a package from a file"
-    echo -n "./release.sh -v 1.0.49 -r itdelsat/<repository> "
+    echo "./release.sh -v 1.0.49 -r vortexmakes/<repository> \\"
     echo "-s path/to/package.tar.gz -m path/to/changelog -t <token>"
-    echo ""
-    echo "- Release a package from a directory"
-    echo -n "./release.sh -v 1.0.49 -r itdelsat/<repository> "
-    echo "-s path/to/dir -m path/to/changelog -t <token>"
 }
 
 gh_curl() 
@@ -53,7 +48,7 @@ gh_curl()
 #
 # \param repo
 # \usage 
-#       repo="itdelsat/release-test-a"
+#       repo="vortexmakes/release-test-a"
 #       get_latest $repo
 #
 get_latest()
@@ -79,7 +74,7 @@ get_latest()
 # \param repo
 # \param release-id
 # \usage 
-#       repo="itdelsat/release-test-a"
+#       repo="vortexmakes/release-test-a"
 #       release-id="v1.0.36-beta"
 #       get_release $repo $release-id
 #
@@ -110,7 +105,7 @@ get_release()
 # \param repo
 # \param file
 # \usage 
-#       repo="itdelsat/release-test-a"
+#       repo="vortexmakes/release-test-a"
 #       file="README.md"
 #       upload_file $repo $file
 #
@@ -149,7 +144,7 @@ upload_file()
 # \param version
 # \param change log file
 # \usage 
-#       repo="itdelsat/release-test-a"
+#       repo="vortexmakes/release-test-a"
 #       version="1.0.16"
 #       message="Release X"
 #       create_release $repo $version "$message"
@@ -194,7 +189,7 @@ create_release()
 #
 # \param repo
 # \usage 
-#       repo="itdelsat/release-test-a"
+#       repo="vortexmakes/release-test-a"
 #       get_tarball $repo
 #
 get_tarball()
