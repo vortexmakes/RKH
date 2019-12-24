@@ -12,10 +12,10 @@ probe="false"
 usage()
 {
     echo "Creates and publishes a release in a GitHub repository"
-    echo "Usage: rkh-release -v <version>  -r <repository> "
-    echo "               [-s <directory | <tar.gz>]"
+    echo "Usage: release -v <version>  -r <repository> "
+    echo "               [-s <directory> | <tar.gz>]"
     echo "               [-b <branch>] [-m <changelog file>] [-d] [-p]"
-    echo "               t <token>"
+    echo "               -t <token>"
     echo "Options:"
     echo "    -v: desired version (i.e. x.y.z or x.y.z-beta)"
     echo "    -r: specifies the repository info \"owner/name\". "
@@ -30,6 +30,15 @@ usage()
     echo "    -d: creates a draft (unpublished) release"
     echo "    -p: identifies the release as a prerelease"
     echo "    -t: personal access token"
+    echo ""
+    echo "Example:"
+    echo "- Release a package from a file"
+    echo -n "./release.sh -v 1.0.49 -r itdelsat/<repository> "
+    echo "-s path/to/package.tar.gz -m path/to/changelog -t <token>"
+    echo ""
+    echo "- Release a package from a directory"
+    echo -n "./release.sh -v 1.0.49 -r itdelsat/<repository> "
+    echo "-s path/to/dir -m path/to/changelog -t <token>"
 }
 
 gh_curl() 
@@ -65,6 +74,37 @@ get_latest()
 }
 
 #
+# Get release
+#
+# \param repo
+# \param release-id
+# \usage 
+#       repo="itdelsat/release-test-a"
+#       release-id="v1.0.36-beta"
+#       get_release $repo $release-id
+#
+get_release()
+{
+    if [[ -n $1 || -n $2 ]]; then
+        response=$(gh_curl -s $github/repos/$1/releases/$2)
+        result=$(echo $response | jq "select(.message == \"Not Found\")")
+        if [ -n "$result" ]; then
+            echo "ERROR: cannot find $2 release from $1 repository"
+        else
+            tag_name=$(echo $response | jq .tag_name)
+            id=$(echo $response | jq .id)
+            published_at=$(echo $response | jq .published_at)
+            draftFlag=$(echo $response | jq .draft)
+            prereleaseFlag=$(echo $response | jq .prerelease)
+            echo -n "Get release $id (id) published at $published_at"
+            echo "- Tag:$tag_name, Draft:$draftFlag, Prerelease:$prereleaseFlag"
+        fi
+    else
+        echo "ERROR: get_release() - missing or wrong arguments"
+    fi
+}
+
+#
 # Upload a file to latest release
 #
 # \param repo
@@ -78,12 +118,18 @@ upload_file()
 {
     if [[ -n $1 && -n $2 ]]; then
         echo "Uploading file $2 to $1..."
-        get_latest $1
+        if [[ "$draft" == "false" && "$prerelease" == "false" ]]; then
+            get_latest $1
+        else
+            get_release $1 $release_id
+        fi
         upload_url="$(echo "$response" | jq -r .upload_url | sed -e "s/{?name,label}//")"
+        #echo "$response" | jq '.'
         response=$(curl --silent -H "Authorization: token $token" \
                         --header "Content-Type:application/gzip" \
-                        --data-binary "$2" \
-                        "$upload_url?name="$2"")
+                        --data-binary @$2 \
+                        "$upload_url?name=$2")
+        #echo "$response" | jq '.'
         result=$(echo $response | jq "select(.message == \"Validation Failed\")")
         if [ -n "$result" ]; then
             result=$(echo $response | jq ".errors | .[0].code")
@@ -128,12 +174,14 @@ create_release()
                  "$github/repos/$1/releases?access_token=$token"
           )
 
+        #echo "$response" | jq '.'
         result=$(echo $response | jq "select(.message == \"Validation Failed\")")
         if [ -n "$result" ]; then
             result=$(echo $response | jq ".errors | .[0].code")
             echo "ERROR: cannot create the release $2. Code from server: $result"
         else
             upload_url="$(echo "$response" | jq -r .upload_url | sed -e "s/{?name,label}//")"
+            release_id="$(echo "$response" | jq -r .id)"
             echo "Release v$2 published in $1 repository"
         fi
     else
@@ -202,12 +250,34 @@ if [ -z $dir ]; then
     get_tarball $repository
     upload_file $repository $tarball
 elif [ -d $dir ]; then
-    echo "Compressing $dir..."
-    tar -czf $(basename $dir).tar.gz $dir
-    upload_file $repository $(basename $dir).tar.gz
+    dir_path=$(dirname $dir)
+    dir_name=$(basename $dir)
+    file=$dir_name.tar.gz
+    if [ "$dir_path" != "." ]; then
+        if [ -d $PWD/$dir_name ]; then
+            echo "Delete old $dir_name in $PWD"
+            rm -r ./$dir_name
+        fi
+        echo "Copy $dir to $PWD"
+        cp -r $dir .
+    fi
+    echo "Compressing $dir_name..."
+    tar -czf $file $dir_name
+    upload_file $repository $file
+    if [ "$dir_path" != "." ]; then
+        if [ -d $PWD/$dir_name ]; then
+            echo "Delete $dir_name in $PWD"
+            rm -r ./$dir_name
+        fi
+        mv $file $dir_path
+    fi
 elif [ -e $dir ]; then
-    ext="${dir##*.}"
+    ext="${dir#*.}"
     if [ "$ext" == "tar.gz" ]; then
+        dir_path=$(dirname $dir)
+        if [[ -n $dir_path && "$dir_path" != "." ]]; then
+            cp $dir .
+        fi
         upload_file $repository $(basename $dir)
     fi
 fi
