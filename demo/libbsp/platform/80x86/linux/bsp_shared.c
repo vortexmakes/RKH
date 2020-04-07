@@ -53,6 +53,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include <stdio.h>
+#include <ctype.h>
 
 #include "shared.h"
 #include "server.h"
@@ -80,7 +81,7 @@ RKH_THIS_MODULE
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static rui32_t l_rnd;           /* random seed */
-static unsigned int tick_msec;          /* clock tick in msec */
+static unsigned int tick_msec;  /* clock tick in msec */
 
 static RKH_ROM_STATIC_EVENT(e_term, TERM);
 static RKH_ROM_STATIC_EVENT(e_pause, PAUSE);
@@ -129,8 +130,8 @@ printBanner(void)
     printf("The application uses four timers, as well as dynamic  \n");
     printf("and static events. \n");
     printf("On the other hand, this application could be used in either \n");
-    printf("preemptive or cooperative enviroment. \n");
-    printf("Aditionally, the SHD could be used to verify a new RKH port. \n");
+    printf("preemptive or cooperative environment. \n");
+    printf("Additionally, the SHD could be used to verify a new RKH port. \n");
     printf("\n\n\n");
 
     printf("1.- Press 'P'/'p' to pause.\n");
@@ -210,10 +211,10 @@ bsp_svr_paused(rui32_t ntot, rui32_t *ncr)
     rui32_t *pNcr;
 
     printf("Server paused | ");
-    printf("ntot = %d |", ntot);
+    printf("ntot = %lu |", ntot);
 
     for (pNcr = ncr, cn = 0; cn < NUM_CLIENTS; ++cn, ++pNcr)
-        printf(" cli%d=%d |", cn, *pNcr);
+        printf(" cli%d=%lu |", cn, *pNcr);
 
     putchar('\n');
 }
