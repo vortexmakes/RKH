@@ -41,10 +41,6 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../shared&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2121232734" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="GPRS_QUICK_SEND=1"/>
-									<listOptionValue builtIn="false" value="MODPWR_CTRL_ENABLE=1"/>
-									<listOptionValue builtIn="false" value="CIPSHUT_ON_INIT=1"/>
-									<listOptionValue builtIn="false" value="CRT_SECURE_NO_WARNINGS=1"/>
 									<listOptionValue builtIn="false" value="DEBUG=1"/>
 									<listOptionValue builtIn="false" value="CONSOLE=1"/>
 									<listOptionValue builtIn="false" value="__LNXGNU__"/>
