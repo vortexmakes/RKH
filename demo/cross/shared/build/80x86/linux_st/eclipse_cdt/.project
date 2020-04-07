@@ -35,9 +35,49 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>src/bsp.h</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/bsp.h</locationURI>
+		</link>
+		<link>
+			<name>src/client.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/client.c</locationURI>
+		</link>
+		<link>
+			<name>src/client.h</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/client.h</locationURI>
+		</link>
+		<link>
+			<name>src/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/main.c</locationURI>
+		</link>
+		<link>
 			<name>src/rkh</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/rkhcfg.h</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/rkhcfg.h</locationURI>
+		</link>
+		<link>
+			<name>src/server.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/server.c</locationURI>
+		</link>
+		<link>
+			<name>src/server.h</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/server.h</locationURI>
+		</link>
+		<link>
+			<name>src/shared.h</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/shared.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/assert.c</name>
@@ -45,19 +85,14 @@
 			<locationURI>PARENT-6-PROJECT_LOC/libbsp/platform/80x86/linux/assert.c</locationURI>
 		</link>
 		<link>
-			<name>src/bsp/bsp_ahsm.c</name>
-			<type>1</type>
-			<locationURI>PARENT-6-PROJECT_LOC/libbsp/platform/80x86/linux/bsp_ahsm.c</locationURI>
-		</link>
-		<link>
-			<name>src/bsp/bsp_blinky.c</name>
-			<type>1</type>
-			<locationURI>PARENT-6-PROJECT_LOC/libbsp/platform/80x86/linux/bsp_blinky.c</locationURI>
-		</link>
-		<link>
 			<name>src/bsp/bsp_common.h</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/libbsp/common/bsp_common.h</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/bsp_shared.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/libbsp/platform/80x86/linux/bsp_shared.c</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/getopt.c</name>
@@ -73,21 +108,6 @@
 			<name>src/bsp/hook.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/libbsp/platform/80x86/linux/hook.c</locationURI>
-		</link>
-		<link>
-			<name>src/bsp/rkhport.c</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/source/portable/80x86/linux_st/gnu/rkhport.c</locationURI>
-		</link>
-		<link>
-			<name>src/bsp/rkhport.h</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/source/portable/80x86/linux_st/gnu/rkhport.h</locationURI>
-		</link>
-		<link>
-			<name>src/bsp/rkht.h</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/source/portable/80x86/linux_st/gnu/rkht.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/trace_io.c</name>
@@ -116,6 +136,11 @@
 		</link>
 		<link>
 			<name>src/rkh/mempool</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/rkh/portable</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -163,6 +188,21 @@
 			<name>src/rkh/mempool/src</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/rkh/portable/rkhport.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/source/portable/80x86/linux_st/gnu/rkhport.c</locationURI>
+		</link>
+		<link>
+			<name>src/rkh/portable/rkhport.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/source/portable/80x86/linux_st/gnu/rkhport.h</locationURI>
+		</link>
+		<link>
+			<name>src/rkh/portable/rkht.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/source/portable/80x86/linux_st/gnu/rkht.h</locationURI>
 		</link>
 		<link>
 			<name>src/rkh/queue/inc</name>
