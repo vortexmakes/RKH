@@ -119,7 +119,7 @@ trace_io_setConfig(int argc, char **argv)
 
             case '?':
             case 'h':
-                printf(helpMessage);
+                printf("%s", helpMessage);
                 break;
         }
 }

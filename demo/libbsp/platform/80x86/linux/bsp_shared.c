@@ -62,8 +62,6 @@
 #include "rkh.h"
 #include "trace_io_cfg.h"
 
-RKH_THIS_MODULE
-
 /* ----------------------------- Local macros ------------------------------ */
 #define kbmap(c)                  ((c) - '0')
 
@@ -81,7 +79,6 @@ RKH_THIS_MODULE
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static rui32_t l_rnd;           /* random seed */
-static unsigned int tick_msec;  /* clock tick in msec */
 
 static RKH_ROM_STATIC_EVENT(e_term, TERM);
 static RKH_ROM_STATIC_EVENT(e_pause, PAUSE);
