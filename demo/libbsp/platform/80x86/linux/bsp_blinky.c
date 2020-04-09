@@ -46,15 +46,15 @@
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  lf@vortexmakes.com
- *  DaBa  Dario Bali�a       dariosb@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
+ *  CaMa  Carlos Mancón      manconci@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include <stdio.h>
 
-#include "Blinky.h"
-#include "signals.h"
+#include "blinky.h"
 #include "bsp.h"
 #include "rkh.h"
 #include "trace_io_cfg.h"
