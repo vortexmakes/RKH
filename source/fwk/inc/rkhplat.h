@@ -115,6 +115,10 @@
     #include "../../portable/arm-cortex/rkhs/arm_cm4f/stm32/rkhport.h"
 #endif
 
+#ifdef __FREERTOS_V10_03_00__
+    #include "../../home/cmancon/RKH/source/portable/freertos/v10.3.0/rkhport.h"
+#endif
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
