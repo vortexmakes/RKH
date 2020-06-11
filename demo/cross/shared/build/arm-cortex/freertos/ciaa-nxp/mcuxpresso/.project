@@ -82,9 +82,24 @@
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/assert.c</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/board.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/board.c</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/board_sysinit.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/board_sysinit.c</locationURI>
+		</link>
+		<link>
 			<name>src/bsp/bsp_shared.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/bsp_shared.c</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/sysinit.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/sysinit.c</locationURI>
 		</link>
 		<link>
 			<name>src/rkh/fwk</name>
@@ -123,6 +138,11 @@
 		</link>
 		<link>
 			<name>src/rkh/trc</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -240,6 +260,11 @@
 			<name>src/Third-party/FreeRTOS/src/timers.c</name>
 			<type>1</type>
 			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/timers.c</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/chip.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/chip.h</locationURI>
 		</link>
 		<link>
 			<name>src/rkh/fwk/inc/rkh.h</name>
