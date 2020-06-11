@@ -38,6 +38,29 @@
 /* (3) Local const modifier                                                  */
 /* (4) Global (extern or non-static external const modifier)                 */
 
+
+#if SERIAL_TRACE == 1
+	#define SERIAL_TRACE_OPEN()		bsp_uart_init()
+	#define SERIAL_TRACE_CLOSE() 	bsp_uart_deinit()
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	\
+									bsp_uart_send_block( buf_, len_ )
+#else
+	#define SERIAL_TRACE_OPEN()						(void)0
+	#define SERIAL_TRACE_CLOSE()					(void)0
+	#define SERIAL_TRACE_SEND( d )					(void)0
+	#define SERIAL_TRACE_SEND_BLOCK( buf_, len_ )	(void)0
+#endif
+
+
+#define UART_USB_LPC				LPC_USART2
+
+#define SIZEOF_EP0STO				32
+#define SIZEOF_EP0_BLOCK			sizeof( RKH_EVT_T )
+#define SIZEOF_EP1STO				16
+#define SIZEOF_EP1_BLOCK			sizeof( ReqEvt )
+#define SVR_NAME					"Server    -"
+#define CLI_NAME					"Client"
+
 /* ---------------------------- Local data types --------------------------- */
 /* (1) typedefs                                                              */
 
@@ -48,10 +71,18 @@
 
 /* ---------------------------- Local variables ---------------------------- */
 /* (1) Static external definitions used only in this file.                   */
+#if RKH_CFG_TRC_EN == RKH_ENABLED
 static RKH_TS_T tstamp;
+#endif
 static rui32_t l_rnd;				/* random seed */
 
+static rui8_t ep0sto[ SIZEOF_EP0STO ], ep1sto[ SIZEOF_EP1STO ];
+
 /* ----------------------- Local function prototypes ----------------------- */
+void bsp_uart_init( void );
+void bsp_uart_send_block(rui8_t *blk, TRCQTY_T nbytes );
+void bsp_uart_deinit( void );
+
 /* ---------------------------- Local functions ---------------------------- */
 
 static
@@ -126,12 +157,6 @@ void
 bsp_keyParser(int c)
 {
 
-}
-
-void
-bsp_timeTick(void)
-{
-    ++tstamp;
 }
 
 rui32_t
@@ -217,9 +242,9 @@ bsp_svr_recall( rui8_t clino )
 void
 bsp_svr_paused(rui32_t ntot, rui32_t *ncr)
 {
+#ifdef PRINTF
 	rInt cn;
     rui32_t *pNcr;
-#ifdef PRINTF
 	PRINTF( "Server paused | ");
 	PRINTF( "ntot = %d |", ntot );
 
@@ -246,6 +271,116 @@ void
 bsp_svr_resume( void )
 {
 
+}
+
+#if RKH_CFG_TRC_EN == RKH_ENABLED
+
+void
+rkh_trc_open( void )
+{
+	rkh_trc_init();
+
+	SERIAL_TRACE_OPEN();
+	RKH_TRC_SEND_CFG( RKH_CFG_FWK_TICK_RATE_HZ );
+}
+
+void
+rkh_trc_close( void )
+{
+	SERIAL_TRACE_CLOSE();
+}
+
+void
+bsp_timeTick(void)
+{
+    ++tstamp;
+}
+
+RKH_TS_T
+rkh_trc_getts(void)
+{
+    return tstamp;
+}
+
+
+void
+rkh_trc_flush( void )
+{
+	rui8_t *blk;
+	TRCQTY_T nbytes;
+	RKH_SR_ALLOC();
+
+	FOREVER
+	{
+		nbytes = (TRCQTY_T)1024;
+
+		RKH_ENTER_CRITICAL_();
+		blk = rkh_trc_get_block( &nbytes );
+		RKH_EXIT_CRITICAL_();
+
+		if((blk != (rui8_t *)0))
+		{
+			SERIAL_TRACE_SEND_BLOCK( blk, nbytes );
+		}
+		else
+			break;
+	}
+}
+
+#endif
+
+
+void
+bsp_uart_init( void )
+{
+	Chip_UART_Init(UART_USB_LPC);
+	Chip_UART_SetBaud(UART_USB_LPC, 19200);  /* Set Baud rate */
+	Chip_UART_SetupFIFOS(UART_USB_LPC, UART_FCR_FIFO_EN | UART_FCR_TRG_LEV0); /* Modify FCR (FIFO Control Register)*/
+	Chip_UART_TXEnable(UART_USB_LPC); /* Enable UART Transmission */
+	Chip_SCU_PinMux(7, 1, MD_PDN, FUNC6);              /* P7_1,FUNC6: UART2_TXD */
+	Chip_SCU_PinMux(7, 2, MD_PLN|MD_EZI|MD_ZI, FUNC6); /* P7_2,FUNC6: UART2_RXD */
+}
+
+void
+bsp_uart_send_block(rui8_t *blk, TRCQTY_T nbytes )
+{
+	while (nbytes--)
+	{
+		while ((Chip_UART_ReadLineStatus(UART_USB_LPC) & UART_LSR_THRE) == 0) {}   // Wait for space in FIFO
+		      Chip_UART_SendByte(UART_USB_LPC, *blk++);
+	}
+}
+
+void
+bsp_uart_deinit( void )
+{
+
+}
+
+void
+rkh_hook_timetick( void )
+{
+    bsp_timeTick();
+}
+
+void
+rkh_hook_start( void )
+{
+	rkh_fwk_registerEvtPool( ep0sto, SIZEOF_EP0STO, SIZEOF_EP0_BLOCK  );
+	rkh_fwk_registerEvtPool( ep1sto, SIZEOF_EP1STO, SIZEOF_EP1_BLOCK  );
+}
+
+void
+rkh_hook_idle(void)             /* called within critical section */
+{
+    RKH_ENA_INTERRUPT();
+    RKH_TRC_FLUSH();
+}
+
+void
+rkh_hook_exit( void )
+{
+	RKH_TRC_FLUSH();
 }
 
 /* ------------------------------ File footer ------------------------------ */

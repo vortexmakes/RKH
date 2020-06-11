@@ -77,6 +77,11 @@
 			<locationURI>PARENT-5-PROJECT_LOC/shared.h</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/LPCOpen</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>src/bsp/assert.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/assert.c</locationURI>
@@ -95,6 +100,11 @@
 			<name>src/bsp/bsp_shared.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/bsp_shared.c</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/cr_startup_lpc43xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-9-PROJECT_LOC/Downloads/LPCOpen%203.02/freertos_blinky/src/cr_startup_lpc43xx.c</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/sysinit.c</name>
@@ -147,6 +157,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/LPCOpen/src</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>src/rkh/fwk/inc</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -163,6 +178,11 @@
 		</link>
 		<link>
 			<name>src/rkh/mempool/src</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/rkh/portable/freertos</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -222,6 +242,11 @@
 			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/portable/GCC/ARM_CM4F/port.c</locationURI>
 		</link>
 		<link>
+			<name>src/Third-party/FreeRTOS/portable/portable.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/third-party/freertos/freertos_kernel/include/portable.h</location>
+		</link>
+		<link>
 			<name>src/Third-party/FreeRTOS/portable/portmacro.h</name>
 			<type>1</type>
 			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/portable/GCC/ARM_CM4F/portmacro.h</locationURI>
@@ -235,6 +260,11 @@
 			<name>src/Third-party/FreeRTOS/src/event_groups.c</name>
 			<type>1</type>
 			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/event_groups.c</locationURI>
+		</link>
+		<link>
+			<name>src/Third-party/FreeRTOS/src/heap_3.c</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/third-party/freertos/freertos_kernel/portable/MemMang/heap_3.c</location>
 		</link>
 		<link>
 			<name>src/Third-party/FreeRTOS/src/list.c</name>
@@ -265,6 +295,56 @@
 			<name>src/bsp/LPCOpen/inc/chip.h</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/chip.h</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/clock_18xx_43xx.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/clock_18xx_43xx.h</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/fpu_init.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/fpu_init.h</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/gpio_18xx_43xx.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.h</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/uart_18xx_43xx.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/uart_18xx_43xx.h</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/src/chip_18xx_43xx.c</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/chip_18xx_43xx.c</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/src/clock_18xx_43xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/clock_18xx_43xx.c</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/src/fpu_init.c</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/fpu_init.c</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/src/gpio_18xx_43xx.c</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.c</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/src/sysinit_18xx_43xx.c</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/sysinit_18xx_43xx.c</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/src/uart_18xx_43xx.c</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/uart_18xx_43xx.c</location>
 		</link>
 		<link>
 			<name>src/rkh/fwk/inc/rkh.h</name>
