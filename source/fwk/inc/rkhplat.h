@@ -116,7 +116,7 @@
 #endif
 
 #ifdef __FREERTOS_V10_03_00__
-    #include "../../home/cmancon/RKH/source/portable/freertos/v10.3.0/rkhport.h"
+    #include "../../portable/freertos/v10.3.0/rkhport.h"
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
