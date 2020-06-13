@@ -67,9 +67,12 @@ main(int argc, char *argv[])
         RKH_SMA_ACTIVATE(CLI(cn), cli_qsto[cn], QSTO_SIZE, cli_stk[cn],
                          CLI_STK_SIZE);
     }
-
+#ifdef __FREERTOS_V10_03_00__
+    vTaskStartScheduler();
+#else
     rkh_fwk_enter();
     RKH_TRC_CLOSE();
+#endif
     return 0;
 }
 
