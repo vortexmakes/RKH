@@ -383,5 +383,16 @@ rkh_hook_exit( void )
 	RKH_TRC_FLUSH();
 }
 
+void
+rkh_startupTask(void *pvParameter)
+{
+	/* Trace already open on bsp_init */
+    /* RKH_TRC_OPEN(); */
+
+    rkh_fwk_enter();
+
+    vTaskDelete(NULL);
+}
+
 /* ------------------------------ File footer ------------------------------ */
 /*  Use file_footer.txt file                                                 */
