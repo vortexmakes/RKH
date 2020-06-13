@@ -206,6 +206,12 @@ rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize,
 
     RKH_ASSERT(sma->equeue);
 
+#ifdef DEBUG
+    /* Registering the queue to inspect it with FreeRTOS debug tools */
+    vQueueAddToRegistry(sma->equeue,
+    					sma->sm.romrkh->name);
+#endif
+
     rkh_sma_register(sma);
     rkh_sm_init((RKH_SM_T *)sma);
 
