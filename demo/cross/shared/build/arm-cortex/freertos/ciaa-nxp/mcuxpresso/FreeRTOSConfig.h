@@ -82,7 +82,7 @@ extern int DbgConsole_Printf( const char *fmt_s, ... );
 #define configMAX_CO_ROUTINE_PRIORITIES              ( 2 )
 
 /* Software timer definitions. */
-#define configUSE_TIMERS                             0
+#define configUSE_TIMERS                             1
 #define configTIMER_TASK_PRIORITY                    ( configMAX_PRIORITIES - 3 )
 #define configTIMER_QUEUE_LENGTH                     10
 #define configTIMER_TASK_STACK_DEPTH                 ( configMINIMAL_STACK_SIZE * 4 )
@@ -132,7 +132,6 @@ extern int DbgConsole_Printf( const char *fmt_s, ... );
         configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1)
 
 /* RKH definitions for FreeRTOS integration */
-#define RKH_STARTUP_STACK_SIZE				512
 #define RKH_TASK_PRIORITY					(configMAX_PRIORITIES - 1)
 
 /* Normal assert() semantics without relying on the provision of an assert.h

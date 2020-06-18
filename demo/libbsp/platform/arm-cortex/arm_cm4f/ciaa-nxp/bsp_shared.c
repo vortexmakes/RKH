@@ -150,7 +150,6 @@ bsp_init(int argc, char *argv[])
 	RKH_FILTER_OFF_SIGNAL( REQ );
 	RKH_FILTER_OFF_SIGNAL( START );
 
-	RKH_TRC_OPEN();
 }
 
 void
@@ -381,17 +380,6 @@ void
 rkh_hook_exit( void )
 {
 	RKH_TRC_FLUSH();
-}
-
-void
-rkh_startupTask(void *pvParameter)
-{
-	/* Trace already open on bsp_init */
-    /* RKH_TRC_OPEN(); */
-
-    rkh_fwk_enter();
-
-    vTaskDelete(NULL);
 }
 
 /* ------------------------------ File footer ------------------------------ */

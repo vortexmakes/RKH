@@ -54,6 +54,7 @@
 #include "rkhfwk_dynevt.h"
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
+#include "timers.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -69,10 +70,9 @@ static rui8_t l_isr_tick;
 #endif
 static rui8_t running;
 
-static StaticQueue_t QueueBuff[RKH_CFG_FWK_MAX_SMA];
+StaticTimer_t xTimerBuffers[ 1 ];
 
-static StaticTask_t startupTask;
-static StackType_t startupTaskStack[RKH_STARTUP_STACK_SIZE];
+static StaticQueue_t QueueBuff[RKH_CFG_FWK_MAX_SMA];
 
 /* ----------------------- Local function prototypes ----------------------- */
 static void thread_function(void *arg);
@@ -99,6 +99,13 @@ thread_function(void *arg)
     RKH_TR_SMA_TERM(sma, RKH_GET_PRIO(sma));
 
     vTaskDelete(NULL);
+}
+
+void
+tick_timerCallback(TimerHandle_t xTimer)
+{
+	(void) xTimer;
+	RKH_TIM_TICK(&l_isr_tick);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -129,16 +136,27 @@ rkh_startupTask(void *pvParameter)
 void
 rkh_fwk_init(void)
 {
-    TaskHandle_t TaskHandle = NULL;
+	RKH_TRC_OPEN();
 
-    TaskHandle = xTaskCreateStatic(rkh_startupTask,
-                                   "rkh_startupTask",
-                                   RKH_STARTUP_STACK_SIZE,
-                                   NULL,
-                                   RKH_TASK_PRIORITY,
-                                   startupTaskStack,
-                                   &startupTask);
-    RKH_ASSERT(TaskHandle);
+#if defined(RKH_USE_TRC_SENDER)
+	RKH_TR_FWK_OBJ(&l_isr_tick);
+#endif
+
+	TimerHandle_t tick_TimerHandle = NULL;
+
+	tick_TimerHandle = xTimerCreateStatic( "isr_Timer",
+			configTICK_RATE_HZ   /* wait for the tick interval */
+			/ RKH_CFG_FWK_TICK_RATE_HZ,
+			pdTRUE,
+			( void * ) 0,
+			tick_timerCallback,
+			&( xTimerBuffers[0] )
+	);
+
+    RKH_ASSERT(tick_TimerHandle);
+
+    xTimerStart( tick_TimerHandle, (TickType_t) NULL );
+
 }
 
 void
@@ -146,19 +164,11 @@ rkh_fwk_enter(void)
 {
     RKH_SR_ALLOC();
 
-    running = (rui8_t)1;
-
     RKH_HOOK_START();                   /* start-up callback */
     RKH_TR_FWK_EN();
 
-    RKH_TR_FWK_OBJ(&l_isr_tick);
+    vTaskStartScheduler();
 
-    while (running)
-    {
-        vTaskDelay(configTICK_RATE_HZ   /* wait for the tick interval */
-                   / RKH_CFG_FWK_TICK_RATE_HZ);
-        RKH_TIM_TICK(&l_isr_tick);      /* tick handler */
-    }
     RKH_HOOK_EXIT();                    /* cleanup callback */
     RKH_TRC_CLOSE();                    /* cleanup the trace session */
 
