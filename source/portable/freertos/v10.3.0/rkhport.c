@@ -45,7 +45,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  DaBa  Dario Bali#a       db@vortexmakes.com
+ *  DaBa  Dario Baliña       db@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -60,7 +60,7 @@
 /* ------------------------------- Constants ------------------------------- */
 RKH_MODULE_NAME(rkhport)
 RKH_MODULE_VERSION(rkhport, 1.00)
-RKH_MODULE_DESC(rkhport, "FreeRTOS v10.2.0")
+RKH_MODULE_DESC(rkhport, "FreeRTOS v10.3.0")
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -123,16 +123,6 @@ rkhport_get_desc(void)
     return RKH_MODULE_GET_DESC();
 }
 
-__attribute__((weak)) void
-rkh_startupTask(void *pvParameter)
-{
-    RKH_TRC_OPEN();
-
-    rkh_fwk_enter();
-
-    vTaskDelete(NULL);
-}
-
 void
 rkh_fwk_init(void)
 {
@@ -153,7 +143,7 @@ rkh_fwk_init(void)
 			&( xTimerBuffers[0] )
 	);
 
-    RKH_ASSERT(tick_TimerHandle);
+	RKH_ENSURE(tick_TimerHandle);
 
     xTimerStart( tick_TimerHandle, (TickType_t) NULL );
 
@@ -217,9 +207,11 @@ rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize,
     RKH_ASSERT(sma->equeue);
 
 #ifdef DEBUG
-    /* Registering the queue to inspect it with FreeRTOS debug tools */
-    vQueueAddToRegistry(sma->equeue,
-    					sma->sm.romrkh->name);
+	#if RKH_CFG_TRC_EN == RKH_ENABLED
+    	/* Registering the queue to inspect it with FreeRTOS debug tools */
+    	vQueueAddToRegistry(sma->equeue,
+    			sma->sm.romrkh->name);
+	#endif
 #endif
 
     rkh_sma_register(sma);
@@ -230,7 +222,11 @@ rkh_sma_activate(RKH_SMA_T *sma, const RKH_EVT_T **qs, RKH_QUENE_T qsize,
     sma->running = (rbool_t)1;
 
     TaskHandle = xTaskCreateStatic(thread_function,    /* function */
+#if RKH_CFG_TRC_EN == RKH_ENABLED
                                    sma->sm.romrkh->name,    /* name */
+#else
+								   NULL,
+#endif
                                    stksize,            /* stack size */
                                    sma,                /* function argument */
                                    prio,               /* priority */

@@ -359,7 +359,9 @@ bsp_uart_deinit( void )
 void
 rkh_hook_timetick( void )
 {
+#if RKH_CFG_TRC_EN == RKH_ENABLED
     bsp_timeTick();
+#endif
 }
 
 void

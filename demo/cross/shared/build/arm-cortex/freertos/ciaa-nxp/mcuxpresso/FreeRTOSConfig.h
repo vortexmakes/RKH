@@ -57,7 +57,7 @@ extern int DbgConsole_Printf( const char *fmt_s, ... );
 #define configCPU_CLOCK_HZ                           ( SystemCoreClock )
 #define configTICK_RATE_HZ                           ( ( TickType_t ) 1000 ) /* 1000 ticks per second => 1ms tick rate */
 #define configMAX_PRIORITIES                         ( 8 )
-#define configMINIMAL_STACK_SIZE                     ( ( uint16_t ) 128 )
+#define configMINIMAL_STACK_SIZE                     ( 256 / sizeof(int) ) /* Should be specified in words, not bytes */
 #define configTOTAL_HEAP_SIZE                        ( ( size_t ) ( 8 * 1024 ) )    /* 8 Kbytes. */
 #define configMAX_TASK_NAME_LEN                      ( 16 )
 #define configUSE_TRACE_FACILITY                     1
