@@ -92,6 +92,11 @@
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/board.c</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/board_ext.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/board_ext.h</locationURI>
+		</link>
+		<link>
 			<name>src/bsp/board_sysinit.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/board_sysinit.c</locationURI>
@@ -292,6 +297,16 @@
 			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/timers.c</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/LPCOpen/inc/board.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/board.h</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/board_api.h</name>
+			<type>1</type>
+			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/board_api.h</location>
+		</link>
+		<link>
 			<name>src/bsp/LPCOpen/inc/chip.h</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/chip.h</locationURI>
@@ -310,6 +325,11 @@
 			<name>src/bsp/LPCOpen/inc/gpio_18xx_43xx.h</name>
 			<type>1</type>
 			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.h</location>
+		</link>
+		<link>
+			<name>src/bsp/LPCOpen/inc/retarget.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/retarget.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/inc/uart_18xx_43xx.h</name>

@@ -23,21 +23,22 @@
 /* (2) #include <other system headers>                                       */
 /* (3) #include �user header files�                                          */
 #include "rkh.h"
+#include "rkhport.h"
 #include "bsp.h"
 #include "server.h"
 #include "client.h"
 #include "shared.h"
 #include "board.h"
+#include "board_ext.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* (1) Function macro defines */
 
-/* ------------------------------- Constants ------------------------------- */
-/* (1) Macro defines                                                         */
+#ifdef DEBUG_SEMIHOSTING
+#define PRINTF(...)	printf( __VA_ARGS__ )
 /* (2) Enumerations                                                          */
-/* (3) Local const modifier                                                  */
-/* (4) Global (extern or non-static external const modifier)                 */
-
+#define PUTCHAR(ch)				putchar(ch)
+#endif
 
 #if SERIAL_TRACE == 1
 	#define SERIAL_TRACE_OPEN()		bsp_uart_init()
@@ -52,6 +53,12 @@
 #endif
 
 
+/* ------------------------------- Constants ------------------------------- */
+/* (1) Macro defines                                                         */
+/* (2) Enumerations                                                          */
+/* (3) Local const modifier                                                  */
+/* (4) Global (extern or non-static external const modifier)                 */
+
 #define UART_USB_LPC				LPC_USART2
 
 #define SIZEOF_EP0STO				32
@@ -63,6 +70,44 @@
 
 /* ---------------------------- Local data types --------------------------- */
 /* (1) typedefs                                                              */
+typedef struct
+{
+	bool led0_onState;
+	bool led1_onState;
+	bool led2_onState;
+	bool led3_onState;
+} LEDS_ST;
+
+
+static LEDS_ST led_combinations[] = {	{ false, false, false, false },
+										{ true, true, true, true },
+										{ true, false, false, false },
+										{ false, true, false, false },
+										{ false, false, true, false },
+										{ false, false, false, true }
+									};
+
+typedef enum
+{
+	NONE,
+	ALL,
+	ONLY_LED0,
+	ONLY_LED1,
+	ONLY_LED2,
+	ONLY_LED3
+} COMBINATION_IDX;
+
+static COMBINATION_IDX clients_leds[] = {
+										NONE,
+										/*
+										 * Client 1-4 according
+										 * to clino arg
+										 */
+										ONLY_LED0,
+										ONLY_LED1,
+										ONLY_LED2,
+										ONLY_LED3
+};
 
 /* ---------------------------- Global variables --------------------------- */
 /* (1) Extern declarations of variables defined in other files.              */
@@ -89,7 +134,6 @@ static
 void
 print_banner( void )
 {
-//TODO
 #ifdef PRINTF
 	PRINTF(	"\"Shared\" example\n\n" );
 	PRINTF(	"RKH version      = %s\n", RKH_RELEASE );
@@ -109,15 +153,31 @@ print_banner( void )
 	PRINTF(	"The application uses four timers, as well as dynamic  \n" );
 	PRINTF(	"and static events. \n" );
 	PRINTF(	"On the other hand, this application could be used in either \n" );
-	PRINTF(	"preemptive or cooperative enviroment. \n" );
-	PRINTF(	"Aditionally, the SHD could be used to verify a new RKH port. \n" );
+	PRINTF(	"preemptive or cooperative environment. \n" );
+	PRINTF(	"Additionally, the SHD could be used to verify a new RKH port. \n" );
 	PRINTF(	"\n\n\n" );
-
-	PRINTF( "1.- Each Client have your own color, Client 1-4:\n" );
-	PRINTF( "	   	RED, GREEN, BLUE, YELLOW\n" );
-	PRINTF( "2.- Press SW2 to PAUSE.\n" );
-	PRINTF( "3.- Paused state is shown with a WHITE in RGB led\n." );
+#ifdef CIAA_NXP
+	PRINTF( "1.- Each Client have its own LED/DOUT, Client 1-4:\n" );
+	PRINTF( "	   	DOUT4, DOUT5, DOUT6, DOUT7\n" );
+	PRINTF( "2.- Activate DIN0 to PAUSE.\n" );
+	PRINTF( "3.- Paused state is shown with all LEDs/DOUTs activated.\n" );
+#else
+	PRINTF( "1.- Each Client have its own LED, Client 1-4:\n" );
+	PRINTF( "	   	LEDB, LED1, LED2, LED3\n" );
+	PRINTF( "2.- Press TEC1 to PAUSE.\n" );
+	PRINTF( "3.- Paused state is shown with all LEDs lit.\n" );
 #endif
+	PRINTF(	"\n\n" );
+#endif
+}
+
+void
+set_leds( COMBINATION_IDX idx )
+{
+	Board_LED_Set(LED0, led_combinations[idx].led0_onState);
+	Board_LED_Set(LED1, led_combinations[idx].led1_onState);
+	Board_LED_Set(LED2, led_combinations[idx].led2_onState);
+	Board_LED_Set(LED3, led_combinations[idx].led3_onState);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -200,7 +260,7 @@ bsp_cli_using( rui8_t clino, RKH_TNT_T using_time )
 	PRINTF( "Client[%d] - Using server for %d [seg]\n",
 									CLI_ID(clino), using_time );
 #endif
-//TODO	set_rgb_led( bsp_led_colors[clino] );
+	set_leds(clients_leds[clino]);
 }
 
 void
@@ -209,7 +269,7 @@ bsp_cli_paused( rui8_t clino )
 #ifdef PRINTF
 	PRINTF( "Client[%d] - Paused\n", CLI_ID(clino) );
 #endif
-//TODO	set_rgb_led( RGB_WHITE );
+	set_leds(ALL);
 }
 
 void
@@ -226,7 +286,7 @@ bsp_cli_done( rui8_t clino )
 #ifdef PRINTF
 	PRINTF( "Client[%d] - Done\n", CLI_ID(clino) );
 #endif
-//TODO	set_rgb_led( RGB_BLACK );
+	set_leds(NONE);
 }
 
 void

@@ -27,7 +27,8 @@
 #include "board.h"
 #include "string.h"
 
-//#include "retarget.h"
+#include "retarget.h"
+#include "board_ext.h"
 
 /** @ingroup BOARD_NGX_XPLORER_18304330
  * @{
@@ -40,19 +41,6 @@
 /* System configuration variables used by chip driver */
 const uint32_t ExtRateIn = 0;
 const uint32_t OscRateIn = 12000000;
-
-typedef struct {
-	uint8_t port;
-	uint8_t pin;
-} io_port_t;
-
-#ifdef CIAA_NXP
-	static const io_port_t gpioLEDBits[] = {{5,12},{5,13},{5,14},{1,8}};
-#else
-static const io_port_t gpioLEDBits[] = {{5,0},{5,1},{5,2},{0,14},{1,11},{1,12}};
-static const io_port_t gpioBtnBits[] = {{0,4},{0,8},{0,9},{1,9}};
-static const uint8_t gpioBtnIDs[] = {TEC1_PRESSED, TEC2_PRESSED, TEC3_PRESSED, TEC4_PRESSED};
-#endif
 
 void Board_UART_Init(LPC_USART_T *pUART)
 {
@@ -175,7 +163,19 @@ void Board_LED_Toggle(uint8_t LEDNumber)
 
 void Board_Buttons_Init(void)
 {
-#ifndef CIAA_NXP
+#ifdef CIAA_NXP
+	/* CIAA-NXP Digital Inputs */
+		PINMUX_GRP_T pin_config[] = {
+				{4, 0, MD_PUP|MD_EZI|FUNC0},	/* DIN0 -> P4_0 */
+				{4, 1, MD_PUP|MD_EZI|FUNC0},	/* DIN1 -> P4_1 */
+				{4, 2, MD_PUP|MD_EZI|FUNC0},	/* DIN2 -> P4_2 */
+				{4, 3, MD_PUP|MD_EZI|FUNC0},	/* DIN3 -> P4_3 */
+				{7, 3, MD_PUP|MD_EZI|FUNC0},	/* DIN4 -> P7_3 */
+				{7, 4, MD_PUP|MD_EZI|FUNC0},	/* DIN5 -> P7_4 */
+				{7, 5, MD_PUP|MD_EZI|FUNC0},	/* DIN6 -> P7_5 */
+				{7, 6, MD_PUP|MD_EZI|FUNC0} 	/* DIN7 -> P7_6 */
+		};
+#else
 	/* EDU-CIAA-NXP buttons */
 	PINMUX_GRP_T pin_config[] = {
 			{1, 0, MD_PUP|MD_EZI|FUNC0},	/* TEC1 -> P1_0 */
@@ -183,13 +183,13 @@ void Board_Buttons_Init(void)
 			{1, 2, MD_PUP|MD_EZI|FUNC0},	/* TEC3 -> P1_2 */
 			{1, 6, MD_PUP|MD_EZI|FUNC0} 	/* TEC4 -> P1_6 */
 	};
+#endif
 
 	Chip_SCU_SetPinMuxing(pin_config, (sizeof(pin_config) / sizeof(PINMUX_GRP_T)));
 
 	for (uint8_t i = 0; i < (sizeof(gpioBtnBits) / sizeof(io_port_t)); i++) {
 		Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, gpioBtnBits[i].port, gpioBtnBits[i].pin);
 	}
-#endif
 }
 
 uint32_t Buttons_GetStatus(void)
@@ -230,72 +230,36 @@ void Board_Init(void)
 
 	/* Initializes GPIO */
 	Chip_GPIO_Init(LPC_GPIO_PORT);
-#if 0
-	/* Setup GPIOs for USB demos */
-	Chip_SCU_PinMuxSet(0x2, 6, (SCU_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC4));			/* P2_6 USB1_PWR_EN, USB1 VBus function */
-	Chip_SCU_PinMuxSet(0x2, 5, (SCU_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC2));	/* P2_5 USB1_VBUS, MUST CONFIGURE THIS SIGNAL FOR USB1 NORMAL OPERATION */
-	Chip_SCU_PinMuxSet(0x1, 7, (SCU_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC4));			/* P1_7 USB0_PWR_EN, USB0 VBus function Xplorer */
-	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 5, 6);							/* GPIO5[6] = USB1_PWR_EN */
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 5, 6, true);							/* GPIO5[6] output high */
-#endif
+
 	/* Initialize LEDs */
 	Board_LED_Init();
 
 	/* Initialize Buttons */
 	Board_Buttons_Init();
 
-#if defined(USE_RMII)
-	/* PHY_nRESET Signal in GPIO0 */
-	Chip_SCU_PinMuxSet(0x6, 1, (SCU_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC0));			/* P6_1 GPIO0 */
-	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 3, 0);							/* GPIO3[0] = PHY_NRESET */
-	/*** Reset PHY_NRESET ***/
-    Chip_GPIO_SetPinState(LPC_GPIO_PORT, 3, 0, false);						/* GPIO3[0] output low */
-
-//	Chip_ENET_RMIIEnable(LPC_ETHERNET);
-#else
-	Chip_ENET_MIIEnable(LPC_ETHERNET);
-#endif
 }
 
-//void Board_I2C_Init(I2C_ID_T id)
-//{
-//	if (id == I2C1) {
-//		/* Configure pin function for I2C1*/
-//		Chip_SCU_PinMuxSet(0x2, 3, (SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC1));		/* P2.3 : I2C1_SDA */
-//		Chip_SCU_PinMuxSet(0x2, 4, (SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC1));		/* P2.4 : I2C1_SCL */
-//	}
-//	else {
-//		Chip_SCU_I2C0PinConfig(I2C0_STANDARD_FAST_MODE);
-//	}
-//}
+void Board_I2C_Init(I2C_ID_T id)
+{
+	if (id == I2C1) {
+		/* Configure pin function for I2C1*/
+		Chip_SCU_PinMuxSet(0x2, 3, (SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC1));		/* P2.3 : I2C1_SDA */
+		Chip_SCU_PinMuxSet(0x2, 4, (SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC1));		/* P2.4 : I2C1_SCL */
+	}
+	else {
+		Chip_SCU_I2C0PinConfig(I2C0_STANDARD_FAST_MODE);
+	}
+}
 
 void Board_SDMMC_Init(void)
 {
-	Chip_SCU_PinMuxSet(0x1, 9, (SCU_PINIO_FAST | SCU_MODE_FUNC7));	/* P1.9 connected to SDIO_D0 */
-	Chip_SCU_PinMuxSet(0x1, 10, (SCU_PINIO_FAST | SCU_MODE_FUNC7));	/* P1.10 connected to SDIO_D1 */
-	Chip_SCU_PinMuxSet(0x1, 11, (SCU_PINIO_FAST | SCU_MODE_FUNC7));	/* P1.11 connected to SDIO_D2 */
-	Chip_SCU_PinMuxSet(0x1, 12, (SCU_PINIO_FAST | SCU_MODE_FUNC7));	/* P1.12 connected to SDIO_D3 */
 
-	Chip_SCU_ClockPinMuxSet(2, (SCU_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_FUNC4));	/* CLK2 connected to SDIO_CLK */
-	Chip_SCU_PinMuxSet(0x1, 6, (SCU_PINIO_FAST | SCU_MODE_FUNC7));	/* P1.6 connected to SDIO_CMD */
 }
 
-//void Board_SSP_Init(LPC_SSP_T *pSSP)
-//{
-//	if (pSSP == LPC_SSP1) {
-//		/* Set up clock and power for SSP1 module */
-//		/* Configure SSP1 pins */
-//		Chip_SCU_PinMuxSet(0xf, 4, (SCU_MODE_PULLUP | SCU_MODE_FUNC0)); /* CLK0 */
-//		Chip_SCU_PinMuxSet(0x1, 3, (SCU_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC5)); /* MISO1 */
-//		Chip_SCU_PinMuxSet(0x1, 4, (SCU_MODE_PULLUP | SCU_MODE_FUNC5)); /* MOSI1 */
-//
-//		Chip_SCU_PinMuxSet(0x6, 1, (SCU_MODE_PULLUP | SCU_MODE_FUNC0)); /* CS1 configured as GPIO */
-//		Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 3, 0);
-//	}
-//	else {
-//		return;
-//	}
-//}
+void Board_SSP_Init(LPC_SSP_T *pSSP)
+{
+
+}
 
 /**
  * @}
