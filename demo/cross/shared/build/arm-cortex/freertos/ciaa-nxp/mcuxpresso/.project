@@ -107,11 +107,6 @@
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/bsp_shared.c</locationURI>
 		</link>
 		<link>
-			<name>src/bsp/cr_startup_lpc43xx.c</name>
-			<type>1</type>
-			<locationURI>PARENT-9-PROJECT_LOC/Downloads/LPCOpen%203.02/freertos_blinky/src/cr_startup_lpc43xx.c</locationURI>
-		</link>
-		<link>
 			<name>src/bsp/sysinit.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/sysinit.c</locationURI>
@@ -242,6 +237,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>src/Third-party/FreeRTOS/inc/FreeRTOS.h</name>
+			<type>1</type>
+			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/include/FreeRTOS.h</locationURI>
+		</link>
+		<link>
 			<name>src/Third-party/FreeRTOS/portable/port.c</name>
 			<type>1</type>
 			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/portable/GCC/ARM_CM4F/port.c</locationURI>
@@ -249,7 +249,7 @@
 		<link>
 			<name>src/Third-party/FreeRTOS/portable/portable.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/third-party/freertos/freertos_kernel/include/portable.h</location>
+			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/include/portable.h</locationURI>
 		</link>
 		<link>
 			<name>src/Third-party/FreeRTOS/portable/portmacro.h</name>
@@ -269,7 +269,7 @@
 		<link>
 			<name>src/Third-party/FreeRTOS/src/heap_3.c</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/third-party/freertos/freertos_kernel/portable/MemMang/heap_3.c</location>
+			<locationURI>PARENT-8-PROJECT_LOC/third-party/freertos/freertos_kernel/portable/MemMang/heap_3.c</locationURI>
 		</link>
 		<link>
 			<name>src/Third-party/FreeRTOS/src/list.c</name>
@@ -299,12 +299,12 @@
 		<link>
 			<name>src/bsp/LPCOpen/inc/board.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/board.h</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/board.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/inc/board_api.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/board_api.h</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/board_api.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/inc/chip.h</name>
@@ -314,17 +314,17 @@
 		<link>
 			<name>src/bsp/LPCOpen/inc/clock_18xx_43xx.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/clock_18xx_43xx.h</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/clock_18xx_43xx.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/inc/fpu_init.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/fpu_init.h</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/fpu_init.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/inc/gpio_18xx_43xx.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.h</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/inc/retarget.h</name>
@@ -334,12 +334,12 @@
 		<link>
 			<name>src/bsp/LPCOpen/inc/uart_18xx_43xx.h</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/uart_18xx_43xx.h</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/uart_18xx_43xx.h</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/src/chip_18xx_43xx.c</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/chip_18xx_43xx.c</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/chip_18xx_43xx.c</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/src/clock_18xx_43xx.c</name>
@@ -347,24 +347,29 @@
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/clock_18xx_43xx.c</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/LPCOpen/src/cr_startup_lpc43xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/cr_startup_lpc43xx.c</locationURI>
+		</link>
+		<link>
 			<name>src/bsp/LPCOpen/src/fpu_init.c</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/fpu_init.c</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/fpu_init.c</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/src/gpio_18xx_43xx.c</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.c</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/gpio_18xx_43xx.c</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/src/sysinit_18xx_43xx.c</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/sysinit_18xx_43xx.c</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/sysinit_18xx_43xx.c</locationURI>
 		</link>
 		<link>
 			<name>src/bsp/LPCOpen/src/uart_18xx_43xx.c</name>
 			<type>1</type>
-			<location>/home/cmancon/RKH/demo/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/uart_18xx_43xx.c</location>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen/uart_18xx_43xx.c</locationURI>
 		</link>
 		<link>
 			<name>src/rkh/fwk/inc/rkh.h</name>
@@ -621,10 +626,6 @@
 		<variable>
 			<name>copy_PARENT</name>
 			<value>$%7BPARENT-11-PROJECT_LOC%7D</value>
-		</variable>
-		<variable>
-			<name>copy_PARENT1</name>
-			<value>$%7Bcopy_PARENT%7D/home/cmancon/GICSAFe-Firmware/rrtester/third-party</value>
 		</variable>
 	</variableList>
 </projectDescription>
