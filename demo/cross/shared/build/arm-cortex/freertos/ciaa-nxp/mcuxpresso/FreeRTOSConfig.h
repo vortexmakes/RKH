@@ -74,6 +74,9 @@ extern int DbgConsole_Printf( const char *fmt_s, ... );
 #define configOVERRIDE_DEFAULT_TICK_CONFIGURATION    1
 #define configRECORD_STACK_HIGH_ADDRESS              1
 
+#define configUSE_TRACE_FACILITY 					 1
+#define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 	 1
+
 // Add old API compatibility
 #define configENABLE_BACKWARD_COMPATIBILITY          1
 
