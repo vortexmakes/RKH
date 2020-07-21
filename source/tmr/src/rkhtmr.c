@@ -145,25 +145,32 @@ rkh_tmr_tick(void)
 
     for (tprev = CPTIM(0), t = thead; t != CPTIM(0); t = t->tnext)
     {
-        if (!--t->ntick)
+        if (t->used == 0)
         {
-            RKH_TR_TMR_TOUT(t, t->evt->e, t->sma);
-            if (t->period == 0)
-            {
-                rem_from_list(t, tprev);
-            }
-            else
-            {
-                t->ntick = t->period;
-                tprev = t;
-            }
-            RKH_HOOK_TIMEOUT(t);
-            RKH_EXEC_THOOK();
-            RKH_TICK_POST(t, sender);
+            rem_from_list(t, tprev);
         }
         else
         {
-            tprev = t;
+            if (!--t->ntick)
+            {
+                RKH_TR_TMR_TOUT(t, t->evt->e, t->sma);
+                if (t->period == 0)
+                {
+                    rem_from_list(t, tprev);
+                }
+                else
+                {
+                    t->ntick = t->period;
+                    tprev = t;
+                }
+                RKH_HOOK_TIMEOUT(t);
+                RKH_EXEC_THOOK();
+                RKH_TICK_POST(t, sender);
+            }
+            else
+            {
+                tprev = t;
+            }
         }
     }
     RKH_EXIT_CRITICAL_();

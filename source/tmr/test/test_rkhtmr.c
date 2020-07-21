@@ -517,6 +517,73 @@ test_CallTickWithoutStartedTimers(void)
     rkh_tmr_tick(0);
 }
 
+void
+test_ReinitializeTheFirstTimerInTheList(void)
+{
+    RKH_TNT_T nTicks;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    rkh_hook_timetick_Ignore();
+    nTicks = 4;
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, nTicks, 0);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, nTicks, 0);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr1.ntick);
+
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    TEST_ASSERT_EQUAL(0, tmr1.used);
+    TEST_ASSERT_EQUAL(0, tmr1.ntick);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr1.ntick);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr1.ntick);
+    TEST_ASSERT_EQUAL(nTicks - 3, tmr0.ntick);
+}
+
+void
+test_ReinitializeTheSecondTimerInTheList(void)
+{
+    RKH_TNT_T nTicks;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    rkh_hook_timetick_Ignore();
+    nTicks = 4;
+
+    rkh_tmr_init();
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, nTicks, 0);
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, nTicks, 0);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr1.ntick);
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    TEST_ASSERT_EQUAL(0, tmr0.used);
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr1.ntick);
+    TEST_ASSERT_NULL(tmr1.tnext);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+    TEST_ASSERT_EQUAL(nTicks - 3, tmr1.ntick);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 
