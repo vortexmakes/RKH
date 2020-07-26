@@ -57,10 +57,9 @@ extern int DbgConsole_Printf( const char *fmt_s, ... );
 #define configCPU_CLOCK_HZ                           ( SystemCoreClock )
 #define configTICK_RATE_HZ                           ( ( TickType_t ) 1000 ) /* 1000 ticks per second => 1ms tick rate */
 #define configMAX_PRIORITIES                         ( 8 )
-#define configMINIMAL_STACK_SIZE                     ( 256 / sizeof(int) ) /* Should be specified in words, not bytes */
+#define configMINIMAL_STACK_SIZE                     ( 256 / sizeof(void *) ) /* Should be specified in words, not bytes */
 #define configTOTAL_HEAP_SIZE                        ( ( size_t ) ( 8 * 1024 ) )    /* 8 Kbytes. */
 #define configMAX_TASK_NAME_LEN                      ( 16 )
-#define configUSE_TRACE_FACILITY                     1
 #define configUSE_16_BIT_TICKS                       0
 #define configIDLE_SHOULD_YIELD                      1
 #define configUSE_MUTEXES                            1
@@ -76,6 +75,13 @@ extern int DbgConsole_Printf( const char *fmt_s, ... );
 
 #define configUSE_TRACE_FACILITY 					 1
 #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 	 1
+
+/* You must change the file for the heap management
+ * implementation to actually change the scheme.
+ * The following define is used to inform to the
+ * debugger and other tools the scheme being used.
+ * */
+#define configFRTOS_MEMORY_SCHEME					 3
 
 // Add old API compatibility
 #define configENABLE_BACKWARD_COMPATIBILITY          1
