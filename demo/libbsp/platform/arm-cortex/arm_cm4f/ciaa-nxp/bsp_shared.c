@@ -30,13 +30,13 @@
 #include "shared.h"
 #include "board.h"
 #include "board_ext.h"
+#include "switch.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* (1) Function macro defines */
 
 #ifdef DEBUG_SEMIHOSTING
 #define PRINTF(...)	printf( __VA_ARGS__ )
-/* (2) Enumerations                                                          */
 #define PUTCHAR(ch)				putchar(ch)
 #endif
 
@@ -116,9 +116,15 @@ static COMBINATION_IDX clients_leds[] = {
 
 /* ---------------------------- Local variables ---------------------------- */
 /* (1) Static external definitions used only in this file.                   */
+
+#if defined( RKH_USE_TRC_SENDER )
+static rui8_t l_isr_kbd;
+#endif
+
 #if RKH_CFG_TRC_EN == RKH_ENABLED
 static RKH_TS_T tstamp;
 #endif
+
 static rui32_t l_rnd;				/* random seed */
 
 static rui8_t ep0sto[ SIZEOF_EP0STO ], ep1sto[ SIZEOF_EP1STO ];
@@ -193,6 +199,7 @@ bsp_init(int argc, char *argv[])
 	SystemCoreClockUpdate();
 
 	Board_Init();
+	switch_init();
 
 	bsp_srand( 1234U );
 	print_banner();
@@ -352,7 +359,10 @@ rkh_trc_close( void )
 void
 bsp_timeTick(void)
 {
+#if RKH_CFG_TRC_EN == RKH_ENABLED
     ++tstamp;
+#endif
+    switch_tick();
 }
 
 RKH_TS_T
@@ -417,11 +427,20 @@ bsp_uart_deinit( void )
 }
 
 void
+bsp_publish( const RKH_EVT_T *e )
+{
+	rInt cn;
+
+	RKH_SMA_POST_FIFO( server, e, &l_isr_kbd );			/* to server */
+
+	for( cn = 0; cn < NUM_CLIENTS; ++cn )				/* to clients */
+		RKH_SMA_POST_FIFO( CLI(cn), e, &l_isr_kbd );
+}
+
+void
 rkh_hook_timetick( void )
 {
-#if RKH_CFG_TRC_EN == RKH_ENABLED
     bsp_timeTick();
-#endif
 }
 
 void

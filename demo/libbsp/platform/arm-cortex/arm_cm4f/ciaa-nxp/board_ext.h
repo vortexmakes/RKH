@@ -56,10 +56,32 @@ typedef struct {
 		LED2,
 		LED3
 	} LEDS;
+
+	enum
+	{
+		SW1_SWITCH,
+		SW2_SWITCH,
+		SW3_SWITCH,
+		SW4_SWITCH,
+		SW5_SWITCH,
+		SW6_SWITCH,
+		SW7_SWITCH,
+		SW8_SWITCH,
+		SWITCHS_NUM
+	};
+
 	static const io_port_t gpioBtnBits[] = {{2, 0},{2, 1},{2, 2},{2, 3},
 											{3,11},{3,12},{3,13},{3,13}};
-//	static const uint8_t gpioBtnIDs[] = {DIN0_LOW, DIN1_LOW, DIN2_LOW, DIN3_LOW,
-//										 DIN4_LOW, DIN5_LOW, DIN6_LOW, DIN7_LOW};
+
+#define	NO_BUTTON_PRESSED	0b0
+#define	DIN0_LOW			0b1
+#define	DIN1_LOW			0b10
+#define	DIN2_LOW			0b100
+#define	DIN3_LOW			0b1000
+#define	DIN4_LOW			0b10000
+#define	DIN5_LOW			0b100000
+#define	DIN6_LOW			0b1000000
+#define	DIN7_LOW			0b10000000
 
 #else
 	static const io_port_t gpioLEDBits[] = {{5,0},{5,1},{5,2},{0,14},{1,11},{1,12}};
@@ -72,8 +94,24 @@ typedef struct {
 			LED2,
 			LED3
 		} LEDS;
+
+		enum
+		{
+			SW1_SWITCH,
+			SW2_SWITCH,
+			SW3_SWITCH,
+			SW4_SWITCH,
+			SWITCHS_NUM
+		};
+
 	static const io_port_t gpioBtnBits[] = {{0,4},{0,8},{0,9},{1,9}};
-	static const uint8_t gpioBtnIDs[] = {TEC1_PRESSED, TEC2_PRESSED, TEC3_PRESSED, TEC4_PRESSED};
+
+#define	NO_BUTTON_PRESSED	0b0
+#define	TEC1_PRESSED		0b0001
+#define	TEC2_PRESSED		0b0010
+#define	TEC3_PRESSED		0b0100
+#define	TEC4_PRESSED		0b1000
+
 #endif
 
 /* -------------------------- External variables --------------------------- */

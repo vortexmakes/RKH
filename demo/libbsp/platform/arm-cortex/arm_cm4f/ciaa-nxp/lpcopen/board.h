@@ -76,9 +76,6 @@ extern "C" {
 /* Board name */
 #define BOARD_NXP_LPCXPRESSO_4337
 
-
-#define NO_BUTTON_PRESSED   0x00
-
 /**
  * @brief	Sets up board specific I2C interface
  * @param	id	: I2C Peripheral ID (I2C0, I2C1)

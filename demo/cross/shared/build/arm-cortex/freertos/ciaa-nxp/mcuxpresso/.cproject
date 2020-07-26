@@ -49,6 +49,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../third-party/freertos/freertos_kernel/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../third-party/freertos/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/switch&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../source/fwk/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../source/mempool/inc&quot;"/>
@@ -267,6 +269,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../third-party/freertos/freertos_kernel/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../third-party/freertos/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/switch&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/lpcopen&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../source/fwk/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../../../../source/mempool/inc&quot;"/>

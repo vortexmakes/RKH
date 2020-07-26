@@ -113,6 +113,11 @@
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/bsp_shared.c</locationURI>
 		</link>
 		<link>
+			<name>src/bsp/switch</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>src/bsp/sysinit.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/sysinit.c</locationURI>
@@ -171,6 +176,16 @@
 			<name>src/bsp/LPCOpen/src</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/switch/switch.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/switch/switch.c</locationURI>
+		</link>
+		<link>
+			<name>src/bsp/switch/switch.h</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/libbsp/platform/arm-cortex/arm_cm4f/ciaa-nxp/switch/switch.h</locationURI>
 		</link>
 		<link>
 			<name>src/rkh/fwk/inc</name>
