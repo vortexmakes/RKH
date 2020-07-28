@@ -111,7 +111,7 @@ void Board_UARTPutSTR(const char *str)
 static void Board_LED_Init()
 {
 
-#ifdef CIAA_NXP
+#if BOARD==ciaa_nxp
 	/* LEDs CIAA-NXP (DOUTs 4-7) */
 	Chip_SCU_PinMux(4,8,MD_PUP|MD_EZI,FUNC4);  /* GPIO5[12], DOUT4 */
 	Chip_SCU_PinMux(4,9,MD_PUP|MD_EZI,FUNC4);  /* GPIO5[13], DOUT5 */
@@ -123,7 +123,7 @@ static void Board_LED_Init()
 
 	Chip_GPIO_ClearValue(LPC_GPIO_PORT, 5,(1<<12)|(1<<13)|(1<<14));
 	Chip_GPIO_ClearValue(LPC_GPIO_PORT, 1,(1<<8));
-#else
+#elif BOARD==edu_ciaa_nxp
    /* LEDs EDU-CIAA-NXP */
    Chip_SCU_PinMux(2,0,MD_PUP|MD_EZI,FUNC4);  /* GPIO5[0], LED0R */
    Chip_SCU_PinMux(2,1,MD_PUP|MD_EZI,FUNC4);  /* GPIO5[1], LED0G */
@@ -139,6 +139,8 @@ static void Board_LED_Init()
    Chip_GPIO_ClearValue(LPC_GPIO_PORT, 5,(1<<0)|(1<<1)|(1<<2));
    Chip_GPIO_ClearValue(LPC_GPIO_PORT, 0,(1<<14));
    Chip_GPIO_ClearValue(LPC_GPIO_PORT, 1,(1<<11)|(1<<12));
+#else
+#error BOARD compile variable must be defined
 #endif
 }
 

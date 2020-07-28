@@ -162,12 +162,12 @@ print_banner( void )
 	PRINTF(	"preemptive or cooperative environment. \n" );
 	PRINTF(	"Additionally, the SHD could be used to verify a new RKH port. \n" );
 	PRINTF(	"\n\n\n" );
-#ifdef CIAA_NXP
+#if BOARD==ciaa_nxp
 	PRINTF( "1.- Each Client have its own LED/DOUT, Client 1-4:\n" );
 	PRINTF( "	   	DOUT4, DOUT5, DOUT6, DOUT7\n" );
 	PRINTF( "2.- Activate DIN0 to PAUSE.\n" );
 	PRINTF( "3.- Paused state is shown with all LEDs/DOUTs activated.\n" );
-#else
+#elif BOARD==edu_ciaa_nxp
 	PRINTF( "1.- Each Client have its own LED, Client 1-4:\n" );
 	PRINTF( "	   	LEDB, LED1, LED2, LED3\n" );
 	PRINTF( "2.- Press TEC1 to PAUSE.\n" );
