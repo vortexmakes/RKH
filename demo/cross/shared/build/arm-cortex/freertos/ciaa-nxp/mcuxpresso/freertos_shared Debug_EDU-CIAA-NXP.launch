@@ -7,15 +7,15 @@
 <booleanAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.doGdbServerAllocateTelnetConsole" value="false"/>
 <booleanAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.doSecondReset" value="true"/>
 <booleanAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.doStartGdbServer" value="true"/>
-<booleanAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.enableSemihosting" value="false"/>
+<booleanAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.enableSemihosting" value="true"/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.firstResetType" value="init"/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbClientOtherCommands" value="set mem inaccessible-by-default off"/>
-<stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbClientOtherOptions" value="Debug/freertos_shared.axf"/>
+<stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbClientOtherOptions" value="Debug_EDU-CIAA-NXP/freertos_shared.axf"/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerConnectionAddress" value=""/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerExecutable" value="${openocd_path}/${openocd_executable}"/>
 <intAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerGdbPortNumber" value="3333"/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerLog" value=""/>
-<stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerOther" value="-f ../ciaa-nxp.cfg"/>
+<stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerOther" value="-f ../ciaa-nxp.cfg -c &quot;$_TARGETNAME configure -rtos FreeRTOS&quot;"/>
 <intAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.gdbServerTelnetPortNumber" value="4444"/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.otherInitCommands" value=""/>
 <stringAttribute key="ilg.gnuarmeclipse.debug.gdbjtag.openocd.otherRunCommands" value=""/>
@@ -31,7 +31,7 @@
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setPcRegister" value="false"/>
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setResume" value="false"/>
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setStopAt" value="true"/>
-<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.stopAt" value="main"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.stopAt" value="vTaskStartScheduler"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.symbolsFileName" value=""/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.symbolsOffset" value=""/>
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useFileForImage" value="false"/>
@@ -41,13 +41,13 @@
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useRemoteTarget" value="true"/>
 <stringAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_NAME" value="arm-none-eabi-gdb"/>
 <booleanAttribute key="org.eclipse.cdt.dsf.gdb.NON_STOP" value="false"/>
-<booleanAttribute key="org.eclipse.cdt.dsf.gdb.UPDATE_THREADLIST_ON_SUSPEND" value="true"/>
+<booleanAttribute key="org.eclipse.cdt.dsf.gdb.UPDATE_THREADLIST_ON_SUSPEND" value="false"/>
 <intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="1"/>
 <stringAttribute key="org.eclipse.cdt.launch.COREFILE_PATH" value=""/>
-<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug/freertos_shared.axf"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug_EDU-CIAA-NXP/freertos_shared.axf"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="freertos_shared"/>
 <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
-<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.debug.1324172874"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.debug.1324172874.2082812930.1155101958"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/freertos_shared"/>
 </listAttribute>
