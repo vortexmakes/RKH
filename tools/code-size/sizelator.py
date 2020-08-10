@@ -16,7 +16,6 @@ class FileObj:
     dataSize = 0
     bssSize = 0
     name = ''
-    path = ''
 
     def __init__(self, name):
         self.name = name
@@ -39,7 +38,7 @@ def createFilesDic(dic, module):
     path = '../../source/' + module + '/src' 
     l = os.listdir(path)
     for f in l:
-        fileList.append(FileObj(f.rstrip('.c')))
+        fileList.append(FileObj(os.path.splitext(f)[0]))
     for f in fileList:
         dic[f.name] = f
 
@@ -47,22 +46,12 @@ if __name__ == "__main__":
     try:
         args = parser.parse_args(sys.argv[1:])
 
-        fwkDic = {}
-        trcDic = {}
-        tmrDic = {}
-        smaDic = {}
-        smDic = {}
-        mempoolDic = {}
-        queueDic = {}
+        modules = {'fwk': {}, 'trc': {}, 'tmr': {}, 'sma': {}, 
+                   'sm': {}, 'mempool': {}, 'queue': {}}
 
-        createFilesDic(fwkDic, 'fwk')
-        createFilesDic(trcDic, 'trc')
-        createFilesDic(tmrDic, 'tmr')
-        createFilesDic(smaDic, 'sma')
-        createFilesDic(smDic, 'sm')
-        createFilesDic(mempoolDic, 'mempool')
-        createFilesDic(queueDic, 'queue')
-        
+        for key in modules.keys():
+            createFilesDic(modules[key], key)
+            
 #       print('--------- Find .txt objects ---------')
 #       firstMatchText = False
 #       for line in args.mapFile:
@@ -89,35 +78,14 @@ if __name__ == "__main__":
             if match:
                 print(match.group('size', 2, 'module'))
                 fileName = match.group('module')
-                if fileName in fwkDic:
-                    fwkDic[fileName].addBss(match.group('size'))
-                elif fileName in trcDic:
-                    trcDic[fileName].addBss(match.group('size'))
-                elif fileName in tmrDic:
-                    tmrDic[fileName].addBss(match.group('size'))
-                elif fileName in smaDic:
-                    smaDic[fileName].addBss(match.group('size'))
-                elif fileName in smDic:
-                    smDic[fileName].addBss(match.group('size'))
-                elif fileName in mempoolDic:
-                    mempoolDic[fileName].addBss(match.group('size'))
-                elif fileName in queueDic:
-                    queueDic[fileName].addBss(match.group('size'))
+                for module in modules.values():
+                    if fileName in module:
+                        module[fileName].addBss(match.group('size'))
+                        break
 
-        for fil in fwkDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
-        for fil in trcDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
-        for fil in tmrDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
-        for fil in smaDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
-        for fil in smDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
-        for fil in mempoolDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
-        for fil in queueDic.values():
-            print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
+        for key in modules.keys():
+            for fil in modules[key].values():
+                print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
 
 #       print('--------- Find .data objects ---------')
 #       args.mapFile.seek(0, 0)
