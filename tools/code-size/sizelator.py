@@ -35,9 +35,13 @@ parser.add_argument('mapFile', metavar='map-file',
                     type=argparse.FileType('rt'), 
                     help='Map file')
 
+parser.add_argument('-p','--path', default='../../source/',
+                    help='Path to source files',
+                    dest='pathToSource')
+
 def createFilesDic(dic, module):
     fileList = []
-    path = '../../source/' + module + '/src' 
+    path = args.pathToSource + module + '/src' 
     l = os.listdir(path)
     for f in l:
         fileList.append(FileObj(os.path.splitext(f)[0]))
