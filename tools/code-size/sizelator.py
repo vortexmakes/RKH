@@ -101,9 +101,10 @@ if __name__ == "__main__":
         # Make a dataset:
         height = list()
         bars = list()
-        for fil in modules['fwk'].values():
-            height.append(fil.bssSize)
-            bars.append(fil.name)
+        for key in modules.keys():
+            for fil in modules[key].values():
+                height.append(fil.bssSize)
+                bars.append(fil.name)
 
         y_pos = np.arange(len(bars))
 
@@ -111,7 +112,7 @@ if __name__ == "__main__":
         plt.bar(y_pos, height)
 
         # Add title and axis names
-        plt.title('Size of .bss for fwk module')
+        plt.title('Size of .bss')
         plt.ylabel('Bytes', fontweight='bold', color=(0.2, 0.4, 0.6, 0.6), fontsize='10')
 
         # Create names on the x-axis
@@ -119,7 +120,7 @@ if __name__ == "__main__":
 
         # Text on the top of each barplot
         for i in range(len(bars)):
-            plt.text(x = y_pos[i] - 0.125, y = height[i] + 0.3, s = height[i], size = 8)
+            plt.text(x = y_pos[i] - 0.5, y = height[i] + 0.3, s = height[i], size = 8)
 
         # Custom the subplot layout
         plt.subplots_adjust(bottom=0.3, top=0.95)
