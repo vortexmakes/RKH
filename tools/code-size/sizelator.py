@@ -76,7 +76,7 @@ if __name__ == "__main__":
         print('--------- Find .bss objects ---------')
         args.mapFile.seek(0, 0)
         for line in args.mapFile:
-            match = re.search(r"\.bss\s+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+[rkh|RKH]/source/\S+/src/(?P<module>\S+).o)", line)
+            match = re.search(r"\.bss[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
             if match:
                 print(match.group('size', 2, 'module'))
                 fileName = match.group('module')
