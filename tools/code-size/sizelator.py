@@ -9,6 +9,8 @@ import argparse
 import os
 import shutil
 import re
+import numpy as np
+import matplotlib.pyplot as plt
 
 class FileObj:
     textSize = 0
@@ -95,5 +97,37 @@ if __name__ == "__main__":
 #               print(match.group(1) + ' ' + match.group(2))
 
         args.mapFile.close()
+
+        # Make a dataset:
+        height = list()
+        bars = list()
+        for fil in modules['fwk'].values():
+            height.append(fil.bssSize)
+            bars.append(fil.name)
+
+        y_pos = np.arange(len(bars))
+
+        # Create bars
+        plt.bar(y_pos, height)
+
+        # Add title and axis names
+        plt.title('Size of .bss for fwk module')
+        plt.ylabel('Bytes', fontweight='bold', color=(0.2, 0.4, 0.6, 0.6), fontsize='10')
+
+        # Create names on the x-axis
+        plt.xticks(y_pos, bars, rotation = 90)
+
+        # Text on the top of each barplot
+        for i in range(len(bars)):
+            plt.text(x = y_pos[i] - 0.125, y = height[i] + 0.3, s = height[i], size = 8)
+
+        # Custom the subplot layout
+        plt.subplots_adjust(bottom=0.3, top=0.95)
+
+#       # Save plot as png
+#       plt.savefig('foo.png', bbox_inches = 'tight')
+
+#       # Show graphic
+        plt.show()
     except IOError as msg:
         parser.error(str(msg))
