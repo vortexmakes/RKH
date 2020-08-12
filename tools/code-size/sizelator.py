@@ -11,6 +11,7 @@ import shutil
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+from prettytable import PrettyTable
 
 class FileObj:
     textSize = 0
@@ -24,6 +25,26 @@ class FileObj:
 
     def addBss(self, value):
         self.bssSize += int(value, 0)
+
+    def addText(self, value):
+        self.textSize += int(value, 0)
+
+    def addData(self, value):
+        self.dataSize += int(value, 0)
+
+    def addRoData(self, value):
+        self.rodataSize += int(value, 0)
+
+    def add(self, section, value):
+        switcher = {
+        'bss': self.addBss,
+        'text': self.addText,
+        'data': self.addData,
+        'rodata': self.addRoData
+        }
+        func = switcher.get(section)
+        func(value)
+        
 
 parser = argparse.ArgumentParser(
             add_help=True,
@@ -77,7 +98,7 @@ if __name__ == "__main__":
 #           if match:
 #               print(match.group(1) + ' ' + match.group(2))
 
-        print('--------- Find .bss objects ---------')
+        print('--------- Parsing objects ---------')
         args.mapFile.seek(0, 0)
         reMatch = False
         temp = ''
@@ -88,23 +109,35 @@ if __name__ == "__main__":
                 reMatch = False
 
             match = re.search(r"\.bss[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
+            match = re.search(r"\.(?P<section>(bss|text|data|rodata){1})[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
 
             if match:
-                print(match.group('size', 2, 'module'))
+                #print(match.group('section','size', 'module'))
+                #print(match.group('size', 2, 'module'))
                 fileName = match.group('module')
                 for module in modules.values():
                     if fileName in module:
-                        module[fileName].addBss(match.group('size'))
+                        module[fileName].add(match.group('section'),match.group('size'))
                         break
             else:
-                if re.search(r"\.bss[\S+|\s+]+\n", line):
+                if re.search(r"\.(bss|text|data|rodata){1}[\S+|\s+]+\n", line):
                     # We have a multiline .bss record
                     temp = line[:-1] #We store the starting line without \n
                     reMatch = True
 
+        x = PrettyTable()
+        x.field_names = ["Module", ".bss", ".text", ".data", ".rodata"]
+        x.align["Module"] = "l"
+        x.align[".bss"] = "r"
+        x.align[".text"] = "r"
+        x.align[".data"] = "r"
+        x.align[".rodata"] = "r"
         for key in modules.keys():
             for fil in modules[key].values():
-                print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
+                x.add_row([fil.name, fil.bssSize, fil.textSize, fil.dataSize, fil.rodataSize])
+                #print('Size of bss section for {0:s}: {1:d} (0x{1:x})'.format(fil.name, fil.bssSize))
+        x.sortby = "Module"
+        print(x)
 
 #       print('--------- Find .data objects ---------')
 #       args.mapFile.seek(0, 0)
@@ -116,28 +149,39 @@ if __name__ == "__main__":
         args.mapFile.close()
 
         # Make a dataset:
-        height = list()
+        heightBss = list()
+        heightText = list()
+        heightData = list()
+        heightRodata = list()
         bars = list()
         for key in modules.keys():
             for fil in modules[key].values():
-                height.append(fil.bssSize)
+                heightBss.append(fil.bssSize)
+                heightText.append(fil.textSize)
+                heightData.append(fil.dataSize)
+                heightRodata.append(fil.rodataSize)
                 bars.append(fil.name)
 
         y_pos = np.arange(len(bars))
 
         # Create bars
-        plt.bar(y_pos, height)
+        bss = plt.bar(y_pos, heightBss)
+        text = plt.bar(y_pos, heightText)
+        data = plt.bar(y_pos, heightData)
+        rodata = plt.bar(y_pos, heightRodata)
+
+        plt.legend((bss[0], text[0], data[0], rodata[0]), ('.bss', '.text', '.data', 'rodata'))
 
         # Add title and axis names
-        plt.title('Size of .bss')
+        plt.title('Size of all sections')
         plt.ylabel('Bytes', fontweight='bold', color=(0.2, 0.4, 0.6, 0.6), fontsize='10')
 
         # Create names on the x-axis
         plt.xticks(y_pos, bars, rotation = 90)
 
         # Text on the top of each barplot
-        for i in range(len(bars)):
-            plt.text(x = y_pos[i] - 0.5, y = height[i] + 0.3, s = height[i], size = 8)
+        #for i in range(len(bars)):
+        #    plt.text(x = y_pos[i] - 0.5, y = height[i] + 0.3, s = height[i], size = 8)
 
         # Custom the subplot layout
         plt.subplots_adjust(bottom=0.3, top=0.95)
