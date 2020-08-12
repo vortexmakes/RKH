@@ -79,8 +79,16 @@ if __name__ == "__main__":
 
         print('--------- Find .bss objects ---------')
         args.mapFile.seek(0, 0)
+        reMatch = False
+        temp = ''
         for line in args.mapFile:
+            if reMatch :
+                # See further down
+                line = temp + line # If we had a multiline .bss, concatenate and reuse common regex
+                reMatch = False
+
             match = re.search(r"\.bss[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
+
             if match:
                 print(match.group('size', 2, 'module'))
                 fileName = match.group('module')
@@ -88,6 +96,11 @@ if __name__ == "__main__":
                     if fileName in module:
                         module[fileName].addBss(match.group('size'))
                         break
+            else:
+                if re.search(r"\.bss[\S+|\s+]+\n", line):
+                    # We have a multiline .bss record
+                    temp = line[:-1] #We store the starting line without \n
+                    reMatch = True
 
         for key in modules.keys():
             for fil in modules[key].values():
