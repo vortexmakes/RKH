@@ -257,7 +257,7 @@ if __name__ == "__main__":
                 title={
                     'text': "Memory usage per module",
                     #'y':0.9,
-                    #'x':0.5,
+                    'x':0.5,
                     'xanchor': 'center',
                     'yanchor': 'top'
                     },
