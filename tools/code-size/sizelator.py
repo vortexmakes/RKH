@@ -60,6 +60,10 @@ parser.add_argument('-p','--path', default='../../source/',
                     help='Path to source files',
                     dest='pathToSource')
 
+parser.add_argument('-g','--graph', default='none',
+                    help='Plot library to use: matplot | plotly | none',
+                    dest='plotType')
+
 def createFilesDic(dic, module):
     fileList = []
     path = args.pathToSource + module + '/src' 
@@ -174,48 +178,49 @@ if __name__ == "__main__":
 
         args.mapFile.close()
 
-        # Make a dataset:
-        heightBss = list()
-        heightText = list()
-        heightData = list()
-        heightRodata = list()
-        bars = list()
-        for key in modules.keys():
-            for fil in modules[key].values():
-                heightBss.append(fil.bssSize)
-                heightText.append(fil.textSize)
-                heightData.append(fil.dataSize)
-                heightRodata.append(fil.rodataSize)
-                bars.append(fil.name)
+        if args.plotType == 'matplot':
+            # Make a dataset:
+            heightBss = list()
+            heightText = list()
+            heightData = list()
+            heightRodata = list()
+            bars = list()
+            for key in modules.keys():
+                for fil in modules[key].values():
+                    heightBss.append(fil.bssSize)
+                    heightText.append(fil.textSize)
+                    heightData.append(fil.dataSize)
+                    heightRodata.append(fil.rodataSize)
+                    bars.append(fil.name)
 
-        y_pos = np.arange(len(bars))
+            y_pos = np.arange(len(bars))
 
-        # Create bars
-        bss = plt.bar(y_pos, heightBss)
-        text = plt.bar(y_pos, heightText)
-        data = plt.bar(y_pos, heightData)
-        rodata = plt.bar(y_pos, heightRodata)
+            # Create bars
+            bss = plt.bar(y_pos, heightBss)
+            text = plt.bar(y_pos, heightText)
+            data = plt.bar(y_pos, heightData)
+            rodata = plt.bar(y_pos, heightRodata)
 
-        plt.legend((bss[0], text[0], data[0], rodata[0]), ('.bss', '.text', '.data', 'rodata'))
+            plt.legend((bss[0], text[0], data[0], rodata[0]), ('.bss', '.text', '.data', 'rodata'))
 
-        # Add title and axis names
-        plt.title('Size of all sections')
-        plt.ylabel('Bytes', fontweight='bold', color=(0.2, 0.4, 0.6, 0.6), fontsize='10')
+            # Add title and axis names
+            plt.title('Size of all sections')
+            plt.ylabel('Bytes', fontweight='bold', color=(0.2, 0.4, 0.6, 0.6), fontsize='10')
 
-        # Create names on the x-axis
-        plt.xticks(y_pos, bars, rotation = 90)
+            # Create names on the x-axis
+            plt.xticks(y_pos, bars, rotation = 90)
 
-        # Text on the top of each barplot
-        #for i in range(len(bars)):
-        #    plt.text(x = y_pos[i] - 0.5, y = height[i] + 0.3, s = height[i], size = 8)
+            # Text on the top of each barplot
+            #for i in range(len(bars)):
+            #    plt.text(x = y_pos[i] - 0.5, y = height[i] + 0.3, s = height[i], size = 8)
 
-        # Custom the subplot layout
-        plt.subplots_adjust(bottom=0.3, top=0.95)
+            # Custom the subplot layout
+            plt.subplots_adjust(bottom=0.3, top=0.95)
 
-#       # Save plot as png
-#       plt.savefig('foo.png', bbox_inches = 'tight')
+    #       # Save plot as png
+    #       plt.savefig('foo.png', bbox_inches = 'tight')
 
-#       # Show graphic
-        plt.show()
+    #       # Show graphic
+            plt.show()
     except IOError as msg:
         parser.error(str(msg))
