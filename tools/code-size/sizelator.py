@@ -69,6 +69,12 @@ def createFilesDic(dic, module):
     for f in fileList:
         dic[f.name] = f
 
+def addToModule(modules, fileName, section, size):
+    for module in modules.values():
+        if fileName in module:
+            module[fileName].add(section, size)
+            break
+
 if __name__ == "__main__":
     try:
         args = parser.parse_args(sys.argv[1:])
@@ -101,29 +107,49 @@ if __name__ == "__main__":
         print('--------- Parsing objects ---------')
         args.mapFile.seek(0, 0)
         reMatch = False
+        checkFill = False
         temp = ''
+        fastForwarding = True
         for line in args.mapFile:
-            if reMatch :
-                # See further down
-                line = temp + line # If we had a multiline .bss, concatenate and reuse common regex
-                reMatch = False
-
-            match = re.search(r"\.bss[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
-            match = re.search(r"\.(?P<section>(bss|text|data|rodata){1})[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
-
-            if match:
-                #print(match.group('section','size', 'module'))
-                #print(match.group('size', 2, 'module'))
-                fileName = match.group('module')
-                for module in modules.values():
-                    if fileName in module:
-                        module[fileName].add(match.group('section'),match.group('size'))
-                        break
+            if fastForwarding:
+                # Speedup 'til sections of interest
+                match = re.search(r"^\.(bss|text|data|rodata){1}\s+0x\w+\s+0x\w+", line)
+                if match:
+                    fastForwarding = False
             else:
-                if re.search(r"\.(bss|text|data|rodata){1}[\S+|\s+]+\n", line):
-                    # We have a multiline .bss record
-                    temp = line[:-1] #We store the starting line without \n
-                    reMatch = True
+                if re.search(r"\.((debug_(info|abbrev|aranges|ranges|macro|line|str){1})|comment|stack)\s+0x\w+\s+0x\w+", line):
+                    # Skip other info between sections
+                    line=''
+                    continue
+                if reMatch :
+                    # See further down
+                    line = temp + line # If we had a multiline .bss, concatenate and reuse common regex
+                    reMatch = False
+                if checkFill:
+                    # See further down
+                    fillMatch = re.search(r"\*fill\*\s+0x\w+\s+(?P<size>0x[\dabcdef]+)\s(\w+)?\n", line)
+                    if fillMatch:
+                        addToModule(modules, match.group('module'), match.group('section'),fillMatch.group('size'))
+                        checkFill = False
+                    else:
+                        # We've reached a new object and no fill in between
+                        # Probably the next symbol fills the gap
+                        if not re.search(r"\.(bss|text|data|rodata){1}", line):
+                            continue
+
+                match = re.search(r"\.(?P<section>(bss|text|data|rodata){1})[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
+
+                if match:
+                    addToModule(modules, match.group('module'), match.group('section'), match.group('size'))
+                    # Lets check if the symbol needs filling
+                    if ( ((int(match.group('size'), base=16)) % 4 ) != 0):
+                        checkFill = True
+
+                else:
+                    if re.search(r"^\s\.(bss|text|data|rodata){1}[\S+|\s+]+\n", line):
+                        # We have a multiline .bss record
+                        temp = line[:-1] #We store the starting line without \n
+                        reMatch = True
 
         x = PrettyTable()
         x.field_names = ["Module", ".bss", ".text", ".data", ".rodata"]
