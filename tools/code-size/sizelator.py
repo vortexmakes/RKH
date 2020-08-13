@@ -11,6 +11,7 @@ import shutil
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from prettytable import PrettyTable
 
 class FileObj:
@@ -222,5 +223,48 @@ if __name__ == "__main__":
 
     #       # Show graphic
             plt.show()
+        
+        if args.plotType == 'plotly':
+            xAxis = []
+            heightBss = list()
+            heightText = list()
+            heightData = list()
+            heightRodata = list()
+            for key in modules.keys():
+                for fil in modules[key].values():
+                    heightBss.append(fil.bssSize)
+                    heightText.append(fil.textSize)
+                    heightData.append(fil.dataSize)
+                    heightRodata.append(fil.rodataSize)
+                    xAxis.append(fil.name)
+
+            xAxis = sorted(xAxis)
+
+            fig = go.Figure(data=[
+                go.Bar(name='.bss', x=xAxis, y=heightBss),
+                go.Bar(name='.text', x=xAxis, y=heightText),
+                go.Bar(name='.data', x=xAxis, y=heightData),
+                go.Bar(name='.rodata', x=xAxis, y=heightRodata)
+            ])
+            
+            # Change the bar mode and set labels
+            fig.update_layout(
+                barmode='stack',
+                yaxis_title="Bytes (B)",
+                xaxis_title="Module",
+                legend_title="Memory Sections",
+                hovermode='x',
+                title={
+                    'text': "Memory usage per module",
+                    #'y':0.9,
+                    #'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'
+                    },
+                title_font_size=24
+            )
+                
+            fig.show()
+
     except IOError as msg:
         parser.error(str(msg))
