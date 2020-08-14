@@ -1757,11 +1757,15 @@ extern "C" {
          *  \endcode
          */
         #define RKH_TR_FWK_EPOOL(poolId_, poolName_) \
-            RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_EPOOL) \
-                RKH_TRC_UI8(poolId_); \
-                RKH_TRC_STR(poolName_); \
-            RKH_TRC_END_WOFIL() \
-            RKH_TRC_FLUSH();
+            do \
+            { \
+                RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_EPOOL) \
+                    RKH_TRC_UI8(poolId_); \
+                    RKH_TRC_STR(poolName_); \
+                RKH_TRC_END_WOFIL() \
+                RKH_TRC_FLUSH(); \
+            } \
+            while (0)
 
         /* --- Symbol entry table for queue objects -------------------- */
 
