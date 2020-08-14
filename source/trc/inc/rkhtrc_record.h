@@ -1377,9 +1377,13 @@ extern "C" {
          *  \endcode
          */
         #define RKH_TR_FWK_EXE_FUN(function_) \
-            RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_EXE_FUN) \
-                RKH_TRC_FUN(function_); \
-            RKH_TRC_END_WOFIL()
+            do \
+            { \
+                RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_EXE_FUN) \
+                    RKH_TRC_FUN(function_); \
+                RKH_TRC_END_WOFIL() \
+            } \
+            while (0)
 
         /**
          *  \brief
@@ -1409,11 +1413,15 @@ extern "C" {
          *  \endcode
          */
         #define RKH_TR_FWK_SYNC_EVT(function_, senderObj_, receiverObj_) \
-            RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_SYNC_EVT) \
-                RKH_TRC_FUN(function_); \
-                RKH_TRC_SNDR(senderObj_); \
-                RKH_TRC_SNDR(receiverObj_); \
-            RKH_TRC_END_WOFIL()
+            do \
+            { \
+                RKH_TRC_BEGIN_WOFIL(RKH_TE_FWK_SYNC_EVT) \
+                    RKH_TRC_FUN(function_); \
+                    RKH_TRC_SNDR(senderObj_); \
+                    RKH_TRC_SNDR(receiverObj_); \
+                RKH_TRC_END_WOFIL() \
+            } \
+            while (0)
 
         /* --- Symbol entry table for user user-defined trace events --- */
 
