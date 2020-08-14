@@ -25,16 +25,16 @@ class FileObj:
         self.name = name
 
     def addBss(self, value):
-        self.bssSize += int(value, 0)
+        self.bssSize += value
 
     def addText(self, value):
-        self.textSize += int(value, 0)
+        self.textSize += value
 
     def addData(self, value):
-        self.dataSize += int(value, 0)
+        self.dataSize += value
 
     def addRoData(self, value):
-        self.rodataSize += int(value, 0)
+        self.rodataSize += value
 
     def add(self, section, value):
         switcher = {
@@ -46,6 +46,21 @@ class FileObj:
         func = switcher.get(section)
         func(value)
         
+class Symbol:
+    module = ''
+    size = 0
+    section = ''
+
+    def __init__(self):
+        self.module = ''
+        self.size = 0
+        self.section = ''
+    
+    def purge(self):
+        self.module = ''
+        self.size = 0
+        self.section = ''
+
 
 parser = argparse.ArgumentParser(
             add_help=True,
@@ -80,6 +95,73 @@ def addToModule(modules, fileName, section, size):
             module[fileName].add(section, size)
             break
 
+def addSymbol():
+    addToModule(modules, currentSymbol.module, currentSymbol.section, currentSymbol.size)
+    currentSymbol.purge()
+
+def caseWaitSection(state):
+    match = re.search(r'^\.bss\s', line)
+    if match:
+        state = 'InBss'
+    return state
+
+def caseInBss(state):
+    if re.search(r"^\n", line):
+        state = 'WaitSection'
+    else:
+        match = re.search(r"\s\.(?P<section>bss|text|rodata|data)[.\w+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+\/src\/(?P<module>\S+).o)", line)
+        if match:
+            currentSymbol.module = match.group('module')
+            currentSymbol.size = (int(match.group('size'), base=16))
+            currentSymbol.section = match.group('section')
+            state = 'WaitFill'
+        else:
+            match = re.search(r"\s\.(?P<section>bss|text|rodata|data)[.\w+|\s+]+\n", line)
+            if match:
+                currentSymbol.section = match.group('section')
+                state = 'WaitSize'
+            else:
+                state = 'InBss'
+    return state
+            
+def caseWaitFill(state):
+    match = re.search(r"\s\*fill\*\s+0x\w+\s+(?P<fill>0x[\dabcdef]+)", line)
+    if match:
+        currentSymbol.size += (int(match.group('fill'), base=16))
+        state = 'InBss'
+        # Add symbol
+        addSymbol()
+    else:
+        match = re.search(r"\s\.(?P<section>bss|text|rodata|data)[.\w+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+\/src\/(?P<module>\S+).o)", line)
+        if match:
+            # No fill, add previous symbol
+            addSymbol()
+            # Store current symbol data
+            currentSymbol.module = match.group('module')
+            currentSymbol.size = (int(match.group('size'), base=16))
+            currentSymbol.section = match.group('section')
+            state = 'WaitFill'
+        else:
+            match = re.search(r"\s\.(?P<section>bss|text|rodata|data)[.\w+|\s+]+\n", line)
+            if match:
+                # No fill, add previous symbol
+                addSymbol()
+                state = 'WaitSize'
+                currentSymbol.section = match.group('section')
+            else:
+                state = 'InBss'
+    return state
+            
+def caseWaitSize(state):
+    match = re.search(r"^\s+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
+    if match:
+        currentSymbol.module = match.group('module')
+        currentSymbol.size = (int(match.group('size'), base=16))
+        state = 'WaitFill'
+    else:
+        state = 'InBss'
+    return state
+
 if __name__ == "__main__":
     try:
         args = parser.parse_args(sys.argv[1:])
@@ -89,72 +171,22 @@ if __name__ == "__main__":
 
         for key in modules.keys():
             createFilesDic(modules[key], key)
-            
-#       print('--------- Find .txt objects ---------')
-#       firstMatchText = False
-#       for line in args.mapFile:
-#           if firstMatchText == False:
-#               if re.search(r"\s\.text\.\S+", line):
-#                   firstMatchText = True
-#           else:
-#               firstMatchText = False
-#               match = re.search(r"\s+0x[\dabcdef]+\s+(0x[\dabcdef]+)\s(\S+[rkh|RKH]/source/\S+/src/\S+.o)", line)
-#               if match:
-#                   print(match.group(1) + ' ' + match.group(2))
-
-#       print('--------- Find .rodata objects ---------')
-#       args.mapFile.seek(0, 0)
-#       for line in args.mapFile:
-#           match = re.search(r"\.rodata\s+0x[\dabdcef]+\s+(0x[\dabcdef]+)\s(\S+[rkh|RKH]/source/\S+/src/\S+.o)", line)
-#           if match:
-#               print(match.group(1) + ' ' + match.group(2))
 
         print('--------- Parsing objects ---------')
-        args.mapFile.seek(0, 0)
-        reMatch = False
-        checkFill = False
-        temp = ''
-        fastForwarding = True
+
+        state = 'WaitSection'
+        switch = {}
+        switch['WaitSection'] = caseWaitSection
+        switch['InBss'] = caseInBss
+        switch['WaitFill'] = caseWaitFill
+        switch['WaitSize'] = caseWaitSize
+
+        currentSymbol = Symbol()
+
         for line in args.mapFile:
-            if fastForwarding:
-                # Speedup 'til sections of interest
-                match = re.search(r"^\.(bss|text|data|rodata){1}\s+0x\w+\s+0x\w+", line)
-                if match:
-                    fastForwarding = False
-            else:
-                if re.search(r"\.((debug_(info|abbrev|aranges|ranges|macro|line|str){1})|comment|stack)\s+0x\w+\s+0x\w+", line):
-                    # Skip other info between sections
-                    line=''
-                    continue
-                if reMatch :
-                    # See further down
-                    line = temp + line # If we had a multiline .bss, concatenate and reuse common regex
-                    reMatch = False
-                if checkFill:
-                    # See further down
-                    fillMatch = re.search(r"\*fill\*\s+0x\w+\s+(?P<size>0x[\dabcdef]+)\s(\w+)?\n", line)
-                    if fillMatch:
-                        addToModule(modules, match.group('module'), match.group('section'),fillMatch.group('size'))
-                        checkFill = False
-                    else:
-                        # We've reached a new object and no fill in between
-                        # Probably the next symbol fills the gap
-                        if not re.search(r"\.(bss|text|data|rodata){1}", line):
-                            continue
+            case = switch.get(state)
+            state = case(state)
 
-                match = re.search(r"\.(?P<section>(bss|text|data|rodata){1})[\S+|\s+]+0x[\dabdcef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
-
-                if match:
-                    addToModule(modules, match.group('module'), match.group('section'), match.group('size'))
-                    # Lets check if the symbol needs filling
-                    if ( ((int(match.group('size'), base=16)) % 4 ) != 0):
-                        checkFill = True
-
-                else:
-                    if re.search(r"^\s\.(bss|text|data|rodata){1}[\S+|\s+]+\n", line):
-                        # We have a multiline .bss record
-                        temp = line[:-1] #We store the starting line without \n
-                        reMatch = True
 
         x = PrettyTable()
         x.field_names = ["Module", ".bss", ".text", ".data", ".rodata"]
