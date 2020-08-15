@@ -55,6 +55,7 @@
 #include "rkhassert.h"
 #include "rkhfwk_dynevt.h"
 #include "rkhmempool.h"
+#include "rkhtrc_record.h"
 
 RKH_MODULE_NAME(rkhfwk_evtpool)
 
@@ -92,11 +93,18 @@ rkh_evtPool_getPool(void *stoStart, rui16_t stoSize, RKH_ES_T evtSize)
 {
     rInt i;
     RKHEvtPool *ep;
+#if RKH_MEMPOOL_EN == RKH_ENABLED
+    char name[] = "memPool?";
+#endif
 
     for (i = 0, ep = evtPools; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i, ++ep)
     {
         if (((RKH_MEMPOOL_T *)ep)->nblocks == 0)
         {
+#if RKH_MEMPOOL_EN == RKH_ENABLED
+            name[7] = (i + '0');
+            RKH_TR_FWK_OBJ_NAME(ep, name);
+#endif
             rkh_memPool_init((RKH_MEMPOOL_T *)ep, stoStart, stoSize, 
                         (RKH_MPBS_T)evtSize);
             return ep;

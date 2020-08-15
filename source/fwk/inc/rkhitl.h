@@ -1692,6 +1692,14 @@ extern "C" {
     #define R_TRC_AO_NAME_EN    RKH_DISABLED
 #endif
 
+#if (RKH_CFG_TRC_EN == RKH_ENABLED  && \
+     (RKH_CFG_TRC_ALL_EN == RKH_ENABLED || \
+      RKH_CFG_TRC_MP_EN == RKH_ENABLED))
+    #define RKH_MEMPOOL_EN  RKH_ENABLED
+#else
+    #define RKH_MEMPOOL_EN  RKH_DISABLED
+#endif
+
 #define MKTRN(evt_, guard_, effect_, target_) \
     { \
         evt_, (RKH_GUARD_T)guard_, \

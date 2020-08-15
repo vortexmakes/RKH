@@ -55,6 +55,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include <string.h>
 #include "unity.h"
 #include "rkhfwk_evtpool.h"
 #include "Mock_rkhtrc_record.h"
@@ -122,9 +123,13 @@ test_AfterInitAllEvtPoolAvailable(void)
 {
     RKHEvtPool *ep;
     int i;
+    char name[10];
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
     {
+        sprintf(name, "memPool%1d", i);
+        rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+        rkh_trc_obj_IgnoreArg_obj();
         rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
         rkh_memPool_init_IgnoreArg_mp();
 
@@ -138,7 +143,11 @@ void
 test_GetOneEvtPool(void)
 {
     RKHEvtPool *ep;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
 
@@ -151,9 +160,13 @@ test_GetMultipleEvtPool(void)
 {
     rInt i;
     RKHEvtPool *ep[RKH_CFG_FWK_MAX_EVT_POOL];
+    char name[10];
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
     {
+        sprintf(name, "memPool%1d", i);
+        rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+        rkh_trc_obj_IgnoreArg_obj();
         rkh_memPool_init_Expect(0, stoStart + (stoSize * i), 
                            stoSize, (RKH_MPBS_T)evtSize * (2 * (i + 1)));
         rkh_memPool_init_IgnoreArg_mp();
@@ -171,9 +184,13 @@ test_Fails_ExceedsMaxAvailableEvtPool(void)
 {
     rInt i;
     RKHEvtPool *ep;
+    char name[10];
 
     for (i = 0; i < RKH_CFG_FWK_MAX_EVT_POOL; ++i)
     {
+        sprintf(name, "memPool%1d", i);
+        rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+        rkh_trc_obj_IgnoreArg_obj();
         rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
         rkh_memPool_init_IgnoreArg_mp();
         ep = rkh_evtPool_getPool(stoStart, stoSize, evtSize);
@@ -187,7 +204,11 @@ void
 test_GetBlockSize(void)
 {
     RKHEvtPool *ep;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
 
@@ -210,7 +231,11 @@ test_GetBlock(void)
 {
     RKHEvtPool *ep;
     RKH_EVT_T *evt;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
     rkh_memPool_get_ExpectAndReturn(0, (void *)0xdead);
@@ -237,7 +262,11 @@ test_PutBlock(void)
 {
     RKHEvtPool *ep;
     RKH_EVT_T *evt = (RKH_EVT_T *)0xdead;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
     rkh_memPool_put_Expect(0, evt);
@@ -263,7 +292,11 @@ void
 test_GetNumUsed(void)
 {
     RKHEvtPool *ep;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
 
@@ -285,7 +318,11 @@ void
 test_GetNumMin(void)
 {
     RKHEvtPool *ep;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
 
@@ -307,7 +344,11 @@ void
 test_GetNumBlock(void)
 {
     RKHEvtPool *ep;
+    char name[10];
 
+    strcpy(name, "memPool0");
+    rkh_trc_obj_Expect(RKH_TE_FWK_OBJ, 0, name);
+    rkh_trc_obj_IgnoreArg_obj();
     rkh_memPool_init_Expect(0, stoStart, stoSize, (RKH_MPBS_T)evtSize);
     rkh_memPool_init_IgnoreArg_mp();
 
