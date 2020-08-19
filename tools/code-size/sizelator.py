@@ -100,12 +100,12 @@ def addSymbol():
     currentSymbol.purge()
 
 def caseWaitSection(state):
-    match = re.search(r'^\.bss\s', line)
+    match = re.search(r'^\.(bss|text|rodata|data)\s', line)
     if match:
-        state = 'InBss'
+        state = 'InSection'
     return state
 
-def caseInBss(state):
+def caseInSection(state):
     if re.search(r"^\n", line):
         state = 'WaitSection'
     else:
@@ -118,17 +118,21 @@ def caseInBss(state):
         else:
             match = re.search(r"\s\.(?P<section>bss|text|rodata|data)[.\w+|\s+]+\n", line)
             if match:
+                addSymbol()
                 currentSymbol.section = match.group('section')
                 state = 'WaitSize'
             else:
-                state = 'InBss'
+                if re.search(r"^\s\*\(COMMON\)", line):
+                    state = 'InSubSection'
+                else:
+                    state = 'InSection'
     return state
             
 def caseWaitFill(state):
     match = re.search(r"\s\*fill\*\s+0x\w+\s+(?P<fill>0x[\dabcdef]+)", line)
     if match:
         currentSymbol.size += (int(match.group('fill'), base=16))
-        state = 'InBss'
+        state = 'InSection'
         # Add symbol
         addSymbol()
     else:
@@ -149,7 +153,11 @@ def caseWaitFill(state):
                 state = 'WaitSize'
                 currentSymbol.section = match.group('section')
             else:
-                state = 'InBss'
+                if re.search(r"^\s+0x[\dabdcef]+\s+\w+\n", line):
+                    # 3 line symbol?
+                    pass
+                else:
+                    state = 'InSection'
     return state
             
 def caseWaitSize(state):
@@ -159,7 +167,22 @@ def caseWaitSize(state):
         currentSymbol.size = (int(match.group('size'), base=16))
         state = 'WaitFill'
     else:
-        state = 'InBss'
+        state = 'InSection'
+    return state
+
+def caseInSubSection(state):
+    match = re.search(r"^\sCOMMON\s+0x[\dabcdef]+\s+(?P<size>0x[\dabcdef]+)\s(\S+/src/(?P<module>\S+).o)", line)
+    if match:
+        currentSymbol.section = 'bss' # Hardcoded as this is a forced subsection
+        currentSymbol.module = match.group('module')
+        currentSymbol.size = (int(match.group('size'), base=16))
+        # TODO: Consider FILL
+        addSymbol()
+    else:
+        if re.search(r"^\n", line):
+            state = 'WaitSection'
+        else:
+            state = 'InSubSection'
     return state
 
 if __name__ == "__main__":
@@ -177,9 +200,10 @@ if __name__ == "__main__":
         state = 'WaitSection'
         switch = {}
         switch['WaitSection'] = caseWaitSection
-        switch['InBss'] = caseInBss
+        switch['InSection'] = caseInSection
         switch['WaitFill'] = caseWaitFill
         switch['WaitSize'] = caseWaitSize
+        switch['InSubSection'] = caseInSubSection
 
         currentSymbol = Symbol()
 
@@ -297,6 +321,5 @@ if __name__ == "__main__":
             )
                 
             fig.show()
-
     except IOError as msg:
         parser.error(str(msg))
