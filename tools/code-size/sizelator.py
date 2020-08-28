@@ -12,7 +12,9 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from prettytable import PrettyTable
+import pandas as pd
 
 class FileObj:
     textSize = 0
@@ -281,27 +283,65 @@ if __name__ == "__main__":
             plt.show()
         
         if args.plotType == 'plotly':
-            xAxis = []
-            heightBss = list()
-            heightText = list()
-            heightData = list()
-            heightRodata = list()
+            df = pd.DataFrame({'Module':[],'.bss':[],'.text':[],'.data':[],'.rodata':[]}) #A dataframe is easier to sort than a dictionary
+
             for key in modules.keys():
                 for fil in modules[key].values():
-                    heightBss.append(fil.bssSize)
-                    heightText.append(fil.textSize)
-                    heightData.append(fil.dataSize)
-                    heightRodata.append(fil.rodataSize)
-                    xAxis.append(fil.name)
+                    df = df.append({
+                        'Module':fil.name,
+                        '.bss':fil.bssSize,
+                        '.text':fil.textSize,
+                        '.data':fil.dataSize,
+                        '.rodata':fil.rodataSize},
+                         ignore_index=True)
 
-            xAxis = sorted(xAxis)
+            df = df.astype({'Module':str,'.bss':int,'.text':int,'.data':int,'.rodata':int})
 
-            fig = go.Figure(data=[
-                go.Bar(name='.bss', x=xAxis, y=heightBss),
-                go.Bar(name='.text', x=xAxis, y=heightText),
-                go.Bar(name='.data', x=xAxis, y=heightData),
-                go.Bar(name='.rodata', x=xAxis, y=heightRodata)
-            ])
+            df.sort_values(by='Module',     #column name or index values according to which the dataframe is to be sorted
+                     axis=0,                #for column sorting
+                     ascending=True,
+                     inplace = True
+            )
+
+            fig = make_subplots(
+                rows=1, cols=2,
+                specs=[[{"type": "table"}, {"type": "bar"}]]
+                )
+
+            fig.add_trace(
+                go.Table(
+                    header=dict(
+                        values=list(df.columns) #['Module', '.bss', '.text', '.data', '.rodata']
+                    ),
+                    cells=dict(
+                        values=[
+                            df.Module,
+                            df['.bss'],
+                            df['.text'],
+                            df['.data'],
+                            df['.rodata']
+                        ],
+                        #line_color='darkslategray',
+                        #fill=dict(color=['lightgray']),#, 'white']),
+                        align=['left', 'center']
+                        #,font_size=12
+                        )
+                    ),
+                row=1, col=1
+            )
+
+            fig.add_trace (
+                go.Bar(name='.bss', x=df.Module, y=df['.bss']), row=1, col=2
+            )
+            fig.add_trace (
+                go.Bar(name='.text', x=df.Module, y=df['.text']), row=1, col=2
+            )
+            fig.add_trace (
+                go.Bar(name='.data', x=df.Module, y=df['.data']), row=1, col=2
+            )
+            fig.add_trace (
+                go.Bar(name='.rodata', x=df.Module, y=df['.rodata']), row=1, col=2
+            )
             
             # Change the bar mode and set labels
             fig.update_layout(
@@ -319,7 +359,9 @@ if __name__ == "__main__":
                     },
                 title_font_size=24
             )
-                
+            
+            fig.write_html("plotlyPlot.html")
+
             fig.show()
     except IOError as msg:
         parser.error(str(msg))
