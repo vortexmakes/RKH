@@ -11,6 +11,8 @@ branches: # safelist
 os:
     - linux
 
+rvm: "2.4"
+
 install:
     - sudo gem install ceedling
     - sudo apt-get install lcov
