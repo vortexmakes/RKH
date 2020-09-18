@@ -356,15 +356,6 @@ rkh_trc_close( void )
 	SERIAL_TRACE_CLOSE();
 }
 
-void
-bsp_timeTick(void)
-{
-#if RKH_CFG_TRC_EN == RKH_ENABLED
-    ++tstamp;
-#endif
-    switch_tick();
-}
-
 RKH_TS_T
 rkh_trc_getts(void)
 {
@@ -397,6 +388,15 @@ rkh_trc_flush( void )
 }
 
 #endif
+
+void
+bsp_timeTick(void)
+{
+#if RKH_CFG_TRC_EN == RKH_ENABLED
+    ++tstamp;
+#endif
+    switch_tick();
+}
 
 
 void
