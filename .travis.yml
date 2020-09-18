@@ -11,7 +11,8 @@ branches: # safelist
 os:
     - linux
 
-rvm: "2.4"
+before_install:
+- rvm install 2.4.0
 
 install:
     - sudo gem install ceedling
