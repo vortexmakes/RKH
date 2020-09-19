@@ -14,8 +14,8 @@ os:
 install:
     - gem install bundler
     - gem install ceedling
-    - apt-get install lcov
-    - apt-get install cppcheck
+    - sudo apt-get install lcov
+    - sudo apt-get install cppcheck
 
 script:
     - cd tools/ceedling && sudo ./test-all.sh
