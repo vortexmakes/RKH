@@ -11,11 +11,9 @@ branches: # safelist
 os:
     - linux
 
-before_install:
-- rvm install 2.4.0
-
 install:
-    - sudo gem install ceedling
+    - gem install bundler
+    - gem install ceedling
     - sudo apt-get install lcov
     - sudo apt-get install cppcheck
 
