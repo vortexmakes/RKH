@@ -4,9 +4,10 @@ import sys
 import argparse
 import os
 import re
-from ftplib import FTP
+from ftplib import FTP, error_perm
 
-RKH_DOC_PATH = 'htdocs/rkh'
+RKH_DOC_SEARH_DIR = 'search'
+
 parser = argparse.ArgumentParser(add_help=True,
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description="Updates RKH's docs using a ftp client")
@@ -22,28 +23,43 @@ parser.add_argument('dest', action="store",
 parser.add_argument('doc', action="store", 
                     help='doc directory to be uploaded')
 
+def findFiles(dirName):
+    fileList = []
+    foundFiles = []
+    ftp.dir(fileList.append)
+    for f in fileList[2:]:
+        split = f.split()
+        attribute = split[0]
+        name = split[-1]
+        if attribute.startswith('-'):
+            foundFiles.append(name)
+    print('Found {0:d} files in \'{1:s}\''.format(len(foundFiles), dirName))
+    return foundFiles
+
+def deleteFiles(dirName):
+    files = []
+    files = findFiles(dirName)
+    for f in files:
+        ftp.delete(f)
+    print('Deleted {0:d} files in \'{1:s}\''.format(len(files), dirName))
+
+def deleteDir(dirName):
+    curDir = ftp.pwd()
+    ftp.cwd(dirName)
+    deleteFiles(dirName)
+    ftp.cwd(curDir)
+    ftp.rmd(dirName)
+    print('Deleted {0:s} directory'.format(dirName))
+
 if __name__ == "__main__":
     try:
         args = parser.parse_args(sys.argv[1:])
         if os.path.isdir(args.doc):
             ftp = FTP(host=args.server, user=args.user, passwd=args.passwd)
-            ftp.cwd(RKH_DOC_PATH)
-            lst = []
-            files = []
-            dirs = []
-            ftp.dir(lst.append)
-            for f in lst[2:]:
-                match = re.search(r'^(?P<type>[d-])\S+\s+\d+\s\S+\s+\S+\s+\d+\s\S+\s+\d+\s+\d+\s(?P<name>\S+)', f)
-                if match.group('type') == '-':
-                    files.append(match.group('name'))
-                elif match.group('type') == 'd':
-                    dirs.append(match.group('name'))
-                else:
-                    print('Unknonw file entry')
-            print('Found {0:d} files in \'{1:s}\''.format(len(files), RKH_DOC_PATH))
-            print('Found {0:d} directories in \'{1:s}\''.format(len(dirs), RKH_DOC_PATH))
-                    
-            # Delete 'htdocs/rkh' content
+            directory = args.dest
+            ftp.cwd(directory)
+            deleteFiles(directory)
+            deleteDir('toto')   # delete RKH_DOC_SEARH_DIR directory
             # Upload doc to 'htdocs/rkh'
             ftp.quit()
         else:
@@ -51,3 +67,5 @@ if __name__ == "__main__":
     
     except IOError as msg:
         parser.error(str(msg))
+    except error_perm as reason:
+        print('ERROR: ftp {}'.format(reason))
