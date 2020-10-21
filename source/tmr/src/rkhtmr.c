@@ -135,14 +135,7 @@ rkh_tmr_tick(void)
     RKH_SR_ALLOC();
 
     RKH_HOOK_TIMETICK();    /* call user definable hook */
-
     RKH_ENTER_CRITICAL_();
-    if (thead == CPTIM(0))  /* is empty list? */
-    {
-        RKH_EXIT_CRITICAL_();
-        return;
-    }
-
     for (tprev = CPTIM(0), t = thead; t != CPTIM(0); t = t->tnext)
     {
         if (t->used == 0)
@@ -187,6 +180,10 @@ rkh_tmr_init_(RKH_TMR_T * t, const RKH_EVT_T * e, RKH_THK_T thk)
     RKH_REQUIRE(t != CPTIM(0) && e != CCE(0));
 
     RKH_ENTER_CRITICAL_();
+    if (t->used == 1)       /* A timer could be in the list, if so this */
+    {                       /* function tries to remove it in order to */
+        searchAndRemove(t); /* properly start it then */
+    }
     t->ntick = 0;
     t->used = 0;
     t->evt = CE(e);
