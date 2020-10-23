@@ -134,6 +134,24 @@ void rkh_trc_put(rui8_t b);
 
 /**
  *  \brief
+ *
+ *  Copies the last \a nElem bytes of the stream to \a destBlock.  
+ *	Frequently, this function is used by the called trace analyzer.
+ *
+ *  \param[in] destBlock    pointer to the destination array where the 
+ *                          required stream content is copied.     
+ *  \param[in] nElem        maximum number of bytes to be copied from the 
+ *                          stream.
+ *
+ *  \returns
+ *  Number of bytes copies to \a destBlock. If this number differs from the 
+ *  \a nElem parameter, i.e. it is less than \a nElem, the end-of-stream was 
+ *  reached. If the trace stream is empty, this function returns zero.
+ *
+ *  \note
+ *  The data is stored in a single ring buffer, called trace stream. In this
+ *	manner the recorder always holds the most recent history.
+ *  rkh_trc_getWholeBlock() is NOT protected with a critical section.
  */
 TRCQTY_T rkh_trc_getWholeBlock(rui8_t *destBlock, TRCQTY_T nElem);
 
