@@ -132,6 +132,11 @@ rui8_t *rkh_trc_get_block(TRCQTY_T *nget);
  */
 void rkh_trc_put(rui8_t b);
 
+/**
+ *  \brief
+ */
+TRCQTY_T rkh_trc_getWholeBlock(rui8_t *destBlock, TRCQTY_T nElem);
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

@@ -55,6 +55,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include <string.h>
 #include "unity.h"
 #include "rkhtrc_stream.h"
 #include "Mock_rkhsm.h"
@@ -71,6 +72,7 @@ static RKH_SMA_T sender;
 static RKH_EVT_T event;
 static RKH_ST_T state = {{RKH_BASIC, "state"}};
 static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
+static rui8_t block[RKH_CFG_TRC_SIZEOF_STREAM];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -238,6 +240,90 @@ test_GetContinuousBlock(void)
 
     for (i = 0; i < nData; i++, output++)
         TEST_ASSERT_EQUAL((rui8_t)i, *output);
+}
+
+void
+test_GetManyFromEmptyUsingWholeBlock(void)
+{
+    TRCQTY_T nGetElem;
+
+    rkh_trc_get();
+    nGetElem = rkh_trc_getWholeBlock(block, 4);
+    TEST_ASSERT_EQUAL(0, nGetElem);
+}
+
+void
+test_GetManyElemsLessThanStoredUsingWholeBlock(void)
+{
+    TRCQTY_T nGetElem;
+
+    memset(block, 0xaa, 8);
+    rkh_trc_put(1);
+    rkh_trc_put(2);
+    rkh_trc_put(3);
+
+    nGetElem = rkh_trc_getWholeBlock(block, 3);
+    TEST_ASSERT_EQUAL(3, nGetElem);
+    TEST_ASSERT_EQUAL(RKH_FLG, block[0]);
+    TEST_ASSERT_EQUAL(1, block[1]);
+    TEST_ASSERT_EQUAL(2, block[2]);
+    TEST_ASSERT_EQUAL(0xaa, block[3]);
+}
+
+void
+test_GetManyElemsEqualThanStoredWholeBlock(void)
+{
+    TRCQTY_T nGetElem;
+
+    memset(block, 0xaa, 8);
+    rkh_trc_put(1);
+    rkh_trc_put(2);
+    rkh_trc_put(3);
+
+    nGetElem = rkh_trc_getWholeBlock(block, 4);
+    TEST_ASSERT_EQUAL(4, nGetElem);
+    TEST_ASSERT_EQUAL(RKH_FLG, block[0]);
+    TEST_ASSERT_EQUAL(1, block[1]);
+    TEST_ASSERT_EQUAL(2, block[2]);
+    TEST_ASSERT_EQUAL(3, block[3]);
+    TEST_ASSERT_EQUAL(0xaa, block[4]);
+}
+
+void
+test_GetManyElemsMoreThanStoredUsingWholeBlock(void)
+{
+    TRCQTY_T nGetElem;
+
+    memset(block, 0xaa, 8);
+    rkh_trc_put(1);
+    rkh_trc_put(2);
+    rkh_trc_put(3);
+
+    nGetElem = rkh_trc_getWholeBlock(block, 5);
+    TEST_ASSERT_EQUAL(4, nGetElem);
+    TEST_ASSERT_EQUAL(RKH_FLG, block[0]);
+    TEST_ASSERT_EQUAL(1, block[1]);
+    TEST_ASSERT_EQUAL(2, block[2]);
+    TEST_ASSERT_EQUAL(3, block[3]);
+    TEST_ASSERT_EQUAL(0xaa, block[4]);
+}
+
+void
+test_GetManyElemsEqualThanStoredWrapAroundUsingWholeBlock(void)
+{
+    TEST_IGNORE();
+}
+
+void
+test_GetManyElemsLessThanStoredWrapAroundUsingWholeBlock(void)
+{
+    TEST_IGNORE();
+}
+
+void
+test_GetManyElemsMoreThanStoredWrapAroundUsingWholeBlock(void)
+{
+    TEST_IGNORE();
 }
 
 /** @} doxygen end group definition */
