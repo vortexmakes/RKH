@@ -72,7 +72,7 @@ static RKH_SMA_T sender;
 static RKH_EVT_T event;
 static RKH_ST_T state = {{RKH_BASIC, "state"}};
 static RKH_ST_T pseudoState = {{RKH_CHOICE, "pseudoState"}};
-static rui8_t block[RKH_CFG_TRC_SIZEOF_STREAM];
+static rui8_t block[RKH_CFG_TRC_SIZEOF_STREAM + 2];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -311,19 +311,74 @@ test_GetManyElemsMoreThanStoredUsingWholeBlock(void)
 void
 test_GetManyElemsEqualThanStoredWrapAroundUsingWholeBlock(void)
 {
-    TEST_IGNORE();
+    TRCQTY_T nGetElem;
+    rui8_t i;
+
+    memset(block, 0xaa, 8);
+    rkh_trc_get();
+    for (i = 0; i < ((2 * RKH_CFG_TRC_SIZEOF_STREAM) - 2); ++i)
+    {
+        rkh_trc_put(i);
+    }
+
+    nGetElem = rkh_trc_getWholeBlock(&block[1], 4);
+
+    TEST_ASSERT_EQUAL(4, nGetElem);
+    TEST_ASSERT_EQUAL(0xaa, block[0]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM - 2, block[1]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM - 1, block[2]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM, block[3]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM + 1, block[4]);
+    TEST_ASSERT_EQUAL(0xaa, block[5]);
 }
 
 void
 test_GetManyElemsLessThanStoredWrapAroundUsingWholeBlock(void)
 {
-    TEST_IGNORE();
+    TRCQTY_T nGetElem;
+    rui8_t i;
+
+    memset(block, 0xaa, 8);
+    rkh_trc_get();
+    for (i = 0; i < ((2 * RKH_CFG_TRC_SIZEOF_STREAM) - 2); ++i)
+    {
+        rkh_trc_put(i);
+    }
+
+    nGetElem = rkh_trc_getWholeBlock(&block[1], 3);
+
+    TEST_ASSERT_EQUAL(3, nGetElem);
+    TEST_ASSERT_EQUAL(0xaa, block[0]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM - 2, block[1]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM - 1, block[2]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM, block[3]);
+    TEST_ASSERT_EQUAL(0xaa, block[4]);
 }
 
 void
 test_GetManyElemsMoreThanStoredWrapAroundUsingWholeBlock(void)
 {
-    TEST_IGNORE();
+    TRCQTY_T nGetElem;
+    rui8_t i;
+
+    memset(block, 0xaa, RKH_CFG_TRC_SIZEOF_STREAM + 2);
+    rkh_trc_get();
+    for (i = 0; i < ((2 * RKH_CFG_TRC_SIZEOF_STREAM) - 2); ++i)
+    {
+        rkh_trc_put(i);
+    }
+
+    nGetElem = rkh_trc_getWholeBlock(&block[1], RKH_CFG_TRC_SIZEOF_STREAM + 1);
+
+    TEST_ASSERT_EQUAL(0xaa, block[0]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM, nGetElem);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM - 2, block[1]);
+    TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM - 1, block[2]);
+    for (i = 0; i < (RKH_CFG_TRC_SIZEOF_STREAM - 2); ++i)
+    {
+        TEST_ASSERT_EQUAL(RKH_CFG_TRC_SIZEOF_STREAM + i, block[i + 3]);
+    }
+    TEST_ASSERT_EQUAL(0xaa, block[RKH_CFG_TRC_SIZEOF_STREAM + 1]);
 }
 
 /** @} doxygen end group definition */

@@ -683,7 +683,7 @@
  *	this number, the lower the RAM consumption.
  */
 
-#define RKH_CFG_TRC_SIZEOF_STREAM		512u
+#define RKH_CFG_TRC_SIZEOF_STREAM		32u
 
 
 /* --- Configuration options related to queue (by reference) facility ----- */
