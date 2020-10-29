@@ -47,6 +47,7 @@
 /*
  *  LeFr  Leandro Francucci  lf@vortexmakes.com
  *  DaBa  Dario Baliña       dariosb@gmail.com
+ *  CaMa  Carlos Mancón      manconci@gmail.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -113,6 +114,10 @@
 
 #ifdef __STM32__
     #include "../../portable/arm-cortex/rkhs/arm_cm4f/stm32/rkhport.h"
+#endif
+
+#ifdef __STM32_CM3F1_CUBEMX__
+    #include "../../portable/arm-cortex/rkhs/arm_cm3/stm32f1-cubemx/rkhport.h"
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
