@@ -1458,6 +1458,15 @@ extern "C" {
 
 #endif
 
+#ifdef RKH_CFG_FWK_AWARE_ISR_PRIO
+#if ((RKH_CFG_FWK_AWARE_ISR_PRIO < 0) || \
+     (RKH_CFG_FWK_AWARE_ISR_PRIO > 255))
+    #error "RKH_CFG_FWK_AWARE_ISR_PRIO       illegally #define'd in 'rkhcfg.h'"
+    #error "                                    [MUST be >= 0]                "
+    #error "                                    [     && <= 255]              "
+#endif
+#endif
+
 /*  PORT          --------------------------------------------------------- */
 #ifndef RKH_CFGPORT_SMA_THREAD_EN
     #error "RKH_CFGPORT_SMA_THREAD_EN            not #define'd in 'rkhport.h'"
