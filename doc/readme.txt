@@ -4361,6 +4361,13 @@ Back: \ref cfg "Configuring framework RKH"
 		<TD> 100 </TD>
 		<TD align="left"> \copybrief RKH_CFG_FWK_TICK_RATE_HZ </TD>
 	</TR>
+	<TR bgColor="#c8cedc" align="center" valign="middle" >
+		<TD align="left"> #RKH_CFG_FWK_AWARE_ISR_PRIO </TD>
+		<TD> integer </TD>
+		<TD> [0..255] </TD>
+		<TD> 0 </TD>
+		<TD align="left"> \copybrief RKH_CFG_FWK_AWARE_ISR_PRIO </TD>
+	</TR>
 </TABLE>
 
 Back: \ref cfg "Configuring framework RKH"

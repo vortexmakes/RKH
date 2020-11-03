@@ -229,6 +229,22 @@
 
 #define RKH_CFG_FWK_TICK_RATE_HZ		100u
 
+/**
+ *  \brief
+ *  This number divides interrupts into "aware" and "unware" interrupts, which 
+ *  are never disabled, and "aware" interrupts, which are disabled in the RKH 
+ *  critical section.
+ *  For example, an interrupt priority number lower than 
+ *  RKH_CFG_FWK_AWARE_ISR_PRIO indicates an "unware" interrupt, whereas an 
+ *  interrupt priority number equal or higher than RKH_CFG_FWK_AWARE_ISR_PRIO 
+ *  indicates an "aware" interrupt.
+ *
+ *  \type       Integer
+ *  \range      [1..255]
+ *  \default    0
+ */
+#define RKH_CFG_FWK_AWARE_ISR_PRIO      0
+
 
 /* --- Configuration options related to state machine applications -------- */
 

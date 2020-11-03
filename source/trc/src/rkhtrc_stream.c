@@ -49,6 +49,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include <string.h>
 #include "rkhtrc_stream.h"
 #include "rkhfwk_bittbl.h"
 #include "rkhassert.h"
@@ -154,6 +155,44 @@ rkh_trc_put(rui8_t b)
         trcqty = RKH_CFG_TRC_SIZEOF_STREAM;
         trcout = trcin;
     }
+}
+
+TRCQTY_T 
+rkh_trc_getWholeBlock(rui8_t *destBlock, TRCQTY_T nElem)
+{
+    TRCQTY_T result = 0, nConsumed, n, offset = 0;
+
+    if (trcqty != (TRCQTY_T)0)
+    {
+        nConsumed = (nElem >= trcqty) ? trcqty : nElem;
+        n = (TRCQTY_T)(trcend - trcout); /* Calculates the number of bytes */
+                                         /* to be retrieved */
+        if (n > trcqty)
+        {
+            n = trcqty;
+        }
+        if (n > nElem)
+        {
+            n = nElem;
+        }
+
+        do
+        {
+            memcpy(destBlock + offset, trcout, n);
+            trcout += offset = n;
+            trcqty -= n;
+            result += n;
+            
+            if (trcout >= trcend)
+            {
+                trcout = trcstm;
+            }
+            nConsumed -= n;
+            n = nConsumed;
+        }
+        while (nConsumed);
+    }
+    return result;
 }
 
 /* ------------------------------ End of file ------------------------------ */
