@@ -34,6 +34,20 @@ parser.add_argument('-d', action="store_true", default=False,
 parser.add_argument('-p', action="store_true", default=False,
                     help='identifies the release as a prerelease')
 
+def printTitle(title):
+    print("\n{}".format(title))
+    print("{}".format('-' * len(title)))
+
+def runRegressionTests():
+    return
+
+def genDoc(repoPath):
+    printTitle("Generating doc (html) using doxygen")
+    curDir = os.getcwd()
+    os.chdir(os.path.join(repoPath, "doc"))
+    os.system('doxygen Doxyfile')
+    os.chdir(curDir)
+    print("Done")
 
 def deploy(version, repository, workingDir, changelog, token, 
            branch = "master", draft = False, prerelease = False):
@@ -41,12 +55,29 @@ def deploy(version, repository, workingDir, changelog, token,
     repoName = repository.split('/')[-1]
     repoPath = os.path.join(workingDir, repoName)
 
+    printTitle("Verifying directories and files")
     if os.path.isdir(workingDir):
         if not os.path.isdir(repoPath):
             os.mkdir(repoPath)
         if not os.path.isdir(os.path.join(repoPath, '.git')):
-            repo = git.Repo.clone_from(GitHostURL + repository + '.git',
-                                repoPath)
+            repoUrl = GitHostURL + repository + '.git'
+            print("Cloning repository from {}...".format(repoUrl))
+            repo = git.Repo.clone_from(repoUrl, repoPath)
+            print("Done")
+        else:
+            repo = git.Repo(repoPath)
+        head = repo.active_branch
+        if head.name != 'master':
+            print("[WARNING] Must be realeased only from master branch")
+       
+
+#       updateVersion()
+#       genDoc(repoPath)
+#       build()
+#       runRegressionTests()
+#       publish()
+#       createPackage()
+#       release()
     else:
         print("ERROR: {0:s} does not exist".format(workingDir))
     return False
