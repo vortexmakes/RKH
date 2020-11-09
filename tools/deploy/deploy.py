@@ -6,6 +6,9 @@ import os
 import shutil
 import tarfile
 import git
+import re
+from datetime import date
+import fileinput
   
 GitHostURL = 'https://github.com/'
 
@@ -41,6 +44,39 @@ def printTitle(title):
 def runRegressionTests():
     return
 
+def updateVersion(repoPath, relVersion):
+    versionFilePath = os.path.join(repoPath, 'source/fwk/inc/rkhfwk_version.h')
+    relVersionNum = relVersion.replace('.', '')
+    today = date.today().strftime("%m/%d/%Y")
+
+    with fileinput.FileInput(versionFilePath, inplace = True) as verFile:
+        for line in verFile:
+            matchVersion = re.search(r"^#define\sRKH_VERSION_CODE\s+0x(?P<code>[0-9]{4})", line)
+            matchDate = re.search(r"^\s\*\s+\\releasedate\s+(?P<date>[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4})", line)
+            if matchVersion:
+                if matchVersion.group('code') != relVersionNum:
+                    print(line.replace(matchVersion.group('code'), 
+                                       relVersionNum), end = '')
+            elif matchDate:
+                if matchDate.group('date') != today:
+                    print(line.replace(matchDate.group('date'), today), end = '')
+            else:
+                print(line, end = '')
+
+#   verFile = open(versionFilePath, 'r+')
+#   for line in verFile:
+#       matchVersion = re.search(r"^#define\sRKH_VERSION_CODE\s+0x(?P<code>[0-9]{4})", line)
+#       matchDate = re.search(r"^\s\*\s+\\releasedate\s+(?P<date>[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4})", line)
+#       if matchVersion:
+#           if matchVersion.group('code') != relVersionNum:
+#               print(line.replace(matchVersion.group('code'), 
+#                                  relVersionNum), end = '')
+#       elif matchDate:
+#           print('date')
+#           if matchDate.group('date') != today:
+#               print(line.replace(matchDate.group('date'), today), end = '')
+#   verFile.close()
+
 def genDoc(repoPath):
     printTitle("Generating doc (html) using doxygen")
     curDir = os.getcwd()
@@ -55,7 +91,11 @@ def deploy(version, repository, workingDir, changelog, token,
     repoName = repository.split('/')[-1]
     repoPath = os.path.join(workingDir, repoName)
 
-    printTitle("Verifying directories and files")
+    printTitle("Verifying directories, files and version")
+    if not re.match(r'[0-9].[0-9].[0-9]{2}', version):
+        print("[ERROR] Invalid version code: {}".format(version))
+        return
+        
     if os.path.isdir(workingDir):
         if not os.path.isdir(repoPath):
             os.mkdir(repoPath)
@@ -66,12 +106,12 @@ def deploy(version, repository, workingDir, changelog, token,
             print("Done")
         else:
             repo = git.Repo(repoPath)
+            print('Repository {0:s} found in {1:s}'.format(repoName, repoPath))
         head = repo.active_branch
         if head.name != 'master':
             print("[WARNING] Must be realeased only from master branch")
-       
 
-#       updateVersion()
+        updateVersion(repoPath, version)
 #       genDoc(repoPath)
 #       build()
 #       runRegressionTests()
