@@ -63,19 +63,8 @@ def updateVersion(repoPath, relVersion):
             else:
                 print(line, end = '')
 
-#   verFile = open(versionFilePath, 'r+')
-#   for line in verFile:
-#       matchVersion = re.search(r"^#define\sRKH_VERSION_CODE\s+0x(?P<code>[0-9]{4})", line)
-#       matchDate = re.search(r"^\s\*\s+\\releasedate\s+(?P<date>[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4})", line)
-#       if matchVersion:
-#           if matchVersion.group('code') != relVersionNum:
-#               print(line.replace(matchVersion.group('code'), 
-#                                  relVersionNum), end = '')
-#       elif matchDate:
-#           print('date')
-#           if matchDate.group('date') != today:
-#               print(line.replace(matchDate.group('date'), today), end = '')
-#   verFile.close()
+def updateChangeLog():
+    return
 
 def genDoc(repoPath):
     printTitle("Generating doc (html) using doxygen")
@@ -111,7 +100,8 @@ def deploy(version, repository, workingDir, changelog, token,
         if head.name != 'master':
             print("[WARNING] Must be realeased only from master branch")
 
-        updateVersion(repoPath, version)
+#       updateVersion(repoPath, version)
+        updateChangeLog()
 #       genDoc(repoPath)
 #       build()
 #       runRegressionTests()
