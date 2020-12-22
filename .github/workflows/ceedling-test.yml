@@ -8,17 +8,17 @@ on:
 env:
     DOCKER_USER: leanfrancucci
     DOCKER_REPO: ceedling
-    DOCKER_TAG: latest
 
 jobs:
     unittest:
         runs-on: ubuntu-latest
         steps:
-        - run: echo ${DOCKER_USER}
+        - run: echo ${DOCKER_USER} $DOCKER_REPO
 #       - uses: actions/checkout@v2
+    DOCKER_TAG: latest
 
 #       - name: Run Ceedling tests
-#         uses: docker://${{ env.DOCKER_USER }}/${{ env.DOCKER_REPO }}:${{ env.DOCKER_TAG }}
+#         uses: docker://$DOCKER_USER/$DOCKER_REPO:$DOCKER_TAG
 #         with:
 #           entrypoint: ls
 #           entrypoint: /bin/echo
