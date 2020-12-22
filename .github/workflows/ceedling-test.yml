@@ -13,7 +13,7 @@ jobs:
     unittest:
         runs-on: ubuntu-latest
         steps:
-        - run: echo 1: ${DOCKER_USER} 2: $DOCKER_REPO
+        - run: echo "1: ${DOCKER_USER} 2: $DOCKER_REPO 3: ${{ env.DOCKER_USER }}"
 #       - uses: actions/checkout@v2
 #       - name: Run Ceedling tests
 #         uses: docker://$DOCKER_USER/$DOCKER_REPO:latest
