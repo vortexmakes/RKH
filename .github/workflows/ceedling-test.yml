@@ -14,11 +14,12 @@ jobs:
     unittest:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
+        - echo ${DOCKER_USER}
+#       - uses: actions/checkout@v2
 
-        - name: Run Ceedling tests
-          uses: docker://${{ env.DOCKER_USER }}/${{ env.DOCKER_REPO }}:${{ env.DOCKER_TAG }}
-          with:
-            entrypoint: ls
+#       - name: Run Ceedling tests
+#         uses: docker://${{ env.DOCKER_USER }}/${{ env.DOCKER_REPO }}:${{ env.DOCKER_TAG }}
+#         with:
+#           entrypoint: ls
 #           entrypoint: /bin/echo
 #           args: /bin/bash -c "cd tools/ceedling; ./test-all.sh"
