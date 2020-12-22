@@ -18,7 +18,7 @@ jobs:
         - name: Run Ceedling tests
           env: 
             DOCKER_TAG: latest
-          uses: docker://${DOCKER_USER}/${DOCKER_REPO}:${DOCKER_TAG}
+          uses: docker://leanfrancucci/ceedling:latest
           with:
             entrypoint: ls
 #           entrypoint: /bin/echo
