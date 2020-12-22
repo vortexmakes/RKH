@@ -1,10 +1,9 @@
 name: Ceedling tests
 
 on:
-    workflow_dispatch
-#   push:
-#       branch:
-#       - issue-workflows
+    push:
+        branch:
+        - issue-workflows
 
 env:
     DOCKER_USER: leanfrancucci
