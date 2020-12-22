@@ -1,9 +1,10 @@
 name: Ceedling tests
 
 on:
-    push:
-        branch:
-        - issue-workflows
+    workflow_dispatch
+#   push:
+#       branch:
+#       - issue-workflows
 
 env:
     DOCKER_USER: leanfrancucci
@@ -18,5 +19,5 @@ jobs:
           uses: docker://docker.io/${DOCKER_USER}/${DOCKER_REPO}:latest
           with:
             entrypoint: ls
-            entrypoint: /bin/echo
-            args: /bin/bash -c "cd tools/ceedling; ./test-all.sh"
+#            entrypoint: /bin/echo
+#            args: /bin/bash -c "cd tools/ceedling; ./test-all.sh"
