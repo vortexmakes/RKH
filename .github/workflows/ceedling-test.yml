@@ -8,6 +8,7 @@ on:
 env:
     DOCKER_USER: leanfrancucci
     DOCKER_REPO: ceedling
+    DOCKER_TAG: latest
 
 jobs:
     unittest:
@@ -16,9 +17,7 @@ jobs:
         - uses: actions/checkout@v2
 
         - name: Run Ceedling tests
-          env: 
-            DOCKER_TAG: latest
-          uses: docker://leanfrancucci/ceedling:latest
+          uses: docker://${{ env.DOCKER_USER }}/${{ env.DOCKER_REPO }}:${{ env.DOCKER_TAG }}
           with:
             entrypoint: ls
 #           entrypoint: /bin/echo
