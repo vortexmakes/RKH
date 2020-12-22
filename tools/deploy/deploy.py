@@ -100,11 +100,11 @@ def deploy(version, repository, workingDir, changelog, token,
         if head.name != 'master':
             print("[WARNING] Must be realeased only from master branch")
 
-#       updateVersion(repoPath, version)
-        updateChangeLog()
-#       genDoc(repoPath)
-#       build()
 #       runRegressionTests()
+#       build()
+#       updateVersion(repoPath, version)
+#       updateChangeLog()
+#       genDoc(repoPath)
 #       publish()
 #       createPackage()
 #       release()
