@@ -15,8 +15,7 @@ jobs:
         steps:
         - uses: actions/checkout@v2
         - name: Run Ceedling tests
-          uses: docker://docker.io/${DOCKER_USER}/${DOCKER_REPO}:latest
+          uses: docker://docker.io/leanfrancucci/ceedling:latest
           with:
-            entrypoint: ls
-#            entrypoint: /bin/echo
-#            args: /bin/bash -c "cd tools/ceedling; ./test-all.sh"
+            entrypoint: /bin/bash
+            args: -c "cd tools/ceedling; ./test-all.sh"
