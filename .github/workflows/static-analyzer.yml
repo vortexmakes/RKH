@@ -1,0 +1,28 @@
+name: Static code analysis
+
+on:
+    push:
+        branch:
+        - issue-workflows
+        path:
+        - '.github/workflows/static-analyzer.yml'
+        - 'source/fwk/**'
+        - 'source/mempool/**'
+        - 'source/queue/**'
+        - 'source/sm/**'
+        - 'source/sma/**'
+        - 'source/tmr/**'
+        - 'source/trc/**'
+
+jobs:
+    unit-test:
+        runs-on: ubuntu-latest
+        container:
+            image: leanfrancucci/ceedling:latest
+        steps:
+        - uses: actions/checkout@v1
+          with:
+            submodules: recursive
+        - name: Execute Cppcheck analyzer
+          working-directory: tools/analyzer
+          run: ./cppcheck.sh
