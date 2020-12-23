@@ -13,7 +13,7 @@ jobs:
           with:
             submodules: recursive
         container:
-          image: docker.io/leanfrancucci/ceedling:latest
+          image: leanfrancucci/ceedling:latest
         - name: Run Ceedling tests
           run: ./test-all.sh
           working-directory: tools/ceedling
