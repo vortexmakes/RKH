@@ -8,23 +8,15 @@ on:
 jobs:
     unit-test:
         runs-on: ubuntu-latest
-#       container:
-#           image: azul/zulu-openjdk-alpine:8-jre
 #       steps:
-#       - name: What OS is running
-#         run: uname -a
-#       - name: What java version do we have
-#         run: java -version
-
-#       steps:
-#       - uses: actions/checkout@v1
-#         with:
-#           submodules: recursive
         container:
             image: leanfrancucci/ceedling:latest
 #       - name: Run Ceedling tests
 #         run: ./test-all.sh
 #         working-directory: tools/ceedling
         steps:
+        - uses: actions/checkout@v1
+          with:
+            submodules: recursive
         - name: Get Ceedling version
           run: ceedling version
