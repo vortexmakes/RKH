@@ -1,0 +1,19 @@
+name: Ceedling tests using container
+
+on:
+    push:
+        branch:
+        - issue-workflows
+
+jobs:
+    unit-test:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v1
+          with:
+            submodules: recursive
+        container:
+            image: docker.io/leanfrancucci/ceedling:latest
+        - name: Run Ceedling tests
+          run: ./test-all.sh
+          working-directory: tools/ceedling
