@@ -13,6 +13,7 @@ jobs:
           with:
             submodules: recursive
         container: leanfrancucci/ceedling:latest
-            - name: Run Ceedling tests
-              run: ./test-all.sh
-              working-directory: tools/ceedling
+        steps:
+        - name: Run Ceedling tests
+          run: ./test-all.sh
+          working-directory: tools/ceedling
