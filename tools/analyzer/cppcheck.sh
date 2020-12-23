@@ -15,18 +15,18 @@ source_dir="../../source"
 cppcheck_dir="tools/analyzer"
 modules="fwk mempool queue sm sma tmr trc"
 additional="../demo/cross/blinky portable/test/"
-flags="--quiet --error-exitcode=1 --language=c --enable=performance,information,missingInclude"
+flags="--error-exitcode=1 --language=c --enable=performance,information,missingInclude"
 defines="__TEST__"
-
-#echo $PATH
-#export PATH="$PATH:/home/travis/.rvm/gems/ruby-2.4.1/bin"
-#echo $PATH
-#which ceedling
-#exit 0
+output=""
 
 if [ ! -d $source_dir ]; then
     echo "[ERROR] This script must be invoked from "$uno_dir
     exit 1
+fi
+
+if [ ! -z $1 ]; then
+    flags+=" --xml --xml-version=2 --quiet"
+    output="../$cppcheck_dir/$1"
 fi
 
 currdir=$PWD
@@ -44,5 +44,8 @@ done
 
 cd $source_dir
 files="${sources[@]}"
-cppcheck $flags -D$defines "${includes[@]}" $files
-
+if [ -z $output ]; then
+    cppcheck $flags -D$defines "${includes[@]}" $files
+else
+    cppcheck $flags -D$defines "${includes[@]}" $files 2> $output
+fi
