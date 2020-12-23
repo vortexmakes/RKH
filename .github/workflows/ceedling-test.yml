@@ -16,7 +16,7 @@ on:
         - 'source/trc/**'
 
 jobs:
-    unittest:
+    unit-test:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v1
@@ -27,3 +27,9 @@ jobs:
           with:
             entrypoint: /bin/bash
             args: -c "cd tools/ceedling; ./test-all.sh"
+        - uses: codecov/codecov-action@v1
+          with:
+#           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+            directory: tools/ceedling/gcov
+            flags: unittests # optional
+            name: codecov-rkh
