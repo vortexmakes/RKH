@@ -12,8 +12,7 @@ jobs:
         - uses: actions/checkout@v1
           with:
             submodules: recursive
-        container:
-          image: leanfrancucci/ceedling:latest
+        container: leanfrancucci/ceedling:latest
         - name: Run Ceedling tests
           run: ./test-all.sh
           working-directory: tools/ceedling
