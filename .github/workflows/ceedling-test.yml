@@ -27,9 +27,9 @@ jobs:
           with:
             entrypoint: /bin/bash
             args: -c "cd tools/ceedling; ./test-all.sh"
-        - uses: codecov/codecov-action@v1
+        - name: Upload coverage to Codecov
+          uses: codecov/codecov-action@v1
           with:
-#           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-            directory: tools/ceedling/gcov
+            directory: ./tools/ceedling/gcov
             flags: unittests # optional
             name: codecov-rkh
