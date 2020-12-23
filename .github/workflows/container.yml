@@ -8,15 +8,12 @@ on:
 jobs:
     unit-test:
         runs-on: ubuntu-latest
-#       steps:
         container:
             image: leanfrancucci/ceedling:latest
-#       - name: Run Ceedling tests
-#         run: ./test-all.sh
-#         working-directory: tools/ceedling
         steps:
         - uses: actions/checkout@v1
           with:
             submodules: recursive
-        - name: Get Ceedling version
-          run: ceedling version
+        - name: Run Ceedling tests
+          run: ./test-all.sh
+          working-directory: tools/ceedling
