@@ -5,10 +5,6 @@ on:
         branch:
         - issue-workflows
 
-env:
-    DOCKER_USER: leanfrancucci
-    DOCKER_REPO: ceedling
-
 jobs:
     unittest:
         runs-on: ubuntu-latest
