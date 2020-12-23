@@ -15,7 +15,7 @@ on:
         - 'source/trc/**'
 
 jobs:
-    unit-test:
+    code-analysis:
         runs-on: ubuntu-latest
         container:
             image: leanfrancucci/ceedling:latest
@@ -25,4 +25,13 @@ jobs:
             submodules: recursive
         - name: Execute Cppcheck analyzer
           working-directory: tools/analyzer
-          run: ./cppcheck.sh
+          run: ./cppcheck.sh cppcheck-report.xml
+          continue-on-error: true
+        - name: Check errors
+          if: ${{ failure() }}
+          uses: actions/upload-artifact@master
+          continue-on-error: True
+          with:
+            name: cppcheck-report.xml
+            path: cppcheck-report.xml
+          run: exit 1
