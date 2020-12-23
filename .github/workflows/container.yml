@@ -25,5 +25,6 @@ jobs:
 #       - name: Run Ceedling tests
 #         run: ./test-all.sh
 #         working-directory: tools/ceedling
+        steps:
         - name: Get Ceedling version
           run: ceedling version
