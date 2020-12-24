@@ -24,14 +24,18 @@ jobs:
           with:
             submodules: recursive
         - name: Execute Cppcheck analyzer
+          id: cppcheck-analysis
           working-directory: tools/analyzer
-          run: ./cppcheck.sh cppcheck-report.xml
+          run: |
+            ./cppcheck.sh cppcheck-report.xml
+#           echo "::set-output name=status::$?"
           continue-on-error: true
-        - name: Check errors
+        - name: Upload analysis result
           if: ${{ failure() }}
           uses: actions/upload-artifact@master
-          continue-on-error: True
           with:
             name: cppcheck-report.xml
             path: cppcheck-report.xml
+        - name: Check analysis result
+          if: steps.cppcheck-analysis.outcome == 'failure'
           run: exit 1
