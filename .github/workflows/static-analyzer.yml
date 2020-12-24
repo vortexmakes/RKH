@@ -26,9 +26,7 @@ jobs:
         - name: Execute Cppcheck analyzer
           id: cppcheck-analysis
           working-directory: tools/analyzer
-          run: |
-            ./cppcheck.sh cppcheck-report.xml
-#           echo "::set-output name=status::$?"
+          run: ./cppcheck.sh cppcheck-report.xml
           continue-on-error: true
         - name: Upload analysis result
           if: ${{ failure() }}
