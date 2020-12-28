@@ -29,11 +29,16 @@ jobs:
           run: ./cppcheck.sh cppcheck-report.xml
           continue-on-error: true
         - name: Upload analysis result
-          if: ${{ success() }}
+          if: ${{ failure() }}
           uses: actions/upload-artifact@master
           with:
             name: cppcheck-report.xml
             path: tools/analyzer/cppcheck-report.xml
+        - name: Execute Uno analyzer
+          id: uno-analysis
+          working-directory: tools/analyzer
+          run: ./uno.sh
+          continue-on-error: true
         - name: Check analysis result
-          if: steps.cppcheck-analysis.outcome == 'failure'
+          if: steps.cppcheck-analysis.outcome == 'failure' && steps.uno-analysis.outcome == 'failure'
           run: exit 1
