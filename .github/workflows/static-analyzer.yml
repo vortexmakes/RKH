@@ -33,7 +33,7 @@ jobs:
           uses: actions/upload-artifact@master
           with:
             name: cppcheck-report.xml
-            path: cppcheck-report.xml
+            path: tools/analyzer/cppcheck-report.xml
         - name: Check analysis result
-          if: steps.cppcheck-analysis.outcome == 'success'
+          if: steps.cppcheck-analysis.outcome == 'failure'
           run: exit 1
