@@ -27,6 +27,12 @@ jobs:
           with:
             entrypoint: /bin/bash
             args: -c "cd tools/ceedling; ./test-all.sh"
+        - name: Publish Unit Test Results
+          uses: EnricoMi/publish-unit-test-result-action@v1.6
+          if: ${{ always() }}
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            files: source/fwk/build/artifacts/gcov/report.xml
         - name: Upload coverage to Codecov
           uses: codecov/codecov-action@v1
           with:
