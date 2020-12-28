@@ -29,11 +29,11 @@ jobs:
           run: ./cppcheck.sh cppcheck-report.xml
           continue-on-error: true
         - name: Upload analysis result
-          if: ${{ failure() }}
+          if: ${{ success() }}
           uses: actions/upload-artifact@master
           with:
             name: cppcheck-report.xml
             path: cppcheck-report.xml
         - name: Check analysis result
-          if: steps.cppcheck-analysis.outcome == 'failure'
+          if: steps.cppcheck-analysis.outcome == 'success'
           run: exit 1
