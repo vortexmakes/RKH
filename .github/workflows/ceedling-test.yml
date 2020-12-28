@@ -32,7 +32,7 @@ jobs:
           if: always()
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
-            files: source/fwk/build/artifacts/gcov/report.xml
+            files: source/fwk/build/artifacts/gcov/report.xml source/mempool/build/artifacts/gcov/report.xml
         - name: Upload coverage to Codecov
           uses: codecov/codecov-action@v1
           with:
