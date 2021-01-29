@@ -16,8 +16,6 @@ import shlex
 from pathlib import Path
 from git import Repo
 
-logger = None
-
 class MyCase(TestCase):
     """
     Custom junitparser.TestCase for our tests that adds some extra <testcase>
@@ -160,25 +158,13 @@ class Uncrustify(ComplianceTest):
                     if re.search("^FAIL:\s", output):
                         self.add_info(output)
 
-def init_logs(cli_arg):
-    # Initializes logging
-
-    # TODO: there may be a shorter version thanks to:
-    # logging.basicConfig(...)
-
-    global logger
-
-    level = os.environ.get('LOG_LEVEL', "WARN")
-
-    console = logging.StreamHandler()
-    console.setFormatter(logging.Formatter('%(levelname)-8s: %(message)s'))
-
-    logger = logging.getLogger('')
-    logger.addHandler(console)
-    logger.setLevel(cli_arg if cli_arg else level)
-
+def init_logs(loglevel):
+    numericLevel = getattr(logging, loglevel.upper(), None)
+    if not isinstance(numericLevel, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+    logging.basicConfig(format='%(levelname)-8s: %(message)s', level=numericLevel)
     logging.info("Log init completed, level=%s",
-                 logging.getLevelName(logger.getEffectiveLevel()))
+                 logging.getLevelName(logging.getLogger().getEffectiveLevel()))
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -196,7 +182,7 @@ def parse_args():
                         default is ./compliance.xml''')
     parser.add_argument('-l', '--list', action="store_true",
                         help="List all checks and exit")
-    parser.add_argument("-v", "--loglevel", help="python logging level")
+    parser.add_argument("-v", "--loglevel", help="python logging level", default='WARNING')
     parser.add_argument('-t', '--test', action="append", default=[],
                         help="Checks to run. All checks by default.")
     parser.add_argument('-e', '--exclude-test', action="append", default=[],
