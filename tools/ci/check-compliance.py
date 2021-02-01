@@ -1,18 +1,12 @@
 #!/usr/bin/env python3
 
-import collections
 import sys
 import subprocess
 import re
 import os
-from email.utils import parseaddr
 import logging
 import argparse
 from junitparser import TestCase, TestSuite, JUnitXml, Skipped, Error, Failure, Attr
-import tempfile
-import traceback
-import magic
-import shlex
 from pathlib import Path
 from git import Repo
 
