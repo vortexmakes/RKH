@@ -9,6 +9,7 @@ import argparse
 from junitparser import TestCase, TestSuite, JUnitXml, Skipped, Error, Failure, Attr
 from pathlib import Path
 from git import Repo
+import traceback
 
 class MyCase(TestCase):
     """
