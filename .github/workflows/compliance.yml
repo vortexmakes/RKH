@@ -1,6 +1,7 @@
 name: Compliance
 
-on: pull_request
+#on: pull_request
+on: push # only for testing this workflow avoiding a pull-request
 
 jobs:
     compliance-job:
@@ -8,9 +9,9 @@ jobs:
         steps:
         - name: Checkout the code
         - uses: actions/checkout@v2
-          with:
-            ref: ${{ github.event.pull_request.head.sha }}
-            fetch-depth: 0
+#         with:
+#           ref: ${{ github.event.pull_request.head.sha }}
+#           fetch-depth: 0
         - name: cache-pip
             uses: actions/cache@v1
             with:
@@ -23,7 +24,8 @@ jobs:
           continue-on-error: true
           id: compliance
           env:
-            BASE_REF: ${{ github.base_ref }}
+#           BASE_REF: ${{ github.base_ref }}
+            BASE_REF: ${{ github.head_ref }} # only for testing this workflow avoiding a pull-request
           run: |
             ./tools/ci/check-compliance.py -c origin/${BASE_REF} -t Uncrustify -t Identity
         - name: Upload results
