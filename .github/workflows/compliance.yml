@@ -1,7 +1,6 @@
 name: Compliance
 
-#on: pull_request
-on: push # only for testing this workflow avoiding a pull-request
+on: [pull_request, push]
 
 jobs:
     compliance-job:
