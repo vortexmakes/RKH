@@ -20,15 +20,21 @@ jobs:
         - name: Install python dependencies
           run: |
             pip3 install setuptools
-            pip3 install wheel
             pip3 install junitparser==1.6.3 gitpython
         - name: Execute compliance tests
           continue-on-error: true
           id: compliance
-          env:
+#         env:
 #           BASE_REF: ${{ github.base_ref }}
-            BASE_REF: ${{ github.ref }} # only for testing this workflow avoiding a pull-request
+#           BASE_REF: ${{ github.ref }} # only for testing this workflow avoiding a pull-request
           run: |
+            if [ ${{ github.event }} = 'push' ]; then
+                echo "BASE_REF=${{ github.ref }}" >> $GITHUB_ENV
+            else
+                echo "BASE_REF=${{ github.base_ref }}" >> $GITHUB_ENV
+            fi
+            echo $BASE_REF
+
             ./tools/ci/check-compliance.py -c origin/${BASE_REF##*/}.. -t Uncrustify -t Identity
         - name: Upload results
           uses: actions/upload-artifact@master
