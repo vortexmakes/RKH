@@ -166,9 +166,9 @@ class Identity(ComplianceTest):
         repo = Repo(GIT_TOP)
         limit = -1 if '.' in COMMIT_RANGE else 1
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$' # Valid email address
+        failure = None
         for commit in list(repo.iter_commits(COMMIT_RANGE, max_count=limit)):
             match = re.search(regex, commit.author.email)
-            failure = None
             if not match:
                 failure = "%s: author email (%s) must be a valid " \
                           "email address." % (commit.hexsha, commit.author.email)
