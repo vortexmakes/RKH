@@ -26,7 +26,7 @@ jobs:
           id: compliance
           env:
 #           BASE_REF: ${{ github.base_ref }}
-            BASE_REF: ${GITHUB_REF##*/} # only for testing this workflow avoiding a pull-request
+            BASE_REF: ${{ GITHUB_REF##*/ }} # only for testing this workflow avoiding a pull-request
           run: |
             echo ${{ github.ref }} ${GITHUB_REF##*/} ${BASE_REF}
             ./tools/ci/check-compliance.py -c origin/${BASE_REF}.. -t Uncrustify -t Identity
