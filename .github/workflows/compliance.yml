@@ -20,6 +20,7 @@ jobs:
         - name: Install python dependencies
           run: |
             pip3 install setuptools
+            pip3 install wheel
             pip3 install junitparser==1.6.3 gitpython
         - name: Execute compliance tests
           continue-on-error: true
