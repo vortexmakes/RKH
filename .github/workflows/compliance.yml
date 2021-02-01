@@ -29,12 +29,12 @@ jobs:
 #           BASE_REF: ${{ github.ref }} # only for testing this workflow avoiding a pull-request
           run: |
             if [ ${{ github.event }} = 'push' ]; then
-                echo "BASE_REF=${{ github.ref }}" >> $GITHUB_ENV
+                BASE_REF=${{ github.ref }}
             else
-                echo "BASE_REF=${{ github.base_ref }}" >> $GITHUB_ENV
+                BASE_REF=${{ github.base_ref }}
             fi
-            echo $BASE_REF
 
+            echo "branch: $BASE_REF"
             ./tools/ci/check-compliance.py -c origin/${BASE_REF##*/}.. -t Uncrustify -t Identity
         - name: Upload results
           uses: actions/upload-artifact@master
