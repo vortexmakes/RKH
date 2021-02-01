@@ -37,12 +37,12 @@ jobs:
 
         - name: Check analysis result
           run: |
-            if [ ! -s "compliance.xml" ]; then
+            if [[ ! -s "compliance.xml" ]]; then
                 exit 1;
             fi
 
             for file in Uncrustify.txt Identity.txt; do
-                if [ -s $file ]; then
+                if [[ -s $file ]]; then
                     errors = $(cat $file)
                     errors = "${errors//'%'/'%25'}"
                     errors = "${errors//$'\n'/'%0A'}"
