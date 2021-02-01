@@ -129,11 +129,12 @@ class EndTest(Exception):
     Tests can raise EndTest themselves to immediately end the test, e.g. from
     within a nested function call.
     """
+
 class Uncrustify(ComplianceTest):
     """
     Runs uncrustify and reports found issues
     """
-    name = "uncrustify"
+    name = "Uncrustify"
     doc = "See ... for more details."
     path_hint = "<git-top>"
 
@@ -157,6 +158,33 @@ class Uncrustify(ComplianceTest):
                     output = ex.output.decode("utf-8")
                     if re.search("^FAIL:\s", output):
                         self.add_info(output)
+
+class Identity(ComplianceTest):
+    """
+    ...
+    """
+    name = "Identity"
+    doc = "See ... for more details."
+    path_hint = "<git-top>"
+
+    def run(self):
+        repo = Repo(GIT_TOP)
+        limit = -1 if '.' in COMMIT_RANGE else 1
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$' # Valid email address
+        for commit in list(repo.iter_commits(COMMIT_RANGE, max_count=limit)):
+            match = re.search(regex, commit.author.email)
+            failure = None
+            if not match:
+                failure = "%s: author email (%s) must be a valid " \
+                          "email address." % (commit.hexsha, commit.author.email)
+            if len(commit.author.name.split(' ')) < 2:
+                if failure:
+                   failure += "\n"
+                failure += "%s: author name (%s) does not follow " \
+                           "the syntax: First Last <email>." \
+                           % (commit.hexsha, commit.author.name)
+        if failure:
+            self.add_failure(failure)
 
 def init_logs(loglevel):
     numericLevel = getattr(logging, loglevel.upper(), None)
@@ -182,11 +210,13 @@ def parse_args():
                         default is ./compliance.xml''')
     parser.add_argument('-l', '--list', action="store_true",
                         help="List all checks and exit")
-    parser.add_argument("-v", "--loglevel", help="python logging level", default='WARNING')
+    parser.add_argument("-v", "--loglevel", default='WARNING', 
+                        help="python logging level")
     parser.add_argument('-t', '--test', action="append", default=[],
-                        help="Checks to run. All checks by default.")
+                        help='''Check to run. Use --list to see available
+                        checks.''')
     parser.add_argument('-e', '--exclude-test', action="append", default=[],
-                        help="Do not run the specified checks")
+                        help="Do not run the specified check")
     parser.add_argument('-j', '--previous-run', default=None,
                         help='''Pre-load JUnit results in XML format
                         from a previous run and combine with new results.''')
@@ -233,10 +263,6 @@ def _main(args):
         suite = TestSuite("Compliance")
 
     for testcase in ComplianceTest.__subclasses__():
-        # "Modules" and "testcases" are the same thing. Better flags would have
-        # been --tests and --exclude-tests or the like, but it's awkward to
-        # change now.
-
         if args.test and testcase.name not in args.test:
             continue
 
