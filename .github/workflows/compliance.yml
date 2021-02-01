@@ -28,13 +28,14 @@ jobs:
 #           BASE_REF: ${{ github.base_ref }}
 #           BASE_REF: ${{ github.ref }} # only for testing this workflow avoiding a pull-request
           run: |
-            if [ ${{ github.event }} = 'push' ]; then
-                BASE_REF = "${{ github.ref }}"
+            if [ ${{ github.event }} == 'push' ]; then
+                BASE_REF=${{ github.ref }}
+                echo "Push event ${{ github.event }}"
             else
-                BASE_REF = "${{ github.base_ref }}"
+                BASE_REF=${{ github.base_ref }}
             fi
 
-            echo "branch: $BASE_REF"
+            echo "branch: ${BASE_REF}"
             ./tools/ci/check-compliance.py -c origin/${BASE_REF##*/}.. -t Uncrustify -t Identity
         - name: Upload results
           uses: actions/upload-artifact@master
@@ -50,10 +51,10 @@ jobs:
 
             for file in Uncrustify.txt Identity.txt; do
                 if [[ -s $file ]]; then
-                    errors = $(cat $file)
-                    errors = "${errors//'%'/'%25'}"
-                    errors = "${errors//$'\n'/'%0A'}"
-                    errors = "${errors//$'\r'/'%0D'}"
+                    errors=$(cat $file)
+                    errors="${errors//'%'/'%25'}"
+                    errors="${errors//$'\n'/'%0A'}"
+                    errors="${errors//$'\r'/'%0D'}"
                     echo "::error file=${file}::$errors"
                     exit = 1
                 fi
