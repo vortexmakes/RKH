@@ -35,20 +35,22 @@ jobs:
             path: compliance.xml
 
         - name: Check analysis result
-            run: |
-                if [ ! -s "compliance.xml" ]; then
-                  exit 1;
+          run: |
+            if [ ! -s "compliance.xml" ]; then
+                exit 1;
+            fi
+
+            for file in Uncrustify.txt Identity.txt; do
+                if [[ -s $file ]]; then
+                    errors = $(cat $file)
+                    errors = "${errors//'%'/'%25'}"
+                    errors = "${errors//$'\n'/'%0A'}"
+                    errors = "${errors//$'\r'/'%0D'}"
+                    echo "::error file=${file}::$errors"
+                    exit = 1
                 fi
-                for file in Uncrustify.txt Identity.txt; do
-                    if [[ -s $file ]]; then
-                        errors = $(cat $file)
-                        errors = "${errors//'%'/'%25'}"
-                        errors = "${errors//$'\n'/'%0A'}"
-                        errors = "${errors//$'\r'/'%0D'}"
-                        echo "::error file=${file}::$errors"
-                        exit = 1
-                    fi
-                done
+            done
+
             if [ ${exit} == 1 ]; then
-              exit 1;
+                exit 1;
             fi
