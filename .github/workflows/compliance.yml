@@ -29,9 +29,9 @@ jobs:
 #           BASE_REF: ${{ github.ref }} # only for testing this workflow avoiding a pull-request
           run: |
             if [ ${{ github.event }} = 'push' ]; then
-                BASE_REF=${{ github.ref }}
+                BASE_REF = "${{ github.ref }}"
             else
-                BASE_REF=${{ github.base_ref }}
+                BASE_REF = "${{ github.base_ref }}"
             fi
 
             echo "branch: $BASE_REF"
