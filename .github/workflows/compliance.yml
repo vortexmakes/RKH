@@ -26,9 +26,9 @@ jobs:
           id: compliance
           env:
 #           BASE_REF: ${{ github.base_ref }}
-            BASE_REF: ${{ github.head_ref }} # only for testing this workflow avoiding a pull-request
+            BASE_REF: ${{ github.ref }} # only for testing this workflow avoiding a pull-request
           run: |
-            ./tools/ci/check-compliance.py -c origin/${BASE_REF} -t Uncrustify -t Identity
+            ./tools/ci/check-compliance.py -c origin/${BASE_REF}.. -t Uncrustify -t Identity
         - name: Upload results
           uses: actions/upload-artifact@master
           with:
