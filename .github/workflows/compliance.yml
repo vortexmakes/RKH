@@ -8,7 +8,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - name: Checkout the code
-        - uses: actions/checkout@v2
+          uses: actions/checkout@v2
 #         with:
 #           ref: ${{ github.event.pull_request.head.sha }}
 #           fetch-depth: 0
@@ -41,7 +41,7 @@ jobs:
             fi
 
             for file in Uncrustify.txt Identity.txt; do
-                if [[ -s $file ]]; then
+                if [ -s $file ]; then
                     errors = $(cat $file)
                     errors = "${errors//'%'/'%25'}"
                     errors = "${errors//$'\n'/'%0A'}"
