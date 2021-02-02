@@ -2,9 +2,9 @@ name: Static code analysis
 
 on:
     push:
-        branch:
-        - issue-workflows
-        path:
+        branches:
+        - develop
+        paths:
         - '.github/workflows/static-analyzer.yml'
         - 'source/fwk/**'
         - 'source/mempool/**'
