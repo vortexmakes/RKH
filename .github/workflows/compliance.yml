@@ -2,9 +2,8 @@ name: Compliance
 
 on:
     pull_request:
-
     push:
-        branch:
+        branches:
         - develop
 
 jobs:
