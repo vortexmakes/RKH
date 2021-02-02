@@ -1,6 +1,11 @@
 name: Compliance
 
-on: [pull_request, push]
+on:
+    pull_request:
+
+    push:
+        branch:
+        - develop
 
 jobs:
     compliance-job:
@@ -37,6 +42,7 @@ jobs:
                 BASE_REF=${{ github.base_ref }}
             fi
 
+            echo "COMMIT_RANGE: ${BASE_REF##*/}"
             ./tools/ci/check-compliance.py -c origin/${BASE_REF##*/}.. -t Uncrustify -t Identity
         - name: Upload results
           uses: actions/upload-artifact@master
@@ -61,6 +67,6 @@ jobs:
                 fi
             done
 
-            if [ ${exit} == 1 ]; then
+            if [ $exit == 1 ]; then
                 exit 1;
             fi
