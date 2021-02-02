@@ -2,8 +2,8 @@ name: Ceedling tests using container
 
 on:
     push:
-        branch:
-        - issue-workflows
+        branches:
+        - develop
 
 jobs:
     unit-test:

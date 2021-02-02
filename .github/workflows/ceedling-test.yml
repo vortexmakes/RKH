@@ -2,9 +2,9 @@ name: Ceedling tests
 
 on:
     push:
-        branch:
-        - issue-workflows
-        path:
+        branches:
+        - develop
+        paths:
         - '.github/workflows/ceedling-test.yml'
         - 'tools/ceedling/test-all.sh'
         - 'source/fwk/**'
