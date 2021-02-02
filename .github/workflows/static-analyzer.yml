@@ -1,6 +1,16 @@
 name: Static code analysis
 
 on:
+    pull_request:
+        paths:
+        - '.github/workflows/static-analyzer.yml'
+        - 'source/fwk/**'
+        - 'source/mempool/**'
+        - 'source/queue/**'
+        - 'source/sm/**'
+        - 'source/sma/**'
+        - 'source/tmr/**'
+        - 'source/trc/**'
     push:
         branches:
         - develop
