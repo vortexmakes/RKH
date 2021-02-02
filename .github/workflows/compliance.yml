@@ -20,6 +20,9 @@ jobs:
           with:
             path: ~/.cache/pip
             key: ${{ runner.os }}-doc-pip
+        - name: Install packages
+          run: |
+            sudo apt-get install -y uncrustify
         - name: Install python dependencies
           run: |
             pip3 install setuptools
