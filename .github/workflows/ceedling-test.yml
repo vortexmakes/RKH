@@ -1,4 +1,4 @@
-name: Ceedling tests
+name: ceedling-unit-tests
 
 on:
     push:
