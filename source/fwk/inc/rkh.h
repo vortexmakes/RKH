@@ -33,6 +33,7 @@
 
 /**
  *  \file       rkh.h
+ *
  *  \brief      RKH framwwork platform - independent interface.
  *
  *  \ingroup    apiSM

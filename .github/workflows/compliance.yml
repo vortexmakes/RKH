@@ -57,7 +57,7 @@ jobs:
                     errors="${errors//$'\n'/'%0A'}"
                     errors="${errors//$'\r'/'%0D'}"
                     echo "::error file=${file}::$errors"
-                    exit = 1
+                    exit=1
                 fi
             done
 
