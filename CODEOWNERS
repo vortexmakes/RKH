@@ -1,0 +1,35 @@
+# 
+# CODEOWNERS for autoreview assigning in GitHub
+# See https://help.github.com/en/articles/about-code-owners#codeowners-syntax
+#
+
+# These owners will be the default owners for everything in the repo. 
+# Unless a later match takes precedence, these codeowners will be requested 
+# for review when someone opens a pull request.
+# Order is important; the last matching pattern takes the most precedence. 
+*                                                       @leanfrancucci
+
+/.github/                                               @leanfrancucci
+/demo/80x86/                                            @leanfrancucci
+/demo/cross/blinky/build/80x86/                         @leanfrancucci
+/demo/cross/blinky/build/80x86/                         @leanfrancucci
+/demo/cross/blinky/build/arm-cortex/                    @dariosb @cmancon
+/demo/cross/blinky/build/cfv1/                          @dariosb
+/demo/cross/blinky/build/s08/                           @dariosb
+/demo/cross/shared/build/80x86/linux_st/eclipse_cdt/    @cmancon
+/demo/cross/shared/build/80x86/win32_*/                 @leanfrancucci
+/demo/cross/shared/build/arm-cortex/                    @dariosb
+/demo/libbsp/                                           @dariosb
+/doc/                                                   @leanfrancucci
+/source/                                                @leanfrancucci
+/source/portable/80x86/                                 @leanfrancucci
+/source/portable/arm-cortex/                            @dariosb
+/source/portable/cv1/                                   @dariosb
+/source/portable/s08/                                   @dariosb
+/source/portable/test/                                  @leanfrancucci
+/source/portable/ucos/                                  @dariosb
+/template/                                              @leanfrancucci
+/third-party/                                           @leanfrancucci
+/third-party/unitrazer                                  @dariosb
+/third-party/utrazer                                    @dariosb
+/tools/                                                 @leanfrancucci
