@@ -41,9 +41,6 @@ def printTitle(title):
     print("\n{}".format(title))
     print("{}".format('-' * len(title)))
 
-def runRegressionTests():
-    return
-
 def updateVersion(repoPath, relVersion):
     versionFilePath = os.path.join(repoPath, 'source/fwk/inc/rkhfwk_version.h')
     relVersionNum = relVersion.replace('.', '')
@@ -100,8 +97,6 @@ def deploy(version, repository, workingDir, changelog, token,
         if head.name != 'master':
             print("[WARNING] Must be realeased only from master branch")
 
-#       runRegressionTests()
-#       build()
 #       updateVersion(repoPath, version)
 #       updateChangeLog()
 #       genDoc(repoPath)
