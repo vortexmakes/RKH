@@ -3,32 +3,32 @@ name: demo-test
 on:
     pull_request:
         paths:
-        - '.github/workflows/demo-test.yml'
-        - 'tools/ci/demo-test.sh'
-        - 'demo/cross/blinky/*.[ch]'
-        - 'demo/cross/blinky/build/80x86/linux_st/gnu'
-        - 'source/fwk/**'
-        - 'source/mempool/**'
-        - 'source/queue/**'
-        - 'source/sm/**'
-        - 'source/sma/**'
-        - 'source/tmr/**'
-        - 'source/trc/**'
+            - '.github/workflows/demo-test.yml'
+            - 'tools/ci/demo-test.sh'
+            - 'demo/cross/blinky/*.[ch]'
+            - 'demo/cross/blinky/build/80x86/linux_st/gnu'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
     push:
         branches:
-        - develop
+            - develop
         paths:
-        - '.github/workflows/ceedling-test.yml'
-        - 'tools/ci/demo-test.sh'
-        - 'demo/cross/blinky/*.[ch]'
-        - 'demo/cross/blinky/build/80x86/linux_st/gnu'
-        - 'source/fwk/**'
-        - 'source/mempool/**'
-        - 'source/queue/**'
-        - 'source/sm/**'
-        - 'source/sma/**'
-        - 'source/tmr/**'
-        - 'source/trc/**'
+            - '.github/workflows/ceedling-test.yml'
+            - 'tools/ci/demo-test.sh'
+            - 'demo/cross/blinky/*.[ch]'
+            - 'demo/cross/blinky/build/80x86/linux_st/gnu'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
 
 jobs:
     unit-test:
