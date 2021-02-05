@@ -34,9 +34,7 @@ jobs:
     unit-test:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v1
-          with:
-            submodules: recursive
+        - uses: actions/checkout@v2
         - name: Run demo test script
           uses: docker://docker.io/leanfrancucci/ceedling:latest
           with:
