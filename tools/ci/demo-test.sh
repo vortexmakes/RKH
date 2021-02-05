@@ -25,7 +25,7 @@ make 2> /dev/null
 if [ $? != '0' ]; then
     echo "[ERROR] Building the application, an error happened ($?)"
     exit 1
-elif [ ! -x $buildDirPath/$appName ]; then
+elif [ ! -x $appName ]; then
     echo "[ERROR] Cannot execute $appName because it does not exist"
     exit 1
 fi
