@@ -137,11 +137,14 @@ rkh_trc_open(void)
             exit(EXIT_FAILURE);
         }
     }
-
-    if (trace_io_tcp_open(config.tcpPort, config.tcpIpAddr, &tsock) < 0)
+    else if (trace_io_tcp_open(config.tcpPort, config.tcpIpAddr, &tsock) < 0)
     {
         printf("Can't open socket %s:%u\n",
                config.tcpIpAddr, config.tcpPort);
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
         exit(EXIT_FAILURE);
     }
 
@@ -155,8 +158,10 @@ rkh_trc_close(void)
     {
         fclose(ftbin);
     }
-
-    trace_io_tcp_close(tsock);
+    else
+    {
+        trace_io_tcp_close(tsock);
+    }
 }
 
 RKH_TS_T
@@ -176,7 +181,10 @@ rkh_trc_flush(void)
         {
             fwrite(d, 1, 1, ftbin);
         }
-        trace_io_tcp_send(tsock, *d);
+        else
+        {
+            trace_io_tcp_send(tsock, *d);
+        }
 	}
 }
 #endif
