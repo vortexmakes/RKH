@@ -18,7 +18,7 @@ on:
         branches:
             - develop
         paths:
-            - '.github/workflows/ceedling-test.yml'
+            - '.github/workflows/demo-test.yml'
             - 'tools/ci/demo-test.sh'
             - 'demo/cross/blinky/*.[ch]'
             - 'demo/cross/blinky/build/80x86/linux_st/gnu'
