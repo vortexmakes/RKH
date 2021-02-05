@@ -3,28 +3,28 @@ name: ceedling-unit-tests
 on:
     pull_request:
         paths:
-        - '.github/workflows/ceedling-test.yml'
-        - 'tools/ceedling/test-all.sh'
-        - 'source/fwk/**'
-        - 'source/mempool/**'
-        - 'source/queue/**'
-        - 'source/sm/**'
-        - 'source/sma/**'
-        - 'source/tmr/**'
-        - 'source/trc/**'
+            - '.github/workflows/ceedling-test.yml'
+            - 'tools/ceedling/test-all.sh'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
     push:
         branches:
         - develop
         paths:
-        - '.github/workflows/ceedling-test.yml'
-        - 'tools/ceedling/test-all.sh'
-        - 'source/fwk/**'
-        - 'source/mempool/**'
-        - 'source/queue/**'
-        - 'source/sm/**'
-        - 'source/sma/**'
-        - 'source/tmr/**'
-        - 'source/trc/**'
+            - '.github/workflows/ceedling-test.yml'
+            - 'tools/ceedling/test-all.sh'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
 
 jobs:
     unit-test:
