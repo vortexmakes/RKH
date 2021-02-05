@@ -180,6 +180,7 @@ rkh_trc_flush(void)
         if (ftbin != NULL)
         {
             fwrite(d, 1, 1, ftbin);
+            fflush(ftbin);
         }
         else
         {
