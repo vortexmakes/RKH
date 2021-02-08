@@ -6,11 +6,17 @@ import os
 import shutil
 import tarfile
 import git
+from git import RemoteProgress
 import re
 from datetime import date
 import fileinput
   
 GitHostURL = 'https://github.com/'
+
+class MyProgressPrinter(RemoteProgress):
+    def update(self, op_code, cur_count, max_count=None, message=''):
+        print(op_code, cur_count, max_count, 
+              cur_count / (max_count or 100.0), message or "NO MESSAGE")
 
 parser = argparse.ArgumentParser(
             add_help=True,
@@ -22,11 +28,12 @@ parser.add_argument('version', action="store",
                     help='desired version. For example, 1.2.3 or 1.2.3-beta.1')
 parser.add_argument('repository', action="store", 
                     help='specifies the repository info <owner>/<name>. '
-                         'For example, itdelsat/CIM-ARM')
+                         'For example, vortexmakes/RKH')
 parser.add_argument('working', action="store", 
                     help='specifies the working directory')
-parser.add_argument('changelog', action="store", 
-                    help='text file describing the contents of the release')
+parser.add_argument('changelog', metavar='changelog-file', 
+                    type=argparse.FileType('rt'), 
+                    help='text file describing code changes')
 parser.add_argument('token', action="store", metavar='token', 
                     help='personal access token')
 parser.add_argument('-b', action="store", metavar='branch', default='master', 
@@ -45,7 +52,10 @@ def updateVersion(repoPath, relVersion):
     versionFilePath = os.path.join(repoPath, 'source/fwk/inc/rkhfwk_version.h')
     relVersionNum = relVersion.replace('.', '')
     today = date.today().strftime("%m/%d/%Y")
+    isFoundVersionPattern = None
+    isFoundDatePattern = None
 
+    printTitle("Updating version")
     with fileinput.FileInput(versionFilePath, inplace = True) as verFile:
         for line in verFile:
             matchVersion = re.search(r"^#define\sRKH_VERSION_CODE\s+0x(?P<code>[0-9]{4})", line)
@@ -54,14 +64,25 @@ def updateVersion(repoPath, relVersion):
                 if matchVersion.group('code') != relVersionNum:
                     print(line.replace(matchVersion.group('code'), 
                                        relVersionNum), end = '')
+                    isFoundVersionPattern = True
             elif matchDate:
                 if matchDate.group('date') != today:
                     print(line.replace(matchDate.group('date'), today), end = '')
+                    isFoundDatePattern = True
             else:
                 print(line, end = '')
 
+    if isFoundDatePattern and isFoundVersionPattern:
+        print("Updated version: {}".format(relVersion))
+        print("Updated version date: {}".format(today))
+    else:
+        print("[ERROR] Unknown version file format")
+
 def updateChangeLog():
     return
+
+def updateBranches(repo):
+    print("Updating default branch from develop")
 
 def genDoc(repoPath):
     printTitle("Generating doc (html) using doxygen")
@@ -88,19 +109,37 @@ def deploy(version, repository, workingDir, changelog, token,
         if not os.path.isdir(os.path.join(repoPath, '.git')):
             repoUrl = GitHostURL + repository + '.git'
             print("Cloning repository from {}...".format(repoUrl))
-            repo = git.Repo.clone_from(repoUrl, repoPath)
+            repo = git.Repo.clone_from(repoUrl, repoPath, 
+                                       progress=MyProgressPrinter())
+            # Setup a local tracking branch of a remote branch
+            ## create local branch "master" from remote "master"
+            origin = repo.remotes['origin']
+            repo.create_head('develop', origin.refs.develop)
+            ## set local "develop" to track remote "develop"
+            repo.heads.develop.set_tracking_branch(origin.refs.develop)
+            ## checkout local "develop" to working tree
+            repo.heads.develop.checkout()
             print("Done")
         else:
             repo = git.Repo(repoPath)
             print('Repository {0:s} found in {1:s}'.format(repoName, repoPath))
-        head = repo.active_branch
-        if head.name != 'master':
-            print("[WARNING] Must be realeased only from master branch")
+            if repo.is_dirty():
+                print("[ERROR] Repository is dirty:")
+                print("{}".format(repo.git.diff('--name-only')))
+                return
+            if repo.active_branch.name != 'develop':
+                print("[ERROR] It process must only be performed on " +
+                      "develop branch")
+                return
+            origin = repo.remotes['origin']
+            origin.pull(progress=MyProgressPrinter())
 
-#       updateVersion(repoPath, version)
+        updateVersion(repoPath, version)
 #       updateChangeLog()
 #       genDoc(repoPath)
-#       publish()
+#       publishDoc()
+#       updateBranches(repo)
+#       updateDftBranch()
 #       createPackage()
 #       release()
     else:
