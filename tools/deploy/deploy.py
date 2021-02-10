@@ -24,11 +24,111 @@ RelFileTail = '''
 */
 '''
 
-MsgType = {"new": 'new', 
-           "bugfix": 'bugFix', 
-           "apichg": 'apichg', 
-           "deprecated": 'par Deprecated features',
-           "note": 'warning'}
+RelMsgHeader = '''
+'''
+
+RelMsgTail = '''
+'''
+
+class Release:
+    header = ""
+    tail = ""
+    version = ""
+    date = ""
+    new = []
+    bugfix = []
+    apichg = []
+    deprecated = []
+    port = []
+    note = []
+
+    def __init__(self, relDic):
+        self.version = relDic['version']
+        self.date = relDic['date']
+        self.new = relDic['new']
+        self.bugfix = relDic['bugfix']
+        self.apichg = relDic['apichg']
+        self.deprecated = relDic['deprecated']
+        self.port = relDic['port']
+        self.note = relDic['note']
+
+    def message(self, kindOf, messages):
+        section = ""
+        if len(messages) != 0:
+            section = "{}\n".format(self.MsgType[kindOf])
+            for line in messages:
+                section += "- " + line + '\n'
+            section += '\n'
+        return section
+
+class RelMsg(Release):
+    HeaderText = ""
+    TailText = ""
+    MsgType = {"new": '**New features**',
+               "bugfix": '**Bug fixes**', 
+               "apichg": '**API changes**',
+               "deprecated": '**Deprecated features**',
+               "note": '**Notes**'}
+
+    def __init__(self, relDic):
+        super().__init__(relDic)
+        self.header = self.HeaderText
+        self.tail = self.TailText
+
+    def news(self):
+        return self.message('new', self.new)
+
+    def bugfixes(self):
+        return self.message('bugfix', self.bugfix)
+
+    def apichanges(self):
+        return self.message('apichg', self.apichg)
+
+    def deprecatedFeatures(self):
+        return self.message('deprecated', self.deprecated)
+
+    def notes(self):
+        return self.message('note', self.note)
+
+class RelLog(Release):
+    HeaderText = "/**\n\page changelog Release Notes\n\n\\tableofcontents\n\n"
+    TailText = "\n*/"
+    MsgType = {"new": '\\new',
+               "bugfix": '\\bugfix', 
+               "apichg": '\\apichg',
+               "deprecated": '\\deprecated',
+               "note": '\\warning'}
+
+    def __init__(self, relDic):
+        super().__init__(relDic)
+        self.header = self.HeaderText
+        self.tail = self.TailText
+
+    def section(self):
+        verCode = self.version.split('.')
+        line = "\section rkhVer_"
+        line += "{0:s}_{1:s}_{2:s} ".format(verCode[0], verCode[1], verCode[2])
+        line += "Version {}\n".format(self.version)
+        return line
+
+    def relDate(self):
+        line = "\\releasedate {}\n\n".format(self.date)
+        return line
+
+    def news(self):
+        return self.message('new', self.new)
+
+    def bugfixes(self):
+        return self.message('bugfix', self.bugfix)
+
+    def apichanges(self):
+        return self.message('apichg', self.apichg)
+
+    def deprecatedFeatures(self):
+        return self.message('deprecated', self.deprecated)
+
+    def notes(self):
+        return self.message('note', self.note)
 
 class MyProgressPrinter(RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
@@ -95,26 +195,6 @@ def updateVersion(repoPath, relVersion):
     else:
         print("[ERROR] Unknown version file format")
 
-def getSection(version):
-    verCode = version.split('.')
-    line = "\section rkhVer_"
-    line += "{0:s}_{1:s}_{2:s} ".format(verCode[0], verCode[1], verCode[2])
-    line += "Version {}\n".format(version)
-    return line
-
-def getDate(date):
-    line = "\\releasedate {}\n\n".format(date)
-    return line
-
-def getMessage(msgType, messages):
-    section = ""
-    if len(messages) != 0:
-        section = "\\{}\n".format(MsgType[msgType])
-        for line in messages:
-            section += "- " + line + '\n'
-        section += '\n'
-    return section
-
 def genChangeLog(repo, inFilePath, outFilePath):
     if os.path.exists(inFilePath):
         with open(outFilePath, "w+") as relfile:
@@ -123,23 +203,47 @@ def genChangeLog(repo, inFilePath, outFilePath):
             jsonFile = open(inFilePath, 'r')
             releases = json.load(jsonFile)
             jsonFile.close()
-            for release in releases:
-                line = getSection(release['version']) 
-                relfile.write(line)
-                line = getDate(release['date'])
-                relfile.write(line)
-                line = getMessage('new', release['new'])
-                relfile.write(line)
-                line = getMessage('bugfix', release['bugfix'])
-                relfile.write(line)
-                line = getMessage('apichg', release['apichg'])
-                relfile.write(line)
-                line = getMessage('deprecated', release['deprecated'])
-                relfile.write(line)
-                line = getMessage('note', release['note'])
-                relfile.write(line)
 
-            relfile.write(RelFileTail)      # Add the tail file
+            latest = RelMsg(releases[0])
+            relfile.write(latest.header)    # Add the message header
+
+            for release in releases:
+                rel = RelLog(release)
+                text = rel.section() 
+                relfile.write(text)
+                text = rel.relDate()
+                relfile.write(text)
+                text = rel.news()
+                relfile.write(text)
+                text = rel.bugfixes()
+                relfile.write(text)
+                text = rel.apichanges()
+                relfile.write(text)
+                text = rel.deprecatedFeatures()
+                relfile.write(text)
+                text = rel.notes()
+                relfile.write(text)
+
+            relfile.write(latest.tail)      # Add the tail file
+    else:
+        print("[ERROR] Release file {} does not exist".format(jsonFile))
+    return
+
+def genRelMsg(repo, inFilePath):
+    if os.path.exists(inFilePath):
+        jsonFile = open(inFilePath, 'r')
+        releases = json.load(jsonFile)
+        jsonFile.close()
+        release = RelMsg(releases[0])
+        text = release.header     # Add the message header
+        ###
+        text += release.news()
+        text += release.bugfixes()
+        text += release.apichanges()
+        text += release.deprecatedFeatures()
+        text += release.notes()
+        text += release.tail       # Add the message tail
+        print(text)
     else:
         print("[ERROR] Release file {} does not exist".format(jsonFile))
     return
@@ -200,6 +304,7 @@ def deploy(version, repository, workingDir, changelog, token,
 #       updateVersion(repoPath, version)
         genChangeLog(repo, os.path.join(repo.working_dir, 'changelog.json'),
                      os.path.join(repo.working_dir, 'chglog.txt'))
+        genRelMsg(repo, os.path.join(repo.working_dir, 'changelog.json'))
 #       genDoc(repoPath)
 #       publishDoc()
 #       updateBranches(repo)
