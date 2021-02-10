@@ -10,8 +10,25 @@ from git import RemoteProgress
 import re
 from datetime import date
 import fileinput
+import json
   
 GitHostURL = 'https://github.com/'
+RelFileHeader = '''
+/**
+\page changelog Release Notes
+
+\\tableofcontents
+
+'''
+RelFileTail = '''
+*/
+'''
+
+MsgType = {"new": 'new', 
+           "bugfix": 'bugFix', 
+           "apichg": 'apichg', 
+           "deprecated": 'par Deprecated features',
+           "note": 'warning'}
 
 class MyProgressPrinter(RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
@@ -78,7 +95,53 @@ def updateVersion(repoPath, relVersion):
     else:
         print("[ERROR] Unknown version file format")
 
-def updateChangeLog():
+def getSection(version):
+    verCode = version.split('.')
+    line = "\section rkhVer_"
+    line += "{0:s}_{1:s}_{2:s} ".format(verCode[0], verCode[1], verCode[2])
+    line += "Version {}\n".format(version)
+    return line
+
+def getDate(date):
+    line = "\\releasedate {}\n\n".format(date)
+    return line
+
+def getMessage(msgType, messages):
+    section = ""
+    if len(messages) != 0:
+        section = "\\{}\n".format(MsgType[msgType])
+        for line in messages:
+            section += "- " + line + '\n'
+        section += '\n'
+    return section
+
+def genChangeLog(repo, inFilePath, outFilePath):
+    if os.path.exists(inFilePath):
+        with open(outFilePath, "w+") as relfile:
+            relfile.write(RelFileHeader)    # Add the header file
+
+            jsonFile = open(inFilePath, 'r')
+            releases = json.load(jsonFile)
+            jsonFile.close()
+            for release in releases:
+                line = getSection(release['version']) 
+                relfile.write(line)
+                line = getDate(release['date'])
+                relfile.write(line)
+                line = getMessage('new', release['new'])
+                relfile.write(line)
+                line = getMessage('bugfix', release['bugfix'])
+                relfile.write(line)
+                line = getMessage('apichg', release['apichg'])
+                relfile.write(line)
+                line = getMessage('deprecated', release['deprecated'])
+                relfile.write(line)
+                line = getMessage('note', release['note'])
+                relfile.write(line)
+
+            relfile.write(RelFileTail)      # Add the tail file
+    else:
+        print("[ERROR] Release file {} does not exist".format(jsonFile))
     return
 
 def updateBranches(repo):
@@ -134,8 +197,9 @@ def deploy(version, repository, workingDir, changelog, token,
             origin = repo.remotes['origin']
             origin.pull(progress=MyProgressPrinter())
 
-        updateVersion(repoPath, version)
-#       updateChangeLog()
+#       updateVersion(repoPath, version)
+        genChangeLog(repo, os.path.join(repo.working_dir, 'changelog.json'),
+                     os.path.join(repo.working_dir, 'chglog.txt'))
 #       genDoc(repoPath)
 #       publishDoc()
 #       updateBranches(repo)
