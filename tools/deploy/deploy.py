@@ -11,24 +11,12 @@ import re
 from datetime import date
 import fileinput
 import json
+import subprocess
+from rkhupdoc import uploadDoc
   
 GitHostURL = 'https://github.com/'
-RelFileHeader = '''
-/**
-\page changelog Release Notes
-
-\\tableofcontents
-
-'''
-RelFileTail = '''
-*/
-'''
-
-RelMsgHeader = '''
-'''
-
-RelMsgTail = '''
-'''
+CHANGELOG_PATH = 'tools/deploy/changelog.json'
+DOC_CHANGELOG_PATH = 'doc/chglog.txt'
 
 class Release:
     header = ""
@@ -61,20 +49,6 @@ class Release:
             section += '\n'
         return section
 
-class RelMsg(Release):
-    HeaderText = ""
-    TailText = ""
-    MsgType = {"new": '**New features**',
-               "bugfix": '**Bug fixes**', 
-               "apichg": '**API changes**',
-               "deprecated": '**Deprecated features**',
-               "note": '**Notes**'}
-
-    def __init__(self, relDic):
-        super().__init__(relDic)
-        self.header = self.HeaderText
-        self.tail = self.TailText
-
     def news(self):
         return self.message('new', self.new)
 
@@ -89,6 +63,20 @@ class RelMsg(Release):
 
     def notes(self):
         return self.message('note', self.note)
+
+class RelMsg(Release):
+    HeaderText = ""
+    TailText = ""
+    MsgType = {"new": '**New features**',
+               "bugfix": '**Bug fixes**', 
+               "apichg": '**API changes**',
+               "deprecated": '**Deprecated features**',
+               "note": '**Notes**'}
+
+    def __init__(self, relDic):
+        super().__init__(relDic)
+        self.header = self.HeaderText
+        self.tail = self.TailText
 
 class RelLog(Release):
     HeaderText = "/**\n\page changelog Release Notes\n\n\\tableofcontents\n\n"
@@ -115,21 +103,6 @@ class RelLog(Release):
         line = "\\releasedate {}\n\n".format(self.date)
         return line
 
-    def news(self):
-        return self.message('new', self.new)
-
-    def bugfixes(self):
-        return self.message('bugfix', self.bugfix)
-
-    def apichanges(self):
-        return self.message('apichg', self.apichg)
-
-    def deprecatedFeatures(self):
-        return self.message('deprecated', self.deprecated)
-
-    def notes(self):
-        return self.message('note', self.note)
-
 class MyProgressPrinter(RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
         print(op_code, cur_count, max_count, 
@@ -148,9 +121,6 @@ parser.add_argument('repository', action="store",
                          'For example, vortexmakes/RKH')
 parser.add_argument('working', action="store", 
                     help='specifies the working directory')
-parser.add_argument('changelog', metavar='changelog-file', 
-                    type=argparse.FileType('rt'), 
-                    help='text file describing code changes')
 parser.add_argument('token', action="store", metavar='token', 
                     help='personal access token')
 parser.add_argument('-b', action="store", metavar='branch', default='master', 
@@ -165,6 +135,12 @@ def printTitle(title):
     print("\n{}".format(title))
     print("{}".format('-' * len(title)))
 
+def printTaskTitle(title):
+    print("{}...".format(title))
+
+def printTaskDone():
+    print("{}".format('Done'))
+
 def updateVersion(repoPath, relVersion):
     versionFilePath = os.path.join(repoPath, 'source/fwk/inc/rkhfwk_version.h')
     relVersionNum = relVersion.replace('.', '')
@@ -172,7 +148,7 @@ def updateVersion(repoPath, relVersion):
     isFoundVersionPattern = None
     isFoundDatePattern = None
 
-    printTitle("Updating version")
+    printTaskTitle("Updating version")
     with fileinput.FileInput(versionFilePath, inplace = True) as verFile:
         for line in verFile:
             matchVersion = re.search(r"^#define\sRKH_VERSION_CODE\s+0x(?P<code>[0-9]{4})", line)
@@ -196,16 +172,15 @@ def updateVersion(repoPath, relVersion):
         print("[ERROR] Unknown version file format")
 
 def genChangeLog(repo, inFilePath, outFilePath):
+    printTaskTitle("Generating change log file")
     if os.path.exists(inFilePath):
+        jsonFile = open(inFilePath, 'r')
+        releases = json.load(jsonFile)
+        jsonFile.close()
+
         with open(outFilePath, "w+") as relfile:
-            relfile.write(RelFileHeader)    # Add the header file
-
-            jsonFile = open(inFilePath, 'r')
-            releases = json.load(jsonFile)
-            jsonFile.close()
-
             latest = RelMsg(releases[0])
-            relfile.write(latest.header)    # Add the message header
+            relfile.write(latest.header)    # Add the header file
 
             for release in releases:
                 rel = RelLog(release)
@@ -225,25 +200,30 @@ def genChangeLog(repo, inFilePath, outFilePath):
                 relfile.write(text)
 
             relfile.write(latest.tail)      # Add the tail file
+            printTaskDone()
     else:
         print("[ERROR] Release file {} does not exist".format(jsonFile))
     return
 
 def genRelMsg(repo, inFilePath):
+    printTaskTitle("Generating release message")
     if os.path.exists(inFilePath):
         jsonFile = open(inFilePath, 'r')
         releases = json.load(jsonFile)
         jsonFile.close()
+
         release = RelMsg(releases[0])
         text = release.header     # Add the message header
-        ###
+
         text += release.news()
         text += release.bugfixes()
         text += release.apichanges()
         text += release.deprecatedFeatures()
         text += release.notes()
+
         text += release.tail       # Add the message tail
-        print(text)
+        printTaskDone()
+        return text
     else:
         print("[ERROR] Release file {} does not exist".format(jsonFile))
     return
@@ -252,20 +232,26 @@ def updateBranches(repo):
     print("Updating default branch from develop")
 
 def genDoc(repoPath):
-    printTitle("Generating doc (html) using doxygen")
-    curDir = os.getcwd()
-    os.chdir(os.path.join(repoPath, "doc"))
-    os.system('doxygen Doxyfile')
-    os.chdir(curDir)
-    print("Done")
+    printTaskTitle("Generating doc (html) using doxygen")
+    docPath = os.path.join(repoPath, 'doc')
+    proc = subprocess.run("doxygen Doxyfile", shell=True, 
+                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
+                          cwd=docPath)
+    if proc.returncode != 0:
+        print("[ERROR] Doxygen fails:\n{}".format(proc.stdout))
+    else:
+        printTaskDone()
 
-def deploy(version, repository, workingDir, changelog, token, 
+def publishDoc(server, user, passwd, dest, doc):
+    uploadDoc(server, user, passwd, dest, doc)
+
+def deploy(version, repository, workingDir, token, 
            branch = "master", draft = False, prerelease = False):
     workingDir = os.path.expanduser(workingDir)
     repoName = repository.split('/')[-1]
     repoPath = os.path.join(workingDir, repoName)
 
-    printTitle("Verifying directories, files and version")
+    printTaskTitle("Verifying directories, files and code version")
     if not re.match(r'[0-9].[0-9].[0-9]{2}', version):
         print("[ERROR] Invalid version code: {}".format(version))
         return
@@ -286,7 +272,7 @@ def deploy(version, repository, workingDir, changelog, token,
             repo.heads.develop.set_tracking_branch(origin.refs.develop)
             ## checkout local "develop" to working tree
             repo.heads.develop.checkout()
-            print("Done")
+            printTaskDone()
         else:
             repo = git.Repo(repoPath)
             print('Repository {0:s} found in {1:s}'.format(repoName, repoPath))
@@ -300,17 +286,22 @@ def deploy(version, repository, workingDir, changelog, token,
                 return
             origin = repo.remotes['origin']
             origin.pull(progress=MyProgressPrinter())
+            printTaskDone()
 
 #       updateVersion(repoPath, version)
-        genChangeLog(repo, os.path.join(repo.working_dir, 'changelog.json'),
-                     os.path.join(repo.working_dir, 'chglog.txt'))
-        genRelMsg(repo, os.path.join(repo.working_dir, 'changelog.json'))
+        genChangeLog(repo, os.path.join(repo.working_dir, CHANGELOG_PATH),
+                     os.path.join(repo.working_dir, DOC_CHANGELOG_PATH))
+        relMsg = genRelMsg(repo, os.path.join(repo.working_dir, CHANGELOG_PATH))
 #       genDoc(repoPath)
-#       publishDoc()
+#       publishDoc('ftp.vortexmakes.com',
+#                  'webmaster.vortexmakes.com',
+#                  'V0rt3xM4k35!',
+#                  'htdocs/rkh/lolo',
+#                  '~/lolo/')
 #       updateBranches(repo)
 #       updateDftBranch()
 #       createPackage()
-#       release()
+#       release(relMsg)
     else:
         print("ERROR: {0:s} does not exist".format(workingDir))
     return False
@@ -318,7 +309,7 @@ def deploy(version, repository, workingDir, changelog, token,
 if __name__ == "__main__":
     try:
         args = parser.parse_args(sys.argv[1:])
-        deploy(args.version, args.repository, args.working, args.changelog, 
+        deploy(args.version, args.repository, args.working, 
                args.token, args.b, args.d, args.p)
     except IOError as msg:
         parser.error(str(msg))

@@ -71,7 +71,8 @@ def _findFiles(ftp, dirName):
     fileList = []
     foundFiles = []
     ftp.dir(fileList.append)
-    for f in fileList[2:]:
+    for f in fileList[2:]:  # Ignore '.' and '..' directories
+#   for f in fileList:
         split = f.split()
         attribute = split[0]
         name = split[-1]
