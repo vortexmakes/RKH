@@ -249,7 +249,11 @@ def updateBranches(repo):
 
     printTaskTitle("Integrating develop onto master")
     repo.git.checkout('master')
-    repo.git.merge('develop')
+    proc = subprocess.run('git merge develop', shell=True,
+                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
+                          cwd=repo.working_dir)
+    if proc.returncode != 0:
+        raise DeployError("\nAbort: Cannot integrate develop onto master")
     printTaskDone()
 
     printTaskTitle("Updating remote branch develop")
