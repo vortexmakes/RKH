@@ -13,10 +13,14 @@ import fileinput
 import json
 import subprocess
 from rkhupdoc import uploadDoc
+import time
   
 GitHostURL = 'https://github.com/'
 CHANGELOG_PATH = 'tools/deploy/changelog.json'
 DOC_CHANGELOG_PATH = 'doc/chglog.txt'
+
+class DeployError(Exception):
+    pass
 
 class Release:
     header = ""
@@ -169,7 +173,7 @@ def updateVersion(repoPath, relVersion):
         print("Updated version: {}".format(relVersion))
         print("Updated version date: {}".format(today))
     else:
-        print("[ERROR] Unknown version file format")
+        raise DeployError("\nAbort: unknown version file format")
 
 def genChangeLog(repo, inFilePath, outFilePath):
     printTaskTitle("Generating change log file")
@@ -202,7 +206,7 @@ def genChangeLog(repo, inFilePath, outFilePath):
             relfile.write(latest.tail)      # Add the tail file
             printTaskDone()
     else:
-        print("[ERROR] Release file {} does not exist".format(jsonFile))
+        raise DeployError("\nAbort: Release file {} does not exist".format(inFilePath))
     return
 
 def genRelMsg(repo, inFilePath):
@@ -225,11 +229,33 @@ def genRelMsg(repo, inFilePath):
         printTaskDone()
         return text
     else:
-        print("[ERROR] Release file {} does not exist".format(jsonFile))
+        raise DeployError("\nAbort: Release file {} does not exist".format(inFilePath))
     return
 
 def updateBranches(repo):
-    print("Updating default branch from develop")
+    printTaskTitle("Updating branch develop")
+    if repo.active_branch.name == 'develop':
+        mfiles = repo.git.diff('--name-only').split('\n')
+        files = ['doc/chglog.txt', 'source/fwk/inc/rkhfwk_version.h']
+        if files == mfiles:
+            repo.index.add(mfiles)
+            repo.index.commit("Updated version and log of code changes")
+            print('Committed {} files'.format(mfiles))
+            printTaskDone()
+        else:
+            raise DeployError("\nAbort: Cannot update develop branch")
+    else:
+        raise DeployError("\nAbort: Cannot update develop branch")
+
+    printTaskTitle("Integrating develop onto master")
+    repo.git.checkout('master')
+    repo.git.merge('develop')
+    printTaskDone()
+
+    printTaskTitle("Updating remote branch develop")
+    printTaskDone()
+    printTaskTitle("Updating remote branch master")
+    printTaskDone()
 
 def genDoc(repoPath):
     printTaskTitle("Generating doc (html) using doxygen")
@@ -238,7 +264,7 @@ def genDoc(repoPath):
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
                           cwd=docPath)
     if proc.returncode != 0:
-        print("[ERROR] Doxygen fails:\n{}".format(proc.stdout))
+        raise DeployError("\nAbort: Doxygen fails:\n{}".format(proc.stdout))
     else:
         printTaskDone()
 
@@ -253,8 +279,7 @@ def deploy(version, repository, workingDir, token,
 
     printTaskTitle("Verifying directories, files and code version")
     if not re.match(r'[0-9].[0-9].[0-9]{2}', version):
-        print("[ERROR] Invalid version code: {}".format(version))
-        return
+        raise DeployError("\nAbort: Invalid version code: {}".format(version))
         
     if os.path.isdir(workingDir):
         if not os.path.isdir(repoPath):
@@ -277,18 +302,15 @@ def deploy(version, repository, workingDir, token,
             repo = git.Repo(repoPath)
             print('Repository {0:s} found in {1:s}'.format(repoName, repoPath))
             if repo.is_dirty():
-                print("[ERROR] Repository is dirty:")
-                print("{}".format(repo.git.diff('--name-only')))
-                return
+                raise DeployError("\nAbort: Repository is dirty")
             if repo.active_branch.name != 'develop':
-                print("[ERROR] It process must only be performed on " +
-                      "develop branch")
-                return
+                raise DeployError("\nAbort: It process must only be performed on " +
+                                  "develop branch")
             origin = repo.remotes['origin']
             origin.pull(progress=MyProgressPrinter())
             printTaskDone()
 
-#       updateVersion(repoPath, version)
+        updateVersion(repoPath, version)
         genChangeLog(repo, os.path.join(repo.working_dir, CHANGELOG_PATH),
                      os.path.join(repo.working_dir, DOC_CHANGELOG_PATH))
         relMsg = genRelMsg(repo, os.path.join(repo.working_dir, CHANGELOG_PATH))
@@ -298,12 +320,11 @@ def deploy(version, repository, workingDir, token,
 #                  'V0rt3xM4k35!',
 #                  'htdocs/rkh/lolo',
 #                  '~/lolo/')
-#       updateBranches(repo)
-#       updateDftBranch()
+        updateBranches(repo)
 #       createPackage()
 #       release(relMsg)
     else:
-        print("ERROR: {0:s} does not exist".format(workingDir))
+        raise DeployError("\nAbort: {0:s} does not exist".format(workingDir))
     return False
 
 if __name__ == "__main__":
@@ -313,3 +334,5 @@ if __name__ == "__main__":
                args.token, args.b, args.d, args.p)
     except IOError as msg:
         parser.error(str(msg))
+    except DeployError as e:
+        print(e)
