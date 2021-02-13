@@ -63,10 +63,8 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-#define LIBRARY_MAX_SYSCALL_IRQ_PRIORITY    5
-
 #define MAX_SYSCALL_IRQ_PRIORITY \
-                   (LIBRARY_MAX_SYSCALL_IRQ_PRIORITY << (8-__NVIC_PRIO_BITS))
+                   (RKH_CFG_FWK_AWARE_ISR_PRIO << (8-__NVIC_PRIO_BITS))
 
 
 #define RKH_CPUSR_TYPE                  uint32_t 

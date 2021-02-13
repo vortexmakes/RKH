@@ -81,7 +81,8 @@ static RKH_EVT_T evt;
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
-createMultipleTimers(RKH_TNT_T nTick0, RKH_TNT_T nTick1, RKH_TNT_T nTick2)
+createMultipleTimers(RKH_TNT_T nTick0, RKH_TNT_T nTick1, RKH_TNT_T nTick2,
+                     bool areOneshot)
 {
     rkh_enter_critical_Ignore();
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
@@ -90,11 +91,11 @@ createMultipleTimers(RKH_TNT_T nTick0, RKH_TNT_T nTick1, RKH_TNT_T nTick2)
 
     rkh_tmr_init();
     RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr0, &ao, nTick0, 0);
+    rkh_tmr_start(&tmr0, &ao, nTick0, (areOneshot == true) ? 0 : nTick0);
     RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr1, &ao, nTick1, 0);
+    rkh_tmr_start(&tmr1, &ao, nTick1, (areOneshot == true) ? 0 : nTick1);
     RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
-    rkh_tmr_start(&tmr2, &ao, nTick2, 0);
+    rkh_tmr_start(&tmr2, &ao, nTick2, (areOneshot == true) ? 0 : nTick2);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -133,11 +134,17 @@ test_InitializeATimer(void)
     rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
     rkh_exit_critical_Ignore();
 
+    tmr.evt = 0;
+    tmr.ntick = 0xde;
+    tmr.used = 1;
+    tmr.tnext = (RKH_TMR_T *)0xdead;
+    rkh_tmr_init();
     RKH_TMR_INIT(&tmr, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
 
     TEST_ASSERT_EQUAL(&evt, tmr.evt);
     TEST_ASSERT_EQUAL(0, tmr.ntick);
     TEST_ASSERT_EQUAL(0, tmr.used);
+    TEST_ASSERT_EQUAL((RKH_TMR_T *)0xdead, tmr.tnext);
 }
 
 void
@@ -204,7 +211,7 @@ test_StartTheSameTimerManyTimes(void)
 void
 test_StartManyTimers(void)
 {
-    createMultipleTimers(8, 4, 2);
+    createMultipleTimers(8, 4, 2, true);
     TEST_ASSERT_EQUAL(&tmr1, tmr2.tnext);
     TEST_ASSERT_EQUAL(&tmr0, tmr1.tnext);
     TEST_ASSERT_EQUAL(0, tmr0.tnext);
@@ -216,7 +223,7 @@ test_StopAndImmediatelyStartTheSameTimer(void)
     rbool_t wasStarted;
     RKH_TNT_T nTick = 4;
 
-    createMultipleTimers(8, 6, nTick);
+    createMultipleTimers(8, 6, nTick, true);
 
     rkh_tmr_tick(0);
     wasStarted = rkh_tmr_stop(&tmr2);
@@ -239,7 +246,7 @@ void
 test_StopATimerAtTheBeginningOfTheList(void)
 {
     rbool_t wasStarted;
-    createMultipleTimers(8, 4, 2);
+    createMultipleTimers(8, 4, 2, true);
 
     wasStarted = rkh_tmr_stop(&tmr2);
     rkh_tmr_tick(0);
@@ -253,7 +260,7 @@ void
 test_StopATimerAtTheMiddleOfTheList(void)
 {
     rbool_t wasStarted;
-    createMultipleTimers(8, 4, 2);
+    createMultipleTimers(8, 4, 2, true);
 
     wasStarted = rkh_tmr_stop(&tmr1);
     rkh_tmr_tick(0);
@@ -268,7 +275,7 @@ void
 test_StopATimerAtTheEndOfTheList(void)
 {
     rbool_t wasStarted;
-    createMultipleTimers(8, 4, 2);
+    createMultipleTimers(8, 4, 2, true);
 
     wasStarted = rkh_tmr_stop(&tmr0);
     rkh_tmr_tick(0);
@@ -323,7 +330,7 @@ test_StopATimerInAnEmptyList(void)
 void
 test_StopAllTimers(void)
 {
-    createMultipleTimers(8, 4, 2);
+    createMultipleTimers(8, 4, 2, true);
     rkh_tmr_init();
     rkh_tmr_tick(0);
 
@@ -582,6 +589,267 @@ test_ReinitializeTheSecondTimerInTheList(void)
     rkh_tmr_tick(0);
     TEST_ASSERT_EQUAL(0, tmr0.ntick);
     TEST_ASSERT_EQUAL(nTicks - 3, tmr1.ntick);
+}
+
+void
+test_ReinitializeAndRestartOneStartedOneshotTimer(void)
+{
+    RKH_TNT_T nTicks;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr0);
+
+    nTicks = 2;
+    rkh_tmr_init();
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, nTicks, 0);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    TEST_ASSERT_NULL(tmr0.tnext);
+    rkh_tmr_start(&tmr0, &ao, nTicks, 0);
+    TEST_ASSERT_NULL(tmr0.tnext);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+}
+
+void
+test_InitializeATimerInAnEmptyList(void)
+{
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    tmr0.used = 1;
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_tick(0);
+}
+
+void
+test_ReinitializeAndRestartATimerAtTheBeginningOfTheList(void)
+{
+    RKH_TNT_T nTicks = 3;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr2);
+
+    rkh_tmr_init();
+    createMultipleTimers(8, 4, 2, true);
+
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, nTicks, 0);
+    TEST_ASSERT_EQUAL(nTicks, tmr2.ntick);
+    TEST_ASSERT_EQUAL(tmr2.tnext, &tmr1);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr2.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr2.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr2.ntick);
+}
+
+void
+test_ReinitializeAndRestartATimerAtTheMiddleOfTheList(void)
+{
+    RKH_TNT_T nTicks = 3;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr1);
+
+    rkh_tmr_init();
+    createMultipleTimers(8, 2, 4, true);
+
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, nTicks, 0);
+    TEST_ASSERT_EQUAL(tmr1.tnext, &tmr2);
+    TEST_ASSERT_EQUAL(nTicks, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr1.ntick);
+}
+
+void
+test_ReinitializeAndRestartATimerAtTheEndOfTheList(void)
+{
+    RKH_TNT_T nTicks = 3;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr0);
+
+    rkh_tmr_init();
+    createMultipleTimers(8, 6, 4, true);
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, nTicks, 0);
+    TEST_ASSERT_EQUAL(tmr0.tnext, &tmr2);
+    TEST_ASSERT_EQUAL(nTicks, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(0, tmr0.ntick);
+}
+
+void
+test_ReinitializeAndRestartOneStartedPeriodicTimer(void)
+{
+    RKH_TNT_T nTicks;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr0);
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr0);
+
+    nTicks = 2;
+    rkh_tmr_init();
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, nTicks, nTicks);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks, tmr0.ntick);
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    TEST_ASSERT_NULL(tmr0.tnext);
+    rkh_tmr_start(&tmr0, &ao, nTicks, nTicks);
+    TEST_ASSERT_NULL(tmr0.tnext);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks, tmr0.ntick);
+}
+
+void
+test_ReinitializeAndRestartAPeriodicTimerAtTheBeginningOfTheList(void)
+{
+    RKH_TNT_T nTicks = 3;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr2);
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr2);
+
+    rkh_tmr_init();
+    createMultipleTimers(8, 6, 2, false);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(1, tmr2.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(2, tmr2.ntick);
+
+    RKH_TMR_INIT(&tmr2, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr2, &ao, nTicks, nTicks);
+    TEST_ASSERT_EQUAL(tmr2.tnext, &tmr1);
+    TEST_ASSERT_EQUAL(nTicks, tmr2.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr2.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr2.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks, tmr2.ntick);
+}
+
+void
+test_ReinitializeAndRestartAPeriodicTimerAtTheMiddleOfTheList(void)
+{
+    RKH_TNT_T nTicks = 3;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr1);
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr1);
+
+    rkh_tmr_init();
+    createMultipleTimers(8, 2, 6, false);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(1, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(2, tmr1.ntick);
+
+    RKH_TMR_INIT(&tmr1, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr1, &ao, nTicks, nTicks);
+    TEST_ASSERT_EQUAL(tmr1.tnext, &tmr2);
+    TEST_ASSERT_EQUAL(nTicks, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr1.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks, tmr1.ntick);
+}
+
+void
+test_ReinitializeAndRestartAPeriodicTimerAtTheEndOfTheList(void)
+{
+    RKH_TNT_T nTicks = 3;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr0);
+    rkh_sma_post_fifo_Expect(&ao, &evt, &tmr0);
+
+    rkh_tmr_init();
+    createMultipleTimers(2, 6, 8, false);
+
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(1, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(2, tmr0.ntick);
+
+    RKH_TMR_INIT(&tmr0, RKH_UPCAST(RKH_EVT_T, &evt), NULL);
+    rkh_tmr_start(&tmr0, &ao, nTicks, nTicks);
+    TEST_ASSERT_EQUAL(tmr0.tnext, &tmr2);
+    TEST_ASSERT_EQUAL(nTicks, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 1, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks - 2, tmr0.ntick);
+    rkh_tmr_tick(0);
+    TEST_ASSERT_EQUAL(nTicks, tmr0.ntick);
+}
+
+void
+test_TickWithEmptyList(void)
+{
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_hook_timetick_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_tmr_init();
+    rkh_tmr_tick(0);
 }
 
 /** @} doxygen end group definition */
