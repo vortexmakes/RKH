@@ -275,6 +275,35 @@ def genDoc(repoPath):
 def publishDoc(server, user, passwd, dest, doc):
     uploadDoc(server, user, passwd, dest, doc)
 
+def createPackage(repo, workingDir, version):
+    printTaskTitle("Exporting Git repository")
+    extractDir = 'tmp_rkh_rel'
+    htmlDirSrc = os.path.join(repo.working_dir, 'doc/html')
+    htmlDirDst = os.path.join(workingDir, extractDir + '/doc/html')
+    releaseOut = 'rkh_v' + version + '.tar.gz'
+    if os.path.isdir(htmlDirSrc):
+        archive = extractDir + '.tar'
+        repo.git.archive('--worktree-attributes', 
+                         '-o',
+                         os.path.join(workingDir, archive),
+                         'develop')
+        print("Extracting archive")
+        shutil.unpack_archive(os.path.join(workingDir, archive), 
+                              os.path.join(workingDir, extractDir), 'tar')
+        print("Copying doc (html) into archive")
+        os.mkdir(htmlDirDst)
+        shutil.copytree(htmlDirSrc, htmlDirDst, dirs_exist_ok=True)
+        print("Packing release package")
+        os.remove(os.path.join(workingDir, archive))
+        fileName = shutil.make_archive(os.path.join(workingDir, extractDir), 
+                                       'gztar', 
+                                       os.path.join(workingDir, extractDir))
+        os.rename(os.path.join(workingDir, fileName),
+                  os.path.join(workingDir, releaseOut))
+    else:
+        raise DeployError("\nAbort: doc/html directory is not found")
+    printTaskDone()
+
 def deploy(version, repository, workingDir, token, 
            branch = "master", draft = False, prerelease = False):
     workingDir = os.path.expanduser(workingDir)
@@ -324,8 +353,8 @@ def deploy(version, repository, workingDir, token,
 #                  'V0rt3xM4k35!',
 #                  'htdocs/rkh/lolo',
 #                  '~/lolo/')
-        updateBranches(repo)
-#       createPackage()
+#       updateBranches(repo)
+        createPackage(repo, workingDir, version)
 #       release(relMsg)
     else:
         raise DeployError("\nAbort: {0:s} does not exist".format(workingDir))
