@@ -14,6 +14,7 @@ import json
 import subprocess
 from rkhupdoc import uploadDoc
 import time
+from release import releasePkg
   
 GitHostURL = 'https://github.com/'
 CHANGELOG_PATH = 'tools/deploy/changelog.json'
@@ -291,7 +292,8 @@ def createPackage(repo, workingDir, version):
         shutil.unpack_archive(os.path.join(workingDir, archive), 
                               os.path.join(workingDir, extractDir), 'tar')
         print("Copying doc (html) into archive")
-        os.mkdir(htmlDirDst)
+        if not os.path.isdir(htmlDirDst):
+            os.mkdir(htmlDirDst)
         shutil.copytree(htmlDirSrc, htmlDirDst, dirs_exist_ok=True)
         print("Packing release package")
         os.remove(os.path.join(workingDir, archive))
@@ -300,9 +302,18 @@ def createPackage(repo, workingDir, version):
                                        os.path.join(workingDir, extractDir))
         os.rename(os.path.join(workingDir, fileName),
                   os.path.join(workingDir, releaseOut))
+        return os.path.join(workingDir, releaseOut)
     else:
         raise DeployError("\nAbort: doc/html directory is not found")
     printTaskDone()
+
+def releasePackage(pkg, version, repository, workingDir, token, 
+                   branch, draft, prerelease, relMsg):
+    changelogPath = os.path.join(workingDir, 'changelog')
+    with open(changelogPath, "w") as clFile:
+        clFile.write(relMsg)
+    releasePkg(version, 'leanfrancucci/ci-test', pkg, changelogPath, token, 
+               branch, draft, prerelease)
 
 def deploy(version, repository, workingDir, token, 
            branch = "master", draft = False, prerelease = False):
@@ -354,8 +365,9 @@ def deploy(version, repository, workingDir, token,
 #                  'htdocs/rkh/lolo',
 #                  '~/lolo/')
 #       updateBranches(repo)
-        createPackage(repo, workingDir, version)
-#       release(relMsg)
+        pkg = createPackage(repo, workingDir, version)
+        releasePackage(pkg, version, repository, workingDir, token, 
+                       branch, draft, prerelease, relMsg)
     else:
         raise DeployError("\nAbort: {0:s} does not exist".format(workingDir))
     return False
