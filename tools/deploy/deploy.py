@@ -14,7 +14,7 @@ import json
 import subprocess
 from rkhupdoc import uploadDoc
 import time
-from release import releasePkg
+#from release import releasePkg
   
 GitHostURL = 'https://github.com/'
 CHANGELOG_PATH = 'tools/deploy/changelog.json'
@@ -263,7 +263,7 @@ def updateBranches(repo):
     printTaskDone()
 
 def genDoc(repoPath):
-    printTaskTitle("Generating doc (html) using doxygen")
+    printTaskTitle("Generating doc (html) using doxygen...")
     docPath = os.path.join(repoPath, 'doc')
     proc = subprocess.run("doxygen Doxyfile", shell=True, 
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
@@ -295,7 +295,7 @@ def createPackage(repo, workingDir, version):
         if not os.path.isdir(htmlDirDst):
             os.mkdir(htmlDirDst)
         shutil.copytree(htmlDirSrc, htmlDirDst, dirs_exist_ok=True)
-        print("Packing release package")
+        print("Compression release package...")
         os.remove(os.path.join(workingDir, archive))
         fileName = shutil.make_archive(os.path.join(workingDir, extractDir), 
                                        'gztar', 
@@ -312,8 +312,24 @@ def releasePackage(pkg, version, repository, workingDir, token,
     changelogPath = os.path.join(workingDir, 'changelog')
     with open(changelogPath, "w") as clFile:
         clFile.write(relMsg)
-    releasePkg(version, 'leanfrancucci/ci-test', pkg, changelogPath, token, 
-               branch, draft, prerelease)
+#   releasePkg(version, 'leanfrancucci/ci-test', pkg, changelogPath, token, 
+#              branch, draft, prerelease)
+    cmd = "./release.sh -v " + version
+#   cmd += " -r " + repository
+    cmd += " -r " + 'leanfrancucci/ci-test'
+    cmd += " -s " + pkg
+    cmd += " -m " + changelogPath
+    cmd += " -t " + token
+    cmd += " -b " + branch
+    cmd += " -d " if draft == True else ''
+    cmd += " -p " if prerelease == True else ''
+    print(cmd)
+    proc = subprocess.run(cmd, shell=True,
+                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    if proc.returncode != 0:
+        raise DeployError("\nAbort: cannot create " +
+                          "the release {0:d}".format(proc.returncode))
+    printTaskDone()
 
 def deploy(version, repository, workingDir, token, 
            branch = "master", draft = False, prerelease = False):
@@ -348,8 +364,8 @@ def deploy(version, repository, workingDir, token,
             if repo.is_dirty():
                 raise DeployError("\nAbort: Repository is dirty")
             if repo.active_branch.name != 'develop':
-                raise DeployError("\nAbort: It process must only be performed on " +
-                                  "develop branch")
+                raise DeployError("\nAbort: It process must only be " + 
+                                  "performed on develop branch")
             origin = repo.remotes['origin']
             origin.pull(progress=MyProgressPrinter())
             printTaskDone()
