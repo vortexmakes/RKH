@@ -82,7 +82,6 @@ get_latest()
 {
     if [ -n $1 ]; then
         response=$(gh_curl -s $github/repos/$1/releases/latest)
-        echo "$response" | jq '.'
         result=$(echo $response | jq "select(.message == \"Not Found\")")
         if [ -n "$result" ]; then
             echo "ERROR: cannot find latest release from $1 repository"
@@ -123,7 +122,6 @@ upload_file()
                         --data-binary @$2 \
                         $upload_url?name=$2)
         result=$(echo $response | jq "select(.message == \"Validation Failed\")")
-        echo "$response" | jq '.'
         if [ -n "$result" ]; then
             result=$(echo $response | jq ".errors | .[0].code")
             echo "ERROR: cannot upload file $2 to $tag_name release. Code from server: $result"
@@ -171,7 +169,6 @@ create_release()
                  "$github/repos/$1/releases"
           )
 
-        echo "$response" | jq '.'
         result=$(echo $response | jq "select(.message == \"Validation Failed\")")
         if [ -n "$result" ]; then
             result=$(echo $response | jq ".errors | .[0].code")
@@ -250,17 +247,36 @@ if [ -z $dir ]; then
     get_tarball $repository
     upload_file $repository $tarball
 elif [ -d $dir ]; then
-    echo "Compressing $dir..."
-    tar -czf $(basename $dir).tar.gz $dir
-    upload_file $repository $(basename $dir).tar.gz
+    dir_path=$(dirname $dir)
+    dir_name=$(basename $dir)
+    file=$dir_name.tar.gz
+    if [ "$dir_path" != "." ]; then
+        if [ -d $PWD/$dir_name ]; then
+            echo "Delete old $dir_name in $PWD"
+            rm -r ./$dir_name
+        fi
+        echo "Copy $dir to $PWD"
+        cp -r $dir .
+    fi
+    echo "Compressing $dir_name..."
+    tar -czf $file $dir_name
+    upload_file $repository $file
+    if [ "$dir_path" != "." ]; then
+        if [ -d $PWD/$dir_name ]; then
+            echo "Delete $dir_name in $PWD"
+            rm -r ./$dir_name
+        fi
+        mv $file $dir_path
+    fi
 elif [ -e $dir ]; then
     ext="${dir##*.}"
     if [ "$ext" == "gz" ]; then
         dir_path=$(dirname $dir)
+        file=$(basename $dir)
         if [[ -n $dir_path && "$dir_path" != "." ]]; then
             cp $dir .
         fi
-        upload_file $repository $(basename $dir)
+        upload_file $repository $file
     fi
 fi
 exit 0
