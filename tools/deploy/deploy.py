@@ -272,6 +272,7 @@ def genDoc(repoPath):
         raise DeployError("\nAbort: Doxygen fails:\n{}".format(proc.stdout))
     else:
         printTaskDone()
+        return os.path.join(docPath, 'html')
 
 def publishDoc(server, user, passwd, dest, doc):
     uploadDoc(server, user, passwd, dest, doc)
@@ -281,7 +282,8 @@ def createPackage(repo, workingDir, version):
     extractDir = 'tmp_rkh_rel'
     htmlDirSrc = os.path.join(repo.working_dir, 'doc/html')
     htmlDirDst = os.path.join(workingDir, extractDir + '/doc/html')
-    releaseOut = 'rkh_v' + version + '.tar.gz'
+    releaseOutDir = 'rkh_v' + version
+    releaseOut = releaseOutDir + '.tar.gz'
     if os.path.isdir(htmlDirSrc):
         archive = extractDir + '.tar'
         repo.git.archive('--worktree-attributes', 
@@ -297,9 +299,11 @@ def createPackage(repo, workingDir, version):
         shutil.copytree(htmlDirSrc, htmlDirDst, dirs_exist_ok=True)
         print("Compression release package...")
         os.remove(os.path.join(workingDir, archive))
-        fileName = shutil.make_archive(os.path.join(workingDir, extractDir), 
+        os.rename(os.path.join(workingDir, extractDir),
+                  os.path.join(workingDir, releaseOutDir))
+        fileName = shutil.make_archive(os.path.join(workingDir, releaseOutDir), 
                                        'gztar', 
-                                       os.path.join(workingDir, extractDir))
+                                       os.path.join(workingDir, releaseOutDir))
         os.rename(os.path.join(workingDir, fileName),
                   os.path.join(workingDir, releaseOut))
         return os.path.join(workingDir, releaseOut)
@@ -315,8 +319,7 @@ def releasePackage(pkg, version, repository, workingDir, token,
 #   releasePkg(version, 'leanfrancucci/ci-test', pkg, changelogPath, token, 
 #              branch, draft, prerelease)
     cmd = "./release.sh -v " + version
-#   cmd += " -r " + repository
-    cmd += " -r " + 'leanfrancucci/ci-test'
+    cmd += " -r " + repository
     cmd += " -s " + pkg
     cmd += " -m " + changelogPath
     cmd += " -t " + token
@@ -327,8 +330,7 @@ def releasePackage(pkg, version, repository, workingDir, token,
     proc = subprocess.run(cmd, shell=True,
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if proc.returncode != 0:
-        raise DeployError("\nAbort: cannot create " +
-                          "the release {0:d}".format(proc.returncode))
+        raise DeployError("\nAbort: {}".format(proc.stdout))
     printTaskDone()
 
 def deploy(version, repository, workingDir, token, 
@@ -374,13 +376,13 @@ def deploy(version, repository, workingDir, token,
         genChangeLog(repo, os.path.join(repo.working_dir, CHANGELOG_PATH),
                      os.path.join(repo.working_dir, DOC_CHANGELOG_PATH))
         relMsg = genRelMsg(repo, os.path.join(repo.working_dir, CHANGELOG_PATH))
-#       genDoc(repoPath)
-#       publishDoc('ftp.vortexmakes.com',
-#                  'webmaster.vortexmakes.com',
-#                  'V0rt3xM4k35!',
-#                  'htdocs/rkh/lolo',
-#                  '~/lolo/')
-#       updateBranches(repo)
+        docPath = genDoc(repoPath)
+        publishDoc('ftp.vortexmakes.com',
+                   'webmaster.vortexmakes.com',
+                   'V0rt3xM4k35!',
+                   'htdocs/rkh',
+                   docPath)
+        updateBranches(repo)
         pkg = createPackage(repo, workingDir, version)
         releasePackage(pkg, version, repository, workingDir, token, 
                        branch, draft, prerelease, relMsg)
