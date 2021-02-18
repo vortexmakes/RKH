@@ -135,6 +135,8 @@ parser.add_argument('-d', action="store_true", default=False,
                     help='creates a draft (unpublished) release')
 parser.add_argument('-p', action="store_true", default=False,
                     help='identifies the release as a prerelease')
+parser.add_argument('-c', action="store_true", default=False,
+                    help='clean release (working) directory')
 
 def printTitle(title):
     print("\n{}".format(title))
@@ -159,14 +161,12 @@ def updateVersion(repoPath, relVersion):
             matchVersion = re.search(r"^#define\sRKH_VERSION_CODE\s+0x(?P<code>[0-9]{4})", line)
             matchDate = re.search(r"^\s\*\s+\\releasedate\s+(?P<date>[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4})", line)
             if matchVersion:
-                if matchVersion.group('code') != relVersionNum:
-                    print(line.replace(matchVersion.group('code'), 
-                                       relVersionNum), end = '')
-                    isFoundVersionPattern = True
+                print(line.replace(matchVersion.group('code'), 
+                                   relVersionNum), end = '')
+                isFoundVersionPattern = True
             elif matchDate:
-                if matchDate.group('date') != today:
-                    print(line.replace(matchDate.group('date'), today), end = '')
-                    isFoundDatePattern = True
+                print(line.replace(matchDate.group('date'), today), end = '')
+                isFoundDatePattern = True
             else:
                 print(line, end = '')
 
@@ -184,7 +184,7 @@ def genChangeLog(repo, inFilePath, outFilePath):
         jsonFile.close()
 
         with open(outFilePath, "w+") as relfile:
-            latest = RelMsg(releases[0])
+            latest = RelLog(releases[0])
             relfile.write(latest.header)    # Add the header file
 
             for release in releases:
@@ -235,6 +235,7 @@ def genRelMsg(repo, inFilePath):
 
 def updateBranches(repo):
     printTaskTitle("Updating branch develop")
+    origin = repo.remotes['origin']
     if repo.active_branch.name == 'develop':
         mfiles = repo.git.diff('--name-only').split('\n')
         files = ['doc/chglog.txt', 'source/fwk/inc/rkhfwk_version.h']
@@ -242,6 +243,7 @@ def updateBranches(repo):
             repo.index.add(mfiles)
             repo.index.commit("Updated version and log of code changes")
             print('Committed {} files'.format(mfiles))
+            origin.push(progress=MyProgressPrinter())
             printTaskDone()
         else:
             raise DeployError("\nAbort: Cannot update develop branch")
@@ -255,11 +257,7 @@ def updateBranches(repo):
                           cwd=repo.working_dir)
     if proc.returncode != 0:
         raise DeployError("\nAbort: Cannot integrate develop onto master")
-    printTaskDone()
-
-    printTaskTitle("Updating remote branch develop")
-    printTaskDone()
-    printTaskTitle("Updating remote branch master")
+    origin.push(progress=MyProgressPrinter())
     printTaskDone()
 
 def genDoc(repoPath):
@@ -290,10 +288,10 @@ def createPackage(repo, workingDir, version):
                          '-o',
                          os.path.join(workingDir, archive),
                          'develop')
-        print("Extracting archive")
+        print("Extracting exported repository")
         shutil.unpack_archive(os.path.join(workingDir, archive), 
                               os.path.join(workingDir, extractDir), 'tar')
-        print("Copying doc (html) into archive")
+        print("Copying doc (html)")
         if not os.path.isdir(htmlDirDst):
             os.mkdir(htmlDirDst)
         shutil.copytree(htmlDirSrc, htmlDirDst, dirs_exist_ok=True)
@@ -313,6 +311,7 @@ def createPackage(repo, workingDir, version):
 
 def releasePackage(pkg, version, repository, workingDir, token, 
                    branch, draft, prerelease, relMsg):
+    printTaskTitle("Releasing version...")
     changelogPath = os.path.join(workingDir, 'changelog')
     with open(changelogPath, "w") as clFile:
         clFile.write(relMsg)
@@ -326,7 +325,6 @@ def releasePackage(pkg, version, repository, workingDir, token,
     cmd += " -b " + branch
     cmd += " -d " if draft == True else ''
     cmd += " -p " if prerelease == True else ''
-    print(cmd)
     proc = subprocess.run(cmd, shell=True,
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if proc.returncode != 0:
@@ -377,11 +375,11 @@ def deploy(version, repository, workingDir, token,
                      os.path.join(repo.working_dir, DOC_CHANGELOG_PATH))
         relMsg = genRelMsg(repo, os.path.join(repo.working_dir, CHANGELOG_PATH))
         docPath = genDoc(repoPath)
-        publishDoc('ftp.vortexmakes.com',
-                   'webmaster.vortexmakes.com',
-                   'V0rt3xM4k35!',
-                   'htdocs/rkh',
-                   docPath)
+#       publishDoc('ftp.vortexmakes.com',
+#                  'webmaster.vortexmakes.com',
+#                  'V0rt3xM4k35!',
+#                  'htdocs/rkh',
+#                  docPath)
         updateBranches(repo)
         pkg = createPackage(repo, workingDir, version)
         releasePackage(pkg, version, repository, workingDir, token, 
@@ -390,11 +388,34 @@ def deploy(version, repository, workingDir, token,
         raise DeployError("\nAbort: {0:s} does not exist".format(workingDir))
     return False
 
+def clean(workingDir, repository):
+    printTaskTitle("Clean release directory")
+    workingDir = os.path.expanduser(workingDir)
+    repoName = repository.split('/')[-1]
+    repoPath = os.path.join(workingDir, repoName)
+
+    with os.scandir(workingDir) as it:
+        for entry in it:
+            if not entry.name.startswith('.'):
+                if entry.is_dir():
+                    if entry.name == 'RKH' or \
+                       re.search(r'rkh_v[0-9]{1}\.[0-9]{1}\.[0-9]{1,2}', 
+                                 entry.name):
+                        shutil.rmtree(os.path.join(workingDir, entry.name))
+                        print('Deleted directory {}'.format(entry.name))
+                elif entry.is_file():
+                    if re.search(r'rkh_v[0-9]{1}\.[0-9]{1}\.[0-9]{1,2}\.tar\.gz', entry.name) or entry.name == 'changelog':
+                        os.remove(os.path.join(workingDir, entry.name))
+                        print('Deleted file {}'.format(entry.name))
+    
 if __name__ == "__main__":
     try:
         args = parser.parse_args(sys.argv[1:])
-        deploy(args.version, args.repository, args.working, 
-               args.token, args.b, args.d, args.p)
+        if args.c == True:
+            clean(args.working, args.repository)
+        else:
+            deploy(args.version, args.repository, args.working, 
+                   args.token, args.b, args.d, args.p)
     except IOError as msg:
         parser.error(str(msg))
     except DeployError as e:
