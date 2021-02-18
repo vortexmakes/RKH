@@ -56,23 +56,80 @@ David Harel</EM>
 - \ref Download
 - \ref changelog
 - \ref deprecated
-- \ref Others
-- \ref Resources
+- \ref Examples
 - \ref Licensing
 - \ref contact
+- \ref Community
+- \ref Resources
+- \ref Others
 - \ref ack
 
 <HR>
 \section Overview Overview
 
-RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
-and open-source development tool for implementing hierarchical 
-state machines based on modern state machine concepts. This modern 
-techniques are used to give an abstract description of the dynamic 
-behavior of a system in a substantial manner. RKH is built based on 
-platform-independent modules which is shown in the following figure.
+RKH (Reactive frameworK for Hierarchical state machines) is a framework used 
+to build software for reactive and real-time embedded systems in a safely and 
+timely way. It is composed of modules, procedures and supporting tools; such as 
+a method for implementing and executing flat and Statechart state machines, 
+asynchronous and synchronous messaging, cross-platform abstraction, runtime 
+tracing, time management, dynamic memory mechanism to deal with fragmentation, 
+unit test harness, among others. These elements make up the needed 
+infrastructure to build apps in embedded systems. 
 
 \image html rkh_framework_2.png
+
+Frequently, real-time embedded system’s development is slow, error-prone, and 
+hard. Thanks to the use of RKH, this has been greatly improved. RKH enables 
+higher quality and functionality, and decreases the development time. Since 
+common software infrastructure do not have to be reimplemented, there is no 
+need to reinvent the wheel over and over again. 
+
+Moreover, by using RKH, developers can build softwares in a user-friendly, 
+well-defined, formal and structured environment. This is achieved because 
+RKH's infrastructure enables them to code using event-driven programming 
+paradigm.
+
+Due to its event-driven nature, a state machine is usually employed to 
+represent the dynamic behaviour of a reactive application. That is why RKH 
+provides a powerful and efficient module for building and executing state 
+machines. It almost entirely supports UML state machines semantics, which are 
+based on David Harel’s statechart formalism. 
+
+RKH also provides the complete infrastructure for the execution of state 
+machines which supports both synchronous and asynchronous event triggers. In 
+the case of the asynchronous event triggers, the state machine is executed 
+according to the Active Object execution model which is the UML concurrency 
+unit. In RKH framework, an Active Object can be made up by one or more state 
+machines.
+
+RKH not only enables to develop a reactive application from the ground up, but 
+also to reinforce the reactive part of an existing functional application.
+
+RKH includes a platform abstraction layer (PAL) which allows the framework to 
+be portable. By allowing the PAL to be replaced, the framework can be easily 
+ported to different target platforms. The PAL contains the abstraction of 
+operating system, compiler, IDE and hardware components.
+
+RKH allows developers to verify and validate the reactive application’s 
+behaviour at runtime by means of its built-in tracer, which is a flexible, 
+configurable and cross-platform software module. In addition, RKH provides a 
+very simple but powerful console application to visualize the trace events’ 
+output in a legible manner.
+Since RKH has been carefully developed from the ground up by using best 
+principles and practices of software engineering, such as OOD 
+(Object-Oriented Design), software modeling, design patterns, TDD 
+(Test-Driven Development), continuous integration, among others; it is 
+considered a safe, flexible, maintainable, and reusable software.
+
+In conclusion, RKH is a framework that provides the infrastructure for the 
+quick and safe development of reactive applications for real-time embedded 
+systems. It supplies an efficient method for both implementing and executing 
+Statecharts.
+It also encourages the embedded software community to apply best principles 
+and practices of software engineering for building flexible, maintainable and 
+reusable software.
+And finally, RKH improves embedded softwares by increasing their quality and 
+functionality and decreased their development time. 
 
 <STRONG> The key features of the RKH framework: </STRONG>
 
@@ -131,14 +188,90 @@ easily adapted to 16 or 32-bits platforms.
 <HR>
 \section Download Download
 
-RKH download: http://sourceforge.net/projects/rkh-reactivesys/ 
+RKH download: https://github.com/vortexmakes/RKH/releases
 
 <HR>
-\section Others Other implementations
+\section Examples Examples
 
-Open-source frameworks that support Statecharts.
+Repo [rkh-examples](https://github.com/vortexmakes/rkh-examples) contains a 
+collection of open source examples based on RKH framework to develop embedded 
+software for several platforms. In this context, it refers to combination of 
+CPU architecture, compiler or IDE, and operating system. Also, rkh-examples 
+includes some demostrative and cross-platform applications running under 
+Windows and Linux to improve and fast development cycle.
 
-- Quantum Leap	- http://www.state-machine.com/
+### Other embedded applications based on RKH framework
+- [Spora](https://sporaio.com/): open source project to build wearables.
+- [DIMBA](https://github.com/vortexmakes/dimba): IoT application, using MQTT 
+protocol over GSM network.
+- [YipiesAgro](https://github.com/vortexmakes/AgroIoT): IoT application, for 
+precision agriculture.
+
+<HR>
+\section Community How to collaborate on RKH?
+
+Would you like to collaborate with RKH? Great, go ahead!. First of all, you 
+must get the project from its official repository: 
+> $ git clone --recurse-submodules https://github.com/vortexmakes/RKH
+
+Then, you are ready to share your bug fixes and improvements with other users. 
+Your contributions may enhance your professional training and increase your 
+skills about embedded software development, specially in responsive systems. 
+As a means of keeping a code quality, we strongly recommend you to use the 
+‘pull request’ mechanism to include your contributions. Once a pull request is 
+opened, you will be able to discuss and review the potential changes with 
+collaborators and add follow-up commits before your changes are merged into 
+the base branch. You can also use the test harness that RKH provides. 
+If you are interested in collaborating with the project but you have not made 
+any specific contribution yet, there is a list of desirable features available. In this way, you will be able to be part of the framework. By using a feature 
+from the list, you can both develop and include it to the project. That is why, our goal is that you can easily join the RKH’s developer community.
+
+<HR>
+\section Licensing Licensing
+
+Copyright (C) 2010 Leandro Francucci. All rights reserved.
+
+RKH is distributed under the terms of the GNU General Public License 
+v3.0 with the following clarification and special exception.
+
+> Linking this framework statically or dynamically with other modules is 
+> making a combined work based on this framework. Thus, the terms and 
+> conditions of the GNU General Public License cover the whole combination.
+>
+> As a special exception, the copyright holders of this framework give you
+> permission to link this framework with independent modules to produce an
+> executable, regardless of the license terms of these independent modules, and
+> to copy and distribute the resulting executable under terms of your choice,
+> provided that you also meet, for each linked independent module, the terms
+> and conditions of the license of that module. An independent module is a
+> module which is not derived from or based on this framework. If you modify 
+> this framework, you may extend this exception to your version of the 
+> framework, but you are not obligated to do so. If you do not wish to do so, 
+> delete this exception statement from your version.
+
+### Licensing scheme
+- GPLv3 + linking exception license, which will allow a customer to link 
+proprietary source code. Observe that, the GPLv3 can be used for research & 
+development and educational purposes (academic purposes).
+- Commercial license, when the source code of your application should not be 
+published under the GNU GPLv3 license (closed source code), please, contact us. See \ref contact section.
+
+### Why does RKH use the GPL?
+RKH is licensed under terms of GPL, since its main goal is to grant everyone 
+the freedom to copy, redistribute, understand, and modify a program. A crucial 
+aspect of free software is that users are free to cooperate. It is absolutely 
+essential to permit users, who wish to help each other, to share their bug 
+fixes and improvements with other users. For this reason, RKH’s goal is to be 
+a free software; as FSF says, ‘Free software is a matter of liberty, not of 
+price’.
+
+<HR>
+\section contact Contact information
+
+RKH site: http://vortexmakes.com/que-es/
+RKH GitHub: https://github.com/vortexmakes/RKH
+RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+\n e-mail: lf@vortexmakes.com
 
 <HR>
 \section Resources Resources
@@ -152,36 +285,11 @@ Open-source frameworks that support Statecharts.
 - D. Harel and H. Kugler - "The Rhapsody Semantics of Statecharts", Lecture Notes in Computer Science, Vol. 3147, Springer-Verlag, 2004, pp. 325-354
 
 <HR>
-\section Licensing Licensing
+\section Others Other implementations
 
-Copyright (C) 2010 Leandro Francucci. All rights reserved.
+Open-source frameworks that support Statecharts.
 
-RKH is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-RKH is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with RKH package. If not, see <http://www.gnu.org/licenses/>.
-
-<em>(*) Observe that, the GPLv3 can be used for research & development and 
-educational purposes (academic purposes).</em> \n
-<em>(**) When the source code of your application should not be published 
-under the GNU GPLv3 license (closed source code), please, contact contact me. 
-See \ref contact section.</em>
-
-<HR>
-\section contact Contact information
-
-RKH site: http://vortexmakes.com/que-es/
-RKH GitHub: https://github.com/vortexmakes/RKH
-RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
-\n e-mail: lf@vortexmakes.com
+- Quantum Leap	- http://www.state-machine.com/
 
 <HR>
 \section ack Acknowlegments
