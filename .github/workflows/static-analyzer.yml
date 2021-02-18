@@ -1,0 +1,54 @@
+name: Static code analysis
+
+on:
+    pull_request:
+        paths:
+            - '.github/workflows/static-analyzer.yml'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
+    push:
+        branches:
+            - develop
+        paths:
+            - '.github/workflows/static-analyzer.yml'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
+
+jobs:
+    code-analysis:
+        runs-on: ubuntu-latest
+        container:
+            image: leanfrancucci/ceedling:latest
+        steps:
+        - uses: actions/checkout@v1
+          with:
+            submodules: recursive
+        - name: Execute Cppcheck analyzer
+          id: cppcheck-analysis
+          working-directory: tools/analyzer
+          run: ./cppcheck.sh cppcheck-report.xml
+          continue-on-error: true
+        - name: Upload analysis result
+          if: ${{ failure() }}
+          uses: actions/upload-artifact@master
+          with:
+            name: cppcheck-report.xml
+            path: tools/analyzer/cppcheck-report.xml
+        - name: Execute Uno analyzer
+          id: uno-analysis
+          working-directory: tools/analyzer
+          run: ./uno.sh
+          continue-on-error: true
+        - name: Check analysis result
+          if: steps.cppcheck-analysis.outcome == 'failure' && steps.uno-analysis.outcome == 'failure'
+          run: exit 1

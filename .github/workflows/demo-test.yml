@@ -1,0 +1,42 @@
+name: demo-test
+
+on:
+    pull_request:
+        paths:
+            - '.github/workflows/demo-test.yml'
+            - 'tools/ci/demo-test.sh'
+            - 'demo/cross/blinky/*.[ch]'
+            - 'demo/cross/blinky/build/80x86/linux_st/gnu'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
+    push:
+        branches:
+            - develop
+        paths:
+            - '.github/workflows/demo-test.yml'
+            - 'tools/ci/demo-test.sh'
+            - 'demo/cross/blinky/*.[ch]'
+            - 'demo/cross/blinky/build/80x86/linux_st/gnu'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
+
+jobs:
+    unit-test:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - name: Run demo test script
+          uses: docker://docker.io/leanfrancucci/ceedling:latest
+          with:
+            entrypoint: /bin/bash
+            args: -c "cd tools/ci; ./demo-test.sh ../../demo/cross/blinky/build/80x86/linux_st/gnu"

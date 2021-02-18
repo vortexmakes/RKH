@@ -1,0 +1,52 @@
+name: ceedling-unit-tests
+
+on:
+    pull_request:
+        paths:
+            - '.github/workflows/ceedling-test.yml'
+            - 'tools/ceedling/test-all.sh'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
+    push:
+        branches:
+        - develop
+        paths:
+            - '.github/workflows/ceedling-test.yml'
+            - 'tools/ceedling/test-all.sh'
+            - 'source/fwk/**'
+            - 'source/mempool/**'
+            - 'source/queue/**'
+            - 'source/sm/**'
+            - 'source/sma/**'
+            - 'source/tmr/**'
+            - 'source/trc/**'
+
+jobs:
+    unit-test:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v1
+          with:
+            submodules: recursive
+        - name: Run Ceedling tests
+          uses: docker://docker.io/leanfrancucci/ceedling:latest
+          with:
+            entrypoint: /bin/bash
+            args: -c "cd tools/ceedling; ./test-all.sh"
+        - name: Publish Unit Test Results
+          uses: EnricoMi/publish-unit-test-result-action@v1.6
+          if: always()
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            files: source/*/build/artifacts/gcov/report.xml
+        - name: Upload coverage to Codecov
+          uses: codecov/codecov-action@v1
+          with:
+            directory: ./tools/ceedling/gcov
+            flags: unittests # optional
+            name: codecov-rkh
