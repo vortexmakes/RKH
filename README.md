@@ -1,6 +1,6 @@
 # RKH - A framework to build software for reactive and real-time embedded systems
 
-![ceedling-tests](https://github.com/vortexmakes/RKH/workflows/ceedling-unit-tests/badge.svg?branch=develop) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/develop/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH)
+![ceedling-tests](https://github.com/vortexmakes/RKH/workflows/ceedling-unit-tests/badge.svg?branch=develop) [![codecov](https://codecov.io/gh/vortexmakes/RKH/branch/develop/graph/badge.svg)](https://codecov.io/gh/vortexmakes/RKH) ![compliance](https://github.com/vortexmakes/RKH/workflows/compliance/badge.svg?branch=develop) ![demo-test](https://github.com/vortexmakes/RKH/workflows/demo-test/badge.svg?branch=develop) ![static-code-analysis](https://github.com/vortexmakes/RKH/workflows/static-code-analysis/badge.svg?branch=develop)
 
 RKH (Reactive frameworK for Hierarchical state machines) is a framework used 
 to build software for reactive and real-time embedded systems in a safely and 
