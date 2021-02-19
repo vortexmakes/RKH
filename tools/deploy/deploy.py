@@ -177,7 +177,7 @@ def updateVersion(repoPath, relVersion):
         raise DeployError("\nAbort: unknown version file format")
 
 def genChangeLog(repo, inFilePath, outFilePath):
-    printTaskTitle("Generating change log file")
+    printTaskTitle("Generating change log file {}".format(outFilePath))
     if os.path.exists(inFilePath):
         jsonFile = open(inFilePath, 'r')
         releases = json.load(jsonFile)
@@ -211,7 +211,7 @@ def genChangeLog(repo, inFilePath, outFilePath):
     return
 
 def genRelMsg(repo, inFilePath):
-    printTaskTitle("Generating release message")
+    printTaskTitle("Generating release notes")
     if os.path.exists(inFilePath):
         jsonFile = open(inFilePath, 'r')
         releases = json.load(jsonFile)
@@ -261,7 +261,7 @@ def updateBranches(repo):
     printTaskDone()
 
 def genDoc(repoPath):
-    printTaskTitle("Generating doc (html) using doxygen...")
+    printTaskTitle("Generating doc (html) using doxygen")
     docPath = os.path.join(repoPath, 'doc')
     proc = subprocess.run("doxygen Doxyfile", shell=True, 
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
@@ -375,11 +375,11 @@ def deploy(version, repository, workingDir, token,
                      os.path.join(repo.working_dir, DOC_CHANGELOG_PATH))
         relMsg = genRelMsg(repo, os.path.join(repo.working_dir, CHANGELOG_PATH))
         docPath = genDoc(repoPath)
-#       publishDoc('ftp.vortexmakes.com',
-#                  'webmaster.vortexmakes.com',
-#                  'V0rt3xM4k35!',
-#                  'htdocs/rkh',
-#                  docPath)
+        publishDoc('ftp.vortexmakes.com',
+                   'webmaster.vortexmakes.com',
+                   'V0rt3xM4k35!',
+                   'htdocs/rkh',
+                   docPath)
         updateBranches(repo)
         pkg = createPackage(repo, workingDir, version)
         releasePackage(pkg, version, repository, workingDir, token, 
