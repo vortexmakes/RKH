@@ -263,7 +263,14 @@ def updateBranches(repo):
 def genDoc(repoPath):
     printTaskTitle("Generating doc (html) using doxygen")
     docPath = os.path.join(repoPath, 'doc')
-    proc = subprocess.run("doxygen Doxyfile", shell=True, 
+    if os.path.exists('/usr/bin/doxygen'):      # Verify doxygen installation
+        cmd = '/usr/bin/doxygen'
+    elif os.path.exists('/usr/local/bin/doxygen'):
+        cmd = '/usr/local/bin/doxygen'
+    else:
+        raise DeployError("\nAbort: Doxygen does not installed")
+    cmd += " Doxyfile"
+    proc = subprocess.run(cmd, shell=True, 
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
                           cwd=docPath)
     if proc.returncode != 0:
