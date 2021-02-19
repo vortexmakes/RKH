@@ -1,7 +1,7 @@
 [
     {
         "version": "3.3.00",
-        "date": "2019-19-02",
+        "date": "2021-19-02",
         "new": ["Enhanced reference manual and added release notes to README.md",
                 "Added a Python script to automate the deploy and release process. Most of them are written in Python in order to achieve more flexible and maintainable scripts than those written in Bash. The project changes must be added to the file changelog.json according to its format from now on",
                 "Allowed applications to run when trace output was configured as file. It modified the libbsp for Linux platform",
