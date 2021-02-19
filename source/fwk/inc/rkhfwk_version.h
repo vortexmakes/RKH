@@ -38,13 +38,6 @@
  */
 
 /* -------------------------- Development history -------------------------- */
-/*
- *  2017.21.04  LeFr  v2.4.05  Initial version
- *  2018.03.05  LeFr  v3.1.00  ...
- *  2019.08.01  LeFr  v3.2.00
- *  2019.28.08  LeFr  v3.2.03
- */
-
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  lf@vortexmakes.com
@@ -70,9 +63,18 @@ extern "C" {
  *	This macro expands to the binary representation of the RKH version.
  *
  *	The version number is composed as 0xABCC, where:
- *	the number A (1-digit) denoted the major revision, the number B (1-digit)
- *	denoted the minor revision, and the number C (2-digit) indicated the
- *	release number. For example, the code for 2.2.04 is 0x2204.
+ *	the number A (1-digit) denoted the MAJOR version, the number B (1-digit)
+ *	denoted the MINOR version, and the number C (2-digit) indicated the
+ *	PATCH version. For example, the code number for version 2.2.04 is 0x2204.
+ *  
+ *  Giving a version number MAJOR.MINOR.PATCH, increment the:
+ *
+ *  MAJOR version when you make incompatible API changes,
+ *  MINOR version when you add functionality in a backwards-compatible manner, and
+ *  PATCH version when you make backwards-compatible bug fixes.
+ *
+ *  \note
+ *  For more additional information please read https://semver.org/.
  *
  *  \releasedate 08/28/2019
  */
