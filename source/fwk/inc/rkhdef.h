@@ -101,7 +101,7 @@ extern "C" {
 #define RKH_BIT08(bit)          ((rui8_t)((rui8_t) 1u << (bit)))
 #define RKH_BIT16(bit)          ((rui16_t)((rui16_t) 1u << (bit)))
 #define RKH_BIT32(bit)          ((rui32_t)((rui32_t) 1u << (bit)))
-/*@}*/
+/**@}*/
 
 /**
  *  \brief
@@ -136,7 +136,7 @@ extern "C" {
     ((rui16_t)((rui16_t)(bit_mask) << (bit_shift)))
 #define RKH_BIT_MASK_32(bit_mask, bit_shift) \
     ((rui32_t)((rui32_t)(bit_mask) << (bit_shift)))
-/*@}*/
+/**@}*/
 
 /**@{
  *  \brief
@@ -156,7 +156,7 @@ extern "C" {
     ((val) = (rui16_t)(((rui16_t)(val)) | ((rui16_t)(mask))))
 #define RKH_BIT_SET_32(val, mask) \
     ((val) = (rui32_t)(((rui32_t)(val)) | ((rui32_t)(mask))))
-/*@}*/
+/**@}*/
 
 /**@{
  *  \brief
@@ -176,7 +176,7 @@ extern "C" {
     ((val) = (rui16_t)(((rui16_t)(val)) & ((rui16_t) ~(mask))))
 #define RKH_BIT_CLR_32(val, mask) \
     ((val) = (rui32_t)(((rui32_t)(val)) & ((rui32_t) ~(mask))))
-/*@}*/
+/**@}*/
 
 /**
  *  \brief
@@ -276,7 +276,7 @@ extern "C" {
 
 #define  RKH_FAIL               0u
 #define  RKH_OK                 1u
-/*@}*/
+/**@}*/
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */

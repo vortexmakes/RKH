@@ -172,14 +172,5 @@ published under the GNU GPLv3 license (closed source code), please, contact us. 
 
 ## RKH Release notes
 
-Changes between [V3.2.0](https://github.com/vortexmakes/RKH/releases/tag/v3.2.0) and V3.2.3 released 08/28/2019
-
-- Added support for null transitions on init a state machine
-- Added bsp for blinky project on Linux platform 
-- Added TimeEvt type for declaring time events
-- Added support for final state in state machine's region
-- Enhanced quick reference and doc related to timers
-- Fixed tick rate for Linux bsp
-- Fixed stop method of timer module 
-- Fixed a race condition in Linux port
-- Added period to timer start method and a return flag to stop method
+Available releases [here](https://github.com/vortexmakes/RKH/releases). It contains 
+package software, along with release notes.

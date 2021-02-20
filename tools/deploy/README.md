@@ -1,9 +1,29 @@
-# How to release
+# How to deploy and release
+
+## Create a release directory
 ```bash 
-cd path/to/<release-dir>
-vim changelog   # Copy the latest changes from <rkh-dir>
-cd path/to/<rkh-dir>/tools/deploy
-./rkh-deploy.sh clean path/to/<release-dir>
-./rkh-deploy.sh deploy 3.2.3 ../../../rkh-git/ path/to/<release-dir>    # Use an absolut path
-./rkh-release.sh -v 3.2.3 -r vortexmakes/RKH -s path/to/<release-dir>/rkh_v3.2.3.tar.gz -m path/to/<release-dir>/changelog -t <token>
+mkdir path/to/<release-dir>
+```
+
+## Clone RKH framework
+```bash 
+cd path/to/<projects>
+git clone https://github.com/vortexmakes/RKH.git
+```
+
+## Add code changes into changelog file
+```bash 
+cd path/to/<projects>/RKH           # RKH clone
+vim tools/deploy/changelog.json     # Add a new release section and complete 
+                                    # it with your changes. Do not forget to 
+                                    # add the release version and the release 
+                                    # date 
+```
+
+## Execute release process
+```bash 
+cd path/to/<projects>/RKH           # RKH clone
+cd tools/deploy
+./deploy.py -c <release-version> vortexmakes/RKH <path/to/<release-dir> <github-token>
+./deploy.py <release-version> vortexmakes/RKH <path/to/<release-dir> <github-token>
 ```
