@@ -12,7 +12,7 @@
                 "Added STM32 port critical section priority flexible configuration",
                 "Added RKH_CFG_FWK_AWARE_ISR_PRIO configuration option",
                 "Added function rkh_trc_getWholeBlock() to get whole block from trace stream",
-                "Supported reinit and restart a already started timer",
+                "Supported reinit and restart an already started timer",
                 "Added new options of Uncrustify",
                 "Sent memory pool symbols as traces",
                 "Deleted reinitialized timer from the timer list",
