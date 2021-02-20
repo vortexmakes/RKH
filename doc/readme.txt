@@ -2986,6 +2986,7 @@ applied, removed or changed at any time.
 - \ref trfil
 - \ref trtbl
 - \ref trtrazer
+- \ref trazertc
 
 <HR>
 \section tre Trace event structure
@@ -4046,6 +4047,24 @@ to that Trazer need to be configured to support this diversity of plataform
 and the wide range of RKH framework configurations. 
 
 Here is the \ref trazer
+
+<HR>
+\section trazertc Reading and analysing traces using Trace Compass
+
+In order to solve performance and reliability issues by reading and analyzing 
+traces of a reactive and embedded application based on the RKH framework is 
+proposed using the powerful Eclipse 
+[Trace Compass](https://www.eclipse.org/tracecompass/).
+
+Trace Compass is an open source application for viewing and analyzing any 
+type of logs or traces. Its goal is to provide views, graphs, metrics, etc. 
+to help extract useful information from traces, in a way that is more 
+user-friendly and informative than huge text dumps.
+
+\image html tc.png
+
+The project [TraceTC](https://github.com/vortexmakes/TrazerTC) brings a 
+simple guide on how to use Trace Compass together with RKH tracing tool.
 
 Prev: \ref main_page "Home" \n
 Next: \ref utest
