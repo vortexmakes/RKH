@@ -76,9 +76,9 @@ extern "C" {
  *  \note
  *  For more additional information please read https://semver.org/.
  *
- *  \releasedate 08/28/2019
+ *  \releasedate 03/20/2021
  */
-#define RKH_VERSION_CODE            0x3203u
+#define RKH_VERSION_CODE            0x3300u
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
