@@ -88,3 +88,9 @@ GTAGS
 *~
 \#*#
 #*
+
+# generated cmake files
+Makefile
+CMakeCache.txt
+*.cmake
+CMakeFiles
