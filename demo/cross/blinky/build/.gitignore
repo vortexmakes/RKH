@@ -94,3 +94,6 @@ Makefile
 CMakeCache.txt
 *.cmake
 CMakeFiles
+Blinky
+CMakeDoxyfile.in
+rkh
