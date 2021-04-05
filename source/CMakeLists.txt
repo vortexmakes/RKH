@@ -1,3 +1,10 @@
+if (RKH_DEV_BUILD)
+    # The RKH framework port for Linux platform requires pthread library
+    set(CMAKE_THREAD_PREFER_PTHREAD ON)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+endif()
+
 add_library(rkh STATIC)
 add_library(rkh:rkh ALIAS rkh)
 
@@ -45,8 +52,6 @@ target_include_directories(rkh PUBLIC
                            ${SOURCES_DIR}/tmr/inc
                            ${SOURCES_DIR}/trc/inc
                            ${RKH_CONF_FILE_DIR})
-
-cmake_print_variables(RKH_CONF_FILE_DIR)
 
 target_compile_definitions(rkh PUBLIC ${RKH_PLATFORM})
 target_link_libraries(rkh PRIVATE 

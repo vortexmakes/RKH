@@ -20,11 +20,11 @@ include(CMakeDependentOption)
 # Custom module and scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(config)
-include(doc)
 
 # ------------------------- Options and variables -----------------------------
 set(RKH_PLATFORM "Select the RKH platform" CACHE STRING "__LNXGNU__")
 set(RKH_DEV_PLATFORM "Enable RKH platform for developing" BOOL FALSE)
+set(NOT_SUBPROJECT "Detect if RKH is being bundled" BOOL OFF)
 
 if (RKH_PLATFORM STREQUAL "__LNXGNU__")
     set(RKH_DEV_PLATFORM TRUE)
@@ -42,22 +42,21 @@ if (RKH_DEV_BUILD AND NOT RKH_PLATFORM STREQUAL "__LNXGNU__")
             "enable RKH_DEV_BUILD")
 endif()
 
-# Basic paths
-set(RKH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(SOURCES_DIR ${RKH_DIR}/source)
-set(EXAMPLES_DIR ${RKH_DIR}/demo)
+set(SOURCES_DIR ${RKH_BASE}/source)
+set(EXAMPLES_DIR ${RKH_BASE}/demo)
 
 # Print variables and options
+cmake_print_variables(RKH_BASE)
+cmake_print_variables(RKH_BASE_DIR)
 cmake_print_variables(RKH_PLATFORM)
 cmake_print_variables(RKH_DEV_PLATFORM)
 cmake_print_variables(RKH_DEV_BUILD)
 cmake_print_variables(RKH_BUILD_EXAMPLES)
+cmake_print_variables(NOT_SUBPROJECT)
 
-if (RKH_DEV_BUILD)
-    # The RKH framework port for Linux platform requires pthread library
-    set(CMAKE_THREAD_PREFER_PTHREAD ON)
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads REQUIRED)
+# ---------------------------------- Doc --------------------------------------
+if (RKH_USE_DOXYGEN AND NOT NOT_SUBPROJECT)
+    include(doc)
 endif()
 
 # We need to bring-in the variables defined there to this scope
