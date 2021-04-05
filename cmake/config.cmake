@@ -1,7 +1,7 @@
 #
 # <license>
 #
-# The RKH configuration can come from the sources below. By default, 
+# The RKH configuration can come from sources below. By default, 
 # rkhcfg.h is used from current directory.
 #
 # 1. If RKH_CONF_FILE is set, the configuration file specified in it are used 
@@ -15,14 +15,14 @@
 if (DEFINED RKH_CONF_FILE)
     set(RKH_CONF_FILE ${RKH_CONF_FILE})
     set(CONF_FILE_SRC "Cmake CLI or script")
-elseif (CACHED_CONF_FILE)
+elseif (CACHED_RKH_CONF_FILE)
     set(RKH_CONF_FILE ${CACHED_RKH_CONF_FILE})
     set(CONF_FILE_SRC "cache")
 elseif (DEFINED ENV{RKH_CONF_FILE})
     set(RKH_CONF_FILE $ENV{RKH_CONF_FILE})
     set(CONF_FILE_SRC "environment")
-elseif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/rkhcfg.h)
-    set(RKH_CONF_FILE ${CMAKE_CURRENT_SOURCE_DIR}/rkhcfg.h)
+elseif (EXISTS ${CMAKE_SOURCE_DIR}/rkhcfg.h)
+    set(RKH_CONF_FILE ${CMAKE_SOURCE_DIR}/rkhcfg.h)
     set(CONF_FILE_SRC "default")
 else()
     message(FATAL_ERROR "Configuration file rkhcfg.h cannot be found")
