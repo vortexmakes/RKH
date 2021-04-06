@@ -19,7 +19,7 @@ include(CMakeDependentOption)
 
 # Custom module and scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-include(config)
+include(boilerplate)
 
 # ------------------------- Options and variables -----------------------------
 set(RKH_PLATFORM "Select the RKH platform" CACHE STRING "__LNXGNU__")
@@ -34,24 +34,19 @@ option(RKH_USE_DOXYGEN "Add a doxygen target to generate the documentation" ON)
 cmake_dependent_option(RKH_DEV_BUILD 
                        "Build tests, enable warnings, etc" ON  
                        "RKH_DEV_PLATFORM" OFF)
-cmake_dependent_option(RKH_BUILD_EXAMPLES "Build code examples" ON 
-                       "RKH_DEV_PLATFORM" OFF)
 
 if (RKH_DEV_BUILD AND NOT RKH_PLATFORM STREQUAL "__LNXGNU__")
     message(FATAL_ERROR "Set RKH_PLATFORM to \"__LNXGNU__\" if you want to "
             "enable RKH_DEV_BUILD")
 endif()
 
-set(SOURCES_DIR ${RKH_BASE}/source)
-set(EXAMPLES_DIR ${RKH_BASE}/demo)
+set(RKH_EXAMPLES_DIR ${RKH_BASE}/demo)
+set(RKH_SOURCE_DIR ${RKH_BASE}/source)
 
 # Print variables and options
 cmake_print_variables(RKH_BASE)
-cmake_print_variables(RKH_BASE_DIR)
 cmake_print_variables(RKH_PLATFORM)
-cmake_print_variables(RKH_DEV_PLATFORM)
 cmake_print_variables(RKH_DEV_BUILD)
-cmake_print_variables(RKH_BUILD_EXAMPLES)
 cmake_print_variables(NOT_SUBPROJECT)
 
 # ---------------------------------- Doc --------------------------------------

@@ -11,9 +11,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #add_definitions(-D${RKH_PLATFORM})   
 
 # Custom module and scripts
-include(~/projects/RKH/cmake/boilerplate.cmake)
+include($ENV{RKH_BASE}/cmake/boilerplate.cmake)
 
 add_subdirectory(${RKH_BASE} ${CMAKE_CURRENT_BINARY_DIR}/rkh)
+add_subdirectory(${RKH_BASE}/demo/libbsp ${CMAKE_CURRENT_BINARY_DIR}/bsp)
 
 # Application's source files should be defined in a specific subdirectory
 add_executable(${PROJECT_NAME} 
@@ -23,4 +24,6 @@ add_executable(${PROJECT_NAME}
                blinky.h 
                rkhcfg.h
                bsp.h)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE rkh)
+target_link_libraries(${PROJECT_NAME} PRIVATE bsp)
