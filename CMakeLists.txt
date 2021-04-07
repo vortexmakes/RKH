@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # Detect if RKH is being bundled, disable testsuite in that case
 if (NOT DEFINED PROJECT_NAME)
-    set(NOT_SUBPROJECT ON)
+    set(NOT_SUBPROJECT BOOL TRUE)
 endif()
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -12,32 +12,24 @@ endif()
 
 project(rkh LANGUAGES C)
 
-# -------------------------------- Modules ------------------------------------
-# Standard CMake modules
-include(CMakePrintHelpers)
-include(CMakeDependentOption)
-
 # Custom module and scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-include(boilerplate)
+if (NOT_SUBPROJECT)
+    include(boilerplate)
+endif()
 
 # ------------------------- Options and variables -----------------------------
-set(RKH_PLATFORM "Select the RKH platform" CACHE STRING "__LNXGNU__")
-set(RKH_DEV_PLATFORM "Enable RKH platform for developing" BOOL FALSE)
-set(NOT_SUBPROJECT "Detect if RKH is being bundled" BOOL OFF)
+set(RKH_PLATFORM "Selects the RKH platform" CACHE STRING "__LNXGNU__")
+option(RKH_DEV_BUILD 
+       "Set to ON to enable RKH development on Linux platform" OFF)
 
-if (RKH_PLATFORM STREQUAL "__LNXGNU__")
-    set(RKH_DEV_PLATFORM TRUE)
-endif()
-    
-option(RKH_USE_DOXYGEN "Add a doxygen target to generate the documentation" ON)
-cmake_dependent_option(RKH_DEV_BUILD 
-                       "Build tests, enable warnings, etc" ON  
-                       "RKH_DEV_PLATFORM" OFF)
-
-if (RKH_DEV_BUILD AND NOT RKH_PLATFORM STREQUAL "__LNXGNU__")
-    message(FATAL_ERROR "Set RKH_PLATFORM to \"__LNXGNU__\" if you want to "
-            "enable RKH_DEV_BUILD")
+if (RKH_DEV_BUILD)
+    if (NOT RKH_PLATFORM STREQUAL "__LNXGNU__")
+        message(FATAL_ERROR "Set RKH_PLATFORM to \"__LNXGNU__\" if you want to "
+                "enable RKH_DEV_BUILD")
+    else()
+        set(DEV_BUILD "RKH development environment is enabled" ON)
+    endif()
 endif()
 
 set(RKH_EXAMPLES_DIR ${RKH_BASE}/demo)
@@ -46,11 +38,11 @@ set(RKH_SOURCE_DIR ${RKH_BASE}/source)
 # Print variables and options
 cmake_print_variables(RKH_BASE)
 cmake_print_variables(RKH_PLATFORM)
-cmake_print_variables(RKH_DEV_BUILD)
+cmake_print_variables(DEV_BUILD)
 cmake_print_variables(NOT_SUBPROJECT)
 
 # ---------------------------------- Doc --------------------------------------
-if (RKH_USE_DOXYGEN AND NOT NOT_SUBPROJECT)
+if (NOT_SUBPROJECT)
     include(doc)
 endif()
 

@@ -12,6 +12,9 @@
 # 2. Otherwise, if RKH_CONF_FILE is set from environment.
 # 3. Otherwise, rkhcfg.h is used if it exists in the current directory.
 
+include(CMakePrintHelpers)
+cmake_print_variables(CMAKE_SOURCE_DIR)
+
 if (DEFINED RKH_CONF_FILE)
     set(RKH_CONF_FILE ${RKH_CONF_FILE})
     set(CONF_FILE_SRC "Cmake CLI or script")
@@ -24,6 +27,9 @@ elseif (DEFINED ENV{RKH_CONF_FILE})
 elseif (EXISTS ${CMAKE_SOURCE_DIR}/rkhcfg.h)
     set(RKH_CONF_FILE ${CMAKE_SOURCE_DIR}/rkhcfg.h)
     set(CONF_FILE_SRC "default")
+elseif (EXISTS ${CMAKE_SOURCE_DIR}/src/rkhcfg.h)
+    set(RKH_CONF_FILE ${CMAKE_SOURCE_DIR}/src/rkhcfg.h)
+    set(CONF_FILE_SRC "default (src/)")
 else()
     message(FATAL_ERROR "Configuration file rkhcfg.h cannot be found")
 endif()

@@ -1,4 +1,4 @@
-if (RKH_DEV_BUILD)
+if (DEV_BUILD)
     # The RKH framework port for Linux platform requires pthread library
     set(CMAKE_THREAD_PREFER_PTHREAD ON)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -7,6 +7,7 @@ endif()
 
 add_library(rkh STATIC)
 add_library(rkh:rkh ALIAS rkh)
+add_library(rkhif INTERFACE)
 
 # Modules source files
 target_sources(rkh PRIVATE 
@@ -30,11 +31,22 @@ target_sources(rkh PRIVATE
 
 # Platform dependent source files used by demo applications
 target_sources(rkh PRIVATE 
-    $<$<BOOL:RKH_DEV_BUILD>:
+    $<$<BOOL:DEV_BUILD>:
     ${CMAKE_CURRENT_SOURCE_DIR}/portable/80x86/linux_st/gnu/rkhport.c>)
 
 target_include_directories(rkh PUBLIC 
-    $<$<BOOL:RKH_DEV_BUILD>:${CMAKE_CURRENT_SOURCE_DIR}/portable/80x86/linux_st/gnu>
+    $<$<BOOL:DEV_BUILD>:${CMAKE_CURRENT_SOURCE_DIR}/portable/80x86/linux_st/gnu>
+    ${CMAKE_CURRENT_SOURCE_DIR}/fwk/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/mempool/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/queue/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/sm/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/sma/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/tmr/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/trc/inc
+    ${RKH_CONF_FILE_DIR})
+
+target_include_directories(rkhif INTERFACE
+    $<$<BOOL:DEV_BUILD>:${CMAKE_CURRENT_SOURCE_DIR}/portable/80x86/linux_st/gnu>
     ${CMAKE_CURRENT_SOURCE_DIR}/fwk/inc
     ${CMAKE_CURRENT_SOURCE_DIR}/mempool/inc
     ${CMAKE_CURRENT_SOURCE_DIR}/queue/inc
@@ -45,5 +57,7 @@ target_include_directories(rkh PUBLIC
     ${RKH_CONF_FILE_DIR})
 
 target_compile_definitions(rkh PUBLIC ${RKH_PLATFORM})
+target_compile_definitions(rkhif INTERFACE ${RKH_PLATFORM})
+
 target_link_libraries(rkh PRIVATE 
-    $<$<BOOL:RKH_DEV_BUILD>:Threads::Threads>)
+    $<$<BOOL:DEV_BUILD>:Threads::Threads>)

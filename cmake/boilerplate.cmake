@@ -12,34 +12,37 @@
 # 2. Otherwise, if RKH_CONF_FILE is set from environment.
 # 3. Otherwise, rkhcfg.h is used if it exists in the current directory.
 
-if (NOT DEFINED BOILERPLATE_WAS_INCLUDED)
-    set(BOILERPLATE_WAS_INCLUDED 
-        "Detects if boilerplate script was already included" TRUE)
+# Standard CMake modules
+include(CMakePrintHelpers)
+include(CMakeDependentOption)
 
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
-    include(config)
+# Let's nicely support folders in IDEs
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-    if (DEFINED RKH_BASE)
-        set(RKH_BASE ${RKH_BASE})
-        set(RKH_BASE_SRC "Cmake CLI or script")
-    elseif (CACHED_RKH_BASE)
-        set(RKH_BASE ${CACHED_RKH_BASE})
-        set(RKH_BASE_SRC "cache")
-    elseif (DEFINED ENV{RKH_BASE})
-        set(RKH_BASE $ENV{RKH_BASE})
-        set(RKH_BASE_SRC "environment")
-    elseif (EXISTS ${CMAKE_CURRENT_LIST_DIR}/../cmake)
-        get_filename_component(RKH_ABS_DIR 
-                               ${CMAKE_CURRENT_LIST_DIR}/.. 
-                               ABSOLUTE)
-        set(RKH_BASE ${RKH_ABS_DIR})
-        set(RKH_BASE_SRC "default")
-    else()
-        message(FATAL_ERROR "RKH base directory cannot be found")
-    endif()
-    get_filename_component(RKH_BASE_DIR ${RKH_BASE} DIRECTORY)
-    message("RKH base directory from ${RKH_BASE_SRC} located in: ${RKH_BASE}")
-    set(CACHED_RKH_BASE ${RKH_BASE} CACHE STRING 
-        "Specifies the RKH directory in which it is located")
-    unset(RKH_BASE CACHE)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+include(config)
+
+if (DEFINED RKH_BASE)
+    set(RKH_BASE ${RKH_BASE})
+    set(RKH_BASE_SRC "Cmake CLI or script")
+elseif (CACHED_RKH_BASE)
+    set(RKH_BASE ${CACHED_RKH_BASE})
+    set(RKH_BASE_SRC "cache")
+elseif (DEFINED ENV{RKH_BASE})
+    set(RKH_BASE $ENV{RKH_BASE})
+    set(RKH_BASE_SRC "environment")
+elseif (EXISTS ${CMAKE_CURRENT_LIST_DIR}/../cmake)
+    get_filename_component(RKH_ABS_DIR 
+                           ${CMAKE_CURRENT_LIST_DIR}/.. 
+                           ABSOLUTE)
+    set(RKH_BASE ${RKH_ABS_DIR})
+    set(RKH_BASE_SRC "default")
+else()
+    message(FATAL_ERROR "RKH base directory cannot be found")
 endif()
+
+get_filename_component(RKH_BASE_DIR ${RKH_BASE} DIRECTORY)
+message("RKH base directory from ${RKH_BASE_SRC} located in: ${RKH_BASE}")
+set(CACHED_RKH_BASE ${RKH_BASE} CACHE STRING 
+    "Specifies the RKH directory in which it is located")
+unset(RKH_BASE CACHE)
