@@ -56,64 +56,40 @@
 #define __RKHTYPE_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#ifdef __NO_OFFICIAL_PORT__
+#if defined(__NO_OFFICIAL_PORT__)
     #include "rkht.h"
-#endif
-
-#ifdef __W32STVC__
+#elif defined(__W32STVC__)
     #include "..\..\portable\80x86\win32_st\vc\rkht.h"
-#endif
-
-#ifdef __W32MTVC__
+#elif defined(__W32MTVC__)
     #include "..\..\portable\80x86\win32_mt\vc\rkht.h"
-#endif
-
-#ifdef __LNXGNU__
+#elif defined(__LNXGNU__)
     #include "../../portable/80x86/linux_st/gnu/rkht.h"
-#endif
-
-#ifdef __S08CW63__
+#elif defined(__S08CW63__)
     #include "..\..\portable\s08\rkhs\cw6_3\rkht.h"
-#endif
-
-#ifdef __CFV1CW63__
+#elif defined(__CFV1CW63__)
     #include "..\..\portable\cfv1\rkhs\cw6_3\rkht.h"
-#endif
-
-#ifdef __ARM_CM0CW10__
+#elif defined(__ARM_CM0CW10__)
     #include "../../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
-#endif
-
-#ifdef __ARM_CM4FCW10__
+#elif defined(__ARM_CM4FCW10__)
     #include "../../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkht.h"
-#endif
-
-#ifdef __KSDK_KDS__
+#elif defined(__KSDK_KDS__)
     #include "..\..\portable\arm-cortex\rkhs\ksdk\kds\rkht.h"
-#endif
-
-#ifdef __KSDK_OS_KDS__
+#elif defined(__KSDK_OS_KDS__)
     #include "..\..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkht.h"
-#endif
-
-#ifdef __UCOS_V3_03_01__
+#elif defined(__UCOS_V3_03_01__)
     #include "..\..\portable\ucos\v3.03.01\rkht.h"
-#endif
-
-#ifdef __ARM_CM3XPRESSO___
+#elif defined(__ARM_CM3XPRESSO___)
     #include "../../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
-#endif
-
-#ifdef __TEST__
+#elif defined(__TEST__)
     #include "../../portable/test/rkht.h"
-#endif
-
-#ifdef __CIAANXP__
+#elif defined(__CIAANXP__)
     #include "../../portable/arm-cortex/rkhs/arm_cm4f/ciaa_nxp/rkht.h"
-#endif
-
-#ifdef __STM32__
+#elif defined(__STM32__)
     #include "../../portable/arm-cortex/rkhs/arm_cm4f/stm32/rkht.h"
+#elif defined(__PLAT_DEF_BY_BUILD__)
+    #include "rkht.h"
+#else
+    #error "rkhtype.h: Platform definition is not found"
 #endif
 
 /* ---------------------- External C language linkage ---------------------- */
