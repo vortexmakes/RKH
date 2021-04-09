@@ -10,7 +10,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
             "and the CMakeFiles/ directory. Then build out-of-source.")
 endif()
 
-project(rkh LANGUAGES C)
+project(rkh LANGUAGES C VERSION 3.3.0)
 
 # Custom module and scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -28,18 +28,20 @@ if (RKH_DEV_BUILD)
         message(FATAL_ERROR "Set RKH_PLATFORM to \"__LNXGNU__\" if you want to "
                 "enable RKH_DEV_BUILD")
     else()
-        set(DEV_BUILD "RKH development environment is enabled" ON)
+        set(DEV_BUILD ON CACHE BOOL "RKH development platform is enabled")
     endif()
 endif()
 
 set(RKH_EXAMPLES_DIR ${RKH_BASE}/demo)
 set(RKH_SOURCE_DIR ${RKH_BASE}/source)
+set(NOT_FIND_PACKAGE FALSE CACHE BOOL "RKH project is being bundle")
 
 # Print variables and options
 cmake_print_variables(RKH_BASE)
 cmake_print_variables(RKH_PLATFORM)
 cmake_print_variables(DEV_BUILD)
 cmake_print_variables(NOT_SUBPROJECT)
+cmake_print_variables(NOT_FIND_PACKAGE)
 
 # ---------------------------------- Doc --------------------------------------
 if (NOT_SUBPROJECT)
