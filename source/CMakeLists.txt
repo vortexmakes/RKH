@@ -156,3 +156,18 @@ install(
     NAMESPACE "${namespace}"
     DESTINATION "${CONFIG_INSTALL_DIR}"
 )
+
+# Config
+install(
+    FILES
+    ${PROJECT_CONFIG}
+    ${VERSION_CONFIG}
+    DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
+)
+
+# Config
+install(
+    EXPORT "${TARGETS_EXPORT_NAME}"
+    NAMESPACE "${namespace}"
+    DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
+)
