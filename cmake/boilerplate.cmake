@@ -42,7 +42,7 @@ else()
 endif()
 
 get_filename_component(RKH_BASE_DIR ${RKH_BASE} DIRECTORY)
-message("RKH base directory from ${RKH_BASE_SRC} located in: ${RKH_BASE}")
+message(STATUS "RKH base directory from ${RKH_BASE_SRC} located in: ${RKH_BASE}")
 set(CACHED_RKH_BASE ${RKH_BASE} CACHE STRING 
     "Specifies the RKH directory in which it is located")
 unset(RKH_BASE CACHE)

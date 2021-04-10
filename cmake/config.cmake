@@ -13,7 +13,6 @@
 # 3. Otherwise, rkhcfg.h is used if it exists in the current directory.
 
 include(CMakePrintHelpers)
-cmake_print_variables(CMAKE_SOURCE_DIR)
 
 if (DEFINED RKH_CONF_FILE)
     set(RKH_CONF_FILE ${RKH_CONF_FILE})
@@ -43,7 +42,7 @@ elseif (NOT IS_ABSOLUTE ${RKH_CONF_FILE_DIR})
         ${CMAKE_CURRENT_SOURCE_DIR}/${RKH_CONF_FILE_DIR})
 endif()
 
-message("Configuration file from ${CONF_FILE_SRC} located in: " 
+message(STATUS "Configuration file from ${CONF_FILE_SRC} located in: " 
         "${RKH_CONF_FILE_DIR}")
 set(CACHED_RKH_CONF_FILE ${RKH_CONF_FILE} CACHE STRING 
     "Specifies the RKH configuration file, which is used to build RKH")
