@@ -10,12 +10,18 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
             "and the CMakeFiles/ directory. Then build out-of-source.")
 endif()
 
-project(rkh LANGUAGES C VERSION 3.3.0)
+project(rkh LANGUAGES C)
 
 # Custom module and scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 if (NOT_SUBPROJECT)
     include(boilerplate)
+    include(version)
+    set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+    configure_file(${RKH_BASE}/cmake/rkhfwk_version.h.in
+                   ${GENERATED_DIR}/rkhfwk_version.h)
+    file(COPY ${GENERATED_DIR}/rkhfwk_version.h
+         DESTINATION ${RKH_BASE}/source/fwk/inc)
 endif()
 
 # ------------------------- Options and variables -----------------------------
