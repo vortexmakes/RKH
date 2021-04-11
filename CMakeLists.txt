@@ -25,7 +25,7 @@ if (NOT_SUBPROJECT)
 endif()
 
 # ------------------------- Options and variables -----------------------------
-set(RKH_PLATFORM "Selects the RKH platform" CACHE STRING "__LNXGNU__")
+set(RKH_PLATFORM "__LNXGNU__" CACHE STRING "Selects the RKH platform")
 option(RKH_DEV_BUILD 
        "Set to ON to enable RKH development on Linux platform" OFF)
 
@@ -49,10 +49,10 @@ cmake_print_variables(DEV_BUILD)
 cmake_print_variables(NOT_SUBPROJECT)
 cmake_print_variables(NOT_FIND_PACKAGE)
 
+# We need to bring-in the variables defined there to this scope
+add_subdirectory(source)
+
 # ---------------------------------- Doc --------------------------------------
 if (NOT_SUBPROJECT)
     include(doc)
 endif()
-
-# We need to bring-in the variables defined there to this scope
-add_subdirectory(source)

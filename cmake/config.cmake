@@ -28,7 +28,7 @@ elseif (EXISTS ${CMAKE_SOURCE_DIR}/rkhcfg.h)
     set(CONF_FILE_SRC "default")
 elseif (EXISTS ${CMAKE_SOURCE_DIR}/src/rkhcfg.h)
     set(RKH_CONF_FILE ${CMAKE_SOURCE_DIR}/src/rkhcfg.h)
-    set(CONF_FILE_SRC "default (src/)")
+    set(CONF_FILE_SRC "default (src)")
 else()
     message(FATAL_ERROR "Configuration file rkhcfg.h cannot be found")
 endif()
@@ -42,8 +42,8 @@ elseif (NOT IS_ABSOLUTE ${RKH_CONF_FILE_DIR})
         ${CMAKE_CURRENT_SOURCE_DIR}/${RKH_CONF_FILE_DIR})
 endif()
 
-message(STATUS "Configuration file from ${CONF_FILE_SRC} located in: " 
-        "${RKH_CONF_FILE_DIR}")
+message(STATUS "Configuration file (rkhcfg.h) from ${CONF_FILE_SRC} is "
+        "located in: ${RKH_CONF_FILE_DIR}")
 set(CACHED_RKH_CONF_FILE ${RKH_CONF_FILE} CACHE STRING 
     "Specifies the RKH configuration file, which is used to build RKH")
 unset(RKH_CONF_FILE CACHE)

@@ -5,3 +5,12 @@ find_dependency(Threads REQUIRED)
 
 include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_EXPORT_NAME@.cmake")
 check_required_components("@PROJECT_NAME@")
+
+if (NOT DEFINED ENV{RKH_BASE})
+    message(FATAL_ERROR 
+            "RKH_BASE is not defined in the environment. Define it using 
+            'export RKH_BASE=<path/to/RKH>', before executing CMake")
+endif()
+
+include($ENV{RKH_BASE}/cmake/boilerplate.cmake)
+message(STATUS "RKH installation directory is located in: ${rkh_DIR}")
