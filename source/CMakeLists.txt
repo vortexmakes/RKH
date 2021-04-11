@@ -83,91 +83,93 @@ set(PROJECT_CONFIG "${GENERATED_DIR}/${PROJECT_NAME}Config.cmake")
 set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
 set(namespace "${PROJECT_NAME}::")
 
-# Include module with fuction 'write_basic_package_version_file'
-include(CMakePackageConfigHelpers)
+if (NOT_SUBPROJECT)
+    # Include module with fuction 'write_basic_package_version_file'
+    include(CMakePackageConfigHelpers)
 
-# Configure '<PROJECT-NAME>ConfigVersion.cmake'
-# Use:
-#   * PROJECT_VERSION
-write_basic_package_version_file(
-    "${VERSION_CONFIG}" COMPATIBILITY SameMajorVersion
-)
+    # Configure '<PROJECT-NAME>ConfigVersion.cmake'
+    # Use:
+    #   * PROJECT_VERSION
+    write_basic_package_version_file(
+        "${VERSION_CONFIG}" COMPATIBILITY SameMajorVersion
+    )
 
-# Configure '<PROJECT-NAME>Config.cmake'
-# Use variables:
-#   * TARGETS_EXPORT_NAME
-#   * PROJECT_NAME
-configure_package_config_file(
-    "${RKH_BASE}/cmake/Config.cmake.in"
-    "${PROJECT_CONFIG}"
-    INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
-)
+    # Configure '<PROJECT-NAME>Config.cmake'
+    # Use variables:
+    #   * TARGETS_EXPORT_NAME
+    #   * PROJECT_NAME
+    configure_package_config_file(
+        "${RKH_BASE}/cmake/Config.cmake.in"
+        "${PROJECT_CONFIG}"
+        INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
+    )
 
-# Targets:
-#   * <prefix>/lib/libbar.a
-#   * <prefix>/lib/libbaz.a
-#   * header location after install: <prefix>/include/foo/Bar.hpp
-#   * headers can be included by C++ code `#include <foo/Bar.hpp>`
-install(
-    TARGETS rkh rkh_interface bsp
-    EXPORT "${TARGETS_EXPORT_NAME}"
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-)
+    # Targets:
+    #   * <prefix>/lib/libbar.a
+    #   * <prefix>/lib/libbaz.a
+    #   * header location after install: <prefix>/include/foo/Bar.hpp
+    #   * headers can be included by C++ code `#include <foo/Bar.hpp>`
+    install(
+        TARGETS rkh rkh_interface bsp
+        EXPORT "${TARGETS_EXPORT_NAME}"
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
 
-# Headers:
-#   * Source/foo/Bar.hpp -> <prefix>/include/foo/Bar.hpp
-#   * Source/foo/Baz.hpp -> <prefix>/include/foo/Baz.hpp
-install(
-   DIRECTORY 
-   portable/80x86/linux_st/gnu/
-   fwk/inc/
-   mempool/inc/
-   queue/inc/
-   sm/inc/
-   sma/inc/
-   tmr/inc/
-   trc/inc/
-   $<$<BOOL:${DEV_BUILD}>:../demo/libbsp/platform/80x86/linux/>
-   $<$<BOOL:${DEV_BUILD}>:../demo/libbsp/common/>
-   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-   FILES_MATCHING PATTERN "*.h"
-)
+    # Headers:
+    #   * Source/foo/Bar.hpp -> <prefix>/include/foo/Bar.hpp
+    #   * Source/foo/Baz.hpp -> <prefix>/include/foo/Baz.hpp
+    install(
+       DIRECTORY 
+       portable/80x86/linux_st/gnu/
+       fwk/inc/
+       mempool/inc/
+       queue/inc/
+       sm/inc/
+       sma/inc/
+       tmr/inc/
+       trc/inc/
+       $<$<BOOL:${DEV_BUILD}>:../demo/libbsp/platform/80x86/linux/>
+       $<$<BOOL:${DEV_BUILD}>:../demo/libbsp/common/>
+       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+       FILES_MATCHING PATTERN "*.h"
+    )
 
-install(
-    FILES ${RKH_CONF_FILE_DIR}/rkhcfg.h
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-)
+    install(
+        FILES ${RKH_CONF_FILE_DIR}/rkhcfg.h
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
 
-# Config
-#   * <prefix>/lib/cmake/Foo/FooConfig.cmake
-#   * <prefix>/lib/cmake/Foo/FooConfigVersion.cmake
-install(
-    FILES "${PROJECT_CONFIG}" "${VERSION_CONFIG}"
-    DESTINATION "${CONFIG_INSTALL_DIR}"
-)
+    # Config
+    #   * <prefix>/lib/cmake/Foo/FooConfig.cmake
+    #   * <prefix>/lib/cmake/Foo/FooConfigVersion.cmake
+    install(
+        FILES "${PROJECT_CONFIG}" "${VERSION_CONFIG}"
+        DESTINATION "${CONFIG_INSTALL_DIR}"
+    )
 
-# Config
-#   * <prefix>/lib/cmake/Foo/FooTargets.cmake
-install(
-    EXPORT "${TARGETS_EXPORT_NAME}"
-    NAMESPACE "${namespace}"
-    DESTINATION "${CONFIG_INSTALL_DIR}"
-)
+    # Config
+    #   * <prefix>/lib/cmake/Foo/FooTargets.cmake
+    install(
+        EXPORT "${TARGETS_EXPORT_NAME}"
+        NAMESPACE "${namespace}"
+        DESTINATION "${CONFIG_INSTALL_DIR}"
+    )
 
-# Config
-install(
-    FILES
-    ${PROJECT_CONFIG}
-    ${VERSION_CONFIG}
-    DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
-)
+    # Config
+    install(
+        FILES
+        ${PROJECT_CONFIG}
+        ${VERSION_CONFIG}
+        DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
+    )
 
-# Config
-install(
-    EXPORT "${TARGETS_EXPORT_NAME}"
-    NAMESPACE "${namespace}"
-    DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
-)
+    # Config
+    install(
+        EXPORT "${TARGETS_EXPORT_NAME}"
+        NAMESPACE "${namespace}"
+        DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
+    )
+endif()
