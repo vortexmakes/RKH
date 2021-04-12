@@ -54,5 +54,6 @@ add_subdirectory(source)
 
 # ---------------------------------- Doc --------------------------------------
 if (NOT_SUBPROJECT)
-    include(doc)
+#   include(doc)
+    add_subdirectory(doc)
 endif()
