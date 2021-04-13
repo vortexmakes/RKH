@@ -212,7 +212,7 @@ extern "C" {
 #define RKH_FWK_START               GRPLSH(RKH_TG_FWK)
 #define RKH_USR_START               GRPLSH(RKH_TG_USR)
 #define RKH_UT_START                GRPLSH(RKH_TG_UT)
-/*@}*/
+/**@}*/
 
 /**@{
  *  Max. number of used trace events in a particular group in octets, thus
@@ -228,7 +228,7 @@ extern "C" {
 #define RKH_FWK_TTBL_RANGE          3
 #define RKH_USR_TTBL_RANGE          4
 #define RKH_UT_TTBL_RANGE           2
-/*@}*/
+/**@}*/
 
 /**
  *  Defines the total number of trace events.

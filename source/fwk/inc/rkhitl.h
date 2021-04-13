@@ -1618,7 +1618,7 @@ extern "C" {
 #define RKH_TIME_MS(ms_)      ((ms_) / RKH_TICK_RATE_MS)
 #define RKH_TIME_SEC(s_)      ((s_) * 1000u / RKH_TICK_RATE_MS)
 #define RKH_TIME_MIN(m_)      ((m_) * 60 * 1000u / RKH_TICK_RATE_MS)
-/*@}*/
+/**@}*/
 
 /*
  *  The following macros and constants are INTERNAL to RKH and
@@ -1997,7 +1997,7 @@ extern "C" {
      */
     #define RKH_DIS_INTERRUPT()
     #define RKH_ENA_INTERRUPT()
-    /*@}*/
+    /**@}*/
 
     /** @{
      *  \brief
@@ -2052,7 +2052,7 @@ extern "C" {
         RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
     #define RKH_ENTER_CRITICAL(dummy)
     #define RKH_EXIT_CRITICAL(dummy)
-    /*@}*/
+    /**@}*/
 
     /**
      *  \addtogroup config
