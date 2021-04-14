@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-# Detect if RKH is being bundled, disable testsuite in that case
+# Detect if RKH is being bundled
 if (NOT DEFINED PROJECT_NAME)
     set(NOT_SUBPROJECT BOOL TRUE)
 endif()
@@ -24,11 +24,10 @@ if (NOT_SUBPROJECT)
          DESTINATION ${RKH_BASE}/source/fwk/inc)
 endif()
 
-# ------------------------- Options and variables -----------------------------
+# Set environment to develop the RKH framework, if it is needed
 set(RKH_PLATFORM "__LNXGNU__" CACHE STRING "Selects the RKH platform")
 option(RKH_DEV_BUILD 
        "Set to ON to enable RKH development on Linux platform" OFF)
-
 if (RKH_DEV_BUILD)
     if (NOT RKH_PLATFORM STREQUAL "__LNXGNU__")
         message(FATAL_ERROR "Set RKH_PLATFORM to \"__LNXGNU__\" if you want to "
@@ -38,11 +37,9 @@ if (RKH_DEV_BUILD)
     endif()
 endif()
 
-set(RKH_EXAMPLES_DIR ${RKH_BASE}/demo)
-set(RKH_SOURCE_DIR ${RKH_BASE}/source)
 set(NOT_FIND_PACKAGE FALSE CACHE BOOL "RKH project is being bundle")
 
-# Print variables and options
+# Print fundamental variables and options
 cmake_print_variables(RKH_BASE)
 cmake_print_variables(RKH_PLATFORM)
 cmake_print_variables(DEV_BUILD)
@@ -52,8 +49,13 @@ cmake_print_variables(NOT_FIND_PACKAGE)
 # We need to bring-in the variables defined there to this scope
 add_subdirectory(source)
 
-# ---------------------------------- Doc --------------------------------------
+# Generate documentation
 if (NOT_SUBPROJECT)
-#   include(doc)
     add_subdirectory(doc)
 endif()
+
+# Run unit tests
+if (NOT_SUBPROJECT)
+    include(unittest)
+endif()
+
