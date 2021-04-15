@@ -12,9 +12,8 @@ add_subdirectory(${RKH_BASE} ${CMAKE_CURRENT_BINARY_DIR}/rkh)
 add_executable(${PROJECT_NAME} 
                main.c 
                blinky.c 
-               ${RKH_BASE}/demo/libbsp/platform/80x86/linux/bsp_blinky.c 
-               blinky.h 
-               rkhcfg.h
-               bsp.h)
+               ${RKH_BASE}/demo/libbsp/platform/80x86/linux/bsp_blinky.c)
 
+target_include_directories(${PROJECT_NAME} PRIVATE 
+                           ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE rkh)
