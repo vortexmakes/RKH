@@ -37,7 +37,7 @@ if (RKH_DEV_BUILD)
     endif()
 endif()
 
-set(NOT_FIND_PACKAGE FALSE CACHE BOOL "RKH project is being bundle")
+set(NOT_FIND_PACKAGE TRUE CACHE BOOL "RKH project is being bundle")
 
 # Print fundamental variables and options
 cmake_print_variables(RKH_BASE)
