@@ -58,4 +58,3 @@ endif()
 if (NOT_SUBPROJECT)
     include(unittest)
 endif()
-
