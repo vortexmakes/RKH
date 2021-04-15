@@ -98,7 +98,9 @@ isr_tmrThread(void *d)
 
     while (rkhport_fwk_is_running())
     {
+    #if defined(RKH_CFG_TRC_TMR_EN) && (RKH_CFG_TRC_TMR_EN == RKH_ENABLED)
         RKH_TIM_TICK(0);
+    #endif
         usleep(tick_msec);
     }
     pthread_exit(NULL);
