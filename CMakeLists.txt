@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # Detect if RKH is being bundled
 if (NOT DEFINED PROJECT_NAME)
-    set(NOT_SUBPROJECT BOOL TRUE)
+    set(NOT_SUBPROJECT BOOL TRUE "RKH is not being bundled")
 endif()
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -37,14 +37,11 @@ if (RKH_DEV_BUILD)
     endif()
 endif()
 
-set(NOT_FIND_PACKAGE TRUE CACHE BOOL "RKH project is being bundle")
-
 # Print fundamental variables and options
 cmake_print_variables(RKH_BASE)
 cmake_print_variables(RKH_PLATFORM)
 cmake_print_variables(DEV_BUILD)
 cmake_print_variables(NOT_SUBPROJECT)
-cmake_print_variables(NOT_FIND_PACKAGE)
 
 # We need to bring-in the variables defined there to this scope
 add_subdirectory(source)

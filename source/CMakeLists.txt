@@ -52,7 +52,7 @@ target_include_directories(rkh_interface INTERFACE
 
 target_compile_definitions(rkh_interface 
                            INTERFACE 
-                           $<IF:$<BOOL:${NOT_FIND_PACKAGE}>,${RKH_PLATFORM},__PLAT_DEF_BY_BUILD__>)
+                           $<IF:$<NOT:$<BOOL:${NOT_SUBPROJECT}>>,${RKH_PLATFORM},__PLAT_DEF_BY_BUILD__>)
 
 # Link required libraries
 target_link_libraries(rkh PUBLIC rkh_interface)
@@ -69,11 +69,14 @@ endif()
 # * CMAKE_INSTALL_INCLUDEDIR
 include(GNUInstallDirs)
 
+# Project prefix. It is used to distinguish different installed RKH versions 
+set(RKH_PREFIX "${PROJECT_NAME}-${PROJECT_VERSION}")
+
 # Layout. This works for all platforms:
 #   * <prefix>/lib*/cmake/<PROJECT-NAME>
 #   * <prefix>/lib*/
 #   * <prefix>/include/
-set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+set(CONFIG_INSTALL_DIR ${RKH_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 
 set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
@@ -112,10 +115,10 @@ if (NOT_SUBPROJECT)
     install(
         TARGETS rkh rkh_interface bsp
         EXPORT "${TARGETS_EXPORT_NAME}"
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-        INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        LIBRARY DESTINATION ${RKH_PREFIX}/${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${RKH_PREFIX}/${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${RKH_PREFIX}/${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${RKH_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}
     )
 
     # Headers:
@@ -133,13 +136,13 @@ if (NOT_SUBPROJECT)
        trc/inc/
        $<$<BOOL:${DEV_BUILD}>:../demo/libbsp/platform/80x86/linux/>
        $<$<BOOL:${DEV_BUILD}>:../demo/libbsp/common/>
-       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+       DESTINATION ${RKH_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}
        FILES_MATCHING PATTERN "*.h"
     )
 
     install(
         FILES ${RKH_CONF_FILE_DIR}/rkhcfg.h
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        DESTINATION ${RKH_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}
     )
 
     # Config

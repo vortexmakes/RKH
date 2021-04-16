@@ -14,3 +14,4 @@ endif()
 
 include($ENV{RKH_BASE}/cmake/boilerplate.cmake)
 message(STATUS "RKH installation directory is located in: ${rkh_DIR}")
+message(STATUS "RKH version: ${rkh_FIND_VERSION}")
