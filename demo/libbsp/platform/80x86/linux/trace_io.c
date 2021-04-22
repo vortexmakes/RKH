@@ -145,7 +145,6 @@ rkh_trc_open(void)
     }
     else
     {
-        exit(EXIT_FAILURE);
     }
 
     RKH_TRC_SEND_CFG(BSP_TS_RATE_HZ);
