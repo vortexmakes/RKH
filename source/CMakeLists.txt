@@ -162,10 +162,15 @@ if (NOT_SUBPROJECT)
     )
 
     # Config
+    #   * <prefix>/lib/cmake/Foo/rkh_export.cmake
     install(
-        FILES
-        ${PROJECT_CONFIG}
-        ${VERSION_CONFIG}
+        FILES "${RKH_BASE}/share/rkh-package/cmake/rkh_export.cmake"
+        DESTINATION "${CONFIG_INSTALL_DIR}"
+    )
+
+    # Config
+    install(
+        FILES ${PROJECT_CONFIG} ${VERSION_CONFIG}
         DESTINATION "${RKH_BASE}/share/rkh-package/cmake"
     )
 
