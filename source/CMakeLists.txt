@@ -70,7 +70,10 @@ endif()
 include(GNUInstallDirs)
 
 # Project prefix. It is used to distinguish different installed RKH versions 
-set(RKH_PREFIX "${PROJECT_NAME}-${PROJECT_VERSION}")
+if (RKH_LIB_ALIAS)
+    set(RKH_SUFFIX "-${RKH_LIB_ALIAS}")
+endif()
+set(RKH_PREFIX "${PROJECT_NAME}-${PROJECT_VERSION}${RKH_SUFFIX}")
 
 # Layout. This works for all platforms:
 #   * <prefix>/lib*/cmake/<PROJECT-NAME>
