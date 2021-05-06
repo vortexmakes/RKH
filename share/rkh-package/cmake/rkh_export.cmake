@@ -1,8 +1,6 @@
 # The purpose of this CMake file is to register a rkhConfig package reference 
 # in: Unix/Linux/MacOS: ~/.cmake/packages/rkh
 #
-# Having rkhConfig package allows for find_package(rkh) to work when RKH_BASE 
-# is not defined. 
 # Create the reference by running `cmake -P rkh_export.cmake` in this directory.
 
 set(MD5_INFILE "current_path.txt")

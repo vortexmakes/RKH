@@ -4,12 +4,12 @@
 # The RKH configuration can come from sources below. By default, 
 # rkhcfg.h is used from current directory.
 #
-# 1. If RKH_CONF_FILE is set, the configuration file specified in it are used 
+# 1. If RKH_CONF_FILE is set, the configuration file specified in it is used 
 # as the framework configuration. RKH_CONF_FILE can be set in various ways:
 #   1. In CMakeLists.txt, before calling find_package(RKH)
 #   2. By passing -DRKH_CONF_FILE=<path/to/rkhcfg.h>
 #   3. From the CMake variable cache
-# 2. Otherwise, if RKH_CONF_FILE is set from environment.
+# 2. Otherwise, if RKH_CONF_FILE is set from the environment.
 # 3. Otherwise, rkhcfg.h is used if it exists in the current directory.
 
 include(CMakePrintHelpers)
