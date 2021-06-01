@@ -50,6 +50,7 @@ David Harel</EM>
 - \ref qref
 - \ref Installation
 - \ref Porting
+- \ref cmake.md
 - \ref cfg
 - \ref dbg
 - \ref utest
