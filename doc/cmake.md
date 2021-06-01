@@ -1,4 +1,8 @@
 # Application development using CMake
+\image html rkh_bunner.jpg
+
+Prev: \ref main_page "Home" \n
+Next: \ref trazer "Trazer Reference Manual"
 
 The “RKH project” incorporates [CMake](https://cmake.org) to make it easier to 
 configure, build, and debug an embedded C/C++ application commonly used within 

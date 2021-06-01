@@ -5029,9 +5029,9 @@ Next: \ref Usage "Getting started with RKH"
 \image html rkh_bunner.jpg
 
 Prev: \ref main_page "Home" \n
-Next: \ref dbg "Tracing tool"
+Next: \ref cmake.md "Application development using CMake"
 
-\n The goal in this section is to explain how to represent a state machine 
+The goal in this section is to explain how to represent a state machine 
 using the RKH framework. To do that is proposed a simple example, which is 
 shown in the \ref fig1 "Figure 1". Also, this section summarizes the main 
 rules and concepts for making the most out of RKH features.
