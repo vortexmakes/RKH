@@ -170,6 +170,28 @@ def updateVersion(repoPath, relVersion):
             else:
                 print(line, end = '')
 
+    versionFilePath = os.path.join(repoPath, 'VERSION')
+    verCode = relVersion.split('.')
+    with fileinput.FileInput(versionFilePath, inplace = True) as verFile:
+        for line in verFile:
+            matchMajor = re.search(r"^VERSION_MAJOR\s=\s+(?P<major>[0-9]{1})", 
+                                   line)
+            matchMinor = re.search(r"^VERSION_MINOR\s=\s+(?P<minor>[0-9]{1})", 
+                                   line)
+            matchPatch = re.search(r"^PATCHLEVEL\s=\s+(?P<patch>[0-9]{2})", 
+                                   line)
+            if matchMajor:
+                print(line.replace(matchMajor.group('major'), 
+                                   verCode[0]), end = '')
+            elif matchMinor:
+                print(line.replace(matchMinor.group('minor'), 
+                                   verCode[1]), end = '')
+            elif matchPatch:
+                print(line.replace(matchPatch.group('patch'), 
+                                   verCode[2]), end = '')
+            else:
+                print(line, end = '')
+
     if isFoundDatePattern and isFoundVersionPattern:
         print("Updated version: {}".format(relVersion))
         print("Updated version date: {}".format(today))
@@ -344,7 +366,14 @@ def deploy(version, repository, workingDir, token,
     repoName = repository.split('/')[-1]
     repoPath = os.path.join(workingDir, repoName)
 
-    printTaskTitle("Verifying directories, files and code version")
+    printTaskTitle("Verifying directories, files, code version " \
+                    "and environment variables")
+
+    if not os.environ.get('RKH_FTP_SERVER') and \
+       not os.environ.get('RKH_FTP_USR') and \
+       not os.environ.get('RKH_FTP_PASSW') :
+        raise DeployError("\nAbort: Undefined environment variables")
+
     if not re.match(r'[0-9].[0-9].[0-9]{2}', version):
         raise DeployError("\nAbort: Invalid version code: {}".format(version))
         
@@ -382,9 +411,9 @@ def deploy(version, repository, workingDir, token,
                      os.path.join(repo.working_dir, DOC_CHANGELOG_PATH))
         relMsg = genRelMsg(repo, os.path.join(repo.working_dir, CHANGELOG_PATH))
         docPath = genDoc(repoPath)
-        publishDoc('ftp.vortexmakes.com',
-                   'webmaster.vortexmakes.com',
-                   'V0rt3xM4k35!',
+        publishDoc(os.environ.get('RKH_FTP_SERVER'),
+                   os.environ.get('RKH_FTP_USR'),
+                   os.environ.get('RKH_FTP_PASSW'),
                    'htdocs/rkh',
                    docPath)
         updateBranches(repo)
