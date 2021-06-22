@@ -1,5 +1,17 @@
 [
     {
+        "version": "3.4.00",
+        "date": "2021-21-06",
+        "new": ["The RKH framework incorporates CMake as a tool for managing the building of the source code project. The RKH CMake project is intended for two purposes, to develop new services, features and examples of RKH, and to create reactive applications based on it.",
+                "Fixed doxygen warnings in source code.",
+                "Added a tutorial to the reference manual that explains how to develop applications based on RKH using CMake."],
+        "bugfix": ["Fixed a critical error in rkh_trc_open() when using Linux platform."],
+        "apichg": [],
+        "deprecated": [],
+        "port": [],
+        "note": []
+    },
+    {
         "version": "3.3.00",
         "date": "2021-19-02",
         "new": ["Enhanced reference manual and added release notes to README.md",
@@ -57,7 +69,7 @@
         "apichg": [],
         "deprecated": [],
         "port": [],
-        "note": ["From this version, you must include the files rkhfwk_rdygrp.h and rkhfwk_rdygrp.c located in <rkh>/source/fwk/inc and <rkh>/source/fwk/src respectively, to maintain the backward-compatiblity with the existing application projects"]
+        "note": ["From this version, you must include the files rkhfwk_rdygrp.h and rkhfwk_rdygrp.c located in \<rkh\>/source/fwk/inc and \<rkh\>/source/fwk/src respectively, to maintain the backward-compatiblity with the existing application projects"]
     },
     {
         "version": "3.1.00",
