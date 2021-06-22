@@ -69,7 +69,7 @@
         "apichg": [],
         "deprecated": [],
         "port": [],
-        "note": ["From this version, you must include the files rkhfwk_rdygrp.h and rkhfwk_rdygrp.c located in \<rkh\>/source/fwk/inc and \<rkh\>/source/fwk/src respectively, to maintain the backward-compatiblity with the existing application projects"]
+        "note": ["From this version, you must include the files rkhfwk_rdygrp.h and rkhfwk_rdygrp.c located in rkh/source/fwk/inc and rkh/source/fwk/src respectively, to maintain the backward-compatiblity with the existing application projects"]
     },
     {
         "version": "3.1.00",
