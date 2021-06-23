@@ -1,6 +1,6 @@
 [
     {
-        "version": "3.4.00",
+        "version": "3.x.00",
         "date": "2021-21-06",
         "new": ["The RKH framework incorporates CMake as a tool for managing the building of the source code project. The RKH CMake project is intended for two purposes, to develop new services, features and examples of RKH, and to create reactive applications based on it.",
                 "Fixed doxygen warnings.",
