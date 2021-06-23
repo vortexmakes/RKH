@@ -137,6 +137,8 @@ parser.add_argument('-p', action="store_true", default=False,
                     help='identifies the release as a prerelease')
 parser.add_argument('-c', action="store_true", default=False,
                     help='clean release (working) directory')
+parser.add_argument('-t', action="store_true", default=False,
+                    help='test deploy process without publishing anything')
 
 def printTitle(title):
     print("\n{}".format(title))
@@ -255,22 +257,26 @@ def genRelMsg(repo, inFilePath):
         raise DeployError("\nAbort: Release file {} does not exist".format(inFilePath))
     return
 
-def updateBranches(repo):
+def updateBranches(repo, test):
     printTaskTitle("Updating branch develop")
     origin = repo.remotes['origin']
     if repo.active_branch.name == 'develop':
         mfiles = repo.git.diff('--name-only').split('\n')
-        files = ['doc/chglog.txt', 'source/fwk/inc/rkhfwk_version.h']
+        files = ['VERSION', 'doc/chglog.txt', 'source/fwk/inc/rkhfwk_version.h']
         if files == mfiles:
-            repo.index.add(mfiles)
-            repo.index.commit("Updated version and log of code changes")
-            print('Committed {} files'.format(mfiles))
-            origin.push(progress=MyProgressPrinter())
-            printTaskDone()
+            if not test:
+                repo.index.add(mfiles)
+                repo.index.commit("Updated version and log of code changes")
+                print('Committed {} files'.format(mfiles))
+                origin.push(progress=MyProgressPrinter())
+                printTaskDone()
+            else:
+                printTaskTitle("Test mode: skiping updating branches")
+                return
         else:
-            raise DeployError("\nAbort: Cannot update develop branch")
+            raise DeployError("\nAbort: unexpected modified files to commit")
     else:
-        raise DeployError("\nAbort: Cannot update develop branch")
+        raise DeployError("\nAbort: updating can be only performed from develop branch")
 
     printTaskTitle("Integrating develop onto master")
     repo.git.checkout('master')
@@ -301,8 +307,11 @@ def genDoc(repoPath):
         printTaskDone()
         return os.path.join(docPath, 'html')
 
-def publishDoc(server, user, passwd, dest, doc):
-    uploadDoc(server, user, passwd, dest, doc)
+def publishDoc(server, user, passwd, dest, doc, test):
+    if not test:
+        uploadDoc(server, user, passwd, dest, doc)
+    else:
+        printTaskTitle("Test mode: skiping publishing doc")
 
 def createPackage(repo, workingDir, version):
     printTaskTitle("Exporting Git repository")
@@ -339,8 +348,8 @@ def createPackage(repo, workingDir, version):
     printTaskDone()
 
 def releasePackage(pkg, version, repository, workingDir, token, 
-                   branch, draft, prerelease, relMsg):
-    printTaskTitle("Releasing version...")
+                   branch, draft, prerelease, relMsg, test):
+    printTaskTitle("Releasing version")
     changelogPath = os.path.join(workingDir, 'changelog')
     with open(changelogPath, "w") as clFile:
         clFile.write(relMsg)
@@ -354,14 +363,18 @@ def releasePackage(pkg, version, repository, workingDir, token,
     cmd += " -b " + branch
     cmd += " -d " if draft == True else ''
     cmd += " -p " if prerelease == True else ''
-    proc = subprocess.run(cmd, shell=True,
-                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    if proc.returncode != 0:
-        raise DeployError("\nAbort: {}".format(proc.stdout))
+    if not test:
+        proc = subprocess.run(cmd, shell=True,
+                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if proc.returncode != 0:
+            raise DeployError("\nAbort: {}".format(proc.stdout))
+    else:
+        print("Test mode: release module would be called as: {}".format(cmd))
+        printTaskTitle("Test mode: skiping releasing package")
     printTaskDone()
 
 def deploy(version, repository, workingDir, token, 
-           branch = "master", draft = False, prerelease = False):
+           branch = "master", draft = False, prerelease = False, test = False):
     workingDir = os.path.expanduser(workingDir)
     repoName = repository.split('/')[-1]
     repoPath = os.path.join(workingDir, repoName)
@@ -397,13 +410,14 @@ def deploy(version, repository, workingDir, token,
         else:
             repo = git.Repo(repoPath)
             print('Repository {0:s} found in {1:s}'.format(repoName, repoPath))
-            if repo.is_dirty():
-                raise DeployError("\nAbort: Repository is dirty")
-            if repo.active_branch.name != 'develop':
-                raise DeployError("\nAbort: It process must only be " + 
+            if not test:
+                if repo.is_dirty():
+                    raise DeployError("\nAbort: Repository is dirty")
+                if repo.active_branch.name != 'develop':
+                    raise DeployError("\nAbort: It process must only be " + 
                                   "performed on develop branch")
-            origin = repo.remotes['origin']
-            origin.pull(progress=MyProgressPrinter())
+                origin = repo.remotes['origin']
+                origin.pull(progress=MyProgressPrinter())
             printTaskDone()
 
         updateVersion(repoPath, version)
@@ -415,11 +429,12 @@ def deploy(version, repository, workingDir, token,
                    os.environ.get('RKH_FTP_USR'),
                    os.environ.get('RKH_FTP_PASSW'),
                    'htdocs/rkh',
-                   docPath)
-        updateBranches(repo)
+                   docPath,
+                   test)
+        updateBranches(repo, test)
         pkg = createPackage(repo, workingDir, version)
         releasePackage(pkg, version, repository, workingDir, token, 
-                       branch, draft, prerelease, relMsg)
+                       branch, draft, prerelease, relMsg, test)
     else:
         raise DeployError("\nAbort: {0:s} does not exist".format(workingDir))
     return False
@@ -451,7 +466,7 @@ if __name__ == "__main__":
             clean(args.working, args.repository)
         else:
             deploy(args.version, args.repository, args.working, 
-                   args.token, args.b, args.d, args.p)
+                   args.token, args.b, args.d, args.p, args.t)
     except IOError as msg:
         parser.error(str(msg))
     except DeployError as e:
