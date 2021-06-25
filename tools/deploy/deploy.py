@@ -260,7 +260,7 @@ def genRelMsg(repo, inFilePath):
 def updateBranches(repo, test):
     printTaskTitle("Updating branch develop")
     origin = repo.remotes['origin']
-    if repo.active_branch.name == 'develop':
+    if repo.active_branch.name == 'develop' or test:
         mfiles = repo.git.diff('--name-only').split('\n')
         files = ['VERSION', 'doc/chglog.txt', 'source/fwk/inc/rkhfwk_version.h']
         if files == mfiles:
