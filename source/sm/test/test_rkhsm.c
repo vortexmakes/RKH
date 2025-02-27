@@ -117,9 +117,6 @@ static const RKH_ST_T *targetStates[16], *exitStates[16], *entryStates[16];
 static RKH_ST_T *expectedState;
 static RKH_RCODE_T result;
 static int first = 1;
-int GlobalExpectCount;
-int GlobalVerifyOrder;
-char *GlobalOrderError;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
