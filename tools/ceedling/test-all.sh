@@ -26,6 +26,11 @@ case "$1" in
         ;;
 esac
 
+# Print tool versions
+ceedling version
+gcov -v
+lcov -v
+
 currdir=$PWD
 for module in $modules;
 do
