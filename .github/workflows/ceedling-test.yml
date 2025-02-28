@@ -3,6 +3,7 @@ name: ceedling-unit-tests
 on:
     pull_request:
         paths:
+            - 'third-party/ceedling/**'
             - '.github/workflows/ceedling-test.yml'
             - 'tools/ceedling/test-all.sh'
             - 'source/fwk/**'
