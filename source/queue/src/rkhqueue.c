@@ -115,6 +115,7 @@ rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_QUENE_T ssize,
     q->rqi.nputs = q->rqi.ngets = q->rqi.nreads = q->rqi.nempty = 
                                                   q->rqi.nfull = 0;
 #endif
+    q->type = RegularQueType;
     RKH_TR_QUE_INIT(q, (const struct RKH_SMA_T *)sma, ssize);
 }
 

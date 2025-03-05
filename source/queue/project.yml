@@ -28,9 +28,9 @@
     - inc
     - ../fwk/inc
     - ../mempool/inc
+    - ../queue/inc
     - ../sm/inc
     - ../sma/inc
-    - ../tmr/inc
     - ../trc/inc
     - ../portable/test
   :support:
@@ -82,4 +82,4 @@
     - stdout_pretty_tests_report
     - module_generator
     - gcov
-
+    - junit_tests_report

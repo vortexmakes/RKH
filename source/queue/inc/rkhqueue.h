@@ -84,6 +84,15 @@ extern "C" {
     (rbool_t)(rkh_queue_get_num((RKH_QUEUE_T *)(q)) == 0)
 
 /* -------------------------------- Constants ------------------------------ */
+/**
+ *  \brief
+ *  Queue types
+ */
+typedef enum
+{
+    RegularQueType, PriorityQueType
+} RKHQueueType;
+
 /* ------------------------------- Data types ------------------------------ */
 /**
  *  \brief
@@ -232,6 +241,12 @@ typedef struct RKH_QUEUE_T
 #if RKH_CFG_QUE_GET_INFO_EN == RKH_ENABLED
     RKH_QUEI_T rqi;
 #endif
+
+    /**
+     *  \brief
+     *  Queue type.
+     */
+    RKHQueueType type;
 } RKH_QUEUE_T;
 
 /* -------------------------- External variables --------------------------- */
