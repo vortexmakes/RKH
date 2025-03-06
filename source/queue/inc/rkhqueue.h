@@ -466,6 +466,18 @@ void rkh_queue_get_info(RKH_QUEUE_T *q, RKH_QUEI_T *pqi);
  */
 void rkh_queue_clear_info(RKH_QUEUE_T *q);
 
+/**
+ *  \brief
+ *  Set the queue type.
+ *
+ *  \param[in] q     pointer to previously created queue.
+ *  \param[in] type  The queue type to set.
+ *
+ *  \ingroup apiQueue
+ */
+void rkh_queue_setType(RKH_QUEUE_T *q, RKHQueueType type);
+
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

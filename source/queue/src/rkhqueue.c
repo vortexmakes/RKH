@@ -52,6 +52,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkhqueue.h"
 #include "rkhassert.h"
+#include "rkhevt.h"
 #include "rkhsma_prio.h"
 #include "rkhsma_sync.h"
 #include "rkhfwk_module.h"
@@ -95,6 +96,106 @@ static void (*cbRKHSmaSetUnready)(RKH_SMA_T *const me) = &rkh_sma_setUnready;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void *
+getFromTop(RKH_QUEUE_T *q)
+{
+    void *e = CV(0);
+    RKH_SR_ALLOC();
+
+    RKH_ENTER_CRITICAL_();
+
+    if (q->sma != CSMA(0))
+    {
+        cbRKHSmaBlock((RKH_SMA_T *)(q->sma));
+    }
+    else if (q->qty == 0)
+    {
+        RKH_IUPDT_EMPTY(q);
+        RKH_EXIT_CRITICAL_();
+        return e;
+    }
+
+    e = *q->pout++;
+    --q->qty;
+
+    if (q->pout == q->pend)
+    {
+        q->pout = (void * *)q->pstart;
+    }
+
+    RKH_IUPDT_GET(q);
+
+    if ((q->sma != CSMA(0)) && (q->qty == 0))
+    {
+        cbRKHSmaSetUnready((RKH_SMA_T *)(q->sma));
+        RKH_TR_QUE_GET_LAST(q);
+        RKH_EXIT_CRITICAL_();
+    }
+    else
+    {
+        RKH_TR_QUE_GET(q, q->qty);
+        RKH_EXIT_CRITICAL_();
+    }
+    return e;
+}
+
+static void *
+getHighestPriority(RKH_QUEUE_T *q)
+{
+    void *e = CV(0);
+    RKH_SR_ALLOC();
+
+    RKH_ENTER_CRITICAL_();
+
+    if (q->sma != CSMA(0))
+    {
+        cbRKHSmaBlock((RKH_SMA_T *)(q->sma));
+    }
+    else if (q->qty == 0)
+    {
+        RKH_EXIT_CRITICAL_();
+        return e;
+    }
+
+    q->pout = (void**)q->pstart;
+    void** highPrioElem = (void**)q->pstart;
+    int i;
+
+    /* Find highest priority event */
+    for (i = 0; i < q->qty; ++i, ++q->pout)
+    {
+        if (((RKH_EVT_T*)(*q->pout))->priority <
+            ((RKH_EVT_T*)(*highPrioElem))->priority)
+        {
+            highPrioElem = q->pout;
+        }
+    }
+
+    --q->qty;
+    e = *highPrioElem;
+    --q->pin;
+
+    /* Remove found element */
+    q->pout = highPrioElem;
+    for (i = 0; i < q->qty; ++i, ++q->pout)
+    {
+        *q->pout = *(q->pout + 1);
+    }
+
+    if ((q->sma != CSMA(0)) && (q->qty == 0))
+    {
+        cbRKHSmaSetUnready((RKH_SMA_T *)(q->sma));
+        RKH_TR_QUE_GET_LAST(q);
+        RKH_EXIT_CRITICAL_();
+    }
+    else
+    {
+        RKH_TR_QUE_GET(q, q->qty);
+        RKH_EXIT_CRITICAL_();
+    }
+    return e;
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void
 rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_QUENE_T ssize,
@@ -174,42 +275,19 @@ void *
 rkh_queue_get(RKH_QUEUE_T *q)
 {
     void *e = CV(0);
-    RKH_SR_ALLOC();
 
-    RKH_ASSERT(q != CQ(0));
-    RKH_ENTER_CRITICAL_();
-
-    if (q->sma != CSMA(0))
+    RKH_REQUIRE((q != CQ(0)) &&
+                ((q->type == RegularQueType) || (q->type == PriorityQueType)));
+    switch (q->type)
     {
-        cbRKHSmaBlock((RKH_SMA_T *)(q->sma));
-    }
-    else if (q->qty == 0)
-    {
-        RKH_IUPDT_EMPTY(q);
-        RKH_EXIT_CRITICAL_();
-        return e;
-    }
-
-    e = *q->pout++;
-    --q->qty;
-
-    if (q->pout == q->pend)
-    {
-        q->pout = (void * *)q->pstart;
-    }
-
-    RKH_IUPDT_GET(q);
-
-    if ((q->sma != CSMA(0)) && (q->qty == 0))
-    {
-        cbRKHSmaSetUnready((RKH_SMA_T *)(q->sma));
-        RKH_TR_QUE_GET_LAST(q);
-        RKH_EXIT_CRITICAL_();
-    }
-    else
-    {
-        RKH_TR_QUE_GET(q, q->qty);
-        RKH_EXIT_CRITICAL_();
+        case RegularQueType:
+            e = getFromTop(q);
+            break;
+        case PriorityQueType:
+            e = getHighestPriority(q);
+            break;
+        default:
+            break;
     }
     return e;
 }
@@ -263,7 +341,7 @@ rkh_queue_put_lifo(RKH_QUEUE_T *q, const void *pe)
 
     RKH_ASSERT(q != CQ(0) && pe != (const void *)0);
     /*RKH_ENTER_CRITICAL_();*/
-    RKH_ASSERT(q->qty < q->nelems);
+    RKH_ASSERT((q->qty < q->nelems) && (q->type == RegularQueType));
 
     if (q->qty >= q->nelems)
     {
@@ -367,6 +445,17 @@ rkh_queue_clear_info(RKH_QUEUE_T *q)
     RKH_EXIT_CRITICAL_();
 }
 #endif
+
+
+void
+rkh_queue_setType(RKH_QUEUE_T *q, RKHQueueType type)
+{
+    RKH_ASSERT(q != CQ(0));
+
+    RKH_ENTER_CRITICAL_();
+    q->type = type;
+    RKH_EXIT_CRITICAL_();
+}
 
 #endif
 /* ------------------------------ End of file ------------------------------ */

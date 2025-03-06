@@ -767,7 +767,7 @@ extern "C" {
  *  See rkh_queue_get_num() function.
  */
 
-#define RKH_CFG_QUE_GET_NELEMS_EN        RKH_DISABLED
+#define RKH_CFG_QUE_GET_NELEMS_EN        RKH_ENABLED
 
 /**
  *  If the #RKH_CFG_QUE_PUT_LIFO_EN is set to 1 then RKH will include the

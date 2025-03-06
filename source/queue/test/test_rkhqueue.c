@@ -54,6 +54,7 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include "rkhevt.h"
 #include "unity.h"
 #include "rkhqueue.h"
 #include "Mock_rkhtrc_record.h"
@@ -74,21 +75,47 @@
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static RKH_SMA_T ao;
-static RKH_EVT_T evt;
+static RKH_STATIC_EVENT(evt, 0xdc);
+static RKH_STATIC_EVENT(evtL, 1);
+static RKH_STATIC_EVENT(evtM, 2);
+static RKH_STATIC_EVENT(evtH, 3);
 static RKH_EVT_T* storage[STORAGE_SIZE];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static void 
+MockAssertCallback(const char* const file, int line, int cmock_num_calls)
+{
+    TEST_PASS();
+}
 
 /* ---------------------------- Global functions --------------------------- */
 void 
 setUp(void)
 {
+    Mock_rkhtrc_record_Init();
+    Mock_rkhtrc_filter_Init();
+    Mock_rkhport_Init();
+    Mock_rkhassert_Init();
+    Mock_rkhsma_Init();
+    Mock_rkhfwk_hook_Init();
+    Mock_rkhfwk_dynevt_Init();
+    Mock_rkhfwk_cast_Init();
+    Mock_rkhsma_sync_Init();
 }
 
 void 
 tearDown(void)
 {
+    Mock_rkhtrc_record_Verify();
+    Mock_rkhtrc_filter_Verify();
+    Mock_rkhport_Verify();
+    Mock_rkhassert_Verify();
+    Mock_rkhsma_Verify();
+    Mock_rkhfwk_hook_Verify();
+    Mock_rkhfwk_dynevt_Verify();
+    Mock_rkhfwk_cast_Verify();
+    Mock_rkhsma_sync_Verify();
 }
 
 void
@@ -97,13 +124,152 @@ test_defaultValueOfTypeIsRegular(void)
     RKH_QUEUE_T queue;
 
     rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_trc_isoff__ExpectAndReturn(0, RKH_FALSE);
+    rkh_trc_isoff__IgnoreArg_e();
     rkh_exit_critical_Ignore();
 
     rkh_queue_init(&queue, RKH_CAST(const void*, storage), STORAGE_SIZE, &ao);
     TEST_ASSERT_EQUAL(RegularQueType, queue.type);
 }
 
+void
+test_setQueueType(void)
+{
+    RKH_QUEUE_T queue;
+
+    rkh_enter_critical_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_queue_setType(&queue, PriorityQueType);
+    TEST_ASSERT_EQUAL(PriorityQueType, queue.type);
+}
+
+void
+test_avoidUsingPostLIFOForAPriorityQueue(void)
+{
+    RKH_QUEUE_T queue;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(0, RKH_FALSE);
+    rkh_trc_isoff__IgnoreArg_e();
+    rkh_exit_critical_Ignore();
+    rkh_assert_Expect("rkhqueue", 0);
+    rkh_assert_IgnoreArg_file();
+    rkh_assert_IgnoreArg_line();
+    rkh_assert_StubWithCallback(MockAssertCallback);
+
+    rkh_queue_init(&queue, RKH_CAST(const void*, storage), STORAGE_SIZE, &ao);
+    rkh_queue_setType(&queue, PriorityQueType);
+    rkh_queue_put_lifo(&queue, &evt);
+}
+
+void
+test_getAnElementFromARegularQueue(void)
+{
+    RKH_QUENE_T nElems;
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    rkh_enter_critical_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_sma_setReady_Expect(&ao);
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    rkh_enter_critical_Ignore();
+    rkh_exit_critical_Ignore();
+    rkh_enter_critical_Ignore();
+    rkh_sma_block_Expect(&ao);
+    rkh_sma_setUnready_Expect(&ao);
+
+    rkh_queue_init(&queue, RKH_CAST(const void*, storage), STORAGE_SIZE, &ao);
+    nElems = rkh_queue_get_num(&queue);
+    TEST_ASSERT_EQUAL(0, nElems);
+
+    rkh_queue_put_fifo(&queue, &evt);
+    nElems = rkh_queue_get_num(&queue);
+    TEST_ASSERT_EQUAL(1, nElems);
+
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(&evt, event);
+}
+
+void
+test_getAnElementFromAPriorityQueueBottom(void)
+{
+    RKH_QUENE_T nElems;
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
+
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_enter_critical_Ignore();
+    rkh_exit_critical_Ignore();
+
+    rkh_sma_setReady_Expect(&ao);
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    rkh_sma_setReady_Expect(&ao);
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+    rkh_sma_setReady_Expect(&ao);
+    rkh_enter_critical_Ignore();
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    rkh_enter_critical_Ignore();
+    rkh_sma_block_Expect(&ao);
+    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
+    rkh_exit_critical_Ignore();
+
+    evtL.priority = 2;
+    evtM.priority = 1;
+    evtH.priority = 0;
+    rkh_queue_init(&queue, RKH_CAST(const void*, storage), STORAGE_SIZE, &ao);
+    rkh_queue_setType(&queue, PriorityQueType);
+    rkh_queue_put_fifo(&queue, &evtH);
+    rkh_queue_put_fifo(&queue, &evtM);
+    rkh_queue_put_fifo(&queue, &evtL);
+
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(&evtH, event);
+    TEST_ASSERT_EQUAL(0, event->priority);
+    TEST_ASSERT_EQUAL(2, queue.qty);
+    TEST_ASSERT_EQUAL(queue.pstart + 2, queue.pin);
+    TEST_ASSERT_EQUAL(&evtM, (RKH_QUEUE_T*)(*queue.pstart));
+    TEST_ASSERT_EQUAL(&evtL, (RKH_QUEUE_T*)(*(queue.pstart + 1)));
+}
+
+void
+test_getAnElementFromAPriorityQueueMiddle(void)
+{
+    TEST_IGNORE();
+}
+
+void
+test_getAnElementFromAPriorityQueueEnd(void)
+{
+    TEST_IGNORE();
+}
+
+void
+test_getAnElementFromAPriorityQueueEmpty(void)
+{
+    TEST_IGNORE();
+}
+
+void
+test_getAnElementFromAPriorityQueueOneElement(void)
+{
+    TEST_IGNORE();
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

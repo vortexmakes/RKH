@@ -185,6 +185,12 @@ typedef struct RKH_EVT_T
      *  Attribute of dynamic events (0 for static event).
      */
     rui8_t pool;
+
+    /**
+     *  \brief
+     *  Priority level.
+     */
+    rui8_t priority;
 } RKH_EVT_T;
 
 /* -------------------------- External variables --------------------------- */
