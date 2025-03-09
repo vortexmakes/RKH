@@ -779,6 +779,20 @@
 
 #define	RKH_CFG_QUE_PUT_LIFO_EN			RKH_ENABLED
 
+/**
+ *  If the #RKH_CFG_QUE_PRIORITY_EN is set to 1, the queue supports
+ *  retrieval of elements based on their priority.  The priority is
+ *  determined by the 'priority' member of the RKH_EVT_T structure. Lower
+ *  numerical values represent higher priorities.
+ *
+ *  If RKH_CFG_QUE_PRIORITY_EN is set to RKH_DISABLED, the queue will not
+ *  support priority-based retrieval, and attempting to use it may result
+ *  in undefined behavior.
+ *
+ *  See rkh_queue_get() function.
+ */
+
+#define RKH_CFG_QUE_PRIORITY_EN          RKH_ENABLED
 
 /* --- Configuration options related to fixed-sized memory block facility - */
 
