@@ -3,7 +3,7 @@
 
 source_dir="../../source"
 ceedling_dir="tools/ceedling"
-modules="fwk sm sma tmr trc"
+modules="fwk sm sma tmr trc queue"
 
 #ruby_dir=$(sudo gem env | grep ".*EXECUTABLE\sDIRECTORY" | sed 's/.*:\s\(.*\)/\1/')
 #echo $ruby_dir
