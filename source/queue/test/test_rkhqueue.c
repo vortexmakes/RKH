@@ -54,7 +54,9 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include "rkhdef.h"
 #include "rkhevt.h"
+#include "rkhtrc_define.h"
 #include "unity.h"
 #include "rkhqueue.h"
 #include "Mock_rkhtrc_record.h"
@@ -79,6 +81,8 @@ static RKH_STATIC_EVENT(evt, 0xdc);
 static RKH_STATIC_EVENT(evtL, 1);
 static RKH_STATIC_EVENT(evtM, 2);
 static RKH_STATIC_EVENT(evtH, 3);
+static RKH_STATIC_EVENT(evtH1, 4);
+static RKH_STATIC_EVENT(evtH2, 5);
 static RKH_EVT_T* storage[STORAGE_SIZE];
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -87,6 +91,43 @@ static void
 MockAssertCallback(const char* const file, int line, int cmock_num_calls)
 {
     TEST_PASS();
+}
+
+static void
+priorityQueueOrderSetup(RKH_QUEUE_T *queue)
+{
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_INIT, RKH_FALSE);
+
+    rkh_enter_critical_Expect();
+    rkh_exit_critical_Expect();
+
+    rkh_sma_setReady_Expect(&ao);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_FIFO, RKH_FALSE);
+
+    rkh_sma_setReady_Expect(&ao);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_FIFO, RKH_FALSE);
+
+    rkh_sma_setReady_Expect(&ao);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_FIFO, RKH_FALSE);
+
+    rkh_enter_critical_Expect();
+    rkh_sma_block_Expect(&ao);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_GET, RKH_FALSE);
+    rkh_exit_critical_Expect();
+
+    evtL.priority = 2;
+    evtM.priority = 1;
+    evtH.priority = 0;
+    rkh_queue_init(queue, RKH_CAST(const void*, storage), STORAGE_SIZE, &ao);
+    rkh_queue_setType(queue, PriorityQueType);
+}
+
+static void
+priorityQueueOrderTeardown(RKH_QUEUE_T *queue, RKH_EVT_T* event)
+{
+    TEST_ASSERT_EQUAL(0, event->priority);
+    TEST_ASSERT_EQUAL(2, queue->qty);
+    TEST_ASSERT_EQUAL(queue->pstart + 2, queue->pin);
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -197,37 +238,82 @@ test_getAnElementFromARegularQueue(void)
     TEST_ASSERT_EQUAL_PTR(&evt, event);
 }
 
+
+
 void
-test_getAnElementFromAPriorityQueueBottom(void)
+test_getAnElementFromAPriorityQueueTop(void)
 {
-    RKH_QUENE_T nElems;
     RKH_QUEUE_T queue;
     RKH_EVT_T* event;
 
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
+    priorityQueueOrderSetup(&queue);
+    rkh_queue_put_fifo(&queue, &evtH);
+    rkh_queue_put_fifo(&queue, &evtL);
+    rkh_queue_put_fifo(&queue, &evtM);
 
-    rkh_enter_critical_Ignore();
-    rkh_exit_critical_Ignore();
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(&evtH, event);
+    TEST_ASSERT_EQUAL(&evtL, (RKH_QUEUE_T*)(*queue.pstart));
+    TEST_ASSERT_EQUAL(&evtM, (RKH_QUEUE_T*)(*(queue.pstart + 1)));
+    priorityQueueOrderTeardown(&queue, event);
+}
+
+void
+test_getAnElementFromAPriorityQueueMiddle(void)
+{
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
+
+    priorityQueueOrderSetup(&queue);
+    rkh_queue_put_fifo(&queue, &evtL);
+    rkh_queue_put_fifo(&queue, &evtH);
+    rkh_queue_put_fifo(&queue, &evtM);
+
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(&evtH, event);
+    TEST_ASSERT_EQUAL(&evtL, (RKH_QUEUE_T*)(*queue.pstart));
+    TEST_ASSERT_EQUAL(&evtM, (RKH_QUEUE_T*)(*(queue.pstart + 1)));
+    priorityQueueOrderTeardown(&queue, event);
+}
+
+void
+test_getAnElementFromAPriorityQueueBottom(void)
+{
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
+
+    priorityQueueOrderSetup(&queue);
+    rkh_queue_put_fifo(&queue, &evtL);
+    rkh_queue_put_fifo(&queue, &evtM);
+    rkh_queue_put_fifo(&queue, &evtH);
+
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(&evtH, event);
+    TEST_ASSERT_EQUAL(&evtL, (RKH_QUEUE_T*)(*queue.pstart));
+    TEST_ASSERT_EQUAL(&evtM, (RKH_QUEUE_T*)(*(queue.pstart + 1)));
+    priorityQueueOrderTeardown(&queue, event);
+}
+
+
+void
+test_getAnElementFromAPriorityQueueOneElement(void)
+{
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
+
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_INIT, RKH_FALSE);
+
+    rkh_enter_critical_Expect();
+    rkh_exit_critical_Expect();
 
     rkh_sma_setReady_Expect(&ao);
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
-    rkh_sma_setReady_Expect(&ao);
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
-    rkh_sma_setReady_Expect(&ao);
-    rkh_enter_critical_Ignore();
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_FIFO, RKH_FALSE);
 
-    rkh_enter_critical_Ignore();
+    rkh_enter_critical_Expect();
     rkh_sma_block_Expect(&ao);
-    rkh_trc_isoff__IgnoreAndReturn(RKH_FALSE);
-    rkh_exit_critical_Ignore();
+    rkh_sma_setUnready_Expect(&ao);
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_GET_LAST, RKH_FALSE);
+    rkh_exit_critical_Expect();
 
     evtL.priority = 2;
     evtM.priority = 1;
@@ -235,40 +321,54 @@ test_getAnElementFromAPriorityQueueBottom(void)
     rkh_queue_init(&queue, RKH_CAST(const void*, storage), STORAGE_SIZE, &ao);
     rkh_queue_setType(&queue, PriorityQueType);
     rkh_queue_put_fifo(&queue, &evtH);
-    rkh_queue_put_fifo(&queue, &evtM);
-    rkh_queue_put_fifo(&queue, &evtL);
 
     event = rkh_queue_get(&queue);
     TEST_ASSERT_EQUAL_PTR(&evtH, event);
     TEST_ASSERT_EQUAL(0, event->priority);
-    TEST_ASSERT_EQUAL(2, queue.qty);
-    TEST_ASSERT_EQUAL(queue.pstart + 2, queue.pin);
-    TEST_ASSERT_EQUAL(&evtM, (RKH_QUEUE_T*)(*queue.pstart));
-    TEST_ASSERT_EQUAL(&evtL, (RKH_QUEUE_T*)(*(queue.pstart + 1)));
+    TEST_ASSERT_EQUAL(0, queue.qty);
+    TEST_ASSERT_EQUAL(queue.pstart, queue.pin);
 }
 
 void
-test_getAnElementFromAPriorityQueueMiddle(void)
+test_getAnElementFromAPriorityQueueFirstHighestElement(void)
 {
-    TEST_IGNORE();
-}
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
 
-void
-test_getAnElementFromAPriorityQueueEnd(void)
-{
-    TEST_IGNORE();
+    priorityQueueOrderSetup(&queue);
+
+    evtL.priority = 2;
+    evtH1.priority = 0;
+    evtH2.priority = 0;
+
+    rkh_queue_put_fifo(&queue, &evtH1);
+    rkh_queue_put_fifo(&queue, &evtL);
+    rkh_queue_put_fifo(&queue, &evtH2);
+
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(&evtH1, event);
+    TEST_ASSERT_EQUAL(&evtL, (RKH_QUEUE_T*)(*queue.pstart));
+    TEST_ASSERT_EQUAL(&evtH2, (RKH_QUEUE_T*)(*(queue.pstart + 1)));
+
+    priorityQueueOrderTeardown(&queue, event);
 }
 
 void
 test_getAnElementFromAPriorityQueueEmpty(void)
 {
-    TEST_IGNORE();
-}
+    RKH_QUEUE_T queue;
+    RKH_EVT_T* event;
 
-void
-test_getAnElementFromAPriorityQueueOneElement(void)
-{
-    TEST_IGNORE();
+    rkh_trc_isoff__ExpectAndReturn(RKH_TE_QUE_INIT, RKH_FALSE);
+    rkh_enter_critical_Expect();
+    rkh_exit_critical_Expect();
+    rkh_enter_critical_Expect();
+    rkh_exit_critical_Expect();
+
+    rkh_queue_init(&queue, RKH_CAST(const void*, storage), STORAGE_SIZE, NULL);
+    rkh_queue_setType(&queue, PriorityQueType);
+    event = rkh_queue_get(&queue);
+    TEST_ASSERT_EQUAL_PTR(NULL, event);
 }
 
 /** @} doxygen end group definition */
