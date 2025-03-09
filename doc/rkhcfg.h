@@ -1134,6 +1134,21 @@ extern "C" {
  */
 #define RKH_CFG_QUE_PUT_LIFO_EN          RKH_ENABLED
 
+/**
+ *  \brief
+ *  If the #RKH_CFG_QUE_PRIORITY_EN is set to 1, the queue supports
+ *  retrieval of elements based on their priority. The priority is
+ *  determined by the 'priority' member of the RKH_EVT_T structure. Lower
+ *  numerical values represent higher priorities.
+ *  See rkh_queue_get() function.
+ *   
+ *  \type       Boolean
+ *  \range      
+ *  \default    RKH_DISABLED
+ */
+
+#define RKH_CFG_QUE_PRIORITY_EN          RKH_ENABLED
+
 /** @} doxygen end group definition */
 
 /**
