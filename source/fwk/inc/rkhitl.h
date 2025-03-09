@@ -435,15 +435,28 @@ extern "C" {
 #endif
 
 #ifndef RKH_CFG_QUE_PUT_LIFO_EN
-    #error "RKH_CFG_QUE_PUT_LIFO_EN                not #define'd in 'rkhcfg.h'"
+    #error "RKH_CFG_QUE_PUT_LIFO_EN               not #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be RKH_ENABLED ]       "
     #error "                                    [     || RKH_DISABLED]       "
 
 #elif   ((RKH_CFG_QUE_PUT_LIFO_EN != RKH_ENABLED) && \
     (RKH_CFG_QUE_PUT_LIFO_EN != RKH_DISABLED))
-    #error "RKH_CFG_QUE_PUT_LIFO_EN          illegally #define'd in 'rkhcfg.h'"
+    #error "RKH_CFG_QUE_PUT_LIFO_EN         illegally #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be  RKH_ENABLED ]      "
     #error "                                    [     ||  RKH_DISABLED]      "
+
+#endif
+
+#ifndef RKH_CFG_QUE_PRIORITY_EN
+    #warning "RKH_CFG_QUE_PRIORITY_EN             not #define'd in 'rkhcfg.h'"
+    #warning "                                  [MUST be RKH_ENABLED ]       "
+    #warning "                                  [     || RKH_DISABLED]       "
+
+#elif   ((RKH_CFG_QUE_PRIORITY_EN != RKH_ENABLED) && \
+    (RKH_CFG_QUE_PRIORITY_EN != RKH_DISABLED))
+    #warning "RKH_CFG_QUE_PRIORITY_EN       illegally #define'd in 'rkhcfg.h'"
+    #warning "                                  [MUST be  RKH_ENABLED ]      "
+    #warning "                                  [     ||  RKH_DISABLED]      "
 
 #endif
 
@@ -1946,19 +1959,30 @@ extern "C" {
     #define MKENP(e,s)              e,(RKHROM RKH_ST_T *)s
 #endif
 
+#if (RKH_CFG_QUE_PRIORITY_EN == RKH_DISABLED)
 #define MK_SET_EVT(ev_obj, ev_sig) \
     ((RKH_EVT_T *)(ev_obj))->e = (RKH_SIG_T)ev_sig;  \
     ((RKH_EVT_T *)(ev_obj))->nref = 0; \
     ((RKH_EVT_T *)(ev_obj))->pool = 0
 
-#define MK_EVT(ev_obj, ev_sig) \
-    RKH_EVT_T ev_obj = {ev_sig, 0, 0}
-
-#define MK_ROM_EVT(ev_obj, ev_sig) \
-    RKHROM RKH_EVT_T ev_obj = {ev_sig,  0, 0}
-
 #define MK_EVT_STRUCT(ev_sig) \
     {ev_sig, 0, 0}
+#else
+#define MK_SET_EVT(ev_obj, ev_sig) \
+    ((RKH_EVT_T *)(ev_obj))->e = (RKH_SIG_T)ev_sig;  \
+    ((RKH_EVT_T *)(ev_obj))->nref = 0; \
+    ((RKH_EVT_T *)(ev_obj))->pool = 0; \
+    ((RKH_EVT_T *)(ev_obj))->priority = 0
+
+#define MK_EVT_STRUCT(ev_sig) \
+    {ev_sig, 0, 0, 0}
+#endif
+
+#define MK_EVT(ev_obj, ev_sig) \
+    RKH_EVT_T ev_obj = MK_EVT_STRUCT(ev_sig)
+
+#define MK_ROM_EVT(ev_obj, ev_sig) \
+    RKHROM RKH_EVT_T ev_obj = MK_EVT_STRUCT(ev_sig)
 
 #ifndef RKH_DIS_INTERRUPT
     #error \
