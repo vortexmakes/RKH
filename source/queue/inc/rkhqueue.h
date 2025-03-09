@@ -85,12 +85,23 @@ extern "C" {
 
 /* -------------------------------- Constants ------------------------------ */
 /**
- *  \brief
- *  Queue types
+ *  \brief Queue types.
+ *
+ *  This enumeration defines the available queue types, which determine the
+ *  order in which elements are retrieved from the queue.
  */
-typedef enum
+typedef enum RKHQueueType
 {
-    RegularQueType, PriorityQueType
+    /**
+     * Elements are retrieved in FIFO (First-In, First-Out) order.
+     */
+    RegularQueType,
+
+    /**
+     * Elements are retrieved based on their priority, with the
+     * highest priority element being retrieved first.
+     */
+    PriorityQueType
 } RKHQueueType;
 
 /* ------------------------------- Data types ------------------------------ */
@@ -226,6 +237,7 @@ typedef struct RKH_QUEUE_T
     /**
      *  \brief
      *  Minimum number of free elements ever in this queue.
+     *
      *	The nmin low-watermark provides valuable empirical data for
      *	proper sizing of the queue.
      */
@@ -245,8 +257,15 @@ typedef struct RKH_QUEUE_T
     /**
      *  \brief
      *  Queue type.
+     *
+     *  Specifies the type of the queue, determining the order in which elements
+     *  are retrieved. The type is defined by the #RKHQueueType enumeration,
+     *  which can be either FIFO (#RegularQueType) or priority-based
+     *  (#PriorityQueType).
      */
+#if RKH_CFG_QUE_PRIORITY_EN == RKH_ENABLED
     RKHQueueType type;
+#endif
 } RKH_QUEUE_T;
 
 /* -------------------------- External variables --------------------------- */
@@ -261,10 +280,12 @@ typedef struct RKH_QUEUE_T
  *  in the queue. Note that if the total number of bytes specified in the
  *  queue's memory area is not evenly divisible by the specified message
  *  size, the remaining bytes in the memory area are not used.
+ *  The queue type defaults to FIFO (RKHQueueType::RegularQueType), but can be
+ *  changed later using rkh_queue_setType().
  *
  *  \param[in] q		pointer to previously allocated queue structure.
- *  \param[in] sstart	storage start. Pointer to an array of pointers that 
- *                      holds the elements. This array must be declared as an 
+ *  \param[in] sstart	storage start. Pointer to an array of pointers that
+ *                      holds the elements. This array must be declared as an
  *                      array of void pointers.
  *  \param[in] ssize	storage size [in the units of void pointers].
  *  \param[in] sma		pointer to associated SMA that receives the enqueued
@@ -275,10 +296,10 @@ typedef struct RKH_QUEUE_T
  *	\sa
  *	RKH_QUEUE_T structure for more information.
  *
- *  \ingroup apiQueue 
+ *  \ingroup apiQueue
  */
-void rkh_queue_init(RKH_QUEUE_T *q, const void * *sstart, RKH_QUENE_T ssize,
-                 void *sma);
+void rkh_queue_init(RKH_QUEUE_T* q, const void** sstart, RKH_QUENE_T ssize,
+                    void* sma);
 
 /**
  *  \brief
@@ -335,10 +356,19 @@ RKH_QUENE_T rkh_queue_get_lwm(RKH_QUEUE_T *q);
  *  \brief
  *	Get and remove an element from a queue.
  *
- *  \param[in] q	pointer to previously created queue from which the
+ *  This function retrieves an element from the queue, either from the top
+ *  (FIFO) or based on priority. The behavior depends on the queue's type,
+ *  which can be either #RegularQueType (FIFO) or #PriorityQueType.
+ *  When using #PriorityQueType, lower numerical values represent higher
+ *  priorities.
+ *
+ *  \param[in] q    pointer to previously created queue from which the
  *                  elements are received.
  *
- *  \ingroup apiQueue 
+ *  \return         pointer to the retrieved element, or NULL if the queue is
+ *                  empty.
+ *
+ *  \ingroup apiQueue
  */
 void *rkh_queue_get(RKH_QUEUE_T *q);
 
@@ -468,15 +498,20 @@ void rkh_queue_clear_info(RKH_QUEUE_T *q);
 
 /**
  *  \brief
- *  Set the queue type.
+ *  Sets the type of the queue.
  *
- *  \param[in] q     pointer to previously created queue.
- *  \param[in] type  The queue type to set.
+ *  This function sets the type of the queue, which determines how elements
+ *  are retrieved (e.g., FIFO or priority-based).
  *
- *  \ingroup apiQueue
+ *  \note
+ *  Keep in mind that setting the queue type to PriorityQueType will increase
+ *  the computational complexity of rkh_queue_get from O(1) to O(n), where n is
+ *  the number of elements in the queue.
+ *
+ *  \param[in] q    Pointer to the queue object (#RKH_QUEUE_T).
+ *  \param[in] type The desired queue type (#RKHQueueType).
  */
 void rkh_queue_setType(RKH_QUEUE_T *q, RKHQueueType type);
-
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

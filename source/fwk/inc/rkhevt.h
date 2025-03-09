@@ -189,6 +189,9 @@ typedef struct RKH_EVT_T
     /**
      *  \brief
      *  Priority level.
+     *
+     *  When used with priority queues, lower numerical values represent higher
+     *  priorities.
      */
     rui8_t priority;
 } RKH_EVT_T;

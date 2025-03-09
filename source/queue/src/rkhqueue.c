@@ -139,6 +139,7 @@ getFromTop(RKH_QUEUE_T *q)
     return e;
 }
 
+#if RKH_CFG_QUE_PRIORITY_EN == RKH_ENABLED
 static void *
 getHighestPriority(RKH_QUEUE_T *q)
 {
@@ -195,6 +196,13 @@ getHighestPriority(RKH_QUEUE_T *q)
     }
     return e;
 }
+#else
+static void *
+getHighestPriority(RKH_QUEUE_T *q)
+{
+    return getFromTop(q);
+}
+#endif
 
 /* ---------------------------- Global functions --------------------------- */
 void
@@ -446,7 +454,7 @@ rkh_queue_clear_info(RKH_QUEUE_T *q)
 }
 #endif
 
-
+#if RKH_CFG_QUE_PRIORITY_EN == RKH_ENABLED
 void
 rkh_queue_setType(RKH_QUEUE_T *q, RKHQueueType type)
 {
@@ -456,6 +464,7 @@ rkh_queue_setType(RKH_QUEUE_T *q, RKHQueueType type)
     q->type = type;
     RKH_EXIT_CRITICAL_();
 }
+#endif
 
 #endif
 /* ------------------------------ End of file ------------------------------ */
