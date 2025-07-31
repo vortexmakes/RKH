@@ -193,6 +193,7 @@ rkh_fwk_exit(void)
     RKH_SR_ALLOC();
 
     rkh_hook_exit();
+    rkhport_fwk_stop();
     RKH_TR_FWK_EX();
 }
 
