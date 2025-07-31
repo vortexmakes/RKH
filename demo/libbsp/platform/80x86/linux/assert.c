@@ -51,6 +51,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "rkh.h"
 
@@ -70,8 +71,9 @@ rkh_assert(RKHROM char * const file, int line)
     fprintf(stderr,    "RKH_ASSERT: [%d] line from %s "
             "file\n", line, file);
     RKH_DIS_INTERRUPT();
-    RKH_TR_FWK_ASSERT((RKHROM char *)file, __LINE__);
+    RKH_TR_FWK_ASSERT((RKHROM char *)file, line);
     rkh_fwk_exit();
+    exit(EXIT_FAILURE);
 }
 
 /* ------------------------------ File footer ------------------------------ */
