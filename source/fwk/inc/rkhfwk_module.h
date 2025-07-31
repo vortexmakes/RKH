@@ -121,6 +121,14 @@ extern "C" {
     #define RKH_THIS_MODULE \
         static RKHROM char *const m_name = __FILE__;
 
+    /**
+     *	\brief
+     *	Get module name.
+     *
+     *  \ingroup apiAssert
+     */
+    #define RKH_MODULE_GET_NAME()  m_name
+
 #else
     #define RKH_MODULE_NAME(__fname)
     #define RKH_THIS_MODULE
