@@ -26,6 +26,6 @@ command=./build/src/PulseCounterMgr
 cwd=$(+currentDir)
 
 [compile-db]
-command= export RKH_BASE=$(VIM_ROOT) && cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DRKH_DEV_BUILD=ON -DRKH_PLATFORM="__LNXGNU__" -DBUILD_CEEDLING=YES && [ ! -f $PWD/Debug/compile_commands.json ] && ln -s Debug/compile_commands.json .
+command= export RKH_BASE=$(VIM_ROOT) && export RKH_CONF_FILE=$(+currentDir)/src/rkhcfg.h && cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DRKH_DEV_BUILD=ON -DRKH_PLATFORM="__LNXGNU__" -DBUILD_CEEDLING=YES && [ ! -f $PWD/Debug/compile_commands.json ] && ln -s Debug/compile_commands.json .
 cwd=$(+currentDir)
 errorformat=%f(%l):%m
