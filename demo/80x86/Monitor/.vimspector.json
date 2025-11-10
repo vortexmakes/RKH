@@ -1,0 +1,20 @@
+{
+  "configurations": {
+    "Launch": {
+      "adapter": "vscode-cpptools",
+      "filetypes": [ "cpp", "c", "objc", "rust" ],
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/build/src/Monitor",
+        "args": [],
+        "cwd": ".",
+        "environment": [],
+        "externalConsole": true,
+        "MIMode": "gdb",
+        "stopOnEntry": true,
+        "stopAtEntry": true
+      }
+    }
+
+  }
+}

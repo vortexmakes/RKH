@@ -1,0 +1,31 @@
+[+]
+proc=8
+currentDir=$(VIM_CWD)/demo/80x86/$(+cp:PulseCounterMgr)
+
+[configure]
+command=mkdir -p build && export RKH_BASE=$(VIM_ROOT) && cmake -S . -B build -DRKH_DEV_BUILD=ON -DCMAKE_BUILD_TYPE=Debug
+output=quickfix
+cwd=$(+currentDir)
+errorformat=%f(%l):%m
+
+[build]
+command=cmake --build build -j$(+proc)
+output=quickfix
+cwd=$(+currentDir)
+
+[clean]
+command=cmake --build build --target clean -j$(+proc)
+cwd=$(+currentDir)
+
+[build-target]
+command=cmake --build build --target $(-target:all) -j$(+proc)
+cwd=$(+currentDir)
+
+[run-app]
+command=./build/src/PulseCounterMgr
+cwd=$(+currentDir)
+
+[compile-db]
+command= export RKH_BASE=$(VIM_ROOT) && cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DRKH_DEV_BUILD=ON -DRKH_PLATFORM="__LNXGNU__" -DBUILD_CEEDLING=YES && [ ! -f $PWD/Debug/compile_commands.json ] && ln -s Debug/compile_commands.json .
+cwd=$(+currentDir)
+errorformat=%f(%l):%m
