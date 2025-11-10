@@ -263,9 +263,7 @@ typedef struct RKH_QUEUE_T
      *  which can be either FIFO (#RegularQueType) or priority-based
      *  (#PriorityQueType).
      */
-#if RKH_CFG_QUE_PRIORITY_EN == RKH_ENABLED
     RKHQueueType type;
-#endif
 } RKH_QUEUE_T;
 
 /* -------------------------- External variables --------------------------- */
