@@ -1191,11 +1191,9 @@ preemptive kernel for executing event-driven system despicted in
 \ref fig15 "Figure 15". \n \n
 
 \anchor fig16
-\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed 
-priority preemptive scheduling"
+\image html rkhpreem.png "Figure 16 - RTC execution model on a fixed priority preemptive scheduling"
 
-\n The following explanation section illuminates the interesting 
-points:\n
+\n The following explanation section illuminates the interesting points:\n
 
 \li (0) When all event queues run out of events, neither of three active 
 objects are able to run, the underlying kernel executes the idle task to 
@@ -1226,7 +1224,6 @@ object that is able to run so is scheduled processor time so the event
 and \b A is again the highest priority active object that is able to run 
 so is scheduled processor time so the event \b D processing can be 
 completed.
-
 \li (10) Idem (5) and (6).
 \li (11) Idem (8).
 \li (12) Idem (9).
@@ -1277,8 +1274,7 @@ cooperative, and non-preemptive kernel for executing event-driven
 system despicted in \ref fig15 "Figure 15". \n \n
 
 \anchor fig17
-\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed 
-priority cooperative scheduling"
+\image html rkhcoop.png "Figure 17 - RTC execution model on a fixed priority cooperative scheduling"
 
 \n The following explanation section illuminates the interesting 
 points:\n
