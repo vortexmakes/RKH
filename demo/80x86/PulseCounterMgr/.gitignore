@@ -11,7 +11,6 @@
 #
 # Generated files
 #
-/Debug
-/build
+Debug
 .cache
 compile_commands.json

@@ -53,6 +53,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include <pthread.h>
 #include <semaphore.h>
+#include <stdio.h>
 
 #include "rkh.h"
 #include "rkhfwk_dynevt.h"
@@ -99,6 +100,7 @@ void
 rkhport_fwk_stop(void)
 {
     running = 0;
+    sem_post(&sma_is_rdy);
 }
 
 void

@@ -1,0 +1,48 @@
+{
+  "configurations": {
+    "LaunchBase": {
+      "adapter": "vscode-cpptools",
+      "filetypes": [ "cpp", "c", "objc", "rust" ],
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/build/src/SignalMgr",
+        "args": [],
+        "cwd": ".",
+        "environment": [],
+        "externalConsole": true,
+        "MIMode": "gdb",
+        "stopOnEntry": true,
+        "stopAtEntry": true
+      }
+    },
+
+    "LaunchV1": {
+      "extends": "LaunchBase",
+      "configuration": {
+        "program": "${workspaceRoot}/build/src/SignalMgrV1"
+      }
+    },
+
+    "LaunchV2": {
+      "extends": "LaunchBase",
+      "configuration": {
+        "program": "${workspaceRoot}/build/src/SignalMgrV2"
+      }
+    },
+
+    "LaunchV3": {
+      "extends": "LaunchBase",
+      "configuration": {
+        "program": "${workspaceRoot}/build/src/SignalMgrV3"
+      }
+    },
+
+    "LaunchV4": {
+      "extends": "LaunchBase",
+      "configuration": {
+        "program": "${workspaceRoot}/build/src/SignalMgrV4"
+      }
+    }
+
+  }
+}

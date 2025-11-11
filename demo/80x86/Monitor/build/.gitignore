@@ -23,10 +23,6 @@
 # host programs on Cygwin
 *.exe
 
-# Build tree
-/build
-/Debug
-
 #
 # Top-level generic files
 #
@@ -53,8 +49,7 @@
 /spl/
 /tpl/
 /doc/html/
-/.cache
-compile_commands.json
+src/
 
 #
 # Generated include files
@@ -91,3 +86,12 @@ GTAGS
 *~
 \#*#
 #*
+
+# generated cmake files
+Makefile
+CMakeCache.txt
+*.cmake
+CMakeFiles
+AHSM
+CMakeDoxyfile.in
+rkh

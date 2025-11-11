@@ -1,0 +1,21 @@
+{
+    "cmake.configureEnvironment": {
+        "RKH_BASE": "${workspaceFolder}/../../../"
+    },
+    "cmake.environment": {
+        "RKH_BASE": "${workspaceFolder}/../../../"
+    },
+    "terminal.integrated.env.linux": {
+        "RKH_BASE": "${workspaceFolder}/../../../"
+    },
+    "cmake.configureArgs": [
+        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DRKH_DEV_BUILD=ON",
+        "-DRKH_PLATFORM=__LNXGNU__"
+    ],
+    "cmake.generator": "Unix Makefiles",
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.buildArgs": [
+        "-j8"
+    ]
+}
