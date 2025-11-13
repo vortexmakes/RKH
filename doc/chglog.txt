@@ -3,6 +3,23 @@
 
 \tableofcontents
 
+\section rkhVer_3_5_00 Version 3.5.00
+\releasedate 2025-13-11
+
+\new
+- Added the rkh_sm_propagate() function to propagate an event to self without using the AO's event queue.
+- Added unit test cases to module rkhsm.c to demonstrate how to build periodic non-reactive/reactive AO classes.
+- Supported clang-format tool.
+- Implemented priority queue feature for native queues.
+- Implemented macro RKH_MODULE_GET_NAME() to get the module name.
+- Provided new application demos to show how to implement special AOs.
+- Updated Ceedling to version 1.0.0
+
+\bugfix
+- Stopped framework scheduler on exit.
+- Free semaphore properly when stopping framework on x86/Linux port.
+- Fixed line number on assertions for x86/Linux port
+
 \section rkhVer_3_4_00 Version 3.4.00
 \releasedate 2021-21-06
 
