@@ -84,7 +84,7 @@ class RelMsg(Release):
         self.tail = self.TailText
 
 class RelLog(Release):
-    HeaderText = "/**\n\page changelog Release Notes\n\n\\tableofcontents\n\n"
+    HeaderText = "/**\n\\page changelog Release Notes\n\n\\tableofcontents\n\n"
     TailText = "\n*/"
     MsgType = {"new": '\\new',
                "bugfix": '\\bugfix', 
@@ -99,7 +99,7 @@ class RelLog(Release):
 
     def section(self):
         verCode = self.version.split('.')
-        line = "\section rkhVer_"
+        line = "\\section rkhVer_"
         line += "{0:s}_{1:s}_{2:s} ".format(verCode[0], verCode[1], verCode[2])
         line += "Version {}\n".format(self.version)
         return line
