@@ -16,7 +16,7 @@ from rkhupdoc import uploadDoc
 import time
 #from release import releasePkg
   
-GitHostURL = 'https://github.com/'
+GitHostURL = 'git@github.com:'
 CHANGELOG_PATH = 'tools/deploy/changelog.json'
 DOC_CHANGELOG_PATH = 'doc/chglog.txt'
 
